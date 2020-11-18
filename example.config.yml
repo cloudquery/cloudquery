@@ -1,0 +1,17 @@
+providers:
+  - name: aws
+    region: us-east-1
+    resources:
+#      - name: ec2.images
+#      - name: ec2.instances
+#      - name: ec2.hosts
+#      - name: ec2.flow_logs
+#      - name: ec2.nat_gateways
+#      - name: ec2.network_acls
+#      - name: ec2.route_tables
+#      - name: directconnect.gateways
+#      - name: ec2.instances
+#      - name: ec2.reserved
+#      - name: ec2.addresses
+#      - name: apigateway.api_keys
+#      - name: apigateway

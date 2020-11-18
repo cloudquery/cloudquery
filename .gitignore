@@ -1,0 +1,7 @@
+.idea
+.vscode
+cloudquery
+cloudquery.db
+config.yml
+dist/
+.release-env
