@@ -1,7 +1,7 @@
 # cloudquery
 
-cloudquery exposes your cloud configuration and metadata as sql tables.
-Providing powerful analysis and monitoring without writing code.
+cloudquery exposes your cloud configuration and metadata as sql tables,
+providing powerful analysis and monitoring without writing code.
 
 ### Links
 * Homepage: https://cloudquery.run
@@ -10,7 +10,7 @@ Providing powerful analysis and monitoring without writing code.
 
 ## Download & install
 
-You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases) or using CLI:
+You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
 ```bash
 export VERSION=v0.1.0
@@ -22,10 +22,10 @@ chmod a+x cloudquery
 
 ## Quick Start
 
-Currently, cloudquery only supports AWS (Azure and GCP are on the roadmap).
-Number of aws resources is actively expanding. 
+Currently, cloudquery only supports AWS (Azure, GCP DO are on the roadmap).
+The number of AWS resources is actively expanding.
 
-You should be authenticated with AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
+You should be authenticated with an AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
  * `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
  * `~/.aws/credentials` created via `aws configure`
  
@@ -37,8 +37,8 @@ cp example.config.yml config.yml
 ./cloudquery
  ```
 
-If you uncommented images (that might take 30 seconds to fetch all images).
-You can now run the following basic query in your sqlite3 console (`sqlite3 ./cloudquery.db`):
+If you uncommented images (it may take up to 30 seconds to fetch all images),
+you can now run the following basic query in your sqlite3 console (`sqlite3 ./cloudquery.db`):
 
 ```sqlite
 SELECT * FROM aws_ec2_images;
@@ -56,3 +56,7 @@ By contributing to cloudquery you agree that your contributions will be licensed
 go build .
 ./cloudquery # --help to see all options
 ```
+
+## Roadmap
+
+cloudquery currently support AWS only, Azure, GCP and DO are on the near roadmap and we are actively expanding number of supported resource with AWS.
