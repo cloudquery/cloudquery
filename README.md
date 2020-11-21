@@ -5,12 +5,12 @@ Providing powerful analysis and monitoring without writing code.
 
 ### Links
 * Homepage: https://cloudquery.run
-* Releases: https://github.com/cloudqueryrun/cloudquery/releases
+* Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.run
 
 ## Download & install
 
-You can download the precompiled binary from [releases](https://github.com/cloudqueryrun/cloudquery/releases) or using CLI:
+You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases) or using CLI:
 
 ```bash
 export VERSION=v0.1.0
