@@ -2,6 +2,8 @@ package cloudqueryclient
 
 import (
 	"fmt"
+	"io/ioutil"
+
 	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"go.uber.org/zap"
@@ -12,7 +14,6 @@ import (
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"io/ioutil"
 )
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
@@ -42,6 +43,7 @@ func New(driver string, dsn string) (*Client, error) {
 		client.db, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
 			Logger: gormLogger,
 		})
+		client.db.Exec("PRAGMA foreign_keys = ON")
 	case "postgresql":
 		client.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 			Logger: gormLogger,
@@ -60,7 +62,6 @@ func New(driver string, dsn string) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.db.Exec("PRAGMA foreign_keys = ON")
 	client.log, err = zap.NewDevelopment()
 	if err != nil {
 		return nil, err
