@@ -73,7 +73,7 @@ type InstanceCapacityReservationSpecificationResponse struct {
 	ID                            uint `gorm:"primarykey"`
 	InstanceID                    uint
 	CapacityReservationPreference *string
-	CapacityReservationTarget     *ec2.CapacityReservationTargetResponse `gorm:"embedded;embeddedPrefix:capacity_reservation_target_"`
+	CapacityReservationTarget     *ec2.CapacityReservationTargetResponse `gorm:"embedded"`
 }
 
 type InstanceElasticGpuAssociation struct {
