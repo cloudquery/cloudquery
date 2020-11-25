@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
-    "time"
-	"github.com/spf13/cobra"
-	"github.com/cloudquery/cloudquery/cloudqueryclient"
 	"os"
+	"time"
+
+	"github.com/cloudquery/cloudquery/cloudqueryclient"
+	"github.com/spf13/cobra"
 )
 
 type Options struct {
@@ -14,6 +15,7 @@ type Options struct {
 }
 
 var options Options
+
 // Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 var Version = "development"
 var Commit = "development"
@@ -41,6 +43,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&options.dsn, "--dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite")
-	rootCmd.PersistentFlags().StringVar(&options.driver, "--driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver")
+	rootCmd.PersistentFlags().StringVar(&options.dsn, "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite")
+	rootCmd.PersistentFlags().StringVar(&options.driver, "driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver")
 }
