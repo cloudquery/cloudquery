@@ -13,7 +13,7 @@ providing powerful analysis and monitoring without writing code.
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
 ```bash
-export VERSION=v0.1.0
+export VERSION=v0.2.0
 export OS=Darwin # Possible values: Linux,Windows,Darwin
 curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cloudquery_${OS}_x86_64 -o cloudquery
 chmod a+x cloudquery
