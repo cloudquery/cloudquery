@@ -3,8 +3,8 @@ package s3
 import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/mitchellh/mapstructure"
 	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
 )

@@ -3,90 +3,90 @@ package autoscaling
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/autoscaling"
-	"github.com/mitchellh/mapstructure"
 	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
 )
 
 type LaunchConfiguration struct {
-	ID                           uint `gorm:"primarykey"`
+	ID uint `gorm:"primarykey"`
 
 	// AWS account id
-	AccountID                    string
+	AccountID string
 
 	// AWS region of the launch configuration
-	Region                       string
+	Region string
 
 	// For Auto Scaling groups that are running in a VPC, specifies whether to assign
 	// a public IP address to the group's instances.
-	AssociatePublicIpAddress     *bool
+	AssociatePublicIpAddress *bool
 
 	// A block device mapping, which specifies the block devices for the instance.
-	BlockDeviceMappings          []*LaunchConfigurationBlockDeviceMapping `gorm:"constraint:OnDelete:CASCADE;"`
+	BlockDeviceMappings []*LaunchConfigurationBlockDeviceMapping `gorm:"constraint:OnDelete:CASCADE;"`
 
 	// The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to.
-	ClassicLinkVPCId             *string
+	ClassicLinkVPCId *string
 
 	// The IDs of one or more security groups for the VPC specified in ClassicLinkVPCId.
 	ClassicLinkVPCSecurityGroups *string
 
 	// The creation date and time for the launch configuration.
-	CreatedTime                  *time.Time
+	CreatedTime *time.Time
 
 	// Specifies whether the launch configuration is optimized for EBS I/O (true)
 	// or not (false).
-	EbsOptimized                 *bool
+	EbsOptimized *bool
 
 	// The name or the Amazon Resource Name (ARN) of the instance profile associated
 	// with the IAM role for the instance. The instance profile contains the IAM
 	// role.
-	IamInstanceProfile           *string
+	IamInstanceProfile *string
 
 	// The ID of the Amazon Machine Image (AMI) to use to launch your EC2 instances.
-	ImageId                      *string
+	ImageId *string
 
 	// Controls whether instances in this group are launched with detailed (true)
 	// or basic (false) monitoring.
-	InstanceMonitoring           *autoscaling.InstanceMonitoring `gorm:"embedded;embeddedPrefix:instance_monitoring_"`
+	InstanceMonitoring *autoscaling.InstanceMonitoring `gorm:"embedded;embeddedPrefix:instance_monitoring_"`
 
 	// The instance type for the instances.
-	InstanceType                 *string
+	InstanceType *string
 
 	// The ID of the kernel associated with the AMI.
-	KernelId                     *string
+	KernelId *string
 
 	// The name of the key pair.
-	KeyName                      *string
+	KeyName *string
 
 	// The Amazon Resource Name (ARN) of the launch configuration.
-	LaunchConfigurationARN       *string
+	LaunchConfigurationARN *string
 
 	// The name of the launch configuration.
-	LaunchConfigurationName      *string
+	LaunchConfigurationName *string
 
 	// The metadata options for the instances. For more information, see Instance
-	MetadataOptions              *autoscaling.InstanceMetadataOptions `gorm:"embedded;embeddedPrefix:metadata_options_"`
+	MetadataOptions *autoscaling.InstanceMetadataOptions `gorm:"embedded;embeddedPrefix:metadata_options_"`
 
 	// The tenancy of the instance, either default or dedicated. An instance with
 	// dedicated tenancy runs on isolated, single-tenant hardware and can only be
 	// launched into a VPC.
-	PlacementTenancy             *string
+	PlacementTenancy *string
 
 	// The ID of the RAM disk associated with the AMI.
-	RamdiskId                    *string
+	RamdiskId *string
 
 	// A list that contains the security groups to assign to the instances in the
 	// Auto Scaling group.
-	SecurityGroups               *string
+	SecurityGroups *string
 
 	// The maximum hourly price to be paid for any Spot Instance launched to fulfill
 	// the request. Spot Instances are launched when the price you specify exceeds
 	// the current Spot price.
-	SpotPrice                    *string
+	SpotPrice *string
 
 	// The Base64-encoded user data to make available to the launched EC2 instances.
-	UserData                     *string
+	UserData *string
 }
 
 type LaunchConfigurationBlockDeviceMapping struct {
@@ -96,17 +96,17 @@ type LaunchConfigurationBlockDeviceMapping struct {
 	// The device name exposed to the EC2 instance (for example, /dev/sdh or xvdh).
 	// For more information, see Device Naming on Linux Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html)
 	// in the Amazon EC2 User Guide for Linux Instances.
-	DeviceName            *string
+	DeviceName *string
 
 	// Parameters used to automatically set up EBS volumes when an instance is launched.
-	Ebs                   *autoscaling.Ebs `gorm:"embedded;embeddedPrefix:ebs_"`
+	Ebs *autoscaling.Ebs `gorm:"embedded;embeddedPrefix:ebs_"`
 
 	// If NoDevice is true for the root device, instances might fail the EC2 health
 	// check. In that case, Amazon EC2 Auto Scaling launches replacement instances.
-	NoDevice              *bool
+	NoDevice *bool
 
 	// The name of the virtual device (for example, ephemeral0).
-	VirtualName           *string
+	VirtualName *string
 }
 
 func (c *Client) transformLaunchConfigurationBlockDeviceMapping(value *autoscaling.BlockDeviceMapping) *LaunchConfigurationBlockDeviceMapping {

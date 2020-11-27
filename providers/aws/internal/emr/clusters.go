@@ -3,8 +3,8 @@ package emr
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/emr"
-	"github.com/mitchellh/mapstructure"
 	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
 

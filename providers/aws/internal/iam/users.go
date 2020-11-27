@@ -3,8 +3,8 @@ package iam
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
-	"github.com/mitchellh/mapstructure"
 	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
 )

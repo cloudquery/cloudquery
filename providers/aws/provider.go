@@ -5,7 +5,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
-	"github.com/mitchellh/mapstructure"
 	"github.com/cloudquery/cloudquery/providers/aws/internal/autoscaling"
 	"github.com/cloudquery/cloudquery/providers/aws/internal/directconnect"
 	"github.com/cloudquery/cloudquery/providers/aws/internal/ec2"
@@ -22,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/internal/resource"
 	"github.com/cloudquery/cloudquery/providers/aws/internal/s3"
 	"github.com/cloudquery/cloudquery/providers/provider"
+	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -62,7 +62,7 @@ var resourceFactory = map[string]NewResourceFunc{
 	"rds":              rds.NewClient,
 	"redshift":         redshift.NewClient,
 	"s3":               s3.NewClient,
-	"elbv2":			elbv2.NewClient,
+	"elbv2":            elbv2.NewClient,
 }
 
 func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
