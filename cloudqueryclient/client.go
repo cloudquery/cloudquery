@@ -2,6 +2,7 @@ package cloudqueryclient
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/providers/gcp"
 	"io/ioutil"
 
 	"github.com/cloudquery/cloudquery/providers/aws"
@@ -18,6 +19,7 @@ import (
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
 	"aws": aws.NewProvider,
+	"gcp": gcp.NewProvider,
 	//"azure": aws.NewProvider,
 }
 

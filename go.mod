@@ -10,6 +10,7 @@ require (
 	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20201012173705-84dcc777aaee // indirect
 	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect
+	google.golang.org/api v0.35.0
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/driver/postgres v1.0.2

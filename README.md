@@ -22,13 +22,21 @@ chmod a+x cloudquery
 
 ## Quick Start
 
-Currently, cloudquery only supports AWS (Azure, GCP DO are on the roadmap).
-The number of AWS resources is actively expanding.
+Currently, cloudquery only supports AWS and GCP (Azure and DigitalOcean are on the roadmap).
+The number of AWS and GCP resources is actively expanding.
 
+#### AWS 
 You should be authenticated with an AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
  * `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
  * `~/.aws/credentials` created via `aws configure`
  
+#### GCP
+
+You should be authenticated with a GCP that has correct permissions for the data you want to pull.
+You should set `GOOGLE_APPLICATION_CREDENTIAL` to point to your downloaded credential file.
+
+#### Running
+
  Run the following commands:
  
 ```bash
@@ -59,4 +67,5 @@ go build .
 
 ## Roadmap
 
-cloudquery currently support AWS only, Azure, GCP and DO are on the near roadmap and we are actively expanding number of supported resource with AWS.
+cloudquery currently support GCP and AWS. Azure and DigitalOcean are on the near roadmap and we are actively expanding
+number of supported resource with AWS and GCP.

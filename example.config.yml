@@ -15,3 +15,7 @@ providers:
 #      - name: ec2.addresses
 #      - name: apigateway.api_keys
 #      - name: apigateway
+#  - name: gcp
+#    project_id: project-id
+#    resources:
+#      - name: compute.vpn_gateways
