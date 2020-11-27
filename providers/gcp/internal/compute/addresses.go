@@ -89,6 +89,7 @@ func (c *Client) Addresses(gConfig interface{}) error {
 	if !c.resourceMigrated["computeAddress"] {
 		err := c.db.AutoMigrate(
 			&Address{},
+			&AddressUser{},
 		)
 		if err != nil {
 			return err

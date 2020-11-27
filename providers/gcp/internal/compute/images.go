@@ -169,6 +169,9 @@ func (c *Client) Images(gConfig interface{}) error {
 		err := c.db.AutoMigrate(
 			&Image{},
 			&ImageGuestOsFeature{},
+			&ImageLicenseCode{},
+			&ImageLicense{},
+			&ImageStorageLocation{},
 		)
 		if err != nil {
 			return err

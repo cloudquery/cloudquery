@@ -19,7 +19,7 @@ type Interconnect struct {
 	GoogleIpAddress         string
 	GoogleReferenceId       string
 	ResourceID              uint64
-	InterconnectAttachments []*InterconnectInterconnectAttachment `gorm:"constraint:OnDelete:CASCADE;"`
+	InterconnectAttachments []*InterconnectAttachment `gorm:"constraint:OnDelete:CASCADE;"`
 	InterconnectType        string
 	Kind                    string
 	LinkType                string
@@ -60,7 +60,7 @@ type InterconnectOutageNotificationAffectedCircuit struct {
 	InterconnectOutageNotificationID uint
 	Value                            string
 }
-type InterconnectInterconnectAttachment struct {
+type InterconnectAttachment struct {
 	ID             uint `gorm:"primarykey"`
 	InterconnectID uint
 	Value          string
@@ -113,10 +113,10 @@ func (c *Client) transformInterconnectOutageNotifications(values []*compute.Inte
 	return tValues
 }
 
-func (c *Client) transformInterconnectInterconnectAttachments(values []string) []*InterconnectInterconnectAttachment {
-	var tValues []*InterconnectInterconnectAttachment
+func (c *Client) transformInterconnectInterconnectAttachments(values []string) []*InterconnectAttachment {
+	var tValues []*InterconnectAttachment
 	for _, v := range values {
-		tValues = append(tValues, &InterconnectInterconnectAttachment{
+		tValues = append(tValues, &InterconnectAttachment{
 			Value: v,
 		})
 	}
@@ -174,6 +174,8 @@ func (c *Client) Interconnects(gConfig interface{}) error {
 			&Interconnect{},
 			&InterconnectCircuitInfo{},
 			&InterconnectOutageNotification{},
+			&InterconnectOutageNotificationAffectedCircuit{},
+			&InterconnectAttachment{},
 		)
 		if err != nil {
 			return err

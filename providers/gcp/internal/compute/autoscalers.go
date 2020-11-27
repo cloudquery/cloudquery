@@ -13,7 +13,7 @@ type Autoscaler struct {
 
 	CoolDownPeriodSec                         int64
 	CpuUtilizationUtilizationTarget           float64
-	CustomMetricUtilizations                  []*AutoscalerAutoscalingPolicyCustomMetricUtilization `gorm:"constraint:OnDelete:CASCADE;"`
+	CustomMetricUtilizations                  []*AutoscalerPolicyCustomMetricUtilization `gorm:"constraint:OnDelete:CASCADE;"`
 	LoadBalancingUtilizationUtilizationTarget float64
 	MaxNumReplicas                            int64
 	MinNumReplicas                            int64
@@ -37,7 +37,7 @@ type Autoscaler struct {
 	Zone              string
 }
 
-type AutoscalerAutoscalingPolicyCustomMetricUtilization struct {
+type AutoscalerPolicyCustomMetricUtilization struct {
 	ID                       uint `gorm:"primarykey"`
 	AutoscalerID             uint
 	Filter                   string
@@ -54,8 +54,8 @@ type AutoscalerStatusDetails struct {
 	Type         string
 }
 
-func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(value *compute.AutoscalingPolicyCustomMetricUtilization) *AutoscalerAutoscalingPolicyCustomMetricUtilization {
-	return &AutoscalerAutoscalingPolicyCustomMetricUtilization{
+func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(value *compute.AutoscalingPolicyCustomMetricUtilization) *AutoscalerPolicyCustomMetricUtilization {
+	return &AutoscalerPolicyCustomMetricUtilization{
 		Filter:                   value.Filter,
 		Metric:                   value.Metric,
 		SingleInstanceAssignment: value.SingleInstanceAssignment,
@@ -64,8 +64,8 @@ func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(val
 	}
 }
 
-func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(values []*compute.AutoscalingPolicyCustomMetricUtilization) []*AutoscalerAutoscalingPolicyCustomMetricUtilization {
-	var tValues []*AutoscalerAutoscalingPolicyCustomMetricUtilization
+func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(values []*compute.AutoscalingPolicyCustomMetricUtilization) []*AutoscalerPolicyCustomMetricUtilization {
+	var tValues []*AutoscalerPolicyCustomMetricUtilization
 	for _, v := range values {
 		tValues = append(tValues, c.transformAutoscalerAutoscalingPolicyCustomMetricUtilization(v))
 	}
@@ -139,7 +139,7 @@ func (c *Client) Autoscalers(gConfig interface{}) error {
 	if !c.resourceMigrated["computeAutoscaler"] {
 		err := c.db.AutoMigrate(
 			&Autoscaler{},
-			&AutoscalerAutoscalingPolicyCustomMetricUtilization{},
+			&AutoscalerPolicyCustomMetricUtilization{},
 			&AutoscalerStatusDetails{},
 		)
 		if err != nil {

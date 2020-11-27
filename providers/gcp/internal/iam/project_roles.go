@@ -61,7 +61,7 @@ func (c *Client) transformRoles(values []*iam.Role) []*Role {
 	return tValues
 }
 
-func (c *Client) ProjectRoles(gConfig interface{}) error {
+func (c *Client) ProjectRoles(_ interface{}) error {
 	if !c.resourceMigrated["iamRole"] {
 		err := c.db.AutoMigrate(
 			&Role{},

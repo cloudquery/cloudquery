@@ -44,7 +44,7 @@ func (c *Client) transformServiceAccounts(values []*iam.ServiceAccount) []*Servi
 	return tValues
 }
 
-func (c *Client) ServiceAccounts(gConfig interface{}) error {
+func (c *Client) ServiceAccounts(_ interface{}) error {
 	if !c.resourceMigrated["iamServiceAccount"] {
 		err := c.db.AutoMigrate(
 			&ServiceAccount{},
