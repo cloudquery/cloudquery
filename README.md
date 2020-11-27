@@ -4,9 +4,9 @@ cloudquery exposes your cloud configuration and metadata as sql tables,
 providing powerful analysis and monitoring without writing code.
 
 ### Links
-* Homepage: https://cloudquery.run
+* Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
-* Documentation: https://docs.cloudquery.run
+* Documentation: https://docs.cloudquery.io
 
 ## Download & install
 
@@ -33,7 +33,7 @@ You should be authenticated with an AWS account with correct permission with eit
 #### GCP
 
 You should be authenticated with a GCP that has correct permissions for the data you want to pull.
-You should set `GOOGLE_APPLICATION_CREDENTIAL` to point to your downloaded credential file.
+You should set `GOOGLE_APPLICATION_CREDENTIALS` to point to your downloaded credential file.
 
 #### Running
 
@@ -52,7 +52,7 @@ you can now run the following basic query in your sqlite3 console (`sqlite3 ./cl
 SELECT * FROM aws_ec2_images;
 ```
 
-Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.run)
+Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
 
 ## License
 
