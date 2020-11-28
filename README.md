@@ -1,5 +1,9 @@
 # cloudquery
 
+<p align="center">
+<img alt="cloudquery logo" width="200px" height="200px" src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
+</p>
+
 cloudquery exposes your cloud configuration and metadata as sql tables,
 providing powerful analysis and monitoring without writing code.
 
