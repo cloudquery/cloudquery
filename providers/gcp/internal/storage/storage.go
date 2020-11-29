@@ -5,6 +5,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/storage/v1"
+	"log"
 )
 
 type Bucket struct {
@@ -47,6 +48,24 @@ type Bucket struct {
 	WebsiteMainPageSuffix          string
 	WebsiteNotFoundPage            string
 	ZoneAffinity                   []*BucketZoneAffinity `gorm:"constraint:OnDelete:CASCADE;"`
+	PolicyBindings                 []*BucketPolicyBinding `gorm:"constraint:OnDelete:CASCADE;"`
+}
+
+type BucketPolicyBinding struct {
+	ID                   uint `gorm:"primarykey"`
+	BucketID             uint
+	ConditionDescription string
+	ConditionExpression  string
+	ConditionLocation    string
+	ConditionTitle       string
+	Members              []*BucketPolicyBindingsMember `gorm:"constraint:OnDelete:CASCADE;"`
+	Role                 string
+}
+
+type BucketPolicyBindingsMember struct {
+	ID                    uint `gorm:"primarykey"`
+	BucketPolicyBindingID uint
+	Name                  string
 }
 
 type BucketAccessControl struct {
@@ -146,6 +165,40 @@ type BucketLabel struct {
 	BucketID uint
 	Key      string
 	Value    string
+}
+
+func (c *Client) transformPolicyBindingsMembers(values []string) []*BucketPolicyBindingsMember {
+	var tValues []*BucketPolicyBindingsMember
+	for _, v := range values {
+		tValues = append(tValues, &BucketPolicyBindingsMember{
+			Name: v,
+		})
+	}
+	return tValues
+}
+
+func (c *Client) transformPolicyBinding(value *storage.PolicyBindings) *BucketPolicyBinding {
+	res := BucketPolicyBinding{
+		Members:              c.transformPolicyBindingsMembers(value.Members),
+		Role:                 value.Role,
+	}
+
+	if value.Condition != nil {
+		res.ConditionDescription = value.Condition.Description
+		res.ConditionExpression = value.Condition.Expression
+		res.ConditionLocation = value.Condition.Location
+		res.ConditionTitle = value.Condition.Title
+	}
+
+	return &res
+}
+
+func (c *Client) transformPolicyBindings(values []*storage.PolicyBindings) []*BucketPolicyBinding {
+	var tValues []*BucketPolicyBinding
+	for _, v := range values {
+		tValues = append(tValues, c.transformPolicyBinding(v))
+	}
+	return tValues
 }
 
 func (c *Client) transformBucketLabels(values map[string]string) []*BucketLabel {
@@ -384,6 +437,15 @@ func (c *Client) transformBucket(value *storage.Bucket) *Bucket {
 	if value.Lifecycle != nil {
 		res.LifecycleRules = c.transformBucketLifecycleRules(value.Lifecycle.Rule)
 	}
+
+	call := c.svc.Buckets.GetIamPolicy(value.Name)
+	output, err := call.Do()
+	if err != nil {
+		// we should return this err instead of calling log.Fatal
+		log.Fatal(err)
+	}
+	res.PolicyBindings = c.transformPolicyBindings(output.Bindings)
+
 	return &res
 }
 
@@ -417,6 +479,8 @@ func (c *Client) Buckets(gConfig interface{}) error {
 			&BucketCorsResponseHeader{},
 			&BucketZoneAffinity{},
 			&BucketLabel{},
+			&BucketPolicyBinding{},
+			&BucketPolicyBindingsMember{},
 		)
 		if err != nil {
 			return err
