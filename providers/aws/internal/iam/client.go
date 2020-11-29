@@ -40,6 +40,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.Groups(config)
 	case "policies":
 		return c.Policys(config)
+	case "roles":
+		return c.Roles(config)
 	default:
 		return fmt.Errorf("unsupported resource iam.%s", resource)
 	}

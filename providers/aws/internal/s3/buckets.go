@@ -17,7 +17,7 @@ type Bucket struct {
 	Name         *string
 	Grants       []*BucketGrant    `gorm:"constraint:OnDelete:CASCADE;"`
 	CORSRules    []*BucketCorsRule `gorm:"constraint:OnDelete:CASCADE;"`
-
+	EncryptionRules []*BucketEncryptionRule `gorm:"constraint:OnDelete:CASCADE;"`
 	// The bucket policy as a JSON document.
 	Policy *string
 
@@ -28,6 +28,15 @@ type Bucket struct {
 
 	// The versioning state of the bucket.
 	Status *string
+}
+
+type BucketEncryptionRule struct {
+	ID       uint `gorm:"primarykey"`
+	BucketID uint
+
+	KMSMasterKeyID *string
+
+	SSEAlgorithm *string
 }
 
 type BucketGrant struct {
@@ -97,6 +106,19 @@ func (c *Client) transformBucketCorsRules(values []*s3.CORSRule) []*BucketCorsRu
 	return tValues
 }
 
+func (c *Client) transformEncryptionRules(values []*s3.ServerSideEncryptionRule) []*BucketEncryptionRule {
+	var tValues []*BucketEncryptionRule
+	for _, v := range values {
+		if v.ApplyServerSideEncryptionByDefault != nil {
+			tValues = append(tValues, &BucketEncryptionRule{
+				KMSMasterKeyID: v.ApplyServerSideEncryptionByDefault.KMSMasterKeyID,
+				SSEAlgorithm:   v.ApplyServerSideEncryptionByDefault.SSEAlgorithm,
+			})
+		}
+	}
+	return tValues
+}
+
 func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 	aclOutput, err := c.svc.GetBucketAcl(&s3.GetBucketAclInput{Bucket: value.Name})
 	if err != nil {
@@ -124,6 +146,24 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 		return nil, err
 	}
 
+	encryptionOutput, err := c.svc.GetBucketEncryption(&s3.GetBucketEncryptionInput{
+		Bucket: value.Name,
+	})
+	if err != nil {
+		var aerr awserr.Error
+		var ok bool
+		if aerr, ok = err.(awserr.Error); !ok {
+			return nil, err
+		}
+		if aerr.Code() != "ServerSideEncryptionConfigurationNotFoundError" {
+			return nil, err
+		}
+	}
+	var EncryptionRules []*BucketEncryptionRule
+	if encryptionOutput.ServerSideEncryptionConfiguration != nil{
+		EncryptionRules = c.transformEncryptionRules(encryptionOutput.ServerSideEncryptionConfiguration.Rules)
+	}
+
 	return &Bucket{
 		Region:       c.region,
 		AccountID:    c.accountID,
@@ -131,6 +171,7 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 		Name:         value.Name,
 		Grants:       c.transformGrants(aclOutput.Grants),
 		CORSRules:    c.transformBucketCorsRules(CORSOutput.CORSRules),
+		EncryptionRules: EncryptionRules,
 		Policy:       policyOutput.Policy,
 		Status:       versioningOutput.Status,
 		MFADelete:    versioningOutput.MFADelete,
@@ -159,6 +200,8 @@ func (c *Client) Buckets(gConfig interface{}) error {
 		err := c.db.AutoMigrate(
 			&Bucket{},
 			&BucketGrant{},
+			&BucketCorsRule{},
+			&BucketEncryptionRule{},
 		)
 		if err != nil {
 			return err
