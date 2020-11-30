@@ -52,13 +52,17 @@ cp example.config.yml config.yml
 If you uncommented images (it may take up to 30 seconds to fetch all images),
 you can now run the following basic query in your sqlite3 console (`sqlite3 ./cloudquery.db`):
 
-```sqlite
+```sql
 SELECT * FROM aws_ec2_images;
 ```
 
-Another example to check if any buckets have public facing permissions in our google cloud:
+Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
 
-```sqlite
+#### Query Examples
+
+##### Find GCP buckets with public facing read permissions:
+
+```sql
 SELECT gcp_storage_buckets.name
 FROM gcp_storage_buckets
          JOIN gcp_storage_bucket_policy_bindings ON gcp_storage_bucket_policy_bindings.bucket_id = gcp_storage_buckets.id
@@ -66,7 +70,26 @@ FROM gcp_storage_buckets
 WHERE gcp_storage_bucket_policy_bindings_members.name = 'allUsers' AND gcp_storage_bucket_policy_bindings.role = 'roles/storage.objectViewer';
 ```
 
-Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
+##### Find all public facing AWS load balancers
+
+```sql
+SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
+```
+
+##### Find all unencrypted RDS instances
+
+```sql
+SELECT * from aws_rds_clusters where storage_encrypted = 0;
+```
+
+##### Find all unencrypted AWS buckets
+
+```sql
+SELECT * from aws_s3_buckets
+    JOIN aws_s3_bucket_encryption_rules ON aws_s3_buckets.id != aws_s3_bucket_encryption_rules.bucket_id;
+```
+
+More examples are available [here](https://docs.cloudquery.io)
 
 ## License
 
