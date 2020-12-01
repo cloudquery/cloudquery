@@ -36,3 +36,7 @@ func StringListToString(arr []*string) *string {
 		return &res
 	}
 }
+
+type ClientInterface interface {
+	CollectResource(resource string, config interface{}) error
+}
