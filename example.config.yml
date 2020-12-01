@@ -19,3 +19,7 @@ providers:
 #    project_id: project-id
 #    resources:
 #      - name: compute.vpn_gateways
+#  - name: okta
+#    domain: https://your-domain.okta.com
+#    resources:
+#      - name: users
