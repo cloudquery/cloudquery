@@ -12,6 +12,11 @@ providing powerful analysis and monitoring without writing code.
 * Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.io
 
+### Supported providers (Actively expanding)
+
+Currently we support: [AWS](https://docs.cloudquery.io/aws), [GCP](https://docs.cloudquery.io/gcp), [Okta](https://docs.cloudquery.io/okta/table-reference) (Azure and DigitalOcean are on the roadmap)
+If you want to us to add new provider please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
+
 ## Download & install
 
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
@@ -25,9 +30,6 @@ chmod a+x cloudquery
 ```
 
 ## Quick Start
-
-Currently, cloudquery only supports AWS and GCP (Azure and DigitalOcean are on the roadmap).
-The number of AWS and GCP resources is actively expanding.
 
 #### AWS 
 You should be authenticated with an AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
@@ -102,7 +104,6 @@ go build .
 ./cloudquery # --help to see all options
 ```
 
-## Roadmap
+## Contribution
 
-cloudquery currently support GCP and AWS. Azure and DigitalOcean are on the near roadmap and we are actively expanding
-number of supported resource with AWS and GCP.
+Feel free to open Pull-Request for small fixes and changes. For bigger changes and new providers please open an issue first to prevent double work and discuss relevant stuff.
