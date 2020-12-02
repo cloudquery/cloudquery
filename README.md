@@ -22,11 +22,14 @@ If you want to us to add new provider please open an [Issue](https://github.com/
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
 ```bash
-export VERSION=v0.2.3
 export OS=Darwin # Possible values: Linux,Windows,Darwin
-curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cloudquery_${OS}_x86_64 -o cloudquery
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
 chmod a+x cloudquery
 ./cloudquery --help
+
+# if you want to download a specific version and not latest use the following endpoint
+export VERSION= # specifiy a version
+curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cloudquery_${OS}_x86_64 -o cloudquery
 ```
 
 ## Quick Start
