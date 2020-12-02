@@ -52,6 +52,10 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.RouteTables(config)
 	case "security_groups":
 		return c.SecurityGroups(config)
+	case "vpcs":
+		return c.Vpcs(config)
+	case "subnets":
+		return c.Subnets(config)
 	default:
 		return fmt.Errorf("unsupported resource ec2.%s", resource)
 	}
