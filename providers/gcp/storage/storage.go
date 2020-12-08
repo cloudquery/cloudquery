@@ -179,8 +179,8 @@ func (c *Client) transformPolicyBindingsMembers(values []string) []*BucketPolicy
 
 func (c *Client) transformPolicyBinding(value *storage.PolicyBindings) *BucketPolicyBinding {
 	res := BucketPolicyBinding{
-		Members:              c.transformPolicyBindingsMembers(value.Members),
-		Role:                 value.Role,
+		Members: c.transformPolicyBindingsMembers(value.Members),
+		Role:    value.Role,
 	}
 
 	if value.Condition != nil {

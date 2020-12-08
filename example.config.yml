@@ -1,6 +1,9 @@
 providers:
   - name: aws
-    region: us-east-1
+    regions:
+      - us-east-1
+    #    accounts: // optional multi-account support via assume-role
+    #        - role_arn: <role_arn>
     resources:
 #      - name: ec2.images
 #      - name: ec2.instances

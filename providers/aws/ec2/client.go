@@ -2,6 +2,7 @@ package ec2
 
 import (
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
@@ -19,7 +20,7 @@ type Client struct {
 	svc              *ec2.EC2
 }
 
-func NewClient(session *session.Session, db *gorm.DB, log *zap.Logger,
+func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
 	accountID string, region string) resource.ClientInterface {
 	return &Client{
 		session:          session,
@@ -28,7 +29,7 @@ func NewClient(session *session.Session, db *gorm.DB, log *zap.Logger,
 		accountID:        accountID,
 		region:           region,
 		resourceMigrated: map[string]bool{},
-		svc:              ec2.New(session),
+		svc:              ec2.New(session, awsConfig),
 	}
 }
 

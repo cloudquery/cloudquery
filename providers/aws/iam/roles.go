@@ -1,4 +1,5 @@
 package iam
+
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
@@ -9,32 +10,32 @@ import (
 )
 
 type Role struct {
-	ID                                             uint `gorm:"primarykey"`
-	AccountID                                    string
-	Region                                       string
-	Arn                                         *string
-	AssumeRolePolicyDocument                    *string
-	CreateDate                               *time.Time
-	Description                                 *string
-	MaxSessionDuration                           *int64
-	Path                                        *string
-	PermissionsBoundary *iam.AttachedPermissionsBoundary `gorm:"embedded;embeddedPrefix:permissions_boundary_"`
-	RoleId                                      *string
-	RoleLastUsed                      *iam.RoleLastUsed `gorm:"embedded;embeddedPrefix:role_last_used_"`
-	RoleName                                    *string
-	Tags                                     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
+	ID                       uint `gorm:"primarykey"`
+	AccountID                string
+	Region                   string
+	Arn                      *string
+	AssumeRolePolicyDocument *string
+	CreateDate               *time.Time
+	Description              *string
+	MaxSessionDuration       *int64
+	Path                     *string
+	PermissionsBoundary      *iam.AttachedPermissionsBoundary `gorm:"embedded;embeddedPrefix:permissions_boundary_"`
+	RoleId                   *string
+	RoleLastUsed             *iam.RoleLastUsed `gorm:"embedded;embeddedPrefix:role_last_used_"`
+	RoleName                 *string
+	Tags                     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 type RoleTag struct {
-	ID                                             uint `gorm:"primarykey"`
-	RoleID                                         uint
-	Key                                         *string
-	Value                                       *string
+	ID     uint `gorm:"primarykey"`
+	RoleID uint
+	Key    *string
+	Value  *string
 }
 
 func (c *Client) transformRoleTag(value *iam.Tag) *RoleTag {
 	return &RoleTag{
-		Key: value.Key,
+		Key:   value.Key,
 		Value: value.Value,
 	}
 }
@@ -49,19 +50,19 @@ func (c *Client) transformRoleTags(values []*iam.Tag) []*RoleTag {
 
 func (c *Client) transformRole(value *iam.Role) *Role {
 	return &Role{
-		Region: c.region,
-		AccountID: c.accountID,
-		Arn: value.Arn,
+		Region:                   c.region,
+		AccountID:                c.accountID,
+		Arn:                      value.Arn,
 		AssumeRolePolicyDocument: value.AssumeRolePolicyDocument,
-		CreateDate: value.CreateDate,
-		Description: value.Description,
-		MaxSessionDuration: value.MaxSessionDuration,
-		Path: value.Path,
-		PermissionsBoundary: value.PermissionsBoundary,
-		RoleId: value.RoleId,
-		RoleLastUsed: value.RoleLastUsed,
-		RoleName: value.RoleName,
-		Tags: c.transformRoleTags(value.Tags),
+		CreateDate:               value.CreateDate,
+		Description:              value.Description,
+		MaxSessionDuration:       value.MaxSessionDuration,
+		Path:                     value.Path,
+		PermissionsBoundary:      value.PermissionsBoundary,
+		RoleId:                   value.RoleId,
+		RoleLastUsed:             value.RoleLastUsed,
+		RoleName:                 value.RoleName,
+		Tags:                     c.transformRoleTags(value.Tags),
 	}
 }
 
@@ -73,7 +74,7 @@ func (c *Client) transformRoles(values []*iam.Role) []*Role {
 	return tValues
 }
 
-func (c *Client)roles(gConfig interface{}) error {
+func (c *Client) roles(gConfig interface{}) error {
 	var config iam.ListRolesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -105,4 +106,3 @@ func (c *Client)roles(gConfig interface{}) error {
 	}
 	return nil
 }
-

@@ -10,13 +10,13 @@ import (
 )
 
 type Bucket struct {
-	ID           uint `gorm:"primarykey"`
-	AccountID    string
-	Region       string
-	CreationDate *time.Time
-	Name         *string
-	Grants       []*BucketGrant             `gorm:"constraint:OnDelete:CASCADE;"`
-	CORSRules    []*BucketCorsRule          `gorm:"constraint:OnDelete:CASCADE;"`
+	ID              uint `gorm:"primarykey"`
+	AccountID       string
+	Region          string
+	CreationDate    *time.Time
+	Name            *string
+	Grants          []*BucketGrant          `gorm:"constraint:OnDelete:CASCADE;"`
+	CORSRules       []*BucketCorsRule       `gorm:"constraint:OnDelete:CASCADE;"`
 	EncryptionRules []*BucketEncryptionRule `gorm:"constraint:OnDelete:CASCADE;"`
 	// The bucket policy as a JSON document.
 	Policy *string
@@ -160,21 +160,21 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 		}
 	}
 	var EncryptionRules []*BucketEncryptionRule
-	if encryptionOutput.ServerSideEncryptionConfiguration != nil{
+	if encryptionOutput.ServerSideEncryptionConfiguration != nil {
 		EncryptionRules = c.transformEncryptionRules(encryptionOutput.ServerSideEncryptionConfiguration.Rules)
 	}
 
 	return &Bucket{
-		Region:       c.region,
-		AccountID:    c.accountID,
-		CreationDate: value.CreationDate,
-		Name:         value.Name,
-		Grants:       c.transformGrants(aclOutput.Grants),
-		CORSRules:    c.transformBucketCorsRules(CORSOutput.CORSRules),
+		Region:          c.region,
+		AccountID:       c.accountID,
+		CreationDate:    value.CreationDate,
+		Name:            value.Name,
+		Grants:          c.transformGrants(aclOutput.Grants),
+		CORSRules:       c.transformBucketCorsRules(CORSOutput.CORSRules),
 		EncryptionRules: EncryptionRules,
-		Policy:       policyOutput.Policy,
-		Status:       versioningOutput.Status,
-		MFADelete:    versioningOutput.MFADelete,
+		Policy:          policyOutput.Policy,
+		Status:          versioningOutput.Status,
+		MFADelete:       versioningOutput.MFADelete,
 	}, nil
 }
 

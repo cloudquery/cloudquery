@@ -9,50 +9,50 @@ import (
 )
 
 type Vpc struct {
-	ID                                             uint `gorm:"primarykey"`
-	AccountID                                    string
-	Region                                       string
-	CidrBlock                                   *string
-	CidrBlockAssociationSet  []*VpcCidrBlockAssociation `gorm:"constraint:OnDelete:CASCADE;"`
-	DhcpOptionsId                               *string
-	InstanceTenancy                             *string
+	ID                          uint `gorm:"primarykey"`
+	AccountID                   string
+	Region                      string
+	CidrBlock                   *string
+	CidrBlockAssociationSet     []*VpcCidrBlockAssociation `gorm:"constraint:OnDelete:CASCADE;"`
+	DhcpOptionsId               *string
+	InstanceTenancy             *string
 	Ipv6CidrBlockAssociationSet []*VpcIpv6CidrBlockAssociation `gorm:"constraint:OnDelete:CASCADE;"`
-	IsDefault                                     *bool
-	OwnerId                                     *string
-	State                                       *string
-	Tags                                      []*VpcTag `gorm:"constraint:OnDelete:CASCADE;"`
-	VpcId                                       *string
+	IsDefault                   *bool
+	OwnerId                     *string
+	State                       *string
+	Tags                        []*VpcTag `gorm:"constraint:OnDelete:CASCADE;"`
+	VpcId                       *string
 }
 
 type VpcCidrBlockAssociation struct {
-	ID                                             uint `gorm:"primarykey"`
-	VpcID                                          uint
-	AssociationId                               *string
-	CidrBlock                                   *string
-	CidrBlockState               *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:cidr_block_state_"`
+	ID             uint `gorm:"primarykey"`
+	VpcID          uint
+	AssociationId  *string
+	CidrBlock      *string
+	CidrBlockState *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:cidr_block_state_"`
 }
 
 type VpcIpv6CidrBlockAssociation struct {
-	ID                                             uint `gorm:"primarykey"`
-	VpcID                                          uint
-	AssociationId                               *string
-	Ipv6CidrBlock                               *string
-	Ipv6CidrBlockState           *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:ipv_6_cidr_block_state_"`
-	Ipv6Pool                                    *string
-	NetworkBorderGroup                          *string
+	ID                 uint `gorm:"primarykey"`
+	VpcID              uint
+	AssociationId      *string
+	Ipv6CidrBlock      *string
+	Ipv6CidrBlockState *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:ipv_6_cidr_block_state_"`
+	Ipv6Pool           *string
+	NetworkBorderGroup *string
 }
 
 type VpcTag struct {
-	ID                                             uint `gorm:"primarykey"`
-	VpcID                                          uint
-	Key                                         *string
-	Value                                       *string
+	ID    uint `gorm:"primarykey"`
+	VpcID uint
+	Key   *string
+	Value *string
 }
 
 func (c *Client) transformVpcCidrBlockAssociation(value *ec2.VpcCidrBlockAssociation) *VpcCidrBlockAssociation {
 	return &VpcCidrBlockAssociation{
-		AssociationId: value.AssociationId,
-		CidrBlock: value.CidrBlock,
+		AssociationId:  value.AssociationId,
+		CidrBlock:      value.CidrBlock,
 		CidrBlockState: value.CidrBlockState,
 	}
 }
@@ -67,10 +67,10 @@ func (c *Client) transformVpcCidrBlockAssociations(values []*ec2.VpcCidrBlockAss
 
 func (c *Client) transformVpcIpv6CidrBlockAssociation(value *ec2.VpcIpv6CidrBlockAssociation) *VpcIpv6CidrBlockAssociation {
 	return &VpcIpv6CidrBlockAssociation{
-		AssociationId: value.AssociationId,
-		Ipv6CidrBlock: value.Ipv6CidrBlock,
+		AssociationId:      value.AssociationId,
+		Ipv6CidrBlock:      value.Ipv6CidrBlock,
 		Ipv6CidrBlockState: value.Ipv6CidrBlockState,
-		Ipv6Pool: value.Ipv6Pool,
+		Ipv6Pool:           value.Ipv6Pool,
 		NetworkBorderGroup: value.NetworkBorderGroup,
 	}
 }
@@ -85,7 +85,7 @@ func (c *Client) transformVpcIpv6CidrBlockAssociations(values []*ec2.VpcIpv6Cidr
 
 func (c *Client) transformVpcTag(value *ec2.Tag) *VpcTag {
 	return &VpcTag{
-		Key: value.Key,
+		Key:   value.Key,
 		Value: value.Value,
 	}
 }
@@ -100,18 +100,18 @@ func (c *Client) transformVpcTags(values []*ec2.Tag) []*VpcTag {
 
 func (c *Client) transformVpc(value *ec2.Vpc) *Vpc {
 	return &Vpc{
-		Region: c.region,
-		AccountID: c.accountID,
-		CidrBlock: value.CidrBlock,
-		CidrBlockAssociationSet: c.transformVpcCidrBlockAssociations(value.CidrBlockAssociationSet),
-		DhcpOptionsId: value.DhcpOptionsId,
-		InstanceTenancy: value.InstanceTenancy,
+		Region:                      c.region,
+		AccountID:                   c.accountID,
+		CidrBlock:                   value.CidrBlock,
+		CidrBlockAssociationSet:     c.transformVpcCidrBlockAssociations(value.CidrBlockAssociationSet),
+		DhcpOptionsId:               value.DhcpOptionsId,
+		InstanceTenancy:             value.InstanceTenancy,
 		Ipv6CidrBlockAssociationSet: c.transformVpcIpv6CidrBlockAssociations(value.Ipv6CidrBlockAssociationSet),
-		IsDefault: value.IsDefault,
-		OwnerId: value.OwnerId,
-		State: value.State,
-		Tags: c.transformVpcTags(value.Tags),
-		VpcId: value.VpcId,
+		IsDefault:                   value.IsDefault,
+		OwnerId:                     value.OwnerId,
+		State:                       value.State,
+		Tags:                        c.transformVpcTags(value.Tags),
+		VpcId:                       value.VpcId,
 	}
 }
 
@@ -123,7 +123,7 @@ func (c *Client) transformVpcs(values []*ec2.Vpc) []*Vpc {
 	return tValues
 }
 
-func (c *Client)vpcs(gConfig interface{}) error {
+func (c *Client) vpcs(gConfig interface{}) error {
 	var config ec2.DescribeVpcsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -157,5 +157,3 @@ func (c *Client)vpcs(gConfig interface{}) error {
 	}
 	return nil
 }
-
-

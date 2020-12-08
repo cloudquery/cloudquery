@@ -3,18 +3,21 @@ package aws
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
-	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
-	"github.com/cloudquery/cloudquery/providers/aws/ec2"
 	"github.com/cloudquery/cloudquery/providers/aws/ecr"
 	"github.com/cloudquery/cloudquery/providers/aws/ecs"
-	"github.com/cloudquery/cloudquery/providers/aws/efs"
 	"github.com/cloudquery/cloudquery/providers/aws/elasticbeanstalk"
-	"github.com/cloudquery/cloudquery/providers/aws/elbv2"
 	"github.com/cloudquery/cloudquery/providers/aws/emr"
 	"github.com/cloudquery/cloudquery/providers/aws/fsx"
+
+	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
+	"github.com/cloudquery/cloudquery/providers/aws/ec2"
+	"github.com/cloudquery/cloudquery/providers/aws/efs"
+	"github.com/cloudquery/cloudquery/providers/aws/elbv2"
 	"github.com/cloudquery/cloudquery/providers/aws/iam"
 	"github.com/cloudquery/cloudquery/providers/aws/rds"
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
@@ -30,6 +33,8 @@ import (
 
 type Provider struct {
 	session         *session.Session
+	cred            *credentials.Credentials
+	region          string
 	db              *gorm.DB
 	config          Config
 	accountID       string
@@ -37,15 +42,21 @@ type Provider struct {
 	log             *zap.Logger
 }
 
+type Account struct {
+	ID      string `mapstructure:"id"`
+	RoleARN string `mapstructure:"role_arn"`
+}
+
 type Config struct {
-	Region    string
+	Regions   []string
+	Accounts  []Account `mapstructure:"accounts"`
 	Resources []struct {
 		Name  string
 		Other map[string]interface{} `mapstructure:",remain"`
 	}
 }
 
-type NewResourceFunc func(session *session.Session, db *gorm.DB, log *zap.Logger,
+type NewResourceFunc func(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
 	accountID string, region string) resource.ClientInterface
 
 var resourceFactory = map[string]NewResourceFunc{
@@ -83,25 +94,43 @@ func (p *Provider) Run(config interface{}) error {
 		return err
 	}
 
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(p.config.Region)},
-	)
-	if err != nil {
-		return err
-	}
-	p.session = sess
-
-	svc := sts.New(p.session)
-	output, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
-	if err != nil {
-		return err
-	}
-	p.accountID = aws.StringValue(output.Account)
-
-	for _, resource := range p.config.Resources {
-		err := p.collectResource(resource.Name, resource.Other)
+	for _, region := range p.config.Regions {
+		sess, err := session.NewSession(&aws.Config{
+			Region: aws.String(region)},
+		)
+		p.region = region
 		if err != nil {
 			return err
+		}
+		p.session = sess
+		var creds []*credentials.Credentials
+
+		if len(p.config.Accounts) == 0 {
+			creds = append(creds, credentials.NewEnvCredentials())
+		} else {
+			for _, account := range p.config.Accounts {
+				creds = append(creds, stscreds.NewCredentials(sess, account.RoleARN))
+			}
+		}
+
+		for _, cred := range creds {
+			svc := sts.New(p.session, &aws.Config{
+				Credentials: cred,
+			})
+			output, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
+			if err != nil {
+				return err
+			}
+			p.accountID = aws.StringValue(output.Account)
+			p.cred = cred
+
+			for _, resource := range p.config.Resources {
+				err := p.collectResource(resource.Name, resource.Other)
+				if err != nil {
+					return err
+				}
+			}
+			p.resetClients()
 		}
 	}
 
@@ -125,7 +154,8 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 	}
 
 	if p.resourceClients[service] == nil {
-		p.resourceClients[service] = resourceFactory[service](p.session, p.db, p.log, p.accountID, p.config.Region)
+		p.resourceClients[service] = resourceFactory[service](p.session, &aws.Config{Credentials: p.cred},
+			p.db, p.log, p.accountID, p.region)
 	}
 	p.db.NamingStrategy = schema.NamingStrategy{
 		TablePrefix: fmt.Sprintf("aws_%s_", service),
