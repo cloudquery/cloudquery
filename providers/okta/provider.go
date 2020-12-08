@@ -50,6 +50,9 @@ func (p *Provider) Run(config interface{}) error {
 	if err != nil {
 		return err
 	}
+	if len(p.config.Resources) == 0 {
+		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/okta/tables-reference")
+	}
 
 	oktaToken, ok := os.LookupEnv("OKTA_TOKEN")
 	if !ok {

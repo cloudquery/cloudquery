@@ -56,6 +56,9 @@ func (p *Provider) Run(config interface{}) error {
 	if err != nil {
 		return err
 	}
+	if len(p.config.Resources) == 0 {
+		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
+	}
 
 	for _, resource := range p.config.Resources {
 		err := p.collectResource(resource.Name, resource.Other)

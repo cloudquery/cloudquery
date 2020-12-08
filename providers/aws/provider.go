@@ -3,8 +3,10 @@ package aws
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
@@ -13,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/providers/aws/emr"
 	"github.com/cloudquery/cloudquery/providers/aws/fsx"
+	"log"
 
 	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
 	"github.com/cloudquery/cloudquery/providers/aws/ec2"
@@ -93,15 +96,32 @@ func (p *Provider) Run(config interface{}) error {
 	if err != nil {
 		return err
 	}
+	if len(p.config.Resources) == 0 {
+		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/aws/tables-reference")
+	}
 
-	for _, region := range p.config.Regions {
+	regions := p.config.Regions
+	if len(regions) == 0 {
+		resolver := endpoints.DefaultResolver()
+		partitions := resolver.(endpoints.EnumPartitions).Partitions()
+		for _, p := range partitions {
+			if p.ID() == "aws" {
+				for id, _ := range p.Regions() {
+					regions = append(regions, id)
+				}
+			}
+		}
+		log.Printf("No regions specified in config.yml. Assuming all %d regions\n", len(regions))
+	}
+
+	for _, region := range regions {
 		sess, err := session.NewSession(&aws.Config{
 			Region: aws.String(region)},
 		)
-		p.region = region
 		if err != nil {
 			return err
 		}
+		p.region = region
 		p.session = sess
 		var creds []*credentials.Credentials
 
@@ -119,6 +139,12 @@ func (p *Provider) Run(config interface{}) error {
 			})
 			output, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
 			if err != nil {
+				if awsErr, ok := err.(awserr.Error); ok {
+					if awsErr.Code() == "InvalidClientTokenId" {
+						log.Printf("Region %s is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skiping...", region)
+						break
+					}
+				}
 				return err
 			}
 			p.accountID = aws.StringValue(output.Account)
