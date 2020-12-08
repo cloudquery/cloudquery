@@ -143,7 +143,7 @@ type UserConfig struct {
 	Filter string
 }
 
-func (p *Provider) Users(gConfig interface{}) error {
+func (p *Provider) users(gConfig interface{}) error {
 	var config UserConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

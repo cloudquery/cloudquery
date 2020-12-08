@@ -2,10 +2,10 @@ package gcp
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/providers/gcp/internal/compute"
-	"github.com/cloudquery/cloudquery/providers/gcp/internal/iam"
-	"github.com/cloudquery/cloudquery/providers/gcp/internal/resource"
-	"github.com/cloudquery/cloudquery/providers/gcp/internal/storage"
+	"github.com/cloudquery/cloudquery/providers/gcp/compute"
+	"github.com/cloudquery/cloudquery/providers/gcp/iam"
+	"github.com/cloudquery/cloudquery/providers/gcp/resource"
+	"github.com/cloudquery/cloudquery/providers/gcp/storage"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"

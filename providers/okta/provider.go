@@ -68,7 +68,7 @@ func (p *Provider) Run(config interface{}) error {
 	for _, resource := range p.config.Resources {
 		switch resource.Name {
 		case "users":
-			return p.Users(resource.Other)
+			return p.users(resource.Other)
 		case "applications":
 			return p.applications(resource.Other)
 		default:
