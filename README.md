@@ -39,6 +39,14 @@ You should be authenticated with an AWS account with correct permission with eit
  * `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
  * `~/.aws/credentials` created via `aws configure`
  
+Multi-account AWS support is available by using an account which can [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to other accounts.
+
+In your config.yml you need to specify role_arns if you want to query multiple accounts in the following way:
+```yaml
+ accounts:
+     - role_arn: <arn>
+```
+ 
 #### GCP
 
 You should be authenticated with a GCP that has correct permissions for the data you want to pull.
