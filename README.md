@@ -104,6 +104,17 @@ SELECT * from aws_s3_buckets
 
 More examples are available [here](https://docs.cloudquery.io)
 
+#### AWS Compliance Pack
+
+There is a growing pack of compliance queries under [examples/aws_compliance_packs](https://github.com/cloudquery/cloudquery/tree/main/examples/aws_compliance_packs).
+You can run them with the following commands:
+
+```shell script
+cp example.aws.config.yml
+./cloudquery
+./examples/aws_compliance_packs/compliance_test.sh
+```
+
 ## License
 
 By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.

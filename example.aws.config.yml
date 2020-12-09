@@ -1,0 +1,14 @@
+providers:
+  - name: aws
+    regions:
+      - us-east-1
+    #    accounts: // optional multi-account support via assume-role
+    #        - role_arn: <role_arn>
+    resources:
+      - name: ec2.vpcs
+      - name: ec2.flow_logs
+      - name: ec2.instances
+      - name: rds.clusters
+      - name: iam.access_keys
+      - name: elbv2.load_balancers
+      - name: s3.buckets

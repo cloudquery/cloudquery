@@ -1,0 +1,1 @@
+SELECT account_id, region, db_cluster_resource_id, cluster_identifier, cluster_create_time  FROM aws_rds_clusters WHERE enabled_cloudwatch_logs_exports = '';
