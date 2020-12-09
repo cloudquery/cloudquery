@@ -12,7 +12,6 @@ import (
 type Group struct {
 	ID         uint `gorm:"primarykey"`
 	AccountID  string
-	Region     string
 	Arn        *string
 	CreateDate *time.Time
 	GroupId    *string
@@ -22,7 +21,6 @@ type Group struct {
 
 func (c *Client) transformGroup(value *iam.Group) *Group {
 	return &Group{
-		Region:     c.region,
 		AccountID:  c.accountID,
 		Arn:        value.Arn,
 		CreateDate: value.CreateDate,
@@ -60,8 +58,8 @@ func (c *Client) groups(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Groups", zap.String("region", c.region), zap.String("account_id", c.accountID))
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Group{})
+		c.log.Debug("deleting previous Groups", zap.String("account_id", c.accountID))
+		c.db.Where("account_id = ?", c.accountID).Delete(&Group{})
 		common.ChunkedCreate(c.db, c.transformGroups(output.Groups))
 		c.log.Info("populating Groups", zap.Int("count", len(output.Groups)))
 		if aws.StringValue(output.Marker) == "" {

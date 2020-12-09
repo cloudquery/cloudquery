@@ -79,6 +79,11 @@ var resourceFactory = map[string]NewResourceFunc{
 	"elbv2":            elbv2.NewClient,
 }
 
+var globalServices = map[string]bool{
+	"s3":  false,
+	"iam": false,
+}
+
 func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:              db,
@@ -114,26 +119,30 @@ func (p *Provider) Run(config interface{}) error {
 		log.Printf("No regions specified in config.yml. Assuming all %d regions\n", len(regions))
 	}
 
-	for _, region := range regions {
-		sess, err := session.NewSession(&aws.Config{
-			Region: aws.String(region)},
-		)
-		if err != nil {
-			return err
-		}
-		p.region = region
-		p.session = sess
-		var creds []*credentials.Credentials
+	if len(p.config.Accounts) == 0 {
+		p.config.Accounts = append(p.config.Accounts, Account{
+			ID:      "default",
+			RoleARN: "default",
+		})
+	}
 
-		if len(p.config.Accounts) == 0 {
-			creds = append(creds, credentials.NewEnvCredentials())
-		} else {
-			for _, account := range p.config.Accounts {
-				creds = append(creds, stscreds.NewCredentials(sess, account.RoleARN))
+	for _, account := range p.config.Accounts {
+		for _, region := range regions {
+			sess, err := session.NewSession(&aws.Config{
+				Region: aws.String(region)},
+			)
+			if err != nil {
+				return err
 			}
-		}
+			p.region = region
+			p.session = sess
 
-		for _, cred := range creds {
+			var cred *credentials.Credentials
+			if account.ID == "default" {
+				cred = credentials.NewEnvCredentials()
+			} else {
+				stscreds.NewCredentials(sess, account.RoleARN)
+			}
 			svc := sts.New(p.session, &aws.Config{
 				Credentials: cred,
 			})
@@ -142,7 +151,7 @@ func (p *Provider) Run(config interface{}) error {
 				if awsErr, ok := err.(awserr.Error); ok {
 					if awsErr.Code() == "InvalidClientTokenId" {
 						log.Printf("Region %s is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skiping...", region)
-						break
+						continue
 					}
 				}
 				return err
@@ -157,6 +166,10 @@ func (p *Provider) Run(config interface{}) error {
 				}
 			}
 			p.resetClients()
+		}
+		globalServices = map[string]bool{
+			"s3":  false,
+			"iam": false,
 		}
 	}
 
@@ -177,6 +190,14 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 
 	if resourceFactory[service] == nil {
 		return fmt.Errorf("unsupported service %s", service)
+	}
+
+	if val, ok := globalServices[service]; ok {
+		if val {
+			// skip this as we already fetched it
+			return nil
+		}
+		globalServices[service] = true
 	}
 
 	if p.resourceClients[service] == nil {

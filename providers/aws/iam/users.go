@@ -12,7 +12,6 @@ import (
 type User struct {
 	ID                  uint `gorm:"primarykey"`
 	AccountID           string
-	Region              string
 	Arn                 *string
 	CreateDate          *time.Time
 	PasswordLastUsed    *time.Time
@@ -47,7 +46,6 @@ func (c *Client) transformUserTags(values []*iam.Tag) []*UserTag {
 
 func (c *Client) transformUser(value *iam.User) *User {
 	return &User{
-		Region:              c.region,
 		AccountID:           c.accountID,
 		Arn:                 value.Arn,
 		CreateDate:          value.CreateDate,
@@ -89,8 +87,8 @@ func (c *Client) users(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Users", zap.String("region", c.region), zap.String("account_id", c.accountID))
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&User{})
+		c.log.Debug("deleting previous Users", zap.String("account_id", c.accountID))
+		c.db.Where("account_id = ?", c.accountID).Delete(&User{})
 		common.ChunkedCreate(c.db, c.transformUsers(output.Users))
 		c.log.Info("populating Users", zap.Int("count", len(output.Users)))
 		if aws.StringValue(output.Marker) == "" {

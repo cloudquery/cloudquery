@@ -12,7 +12,6 @@ import (
 type Policy struct {
 	ID                            uint `gorm:"primarykey"`
 	AccountID                     string
-	Region                        string
 	Arn                           *string
 	AttachmentCount               *int64
 	CreateDate                    *time.Time
@@ -28,7 +27,6 @@ type Policy struct {
 
 func (c *Client) transformPolicy(value *iam.Policy) *Policy {
 	return &Policy{
-		Region:                        c.region,
 		AccountID:                     c.accountID,
 		Arn:                           value.Arn,
 		AttachmentCount:               value.AttachmentCount,
@@ -72,8 +70,8 @@ func (c *Client) policys(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Policys", zap.String("region", c.region), zap.String("account_id", c.accountID))
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Policy{})
+		c.log.Debug("deleting previous Policys", zap.String("account_id", c.accountID))
+		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
 		common.ChunkedCreate(c.db, c.transformPolicys(output.Policies))
 		c.log.Info("populating Policys", zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {

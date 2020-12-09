@@ -18,18 +18,20 @@ type Client struct {
 	region           string
 	resourceMigrated map[string]bool
 	svc              *s3.S3
+	awsConfig        *aws.Config
 }
 
-func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
+func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
 	accountID string, region string) resource.ClientInterface {
 	return &Client{
-		session:          session,
+		session:          sess,
 		db:               db,
 		log:              log,
 		accountID:        accountID,
 		region:           region,
 		resourceMigrated: map[string]bool{},
-		svc:              s3.New(session, awsConfig),
+		svc:              s3.New(sess, awsConfig),
+		awsConfig:        awsConfig,
 	}
 }
 

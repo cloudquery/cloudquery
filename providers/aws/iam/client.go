@@ -15,19 +15,17 @@ type Client struct {
 	db               *gorm.DB
 	log              *zap.Logger
 	accountID        string
-	region           string
 	resourceMigrated map[string]bool
 	svc              *iam.IAM
 }
 
 func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
-	accountID string, region string) resource.ClientInterface {
+	accountID string, _ string) resource.ClientInterface {
 	return &Client{
 		session:          session,
 		db:               db,
 		log:              log,
 		accountID:        accountID,
-		region:           region,
 		resourceMigrated: map[string]bool{},
 		svc:              iam.New(session, awsConfig),
 	}
@@ -43,6 +41,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.policys(config)
 	case "roles":
 		return c.roles(config)
+	case "access_keys":
+		return c.accessKeys(config)
 	default:
 		return fmt.Errorf("unsupported resource iam.%s", resource)
 	}
