@@ -59,6 +59,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.subnets(config)
 	case "flow_logs":
 		return c.FlowLogs(config)
+	case "vpc_peering_connections":
+		return c.vpcPeeringConnections(config)
 	default:
 		return fmt.Errorf("unsupported resource ec2.%s", resource)
 	}
