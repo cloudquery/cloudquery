@@ -43,6 +43,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.roles(config)
 	case "access_keys":
 		return c.accessKeys(config)
+	case "password_policies":
+		return c.passwordPolicies(config)
 	default:
 		return fmt.Errorf("unsupported resource iam.%s", resource)
 	}
