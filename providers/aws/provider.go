@@ -129,8 +129,7 @@ func (p *Provider) Run(config interface{}) error {
 	for _, account := range p.config.Accounts {
 		for _, region := range regions {
 			sess, err := session.NewSession(&aws.Config{
-				Region: aws.String(region)},
-			)
+				Region: aws.String(region)})
 			if err != nil {
 				return err
 			}
@@ -138,10 +137,8 @@ func (p *Provider) Run(config interface{}) error {
 			p.session = sess
 
 			var cred *credentials.Credentials
-			if account.ID == "default" {
-				cred = credentials.NewEnvCredentials()
-			} else {
-				stscreds.NewCredentials(sess, account.RoleARN)
+			if account.ID != "default" {
+				cred = stscreds.NewCredentials(sess, account.RoleARN)
 			}
 			svc := sts.New(p.session, &aws.Config{
 				Credentials: cred,
