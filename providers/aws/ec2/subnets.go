@@ -131,7 +131,6 @@ func (c *Client) subnets(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Subnets", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Subnet{})
 		common.ChunkedCreate(c.db, c.transformSubnets(output.Subnets))
 		c.log.Info("populating Subnets", zap.Int("count", len(output.Subnets)))

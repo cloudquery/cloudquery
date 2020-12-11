@@ -81,7 +81,6 @@ func (c *Client) projectRoles(_ interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Roles", zap.String("region", c.region), zap.String("project_id", c.projectID))
 		c.db.Where("region = ?", c.region).Where("project_id = ?", c.projectID).Delete(&Role{})
 		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
 		c.log.Info("populating Roles", zap.Int("count", len(output.Roles)))

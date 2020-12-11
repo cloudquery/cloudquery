@@ -146,7 +146,6 @@ func (c *Client) vpcs(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Vpcs", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Vpc{})
 		common.ChunkedCreate(c.db, c.transformVpcs(output.Vpcs))
 		c.log.Info("populating Vpcs", zap.Int("count", len(output.Vpcs)))

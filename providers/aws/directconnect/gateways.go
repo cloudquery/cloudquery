@@ -61,7 +61,6 @@ func (c *Client) gateways(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous gateways", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Gateway{})
 		common.ChunkedCreate(c.db, c.transformGateways(output.DirectConnectGateways))
 		c.log.Info("populating gateways", zap.Int("count", len(output.DirectConnectGateways)))

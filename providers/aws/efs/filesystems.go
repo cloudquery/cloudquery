@@ -103,7 +103,6 @@ func (c *Client) fileSystems(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous FileSystemDescriptions", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FileSystemDescription{})
 		common.ChunkedCreate(c.db, c.transformFileSystemDescriptions(output.FileSystems))
 		c.log.Info("populating FileSystemDescriptions", zap.Int("count", len(output.FileSystems)))

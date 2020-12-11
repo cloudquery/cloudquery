@@ -71,7 +71,6 @@ func (c *Client) accessKeys(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous AccessKeys", zap.String("account_id", c.accountID))
 		c.db.Where("account_id = ?", c.accountID).Delete(&AccessKey{})
 		common.ChunkedCreate(c.db, c.transformAccessKeys(output.AccessKeyMetadata))
 		c.log.Info("populating AccessKeys", zap.Int("count", len(output.AccessKeyMetadata)))

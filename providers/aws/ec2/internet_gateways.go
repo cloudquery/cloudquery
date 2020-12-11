@@ -103,7 +103,6 @@ func (c *Client) internetGateways(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous InternetGateways", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&InternetGateway{})
 		common.ChunkedCreate(c.db, c.transformInternetGateways(output.InternetGateways))
 		c.log.Info("populating InternetGateways", zap.Int("count", len(output.InternetGateways)))

@@ -168,7 +168,6 @@ func (c *Client) environments(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Environments", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Environment{})
 		common.ChunkedCreate(c.db, c.transformEnvironments(output.Environments))
 		c.log.Info("populating Environments", zap.Int("count", len(output.Environments)))

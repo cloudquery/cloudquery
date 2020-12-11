@@ -182,7 +182,6 @@ func (c *Client) launchConfigurations(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous launchConfigurations", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LaunchConfiguration{})
 		common.ChunkedCreate(c.db, c.transformLaunchConfigurations(output.LaunchConfigurations))
 		c.log.Info("populating launchConfigurations", zap.Int("count", len(output.LaunchConfigurations)))

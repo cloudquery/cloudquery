@@ -187,7 +187,6 @@ func (c *Client) routeTables(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous RouteTables", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&RouteTable{})
 		common.ChunkedCreate(c.db, c.transformRouteTables(output.RouteTables))
 		c.log.Info("populating RouteTables", zap.Int("count", len(output.RouteTables)))

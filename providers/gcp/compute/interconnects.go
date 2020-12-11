@@ -191,7 +191,6 @@ func (c *Client) interconnects(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Interconnects", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Interconnect{})
 		common.ChunkedCreate(c.db, output.Items)
 		c.log.Info("populating Interconnects", zap.Int("count", len(output.Items)))

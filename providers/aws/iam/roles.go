@@ -93,7 +93,6 @@ func (c *Client) roles(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Roles", zap.String("account_id", c.accountID))
 		c.db.Where("account_id = ?", c.accountID).Delete(&Role{})
 		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
 		c.log.Info("populating Roles", zap.Int("count", len(output.Roles)))

@@ -146,7 +146,6 @@ func (c *Client) networkAcls(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous NetworkAcls", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NetworkAcl{})
 		common.ChunkedCreate(c.db, c.transformNetworkAcls(output.NetworkAcls))
 		c.log.Info("populating NetworkAcls", zap.Int("count", len(output.NetworkAcls)))

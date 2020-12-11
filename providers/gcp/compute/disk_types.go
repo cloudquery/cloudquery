@@ -87,7 +87,6 @@ func (c *Client) diskTypes(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous DiskTypes", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&DiskType{})
 		var tValues []*DiskType
 		for _, items := range output.Items {

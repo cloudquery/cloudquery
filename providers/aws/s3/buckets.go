@@ -239,7 +239,6 @@ func (c *Client) buckets(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.log.Debug("deleting previous Buckets", zap.String("account_id", c.accountID))
 	c.db.Where("account_id = ?", c.accountID).Delete(&Bucket{})
 	tBuckets, err := c.transformBuckets(output.Buckets)
 	if err != nil {

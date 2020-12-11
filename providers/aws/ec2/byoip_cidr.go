@@ -57,10 +57,9 @@ func (c *Client) byoipCidrs(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous byoipCidrs", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&ByoipCidr{})
 		common.ChunkedCreate(c.db, c.transformByoipCidrs(output.ByoipCidrs))
-		c.log.Info("populating byoipCidrs", zap.Int("count", len(output.ByoipCidrs)))
+		c.log.Info("fetched resources", zap.String("resource", "ec2.byoip_cidrs"), zap.Int("count", len(output.ByoipCidrs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

@@ -63,7 +63,6 @@ func (c *Client) serviceAccounts(_ interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous ServiceAccounts", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&ServiceAccount{})
 		common.ChunkedCreate(c.db, c.transformServiceAccounts(output.Accounts))
 		c.log.Info("populating ServiceAccounts", zap.Int("count", len(output.Accounts)))

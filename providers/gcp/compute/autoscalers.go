@@ -156,7 +156,6 @@ func (c *Client) autoscalers(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Autoscalers", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Autoscaler{})
 		var tValues []*Autoscaler
 		for _, items := range output.Items {

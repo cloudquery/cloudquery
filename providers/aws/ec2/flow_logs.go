@@ -101,7 +101,6 @@ func (c *Client) FlowLogs(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous FlowLogs", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FlowLog{})
 		common.ChunkedCreate(c.db, c.transformFlowLogs(output.FlowLogs))
 		c.log.Info("populating FlowLogs", zap.Int("count", len(output.FlowLogs)))

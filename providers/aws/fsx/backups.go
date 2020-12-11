@@ -93,7 +93,6 @@ func (c *Client) backups(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Backups", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Backup{})
 		common.ChunkedCreate(c.db, c.transformBackups(output.Backups))
 		c.log.Info("populating Backups", zap.Int("count", len(output.Backups)))

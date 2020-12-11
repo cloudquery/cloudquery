@@ -497,7 +497,6 @@ func (c *Client) buckets(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Buckets", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Bucket{})
 		common.ChunkedCreate(c.db, c.transformBuckets(output.Items))
 		c.log.Info("populating Buckets", zap.Int("count", len(output.Items)))

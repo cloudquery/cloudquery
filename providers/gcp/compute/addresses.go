@@ -105,7 +105,6 @@ func (c *Client) addresses(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Addresss", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Address{})
 		var tValues []*Address
 		for _, items := range output.Items {

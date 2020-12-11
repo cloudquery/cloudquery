@@ -423,7 +423,6 @@ func (c *Client) instances(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Instances", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Instance{})
 		for _, reservation := range output.Reservations {
 			c.log.Info("populating Instances", zap.Int("count", len(reservation.Instances)))

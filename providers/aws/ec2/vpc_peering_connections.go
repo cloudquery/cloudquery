@@ -189,7 +189,6 @@ func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous VpcPeeringConnections", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&VpcPeeringConnection{})
 		common.ChunkedCreate(c.db, c.transformVpcPeeringConnections(output.VpcPeeringConnections))
 		c.log.Info("populating VpcPeeringConnections", zap.Int("count", len(output.VpcPeeringConnections)))

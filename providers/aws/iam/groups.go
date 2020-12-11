@@ -58,7 +58,6 @@ func (c *Client) groups(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Groups", zap.String("account_id", c.accountID))
 		c.db.Where("account_id = ?", c.accountID).Delete(&Group{})
 		common.ChunkedCreate(c.db, c.transformGroups(output.Groups))
 		c.log.Info("populating Groups", zap.Int("count", len(output.Groups)))

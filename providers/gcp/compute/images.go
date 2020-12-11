@@ -187,7 +187,6 @@ func (c *Client) images(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous images", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Image{})
 		common.ChunkedCreate(c.db, c.transformImages(output.Items))
 		c.log.Info("populating images", zap.Int("count", len(output.Items)))

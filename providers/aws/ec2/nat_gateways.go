@@ -122,7 +122,6 @@ func (c *Client) natGateways(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous NatGateways", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NatGateway{})
 		common.ChunkedCreate(c.db, c.transformNatGateways(output.NatGateways))
 		c.log.Info("populating NatGateways", zap.Int("count", len(output.NatGateways)))

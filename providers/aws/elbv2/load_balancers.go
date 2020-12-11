@@ -128,7 +128,6 @@ func (c *Client) loadBalancers(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous LoadBalancers", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LoadBalancer{})
 		common.ChunkedCreate(c.db, c.transformLoadBalancers(output.LoadBalancers))
 		c.log.Info("populating LoadBalancers", zap.Int("count", len(output.LoadBalancers)))

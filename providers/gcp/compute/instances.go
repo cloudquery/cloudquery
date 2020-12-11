@@ -487,7 +487,6 @@ func (c *Client) instances(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous Instances", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&Instance{})
 		var tValues []*Instance
 		for _, items := range output.Items {

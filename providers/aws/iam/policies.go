@@ -70,7 +70,6 @@ func (c *Client) policys(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Policys", zap.String("account_id", c.accountID))
 		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
 		common.ChunkedCreate(c.db, c.transformPolicys(output.Policies))
 		c.log.Info("populating Policys", zap.Int("count", len(output.Policies)))

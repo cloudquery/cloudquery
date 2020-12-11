@@ -25,7 +25,7 @@ func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log
 	return &Client{
 		session:          session,
 		db:               db,
-		log:              log,
+		log:              log.With(zap.String("region", aws.StringValue(session.Config.Region))),
 		accountID:        accountID,
 		region:           region,
 		resourceMigrated: map[string]bool{},

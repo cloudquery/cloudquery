@@ -166,7 +166,6 @@ func (p *Provider) users(gConfig interface{}) error {
 		return err
 	}
 
-	p.log.Debug("deleting previous Users", zap.String("domain", p.config.Domain))
 	p.db.Where("domain = ?", p.config.Domain).Delete(&User{})
 	common.ChunkedCreate(p.db, p.transformUsers(users))
 	p.log.Info("populating Users", zap.Int("count", len(users)))

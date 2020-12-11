@@ -87,7 +87,6 @@ func (c *Client) users(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Users", zap.String("account_id", c.accountID))
 		c.db.Where("account_id = ?", c.accountID).Delete(&User{})
 		common.ChunkedCreate(c.db, c.transformUsers(output.Users))
 		c.log.Info("populating Users", zap.Int("count", len(output.Users)))

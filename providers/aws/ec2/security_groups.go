@@ -221,7 +221,6 @@ func (c *Client) securityGroups(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous SecurityGroups", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&SecurityGroup{})
 		common.ChunkedCreate(c.db, c.transformSecurityGroups(output.SecurityGroups))
 		c.log.Info("populating SecurityGroups", zap.Int("count", len(output.SecurityGroups)))

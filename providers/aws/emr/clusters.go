@@ -78,7 +78,6 @@ func (c *Client) clusters(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.log.Debug("deleting previous Clusters", zap.String("region", c.region), zap.String("account_id", c.accountID))
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
 		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
 		c.log.Info("populating Clusters", zap.Int("count", len(output.Clusters)))

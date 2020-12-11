@@ -158,7 +158,6 @@ func (p *Provider) applications(gConfig interface{}) error {
 		return err
 	}
 
-	p.log.Debug("deleting previous Applications", zap.String("domain", p.config.Domain))
 	p.db.Where("domain = ?", p.config.Domain).Delete(&Application{})
 	common.ChunkedCreate(p.db, p.transformApplications(applications))
 	p.log.Info("populating Applications", zap.Int("count", len(applications)))

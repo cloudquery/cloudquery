@@ -2,11 +2,9 @@ package cloudqueryclient
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/gcp"
 	"github.com/cloudquery/cloudquery/providers/okta"
-	"io/ioutil"
-
-	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -16,6 +14,7 @@ import (
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"io/ioutil"
 )
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
@@ -36,6 +35,18 @@ type Client struct {
 	db     *gorm.DB
 	config Config
 	log    *zap.Logger
+}
+
+func NewLogger(options ...zap.Option) (*zap.Logger, error) {
+	return zap.Config{
+		Level:            zap.NewAtomicLevelAt(zap.DebugLevel),
+		Development:      true,
+		DisableCaller: 	  true,
+		Encoding:         "console",
+		EncoderConfig:    zap.NewDevelopmentEncoderConfig(),
+		OutputPaths:      []string{"stderr"},
+		ErrorOutputPaths: []string{"stderr"},
+	}.Build()
 }
 
 func New(driver string, dsn string) (*Client, error) {
@@ -66,7 +77,9 @@ func New(driver string, dsn string) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.log, err = zap.NewDevelopment()
+
+	zapLogger, err := NewLogger()
+	client.log = zapLogger
 	if err != nil {
 		return nil, err
 	}
@@ -91,6 +104,7 @@ func (c *Client) Run(path string) error {
 		if ProviderMap[provider.Name] == nil {
 			return fmt.Errorf("provider %s is not supported\n", provider.Name)
 		}
+		c.log = c.log.With(zap.String("provider", "AWS"))
 		p, err := ProviderMap[provider.Name](c.db, c.log)
 		if err != nil {
 			return err

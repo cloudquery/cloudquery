@@ -87,7 +87,6 @@ func (c *Client) customerGateways(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.log.Debug("deleting previous customerGateways", zap.String("region", c.region), zap.String("account_id", c.accountID))
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&CustomerGateway{})
 	common.ChunkedCreate(c.db, c.transformCustomerGateways(output.CustomerGateways))
 	c.log.Info("populating customerGateways", zap.Int("count", len(output.CustomerGateways)))

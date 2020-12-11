@@ -120,7 +120,6 @@ func (c *Client) sslCertificates(gConfig interface{}) error {
 			return err
 		}
 
-		c.log.Debug("deleting previous SSLCertificates", zap.String("project_id", c.projectID))
 		c.db.Where("project_id = ?", c.projectID).Delete(&SSLCertificate{})
 		var tValues []*SSLCertificate
 		for _, items := range output.Items {
