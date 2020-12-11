@@ -72,7 +72,7 @@ func (c *Client) policys(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
 		common.ChunkedCreate(c.db, c.transformPolicys(output.Policies))
-		c.log.Info("populating Policys", zap.Int("count", len(output.Policies)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

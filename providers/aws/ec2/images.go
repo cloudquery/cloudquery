@@ -175,6 +175,6 @@ func (c *Client) images(gConfig interface{}) error {
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
 	common.ChunkedCreate(c.db, c.transformImages(output.Images))
-	c.log.Info("populating images", zap.Int("count", len(output.Images)))
+	c.log.Info("Fetched resources", zap.Int("count", len(output.Images)))
 	return nil
 }

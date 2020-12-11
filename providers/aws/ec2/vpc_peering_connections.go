@@ -191,7 +191,7 @@ func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&VpcPeeringConnection{})
 		common.ChunkedCreate(c.db, c.transformVpcPeeringConnections(output.VpcPeeringConnections))
-		c.log.Info("populating VpcPeeringConnections", zap.Int("count", len(output.VpcPeeringConnections)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.VpcPeeringConnections)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

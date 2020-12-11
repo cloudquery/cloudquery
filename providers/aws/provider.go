@@ -10,17 +10,15 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
-	"github.com/cloudquery/cloudquery/providers/aws/ecr"
-	"github.com/cloudquery/cloudquery/providers/aws/ecs"
-	"github.com/cloudquery/cloudquery/providers/aws/elasticbeanstalk"
-	"github.com/cloudquery/cloudquery/providers/aws/emr"
-	"github.com/cloudquery/cloudquery/providers/aws/fsx"
-	"log"
-
 	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
 	"github.com/cloudquery/cloudquery/providers/aws/ec2"
+	"github.com/cloudquery/cloudquery/providers/aws/ecr"
+	"github.com/cloudquery/cloudquery/providers/aws/ecs"
 	"github.com/cloudquery/cloudquery/providers/aws/efs"
+	"github.com/cloudquery/cloudquery/providers/aws/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/providers/aws/elbv2"
+	"github.com/cloudquery/cloudquery/providers/aws/emr"
+	"github.com/cloudquery/cloudquery/providers/aws/fsx"
 	"github.com/cloudquery/cloudquery/providers/aws/iam"
 	"github.com/cloudquery/cloudquery/providers/aws/rds"
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
@@ -116,7 +114,7 @@ func (p *Provider) Run(config interface{}) error {
 				}
 			}
 		}
-		log.Printf("No regions specified in config.yml. Assuming all %d regions\n", len(regions))
+		p.log.Info(fmt.Sprintf("No regions specified in config.yml. Assuming all %d regions", len(regions)))
 	}
 
 	if len(p.config.Accounts) == 0 {
@@ -147,7 +145,9 @@ func (p *Provider) Run(config interface{}) error {
 			if err != nil {
 				if awsErr, ok := err.(awserr.Error); ok {
 					if awsErr.Code() == "InvalidClientTokenId" {
-						log.Printf("Region %s is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skiping...", region)
+						p.log.Info("Region is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skipping...",
+							zap.String("account_id", p.accountID),
+							zap.String("region", region))
 						continue
 					}
 				}
@@ -191,15 +191,16 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 
 	if val, ok := globalServices[service]; ok {
 		if val {
-			// skip this as we already fetched it
+			// skip this as we already Fetched resources
 			return nil
 		}
 		globalServices[service] = true
 	}
 
 	if p.resourceClients[service] == nil {
+		log := p.log.With(zap.String("account_id", p.accountID), zap.String("region", aws.StringValue(p.session.Config.Region)), zap.String("resource", fullResourceName))
 		p.resourceClients[service] = resourceFactory[service](p.session, &aws.Config{Credentials: p.cred},
-			p.db, p.log, p.accountID, p.region)
+			p.db, log, p.accountID, p.region)
 	}
 	p.db.NamingStrategy = schema.NamingStrategy{
 		TablePrefix: fmt.Sprintf("aws_%s_", service),

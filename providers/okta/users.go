@@ -168,7 +168,7 @@ func (p *Provider) users(gConfig interface{}) error {
 
 	p.db.Where("domain = ?", p.config.Domain).Delete(&User{})
 	common.ChunkedCreate(p.db, p.transformUsers(users))
-	p.log.Info("populating Users", zap.Int("count", len(users)))
+	p.log.Info("Fetched resources", zap.Int("count", len(users)))
 
 	return nil
 }

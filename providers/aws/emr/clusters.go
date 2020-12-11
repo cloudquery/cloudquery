@@ -80,7 +80,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
 		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
-		c.log.Info("populating Clusters", zap.Int("count", len(output.Clusters)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Clusters)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

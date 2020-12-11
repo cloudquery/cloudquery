@@ -105,7 +105,7 @@ func (c *Client) fileSystems(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FileSystemDescription{})
 		common.ChunkedCreate(c.db, c.transformFileSystemDescriptions(output.FileSystems))
-		c.log.Info("populating FileSystemDescriptions", zap.Int("count", len(output.FileSystems)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.FileSystems)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
 		}

@@ -105,7 +105,7 @@ func (c *Client) internetGateways(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&InternetGateway{})
 		common.ChunkedCreate(c.db, c.transformInternetGateways(output.InternetGateways))
-		c.log.Info("populating InternetGateways", zap.Int("count", len(output.InternetGateways)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.InternetGateways)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

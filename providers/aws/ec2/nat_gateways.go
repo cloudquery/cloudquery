@@ -124,7 +124,7 @@ func (c *Client) natGateways(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NatGateway{})
 		common.ChunkedCreate(c.db, c.transformNatGateways(output.NatGateways))
-		c.log.Info("populating NatGateways", zap.Int("count", len(output.NatGateways)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.NatGateways)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

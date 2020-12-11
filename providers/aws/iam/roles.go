@@ -95,7 +95,7 @@ func (c *Client) roles(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Role{})
 		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
-		c.log.Info("populating Roles", zap.Int("count", len(output.Roles)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Roles)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

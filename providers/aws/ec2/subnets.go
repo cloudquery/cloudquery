@@ -133,7 +133,7 @@ func (c *Client) subnets(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Subnet{})
 		common.ChunkedCreate(c.db, c.transformSubnets(output.Subnets))
-		c.log.Info("populating Subnets", zap.Int("count", len(output.Subnets)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Subnets)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

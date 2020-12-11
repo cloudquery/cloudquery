@@ -95,7 +95,7 @@ func (c *Client) backups(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Backup{})
 		common.ChunkedCreate(c.db, c.transformBackups(output.Backups))
-		c.log.Info("populating Backups", zap.Int("count", len(output.Backups)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Backups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

@@ -103,7 +103,7 @@ func (c *Client) FlowLogs(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FlowLog{})
 		common.ChunkedCreate(c.db, c.transformFlowLogs(output.FlowLogs))
-		c.log.Info("populating FlowLogs", zap.Int("count", len(output.FlowLogs)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.FlowLogs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

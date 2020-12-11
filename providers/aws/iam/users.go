@@ -89,7 +89,7 @@ func (c *Client) users(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&User{})
 		common.ChunkedCreate(c.db, c.transformUsers(output.Users))
-		c.log.Info("populating Users", zap.Int("count", len(output.Users)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Users)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

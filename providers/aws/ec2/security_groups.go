@@ -223,7 +223,7 @@ func (c *Client) securityGroups(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&SecurityGroup{})
 		common.ChunkedCreate(c.db, c.transformSecurityGroups(output.SecurityGroups))
-		c.log.Info("populating SecurityGroups", zap.Int("count", len(output.SecurityGroups)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.SecurityGroups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

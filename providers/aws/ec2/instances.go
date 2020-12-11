@@ -425,7 +425,7 @@ func (c *Client) instances(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Instance{})
 		for _, reservation := range output.Reservations {
-			c.log.Info("populating Instances", zap.Int("count", len(reservation.Instances)))
+			c.log.Info("Fetched resources", zap.Int("count", len(reservation.Instances)))
 			common.ChunkedCreate(c.db, c.transformInstances(reservation.Instances))
 		}
 		if aws.StringValue(output.NextToken) == "" {

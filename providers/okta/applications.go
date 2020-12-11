@@ -160,6 +160,6 @@ func (p *Provider) applications(gConfig interface{}) error {
 
 	p.db.Where("domain = ?", p.config.Domain).Delete(&Application{})
 	common.ChunkedCreate(p.db, p.transformApplications(applications))
-	p.log.Info("populating Applications", zap.Int("count", len(applications)))
+	p.log.Info("Fetched resources", zap.Int("count", len(applications)))
 	return nil
 }

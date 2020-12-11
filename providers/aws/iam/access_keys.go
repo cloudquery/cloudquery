@@ -73,7 +73,7 @@ func (c *Client) accessKeys(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&AccessKey{})
 		common.ChunkedCreate(c.db, c.transformAccessKeys(output.AccessKeyMetadata))
-		c.log.Info("populating AccessKeys", zap.Int("count", len(output.AccessKeyMetadata)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.AccessKeyMetadata)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

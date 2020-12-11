@@ -89,6 +89,6 @@ func (c *Client) customerGateways(gConfig interface{}) error {
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&CustomerGateway{})
 	common.ChunkedCreate(c.db, c.transformCustomerGateways(output.CustomerGateways))
-	c.log.Info("populating customerGateways", zap.Int("count", len(output.CustomerGateways)))
+	c.log.Info("Fetched resources", zap.Int("count", len(output.CustomerGateways)))
 	return nil
 }

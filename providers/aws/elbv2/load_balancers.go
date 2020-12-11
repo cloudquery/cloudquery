@@ -130,7 +130,7 @@ func (c *Client) loadBalancers(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LoadBalancer{})
 		common.ChunkedCreate(c.db, c.transformLoadBalancers(output.LoadBalancers))
-		c.log.Info("populating LoadBalancers", zap.Int("count", len(output.LoadBalancers)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.LoadBalancers)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
 		}

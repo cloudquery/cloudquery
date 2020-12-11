@@ -245,7 +245,7 @@ func (c *Client) buckets(gConfig interface{}) error {
 		return err
 	}
 	common.ChunkedCreate(c.db, tBuckets)
-	c.log.Info("populating Buckets", zap.Int("count", len(tBuckets)))
+	c.log.Info("Fetched resources", zap.Int("count", len(tBuckets)))
 
 	return nil
 }

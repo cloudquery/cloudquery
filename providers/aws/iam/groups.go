@@ -60,7 +60,7 @@ func (c *Client) groups(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Group{})
 		common.ChunkedCreate(c.db, c.transformGroups(output.Groups))
-		c.log.Info("populating Groups", zap.Int("count", len(output.Groups)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Groups)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

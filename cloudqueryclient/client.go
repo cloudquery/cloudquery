@@ -104,8 +104,8 @@ func (c *Client) Run(path string) error {
 		if ProviderMap[provider.Name] == nil {
 			return fmt.Errorf("provider %s is not supported\n", provider.Name)
 		}
-		c.log = c.log.With(zap.String("provider", "AWS"))
-		p, err := ProviderMap[provider.Name](c.db, c.log)
+		log := c.log.With(zap.String("provider", provider.Name))
+		p, err := ProviderMap[provider.Name](c.db, log)
 		if err != nil {
 			return err
 		}

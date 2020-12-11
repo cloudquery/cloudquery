@@ -111,7 +111,7 @@ func (c *Client) addresses(gConfig interface{}) error {
 			tValues = append(tValues, c.transformAddresses(items.Addresses)...)
 		}
 		common.ChunkedCreate(c.db, tValues)
-		c.log.Info("populating Addresss", zap.Int("count", len(tValues)))
+		c.log.Info("Fetched resources", zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break
 		}

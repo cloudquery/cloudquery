@@ -59,7 +59,7 @@ func (c *Client) byoipCidrs(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&ByoipCidr{})
 		common.ChunkedCreate(c.db, c.transformByoipCidrs(output.ByoipCidrs))
-		c.log.Info("fetched resources", zap.String("resource", "ec2.byoip_cidrs"), zap.Int("count", len(output.ByoipCidrs)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.byoip_cidrs"), zap.Int("count", len(output.ByoipCidrs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

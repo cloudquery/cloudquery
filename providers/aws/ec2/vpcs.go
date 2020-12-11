@@ -148,7 +148,7 @@ func (c *Client) vpcs(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Vpc{})
 		common.ChunkedCreate(c.db, c.transformVpcs(output.Vpcs))
-		c.log.Info("populating Vpcs", zap.Int("count", len(output.Vpcs)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Vpcs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

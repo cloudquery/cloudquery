@@ -184,7 +184,7 @@ func (c *Client) launchConfigurations(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LaunchConfiguration{})
 		common.ChunkedCreate(c.db, c.transformLaunchConfigurations(output.LaunchConfigurations))
-		c.log.Info("populating launchConfigurations", zap.Int("count", len(output.LaunchConfigurations)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.LaunchConfigurations)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

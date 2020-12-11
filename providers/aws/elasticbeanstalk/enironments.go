@@ -170,7 +170,7 @@ func (c *Client) environments(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Environment{})
 		common.ChunkedCreate(c.db, c.transformEnvironments(output.Environments))
-		c.log.Info("populating Environments", zap.Int("count", len(output.Environments)))
+		c.log.Info("Fetched resources", zap.Int("count", len(output.Environments)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}
