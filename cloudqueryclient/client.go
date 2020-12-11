@@ -41,7 +41,7 @@ func NewLogger(options ...zap.Option) (*zap.Logger, error) {
 	return zap.Config{
 		Level:            zap.NewAtomicLevelAt(zap.DebugLevel),
 		Development:      true,
-		DisableCaller: 	  true,
+		DisableCaller:    true,
 		Encoding:         "console",
 		EncoderConfig:    zap.NewDevelopmentEncoderConfig(),
 		OutputPaths:      []string{"stderr"},

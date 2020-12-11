@@ -8,37 +8,37 @@ import (
 )
 
 type PasswordPolicy struct {
-	ID                                             uint `gorm:"primarykey"`
-	AccountID                                    string
-	AllowUsersToChangePassword                    *bool
-	ExpirePasswords                               *bool
-	HardExpiry                                    *bool
-	MaxPasswordAge                               *int64
-	MinimumPasswordLength                        *int64
-	PasswordReusePrevention                      *int64
-	RequireLowercaseCharacters                    *bool
-	RequireNumbers                                *bool
-	RequireSymbols                                *bool
-	RequireUppercaseCharacters                    *bool
+	ID                         uint `gorm:"primarykey"`
+	AccountID                  string
+	AllowUsersToChangePassword *bool
+	ExpirePasswords            *bool
+	HardExpiry                 *bool
+	MaxPasswordAge             *int64
+	MinimumPasswordLength      *int64
+	PasswordReusePrevention    *int64
+	RequireLowercaseCharacters *bool
+	RequireNumbers             *bool
+	RequireSymbols             *bool
+	RequireUppercaseCharacters *bool
 }
 
 func (c *Client) transformPasswordPolicy(value *iam.PasswordPolicy) *PasswordPolicy {
-	return &PasswordPolicy {
-		AccountID: c.accountID,
+	return &PasswordPolicy{
+		AccountID:                  c.accountID,
 		AllowUsersToChangePassword: value.AllowUsersToChangePassword,
-		ExpirePasswords: value.ExpirePasswords,
-		HardExpiry: value.HardExpiry,
-		MaxPasswordAge: value.MaxPasswordAge,
-		MinimumPasswordLength: value.MinimumPasswordLength,
-		PasswordReusePrevention: value.PasswordReusePrevention,
+		ExpirePasswords:            value.ExpirePasswords,
+		HardExpiry:                 value.HardExpiry,
+		MaxPasswordAge:             value.MaxPasswordAge,
+		MinimumPasswordLength:      value.MinimumPasswordLength,
+		PasswordReusePrevention:    value.PasswordReusePrevention,
 		RequireLowercaseCharacters: value.RequireLowercaseCharacters,
-		RequireNumbers: value.RequireNumbers,
-		RequireSymbols: value.RequireSymbols,
+		RequireNumbers:             value.RequireNumbers,
+		RequireSymbols:             value.RequireSymbols,
 		RequireUppercaseCharacters: value.RequireUppercaseCharacters,
 	}
 }
 
-func (c *Client)passwordPolicies(gConfig interface{}) error {
+func (c *Client) passwordPolicies(gConfig interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -68,4 +68,3 @@ func (c *Client)passwordPolicies(gConfig interface{}) error {
 
 	return nil
 }
-

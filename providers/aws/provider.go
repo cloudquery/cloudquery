@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/emr"
 	"github.com/cloudquery/cloudquery/providers/aws/fsx"
 	"github.com/cloudquery/cloudquery/providers/aws/iam"
+	"github.com/cloudquery/cloudquery/providers/aws/kms"
 	"github.com/cloudquery/cloudquery/providers/aws/rds"
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
@@ -75,6 +76,7 @@ var resourceFactory = map[string]NewResourceFunc{
 	"redshift":         redshift.NewClient,
 	"s3":               s3.NewClient,
 	"elbv2":            elbv2.NewClient,
+	"kms":              kms.NewClient,
 }
 
 var globalServices = map[string]bool{
