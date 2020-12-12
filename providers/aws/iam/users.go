@@ -1,6 +1,7 @@
 package iam
 
 import (
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/gocarina/gocsv"
@@ -145,7 +146,27 @@ func (c *Client) users(_ interface{}) error {
 		c.resourceMigrated["iamUser"] = true
 	}
 
-	reportOutput, err := c.svc.GetCredentialReport(&iam.GetCredentialReportInput{})
+	var err error
+	var reportOutput *iam.GetCredentialReportOutput
+	for {
+		reportOutput, err = c.svc.GetCredentialReport(&iam.GetCredentialReportInput{})
+		if err != nil {
+			if err.(awserr.Error).Code() != iam.ErrCodeCredentialReportNotPresentException ||
+				err.(awserr.Error).Code() != iam.ErrCodeCredentialReportExpiredException {
+				_, err := c.svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
+				if err != nil {
+					return err
+				}
+			} else if err.(awserr.Error).Code() != iam.ErrCodeCredentialReportNotReadyException {
+				c.log.Info("Waiting for credential report to be generated", zap.String("resource", "iam.users"))
+				time.Sleep(2 * time.Second)
+			} else {
+				return err
+			}
+		} else {
+			break
+		}
+	}
 	var users []*ReportUser
 	err = gocsv.UnmarshalBytes(reportOutput.Content, &users)
 	if err != nil {
