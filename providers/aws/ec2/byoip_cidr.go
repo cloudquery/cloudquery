@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/cloudquery/cloudquery/providers/common"
-	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
 
@@ -41,11 +40,10 @@ func (c *Client) transformByoipCidrs(values []*ec2.ByoipCidr) []*ByoipCidr {
 	return tValues
 }
 
-func (c *Client) byoipCidrs(gConfig interface{}) error {
-	var config ec2.DescribeByoipCidrsInput
-	err := mapstructure.Decode(gConfig, &config)
-	if err != nil {
-		return err
+func (c *Client) byoipCidrs(_ interface{}) error {
+	MaxResults := int64(100)
+	config := ec2.DescribeByoipCidrsInput{
+		MaxResults: &MaxResults,
 	}
 	if !c.resourceMigrated["ec2ByoipCidr"] {
 		err := c.db.AutoMigrate(

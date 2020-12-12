@@ -169,6 +169,10 @@ func (c *Client) transformImages(values []*ec2.Image) []*Image {
 func (c *Client) images(gConfig interface{}) error {
 	var config ec2.DescribeImagesInput
 	err := mapstructure.Decode(gConfig, &config)
+	if config.Owners == nil {
+		self := "self"
+		config.Owners = append(config.Owners, &self)
+	}
 	if err != nil {
 		return err
 	}
