@@ -19,6 +19,10 @@ type Group struct {
 	Path       *string
 }
 
+func (Group)TableName() string {
+	return "aws_iam_groups"
+}
+
 func (c *Client) transformGroup(value *iam.Group) *Group {
 	return &Group{
 		AccountID:  c.accountID,
@@ -60,7 +64,7 @@ func (c *Client) groups(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Group{})
 		common.ChunkedCreate(c.db, c.transformGroups(output.Groups))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Groups)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.groups"), zap.Int("count", len(output.Groups)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

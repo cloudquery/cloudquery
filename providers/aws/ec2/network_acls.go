@@ -21,12 +21,20 @@ type NetworkAcl struct {
 	VpcId        *string
 }
 
+func (NetworkAcl)TableName() string {
+	return "aws_ec2_network_acls"
+}
+
 type NetworkAclAssociation struct {
 	ID                      uint `gorm:"primarykey"`
 	NetworkAclID            uint
 	NetworkAclAssociationId *string
 	NetworkAclId            *string
 	SubnetId                *string
+}
+
+func (NetworkAclAssociation)TableName() string {
+	return "aws_ec2_network_acl_associations"
 }
 
 type NetworkAclEntry struct {
@@ -42,11 +50,19 @@ type NetworkAclEntry struct {
 	RuleNumber    *int64
 }
 
+func (NetworkAclEntry)TableName() string {
+	return "aws_ec2_network_acl_entries"
+}
+
 type NetworkAclTag struct {
 	ID           uint `gorm:"primarykey"`
 	NetworkAclID uint
 	Key          *string
 	Value        *string
+}
+
+func (NetworkAclTag)TableName() string {
+	return "aws_ec2_network_acl_tags"
 }
 
 func (c *Client) transformNetworkAclAssociation(value *ec2.NetworkAclAssociation) *NetworkAclAssociation {
@@ -148,7 +164,7 @@ func (c *Client) networkAcls(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NetworkAcl{})
 		common.ChunkedCreate(c.db, c.transformNetworkAcls(output.NetworkAcls))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.NetworkAcls)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.network_acls"), zap.Int("count", len(output.NetworkAcls)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

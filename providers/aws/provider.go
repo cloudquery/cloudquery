@@ -29,8 +29,9 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
+	"log"
 	"strings"
+	"sync"
 )
 
 type Provider struct {
@@ -58,26 +59,6 @@ type Config struct {
 	}
 }
 
-type NewResourceFunc func(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
-	accountID string, region string) resource.ClientInterface
-
-var resourceFactory = map[string]NewResourceFunc{
-	"ec2":              ec2.NewClient,
-	"ecr":              ecr.NewClient,
-	"ecs":              ecs.NewClient,
-	"autoscaling":      autoscaling.NewClient,
-	"efs":              efs.NewClient,
-	"elasticbeanstalk": elasticbeanstalk.NewClient,
-	"directconnect":    directconnect.NewClient,
-	"emr":              emr.NewClient,
-	"fsx":              fsx.NewClient,
-	"iam":              iam.NewClient,
-	"rds":              rds.NewClient,
-	"redshift":         redshift.NewClient,
-	"s3":               s3.NewClient,
-	"elbv2":            elbv2.NewClient,
-	"kms":              kms.NewClient,
-}
 
 var globalServices = map[string]bool{
 	"s3":  true,
@@ -91,9 +72,6 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 		db:              db,
 		resourceClients: map[string]resource.ClientInterface{},
 		log:             log,
-	}
-	p.db.NamingStrategy = schema.NamingStrategy{
-		TablePrefix: "aws_",
 	}
 	return &p, nil
 }
@@ -129,21 +107,25 @@ func (p *Provider) Run(config interface{}) error {
 	}
 
 	for _, account := range p.config.Accounts {
-		for _, region := range regions {
-			sess, err := session.NewSession(&aws.Config{
-				Region: aws.String(region)})
+		p.session, err = session.NewSession()
+		if err != nil {
+			return err
+		}
+		if account.ID != "default" {
+			// assume role if different account
+			cred := stscreds.NewCredentials(p.session, account.RoleARN)
+			p.session, err = session.NewSession(&aws.Config{
+				Credentials: cred,
+			})
 			if err != nil {
 				return err
 			}
+		}
+		for _, region := range regions {
 			p.region = region
-			p.session = sess
 
-			var cred *credentials.Credentials
-			if account.ID != "default" {
-				cred = stscreds.NewCredentials(sess, account.RoleARN)
-			}
 			svc := sts.New(p.session, &aws.Config{
-				Credentials: cred,
+				Region: aws.String(region),
 			})
 			output, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
 			if err != nil {
@@ -158,16 +140,13 @@ func (p *Provider) Run(config interface{}) error {
 				return err
 			}
 			p.accountID = aws.StringValue(output.Account)
-			p.cred = cred
-
+			p.initClients()
+			var wg sync.WaitGroup
 			for _, resource := range p.config.Resources {
-				err := p.collectResource(resource.Name, resource.Other)
-				if err != nil {
-					return err
-				}
+				wg.Add(1)
+				go p.collectResource(&wg, resource.Name, resource.Other)
 			}
-			// TODO: re-enable service cache
-			//p.resetClients()
+			wg.Wait()
 		}
 		globalCollectedResources = map[string]bool{}
 	}
@@ -175,36 +154,63 @@ func (p *Provider) Run(config interface{}) error {
 	return nil
 }
 
-func (p *Provider) resetClients() {
-	p.resourceClients = map[string]resource.ClientInterface{}
+
+func (p *Provider) initClients() {
+	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
+	p.resourceClients["ec2"] = ec2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["ecr"] = ecr.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["ecs"] = ecs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["autoscaling"] = autoscaling.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["efs"] = efs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["elasticbeanstalk"] = elasticbeanstalk.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["directconnect"] = directconnect.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["emr"] = emr.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["fsx"] = fsx.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["iam"] = iam.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["rds"] = rds.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["redshift"] = redshift.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["s3"] = s3.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["elbv2"] = elbv2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["kms"] = kms.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
 }
 
-func (p *Provider) collectResource(fullResourceName string, config interface{}) error {
+func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, config interface{}) {
+	defer wg.Done()
 	resourcePath := strings.Split(fullResourceName, ".")
 	if len(resourcePath) != 2 {
-		return fmt.Errorf("resource %s should be in format {service}.{resource}", fullResourceName)
+		log.Fatalf("resource %s should be in format {service}.{resource}", fullResourceName)
 	}
 	service := resourcePath[0]
 	resourceName := resourcePath[1]
 
-	if resourceFactory[service] == nil {
-		return fmt.Errorf("unsupported service %s", service)
+	if p.resourceClients[service] == nil {
+		log.Fatalf("unsupported service %s", service)
 	}
 
 	if globalServices[service] {
 		if globalCollectedResources[fullResourceName] {
-			return nil
+			return
 		}
 		globalCollectedResources[fullResourceName] = true
 	}
-	// TODO: re-enable service caching
-	//if p.resourceClients[service] == nil {
-	log := p.log.With(zap.String("account_id", p.accountID), zap.String("region", aws.StringValue(p.session.Config.Region)), zap.String("resource", fullResourceName))
-	p.resourceClients[service] = resourceFactory[service](p.session, &aws.Config{Credentials: p.cred},
-		p.db, log, p.accountID, p.region)
-	//}
-	p.db.NamingStrategy = schema.NamingStrategy{
-		TablePrefix: fmt.Sprintf("aws_%s_", service),
+
+	err := p.resourceClients[service].CollectResource(resourceName, config)
+	if err != nil {
+		log.Fatal(err)
 	}
-	return p.resourceClients[service].CollectResource(resourceName, config)
 }

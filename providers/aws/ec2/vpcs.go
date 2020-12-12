@@ -24,12 +24,20 @@ type Vpc struct {
 	VpcId                       *string
 }
 
+func (Vpc)TableName() string {
+	return "aws_ec2_vpcs"
+}
+
 type VpcCidrBlockAssociation struct {
 	ID             uint `gorm:"primarykey"`
 	VpcID          uint
 	AssociationId  *string
 	CidrBlock      *string
 	CidrBlockState *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:cidr_block_state_"`
+}
+
+func (VpcCidrBlockAssociation)TableName() string {
+	return "aws_ec2_vpc_cidr_block_associations"
 }
 
 type VpcIpv6CidrBlockAssociation struct {
@@ -42,11 +50,19 @@ type VpcIpv6CidrBlockAssociation struct {
 	NetworkBorderGroup *string
 }
 
+func (VpcIpv6CidrBlockAssociation)TableName() string {
+	return "aws_ec2_vpc_ipv6_cidr_block_associations"
+}
+
 type VpcTag struct {
 	ID    uint `gorm:"primarykey"`
 	VpcID uint
 	Key   *string
 	Value *string
+}
+
+func (VpcTag)TableName() string {
+	return "aws_ec2_vpc_tags"
 }
 
 func (c *Client) transformVpcCidrBlockAssociation(value *ec2.VpcCidrBlockAssociation) *VpcCidrBlockAssociation {
@@ -148,7 +164,7 @@ func (c *Client) vpcs(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Vpc{})
 		common.ChunkedCreate(c.db, c.transformVpcs(output.Vpcs))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Vpcs)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.vpcs"), zap.Int("count", len(output.Vpcs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

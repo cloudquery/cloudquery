@@ -36,6 +36,10 @@ type Environment struct {
 	VersionLabel                 *string
 }
 
+func (Environment)TableName() string {
+	return "aws_elasticbeanstalk_environments"
+}
+
 type EnvironmentLink struct {
 	ID              uint `gorm:"primarykey"`
 	EnvironmentID   uint
@@ -43,10 +47,18 @@ type EnvironmentLink struct {
 	LinkName        *string
 }
 
+func (EnvironmentLink)TableName() string {
+	return "aws_elasticbeanstalk_environment_links"
+}
+
 type EnvironmentResource struct {
 	ID            uint `gorm:"primarykey"`
 	EnvironmentID uint
 	LoadBalancer  *EnvironmentLoadBalancer `gorm:"constraint:OnDelete:CASCADE;"`
+}
+
+func (EnvironmentResource)TableName() string {
+	return "aws_elasticbeanstalk_environment_resources"
 }
 
 type EnvironmentLoadBalancer struct {
@@ -57,11 +69,19 @@ type EnvironmentLoadBalancer struct {
 	LoadBalancerName      *string
 }
 
+func (EnvironmentLoadBalancer)TableName() string {
+	return "aws_elasticbeanstalk_environment_load_balancers"
+}
+
 type EnvironmentListener struct {
 	ID                        uint `gorm:"primarykey"`
 	EnvironmentLoadBalancerID uint
 	Port                      *int64
 	Protocol                  *string
+}
+
+func (EnvironmentListener)TableName() string {
+	return "aws_elasticbeanstalk_environment_listeners"
 }
 
 func (c *Client) transformEnvironmentLink(value *elasticbeanstalk.EnvironmentLink) *EnvironmentLink {
@@ -170,7 +190,7 @@ func (c *Client) environments(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Environment{})
 		common.ChunkedCreate(c.db, c.transformEnvironments(output.Environments))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Environments)))
+		c.log.Info("Fetched resources", zap.String("resource", "elasticbeanstalk.environments"), zap.Int("count", len(output.Environments)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

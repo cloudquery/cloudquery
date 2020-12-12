@@ -26,6 +26,10 @@ type NatGateway struct {
 	VpcId                *string
 }
 
+func (NatGateway)TableName() string {
+	return "aws_ec2_nat_gateways"
+}
+
 type NatGatewayAddress struct {
 	ID                 uint `gorm:"primarykey"`
 	NatGatewayID       uint
@@ -35,11 +39,19 @@ type NatGatewayAddress struct {
 	PublicIp           *string
 }
 
+func (NatGatewayAddress)TableName() string {
+	return "aws_ec2_nat_gateway_addresses"
+}
+
 type NatGatewayTag struct {
 	ID           uint `gorm:"primarykey"`
 	NatGatewayID uint
 	Key          *string
 	Value        *string
+}
+
+func (NatGatewayTag)TableName() string {
+	return "aws_ec2_nat_gateway_tags"
 }
 
 func (c *Client) transformNatGatewayAddress(value *ec2.NatGatewayAddress) *NatGatewayAddress {
@@ -124,7 +136,7 @@ func (c *Client) natGateways(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NatGateway{})
 		common.ChunkedCreate(c.db, c.transformNatGateways(output.NatGateways))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.NatGateways)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.nat_gateways"), zap.Int("count", len(output.NatGateways)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

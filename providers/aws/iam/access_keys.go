@@ -21,6 +21,10 @@ type AccessKey struct {
 	LastUsedServiceName *string
 }
 
+func (AccessKey)TableName() string {
+	return "aws_iam_access_keys"
+}
+
 func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) *AccessKey {
 	output, err := c.svc.GetAccessKeyLastUsed(&iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
 	if err != nil {
@@ -73,7 +77,7 @@ func (c *Client) accessKeys(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&AccessKey{})
 		common.ChunkedCreate(c.db, c.transformAccessKeys(output.AccessKeyMetadata))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.AccessKeyMetadata)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.access_keys"), zap.Int("count", len(output.AccessKeyMetadata)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

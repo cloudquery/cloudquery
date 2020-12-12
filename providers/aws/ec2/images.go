@@ -39,6 +39,10 @@ type Image struct {
 	VirtualizationType  *string
 }
 
+func (Image)TableName() string {
+	return "aws_ec2_images"
+}
+
 type ImageBlockDeviceMapping struct {
 	ID          uint `gorm:"primarykey"`
 	ImageID     uint
@@ -48,6 +52,10 @@ type ImageBlockDeviceMapping struct {
 	VirtualName *string
 }
 
+func (ImageBlockDeviceMapping)TableName() string {
+	return "aws_ec2_image_block_device_mappings"
+}
+
 type ImageProductCode struct {
 	ID              uint `gorm:"primarykey"`
 	ImageID         uint
@@ -55,11 +63,19 @@ type ImageProductCode struct {
 	ProductCodeType *string
 }
 
+func (ImageProductCode)TableName() string {
+	return "aws_ec2_image_product_codes"
+}
+
 type ImageTag struct {
 	ID      uint `gorm:"primarykey"`
 	ImageID uint
 	Key     *string
 	Value   *string
+}
+
+func (ImageTag)TableName() string {
+	return "aws_ec2_image_tags"
 }
 
 func (c *Client) transformImageBlockDeviceMapping(value *ec2.BlockDeviceMapping) *ImageBlockDeviceMapping {
@@ -175,6 +191,6 @@ func (c *Client) images(gConfig interface{}) error {
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
 	common.ChunkedCreate(c.db, c.transformImages(output.Images))
-	c.log.Info("Fetched resources", zap.Int("count", len(output.Images)))
+	c.log.Info("Fetched resources", zap.String("resource", "ec2.images"), zap.Int("count", len(output.Images)))
 	return nil
 }

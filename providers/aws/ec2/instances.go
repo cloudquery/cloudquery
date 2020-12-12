@@ -62,6 +62,10 @@ type Instance struct {
 	VpcId                                   *string
 }
 
+func (Instance)TableName() string {
+	return "aws_ec2_instances"
+}
+
 type InstanceBlockDeviceMapping struct {
 	ID         uint `gorm:"primarykey"`
 	InstanceID uint
@@ -69,11 +73,19 @@ type InstanceBlockDeviceMapping struct {
 	Ebs        *ec2.EbsInstanceBlockDevice `gorm:"embedded;embeddedPrefix:ebs_"`
 }
 
+func (InstanceBlockDeviceMapping)TableName() string {
+	return "aws_ec2_instance_block_device_mappings"
+}
+
 type InstanceCapacityReservationSpecificationResponse struct {
 	ID                            uint `gorm:"primarykey"`
 	InstanceID                    uint
 	CapacityReservationPreference *string
 	CapacityReservationTarget     *ec2.CapacityReservationTargetResponse `gorm:"embedded"`
+}
+
+func (InstanceCapacityReservationSpecificationResponse)TableName() string {
+	return "aws_ec2_instance_capacity_reservation_specification_responses"
 }
 
 type InstanceElasticGpuAssociation struct {
@@ -85,6 +97,10 @@ type InstanceElasticGpuAssociation struct {
 	ElasticGpuId               *string
 }
 
+func (InstanceElasticGpuAssociation)TableName() string {
+	return "aws_ec2_instance_elastic_gpu_associations"
+}
+
 type InstanceElasticInferenceAcceleratorAssociation struct {
 	ID                                          uint `gorm:"primarykey"`
 	InstanceID                                  uint
@@ -94,10 +110,18 @@ type InstanceElasticInferenceAcceleratorAssociation struct {
 	ElasticInferenceAcceleratorAssociationTime  *time.Time
 }
 
+func (InstanceElasticInferenceAcceleratorAssociation)TableName() string {
+	return "aws_ec2_instance_elastic_inference_accelerator_associations"
+}
+
 type InstanceLicenseConfiguration struct {
 	ID                      uint `gorm:"primarykey"`
 	InstanceID              uint
 	LicenseConfigurationArn *string
+}
+
+func (InstanceLicenseConfiguration)TableName() string {
+	return "aws_ec2_instance_license_configurations"
 }
 
 type InstanceNetworkInterface struct {
@@ -120,6 +144,10 @@ type InstanceNetworkInterface struct {
 	VpcId              *string
 }
 
+func (InstanceNetworkInterface)TableName() string {
+	return "aws_ec2_instance_network_interfaces"
+}
+
 type InstanceGroupIdentifier struct {
 	ID         uint `gorm:"primarykey"`
 	InstanceID uint
@@ -127,10 +155,18 @@ type InstanceGroupIdentifier struct {
 	GroupName  *string
 }
 
+func (InstanceGroupIdentifier)TableName() string {
+	return "aws_ec2_instance_group_identifiers"
+}
+
 type InstanceIpv6Address struct {
 	ID                         uint `gorm:"primarykey"`
 	InstanceNetworkInterfaceID uint
 	Ipv6Address                *string
+}
+
+func (InstanceIpv6Address)TableName() string {
+	return "aws_ec2_instance_ipv6_addresses"
 }
 
 type InstancePrivateIpAddress struct {
@@ -142,6 +178,10 @@ type InstancePrivateIpAddress struct {
 	PrivateIpAddress           *string
 }
 
+func (InstancePrivateIpAddress)TableName() string {
+	return "aws_ec2_instance_private_ip_addresses"
+}
+
 type InstanceProductCode struct {
 	ID              uint `gorm:"primarykey"`
 	InstanceID      uint
@@ -149,11 +189,19 @@ type InstanceProductCode struct {
 	ProductCodeType *string
 }
 
+func (InstanceProductCode)TableName() string {
+	return "aws_ec2_instance_product_codes"
+}
+
 type InstanceTag struct {
 	ID         uint `gorm:"primarykey"`
 	InstanceID uint
 	Key        *string
 	Value      *string
+}
+
+func (InstanceTag)TableName() string {
+	return "aws_ec2_instance_tags"
 }
 
 func (c *Client) transformInstanceBlockDeviceMapping(value *ec2.InstanceBlockDeviceMapping) *InstanceBlockDeviceMapping {
@@ -425,7 +473,7 @@ func (c *Client) instances(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Instance{})
 		for _, reservation := range output.Reservations {
-			c.log.Info("Fetched resources", zap.Int("count", len(reservation.Instances)))
+			c.log.Info("Fetched resources", zap.String("resource", "ec2.instances"), zap.Int("count", len(reservation.Instances)))
 			common.ChunkedCreate(c.db, c.transformInstances(reservation.Instances))
 		}
 		if aws.StringValue(output.NextToken) == "" {

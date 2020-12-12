@@ -25,11 +25,19 @@ type Role struct {
 	Tags                     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Role)TableName() string {
+	return "aws_iam_roles"
+}
+
 type RoleTag struct {
 	ID     uint `gorm:"primarykey"`
 	RoleID uint
 	Key    *string
 	Value  *string
+}
+
+func (RoleTag)TableName() string {
+	return "aws_iam_role_tags"
 }
 
 func (c *Client) transformRoleTag(value *iam.Tag) *RoleTag {
@@ -95,7 +103,7 @@ func (c *Client) roles(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Role{})
 		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Roles)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.roles"), zap.Int("count", len(output.Roles)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

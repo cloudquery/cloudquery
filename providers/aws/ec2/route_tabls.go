@@ -21,6 +21,10 @@ type RouteTable struct {
 	VpcId           *string
 }
 
+func (RouteTable)TableName() string {
+	return "aws_ec2_route_tables"
+}
+
 type RouteTableAssociation struct {
 	ID                      uint `gorm:"primarykey"`
 	RouteTableID            uint
@@ -32,10 +36,18 @@ type RouteTableAssociation struct {
 	SubnetId                *string
 }
 
+func (RouteTableAssociation)TableName() string {
+	return "aws_ec2_route_table_associations"
+}
+
 type RouteTablePropagatingVgw struct {
 	ID           uint `gorm:"primarykey"`
 	RouteTableID uint
 	GatewayId    *string
+}
+
+func (RouteTablePropagatingVgw)TableName() string {
+	return "aws_ec2_route_table_propagation_vgws"
 }
 
 type RouteTableRoute struct {
@@ -58,11 +70,19 @@ type RouteTableRoute struct {
 	VpcPeeringConnectionId      *string
 }
 
+func (RouteTableRoute)TableName() string {
+	return "aws_ec2_route_table_routes"
+}
+
 type RouteTableTag struct {
 	ID           uint `gorm:"primarykey"`
 	RouteTableID uint
 	Key          *string
 	Value        *string
+}
+
+func (RouteTableTag)RouteTableAssociation() string {
+	return "aws_ec2_route_table_tags"
 }
 
 func (c *Client) transformRouteTableAssociation(value *ec2.RouteTableAssociation) *RouteTableAssociation {
@@ -189,7 +209,7 @@ func (c *Client) routeTables(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&RouteTable{})
 		common.ChunkedCreate(c.db, c.transformRouteTables(output.RouteTables))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.RouteTables)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.route_tables"), zap.Int("count", len(output.RouteTables)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

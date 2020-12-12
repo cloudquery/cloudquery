@@ -22,13 +22,15 @@ type Client struct {
 }
 
 func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
-	accountID string, region string) resource.ClientInterface {
+	accountID string, _ string) resource.ClientInterface {
+	globalRegion := "us-east-1"
+	awsConfig.Region = &globalRegion
 	return &Client{
 		session:          sess,
 		db:               db,
 		log:              log,
 		accountID:        accountID,
-		region:           region,
+		region:           "us-east-1",
 		resourceMigrated: map[string]bool{},
 		svc:              s3.New(sess, awsConfig),
 		awsConfig:        awsConfig,

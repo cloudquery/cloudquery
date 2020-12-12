@@ -25,6 +25,10 @@ type Policy struct {
 	UpdateDate                    *time.Time
 }
 
+func (Policy)TableName() string {
+	return "aws_iam_policies"
+}
+
 func (c *Client) transformPolicy(value *iam.Policy) *Policy {
 	return &Policy{
 		AccountID:                     c.accountID,
@@ -72,7 +76,7 @@ func (c *Client) policys(gConfig interface{}) error {
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
 		common.ChunkedCreate(c.db, c.transformPolicys(output.Policies))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Policies)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.policies"), zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

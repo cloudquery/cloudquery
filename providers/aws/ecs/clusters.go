@@ -26,11 +26,19 @@ type Cluster struct {
 	Tags                              []*ClusterTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Cluster)TableName() string {
+	return "aws_ecs_clusters"
+}
+
 type ClusterKeyValuePair struct {
 	ID        uint `gorm:"primarykey"`
 	ClusterID uint
 	Name      *string
 	Value     *string
+}
+
+func (ClusterKeyValuePair)TableName() string {
+	return "aws_ecs_cluster_key_value_pairs"
 }
 
 type ClusterCapacityProviderStrategyItem struct {
@@ -41,6 +49,10 @@ type ClusterCapacityProviderStrategyItem struct {
 	Weight           *int64
 }
 
+func (ClusterCapacityProviderStrategyItem)TableName() string {
+	return "aws_ecs_cluster_capacity_provider_strategy_items"
+}
+
 type ClusterSetting struct {
 	ID        uint `gorm:"primarykey"`
 	ClusterID uint
@@ -48,11 +60,19 @@ type ClusterSetting struct {
 	Value     *string
 }
 
+func (ClusterSetting)TableName() string {
+	return "aws_ecs_cluster_settings"
+}
+
 type ClusterTag struct {
 	ID        uint `gorm:"primarykey"`
 	ClusterID uint
 	Key       *string
 	Value     *string
+}
+
+func (ClusterTag)TableName() string {
+	return "aws_ecs_cluster_tags"
 }
 
 func (c *Client) transformClusterKeyValuePair(value *ecs.KeyValuePair) *ClusterKeyValuePair {
@@ -170,6 +190,6 @@ func (c *Client) clusters(gConfig interface{}) error {
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
 	common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
-	c.log.Info("Fetched resources", zap.Int("count", len(output.Clusters)))
+	c.log.Info("Fetched resources", zap.String("resource", "ecs.cluster"), zap.Int("count", len(output.Clusters)))
 	return nil
 }

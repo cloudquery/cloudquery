@@ -20,6 +20,10 @@ type Gateway struct {
 	StateChangeError          *string
 }
 
+func (Gateway)TableName() string {
+	return "aws_directconnect_gateways"
+}
+
 func (c *Client) transformGateway(value *directconnect.Gateway) *Gateway {
 	return &Gateway{
 		Region:                    c.region,
@@ -63,7 +67,7 @@ func (c *Client) gateways(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Gateway{})
 		common.ChunkedCreate(c.db, c.transformGateways(output.DirectConnectGateways))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.DirectConnectGateways)))
+		c.log.Info("Fetched resources", zap.String("resource", "directconnect.gateways"), zap.Int("count", len(output.DirectConnectGateways)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

@@ -28,6 +28,10 @@ type LoadBalancer struct {
 	VpcId                 *string
 }
 
+func (LoadBalancer)TableName() string {
+	return "aws_elbv2_load_balancers"
+}
+
 type LoadBalancerAvailabilityZone struct {
 	ID                    uint `gorm:"primarykey"`
 	LoadBalancerID        uint
@@ -37,12 +41,20 @@ type LoadBalancerAvailabilityZone struct {
 	ZoneName              *string
 }
 
+func (LoadBalancerAvailabilityZone)TableName() string {
+	return "aws_elbv2_load_balancer_availability_zones"
+}
+
 type LoadBalancerAddress struct {
 	ID                             uint `gorm:"primarykey"`
 	LoadBalancerAvailabilityZoneID uint
 	AllocationId                   *string
 	IpAddress                      *string
 	PrivateIPv4Address             *string
+}
+
+func (LoadBalancerAddress)TableName() string {
+	return "aws_elbv2_load_balancer_addresses"
 }
 
 func (c *Client) transformLoadBalancerAddress(value *elbv2.LoadBalancerAddress) *LoadBalancerAddress {
@@ -130,7 +142,7 @@ func (c *Client) loadBalancers(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LoadBalancer{})
 		common.ChunkedCreate(c.db, c.transformLoadBalancers(output.LoadBalancers))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.LoadBalancers)))
+		c.log.Info("Fetched resources", zap.String("resource", "elbv2.load_balancers"), zap.Int("count", len(output.LoadBalancers)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
 		}

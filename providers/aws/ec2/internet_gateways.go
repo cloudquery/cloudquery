@@ -18,6 +18,10 @@ type InternetGateway struct {
 	Tags              []*InternetGatewayTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (InternetGateway)TableName() string {
+	return "aws_ec2_internet_gateways"
+}
+
 type InternetGatewayAttachment struct {
 	ID                uint `gorm:"primarykey"`
 	InternetGatewayID uint
@@ -25,11 +29,19 @@ type InternetGatewayAttachment struct {
 	VpcId             *string
 }
 
+func (InternetGatewayAttachment)TableName() string {
+	return "aws_ec2_internet_gateway_attachments"
+}
+
 type InternetGatewayTag struct {
 	ID                uint `gorm:"primarykey"`
 	InternetGatewayID uint
 	Key               *string
 	Value             *string
+}
+
+func (InternetGatewayTag)TableName() string {
+	return "aws_ec2_internet_gateway_tags"
 }
 
 func (c *Client) transformInternetGatewayAttachment(value *ec2.InternetGatewayAttachment) *InternetGatewayAttachment {

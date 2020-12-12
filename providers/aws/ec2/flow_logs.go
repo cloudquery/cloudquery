@@ -29,11 +29,19 @@ type FlowLog struct {
 	TrafficType              *string
 }
 
+func (FlowLog)TableName() string {
+	return "aws_ec2_flow_logs"
+}
+
 type FlowLogTag struct {
 	ID        uint `gorm:"primarykey"`
 	FlowLogID uint
 	Key       *string
 	Value     *string
+}
+
+func (FlowLogTag)TableName() string {
+	return "aws_ec2_flow_log_tags"
 }
 
 func (c *Client) transformFlowLogTag(value *ec2.Tag) *FlowLogTag {
@@ -103,7 +111,7 @@ func (c *Client) FlowLogs(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FlowLog{})
 		common.ChunkedCreate(c.db, c.transformFlowLogs(output.FlowLogs))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.FlowLogs)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.flow_logs"), zap.Int("count", len(output.FlowLogs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

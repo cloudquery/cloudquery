@@ -21,11 +21,19 @@ type CustomerGateway struct {
 	Type              *string
 }
 
+func (CustomerGateway)TableName() string {
+	return "aws_ec2_customer_gateways"
+}
+
 type CustomerGatewayTag struct {
 	ID                uint `gorm:"primarykey"`
 	CustomerGatewayID uint
 	Key               *string
 	Value             *string
+}
+
+func (CustomerGatewayTag)TableName() string {
+	return "aws_ec2_customer_gateway_tags"
 }
 
 func (c *Client) transformCustomerGatewayTag(value *ec2.Tag) *CustomerGatewayTag {
@@ -89,6 +97,6 @@ func (c *Client) customerGateways(gConfig interface{}) error {
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&CustomerGateway{})
 	common.ChunkedCreate(c.db, c.transformCustomerGateways(output.CustomerGateways))
-	c.log.Info("Fetched resources", zap.Int("count", len(output.CustomerGateways)))
+	c.log.Info("Fetched resources", zap.String("resource", "ec2.customer_gateways"), zap.Int("count", len(output.CustomerGateways)))
 	return nil
 }

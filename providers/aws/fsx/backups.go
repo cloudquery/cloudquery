@@ -25,11 +25,19 @@ type Backup struct {
 	Type                 *string
 }
 
+func (Backup)TableName() string {
+	return "aws_fsx_backups"
+}
+
 type BackupTag struct {
 	ID       uint `gorm:"primarykey"`
 	BackupID uint
 	Key      *string
 	Value    *string
+}
+
+func (BackupTag)TableName() string {
+	return "aws_fsx_backup_tags"
 }
 
 func (c *Client) transformBackupTag(value *fsx.Tag) *BackupTag {
@@ -95,7 +103,7 @@ func (c *Client) backups(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Backup{})
 		common.ChunkedCreate(c.db, c.transformBackups(output.Backups))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Backups)))
+		c.log.Info("Fetched resources", zap.String("resource", "fsx.backups"), zap.Int("count", len(output.Backups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

@@ -61,12 +61,20 @@ type Cluster struct {
 	VpcSecurityGroups                      []*ClusterVpcSecurityGroupMembership `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Cluster)TableName() string {
+	return "aws_redshift_clusters"
+}
+
 type ClusterNode struct {
 	ID               uint `gorm:"primarykey"`
 	ClusterID        uint
 	NodeRole         *string
 	PrivateIPAddress *string
 	PublicIPAddress  *string
+}
+
+func (ClusterNode)TableName() string {
+	return "aws_redshift_cluster_nodes"
 }
 
 type ClusterParameterGroupStatus struct {
@@ -77,6 +85,10 @@ type ClusterParameterGroupStatus struct {
 	ParameterGroupName         *string
 }
 
+func (ClusterParameterGroupStatus)TableName() string {
+	return "aws_redshift_cluster_parameter_group_statuses"
+}
+
 type ClusterParameterStatus struct {
 	ID                             uint `gorm:"primarykey"`
 	ClusterParameterGroupStatusID  uint
@@ -85,11 +97,19 @@ type ClusterParameterStatus struct {
 	ParameterName                  *string
 }
 
+func (ClusterParameterStatus)TableName() string {
+	return "aws_redshift_cluster_parameter_statuses"
+}
+
 type ClusterSecurityGroupMembership struct {
 	ID                       uint `gorm:"primarykey"`
 	ClusterID                uint
 	ClusterSecurityGroupName *string
 	Status                   *string
+}
+
+func (ClusterSecurityGroupMembership)TableName() string {
+	return "aws_redshift_cluster_security_group_memberships"
 }
 
 type ClusterDeferredMaintenanceWindow struct {
@@ -100,11 +120,19 @@ type ClusterDeferredMaintenanceWindow struct {
 	DeferMaintenanceStartTime  *time.Time
 }
 
+func (ClusterDeferredMaintenanceWindow)TableName() string {
+	return "aws_redshift_cluster_deferred_maintenance_windows"
+}
+
 type ClusterIamRole struct {
 	ID          uint `gorm:"primarykey"`
 	ClusterID   uint
 	ApplyStatus *string
 	IamRoleArn  *string
+}
+
+func (ClusterIamRole)TableName() string {
+	return "aws_redshift_cluster_iam_roles"
 }
 
 type ClusterTag struct {
@@ -114,11 +142,19 @@ type ClusterTag struct {
 	Value     *string
 }
 
+func (ClusterTag)TableName() string {
+	return "aws_redshift_cluster_tags"
+}
+
 type ClusterVpcSecurityGroupMembership struct {
 	ID                 uint `gorm:"primarykey"`
 	ClusterID          uint
 	Status             *string
 	VpcSecurityGroupId *string
+}
+
+func (ClusterVpcSecurityGroupMembership)TableName() string {
+	return "aws_redshift_cluster_vpc_security_group_memberships"
 }
 
 func (c *Client) transformClusterNode(value *redshift.ClusterNode) *ClusterNode {
@@ -336,7 +372,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
 		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Clusters)))
+		c.log.Info("Fetched resources", zap.String("resource", "redshift.clusters"), zap.Int("count", len(output.Clusters)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

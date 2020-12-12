@@ -26,6 +26,10 @@ type User struct {
 	UserName             *string `csv:"user"`
 }
 
+func (User)TableName() string {
+	return "aws_iam_users"
+}
+
 type UserAccessKey struct {
 	ID     uint `gorm:"primarykey"`
 	UserID uint
@@ -36,6 +40,10 @@ type UserTag struct {
 	UserID uint
 	Key    *string
 	Value  *string
+}
+
+func (UserTag)TableName() string {
+	return "aws_iam_user_tags"
 }
 
 func (c *Client) transformUserTag(value *iam.Tag) *UserTag {
@@ -146,6 +154,6 @@ func (c *Client) users(_ interface{}) error {
 
 	c.db.Where("account_id = ?", c.accountID).Delete(&User{})
 	common.ChunkedCreate(c.db, c.transformReportUsers(users))
-	c.log.Info("Fetched resources", zap.Int("count", len(users)))
+	c.log.Info("Fetched resources", zap.String("resource", "iam.users"), zap.Int("count", len(users)))
 	return nil
 }

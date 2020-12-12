@@ -35,16 +35,28 @@ type Key struct {
 	ValidTo               *time.Time
 }
 
+func (Key)TableName() string {
+	return "aws_kms_keys"
+}
+
 type KeyEncryptionAlgorithm struct {
 	ID    uint `gorm:"primarykey"`
 	KeyID uint
 	name  string
 }
 
+func (KeyEncryptionAlgorithm)TableName() string {
+	return "aws_kms_key_encryption_algorithms"
+}
+
 type KeySigningAlgorithm struct {
 	ID    uint `gorm:"primarykey"`
 	KeyID uint
 	name  string
+}
+
+func (KeySigningAlgorithm)TableName() string {
+	return "aws_kms_key_signing_algorithms"
 }
 
 func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) *Key {
@@ -128,7 +140,7 @@ func (c *Client) keys(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Key{})
 		common.ChunkedCreate(c.db, c.transformKeyListEntrys(output.Keys))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Keys)))
+		c.log.Info("Fetched resources", zap.String("resource", "kms.keys"), zap.Int("count", len(output.Keys)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
 		}

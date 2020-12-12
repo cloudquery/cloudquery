@@ -68,7 +68,7 @@ func (c *Client) certificates(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Certificate{})
 		common.ChunkedCreate(c.db, c.transformCertificates(output.Certificates))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Certificates)))
+		c.log.Info("Fetched resources", zap.String("resource", "rds.certificates"), zap.Int("count", len(output.Certificates)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}

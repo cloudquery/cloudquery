@@ -21,6 +21,10 @@ type SecurityGroup struct {
 	VpcId         *string
 }
 
+func (SecurityGroup)TableName() string {
+	return "aws_ec2_security_groups"
+}
+
 type SecurityGroupIpPermission struct {
 	ID               uint `gorm:"primarykey"`
 	SecurityGroupID  uint
@@ -33,11 +37,19 @@ type SecurityGroupIpPermission struct {
 	UserIdGroupPairs []*SecurityGroupUserIdGroupPair `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (SecurityGroupIpPermission)TableName() string {
+	return "aws_ec2_security_group_ip_permissions"
+}
+
 type SecurityGroupIpRange struct {
 	ID                          uint `gorm:"primarykey"`
 	SecurityGroupIpPermissionID uint
 	CidrIp                      *string
 	Description                 *string
+}
+
+func (SecurityGroupIpRange)TableName() string {
+	return "aws_ec2_security_group_ip_ranges"
 }
 
 type SecurityGroupIpv6Range struct {
@@ -47,11 +59,19 @@ type SecurityGroupIpv6Range struct {
 	Description                 *string
 }
 
+func (SecurityGroupIpv6Range)TableName() string {
+	return "aws_ec2_security_group_ipv6_ranges"
+}
+
 type SecurityGroupPrefixListId struct {
 	ID                          uint `gorm:"primarykey"`
 	SecurityGroupIpPermissionID uint
 	Description                 *string
 	PrefixListId                *string
+}
+
+func (SecurityGroupPrefixListId)TableName() string {
+	return "aws_ec2_security_group_prefix_list_ids"
 }
 
 type SecurityGroupUserIdGroupPair struct {
@@ -66,11 +86,19 @@ type SecurityGroupUserIdGroupPair struct {
 	VpcPeeringConnectionId      *string
 }
 
+func (SecurityGroupUserIdGroupPair)TableName() string {
+	return "aws_ec2_security_group_user_id_group_paris"
+}
+
 type SecurityGroupTag struct {
 	ID              uint `gorm:"primarykey"`
 	SecurityGroupID uint
 	Key             *string
 	Value           *string
+}
+
+func (SecurityGroupTag)TableName() string {
+	return "aws_ec2_security_group_tags"
 }
 
 func (c *Client) transformSecurityGroupIpRange(value *ec2.IpRange) *SecurityGroupIpRange {
@@ -223,7 +251,7 @@ func (c *Client) securityGroups(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&SecurityGroup{})
 		common.ChunkedCreate(c.db, c.transformSecurityGroups(output.SecurityGroups))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.SecurityGroups)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.security_groups"), zap.Int("count", len(output.SecurityGroups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

@@ -18,6 +18,10 @@ type ByoipCidr struct {
 	StatusMessage *string
 }
 
+func (ByoipCidr)TableName() string {
+	return "aws_ec2_byoip_cidrs"
+}
+
 func (c *Client) transformByoipCidr(value *ec2.ByoipCidr) *ByoipCidr {
 	return &ByoipCidr{
 		Region:        c.region,

@@ -31,6 +31,10 @@ type Subnet struct {
 	VpcId                       *string
 }
 
+func (Subnet)TableName() string {
+	return "aws_ec2_subnets"
+}
+
 type SubnetIpv6CidrBlockAssociation struct {
 	ID                 uint `gorm:"primarykey"`
 	SubnetID           uint
@@ -39,11 +43,19 @@ type SubnetIpv6CidrBlockAssociation struct {
 	Ipv6CidrBlockState *ec2.SubnetCidrBlockState `gorm:"embedded;embeddedPrefix:ipv_6_cidr_block_state_"`
 }
 
+func (SubnetIpv6CidrBlockAssociation)TableName() string {
+	return "aws_ec2_subnet_ipv6_cidr_block_associations"
+}
+
 type SubnetTag struct {
 	ID       uint `gorm:"primarykey"`
 	SubnetID uint
 	Key      *string
 	Value    *string
+}
+
+func (SubnetTag)TableName() string {
+	return "aws_ec2_subnet_tags"
 }
 
 func (c *Client) transformSubnetIpv6CidrBlockAssociation(value *ec2.SubnetIpv6CidrBlockAssociation) *SubnetIpv6CidrBlockAssociation {
@@ -133,7 +145,7 @@ func (c *Client) subnets(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Subnet{})
 		common.ChunkedCreate(c.db, c.transformSubnets(output.Subnets))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Subnets)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.subnets"), zap.Int("count", len(output.Subnets)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

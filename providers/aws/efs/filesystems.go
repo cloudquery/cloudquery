@@ -30,11 +30,19 @@ type FileSystemDescription struct {
 	ThroughputMode               *string
 }
 
+func (FileSystemDescription)TableName() string {
+	return "aws_efs_file_system_descriptions"
+}
+
 type FileSystemDescriptionTag struct {
 	ID                      uint `gorm:"primarykey"`
 	FileSystemDescriptionID uint
 	Key                     *string
 	Value                   *string
+}
+
+func (FileSystemDescriptionTag)TableName() string {
+	return "aws_efs_file_system_description_tags"
 }
 
 func (c *Client) transformFileSystemDescriptionTag(value *efs.Tag) *FileSystemDescriptionTag {
@@ -105,7 +113,7 @@ func (c *Client) fileSystems(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FileSystemDescription{})
 		common.ChunkedCreate(c.db, c.transformFileSystemDescriptions(output.FileSystems))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.FileSystems)))
+		c.log.Info("Fetched resources", zap.String("resource", "efs.filesystems"), zap.Int("count", len(output.FileSystems)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
 		}

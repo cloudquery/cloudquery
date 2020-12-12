@@ -37,10 +37,18 @@ type VpcPeeringConnection struct {
 	VpcPeeringConnectionId *string
 }
 
+func (VpcPeeringConnection)TableName() string {
+	return "aws_ec2_vpc_peering_connections"
+}
+
 type VpcPeeringConnectionAccepterCidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
 	VpcPeeringConnectionID uint
 	CidrBlock              *string
+}
+
+func (VpcPeeringConnectionAccepterCidrBlock)TableName() string {
+	return "aws_ec2_vpc_peering_connection_accepter_cidr_blocks"
 }
 
 type VpcPeeringConnectionAccepterIpv6CidrBlock struct {
@@ -49,10 +57,18 @@ type VpcPeeringConnectionAccepterIpv6CidrBlock struct {
 	Ipv6CidrBlock          *string
 }
 
+func (VpcPeeringConnectionAccepterIpv6CidrBlock)TableName() string {
+	return "aws_ec2_vpc_peering_connection_accepter_ipv6_cidr_blocks"
+}
+
 type VpcPeeringConnectionRequesterCidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
 	VpcPeeringConnectionID uint
 	CidrBlock              *string
+}
+
+func (VpcPeeringConnectionRequesterCidrBlock)TableName() string {
+	return "aws_ec2_vpc_peering_connection_requester_cidr_blocks"
 }
 
 type VpcPeeringConnectionRequesterIpv6CidrBlock struct {
@@ -61,11 +77,19 @@ type VpcPeeringConnectionRequesterIpv6CidrBlock struct {
 	Ipv6CidrBlock          *string
 }
 
+func (VpcPeeringConnectionRequesterIpv6CidrBlock)TableName() string {
+	return "aws_ec2_vpc_peering_connection_requester_ipv6_cidr_blocks"
+}
+
 type VpcPeeringConnectionTag struct {
 	ID                     uint `gorm:"primarykey"`
 	VpcPeeringConnectionID uint
 	Key                    *string
 	Value                  *string
+}
+
+func (VpcPeeringConnectionTag)TableName() string {
+	return "aws_ec2_vpc_peering_connection_tags"
 }
 
 func (c *Client) transformVpcPeeringConnectionAccepterCidrBlocks(values []*ec2.CidrBlock) []*VpcPeeringConnectionAccepterCidrBlock {
@@ -191,7 +215,7 @@ func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&VpcPeeringConnection{})
 		common.ChunkedCreate(c.db, c.transformVpcPeeringConnections(output.VpcPeeringConnections))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.VpcPeeringConnections)))
+		c.log.Info("Fetched resources", zap.String("resource", "ec2.vpc_peering_connections"), zap.Int("count", len(output.VpcPeeringConnections)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

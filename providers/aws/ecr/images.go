@@ -16,6 +16,10 @@ type Image struct {
 	ImageTag    *string
 }
 
+func (Image)TableName() string {
+	return "aws_ecr_images"
+}
+
 func (c *Client) transformImageIdentifier(value *ecr.ImageIdentifier) *Image {
 	return &Image{
 		Region:      c.region,
@@ -55,7 +59,7 @@ func (c *Client) imageIdentifiers(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
 		common.ChunkedCreate(c.db, c.transformImageIdentifiers(output.ImageIds))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.ImageIds)))
+		c.log.Info("Fetched resources", zap.String("resource", "ecr.images"), zap.Int("count", len(output.ImageIds)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

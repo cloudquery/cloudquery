@@ -22,6 +22,10 @@ type PasswordPolicy struct {
 	RequireUppercaseCharacters *bool
 }
 
+func (PasswordPolicy)TableName() string {
+	return "aws_iam_password_policies"
+}
+
 func (c *Client) transformPasswordPolicy(value *iam.PasswordPolicy) *PasswordPolicy {
 	return &PasswordPolicy{
 		AccountID:                  c.accountID,
@@ -64,7 +68,7 @@ func (c *Client) passwordPolicies(gConfig interface{}) error {
 	}
 	c.db.Where("account_id = ?", c.accountID).Delete(&PasswordPolicy{})
 	c.db.Create(c.transformPasswordPolicy(output.PasswordPolicy))
-	c.log.Info("Fetched PasswordPolicy", zap.Int("count", 1))
+	c.log.Info("Fetched resources", zap.String("resource", "iam.password_policies"), zap.Int("count", 1))
 
 	return nil
 }

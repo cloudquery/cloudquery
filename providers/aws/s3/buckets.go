@@ -32,13 +32,20 @@ type Bucket struct {
 	Status *string
 }
 
+func (Bucket)TableName() string {
+	return "aws_s3_buckets"
+}
+
 type BucketEncryptionRule struct {
 	ID       uint `gorm:"primarykey"`
 	BucketID uint
 
 	KMSMasterKeyID *string
-
 	SSEAlgorithm *string
+}
+
+func (BucketEncryptionRule)TableName() string {
+	return "aws_s3_bucket_encryption_rules"
 }
 
 type BucketGrant struct {
@@ -50,6 +57,10 @@ type BucketGrant struct {
 
 	// Specifies the permission given to the grantee.
 	Permission *string
+}
+
+func (BucketGrant)TableName() string {
+	return "aws_s3_bucket_grants"
 }
 
 type BucketCorsRule struct {
@@ -81,6 +92,10 @@ type BucketCorsRule struct {
 	// The time in seconds that your browser is to cache the preflight response
 	// for the specified resource.
 	MaxAgeSeconds *int64
+}
+
+func (BucketCorsRule)TableName() string {
+	return "aws_s3_bucket_cors_rules"
 }
 
 func (c *Client) transformGrants(values []*s3.Grant) []*BucketGrant {
@@ -245,7 +260,7 @@ func (c *Client) buckets(gConfig interface{}) error {
 		return err
 	}
 	common.ChunkedCreate(c.db, tBuckets)
-	c.log.Info("Fetched resources", zap.Int("count", len(tBuckets)))
+	c.log.Info("Fetched resources", zap.String("resource", "s3.buckets"), zap.Int("count", len(tBuckets)))
 
 	return nil
 }

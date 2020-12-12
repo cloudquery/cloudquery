@@ -89,6 +89,10 @@ type LaunchConfiguration struct {
 	UserData *string
 }
 
+func (LaunchConfiguration)TableName() string {
+	return "aws_autoscaling_launch_configurations"
+}
+
 type LaunchConfigurationBlockDeviceMapping struct {
 	ID                    uint `gorm:"primarykey"`
 	LaunchConfigurationID uint
@@ -107,6 +111,10 @@ type LaunchConfigurationBlockDeviceMapping struct {
 
 	// The name of the virtual device (for example, ephemeral0).
 	VirtualName *string
+}
+
+func (LaunchConfigurationBlockDeviceMapping)TableName() string {
+	return "aws_autoscaling_launch_configuration_block_device_mapping"
 }
 
 func (c *Client) transformLaunchConfigurationBlockDeviceMapping(value *autoscaling.BlockDeviceMapping) *LaunchConfigurationBlockDeviceMapping {
@@ -184,7 +192,7 @@ func (c *Client) launchConfigurations(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LaunchConfiguration{})
 		common.ChunkedCreate(c.db, c.transformLaunchConfigurations(output.LaunchConfigurations))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.LaunchConfigurations)))
+		c.log.Info("Fetched resources", zap.String("resource", "auto_scaling.launch_configurations"), zap.Int("count", len(output.LaunchConfigurations)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
 		}

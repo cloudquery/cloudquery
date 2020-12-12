@@ -20,12 +20,20 @@ type Cluster struct {
 	Status                  *ClusterStatus `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Cluster)TableName() string {
+	return "aws_emr_clusters"
+}
+
 type ClusterStatus struct {
 	ID                uint `gorm:"primarykey"`
 	ClusterID         uint
 	State             *string
 	StateChangeReason *emr.ClusterStateChangeReason `gorm:"embedded;embeddedPrefix:state_change_reason_"`
 	Timeline          *emr.ClusterTimeline          `gorm:"embedded;embeddedPrefix:timeline_"`
+}
+
+func (ClusterStatus)TableName() string {
+	return "aws_emr_cluster_statuses"
 }
 
 func (c *Client) transformClusterStatus(value *emr.ClusterStatus) *ClusterStatus {
@@ -80,7 +88,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
 		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Clusters)))
+		c.log.Info("Fetched resources", zap.String("resource", "emr.clusters"), zap.Int("count", len(output.Clusters)))
 		if aws.StringValue(output.Marker) == "" {
 			break
 		}
