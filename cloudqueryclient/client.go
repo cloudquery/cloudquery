@@ -37,9 +37,13 @@ type Client struct {
 	log    *zap.Logger
 }
 
-func NewLogger(options ...zap.Option) (*zap.Logger, error) {
+func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
+	level := zap.NewAtomicLevelAt(zap.InfoLevel)
+	if verbose {
+		level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	}
 	return zap.Config{
-		Level:            zap.NewAtomicLevelAt(zap.DebugLevel),
+		Level:            level,
 		Development:      true,
 		DisableCaller:    true,
 		Encoding:         "console",
@@ -49,7 +53,7 @@ func NewLogger(options ...zap.Option) (*zap.Logger, error) {
 	}.Build()
 }
 
-func New(driver string, dsn string) (*Client, error) {
+func New(driver string, dsn string, verbose bool) (*Client, error) {
 	client := Client{}
 	gormLogger := logger.Default.LogMode(logger.Error)
 	var err error = nil
@@ -78,7 +82,7 @@ func New(driver string, dsn string) (*Client, error) {
 		return nil, err
 	}
 
-	zapLogger, err := NewLogger()
+	zapLogger, err := NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
 		return nil, err

@@ -149,7 +149,7 @@ func (p *Provider) Run(config interface{}) error {
 			if err != nil {
 				if awsErr, ok := err.(awserr.Error); ok {
 					if awsErr.Code() == "InvalidClientTokenId" {
-						p.log.Info("Region is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skipping...",
+						p.log.Debug("Region is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skipping...",
 							zap.String("account_id", p.accountID),
 							zap.String("region", region))
 						continue
@@ -166,7 +166,8 @@ func (p *Provider) Run(config interface{}) error {
 					return err
 				}
 			}
-			p.resetClients()
+			// TODO: re-enable service cache
+			//p.resetClients()
 		}
 		globalCollectedResources = map[string]bool{}
 	}
