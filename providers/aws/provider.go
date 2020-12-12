@@ -196,12 +196,12 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 		}
 		globalCollectedResources[fullResourceName] = true
 	}
-
-	if p.resourceClients[service] == nil {
-		log := p.log.With(zap.String("account_id", p.accountID), zap.String("region", aws.StringValue(p.session.Config.Region)), zap.String("resource", fullResourceName))
-		p.resourceClients[service] = resourceFactory[service](p.session, &aws.Config{Credentials: p.cred},
-			p.db, log, p.accountID, p.region)
-	}
+	// TODO: re-enable service caching
+	//if p.resourceClients[service] == nil {
+	log := p.log.With(zap.String("account_id", p.accountID), zap.String("region", aws.StringValue(p.session.Config.Region)), zap.String("resource", fullResourceName))
+	p.resourceClients[service] = resourceFactory[service](p.session, &aws.Config{Credentials: p.cred},
+		p.db, log, p.accountID, p.region)
+	//}
 	p.db.NamingStrategy = schema.NamingStrategy{
 		TablePrefix: fmt.Sprintf("aws_%s_", service),
 	}
