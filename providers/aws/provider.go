@@ -80,9 +80,11 @@ var resourceFactory = map[string]NewResourceFunc{
 }
 
 var globalServices = map[string]bool{
-	"s3":  false,
-	"iam": false,
+	"s3":  true,
+	"iam": true,
 }
+
+var globalCollectedResources = map[string]bool{}
 
 func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
@@ -166,10 +168,7 @@ func (p *Provider) Run(config interface{}) error {
 			}
 			p.resetClients()
 		}
-		globalServices = map[string]bool{
-			"s3":  false,
-			"iam": false,
-		}
+		globalCollectedResources = map[string]bool{}
 	}
 
 	return nil
@@ -191,12 +190,11 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 		return fmt.Errorf("unsupported service %s", service)
 	}
 
-	if val, ok := globalServices[service]; ok {
-		if val {
-			// skip this as we already Fetched resources
+	if globalServices[service] {
+		if globalCollectedResources[fullResourceName] {
 			return nil
 		}
-		globalServices[service] = true
+		globalCollectedResources[fullResourceName] = true
 	}
 
 	if p.resourceClients[service] == nil {
