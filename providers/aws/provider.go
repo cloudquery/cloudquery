@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
+	"github.com/cloudquery/cloudquery/providers/aws/cloudtrail"
 	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
 	"github.com/cloudquery/cloudquery/providers/aws/ec2"
 	"github.com/cloudquery/cloudquery/providers/aws/ecr"
@@ -58,7 +59,6 @@ type Config struct {
 		Other map[string]interface{} `mapstructure:",remain"`
 	}
 }
-
 
 var globalServices = map[string]bool{
 	"s3":  true,
@@ -154,16 +154,17 @@ func (p *Provider) Run(config interface{}) error {
 	return nil
 }
 
-
 func (p *Provider) initClients() {
 	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
+	p.resourceClients["autoscaling"] = autoscaling.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
+	p.resourceClients["cloudtrail"] = cloudtrail.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
+		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["ec2"] = ec2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["ecr"] = ecr.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["ecs"] = ecs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["autoscaling"] = autoscaling.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["efs"] = efs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)

@@ -30,7 +30,7 @@ type FileSystemDescription struct {
 	ThroughputMode               *string
 }
 
-func (FileSystemDescription)TableName() string {
+func (FileSystemDescription) TableName() string {
 	return "aws_efs_file_system_descriptions"
 }
 
@@ -41,7 +41,7 @@ type FileSystemDescriptionTag struct {
 	Value                   *string
 }
 
-func (FileSystemDescriptionTag)TableName() string {
+func (FileSystemDescriptionTag) TableName() string {
 	return "aws_efs_file_system_description_tags"
 }
 

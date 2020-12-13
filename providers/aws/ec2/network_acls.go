@@ -21,7 +21,7 @@ type NetworkAcl struct {
 	VpcId        *string
 }
 
-func (NetworkAcl)TableName() string {
+func (NetworkAcl) TableName() string {
 	return "aws_ec2_network_acls"
 }
 
@@ -33,7 +33,7 @@ type NetworkAclAssociation struct {
 	SubnetId                *string
 }
 
-func (NetworkAclAssociation)TableName() string {
+func (NetworkAclAssociation) TableName() string {
 	return "aws_ec2_network_acl_associations"
 }
 
@@ -50,7 +50,7 @@ type NetworkAclEntry struct {
 	RuleNumber    *int64
 }
 
-func (NetworkAclEntry)TableName() string {
+func (NetworkAclEntry) TableName() string {
 	return "aws_ec2_network_acl_entries"
 }
 
@@ -61,7 +61,7 @@ type NetworkAclTag struct {
 	Value        *string
 }
 
-func (NetworkAclTag)TableName() string {
+func (NetworkAclTag) TableName() string {
 	return "aws_ec2_network_acl_tags"
 }
 

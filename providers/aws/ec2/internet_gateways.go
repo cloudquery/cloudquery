@@ -18,7 +18,7 @@ type InternetGateway struct {
 	Tags              []*InternetGatewayTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (InternetGateway)TableName() string {
+func (InternetGateway) TableName() string {
 	return "aws_ec2_internet_gateways"
 }
 
@@ -29,7 +29,7 @@ type InternetGatewayAttachment struct {
 	VpcId             *string
 }
 
-func (InternetGatewayAttachment)TableName() string {
+func (InternetGatewayAttachment) TableName() string {
 	return "aws_ec2_internet_gateway_attachments"
 }
 
@@ -40,7 +40,7 @@ type InternetGatewayTag struct {
 	Value             *string
 }
 
-func (InternetGatewayTag)TableName() string {
+func (InternetGatewayTag) TableName() string {
 	return "aws_ec2_internet_gateway_tags"
 }
 

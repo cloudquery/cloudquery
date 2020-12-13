@@ -19,7 +19,7 @@ type Group struct {
 	Path       *string
 }
 
-func (Group)TableName() string {
+func (Group) TableName() string {
 	return "aws_iam_groups"
 }
 

@@ -22,7 +22,7 @@ type PasswordPolicy struct {
 	RequireUppercaseCharacters *bool
 }
 
-func (PasswordPolicy)TableName() string {
+func (PasswordPolicy) TableName() string {
 	return "aws_iam_password_policies"
 }
 

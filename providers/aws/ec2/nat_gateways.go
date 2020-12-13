@@ -26,7 +26,7 @@ type NatGateway struct {
 	VpcId                *string
 }
 
-func (NatGateway)TableName() string {
+func (NatGateway) TableName() string {
 	return "aws_ec2_nat_gateways"
 }
 
@@ -39,7 +39,7 @@ type NatGatewayAddress struct {
 	PublicIp           *string
 }
 
-func (NatGatewayAddress)TableName() string {
+func (NatGatewayAddress) TableName() string {
 	return "aws_ec2_nat_gateway_addresses"
 }
 
@@ -50,7 +50,7 @@ type NatGatewayTag struct {
 	Value        *string
 }
 
-func (NatGatewayTag)TableName() string {
+func (NatGatewayTag) TableName() string {
 	return "aws_ec2_nat_gateway_tags"
 }
 

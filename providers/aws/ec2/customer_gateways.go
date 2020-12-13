@@ -21,7 +21,7 @@ type CustomerGateway struct {
 	Type              *string
 }
 
-func (CustomerGateway)TableName() string {
+func (CustomerGateway) TableName() string {
 	return "aws_ec2_customer_gateways"
 }
 
@@ -32,7 +32,7 @@ type CustomerGatewayTag struct {
 	Value             *string
 }
 
-func (CustomerGatewayTag)TableName() string {
+func (CustomerGatewayTag) TableName() string {
 	return "aws_ec2_customer_gateway_tags"
 }
 

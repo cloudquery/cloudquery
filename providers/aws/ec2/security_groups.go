@@ -21,7 +21,7 @@ type SecurityGroup struct {
 	VpcId         *string
 }
 
-func (SecurityGroup)TableName() string {
+func (SecurityGroup) TableName() string {
 	return "aws_ec2_security_groups"
 }
 
@@ -37,7 +37,7 @@ type SecurityGroupIpPermission struct {
 	UserIdGroupPairs []*SecurityGroupUserIdGroupPair `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (SecurityGroupIpPermission)TableName() string {
+func (SecurityGroupIpPermission) TableName() string {
 	return "aws_ec2_security_group_ip_permissions"
 }
 
@@ -48,7 +48,7 @@ type SecurityGroupIpRange struct {
 	Description                 *string
 }
 
-func (SecurityGroupIpRange)TableName() string {
+func (SecurityGroupIpRange) TableName() string {
 	return "aws_ec2_security_group_ip_ranges"
 }
 
@@ -59,7 +59,7 @@ type SecurityGroupIpv6Range struct {
 	Description                 *string
 }
 
-func (SecurityGroupIpv6Range)TableName() string {
+func (SecurityGroupIpv6Range) TableName() string {
 	return "aws_ec2_security_group_ipv6_ranges"
 }
 
@@ -70,7 +70,7 @@ type SecurityGroupPrefixListId struct {
 	PrefixListId                *string
 }
 
-func (SecurityGroupPrefixListId)TableName() string {
+func (SecurityGroupPrefixListId) TableName() string {
 	return "aws_ec2_security_group_prefix_list_ids"
 }
 
@@ -86,7 +86,7 @@ type SecurityGroupUserIdGroupPair struct {
 	VpcPeeringConnectionId      *string
 }
 
-func (SecurityGroupUserIdGroupPair)TableName() string {
+func (SecurityGroupUserIdGroupPair) TableName() string {
 	return "aws_ec2_security_group_user_id_group_paris"
 }
 
@@ -97,7 +97,7 @@ type SecurityGroupTag struct {
 	Value           *string
 }
 
-func (SecurityGroupTag)TableName() string {
+func (SecurityGroupTag) TableName() string {
 	return "aws_ec2_security_group_tags"
 }
 

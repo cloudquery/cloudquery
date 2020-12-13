@@ -39,7 +39,7 @@ type Image struct {
 	VirtualizationType  *string
 }
 
-func (Image)TableName() string {
+func (Image) TableName() string {
 	return "aws_ec2_images"
 }
 
@@ -52,7 +52,7 @@ type ImageBlockDeviceMapping struct {
 	VirtualName *string
 }
 
-func (ImageBlockDeviceMapping)TableName() string {
+func (ImageBlockDeviceMapping) TableName() string {
 	return "aws_ec2_image_block_device_mappings"
 }
 
@@ -63,7 +63,7 @@ type ImageProductCode struct {
 	ProductCodeType *string
 }
 
-func (ImageProductCode)TableName() string {
+func (ImageProductCode) TableName() string {
 	return "aws_ec2_image_product_codes"
 }
 
@@ -74,7 +74,7 @@ type ImageTag struct {
 	Value   *string
 }
 
-func (ImageTag)TableName() string {
+func (ImageTag) TableName() string {
 	return "aws_ec2_image_tags"
 }
 

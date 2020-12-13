@@ -25,7 +25,7 @@ type Backup struct {
 	Type                 *string
 }
 
-func (Backup)TableName() string {
+func (Backup) TableName() string {
 	return "aws_fsx_backups"
 }
 
@@ -36,7 +36,7 @@ type BackupTag struct {
 	Value    *string
 }
 
-func (BackupTag)TableName() string {
+func (BackupTag) TableName() string {
 	return "aws_fsx_backup_tags"
 }
 

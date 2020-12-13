@@ -16,7 +16,7 @@ type Image struct {
 	ImageTag    *string
 }
 
-func (Image)TableName() string {
+func (Image) TableName() string {
 	return "aws_ecr_images"
 }
 

@@ -20,7 +20,7 @@ type Gateway struct {
 	StateChangeError          *string
 }
 
-func (Gateway)TableName() string {
+func (Gateway) TableName() string {
 	return "aws_directconnect_gateways"
 }
 

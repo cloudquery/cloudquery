@@ -20,7 +20,7 @@ type Cluster struct {
 	Status                  *ClusterStatus `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (Cluster)TableName() string {
+func (Cluster) TableName() string {
 	return "aws_emr_clusters"
 }
 
@@ -32,7 +32,7 @@ type ClusterStatus struct {
 	Timeline          *emr.ClusterTimeline          `gorm:"embedded;embeddedPrefix:timeline_"`
 }
 
-func (ClusterStatus)TableName() string {
+func (ClusterStatus) TableName() string {
 	return "aws_emr_cluster_statuses"
 }
 

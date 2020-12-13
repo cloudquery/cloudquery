@@ -32,7 +32,7 @@ type Bucket struct {
 	Status *string
 }
 
-func (Bucket)TableName() string {
+func (Bucket) TableName() string {
 	return "aws_s3_buckets"
 }
 
@@ -41,10 +41,10 @@ type BucketEncryptionRule struct {
 	BucketID uint
 
 	KMSMasterKeyID *string
-	SSEAlgorithm *string
+	SSEAlgorithm   *string
 }
 
-func (BucketEncryptionRule)TableName() string {
+func (BucketEncryptionRule) TableName() string {
 	return "aws_s3_bucket_encryption_rules"
 }
 
@@ -59,7 +59,7 @@ type BucketGrant struct {
 	Permission *string
 }
 
-func (BucketGrant)TableName() string {
+func (BucketGrant) TableName() string {
 	return "aws_s3_bucket_grants"
 }
 
@@ -94,7 +94,7 @@ type BucketCorsRule struct {
 	MaxAgeSeconds *int64
 }
 
-func (BucketCorsRule)TableName() string {
+func (BucketCorsRule) TableName() string {
 	return "aws_s3_bucket_cors_rules"
 }
 

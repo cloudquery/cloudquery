@@ -24,29 +24,28 @@ type User struct {
 	PermissionsBoundary  *iam.AttachedPermissionsBoundary `gorm:"embedded;embeddedPrefix:permissions_boundary_"`
 	Tags                 []*UserTag                       `gorm:"constraint:OnDelete:CASCADE;"`
 	UserId               *string
-	UserName             *string            `csv:"user"`
-	AccessKeys			 []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
+	UserName             *string          `csv:"user"`
+	AccessKeys           []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (User)TableName() string {
+func (User) TableName() string {
 	return "aws_iam_users"
 }
 
 type UserAccessKey struct {
 	ID                  uint `gorm:"primarykey"`
-	UserID uint
+	UserID              uint
 	AccessKeyId         *string
 	CreateDate          *time.Time
 	Status              *string
 	LastUsed            *time.Time
-	LastRotated          *time.Time
+	LastRotated         *time.Time
 	LastUsedServiceName *string
 }
 
-func (UserAccessKey)TableName() string {
+func (UserAccessKey) TableName() string {
 	return "aws_iam_user_access_keys"
 }
-
 
 type UserTag struct {
 	ID     uint `gorm:"primarykey"`
@@ -55,7 +54,7 @@ type UserTag struct {
 	Value  *string
 }
 
-func (UserTag)TableName() string {
+func (UserTag) TableName() string {
 	return "aws_iam_user_tags"
 }
 
@@ -103,16 +102,16 @@ func (c *Client) transformUserTags(values []*iam.Tag) []*UserTag {
 }
 
 type ReportUser struct {
-	User                 string    `csv:"user"`
-	ARN                  string    `csv:"arn"`
-	UserCreationTime     time.Time `csv:"user_creation_time"`
-	PasswordEnabled      string    `csv:"password_enabled"`
-	PasswordLastUsed     string    `csv:"password_last_used"`
-	PasswordLastChanged  string    `csv:"password_last_changed"`
-	PasswordNextRotation string    `csv:"password_next_rotation"`
-	MFAActive            bool      `csv:"mfa_active"`
-	AccessKey1LastRotated string   `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated string   `csv:"access_key_2_last_rotated"`
+	User                  string    `csv:"user"`
+	ARN                   string    `csv:"arn"`
+	UserCreationTime      time.Time `csv:"user_creation_time"`
+	PasswordEnabled       string    `csv:"password_enabled"`
+	PasswordLastUsed      string    `csv:"password_last_used"`
+	PasswordLastChanged   string    `csv:"password_last_changed"`
+	PasswordNextRotation  string    `csv:"password_next_rotation"`
+	MFAActive             bool      `csv:"mfa_active"`
+	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
 }
 
 func (c *Client) transformReportUser(reportUser *ReportUser) *User {
@@ -143,7 +142,6 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 		}
 		res.AccessKeys = c.transformAccessKeys(outputAccessKeys.AccessKeyMetadata)
 	}
-
 
 	switch reportUser.PasswordEnabled {
 	case "FALSE", "false":

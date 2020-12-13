@@ -28,7 +28,7 @@ type LoadBalancer struct {
 	VpcId                 *string
 }
 
-func (LoadBalancer)TableName() string {
+func (LoadBalancer) TableName() string {
 	return "aws_elbv2_load_balancers"
 }
 
@@ -41,7 +41,7 @@ type LoadBalancerAvailabilityZone struct {
 	ZoneName              *string
 }
 
-func (LoadBalancerAvailabilityZone)TableName() string {
+func (LoadBalancerAvailabilityZone) TableName() string {
 	return "aws_elbv2_load_balancer_availability_zones"
 }
 
@@ -53,7 +53,7 @@ type LoadBalancerAddress struct {
 	PrivateIPv4Address             *string
 }
 
-func (LoadBalancerAddress)TableName() string {
+func (LoadBalancerAddress) TableName() string {
 	return "aws_elbv2_load_balancer_addresses"
 }
 

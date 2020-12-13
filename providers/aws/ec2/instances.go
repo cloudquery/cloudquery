@@ -62,7 +62,7 @@ type Instance struct {
 	VpcId                                   *string
 }
 
-func (Instance)TableName() string {
+func (Instance) TableName() string {
 	return "aws_ec2_instances"
 }
 
@@ -73,7 +73,7 @@ type InstanceBlockDeviceMapping struct {
 	Ebs        *ec2.EbsInstanceBlockDevice `gorm:"embedded;embeddedPrefix:ebs_"`
 }
 
-func (InstanceBlockDeviceMapping)TableName() string {
+func (InstanceBlockDeviceMapping) TableName() string {
 	return "aws_ec2_instance_block_device_mappings"
 }
 
@@ -84,7 +84,7 @@ type InstanceCapacityReservationSpecificationResponse struct {
 	CapacityReservationTarget     *ec2.CapacityReservationTargetResponse `gorm:"embedded"`
 }
 
-func (InstanceCapacityReservationSpecificationResponse)TableName() string {
+func (InstanceCapacityReservationSpecificationResponse) TableName() string {
 	return "aws_ec2_instance_capacity_reservation_specification_responses"
 }
 
@@ -97,7 +97,7 @@ type InstanceElasticGpuAssociation struct {
 	ElasticGpuId               *string
 }
 
-func (InstanceElasticGpuAssociation)TableName() string {
+func (InstanceElasticGpuAssociation) TableName() string {
 	return "aws_ec2_instance_elastic_gpu_associations"
 }
 
@@ -110,7 +110,7 @@ type InstanceElasticInferenceAcceleratorAssociation struct {
 	ElasticInferenceAcceleratorAssociationTime  *time.Time
 }
 
-func (InstanceElasticInferenceAcceleratorAssociation)TableName() string {
+func (InstanceElasticInferenceAcceleratorAssociation) TableName() string {
 	return "aws_ec2_instance_elastic_inference_accelerator_associations"
 }
 
@@ -120,7 +120,7 @@ type InstanceLicenseConfiguration struct {
 	LicenseConfigurationArn *string
 }
 
-func (InstanceLicenseConfiguration)TableName() string {
+func (InstanceLicenseConfiguration) TableName() string {
 	return "aws_ec2_instance_license_configurations"
 }
 
@@ -144,7 +144,7 @@ type InstanceNetworkInterface struct {
 	VpcId              *string
 }
 
-func (InstanceNetworkInterface)TableName() string {
+func (InstanceNetworkInterface) TableName() string {
 	return "aws_ec2_instance_network_interfaces"
 }
 
@@ -155,7 +155,7 @@ type InstanceGroupIdentifier struct {
 	GroupName  *string
 }
 
-func (InstanceGroupIdentifier)TableName() string {
+func (InstanceGroupIdentifier) TableName() string {
 	return "aws_ec2_instance_group_identifiers"
 }
 
@@ -165,7 +165,7 @@ type InstanceIpv6Address struct {
 	Ipv6Address                *string
 }
 
-func (InstanceIpv6Address)TableName() string {
+func (InstanceIpv6Address) TableName() string {
 	return "aws_ec2_instance_ipv6_addresses"
 }
 
@@ -178,7 +178,7 @@ type InstancePrivateIpAddress struct {
 	PrivateIpAddress           *string
 }
 
-func (InstancePrivateIpAddress)TableName() string {
+func (InstancePrivateIpAddress) TableName() string {
 	return "aws_ec2_instance_private_ip_addresses"
 }
 
@@ -189,7 +189,7 @@ type InstanceProductCode struct {
 	ProductCodeType *string
 }
 
-func (InstanceProductCode)TableName() string {
+func (InstanceProductCode) TableName() string {
 	return "aws_ec2_instance_product_codes"
 }
 
@@ -200,7 +200,7 @@ type InstanceTag struct {
 	Value      *string
 }
 
-func (InstanceTag)TableName() string {
+func (InstanceTag) TableName() string {
 	return "aws_ec2_instance_tags"
 }
 

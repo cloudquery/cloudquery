@@ -21,7 +21,7 @@ type RouteTable struct {
 	VpcId           *string
 }
 
-func (RouteTable)TableName() string {
+func (RouteTable) TableName() string {
 	return "aws_ec2_route_tables"
 }
 
@@ -36,7 +36,7 @@ type RouteTableAssociation struct {
 	SubnetId                *string
 }
 
-func (RouteTableAssociation)TableName() string {
+func (RouteTableAssociation) TableName() string {
 	return "aws_ec2_route_table_associations"
 }
 
@@ -46,7 +46,7 @@ type RouteTablePropagatingVgw struct {
 	GatewayId    *string
 }
 
-func (RouteTablePropagatingVgw)TableName() string {
+func (RouteTablePropagatingVgw) TableName() string {
 	return "aws_ec2_route_table_propagation_vgws"
 }
 
@@ -70,7 +70,7 @@ type RouteTableRoute struct {
 	VpcPeeringConnectionId      *string
 }
 
-func (RouteTableRoute)TableName() string {
+func (RouteTableRoute) TableName() string {
 	return "aws_ec2_route_table_routes"
 }
 
@@ -81,7 +81,7 @@ type RouteTableTag struct {
 	Value        *string
 }
 
-func (RouteTableTag)RouteTableAssociation() string {
+func (RouteTableTag) RouteTableAssociation() string {
 	return "aws_ec2_route_table_tags"
 }
 

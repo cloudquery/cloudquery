@@ -17,7 +17,7 @@ type ByoipCidr struct {
 	StatusMessage *string
 }
 
-func (ByoipCidr)TableName() string {
+func (ByoipCidr) TableName() string {
 	return "aws_ec2_byoip_cidrs"
 }
 

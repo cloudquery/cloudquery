@@ -37,7 +37,7 @@ type VpcPeeringConnection struct {
 	VpcPeeringConnectionId *string
 }
 
-func (VpcPeeringConnection)TableName() string {
+func (VpcPeeringConnection) TableName() string {
 	return "aws_ec2_vpc_peering_connections"
 }
 
@@ -47,7 +47,7 @@ type VpcPeeringConnectionAccepterCidrBlock struct {
 	CidrBlock              *string
 }
 
-func (VpcPeeringConnectionAccepterCidrBlock)TableName() string {
+func (VpcPeeringConnectionAccepterCidrBlock) TableName() string {
 	return "aws_ec2_vpc_peering_connection_accepter_cidr_blocks"
 }
 
@@ -57,7 +57,7 @@ type VpcPeeringConnectionAccepterIpv6CidrBlock struct {
 	Ipv6CidrBlock          *string
 }
 
-func (VpcPeeringConnectionAccepterIpv6CidrBlock)TableName() string {
+func (VpcPeeringConnectionAccepterIpv6CidrBlock) TableName() string {
 	return "aws_ec2_vpc_peering_connection_accepter_ipv6_cidr_blocks"
 }
 
@@ -67,7 +67,7 @@ type VpcPeeringConnectionRequesterCidrBlock struct {
 	CidrBlock              *string
 }
 
-func (VpcPeeringConnectionRequesterCidrBlock)TableName() string {
+func (VpcPeeringConnectionRequesterCidrBlock) TableName() string {
 	return "aws_ec2_vpc_peering_connection_requester_cidr_blocks"
 }
 
@@ -77,7 +77,7 @@ type VpcPeeringConnectionRequesterIpv6CidrBlock struct {
 	Ipv6CidrBlock          *string
 }
 
-func (VpcPeeringConnectionRequesterIpv6CidrBlock)TableName() string {
+func (VpcPeeringConnectionRequesterIpv6CidrBlock) TableName() string {
 	return "aws_ec2_vpc_peering_connection_requester_ipv6_cidr_blocks"
 }
 
@@ -88,7 +88,7 @@ type VpcPeeringConnectionTag struct {
 	Value                  *string
 }
 
-func (VpcPeeringConnectionTag)TableName() string {
+func (VpcPeeringConnectionTag) TableName() string {
 	return "aws_ec2_vpc_peering_connection_tags"
 }
 

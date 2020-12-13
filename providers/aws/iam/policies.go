@@ -25,7 +25,7 @@ type Policy struct {
 	UpdateDate                    *time.Time
 }
 
-func (Policy)TableName() string {
+func (Policy) TableName() string {
 	return "aws_iam_policies"
 }
 

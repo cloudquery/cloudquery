@@ -29,7 +29,7 @@ type FlowLog struct {
 	TrafficType              *string
 }
 
-func (FlowLog)TableName() string {
+func (FlowLog) TableName() string {
 	return "aws_ec2_flow_logs"
 }
 
@@ -40,7 +40,7 @@ type FlowLogTag struct {
 	Value     *string
 }
 
-func (FlowLogTag)TableName() string {
+func (FlowLogTag) TableName() string {
 	return "aws_ec2_flow_log_tags"
 }
 

@@ -35,7 +35,7 @@ type Key struct {
 	ValidTo               *time.Time
 }
 
-func (Key)TableName() string {
+func (Key) TableName() string {
 	return "aws_kms_keys"
 }
 
@@ -45,7 +45,7 @@ type KeyEncryptionAlgorithm struct {
 	name  string
 }
 
-func (KeyEncryptionAlgorithm)TableName() string {
+func (KeyEncryptionAlgorithm) TableName() string {
 	return "aws_kms_key_encryption_algorithms"
 }
 
@@ -55,7 +55,7 @@ type KeySigningAlgorithm struct {
 	name  string
 }
 
-func (KeySigningAlgorithm)TableName() string {
+func (KeySigningAlgorithm) TableName() string {
 	return "aws_kms_key_signing_algorithms"
 }
 

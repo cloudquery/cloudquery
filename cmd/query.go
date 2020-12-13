@@ -5,9 +5,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-var	queryDSN    string
-var	queryDriver string
+var queryDSN string
+var queryDriver string
 var queryConfigPath string
 
 var queryCmd = &cobra.Command{

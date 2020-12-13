@@ -25,7 +25,7 @@ type Role struct {
 	Tags                     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (Role)TableName() string {
+func (Role) TableName() string {
 	return "aws_iam_roles"
 }
 
@@ -36,7 +36,7 @@ type RoleTag struct {
 	Value  *string
 }
 
-func (RoleTag)TableName() string {
+func (RoleTag) TableName() string {
 	return "aws_iam_role_tags"
 }
 

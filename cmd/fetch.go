@@ -5,9 +5,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-var	dsn    string
-var	driver string
+var dsn string
+var driver string
 var verbose bool
 var fetchConfigPath string
 

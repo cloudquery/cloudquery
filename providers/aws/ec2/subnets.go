@@ -31,7 +31,7 @@ type Subnet struct {
 	VpcId                       *string
 }
 
-func (Subnet)TableName() string {
+func (Subnet) TableName() string {
 	return "aws_ec2_subnets"
 }
 
@@ -43,7 +43,7 @@ type SubnetIpv6CidrBlockAssociation struct {
 	Ipv6CidrBlockState *ec2.SubnetCidrBlockState `gorm:"embedded;embeddedPrefix:ipv_6_cidr_block_state_"`
 }
 
-func (SubnetIpv6CidrBlockAssociation)TableName() string {
+func (SubnetIpv6CidrBlockAssociation) TableName() string {
 	return "aws_ec2_subnet_ipv6_cidr_block_associations"
 }
 
@@ -54,7 +54,7 @@ type SubnetTag struct {
 	Value    *string
 }
 
-func (SubnetTag)TableName() string {
+func (SubnetTag) TableName() string {
 	return "aws_ec2_subnet_tags"
 }
 

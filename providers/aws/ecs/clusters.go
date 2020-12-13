@@ -26,7 +26,7 @@ type Cluster struct {
 	Tags                              []*ClusterTag `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (Cluster)TableName() string {
+func (Cluster) TableName() string {
 	return "aws_ecs_clusters"
 }
 
@@ -37,7 +37,7 @@ type ClusterKeyValuePair struct {
 	Value     *string
 }
 
-func (ClusterKeyValuePair)TableName() string {
+func (ClusterKeyValuePair) TableName() string {
 	return "aws_ecs_cluster_key_value_pairs"
 }
 
@@ -49,7 +49,7 @@ type ClusterCapacityProviderStrategyItem struct {
 	Weight           *int64
 }
 
-func (ClusterCapacityProviderStrategyItem)TableName() string {
+func (ClusterCapacityProviderStrategyItem) TableName() string {
 	return "aws_ecs_cluster_capacity_provider_strategy_items"
 }
 
@@ -60,7 +60,7 @@ type ClusterSetting struct {
 	Value     *string
 }
 
-func (ClusterSetting)TableName() string {
+func (ClusterSetting) TableName() string {
 	return "aws_ecs_cluster_settings"
 }
 
@@ -71,7 +71,7 @@ type ClusterTag struct {
 	Value     *string
 }
 
-func (ClusterTag)TableName() string {
+func (ClusterTag) TableName() string {
 	return "aws_ecs_cluster_tags"
 }
 

@@ -69,7 +69,7 @@ type Cluster struct {
 	VpcSecurityGroups                []*ClusterVpcSecurityGroupMembership `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (Cluster)TableName() string {
+func (Cluster) TableName() string {
 	return "aws_rds_clusters"
 }
 
@@ -81,7 +81,7 @@ type ClusterRole struct {
 	Status      *string
 }
 
-func (ClusterRole)TableName() string {
+func (ClusterRole) TableName() string {
 	return "aws_rds_cluster_roles"
 }
 
@@ -94,7 +94,7 @@ type ClusterMember struct {
 	PromotionTier               *int64
 }
 
-func (ClusterMember)TableName() string {
+func (ClusterMember) TableName() string {
 	return "aws_rds_cluster_members"
 }
 
@@ -105,7 +105,7 @@ type ClusterOptionGroupStatus struct {
 	Status                 *string
 }
 
-func (ClusterOptionGroupStatus)TableName() string {
+func (ClusterOptionGroupStatus) TableName() string {
 	return "aws_rds_cluster_option_group_statuses"
 }
 
@@ -118,7 +118,7 @@ type ClusterDomainMembership struct {
 	Status      *string
 }
 
-func (ClusterDomainMembership)TableName() string {
+func (ClusterDomainMembership) TableName() string {
 	return "aws_rds_cluster_domain_membership"
 }
 
@@ -129,7 +129,7 @@ type ClusterVpcSecurityGroupMembership struct {
 	VpcSecurityGroupId *string
 }
 
-func (ClusterVpcSecurityGroupMembership)TableName() string {
+func (ClusterVpcSecurityGroupMembership) TableName() string {
 	return "aws_rds_cluster_vpc_security_group_memberships"
 }
 

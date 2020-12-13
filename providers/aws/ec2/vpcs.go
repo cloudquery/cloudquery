@@ -24,7 +24,7 @@ type Vpc struct {
 	VpcId                       *string
 }
 
-func (Vpc)TableName() string {
+func (Vpc) TableName() string {
 	return "aws_ec2_vpcs"
 }
 
@@ -36,7 +36,7 @@ type VpcCidrBlockAssociation struct {
 	CidrBlockState *ec2.VpcCidrBlockState `gorm:"embedded;embeddedPrefix:cidr_block_state_"`
 }
 
-func (VpcCidrBlockAssociation)TableName() string {
+func (VpcCidrBlockAssociation) TableName() string {
 	return "aws_ec2_vpc_cidr_block_associations"
 }
 
@@ -50,7 +50,7 @@ type VpcIpv6CidrBlockAssociation struct {
 	NetworkBorderGroup *string
 }
 
-func (VpcIpv6CidrBlockAssociation)TableName() string {
+func (VpcIpv6CidrBlockAssociation) TableName() string {
 	return "aws_ec2_vpc_ipv6_cidr_block_associations"
 }
 
@@ -61,7 +61,7 @@ type VpcTag struct {
 	Value *string
 }
 
-func (VpcTag)TableName() string {
+func (VpcTag) TableName() string {
 	return "aws_ec2_vpc_tags"
 }
 

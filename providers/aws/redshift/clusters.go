@@ -61,7 +61,7 @@ type Cluster struct {
 	VpcSecurityGroups                      []*ClusterVpcSecurityGroupMembership `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (Cluster)TableName() string {
+func (Cluster) TableName() string {
 	return "aws_redshift_clusters"
 }
 
@@ -73,7 +73,7 @@ type ClusterNode struct {
 	PublicIPAddress  *string
 }
 
-func (ClusterNode)TableName() string {
+func (ClusterNode) TableName() string {
 	return "aws_redshift_cluster_nodes"
 }
 
@@ -85,7 +85,7 @@ type ClusterParameterGroupStatus struct {
 	ParameterGroupName         *string
 }
 
-func (ClusterParameterGroupStatus)TableName() string {
+func (ClusterParameterGroupStatus) TableName() string {
 	return "aws_redshift_cluster_parameter_group_statuses"
 }
 
@@ -97,7 +97,7 @@ type ClusterParameterStatus struct {
 	ParameterName                  *string
 }
 
-func (ClusterParameterStatus)TableName() string {
+func (ClusterParameterStatus) TableName() string {
 	return "aws_redshift_cluster_parameter_statuses"
 }
 
@@ -108,7 +108,7 @@ type ClusterSecurityGroupMembership struct {
 	Status                   *string
 }
 
-func (ClusterSecurityGroupMembership)TableName() string {
+func (ClusterSecurityGroupMembership) TableName() string {
 	return "aws_redshift_cluster_security_group_memberships"
 }
 
@@ -120,7 +120,7 @@ type ClusterDeferredMaintenanceWindow struct {
 	DeferMaintenanceStartTime  *time.Time
 }
 
-func (ClusterDeferredMaintenanceWindow)TableName() string {
+func (ClusterDeferredMaintenanceWindow) TableName() string {
 	return "aws_redshift_cluster_deferred_maintenance_windows"
 }
 
@@ -131,7 +131,7 @@ type ClusterIamRole struct {
 	IamRoleArn  *string
 }
 
-func (ClusterIamRole)TableName() string {
+func (ClusterIamRole) TableName() string {
 	return "aws_redshift_cluster_iam_roles"
 }
 
@@ -142,7 +142,7 @@ type ClusterTag struct {
 	Value     *string
 }
 
-func (ClusterTag)TableName() string {
+func (ClusterTag) TableName() string {
 	return "aws_redshift_cluster_tags"
 }
 
@@ -153,7 +153,7 @@ type ClusterVpcSecurityGroupMembership struct {
 	VpcSecurityGroupId *string
 }
 
-func (ClusterVpcSecurityGroupMembership)TableName() string {
+func (ClusterVpcSecurityGroupMembership) TableName() string {
 	return "aws_redshift_cluster_vpc_security_group_memberships"
 }
 

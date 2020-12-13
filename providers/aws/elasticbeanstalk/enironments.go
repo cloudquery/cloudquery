@@ -36,7 +36,7 @@ type Environment struct {
 	VersionLabel                 *string
 }
 
-func (Environment)TableName() string {
+func (Environment) TableName() string {
 	return "aws_elasticbeanstalk_environments"
 }
 
@@ -47,7 +47,7 @@ type EnvironmentLink struct {
 	LinkName        *string
 }
 
-func (EnvironmentLink)TableName() string {
+func (EnvironmentLink) TableName() string {
 	return "aws_elasticbeanstalk_environment_links"
 }
 
@@ -57,7 +57,7 @@ type EnvironmentResource struct {
 	LoadBalancer  *EnvironmentLoadBalancer `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-func (EnvironmentResource)TableName() string {
+func (EnvironmentResource) TableName() string {
 	return "aws_elasticbeanstalk_environment_resources"
 }
 
@@ -69,7 +69,7 @@ type EnvironmentLoadBalancer struct {
 	LoadBalancerName      *string
 }
 
-func (EnvironmentLoadBalancer)TableName() string {
+func (EnvironmentLoadBalancer) TableName() string {
 	return "aws_elasticbeanstalk_environment_load_balancers"
 }
 
@@ -80,7 +80,7 @@ type EnvironmentListener struct {
 	Protocol                  *string
 }
 
-func (EnvironmentListener)TableName() string {
+func (EnvironmentListener) TableName() string {
 	return "aws_elasticbeanstalk_environment_listeners"
 }
 

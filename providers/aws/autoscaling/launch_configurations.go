@@ -89,7 +89,7 @@ type LaunchConfiguration struct {
 	UserData *string
 }
 
-func (LaunchConfiguration)TableName() string {
+func (LaunchConfiguration) TableName() string {
 	return "aws_autoscaling_launch_configurations"
 }
 
@@ -113,7 +113,7 @@ type LaunchConfigurationBlockDeviceMapping struct {
 	VirtualName *string
 }
 
-func (LaunchConfigurationBlockDeviceMapping)TableName() string {
+func (LaunchConfigurationBlockDeviceMapping) TableName() string {
 	return "aws_autoscaling_launch_configuration_block_device_mapping"
 }
 
