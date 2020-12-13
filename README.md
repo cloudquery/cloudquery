@@ -15,6 +15,9 @@ cloudquery can be easily extended to more resources and SaaS providers (open an 
 
 cloudquery comes with built-in policy packs such as: [AWS CIS](#running-policy-packs) (more is coming!).
 
+Think about cloudquery as a compliance-as-code tool inspired by tools like [osquery](https://github.com/osquery/osquery)
+and [terraform](https://github.com/hashicorp/terraform), cool right?
+
 ### Links
 * Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
