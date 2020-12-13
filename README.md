@@ -4,8 +4,14 @@
 <img alt="cloudquery logo" width="200px" height="200px" src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
 </p>
 
-cloudquery exposes your cloud configuration and metadata as sql tables,
-providing powerful analysis and monitoring without writing code.
+cloudquery transforms your cloud infrastructure into queryable SQL tables for easy monitoring, governance and security.
+
+### What is cloudquery and use it?
+
+cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL database.
+This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
+
+cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
 
 ### Links
 * Homepage: https://cloudquery.io
@@ -14,8 +20,8 @@ providing powerful analysis and monitoring without writing code.
 
 ### Supported providers (Actively expanding)
 
-Currently we support: [AWS](https://docs.cloudquery.io/aws), [GCP](https://docs.cloudquery.io/gcp), [Okta](https://docs.cloudquery.io/okta/table-reference) (Azure and DigitalOcean are on the roadmap)
-If you want to us to add new provider please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
+Currently, we support: [AWS](https://docs.cloudquery.io/aws), [GCP](https://docs.cloudquery.io/gcp), [Okta](https://docs.cloudquery.io/okta/table-reference) (Azure and DigitalOcean are on the roadmap)
+If you want to us to add a new provider please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
 ## Download & install
 
@@ -33,6 +39,40 @@ curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cl
 ```
 
 ## Quick Start
+
+### Running
+
+First generate a `config.yml` file that will describe which resources you want cloudquery to pull, normalize
+and transform resources to the specified SQL database by running the following command:
+ 
+```shell script
+./cloudquery gen config aws
+# ./cloudquery gen config gcp okta # This will generate a config containing gcp and okta providers
+# ./cloudquery gen config --help # Show all possible auto generated configs and flags
+ ```
+
+Once your `config.yml` is generated run the following command to fetch the resources:
+
+```shell script
+./cloudquery fetch
+# ./cloudquery fetch --help # Show all possible fetch flags
+```
+
+If you used the default `sqlite` provider you run the following example queries
+
+List ec2_images
+```sql
+SELECT * FROM aws_ec2_images;
+```
+
+Find all public facing AWS load balancers
+```sql
+SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
+```
+
+Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
+
+### Providers Authentication
 
 #### AWS 
 You should be authenticated with an AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
@@ -52,24 +92,9 @@ In your config.yml you need to specify role_arns if you want to query multiple a
 You should be authenticated with a GCP that has correct permissions for the data you want to pull.
 You should set `GOOGLE_APPLICATION_CREDENTIALS` to point to your downloaded credential file.
 
-#### Running
+#### Okta
 
- Run the following commands:
- 
-```bash
-cp example.config.yml config.yml
-# uncomment resource of interest in config.yml
-./cloudquery
- ```
-
-If you uncommented images (it may take up to 30 seconds to fetch all images),
-you can now run the following basic query in your sqlite3 console (`sqlite3 ./cloudquery.db`):
-
-```sql
-SELECT * FROM aws_ec2_images;
-```
-
-Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
+You need to set `OKTA_TOKEN` environment variable
 
 #### Query Examples
 
