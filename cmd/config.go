@@ -90,7 +90,7 @@ var configCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := cobra.OnlyValidArgs(cmd, args)
 		if err != nil {
-			return fmt.Errorf("invalid argument %s for cloudquery gen. choose from %v", args[0], validArgs)
+			return fmt.Errorf("invalid argument %s for cloudquery gen config. choose from %v", args[0], validArgs)
 		}
 		var s strings.Builder
 		_, err = s.WriteString(headerConfig)

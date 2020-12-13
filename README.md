@@ -13,6 +13,8 @@ This abstracts various scattered APIs enabling you to define security,governance
 
 cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
 
+cloudquery comes with built-in policy packs such as: [AWS CIS](#running-policy-packs) (more is coming!).
+
 ### Links
 * Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
@@ -69,6 +71,20 @@ Find all public facing AWS load balancers
 ```sql
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
+
+#### Running policy packs
+
+cloudquery comes with some ready compliance policy pack which you can use as is or modify to fit your use-case.
+
+Currently, cloudquery support [AWS CIS](https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf)
+policy pack (it is under active development, so it doesn't cover the whole spec yet).
+
+To run AWS CIS pack enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
+
+```shell script
+./cloudquery gen policy aws_cis
+./cloudquery query 
+``` 
 
 Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
 
