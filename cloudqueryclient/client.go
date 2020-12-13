@@ -1,6 +1,7 @@
 package cloudqueryclient
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/gcp"
@@ -179,7 +180,8 @@ func (c *Client) RunQuery(path string) error {
 		table.SetAutoFormatHeaders(false)
 		table.SetHeader(columns)
 		nc := len(columns)
-		res := make([]string, nc)
+		prettyRow := make([]string, nc)
+		res := make([]sql.NullString, nc)
 		resPtrs := make([]interface{}, nc)
 		for i := 0; i < nc; i++ {
 			resPtrs[i] = &res[i]
@@ -189,7 +191,10 @@ func (c *Client) RunQuery(path string) error {
 			if err != nil {
 				return err
 			}
-			table.Append(res)
+			for i, v := range res {
+				prettyRow[i] = v.String
+			}
+			table.Append(prettyRow)
 		}
 		table.Render()
 
