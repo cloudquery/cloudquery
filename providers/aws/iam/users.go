@@ -24,7 +24,8 @@ type User struct {
 	PermissionsBoundary  *iam.AttachedPermissionsBoundary `gorm:"embedded;embeddedPrefix:permissions_boundary_"`
 	Tags                 []*UserTag                       `gorm:"constraint:OnDelete:CASCADE;"`
 	UserId               *string
-	UserName             *string `csv:"user"`
+	UserName             *string            `csv:"user"`
+	AccessKeys			 []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (User)TableName() string {
@@ -32,9 +33,19 @@ func (User)TableName() string {
 }
 
 type UserAccessKey struct {
-	ID     uint `gorm:"primarykey"`
+	ID                  uint `gorm:"primarykey"`
 	UserID uint
+	AccessKeyId         *string
+	CreateDate          *time.Time
+	Status              *string
+	LastUsed            *time.Time
+	LastUsedServiceName *string
 }
+
+func (UserAccessKey)TableName() string {
+	return "aws_iam_user_access_keys"
+}
+
 
 type UserTag struct {
 	ID     uint `gorm:"primarykey"`
@@ -45,6 +56,34 @@ type UserTag struct {
 
 func (UserTag)TableName() string {
 	return "aws_iam_user_tags"
+}
+
+func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) *UserAccessKey {
+	output, err := c.svc.GetAccessKeyLastUsed(&iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res := UserAccessKey{
+		AccessKeyId:         value.AccessKeyId,
+		CreateDate:          value.CreateDate,
+		Status:              value.Status,
+		LastUsed:            output.AccessKeyLastUsed.LastUsedDate,
+		LastUsedServiceName: output.AccessKeyLastUsed.ServiceName,
+	}
+	if output.AccessKeyLastUsed != nil {
+		res.LastUsed = output.AccessKeyLastUsed.LastUsedDate
+		res.LastUsedServiceName = output.AccessKeyLastUsed.ServiceName
+	}
+	return &res
+}
+
+func (c *Client) transformAccessKeys(values []*iam.AccessKeyMetadata) []*UserAccessKey {
+	var tValues []*UserAccessKey
+	for _, v := range values {
+		tValues = append(tValues, c.transformAccessKey(v))
+	}
+	return tValues
 }
 
 func (c *Client) transformUserTag(value *iam.Tag) *UserTag {
@@ -74,15 +113,7 @@ type ReportUser struct {
 }
 
 func (c *Client) transformReportUser(reportUser *ReportUser) *User {
-	var output *iam.GetUserOutput
 	var err error
-	if reportUser.User != "<root_account>" {
-		output, err = c.svc.GetUser(&iam.GetUserInput{UserName: &reportUser.User})
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
 	res := User{
 		AccountID:  c.accountID,
 		Arn:        &reportUser.ARN,
@@ -91,12 +122,25 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 		UserName:   &reportUser.User,
 	}
 
-	if output != nil {
+	if reportUser.User != "<root_account>" {
+		output, err := c.svc.GetUser(&iam.GetUserInput{UserName: &reportUser.User})
+		if err != nil {
+			log.Fatal(err)
+		}
 		res.Path = output.User.Path
 		res.PermissionsBoundary = output.User.PermissionsBoundary
 		res.Tags = c.transformUserTags(output.User.Tags)
 		res.UserId = output.User.UserId
+
+		outputAccessKeys, err := c.svc.ListAccessKeys(&iam.ListAccessKeysInput{
+			UserName: &reportUser.User,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		res.AccessKeys = c.transformAccessKeys(outputAccessKeys.AccessKeyMetadata)
 	}
+
 
 	switch reportUser.PasswordEnabled {
 	case "FALSE", "false":
@@ -136,6 +180,7 @@ func (c *Client) users(_ interface{}) error {
 	if !c.resourceMigrated["iamUser"] {
 		err := c.db.AutoMigrate(
 			&User{},
+			&UserAccessKey{},
 			&UserTag{},
 		)
 		if err != nil {

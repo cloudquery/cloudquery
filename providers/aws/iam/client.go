@@ -41,8 +41,6 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.policys(config)
 	case "roles":
 		return c.roles(config)
-	case "access_keys":
-		return c.accessKeys(config)
 	case "password_policies":
 		return c.passwordPolicies(config)
 	default:

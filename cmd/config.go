@@ -38,7 +38,6 @@ var awsConfig = `
       - name: elbv2.load_balancers
       - name: emr.clusters
       - name: fsx.backups
-      - name: iam.access_keys
       - name: iam.groups
       - name: iam.password_policies
       - name: iam.policies
