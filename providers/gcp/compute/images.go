@@ -189,7 +189,7 @@ func (c *Client) images(gConfig interface{}) error {
 
 		c.db.Where("project_id = ?", c.projectID).Delete(&Image{})
 		common.ChunkedCreate(c.db, c.transformImages(output.Items))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Items)))
+		c.log.Info("Fetched resources", zap.String("resource", "compute.images"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break
 		}

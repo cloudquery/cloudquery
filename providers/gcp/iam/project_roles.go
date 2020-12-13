@@ -83,7 +83,7 @@ func (c *Client) projectRoles(_ interface{}) error {
 
 		c.db.Where("region = ?", c.region).Where("project_id = ?", c.projectID).Delete(&Role{})
 		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Roles)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.project_roles"), zap.Int("count", len(output.Roles)))
 		if output.NextPageToken == "" {
 			break
 		}

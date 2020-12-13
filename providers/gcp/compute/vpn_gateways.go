@@ -124,7 +124,7 @@ func (c *Client) vpnGateways(gConfig interface{}) error {
 			tValues = append(tValues, c.transformVpnGateways(items.VpnGateways)...)
 		}
 		common.ChunkedCreate(c.db, tValues)
-		c.log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		c.log.Info("Fetched resources", zap.String("resource", "compute.vpn_gateways"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break
 		}

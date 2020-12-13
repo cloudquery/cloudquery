@@ -93,7 +93,7 @@ func (c *Client) diskTypes(gConfig interface{}) error {
 			tValues = append(tValues, c.transformDiskTypes(items.DiskTypes)...)
 		}
 		common.ChunkedCreate(c.db, tValues)
-		c.log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		c.log.Info("Fetched resources", zap.String("resource", "compute.disk_types"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break
 		}

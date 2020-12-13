@@ -493,7 +493,7 @@ func (c *Client) instances(gConfig interface{}) error {
 			tValues = append(tValues, c.transformInstances(items.Instances)...)
 		}
 		common.ChunkedCreate(c.db, tValues)
-		c.log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		c.log.Info("Fetched resources", zap.String("resource", "compute.instances"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break
 		}

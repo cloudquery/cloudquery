@@ -499,7 +499,7 @@ func (c *Client) buckets(gConfig interface{}) error {
 
 		c.db.Where("project_id = ?", c.projectID).Delete(&Bucket{})
 		common.ChunkedCreate(c.db, c.transformBuckets(output.Items))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Items)))
+		c.log.Info("Fetched resources", zap.String("resource", "storage.buckets"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break
 		}

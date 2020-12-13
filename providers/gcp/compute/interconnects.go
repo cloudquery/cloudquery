@@ -193,7 +193,7 @@ func (c *Client) interconnects(gConfig interface{}) error {
 
 		c.db.Where("project_id = ?", c.projectID).Delete(&Interconnect{})
 		common.ChunkedCreate(c.db, output.Items)
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Items)))
+		c.log.Info("Fetched resources", zap.String("resource", "compute.interconnects"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break
 		}

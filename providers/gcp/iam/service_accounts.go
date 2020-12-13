@@ -65,7 +65,7 @@ func (c *Client) serviceAccounts(_ interface{}) error {
 
 		c.db.Where("project_id = ?", c.projectID).Delete(&ServiceAccount{})
 		common.ChunkedCreate(c.db, c.transformServiceAccounts(output.Accounts))
-		c.log.Info("Fetched resources", zap.Int("count", len(output.Accounts)))
+		c.log.Info("Fetched resources", zap.String("resource", "iam.service_accounts"), zap.Int("count", len(output.Accounts)))
 		if output.NextPageToken == "" {
 			break
 		}
