@@ -36,7 +36,7 @@ type Config struct {
 
 type PolicyConfig struct {
 	Queries []struct {
-		Name string
+		Name  string
 		Query string
 	}
 }
@@ -55,7 +55,7 @@ func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
 		disableCaller = false
 	}
 	return zap.Config{
-		Sampling: nil,
+		Sampling:         nil,
 		Level:            level,
 		Development:      true,
 		DisableCaller:    disableCaller,

@@ -19,6 +19,7 @@ var awsConfig = `
 #      - us-west-2
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
+      - name: cloudtrail.trails
       - name: directconnect.gateways
       - name: ec2.customer_gateways
       - name: ec2.flow_logs
@@ -73,8 +74,8 @@ var oktaConfig = `
       - name: applications`
 
 var initialConfigs = map[string]string{
-	"aws": awsConfig,
-	"gcp": gcpConfig,
+	"aws":  awsConfig,
+	"gcp":  gcpConfig,
 	"okta": oktaConfig,
 }
 
@@ -82,10 +83,10 @@ var validArgs = []string{"aws", "gcp", "okta"}
 var configPath = "./config.yml"
 
 var configCmd = &cobra.Command{
-	Use:     fmt.Sprintf("config [choose one or more of: %s]", strings.Join(validArgs, ",")),
-	Short:   "Generate initial config.yml for fetch command",
+	Use:       fmt.Sprintf("config [choose one or more of: %s]", strings.Join(validArgs, ",")),
+	Short:     "Generate initial config.yml for fetch command",
 	ValidArgs: validArgs,
-	Args: cobra.RangeArgs(1, len(validArgs)),
+	Args:      cobra.RangeArgs(1, len(validArgs)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := cobra.OnlyValidArgs(cmd, args)
 		if err != nil {
@@ -101,7 +102,7 @@ var configCmd = &cobra.Command{
 		}
 		s.WriteString("\n")
 		if _, err := os.Stat(configPath); err == nil {
-				return fmt.Errorf("file %s already exists. Either delete it or specify other path via --path flag", configPath)
+			return fmt.Errorf("file %s already exists. Either delete it or specify other path via --path flag", configPath)
 		} else if os.IsNotExist(err) {
 			return ioutil.WriteFile(configPath, []byte(s.String()), 0644)
 		} else {
