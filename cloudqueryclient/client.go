@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/gcp"
 	"github.com/cloudquery/cloudquery/providers/okta"
 	"github.com/cloudquery/cloudquery/providers/provider"
+	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 	"gorm.io/driver/mysql"
@@ -29,6 +30,13 @@ type Config struct {
 	Providers []struct {
 		Name string
 		Rest map[string]interface{} `yaml:",inline"`
+	}
+}
+
+type PolicyConfig struct {
+	Queries []struct {
+		Name string
+		Query string
 	}
 }
 
@@ -132,5 +140,59 @@ func (c *Client) Run(path string) error {
 
 	}
 
+	return nil
+}
+
+func (c *Client) RunQuery(path string) error {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("%s doesn't exist. you can create one via 'gen policy' command", path)
+		}
+		return err
+	}
+
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	config := PolicyConfig{}
+	err = yaml.Unmarshal(data, &config)
+	if err != nil {
+		return err
+	}
+
+	c.log.Info("Executing queries", zap.Int("count", len(config.Queries)))
+	for _, query := range config.Queries {
+		c.log.Info("Executing query", zap.String("name", query.Name))
+		//var res string
+		rows, err := c.db.Raw(query.Query).Rows()
+		if err != nil {
+			return err
+		}
+		columns, err := rows.Columns()
+		if err != nil {
+			return err
+		}
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetAutoFormatHeaders(false)
+		table.SetHeader(columns)
+		nc := len(columns)
+		res := make([]string, nc)
+		resPtrs := make([]interface{}, nc)
+		for i := 0; i < nc; i++ {
+			resPtrs[i] = &res[i]
+		}
+		for rows.Next() {
+			err := rows.Scan(resPtrs...)
+			if err != nil {
+				return err
+			}
+			table.Append(res)
+		}
+		table.Render()
+
+	}
 	return nil
 }

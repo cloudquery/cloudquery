@@ -3,5 +3,6 @@
 cloudquery
 cloudquery.db
 config.yml
+policy.yml
 dist/
 .release-env

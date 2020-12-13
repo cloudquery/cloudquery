@@ -7,6 +7,7 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/okta/okta-sdk-golang/v2 v2.2.1
+	github.com/olekukonko/tablewriter v0.0.4
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cobra v1.1.0
 	go.uber.org/zap v1.10.0
