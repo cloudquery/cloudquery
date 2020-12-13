@@ -15,6 +15,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"io/ioutil"
+	"os"
 )
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
@@ -94,6 +95,14 @@ func New(driver string, dsn string, verbose bool) (*Client, error) {
 }
 
 func (c *Client) Run(path string) error {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("%s doesn't exist. you can create one via 'gen config' command", path)
+		}
+		return err
+	}
+
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
