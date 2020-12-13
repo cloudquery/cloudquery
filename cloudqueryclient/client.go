@@ -186,17 +186,24 @@ func (c *Client) RunQuery(path string) error {
 		for i := 0; i < nc; i++ {
 			resPtrs[i] = &res[i]
 		}
+		resultsCount := 0
 		for rows.Next() {
 			err := rows.Scan(resPtrs...)
 			if err != nil {
 				return err
 			}
+			resultsCount += 1
 			for i, v := range res {
 				prettyRow[i] = v.String
 			}
 			table.Append(prettyRow)
 		}
-		table.Render()
+		if resultsCount > 0 {
+			c.log.Info("Check failed. Query returned results.", zap.String("name", query.Name), zap.Int("count", resultsCount))
+			table.Render()
+		} else {
+			c.log.Info("Check passed. Query returned no results.", zap.String("name", query.Name))
+		}
 
 	}
 	return nil
