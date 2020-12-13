@@ -6,7 +6,7 @@
 
 cloudquery transforms your cloud infrastructure into queryable SQL tables for easy monitoring, governance and security.
 
-### What is cloudquery and use it?
+### What is cloudquery and why use it?
 
 cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL database.
 This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
