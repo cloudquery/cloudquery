@@ -39,6 +39,7 @@ type UserAccessKey struct {
 	CreateDate          *time.Time
 	Status              *string
 	LastUsed            *time.Time
+	LastRotated          *time.Time
 	LastUsedServiceName *string
 }
 
@@ -110,6 +111,8 @@ type ReportUser struct {
 	PasswordLastChanged  string    `csv:"password_last_changed"`
 	PasswordNextRotation string    `csv:"password_next_rotation"`
 	MFAActive            bool      `csv:"mfa_active"`
+	AccessKey1LastRotated string   `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated string   `csv:"access_key_2_last_rotated"`
 }
 
 func (c *Client) transformReportUser(reportUser *ReportUser) *User {
@@ -163,6 +166,16 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 	passwordNextRotation, err := time.Parse(time.RFC3339, reportUser.PasswordNextRotation)
 	if err == nil {
 		res.PasswordNextRotation = &passwordNextRotation
+	}
+
+	lastRotated1, err := time.Parse(time.RFC3339, reportUser.AccessKey1LastRotated)
+	if err == nil {
+		res.AccessKeys[0].LastRotated = &lastRotated1
+	}
+
+	lastRotated2, err := time.Parse(time.RFC3339, reportUser.AccessKey2LastRotated)
+	if err == nil {
+		res.AccessKeys[1].LastRotated = &lastRotated2
 	}
 
 	return &res
