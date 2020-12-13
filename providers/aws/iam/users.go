@@ -107,20 +107,18 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 		res.PasswordEnabled = &passwordEnabled
 	}
 
-	layout := "2020-10-21T12:15:57+00:00"
-	tm, err := time.Parse(layout, reportUser.PasswordLastUsed)
+	passwordLastUsed, err := time.Parse(time.RFC3339, reportUser.PasswordLastUsed)
 	if err == nil {
-		res.PasswordLastUsed = &tm
+		res.PasswordLastUsed = &passwordLastUsed
+	}
+	passwordLastChanged, err := time.Parse(time.RFC3339, reportUser.PasswordLastChanged)
+	if err == nil {
+		res.PasswordLastChanged = &passwordLastChanged
 	}
 
-	tm, err = time.Parse(layout, reportUser.PasswordLastChanged)
+	passwordNextRotation, err := time.Parse(time.RFC3339, reportUser.PasswordNextRotation)
 	if err == nil {
-		res.PasswordLastChanged = &tm
-	}
-
-	tm, err = time.Parse(layout, reportUser.PasswordNextRotation)
-	if err == nil {
-		res.PasswordNextRotation = &tm
+		res.PasswordNextRotation = &passwordNextRotation
 	}
 
 	return &res
