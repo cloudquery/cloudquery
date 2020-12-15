@@ -73,13 +73,27 @@ var oktaConfig = `
       - name: users
       - name: applications`
 
+var azureConfig = `
+  - name: azure
+#    subscriptions: # Optional. if you not specified, cloudquery tries to access all subscriptions available to tenant
+#      - "subscription-id"
+    resources:
+      - name: resources.groups
+      - name: sql.servers
+      - name: sql.databases
+      - name: postgresql.servers
+      - name: mysql.servers
+      - name: compute.disks
+      - name: keyvault.vaults`
+
 var initialConfigs = map[string]string{
 	"aws":  awsConfig,
 	"gcp":  gcpConfig,
 	"okta": oktaConfig,
+	"azure": azureConfig,
 }
 
-var validArgs = []string{"aws", "gcp", "okta"}
+var validArgs = []string{"aws", "gcp", "okta", "azure"}
 var configPath = "./config.yml"
 
 var configCmd = &cobra.Command{

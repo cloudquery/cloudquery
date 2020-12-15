@@ -68,7 +68,7 @@ var awsCIS = `
       WHERE log_file_validation_enabled = 0`
 
 var policies = map[string]string{
-	"aws_cis":  awsCIS,
+	"aws_cis": awsCIS,
 }
 
 var policyValidArgs = []string{"aws_cis"}

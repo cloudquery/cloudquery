@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/cloudquery/cloudquery/providers/aws"
+	"github.com/cloudquery/cloudquery/providers/azure"
 	"github.com/cloudquery/cloudquery/providers/gcp"
 	"github.com/cloudquery/cloudquery/providers/okta"
 	"github.com/cloudquery/cloudquery/providers/provider"
@@ -21,10 +22,10 @@ import (
 )
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
-	"aws":  aws.NewProvider,
-	"gcp":  gcp.NewProvider,
-	"okta": okta.NewProvider,
-	//"azure": aws.NewProvider,
+	"aws":   aws.NewProvider,
+	"gcp":   gcp.NewProvider,
+	"okta":  okta.NewProvider,
+	"azure": azure.NewProvider,
 }
 
 type Config struct {
