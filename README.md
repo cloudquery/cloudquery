@@ -25,8 +25,10 @@ and [terraform](https://github.com/hashicorp/terraform), cool right?
 
 ### Supported providers (Actively expanding)
 
-Currently, we support: [AWS](https://docs.cloudquery.io/aws), [GCP](https://docs.cloudquery.io/gcp), [Okta](https://docs.cloudquery.io/okta/table-reference) (Azure and DigitalOcean are on the roadmap)
-If you want to us to add a new provider please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
+Currently, we support: [AWS](https://docs.cloudquery.io/aws),
+[Azure](https://docs.cloudquery.io/azure), [GCP](https://docs.cloudquery.io/gcp),
+[Okta](https://docs.cloudquery.io/okta/table-reference).
+If you want us to add a new provider or resource please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
 ## Download & install
 
@@ -51,7 +53,7 @@ First generate a `config.yml` file that will describe which resources you want c
 and transform resources to the specified SQL database by running the following command:
  
 ```shell script
-./cloudquery gen config aws
+./cloudquery gen config aws # choose one or more from: [aws azure gcp okta]
 # ./cloudquery gen config gcp okta # This will generate a config containing gcp and okta providers
 # ./cloudquery gen config --help # Show all possible auto generated configs and flags
  ```
@@ -97,6 +99,7 @@ Full Documentation, resources and SQL schema definitions are available [here](ht
 You should be authenticated with an AWS account with correct permission with either option (see full [documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html)):
  * `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
  * `~/.aws/credentials` created via `aws configure`
+ * `AWS_PROFILE`
  
 Multi-account AWS support is available by using an account which can [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to other accounts.
 
@@ -105,6 +108,13 @@ In your config.yml you need to specify role_arns if you want to query multiple a
  accounts:
      - role_arn: <arn>
 ```
+ 
+#### Azure
+
+You should set the following environment variables:
+`AZURE_CLIENT_ID`,`AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID` which you can generate via `az ad sp create-for-rbac --sdk-auth`.
+See full details at [environment based authentication for sdk](https://docs.microsoft.com/en-us/azure/developer/go/azure-sdk-authorization#use-environment-based-authentication)
+
  
 #### GCP
 
