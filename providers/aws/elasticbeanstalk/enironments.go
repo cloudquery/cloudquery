@@ -129,7 +129,7 @@ func (c *Client) transformEnvironmentResources(value *elasticbeanstalk.Environme
 }
 
 func (c *Client) transformEnvironment(value *elasticbeanstalk.EnvironmentDescription) *Environment {
-	return &Environment{
+	res := Environment{
 		Region:                       c.region,
 		AccountID:                    c.accountID,
 		AbortableOperationInProgress: value.AbortableOperationInProgress,
@@ -141,19 +141,27 @@ func (c *Client) transformEnvironment(value *elasticbeanstalk.EnvironmentDescrip
 		EndpointURL:                  value.EndpointURL,
 		EnvironmentArn:               value.EnvironmentArn,
 		EnvironmentId:                value.EnvironmentId,
-		EnvironmentLinks:             c.transformEnvironmentDescriptionEnvironmentLinks(value.EnvironmentLinks),
 		EnvironmentName:              value.EnvironmentName,
 		Health:                       value.Health,
 		HealthStatus:                 value.HealthStatus,
 		OperationsRole:               value.OperationsRole,
 		PlatformArn:                  value.PlatformArn,
-		Resources:                    c.transformEnvironmentResources(value.Resources),
 		SolutionStackName:            value.SolutionStackName,
 		Status:                       value.Status,
 		TemplateName:                 value.TemplateName,
 		Tier:                         value.Tier,
 		VersionLabel:                 value.VersionLabel,
 	}
+
+	if value.EnvironmentLinks != nil {
+		res.EnvironmentLinks = c.transformEnvironmentDescriptionEnvironmentLinks(value.EnvironmentLinks)
+	}
+
+	if value.Resources != nil {
+		res.Resources = c.transformEnvironmentResources(value.Resources)
+	}
+
+	return &res
 }
 
 func (c *Client) transformEnvironments(values []*elasticbeanstalk.EnvironmentDescription) []*Environment {
