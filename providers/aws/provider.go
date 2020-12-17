@@ -215,7 +215,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 	if err != nil {
 		if awsErr, ok := err.(awserr.Error); ok {
 			if awsErr.Code() == "AccessDenied" || awsErr.Code() == "AccessDeniedException" {
-				p.log.Warn("Skipping resource. Access denied", zap.String("resource", "s3.buckets"), zap.Error(err))
+				p.log.Warn("Skipping resource. Access denied", zap.String("resource", fullResourceName), zap.Error(err))
 				return
 			}
 		}
