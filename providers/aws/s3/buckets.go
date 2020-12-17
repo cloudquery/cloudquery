@@ -3,7 +3,6 @@ package s3
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
@@ -198,14 +197,15 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 func (c *Client) transformBuckets(values []*s3.Bucket) ([]*Bucket, error) {
 	var tValues []*Bucket
 	for _, v := range values {
-
 		output, err := c.svc.GetBucketLocation(&s3.GetBucketLocationInput{
 			Bucket: v.Name,
 		})
+
 		if err != nil {
 			if err.(awserr.Error).Code() == "NoSuchBucket" {
 				// https://aws.amazon.com/premiumsupport/knowledge-center/s3-listing-deleted-bucket/
 				// deleted buckets may show up
+				c.log.Debug("Skipping bucket (already deleted)", zap.String("bucket", *v.Name))
 				continue
 			}
 			return nil, err
@@ -215,13 +215,8 @@ func (c *Client) transformBuckets(values []*s3.Bucket) ([]*Bucket, error) {
 			// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
 			c.region = aws.StringValue(output.LocationConstraint)
 		}
-		sess, err := session.NewSession(&aws.Config{
-			Region: aws.String(c.region)},
-		)
-		if err != nil {
-			return nil, err
-		}
-		c.svc = s3.New(sess, c.awsConfig)
+		c.awsConfig.Region = aws.String(c.region)
+		c.svc = s3.New(c.session, c.awsConfig)
 
 		tBucket, err := c.transformBucket(v)
 		if err != nil {

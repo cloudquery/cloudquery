@@ -156,6 +156,7 @@ func (p *Provider) Run(config interface{}) error {
 
 func (p *Provider) initClients() {
 	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
+	noRegionLog := p.log.With(zap.String("account_id", p.accountID))
 	p.resourceClients["autoscaling"] = autoscaling.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["cloudtrail"] = cloudtrail.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
@@ -177,13 +178,13 @@ func (p *Provider) initClients() {
 	p.resourceClients["fsx"] = fsx.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["iam"] = iam.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
+		p.db, noRegionLog, p.accountID, p.region)
 	p.resourceClients["rds"] = rds.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["redshift"] = redshift.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["s3"] = s3.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
+		p.db, noRegionLog, p.accountID, p.region)
 	p.resourceClients["elbv2"] = elbv2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
 		p.db, zapLog, p.accountID, p.region)
 	p.resourceClients["kms"] = kms.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
