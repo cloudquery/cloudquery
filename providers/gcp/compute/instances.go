@@ -389,7 +389,7 @@ func (c *Client) transformMetadataItems(value *compute.Metadata) []*InstanceMeta
 }
 
 func (c *Client) transformInstance(value *compute.Instance) *Instance {
-	return &Instance{
+	res := Instance{
 		ProjectID:    c.projectID,
 		CanIpForward: value.CanIpForward,
 		ConfidentialInstanceConfigEnableConfidentialCompute: value.ConfidentialInstanceConfig.EnableConfidentialCompute,
@@ -415,29 +415,38 @@ func (c *Client) transformInstance(value *compute.Instance) *Instance {
 		NetworkInterfaces:          c.transformInstanceNetworkInterfaces(value.NetworkInterfaces),
 		PrivateIpv6GoogleAccess:    value.PrivateIpv6GoogleAccess,
 
-		ReservationAffinityKey:                    value.ReservationAffinity.Key,
-		ReservationAffinityConsumeReservationType: value.ReservationAffinity.ConsumeReservationType,
-		ReservationAffinityValues:                 c.transformInstanceReservationAffinityValues(value.ReservationAffinity.Values),
-
 		ResourcePolicies: c.transformInstanceResourcePolicies(value.ResourcePolicies),
-
-		SchedulingAutomaticRestart:  value.Scheduling.AutomaticRestart,
-		SchedulingMinNodeCpus:       value.Scheduling.MinNodeCpus,
-		SchedulingOnHostMaintenance: value.Scheduling.OnHostMaintenance,
-		SchedulingNodeAffinities:    c.transformInstanceSchedulingNodeAffinities(value.Scheduling.NodeAffinities),
 
 		SelfLink:        value.SelfLink,
 		ServiceAccounts: c.transformInstanceServiceAccounts(value.ServiceAccounts),
-		ShieldedInstanceConfigEnableIntegrityMonitoring:      value.ShieldedInstanceConfig.EnableIntegrityMonitoring,
-		ShieldedInstanceConfigEnableSecureBoot:               value.ShieldedInstanceConfig.EnableSecureBoot,
-		ShieldedInstanceConfigEnableVtpm:                     value.ShieldedInstanceConfig.EnableVtpm,
-		ShieldedInstanceIntegrityPolicyUpdateAutoLearnPolicy: value.ShieldedInstanceIntegrityPolicy.UpdateAutoLearnPolicy,
+
 		StartRestricted: value.StartRestricted,
 		Status:          value.Status,
 		StatusMessage:   value.StatusMessage,
 		Tags:            c.transformTags(value.Tags),
 		Zone:            value.Zone,
 	}
+
+	if value.ReservationAffinity != nil {
+		res.ReservationAffinityKey = value.ReservationAffinity.Key
+		res.ReservationAffinityConsumeReservationType = value.ReservationAffinity.ConsumeReservationType
+		res.ReservationAffinityValues = c.transformInstanceReservationAffinityValues(value.ReservationAffinity.Values)
+	}
+	if value.Scheduling != nil {
+		res.SchedulingAutomaticRestart = value.Scheduling.AutomaticRestart
+		res.SchedulingMinNodeCpus = value.Scheduling.MinNodeCpus
+		res.SchedulingOnHostMaintenance = value.Scheduling.OnHostMaintenance
+		res.SchedulingNodeAffinities = c.transformInstanceSchedulingNodeAffinities(value.Scheduling.NodeAffinities)
+	}
+
+	if value.ShieldedInstanceConfig != nil {
+		res.ShieldedInstanceConfigEnableIntegrityMonitoring = value.ShieldedInstanceConfig.EnableIntegrityMonitoring
+		res.ShieldedInstanceConfigEnableSecureBoot = value.ShieldedInstanceConfig.EnableSecureBoot
+		res.ShieldedInstanceConfigEnableVtpm = value.ShieldedInstanceConfig.EnableVtpm
+		res.ShieldedInstanceIntegrityPolicyUpdateAutoLearnPolicy = value.ShieldedInstanceIntegrityPolicy.UpdateAutoLearnPolicy
+	}
+
+	return &res
 }
 
 func (c *Client) transformInstances(values []*compute.Instance) []*Instance {
