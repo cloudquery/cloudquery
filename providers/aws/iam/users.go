@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
-	"log"
 	"time"
 )
 
@@ -58,10 +57,10 @@ func (UserTag) TableName() string {
 	return "aws_iam_user_tags"
 }
 
-func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) *UserAccessKey {
+func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) (*UserAccessKey, error) {
 	output, err := c.svc.GetAccessKeyLastUsed(&iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	res := UserAccessKey{
@@ -75,15 +74,19 @@ func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) *UserAccessKey
 		res.LastUsed = output.AccessKeyLastUsed.LastUsedDate
 		res.LastUsedServiceName = output.AccessKeyLastUsed.ServiceName
 	}
-	return &res
+	return &res, nil
 }
 
-func (c *Client) transformAccessKeys(values []*iam.AccessKeyMetadata) []*UserAccessKey {
+func (c *Client) transformAccessKeys(values []*iam.AccessKeyMetadata) ([]*UserAccessKey, error) {
 	var tValues []*UserAccessKey
 	for _, v := range values {
-		tValues = append(tValues, c.transformAccessKey(v))
+		tValue, err := c.transformAccessKey(v)
+		if err != nil {
+			return nil, err
+		}
+		tValues = append(tValues, tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 func (c *Client) transformUserTag(value *iam.Tag) *UserTag {
@@ -114,7 +117,7 @@ type ReportUser struct {
 	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
 }
 
-func (c *Client) transformReportUser(reportUser *ReportUser) *User {
+func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 	var err error
 	res := User{
 		AccountID:  c.accountID,
@@ -127,7 +130,7 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 	if reportUser.User != "<root_account>" {
 		output, err := c.svc.GetUser(&iam.GetUserInput{UserName: &reportUser.User})
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		res.Path = output.User.Path
 		res.PermissionsBoundary = output.User.PermissionsBoundary
@@ -138,9 +141,12 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 			UserName: &reportUser.User,
 		})
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
-		res.AccessKeys = c.transformAccessKeys(outputAccessKeys.AccessKeyMetadata)
+		res.AccessKeys, err = c.transformAccessKeys(outputAccessKeys.AccessKeyMetadata)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	switch reportUser.PasswordEnabled {
@@ -176,15 +182,19 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 		res.AccessKeys[1].LastRotated = &lastRotated2
 	}
 
-	return &res
+	return &res, nil
 }
 
-func (c *Client) transformReportUsers(values []*ReportUser) []*User {
+func (c *Client) transformReportUsers(values []*ReportUser) ([]*User, error) {
 	var tValues []*User
 	for _, v := range values {
-		tValues = append(tValues, c.transformReportUser(v))
+		tValue, err := c.transformReportUser(v)
+		if err != nil {
+			return nil, err
+		}
+		tValues = append(tValues, tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 func (c *Client) users(_ interface{}) error {
@@ -228,7 +238,11 @@ func (c *Client) users(_ interface{}) error {
 	}
 
 	c.db.Where("account_id = ?", c.accountID).Delete(&User{})
-	common.ChunkedCreate(c.db, c.transformReportUsers(users))
+	tValues, err := c.transformReportUsers(users)
+	if err != nil {
+		return err
+	}
+	common.ChunkedCreate(c.db, tValues)
 	c.log.Info("Fetched resources", zap.String("resource", "iam.users"), zap.Int("count", len(users)))
 	return nil
 }

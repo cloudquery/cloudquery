@@ -213,6 +213,6 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 
 	err := p.resourceClients[service].CollectResource(resourceName, config)
 	if err != nil {
-		log.Fatal(err)
+		p.log.Warn("Error collecting resource. Skipping...", zap.String("resource", resourceName), zap.Error(err))
 	}
 }

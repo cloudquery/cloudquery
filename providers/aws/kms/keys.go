@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"log"
 	"time"
 )
 
@@ -59,18 +58,18 @@ func (KeySigningAlgorithm) TableName() string {
 	return "aws_kms_key_signing_algorithms"
 }
 
-func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) *Key {
+func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) (*Key, error) {
 	output, err := c.svc.DescribeKey(&kms.DescribeKeyInput{
 		KeyId: value.KeyId,
 	})
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	outputKeyRotation, err := c.svc.GetKeyRotationStatus(&kms.GetKeyRotationStatusInput{
 		KeyId: value.KeyId,
 	})
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	res := Key{
 		Region:                c.region,
@@ -105,15 +104,19 @@ func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) *Key {
 		})
 	}
 
-	return &res
+	return &res, nil
 }
 
-func (c *Client) transformKeyListEntrys(values []*kms.KeyListEntry) []*Key {
+func (c *Client) transformKeyListEntrys(values []*kms.KeyListEntry) ([]*Key, error) {
 	var tValues []*Key
 	for _, v := range values {
-		tValues = append(tValues, c.transformKeyListEntry(v))
+		tValue, err := c.transformKeyListEntry(v)
+		if err != nil {
+			return nil, err
+		}
+		tValues = append(tValues, tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 func (c *Client) keys(gConfig interface{}) error {
@@ -139,7 +142,11 @@ func (c *Client) keys(gConfig interface{}) error {
 			return err
 		}
 		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Key{})
-		common.ChunkedCreate(c.db, c.transformKeyListEntrys(output.Keys))
+		tValues, err := c.transformKeyListEntrys(output.Keys)
+		if tValues != nil {
+			return err
+		}
+		common.ChunkedCreate(c.db, tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "kms.keys"), zap.Int("count", len(output.Keys)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break
