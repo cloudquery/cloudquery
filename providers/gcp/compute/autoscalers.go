@@ -88,20 +88,8 @@ func (c *Client) transformAutoscalerStatusDetailss(values []*compute.AutoscalerS
 }
 
 func (c *Client) transformAutoscaler(value *compute.Autoscaler) *Autoscaler {
-	return &Autoscaler{
+	res := Autoscaler{
 		ProjectID: c.projectID,
-
-		CoolDownPeriodSec:                         value.AutoscalingPolicy.CoolDownPeriodSec,
-		CpuUtilizationUtilizationTarget:           value.AutoscalingPolicy.CpuUtilization.UtilizationTarget,
-		CustomMetricUtilizations:                  c.transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(value.AutoscalingPolicy.CustomMetricUtilizations),
-		LoadBalancingUtilizationUtilizationTarget: value.AutoscalingPolicy.LoadBalancingUtilization.UtilizationTarget,
-		MaxNumReplicas:                            value.AutoscalingPolicy.MaxNumReplicas,
-		MinNumReplicas:                            value.AutoscalingPolicy.MinNumReplicas,
-		Mode:                                      value.AutoscalingPolicy.Mode,
-		MaxScaledInReplicasCalculated:             value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Calculated,
-		MaxScaledInReplicasFixed:                  value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Fixed,
-		MaxScaledInReplicasPercent:                value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Percent,
-		TimeWindowSec:                             value.AutoscalingPolicy.ScaleInControl.TimeWindowSec,
 
 		CreationTimestamp: value.CreationTimestamp,
 		Description:       value.Description,
@@ -116,6 +104,34 @@ func (c *Client) transformAutoscaler(value *compute.Autoscaler) *Autoscaler {
 		Target:            value.Target,
 		Zone:              value.Zone,
 	}
+
+	if value.AutoscalingPolicy != nil {
+		res.CoolDownPeriodSec = value.AutoscalingPolicy.CoolDownPeriodSec
+
+		if value.AutoscalingPolicy.CpuUtilization != nil {
+			res.CpuUtilizationUtilizationTarget = value.AutoscalingPolicy.CpuUtilization.UtilizationTarget
+		}
+
+		res.CustomMetricUtilizations = c.transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(value.AutoscalingPolicy.CustomMetricUtilizations)
+		if value.AutoscalingPolicy.LoadBalancingUtilization != nil {
+			res.LoadBalancingUtilizationUtilizationTarget = value.AutoscalingPolicy.LoadBalancingUtilization.UtilizationTarget
+		}
+
+		res.MaxNumReplicas = value.AutoscalingPolicy.MaxNumReplicas
+		res.MinNumReplicas = value.AutoscalingPolicy.MinNumReplicas
+		res.Mode = value.AutoscalingPolicy.Mode
+
+		if value.AutoscalingPolicy.ScaleInControl != nil {
+			if value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas != nil {
+				res.MaxScaledInReplicasCalculated = value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Calculated
+				res.MaxScaledInReplicasFixed = value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Fixed
+				res.MaxScaledInReplicasPercent = value.AutoscalingPolicy.ScaleInControl.MaxScaledInReplicas.Percent
+			}
+			res.TimeWindowSec = value.AutoscalingPolicy.ScaleInControl.TimeWindowSec
+		}
+	}
+
+	return &res
 }
 
 func (c *Client) transformAutoscalers(values []*compute.Autoscaler) []*Autoscaler {

@@ -114,16 +114,11 @@ func (c *Client) transformImageStorageLocations(values []string) []*ImageStorage
 }
 
 func (c *Client) transformImage(value *compute.Image) *Image {
-	return &Image{
+	res := Image{
 		Region:                c.region,
 		ProjectID:             c.projectID,
 		ArchiveSizeBytes:      value.ArchiveSizeBytes,
 		CreationTimestamp:     value.CreationTimestamp,
-		DeprecatedDeleted:     value.Deprecated.Deleted,
-		DeprecatedDeprecated:  value.Deprecated.Deprecated,
-		DeprecatedObsolete:    value.Deprecated.Obsolete,
-		DeprecatedReplacement: value.Deprecated.Replacement,
-		DeprecatedState:       value.Deprecated.State,
 		Description:           value.Description,
 		DiskSizeGb:            value.DiskSizeGb,
 		Family:                value.Family,
@@ -135,9 +130,6 @@ func (c *Client) transformImage(value *compute.Image) *Image {
 		LicenseCodes:          c.transformImageLicenseCodes(value.LicenseCodes),
 		Licenses:              c.transformImageLicenses(value.Licenses),
 		Name:                  value.Name,
-		RawDiskContainerType:  value.RawDisk.ContainerType,
-		RawDiskSha1Checksum:   value.RawDisk.Sha1Checksum,
-		RawDiskSource:         value.RawDisk.Source,
 		SelfLink:              value.SelfLink,
 		SourceDisk:            value.SourceDisk,
 		SourceDiskId:          value.SourceDiskId,
@@ -149,6 +141,22 @@ func (c *Client) transformImage(value *compute.Image) *Image {
 		Status:                value.Status,
 		StorageLocations:      c.transformImageStorageLocations(value.StorageLocations),
 	}
+
+	if value.Deprecated != nil {
+		res.DeprecatedDeleted = value.Deprecated.Deleted
+		res.DeprecatedDeprecated = value.Deprecated.Deprecated
+		res.DeprecatedObsolete = value.Deprecated.Obsolete
+		res.DeprecatedReplacement = value.Deprecated.Replacement
+		res.DeprecatedState = value.Deprecated.State
+	}
+
+	if value.RawDisk != nil {
+		res.RawDiskContainerType = value.RawDisk.ContainerType
+		res.RawDiskSha1Checksum = value.RawDisk.Sha1Checksum
+		res.RawDiskSource = value.RawDisk.Source
+	}
+	
+	return &res
 }
 
 func (c *Client) transformImages(values []*compute.Image) []*Image {

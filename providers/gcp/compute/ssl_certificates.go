@@ -70,9 +70,12 @@ func (c *Client) transformSSLCertificate(value *compute.SslCertificate) *SSLCert
 		Name:                    value.Name,
 		Region:                  value.Region,
 		SelfLink:                value.SelfLink,
-		SelfManagedCertificate:  value.SelfManaged.Certificate,
+
 		SubjectAlternativeNames: c.transformSSLCertificateSubjectAlternativeNames(value.SubjectAlternativeNames),
 		Type:                    value.Type,
+	}
+	if value.SelfManaged != nil {
+		res.SelfManagedCertificate = value.SelfManaged.Certificate
 	}
 
 	if value.Managed != nil {

@@ -392,13 +392,12 @@ func (c *Client) transformInstance(value *compute.Instance) *Instance {
 	res := Instance{
 		ProjectID:    c.projectID,
 		CanIpForward: value.CanIpForward,
-		ConfidentialInstanceConfigEnableConfidentialCompute: value.ConfidentialInstanceConfig.EnableConfidentialCompute,
+
 		CpuPlatform:                value.CpuPlatform,
 		CreationTimestamp:          value.CreationTimestamp,
 		DeletionProtection:         value.DeletionProtection,
 		Description:                value.Description,
 		Disks:                      c.transformInstanceAttachedDisks(value.Disks),
-		DisplayDeviceEnableDisplay: value.DisplayDevice.EnableDisplay,
 		Fingerprint:                value.Fingerprint,
 		GuestAccelerators:          c.transformInstanceAcceleratorConfigs(value.GuestAccelerators),
 		Hostname:                   value.Hostname,
@@ -425,6 +424,14 @@ func (c *Client) transformInstance(value *compute.Instance) *Instance {
 		StatusMessage:   value.StatusMessage,
 		Tags:            c.transformTags(value.Tags),
 		Zone:            value.Zone,
+	}
+
+	if value.DisplayDevice != nil {
+		res.DisplayDeviceEnableDisplay = value.DisplayDevice.EnableDisplay
+	}
+
+	if value.ConfidentialInstanceConfig != nil {
+		res.ConfidentialInstanceConfigEnableConfidentialCompute = value.ConfidentialInstanceConfig.EnableConfidentialCompute
 	}
 
 	if value.ReservationAffinity != nil {
