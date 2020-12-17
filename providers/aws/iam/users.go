@@ -167,12 +167,12 @@ func (c *Client) transformReportUser(reportUser *ReportUser) *User {
 	}
 
 	lastRotated1, err := time.Parse(time.RFC3339, reportUser.AccessKey1LastRotated)
-	if err == nil {
+	if err == nil && len(res.AccessKeys) > 0 {
 		res.AccessKeys[0].LastRotated = &lastRotated1
 	}
 
 	lastRotated2, err := time.Parse(time.RFC3339, reportUser.AccessKey2LastRotated)
-	if err == nil {
+	if err == nil && len(res.AccessKeys) > 1 {
 		res.AccessKeys[1].LastRotated = &lastRotated2
 	}
 
