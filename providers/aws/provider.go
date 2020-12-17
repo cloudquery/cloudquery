@@ -213,6 +213,6 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 
 	err := p.resourceClients[service].CollectResource(resourceName, config)
 	if err != nil {
-		log.Fatal(err)
+		p.log.Sugar().Warnf("Skipping %s resources due to an error when querying: %v", fullResourceName, err)
 	}
 }
