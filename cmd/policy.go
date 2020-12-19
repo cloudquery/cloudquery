@@ -50,10 +50,10 @@ var awsCIS = `
     query: >
       SELECT account_id, minimum_password_length FROM aws_iam_password_policies
        WHERE minimum_password_length < 14
-  - name: "AWS CIS check 1.10. Ensure IAM password policy requires minimum length of 14 or greater"
+  - name: "AWS CIS check 1.10. Ensure IAM password policy prevents password reuse" 
     query: >
       SELECT account_id, password_reuse_prevention FROM aws_iam_password_policies
-       WHERE password_reuse_prevention is NULL or password_reuse_prevention != 1
+       WHERE password_reuse_prevention is NULL or password_reuse_prevention > 24
   - name: "AWS CIS check 1.11. Ensure IAM password policy expires passwords within 90 days or less"
     query: >
       SELECT account_id, max_password_age FROM aws_iam_password_policies
