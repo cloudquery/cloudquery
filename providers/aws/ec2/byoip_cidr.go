@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/cloudquery/cloudquery/providers/common"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type ByoipCidr struct {
@@ -40,20 +41,18 @@ func (c *Client) transformByoipCidrs(values []*ec2.ByoipCidr) []*ByoipCidr {
 	return tValues
 }
 
+func MigrateByoipCidrs(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&ByoipCidr{},
+	)
+}
+
 func (c *Client) byoipCidrs(_ interface{}) error {
 	MaxResults := int64(100)
 	config := ec2.DescribeByoipCidrsInput{
 		MaxResults: &MaxResults,
 	}
-	if !c.resourceMigrated["ec2ByoipCidr"] {
-		err := c.db.AutoMigrate(
-			&ByoipCidr{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2ByoipCidr"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeByoipCidrs(&config)
 		if err != nil {

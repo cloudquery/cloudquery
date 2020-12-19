@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type SecurityGroup struct {
@@ -223,27 +224,25 @@ func (c *Client) transformSecurityGroups(values []*ec2.SecurityGroup) []*Securit
 	return tValues
 }
 
+func MigrateSecurityGroups(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&SecurityGroup{},
+		&SecurityGroupIpPermission{},
+		&SecurityGroupIpRange{},
+		&SecurityGroupIpv6Range{},
+		&SecurityGroupPrefixListId{},
+		&SecurityGroupUserIdGroupPair{},
+		&SecurityGroupTag{},
+	)
+}
+
 func (c *Client) securityGroups(gConfig interface{}) error {
 	var config ec2.DescribeSecurityGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2SecurityGroup"] {
-		err := c.db.AutoMigrate(
-			&SecurityGroup{},
-			&SecurityGroupIpPermission{},
-			&SecurityGroupIpRange{},
-			&SecurityGroupIpv6Range{},
-			&SecurityGroupPrefixListId{},
-			&SecurityGroupUserIdGroupPair{},
-			&SecurityGroupTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2SecurityGroup"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeSecurityGroups(&config)
 		if err != nil {

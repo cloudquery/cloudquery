@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -80,22 +81,20 @@ func (c *Client) transformRoles(values []*iam.Role) []*Role {
 	return tValues
 }
 
+func MigrateRoles(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Role{},
+		&RoleTag{},
+	)
+}
+
 func (c *Client) roles(gConfig interface{}) error {
 	var config iam.ListRolesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["iamRole"] {
-		err := c.db.AutoMigrate(
-			&Role{},
-			&RoleTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamRole"] = true
-	}
+
 	for {
 		output, err := c.svc.ListRoles(&config)
 		if err != nil {

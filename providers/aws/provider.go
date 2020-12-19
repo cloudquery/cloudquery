@@ -67,11 +67,54 @@ var globalServices = map[string]bool{
 
 var globalCollectedResources = map[string]bool{}
 
+var migrateFunctions = []func(*gorm.DB) error{
+	autoscaling.MigrateLaunchConfigurations,
+	cloudtrail.MigrateTrails,
+	directconnect.MigrateGateways,
+	ec2.MigrateByoipCidrs,
+	ec2.MigrateCustomerGateways,
+	ec2.MigrateFlowLogs,
+	ec2.MigrateImages,
+	ec2.MigrateInstances,
+	ec2.MigrateInternetGateways,
+	ec2.MigrateNatGateways,
+	ec2.MigrateNetworkAcls,
+	ec2.MigrateRouteTables,
+	ec2.MigrateSecurityGroups,
+	ec2.MigrateSubnets,
+	ec2.MigrateVPCPeeringConnections,
+	ec2.MigrateVPCs,
+	ecr.MigrateImageIdentifiers,
+	ecs.MigrateClusters,
+	efs.MigrateFileSystems,
+	elasticbeanstalk.MigrateEnvironments,
+	elbv2.MigrateLoadBalancers,
+	emr.MigrateClusters,
+	fsx.MigrateBackups,
+	iam.MigrateGroups,
+	iam.MigratePasswordPolicies,
+	iam.MigratePolicies,
+	iam.MigrateRoles,
+	iam.MigrateUsers,
+	kms.MigrateKeys,
+	rds.MigrateClusters,
+	rds.MigrateCertificates,
+	redshift.MigrateClusters,
+	s3.MigrateBuckets,
+}
+
 func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:              db,
 		resourceClients: map[string]resource.ClientInterface{},
 		log:             log,
+	}
+	log.Info("Creating tables if needed")
+	for _, f := range migrateFunctions {
+		err := f(db)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return &p, nil
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -172,25 +173,23 @@ func (c *Client) transformEnvironments(values []*elasticbeanstalk.EnvironmentDes
 	return tValues
 }
 
+func MigrateEnvironments(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Environment{},
+		&EnvironmentLink{},
+		&EnvironmentResource{},
+		&EnvironmentLoadBalancer{},
+		&EnvironmentListener{},
+	)
+}
+
 func (c *Client) environments(gConfig interface{}) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["elasticbeanstalk_environments"] {
-		err := c.db.AutoMigrate(
-			&Environment{},
-			&EnvironmentLink{},
-			&EnvironmentResource{},
-			&EnvironmentLoadBalancer{},
-			&EnvironmentListener{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["elasticbeanstalk_environments"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeEnvironments(&config)
 		if err != nil {

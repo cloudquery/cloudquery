@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -88,22 +89,20 @@ func (c *Client) transformFlowLogs(values []*ec2.FlowLog) []*FlowLog {
 	return tValues
 }
 
+func MigrateFlowLogs(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&FlowLog{},
+		&FlowLogTag{},
+	)
+}
+
 func (c *Client) FlowLogs(gConfig interface{}) error {
 	var config ec2.DescribeFlowLogsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2FlowLog"] {
-		err := c.db.AutoMigrate(
-			&FlowLog{},
-			&FlowLogTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2FlowLog"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeFlowLogs(&config)
 		if err != nil {

@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -42,21 +43,19 @@ func (c *Client) transformGroups(values []*iam.Group) []*Group {
 	return tValues
 }
 
+func MigrateGroups(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Group{},
+	)
+}
+
 func (c *Client) groups(gConfig interface{}) error {
 	var config iam.ListGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["iamGroup"] {
-		err := c.db.AutoMigrate(
-			&Group{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamGroup"] = true
-	}
+
 	for {
 		output, err := c.svc.ListGroups(&config)
 		if err != nil {

@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Gateway struct {
@@ -45,21 +46,19 @@ func (c *Client) transformGateways(values []*directconnect.Gateway) []*Gateway {
 	return tValues
 }
 
+func MigrateGateways(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Gateway{},
+	)
+}
+
 func (c *Client) gateways(gConfig interface{}) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["directconnectGateway"] {
-		err := c.db.AutoMigrate(
-			&Gateway{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["directconnectGateway"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeDirectConnectGateways(&config)
 		if err != nil {

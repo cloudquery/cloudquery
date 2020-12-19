@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Subnet struct {
@@ -121,23 +122,21 @@ func (c *Client) transformSubnets(values []*ec2.Subnet) []*Subnet {
 	return tValues
 }
 
+func MigrateSubnets(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Subnet{},
+		&SubnetIpv6CidrBlockAssociation{},
+		&SubnetTag{},
+	)
+}
+
 func (c *Client) subnets(gConfig interface{}) error {
 	var config ec2.DescribeSubnetsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2Subnet"] {
-		err := c.db.AutoMigrate(
-			&Subnet{},
-			&SubnetIpv6CidrBlockAssociation{},
-			&SubnetTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2Subnet"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeSubnets(&config)
 		if err != nil {

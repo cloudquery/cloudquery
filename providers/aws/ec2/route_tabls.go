@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type RouteTable struct {
@@ -183,25 +184,23 @@ func (c *Client) transformRouteTables(values []*ec2.RouteTable) []*RouteTable {
 	return tValues
 }
 
+func MigrateRouteTables(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&RouteTable{},
+		&RouteTableAssociation{},
+		&RouteTablePropagatingVgw{},
+		&RouteTableRoute{},
+		&RouteTableTag{},
+	)
+}
+
 func (c *Client) routeTables(gConfig interface{}) error {
 	var config ec2.DescribeRouteTablesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2RouteTable"] {
-		err := c.db.AutoMigrate(
-			&RouteTable{},
-			&RouteTableAssociation{},
-			&RouteTablePropagatingVgw{},
-			&RouteTableRoute{},
-			&RouteTableTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2RouteTable"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeRouteTables(&config)
 		if err != nil {

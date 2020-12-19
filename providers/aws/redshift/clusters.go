@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -342,29 +343,27 @@ func (c *Client) transformClusters(values []*redshift.Cluster) []*Cluster {
 	return tValues
 }
 
+func MigrateClusters(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Cluster{},
+		&ClusterNode{},
+		&ClusterParameterGroupStatus{},
+		&ClusterParameterStatus{},
+		&ClusterSecurityGroupMembership{},
+		&ClusterDeferredMaintenanceWindow{},
+		&ClusterIamRole{},
+		&ClusterTag{},
+		&ClusterVpcSecurityGroupMembership{},
+	)
+}
+
 func (c *Client) clusters(gConfig interface{}) error {
 	var config redshift.DescribeClustersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["redshiftCluster"] {
-		err := c.db.AutoMigrate(
-			&Cluster{},
-			&ClusterNode{},
-			&ClusterParameterGroupStatus{},
-			&ClusterParameterStatus{},
-			&ClusterSecurityGroupMembership{},
-			&ClusterDeferredMaintenanceWindow{},
-			&ClusterIamRole{},
-			&ClusterTag{},
-			&ClusterVpcSecurityGroupMembership{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["redshiftCluster"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeClusters(&config)
 		if err != nil {

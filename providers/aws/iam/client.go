@@ -15,7 +15,6 @@ type Client struct {
 	db               *gorm.DB
 	log              *zap.Logger
 	accountID        string
-	resourceMigrated map[string]bool
 	svc              *iam.IAM
 }
 
@@ -26,7 +25,6 @@ func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log
 		db:               db,
 		log:              log,
 		accountID:        accountID,
-		resourceMigrated: map[string]bool{},
 		svc:              iam.New(session, awsConfig),
 	}
 }
@@ -38,7 +36,7 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 	case "groups":
 		return c.groups(config)
 	case "policies":
-		return c.policys(config)
+		return c.policies(config)
 	case "roles":
 		return c.roles(config)
 	case "password_policies":

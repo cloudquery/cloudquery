@@ -6,6 +6,8 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"github.com/okta/okta-sdk-golang/v2/okta"
+	"gorm.io/gorm"
+
 	//"github.com/okta/okta-sdk-golang/v2/okta/query"
 	"go.uber.org/zap"
 	"log"
@@ -143,21 +145,18 @@ type UserConfig struct {
 	Filter string
 }
 
+func migrateUser(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&User{},
+		&UserGroup{},
+	)
+}
+
 func (p *Provider) users(gConfig interface{}) error {
 	var config UserConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
-	}
-	if !p.resourceMigrated["oktaUser"] {
-		err := p.db.AutoMigrate(
-			&User{},
-			&UserGroup{},
-		)
-		if err != nil {
-			return err
-		}
-		p.resourceMigrated["oktaUser"] = true
 	}
 
 	//filter := query.NewQueryParams()

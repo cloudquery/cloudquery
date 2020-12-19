@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type PasswordPolicy struct {
@@ -42,20 +43,17 @@ func (c *Client) transformPasswordPolicy(value *iam.PasswordPolicy) *PasswordPol
 	}
 }
 
+func MigratePasswordPolicies(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&PasswordPolicy{},
+	)
+}
+
 func (c *Client) passwordPolicies(gConfig interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
-	}
-	if !c.resourceMigrated["iamPasswordPolicy"] {
-		err := c.db.AutoMigrate(
-			&PasswordPolicy{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamPasswordPolicy"] = true
 	}
 
 	output, err := c.svc.GetAccountPasswordPolicy(&config)

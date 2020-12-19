@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -197,19 +198,15 @@ func (c *Client) transformReportUsers(values []*ReportUser) ([]*User, error) {
 	return tValues, nil
 }
 
-func (c *Client) users(_ interface{}) error {
-	if !c.resourceMigrated["iamUser"] {
-		err := c.db.AutoMigrate(
-			&User{},
-			&UserAccessKey{},
-			&UserTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamUser"] = true
-	}
+func MigrateUsers(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&User{},
+		&UserAccessKey{},
+		&UserTag{},
+	)
+}
 
+func (c *Client) users(_ interface{}) error {
 	var err error
 	var reportOutput *iam.GetCredentialReportOutput
 	for {

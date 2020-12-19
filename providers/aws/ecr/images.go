@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Image struct {
@@ -37,21 +38,19 @@ func (c *Client) transformImageIdentifiers(values []*ecr.ImageIdentifier) []*Ima
 	return tValues
 }
 
+func MigrateImageIdentifiers(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Image{},
+	)
+}
+
 func (c *Client) imageIdentifiers(gConfig interface{}) error {
 	var config ecr.ListImagesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ecrImageIdentifier"] {
-		err := c.db.AutoMigrate(
-			&Image{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ecrImageIdentifier"] = true
-	}
+
 	for {
 		output, err := c.svc.ListImages(&config)
 		if err != nil {

@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -227,24 +228,22 @@ func (c *Client) transformBuckets(values []*s3.Bucket) ([]*Bucket, error) {
 	return tValues, nil
 }
 
+func MigrateBuckets(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Bucket{},
+		&BucketGrant{},
+		&BucketCorsRule{},
+		&BucketEncryptionRule{},
+	)
+}
+
 func (c *Client) buckets(gConfig interface{}) error {
 	var config s3.ListBucketsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["s3Bucket"] {
-		err := c.db.AutoMigrate(
-			&Bucket{},
-			&BucketGrant{},
-			&BucketCorsRule{},
-			&BucketEncryptionRule{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["s3Bucket"] = true
-	}
+
 	output, err := c.svc.ListBuckets(&config)
 	if err != nil {
 		return err

@@ -41,6 +41,16 @@ type Config struct {
 	}
 }
 
+var migrateFunctions = []func(*gorm.DB) error {
+	resources.MigrateGroup,
+	sql.MigrateServer,
+	sql.MigrateDatabase,
+	postgresql.MigrateServer,
+	mysql.MigrateServer,
+	compute.MigrateDisk,
+	keyvault.MigrateVault,
+}
+
 func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:  db,
@@ -55,18 +65,12 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 		"compute.disks":      compute.Disks,
 		"keyvault.vaults":    keyvault.Vaults,
 	}
-	p.MigrationFuncs = map[string]MigrationFunc{
-		"resources.groups":   resources.MigrateGroup,
-		"sql.servers":        sql.MigrateServer,
-		"sql.databases":      sql.MigrateDatabase,
-		"postgresql.servers": postgresql.MigrateServer,
-		"mysql.servers":      mysql.MigrateServer,
-		"compute.disks":      compute.MigrateDisk,
-		"keyvault.vaults":    keyvault.MigrateVault,
-	}
-	err := p.migrateDatabase()
-	if err != nil {
-		return nil, err
+	log.Info("Creating tables if needed")
+	for _, f := range migrateFunctions {
+		err := f(db)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return &p, nil
 }
@@ -123,17 +127,6 @@ func (p *Provider) Run(config interface{}) error {
 			}
 		}
 		//wg.Wait()
-	}
-
-	return nil
-}
-
-func (p *Provider) migrateDatabase() error {
-	for _, v := range p.MigrationFuncs {
-		err := v(p.db)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil

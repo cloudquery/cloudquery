@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -440,32 +441,30 @@ func (c *Client) transformInstances(values []*ec2.Instance) []*Instance {
 	return tValues
 }
 
+func MigrateInstances(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Instance{},
+		&InstanceBlockDeviceMapping{},
+		&InstanceCapacityReservationSpecificationResponse{},
+		&InstanceElasticGpuAssociation{},
+		&InstanceElasticInferenceAcceleratorAssociation{},
+		&InstanceLicenseConfiguration{},
+		&InstanceNetworkInterface{},
+		&InstanceGroupIdentifier{},
+		&InstanceIpv6Address{},
+		&InstancePrivateIpAddress{},
+		&InstanceProductCode{},
+		&InstanceTag{},
+	)
+}
+
 func (c *Client) instances(gConfig interface{}) error {
 	var config ec2.DescribeInstancesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2Instance"] {
-		err := c.db.AutoMigrate(
-			&Instance{},
-			&InstanceBlockDeviceMapping{},
-			&InstanceCapacityReservationSpecificationResponse{},
-			&InstanceElasticGpuAssociation{},
-			&InstanceElasticInferenceAcceleratorAssociation{},
-			&InstanceLicenseConfiguration{},
-			&InstanceNetworkInterface{},
-			&InstanceGroupIdentifier{},
-			&InstanceIpv6Address{},
-			&InstancePrivateIpAddress{},
-			&InstanceProductCode{},
-			&InstanceTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2Instance"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeInstances(&config)
 		if err != nil {

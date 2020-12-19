@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -169,22 +170,20 @@ func (c *Client) transformLaunchConfigurations(values []*autoscaling.LaunchConfi
 	return tValues
 }
 
+func MigrateLaunchConfigurations(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&LaunchConfiguration{},
+		&LaunchConfigurationBlockDeviceMapping{},
+	)
+}
+
 func (c *Client) launchConfigurations(gConfig interface{}) error {
 	var config autoscaling.DescribeLaunchConfigurationsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["autoscalingLaunchConfiguration"] {
-		err := c.db.AutoMigrate(
-			&LaunchConfiguration{},
-			&LaunchConfigurationBlockDeviceMapping{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["autoscalingLaunchConfiguration"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeLaunchConfigurations(&config)
 		if err != nil {

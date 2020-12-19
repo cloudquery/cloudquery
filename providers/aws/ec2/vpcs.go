@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Vpc struct {
@@ -139,24 +140,22 @@ func (c *Client) transformVpcs(values []*ec2.Vpc) []*Vpc {
 	return tValues
 }
 
+func MigrateVPCs(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Vpc{},
+		&VpcCidrBlockAssociation{},
+		&VpcIpv6CidrBlockAssociation{},
+		&VpcTag{},
+	)
+}
+
 func (c *Client) vpcs(gConfig interface{}) error {
 	var config ec2.DescribeVpcsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2Vpc"] {
-		err := c.db.AutoMigrate(
-			&Vpc{},
-			&VpcCidrBlockAssociation{},
-			&VpcIpv6CidrBlockAssociation{},
-			&VpcTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2Vpc"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeVpcs(&config)
 		if err != nil {

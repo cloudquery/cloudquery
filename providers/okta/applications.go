@@ -6,6 +6,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"log"
 	"time"
 )
@@ -136,22 +137,20 @@ type ApplicationConfig struct {
 	Filter string
 }
 
+func migrateApplication(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Application{},
+		&ApplicationFeatures{},
+	)
+}
+
 func (p *Provider) applications(gConfig interface{}) error {
 	var config ApplicationConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !p.resourceMigrated["oktaApplication"] {
-		err := p.db.AutoMigrate(
-			&Application{},
-			&ApplicationFeatures{},
-		)
-		if err != nil {
-			return err
-		}
-		p.resourceMigrated["oktaApplication"] = true
-	}
+
 	//filter := query.NewQueryParams()
 	applications, _, err := p.client.Application.ListApplications(context.Background(), nil)
 	if err != nil {

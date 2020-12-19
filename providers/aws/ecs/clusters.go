@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Cluster struct {
@@ -164,25 +165,23 @@ func (c *Client) transformClusters(values []*ecs.Cluster) []*Cluster {
 	return tValues
 }
 
+func MigrateClusters(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Cluster{},
+		&ClusterKeyValuePair{},
+		&ClusterCapacityProviderStrategyItem{},
+		&ClusterSetting{},
+		&ClusterTag{},
+	)
+}
+
 func (c *Client) clusters(gConfig interface{}) error {
 	var config ecs.DescribeClustersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ecsCluster"] {
-		err := c.db.AutoMigrate(
-			&Cluster{},
-			&ClusterKeyValuePair{},
-			&ClusterCapacityProviderStrategyItem{},
-			&ClusterSetting{},
-			&ClusterTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ecsCluster"] = true
-	}
+
 
 	output, err := c.svc.DescribeClusters(&config)
 	if err != nil {

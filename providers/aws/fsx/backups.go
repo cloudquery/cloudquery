@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -80,22 +81,20 @@ func (c *Client) transformBackups(values []*fsx.Backup) []*Backup {
 	return tValues
 }
 
+func MigrateBackups(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Backup{},
+		&BackupTag{},
+	)
+}
+
 func (c *Client) backups(gConfig interface{}) error {
 	var config fsx.DescribeBackupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["fsxBackup"] {
-		err := c.db.AutoMigrate(
-			&Backup{},
-			&BackupTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["fsxBackup"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeBackups(&config)
 		if err != nil {

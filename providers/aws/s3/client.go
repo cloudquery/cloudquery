@@ -16,7 +16,6 @@ type Client struct {
 	log              *zap.Logger
 	accountID        string
 	region           string
-	resourceMigrated map[string]bool
 	svc              *s3.S3
 	awsConfig        *aws.Config
 }
@@ -31,7 +30,6 @@ func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *z
 		log:              log,
 		accountID:        accountID,
 		region:           "us-east-1",
-		resourceMigrated: map[string]bool{},
 		svc:              s3.New(sess, awsConfig),
 		awsConfig:        awsConfig,
 	}

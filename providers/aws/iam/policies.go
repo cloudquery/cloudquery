@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -46,7 +47,7 @@ func (c *Client) transformPolicy(value *iam.Policy) *Policy {
 	}
 }
 
-func (c *Client) transformPolicys(values []*iam.Policy) []*Policy {
+func (c *Client) transformPolicies(values []*iam.Policy) []*Policy {
 	var tValues []*Policy
 	for _, v := range values {
 		tValues = append(tValues, c.transformPolicy(v))
@@ -54,28 +55,26 @@ func (c *Client) transformPolicys(values []*iam.Policy) []*Policy {
 	return tValues
 }
 
-func (c *Client) policys(gConfig interface{}) error {
+func MigratePolicies(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Policy{},
+	)
+}
+
+func (c *Client) policies(gConfig interface{}) error {
 	var config iam.ListPoliciesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["iamPolicy"] {
-		err := c.db.AutoMigrate(
-			&Policy{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamPolicy"] = true
-	}
+
 	for {
 		output, err := c.svc.ListPolicies(&config)
 		if err != nil {
 			return err
 		}
 		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
-		common.ChunkedCreate(c.db, c.transformPolicys(output.Policies))
+		common.ChunkedCreate(c.db, c.transformPolicies(output.Policies))
 		c.log.Info("Fetched resources", zap.String("resource", "iam.policies"), zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
 			break

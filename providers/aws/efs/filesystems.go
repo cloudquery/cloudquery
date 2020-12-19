@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -90,22 +91,20 @@ func (c *Client) transformFileSystemDescriptions(values []*efs.FileSystemDescrip
 	return tValues
 }
 
+func MigrateFileSystems(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&FileSystemDescription{},
+		&FileSystemDescriptionTag{},
+	)
+}
+
 func (c *Client) fileSystems(gConfig interface{}) error {
 	var config efs.DescribeFileSystemsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["efsFileSystemDescription"] {
-		err := c.db.AutoMigrate(
-			&FileSystemDescription{},
-			&FileSystemDescriptionTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["efsFileSystemDescription"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeFileSystems(&config)
 		if err != nil {

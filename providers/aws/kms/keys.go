@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -119,23 +120,21 @@ func (c *Client) transformKeyListEntrys(values []*kms.KeyListEntry) ([]*Key, err
 	return tValues, nil
 }
 
+func MigrateKeys(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Key{},
+		&KeySigningAlgorithm{},
+		&KeyEncryptionAlgorithm{},
+	)
+}
+
 func (c *Client) keys(gConfig interface{}) error {
 	var config kms.ListKeysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["kmsKeys"] {
-		err := c.db.AutoMigrate(
-			&Key{},
-			&KeySigningAlgorithm{},
-			&KeyEncryptionAlgorithm{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["kmsKeys"] = true
-	}
+
 	for {
 		output, err := c.svc.ListKeys(&config)
 		if err != nil {

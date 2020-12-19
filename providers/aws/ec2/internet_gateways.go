@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type InternetGateway struct {
@@ -93,23 +94,21 @@ func (c *Client) transformInternetGateways(values []*ec2.InternetGateway) []*Int
 	return tValues
 }
 
+func MigrateInternetGateways(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&InternetGateway{},
+		&InternetGatewayAttachment{},
+		&InternetGatewayTag{},
+	)
+}
+
 func (c *Client) internetGateways(gConfig interface{}) error {
 	var config ec2.DescribeInternetGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2InternetGateway"] {
-		err := c.db.AutoMigrate(
-			&InternetGateway{},
-			&InternetGatewayAttachment{},
-			&InternetGatewayTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2InternetGateway"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeInternetGateways(&config)
 		if err != nil {

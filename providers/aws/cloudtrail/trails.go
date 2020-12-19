@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Trail struct {
@@ -66,20 +67,17 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) []*Trail {
 	return tValues
 }
 
+func MigrateTrails(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Trail{},
+	)
+}
+
 func (c *Client) trails(gConfig interface{}) error {
 	var config cloudtrail.DescribeTrailsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
-	}
-	if !c.resourceMigrated["cloudtrailTrail"] {
-		err := c.db.AutoMigrate(
-			&Trail{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["cloudtrailTrail"] = true
 	}
 
 	output, err := c.svc.DescribeTrails(&config)

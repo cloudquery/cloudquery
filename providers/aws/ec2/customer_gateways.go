@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type CustomerGateway struct {
@@ -74,21 +75,18 @@ func (c *Client) transformCustomerGateways(values []*ec2.CustomerGateway) []*Cus
 	return tValues
 }
 
+func MigrateCustomerGateways(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&CustomerGateway{},
+		&CustomerGatewayTag{},
+	)
+}
+
 func (c *Client) customerGateways(gConfig interface{}) error {
 	var config ec2.DescribeCustomerGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
-	}
-	if !c.resourceMigrated["ec2CustomerGateway"] {
-		err := c.db.AutoMigrate(
-			&CustomerGateway{},
-			&CustomerGatewayTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2CustomerGateway"] = true
 	}
 
 	output, err := c.svc.DescribeCustomerGateways(&config)

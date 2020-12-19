@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -118,23 +119,21 @@ func (c *Client) transformLoadBalancers(values []*elbv2.LoadBalancer) []*LoadBal
 	return tValues
 }
 
+func MigrateLoadBalancers(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&LoadBalancer{},
+		&LoadBalancerAvailabilityZone{},
+		&LoadBalancerAddress{},
+	)
+}
+
 func (c *Client) loadBalancers(gConfig interface{}) error {
 	var config elbv2.DescribeLoadBalancersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["elbv2LoadBalancer"] {
-		err := c.db.AutoMigrate(
-			&LoadBalancer{},
-			&LoadBalancerAvailabilityZone{},
-			&LoadBalancerAddress{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["elbv2LoadBalancer"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeLoadBalancers(&config)
 		if err != nil {

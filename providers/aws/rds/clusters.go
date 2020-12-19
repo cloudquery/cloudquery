@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -282,26 +283,24 @@ func (c *Client) transformClusters(values []*rds.DBCluster) []*Cluster {
 	return tValues
 }
 
+func MigrateClusters(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Cluster{},
+		&ClusterRole{},
+		&ClusterMember{},
+		&ClusterOptionGroupStatus{},
+		&ClusterDomainMembership{},
+		&ClusterVpcSecurityGroupMembership{},
+	)
+}
+
 func (c *Client) clusters(gConfig interface{}) error {
 	var config rds.DescribeDBClustersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["rdsCluster"] {
-		err := c.db.AutoMigrate(
-			&Cluster{},
-			&ClusterRole{},
-			&ClusterMember{},
-			&ClusterOptionGroupStatus{},
-			&ClusterDomainMembership{},
-			&ClusterVpcSecurityGroupMembership{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["rdsCluster"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeDBClusters(&config)
 		if err != nil {

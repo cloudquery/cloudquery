@@ -42,7 +42,20 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	p.db.NamingStrategy = schema.NamingStrategy{
 		TablePrefix: "okta_",
 	}
+	log.Info("Creating tables if needed")
+	err := p.migrateTables()
+	if err != nil {
+		return nil, err
+	}
 	return &p, nil
+}
+
+func (p *Provider)migrateTables() error {
+	err := migrateUser(p.db)
+	if err != nil {
+		return err
+	}
+	return migrateApplication(p.db)
 }
 
 func (p *Provider) Run(config interface{}) error {

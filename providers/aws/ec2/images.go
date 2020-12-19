@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Image struct {
@@ -166,6 +167,15 @@ func (c *Client) transformImages(values []*ec2.Image) []*Image {
 	return tValues
 }
 
+func MigrateImages(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Image{},
+		&ImageBlockDeviceMapping{},
+		&ImageProductCode{},
+		&ImageTag{},
+	)
+}
+
 func (c *Client) images(gConfig interface{}) error {
 	var config ec2.DescribeImagesInput
 	err := mapstructure.Decode(gConfig, &config)
@@ -175,18 +185,6 @@ func (c *Client) images(gConfig interface{}) error {
 	}
 	if err != nil {
 		return err
-	}
-	if !c.resourceMigrated["ec2Image"] {
-		err := c.db.AutoMigrate(
-			&Image{},
-			&ImageBlockDeviceMapping{},
-			&ImageProductCode{},
-			&ImageTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2Image"] = true
 	}
 
 	output, err := c.svc.DescribeImages(&config)

@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -46,21 +47,19 @@ func (c *Client) transformCertificates(values []*rds.Certificate) []*Certificate
 	return tValues
 }
 
+func MigrateCertificates(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&Certificate{},
+	)
+}
+
 func (c *Client) certificates(gConfig interface{}) error {
 	var config rds.DescribeCertificatesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["rdsCertificate"] {
-		err := c.db.AutoMigrate(
-			&Certificate{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["rdsCertificate"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeCertificates(&config)
 		if err != nil {

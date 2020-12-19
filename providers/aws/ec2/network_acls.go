@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type NetworkAcl struct {
@@ -139,24 +140,22 @@ func (c *Client) transformNetworkAcls(values []*ec2.NetworkAcl) []*NetworkAcl {
 	return tValues
 }
 
+func MigrateNetworkAcls(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&NetworkAcl{},
+		&NetworkAclAssociation{},
+		&NetworkAclEntry{},
+		&NetworkAclTag{},
+	)
+}
+
 func (c *Client) networkAcls(gConfig interface{}) error {
 	var config ec2.DescribeNetworkAclsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2NetworkAcl"] {
-		err := c.db.AutoMigrate(
-			&NetworkAcl{},
-			&NetworkAclAssociation{},
-			&NetworkAclEntry{},
-			&NetworkAclTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2NetworkAcl"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeNetworkAcls(&config)
 		if err != nil {

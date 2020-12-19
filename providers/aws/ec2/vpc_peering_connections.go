@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -188,26 +189,24 @@ func (c *Client) transformVpcPeeringConnections(values []*ec2.VpcPeeringConnecti
 	return tValues
 }
 
+func MigrateVPCPeeringConnections(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&VpcPeeringConnection{},
+		&VpcPeeringConnectionAccepterCidrBlock{},
+		&VpcPeeringConnectionAccepterIpv6CidrBlock{},
+		&VpcPeeringConnectionRequesterCidrBlock{},
+		&VpcPeeringConnectionRequesterIpv6CidrBlock{},
+		&VpcPeeringConnectionTag{},
+	)
+}
+
 func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 	var config ec2.DescribeVpcPeeringConnectionsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["ec2VpcPeeringConnection"] {
-		err := c.db.AutoMigrate(
-			&VpcPeeringConnection{},
-			&VpcPeeringConnectionAccepterCidrBlock{},
-			&VpcPeeringConnectionAccepterIpv6CidrBlock{},
-			&VpcPeeringConnectionRequesterCidrBlock{},
-			&VpcPeeringConnectionRequesterIpv6CidrBlock{},
-			&VpcPeeringConnectionTag{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["ec2VpcPeeringConnection"] = true
-	}
+
 	for {
 		output, err := c.svc.DescribeVpcPeeringConnections(&config)
 		if err != nil {
