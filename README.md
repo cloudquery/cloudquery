@@ -22,6 +22,7 @@ and [terraform](https://github.com/hashicorp/terraform), cool right?
 * Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.io
+* Schema explorer (schemaspy): https://schema.cloudquery.io/
 
 ### Supported providers (Actively expanding)
 
