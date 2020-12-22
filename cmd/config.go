@@ -17,7 +17,8 @@ var awsConfig = `
 #    regions: # Optional. if commented out assumes all regions
 #      - us-east-1
 #      - us-west-2
-#    log_level: debug # Optional. if commented out will enable AWS SDK debug logging. possible values: debug, debug_with_signing, debug_with_http_body, debug_with_request_retries, debug_with_request_error, debug_with_event_stream_body 
+#    log_level: debug # Optional. if commented out will enable AWS SDK debug logging. possible values: debug, debug_with_signing, debug_with_http_body, debug_with_request_retries, debug_with_request_error, debug_with_event_stream_body
+#    max_retries: # Optional. The maximum number of times that a request will be retried for failures. Defaults to -1, which defers the max retry setting to the service specific configuration. 	
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
       - name: cloudtrail.trails

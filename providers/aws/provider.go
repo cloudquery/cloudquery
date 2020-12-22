@@ -53,10 +53,11 @@ type Account struct {
 }
 
 type Config struct {
-	Regions   []string
-	Accounts  []Account `mapstructure:"accounts"`
-	LogLevel  *string   `mapstructure:"log_level"`
-	Resources []struct {
+	Regions    []string
+	Accounts   []Account `mapstructure:"accounts"`
+	LogLevel   *string   `mapstructure:"log_level"`
+	MaxRetries *int      `mapstructure:"max_retries"`
+	Resources  []struct {
 		Name  string
 		Other map[string]interface{} `mapstructure:",remain"`
 	}
@@ -243,7 +244,12 @@ func (p *Provider) Run(config interface{}) error {
 func (p *Provider) initRegionalClients() {
 	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
 	for serviceName, newFunc := range regionalServices {
-		p.resourceClients[serviceName] = newFunc(p.session, &aws.Config{Region: aws.String(p.region), LogLevel: &p.logLevel},
+		p.resourceClients[serviceName] = newFunc(p.session,
+			&aws.Config{
+				Region:     aws.String(p.region),
+				LogLevel:   &p.logLevel,
+				MaxRetries: p.config.MaxRetries,
+			},
 			p.db, zapLog, p.accountID, p.region)
 	}
 }
@@ -268,7 +274,11 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 		globalCollectedResources[fullResourceName] = true
 		if p.resourceClients[service] == nil {
 			zapLog := p.log.With(zap.String("account_id", p.accountID))
-			p.resourceClients[service] = globalServices[service](p.session, &aws.Config{Region: aws.String(p.region), LogLevel: &p.logLevel},
+			p.resourceClients[service] = globalServices[service](p.session,
+				&aws.Config{Region: aws.String(p.region),
+					LogLevel:   &p.logLevel,
+					MaxRetries: p.config.MaxRetries,
+				},
 				p.db, zapLog, p.accountID, p.region)
 		}
 		lock.Unlock()
