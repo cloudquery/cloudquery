@@ -24,6 +24,10 @@ type Certificate struct {
 	ValidTill                 *time.Time
 }
 
+func (Certificate) TableName() string {
+	return "aws_rds_certificates"
+}
+
 func (c *Client) transformCertificate(value *rds.Certificate) *Certificate {
 	return &Certificate{
 		Region:                    c.region,
