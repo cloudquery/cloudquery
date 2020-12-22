@@ -44,6 +44,7 @@ type Provider struct {
 	accountID       string
 	resourceClients map[string]resource.ClientInterface
 	log             *zap.Logger
+	logLevel        aws.LogLevelType
 }
 
 type Account struct {
@@ -54,18 +55,38 @@ type Account struct {
 type Config struct {
 	Regions   []string
 	Accounts  []Account `mapstructure:"accounts"`
+	LogLevel  *string   `mapstructure:"log_level"`
 	Resources []struct {
 		Name  string
 		Other map[string]interface{} `mapstructure:",remain"`
 	}
 }
 
-var globalServices = map[string]bool{
-	"s3":  true,
-	"iam": true,
+var globalCollectedResources = map[string]bool{}
+
+type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger, accountID string, region string) resource.ClientInterface
+
+var globalServices = map[string]ServiceNewFunction{
+	"iam": iam.NewClient,
+	"s3":  s3.NewClient,
 }
 
-var globalCollectedResources = map[string]bool{}
+var regionalServices = map[string]ServiceNewFunction{
+	"autoscaling":      autoscaling.NewClient,
+	"cloudtrail":       cloudtrail.NewClient,
+	"directconnect":    directconnect.NewClient,
+	"ec2":              ec2.NewClient,
+	"ecr":              ecr.NewClient,
+	"ecs":              ecs.NewClient,
+	"efs":              efs.NewClient,
+	"elasticbeanstalk": elasticbeanstalk.NewClient,
+	"elbv2":            elbv2.NewClient,
+	"emr":              emr.NewClient,
+	"fsx":              fsx.NewClient,
+	"kms":              kms.NewClient,
+	"rds":              rds.NewClient,
+	"redshift":         redshift.NewClient,
+}
 
 var migrateFunctions = []func(*gorm.DB) error{
 	autoscaling.MigrateLaunchConfigurations,
@@ -119,6 +140,26 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	return &p, nil
 }
 
+func (p *Provider) parseLogLevel() {
+	if p.config.LogLevel == nil {
+		return
+	}
+	switch *p.config.LogLevel {
+	case "debug", "debug_with_signing":
+		p.logLevel = aws.LogDebug
+	case "debug_with_http_body":
+		p.logLevel = aws.LogDebugWithSigning
+	case "debug_with_request_retries":
+		p.logLevel = aws.LogDebugWithRequestRetries
+	case "debug_with_request_error":
+		p.logLevel = aws.LogDebugWithRequestErrors
+	case "debug_with_event_stream_body":
+		p.logLevel = aws.LogDebugWithEventStreamBody
+	default:
+		log.Fatalf("unknown log_level %s", *p.config.LogLevel)
+	}
+}
+
 func (p *Provider) Run(config interface{}) error {
 	err := mapstructure.Decode(config, &p.config)
 	if err != nil {
@@ -127,7 +168,6 @@ func (p *Provider) Run(config interface{}) error {
 	if len(p.config.Resources) == 0 {
 		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/aws/tables-reference")
 	}
-
 	regions := p.config.Regions
 	if len(regions) == 0 {
 		resolver := endpoints.DefaultResolver()
@@ -148,6 +188,8 @@ func (p *Provider) Run(config interface{}) error {
 			RoleARN: "default",
 		})
 	}
+
+	p.parseLogLevel()
 
 	for _, account := range p.config.Accounts {
 		p.session, err = session.NewSession()
@@ -183,7 +225,7 @@ func (p *Provider) Run(config interface{}) error {
 				return err
 			}
 			p.accountID = aws.StringValue(output.Account)
-			p.initClients()
+			p.initRegionalClients()
 			var wg sync.WaitGroup
 			for _, resource := range p.config.Resources {
 				wg.Add(1)
@@ -192,47 +234,21 @@ func (p *Provider) Run(config interface{}) error {
 			wg.Wait()
 		}
 		globalCollectedResources = map[string]bool{}
+		p.resourceClients = map[string]resource.ClientInterface{}
 	}
 
 	return nil
 }
 
-func (p *Provider) initClients() {
+func (p *Provider) initRegionalClients() {
 	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
-	noRegionLog := p.log.With(zap.String("account_id", p.accountID))
-	p.resourceClients["autoscaling"] = autoscaling.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["cloudtrail"] = cloudtrail.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["ec2"] = ec2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["ecr"] = ecr.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["ecs"] = ecs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["efs"] = efs.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["elasticbeanstalk"] = elasticbeanstalk.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["directconnect"] = directconnect.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["emr"] = emr.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["fsx"] = fsx.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["iam"] = iam.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, noRegionLog, p.accountID, p.region)
-	p.resourceClients["rds"] = rds.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["redshift"] = redshift.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["s3"] = s3.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, noRegionLog, p.accountID, p.region)
-	p.resourceClients["elbv2"] = elbv2.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
-	p.resourceClients["kms"] = kms.NewClient(p.session, &aws.Config{Region: aws.String(p.region)},
-		p.db, zapLog, p.accountID, p.region)
+	for serviceName, newFunc := range regionalServices {
+		p.resourceClients[serviceName] = newFunc(p.session, &aws.Config{Region: aws.String(p.region), LogLevel: &p.logLevel},
+			p.db, zapLog, p.accountID, p.region)
+	}
 }
+
+var lock = sync.RWMutex{}
 
 func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, config interface{}) {
 	defer wg.Done()
@@ -243,15 +259,23 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 	service := resourcePath[0]
 	resourceName := resourcePath[1]
 
-	if p.resourceClients[service] == nil {
-		log.Fatalf("unsupported service %s", service)
-	}
-
-	if globalServices[service] {
+	if globalServices[service] != nil {
+		lock.Lock()
 		if globalCollectedResources[fullResourceName] {
+			lock.Unlock()
 			return
 		}
 		globalCollectedResources[fullResourceName] = true
+		if p.resourceClients[service] == nil {
+			zapLog := p.log.With(zap.String("account_id", p.accountID))
+			p.resourceClients[service] = globalServices[service](p.session, &aws.Config{Region: aws.String(p.region), LogLevel: &p.logLevel},
+				p.db, zapLog, p.accountID, p.region)
+		}
+		lock.Unlock()
+	}
+
+	if p.resourceClients[service] == nil {
+		log.Fatalf("unsupported service %s for resource %s", service, resourceName)
 	}
 
 	err := p.resourceClients[service].CollectResource(resourceName, config)

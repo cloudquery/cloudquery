@@ -11,21 +11,21 @@ import (
 )
 
 type Client struct {
-	session          *session.Session
-	db               *gorm.DB
-	log              *zap.Logger
-	accountID        string
-	svc              *iam.IAM
+	session   *session.Session
+	db        *gorm.DB
+	log       *zap.Logger
+	accountID string
+	svc       *iam.IAM
 }
 
 func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
 	accountID string, _ string) resource.ClientInterface {
 	return &Client{
-		session:          session,
-		db:               db,
-		log:              log,
-		accountID:        accountID,
-		svc:              iam.New(session, awsConfig),
+		session:   session,
+		db:        db,
+		log:       log,
+		accountID: accountID,
+		svc:       iam.New(session, awsConfig),
 	}
 }
 

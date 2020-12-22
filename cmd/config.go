@@ -17,6 +17,7 @@ var awsConfig = `
 #    regions: # Optional. if commented out assumes all regions
 #      - us-east-1
 #      - us-west-2
+#    log_level: debug # Optional. if commented out will enable AWS SDK debug logging. possible values: debug, debug_with_signing, debug_with_http_body, debug_with_request_retries, debug_with_request_error, debug_with_event_stream_body 
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
       - name: cloudtrail.trails
@@ -87,9 +88,9 @@ var azureConfig = `
       - name: keyvault.vaults`
 
 var initialConfigs = map[string]string{
-	"aws":  awsConfig,
-	"gcp":  gcpConfig,
-	"okta": oktaConfig,
+	"aws":   awsConfig,
+	"gcp":   gcpConfig,
+	"okta":  oktaConfig,
 	"azure": azureConfig,
 }
 

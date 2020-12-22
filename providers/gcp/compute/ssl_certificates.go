@@ -60,16 +60,16 @@ func (c *Client) transformSSLCertificateSubjectAlternativeNames(values []string)
 
 func (c *Client) transformSSLCertificate(value *compute.SslCertificate) *SSLCertificate {
 	res := SSLCertificate{
-		ProjectID:               c.projectID,
-		Certificate:             value.Certificate,
-		CreationTimestamp:       value.CreationTimestamp,
-		Description:             value.Description,
-		ExpireTime:              value.ExpireTime,
-		ResourceID:              value.Id,
-		Kind:                    value.Kind,
-		Name:                    value.Name,
-		Region:                  value.Region,
-		SelfLink:                value.SelfLink,
+		ProjectID:         c.projectID,
+		Certificate:       value.Certificate,
+		CreationTimestamp: value.CreationTimestamp,
+		Description:       value.Description,
+		ExpireTime:        value.ExpireTime,
+		ResourceID:        value.Id,
+		Kind:              value.Kind,
+		Name:              value.Name,
+		Region:            value.Region,
+		SelfLink:          value.SelfLink,
 
 		SubjectAlternativeNames: c.transformSSLCertificateSubjectAlternativeNames(value.SubjectAlternativeNames),
 		Type:                    value.Type,

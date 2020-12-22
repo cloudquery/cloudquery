@@ -115,31 +115,31 @@ func (c *Client) transformImageStorageLocations(values []string) []*ImageStorage
 
 func (c *Client) transformImage(value *compute.Image) *Image {
 	res := Image{
-		Region:                c.region,
-		ProjectID:             c.projectID,
-		ArchiveSizeBytes:      value.ArchiveSizeBytes,
-		CreationTimestamp:     value.CreationTimestamp,
-		Description:           value.Description,
-		DiskSizeGb:            value.DiskSizeGb,
-		Family:                value.Family,
-		GuestOsFeatures:       c.transformImageGuestOsFeatures(value.GuestOsFeatures),
-		ResourceID:            value.Id,
-		Id:                    value.Id,
-		Kind:                  value.Kind,
-		LabelFingerprint:      value.LabelFingerprint,
-		LicenseCodes:          c.transformImageLicenseCodes(value.LicenseCodes),
-		Licenses:              c.transformImageLicenses(value.Licenses),
-		Name:                  value.Name,
-		SelfLink:              value.SelfLink,
-		SourceDisk:            value.SourceDisk,
-		SourceDiskId:          value.SourceDiskId,
-		SourceImage:           value.SourceImage,
-		SourceImageId:         value.SourceImageId,
-		SourceSnapshot:        value.SourceSnapshot,
-		SourceSnapshotId:      value.SourceSnapshotId,
-		SourceType:            value.SourceType,
-		Status:                value.Status,
-		StorageLocations:      c.transformImageStorageLocations(value.StorageLocations),
+		Region:            c.region,
+		ProjectID:         c.projectID,
+		ArchiveSizeBytes:  value.ArchiveSizeBytes,
+		CreationTimestamp: value.CreationTimestamp,
+		Description:       value.Description,
+		DiskSizeGb:        value.DiskSizeGb,
+		Family:            value.Family,
+		GuestOsFeatures:   c.transformImageGuestOsFeatures(value.GuestOsFeatures),
+		ResourceID:        value.Id,
+		Id:                value.Id,
+		Kind:              value.Kind,
+		LabelFingerprint:  value.LabelFingerprint,
+		LicenseCodes:      c.transformImageLicenseCodes(value.LicenseCodes),
+		Licenses:          c.transformImageLicenses(value.Licenses),
+		Name:              value.Name,
+		SelfLink:          value.SelfLink,
+		SourceDisk:        value.SourceDisk,
+		SourceDiskId:      value.SourceDiskId,
+		SourceImage:       value.SourceImage,
+		SourceImageId:     value.SourceImageId,
+		SourceSnapshot:    value.SourceSnapshot,
+		SourceSnapshotId:  value.SourceSnapshotId,
+		SourceType:        value.SourceType,
+		Status:            value.Status,
+		StorageLocations:  c.transformImageStorageLocations(value.StorageLocations),
 	}
 
 	if value.Deprecated != nil {
@@ -155,7 +155,7 @@ func (c *Client) transformImage(value *compute.Image) *Image {
 		res.RawDiskSha1Checksum = value.RawDisk.Sha1Checksum
 		res.RawDiskSource = value.RawDisk.Source
 	}
-	
+
 	return &res
 }
 

@@ -50,7 +50,7 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 	return &p, nil
 }
 
-func (p *Provider)migrateTables() error {
+func (p *Provider) migrateTables() error {
 	err := migrateUser(p.db)
 	if err != nil {
 		return err

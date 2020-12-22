@@ -41,7 +41,7 @@ type Config struct {
 	}
 }
 
-var migrateFunctions = []func(*gorm.DB) error {
+var migrateFunctions = []func(*gorm.DB) error{
 	resources.MigrateGroup,
 	sql.MigrateServer,
 	sql.MigrateDatabase,

@@ -182,7 +182,6 @@ func (c *Client) clusters(gConfig interface{}) error {
 		return err
 	}
 
-
 	output, err := c.svc.DescribeClusters(&config)
 	if err != nil {
 		return err

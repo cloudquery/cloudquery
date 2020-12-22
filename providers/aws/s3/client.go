@@ -11,13 +11,13 @@ import (
 )
 
 type Client struct {
-	session          *session.Session
-	db               *gorm.DB
-	log              *zap.Logger
-	accountID        string
-	region           string
-	svc              *s3.S3
-	awsConfig        *aws.Config
+	session   *session.Session
+	db        *gorm.DB
+	log       *zap.Logger
+	accountID string
+	region    string
+	svc       *s3.S3
+	awsConfig *aws.Config
 }
 
 func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
@@ -25,13 +25,13 @@ func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *z
 	globalRegion := "us-east-1"
 	awsConfig.Region = &globalRegion
 	return &Client{
-		session:          sess,
-		db:               db,
-		log:              log,
-		accountID:        accountID,
-		region:           "us-east-1",
-		svc:              s3.New(sess, awsConfig),
-		awsConfig:        awsConfig,
+		session:   sess,
+		db:        db,
+		log:       log,
+		accountID: accountID,
+		region:    "us-east-1",
+		svc:       s3.New(sess, awsConfig),
+		awsConfig: awsConfig,
 	}
 }
 
