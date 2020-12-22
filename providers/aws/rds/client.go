@@ -37,7 +37,9 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.certificates(config)
 	case "clusters":
 		return c.clusters(config)
+	case "db_subnet_groups":
+		return c.dbSubnetGroups(config)
 	default:
-		return fmt.Errorf("unsupported resource iam.%s", resource)
+		return fmt.Errorf("unsupported resource rds.%s", resource)
 	}
 }

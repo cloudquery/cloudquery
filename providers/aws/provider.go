@@ -121,7 +121,9 @@ var migrateFunctions = []func(*gorm.DB) error{
 	kms.MigrateKeys,
 	rds.MigrateClusters,
 	rds.MigrateCertificates,
+	rds.MigrateDBSubnetGroups,
 	redshift.MigrateClusters,
+	redshift.MigrateClusterSubnetGroups,
 	s3.MigrateBuckets,
 }
 

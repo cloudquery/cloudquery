@@ -49,7 +49,9 @@ var awsConfig = `
       - name: kms.keys
       - name: rds.certificates
       - name: rds.clusters
+      - name: rds.db_subnet_groups
       - name: redshift.clusters
+      - name: redshift.cluster_subnet_groups
       - name: s3.buckets`
 
 var gcpConfig = `

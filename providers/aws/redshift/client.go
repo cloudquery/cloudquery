@@ -35,6 +35,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 	switch resource {
 	case "clusters":
 		return c.clusters(config)
+	case "cluster_subnet_groups":
+		return c.clusterSubnetGroups(config)
 	default:
 		return fmt.Errorf("unsupported resource redshift.%s", resource)
 	}
