@@ -82,7 +82,7 @@ type RouteTableTag struct {
 	Value        *string
 }
 
-func (RouteTableTag) RouteTableAssociation() string {
+func (RouteTableTag) TableName() string {
 	return "aws_ec2_route_table_tags"
 }
 
