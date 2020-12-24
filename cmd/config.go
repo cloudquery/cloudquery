@@ -90,14 +90,21 @@ var azureConfig = `
       - name: compute.disks
       - name: keyvault.vaults`
 
+var k8sConfig = `
+  - name: k8s
+    resources:
+      - name: pods
+      - name: services`
+
 var initialConfigs = map[string]string{
 	"aws":   awsConfig,
 	"gcp":   gcpConfig,
 	"okta":  oktaConfig,
 	"azure": azureConfig,
+	"k8s": k8sConfig,
 }
 
-var validArgs = []string{"aws", "gcp", "okta", "azure"}
+var validArgs = []string{"aws", "gcp", "okta", "azure", "k8s"}
 var configPath = "./config.yml"
 
 var configCmd = &cobra.Command{

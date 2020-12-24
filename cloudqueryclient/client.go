@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/azure"
 	"github.com/cloudquery/cloudquery/providers/gcp"
+	"github.com/cloudquery/cloudquery/providers/k8s"
 	"github.com/cloudquery/cloudquery/providers/okta"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/olekukonko/tablewriter"
@@ -26,6 +27,7 @@ var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, er
 	"gcp":   gcp.NewProvider,
 	"okta":  okta.NewProvider,
 	"azure": azure.NewProvider,
+	"k8s":   k8s.NewProvider,
 }
 
 type Config struct {
