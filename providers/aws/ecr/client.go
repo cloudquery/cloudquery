@@ -34,7 +34,7 @@ func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log
 func (c *Client) CollectResource(resource string, config interface{}) error {
 	switch resource {
 	case "images":
-		return c.imageIdentifiers(config)
+		return c.images(config)
 	default:
 		return fmt.Errorf("unsupported resource ecr.%s", resource)
 	}

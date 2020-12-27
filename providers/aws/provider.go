@@ -106,7 +106,7 @@ var migrateFunctions = []func(*gorm.DB) error{
 	ec2.MigrateSubnets,
 	ec2.MigrateVPCPeeringConnections,
 	ec2.MigrateVPCs,
-	ecr.MigrateImageIdentifiers,
+	ecr.MigrateImage,
 	ecs.MigrateClusters,
 	efs.MigrateFileSystems,
 	elasticbeanstalk.MigrateEnvironments,

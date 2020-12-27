@@ -36,6 +36,7 @@ var awsConfig = `
       - name: ec2.vpc_peering_connections
       - name: ec2.vpcs
       - name: ecs.clusters
+      - name: ecr.images
       - name: efs.filesystems
       - name: elasticbeanstalk.environments
       - name: elbv2.load_balancers
