@@ -181,13 +181,25 @@ func (c *Client) clusters(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
-	output, err := c.svc.DescribeClusters(&config)
-	if err != nil {
-		return err
-	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
-	common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
-	c.log.Info("Fetched resources", zap.String("resource", "ecs.cluster"), zap.Int("count", len(output.Clusters)))
+
+	var listConfig ecs.ListClustersInput
+	for {
+		listOutput, err := c.svc.ListClusters(&listConfig)
+		if err != nil {
+			return err
+		}
+		config.Clusters = listOutput.ClusterArns
+		output, err := c.svc.DescribeClusters(&config)
+		if err != nil {
+			return err
+		}
+		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
+		c.log.Info("Fetched resources", zap.String("resource", "ecs.cluster"), zap.Int("count", len(output.Clusters)))
+		if listOutput.NextToken == nil {
+			break
+		}
+		listConfig.NextToken = listOutput.NextToken
+	}
 	return nil
 }
