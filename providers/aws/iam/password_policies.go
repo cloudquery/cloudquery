@@ -58,7 +58,7 @@ func (c *Client) passwordPolicies(gConfig interface{}) error {
 
 	output, err := c.svc.GetAccountPasswordPolicy(&config)
 	if err != nil {
-		if err.(awserr.Error).Code() != "NoSuchEntity" {
+		if err.(awserr.Error).Code() == "NoSuchEntity" {
 			c.log.Info("Fetched PasswordPolicy", zap.Int("count", 0))
 			return nil
 		}
