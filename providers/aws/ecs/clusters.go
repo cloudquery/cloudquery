@@ -172,6 +172,16 @@ func MigrateClusters(db *gorm.DB) error {
 		&ClusterCapacityProviderStrategyItem{},
 		&ClusterSetting{},
 		&ClusterTag{},
+
+		&Service{},
+		&ServiceSecurityGroups{},
+		&ServiceSubnets{},
+		&ServiceCapProviderStrategy{},
+		&ServiceLoadBalancer{},
+		&ServicePlacementConstraint{},
+		&ServicePlacementStrategy{},
+		&ServiceRegistry{},
+		&ServiceTag{},
 	)
 }
 
@@ -182,10 +192,14 @@ func (c *Client) clusters(gConfig interface{}) error {
 		return err
 	}
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
-
+	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Service{})
 	var listConfig ecs.ListClustersInput
 	for {
 		listOutput, err := c.svc.ListClusters(&listConfig)
+		if err != nil {
+			return err
+		}
+		err = c.services(listOutput.ClusterArns)
 		if err != nil {
 			return err
 		}
@@ -196,6 +210,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		}
 		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
 		c.log.Info("Fetched resources", zap.String("resource", "ecs.cluster"), zap.Int("count", len(output.Clusters)))
+
 		if listOutput.NextToken == nil {
 			break
 		}
