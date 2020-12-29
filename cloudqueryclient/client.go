@@ -71,7 +71,7 @@ func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
 
 func New(driver string, dsn string, verbose bool) (*Client, error) {
 	client := Client{}
-	gormLogger := logger.Default.LogMode(logger.Error)
+	gormLogger := logger.Default.LogMode(logger.Warn)
 	var err error = nil
 	switch driver {
 	case "sqlite":

@@ -19,7 +19,7 @@ type VpcPeeringConnection struct {
 	AccepterCidrBlockSet     []*VpcPeeringConnectionAccepterCidrBlock     `gorm:"constraint:OnDelete:CASCADE;"`
 	AccepterIpv6CidrBlockSet []*VpcPeeringConnectionAccepterIpv6CidrBlock `gorm:"constraint:OnDelete:CASCADE;"`
 	AccepterOwnerId          *string
-	AccepterOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:accepter_option_"`
+	AccepterOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:acc_option_"`
 	AccepterRegion           *string
 	AccepterVpcId            *string
 
@@ -29,7 +29,7 @@ type VpcPeeringConnection struct {
 	RequesterCidrBlockSet     []*VpcPeeringConnectionRequesterCidrBlock     `gorm:"constraint:OnDelete:CASCADE;"`
 	RequesterIpv6CidrBlockSet []*VpcPeeringConnectionRequesterIpv6CidrBlock `gorm:"constraint:OnDelete:CASCADE;"`
 	RequesterOwnerId          *string
-	RequesterOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:requester_option_"`
+	RequesterOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:req_option_"`
 	RequesterRegion           *string
 	RequesterVpcId            *string
 
