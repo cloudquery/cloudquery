@@ -35,6 +35,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 	switch resource {
 	case "load_balancers":
 		return c.loadBalancers(config)
+	case "target_groups":
+		return c.targetGroups(config)
 	default:
 		return fmt.Errorf("unsupported resource elbv2.%s", resource)
 	}

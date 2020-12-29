@@ -40,6 +40,7 @@ var awsConfig = `
       - name: efs.filesystems
       - name: elasticbeanstalk.environments
       - name: elbv2.load_balancers
+      - name: elbv2.target_groups
       - name: emr.clusters
       - name: fsx.backups
       - name: iam.groups

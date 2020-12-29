@@ -111,6 +111,7 @@ var migrateFunctions = []func(*gorm.DB) error{
 	efs.MigrateFileSystems,
 	elasticbeanstalk.MigrateEnvironments,
 	elbv2.MigrateLoadBalancers,
+	elbv2.MigrateTargetGroup,
 	emr.MigrateClusters,
 	fsx.MigrateBackups,
 	iam.MigrateGroups,
