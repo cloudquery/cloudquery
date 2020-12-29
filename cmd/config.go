@@ -102,7 +102,7 @@ var initialConfigs = map[string]string{
 	"gcp":   gcpConfig,
 	"okta":  oktaConfig,
 	"azure": azureConfig,
-	"k8s": k8sConfig,
+	"k8s":   k8sConfig,
 }
 
 var validArgs = []string{"aws", "gcp", "okta", "azure", "k8s"}

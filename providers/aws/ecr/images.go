@@ -9,27 +9,26 @@ import (
 	"time"
 )
 
-
 type Image struct {
-	ID uint `gorm:"primarykey"`
+	ID        uint `gorm:"primarykey"`
 	AccountID string
-	Region string
+	Region    string
 
-	ArtifactMediaType *string
-	ImageDigest *string
+	ArtifactMediaType      *string
+	ImageDigest            *string
 	ImageManifestMediaType *string
-	ImagePushedAt *time.Time
+	ImagePushedAt          *time.Time
 
-	ImageScanFindingsSeverityCounts []*ImageSeverityCount `gorm:"constraint:OnDelete:CASCADE;"`
-	ImageScanFindingsImageScanCompletedAt *time.Time
+	ImageScanFindingsSeverityCounts               []*ImageSeverityCount `gorm:"constraint:OnDelete:CASCADE;"`
+	ImageScanFindingsImageScanCompletedAt         *time.Time
 	ImageScanFindingsVulnerabilitySourceUpdatedAt *time.Time
 
 	ImageScanStatusDescription *string
-	ImageScanStatusStatus *string
-	ImageSizeInBytes *int64
-	ImageTags []*ImageTags `gorm:"constraint:OnDelete:CASCADE;"`
-	RegistryId *string
-	RepositoryName *string
+	ImageScanStatusStatus      *string
+	ImageSizeInBytes           *int64
+	ImageTags                  []*ImageTags `gorm:"constraint:OnDelete:CASCADE;"`
+	RegistryId                 *string
+	RepositoryName             *string
 }
 
 func (Image) TableName() string {
@@ -37,10 +36,10 @@ func (Image) TableName() string {
 }
 
 type ImageSeverityCount struct {
-	ID uint
-	ImageID uint
+	ID       uint
+	ImageID  uint
 	Severity string
-	Count *int64
+	Count    *int64
 }
 
 func (ImageSeverityCount) TableName() string {
@@ -48,30 +47,29 @@ func (ImageSeverityCount) TableName() string {
 }
 
 type ImageTags struct {
-	ID uint `gorm:"primarykey"`
+	ID      uint `gorm:"primarykey"`
 	ImageID uint
-	Value *string
+	Value   *string
 }
 
 func (ImageTags) TableName() string {
 	return "aws_ecr_image_tags"
 }
 
-
 func (c *Client) transformImages(values []*ecr.ImageDetail) []*Image {
 	var tValues []*Image
 	for _, value := range values {
 		tValue := Image{
-			AccountID: c.accountID,
-			Region: c.region,
-			ArtifactMediaType: value.ArtifactMediaType,
-			ImageDigest: value.ImageDigest,
+			AccountID:              c.accountID,
+			Region:                 c.region,
+			ArtifactMediaType:      value.ArtifactMediaType,
+			ImageDigest:            value.ImageDigest,
 			ImageManifestMediaType: value.ImageManifestMediaType,
-			ImagePushedAt: value.ImagePushedAt,
-			ImageSizeInBytes: value.ImageSizeInBytes,
-			ImageTags: c.transformImageTags(value.ImageTags),
-			RegistryId: value.RegistryId,
-			RepositoryName: value.RepositoryName,
+			ImagePushedAt:          value.ImagePushedAt,
+			ImageSizeInBytes:       value.ImageSizeInBytes,
+			ImageTags:              c.transformImageTags(value.ImageTags),
+			RegistryId:             value.RegistryId,
+			RepositoryName:         value.RepositoryName,
 		}
 
 		if value.ImageScanFindingsSummary != nil {
@@ -120,7 +118,6 @@ func MigrateImage(db *gorm.DB) error {
 
 	return nil
 }
-
 
 func (c *Client) images(_ interface{}) error {
 	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
