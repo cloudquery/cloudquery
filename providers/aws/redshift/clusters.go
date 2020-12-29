@@ -79,11 +79,11 @@ func (ClusterNode) TableName() string {
 }
 
 type ClusterParameterGroupStatus struct {
-	ID                         uint `gorm:"primarykey"`
-	ClusterID                  uint
-	ClusterParameterStatusList []*ClusterParameterStatus `gorm:"constraint:OnDelete:CASCADE;"`
-	ParameterApplyStatus       *string
-	ParameterGroupName         *string
+	ID                   uint `gorm:"primarykey"`
+	ClusterID            uint
+	List                 []*ClusterParameterStatus `gorm:"constraint:OnDelete:CASCADE;"`
+	ParameterApplyStatus *string
+	ParameterGroupName   *string
 }
 
 func (ClusterParameterGroupStatus) TableName() string {
@@ -192,9 +192,9 @@ func (c *Client) transformClusterParameterStatuss(values []*redshift.ClusterPara
 
 func (c *Client) transformClusterParameterGroupStatus(value *redshift.ClusterParameterGroupStatus) *ClusterParameterGroupStatus {
 	return &ClusterParameterGroupStatus{
-		ClusterParameterStatusList: c.transformClusterParameterStatuss(value.ClusterParameterStatusList),
-		ParameterApplyStatus:       value.ParameterApplyStatus,
-		ParameterGroupName:         value.ParameterGroupName,
+		List:                 c.transformClusterParameterStatuss(value.ClusterParameterStatusList),
+		ParameterApplyStatus: value.ParameterApplyStatus,
+		ParameterGroupName:   value.ParameterGroupName,
 	}
 }
 

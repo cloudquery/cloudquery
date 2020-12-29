@@ -42,10 +42,10 @@ type ClusterSubnetGroupSubnet struct {
 	ID                   uint `gorm:"primarykey"`
 	ClusterSubnetGroupID uint
 
-	AvailabilityZoneName               *string
-	AvailabilityZoneSupportedPlatforms []*ClusterSubnetGroupSupportedPlatform `gorm:"constraint:OnDelete:CASCADE;"`
-	Identifier                         *string
-	Status                             *string
+	AZName      *string
+	AZPlatforms []*ClusterSubnetGroupSupportedPlatform `gorm:"constraint:OnDelete:CASCADE;"`
+	Identifier  *string
+	Status      *string
 }
 
 func (ClusterSubnetGroupSubnet) TableName() string {
@@ -100,8 +100,8 @@ func (c *Client) transformClusterSubnetGroupSubnets(values []*redshift.Subnet) [
 			Status:     value.SubnetStatus,
 		}
 		if value.SubnetAvailabilityZone != nil {
-			tValue.AvailabilityZoneName = value.SubnetAvailabilityZone.Name
-			tValue.AvailabilityZoneSupportedPlatforms = c.transformClusterSubnetGroupSupportedPlatforms(value.SubnetAvailabilityZone.SupportedPlatforms)
+			tValue.AZName = value.SubnetAvailabilityZone.Name
+			tValue.AZPlatforms = c.transformClusterSubnetGroupSupportedPlatforms(value.SubnetAvailabilityZone.SupportedPlatforms)
 		}
 		tValues = append(tValues, &tValue)
 	}

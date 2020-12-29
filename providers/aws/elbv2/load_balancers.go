@@ -43,7 +43,7 @@ type LoadBalancerAvailabilityZone struct {
 }
 
 func (LoadBalancerAvailabilityZone) TableName() string {
-	return "aws_elbv2_load_balancer_availability_zones"
+	return "aws_elbv2_load_balancer_av_zones"
 }
 
 type LoadBalancerAddress struct {
