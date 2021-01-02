@@ -4,12 +4,13 @@
 <img alt="cloudquery logo" width="200px" height="200px" src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
 </p>
 
-cloudquery transforms your cloud infrastructure into queryable SQL tables for easy monitoring, governance and security.
+cloudquery transforms your cloud infrastructure into queryable SQL or Graphs for easy monitoring, governance and security.
 
 ### What is cloudquery and why use it?
 
-cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL database.
-This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
+cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL or Graph(Neo4j) database.
+This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL
+ or [Cypher(Neo4j)](https://neo4j.com/developer/cypher/).
 
 cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
 
@@ -23,6 +24,7 @@ and [terraform](https://github.com/hashicorp/terraform), cool right?
 * Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.io
 * Schema explorer (schemaspy): https://schema.cloudquery.io/
+* Database Configuration: https://docs.cloudquery.io/database-configuration
 
 ### Supported providers (Actively expanding)
 
@@ -63,10 +65,11 @@ Once your `config.yml` is generated run the following command to fetch the resou
 
 ```shell script
 ./cloudquery fetch
+# you can choose a database backend via --driver sqlite/mysql/postgresql/sqlserver/neo4j --dsn <connection_string>
 # ./cloudquery fetch --help # Show all possible fetch flags
 ```
 
-If you used the default `sqlite` provider you run the following example queries
+If you used the default `sqlite` provider you run the following example queries from `sqlite` shell
 
 List ec2_images
 ```sql
@@ -158,17 +161,6 @@ SELECT * from aws_s3_buckets
 ```
 
 More examples are available [here](https://docs.cloudquery.io)
-
-#### AWS Compliance Pack
-
-There is a growing pack of compliance queries under [examples/aws_compliance_packs](https://github.com/cloudquery/cloudquery/tree/main/examples/aws_compliance_packs).
-You can run them with the following commands:
-
-```shell script
-cp example.aws.config.yml
-./cloudquery
-./examples/aws_compliance_packs/compliance_test.sh
-```
 
 ## License
 

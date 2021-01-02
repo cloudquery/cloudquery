@@ -2,19 +2,18 @@ package ec2
 
 import (
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type CustomerGateway struct {
-	ID                uint `gorm:"primarykey"`
-	AccountID         string
-	Region            string
+	_                 interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                uint        `gorm:"primarykey"`
+	AccountID         string      `neo:"unique"`
+	Region            string      `neo:"unique"`
 	BgpAsn            *string
 	CertificateArn    *string
-	CustomerGatewayId *string
+	CustomerGatewayId *string `neo:"unique"`
 	DeviceName        *string
 	IpAddress         *string
 	State             *string
@@ -27,10 +26,13 @@ func (CustomerGateway) TableName() string {
 }
 
 type CustomerGatewayTag struct {
-	ID                uint `gorm:"primarykey"`
-	CustomerGatewayID uint
-	Key               *string
-	Value             *string
+	ID                uint   `gorm:"primarykey"`
+	CustomerGatewayID uint   `neo:"ignore"`
+	AccountID         string `gorm:"-"`
+	Region            string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (CustomerGatewayTag) TableName() string {
@@ -39,8 +41,10 @@ func (CustomerGatewayTag) TableName() string {
 
 func (c *Client) transformCustomerGatewayTag(value *ec2.Tag) *CustomerGatewayTag {
 	return &CustomerGatewayTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -75,11 +79,9 @@ func (c *Client) transformCustomerGateways(values []*ec2.CustomerGateway) []*Cus
 	return tValues
 }
 
-func MigrateCustomerGateways(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&CustomerGateway{},
-		&CustomerGatewayTag{},
-	)
+var CustomerGatewayTables = []interface{}{
+	&CustomerGateway{},
+	&CustomerGatewayTag{},
 }
 
 func (c *Client) customerGateways(gConfig interface{}) error {
@@ -93,8 +95,8 @@ func (c *Client) customerGateways(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&CustomerGateway{})
-	common.ChunkedCreate(c.db, c.transformCustomerGateways(output.CustomerGateways))
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(CustomerGatewayTables...)
+	c.db.ChunkedCreate(c.transformCustomerGateways(output.CustomerGateways))
 	c.log.Info("Fetched resources", zap.String("resource", "ec2.customer_gateways"), zap.Int("count", len(output.CustomerGateways)))
 	return nil
 }

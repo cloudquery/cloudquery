@@ -3,17 +3,15 @@ package iam
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Group struct {
 	ID         uint `gorm:"primarykey"`
 	AccountID  string
-	Arn        *string
+	Arn        *string `neo:"unique"`
 	CreateDate *time.Time
 	GroupId    *string
 	GroupName  *string
@@ -43,10 +41,8 @@ func (c *Client) transformGroups(values []*iam.Group) []*Group {
 	return tValues
 }
 
-func MigrateGroups(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Group{},
-	)
+var GroupTables = []interface{}{
+	&Group{},
 }
 
 func (c *Client) groups(gConfig interface{}) error {
@@ -55,14 +51,14 @@ func (c *Client) groups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	c.db.Where("account_id", c.accountID).Delete(GroupTables...)
 
 	for {
 		output, err := c.svc.ListGroups(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("account_id = ?", c.accountID).Delete(&Group{})
-		common.ChunkedCreate(c.db, c.transformGroups(output.Groups))
+		c.db.ChunkedCreate(c.transformGroups(output.Groups))
 		c.log.Info("Fetched resources", zap.String("resource", "iam.groups"), zap.Int("count", len(output.Groups)))
 		if aws.StringValue(output.Marker) == "" {
 			break

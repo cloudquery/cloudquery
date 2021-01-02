@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/azure/utils"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"regexp"
 )
 
 type Vault struct {
-	ID             uint `gorm:"primarykey"`
-	SubscriptionID string
-	ResourceID     *string
+	_              interface{} `neo:"raw:MERGE (a:AzureSubscription {subscription_id: $subscription_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID             uint        `gorm:"primarykey"`
+	SubscriptionID string      `neo:"unique"`
+	ResourceID     *string     `neo:"unique"`
 	Name           *string
 	Type           *string
 	Location       *string
@@ -50,10 +50,11 @@ func (Vault) TableName() string {
 }
 
 type VaultTag struct {
-	ID      uint
-	VaultID uint
-	Key     string
-	Value   *string
+	ID             uint   `gorm:"primarykey"`
+	VaultID        uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+	Key            string
+	Value          *string
 }
 
 func (VaultTag) TableName() string {
@@ -61,9 +62,11 @@ func (VaultTag) TableName() string {
 }
 
 type VaultIPRule struct {
-	ID      uint `gorm:"primarykey"`
-	VaultID uint
-	Value   *string
+	ID             uint   `gorm:"primarykey"`
+	VaultID        uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
+	Value *string
 }
 
 func (VaultIPRule) TableName() string {
@@ -71,8 +74,10 @@ func (VaultIPRule) TableName() string {
 }
 
 type VaultVirtualNetworkRule struct {
-	ID         uint `gorm:"primarykey"`
-	VaultID    uint
+	ID             uint   `gorm:"primarykey"`
+	VaultID        uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
 	ResourceID *string
 }
 
@@ -81,8 +86,9 @@ func (VaultVirtualNetworkRule) TableName() string {
 }
 
 type VaultPrivateEndpointConnection struct {
-	ID      uint `gorm:"primarykey"`
-	VaultID uint
+	ID             uint   `gorm:"primarykey"`
+	VaultID        uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
 
 	ResourceID                                      *string
 	PrivateLinkServiceConnectionStateStatus         string
@@ -96,8 +102,10 @@ func (VaultPrivateEndpointConnection) TableName() string {
 }
 
 type VaultAccessPolicy struct {
-	ID            uint `gorm:"primarykey"`
-	VaultID       uint
+	ID             uint   `gorm:"primarykey"`
+	VaultID        uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
 	TenantID      *string
 	ObjectID      *string
 	ApplicationID *string
@@ -113,9 +121,11 @@ func (VaultAccessPolicy) TableName() string {
 }
 
 type VaultKeyPermission struct {
-	ID                  uint `gorm:"primarykey"`
-	VaultAccessPolicyID uint
-	Value               string
+	ID                  uint   `gorm:"primarykey"`
+	VaultAccessPolicyID uint   `neo:"ignore"`
+	SubscriptionID      string `gorm:"-"`
+
+	Value string
 }
 
 func (VaultKeyPermission) TableName() string {
@@ -123,9 +133,11 @@ func (VaultKeyPermission) TableName() string {
 }
 
 type VaultSecretPermission struct {
-	ID                  uint `gorm:"primarykey"`
-	VaultAccessPolicyID uint
-	Value               string
+	ID                  uint   `gorm:"primarykey"`
+	VaultAccessPolicyID uint   `neo:"ignore"`
+	SubscriptionID      string `gorm:"-"`
+
+	Value string
 }
 
 func (VaultSecretPermission) TableName() string {
@@ -133,9 +145,11 @@ func (VaultSecretPermission) TableName() string {
 }
 
 type VaultCertificatePermission struct {
-	ID                  uint `gorm:"primarykey"`
-	VaultAccessPolicyID uint
-	Value               string
+	ID                  uint   `gorm:"primarykey"`
+	VaultAccessPolicyID uint   `neo:"ignore"`
+	SubscriptionID      string `gorm:"-"`
+
+	Value string
 }
 
 func (VaultCertificatePermission) TableName() string {
@@ -143,9 +157,11 @@ func (VaultCertificatePermission) TableName() string {
 }
 
 type VaultStoragePermission struct {
-	ID                  uint `gorm:"primarykey"`
-	VaultAccessPolicyID uint
-	Value               string
+	ID                  uint   `gorm:"primarykey"`
+	VaultAccessPolicyID uint   `neo:"ignore"`
+	SubscriptionID      string `gorm:"-"`
+
+	Value string
 }
 
 func (VaultStoragePermission) TableName() string {
@@ -163,7 +179,7 @@ func transformVaults(subscriptionID string, auth autorest.Authorizer, values []k
 			Name:           value.Name,
 			Type:           value.Type,
 			Location:       value.Location,
-			Tags:           transformVaultTags(value.Tags),
+			Tags:           transformVaultTags(subscriptionID, value.Tags),
 		}
 
 		match := resourceGroupRe.FindStringSubmatch(*value.ID)
@@ -187,7 +203,7 @@ func transformVaults(subscriptionID string, auth autorest.Authorizer, values []k
 
 		if value.Properties != nil {
 			tValue.TenantID = utils.AzureUUIDToString(value.Properties.TenantID)
-			tValue.AccessPolicies = transformVaultAccessPolicyEntries(value.Properties.AccessPolicies)
+			tValue.AccessPolicies = transformVaultAccessPolicyEntries(subscriptionID, value.Properties.AccessPolicies)
 			tValue.VaultURI = value.Properties.VaultURI
 			tValue.EnabledForDeployment = value.Properties.EnabledForDeployment
 			tValue.EnabledForDiskEncryption = value.Properties.EnabledForDiskEncryption
@@ -199,138 +215,148 @@ func transformVaults(subscriptionID string, auth autorest.Authorizer, values []k
 			tValue.EnablePurgeProtection = value.Properties.EnablePurgeProtection
 
 			if value.Properties.NetworkAcls != nil {
-				tValue.NetworkAclsIPRules = transformVaultIPRules(value.Properties.NetworkAcls.IPRules)
-				tValue.NetworkAclsVirtualNetworkRules = transformVaultVirtualNetworkRules(value.Properties.NetworkAcls.VirtualNetworkRules)
+				tValue.NetworkAclsIPRules = transformVaultIPRules(subscriptionID, value.Properties.NetworkAcls.IPRules)
+				tValue.NetworkAclsVirtualNetworkRules = transformVaultVirtualNetworkRules(subscriptionID, value.Properties.NetworkAcls.VirtualNetworkRules)
 			}
 
-			tValue.PrivateEndpointConnections = transformVaultPrivateEndpointConnectionItems(value.Properties.PrivateEndpointConnections)
+			tValue.PrivateEndpointConnections = transformVaultPrivateEndpointConnectionItems(subscriptionID, value.Properties.PrivateEndpointConnections)
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues, nil
 }
 
-func transformVaultTags(values map[string]*string) []*VaultTag {
+func transformVaultTags(subscriptionID string, values map[string]*string) []*VaultTag {
 	var tValues []*VaultTag
 	for k, v := range values {
 		tValue := VaultTag{
-			Key:   k,
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Key:            k,
+			Value:          v,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func transformVaultPermissionsKeys(values *[]keyvault.KeyPermissions) []*VaultKeyPermission {
+func transformVaultPermissionsKeys(subscriptionID string, values *[]keyvault.KeyPermissions) []*VaultKeyPermission {
 	var tValues []*VaultKeyPermission
 	if values == nil {
 		return nil
 	}
 	for _, v := range *values {
 		tValues = append(tValues, &VaultKeyPermission{
-			Value: string(v),
+			SubscriptionID: subscriptionID,
+			Value:          string(v),
 		})
 	}
 	return tValues
 }
 
-func transformVaultPermissionsSecrets(values *[]keyvault.SecretPermissions) []*VaultSecretPermission {
+func transformVaultPermissionsSecrets(subscriptionID string, values *[]keyvault.SecretPermissions) []*VaultSecretPermission {
 	var tValues []*VaultSecretPermission
 	if values == nil {
 		return nil
 	}
 	for _, v := range *values {
 		tValues = append(tValues, &VaultSecretPermission{
-			Value: string(v),
+			SubscriptionID: subscriptionID,
+			Value:          string(v),
 		})
 	}
 	return tValues
 }
 
-func transformVaultPermissionsCertificates(values *[]keyvault.CertificatePermissions) []*VaultCertificatePermission {
+func transformVaultPermissionsCertificates(subscriptionID string, values *[]keyvault.CertificatePermissions) []*VaultCertificatePermission {
 	var tValues []*VaultCertificatePermission
 	if values == nil {
 		return nil
 	}
 	for _, v := range *values {
 		tValues = append(tValues, &VaultCertificatePermission{
-			Value: string(v),
+			SubscriptionID: subscriptionID,
+			Value:          string(v),
 		})
 	}
 	return tValues
 }
 
-func transformVaultPermissionsStorage(values *[]keyvault.StoragePermissions) []*VaultStoragePermission {
+func transformVaultPermissionsStorage(subscriptionID string, values *[]keyvault.StoragePermissions) []*VaultStoragePermission {
 	var tValues []*VaultStoragePermission
 	if values == nil {
 		return nil
 	}
 	for _, v := range *values {
 		tValues = append(tValues, &VaultStoragePermission{
-			Value: string(v),
+			SubscriptionID: subscriptionID,
+			Value:          string(v),
 		})
 	}
 	return tValues
 }
 
-func transformVaultAccessPolicyEntries(values *[]keyvault.AccessPolicyEntry) []*VaultAccessPolicy {
+func transformVaultAccessPolicyEntries(subscriptionID string, values *[]keyvault.AccessPolicyEntry) []*VaultAccessPolicy {
 	var tValues []*VaultAccessPolicy
 	if values == nil {
 		return nil
 	}
 	for _, value := range *values {
 		tValue := VaultAccessPolicy{
-			TenantID:      utils.AzureUUIDToString(value.TenantID),
-			ObjectID:      value.ObjectID,
-			ApplicationID: utils.AzureUUIDToString(value.ApplicationID),
+			SubscriptionID: subscriptionID,
+			TenantID:       utils.AzureUUIDToString(value.TenantID),
+			ObjectID:       value.ObjectID,
+			ApplicationID:  utils.AzureUUIDToString(value.ApplicationID),
 		}
 		if value.Permissions != nil {
-			tValue.KeyPermissions = transformVaultPermissionsKeys(value.Permissions.Keys)
-			tValue.SecretPermissions = transformVaultPermissionsSecrets(value.Permissions.Secrets)
-			tValue.CertificatePermissions = transformVaultPermissionsCertificates(value.Permissions.Certificates)
-			tValue.StoragePermissions = transformVaultPermissionsStorage(value.Permissions.Storage)
+			tValue.KeyPermissions = transformVaultPermissionsKeys(subscriptionID, value.Permissions.Keys)
+			tValue.SecretPermissions = transformVaultPermissionsSecrets(subscriptionID, value.Permissions.Secrets)
+			tValue.CertificatePermissions = transformVaultPermissionsCertificates(subscriptionID, value.Permissions.Certificates)
+			tValue.StoragePermissions = transformVaultPermissionsStorage(subscriptionID, value.Permissions.Storage)
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func transformVaultIPRules(values *[]keyvault.IPRule) []*VaultIPRule {
+func transformVaultIPRules(subscriptionID string, values *[]keyvault.IPRule) []*VaultIPRule {
 	var tValues []*VaultIPRule
 	if values == nil {
 		return nil
 	}
 	for _, value := range *values {
 		tValue := VaultIPRule{
-			Value: value.Value,
+			SubscriptionID: subscriptionID,
+			Value:          value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func transformVaultVirtualNetworkRules(values *[]keyvault.VirtualNetworkRule) []*VaultVirtualNetworkRule {
+func transformVaultVirtualNetworkRules(subscriptionID string, values *[]keyvault.VirtualNetworkRule) []*VaultVirtualNetworkRule {
 	var tValues []*VaultVirtualNetworkRule
 	if values == nil {
 		return nil
 	}
 	for _, value := range *values {
 		tValue := VaultVirtualNetworkRule{
-			ResourceID: value.ID,
+			SubscriptionID: subscriptionID,
+			ResourceID:     value.ID,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func transformVaultPrivateEndpointConnectionItems(values *[]keyvault.PrivateEndpointConnectionItem) []*VaultPrivateEndpointConnection {
+func transformVaultPrivateEndpointConnectionItems(subscriptionID string, values *[]keyvault.PrivateEndpointConnectionItem) []*VaultPrivateEndpointConnection {
 	var tValues []*VaultPrivateEndpointConnection
 	if values == nil {
 		return nil
 	}
 	for _, value := range *values {
-		tValue := VaultPrivateEndpointConnection{}
+		tValue := VaultPrivateEndpointConnection{
+			SubscriptionID: subscriptionID,
+		}
 		if value.PrivateEndpointConnectionProperties != nil {
 
 			tValue.ProvisioningState = string(value.PrivateEndpointConnectionProperties.ProvisioningState)
@@ -344,29 +370,22 @@ type VaultConfig struct {
 	Filter string
 }
 
-func MigrateVault(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Vault{},
-		&VaultTag{},
-		&VaultIPRule{},
-		&VaultVirtualNetworkRule{},
-		&VaultPrivateEndpointConnection{},
-		&VaultAccessPolicy{},
-		&VaultKeyPermission{},
-		&VaultSecretPermission{},
-		&VaultStoragePermission{},
-		&VaultCertificatePermission{},
-		&Key{},
-		&KeyTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var VaultTables = []interface{}{
+	&Vault{},
+	&VaultTag{},
+	&VaultIPRule{},
+	&VaultVirtualNetworkRule{},
+	&VaultPrivateEndpointConnection{},
+	&VaultAccessPolicy{},
+	&VaultKeyPermission{},
+	&VaultSecretPermission{},
+	&VaultStoragePermission{},
+	&VaultCertificatePermission{},
+	&Key{},
+	&KeyTag{},
 }
 
-func Vaults(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Vaults(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config VaultConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -382,7 +401,7 @@ func Vaults(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *z
 		return err
 	}
 
-	db.Where("subscription_id = ?", subscriptionID).Delete(&Vault{})
+	db.Where("subscription_id", subscriptionID).Delete(VaultTables...)
 	if !output.NotDone() {
 		log.Info("Fetched resources", zap.Int("count", 0))
 	}
@@ -396,7 +415,7 @@ func Vaults(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *z
 		if err != nil {
 			return err
 		}
-		common.ChunkedCreate(db, tValues)
+		db.ChunkedCreate(tValues)
 		log.Info("Fetched resources", zap.Int("count", len(tValues)))
 	}
 

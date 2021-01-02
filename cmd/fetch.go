@@ -27,7 +27,7 @@ var fetchCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(fetchCmd)
 	fetchCmd.Flags().StringVar(&dsn, "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite")
-	fetchCmd.Flags().StringVar(&driver, "driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver")
+	fetchCmd.Flags().StringVar(&driver, "driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j")
 	fetchCmd.Flags().StringVar(&fetchConfigPath, "path", "./config.yml", "path to configuration file. can be generated with 'gen config' command")
 	fetchCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 }

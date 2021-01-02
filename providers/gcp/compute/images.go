@@ -2,15 +2,15 @@ package compute
 
 import (
 	"github.com/aws/aws-sdk-go/service/elb"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
 
 type Image struct {
-	ID                    uint `gorm:"primarykey"`
-	ProjectID             string
+	_                     interface{} `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                    uint        `gorm:"primarykey"`
+	ProjectID             string      `neo:"unique"`
 	Region                string
 	ArchiveSizeBytes      int64
 	CreationTimestamp     string
@@ -23,8 +23,7 @@ type Image struct {
 	DiskSizeGb            int64
 	Family                string
 	GuestOsFeatures       []*ImageGuestOsFeature `gorm:"constraint:OnDelete:CASCADE;"`
-	ResourceID            uint64
-	Id                    uint64
+	ResourceID            uint64                 `neo:"unique"`
 	Kind                  string
 	LabelFingerprint      string
 	//Labels                               []*ImageLabel `gorm:"constraint:OnDelete:CASCADE;"`
@@ -46,32 +45,58 @@ type Image struct {
 	StorageLocations     []*ImageStorageLocation `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Image) TableName() string {
+	return "gcp_compute_images"
+}
+
 type ImageGuestOsFeature struct {
-	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Type    string
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Type      string
+}
+
+func (ImageGuestOsFeature) TableName() string {
+	return "gcp_compute_image_guest_os_features"
 }
 
 type ImageLicenseCode struct {
-	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Value   int64
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Value     int64
 }
+
+func (ImageLicenseCode) TableName() string {
+	return "gcp_compute_image_license_codes"
+}
+
 type ImageLicense struct {
-	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Value   string
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Value     string
+}
+
+func (ImageLicense) TableName() string {
+	return "gcp_compute_image_licenses"
 }
 
 type ImageStorageLocation struct {
-	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Value   string
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Value     string
+}
+
+func (ImageStorageLocation) TableName() string {
+	return "gcp_compute_image_storage_locations"
 }
 
 func (c *Client) transformImageGuestOsFeature(value *compute.GuestOsFeature) *ImageGuestOsFeature {
 	return &ImageGuestOsFeature{
-		Type: value.Type,
+		ProjectID: c.projectID,
+		Type:      value.Type,
 	}
 }
 
@@ -87,7 +112,8 @@ func (c *Client) transformImageLicenseCodes(values []int64) []*ImageLicenseCode 
 	var tValues []*ImageLicenseCode
 	for _, v := range values {
 		tValues = append(tValues, &ImageLicenseCode{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -97,7 +123,8 @@ func (c *Client) transformImageLicenses(values []string) []*ImageLicense {
 	var tValues []*ImageLicense
 	for _, v := range values {
 		tValues = append(tValues, &ImageLicense{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -107,7 +134,8 @@ func (c *Client) transformImageStorageLocations(values []string) []*ImageStorage
 	var tValues []*ImageStorageLocation
 	for _, v := range values {
 		tValues = append(tValues, &ImageStorageLocation{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -124,7 +152,6 @@ func (c *Client) transformImage(value *compute.Image) *Image {
 		Family:            value.Family,
 		GuestOsFeatures:   c.transformImageGuestOsFeatures(value.GuestOsFeatures),
 		ResourceID:        value.Id,
-		Id:                value.Id,
 		Kind:              value.Kind,
 		LabelFingerprint:  value.LabelFingerprint,
 		LicenseCodes:      c.transformImageLicenseCodes(value.LicenseCodes),
@@ -167,25 +194,22 @@ func (c *Client) transformImages(values []*compute.Image) []*Image {
 	return tValues
 }
 
+var ImageTables = []interface{}{
+	&Image{},
+	&ImageGuestOsFeature{},
+	&ImageLicenseCode{},
+	&ImageLicense{},
+	&ImageStorageLocation{},
+}
+
 func (c *Client) images(gConfig interface{}) error {
 	var config elb.DescribeLoadBalancersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeImage"] {
-		err := c.db.AutoMigrate(
-			&Image{},
-			&ImageGuestOsFeature{},
-			&ImageLicenseCode{},
-			&ImageLicense{},
-			&ImageStorageLocation{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeImage"] = true
-	}
+
+	c.db.Where("project_id", c.projectID).Delete(ImageTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.Images.List(c.projectID)
@@ -195,8 +219,7 @@ func (c *Client) images(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&Image{})
-		common.ChunkedCreate(c.db, c.transformImages(output.Items))
+		c.db.ChunkedCreate(c.transformImages(output.Items))
 		c.log.Info("Fetched resources", zap.String("resource", "compute.images"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break

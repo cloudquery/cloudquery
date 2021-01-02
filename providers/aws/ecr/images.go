@@ -3,14 +3,13 @@ package ecr
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ecr"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Image struct {
-	ID        uint `gorm:"primarykey"`
+	_         interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID        uint        `gorm:"primarykey"`
 	AccountID string
 	Region    string
 
@@ -36,8 +35,11 @@ func (Image) TableName() string {
 }
 
 type ImageSeverityCount struct {
-	ID       uint
-	ImageID  uint
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
 	Severity string
 	Count    *int64
 }
@@ -47,9 +49,12 @@ func (ImageSeverityCount) TableName() string {
 }
 
 type ImageTags struct {
-	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Value   *string
+	ID        uint   `gorm:"primarykey"`
+	ImageID   uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Value *string
 }
 
 func (ImageTags) TableName() string {
@@ -78,8 +83,10 @@ func (c *Client) transformImages(values []*ecr.ImageDetail) []*Image {
 			for severity, count := range value.ImageScanFindingsSummary.FindingSeverityCounts {
 				tValue.ImageScanFindingsSeverityCounts = append(tValue.ImageScanFindingsSeverityCounts,
 					&ImageSeverityCount{
-						Severity: severity,
-						Count:    count,
+						AccountID: c.accountID,
+						Region:    c.region,
+						Severity:  severity,
+						Count:     count,
 					})
 			}
 		}
@@ -96,7 +103,9 @@ func (c *Client) transformImageTags(values []*string) []*ImageTags {
 	var tValues []*ImageTags
 	for _, v := range values {
 		tValues = append(tValues, &ImageTags{
-			Value: v,
+			AccountID: c.accountID,
+			Region:    c.region,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -106,21 +115,14 @@ type ImageConfig struct {
 	Filter string
 }
 
-func MigrateImage(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Image{},
-		&ImageSeverityCount{},
-		&ImageTags{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var ImageTables = []interface{}{
+	&Image{},
+	&ImageSeverityCount{},
+	&ImageTags{},
 }
 
 func (c *Client) images(_ interface{}) error {
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ImageTables...)
 
 	var describeRepositoriesInput ecr.DescribeRepositoriesInput
 	var describeImagesInput ecr.DescribeImagesInput
@@ -141,7 +143,7 @@ func (c *Client) images(_ interface{}) error {
 				if err != nil {
 					return err
 				}
-				common.ChunkedCreate(c.db, c.transformImages(outputDescribeImages.ImageDetails))
+				c.db.ChunkedCreate(c.transformImages(outputDescribeImages.ImageDetails))
 				totalImages += len(outputDescribeImages.ImageDetails)
 				c.log.Info("Fetched resources", zap.String("resource", "ecr.images"), zap.Int("count", len(outputDescribeImages.ImageDetails)))
 				if aws.StringValue(outputDescribeImages.NextToken) == "" {

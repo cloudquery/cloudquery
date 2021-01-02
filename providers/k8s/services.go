@@ -2,20 +2,18 @@ package k8s
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Service struct {
-	ID          uint `gorm:"primarykey"`
-	ClusterName string
+	ID          uint   `gorm:"primarykey"`
+	ClusterName string `neo:"unique"`
 
-	Name                         string
-	Namespace                    string
+	Name                         string                 `neo:"unique"`
+	Namespace                    string                 `neo:"unique"`
 	SpecPorts                    []*ServicePort         `gorm:"constraint:OnDelete:CASCADE;"`
 	SpecSelector                 []*ServiceSpecSelector `gorm:"constraint:OnDelete:CASCADE;"`
 	SpecClusterIP                string
@@ -41,8 +39,10 @@ func (Service) TableName() string {
 }
 
 type ServicePort struct {
-	ID          uint `gorm:"primarykey"`
-	ServiceID   uint
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
 	Name        string
 	Protocol    string
 	AppProtocol *string
@@ -56,10 +56,12 @@ func (ServicePort) TableName() string {
 }
 
 type ServiceSpecSelector struct {
-	ID        uint
-	ServiceID uint
-	Key       string
-	Value     string
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
+	Key   string
+	Value string
 }
 
 func (ServiceSpecSelector) TableName() string {
@@ -67,9 +69,11 @@ func (ServiceSpecSelector) TableName() string {
 }
 
 type ServiceSpecExternalIPs struct {
-	ID        uint `gorm:"primarykey"`
-	ServiceID uint
-	Value     string
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
+	Value string
 }
 
 func (ServiceSpecExternalIPs) TableName() string {
@@ -77,9 +81,11 @@ func (ServiceSpecExternalIPs) TableName() string {
 }
 
 type ServiceSpecLoadBalancerSourceRanges struct {
-	ID        uint `gorm:"primarykey"`
-	ServiceID uint
-	Value     string
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
+	Value string
 }
 
 func (ServiceSpecLoadBalancerSourceRanges) TableName() string {
@@ -87,9 +93,11 @@ func (ServiceSpecLoadBalancerSourceRanges) TableName() string {
 }
 
 type ServiceSpecTopologyKeys struct {
-	ID        uint `gorm:"primarykey"`
-	ServiceID uint
-	Value     string
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
+	Value string
 }
 
 func (ServiceSpecTopologyKeys) TableName() string {
@@ -97,10 +105,12 @@ func (ServiceSpecTopologyKeys) TableName() string {
 }
 
 type ServiceLoadBalancerIngress struct {
-	ID        uint `gorm:"primarykey"`
-	ServiceID uint
-	IP        string
-	Hostname  string
+	ID          uint   `gorm:"primarykey"`
+	ServiceID   uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+
+	IP       string
+	Hostname string
 }
 
 func (ServiceLoadBalancerIngress) TableName() string {
@@ -141,6 +151,7 @@ func (p *Provider) transformServicePorts(values []v1.ServicePort) []*ServicePort
 	for _, value := range values {
 		tValue := ServicePort{
 			Name:        value.Name,
+			ClusterName: p.clusterName,
 			Protocol:    string(value.Protocol),
 			AppProtocol: value.AppProtocol,
 			Port:        value.Port,
@@ -156,8 +167,9 @@ func (p *Provider) transformServiceSpecSelectors(values map[string]string) []*Se
 	var tValues []*ServiceSpecSelector
 	for k, v := range values {
 		tValue := ServiceSpecSelector{
-			Key:   k,
-			Value: v,
+			ClusterName: p.clusterName,
+			Key:         k,
+			Value:       v,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -168,7 +180,8 @@ func (p *Provider) transformServiceSpecExternalIPs(values []string) []*ServiceSp
 	var tValues []*ServiceSpecExternalIPs
 	for _, v := range values {
 		tValues = append(tValues, &ServiceSpecExternalIPs{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -178,7 +191,8 @@ func (p *Provider) transformServiceSpecLoadBalancerSourceRanges(values []string)
 	var tValues []*ServiceSpecLoadBalancerSourceRanges
 	for _, v := range values {
 		tValues = append(tValues, &ServiceSpecLoadBalancerSourceRanges{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -188,7 +202,8 @@ func (p *Provider) transformServiceSpecTopologyKeys(values []string) []*ServiceS
 	var tValues []*ServiceSpecTopologyKeys
 	for _, v := range values {
 		tValues = append(tValues, &ServiceSpecTopologyKeys{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -198,8 +213,9 @@ func (p *Provider) transformServiceLoadBalancerIngresses(values []v1.LoadBalance
 	var tValues []*ServiceLoadBalancerIngress
 	for _, value := range values {
 		tValue := ServiceLoadBalancerIngress{
-			IP:       value.IP,
-			Hostname: value.Hostname,
+			ClusterName: p.clusterName,
+			IP:          value.IP,
+			Hostname:    value.Hostname,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -210,21 +226,14 @@ type ServiceConfig struct {
 	Filter string
 }
 
-func migrateServices(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Service{},
-		&ServicePort{},
-		&ServiceSpecSelector{},
-		&ServiceSpecExternalIPs{},
-		&ServiceSpecLoadBalancerSourceRanges{},
-		&ServiceSpecTopologyKeys{},
-		&ServiceLoadBalancerIngress{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var serviceTables = []interface{}{
+	&Service{},
+	&ServicePort{},
+	&ServiceSpecSelector{},
+	&ServiceSpecExternalIPs{},
+	&ServiceSpecLoadBalancerSourceRanges{},
+	&ServiceSpecTopologyKeys{},
+	&ServiceLoadBalancerIngress{},
 }
 
 func (p *Provider) services(gConfig interface{}) error {
@@ -239,9 +248,9 @@ func (p *Provider) services(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	p.db.Where("cluster_name = ?", p.clusterName).Delete(&Service{})
-	common.ChunkedCreate(p.db, p.transformServices(output.Items))
-	p.log.Info("Fetched resources", zap.Int("count", len(output.Items)))
+	p.db.Where("cluster_name", p.clusterName).Delete(serviceTables...)
+	p.db.ChunkedCreate(p.transformServices(output.Items))
+	p.log.Info("Fetched resources", zap.String("resource", "k8s.services"), zap.Int("count", len(output.Items)))
 
 	return nil
 }

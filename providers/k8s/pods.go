@@ -2,18 +2,16 @@ package k8s
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Pod struct {
-	ID          uint `gorm:"primarykey"`
-	ClusterName string
-	Name        string
-	Namespace   string
+	ID          uint   `gorm:"primarykey"`
+	ClusterName string `neo:"unique"`
+	Name        string `neo:"unique"`
+	Namespace   string `neo:"unique"`
 
 	SpecVolumes                       []*PodVolume             `gorm:"constraint:OnDelete:CASCADE;"`
 	SpecContainers                    []*PodContainer          `gorm:"constraint:OnDelete:CASCADE;"`
@@ -83,9 +81,10 @@ func (Pod) TableName() string {
 }
 
 type PodVolume struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Name  string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Name        string
 }
 
 func (PodVolume) TableName() string {
@@ -93,8 +92,9 @@ func (PodVolume) TableName() string {
 }
 
 type PodContainerCommand struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Value          string
 }
 
@@ -103,8 +103,9 @@ func (PodContainerCommand) TableName() string {
 }
 
 type PodContainerArgs struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Value          string
 }
 
@@ -113,8 +114,9 @@ func (PodContainerArgs) TableName() string {
 }
 
 type PodContainerPort struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Name           string
 	HostPort       int32
 	ContainerPort  int32
@@ -127,8 +129,9 @@ func (PodContainerPort) TableName() string {
 }
 
 type PodEnvFromSource struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Prefix         string
 
 	ConfigMapRefOptional *bool
@@ -141,8 +144,9 @@ func (PodEnvFromSource) TableName() string {
 }
 
 type PodEnvVar struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Name           string
 	Value          string
 
@@ -169,8 +173,9 @@ func (PodEnvVar) TableName() string {
 }
 
 type PodVolumeMount struct {
-	ID               uint `gorm:"primarykey"`
-	PodContainerID   uint
+	ID               uint   `gorm:"primarykey"`
+	PodContainerID   uint   `neo:"ignore"`
+	ClusterName      string `gorm:"-"`
 	Name             string
 	ReadOnly         bool
 	MountPath        string
@@ -184,8 +189,9 @@ func (PodVolumeMount) TableName() string {
 }
 
 type PodVolumeDevice struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Name           string
 	DevicePath     string
 }
@@ -195,8 +201,9 @@ func (PodVolumeDevice) TableName() string {
 }
 
 type PodExecActionCommand struct {
-	ID              uint `gorm:"primarykey"`
-	PodExecActionID uint
+	ID              uint   `gorm:"primarykey"`
+	PodExecActionID uint   `neo:"ignore"`
+	ClusterName     string `gorm:"-"`
 	Value           string
 }
 
@@ -205,8 +212,9 @@ func (PodExecActionCommand) TableName() string {
 }
 
 type PodHTTPHeader struct {
-	ID                 uint `gorm:"primarykey"`
-	PodHTTPGetActionID uint
+	ID                 uint   `gorm:"primarykey"`
+	PodHTTPGetActionID uint   `neo:"ignore"`
+	ClusterName        string `gorm:"-"`
 	Name               string
 	Value              string
 }
@@ -216,8 +224,9 @@ func (PodHTTPHeader) TableName() string {
 }
 
 type PodCapabilitiesAdd struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Value          string
 }
 
@@ -226,8 +235,9 @@ func (PodCapabilitiesAdd) TableName() string {
 }
 
 type PodCapabilitiesDrop struct {
-	ID             uint `gorm:"primarykey"`
-	PodContainerID uint
+	ID             uint   `gorm:"primarykey"`
+	PodContainerID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Value          string
 }
 
@@ -236,16 +246,17 @@ func (PodCapabilitiesDrop) TableName() string {
 }
 
 type PodContainer struct {
-	ID         uint `gorm:"primarykey"`
-	PodID      uint
-	Name       string
-	Image      string
-	Command    []*PodContainerCommand `gorm:"constraint:OnDelete:CASCADE;"`
-	Args       []*PodContainerArgs    `gorm:"constraint:OnDelete:CASCADE;"`
-	WorkingDir string
-	Ports      []*PodContainerPort `gorm:"constraint:OnDelete:CASCADE;"`
-	EnvFrom    []*PodEnvFromSource `gorm:"constraint:OnDelete:CASCADE;"`
-	Env        []*PodEnvVar        `gorm:"constraint:OnDelete:CASCADE;"`
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Name        string
+	Image       string
+	Command     []*PodContainerCommand `gorm:"constraint:OnDelete:CASCADE;"`
+	Args        []*PodContainerArgs    `gorm:"constraint:OnDelete:CASCADE;"`
+	WorkingDir  string
+	Ports       []*PodContainerPort `gorm:"constraint:OnDelete:CASCADE;"`
+	EnvFrom     []*PodEnvFromSource `gorm:"constraint:OnDelete:CASCADE;"`
+	Env         []*PodEnvVar        `gorm:"constraint:OnDelete:CASCADE;"`
 
 	VolumeMounts  []*PodVolumeMount  `gorm:"constraint:OnDelete:CASCADE;"`
 	VolumeDevices []*PodVolumeDevice `gorm:"constraint:OnDelete:CASCADE;"`
@@ -318,8 +329,9 @@ func (PodContainer) TableName() string {
 }
 
 type PodEphemeralContainer struct {
-	ID                  uint `gorm:"primarykey"`
-	PodID               uint
+	ID                  uint   `gorm:"primarykey"`
+	PodID               uint   `neo:"ignore"`
+	ClusterName         string `gorm:"-"`
 	TargetContainerName string
 }
 
@@ -328,10 +340,11 @@ func (PodEphemeralContainer) TableName() string {
 }
 
 type PodSysctl struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Name  string
-	Value string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Name        string
+	Value       string
 }
 
 func (PodSysctl) TableName() string {
@@ -339,14 +352,20 @@ func (PodSysctl) TableName() string {
 }
 
 type PodAffinityTermNamespaces struct {
-	ID                uint `gorm:"primarykey"`
-	PodAffinityTermID uint
+	ID                uint   `gorm:"primarykey"`
+	PodAffinityTermID uint   `neo:"ignore"`
+	ClusterName       string `gorm:"-"`
 	Value             string
 }
 
+func (PodAffinityTermNamespaces) TableName() string {
+	return "k8s_pod_affinity_term_namespaces"
+}
+
 type PodToleration struct {
-	ID                uint `gorm:"primarykey"`
-	PodID             uint
+	ID                uint   `gorm:"primarykey"`
+	PodID             uint   `neo:"ignore"`
+	ClusterName       string `gorm:"-"`
 	Key               string
 	Operator          string
 	Value             string
@@ -359,8 +378,9 @@ func (PodToleration) TableName() string {
 }
 
 type PodHostAliasHostnames struct {
-	ID             uint `gorm:"primarykey"`
-	PodHostAliasID uint
+	ID             uint   `gorm:"primarykey"`
+	PodHostAliasID uint   `neo:"ignore"`
+	ClusterName    string `gorm:"-"`
 	Value          string
 }
 
@@ -369,10 +389,11 @@ func (PodHostAliasHostnames) TableName() string {
 }
 
 type PodHostAlias struct {
-	ID        uint `gorm:"primarykey"`
-	PodID     uint
-	IP        string
-	Hostnames []*PodHostAliasHostnames `gorm:"constraint:OnDelete:CASCADE;"`
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	IP          string
+	Hostnames   []*PodHostAliasHostnames `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (PodHostAlias) TableName() string {
@@ -380,9 +401,10 @@ func (PodHostAlias) TableName() string {
 }
 
 type PodDNSConfigNameservers struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Value string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Value       string
 }
 
 func (PodDNSConfigNameservers) TableName() string {
@@ -390,9 +412,10 @@ func (PodDNSConfigNameservers) TableName() string {
 }
 
 type PodDNSConfigSearches struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Value string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Value       string
 }
 
 func (PodDNSConfigSearches) TableName() string {
@@ -400,10 +423,11 @@ func (PodDNSConfigSearches) TableName() string {
 }
 
 type PodDNSConfigOption struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Name  string
-	Value *string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Name        string
+	Value       *string
 }
 
 func (PodDNSConfigOption) TableName() string {
@@ -411,8 +435,9 @@ func (PodDNSConfigOption) TableName() string {
 }
 
 type PodReadinessGate struct {
-	ID            uint `gorm:"primarykey"`
-	PodID         uint
+	ID            uint   `gorm:"primarykey"`
+	PodID         uint   `neo:"ignore"`
+	ClusterName   string `gorm:"-"`
 	ConditionType string
 }
 
@@ -421,10 +446,11 @@ func (PodReadinessGate) TableName() string {
 }
 
 type PodCondition struct {
-	ID     uint `gorm:"primarykey"`
-	PodID  uint
-	Type   string
-	Status string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Type        string
+	Status      string
 
 	Reason  string
 	Message string
@@ -435,9 +461,10 @@ func (PodCondition) TableName() string {
 }
 
 type PodIP struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	IP    string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	IP          string
 }
 
 func (PodIP) TableName() string {
@@ -445,9 +472,10 @@ func (PodIP) TableName() string {
 }
 
 type PodContainerStatus struct {
-	ID    uint `gorm:"primarykey"`
-	PodID uint
-	Name  string
+	ID          uint   `gorm:"primarykey"`
+	PodID       uint   `neo:"ignore"`
+	ClusterName string `gorm:"-"`
+	Name        string
 
 	StateWaitingReason  string
 	StateWaitingMessage string
@@ -570,7 +598,8 @@ func (p *Provider) transformPodVolumes(values []v1.Volume) []*PodVolume {
 	var tValues []*PodVolume
 	for _, value := range values {
 		tValue := PodVolume{
-			Name: value.Name,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -580,7 +609,8 @@ func (p *Provider) transformPodContainerCommand(values []string) []*PodContainer
 	var tValues []*PodContainerCommand
 	for _, v := range values {
 		tValues = append(tValues, &PodContainerCommand{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -590,7 +620,8 @@ func (p *Provider) transformPodContainerArgs(values []string) []*PodContainerArg
 	var tValues []*PodContainerArgs
 	for _, v := range values {
 		tValues = append(tValues, &PodContainerArgs{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -600,6 +631,7 @@ func (p *Provider) transformPodContainerPorts(values []v1.ContainerPort) []*PodC
 	var tValues []*PodContainerPort
 	for _, value := range values {
 		tValue := PodContainerPort{
+			ClusterName:   p.clusterName,
 			Name:          value.Name,
 			HostPort:      value.HostPort,
 			ContainerPort: value.ContainerPort,
@@ -615,7 +647,8 @@ func (p *Provider) transformPodEnvFromSources(values []v1.EnvFromSource) []*PodE
 	var tValues []*PodEnvFromSource
 	for _, value := range values {
 		tValue := PodEnvFromSource{
-			Prefix: value.Prefix,
+			ClusterName: p.clusterName,
+			Prefix:      value.Prefix,
 		}
 		if value.ConfigMapRef != nil {
 			tValue.ConfigMapRefOptional = value.ConfigMapRef.Optional
@@ -632,8 +665,9 @@ func (p *Provider) transformPodEnvVars(values []v1.EnvVar) []*PodEnvVar {
 	var tValues []*PodEnvVar
 	for _, value := range values {
 		tValue := PodEnvVar{
-			Name:  value.Name,
-			Value: value.Value,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			Value:       value.Value,
 		}
 		if value.ValueFrom != nil {
 
@@ -647,6 +681,7 @@ func (p *Provider) transformPodVolumeMounts(values []v1.VolumeMount) []*PodVolum
 	var tValues []*PodVolumeMount
 	for _, value := range values {
 		tValue := PodVolumeMount{
+			ClusterName:      p.clusterName,
 			Name:             value.Name,
 			ReadOnly:         value.ReadOnly,
 			MountPath:        value.MountPath,
@@ -663,8 +698,9 @@ func (p *Provider) transformPodVolumeDevices(values []v1.VolumeDevice) []*PodVol
 	var tValues []*PodVolumeDevice
 	for _, value := range values {
 		tValue := PodVolumeDevice{
-			Name:       value.Name,
-			DevicePath: value.DevicePath,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			DevicePath:  value.DevicePath,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -675,8 +711,9 @@ func (p *Provider) transformPodHTTPHeaders(values []v1.HTTPHeader) []*PodHTTPHea
 	var tValues []*PodHTTPHeader
 	for _, value := range values {
 		tValue := PodHTTPHeader{
-			Name:  value.Name,
-			Value: value.Value,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			Value:       value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -686,7 +723,8 @@ func (p *Provider) transformPodExecActionCommand(values []string) []*PodExecActi
 	var tValues []*PodExecActionCommand
 	for _, v := range values {
 		tValues = append(tValues, &PodExecActionCommand{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -696,7 +734,8 @@ func (p *Provider) transformPodCapabilitiesAdd(values []string) []*PodCapabiliti
 	var tValues []*PodCapabilitiesAdd
 	for _, v := range values {
 		tValues = append(tValues, &PodCapabilitiesAdd{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -706,7 +745,8 @@ func (p *Provider) transformPodCapabilitiesDrop(values []string) []*PodCapabilit
 	var tValues []*PodCapabilitiesDrop
 	for _, v := range values {
 		tValues = append(tValues, &PodCapabilitiesDrop{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -716,14 +756,15 @@ func (p *Provider) transformPodContainers(values []v1.Container) []*PodContainer
 	var tValues []*PodContainer
 	for _, value := range values {
 		tValue := PodContainer{
-			Name:       value.Name,
-			Image:      value.Image,
-			Command:    p.transformPodContainerCommand(value.Command),
-			Args:       p.transformPodContainerArgs(value.Args),
-			WorkingDir: value.WorkingDir,
-			Ports:      p.transformPodContainerPorts(value.Ports),
-			EnvFrom:    p.transformPodEnvFromSources(value.EnvFrom),
-			Env:        p.transformPodEnvVars(value.Env),
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			Image:       value.Image,
+			Command:     p.transformPodContainerCommand(value.Command),
+			Args:        p.transformPodContainerArgs(value.Args),
+			WorkingDir:  value.WorkingDir,
+			Ports:       p.transformPodContainerPorts(value.Ports),
+			EnvFrom:     p.transformPodEnvFromSources(value.EnvFrom),
+			Env:         p.transformPodEnvVars(value.Env),
 
 			VolumeMounts:             p.transformPodVolumeMounts(value.VolumeMounts),
 			VolumeDevices:            p.transformPodVolumeDevices(value.VolumeDevices),
@@ -776,6 +817,7 @@ func (p *Provider) transformPodEphemeralContainers(values []v1.EphemeralContaine
 	var tValues []*PodEphemeralContainer
 	for _, value := range values {
 		tValue := PodEphemeralContainer{
+			ClusterName:         p.clusterName,
 			TargetContainerName: value.TargetContainerName,
 		}
 		tValues = append(tValues, &tValue)
@@ -787,8 +829,9 @@ func (p *Provider) transformPodSysctls(values []v1.Sysctl) []*PodSysctl {
 	var tValues []*PodSysctl
 	for _, value := range values {
 		tValue := PodSysctl{
-			Name:  value.Name,
-			Value: value.Value,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			Value:       value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -799,7 +842,8 @@ func (p *Provider) transformPodAffinityTermNamespaces(values []string) []*PodAff
 	var tValues []*PodAffinityTermNamespaces
 	for _, v := range values {
 		tValues = append(tValues, &PodAffinityTermNamespaces{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -809,6 +853,7 @@ func (p *Provider) transformPodTolerations(values []v1.Toleration) []*PodTolerat
 	var tValues []*PodToleration
 	for _, value := range values {
 		tValue := PodToleration{
+			ClusterName:       p.clusterName,
 			Key:               value.Key,
 			Operator:          string(value.Operator),
 			Value:             value.Value,
@@ -823,7 +868,8 @@ func (p *Provider) transformPodHostAliasHostnames(values []string) []*PodHostAli
 	var tValues []*PodHostAliasHostnames
 	for _, v := range values {
 		tValues = append(tValues, &PodHostAliasHostnames{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -833,8 +879,9 @@ func (p *Provider) transformPodHostAliass(values []v1.HostAlias) []*PodHostAlias
 	var tValues []*PodHostAlias
 	for _, value := range values {
 		tValue := PodHostAlias{
-			IP:        value.IP,
-			Hostnames: p.transformPodHostAliasHostnames(value.Hostnames),
+			ClusterName: p.clusterName,
+			IP:          value.IP,
+			Hostnames:   p.transformPodHostAliasHostnames(value.Hostnames),
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -844,7 +891,8 @@ func (p *Provider) transformPodDNSConfigNameservers(values []string) []*PodDNSCo
 	var tValues []*PodDNSConfigNameservers
 	for _, v := range values {
 		tValues = append(tValues, &PodDNSConfigNameservers{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -854,7 +902,8 @@ func (p *Provider) transformPodDNSConfigSearches(values []string) []*PodDNSConfi
 	var tValues []*PodDNSConfigSearches
 	for _, v := range values {
 		tValues = append(tValues, &PodDNSConfigSearches{
-			Value: v,
+			ClusterName: p.clusterName,
+			Value:       v,
 		})
 	}
 	return tValues
@@ -864,8 +913,9 @@ func (p *Provider) transformPodDNSConfigOptions(values []v1.PodDNSConfigOption) 
 	var tValues []*PodDNSConfigOption
 	for _, value := range values {
 		tValue := PodDNSConfigOption{
-			Name:  value.Name,
-			Value: value.Value,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
+			Value:       value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -876,6 +926,7 @@ func (p *Provider) transformPodReadinessGates(values []v1.PodReadinessGate) []*P
 	var tValues []*PodReadinessGate
 	for _, value := range values {
 		tValue := PodReadinessGate{
+			ClusterName:   p.clusterName,
 			ConditionType: string(value.ConditionType),
 		}
 		tValues = append(tValues, &tValue)
@@ -887,8 +938,9 @@ func (p *Provider) transformPodConditions(values []v1.PodCondition) []*PodCondit
 	var tValues []*PodCondition
 	for _, value := range values {
 		tValue := PodCondition{
-			Type:   string(value.Type),
-			Status: string(value.Status),
+			ClusterName: p.clusterName,
+			Type:        string(value.Type),
+			Status:      string(value.Status),
 
 			Reason:  value.Reason,
 			Message: value.Message,
@@ -902,7 +954,8 @@ func (p *Provider) transformPodIPs(values []v1.PodIP) []*PodIP {
 	var tValues []*PodIP
 	for _, value := range values {
 		tValue := PodIP{
-			IP: value.IP,
+			ClusterName: p.clusterName,
+			IP:          value.IP,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -913,7 +966,8 @@ func (p *Provider) transformPodContainerStatuss(values []v1.ContainerStatus) []*
 	var tValues []*PodContainerStatus
 	for _, value := range values {
 		tValue := PodContainerStatus{
-			Name: value.Name,
+			ClusterName: p.clusterName,
+			Name:        value.Name,
 
 			Ready:        value.Ready,
 			RestartCount: value.RestartCount,
@@ -931,43 +985,36 @@ type PodConfig struct {
 	Filter string
 }
 
-func migratePods(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Pod{},
-		&PodVolume{},
-		&PodContainer{},
-		&PodContainerCommand{},
-		&PodContainerArgs{},
-		&PodContainerPort{},
-		&PodEnvFromSource{},
-		&PodEnvVar{},
-		&PodVolumeMount{},
-		&PodVolumeDevice{},
-		&PodExecActionCommand{},
-		&PodHTTPHeader{},
-		&PodExecActionCommand{},
-		&PodCapabilitiesAdd{},
-		&PodCapabilitiesDrop{},
-		&PodEphemeralContainer{},
-		&PodSysctl{},
-		&PodAffinityTermNamespaces{},
-		&PodAffinityTermNamespaces{},
-		&PodToleration{},
-		&PodHostAlias{},
-		&PodHostAliasHostnames{},
-		&PodDNSConfigNameservers{},
-		&PodDNSConfigSearches{},
-		&PodDNSConfigOption{},
-		&PodReadinessGate{},
-		&PodCondition{},
-		&PodIP{},
-		&PodContainerStatus{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var podTables = []interface{}{
+	&Pod{},
+	&PodVolume{},
+	&PodContainer{},
+	&PodContainerCommand{},
+	&PodContainerArgs{},
+	&PodContainerPort{},
+	&PodEnvFromSource{},
+	&PodEnvVar{},
+	&PodVolumeMount{},
+	&PodVolumeDevice{},
+	&PodExecActionCommand{},
+	&PodHTTPHeader{},
+	&PodExecActionCommand{},
+	&PodCapabilitiesAdd{},
+	&PodCapabilitiesDrop{},
+	&PodEphemeralContainer{},
+	&PodSysctl{},
+	&PodAffinityTermNamespaces{},
+	&PodAffinityTermNamespaces{},
+	&PodToleration{},
+	&PodHostAlias{},
+	&PodHostAliasHostnames{},
+	&PodDNSConfigNameservers{},
+	&PodDNSConfigSearches{},
+	&PodDNSConfigOption{},
+	&PodReadinessGate{},
+	&PodCondition{},
+	&PodIP{},
+	&PodContainerStatus{},
 }
 
 func (p *Provider) pods(_ interface{}) error {
@@ -982,9 +1029,9 @@ func (p *Provider) pods(_ interface{}) error {
 	if err != nil {
 		return err
 	}
-	p.db.Where("cluster_name = ?", p.clusterName).Delete(&Pod{})
-	common.ChunkedCreate(p.db, p.transformPods(output.Items))
-	p.log.Info("Fetched resources", zap.Int("count", len(output.Items)))
+	p.db.Where("cluster_name", p.clusterName).Delete(podTables...)
+	p.db.ChunkedCreate(p.transformPods(output.Items))
+	p.log.Info("Fetched resources", zap.String("resource", "k8s.services"), zap.Int("count", len(output.Items)))
 
 	return nil
 }

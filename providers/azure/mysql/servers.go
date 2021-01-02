@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/azure/utils"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"regexp"
 	"time"
 )
 
 type Server struct {
-	ID             uint `gorm:"primarykey"`
-	SubscriptionID string
+	_              interface{} `neo:"raw:MERGE (a:AzureSubscription {subscription_id: $subscription_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID             uint        `gorm:"primarykey"`
+	SubscriptionID string      `neo:"unique"`
 
 	IdentityPrincipalID *string
 	IdentityType        string
@@ -50,7 +50,7 @@ type Server struct {
 	Tags                              []*ServerTag                       `gorm:"constraint:OnDelete:CASCADE;"`
 	Configurations                    []*ServerConfiguration             `gorm:"constraint:OnDelete:CASCADE;"`
 	Location                          *string
-	ResourceID                        *string
+	ResourceID                        *string `neo:"unique"`
 	Name                              *string
 	Type                              *string
 }
@@ -60,8 +60,9 @@ func (Server) TableName() string {
 }
 
 type ServerConfiguration struct {
-	ID       uint `gorm:"primarykey"`
-	ServerID uint
+	ID             uint   `gorm:"primarykey"`
+	ServerID       uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"ignore"`
 
 	Value         *string
 	DefaultValue  *string
@@ -78,10 +79,11 @@ func (ServerConfiguration) TableName() string {
 }
 
 type ServerPrivateEndpointConnection struct {
-	ID         uint `gorm:"primarykey"`
-	ServerID   uint
-	ResourceID *string
+	ID             uint   `gorm:"primarykey"`
+	ServerID       uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"ignore"`
 
+	ResourceID                                       *string
 	PrivateEndpointID                                *string
 	PrivateLinkServiceConnectionStateStatus          string
 	PrivateLinkServiceConnectionStateDescription     *string
@@ -94,10 +96,12 @@ func (ServerPrivateEndpointConnection) TableName() string {
 }
 
 type ServerTag struct {
-	ID       uint
-	ServerID uint
-	Key      string
-	Value    *string
+	ID             uint   `gorm:"primarykey"`
+	ServerID       uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"ignore"`
+
+	Key   string
+	Value *string
 }
 
 func (ServerTag) TableName() string {
@@ -111,7 +115,7 @@ func transformServers(subscriptionID string, auth autorest.Authorizer, values *[
 	for _, value := range *values {
 		tValue := Server{
 			SubscriptionID: subscriptionID,
-			Tags:           transformServerTags(value.Tags),
+			Tags:           transformServerTags(subscriptionID, value.Tags),
 			Location:       value.Location,
 			ResourceID:     value.ID,
 			Name:           value.Name,
@@ -128,7 +132,7 @@ func transformServers(subscriptionID string, auth autorest.Authorizer, values *[
 			return nil, err
 		}
 		if configResult.Value != nil {
-			tValue.Configurations = transformConfigurations(configResult.Value)
+			tValue.Configurations = transformConfigurations(subscriptionID, configResult.Value)
 		}
 
 		if value.Identity != nil {
@@ -161,7 +165,7 @@ func transformServers(subscriptionID string, auth autorest.Authorizer, values *[
 			tValue.ReplicaCapacity = value.ServerProperties.ReplicaCapacity
 			tValue.PublicNetworkAccess = string(value.ServerProperties.PublicNetworkAccess)
 			if value.ServerProperties.PrivateEndpointConnections != nil {
-				tValue.PrivateEndpointConnections = transformServerPrivateEndpointConnections(value.ServerProperties.PrivateEndpointConnections)
+				tValue.PrivateEndpointConnections = transformServerPrivateEndpointConnections(subscriptionID, value.ServerProperties.PrivateEndpointConnections)
 			}
 		}
 		tValues = append(tValues, &tValue)
@@ -169,13 +173,14 @@ func transformServers(subscriptionID string, auth autorest.Authorizer, values *[
 	return tValues, nil
 }
 
-func transformConfigurations(values *[]mysql.Configuration) []*ServerConfiguration {
+func transformConfigurations(subscriptionID string, values *[]mysql.Configuration) []*ServerConfiguration {
 	var tValues []*ServerConfiguration
 	for _, value := range *values {
 		tValue := ServerConfiguration{
-			ResourceID: value.ID,
-			Name:       value.Name,
-			Type:       value.Type,
+			SubscriptionID: subscriptionID,
+			ResourceID:     value.ID,
+			Name:           value.Name,
+			Type:           value.Type,
 		}
 
 		if value.ConfigurationProperties != nil {
@@ -190,11 +195,12 @@ func transformConfigurations(values *[]mysql.Configuration) []*ServerConfigurati
 	return tValues
 }
 
-func transformServerPrivateEndpointConnections(values *[]mysql.ServerPrivateEndpointConnection) []*ServerPrivateEndpointConnection {
+func transformServerPrivateEndpointConnections(subscriptionID string, values *[]mysql.ServerPrivateEndpointConnection) []*ServerPrivateEndpointConnection {
 	var tValues []*ServerPrivateEndpointConnection
 	for _, value := range *values {
 		tValue := ServerPrivateEndpointConnection{
-			ResourceID: value.ID,
+			SubscriptionID: subscriptionID,
+			ResourceID:     value.ID,
 		}
 		if value.Properties != nil {
 			tValue.ProvisioningState = string(value.Properties.ProvisioningState)
@@ -207,12 +213,13 @@ func transformServerPrivateEndpointConnections(values *[]mysql.ServerPrivateEndp
 	return tValues
 }
 
-func transformServerTags(values map[string]*string) []*ServerTag {
+func transformServerTags(subscriptionID string, values map[string]*string) []*ServerTag {
 	var tValues []*ServerTag
 	for k, v := range values {
 		tValue := ServerTag{
-			Key:   k,
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Key:            k,
+			Value:          v,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -223,21 +230,14 @@ type ServerConfig struct {
 	Filter string
 }
 
-func MigrateServer(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Server{},
-		&ServerConfiguration{},
-		&ServerPrivateEndpointConnection{},
-		&ServerTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var ServerTables = []interface{}{
+	&Server{},
+	&ServerConfiguration{},
+	&ServerPrivateEndpointConnection{},
+	&ServerTag{},
 }
 
-func Servers(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Servers(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config ServerConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -252,13 +252,13 @@ func Servers(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *
 		return err
 	}
 
-	db.Where("subscription_id = ?", subscriptionID).Delete(&Server{})
+	db.Where("subscription_id", subscriptionID).Delete(ServerTables...)
 	if output.Value != nil {
 		tValues, err := transformServers(subscriptionID, auth, output.Value)
 		if err != nil {
 			return err
 		}
-		common.ChunkedCreate(db, tValues)
+		db.ChunkedCreate(tValues)
 		log.Info("Fetched resources", zap.Int("count", len(tValues)))
 	}
 

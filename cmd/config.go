@@ -60,7 +60,7 @@ var gcpConfig = `
   - name: gcp
     project_id: <CHANGE_THIS_TO_YOUR_PROJECT_ID>
     resources:
-      - name: compute.instances
+      - name: compute.addresses
       - name: compute.autoscalers
       - name: compute.disk_types
       - name: compute.images

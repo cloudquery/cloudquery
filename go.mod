@@ -11,7 +11,9 @@ require (
 	github.com/Azure/go-autorest/autorest/validation v0.3.1 // indirect
 	github.com/aws/aws-sdk-go v1.35.0
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
+	github.com/iancoleman/strcase v0.1.2
 	github.com/mitchellh/mapstructure v1.3.3
+	github.com/neo4j/neo4j-go-driver/v4 v4.2.1-0.20201216094814-003230e3e54b
 	github.com/okta/okta-sdk-golang/v2 v2.2.1
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/satori/go.uuid v1.2.0

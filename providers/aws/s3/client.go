@@ -5,14 +5,14 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Client struct {
 	session   *session.Session
-	db        *gorm.DB
+	db        *database.Database
 	log       *zap.Logger
 	accountID string
 	region    string
@@ -20,7 +20,7 @@ type Client struct {
 	awsConfig *aws.Config
 }
 
-func NewClient(sess *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
+func NewClient(sess *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger,
 	accountID string, _ string) resource.ClientInterface {
 	globalRegion := "us-east-1"
 	awsConfig.Region = &globalRegion

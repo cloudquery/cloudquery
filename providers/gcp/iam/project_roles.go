@@ -1,7 +1,6 @@
 package iam
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"go.uber.org/zap"
 	"google.golang.org/api/iam/v1"
 )
@@ -19,15 +18,25 @@ type Role struct {
 	Title               string
 }
 
+func (Role) TableName() string {
+	return "gcp_iam_roles"
+}
+
 type RolePermission struct {
-	ID     uint `gorm:"primarykey"`
-	RoleID uint
-	Value  string
+	ID        uint   `gorm:"primarykey"`
+	RoleID    uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Value     string
+}
+
+func (RolePermission) TableName() string {
+	return "gcp_iam_role_permissions"
 }
 
 func (c *Client) transformRolePermission(value string) *RolePermission {
 	return &RolePermission{
-		Value: value,
+		ProjectID: c.projectID,
+		Value:     value,
 	}
 }
 
@@ -61,17 +70,13 @@ func (c *Client) transformRoles(values []*iam.Role) []*Role {
 	return tValues
 }
 
+var RoleTables = []interface{}{
+	&Role{},
+	&RolePermission{},
+}
+
 func (c *Client) projectRoles(_ interface{}) error {
-	if !c.resourceMigrated["iamRole"] {
-		err := c.db.AutoMigrate(
-			&Role{},
-			&RolePermission{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["iamRole"] = true
-	}
+	c.db.Where("region", c.region).Where("project_id", c.projectID).Delete(RoleTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.Projects.Roles.List("projects/" + c.projectID)
@@ -81,8 +86,7 @@ func (c *Client) projectRoles(_ interface{}) error {
 			return err
 		}
 
-		c.db.Where("region = ?", c.region).Where("project_id = ?", c.projectID).Delete(&Role{})
-		common.ChunkedCreate(c.db, c.transformRoles(output.Roles))
+		c.db.ChunkedCreate(c.transformRoles(output.Roles))
 		c.log.Info("Fetched resources", zap.String("resource", "iam.project_roles"), zap.Int("count", len(output.Roles)))
 		if output.NextPageToken == "" {
 			break

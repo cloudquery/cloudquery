@@ -3,16 +3,14 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Subnet struct {
-	ID                          uint `gorm:"primarykey"`
-	AccountID                   string
-	Region                      string
+	ID                          uint   `gorm:"primarykey"`
+	AccountID                   string `neo:"unique"`
+	Region                      string `neo:"unique"`
 	AssignIpv6AddressOnCreation *bool
 	AvailabilityZone            *string
 	AvailabilityZoneId          *string
@@ -27,7 +25,7 @@ type Subnet struct {
 	OwnerId                     *string
 	State                       *string
 	SubnetArn                   *string
-	SubnetId                    *string
+	SubnetId                    *string      `neo:"unique"`
 	Tags                        []*SubnetTag `gorm:"constraint:OnDelete:CASCADE;"`
 	VpcId                       *string
 }
@@ -37,11 +35,16 @@ func (Subnet) TableName() string {
 }
 
 type SubnetIpv6CidrBlockAssociation struct {
-	ID                 uint `gorm:"primarykey"`
-	SubnetID           uint
-	AssociationId      *string
-	Ipv6CidrBlock      *string
-	Ipv6CidrBlockState *ec2.SubnetCidrBlockState `gorm:"embedded;embeddedPrefix:ipv_6_cidr_block_state_"`
+	ID       uint `gorm:"primarykey"`
+	SubnetID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	AssociationId *string
+	Ipv6CidrBlock *string
+	State         *string
+	StatusMessage *string
 }
 
 func (SubnetIpv6CidrBlockAssociation) TableName() string {
@@ -49,10 +52,12 @@ func (SubnetIpv6CidrBlockAssociation) TableName() string {
 }
 
 type SubnetTag struct {
-	ID       uint `gorm:"primarykey"`
-	SubnetID uint
-	Key      *string
-	Value    *string
+	ID        uint   `gorm:"primarykey"`
+	SubnetID  uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+	Key       *string
+	Value     *string
 }
 
 func (SubnetTag) TableName() string {
@@ -60,11 +65,18 @@ func (SubnetTag) TableName() string {
 }
 
 func (c *Client) transformSubnetIpv6CidrBlockAssociation(value *ec2.SubnetIpv6CidrBlockAssociation) *SubnetIpv6CidrBlockAssociation {
-	return &SubnetIpv6CidrBlockAssociation{
-		AssociationId:      value.AssociationId,
-		Ipv6CidrBlock:      value.Ipv6CidrBlock,
-		Ipv6CidrBlockState: value.Ipv6CidrBlockState,
+	res := SubnetIpv6CidrBlockAssociation{
+		AccountID:     c.accountID,
+		Region:        c.region,
+		AssociationId: value.AssociationId,
+		Ipv6CidrBlock: value.Ipv6CidrBlock,
 	}
+	if value.Ipv6CidrBlock != nil {
+		res.State = value.Ipv6CidrBlockState.State
+		res.StatusMessage = value.Ipv6CidrBlockState.StatusMessage
+	}
+
+	return &res
 }
 
 func (c *Client) transformSubnetIpv6CidrBlockAssociations(values []*ec2.SubnetIpv6CidrBlockAssociation) []*SubnetIpv6CidrBlockAssociation {
@@ -77,8 +89,10 @@ func (c *Client) transformSubnetIpv6CidrBlockAssociations(values []*ec2.SubnetIp
 
 func (c *Client) transformSubnetTag(value *ec2.Tag) *SubnetTag {
 	return &SubnetTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -122,12 +136,10 @@ func (c *Client) transformSubnets(values []*ec2.Subnet) []*Subnet {
 	return tValues
 }
 
-func MigrateSubnets(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Subnet{},
-		&SubnetIpv6CidrBlockAssociation{},
-		&SubnetTag{},
-	)
+var SubnetTables = []interface{}{
+	&Subnet{},
+	&SubnetIpv6CidrBlockAssociation{},
+	&SubnetTag{},
 }
 
 func (c *Client) subnets(gConfig interface{}) error {
@@ -136,14 +148,13 @@ func (c *Client) subnets(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(SubnetTables...)
 	for {
 		output, err := c.svc.DescribeSubnets(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Subnet{})
-		common.ChunkedCreate(c.db, c.transformSubnets(output.Subnets))
+		c.db.ChunkedCreate(c.transformSubnets(output.Subnets))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.subnets"), zap.Int("count", len(output.Subnets)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

@@ -2,18 +2,18 @@ package k8s
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type Provider struct {
-	db              *gorm.DB
+	db              *database.Database
 	config          Config
 	resourceClients map[string]common.ClientInterface
 	log             *zap.Logger
@@ -29,20 +29,20 @@ type Config struct {
 	}
 }
 
-var migrateFunctions = []func(*gorm.DB) error{
-	migrateServices,
-	migratePods,
+var tablesArr = [][]interface{}{
+	serviceTables,
+	podTables,
 }
 
-func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
+func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:              db,
 		resourceClients: map[string]common.ClientInterface{},
 		log:             log,
 	}
 
-	for _, migrateFunc := range migrateFunctions {
-		err := migrateFunc(db)
+	for _, tables := range tablesArr {
+		err := db.AutoMigrate(tables...)
 		if err != nil {
 			return nil, err
 		}

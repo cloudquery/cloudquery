@@ -3,18 +3,16 @@ package redshift
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/redshift"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type ClusterSubnetGroup struct {
-	ID        uint `gorm:"primarykey"`
-	AccountID string
-	Region    string
+	ID        uint   `gorm:"primarykey"`
+	AccountID string `neo:"unique"`
+	Region    string `neo:"unique"`
 
-	Name        *string
+	Name        *string `neo:"unique"`
 	Description *string
 	Status      *string
 	Subnets     []*ClusterSubnetGroupSubnet `gorm:"constraint:OnDelete:CASCADE;"`
@@ -27,8 +25,10 @@ func (ClusterSubnetGroup) TableName() string {
 }
 
 type ClusterSubnetGroupTag struct {
-	ID                   uint `gorm:"primarykey"`
-	ClusterSubnetGroupID uint
+	ID                   uint   `gorm:"primarykey"`
+	ClusterSubnetGroupID uint   `neo:"ignore"`
+	AccountID            string `gorm:"-"`
+	Region               string `gorm:"-"`
 
 	Key   *string
 	Value *string
@@ -39,8 +39,10 @@ func (ClusterSubnetGroupTag) TableName() string {
 }
 
 type ClusterSubnetGroupSubnet struct {
-	ID                   uint `gorm:"primarykey"`
-	ClusterSubnetGroupID uint
+	ID                   uint   `gorm:"primarykey"`
+	ClusterSubnetGroupID uint   `neo:"ignore"`
+	AccountID            string `gorm:"-"`
+	Region               string `gorm:"-"`
 
 	AZName      *string
 	AZPlatforms []*ClusterSubnetGroupSupportedPlatform `gorm:"constraint:OnDelete:CASCADE;"`
@@ -53,8 +55,10 @@ func (ClusterSubnetGroupSubnet) TableName() string {
 }
 
 type ClusterSubnetGroupSupportedPlatform struct {
-	ID                         uint `gorm:"primarykey"`
-	ClusterSubnetGroupSubnetID uint
+	ID                         uint   `gorm:"primarykey"`
+	ClusterSubnetGroupSubnetID uint   `neo:"ignore"`
+	AccountID                  string `gorm:"-"`
+	Region                     string `gorm:"-"`
 
 	Name *string
 }
@@ -85,7 +89,9 @@ func (c *Client) transformClusterSubnetGroupSupportedPlatforms(values []*redshif
 	var tValues []*ClusterSubnetGroupSupportedPlatform
 	for _, value := range values {
 		tValue := ClusterSubnetGroupSupportedPlatform{
-			Name: value.Name,
+			AccountID: c.accountID,
+			Region:    c.region,
+			Name:      value.Name,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -96,6 +102,8 @@ func (c *Client) transformClusterSubnetGroupSubnets(values []*redshift.Subnet) [
 	var tValues []*ClusterSubnetGroupSubnet
 	for _, value := range values {
 		tValue := ClusterSubnetGroupSubnet{
+			AccountID:  c.accountID,
+			Region:     c.region,
 			Identifier: value.SubnetIdentifier,
 			Status:     value.SubnetStatus,
 		}
@@ -112,26 +120,21 @@ func (c *Client) transformClusterSubnetGroupTags(values []*redshift.Tag) []*Clus
 	var tValues []*ClusterSubnetGroupTag
 	for _, value := range values {
 		tValue := ClusterSubnetGroupTag{
-			Key:   value.Key,
-			Value: value.Value,
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func MigrateClusterSubnetGroups(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&ClusterSubnetGroup{},
-		&ClusterSubnetGroupSubnet{},
-		&ClusterSubnetGroupSupportedPlatform{},
-		&ClusterSubnetGroupTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var ClusterSubnetGroupTables = []interface{}{
+	&ClusterSubnetGroup{},
+	&ClusterSubnetGroupSubnet{},
+	&ClusterSubnetGroupSupportedPlatform{},
+	&ClusterSubnetGroupTag{},
 }
 
 func (c *Client) clusterSubnetGroups(gConfig interface{}) error {
@@ -140,14 +143,14 @@ func (c *Client) clusterSubnetGroups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterSubnetGroupTables...)
 
 	for {
 		output, err := c.svc.DescribeClusterSubnetGroups(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&ClusterSubnetGroup{})
-		common.ChunkedCreate(c.db, c.transformClusterSubnetGroups(output.ClusterSubnetGroups))
+		c.db.ChunkedCreate(c.transformClusterSubnetGroups(output.ClusterSubnetGroups))
 		c.log.Info("Fetched resources", zap.String("resource", "redshift.cluster_subnet_groups"), zap.Int("count", len(output.ClusterSubnetGroups)))
 		if aws.StringValue(output.Marker) == "" {
 			break

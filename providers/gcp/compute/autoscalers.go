@@ -1,19 +1,19 @@
 package compute
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
 
 type Autoscaler struct {
-	ID        uint `gorm:"primarykey"`
-	ProjectID string
+	_         interface{} `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID        uint        `gorm:"primarykey"`
+	ProjectID string      `neo:"unique"`
 
 	CoolDownPeriodSec                         int64
 	CpuUtilizationUtilizationTarget           float64
-	CustomMetricUtilizations                  []*AutoscalerPolicyCustomMetricUtilization `gorm:"constraint:OnDelete:CASCADE;"`
+	CustomMetris                              []*AutoscalerPolicyCustomMetric `gorm:"constraint:OnDelete:CASCADE;"`
 	LoadBalancingUtilizationUtilizationTarget float64
 	MaxNumReplicas                            int64
 	MinNumReplicas                            int64
@@ -25,7 +25,7 @@ type Autoscaler struct {
 
 	CreationTimestamp string
 	Description       string
-	ResourceID        uint64
+	ResourceID        uint64 `neo:"unique"`
 	Kind              string
 	Name              string
 	RecommendedSize   int64
@@ -37,9 +37,15 @@ type Autoscaler struct {
 	Zone              string
 }
 
-type AutoscalerPolicyCustomMetricUtilization struct {
-	ID                       uint `gorm:"primarykey"`
-	AutoscalerID             uint
+func (Autoscaler) TableName() string {
+	return "gcp_compute_autoscalers"
+}
+
+type AutoscalerPolicyCustomMetric struct {
+	ID           uint   `gorm:"primarykey"`
+	AutoscalerID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
+
 	Filter                   string
 	Metric                   string
 	SingleInstanceAssignment float64
@@ -47,15 +53,26 @@ type AutoscalerPolicyCustomMetricUtilization struct {
 	UtilizationTargetType    string
 }
 
-type AutoscalerStatusDetails struct {
-	ID           uint `gorm:"primarykey"`
-	AutoscalerID uint
-	Message      string
-	Type         string
+func (AutoscalerPolicyCustomMetric) TableName() string {
+	return "gcp_compute_autoscaler_policy_custom_metrics"
 }
 
-func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(value *compute.AutoscalingPolicyCustomMetricUtilization) *AutoscalerPolicyCustomMetricUtilization {
-	return &AutoscalerPolicyCustomMetricUtilization{
+type AutoscalerStatusDetails struct {
+	ID           uint   `gorm:"primarykey"`
+	AutoscalerID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
+
+	Message string
+	Type    string
+}
+
+func (AutoscalerStatusDetails) TableName() string {
+	return "gcp_compute_autoscaler_status_details"
+}
+
+func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(value *compute.AutoscalingPolicyCustomMetricUtilization) *AutoscalerPolicyCustomMetric {
+	return &AutoscalerPolicyCustomMetric{
+		ProjectID:                c.projectID,
 		Filter:                   value.Filter,
 		Metric:                   value.Metric,
 		SingleInstanceAssignment: value.SingleInstanceAssignment,
@@ -64,8 +81,8 @@ func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilization(val
 	}
 }
 
-func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(values []*compute.AutoscalingPolicyCustomMetricUtilization) []*AutoscalerPolicyCustomMetricUtilization {
-	var tValues []*AutoscalerPolicyCustomMetricUtilization
+func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(values []*compute.AutoscalingPolicyCustomMetricUtilization) []*AutoscalerPolicyCustomMetric {
+	var tValues []*AutoscalerPolicyCustomMetric
 	for _, v := range values {
 		tValues = append(tValues, c.transformAutoscalerAutoscalingPolicyCustomMetricUtilization(v))
 	}
@@ -74,8 +91,9 @@ func (c *Client) transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(va
 
 func (c *Client) transformAutoscalerStatusDetails(value *compute.AutoscalerStatusDetails) *AutoscalerStatusDetails {
 	return &AutoscalerStatusDetails{
-		Message: value.Message,
-		Type:    value.Type,
+		ProjectID: c.projectID,
+		Message:   value.Message,
+		Type:      value.Type,
 	}
 }
 
@@ -112,7 +130,7 @@ func (c *Client) transformAutoscaler(value *compute.Autoscaler) *Autoscaler {
 			res.CpuUtilizationUtilizationTarget = value.AutoscalingPolicy.CpuUtilization.UtilizationTarget
 		}
 
-		res.CustomMetricUtilizations = c.transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(value.AutoscalingPolicy.CustomMetricUtilizations)
+		res.CustomMetris = c.transformAutoscalerAutoscalingPolicyCustomMetricUtilizations(value.AutoscalingPolicy.CustomMetricUtilizations)
 		if value.AutoscalingPolicy.LoadBalancingUtilization != nil {
 			res.LoadBalancingUtilizationUtilizationTarget = value.AutoscalingPolicy.LoadBalancingUtilization.UtilizationTarget
 		}
@@ -146,23 +164,19 @@ type AutoscalerConfig struct {
 	Filter string
 }
 
+var AutoscalerTables = []interface{}{
+	&Autoscaler{},
+	&AutoscalerPolicyCustomMetric{},
+	&AutoscalerStatusDetails{},
+}
+
 func (c *Client) autoscalers(gConfig interface{}) error {
 	var config AutoscalerConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeAutoscaler"] {
-		err := c.db.AutoMigrate(
-			&Autoscaler{},
-			&AutoscalerPolicyCustomMetricUtilization{},
-			&AutoscalerStatusDetails{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeAutoscaler"] = true
-	}
+	c.db.Where("project_id", c.projectID).Delete(AutoscalerTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.Autoscalers.AggregatedList(c.projectID)
@@ -172,13 +186,12 @@ func (c *Client) autoscalers(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&Autoscaler{})
 		var tValues []*Autoscaler
 		for _, items := range output.Items {
 			tValues = append(tValues, c.transformAutoscalers(items.Autoscalers)...)
 		}
-		common.ChunkedCreate(c.db, tValues)
-		c.log.Info("Fetched resources", zap.String("resource", "compute.addresses"), zap.Int("count", len(tValues)))
+		c.db.ChunkedCreate(tValues)
+		c.log.Info("Fetched resources", zap.String("resource", "compute.autoscalers"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break
 		}

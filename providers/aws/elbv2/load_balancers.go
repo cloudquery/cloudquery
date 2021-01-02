@@ -6,12 +6,12 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type LoadBalancer struct {
-	ID                    uint `gorm:"primarykey"`
+	_                     interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                    uint        `gorm:"primarykey"`
 	AccountID             string
 	Region                string
 	AvailabilityZones     []*LoadBalancerAvailabilityZone `gorm:"constraint:OnDelete:CASCADE;"`
@@ -20,13 +20,16 @@ type LoadBalancer struct {
 	CustomerOwnedIpv4Pool *string
 	DNSName               *string
 	IpAddressType         *string
-	LoadBalancerArn       *string
+	LoadBalancerArn       *string `neo:"unique"`
 	LoadBalancerName      *string
 	Scheme                *string
 	SecurityGroups        *string
-	State                 *elbv2.LoadBalancerState `gorm:"embedded;embeddedPrefix:state_"`
-	Type                  *string
-	VpcId                 *string
+
+	StateCode   *string
+	StateReason *string
+
+	Type  *string
+	VpcId *string
 }
 
 func (LoadBalancer) TableName() string {
@@ -34,8 +37,11 @@ func (LoadBalancer) TableName() string {
 }
 
 type LoadBalancerAvailabilityZone struct {
-	ID                    uint `gorm:"primarykey"`
-	LoadBalancerID        uint
+	ID             uint   `gorm:"primarykey"`
+	LoadBalancerID uint   `neo:"ignore"`
+	AccountID      string `gorm:"-"`
+	Region         string `gorm:"-"`
+
 	LoadBalancerAddresses []*LoadBalancerAddress `gorm:"constraint:OnDelete:CASCADE;"`
 	OutpostId             *string
 	SubnetId              *string
@@ -47,11 +53,14 @@ func (LoadBalancerAvailabilityZone) TableName() string {
 }
 
 type LoadBalancerAddress struct {
-	ID                             uint `gorm:"primarykey"`
-	LoadBalancerAvailabilityZoneID uint
-	AllocationId                   *string
-	IpAddress                      *string
-	PrivateIPv4Address             *string
+	ID                             uint   `gorm:"primarykey"`
+	LoadBalancerAvailabilityZoneID uint   `neo:"ignore"`
+	AccountID                      string `gorm:"-"`
+	Region                         string `gorm:"-"`
+
+	AllocationId       *string
+	IpAddress          *string
+	PrivateIPv4Address *string
 }
 
 func (LoadBalancerAddress) TableName() string {
@@ -60,6 +69,8 @@ func (LoadBalancerAddress) TableName() string {
 
 func (c *Client) transformLoadBalancerAddress(value *elbv2.LoadBalancerAddress) *LoadBalancerAddress {
 	return &LoadBalancerAddress{
+		AccountID:          c.accountID,
+		Region:             c.region,
 		AllocationId:       value.AllocationId,
 		IpAddress:          value.IpAddress,
 		PrivateIPv4Address: value.PrivateIPv4Address,
@@ -76,6 +87,8 @@ func (c *Client) transformLoadBalancerAddresss(values []*elbv2.LoadBalancerAddre
 
 func (c *Client) transformLoadBalancerAvailabilityZone(value *elbv2.AvailabilityZone) *LoadBalancerAvailabilityZone {
 	return &LoadBalancerAvailabilityZone{
+		AccountID:             c.accountID,
+		Region:                c.region,
 		LoadBalancerAddresses: c.transformLoadBalancerAddresss(value.LoadBalancerAddresses),
 		OutpostId:             value.OutpostId,
 		SubnetId:              value.SubnetId,
@@ -92,7 +105,7 @@ func (c *Client) transformLoadBalancerAvailabilityZones(values []*elbv2.Availabi
 }
 
 func (c *Client) transformLoadBalancer(value *elbv2.LoadBalancer) *LoadBalancer {
-	return &LoadBalancer{
+	res := LoadBalancer{
 		Region:                c.region,
 		AccountID:             c.accountID,
 		AvailabilityZones:     c.transformLoadBalancerAvailabilityZones(value.AvailabilityZones),
@@ -105,10 +118,16 @@ func (c *Client) transformLoadBalancer(value *elbv2.LoadBalancer) *LoadBalancer 
 		LoadBalancerName:      value.LoadBalancerName,
 		Scheme:                value.Scheme,
 		SecurityGroups:        common.StringListToString(value.SecurityGroups),
-		State:                 value.State,
 		Type:                  value.Type,
 		VpcId:                 value.VpcId,
 	}
+
+	if value.State != nil {
+		res.StateReason = value.State.Reason
+		res.StateCode = value.State.Code
+	}
+
+	return &res
 }
 
 func (c *Client) transformLoadBalancers(values []*elbv2.LoadBalancer) []*LoadBalancer {
@@ -119,12 +138,10 @@ func (c *Client) transformLoadBalancers(values []*elbv2.LoadBalancer) []*LoadBal
 	return tValues
 }
 
-func MigrateLoadBalancers(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&LoadBalancer{},
-		&LoadBalancerAvailabilityZone{},
-		&LoadBalancerAddress{},
-	)
+var LoadBalancerTables = []interface{}{
+	&LoadBalancer{},
+	&LoadBalancerAvailabilityZone{},
+	&LoadBalancerAddress{},
 }
 
 func (c *Client) loadBalancers(gConfig interface{}) error {
@@ -133,14 +150,14 @@ func (c *Client) loadBalancers(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(LoadBalancerTables...)
 
 	for {
 		output, err := c.svc.DescribeLoadBalancers(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LoadBalancer{})
-		common.ChunkedCreate(c.db, c.transformLoadBalancers(output.LoadBalancers))
+		c.db.ChunkedCreate(c.transformLoadBalancers(output.LoadBalancers))
 		c.log.Info("Fetched resources", zap.String("resource", "elbv2.load_balancers"), zap.Int("count", len(output.LoadBalancers)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break

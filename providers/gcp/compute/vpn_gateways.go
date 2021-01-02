@@ -1,18 +1,18 @@
 package compute
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
 
 type VpnGateway struct {
-	ID                uint `gorm:"primarykey"`
-	ProjectID         string
+	_                 interface{} `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                uint        `gorm:"primarykey"`
+	ProjectID         string      `neo:"unique"`
 	CreationTimestamp string
 	Description       string
-	ResourceID        uint64
+	ResourceID        uint64 `neo:"unique"`
 	Kind              string
 	LabelFingerprint  string
 	Labels            []*VpnGatewayLabel `gorm:"constraint:OnDelete:CASCADE;"`
@@ -23,26 +23,41 @@ type VpnGateway struct {
 	VpnInterfaces     []*VpnGatewayVpnGatewayInterface `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (VpnGateway) TableName() string {
+	return "gcp_compute_vpn_gateways"
+}
+
 type VpnGatewayLabel struct {
-	ID           uint `gorm:"primarykey"`
-	VpnGatewayID uint
+	ID           uint   `gorm:"primarykey"`
+	VpnGatewayID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
 	Key          string
 	Value        string
 }
 
+func (VpnGatewayLabel) TableName() string {
+	return "gcp_compute_vpn_gateway_label"
+}
+
 type VpnGatewayVpnGatewayInterface struct {
-	ID           uint `gorm:"primarykey"`
-	VpnGatewayID uint
+	ID           uint   `gorm:"primarykey"`
+	VpnGatewayID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
 	ResourceID   int64
 	IpAddress    string
+}
+
+func (VpnGatewayVpnGatewayInterface) TableName() string {
+	return "gcp_compute_vpn_gateway_interfaces"
 }
 
 func (c *Client) transformVpnGatewayVpnGatewayLabels(values map[string]string) []*VpnGatewayLabel {
 	var tValues []*VpnGatewayLabel
 	for k, v := range values {
 		tValues = append(tValues, &VpnGatewayLabel{
-			Key:   k,
-			Value: v,
+			ProjectID: c.projectID,
+			Key:       k,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -50,6 +65,7 @@ func (c *Client) transformVpnGatewayVpnGatewayLabels(values map[string]string) [
 
 func (c *Client) transformVpnGatewayVpnGatewayInterface(value *compute.VpnGatewayVpnGatewayInterface) *VpnGatewayVpnGatewayInterface {
 	return &VpnGatewayVpnGatewayInterface{
+		ProjectID:  c.projectID,
 		ResourceID: value.Id,
 		IpAddress:  value.IpAddress,
 	}
@@ -92,23 +108,20 @@ type VpnGatewayConfig struct {
 	Filter string
 }
 
+var VPNGatewayTables = []interface{}{
+	&VpnGateway{},
+	&VpnGatewayVpnGatewayInterface{},
+	&VpnGatewayLabel{},
+}
+
 func (c *Client) vpnGateways(gConfig interface{}) error {
 	var config VpnGatewayConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeVpnGateway"] {
-		err := c.db.AutoMigrate(
-			&VpnGateway{},
-			&VpnGatewayVpnGatewayInterface{},
-			&VpnGatewayLabel{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeVpnGateway"] = true
-	}
+
+	c.db.Where("project_id", c.projectID).Delete(VPNGatewayTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.VpnGateways.AggregatedList(c.projectID)
@@ -118,12 +131,11 @@ func (c *Client) vpnGateways(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&VpnGateway{})
 		var tValues []*VpnGateway
 		for _, items := range output.Items {
 			tValues = append(tValues, c.transformVpnGateways(items.VpnGateways)...)
 		}
-		common.ChunkedCreate(c.db, tValues)
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "compute.vpn_gateways"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break

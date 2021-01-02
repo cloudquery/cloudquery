@@ -6,7 +6,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 	"github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -102,7 +102,7 @@ func MigrateUser(db *gorm.DB) error {
 	return nil
 }
 
-func Users(auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Users(auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config UserConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -137,7 +137,7 @@ func Users(auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig inter
 	//for _, items := range output.Items {
 	//	tValues = append(tValues, transformUsers(items)...)
 	//}
-	common.ChunkedCreate(db, tValues)
+	db.ChunkedCreate(tValues)
 	log.Info("populating Users", zap.Int("count", len(tValues)))
 
 	return nil

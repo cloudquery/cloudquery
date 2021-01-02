@@ -4,10 +4,9 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Group struct {
@@ -72,19 +71,12 @@ type GroupConfig struct {
 	Filter string
 }
 
-func MigrateGroup(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Group{},
-		&GroupTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var GroupTables = []interface{}{
+	&Group{},
+	&GroupTag{},
 }
 
-func Groups(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Groups(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config GroupConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -99,7 +91,7 @@ func Groups(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *z
 		return err
 	}
 
-	db.Where("subscription_id = ?", subscriptionID).Delete(&Group{})
+	db.Where("subscription_id", subscriptionID).Delete(GroupTables...)
 	for output.NotDone() {
 		values := output.Values()
 		err := output.NextWithContext(ctx)
@@ -107,7 +99,7 @@ func Groups(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *z
 			return err
 		}
 		tValues := transformGroups(subscriptionID, &values)
-		common.ChunkedCreate(db, tValues)
+		db.ChunkedCreate(tValues)
 		log.Info("Fetched resources", zap.Int("count", len(tValues)))
 	}
 

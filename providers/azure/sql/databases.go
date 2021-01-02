@@ -5,24 +5,23 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"regexp"
 	"time"
 )
 
 type Database struct {
-	ID             uint `gorm:"primarykey"`
-	SubscriptionID string
+	ID             uint   `gorm:"primarykey"`
+	SubscriptionID string `neo:"unique"`
 	Kind           *string
 
 	Collation                               *string
 	CreationDate                            time.Time
 	ContainmentState                        *int64
 	CurrentServiceObjectiveID               string
-	DatabaseID                              string
+	DatabaseID                              string `neo:"unique"`
 	EarliestRestoreDate                     time.Time
 	CreateMode                              string
 	SourceDatabaseID                        *string
@@ -55,8 +54,9 @@ func (Database) TableName() string {
 }
 
 type DatabaseTransparentDataEncryption struct {
-	ID         uint `gorm:"primarykey"`
-	DatabaseID uint
+	ID             uint   `gorm:"primarykey"`
+	DatabaseID     uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
 
 	Location   *string
 	Status     string
@@ -70,10 +70,12 @@ func (DatabaseTransparentDataEncryption) TableName() string {
 }
 
 type DatabaseTag struct {
-	ID         uint
-	DatabaseID uint
-	Key        string
-	Value      *string
+	ID             uint   `gorm:"primarykey"`
+	DatabaseID     uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
+	Key   string
+	Value *string
 }
 
 func (DatabaseTag) TableName() string {
@@ -88,7 +90,7 @@ func transformDatabases(subscriptionID string, values *[]sql.Database) []*Databa
 			Kind:           value.Kind,
 
 			Location:   value.Location,
-			Tags:       transformDatabaseTags(value.Tags),
+			Tags:       transformDatabaseTags(subscriptionID, value.Tags),
 			ResourceID: value.ID,
 			Name:       value.Name,
 			Type:       value.Type,
@@ -132,7 +134,7 @@ func transformDatabases(subscriptionID string, values *[]sql.Database) []*Databa
 			}
 
 			if value.DatabaseProperties.TransparentDataEncryption != nil {
-				tValue.TransparentDataEncryption = transformDatabaseTransparentDataEncryptions(value.DatabaseProperties.TransparentDataEncryption)
+				tValue.TransparentDataEncryption = transformDatabaseTransparentDataEncryptions(subscriptionID, value.DatabaseProperties.TransparentDataEncryption)
 			}
 
 		}
@@ -142,11 +144,12 @@ func transformDatabases(subscriptionID string, values *[]sql.Database) []*Databa
 	return tValues
 }
 
-func transformDatabaseTransparentDataEncryptions(values *[]sql.TransparentDataEncryption) []*DatabaseTransparentDataEncryption {
+func transformDatabaseTransparentDataEncryptions(subscriptionID string, values *[]sql.TransparentDataEncryption) []*DatabaseTransparentDataEncryption {
 	var tValues []*DatabaseTransparentDataEncryption
 	for _, value := range *values {
 		tValue := DatabaseTransparentDataEncryption{
-			Location: value.Location,
+			Location:       value.Location,
+			SubscriptionID: subscriptionID,
 
 			ResourceID: value.ID,
 			Name:       value.Name,
@@ -160,12 +163,13 @@ func transformDatabaseTransparentDataEncryptions(values *[]sql.TransparentDataEn
 	return tValues
 }
 
-func transformDatabaseTags(values map[string]*string) []*DatabaseTag {
+func transformDatabaseTags(subscriptionID string, values map[string]*string) []*DatabaseTag {
 	var tValues []*DatabaseTag
 	for k, v := range values {
 		tValue := DatabaseTag{
-			Key:   k,
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Key:            k,
+			Value:          v,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -176,20 +180,13 @@ type DatabaseConfig struct {
 	Filter string
 }
 
-func MigrateDatabase(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Database{},
-		&DatabaseTransparentDataEncryption{},
-		&DatabaseTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var DatabaseTables = []interface{}{
+	&Database{},
+	&DatabaseTransparentDataEncryption{},
+	&DatabaseTag{},
 }
 
-func Databases(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Databases(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config DatabaseConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -205,7 +202,10 @@ func Databases(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log
 		return err
 	}
 	resourceGroupRe := regexp.MustCompile("resourceGroups/([a-zA-Z0-9-_]+)/")
-	db.Where("subscription_id = ?", subscriptionID).Delete(&Database{})
+	db.Where("subscription_id", subscriptionID).Delete(DatabaseTables...)
+	if len(*serverResult.Value) == 0 {
+		log.Info("Fetched resources", zap.Int("count", 0))
+	}
 	for _, server := range *serverResult.Value {
 		svc := sql.NewDatabasesClient(subscriptionID)
 		svc.Authorizer = auth
@@ -218,7 +218,7 @@ func Databases(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log
 			return err
 		}
 		tValues := transformDatabases(subscriptionID, output.Value)
-		common.ChunkedCreate(db, tValues)
+		db.ChunkedCreate(tValues)
 		log.Info("Fetched resources", zap.Int("count", len(tValues)))
 	}
 

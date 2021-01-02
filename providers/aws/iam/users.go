@@ -3,17 +3,15 @@ package iam
 import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/iam"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type User struct {
-	ID                   uint `gorm:"primarykey"`
-	AccountID            string
-	Arn                  *string
+	ID                   uint    `gorm:"primarykey"`
+	AccountID            string  `neo:"unique"`
+	Arn                  *string `neo:"unique"`
 	PasswordEnabled      *bool
 	PasswordLastUsed     *time.Time
 	PasswordLastChanged  *time.Time
@@ -21,11 +19,14 @@ type User struct {
 	MFAActive            *bool
 	CreateDate           *time.Time
 	Path                 *string
-	PermissionsBoundary  *iam.AttachedPermissionsBoundary `gorm:"embedded;embeddedPrefix:permissions_boundary_"`
-	Tags                 []*UserTag                       `gorm:"constraint:OnDelete:CASCADE;"`
-	UserId               *string
-	UserName             *string          `csv:"user"`
-	AccessKeys           []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
+
+	PermissionsBoundaryArn  *string
+	PermissionsBoundaryType *string
+
+	Tags       []*UserTag `gorm:"constraint:OnDelete:CASCADE;"`
+	UserId     *string
+	UserName   *string          `csv:"user"`
+	AccessKeys []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (User) TableName() string {
@@ -33,8 +34,10 @@ func (User) TableName() string {
 }
 
 type UserAccessKey struct {
-	ID                  uint `gorm:"primarykey"`
-	UserID              uint
+	ID        uint   `gorm:"primarykey"`
+	UserID    uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+
 	AccessKeyId         *string
 	CreateDate          *time.Time
 	Status              *string
@@ -48,10 +51,12 @@ func (UserAccessKey) TableName() string {
 }
 
 type UserTag struct {
-	ID     uint `gorm:"primarykey"`
-	UserID uint
-	Key    *string
-	Value  *string
+	ID        uint   `gorm:"primarykey"`
+	UserID    uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (UserTag) TableName() string {
@@ -119,12 +124,18 @@ type ReportUser struct {
 }
 
 func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
-	var err error
+	//var err error
+	location, err := time.LoadLocation("UTC")
+	if err != nil {
+		panic(err)
+	}
+
+	createDate := reportUser.UserCreationTime.In(location)
 	res := User{
 		AccountID:  c.accountID,
 		Arn:        &reportUser.ARN,
 		MFAActive:  &reportUser.MFAActive,
-		CreateDate: &reportUser.UserCreationTime,
+		CreateDate: &createDate,
 		UserName:   &reportUser.User,
 	}
 
@@ -134,7 +145,10 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			return nil, err
 		}
 		res.Path = output.User.Path
-		res.PermissionsBoundary = output.User.PermissionsBoundary
+		if output.User.PermissionsBoundary != nil {
+			res.PermissionsBoundaryType = output.User.PermissionsBoundary.PermissionsBoundaryType
+			res.PermissionsBoundaryArn = output.User.PermissionsBoundary.PermissionsBoundaryArn
+		}
 		res.Tags = c.transformUserTags(output.User.Tags)
 		res.UserId = output.User.UserId
 
@@ -159,26 +173,26 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 		res.PasswordEnabled = &passwordEnabled
 	}
 
-	passwordLastUsed, err := time.Parse(time.RFC3339, reportUser.PasswordLastUsed)
+	passwordLastUsed, err := time.ParseInLocation(time.RFC3339, reportUser.PasswordLastUsed, location)
 	if err == nil {
 		res.PasswordLastUsed = &passwordLastUsed
 	}
-	passwordLastChanged, err := time.Parse(time.RFC3339, reportUser.PasswordLastChanged)
+	passwordLastChanged, err := time.ParseInLocation(time.RFC3339, reportUser.PasswordLastChanged, location)
 	if err == nil {
 		res.PasswordLastChanged = &passwordLastChanged
 	}
 
-	passwordNextRotation, err := time.Parse(time.RFC3339, reportUser.PasswordNextRotation)
+	passwordNextRotation, err := time.ParseInLocation(time.RFC3339, reportUser.PasswordNextRotation, location)
 	if err == nil {
 		res.PasswordNextRotation = &passwordNextRotation
 	}
 
-	lastRotated1, err := time.Parse(time.RFC3339, reportUser.AccessKey1LastRotated)
+	lastRotated1, err := time.ParseInLocation(time.RFC3339, reportUser.AccessKey1LastRotated, location)
 	if err == nil && len(res.AccessKeys) > 0 {
 		res.AccessKeys[0].LastRotated = &lastRotated1
 	}
 
-	lastRotated2, err := time.Parse(time.RFC3339, reportUser.AccessKey2LastRotated)
+	lastRotated2, err := time.ParseInLocation(time.RFC3339, reportUser.AccessKey2LastRotated, location)
 	if err == nil && len(res.AccessKeys) > 1 {
 		res.AccessKeys[1].LastRotated = &lastRotated2
 	}
@@ -198,17 +212,17 @@ func (c *Client) transformReportUsers(values []*ReportUser) ([]*User, error) {
 	return tValues, nil
 }
 
-func MigrateUsers(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&User{},
-		&UserAccessKey{},
-		&UserTag{},
-	)
+var UserTables = []interface{}{
+	&User{},
+	&UserAccessKey{},
+	&UserTag{},
 }
 
 func (c *Client) users(_ interface{}) error {
 	var err error
 	var reportOutput *iam.GetCredentialReportOutput
+
+	c.db.Where("account_id", c.accountID).Delete(UserTables...)
 	for {
 		reportOutput, err = c.svc.GetCredentialReport(&iam.GetCredentialReportInput{})
 		if err != nil {
@@ -234,12 +248,11 @@ func (c *Client) users(_ interface{}) error {
 		return err
 	}
 
-	c.db.Where("account_id = ?", c.accountID).Delete(&User{})
 	tValues, err := c.transformReportUsers(users)
 	if err != nil {
 		return err
 	}
-	common.ChunkedCreate(c.db, tValues)
+	c.db.ChunkedCreate(tValues)
 	c.log.Info("Fetched resources", zap.String("resource", "iam.users"), zap.Int("count", len(users)))
 	return nil
 }

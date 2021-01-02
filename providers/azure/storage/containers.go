@@ -4,10 +4,9 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -173,7 +172,7 @@ type ListContainerItemConfig struct {
 	Filter string
 }
 
-func MigrateListContainerItem(db *gorm.DB) error {
+func MigrateListContainerItem(db *database.Database) error {
 	err := db.AutoMigrate(
 		&ListContainerItem{},
 		&ListContainerItemUpdateHistoryProperty{},
@@ -186,7 +185,7 @@ func MigrateListContainerItem(db *gorm.DB) error {
 	return nil
 }
 
-func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config ListContainerItemConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -202,7 +201,7 @@ func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *gor
 	}
 	for output.NotDone() {
 		vals := output.Values()
-		common.ChunkedCreate(db, transformListContainerItems(vals))
+		db.ChunkedCreate(transformListContainerItems(vals))
 		log.Info("populating ListContainerItems", zap.Int("count", len(vals)))
 		output.NextWithContext(ctx)
 	}

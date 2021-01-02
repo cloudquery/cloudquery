@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
 	"github.com/cloudquery/cloudquery/providers/aws/cloudtrail"
 	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
@@ -29,7 +30,6 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"log"
 	"strings"
 	"sync"
@@ -39,7 +39,7 @@ type Provider struct {
 	session         *session.Session
 	cred            *credentials.Credentials
 	region          string
-	db              *gorm.DB
+	db              *database.Database
 	config          Config
 	accountID       string
 	resourceClients map[string]resource.ClientInterface
@@ -65,7 +65,7 @@ type Config struct {
 
 var globalCollectedResources = map[string]bool{}
 
-type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger, accountID string, region string) resource.ClientInterface
+type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger, accountID string, region string) resource.ClientInterface
 
 var globalServices = map[string]ServiceNewFunction{
 	"iam": iam.NewClient,
@@ -89,54 +89,54 @@ var regionalServices = map[string]ServiceNewFunction{
 	"redshift":         redshift.NewClient,
 }
 
-var migrateFunctions = []func(*gorm.DB) error{
-	autoscaling.MigrateLaunchConfigurations,
-	cloudtrail.MigrateTrails,
-	directconnect.MigrateGateways,
-	ec2.MigrateByoipCidrs,
-	ec2.MigrateCustomerGateways,
-	ec2.MigrateFlowLogs,
-	ec2.MigrateImages,
-	ec2.MigrateInstances,
-	ec2.MigrateInternetGateways,
-	ec2.MigrateNatGateways,
-	ec2.MigrateNetworkAcls,
-	ec2.MigrateRouteTables,
-	ec2.MigrateSecurityGroups,
-	ec2.MigrateSubnets,
-	ec2.MigrateVPCPeeringConnections,
-	ec2.MigrateVPCs,
-	ecr.MigrateImage,
-	ecs.MigrateClusters,
-	efs.MigrateFileSystems,
-	elasticbeanstalk.MigrateEnvironments,
-	elbv2.MigrateLoadBalancers,
-	elbv2.MigrateTargetGroup,
-	emr.MigrateClusters,
-	fsx.MigrateBackups,
-	iam.MigrateGroups,
-	iam.MigratePasswordPolicies,
-	iam.MigratePolicies,
-	iam.MigrateRoles,
-	iam.MigrateUsers,
-	kms.MigrateKeys,
-	rds.MigrateClusters,
-	rds.MigrateCertificates,
-	rds.MigrateDBSubnetGroups,
-	redshift.MigrateClusters,
-	redshift.MigrateClusterSubnetGroups,
-	s3.MigrateBuckets,
+var tablesArr = [][]interface{}{
+	autoscaling.LaunchConfigurationTables,
+	cloudtrail.TrailTables,
+	directconnect.GatewayTables,
+	ec2.ByoipCidrTables,
+	ec2.CustomerGatewayTables,
+	ec2.FlowLogsTables,
+	ec2.ImageTables,
+	ec2.InstanceTables,
+	ec2.InternetGatewayTables,
+	ec2.NatGatewayTables,
+	ec2.NetworkAclTables,
+	ec2.RouteTableTables,
+	ec2.SecurityGroupTables,
+	ec2.SubnetTables,
+	ec2.VPCPeeringConnectionTables,
+	ec2.VPCTables,
+	ecr.ImageTables,
+	ecs.ClusterTables,
+	efs.FileSystemTables,
+	elasticbeanstalk.EnvironmentTables,
+	elbv2.LoadBalancerTables,
+	elbv2.TargetGroupTables,
+	emr.ClusterTables,
+	fsx.BackupTables,
+	iam.GroupTables,
+	iam.PasswordPolicyTables,
+	iam.PolicyTables,
+	iam.RoleTables,
+	iam.UserTables,
+	kms.KeyTables,
+	rds.ClusterTables,
+	rds.CertificateTables,
+	rds.DBSubnetGroupTables,
+	redshift.ClusterTables,
+	redshift.ClusterSubnetGroupTables,
+	s3.BucketTables,
 }
 
-func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
+func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:              db,
 		resourceClients: map[string]resource.ClientInterface{},
 		log:             log,
 	}
 	log.Info("Creating tables if needed")
-	for _, f := range migrateFunctions {
-		err := f(db)
+	for _, tables := range tablesArr {
+		err := db.AutoMigrate(tables...)
 		if err != nil {
 			return nil, err
 		}

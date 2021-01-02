@@ -3,15 +3,14 @@ package elasticbeanstalk
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/elasticbeanstalk"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Environment struct {
-	ID                           uint `gorm:"primarykey"`
+	_                            interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                           uint        `gorm:"primarykey"`
 	AccountID                    string
 	Region                       string
 	AbortableOperationInProgress *bool
@@ -21,7 +20,7 @@ type Environment struct {
 	DateUpdated                  *time.Time
 	Description                  *string
 	EndpointURL                  *string
-	EnvironmentArn               *string
+	EnvironmentArn               *string `neo:"unique"`
 	EnvironmentId                *string
 	EnvironmentLinks             []*EnvironmentLink `gorm:"constraint:OnDelete:CASCADE;"`
 	EnvironmentName              *string
@@ -29,12 +28,20 @@ type Environment struct {
 	HealthStatus                 *string
 	OperationsRole               *string
 	PlatformArn                  *string
-	Resources                    *EnvironmentResource `gorm:"constraint:OnDelete:CASCADE;"`
-	SolutionStackName            *string
-	Status                       *string
-	TemplateName                 *string
-	Tier                         *elasticbeanstalk.EnvironmentTier `gorm:"embedded;embeddedPrefix:tier_"`
-	VersionLabel                 *string
+
+	LoadBalancerDomain    *string
+	LoadBalancerListeners []*EnvironmentListener `gorm:"constraint:OnDelete:CASCADE;"`
+	LoadBalancerName      *string
+
+	SolutionStackName *string
+	Status            *string
+	TemplateName      *string
+
+	TierName    *string
+	TierType    *string
+	TierVersion *string
+
+	VersionLabel *string
 }
 
 func (Environment) TableName() string {
@@ -42,8 +49,11 @@ func (Environment) TableName() string {
 }
 
 type EnvironmentLink struct {
-	ID              uint `gorm:"primarykey"`
-	EnvironmentID   uint
+	ID            uint   `gorm:"primarykey"`
+	EnvironmentID uint   `neo:"ignore"`
+	AccountID     string `gorm:"-"`
+	Region        string `gorm:"-"`
+
 	EnvironmentName *string
 	LinkName        *string
 }
@@ -52,33 +62,14 @@ func (EnvironmentLink) TableName() string {
 	return "aws_elasticbeanstalk_environment_links"
 }
 
-type EnvironmentResource struct {
-	ID            uint `gorm:"primarykey"`
-	EnvironmentID uint
-	LoadBalancer  *EnvironmentLoadBalancer `gorm:"constraint:OnDelete:CASCADE;"`
-}
-
-func (EnvironmentResource) TableName() string {
-	return "aws_elasticbeanstalk_environment_resources"
-}
-
-type EnvironmentLoadBalancer struct {
-	ID                    uint `gorm:"primarykey"`
-	EnvironmentResourceID uint
-	Domain                *string
-	Listeners             []*EnvironmentListener `gorm:"constraint:OnDelete:CASCADE;"`
-	LoadBalancerName      *string
-}
-
-func (EnvironmentLoadBalancer) TableName() string {
-	return "aws_elasticbeanstalk_environment_load_balancers"
-}
-
 type EnvironmentListener struct {
-	ID                        uint `gorm:"primarykey"`
-	EnvironmentLoadBalancerID uint
-	Port                      *int64
-	Protocol                  *string
+	ID            uint   `gorm:"primarykey"`
+	EnvironmentID uint   `neo:"ignore"`
+	AccountID     string `gorm:"-"`
+	Region        string `gorm:"-"`
+
+	Port     *int64
+	Protocol *string
 }
 
 func (EnvironmentListener) TableName() string {
@@ -87,6 +78,8 @@ func (EnvironmentListener) TableName() string {
 
 func (c *Client) transformEnvironmentLink(value *elasticbeanstalk.EnvironmentLink) *EnvironmentLink {
 	return &EnvironmentLink{
+		AccountID:       c.accountID,
+		Region:          c.region,
 		EnvironmentName: value.EnvironmentName,
 		LinkName:        value.LinkName,
 	}
@@ -102,8 +95,10 @@ func (c *Client) transformEnvironmentDescriptionEnvironmentLinks(values []*elast
 
 func (c *Client) transformEnvironmentListener(value *elasticbeanstalk.Listener) *EnvironmentListener {
 	return &EnvironmentListener{
-		Port:     value.Port,
-		Protocol: value.Protocol,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Port:      value.Port,
+		Protocol:  value.Protocol,
 	}
 }
 
@@ -113,20 +108,6 @@ func (c *Client) transformEnvironmentListeners(values []*elasticbeanstalk.Listen
 		tValues = append(tValues, c.transformEnvironmentListener(v))
 	}
 	return tValues
-}
-
-func (c *Client) transformEnvironmentLoadBalancer(value *elasticbeanstalk.LoadBalancerDescription) *EnvironmentLoadBalancer {
-	return &EnvironmentLoadBalancer{
-		Domain:           value.Domain,
-		Listeners:        c.transformEnvironmentListeners(value.Listeners),
-		LoadBalancerName: value.LoadBalancerName,
-	}
-}
-
-func (c *Client) transformEnvironmentResources(value *elasticbeanstalk.EnvironmentResourcesDescription) *EnvironmentResource {
-	return &EnvironmentResource{
-		LoadBalancer: c.transformEnvironmentLoadBalancer(value.LoadBalancer),
-	}
 }
 
 func (c *Client) transformEnvironment(value *elasticbeanstalk.EnvironmentDescription) *Environment {
@@ -150,16 +131,23 @@ func (c *Client) transformEnvironment(value *elasticbeanstalk.EnvironmentDescrip
 		SolutionStackName:            value.SolutionStackName,
 		Status:                       value.Status,
 		TemplateName:                 value.TemplateName,
-		Tier:                         value.Tier,
 		VersionLabel:                 value.VersionLabel,
+	}
+
+	if value.Tier != nil {
+		res.TierName = value.Tier.Name
+		res.TierType = value.Tier.Type
+		res.TierVersion = value.Tier.Version
 	}
 
 	if value.EnvironmentLinks != nil {
 		res.EnvironmentLinks = c.transformEnvironmentDescriptionEnvironmentLinks(value.EnvironmentLinks)
 	}
 
-	if value.Resources != nil {
-		res.Resources = c.transformEnvironmentResources(value.Resources)
+	if value.Resources != nil && value.Resources.LoadBalancer != nil {
+		res.LoadBalancerDomain = value.Resources.LoadBalancer.Domain
+		res.LoadBalancerListeners = c.transformEnvironmentListeners(value.Resources.LoadBalancer.Listeners)
+		res.LoadBalancerName = value.Resources.LoadBalancer.LoadBalancerName
 	}
 
 	return &res
@@ -173,14 +161,10 @@ func (c *Client) transformEnvironments(values []*elasticbeanstalk.EnvironmentDes
 	return tValues
 }
 
-func MigrateEnvironments(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Environment{},
-		&EnvironmentLink{},
-		&EnvironmentResource{},
-		&EnvironmentLoadBalancer{},
-		&EnvironmentListener{},
-	)
+var EnvironmentTables = []interface{}{
+	&Environment{},
+	&EnvironmentLink{},
+	&EnvironmentListener{},
 }
 
 func (c *Client) environments(gConfig interface{}) error {
@@ -189,14 +173,14 @@ func (c *Client) environments(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(EnvironmentTables...)
 	for {
 		output, err := c.svc.DescribeEnvironments(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Environment{})
-		common.ChunkedCreate(c.db, c.transformEnvironments(output.Environments))
+
+		c.db.ChunkedCreate(c.transformEnvironments(output.Environments))
 		c.log.Info("Fetched resources", zap.String("resource", "elasticbeanstalk.environments"), zap.Int("count", len(output.Environments)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/azure/compute"
 	"github.com/cloudquery/cloudquery/providers/azure/keyvault"
 	"github.com/cloudquery/cloudquery/providers/azure/mysql"
@@ -17,19 +18,16 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
-type ResourceFunc func(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error
-type MigrationFunc func(db *gorm.DB) error
+type ResourceFunc func(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error
 
 type Provider struct {
 	region         string
-	db             *gorm.DB
+	db             *database.Database
 	config         Config
 	subscriptionID string
 	resourceFuncs  map[string]ResourceFunc
-	MigrationFuncs map[string]MigrationFunc
 	log            *zap.Logger
 }
 
@@ -41,17 +39,17 @@ type Config struct {
 	}
 }
 
-var migrateFunctions = []func(*gorm.DB) error{
-	resources.MigrateGroup,
-	sql.MigrateServer,
-	sql.MigrateDatabase,
-	postgresql.MigrateServer,
-	mysql.MigrateServer,
-	compute.MigrateDisk,
-	keyvault.MigrateVault,
+var TablesArr = [][]interface{}{
+	resources.GroupTables,
+	sql.ServerTables,
+	sql.DatabaseTables,
+	postgresql.ServerTables,
+	mysql.ServerTables,
+	compute.DiskTables,
+	keyvault.VaultTables,
 }
 
-func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
+func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:  db,
 		log: log,
@@ -66,8 +64,8 @@ func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
 		"keyvault.vaults":    keyvault.Vaults,
 	}
 	log.Info("Creating tables if needed")
-	for _, f := range migrateFunctions {
-		err := f(db)
+	for _, tables := range TablesArr {
+		err := db.AutoMigrate(tables...)
 		if err != nil {
 			return nil, err
 		}

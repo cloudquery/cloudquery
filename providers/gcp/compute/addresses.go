@@ -1,20 +1,20 @@
 package compute
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
 
 type Address struct {
-	ID                uint `gorm:"primarykey"`
-	ProjectID         string
+	_                 interface{} `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                uint        `gorm:"primarykey"`
+	ProjectID         string      `neo:"unique"`
 	Address           string
 	AddressType       string
 	CreationTimestamp string
 	Description       string
-	ResourceID        uint64
+	ResourceID        uint64 `neo:"unique"`
 	IpVersion         string
 	Kind              string
 	Name              string
@@ -29,17 +29,27 @@ type Address struct {
 	Users             []*AddressUser `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Address) TableName() string {
+	return "gcp_compute_addresses"
+}
+
 type AddressUser struct {
-	ID        uint `gorm:"primarykey"`
-	AddressID uint
+	ID        uint   `gorm:"primarykey"`
+	AddressID uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
 	Value     string
+}
+
+func (AddressUser) TableName() string {
+	return "gcp_compute_address_users"
 }
 
 func (c *Client) transformAddressUsers(values []string) []*AddressUser {
 	var tValues []*AddressUser
 	for _, v := range values {
 		tValues = append(tValues, &AddressUser{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -80,22 +90,18 @@ type AddressConfig struct {
 	Filter string
 }
 
+var AddressTables = []interface{}{
+	&Address{},
+	&AddressUser{},
+}
+
 func (c *Client) addresses(gConfig interface{}) error {
 	var config AddressConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeAddress"] {
-		err := c.db.AutoMigrate(
-			&Address{},
-			&AddressUser{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeAddress"] = true
-	}
+	c.db.Where("project_id", c.projectID).Delete(AddressTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.Addresses.AggregatedList(c.projectID)
@@ -105,12 +111,11 @@ func (c *Client) addresses(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&Address{})
 		var tValues []*Address
 		for _, items := range output.Items {
 			tValues = append(tValues, c.transformAddresses(items.Addresses)...)
 		}
-		common.ChunkedCreate(c.db, tValues)
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "compute.addresses"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break

@@ -1,20 +1,20 @@
 package compute
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
 
 type SSLCertificate struct {
-	ID                      uint `gorm:"primarykey"`
-	ProjectID               string
+	_                       interface{} `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                      uint        `gorm:"primarykey"`
+	ProjectID               string      `neo:"unique"`
 	Certificate             string
 	CreationTimestamp       string
 	Description             string
 	ExpireTime              string
-	ResourceID              uint64
+	ResourceID              uint64 `neo:"unique"`
 	Kind                    string
 	ManagedDomains          []*SSLCertificateManagedDomain `gorm:"constraint:OnDelete:CASCADE;"`
 	ManagedStatus           string
@@ -26,23 +26,38 @@ type SSLCertificate struct {
 	Type                    string
 }
 
+func (SSLCertificate) TableName() string {
+	return "gcp_compute_ssl_certificates"
+}
+
 type SSLCertificateManagedDomain struct {
-	ID               uint `gorm:"primarykey"`
-	SSLCertificateID uint
+	ID               uint   `gorm:"primarykey"`
+	SSLCertificateID uint   `neo:"ignore"`
+	ProjectID        string `gorm:"-"`
 	Value            string
 }
 
+func (SSLCertificateManagedDomain) TableName() string {
+	return "gcp_compute_ssl_certificate_managed_domains"
+}
+
 type SSLCertificateSubjectAlternativeName struct {
-	ID               uint `gorm:"primarykey"`
-	SSLCertificateID uint
+	ID               uint   `gorm:"primarykey"`
+	SSLCertificateID uint   `neo:"ignore"`
+	ProjectID        string `gorm:"-"`
 	Value            string
+}
+
+func (SSLCertificateSubjectAlternativeName) TableName() string {
+	return "gcp_compute_ssl_certificate_subject_alternative_names"
 }
 
 func (c *Client) transformSSLCertificateManagedSslCertificateDomains(values []string) []*SSLCertificateManagedDomain {
 	var tValues []*SSLCertificateManagedDomain
 	for _, v := range values {
 		tValues = append(tValues, &SSLCertificateManagedDomain{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -52,7 +67,8 @@ func (c *Client) transformSSLCertificateSubjectAlternativeNames(values []string)
 	var tValues []*SSLCertificateSubjectAlternativeName
 	for _, v := range values {
 		tValues = append(tValues, &SSLCertificateSubjectAlternativeName{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -97,23 +113,20 @@ type SslCertificateConfig struct {
 	Filter string
 }
 
+var SSLCertificateTables = []interface{}{
+	&SSLCertificate{},
+	&SSLCertificateManagedDomain{},
+	&SSLCertificateSubjectAlternativeName{},
+}
+
 func (c *Client) sslCertificates(gConfig interface{}) error {
 	var config SslCertificateConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeSslCertificate"] {
-		err := c.db.AutoMigrate(
-			&SSLCertificate{},
-			&SSLCertificateManagedDomain{},
-			&SSLCertificateSubjectAlternativeName{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeSslCertificate"] = true
-	}
+
+	c.db.Where("project_id", c.projectID).Delete(SSLCertificateTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.SslCertificates.AggregatedList(c.projectID)
@@ -123,12 +136,11 @@ func (c *Client) sslCertificates(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&SSLCertificate{})
 		var tValues []*SSLCertificate
 		for _, items := range output.Items {
 			tValues = append(tValues, c.transformSSLCertificates(items.SslCertificates)...)
 		}
-		common.ChunkedCreate(c.db, tValues)
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "compute.ssl_certificates"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break

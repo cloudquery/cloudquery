@@ -4,16 +4,17 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-01/compute"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/azure/utils"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
+	"log"
 	"time"
 )
 
 type Disk struct {
-	ID                uint `gorm:"primarykey"`
+	ID                uint        `gorm:"primarykey"`
+	_                 interface{} `neo:"raw:MERGE (a:AzureSubscription {subscription_id: $subscription_id}) MERGE (a) - [:Resource] -> (n)"`
 	SubscriptionID    string
 	ManagedBy         *string
 	ManagedByExtended []*DiskManagedByExtended `gorm:"constraint:OnDelete:CASCADE;"`
@@ -70,18 +71,21 @@ func (Disk) TableName() string {
 }
 
 type DiskManagedByExtended struct {
-	ID     uint `gorm:"primarykey"`
-	DiskID uint
-	Value  string
+	ID             uint   `gorm:"primarykey"`
+	DiskID         uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+	Value          string
 }
 type DiskZones struct {
-	ID     uint `gorm:"primarykey"`
-	DiskID uint
-	Value  string
+	ID             uint   `gorm:"primarykey"`
+	DiskID         uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+	Value          string
 }
 type DiskEncryptionSettingsElement struct {
-	ID     uint `gorm:"primarykey"`
-	DiskID uint
+	ID             uint   `gorm:"primarykey"`
+	DiskID         uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
 
 	DiskEncryptionKeySourceVaultID *string
 	DiskEncryptionKeySecretURL     *string
@@ -95,9 +99,10 @@ func (DiskEncryptionSettingsElement) TableName() string {
 }
 
 type DiskShareInfoElement struct {
-	ID     uint `gorm:"primarykey"`
-	DiskID uint
-	VMURI  *string
+	ID             uint   `gorm:"primarykey"`
+	DiskID         uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+	VMURI          *string
 }
 
 func (DiskShareInfoElement) TableName() string {
@@ -105,10 +110,12 @@ func (DiskShareInfoElement) TableName() string {
 }
 
 type DiskTag struct {
-	ID     uint
-	DiskID uint
-	Key    string
-	Value  *string
+	ID             uint   `gorm:"primarykey"`
+	DiskID         uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
+	Key   string
+	Value *string
 }
 
 func (DiskTag) TableName() string {
@@ -125,15 +132,26 @@ func transformDisks(subscriptionID string, values []compute.Disk) []*Disk {
 			Name:           value.Name,
 			Type:           value.Type,
 			Location:       value.Location,
-			Tags:           transformDiskTags(value.Tags),
+			Tags:           transformDiskTags(subscriptionID, value.Tags),
 		}
 
 		if value.ManagedByExtended != nil {
-			tValue.ManagedByExtended = transformDiskManagedByExtended(*value.ManagedByExtended)
+			tValue.ManagedByExtended = transformDiskManagedByExtended(subscriptionID, *value.ManagedByExtended)
+		}
+
+		if value.EncryptionSettingsCollection != nil {
+			tValue.EncryptionSettingsCollectionEncryptionSettings = transformDiskEncryptionSettingsElements(subscriptionID, value.EncryptionSettingsCollection.EncryptionSettings)
+			tValue.EncryptionSettingsCollectionEnabled = value.EncryptionSettingsCollection.Enabled
+			tValue.EncryptionSettingsCollectionEncryptionSettingsVersion = value.EncryptionSettingsCollection.EncryptionSettingsVersion
+		}
+
+		if value.Encryption != nil {
+			tValue.EncryptionDiskEncryptionSetID = value.Encryption.DiskEncryptionSetID
+			tValue.EncryptionType = string(value.Encryption.Type)
 		}
 
 		if value.Zones != nil {
-			tValue.Zones = transformDiskZones(*value.Zones)
+			tValue.Zones = transformDiskZones(subscriptionID, *value.Zones)
 		}
 
 		if value.Sku != nil {
@@ -142,8 +160,12 @@ func transformDisks(subscriptionID string, values []compute.Disk) []*Disk {
 		}
 
 		if value.DiskProperties != nil {
-
-			tValue.TimeCreated = utils.AzureDateToTime(value.DiskProperties.TimeCreated)
+			location, err := time.LoadLocation("UTC")
+			if err != nil {
+				log.Fatal(err)
+			}
+			timeCreated := utils.AzureDateToTime(value.DiskProperties.TimeCreated).In(location)
+			tValue.TimeCreated = &timeCreated
 			tValue.OsType = string(value.DiskProperties.OsType)
 			tValue.HyperVGeneration = string(value.DiskProperties.HyperVGeneration)
 			tValue.DiskSizeGB = value.DiskProperties.DiskSizeGB
@@ -160,37 +182,41 @@ func transformDisks(subscriptionID string, values []compute.Disk) []*Disk {
 			tValue.DiskAccessID = value.DiskProperties.DiskAccessID
 
 			if value.DiskProperties.ShareInfo != nil {
-				tValue.ShareInfo = transformDiskShareInfoElements(value.DiskProperties.ShareInfo)
+				tValue.ShareInfo = transformDiskShareInfoElements(subscriptionID, value.DiskProperties.ShareInfo)
 			}
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
-func transformDiskManagedByExtended(values []string) []*DiskManagedByExtended {
+func transformDiskManagedByExtended(subscriptionID string, values []string) []*DiskManagedByExtended {
 	var tValues []*DiskManagedByExtended
 	for _, v := range values {
 		tValues = append(tValues, &DiskManagedByExtended{
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Value:          v,
 		})
 	}
 	return tValues
 }
 
-func transformDiskZones(values []string) []*DiskZones {
+func transformDiskZones(subscriptionID string, values []string) []*DiskZones {
 	var tValues []*DiskZones
 	for _, v := range values {
 		tValues = append(tValues, &DiskZones{
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Value:          v,
 		})
 	}
 	return tValues
 }
 
-func transformDiskEncryptionSettingsElements(values *[]compute.EncryptionSettingsElement) []*DiskEncryptionSettingsElement {
+func transformDiskEncryptionSettingsElements(subscriptionID string, values *[]compute.EncryptionSettingsElement) []*DiskEncryptionSettingsElement {
 	var tValues []*DiskEncryptionSettingsElement
 	for _, value := range *values {
-		tValue := DiskEncryptionSettingsElement{}
+		tValue := DiskEncryptionSettingsElement{
+			SubscriptionID: subscriptionID,
+		}
 		if value.DiskEncryptionKey != nil {
 			if value.DiskEncryptionKey.SourceVault != nil {
 				return nil
@@ -208,23 +234,25 @@ func transformDiskEncryptionSettingsElements(values *[]compute.EncryptionSetting
 	return tValues
 }
 
-func transformDiskShareInfoElements(values *[]compute.ShareInfoElement) []*DiskShareInfoElement {
+func transformDiskShareInfoElements(subscriptionID string, values *[]compute.ShareInfoElement) []*DiskShareInfoElement {
 	var tValues []*DiskShareInfoElement
 	for _, value := range *values {
 		tValue := DiskShareInfoElement{
-			VMURI: value.VMURI,
+			SubscriptionID: subscriptionID,
+			VMURI:          value.VMURI,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func transformDiskTags(values map[string]*string) []*DiskTag {
+func transformDiskTags(subscriptionID string, values map[string]*string) []*DiskTag {
 	var tValues []*DiskTag
 	for k, v := range values {
 		tValue := DiskTag{
-			Key:   k,
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Key:            k,
+			Value:          v,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -235,21 +263,14 @@ type DiskConfig struct {
 	Filter string
 }
 
-func MigrateDisk(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&Disk{},
-		&DiskEncryptionSettingsElement{},
-		&DiskShareInfoElement{},
-		&DiskTag{},
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
+var DiskTables = []interface{}{
+	&Disk{},
+	&DiskEncryptionSettingsElement{},
+	&DiskShareInfoElement{},
+	&DiskTag{},
 }
 
-func Disks(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Disks(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config DiskConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -264,7 +285,7 @@ func Disks(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *za
 		return err
 	}
 
-	db.Where("subscription_id = ?", subscriptionID).Delete(&Disk{})
+	db.Where("subscription_id", subscriptionID).Delete(DiskTables...)
 	if !output.NotDone() {
 		log.Info("Fetched resources", zap.Int("count", 0))
 	}
@@ -275,7 +296,7 @@ func Disks(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *za
 			return err
 		}
 		tValues := transformDisks(subscriptionID, values)
-		common.ChunkedCreate(db, tValues)
+		db.ChunkedCreate(tValues)
 		log.Info("Fetched resources", zap.Int("count", len(tValues)))
 	}
 
