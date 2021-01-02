@@ -1,7 +1,6 @@
 package compute
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
@@ -19,13 +18,16 @@ type DiskType struct {
 	DeprecatedState       string
 	Description           string
 	ResourceID            uint64
-	Id                    uint64
 	Kind                  string
 	Name                  string
 	Region                string
 	SelfLink              string
 	ValidDiskSize         string
 	Zone                  string
+}
+
+func (DiskType) TableName() string {
+	return "gcp_compute_disk_types"
 }
 
 func (c *Client) transformDiskType(value *compute.DiskType) *DiskType {
@@ -40,7 +42,6 @@ func (c *Client) transformDiskType(value *compute.DiskType) *DiskType {
 		//DeprecatedState: value.Deprecated.State,
 		Description:   value.Description,
 		ResourceID:    value.Id,
-		Id:            value.Id,
 		Kind:          value.Kind,
 		Name:          value.Name,
 		Region:        value.Region,
@@ -62,21 +63,17 @@ type DiskTypeConfig struct {
 	Filter string
 }
 
+var DiskTypeTables = []interface{}{
+	&DiskType{},
+}
+
 func (c *Client) diskTypes(gConfig interface{}) error {
 	var config DiskTypeConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["computeDiskType"] {
-		err := c.db.AutoMigrate(
-			&DiskType{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["computeDiskType"] = true
-	}
+	c.db.Where("project_id", c.projectID).Delete(DiskTypeTables...)
 	nextPageToken := ""
 	for {
 		call := c.svc.DiskTypes.AggregatedList(c.projectID)
@@ -87,12 +84,11 @@ func (c *Client) diskTypes(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&DiskType{})
 		var tValues []*DiskType
 		for _, items := range output.Items {
 			tValues = append(tValues, c.transformDiskTypes(items.DiskTypes)...)
 		}
-		common.ChunkedCreate(c.db, tValues)
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "compute.disk_types"), zap.Int("count", len(tValues)))
 		if output.NextPageToken == "" {
 			break

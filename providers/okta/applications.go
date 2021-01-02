@@ -2,18 +2,16 @@ package okta
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"log"
 	"time"
 )
 
 type Application struct {
-	ID     uint `gorm:"primarykey"`
-	Domain string
+	ID     uint   `gorm:"primarykey"`
+	Domain string `neo:"unique"`
 
 	AccessibilityErrorRedirectUrl string
 	AccessibilityLoginRedirectUrl string
@@ -30,7 +28,7 @@ type Application struct {
 	CredentialsUserNameTemplateType     string
 
 	Features      []*ApplicationFeatures `gorm:"constraint:OnDelete:CASCADE;"`
-	ApplicationID string
+	ApplicationID string                 `neo:"unique"`
 	Label         string
 	LastUpdated   *time.Time
 
@@ -50,16 +48,27 @@ type Application struct {
 	VisibilityHideWeb           *bool
 }
 
+func (Application) TableName() string {
+	return "okta_applications"
+}
+
 type ApplicationFeatures struct {
-	ID            uint `gorm:"primarykey"`
-	ApplicationID uint
+	ID            uint   `gorm:"primarykey"`
+	ApplicationID uint   `neo:"ignore"`
+	Domain        string `gorm:"-"`
 	Value         string
+}
+
+func (ApplicationFeatures) TableName() string {
+	return "okta_application_features"
 }
 
 func (p *Provider) transformApplicationFeatures(values []string) []*ApplicationFeatures {
 	var tValues []*ApplicationFeatures
 	for _, v := range values {
 		tValues = append(tValues, &ApplicationFeatures{
+			Domain: p.config.Domain,
+
 			Value: v,
 		})
 	}
@@ -137,11 +146,9 @@ type ApplicationConfig struct {
 	Filter string
 }
 
-func migrateApplication(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Application{},
-		&ApplicationFeatures{},
-	)
+var applicationTables = []interface{}{
+	&Application{},
+	&ApplicationFeatures{},
 }
 
 func (p *Provider) applications(gConfig interface{}) error {
@@ -157,8 +164,8 @@ func (p *Provider) applications(gConfig interface{}) error {
 		return err
 	}
 
-	p.db.Where("domain = ?", p.config.Domain).Delete(&Application{})
-	common.ChunkedCreate(p.db, p.transformApplications(applications))
+	p.db.Where("domain", p.config.Domain).Delete(applicationTables...)
+	p.db.ChunkedCreate(p.transformApplications(applications))
 	p.log.Info("Fetched resources", zap.Int("count", len(applications)))
 	return nil
 }

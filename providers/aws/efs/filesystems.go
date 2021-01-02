@@ -3,21 +3,20 @@ package efs
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/efs"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type FileSystemDescription struct {
-	ID                           uint `gorm:"primarykey"`
+	_                            interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                           uint        `gorm:"primarykey"`
 	AccountID                    string
 	Region                       string
 	CreationTime                 *time.Time
 	CreationToken                *string
 	Encrypted                    *bool
-	FileSystemArn                *string
+	FileSystemArn                *string `neo:"unique"`
 	FileSystemId                 *string
 	KmsKeyId                     *string
 	LifeCycleState               *string
@@ -26,9 +25,14 @@ type FileSystemDescription struct {
 	OwnerId                      *string
 	PerformanceMode              *string
 	ProvisionedThroughputInMibps *float64
-	SizeInBytes                  *efs.FileSystemSize         `gorm:"embedded;embeddedPrefix:size_in_bytes_"`
-	Tags                         []*FileSystemDescriptionTag `gorm:"constraint:OnDelete:CASCADE;"`
-	ThroughputMode               *string
+
+	SizeInBytesTimestamp       *time.Time
+	SizeInBytesValue           *int64
+	SizeInBytesValueInIA       *int64
+	SizeInBytesValueInStandard *int64
+
+	Tags           []*FileSystemDescriptionTag `gorm:"constraint:OnDelete:CASCADE;"`
+	ThroughputMode *string
 }
 
 func (FileSystemDescription) TableName() string {
@@ -36,10 +40,13 @@ func (FileSystemDescription) TableName() string {
 }
 
 type FileSystemDescriptionTag struct {
-	ID                      uint `gorm:"primarykey"`
-	FileSystemDescriptionID uint
-	Key                     *string
-	Value                   *string
+	ID                      uint   `gorm:"primarykey"`
+	FileSystemDescriptionID uint   `neo:"ignore"`
+	AccountID               string `gorm:"-"`
+	Region                  string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (FileSystemDescriptionTag) TableName() string {
@@ -48,8 +55,10 @@ func (FileSystemDescriptionTag) TableName() string {
 
 func (c *Client) transformFileSystemDescriptionTag(value *efs.Tag) *FileSystemDescriptionTag {
 	return &FileSystemDescriptionTag{
-		Key:   value.Key,
-		Value: value.Value,
+		Region:    c.region,
+		AccountID: c.accountID,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -62,7 +71,7 @@ func (c *Client) transformFileSystemDescriptionTags(values []*efs.Tag) []*FileSy
 }
 
 func (c *Client) transformFileSystemDescription(value *efs.FileSystemDescription) *FileSystemDescription {
-	return &FileSystemDescription{
+	res := FileSystemDescription{
 		Region:                       c.region,
 		AccountID:                    c.accountID,
 		CreationTime:                 value.CreationTime,
@@ -77,10 +86,18 @@ func (c *Client) transformFileSystemDescription(value *efs.FileSystemDescription
 		OwnerId:                      value.OwnerId,
 		PerformanceMode:              value.PerformanceMode,
 		ProvisionedThroughputInMibps: value.ProvisionedThroughputInMibps,
-		SizeInBytes:                  value.SizeInBytes,
 		Tags:                         c.transformFileSystemDescriptionTags(value.Tags),
 		ThroughputMode:               value.ThroughputMode,
 	}
+
+	if value.SizeInBytes != nil {
+		res.SizeInBytesTimestamp = value.SizeInBytes.Timestamp
+		res.SizeInBytesValue = value.SizeInBytes.Value
+		res.SizeInBytesValueInIA = value.SizeInBytes.ValueInIA
+		res.SizeInBytesValueInStandard = value.SizeInBytes.ValueInStandard
+	}
+
+	return &res
 }
 
 func (c *Client) transformFileSystemDescriptions(values []*efs.FileSystemDescription) []*FileSystemDescription {
@@ -91,11 +108,9 @@ func (c *Client) transformFileSystemDescriptions(values []*efs.FileSystemDescrip
 	return tValues
 }
 
-func MigrateFileSystems(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&FileSystemDescription{},
-		&FileSystemDescriptionTag{},
-	)
+var FileSystemTables = []interface{}{
+	&FileSystemDescription{},
+	&FileSystemDescriptionTag{},
 }
 
 func (c *Client) fileSystems(gConfig interface{}) error {
@@ -104,14 +119,13 @@ func (c *Client) fileSystems(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(FileSystemTables...)
 	for {
 		output, err := c.svc.DescribeFileSystems(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FileSystemDescription{})
-		common.ChunkedCreate(c.db, c.transformFileSystemDescriptions(output.FileSystems))
+		c.db.ChunkedCreate(c.transformFileSystemDescriptions(output.FileSystems))
 		c.log.Info("Fetched resources", zap.String("resource", "efs.filesystems"), zap.Int("count", len(output.FileSystems)))
 		if aws.StringValue(output.NextMarker) == "" {
 			break

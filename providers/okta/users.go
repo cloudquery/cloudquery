@@ -3,11 +3,8 @@ package okta
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"github.com/okta/okta-sdk-golang/v2/okta"
-	"gorm.io/gorm"
-
 	//"github.com/okta/okta-sdk-golang/v2/okta/query"
 	"go.uber.org/zap"
 	"log"
@@ -19,8 +16,8 @@ import (
 )
 
 type User struct {
-	ID        uint `gorm:"primarykey"`
-	Domain    string
+	ID        uint   `gorm:"primarykey"`
+	Domain    string `neo:"unique"`
 	Activated *time.Time
 	Created   *time.Time
 
@@ -60,7 +57,7 @@ type User struct {
 	CredentialsProviderName string
 	CredentialsProviderType string
 
-	ResourceID            string
+	ResourceID            string `neo:"unique"`
 	LastLogin             *time.Time
 	LastUpdated           *time.Time
 	PasswordChanged       *time.Time
@@ -69,9 +66,14 @@ type User struct {
 	TransitioningToStatus string
 }
 
+func (User) TableName() string {
+	return "okta_application_users"
+}
+
 type UserGroup struct {
-	UserGroupID           uint `gorm:"primarykey"`
-	UserID                uint
+	UserGroupID           uint   `gorm:"primarykey"`
+	Domain                string `gorm:"-"`
+	UserID                uint   `neo:"ignore"`
 	Created               *time.Time
 	GroupID               string
 	LastMembershipUpdated *time.Time
@@ -81,10 +83,15 @@ type UserGroup struct {
 	Type                  string
 }
 
+func (UserGroup) TableName() string {
+	return "okta_application_user_groups"
+}
+
 func (p *Provider) transformUserGroups(values []*okta.Group) []*UserGroup {
 	var tValues []*UserGroup
 	for _, v := range values {
 		tValues = append(tValues, &UserGroup{
+			Domain:                p.config.Domain,
 			Created:               v.Created,
 			GroupID:               v.Id,
 			LastMembershipUpdated: v.LastMembershipUpdated,
@@ -145,11 +152,9 @@ type UserConfig struct {
 	Filter string
 }
 
-func migrateUser(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&User{},
-		&UserGroup{},
-	)
+var userTables = []interface{}{
+	&User{},
+	&UserGroup{},
 }
 
 func (p *Provider) users(gConfig interface{}) error {
@@ -165,8 +170,8 @@ func (p *Provider) users(gConfig interface{}) error {
 		return err
 	}
 
-	p.db.Where("domain = ?", p.config.Domain).Delete(&User{})
-	common.ChunkedCreate(p.db, p.transformUsers(users))
+	p.db.Where("domain", p.config.Domain).Delete(userTables...)
+	p.db.ChunkedCreate(p.transformUsers(users))
 	p.log.Info("Fetched resources", zap.Int("count", len(users)))
 
 	return nil

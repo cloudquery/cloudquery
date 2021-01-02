@@ -3,9 +3,7 @@ package cloudqueryclient
 import (
 	"database/sql"
 	"fmt"
-	"io/ioutil"
-	"os"
-
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/azure"
 	"github.com/cloudquery/cloudquery/providers/gcp"
@@ -15,15 +13,11 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
-	"gorm.io/driver/mysql"
-	"gorm.io/driver/postgres"
-	"gorm.io/driver/sqlite"
-	"gorm.io/driver/sqlserver"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	"io/ioutil"
+	"os"
 )
 
-var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
+var ProviderMap = map[string]func(*database.Database, *zap.Logger) (provider.Interface, error){
 	"aws":   aws.NewProvider,
 	"gcp":   gcp.NewProvider,
 	"okta":  okta.NewProvider,
@@ -46,7 +40,7 @@ type PolicyConfig struct {
 }
 
 type Client struct {
-	db     *gorm.DB
+	db     *database.Database
 	config Config
 	log    *zap.Logger
 }
@@ -72,29 +66,8 @@ func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
 
 func New(driver string, dsn string, verbose bool) (*Client, error) {
 	client := Client{}
-	gormLogger := logger.Default.LogMode(logger.Warn)
-	var err error = nil
-	switch driver {
-	case "sqlite":
-		client.db, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-		client.db.Exec("PRAGMA foreign_keys = ON")
-	case "postgresql":
-		client.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-	case "mysql":
-		client.db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-	case "sqlserver":
-		client.db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-	default:
-		return nil, fmt.Errorf("database driver only supports one of sqlite,postgresql,mysql,sqlserver")
-	}
+	var err error
+	client.db, err = database.Open(driver, dsn)
 	if err != nil {
 		return nil, err
 	}
@@ -157,6 +130,10 @@ func (c *Client) RunQuery(path string) error {
 		return err
 	}
 
+	if c.db.Driver == "neo4j" {
+		return fmt.Errorf("query command doesn't support neo4j driver yet")
+	}
+
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -172,7 +149,7 @@ func (c *Client) RunQuery(path string) error {
 	for _, query := range config.Queries {
 		c.log.Info("Executing query", zap.String("name", query.Name))
 		//var res string
-		rows, err := c.db.Raw(query.Query).Rows()
+		rows, err := c.db.GormDB.Raw(query.Query).Rows()
 		if err != nil {
 			return err
 		}

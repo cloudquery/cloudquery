@@ -3,17 +3,15 @@ package iam
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Policy struct {
-	ID                            uint `gorm:"primarykey"`
-	AccountID                     string
-	Arn                           *string
+	ID                            uint    `gorm:"primarykey"`
+	AccountID                     string  `neo:"unique"`
+	Arn                           *string `neo:"unique"`
 	AttachmentCount               *int64
 	CreateDate                    *time.Time
 	DefaultVersionId              *string
@@ -21,7 +19,7 @@ type Policy struct {
 	IsAttachable                  *bool
 	Path                          *string
 	PermissionsBoundaryUsageCount *int64
-	PolicyId                      *string
+	PolicyId                      *string `neo:"unique"`
 	PolicyName                    *string
 	UpdateDate                    *time.Time
 }
@@ -55,10 +53,8 @@ func (c *Client) transformPolicies(values []*iam.Policy) []*Policy {
 	return tValues
 }
 
-func MigratePolicies(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Policy{},
-	)
+var PolicyTables = []interface{}{
+	&Policy{},
 }
 
 func (c *Client) policies(gConfig interface{}) error {
@@ -73,8 +69,8 @@ func (c *Client) policies(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.db.Where("account_id = ?", c.accountID).Delete(&Policy{})
-		common.ChunkedCreate(c.db, c.transformPolicies(output.Policies))
+		c.db.Where("account_id", c.accountID).Delete(PolicyTables...)
+		c.db.ChunkedCreate(c.transformPolicies(output.Policies))
 		c.log.Info("Fetched resources", zap.String("resource", "iam.policies"), zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
 			break

@@ -7,16 +7,16 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Bucket struct {
-	ID              uint `gorm:"primarykey"`
-	AccountID       string
-	Region          string
+	_               interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID              uint        `gorm:"primarykey"`
+	AccountID       string      `neo:"unique"`
+	Region          string      `neo:"unique"`
 	CreationDate    *time.Time
-	Name            *string
+	Name            *string                 `neo:"unique"`
 	Grants          []*BucketGrant          `gorm:"constraint:OnDelete:CASCADE;"`
 	CORSRules       []*BucketCorsRule       `gorm:"constraint:OnDelete:CASCADE;"`
 	EncryptionRules []*BucketEncryptionRule `gorm:"constraint:OnDelete:CASCADE;"`
@@ -37,8 +37,10 @@ func (Bucket) TableName() string {
 }
 
 type BucketEncryptionRule struct {
-	ID       uint `gorm:"primarykey"`
-	BucketID uint
+	ID        uint   `gorm:"primarykey"`
+	BucketID  uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
 
 	KMSMasterKeyID *string
 	SSEAlgorithm   *string
@@ -49,11 +51,17 @@ func (BucketEncryptionRule) TableName() string {
 }
 
 type BucketGrant struct {
-	ID       uint `gorm:"primarykey"`
-	BucketID uint
+	ID        uint   `gorm:"primarykey"`
+	BucketID  uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
 
 	// The person being granted permissions.
-	Grantee *s3.Grantee `gorm:"embedded;embeddedPrefix:s3_grantee_"`
+	GranteeDisplayName  *string
+	GranteeEmailAddress *string
+	GranteeID           *string
+	GranteeType         *string
+	GranteeURI          *string
 
 	// Specifies the permission given to the grantee.
 	Permission *string
@@ -64,8 +72,10 @@ func (BucketGrant) TableName() string {
 }
 
 type BucketCorsRule struct {
-	ID       uint `gorm:"primarykey"`
-	BucketID uint
+	ID        uint   `gorm:"primarykey"`
+	BucketID  uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
 
 	// Headers that are specified in the Access-Control-Request-Headers header.
 	// These headers are allowed in a preflight OPTIONS request. In response to
@@ -101,10 +111,19 @@ func (BucketCorsRule) TableName() string {
 func (c *Client) transformGrants(values []*s3.Grant) []*BucketGrant {
 	var tValues []*BucketGrant
 	for _, v := range values {
-		tValues = append(tValues, &BucketGrant{
-			Grantee:    v.Grantee,
+		tValue := BucketGrant{
+			AccountID:  c.accountID,
+			Region:     c.region,
 			Permission: v.Permission,
-		})
+		}
+		if v.Grantee != nil {
+			tValue.GranteeDisplayName = v.Grantee.DisplayName
+			tValue.GranteeType = v.Grantee.Type
+			tValue.GranteeID = v.Grantee.ID
+			tValue.GranteeEmailAddress = v.Grantee.EmailAddress
+			tValue.GranteeURI = v.Grantee.URI
+		}
+		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
@@ -113,6 +132,8 @@ func (c *Client) transformBucketCorsRules(values []*s3.CORSRule) []*BucketCorsRu
 	var tValues []*BucketCorsRule
 	for _, v := range values {
 		tValues = append(tValues, &BucketCorsRule{
+			AccountID:      c.accountID,
+			Region:         c.region,
 			AllowedHeaders: common.StringListToString(v.AllowedHeaders),
 			AllowedMethods: common.StringListToString(v.AllowedMethods),
 			AllowedOrigins: common.StringListToString(v.AllowedOrigins),
@@ -128,6 +149,8 @@ func (c *Client) transformEncryptionRules(values []*s3.ServerSideEncryptionRule)
 	for _, v := range values {
 		if v.ApplyServerSideEncryptionByDefault != nil {
 			tValues = append(tValues, &BucketEncryptionRule{
+				AccountID:      c.accountID,
+				Region:         c.region,
 				KMSMasterKeyID: v.ApplyServerSideEncryptionByDefault.KMSMasterKeyID,
 				SSEAlgorithm:   v.ApplyServerSideEncryptionByDefault.SSEAlgorithm,
 			})
@@ -228,13 +251,11 @@ func (c *Client) transformBuckets(values []*s3.Bucket) ([]*Bucket, error) {
 	return tValues, nil
 }
 
-func MigrateBuckets(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Bucket{},
-		&BucketGrant{},
-		&BucketCorsRule{},
-		&BucketEncryptionRule{},
-	)
+var BucketTables = []interface{}{
+	&Bucket{},
+	&BucketGrant{},
+	&BucketCorsRule{},
+	&BucketEncryptionRule{},
 }
 
 func (c *Client) buckets(gConfig interface{}) error {
@@ -248,12 +269,12 @@ func (c *Client) buckets(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.db.Where("account_id = ?", c.accountID).Delete(&Bucket{})
+	c.db.Where("account_id", c.accountID).Delete(BucketTables...)
 	tBuckets, err := c.transformBuckets(output.Buckets)
 	if err != nil {
 		return err
 	}
-	common.ChunkedCreate(c.db, tBuckets)
+	c.db.ChunkedCreate(tBuckets)
 	c.log.Info("Fetched resources", zap.String("resource", "s3.buckets"), zap.Int("count", len(tBuckets)))
 
 	return nil

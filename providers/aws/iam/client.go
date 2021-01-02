@@ -5,20 +5,20 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/iam"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Client struct {
 	session   *session.Session
-	db        *gorm.DB
+	db        *database.Database
 	log       *zap.Logger
 	accountID string
 	svc       *iam.IAM
 }
 
-func NewClient(session *session.Session, awsConfig *aws.Config, db *gorm.DB, log *zap.Logger,
+func NewClient(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger,
 	accountID string, _ string) resource.ClientInterface {
 	return &Client{
 		session:   session,

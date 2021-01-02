@@ -5,12 +5,11 @@ import (
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type PasswordPolicy struct {
-	ID                         uint `gorm:"primarykey"`
-	AccountID                  string
+	ID                         uint   `gorm:"primarykey"`
+	AccountID                  string `neo:"unique"`
 	AllowUsersToChangePassword *bool
 	ExpirePasswords            *bool
 	HardExpiry                 *bool
@@ -43,10 +42,8 @@ func (c *Client) transformPasswordPolicy(value *iam.PasswordPolicy) *PasswordPol
 	}
 }
 
-func MigratePasswordPolicies(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&PasswordPolicy{},
-	)
+var PasswordPolicyTables = []interface{}{
+	&PasswordPolicy{},
 }
 
 func (c *Client) passwordPolicies(gConfig interface{}) error {
@@ -64,8 +61,8 @@ func (c *Client) passwordPolicies(gConfig interface{}) error {
 		}
 		return err
 	}
-	c.db.Where("account_id = ?", c.accountID).Delete(&PasswordPolicy{})
-	c.db.Create(c.transformPasswordPolicy(output.PasswordPolicy))
+	c.db.Where("account_id", c.accountID).Delete(PasswordPolicyTables...)
+	c.db.InsertOne(c.transformPasswordPolicy(output.PasswordPolicy))
 	c.log.Info("Fetched resources", zap.String("resource", "iam.password_policies"), zap.Int("count", 1))
 
 	return nil

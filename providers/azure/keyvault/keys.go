@@ -6,7 +6,7 @@ import (
 
 type Key struct {
 	ID             uint `gorm:"primarykey"`
-	VaultID        uint
+	VaultID        uint `neo:"ignore"`
 	SubscriptionID string
 
 	AttributesEnabled       *bool
@@ -33,9 +33,10 @@ func (Key) TableName() string {
 }
 
 type KeyOp struct {
-	ID    uint `gorm:"primarykey"`
-	KeyID uint
-	Value string
+	ID             uint   `gorm:"primarykey"`
+	KeyID          uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+	Value          string
 }
 
 func (KeyOp) TableName() string {
@@ -43,8 +44,10 @@ func (KeyOp) TableName() string {
 }
 
 type KeyTag struct {
-	ID    uint
-	KeyID uint
+	ID             uint   `gorm:"primarykey"`
+	KeyID          uint   `neo:"ignore"`
+	SubscriptionID string `gorm:"-"`
+
 	Key   string
 	Value *string
 }
@@ -62,7 +65,7 @@ func transformKeys(subscriptionID string, values []keyvault.Key) []*Key {
 			Name:           value.Name,
 			Type:           value.Type,
 			Location:       value.Location,
-			Tags:           transformKeyTags(value.Tags),
+			Tags:           transformKeyTags(subscriptionID, value.Tags),
 		}
 
 		if value.Attributes != nil {
@@ -76,7 +79,7 @@ func transformKeys(subscriptionID string, values []keyvault.Key) []*Key {
 
 		if value.KeyProperties != nil {
 			tValue.Kty = string(value.KeyProperties.Kty)
-			tValue.KeyOps = transformKeyPropertiesKeyOps(value.KeyProperties.KeyOps)
+			tValue.KeyOps = transformKeyPropertiesKeyOps(subscriptionID, value.KeyProperties.KeyOps)
 			tValue.KeySize = value.KeyProperties.KeySize
 			tValue.CurveName = string(value.KeyProperties.CurveName)
 			tValue.KeyURI = value.KeyProperties.KeyURI
@@ -86,25 +89,28 @@ func transformKeys(subscriptionID string, values []keyvault.Key) []*Key {
 	}
 	return tValues
 }
-func transformKeyPropertiesKeyOps(values *[]keyvault.JSONWebKeyOperation) []*KeyOp {
+
+func transformKeyPropertiesKeyOps(subscriptionID string, values *[]keyvault.JSONWebKeyOperation) []*KeyOp {
 	var tValues []*KeyOp
 	if values == nil {
 		return nil
 	}
 	for _, v := range *values {
 		tValues = append(tValues, &KeyOp{
-			Value: string(v),
+			SubscriptionID: subscriptionID,
+			Value:          string(v),
 		})
 	}
 	return tValues
 }
 
-func transformKeyTags(values map[string]*string) []*KeyTag {
+func transformKeyTags(subscriptionID string, values map[string]*string) []*KeyTag {
 	var tValues []*KeyTag
 	for k, v := range values {
 		tValue := KeyTag{
-			Key:   k,
-			Value: v,
+			SubscriptionID: subscriptionID,
+			Key:            k,
+			Value:          v,
 		}
 		tValues = append(tValues, &tValue)
 	}

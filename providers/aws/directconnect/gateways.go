@@ -3,18 +3,17 @@ package directconnect
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/directconnect"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Gateway struct {
-	ID                        uint `gorm:"primarykey"`
-	AccountID                 string
-	Region                    string
+	_                         interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                        uint        `gorm:"primarykey"`
+	AccountID                 string      `neo:"unique"`
+	Region                    string      `neo:"unique"`
 	AmazonSideAsn             *int64
-	DirectConnectGatewayId    *string
+	DirectConnectGatewayId    *string `neo:"unique"`
 	DirectConnectGatewayName  *string
 	DirectConnectGatewayState *string
 	OwnerAccount              *string
@@ -46,10 +45,8 @@ func (c *Client) transformGateways(values []*directconnect.Gateway) []*Gateway {
 	return tValues
 }
 
-func MigrateGateways(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Gateway{},
-	)
+var GatewayTables = []interface{}{
+	&Gateway{},
 }
 
 func (c *Client) gateways(gConfig interface{}) error {
@@ -58,14 +55,13 @@ func (c *Client) gateways(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(GatewayTables...)
 	for {
 		output, err := c.svc.DescribeDirectConnectGateways(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Gateway{})
-		common.ChunkedCreate(c.db, c.transformGateways(output.DirectConnectGateways))
+		c.db.ChunkedCreate(c.transformGateways(output.DirectConnectGateways))
 		c.log.Info("Fetched resources", zap.String("resource", "directconnect.gateways"), zap.Int("count", len(output.DirectConnectGateways)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

@@ -3,20 +3,18 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type NetworkAcl struct {
-	ID           uint `gorm:"primarykey"`
-	AccountID    string
-	Region       string
+	ID           uint                     `gorm:"primarykey"`
+	AccountID    string                   `neo:"unique"`
+	Region       string                   `neo:"unique"`
 	Associations []*NetworkAclAssociation `gorm:"constraint:OnDelete:CASCADE;"`
 	Entries      []*NetworkAclEntry       `gorm:"constraint:OnDelete:CASCADE;"`
 	IsDefault    *bool
-	NetworkAclId *string
+	NetworkAclId *string `neo:"unique"`
 	OwnerId      *string
 	Tags         []*NetworkAclTag `gorm:"constraint:OnDelete:CASCADE;"`
 	VpcId        *string
@@ -27,8 +25,12 @@ func (NetworkAcl) TableName() string {
 }
 
 type NetworkAclAssociation struct {
-	ID                      uint `gorm:"primarykey"`
-	NetworkAclID            uint
+	ID           uint `gorm:"primarykey"`
+	NetworkAclID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
 	NetworkAclAssociationId *string
 	NetworkAclId            *string
 	SubnetId                *string
@@ -39,16 +41,26 @@ func (NetworkAclAssociation) TableName() string {
 }
 
 type NetworkAclEntry struct {
-	ID            uint `gorm:"primarykey"`
-	NetworkAclID  uint
-	CidrBlock     *string
-	Egress        *bool
-	IcmpTypeCode  *ec2.IcmpTypeCode `gorm:"embedded;embeddedPrefix:icmp_type_code_"`
+	ID           uint `gorm:"primarykey"`
+	NetworkAclID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	CidrBlock *string
+	Egress    *bool
+
+	IcmpTypeCode *int64
+	IcmpTypeType *int64
+
 	Ipv6CidrBlock *string
-	PortRange     *ec2.PortRange `gorm:"embedded;embeddedPrefix:port_range_"`
-	Protocol      *string
-	RuleAction    *string
-	RuleNumber    *int64
+
+	PortRangeFrom *int64
+	PortRangeTo   *int64
+
+	Protocol   *string
+	RuleAction *string
+	RuleNumber *int64
 }
 
 func (NetworkAclEntry) TableName() string {
@@ -57,9 +69,13 @@ func (NetworkAclEntry) TableName() string {
 
 type NetworkAclTag struct {
 	ID           uint `gorm:"primarykey"`
-	NetworkAclID uint
-	Key          *string
-	Value        *string
+	NetworkAclID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (NetworkAclTag) TableName() string {
@@ -68,6 +84,8 @@ func (NetworkAclTag) TableName() string {
 
 func (c *Client) transformNetworkAclAssociation(value *ec2.NetworkAclAssociation) *NetworkAclAssociation {
 	return &NetworkAclAssociation{
+		AccountID:               c.accountID,
+		Region:                  c.region,
 		NetworkAclAssociationId: value.NetworkAclAssociationId,
 		NetworkAclId:            value.NetworkAclId,
 		SubnetId:                value.SubnetId,
@@ -83,16 +101,31 @@ func (c *Client) transformNetworkAclAssociations(values []*ec2.NetworkAclAssocia
 }
 
 func (c *Client) transformNetworkAclEntry(value *ec2.NetworkAclEntry) *NetworkAclEntry {
-	return &NetworkAclEntry{
-		CidrBlock:     value.CidrBlock,
-		Egress:        value.Egress,
-		IcmpTypeCode:  value.IcmpTypeCode,
+	res := NetworkAclEntry{
+		AccountID: c.accountID,
+		Region:    c.region,
+
+		CidrBlock: value.CidrBlock,
+		Egress:    value.Egress,
+
 		Ipv6CidrBlock: value.Ipv6CidrBlock,
-		PortRange:     value.PortRange,
-		Protocol:      value.Protocol,
-		RuleAction:    value.RuleAction,
-		RuleNumber:    value.RuleNumber,
+
+		Protocol:   value.Protocol,
+		RuleAction: value.RuleAction,
+		RuleNumber: value.RuleNumber,
 	}
+
+	if value.IcmpTypeCode != nil {
+		res.IcmpTypeCode = value.IcmpTypeCode.Code
+		res.IcmpTypeType = value.IcmpTypeCode.Type
+	}
+
+	if value.PortRange != nil {
+		res.PortRangeFrom = value.PortRange.From
+		res.PortRangeTo = value.PortRange.To
+	}
+
+	return &res
 }
 
 func (c *Client) transformNetworkAclEntrys(values []*ec2.NetworkAclEntry) []*NetworkAclEntry {
@@ -105,8 +138,10 @@ func (c *Client) transformNetworkAclEntrys(values []*ec2.NetworkAclEntry) []*Net
 
 func (c *Client) transformNetworkAclTag(value *ec2.Tag) *NetworkAclTag {
 	return &NetworkAclTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -140,13 +175,11 @@ func (c *Client) transformNetworkAcls(values []*ec2.NetworkAcl) []*NetworkAcl {
 	return tValues
 }
 
-func MigrateNetworkAcls(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&NetworkAcl{},
-		&NetworkAclAssociation{},
-		&NetworkAclEntry{},
-		&NetworkAclTag{},
-	)
+var NetworkAclTables = []interface{}{
+	&NetworkAcl{},
+	&NetworkAclAssociation{},
+	&NetworkAclEntry{},
+	&NetworkAclTag{},
 }
 
 func (c *Client) networkAcls(gConfig interface{}) error {
@@ -155,14 +188,13 @@ func (c *Client) networkAcls(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(NetworkAclTables...)
 	for {
 		output, err := c.svc.DescribeNetworkAcls(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&NetworkAcl{})
-		common.ChunkedCreate(c.db, c.transformNetworkAcls(output.NetworkAcls))
+		c.db.ChunkedCreate(c.transformNetworkAcls(output.NetworkAcls))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.network_acls"), zap.Int("count", len(output.NetworkAcls)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

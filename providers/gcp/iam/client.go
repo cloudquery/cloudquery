@@ -3,14 +3,14 @@ package iam
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/gcp/resource"
 	"go.uber.org/zap"
 	"google.golang.org/api/iam/v1"
-	"gorm.io/gorm"
 )
 
 type Client struct {
-	db               *gorm.DB
+	db               *database.Database
 	log              *zap.Logger
 	projectID        string
 	region           string
@@ -18,7 +18,7 @@ type Client struct {
 	svc              *iam.Service
 }
 
-func NewClient(db *gorm.DB, log *zap.Logger,
+func NewClient(db *database.Database, log *zap.Logger,
 	projectID string, region string) (resource.ClientInterface, error) {
 	ctx := context.Background()
 	computeService, err := iam.NewService(ctx)

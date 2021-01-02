@@ -3,18 +3,18 @@ package okta
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 	"os"
 )
 
 type Provider struct {
-	db               *gorm.DB
+	db               *database.Database
 	config           Config
 	resourceClients  map[string]common.ClientInterface
 	log              *zap.Logger
@@ -32,30 +32,26 @@ type Config struct {
 
 type NewResourceFunc func(client *okta.Client, db *gorm.DB, log *zap.Logger) (common.ClientInterface, error)
 
-func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
+var tablesArr = [][]interface{}{
+	applicationTables,
+	userTables,
+}
+
+func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:               db,
 		resourceClients:  map[string]common.ClientInterface{},
 		resourceMigrated: map[string]bool{},
 		log:              log,
 	}
-	p.db.NamingStrategy = schema.NamingStrategy{
-		TablePrefix: "okta_",
-	}
 	log.Info("Creating tables if needed")
-	err := p.migrateTables()
-	if err != nil {
-		return nil, err
+	for _, tables := range tablesArr {
+		err := p.db.AutoMigrate(tables...)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return &p, nil
-}
-
-func (p *Provider) migrateTables() error {
-	err := migrateUser(p.db)
-	if err != nil {
-		return err
-	}
-	return migrateApplication(p.db)
 }
 
 func (p *Provider) Run(config interface{}) error {

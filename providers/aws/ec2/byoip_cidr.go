@@ -3,13 +3,12 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type ByoipCidr struct {
-	ID            uint `gorm:"primarykey"`
+	_             interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID            uint        `gorm:"primarykey"`
 	AccountID     string
 	Region        string
 	Cidr          *string
@@ -41,10 +40,8 @@ func (c *Client) transformByoipCidrs(values []*ec2.ByoipCidr) []*ByoipCidr {
 	return tValues
 }
 
-func MigrateByoipCidrs(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&ByoipCidr{},
-	)
+var ByoipCidrTables = []interface{}{
+	&ByoipCidr{},
 }
 
 func (c *Client) byoipCidrs(_ interface{}) error {
@@ -52,14 +49,13 @@ func (c *Client) byoipCidrs(_ interface{}) error {
 	config := ec2.DescribeByoipCidrsInput{
 		MaxResults: &MaxResults,
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ByoipCidrTables...)
 	for {
 		output, err := c.svc.DescribeByoipCidrs(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&ByoipCidr{})
-		common.ChunkedCreate(c.db, c.transformByoipCidrs(output.ByoipCidrs))
+		c.db.ChunkedCreate(c.transformByoipCidrs(output.ByoipCidrs))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.byoip_cidrs"), zap.Int("count", len(output.ByoipCidrs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

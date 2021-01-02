@@ -3,17 +3,15 @@ package rds
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/rds"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type DBSubnetGroup struct {
 	ID                       uint `gorm:"primarykey"`
 	AccountID                string
 	Region                   string
-	DBSubnetGroupArn         *string
+	DBSubnetGroupArn         *string `neo:"unique"`
 	DBSubnetGroupDescription *string
 	DBSubnetGroupName        *string
 	SubnetGroupStatus        *string
@@ -26,12 +24,15 @@ func (DBSubnetGroup) TableName() string {
 }
 
 type DBSubnetGroupSubnet struct {
-	ID                     uint `gorm:"primarykey"`
-	DBSubnetGroupID        uint
-	SubnetAvailabilityZone *rds.AvailabilityZone `gorm:"embedded;embeddedPrefix:availability_zone_"`
-	SubnetIdentifier       *string
-	SubnetOutpost          *rds.Outpost `gorm:"embedded;embeddedPrefix:outpost_"`
-	SubnetStatus           *string
+	ID              uint   `gorm:"primarykey"`
+	DBSubnetGroupID uint   `neo:"ignore"`
+	AccountID       string `gorm:"-"`
+	Region          string `gorm:"-"`
+
+	AvailabilityZoneName *string
+	Identifier           *string
+	OutpostArn           *string
+	Status               *string
 }
 
 func (DBSubnetGroupSubnet) TableName() string {
@@ -39,12 +40,20 @@ func (DBSubnetGroupSubnet) TableName() string {
 }
 
 func (c *Client) transformDBSubnetGroupSubnet(value *rds.Subnet) *DBSubnetGroupSubnet {
-	return &DBSubnetGroupSubnet{
-		SubnetAvailabilityZone: value.SubnetAvailabilityZone,
-		SubnetIdentifier:       value.SubnetIdentifier,
-		SubnetOutpost:          value.SubnetOutpost,
-		SubnetStatus:           value.SubnetStatus,
+	res := DBSubnetGroupSubnet{
+		Identifier: value.SubnetIdentifier,
+		Status:     value.SubnetStatus,
 	}
+
+	if value.SubnetAvailabilityZone != nil {
+		res.AvailabilityZoneName = value.SubnetAvailabilityZone.Name
+	}
+
+	if value.SubnetOutpost != nil {
+		res.OutpostArn = value.SubnetOutpost.Arn
+	}
+
+	return &res
 }
 
 func (c *Client) transformDBSubnetGroupSubnets(values []*rds.Subnet) []*DBSubnetGroupSubnet {
@@ -76,11 +85,9 @@ func (c *Client) transformDBSubnetGroups(values []*rds.DBSubnetGroup) []*DBSubne
 	return tValues
 }
 
-func MigrateDBSubnetGroups(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&DBSubnetGroup{},
-		&DBSubnetGroupSubnet{},
-	)
+var DBSubnetGroupTables = []interface{}{
+	&DBSubnetGroup{},
+	&DBSubnetGroupSubnet{},
 }
 
 func (c *Client) dbSubnetGroups(gConfig interface{}) error {
@@ -89,14 +96,14 @@ func (c *Client) dbSubnetGroups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(DBSubnetGroupTables...)
 
 	for {
 		output, err := c.svc.DescribeDBSubnetGroups(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&DBSubnetGroup{})
-		common.ChunkedCreate(c.db, c.transformDBSubnetGroups(output.DBSubnetGroups))
+		c.db.ChunkedCreate(c.transformDBSubnetGroups(output.DBSubnetGroups))
 		c.log.Info("Fetched resources", zap.String("resource", "rds.subnet_groups"), zap.Int("count", len(output.DBSubnetGroups)))
 		if aws.StringValue(output.Marker) == "" {
 			break

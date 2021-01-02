@@ -2,6 +2,7 @@ package gcp
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/gcp/compute"
 	"github.com/cloudquery/cloudquery/providers/gcp/iam"
 	"github.com/cloudquery/cloudquery/providers/gcp/resource"
@@ -9,13 +10,11 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 	"strings"
 )
 
 type Provider struct {
-	db              *gorm.DB
+	db              *database.Database
 	config          Config
 	resourceClients map[string]resource.ClientInterface
 	log             *zap.Logger
@@ -30,7 +29,7 @@ type Config struct {
 	}
 }
 
-type NewResourceFunc func(db *gorm.DB, log *zap.Logger,
+type NewResourceFunc func(db *database.Database, log *zap.Logger,
 	projectID string, region string) (resource.ClientInterface, error)
 
 var resourceFactory = map[string]NewResourceFunc{
@@ -39,15 +38,34 @@ var resourceFactory = map[string]NewResourceFunc{
 	"storage": storage.NewClient,
 }
 
-func NewProvider(db *gorm.DB, log *zap.Logger) (provider.Interface, error) {
+var tablesArr = [][]interface{}{
+	compute.AddressTables,
+	compute.AutoscalerTables,
+	compute.DiskTypeTables,
+	compute.ImageTables,
+	compute.InstanceTables,
+	compute.InterconnectTables,
+	compute.SSLCertificateTables,
+	compute.VPNGatewayTables,
+	iam.RoleTables,
+	iam.ServiceAccountTables,
+	storage.BucketTables,
+}
+
+func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
 	p := Provider{
 		db:              db,
 		resourceClients: map[string]resource.ClientInterface{},
 		log:             log,
 	}
-	p.db.NamingStrategy = schema.NamingStrategy{
-		TablePrefix: "gcp_",
+
+	for _, table := range tablesArr {
+		err := db.AutoMigrate(table...)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	return &p, nil
 }
 
@@ -92,9 +110,6 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 		if err != nil {
 			return err
 		}
-	}
-	p.db.NamingStrategy = schema.NamingStrategy{
-		TablePrefix: fmt.Sprintf("gcp_%s_", service),
 	}
 	return p.resourceClients[service].CollectResource(resourceName, config)
 }

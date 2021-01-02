@@ -3,18 +3,16 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type SecurityGroup struct {
-	ID            uint `gorm:"primarykey"`
-	AccountID     string
-	Region        string
+	ID            uint   `gorm:"primarykey"`
+	AccountID     string `neo:"unique"`
+	Region        string `neo:"unique"`
 	Description   *string
-	GroupId       *string
+	GroupId       *string `neo:"unique"`
 	GroupName     *string
 	IpPermissions []*SecurityGroupIpPermission `gorm:"constraint:OnDelete:CASCADE;"`
 	OwnerId       *string
@@ -27,8 +25,10 @@ func (SecurityGroup) TableName() string {
 }
 
 type SecurityGroupIpPermission struct {
-	ID               uint `gorm:"primarykey"`
-	SecurityGroupID  uint
+	ID               uint   `gorm:"primarykey"`
+	SecurityGroupID  uint   `neo:"ignore"`
+	AccountID        string `gorm:"-"`
+	Region           string `gorm:"-"`
 	FromPort         *int64
 	IpProtocol       *string
 	IpRanges         []*SecurityGroupIpRange      `gorm:"constraint:OnDelete:CASCADE;"`
@@ -43,8 +43,10 @@ func (SecurityGroupIpPermission) TableName() string {
 }
 
 type SecurityGroupIpRange struct {
-	ID                          uint `gorm:"primarykey"`
-	SecurityGroupIpPermissionID uint
+	ID                          uint   `gorm:"primarykey"`
+	SecurityGroupIpPermissionID uint   `neo:"ignore"`
+	AccountID                   string `gorm:"-"`
+	Region                      string `gorm:"-"`
 	CidrIp                      *string
 	Description                 *string
 }
@@ -54,8 +56,10 @@ func (SecurityGroupIpRange) TableName() string {
 }
 
 type SecurityGroupIpv6Range struct {
-	ID                          uint `gorm:"primarykey"`
-	SecurityGroupIpPermissionID uint
+	ID                          uint   `gorm:"primarykey"`
+	SecurityGroupIpPermissionID uint   `neo:"ignore"`
+	AccountID                   string `gorm:"-"`
+	Region                      string `gorm:"-"`
 	CidrIpv6                    *string
 	Description                 *string
 }
@@ -65,8 +69,10 @@ func (SecurityGroupIpv6Range) TableName() string {
 }
 
 type SecurityGroupPrefixListId struct {
-	ID                          uint `gorm:"primarykey"`
-	SecurityGroupIpPermissionID uint
+	ID                          uint   `gorm:"primarykey"`
+	SecurityGroupIpPermissionID uint   `neo:"ignore"`
+	AccountID                   string `gorm:"-"`
+	Region                      string `gorm:"-"`
 	Description                 *string
 	PrefixListId                *string
 }
@@ -76,8 +82,10 @@ func (SecurityGroupPrefixListId) TableName() string {
 }
 
 type SecurityGroupUserIdGroupPair struct {
-	ID                          uint `gorm:"primarykey"`
-	SecurityGroupIpPermissionID uint
+	ID                          uint   `gorm:"primarykey"`
+	SecurityGroupIpPermissionID uint   `neo:"ignore"`
+	AccountID                   string `gorm:"-"`
+	Region                      string `gorm:"-"`
 	Description                 *string
 	GroupId                     *string
 	GroupName                   *string
@@ -92,8 +100,10 @@ func (SecurityGroupUserIdGroupPair) TableName() string {
 }
 
 type SecurityGroupTag struct {
-	ID              uint `gorm:"primarykey"`
-	SecurityGroupID uint
+	ID              uint   `gorm:"primarykey"`
+	SecurityGroupID uint   `neo:"ignore"`
+	AccountID       string `gorm:"-"`
+	Region          string `gorm:"-"`
 	Key             *string
 	Value           *string
 }
@@ -104,6 +114,8 @@ func (SecurityGroupTag) TableName() string {
 
 func (c *Client) transformSecurityGroupIpRange(value *ec2.IpRange) *SecurityGroupIpRange {
 	return &SecurityGroupIpRange{
+		AccountID:   c.accountID,
+		Region:      c.region,
 		CidrIp:      value.CidrIp,
 		Description: value.Description,
 	}
@@ -119,6 +131,8 @@ func (c *Client) transformSecurityGroupIpRanges(values []*ec2.IpRange) []*Securi
 
 func (c *Client) transformSecurityGroupIpv6Range(value *ec2.Ipv6Range) *SecurityGroupIpv6Range {
 	return &SecurityGroupIpv6Range{
+		AccountID:   c.accountID,
+		Region:      c.region,
 		CidrIpv6:    value.CidrIpv6,
 		Description: value.Description,
 	}
@@ -134,6 +148,8 @@ func (c *Client) transformSecurityGroupIpv6Ranges(values []*ec2.Ipv6Range) []*Se
 
 func (c *Client) transformSecurityGroupPrefixListId(value *ec2.PrefixListId) *SecurityGroupPrefixListId {
 	return &SecurityGroupPrefixListId{
+		AccountID:    c.accountID,
+		Region:       c.region,
 		Description:  value.Description,
 		PrefixListId: value.PrefixListId,
 	}
@@ -149,6 +165,8 @@ func (c *Client) transformSecurityGroupPrefixListIds(values []*ec2.PrefixListId)
 
 func (c *Client) transformSecurityGroupUserIdGroupPair(value *ec2.UserIdGroupPair) *SecurityGroupUserIdGroupPair {
 	return &SecurityGroupUserIdGroupPair{
+		AccountID:              c.accountID,
+		Region:                 c.region,
 		Description:            value.Description,
 		GroupId:                value.GroupId,
 		GroupName:              value.GroupName,
@@ -169,6 +187,8 @@ func (c *Client) transformSecurityGroupUserIdGroupPairs(values []*ec2.UserIdGrou
 
 func (c *Client) transformSecurityGroupIpPermission(value *ec2.IpPermission) *SecurityGroupIpPermission {
 	return &SecurityGroupIpPermission{
+		AccountID:        c.accountID,
+		Region:           c.region,
 		FromPort:         value.FromPort,
 		IpProtocol:       value.IpProtocol,
 		IpRanges:         c.transformSecurityGroupIpRanges(value.IpRanges),
@@ -189,8 +209,10 @@ func (c *Client) transformSecurityGroupIpPermissions(values []*ec2.IpPermission)
 
 func (c *Client) transformSecurityGroupTag(value *ec2.Tag) *SecurityGroupTag {
 	return &SecurityGroupTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -224,16 +246,14 @@ func (c *Client) transformSecurityGroups(values []*ec2.SecurityGroup) []*Securit
 	return tValues
 }
 
-func MigrateSecurityGroups(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&SecurityGroup{},
-		&SecurityGroupIpPermission{},
-		&SecurityGroupIpRange{},
-		&SecurityGroupIpv6Range{},
-		&SecurityGroupPrefixListId{},
-		&SecurityGroupUserIdGroupPair{},
-		&SecurityGroupTag{},
-	)
+var SecurityGroupTables = []interface{}{
+	&SecurityGroup{},
+	&SecurityGroupIpPermission{},
+	&SecurityGroupIpRange{},
+	&SecurityGroupIpv6Range{},
+	&SecurityGroupPrefixListId{},
+	&SecurityGroupUserIdGroupPair{},
+	&SecurityGroupTag{},
 }
 
 func (c *Client) securityGroups(gConfig interface{}) error {
@@ -242,14 +262,13 @@ func (c *Client) securityGroups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(SecurityGroupTables...)
 	for {
 		output, err := c.svc.DescribeSecurityGroups(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&SecurityGroup{})
-		common.ChunkedCreate(c.db, c.transformSecurityGroups(output.SecurityGroups))
+		c.db.ChunkedCreate(c.transformSecurityGroups(output.SecurityGroups))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.security_groups"), zap.Int("count", len(output.SecurityGroups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

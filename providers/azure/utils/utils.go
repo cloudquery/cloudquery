@@ -3,12 +3,17 @@ package utils
 import (
 	"github.com/Azure/go-autorest/autorest/date"
 	uuid "github.com/satori/go.uuid"
+	"log"
 	"time"
 )
 
 func AzureDateToTime(t *date.Time) *time.Time {
 	if t != nil {
-		v := t.ToTime()
+		location, err := time.LoadLocation("UTC")
+		if err != nil {
+			log.Fatal(err)
+		}
+		v := t.In(location)
 		return &v
 	}
 	return nil

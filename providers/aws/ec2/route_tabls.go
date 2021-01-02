@@ -3,22 +3,20 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type RouteTable struct {
-	ID              uint `gorm:"primarykey"`
-	AccountID       string
-	Region          string
+	ID              uint                     `gorm:"primarykey"`
+	AccountID       string                   `neo:"unique"`
+	Region          string                   `neo:"unique"`
 	Associations    []*RouteTableAssociation `gorm:"constraint:OnDelete:CASCADE;"`
 	OwnerId         *string
 	PropagatingVgws []*RouteTablePropagatingVgw `gorm:"constraint:OnDelete:CASCADE;"`
-	RouteTableId    *string
-	Routes          []*RouteTableRoute `gorm:"constraint:OnDelete:CASCADE;"`
-	Tags            []*RouteTableTag   `gorm:"constraint:OnDelete:CASCADE;"`
+	RouteTableId    *string                     `neo:"unique"`
+	Routes          []*RouteTableRoute          `gorm:"constraint:OnDelete:CASCADE;"`
+	Tags            []*RouteTableTag            `gorm:"constraint:OnDelete:CASCADE;"`
 	VpcId           *string
 }
 
@@ -27,12 +25,17 @@ func (RouteTable) TableName() string {
 }
 
 type RouteTableAssociation struct {
-	ID                      uint `gorm:"primarykey"`
-	RouteTableID            uint
-	AssociationState        *ec2.RouteTableAssociationState `gorm:"embedded;embeddedPrefix:association_state_"`
+	ID           uint   `gorm:"primarykey"`
+	RouteTableID uint   `neo:"ignore"`
+	AccountID    string `gorm:"-" neo:"unique"`
+	Region       string `gorm:"-" neo:"unique"`
+
+	State         *string
+	StatusMessage *string
+
 	GatewayId               *string
 	Main                    *bool
-	RouteTableAssociationId *string
+	RouteTableAssociationId *string `neo:"unique"`
 	RouteTableId            *string
 	SubnetId                *string
 }
@@ -42,9 +45,12 @@ func (RouteTableAssociation) TableName() string {
 }
 
 type RouteTablePropagatingVgw struct {
-	ID           uint `gorm:"primarykey"`
-	RouteTableID uint
-	GatewayId    *string
+	ID           uint   `gorm:"primarykey"`
+	RouteTableID uint   `neo:"ignore"`
+	AccountID    string `gorm:"-"`
+	Region       string `gorm:"-"`
+
+	GatewayId *string
 }
 
 func (RouteTablePropagatingVgw) TableName() string {
@@ -52,8 +58,11 @@ func (RouteTablePropagatingVgw) TableName() string {
 }
 
 type RouteTableRoute struct {
-	ID                          uint `gorm:"primarykey"`
-	RouteTableID                uint
+	ID           uint   `gorm:"primarykey"`
+	RouteTableID uint   `neo:"ignore"`
+	AccountID    string `gorm:"-"`
+	Region       string `gorm:"-"`
+
 	CarrierGatewayId            *string
 	DestinationCidrBlock        *string
 	DestinationIpv6CidrBlock    *string
@@ -77,9 +86,13 @@ func (RouteTableRoute) TableName() string {
 
 type RouteTableTag struct {
 	ID           uint `gorm:"primarykey"`
-	RouteTableID uint
-	Key          *string
-	Value        *string
+	RouteTableID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (RouteTableTag) TableName() string {
@@ -87,14 +100,22 @@ func (RouteTableTag) TableName() string {
 }
 
 func (c *Client) transformRouteTableAssociation(value *ec2.RouteTableAssociation) *RouteTableAssociation {
-	return &RouteTableAssociation{
-		AssociationState:        value.AssociationState,
+	res := RouteTableAssociation{
+		AccountID:               c.accountID,
+		Region:                  c.region,
 		GatewayId:               value.GatewayId,
 		Main:                    value.Main,
 		RouteTableAssociationId: value.RouteTableAssociationId,
 		RouteTableId:            value.RouteTableId,
 		SubnetId:                value.SubnetId,
 	}
+
+	if value.AssociationState != nil {
+		res.State = value.AssociationState.State
+		res.StatusMessage = value.AssociationState.StatusMessage
+	}
+
+	return &res
 }
 
 func (c *Client) transformRouteTableAssociations(values []*ec2.RouteTableAssociation) []*RouteTableAssociation {
@@ -107,6 +128,8 @@ func (c *Client) transformRouteTableAssociations(values []*ec2.RouteTableAssocia
 
 func (c *Client) transformRouteTablePropagatingVgw(value *ec2.PropagatingVgw) *RouteTablePropagatingVgw {
 	return &RouteTablePropagatingVgw{
+		AccountID: c.accountID,
+		Region:    c.region,
 		GatewayId: value.GatewayId,
 	}
 }
@@ -121,6 +144,8 @@ func (c *Client) transformRouteTablePropagatingVgws(values []*ec2.PropagatingVgw
 
 func (c *Client) transformRouteTableRoute(value *ec2.Route) *RouteTableRoute {
 	return &RouteTableRoute{
+		AccountID:                   c.accountID,
+		Region:                      c.region,
 		CarrierGatewayId:            value.CarrierGatewayId,
 		DestinationCidrBlock:        value.DestinationCidrBlock,
 		DestinationIpv6CidrBlock:    value.DestinationIpv6CidrBlock,
@@ -149,8 +174,10 @@ func (c *Client) transformRouteTableRoutes(values []*ec2.Route) []*RouteTableRou
 
 func (c *Client) transformRouteTableTag(value *ec2.Tag) *RouteTableTag {
 	return &RouteTableTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -184,14 +211,12 @@ func (c *Client) transformRouteTables(values []*ec2.RouteTable) []*RouteTable {
 	return tValues
 }
 
-func MigrateRouteTables(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&RouteTable{},
-		&RouteTableAssociation{},
-		&RouteTablePropagatingVgw{},
-		&RouteTableRoute{},
-		&RouteTableTag{},
-	)
+var RouteTableTables = []interface{}{
+	&RouteTable{},
+	&RouteTableAssociation{},
+	&RouteTablePropagatingVgw{},
+	&RouteTableRoute{},
+	&RouteTableTag{},
 }
 
 func (c *Client) routeTables(gConfig interface{}) error {
@@ -200,14 +225,13 @@ func (c *Client) routeTables(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(RouteTableTables...)
 	for {
 		output, err := c.svc.DescribeRouteTables(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&RouteTable{})
-		common.ChunkedCreate(c.db, c.transformRouteTables(output.RouteTables))
+		c.db.ChunkedCreate(c.transformRouteTables(output.RouteTables))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.route_tables"), zap.Int("count", len(output.RouteTables)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

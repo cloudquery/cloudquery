@@ -5,17 +5,17 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Cluster struct {
-	ID                                uint `gorm:"primarykey"`
+	_                                 interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                                uint        `gorm:"primarykey"`
 	AccountID                         string
 	Region                            string
 	ActiveServicesCount               *int64
 	AttachmentsStatus                 *string
 	CapacityProviders                 *string
-	ClusterArn                        *string
+	ClusterArn                        *string `neo:"unique"`
 	ClusterName                       *string
 	DefaultCapacityProviderStrategy   []*ClusterCapacityProviderStrategyItem `gorm:"constraint:OnDelete:CASCADE;"`
 	PendingTasksCount                 *int64
@@ -32,10 +32,13 @@ func (Cluster) TableName() string {
 }
 
 type ClusterKeyValuePair struct {
-	ID        uint `gorm:"primarykey"`
-	ClusterID uint
-	Name      *string
-	Value     *string
+	ID        uint   `gorm:"primarykey"`
+	ClusterID uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Name  *string
+	Value *string
 }
 
 func (ClusterKeyValuePair) TableName() string {
@@ -43,8 +46,11 @@ func (ClusterKeyValuePair) TableName() string {
 }
 
 type ClusterCapacityProviderStrategyItem struct {
-	ID               uint `gorm:"primarykey"`
-	ClusterID        uint
+	ID        uint   `gorm:"primarykey"`
+	ClusterID uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
 	Base             *int64
 	CapacityProvider *string
 	Weight           *int64
@@ -55,10 +61,13 @@ func (ClusterCapacityProviderStrategyItem) TableName() string {
 }
 
 type ClusterSetting struct {
-	ID        uint `gorm:"primarykey"`
-	ClusterID uint
-	Name      *string
-	Value     *string
+	ID        uint   `gorm:"primarykey"`
+	ClusterID uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Name  *string
+	Value *string
 }
 
 func (ClusterSetting) TableName() string {
@@ -66,10 +75,13 @@ func (ClusterSetting) TableName() string {
 }
 
 type ClusterTag struct {
-	ID        uint `gorm:"primarykey"`
-	ClusterID uint
-	Key       *string
-	Value     *string
+	ID        uint   `gorm:"primarykey"`
+	ClusterID uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (ClusterTag) TableName() string {
@@ -78,8 +90,10 @@ func (ClusterTag) TableName() string {
 
 func (c *Client) transformClusterKeyValuePair(value *ecs.KeyValuePair) *ClusterKeyValuePair {
 	return &ClusterKeyValuePair{
-		Name:  value.Name,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Name:      value.Name,
+		Value:     value.Value,
 	}
 }
 
@@ -93,6 +107,8 @@ func (c *Client) transformClusterKeyValuePairs(values []*ecs.KeyValuePair) []*Cl
 
 func (c *Client) transformClusterCapacityProviderStrategyItem(value *ecs.CapacityProviderStrategyItem) *ClusterCapacityProviderStrategyItem {
 	return &ClusterCapacityProviderStrategyItem{
+		AccountID:        c.accountID,
+		Region:           c.region,
 		Base:             value.Base,
 		CapacityProvider: value.CapacityProvider,
 		Weight:           value.Weight,
@@ -109,8 +125,10 @@ func (c *Client) transformClusterCapacityProviderStrategyItems(values []*ecs.Cap
 
 func (c *Client) transformClusterSetting(value *ecs.ClusterSetting) *ClusterSetting {
 	return &ClusterSetting{
-		Name:  value.Name,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Name:      value.Name,
+		Value:     value.Value,
 	}
 }
 
@@ -124,8 +142,10 @@ func (c *Client) transformClusterSettings(values []*ecs.ClusterSetting) []*Clust
 
 func (c *Client) transformClusterTag(value *ecs.Tag) *ClusterTag {
 	return &ClusterTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -165,24 +185,22 @@ func (c *Client) transformClusters(values []*ecs.Cluster) []*Cluster {
 	return tValues
 }
 
-func MigrateClusters(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Cluster{},
-		&ClusterKeyValuePair{},
-		&ClusterCapacityProviderStrategyItem{},
-		&ClusterSetting{},
-		&ClusterTag{},
+var ClusterTables = []interface{}{
+	&Cluster{},
+	&ClusterKeyValuePair{},
+	&ClusterCapacityProviderStrategyItem{},
+	&ClusterSetting{},
+	&ClusterTag{},
 
-		&Service{},
-		&ServiceSecurityGroups{},
-		&ServiceSubnets{},
-		&ServiceCapProviderStrategy{},
-		&ServiceLoadBalancer{},
-		&ServicePlacementConstraint{},
-		&ServicePlacementStrategy{},
-		&ServiceRegistry{},
-		&ServiceTag{},
-	)
+	&Service{},
+	&ServiceSecurityGroups{},
+	&ServiceSubnets{},
+	&ServiceCapProviderStrategy{},
+	&ServiceLoadBalancer{},
+	&ServicePlacementConstraint{},
+	&ServicePlacementStrategy{},
+	&ServiceRegistry{},
+	&ServiceTag{},
 }
 
 func (c *Client) clusters(gConfig interface{}) error {
@@ -191,8 +209,8 @@ func (c *Client) clusters(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Cluster{})
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Service{})
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterTables...)
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(&Service{})
 	var listConfig ecs.ListClustersInput
 	for {
 		listOutput, err := c.svc.ListClusters(&listConfig)
@@ -208,7 +226,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		common.ChunkedCreate(c.db, c.transformClusters(output.Clusters))
+		c.db.ChunkedCreate(c.transformClusters(output.Clusters))
 		c.log.Info("Fetched resources", zap.String("resource", "ecs.cluster"), zap.Int("count", len(output.Clusters)))
 
 		if listOutput.NextToken == nil {

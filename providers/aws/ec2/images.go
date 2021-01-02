@@ -2,23 +2,22 @@ package ec2
 
 import (
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Image struct {
-	ID                  uint `gorm:"primarykey"`
-	AccountID           string
-	Region              string
+	_                   interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                  uint        `gorm:"primarykey"`
+	AccountID           string      `neo:"unique"`
+	Region              string      `neo:"unique"`
 	Architecture        *string
 	BlockDeviceMappings []*ImageBlockDeviceMapping `gorm:"constraint:OnDelete:CASCADE;"`
 	CreationDate        *string
 	Description         *string
 	EnaSupport          *bool
 	Hypervisor          *string
-	ImageId             *string
+	ImageId             *string `neo:"unique"`
 	ImageLocation       *string
 	ImageOwnerAlias     *string
 	ImageType           *string
@@ -34,10 +33,13 @@ type Image struct {
 	RootDeviceType      *string
 	SriovNetSupport     *string
 	State               *string
-	StateReason         *ec2.StateReason `gorm:"embedded;embeddedPrefix:state_reason_"`
-	Tags                []*ImageTag      `gorm:"constraint:OnDelete:CASCADE;"`
-	UsageOperation      *string
-	VirtualizationType  *string
+
+	StateReasonCode    *string
+	StateReasonMessage *string
+
+	Tags               []*ImageTag `gorm:"constraint:OnDelete:CASCADE;"`
+	UsageOperation     *string
+	VirtualizationType *string
 }
 
 func (Image) TableName() string {
@@ -45,10 +47,21 @@ func (Image) TableName() string {
 }
 
 type ImageBlockDeviceMapping struct {
-	ID          uint `gorm:"primarykey"`
-	ImageID     uint
-	DeviceName  *string
-	Ebs         *ec2.EbsBlockDevice `gorm:"embedded;embeddedPrefix:ebs_"`
+	ID      uint `gorm:"primarykey"`
+	ImageID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	DeviceName             *string
+	EbsDeleteOnTermination *bool
+	EbsEncrypted           *bool
+	EbsIops                *int64
+	EbsKmsKeyId            *string
+	EbsSnapshotId          *string
+	EbsVolumeSize          *int64
+	EbsVolumeType          *string
+
 	NoDevice    *string
 	VirtualName *string
 }
@@ -58,8 +71,12 @@ func (ImageBlockDeviceMapping) TableName() string {
 }
 
 type ImageProductCode struct {
-	ID              uint `gorm:"primarykey"`
-	ImageID         uint
+	ID      uint `gorm:"primarykey"`
+	ImageID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
 	ProductCodeId   *string
 	ProductCodeType *string
 }
@@ -70,9 +87,13 @@ func (ImageProductCode) TableName() string {
 
 type ImageTag struct {
 	ID      uint `gorm:"primarykey"`
-	ImageID uint
-	Key     *string
-	Value   *string
+	ImageID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (ImageTag) TableName() string {
@@ -80,12 +101,25 @@ func (ImageTag) TableName() string {
 }
 
 func (c *Client) transformImageBlockDeviceMapping(value *ec2.BlockDeviceMapping) *ImageBlockDeviceMapping {
-	return &ImageBlockDeviceMapping{
+	res := ImageBlockDeviceMapping{
 		DeviceName:  value.DeviceName,
-		Ebs:         value.Ebs,
+		AccountID:   c.accountID,
+		Region:      c.region,
 		NoDevice:    value.NoDevice,
 		VirtualName: value.VirtualName,
 	}
+
+	if value.Ebs != nil {
+		res.EbsDeleteOnTermination = value.Ebs.DeleteOnTermination
+		res.EbsEncrypted = value.Ebs.Encrypted
+		res.EbsIops = value.Ebs.Iops
+		res.EbsKmsKeyId = value.Ebs.KmsKeyId
+		res.EbsSnapshotId = value.Ebs.SnapshotId
+		res.EbsVolumeSize = value.Ebs.VolumeSize
+		res.EbsVolumeType = value.Ebs.VolumeType
+	}
+
+	return &res
 }
 
 func (c *Client) transformImageBlockDeviceMappings(values []*ec2.BlockDeviceMapping) []*ImageBlockDeviceMapping {
@@ -98,6 +132,8 @@ func (c *Client) transformImageBlockDeviceMappings(values []*ec2.BlockDeviceMapp
 
 func (c *Client) transformImageProductCode(value *ec2.ProductCode) *ImageProductCode {
 	return &ImageProductCode{
+		AccountID:       c.accountID,
+		Region:          c.region,
 		ProductCodeId:   value.ProductCodeId,
 		ProductCodeType: value.ProductCodeType,
 	}
@@ -113,8 +149,10 @@ func (c *Client) transformImageProductCodes(values []*ec2.ProductCode) []*ImageP
 
 func (c *Client) transformImageTag(value *ec2.Tag) *ImageTag {
 	return &ImageTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -127,7 +165,7 @@ func (c *Client) transformImageTags(values []*ec2.Tag) []*ImageTag {
 }
 
 func (c *Client) transformImage(value *ec2.Image) *Image {
-	return &Image{
+	res := Image{
 		Region:              c.region,
 		AccountID:           c.accountID,
 		Architecture:        value.Architecture,
@@ -152,11 +190,16 @@ func (c *Client) transformImage(value *ec2.Image) *Image {
 		RootDeviceType:      value.RootDeviceType,
 		SriovNetSupport:     value.SriovNetSupport,
 		State:               value.State,
-		StateReason:         value.StateReason,
 		Tags:                c.transformImageTags(value.Tags),
 		UsageOperation:      value.UsageOperation,
 		VirtualizationType:  value.VirtualizationType,
 	}
+
+	if value.StateReason != nil {
+		res.StateReasonCode = value.StateReason.Code
+		res.StateReasonMessage = value.StateReason.Message
+	}
+	return &res
 }
 
 func (c *Client) transformImages(values []*ec2.Image) []*Image {
@@ -167,13 +210,11 @@ func (c *Client) transformImages(values []*ec2.Image) []*Image {
 	return tValues
 }
 
-func MigrateImages(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Image{},
-		&ImageBlockDeviceMapping{},
-		&ImageProductCode{},
-		&ImageTag{},
-	)
+var ImageTables = []interface{}{
+	&Image{},
+	&ImageBlockDeviceMapping{},
+	&ImageProductCode{},
+	&ImageTag{},
 }
 
 func (c *Client) images(gConfig interface{}) error {
@@ -191,8 +232,8 @@ func (c *Client) images(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Image{})
-	common.ChunkedCreate(c.db, c.transformImages(output.Images))
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ImageTables...)
+	c.db.ChunkedCreate(c.transformImages(output.Images))
 	c.log.Info("Fetched resources", zap.String("resource", "ec2.images"), zap.Int("count", len(output.Images)))
 	return nil
 }

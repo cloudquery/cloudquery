@@ -4,10 +4,9 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cloudquery/database"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -402,7 +401,7 @@ type AccountConfig struct {
 	Filter string
 }
 
-func MigrateAccount(db *gorm.DB) error {
+func MigrateAccount(db *database.Database) error {
 	err := db.AutoMigrate(
 		&Account{},
 		&AccountVirtualNetworkRule{},
@@ -417,7 +416,7 @@ func MigrateAccount(db *gorm.DB) error {
 	return nil
 }
 
-func Accounts(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log *zap.Logger, gConfig interface{}) error {
+func Accounts(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
 	var config AccountConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -431,7 +430,7 @@ func Accounts(subscriptionID string, auth autorest.Authorizer, db *gorm.DB, log 
 
 	for output.NotDone() {
 		vals := output.Values()
-		common.ChunkedCreate(db, transformAccounts(vals))
+		db.ChunkedCreate(transformAccounts(vals))
 		log.Info("populating Accounts", zap.Int("count", len(vals)))
 		output.NextWithContext(ctx)
 	}

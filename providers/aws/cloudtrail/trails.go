@@ -2,14 +2,13 @@ package cloudtrail
 
 import (
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Trail struct {
-	ID                         uint `gorm:"primarykey"`
+	_                          interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                         uint        `gorm:"primarykey"`
 	AccountID                  string
 	Region                     string
 	CloudWatchLogsLogGroupArn  *string
@@ -27,7 +26,7 @@ type Trail struct {
 	S3KeyPrefix                *string
 	SnsTopicARN                *string
 	SnsTopicName               *string
-	TrailARN                   *string
+	TrailARN                   *string `neo:"unique"`
 }
 
 func (Trail) TableName() string {
@@ -67,10 +66,8 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) []*Trail {
 	return tValues
 }
 
-func MigrateTrails(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Trail{},
-	)
+var TrailTables = []interface{}{
+	&Trail{},
 }
 
 func (c *Client) trails(gConfig interface{}) error {
@@ -84,8 +81,8 @@ func (c *Client) trails(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Trail{})
-	common.ChunkedCreate(c.db, c.transformTrails(output.TrailList))
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(TrailTables...)
+	c.db.ChunkedCreate(c.transformTrails(output.TrailList))
 	c.log.Info("Fetched resources", zap.String("resource", "cloudtrail.trails"), zap.Int("count", len(output.TrailList)))
 
 	return nil

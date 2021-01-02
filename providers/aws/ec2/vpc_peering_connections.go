@@ -3,25 +3,27 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type VpcPeeringConnection struct {
-	ID        uint `gorm:"primarykey"`
-	AccountID string
-	Region    string
+	ID        uint   `gorm:"primarykey"`
+	AccountID string `neo:"unique"`
+	Region    string `neo:"unique"`
 
 	AccCidrBlock        *string
 	AccCidrBlockSet     []*VpcPeeringConnectionAccCidrBlock     `gorm:"constraint:OnDelete:CASCADE;"`
 	AccIpv6CidrBlockSet []*VpcPeeringConnectionAccIpv6CidrBlock `gorm:"constraint:OnDelete:CASCADE;"`
 	AccOwnerId          *string
-	AccOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:acc_option_"`
-	AccRegion           *string
-	AccVpcId            *string
+
+	AccOptAllowDnsResolutionFromRemoteVpc            *bool
+	AccOptAllowEgressFromLocalClassicLinkToRemoteVpc *bool
+	AccOptAllowEgressFromLocalVpcToRemoteClassicLink *bool
+
+	AccRegion *string
+	AccVpcId  *string
 
 	ExpirationTime *time.Time
 
@@ -29,13 +31,19 @@ type VpcPeeringConnection struct {
 	ReqCidrBlockSet     []*VpcPeeringConnectionReqCidrBlock     `gorm:"constraint:OnDelete:CASCADE;"`
 	ReqIpv6CidrBlockSet []*VpcPeeringConnectionReqIpv6CidrBlock `gorm:"constraint:OnDelete:CASCADE;"`
 	ReqOwnerId          *string
-	ReqOptions          *ec2.VpcPeeringConnectionOptionsDescription `gorm:"embedded;embeddedPrefix:req_option_"`
-	ReqRegion           *string
-	ReqVpcId            *string
 
-	Status                 *ec2.VpcPeeringConnectionStateReason `gorm:"embedded;embeddedPrefix:status_"`
-	Tags                   []*VpcPeeringConnectionTag           `gorm:"constraint:OnDelete:CASCADE;"`
-	VpcPeeringConnectionId *string
+	ReqOptAllowDnsResolutionFromRemoteVpc            *bool
+	ReqOptAllowEgressFromLocalClassicLinkToRemoteVpc *bool
+	ReqOptAllowEgressFromLocalVpcToRemoteClassicLink *bool
+
+	ReqRegion *string
+	ReqVpcId  *string
+
+	StatusCode    *string
+	StatusMessage *string
+
+	Tags                   []*VpcPeeringConnectionTag `gorm:"constraint:OnDelete:CASCADE;"`
+	VpcPeeringConnectionId *string                    `neo:"unique"`
 }
 
 func (VpcPeeringConnection) TableName() string {
@@ -44,8 +52,12 @@ func (VpcPeeringConnection) TableName() string {
 
 type VpcPeeringConnectionAccCidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
-	VpcPeeringConnectionID uint
-	CidrBlock              *string
+	VpcPeeringConnectionID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	CidrBlock *string
 }
 
 func (VpcPeeringConnectionAccCidrBlock) TableName() string {
@@ -54,8 +66,12 @@ func (VpcPeeringConnectionAccCidrBlock) TableName() string {
 
 type VpcPeeringConnectionAccIpv6CidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
-	VpcPeeringConnectionID uint
-	Ipv6CidrBlock          *string
+	VpcPeeringConnectionID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Ipv6CidrBlock *string
 }
 
 func (VpcPeeringConnectionAccIpv6CidrBlock) TableName() string {
@@ -64,8 +80,12 @@ func (VpcPeeringConnectionAccIpv6CidrBlock) TableName() string {
 
 type VpcPeeringConnectionReqCidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
-	VpcPeeringConnectionID uint
-	CidrBlock              *string
+	VpcPeeringConnectionID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	CidrBlock *string
 }
 
 func (VpcPeeringConnectionReqCidrBlock) TableName() string {
@@ -74,8 +94,12 @@ func (VpcPeeringConnectionReqCidrBlock) TableName() string {
 
 type VpcPeeringConnectionReqIpv6CidrBlock struct {
 	ID                     uint `gorm:"primarykey"`
-	VpcPeeringConnectionID uint
-	Ipv6CidrBlock          *string
+	VpcPeeringConnectionID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Ipv6CidrBlock *string
 }
 
 func (VpcPeeringConnectionReqIpv6CidrBlock) TableName() string {
@@ -84,9 +108,13 @@ func (VpcPeeringConnectionReqIpv6CidrBlock) TableName() string {
 
 type VpcPeeringConnectionTag struct {
 	ID                     uint `gorm:"primarykey"`
-	VpcPeeringConnectionID uint
-	Key                    *string
-	Value                  *string
+	VpcPeeringConnectionID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (VpcPeeringConnectionTag) TableName() string {
@@ -97,6 +125,8 @@ func (c *Client) transformVpcPeeringConnectionAccepterCidrBlocks(values []*ec2.C
 	var tValues []*VpcPeeringConnectionAccCidrBlock
 	for _, v := range values {
 		tValues = append(tValues, &VpcPeeringConnectionAccCidrBlock{
+			AccountID: c.accountID,
+			Region:    c.region,
 			CidrBlock: v.CidrBlock,
 		})
 	}
@@ -107,6 +137,8 @@ func (c *Client) transformVpcPeeringConnectionAccepterIpv6CidrBlocks(values []*e
 	var tValues []*VpcPeeringConnectionAccIpv6CidrBlock
 	for _, v := range values {
 		tValues = append(tValues, &VpcPeeringConnectionAccIpv6CidrBlock{
+			AccountID:     c.accountID,
+			Region:        c.region,
 			Ipv6CidrBlock: v.Ipv6CidrBlock,
 		})
 	}
@@ -117,6 +149,8 @@ func (c *Client) transformVpcPeeringConnectionRequesterCidrBlocks(values []*ec2.
 	var tValues []*VpcPeeringConnectionReqCidrBlock
 	for _, v := range values {
 		tValues = append(tValues, &VpcPeeringConnectionReqCidrBlock{
+			AccountID: c.accountID,
+			Region:    c.region,
 			CidrBlock: v.CidrBlock,
 		})
 	}
@@ -127,6 +161,8 @@ func (c *Client) transformVpcPeeringConnectionRequesterIpv6CidrBlocks(values []*
 	var tValues []*VpcPeeringConnectionReqIpv6CidrBlock
 	for _, v := range values {
 		tValues = append(tValues, &VpcPeeringConnectionReqIpv6CidrBlock{
+			AccountID:     c.accountID,
+			Region:        c.region,
 			Ipv6CidrBlock: v.Ipv6CidrBlock,
 		})
 	}
@@ -135,8 +171,10 @@ func (c *Client) transformVpcPeeringConnectionRequesterIpv6CidrBlocks(values []*
 
 func (c *Client) transformVpcPeeringConnectionTag(value *ec2.Tag) *VpcPeeringConnectionTag {
 	return &VpcPeeringConnectionTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -153,9 +191,13 @@ func (c *Client) transformVpcPeeringConnection(value *ec2.VpcPeeringConnection) 
 		Region:                 c.region,
 		AccountID:              c.accountID,
 		ExpirationTime:         value.ExpirationTime,
-		Status:                 value.Status,
 		Tags:                   c.transformVpcPeeringConnectionTags(value.Tags),
 		VpcPeeringConnectionId: value.VpcPeeringConnectionId,
+	}
+
+	if value.Status != nil {
+		res.StatusMessage = value.Status.Message
+		res.StatusCode = value.Status.Code
 	}
 
 	if value.AccepterVpcInfo != nil {
@@ -163,9 +205,14 @@ func (c *Client) transformVpcPeeringConnection(value *ec2.VpcPeeringConnection) 
 		res.AccCidrBlockSet = c.transformVpcPeeringConnectionAccepterCidrBlocks(value.AccepterVpcInfo.CidrBlockSet)
 		res.AccIpv6CidrBlockSet = c.transformVpcPeeringConnectionAccepterIpv6CidrBlocks(value.AccepterVpcInfo.Ipv6CidrBlockSet)
 		res.AccOwnerId = value.AccepterVpcInfo.OwnerId
-		res.AccOptions = value.AccepterVpcInfo.PeeringOptions
 		res.AccRegion = value.AccepterVpcInfo.Region
 		res.AccVpcId = value.AccepterVpcInfo.VpcId
+
+		if value.AccepterVpcInfo.PeeringOptions != nil {
+			res.AccOptAllowDnsResolutionFromRemoteVpc = value.AccepterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
+			res.AccOptAllowEgressFromLocalClassicLinkToRemoteVpc = value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
+			res.AccOptAllowEgressFromLocalVpcToRemoteClassicLink = value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
+		}
 	}
 
 	if value.RequesterVpcInfo != nil {
@@ -173,9 +220,13 @@ func (c *Client) transformVpcPeeringConnection(value *ec2.VpcPeeringConnection) 
 		res.ReqCidrBlockSet = c.transformVpcPeeringConnectionRequesterCidrBlocks(value.RequesterVpcInfo.CidrBlockSet)
 		res.ReqIpv6CidrBlockSet = c.transformVpcPeeringConnectionRequesterIpv6CidrBlocks(value.RequesterVpcInfo.Ipv6CidrBlockSet)
 		res.ReqOwnerId = value.RequesterVpcInfo.OwnerId
-		res.ReqOptions = value.RequesterVpcInfo.PeeringOptions
 		res.ReqRegion = value.RequesterVpcInfo.Region
 		res.ReqVpcId = value.RequesterVpcInfo.VpcId
+		if value.RequesterVpcInfo.PeeringOptions != nil {
+			res.ReqOptAllowDnsResolutionFromRemoteVpc = value.RequesterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
+			res.ReqOptAllowEgressFromLocalClassicLinkToRemoteVpc = value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
+			res.ReqOptAllowEgressFromLocalVpcToRemoteClassicLink = value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
+		}
 	}
 
 	return &res
@@ -189,15 +240,13 @@ func (c *Client) transformVpcPeeringConnections(values []*ec2.VpcPeeringConnecti
 	return tValues
 }
 
-func MigrateVPCPeeringConnections(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&VpcPeeringConnection{},
-		&VpcPeeringConnectionAccCidrBlock{},
-		&VpcPeeringConnectionAccIpv6CidrBlock{},
-		&VpcPeeringConnectionReqCidrBlock{},
-		&VpcPeeringConnectionReqIpv6CidrBlock{},
-		&VpcPeeringConnectionTag{},
-	)
+var VPCPeeringConnectionTables = []interface{}{
+	&VpcPeeringConnection{},
+	&VpcPeeringConnectionAccCidrBlock{},
+	&VpcPeeringConnectionAccIpv6CidrBlock{},
+	&VpcPeeringConnectionReqCidrBlock{},
+	&VpcPeeringConnectionReqIpv6CidrBlock{},
+	&VpcPeeringConnectionTag{},
 }
 
 func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
@@ -206,14 +255,13 @@ func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(VPCPeeringConnectionTables...)
 	for {
 		output, err := c.svc.DescribeVpcPeeringConnections(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&VpcPeeringConnection{})
-		common.ChunkedCreate(c.db, c.transformVpcPeeringConnections(output.VpcPeeringConnections))
+		c.db.ChunkedCreate(c.transformVpcPeeringConnections(output.VpcPeeringConnections))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.vpc_peering_connections"), zap.Int("count", len(output.VpcPeeringConnections)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

@@ -6,88 +6,42 @@ import (
 	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type LaunchConfiguration struct {
-	ID uint `gorm:"primarykey"`
+	_  interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID uint        `gorm:"primarykey"`
 
 	// AWS account id
 	AccountID string
 
-	// AWS region of the launch configuration
-	Region string
-
-	// For Auto Scaling groups that are running in a VPC, specifies whether to assign
-	// a public IP address to the group's instances.
-	AssociatePublicIpAddress *bool
-
-	// A block device mapping, which specifies the block devices for the instance.
-	BlockDeviceMappings []*LaunchConfigurationBlockDeviceMapping `gorm:"constraint:OnDelete:CASCADE;"`
-
-	// The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to.
-	ClassicLinkVPCId *string
-
-	// The IDs of one or more security groups for the VPC specified in ClassicLinkVPCId.
+	Region                       string
+	AssociatePublicIpAddress     *bool
+	BlockDeviceMappings          []*LaunchConfigurationBlockDeviceMapping `gorm:"constraint:OnDelete:CASCADE;"`
+	ClassicLinkVPCId             *string
 	ClassicLinkVPCSecurityGroups *string
+	CreatedTime                  *time.Time
+	EbsOptimized                 *bool
+	IamInstanceProfile           *string
+	ImageId                      *string
+	InstanceMonitoringEnabled    *bool
+	InstanceType                 *string
+	KernelId                     *string
+	KeyName                      *string
 
-	// The creation date and time for the launch configuration.
-	CreatedTime *time.Time
-
-	// Specifies whether the launch configuration is optimized for EBS I/O (true)
-	// or not (false).
-	EbsOptimized *bool
-
-	// The name or the Amazon Resource Name (ARN) of the instance profile associated
-	// with the IAM role for the instance. The instance profile contains the IAM
-	// role.
-	IamInstanceProfile *string
-
-	// The ID of the Amazon Machine Image (AMI) to use to launch your EC2 instances.
-	ImageId *string
-
-	// Controls whether instances in this group are launched with detailed (true)
-	// or basic (false) monitoring.
-	InstanceMonitoring *autoscaling.InstanceMonitoring `gorm:"embedded;embeddedPrefix:instance_monitoring_"`
-
-	// The instance type for the instances.
-	InstanceType *string
-
-	// The ID of the kernel associated with the AMI.
-	KernelId *string
-
-	// The name of the key pair.
-	KeyName *string
-
-	// The Amazon Resource Name (ARN) of the launch configuration.
-	LaunchConfigurationARN *string
-
-	// The name of the launch configuration.
+	LaunchConfigurationARN  *string `neo:"unique"`
 	LaunchConfigurationName *string
 
-	// The metadata options for the instances. For more information, see Instance
-	MetadataOptions *autoscaling.InstanceMetadataOptions `gorm:"embedded;embeddedPrefix:metadata_options_"`
+	MetadataHttpEndpoint            *string
+	MetadataHttpPutResponseHopLimit *int64
+	MetadataHttpTokens              *string
 
-	// The tenancy of the instance, either default or dedicated. An instance with
-	// dedicated tenancy runs on isolated, single-tenant hardware and can only be
-	// launched into a VPC.
 	PlacementTenancy *string
-
-	// The ID of the RAM disk associated with the AMI.
-	RamdiskId *string
-
-	// A list that contains the security groups to assign to the instances in the
-	// Auto Scaling group.
-	SecurityGroups *string
-
-	// The maximum hourly price to be paid for any Spot Instance launched to fulfill
-	// the request. Spot Instances are launched when the price you specify exceeds
-	// the current Spot price.
-	SpotPrice *string
-
-	// The Base64-encoded user data to make available to the launched EC2 instances.
-	UserData *string
+	RamdiskId        *string
+	SecurityGroups   *string
+	SpotPrice        *string
+	UserData         *string
 }
 
 func (LaunchConfiguration) TableName() string {
@@ -96,15 +50,22 @@ func (LaunchConfiguration) TableName() string {
 
 type LaunchConfigurationBlockDeviceMapping struct {
 	ID                    uint `gorm:"primarykey"`
-	LaunchConfigurationID uint
+	LaunchConfigurationID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
 
 	// The device name exposed to the EC2 instance (for example, /dev/sdh or xvdh).
 	// For more information, see Device Naming on Linux Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html)
 	// in the Amazon EC2 User Guide for Linux Instances.
 	DeviceName *string
 
-	// Parameters used to automatically set up EBS volumes when an instance is launched.
-	Ebs *autoscaling.Ebs `gorm:"embedded;embeddedPrefix:ebs_"`
+	EbsDeleteOnTermination *bool
+	EbsEncrypted           *bool
+	EbsIops                *int64
+	EbsSnapshotId          *string
+	EbsVolumeSize          *int64
+	EbsVolumeType          *string
 
 	// If NoDevice is true for the root device, instances might fail the EC2 health
 	// check. In that case, Amazon EC2 Auto Scaling launches replacement instances.
@@ -119,12 +80,22 @@ func (LaunchConfigurationBlockDeviceMapping) TableName() string {
 }
 
 func (c *Client) transformLaunchConfigurationBlockDeviceMapping(value *autoscaling.BlockDeviceMapping) *LaunchConfigurationBlockDeviceMapping {
-	return &LaunchConfigurationBlockDeviceMapping{
+	res := LaunchConfigurationBlockDeviceMapping{
+		AccountID:   c.accountID,
+		Region:      c.region,
 		DeviceName:  value.DeviceName,
-		Ebs:         value.Ebs,
 		NoDevice:    value.NoDevice,
 		VirtualName: value.VirtualName,
 	}
+	if value.Ebs != nil {
+		res.EbsDeleteOnTermination = value.Ebs.DeleteOnTermination
+		res.EbsEncrypted = value.Ebs.Encrypted
+		res.EbsIops = value.Ebs.Iops
+		res.EbsSnapshotId = value.Ebs.SnapshotId
+		res.EbsVolumeSize = value.Ebs.VolumeSize
+		res.EbsVolumeType = value.Ebs.VolumeType
+	}
+	return &res
 }
 
 func (c *Client) transformLaunchConfigurationBlockDeviceMappings(values []*autoscaling.BlockDeviceMapping) []*LaunchConfigurationBlockDeviceMapping {
@@ -136,7 +107,7 @@ func (c *Client) transformLaunchConfigurationBlockDeviceMappings(values []*autos
 }
 
 func (c *Client) transformLaunchConfiguration(value *autoscaling.LaunchConfiguration) *LaunchConfiguration {
-	return &LaunchConfiguration{
+	res := LaunchConfiguration{
 		Region:                       c.region,
 		AccountID:                    c.accountID,
 		AssociatePublicIpAddress:     value.AssociatePublicIpAddress,
@@ -147,19 +118,29 @@ func (c *Client) transformLaunchConfiguration(value *autoscaling.LaunchConfigura
 		EbsOptimized:                 value.EbsOptimized,
 		IamInstanceProfile:           value.IamInstanceProfile,
 		ImageId:                      value.ImageId,
-		InstanceMonitoring:           value.InstanceMonitoring,
 		InstanceType:                 value.InstanceType,
 		KernelId:                     value.KernelId,
 		KeyName:                      value.KeyName,
 		LaunchConfigurationARN:       value.LaunchConfigurationARN,
 		LaunchConfigurationName:      value.LaunchConfigurationName,
-		MetadataOptions:              value.MetadataOptions,
 		PlacementTenancy:             value.PlacementTenancy,
 		RamdiskId:                    value.RamdiskId,
 		SecurityGroups:               common.StringListToString(value.SecurityGroups),
 		SpotPrice:                    value.SpotPrice,
 		UserData:                     value.UserData,
 	}
+
+	if value.MetadataOptions != nil {
+		res.MetadataHttpEndpoint = value.MetadataOptions.HttpEndpoint
+		res.MetadataHttpPutResponseHopLimit = value.MetadataOptions.HttpPutResponseHopLimit
+		res.MetadataHttpTokens = value.MetadataOptions.HttpTokens
+	}
+
+	if value.InstanceMonitoring != nil {
+		res.InstanceMonitoringEnabled = value.InstanceMonitoring.Enabled
+	}
+
+	return &res
 }
 
 func (c *Client) transformLaunchConfigurations(values []*autoscaling.LaunchConfiguration) []*LaunchConfiguration {
@@ -170,11 +151,9 @@ func (c *Client) transformLaunchConfigurations(values []*autoscaling.LaunchConfi
 	return tValues
 }
 
-func MigrateLaunchConfigurations(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&LaunchConfiguration{},
-		&LaunchConfigurationBlockDeviceMapping{},
-	)
+var LaunchConfigurationTables = []interface{}{
+	&LaunchConfiguration{},
+	&LaunchConfigurationBlockDeviceMapping{},
 }
 
 func (c *Client) launchConfigurations(gConfig interface{}) error {
@@ -183,14 +162,13 @@ func (c *Client) launchConfigurations(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(LaunchConfigurationTables...)
 	for {
 		output, err := c.svc.DescribeLaunchConfigurations(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&LaunchConfiguration{})
-		common.ChunkedCreate(c.db, c.transformLaunchConfigurations(output.LaunchConfigurations))
+		c.db.ChunkedCreate(c.transformLaunchConfigurations(output.LaunchConfigurations))
 		c.log.Info("Fetched resources", zap.String("resource", "auto_scaling.launch_configurations"), zap.Int("count", len(output.LaunchConfigurations)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

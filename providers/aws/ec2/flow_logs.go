@@ -3,22 +3,21 @@ package ec2
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type FlowLog struct {
-	ID                       uint `gorm:"primarykey"`
-	AccountID                string
-	Region                   string
+	_                        interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                       uint        `gorm:"primarykey"`
+	AccountID                string      `neo:"unique"`
+	Region                   string      `neo:"unique"`
 	CreationTime             *time.Time
 	DeliverLogsErrorMessage  *string
 	DeliverLogsPermissionArn *string
 	DeliverLogsStatus        *string
-	FlowLogId                *string
+	FlowLogId                *string `neo:"unique"`
 	FlowLogStatus            *string
 	LogDestination           *string
 	LogDestinationType       *string
@@ -36,9 +35,13 @@ func (FlowLog) TableName() string {
 
 type FlowLogTag struct {
 	ID        uint `gorm:"primarykey"`
-	FlowLogID uint
-	Key       *string
-	Value     *string
+	FlowLogID uint `neo:"ignore"`
+
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+
+	Key   *string
+	Value *string
 }
 
 func (FlowLogTag) TableName() string {
@@ -47,8 +50,10 @@ func (FlowLogTag) TableName() string {
 
 func (c *Client) transformFlowLogTag(value *ec2.Tag) *FlowLogTag {
 	return &FlowLogTag{
-		Key:   value.Key,
-		Value: value.Value,
+		AccountID: c.accountID,
+		Region:    c.region,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -89,11 +94,9 @@ func (c *Client) transformFlowLogs(values []*ec2.FlowLog) []*FlowLog {
 	return tValues
 }
 
-func MigrateFlowLogs(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&FlowLog{},
-		&FlowLogTag{},
-	)
+var FlowLogsTables = []interface{}{
+	&FlowLog{},
+	&FlowLogTag{},
 }
 
 func (c *Client) FlowLogs(gConfig interface{}) error {
@@ -102,14 +105,13 @@ func (c *Client) FlowLogs(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(FlowLogsTables...)
 	for {
 		output, err := c.svc.DescribeFlowLogs(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&FlowLog{})
-		common.ChunkedCreate(c.db, c.transformFlowLogs(output.FlowLogs))
+		c.db.ChunkedCreate(c.transformFlowLogs(output.FlowLogs))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.flow_logs"), zap.Int("count", len(output.FlowLogs)))
 		if aws.StringValue(output.NextToken) == "" {
 			break

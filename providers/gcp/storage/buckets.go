@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/storage/v1"
@@ -9,13 +8,14 @@ import (
 )
 
 type Bucket struct {
-	ID                          uint `gorm:"primarykey"`
-	ProjectID                   string
-	Acl                         []*BucketAccessControl `gorm:"constraint:OnDelete:CASCADE;"`
+	_                           interface{}   `neo:"raw:MERGE (a:GCPProject {project_id: $project_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID                          uint          `gorm:"primarykey"`
+	ProjectID                   string        `neo:"unique"`
+	Acl                         []*BucketACLs `gorm:"constraint:OnDelete:CASCADE;"`
 	BillingRequesterPays        bool
 	Cors                        []*BucketCors `gorm:"constraint:OnDelete:CASCADE;"`
 	DefaultEventBasedHold       bool
-	DefaultObjectAcl            []*BucketObjectAccessControl `gorm:"constraint:OnDelete:CASCADE;"`
+	DefaultObjectAcl            []*BucketObjectACLs `gorm:"constraint:OnDelete:CASCADE;"`
 	EncryptionDefaultKmsKeyName string
 	Etag                        string
 
@@ -24,7 +24,7 @@ type Bucket struct {
 	UniformBucketLevelAccessEnabled    bool
 	UniformBucketLevelAccessLockedTime string
 
-	ResourceID                     string
+	ResourceID                     string `neo:"unique"`
 	Kind                           string
 	Labels                         []*BucketLabel         `gorm:"constraint:OnDelete:CASCADE;"`
 	LifecycleRules                 []*BucketLifecycleRule `gorm:"constraint:OnDelete:CASCADE;"`
@@ -51,9 +51,14 @@ type Bucket struct {
 	PolicyBindings                 []*BucketPolicyBinding `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (Bucket) TableName() string {
+	return "gcp_storage_buckets"
+}
+
 type BucketPolicyBinding struct {
-	ID                   uint `gorm:"primarykey"`
-	BucketID             uint
+	ID                   uint   `gorm:"primarykey"`
+	BucketID             uint   `neo:"ignore"`
+	ProjectID            string `gorm:"-"`
 	ConditionDescription string
 	ConditionExpression  string
 	ConditionLocation    string
@@ -62,15 +67,25 @@ type BucketPolicyBinding struct {
 	Role                 string
 }
 
+func (BucketPolicyBinding) TableName() string {
+	return "gcp_storage_bucket_policy_bindings"
+}
+
 type BucketPolicyBindingsMember struct {
-	ID                    uint `gorm:"primarykey"`
-	BucketPolicyBindingID uint
+	ID                    uint   `gorm:"primarykey"`
+	BucketPolicyBindingID uint   `neo:"ignore"`
+	ProjectID             string `gorm:"-"`
 	Name                  string
 }
 
-type BucketAccessControl struct {
-	ID                       uint `gorm:"primarykey"`
-	BucketID                 uint
+func (BucketPolicyBindingsMember) TableName() string {
+	return "gcp_storage_bucket_policy_binding_members"
+}
+
+type BucketACLs struct {
+	ID                       uint   `gorm:"primarykey"`
+	BucketID                 uint   `neo:"ignore"`
+	ProjectID                string `gorm:"-"`
 	Bucket                   string
 	Domain                   string
 	Email                    string
@@ -85,36 +100,61 @@ type BucketAccessControl struct {
 	SelfLink                 string
 }
 
+func (BucketACLs) TableName() string {
+	return "gcp_storage_bucket_acls"
+}
+
 type BucketCors struct {
-	ID             uint `gorm:"primarykey"`
-	BucketID       uint
+	ID             uint   `gorm:"primarykey"`
+	BucketID       uint   `neo:"ignore"`
+	ProjectID      string `gorm:"-"`
 	MaxAgeSeconds  int64
 	Method         []*BucketCorsMethod         `gorm:"constraint:OnDelete:CASCADE;"`
 	Origin         []*BucketCorsOrigin         `gorm:"constraint:OnDelete:CASCADE;"`
 	ResponseHeader []*BucketCorsResponseHeader `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
+func (BucketCors) TableName() string {
+	return "gcp_storage_bucket_cors"
+}
+
 type BucketCorsMethod struct {
-	ID           uint `gorm:"primarykey"`
-	BucketCorsID uint
+	ID           uint   `gorm:"primarykey"`
+	BucketCorsID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
 	Value        string
+}
+
+func (BucketCorsMethod) TableName() string {
+	return "gcp_storage_bucket_cors_methods"
 }
 
 type BucketCorsOrigin struct {
-	ID           uint `gorm:"primarykey"`
-	BucketCorsID uint
+	ID           uint   `gorm:"primarykey"`
+	BucketCorsID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
 	Value        string
+}
+
+func (BucketCorsOrigin) TableName() string {
+	return "gcp_storage_bucket_cors_origins"
 }
 
 type BucketCorsResponseHeader struct {
-	ID           uint `gorm:"primarykey"`
-	BucketCorsID uint
+	ID           uint   `gorm:"primarykey"`
+	BucketCorsID uint   `neo:"ignore"`
+	ProjectID    string `gorm:"-"`
 	Value        string
 }
 
-type BucketObjectAccessControl struct {
-	ID                       uint `gorm:"primarykey"`
-	BucketID                 uint
+func (BucketCorsResponseHeader) TableName() string {
+	return "gcp_storage_bucket_cors_response_headers"
+}
+
+type BucketObjectACLs struct {
+	ID                       uint   `gorm:"primarykey"`
+	BucketID                 uint   `neo:"ignore"`
+	ProjectID                string `gorm:"-"`
 	Bucket                   string
 	Domain                   string
 	Email                    string
@@ -131,9 +171,14 @@ type BucketObjectAccessControl struct {
 	SelfLink                 string
 }
 
+func (BucketObjectACLs) TableName() string {
+	return "gcp_storage_bucket_object_acls"
+}
+
 type BucketLifecycleRule struct {
-	ID                      uint `gorm:"primarykey"`
-	BucketID                uint
+	ID                      uint   `gorm:"primarykey"`
+	BucketID                uint   `neo:"ignore"`
+	ProjectID               string `gorm:"-"`
 	ActionStorageClass      string
 	ActionType              string
 	Age                     int64
@@ -148,30 +193,50 @@ type BucketLifecycleRule struct {
 	NumNewerVersions        int64
 }
 
+func (BucketLifecycleRule) TableName() string {
+	return "gcp_storage_bucket_lifecycle_rules"
+}
+
 type BucketLifecycleRuleConditionMatchesStorageClass struct {
-	ID                    uint `gorm:"primarykey"`
-	BucketLifecycleRuleID uint
+	ID                    uint   `gorm:"primarykey"`
+	BucketLifecycleRuleID uint   `neo:"ignore"`
+	ProjectID             string `gorm:"-"`
 	Value                 string
 }
 
+func (BucketLifecycleRuleConditionMatchesStorageClass) TableName() string {
+	return "gcp_storage_bucket_lifecycle_rule_condition_matches_storage_class"
+}
+
 type BucketZoneAffinity struct {
-	ID       uint `gorm:"primarykey"`
-	BucketID uint
-	Value    string
+	ID        uint   `gorm:"primarykey"`
+	BucketID  uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Value     string
+}
+
+func (BucketZoneAffinity) TableName() string {
+	return "gcp_storage_bucket_zone_affinities"
 }
 
 type BucketLabel struct {
-	ID       uint `gorm:"primarykey"`
-	BucketID uint
-	Key      string
-	Value    string
+	ID        uint   `gorm:"primarykey"`
+	BucketID  uint   `neo:"ignore"`
+	ProjectID string `gorm:"-"`
+	Key       string
+	Value     string
+}
+
+func (BucketLabel) TableName() string {
+	return "gcp_storage_bucket_labels"
 }
 
 func (c *Client) transformPolicyBindingsMembers(values []string) []*BucketPolicyBindingsMember {
 	var tValues []*BucketPolicyBindingsMember
 	for _, v := range values {
 		tValues = append(tValues, &BucketPolicyBindingsMember{
-			Name: v,
+			ProjectID: c.projectID,
+			Name:      v,
 		})
 	}
 	return tValues
@@ -179,8 +244,9 @@ func (c *Client) transformPolicyBindingsMembers(values []string) []*BucketPolicy
 
 func (c *Client) transformPolicyBinding(value *storage.PolicyBindings) *BucketPolicyBinding {
 	res := BucketPolicyBinding{
-		Members: c.transformPolicyBindingsMembers(value.Members),
-		Role:    value.Role,
+		ProjectID: c.projectID,
+		Members:   c.transformPolicyBindingsMembers(value.Members),
+		Role:      value.Role,
 	}
 
 	if value.Condition != nil {
@@ -205,15 +271,17 @@ func (c *Client) transformBucketLabels(values map[string]string) []*BucketLabel 
 	var tValues []*BucketLabel
 	for k, v := range values {
 		tValues = append(tValues, &BucketLabel{
-			Key:   k,
-			Value: v,
+			ProjectID: c.projectID,
+			Key:       k,
+			Value:     v,
 		})
 	}
 	return tValues
 }
 
-func (c *Client) transformBucketAccessControl(value *storage.BucketAccessControl) *BucketAccessControl {
-	res := BucketAccessControl{
+func (c *Client) transformBucketAccessControl(value *storage.BucketAccessControl) *BucketACLs {
+	res := BucketACLs{
+		ProjectID:  c.projectID,
 		Bucket:     value.Bucket,
 		Domain:     value.Domain,
 		Email:      value.Email,
@@ -234,8 +302,8 @@ func (c *Client) transformBucketAccessControl(value *storage.BucketAccessControl
 	return &res
 }
 
-func (c *Client) transformBucketAccessControls(values []*storage.BucketAccessControl) []*BucketAccessControl {
-	var tValues []*BucketAccessControl
+func (c *Client) transformBucketAccessControls(values []*storage.BucketAccessControl) []*BucketACLs {
+	var tValues []*BucketACLs
 	for _, v := range values {
 		tValues = append(tValues, c.transformBucketAccessControl(v))
 	}
@@ -246,7 +314,8 @@ func (c *Client) transformBucketCorsMethods(values []string) []*BucketCorsMethod
 	var tValues []*BucketCorsMethod
 	for _, v := range values {
 		tValues = append(tValues, &BucketCorsMethod{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -256,7 +325,8 @@ func (c *Client) transformBucketCorsOrigins(values []string) []*BucketCorsOrigin
 	var tValues []*BucketCorsOrigin
 	for _, v := range values {
 		tValues = append(tValues, &BucketCorsOrigin{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -266,7 +336,8 @@ func (c *Client) transformBucketCorsResponseHeaders(values []string) []*BucketCo
 	var tValues []*BucketCorsResponseHeader
 	for _, v := range values {
 		tValues = append(tValues, &BucketCorsResponseHeader{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -274,6 +345,7 @@ func (c *Client) transformBucketCorsResponseHeaders(values []string) []*BucketCo
 
 func (c *Client) transformBucketCors(value *storage.BucketCors) *BucketCors {
 	return &BucketCors{
+		ProjectID:      c.projectID,
 		MaxAgeSeconds:  value.MaxAgeSeconds,
 		Method:         c.transformBucketCorsMethods(value.Method),
 		Origin:         c.transformBucketCorsOrigins(value.Origin),
@@ -289,8 +361,9 @@ func (c *Client) transformBucketCorss(values []*storage.BucketCors) []*BucketCor
 	return tValues
 }
 
-func (c *Client) transformBucketObjectAccessControl(value *storage.ObjectAccessControl) *BucketObjectAccessControl {
-	res := BucketObjectAccessControl{
+func (c *Client) transformBucketObjectAccessControl(value *storage.ObjectAccessControl) *BucketObjectACLs {
+	res := BucketObjectACLs{
+		ProjectID:  c.projectID,
 		Bucket:     value.Bucket,
 		Domain:     value.Domain,
 		Email:      value.Email,
@@ -311,8 +384,8 @@ func (c *Client) transformBucketObjectAccessControl(value *storage.ObjectAccessC
 	return &res
 }
 
-func (c *Client) transformBucketObjectAccessControls(values []*storage.ObjectAccessControl) []*BucketObjectAccessControl {
-	var tValues []*BucketObjectAccessControl
+func (c *Client) transformBucketObjectAccessControls(values []*storage.ObjectAccessControl) []*BucketObjectACLs {
+	var tValues []*BucketObjectACLs
 	for _, v := range values {
 		tValues = append(tValues, c.transformBucketObjectAccessControl(v))
 	}
@@ -323,14 +396,17 @@ func (c *Client) transformBucketLifecycleRuleConditionMatchesStorageClasss(value
 	var tValues []*BucketLifecycleRuleConditionMatchesStorageClass
 	for _, v := range values {
 		tValues = append(tValues, &BucketLifecycleRuleConditionMatchesStorageClass{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
 }
 
 func (c *Client) transformBucketLifecycleRule(value *storage.BucketLifecycleRule) *BucketLifecycleRule {
-	res := BucketLifecycleRule{}
+	res := BucketLifecycleRule{
+		ProjectID: c.projectID,
+	}
 
 	if value.Action != nil {
 		res.ActionStorageClass = value.Action.StorageClass
@@ -365,7 +441,8 @@ func (c *Client) transformBucketZoneAffinities(values []string) []*BucketZoneAff
 	var tValues []*BucketZoneAffinity
 	for _, v := range values {
 		tValues = append(tValues, &BucketZoneAffinity{
-			Value: v,
+			ProjectID: c.projectID,
+			Value:     v,
 		})
 	}
 	return tValues
@@ -461,32 +538,28 @@ type BucketConfig struct {
 	Prefix string
 }
 
+var BucketTables = []interface{}{
+	&Bucket{},
+	&BucketACLs{},
+	&BucketCors{},
+	&BucketObjectACLs{},
+	&BucketLifecycleRule{},
+	&BucketCorsMethod{},
+	&BucketCorsOrigin{},
+	&BucketCorsResponseHeader{},
+	&BucketZoneAffinity{},
+	&BucketLabel{},
+	&BucketPolicyBinding{},
+	&BucketPolicyBindingsMember{},
+}
+
 func (c *Client) buckets(gConfig interface{}) error {
 	var config BucketConfig
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	if !c.resourceMigrated["storageBucket"] {
-		err := c.db.AutoMigrate(
-			&Bucket{},
-			&BucketAccessControl{},
-			&BucketCors{},
-			&BucketObjectAccessControl{},
-			&BucketLifecycleRule{},
-			&BucketCorsMethod{},
-			&BucketCorsOrigin{},
-			&BucketCorsResponseHeader{},
-			&BucketZoneAffinity{},
-			&BucketLabel{},
-			&BucketPolicyBinding{},
-			&BucketPolicyBindingsMember{},
-		)
-		if err != nil {
-			return err
-		}
-		c.resourceMigrated["storageBucket"] = true
-	}
+
 	nextPageToken := ""
 	for {
 		call := c.svc.Buckets.List(c.projectID)
@@ -497,8 +570,8 @@ func (c *Client) buckets(gConfig interface{}) error {
 			return err
 		}
 
-		c.db.Where("project_id = ?", c.projectID).Delete(&Bucket{})
-		common.ChunkedCreate(c.db, c.transformBuckets(output.Items))
+		c.db.Where("project_id", c.projectID).Delete(BucketTables...)
+		c.db.ChunkedCreate(c.transformBuckets(output.Items))
 		c.log.Info("Fetched resources", zap.String("resource", "storage.buckets"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break

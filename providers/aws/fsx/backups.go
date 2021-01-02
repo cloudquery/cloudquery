@@ -3,27 +3,30 @@ package fsx
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/fsx"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Backup struct {
-	ID                   uint `gorm:"primarykey"`
-	AccountID            string
-	Region               string
-	BackupId             *string
-	CreationTime         *time.Time
-	DirectoryInformation *fsx.ActiveDirectoryBackupAttributes `gorm:"embedded;embeddedPrefix:directory_information_"`
-	FailureDetails       *fsx.BackupFailureDetails            `gorm:"embedded;embeddedPrefix:failure_details_"`
-	KmsKeyId             *string
-	Lifecycle            *string
-	ProgressPercent      *int64
-	ResourceARN          *string
-	Tags                 []*BackupTag `gorm:"constraint:OnDelete:CASCADE;"`
-	Type                 *string
+	_            interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID           uint        `gorm:"primarykey"`
+	AccountID    string
+	Region       string
+	BackupId     *string
+	CreationTime *time.Time
+
+	ActiveDirectoryId         *string
+	ActiveDirectoryDomainName *string
+
+	FailureDetailsMessage *string
+
+	KmsKeyId        *string
+	Lifecycle       *string
+	ProgressPercent *int64
+	ResourceARN     *string      `neo:"unique"`
+	Tags            []*BackupTag `gorm:"constraint:OnDelete:CASCADE;"`
+	Type            *string
 }
 
 func (Backup) TableName() string {
@@ -31,10 +34,12 @@ func (Backup) TableName() string {
 }
 
 type BackupTag struct {
-	ID       uint `gorm:"primarykey"`
-	BackupID uint
-	Key      *string
-	Value    *string
+	ID        uint   `gorm:"primarykey"`
+	BackupID  uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
+	Key       *string
+	Value     *string
 }
 
 func (BackupTag) TableName() string {
@@ -43,8 +48,10 @@ func (BackupTag) TableName() string {
 
 func (c *Client) transformBackupTag(value *fsx.Tag) *BackupTag {
 	return &BackupTag{
-		Key:   value.Key,
-		Value: value.Value,
+		Region:    c.region,
+		AccountID: c.accountID,
+		Key:       value.Key,
+		Value:     value.Value,
 	}
 }
 
@@ -57,20 +64,29 @@ func (c *Client) transformBackupTags(values []*fsx.Tag) []*BackupTag {
 }
 
 func (c *Client) transformBackup(value *fsx.Backup) *Backup {
-	return &Backup{
-		Region:               c.region,
-		AccountID:            c.accountID,
-		BackupId:             value.BackupId,
-		CreationTime:         value.CreationTime,
-		DirectoryInformation: value.DirectoryInformation,
-		FailureDetails:       value.FailureDetails,
-		KmsKeyId:             value.KmsKeyId,
-		Lifecycle:            value.Lifecycle,
-		ProgressPercent:      value.ProgressPercent,
-		ResourceARN:          value.ResourceARN,
-		Tags:                 c.transformBackupTags(value.Tags),
-		Type:                 value.Type,
+	res := Backup{
+		Region:          c.region,
+		AccountID:       c.accountID,
+		BackupId:        value.BackupId,
+		CreationTime:    value.CreationTime,
+		KmsKeyId:        value.KmsKeyId,
+		Lifecycle:       value.Lifecycle,
+		ProgressPercent: value.ProgressPercent,
+		ResourceARN:     value.ResourceARN,
+		Tags:            c.transformBackupTags(value.Tags),
+		Type:            value.Type,
 	}
+
+	if value.DirectoryInformation != nil {
+		res.ActiveDirectoryDomainName = value.DirectoryInformation.DomainName
+		res.ActiveDirectoryId = value.DirectoryInformation.ActiveDirectoryId
+	}
+
+	if value.FailureDetails != nil {
+		res.FailureDetailsMessage = value.FailureDetails.Message
+	}
+
+	return &res
 }
 
 func (c *Client) transformBackups(values []*fsx.Backup) []*Backup {
@@ -81,11 +97,9 @@ func (c *Client) transformBackups(values []*fsx.Backup) []*Backup {
 	return tValues
 }
 
-func MigrateBackups(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&Backup{},
-		&BackupTag{},
-	)
+var BackupTables = []interface{}{
+	&Backup{},
+	&BackupTag{},
 }
 
 func (c *Client) backups(gConfig interface{}) error {
@@ -94,14 +108,14 @@ func (c *Client) backups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(BackupTables...)
 
 	for {
 		output, err := c.svc.DescribeBackups(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("region = ?", c.region).Where("account_id = ?", c.accountID).Delete(&Backup{})
-		common.ChunkedCreate(c.db, c.transformBackups(output.Backups))
+		c.db.ChunkedCreate(c.transformBackups(output.Backups))
 		c.log.Info("Fetched resources", zap.String("resource", "fsx.backups"), zap.Int("count", len(output.Backups)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
