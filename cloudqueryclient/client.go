@@ -3,6 +3,9 @@ package cloudqueryclient
 import (
 	"database/sql"
 	"fmt"
+	"io/ioutil"
+	"os"
+
 	"github.com/cloudquery/cloudquery/providers/aws"
 	"github.com/cloudquery/cloudquery/providers/azure"
 	"github.com/cloudquery/cloudquery/providers/gcp"
@@ -18,8 +21,6 @@ import (
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"io/ioutil"
-	"os"
 )
 
 var ProviderMap = map[string]func(*gorm.DB, *zap.Logger) (provider.Interface, error){
@@ -66,7 +67,7 @@ func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
 		EncoderConfig:    zap.NewDevelopmentEncoderConfig(),
 		OutputPaths:      []string{"stderr"},
 		ErrorOutputPaths: []string{"stderr"},
-	}.Build()
+	}.Build(options...)
 }
 
 func New(driver string, dsn string, verbose bool) (*Client, error) {
