@@ -48,6 +48,14 @@ export VERSION= # specifiy a version
 curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cloudquery_${OS}_x86_64 -o cloudquery
 ```
 
+Homebrew
+
+```shell script
+brew install cloudquery/tap/cloudquery
+# After initial install you can upgrade the version via:
+brew upgrade cloudquery
+```
+
 ## Quick Start
 
 ### Running

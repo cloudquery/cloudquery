@@ -24,7 +24,7 @@ import (
 // completionCmd represents the completion command
 var completionCmd = &cobra.Command{
 	Use:   "completion [bash|zsh|fish|powershell]",
-	Short: "Generate completion script",
+	Short: "Generate completion script (run --help for full instructions)",
 	Long: `To load completions:
 
 Bash:
@@ -33,9 +33,9 @@ $ source <(cloudquery completion bash)
 
 # To load completions for each session, execute once:
 Linux:
-  $ ./cloudquery completion bash > /etc/bash_completion.d/cloudquery
+  $ cloudquery completion bash > /etc/bash_completion.d/cloudquery
 MacOS:
-  $ ./cloudquery completion bash > /usr/local/etc/bash_completion.d/cloudquery
+  $ cloudquery completion bash > /usr/local/etc/bash_completion.d/cloudquery
 
 Zsh:
 
@@ -45,20 +45,20 @@ Zsh:
 $ echo "autoload -U compinit; compinit" >> ~/.zshrc
 
 # To load completions for each session, execute once:
-$ ./cloudquery completion zsh > "${fpath[1]}/_cloudquery"
+$ cloudquery completion zsh > "${fpath[1]}/_cloudquery"
 
 # You will need to start a new shell for this setup to take effect.
 
 Fish:
 
-$ ./cloudquery completion fish | source
+$ cloudquery completion fish | source
 
 # To load completions for each session, execute once:
 $ cloudquery completion fish > ~/.config/fish/completions/cloudquery.fish
 
 Powershell:
 
-PS> ./cloudquery completion powershell | Out-String | Invoke-Expression
+PS> cloudquery completion powershell | Out-String | Invoke-Expression
 
 # To load completions for every new session, run:
 PS> cloudquery completion powershell > cloudquery.ps1
