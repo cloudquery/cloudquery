@@ -54,6 +54,16 @@ archives:
       386: i386
       amd64: x86_64
     format: binary
+  -
+    id: homebrew
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+    format: zip
 checksum:
   name_template: 'checksums.txt'
 changelog:
@@ -62,3 +72,12 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+brews:
+  -
+    name: cloudquery
+    github:
+      owner: cloudquery
+      name: homebrew-tap
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://cloudquery.io"
+    description: "Easily monitor and ask questions about your infrastructure."

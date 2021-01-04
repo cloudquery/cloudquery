@@ -37,7 +37,7 @@ If you want us to add a new provider or resource please open an [Issue](https://
 
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-```bash
+```shell script
 export OS=Darwin # Possible values: Linux,Windows,Darwin
 curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
 chmod a+x cloudquery
