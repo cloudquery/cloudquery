@@ -79,6 +79,7 @@ brews:
     github:
       owner: cloudquery
       name: homebrew-tap
+      token: "{{ .Env.GORELEASER_GITHUB_TOKEN }}"
     url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Easily monitor and ask questions about your infrastructure."
