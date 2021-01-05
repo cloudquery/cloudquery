@@ -27,7 +27,7 @@ type Database struct {
 
 func Open(driver string, dsn string) (*Database, error) {
 	var err error
-	gormLogger := logger.Default.LogMode(logger.Warn)
+	gormLogger := logger.Default.LogMode(logger.Error)
 	r := Database{
 		Driver: driver,
 	}
@@ -36,7 +36,15 @@ func Open(driver string, dsn string) (*Database, error) {
 		r.GormDB, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
 			Logger: gormLogger,
 		})
+		if err != nil {
+			return nil, err
+		}
 		r.GormDB.Exec("PRAGMA foreign_keys = ON")
+		sqlDB, err := r.GormDB.DB()
+		if err != nil {
+			return nil, err
+		}
+		sqlDB.SetMaxOpenConns(1)
 	case "postgresql":
 		r.GormDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 			Logger: gormLogger,
