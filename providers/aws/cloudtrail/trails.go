@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"time"
 )
 
 type Trail struct {
@@ -27,47 +28,94 @@ type Trail struct {
 	SnsTopicARN                *string
 	SnsTopicName               *string
 	TrailARN                   *string `neo:"unique"`
+	EventSelectors 			   []*EventSelector `gorm:"constraint:OnDelete:CASCADE;"`
+	IsLogging *bool
+
+	// Status
+	LatestCloudWatchLogsDeliveryError *string
+	LatestCloudWatchLogsDeliveryTime *time.Time
+	LatestDeliveryAttemptSucceeded *string
+	LatestDeliveryAttemptTime *string
+	LatestDeliveryError *string
+	LatestDeliveryTime *time.Time
+	LatestDigestDeliveryError *string
+	LatestDigestDeliveryTime *time.Time
+	LatestNotificationAttemptSucceeded *string
+	LatestNotificationAttemptTime *string
+	LatestNotificationError *string
+	LatestNotificationTime *time.Time
+	StartLoggingTime *time.Time
+	StopLoggingTime *time.Time
+	TimeLoggingStarted *string
+	TimeLoggingStopped *string
 }
 
 func (Trail) TableName() string {
 	return "aws_cloudtrail_trails"
 }
 
-func (c *Client) transformTrail(value *cloudtrail.Trail) *Trail {
-	res := Trail{
-		Region:                     c.region,
-		AccountID:                  c.accountID,
-		CloudWatchLogsLogGroupArn:  value.CloudWatchLogsLogGroupArn,
-		CloudWatchLogsRoleArn:      value.CloudWatchLogsRoleArn,
-		HasCustomEventSelectors:    value.HasCustomEventSelectors,
-		HasInsightSelectors:        value.HasInsightSelectors,
-		HomeRegion:                 value.HomeRegion,
-		IncludeGlobalServiceEvents: value.IncludeGlobalServiceEvents,
-		IsMultiRegionTrail:         value.IsMultiRegionTrail,
-		IsOrganizationTrail:        value.IsOrganizationTrail,
-		KmsKeyId:                   value.KmsKeyId,
-		LogFileValidationEnabled:   value.LogFileValidationEnabled,
-		Name:                       value.Name,
-		S3BucketName:               value.S3BucketName,
-		S3KeyPrefix:                value.S3KeyPrefix,
-		SnsTopicARN:                value.SnsTopicARN,
-		SnsTopicName:               value.SnsTopicName,
-		TrailARN:                   value.TrailARN,
-	}
 
-	return &res
-}
-
-func (c *Client) transformTrails(values []*cloudtrail.Trail) []*Trail {
+func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 	var tValues []*Trail
-	for _, v := range values {
-		tValues = append(tValues, c.transformTrail(v))
+	for _, value := range values {
+		statusOutput, err := c.svc.GetTrailStatus(&cloudtrail.GetTrailStatusInput{Name: value.TrailARN})
+		if err != nil {
+			return nil, err
+		}
+		res := Trail{
+			Region:                     c.region,
+			AccountID:                  c.accountID,
+			CloudWatchLogsLogGroupArn:  value.CloudWatchLogsLogGroupArn,
+			CloudWatchLogsRoleArn:      value.CloudWatchLogsRoleArn,
+			HasCustomEventSelectors:    value.HasCustomEventSelectors,
+			HasInsightSelectors:        value.HasInsightSelectors,
+			HomeRegion:                 value.HomeRegion,
+			IncludeGlobalServiceEvents: value.IncludeGlobalServiceEvents,
+			IsMultiRegionTrail:         value.IsMultiRegionTrail,
+			IsOrganizationTrail:        value.IsOrganizationTrail,
+			KmsKeyId:                   value.KmsKeyId,
+			LogFileValidationEnabled:   value.LogFileValidationEnabled,
+			Name:                       value.Name,
+			S3BucketName:               value.S3BucketName,
+			S3KeyPrefix:                value.S3KeyPrefix,
+			SnsTopicARN:                value.SnsTopicARN,
+			SnsTopicName:               value.SnsTopicName,
+			TrailARN:                   value.TrailARN,
+			IsLogging: statusOutput.IsLogging,
+			LatestCloudWatchLogsDeliveryError: statusOutput.LatestCloudWatchLogsDeliveryError,
+			LatestCloudWatchLogsDeliveryTime: statusOutput.LatestCloudWatchLogsDeliveryTime,
+			LatestDeliveryAttemptSucceeded: statusOutput.LatestDeliveryAttemptSucceeded,
+			LatestDeliveryAttemptTime: statusOutput.LatestDeliveryAttemptTime,
+			LatestDeliveryError: statusOutput.LatestDeliveryError,
+			LatestDeliveryTime: statusOutput.LatestDeliveryTime,
+			LatestDigestDeliveryError: statusOutput.LatestDigestDeliveryError,
+			LatestDigestDeliveryTime: statusOutput.LatestDigestDeliveryTime,
+			LatestNotificationAttemptSucceeded: statusOutput.LatestNotificationAttemptSucceeded,
+			LatestNotificationAttemptTime: statusOutput.LatestNotificationAttemptTime,
+			LatestNotificationError: statusOutput.LatestNotificationError,
+			LatestNotificationTime: statusOutput.LatestNotificationTime,
+			StartLoggingTime: statusOutput.StartLoggingTime,
+			StopLoggingTime: statusOutput.StopLoggingTime,
+			TimeLoggingStarted: statusOutput.TimeLoggingStarted,
+			TimeLoggingStopped: statusOutput.TimeLoggingStopped,
+		}
+
+		output, err := c.svc.GetEventSelectors(&cloudtrail.GetEventSelectorsInput{TrailName: value.TrailARN})
+		if err != nil {
+			return nil, err
+		}
+		res.EventSelectors = c.transformEventSelectors(output.EventSelectors)
+
+		tValues = append(tValues, &res)
 	}
-	return tValues
+
+	return tValues, nil
 }
 
 var TrailTables = []interface{}{
 	&Trail{},
+
+	&EventSelector{},
 }
 
 func (c *Client) trails(gConfig interface{}) error {
@@ -82,7 +130,11 @@ func (c *Client) trails(gConfig interface{}) error {
 		return err
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(TrailTables...)
-	c.db.ChunkedCreate(c.transformTrails(output.TrailList))
+	tValues, err := c.transformTrails(output.TrailList)
+	if err != nil {
+		return err
+	}
+	c.db.ChunkedCreate(tValues)
 	c.log.Info("Fetched resources", zap.String("resource", "cloudtrail.trails"), zap.Int("count", len(output.TrailList)))
 
 	return nil
