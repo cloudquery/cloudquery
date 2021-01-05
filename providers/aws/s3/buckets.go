@@ -30,6 +30,10 @@ type Bucket struct {
 
 	// The versioning state of the bucket.
 	Status *string
+
+	// Logging
+	LoggingTargetPrefix *string
+	LoggingTargetBucket *string
 }
 
 func (Bucket) TableName() string {
@@ -160,6 +164,11 @@ func (c *Client) transformEncryptionRules(values []*s3.ServerSideEncryptionRule)
 }
 
 func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
+	loggingOutput, err := c.svc.GetBucketLogging(&s3.GetBucketLoggingInput{Bucket: value.Name})
+	if err != nil {
+		return nil, err
+	}
+
 	aclOutput, err := c.svc.GetBucketAcl(&s3.GetBucketAclInput{Bucket: value.Name})
 	if err != nil {
 		return nil, err
@@ -204,7 +213,7 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 		EncryptionRules = c.transformEncryptionRules(encryptionOutput.ServerSideEncryptionConfiguration.Rules)
 	}
 
-	return &Bucket{
+	res := Bucket{
 		Region:          c.region,
 		AccountID:       c.accountID,
 		CreationDate:    value.CreationDate,
@@ -215,7 +224,14 @@ func (c *Client) transformBucket(value *s3.Bucket) (*Bucket, error) {
 		Policy:          policyOutput.Policy,
 		Status:          versioningOutput.Status,
 		MFADelete:       versioningOutput.MFADelete,
-	}, nil
+	}
+
+	if loggingOutput.LoggingEnabled != nil {
+		res.LoggingTargetBucket = loggingOutput.LoggingEnabled.TargetBucket
+		res.LoggingTargetPrefix = loggingOutput.LoggingEnabled.TargetPrefix
+	}
+
+	return &res, nil
 }
 
 func (c *Client) transformBuckets(values []*s3.Bucket) ([]*Bucket, error) {
