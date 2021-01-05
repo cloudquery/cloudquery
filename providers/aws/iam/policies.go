@@ -64,12 +64,12 @@ func (c *Client) policies(gConfig interface{}) error {
 		return err
 	}
 
+	c.db.Where("account_id", c.accountID).Delete(PolicyTables...)
 	for {
 		output, err := c.svc.ListPolicies(&config)
 		if err != nil {
 			return err
 		}
-		c.db.Where("account_id", c.accountID).Delete(PolicyTables...)
 		c.db.ChunkedCreate(c.transformPolicies(output.Policies))
 		c.log.Info("Fetched resources", zap.String("resource", "iam.policies"), zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
