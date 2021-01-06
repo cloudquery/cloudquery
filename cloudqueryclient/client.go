@@ -179,6 +179,7 @@ func (c *Client) RunQuery(path string) error {
 			}
 			table.Append(prettyRow)
 		}
+		rows.Close()
 		if resultsCount > 0 {
 			c.log.Info("Check failed. Query returned results.", zap.String("name", query.Name), zap.Int("count", resultsCount))
 			table.Render()
