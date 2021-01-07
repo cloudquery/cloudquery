@@ -1,0 +1,147 @@
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+
+Code generator @microsoft.azure/autorest.go@~2.1.161
+
+## Breaking Changes
+
+- Function `VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdateResponder` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+- Function `NewGalleryApplicationListPage` parameter(s) have been changed from `(func(context.Context, GalleryApplicationList) (GalleryApplicationList, error))` to `(GalleryApplicationList, func(context.Context, GalleryApplicationList) (GalleryApplicationList, error))`
+- Function `NewGalleryImageListPage` parameter(s) have been changed from `(func(context.Context, GalleryImageList) (GalleryImageList, error))` to `(GalleryImageList, func(context.Context, GalleryImageList) (GalleryImageList, error))`
+- Function `NewVirtualMachineScaleSetVMListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error))` to `(VirtualMachineScaleSetVMListResult, func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error))`
+- Function `NewDiskEncryptionSetListPage` parameter(s) have been changed from `(func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error))` to `(DiskEncryptionSetList, func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error))`
+- Function `NewGalleryApplicationVersionListPage` parameter(s) have been changed from `(func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error))` to `(GalleryApplicationVersionList, func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error))`
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture.Result` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+- Function `NewListUsagesResultPage` parameter(s) have been changed from `(func(context.Context, ListUsagesResult) (ListUsagesResult, error))` to `(ListUsagesResult, func(context.Context, ListUsagesResult) (ListUsagesResult, error))`
+- Function `NewProximityPlacementGroupListResultPage` parameter(s) have been changed from `(func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error))` to `(ProximityPlacementGroupListResult, func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.UpdateResponder` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+- Function `VirtualMachineScaleSetVMExtensionsClient.GetResponder` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+- Function `NewImageListResultPage` parameter(s) have been changed from `(func(context.Context, ImageListResult) (ImageListResult, error))` to `(ImageListResult, func(context.Context, ImageListResult) (ImageListResult, error))`
+- Function `NewRunCommandListResultPage` parameter(s) have been changed from `(func(context.Context, RunCommandListResult) (RunCommandListResult, error))` to `(RunCommandListResult, func(context.Context, RunCommandListResult) (RunCommandListResult, error))`
+- Function `VirtualMachinesClient.DeletePreparer` parameter(s) have been changed from `(context.Context, string, string)` to `(context.Context, string, string, *bool)`
+- Function `NewGalleryListPage` parameter(s) have been changed from `(func(context.Context, GalleryList) (GalleryList, error))` to `(GalleryList, func(context.Context, GalleryList) (GalleryList, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineExtensionUpdate)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtensionUpdate)`
+- Function `NewDedicatedHostListResultPage` parameter(s) have been changed from `(func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error))` to `(DedicatedHostListResult, func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error))`
+- Function `NewContainerServiceListResultPage` parameter(s) have been changed from `(func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error))` to `(ContainerServiceListResult, func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error))`
+- Function `NewGalleryImageVersionListPage` parameter(s) have been changed from `(func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error))` to `(GalleryImageVersionList, func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error))`
+- Function `NewVirtualMachineScaleSetListOSUpgradeHistoryPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error))` to `(VirtualMachineScaleSetListOSUpgradeHistory, func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdatePreparer` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineExtension)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtension)`
+- Function `VirtualMachineScaleSetVMExtensionsClient.List` return value(s) have been changed from `(VirtualMachineExtensionsListResult, error)` to `(VirtualMachineScaleSetVMExtensionsListResult, error)`
+- Function `NewVirtualMachineScaleSetListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error))` to `(VirtualMachineScaleSetListResult, func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error))`
+- Function `VirtualMachinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string)` to `(context.Context, string, string, *bool)`
+- Function `NewResourceSkusResultPage` parameter(s) have been changed from `(func(context.Context, ResourceSkusResult) (ResourceSkusResult, error))` to `(ResourceSkusResult, func(context.Context, ResourceSkusResult) (ResourceSkusResult, error))`
+- Function `NewDiskAccessListPage` parameter(s) have been changed from `(func(context.Context, DiskAccessList) (DiskAccessList, error))` to `(DiskAccessList, func(context.Context, DiskAccessList) (DiskAccessList, error))`
+- Function `NewDedicatedHostGroupListResultPage` parameter(s) have been changed from `(func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error))` to `(DedicatedHostGroupListResult, func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error))`
+- Function `NewSSHPublicKeysGroupListResultPage` parameter(s) have been changed from `(func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error))` to `(SSHPublicKeysGroupListResult, func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error))`
+- Function `NewVirtualMachineScaleSetListSkusResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error))` to `(VirtualMachineScaleSetListSkusResult, func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineExtension)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtension)`
+- Function `VirtualMachineScaleSetVMExtensionsClient.ListResponder` return value(s) have been changed from `(VirtualMachineExtensionsListResult, error)` to `(VirtualMachineScaleSetVMExtensionsListResult, error)`
+- Function `NewSnapshotListPage` parameter(s) have been changed from `(func(context.Context, SnapshotList) (SnapshotList, error))` to `(SnapshotList, func(context.Context, SnapshotList) (SnapshotList, error))`
+- Function `NewVirtualMachineScaleSetExtensionListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error))` to `(VirtualMachineScaleSetExtensionListResult, func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.Get` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+- Function `NewVirtualMachineListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error))` to `(VirtualMachineListResult, func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error))`
+- Function `NewDiskListPage` parameter(s) have been changed from `(func(context.Context, DiskList) (DiskList, error))` to `(DiskList, func(context.Context, DiskList) (DiskList, error))`
+- Function `NewAvailabilitySetListResultPage` parameter(s) have been changed from `(func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error))` to `(AvailabilitySetListResult, func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error))`
+- Function `VirtualMachineScaleSetVMExtensionsClient.UpdatePreparer` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineExtensionUpdate)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtensionUpdate)`
+- Function `NewVirtualMachineScaleSetListWithLinkResultPage` parameter(s) have been changed from `(func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error))` to `(VirtualMachineScaleSetListWithLinkResult, func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error))`
+- Function `*VirtualMachineScaleSetVMExtensionsUpdateFuture.Result` return value(s) have been changed from `(VirtualMachineExtension, error)` to `(VirtualMachineScaleSetVMExtension, error)`
+
+## New Content
+
+- New const `ExecutionStatePending`
+- New const `ExecutionStateRunning`
+- New const `ExecutionStateTimedOut`
+- New const `ExecutionStateFailed`
+- New const `ExecutionStateUnknown`
+- New const `ExecutionStateCanceled`
+- New const `ExecutionStateSucceeded`
+- New function `VirtualMachineRunCommandsClient.ListByVirtualMachinePreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.List(context.Context, string, string, string, string) (VirtualMachineRunCommandsListResultPage, error)`
+- New function `VirtualMachineRunCommandsListResult.IsEmpty() bool`
+- New function `*VirtualMachineRunCommandsListResultPage.NextWithContext(context.Context) error`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdateSender(*http.Request) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture, error)`
+- New function `VirtualMachineRunCommandsClient.CreateOrUpdatePreparer(context.Context, string, string, string, VirtualMachineRunCommand) (*http.Request, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture.Result(VirtualMachineScaleSetVMRunCommandsClient) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.ListResponder(*http.Response) (VirtualMachineRunCommandsListResult, error)`
+- New function `VirtualMachineRunCommandsClient.GetByVirtualMachinePreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `VirtualMachineRunCommandsListResultIterator.Response() VirtualMachineRunCommandsListResult`
+- New function `VirtualMachineRunCommandsClient.GetByVirtualMachineResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New function `NewVirtualMachineRunCommandsListResultPage(VirtualMachineRunCommandsListResult, func(context.Context, VirtualMachineRunCommandsListResult) (VirtualMachineRunCommandsListResult, error)) VirtualMachineRunCommandsListResultPage`
+- New function `VirtualMachineRunCommandsListResultIterator.Value() VirtualMachineRunCommand`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.ListPreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.UpdateResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineRunCommandsClient.CreateOrUpdate(context.Context, string, string, string, VirtualMachineRunCommand) (VirtualMachineRunCommandsCreateOrUpdateFuture, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.DeleteResponder(*http.Response) (autorest.Response, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.UpdateSender(*http.Request) (VirtualMachineScaleSetVMRunCommandsUpdateFuture, error)`
+- New function `VirtualMachineRunCommandsClient.Delete(context.Context, string, string, string) (VirtualMachineRunCommandsDeleteFuture, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.Delete(context.Context, string, string, string, string) (VirtualMachineScaleSetVMRunCommandsDeleteFuture, error)`
+- New function `PossibleExecutionStateValues() []ExecutionState`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.DeletePreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `*VirtualMachineRunCommandsListResultIterator.NextWithContext(context.Context) error`
+- New function `VirtualMachineRunCommandsListResultPage.NotDone() bool`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdatePreparer(context.Context, string, string, string, string, VirtualMachineRunCommand) (*http.Request, error)`
+- New function `VirtualMachineRunCommandsClient.DeleteSender(*http.Request) (VirtualMachineRunCommandsDeleteFuture, error)`
+- New function `*VirtualMachineRunCommandUpdate.UnmarshalJSON([]byte) error`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.Get(context.Context, string, string, string, string, string) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineScaleSetVMExtension.MarshalJSON() ([]byte, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.GetResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New function `*VirtualMachineRunCommand.UnmarshalJSON([]byte) error`
+- New function `VirtualMachineRunCommandsClient.GetByVirtualMachineSender(*http.Request) (*http.Response, error)`
+- New function `*VirtualMachineRunCommandsListResultIterator.Next() error`
+- New function `VirtualMachineRunCommandsClient.ListByVirtualMachineResponder(*http.Response) (VirtualMachineRunCommandsListResult, error)`
+- New function `VirtualMachineRunCommandsClient.UpdateSender(*http.Request) (VirtualMachineRunCommandsUpdateFuture, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdate(context.Context, string, string, string, string, VirtualMachineRunCommand) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture, error)`
+- New function `*VirtualMachineRunCommandsListResultPage.Next() error`
+- New function `VirtualMachineRunCommandsListResultPage.Values() []VirtualMachineRunCommand`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdateResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New function `*VirtualMachineRunCommandsDeleteFuture.Result(VirtualMachineRunCommandsClient) (autorest.Response, error)`
+- New function `NewVirtualMachineRunCommandsListResultIterator(VirtualMachineRunCommandsListResultPage) VirtualMachineRunCommandsListResultIterator`
+- New function `*VirtualMachineScaleSetVMRunCommandsUpdateFuture.Result(VirtualMachineScaleSetVMRunCommandsClient) (VirtualMachineRunCommand, error)`
+- New function `NewVirtualMachineScaleSetVMRunCommandsClientWithBaseURI(string, string) VirtualMachineScaleSetVMRunCommandsClient`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.ListComplete(context.Context, string, string, string, string) (VirtualMachineRunCommandsListResultIterator, error)`
+- New function `VirtualMachineRunCommandsClient.Update(context.Context, string, string, string, VirtualMachineRunCommandUpdate) (VirtualMachineRunCommandsUpdateFuture, error)`
+- New function `VirtualMachineRunCommandsClient.GetByVirtualMachine(context.Context, string, string, string, string) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineRunCommandsClient.UpdatePreparer(context.Context, string, string, string, VirtualMachineRunCommandUpdate) (*http.Request, error)`
+- New function `VirtualMachineRunCommandsClient.CreateOrUpdateSender(*http.Request) (VirtualMachineRunCommandsCreateOrUpdateFuture, error)`
+- New function `VirtualMachineRunCommandsClient.ListByVirtualMachine(context.Context, string, string, string) (VirtualMachineRunCommandsListResultPage, error)`
+- New function `VirtualMachineRunCommandsClient.CreateOrUpdateResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.GetSender(*http.Request) (*http.Response, error)`
+- New function `VirtualMachineRunCommandsClient.DeletePreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `*VirtualMachineRunCommandsCreateOrUpdateFuture.Result(VirtualMachineRunCommandsClient) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineRunCommandsListResultPage.Response() VirtualMachineRunCommandsListResult`
+- New function `VirtualMachineRunCommandsClient.ListByVirtualMachineComplete(context.Context, string, string, string) (VirtualMachineRunCommandsListResultIterator, error)`
+- New function `VirtualMachineScaleSetVMExtensionUpdate.MarshalJSON() ([]byte, error)`
+- New function `VirtualMachineRunCommandProperties.MarshalJSON() ([]byte, error)`
+- New function `NewVirtualMachineScaleSetVMRunCommandsClient(string) VirtualMachineScaleSetVMRunCommandsClient`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.GetPreparer(context.Context, string, string, string, string, string) (*http.Request, error)`
+- New function `VirtualMachineRunCommand.MarshalJSON() ([]byte, error)`
+- New function `VirtualMachineRunCommandsClient.DeleteResponder(*http.Response) (autorest.Response, error)`
+- New function `VirtualMachineRunCommandsListResultIterator.NotDone() bool`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.Update(context.Context, string, string, string, string, VirtualMachineRunCommandUpdate) (VirtualMachineScaleSetVMRunCommandsUpdateFuture, error)`
+- New function `*VirtualMachineScaleSetVMExtensionUpdate.UnmarshalJSON([]byte) error`
+- New function `VirtualMachineRunCommandsClient.ListByVirtualMachineSender(*http.Request) (*http.Response, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.UpdatePreparer(context.Context, string, string, string, string, VirtualMachineRunCommandUpdate) (*http.Request, error)`
+- New function `*VirtualMachineScaleSetVMExtension.UnmarshalJSON([]byte) error`
+- New function `VirtualMachineRunCommandUpdate.MarshalJSON() ([]byte, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClient.DeleteSender(*http.Request) (VirtualMachineScaleSetVMRunCommandsDeleteFuture, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsDeleteFuture.Result(VirtualMachineScaleSetVMRunCommandsClient) (autorest.Response, error)`
+- New function `*VirtualMachineRunCommandsUpdateFuture.Result(VirtualMachineRunCommandsClient) (VirtualMachineRunCommand, error)`
+- New function `VirtualMachineRunCommandsClient.UpdateResponder(*http.Response) (VirtualMachineRunCommand, error)`
+- New struct `VirtualMachineRunCommand`
+- New struct `VirtualMachineRunCommandInstanceView`
+- New struct `VirtualMachineRunCommandProperties`
+- New struct `VirtualMachineRunCommandScriptSource`
+- New struct `VirtualMachineRunCommandUpdate`
+- New struct `VirtualMachineRunCommandsCreateOrUpdateFuture`
+- New struct `VirtualMachineRunCommandsDeleteFuture`
+- New struct `VirtualMachineRunCommandsListResult`
+- New struct `VirtualMachineRunCommandsListResultIterator`
+- New struct `VirtualMachineRunCommandsListResultPage`
+- New struct `VirtualMachineRunCommandsUpdateFuture`
+- New struct `VirtualMachineScaleSetVMExtension`
+- New struct `VirtualMachineScaleSetVMExtensionUpdate`
+- New struct `VirtualMachineScaleSetVMExtensionsListResult`
+- New struct `VirtualMachineScaleSetVMRunCommandsClient`
+- New struct `VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture`
+- New struct `VirtualMachineScaleSetVMRunCommandsDeleteFuture`
+- New struct `VirtualMachineScaleSetVMRunCommandsUpdateFuture`

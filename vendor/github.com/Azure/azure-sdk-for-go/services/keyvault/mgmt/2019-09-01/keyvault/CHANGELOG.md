@@ -1,0 +1,96 @@
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+
+Code generator @microsoft.azure/autorest.go@~2.1.161
+
+## Breaking Changes
+
+- Function `NewResourceListResultPage` parameter(s) have been changed from `(func(context.Context, ResourceListResult) (ResourceListResult, error))` to `(ResourceListResult, func(context.Context, ResourceListResult) (ResourceListResult, error))`
+- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
+- Function `NewDeletedVaultListResultPage` parameter(s) have been changed from `(func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error))` to `(DeletedVaultListResult, func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error))`
+- Function `NewVaultListResultPage` parameter(s) have been changed from `(func(context.Context, VaultListResult) (VaultListResult, error))` to `(VaultListResult, func(context.Context, VaultListResult) (VaultListResult, error))`
+
+## New Content
+
+- New const `KeyPermissionsAll`
+- New const `JSONWebKeyOperationSign`
+- New const `RSA`
+- New const `StoragePermissionsAll`
+- New const `JSONWebKeyOperationEncrypt`
+- New const `RSAHSM`
+- New const `Purgeable`
+- New const `All`
+- New const `ECHSM`
+- New const `P521`
+- New const `JSONWebKeyOperationDecrypt`
+- New const `JSONWebKeyOperationImport`
+- New const `JSONWebKeyOperationVerify`
+- New const `Recoverable`
+- New const `P256`
+- New const `RecoverableProtectedSubscription`
+- New const `P384`
+- New const `JSONWebKeyOperationUnwrapKey`
+- New const `SecretPermissionsAll`
+- New const `JSONWebKeyOperationWrapKey`
+- New const `EC`
+- New const `RecoverablePurgeable`
+- New const `P256K`
+- New function `*KeyListResultIterator.Next() error`
+- New function `NewKeysClientWithBaseURI(string, string) KeysClient`
+- New function `KeysClient.List(context.Context, string, string) (KeyListResultPage, error)`
+- New function `KeysClient.GetVersionPreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `PossibleJSONWebKeyTypeValues() []JSONWebKeyType`
+- New function `KeysClient.CreateIfNotExistSender(*http.Request) (*http.Response, error)`
+- New function `KeysClient.ListVersionsPreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `KeyListResultIterator.Response() KeyListResult`
+- New function `KeysClient.GetVersion(context.Context, string, string, string, string) (Key, error)`
+- New function `KeysClient.GetSender(*http.Request) (*http.Response, error)`
+- New function `KeysClient.GetVersionSender(*http.Request) (*http.Response, error)`
+- New function `PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation`
+- New function `KeyListResult.IsEmpty() bool`
+- New function `KeyAttributes.MarshalJSON() ([]byte, error)`
+- New function `KeyListResultIterator.Value() Key`
+- New function `*Key.UnmarshalJSON([]byte) error`
+- New function `PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `NewKeyListResultIterator(KeyListResultPage) KeyListResultIterator`
+- New function `KeysClient.ListVersionsSender(*http.Request) (*http.Response, error)`
+- New function `KeysClient.ListVersionsResponder(*http.Response) (KeyListResult, error)`
+- New function `KeyCreateParameters.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.GetResponder(*http.Response) (Key, error)`
+- New function `NewKeysClient(string) KeysClient`
+- New function `*KeyListResultPage.Next() error`
+- New function `KeysClient.ListResponder(*http.Response) (KeyListResult, error)`
+- New function `KeysClient.Get(context.Context, string, string, string) (Key, error)`
+- New function `VaultProperties.MarshalJSON() ([]byte, error)`
+- New function `KeyListResultPage.Values() []Key`
+- New function `KeyProperties.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.CreateIfNotExistResponder(*http.Response) (Key, error)`
+- New function `KeysClient.ListVersions(context.Context, string, string, string) (KeyListResultPage, error)`
+- New function `VaultAccessPolicyParameters.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.ListComplete(context.Context, string, string) (KeyListResultIterator, error)`
+- New function `KeysClient.ListVersionsComplete(context.Context, string, string, string) (KeyListResultIterator, error)`
+- New function `PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel`
+- New function `KeyListResultPage.Response() KeyListResult`
+- New function `DeletedVault.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName`
+- New function `*KeyListResultIterator.NextWithContext(context.Context) error`
+- New function `Key.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.CreateIfNotExist(context.Context, string, string, string, KeyCreateParameters) (Key, error)`
+- New function `Attributes.MarshalJSON() ([]byte, error)`
+- New function `KeysClient.ListPreparer(context.Context, string, string) (*http.Request, error)`
+- New function `KeysClient.CreateIfNotExistPreparer(context.Context, string, string, string, KeyCreateParameters) (*http.Request, error)`
+- New function `KeyListResultIterator.NotDone() bool`
+- New function `KeysClient.GetVersionResponder(*http.Response) (Key, error)`
+- New function `*KeyListResultPage.NextWithContext(context.Context) error`
+- New function `KeysClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `KeyListResultPage.NotDone() bool`
+- New function `NewKeyListResultPage(KeyListResult, func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage`
+- New struct `Attributes`
+- New struct `Key`
+- New struct `KeyAttributes`
+- New struct `KeyCreateParameters`
+- New struct `KeyListResult`
+- New struct `KeyListResultIterator`
+- New struct `KeyListResultPage`
+- New struct `KeyProperties`
+- New struct `KeysClient`
