@@ -2,6 +2,7 @@ package cloudqueryclient
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws"
@@ -127,7 +128,7 @@ func (c *Client) Run(path string) error {
 	return nil
 }
 
-func (c *Client) RunQuery(path string) error {
+func (c *Client) RunQuery(path string, outputPath string) error {
 	_, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -156,19 +157,38 @@ func (c *Client) RunQuery(path string) error {
 		return err
 	}
 
-	err = c.runQueries(&config)
+	err = c.runQueries(&config, outputPath)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) runQueries(config *PolicyConfig) error {
+type QueryResult struct {
+	Name string
+	CheckPassed bool
+	ResultHeaders []string
+	ResultRows [][]string
+}
+
+func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
+	var f *os.File
+	var err error
+	if outputPath != "" {
+		f, err = os.Create(outputPath)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+	}
+
 	c.log.Info("Executing queries", zap.Int("count", len(config.Queries)))
 	for _, query := range config.Queries {
+		queryResult := QueryResult{
+			Name:          query.Name,
+			CheckPassed: true,
+		}
 		c.log.Info("Executing query", zap.String("name", query.Name))
-		fmt.Println(query.Invert)
-		//var res string
 		rows, err := c.db.GormDB.Raw(query.Query).Rows()
 		if err != nil {
 			return err
@@ -181,6 +201,7 @@ func (c *Client) runQueries(config *PolicyConfig) error {
 		table.SetAutoFormatHeaders(false)
 		table.SetHeader(columns)
 		nc := len(columns)
+		queryResult.ResultHeaders = columns
 		prettyRow := make([]string, nc)
 		res := make([]sql.NullString, nc)
 		resPtrs := make([]interface{}, nc)
@@ -198,6 +219,7 @@ func (c *Client) runQueries(config *PolicyConfig) error {
 				prettyRow[i] = v.String
 			}
 			table.Append(prettyRow)
+			queryResult.ResultRows = append(queryResult.ResultRows, prettyRow)
 		}
 		err = rows.Close()
 		if err != nil {
@@ -206,11 +228,24 @@ func (c *Client) runQueries(config *PolicyConfig) error {
 		if resultsCount > 0 && !query.Invert{
 			c.log.Info("Check failed. Query returned results.", zap.String("name", query.Name), zap.Int("count", resultsCount))
 			table.Render()
+			queryResult.CheckPassed = false
 		} else {
 			if query.Invert {
 				c.log.Info("Check failed. Query returned no results.", zap.String("name", query.Name))
+				queryResult.CheckPassed = false
 			} else {
 				c.log.Info("Check passed. Query returned no results.", zap.String("name", query.Name))
+			}
+		}
+
+		if outputPath != "" {
+			b, err := json.Marshal(&queryResult)
+			if err != nil {
+				return err
+			}
+			_, err = f.WriteString(string(b) + "\n")
+			if err != nil {
+				return err
 			}
 		}
 	}

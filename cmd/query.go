@@ -8,6 +8,7 @@ import (
 var queryDSN string
 var queryDriver string
 var queryConfigPath string
+var queryOutputJsonPath string
 
 var queryCmd = &cobra.Command{
 	Use:     "query",
@@ -18,7 +19,7 @@ var queryCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		return client.RunQuery(queryConfigPath)
+		return client.RunQuery(queryConfigPath, queryOutputJsonPath)
 
 	},
 }
@@ -28,4 +29,5 @@ func init() {
 	queryCmd.Flags().StringVar(&queryDSN, "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite")
 	queryCmd.Flags().StringVar(&queryDriver, "driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver")
 	queryCmd.Flags().StringVar(&queryConfigPath, "path", "./policy.yml", "path to a policy file. can be generated with 'gen policy' command")
+	queryCmd.Flags().StringVar(&queryOutputJsonPath, "output", "", "output path to store results as json file")
 }
