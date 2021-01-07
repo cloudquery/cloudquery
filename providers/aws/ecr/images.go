@@ -7,11 +7,35 @@ import (
 	"time"
 )
 
-type Image struct {
-	_         interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
-	ID        uint        `gorm:"primarykey"`
+
+type Repository struct {
+	_   interface{} `neo:"raw:MERGE (a:AWSAccount {account_id: $account_id}) MERGE (a) - [:Resource] -> (n)"`
+	ID uint `gorm:"primarykey"`
 	AccountID string
-	Region    string
+	Region string
+	CreatedAt *time.Time
+
+	EncryptionType   *string
+	EncryptionKmsKey *string
+
+	ImageScanningConfigurationScanOnPush *bool
+	ImageTagMutability                   *string
+	RegistryId                           *string
+	ARN                                  *string
+	Name                                 *string
+	URI                                  *string
+	Images []*Image
+}
+
+func (Repository) TableName() string {
+	return "aws_ecr_repositories"
+}
+
+type Image struct {
+	ID        uint        `gorm:"primarykey"`
+	RepositoryID uint `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	Region    string `gorm:"-"`
 
 	ArtifactMediaType      *string
 	ImageDigest            *string
@@ -59,6 +83,30 @@ type ImageTags struct {
 
 func (ImageTags) TableName() string {
 	return "aws_ecr_image_tags"
+}
+
+func (c *Client) transformRepository(value *ecr.Repository) *Repository {
+		tValue := Repository {
+			AccountID:          c.accountID,
+			Region:             c.region,
+			CreatedAt:          value.CreatedAt,
+			ImageTagMutability: value.ImageTagMutability,
+			RegistryId:         value.RegistryId,
+			ARN:                value.RepositoryArn,
+			Name:               value.RepositoryName,
+			URI:                value.RepositoryUri,
+		}
+
+		if value.EncryptionConfiguration != nil {
+			tValue.EncryptionType = value.EncryptionConfiguration.EncryptionType
+			tValue.EncryptionKmsKey = value.EncryptionConfiguration.KmsKey
+		}
+
+		if value.ImageScanningConfiguration != nil {
+			tValue.ImageScanningConfigurationScanOnPush = value.ImageScanningConfiguration.ScanOnPush
+		}
+
+		return &tValue
 }
 
 func (c *Client) transformImages(values []*ecr.ImageDetail) []*Image {
@@ -116,6 +164,7 @@ type ImageConfig struct {
 }
 
 var ImageTables = []interface{}{
+	&Repository{},
 	&Image{},
 	&ImageSeverityCount{},
 	&ImageTags{},
@@ -138,12 +187,14 @@ func (c *Client) images(_ interface{}) error {
 		}
 		for _, repo := range outputRepos.Repositories {
 			for {
+				tRepo := c.transformRepository(repo)
 				describeImagesInput.RepositoryName = repo.RepositoryName
 				outputDescribeImages, err := c.svc.DescribeImages(&describeImagesInput)
 				if err != nil {
 					return err
 				}
-				c.db.ChunkedCreate(c.transformImages(outputDescribeImages.ImageDetails))
+				tRepo.Images = c.transformImages(outputDescribeImages.ImageDetails)
+				c.db.InsertOne(tRepo)
 				totalImages += len(outputDescribeImages.ImageDetails)
 				c.log.Info("Fetched resources", zap.String("resource", "ecr.images"), zap.Int("count", len(outputDescribeImages.ImageDetails)))
 				if aws.StringValue(outputDescribeImages.NextToken) == "" {
