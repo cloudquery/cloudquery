@@ -15,6 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 var ProviderMap = map[string]func(*database.Database, *zap.Logger) (provider.Interface, error){
@@ -33,8 +34,13 @@ type Config struct {
 }
 
 type PolicyConfig struct {
+	Views []struct {
+		Name  string
+		Query string
+	}
 	Queries []struct {
 		Name  string
+		Invert bool
 		Query string
 	}
 }
@@ -145,9 +151,23 @@ func (c *Client) RunQuery(path string) error {
 		return err
 	}
 
+	err = c.createViews(&config)
+	if err != nil {
+		return err
+	}
+
+	err = c.runQueries(&config)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) runQueries(config *PolicyConfig) error {
 	c.log.Info("Executing queries", zap.Int("count", len(config.Queries)))
 	for _, query := range config.Queries {
 		c.log.Info("Executing query", zap.String("name", query.Name))
+		fmt.Println(query.Invert)
 		//var res string
 		rows, err := c.db.GormDB.Raw(query.Query).Rows()
 		if err != nil {
@@ -179,14 +199,39 @@ func (c *Client) RunQuery(path string) error {
 			}
 			table.Append(prettyRow)
 		}
-		rows.Close()
-		if resultsCount > 0 {
+		err = rows.Close()
+		if err != nil {
+			return err
+		}
+		if resultsCount > 0 && !query.Invert{
 			c.log.Info("Check failed. Query returned results.", zap.String("name", query.Name), zap.Int("count", resultsCount))
 			table.Render()
 		} else {
-			c.log.Info("Check passed. Query returned no results.", zap.String("name", query.Name))
+			if query.Invert {
+				c.log.Info("Check failed. Query returned no results.", zap.String("name", query.Name))
+			} else {
+				c.log.Info("Check passed. Query returned no results.", zap.String("name", query.Name))
+			}
 		}
-
 	}
+
+	return nil
+}
+
+func (c *Client) createViews(config *PolicyConfig) error {
+	c.log.Info("Creating views", zap.Int("count", len(config.Views)))
+	for _, view := range config.Views {
+		c.log.Info("Creating view", zap.String("name", view.Name))
+		fmt.Println(view.Query)
+		err := c.db.GormDB.Exec(view.Query).Error
+		if err != nil {
+			if strings.HasPrefix(err.Error(), "table") {
+				c.log.Info("table already exist. skipping.", zap.String("name", view.Name))
+				continue
+			}
+			return err
+		}
+	}
+
 	return nil
 }

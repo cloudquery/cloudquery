@@ -27,7 +27,7 @@ type Database struct {
 
 func Open(driver string, dsn string) (*Database, error) {
 	var err error
-	gormLogger := logger.Default.LogMode(logger.Error)
+	gormLogger := logger.Default.LogMode(logger.Silent)
 	r := Database{
 		Driver: driver,
 	}

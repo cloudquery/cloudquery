@@ -22,6 +22,8 @@ var awsConfig = `
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
       - name: cloudtrail.trails
+      - name: cloudwatch.alarms
+      - name: cloudwatchlogs.metric_filters
       - name: directconnect.gateways
       - name: ec2.customer_gateways
       - name: ec2.flow_logs
@@ -48,13 +50,15 @@ var awsConfig = `
       - name: iam.policies
       - name: iam.roles
       - name: iam.users
+      - name: iam.virtual_mfa_devices
       - name: kms.keys
       - name: rds.certificates
       - name: rds.clusters
       - name: rds.db_subnet_groups
       - name: redshift.clusters
       - name: redshift.cluster_subnet_groups
-      - name: s3.buckets`
+      - name: s3.buckets
+      - name: sns.subscriptions`
 
 var gcpConfig = `
   - name: gcp

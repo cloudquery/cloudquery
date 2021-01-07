@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"regexp"
 	"time"
 )
 
@@ -13,6 +14,7 @@ type Trail struct {
 	AccountID                  string
 	Region                     string
 	CloudWatchLogsLogGroupArn  *string
+	CloudWatchLogsLogGroupName *string
 	CloudWatchLogsRoleArn      *string
 	HasCustomEventSelectors    *bool
 	HasInsightSelectors        *bool
@@ -53,11 +55,13 @@ type Trail struct {
 func (Trail) TableName() string {
 	return "aws_cloudtrail_trails"
 }
-
+//log-group:([a-zA-Z0-9/]+):
+var groupNameRegex = regexp.MustCompile("arn:aws:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
 func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 	var tValues []*Trail
 	for _, value := range values {
+		groupName := groupNameRegex.FindStringSubmatch(*value.CloudWatchLogsLogGroupArn)[1]
 		statusOutput, err := c.svc.GetTrailStatus(&cloudtrail.GetTrailStatusInput{Name: value.TrailARN})
 		if err != nil {
 			return nil, err
@@ -66,6 +70,7 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 			Region:                     c.region,
 			AccountID:                  c.accountID,
 			CloudWatchLogsLogGroupArn:  value.CloudWatchLogsLogGroupArn,
+			CloudWatchLogsLogGroupName: &groupName,
 			CloudWatchLogsRoleArn:      value.CloudWatchLogsRoleArn,
 			HasCustomEventSelectors:    value.HasCustomEventSelectors,
 			HasInsightSelectors:        value.HasInsightSelectors,

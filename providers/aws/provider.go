@@ -12,6 +12,8 @@ import (
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/aws/autoscaling"
 	"github.com/cloudquery/cloudquery/providers/aws/cloudtrail"
+	"github.com/cloudquery/cloudquery/providers/aws/cloudwatch"
+	"github.com/cloudquery/cloudquery/providers/aws/cloudwatchlogs"
 	"github.com/cloudquery/cloudquery/providers/aws/directconnect"
 	"github.com/cloudquery/cloudquery/providers/aws/ec2"
 	"github.com/cloudquery/cloudquery/providers/aws/ecr"
@@ -27,6 +29,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
 	"github.com/cloudquery/cloudquery/providers/aws/s3"
+	"github.com/cloudquery/cloudquery/providers/aws/sns"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
@@ -75,6 +78,8 @@ var globalServices = map[string]ServiceNewFunction{
 var regionalServices = map[string]ServiceNewFunction{
 	"autoscaling":      autoscaling.NewClient,
 	"cloudtrail":       cloudtrail.NewClient,
+	"cloudwatchlogs":       cloudwatchlogs.NewClient,
+	"cloudwatch": cloudwatch.NewClient,
 	"directconnect":    directconnect.NewClient,
 	"ec2":              ec2.NewClient,
 	"ecr":              ecr.NewClient,
@@ -87,11 +92,14 @@ var regionalServices = map[string]ServiceNewFunction{
 	"kms":              kms.NewClient,
 	"rds":              rds.NewClient,
 	"redshift":         redshift.NewClient,
+	"sns": sns.NewClient,
 }
 
 var tablesArr = [][]interface{}{
 	autoscaling.LaunchConfigurationTables,
 	cloudtrail.TrailTables,
+	cloudwatchlogs.MetricFilterTables,
+	cloudwatch.MetricAlarmTables,
 	directconnect.GatewayTables,
 	ec2.ByoipCidrTables,
 	ec2.CustomerGatewayTables,
@@ -119,6 +127,7 @@ var tablesArr = [][]interface{}{
 	iam.PolicyTables,
 	iam.RoleTables,
 	iam.UserTables,
+	iam.VirtualMFADeviceTables,
 	kms.KeyTables,
 	rds.ClusterTables,
 	rds.CertificateTables,
@@ -126,6 +135,7 @@ var tablesArr = [][]interface{}{
 	redshift.ClusterTables,
 	redshift.ClusterSubnetGroupTables,
 	s3.BucketTables,
+	sns.SubscriptionTables,
 }
 
 func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {

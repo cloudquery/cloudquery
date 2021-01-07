@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
+	"strings"
 	"time"
 )
 
@@ -25,8 +26,9 @@ type User struct {
 
 	Tags       []*UserTag `gorm:"constraint:OnDelete:CASCADE;"`
 	UserId     *string
-	UserName   *string          `csv:"user"`
-	AccessKeys []*UserAccessKey `gorm:"constraint:OnDelete:CASCADE;"`
+	UserName   *string                     `csv:"user"`
+	AccessKeys []*UserAccessKey            `gorm:"constraint:OnDelete:CASCADE;"`
+	AttachedPolicies []*UserAttachedPolicy `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (User) TableName() string {
@@ -119,6 +121,8 @@ type ReportUser struct {
 	PasswordLastChanged   string    `csv:"password_last_changed"`
 	PasswordNextRotation  string    `csv:"password_next_rotation"`
 	MFAActive             bool      `csv:"mfa_active"`
+	AccessKey1Active        bool      `csv:"access_key_1_active"`
+	AccessKey2Active        bool      `csv:"access_key_2_active"`
 	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
 	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
 }
@@ -162,13 +166,29 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		listAttachedUserPoliciesInput := iam.ListAttachedUserPoliciesInput{
+			UserName: &reportUser.User,
+		}
+		for {
+			outputAttachedPolicies, err := c.svc.ListAttachedUserPolicies(&listAttachedUserPoliciesInput)
+			if err != nil {
+				return nil, err
+			}
+			res.AttachedPolicies = append(res.AttachedPolicies, c.transformAttachedPolicies(outputAttachedPolicies.AttachedPolicies)...)
+			if outputAttachedPolicies.Marker == nil {
+				break
+			}
+			listAttachedUserPoliciesInput.Marker = outputAttachedPolicies.Marker
+		}
+
 	}
 
-	switch reportUser.PasswordEnabled {
-	case "FALSE", "false":
+	switch strings.ToLower(reportUser.PasswordEnabled) {
+	case "false":
 		passwordEnabled := false
 		res.PasswordEnabled = &passwordEnabled
-	case "TRUE", "true":
+	case "true":
 		passwordEnabled := true
 		res.PasswordEnabled = &passwordEnabled
 	}
@@ -216,6 +236,8 @@ var UserTables = []interface{}{
 	&User{},
 	&UserAccessKey{},
 	&UserTag{},
+
+	&UserAttachedPolicy{},
 }
 
 func (c *Client) users(_ interface{}) error {
