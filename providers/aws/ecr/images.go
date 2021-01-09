@@ -24,7 +24,7 @@ type Repository struct {
 	ARN                                  *string
 	Name                                 *string
 	URI                                  *string
-	Images []*Image
+	Images []*Image `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (Repository) TableName() string {
