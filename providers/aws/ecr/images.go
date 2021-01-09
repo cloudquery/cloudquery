@@ -1,10 +1,11 @@
 package ecr
 
 import (
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ecr"
 	"go.uber.org/zap"
-	"time"
 )
 
 
@@ -186,22 +187,24 @@ func (c *Client) images(_ interface{}) error {
 			return err
 		}
 		for _, repo := range outputRepos.Repositories {
+			describeImagesInput.RepositoryName = repo.RepositoryName
+			describeImagesInput.NextToken = nil
+			tRepo := c.transformRepository(repo)
 			for {
-				tRepo := c.transformRepository(repo)
-				describeImagesInput.RepositoryName = repo.RepositoryName
 				outputDescribeImages, err := c.svc.DescribeImages(&describeImagesInput)
 				if err != nil {
 					return err
 				}
-				tRepo.Images = c.transformImages(outputDescribeImages.ImageDetails)
-				c.db.InsertOne(tRepo)
+				tRepo.Images = append(tRepo.Images, c.transformImages(outputDescribeImages.ImageDetails)...)
 				totalImages += len(outputDescribeImages.ImageDetails)
 				c.log.Info("Fetched resources", zap.String("resource", "ecr.images"), zap.Int("count", len(outputDescribeImages.ImageDetails)))
+				
 				if aws.StringValue(outputDescribeImages.NextToken) == "" {
 					break
 				}
 				describeImagesInput.NextToken = outputDescribeImages.NextToken
 			}
+			c.db.InsertOne(tRepo)
 		}
 		if aws.StringValue(outputRepos.NextToken) == "" {
 			break
