@@ -19,6 +19,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cobra v1.1.1
+	github.com/spf13/viper v1.7.0
 	go.uber.org/zap v1.10.0
 	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect
 	google.golang.org/api v0.35.0

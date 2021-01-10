@@ -3,31 +3,36 @@ package cmd
 import (
 	"github.com/cloudquery/cloudquery/cloudqueryclient"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var dsn string
-var driver string
 var verbose bool
-var fetchConfigPath string
 
 var fetchCmd = &cobra.Command{
 	Use:     "fetch",
 	Short:   "Fetch data from configured cloud APIs to specified SQL database",
 	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		driver := viper.GetString("driver")
+		dsn := viper.GetString("dsn")
+		configPath := viper.GetString("config_path")
 		client, err := cloudqueryclient.New(driver, dsn, verbose)
 		if err != nil {
 			return err
 		}
-		return client.Run(fetchConfigPath)
+		return client.Run(configPath)
 
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(fetchCmd)
-	fetchCmd.Flags().StringVar(&dsn, "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite")
-	fetchCmd.Flags().StringVar(&driver, "driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j")
-	fetchCmd.Flags().StringVar(&fetchConfigPath, "path", "./config.yml", "path to configuration file. can be generated with 'gen config' command")
+	fetchCmd.Flags().String( "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite (env: CQ_DSN)")
+	fetchCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j (env: CQ_DRIVER)")
+	fetchCmd.Flags().String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	fetchCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
+	viper.BindPFlag("dsn", fetchCmd.Flags().Lookup("dsn"))
+	viper.BindPFlag("driver", fetchCmd.Flags().Lookup("driver"))
+	viper.BindPFlag("config_path", fetchCmd.Flags().Lookup("path"))
+
+	rootCmd.AddCommand(fetchCmd)
 }
