@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -23,4 +25,14 @@ func Execute() {
 		log.Println(err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("CQ")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
