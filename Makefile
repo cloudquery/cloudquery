@@ -29,3 +29,15 @@ release:
 		-w /go/src/$(PACKAGE_NAME) \
 		troian/golang-cross:${GOLANG_CROSS_VERSION} \
 		release --rm-dist
+
+.PHONY: docker
+docker:
+	@docker build -t cloudquery:latest .
+
+.PHONY: docker-test
+docker-test:
+	@docker build -t cloudquery:test -f Dockerfile.test .
+
+.PHONY: docker-publish
+	@docker tag cloudquery-test:latest public.ecr.aws/d1r4a9i9/cloudquery-test:latest \
+	&& docker push public.ecr.aws/d1r4a9i9/cloudquery-test:latest

@@ -36,6 +36,8 @@ var lambdaCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(lambdaCmd)
+	DRIVER = os.Getenv("CLOUDQUERY_DRIVER")
+	DSN = os.Getenv("CLOUDQUERY_DATABASE_STRING")
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
@@ -49,7 +51,7 @@ func TaskExecutor(taskName string) (string, error) {
 	case "policy":
 		Policy(DRIVER, DSN, false)
 	default:
-		log.Printf("Unknown task: %s", taskName)
+		return fmt.Sprintf("Unknown task: %s", taskName), fmt.Errorf("Unkown task: %s", taskName)
 	}
 	return fmt.Sprintf("Completed task %s", taskName), nil
 }

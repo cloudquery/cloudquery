@@ -93,6 +93,8 @@ github.com/aws/aws-sdk-go/private/protocol/restxml
 github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
 github.com/aws/aws-sdk-go/service/autoscaling
 github.com/aws/aws-sdk-go/service/cloudtrail
+github.com/aws/aws-sdk-go/service/cloudwatch
+github.com/aws/aws-sdk-go/service/cloudwatchlogs
 github.com/aws/aws-sdk-go/service/directconnect
 github.com/aws/aws-sdk-go/service/ec2
 github.com/aws/aws-sdk-go/service/ecr
@@ -108,6 +110,7 @@ github.com/aws/aws-sdk-go/service/kms
 github.com/aws/aws-sdk-go/service/rds
 github.com/aws/aws-sdk-go/service/redshift
 github.com/aws/aws-sdk-go/service/s3
+github.com/aws/aws-sdk-go/service/sns
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
 # github.com/cenkalti/backoff/v4 v4.1.0

@@ -6,8 +6,8 @@ RUN apk add --no-cache curl && \
   chmod +x /aws-lambda-rie
 
 
-FROM cloudquery-lambda:latest
+FROM cloudquery:latest
 
 COPY --from=rie-image /aws-lambda-rie /usr/local/bin/
 
-ENTRYPOINT ["aws-lambda-rie", "/app/main", "lambda"]
+ENTRYPOINT ["aws-lambda-rie", "/app/cloudquery", "lambda"]

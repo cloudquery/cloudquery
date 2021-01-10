@@ -4,7 +4,7 @@ resource "aws_rds_cluster" "cloudquery" {
   engine_version     = "5.7.mysql_aurora.2.07.1"
   engine_mode        = "serverless"
   master_username    = "cloudquery"
-  master_password    = random_password.password
+  master_password    = random_password.password.result
 
   scaling_configuration {
     auto_pause               = true
@@ -19,4 +19,11 @@ resource "random_password" "password" {
   length           = 16
   special          = true
   override_special = "_%@"
+}
+
+resource "aws_ssm_parameter" "cloudquery_master_password" {
+  name        = "/cloudquery/database/password/master"
+  description = "Master password for cloudquery aurora database"
+  type        = "SecureString"
+  value       = random_password.password.result
 }
