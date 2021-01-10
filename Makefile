@@ -25,6 +25,7 @@ release:
 		-e CGO_ENABLED=1 \
 		--env-file .release-env \
 		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v ~/.docker:/root/.docker \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
 		troian/golang-cross:${GOLANG_CROSS_VERSION} \
