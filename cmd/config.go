@@ -62,8 +62,9 @@ var awsConfig = `
 
 var gcpConfig = `
   - name: gcp
-    project_ids:
-      - <CHANGE_THIS_TO_YOUR_PROJECT_ID>
+#    project_filter: "" # Optional. Filter as described https://cloud.google.com/sdk/gcloud/reference/projects/list --filter
+#    project_ids: # Optional. If not specified either using all projects accessible.
+#     - <CHANGE_THIS_TO_YOUR_PROJECT_ID>
     resources:
       - name: compute.addresses
       - name: compute.autoscalers

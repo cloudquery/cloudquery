@@ -3,8 +3,8 @@ package storage
 import (
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"google.golang.org/api/googleapi"
 	"google.golang.org/api/storage/v1"
-	"log"
 )
 
 type Bucket struct {
@@ -448,7 +448,7 @@ func (c *Client) transformBucketZoneAffinities(values []string) []*BucketZoneAff
 	return tValues
 }
 
-func (c *Client) transformBucket(value *storage.Bucket) *Bucket {
+func (c *Client) transformBucket(value *storage.Bucket) (*Bucket, error) {
 	res := Bucket{
 		ProjectID:             c.projectID,
 		Acl:                   c.transformBucketAccessControls(value.Acl),
@@ -518,20 +518,30 @@ func (c *Client) transformBucket(value *storage.Bucket) *Bucket {
 	call := c.svc.Buckets.GetIamPolicy(value.Name)
 	output, err := call.Do()
 	if err != nil {
-		// we should return this err instead of calling log.Fatal
-		log.Fatal(err)
+		if e, ok := err.(*googleapi.Error); ok {
+			if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
+				c.log.Info("access denied. skipping.",
+					zap.String("project_id", c.projectID), zap.String("resource", "storage.buckets"))
+				return &res, nil
+			}
+		}
+		return nil, err
 	}
 	res.PolicyBindings = c.transformPolicyBindings(output.Bindings)
 
-	return &res
+	return &res, nil
 }
 
-func (c *Client) transformBuckets(values []*storage.Bucket) []*Bucket {
+func (c *Client) transformBuckets(values []*storage.Bucket) ([]*Bucket, error) {
 	var tValues []*Bucket
 	for _, v := range values {
-		tValues = append(tValues, c.transformBucket(v))
+		tValue, err := c.transformBucket(v)
+		if err != nil {
+			return nil, err
+		}
+		tValues = append(tValues, tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 type BucketConfig struct {
@@ -571,7 +581,11 @@ func (c *Client) buckets(gConfig interface{}) error {
 		}
 
 		c.db.Where("project_id", c.projectID).Delete(BucketTables...)
-		c.db.ChunkedCreate(c.transformBuckets(output.Items))
+		tValues, err := c.transformBuckets(output.Items)
+		if err != nil {
+			return err
+		}
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "storage.buckets"), zap.Int("count", len(output.Items)))
 		if output.NextPageToken == "" {
 			break
