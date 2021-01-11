@@ -1,6 +1,7 @@
 package gcp
 
 import (
+	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/gcp/compute"
@@ -11,6 +12,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/googleapi"
+	"google.golang.org/api/cloudresourcemanager/v1"
 	"log"
 	"strings"
 	"sync"
@@ -24,6 +26,7 @@ type Provider struct {
 }
 
 type Config struct {
+	ProjectFilter string `mapstructure:"project_filter"`
 	ProjectIDs [] string `mapstructure:"project_ids"`
 	Resources []struct {
 		Name  string
@@ -73,6 +76,7 @@ func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, er
 
 func (p *Provider) Run(config interface{}) error {
 	err := mapstructure.Decode(config, &p.config)
+	ctx := context.Background()
 	if err != nil {
 		return err
 	}
@@ -80,11 +84,37 @@ func (p *Provider) Run(config interface{}) error {
 		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
 	}
 
+	var projectIDs []string
 	if len(p.config.ProjectIDs) == 0 {
-		return fmt.Errorf("please specify at least 1 project_id in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
+		service, err := cloudresourcemanager.NewService(ctx)
+		if err != nil {
+			return err
+		}
+
+		call := service.Projects.List()
+		if p.config.ProjectFilter != "" {
+			call.Filter(p.config.ProjectFilter)
+		}
+		for {
+			output, err := call.Do()
+			if err != nil {
+				return err
+			}
+			for _, project := range output.Projects {
+				projectIDs = append(projectIDs, project.ProjectId)
+			}
+			if output.NextPageToken == "" {
+				break
+			}
+			call.PageToken(output.NextPageToken)
+		}
+		p.log.Info("No project_ids specified in config.yml assuming all projects", zap.Int("count", len(projectIDs)))
+	} else {
+		projectIDs = p.config.ProjectIDs
 	}
 
-	for _, projectID := range p.config.ProjectIDs {
+
+	for _, projectID := range projectIDs {
 		if projectID == "<CHANGE_THIS_TO_YOUR_PROJECT_ID>" {
 			return fmt.Errorf("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
 		}
