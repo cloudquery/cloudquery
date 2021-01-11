@@ -71,7 +71,7 @@ dockers:
     dockerfile: Dockerfile.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cloudquery:latest"
-      - "ghcr.io/cloudquery/cloudquery:{{.Version}}"
+      - "ghcr.io/cloudquery/cloudquery:v{{.Version}}"
       - "ghcr.io/cloudquery/cloudquery:v{{ .Major }}.{{ .Minor }}"
     build_flag_templates:
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
