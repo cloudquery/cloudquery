@@ -55,13 +55,24 @@ type Trail struct {
 func (Trail) TableName() string {
 	return "aws_cloudtrail_trails"
 }
+
 //log-group:([a-zA-Z0-9/]+):
 var groupNameRegex = regexp.MustCompile("arn:aws:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
 func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 	var tValues []*Trail
 	for _, value := range values {
-		groupName := groupNameRegex.FindStringSubmatch(*value.CloudWatchLogsLogGroupArn)[1]
+		groupName := ""
+		if value.CloudWatchLogsLogGroupArn == nil {
+			c.log.Warn("CloudWatchLogsLogGroupARN is empty")
+			matches := groupNameRegex.FindStringSubmatch(*value.CloudWatchLogsLogGroupArn)
+			if len(matches) < 2 {
+				c.log.Warn("CloudWatchLogsLogGroupARN doesn't fit standard regex", zap.String("arn", *value.CloudWatchLogsLogGroupArn))
+			} else {
+				groupName = matches[1]
+			}
+		}
+
 		statusOutput, err := c.svc.GetTrailStatus(&cloudtrail.GetTrailStatusInput{Name: value.TrailARN})
 		if err != nil {
 			return nil, err
