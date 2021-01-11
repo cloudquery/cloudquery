@@ -62,7 +62,8 @@ var awsConfig = `
 
 var gcpConfig = `
   - name: gcp
-    project_id: <CHANGE_THIS_TO_YOUR_PROJECT_ID>
+    project_ids:
+      - <CHANGE_THIS_TO_YOUR_PROJECT_ID>
     resources:
       - name: compute.addresses
       - name: compute.autoscalers

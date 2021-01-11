@@ -19,7 +19,7 @@ type Client struct {
 }
 
 func NewClient(db *database.Database, log *zap.Logger,
-	projectID string, region string) (resource.ClientInterface, error) {
+	projectID string) (resource.ClientInterface, error) {
 	ctx := context.Background()
 	computeService, err := storage.NewService(ctx)
 	if err != nil {
@@ -30,7 +30,6 @@ func NewClient(db *database.Database, log *zap.Logger,
 		db:               db,
 		log:              log,
 		projectID:        projectID,
-		region:           region,
 		resourceMigrated: map[string]bool{},
 		svc:              computeService,
 	}, nil

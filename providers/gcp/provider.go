@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"google.golang.org/api/googleapi"
 	"strings"
 )
 
@@ -21,8 +22,7 @@ type Provider struct {
 }
 
 type Config struct {
-	Region    string `mapstructure:"region"`
-	ProjectID string `mapstructure:"project_id"`
+	ProjectIDs [] string `mapstructure:"project_ids"`
 	Resources []struct {
 		Name  string
 		Other map[string]interface{} `mapstructure:",remain"`
@@ -30,7 +30,7 @@ type Config struct {
 }
 
 type NewResourceFunc func(db *database.Database, log *zap.Logger,
-	projectID string, region string) (resource.ClientInterface, error)
+	projectID string) (resource.ClientInterface, error)
 
 var resourceFactory = map[string]NewResourceFunc{
 	"compute": compute.NewClient,
@@ -78,21 +78,51 @@ func (p *Provider) Run(config interface{}) error {
 		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
 	}
 
-	for _, resource := range p.config.Resources {
-		err := p.collectResource(resource.Name, resource.Other)
+	if len(p.config.ProjectIDs) == 0 {
+		return fmt.Errorf("please specify at least 1 project_id in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
+	}
+
+	for _, projectID := range p.config.ProjectIDs {
+		err := p.initClients(projectID)
 		if err != nil {
 			return err
+		}
+		for _, resource := range p.config.Resources {
+			err := p.collectResource(projectID, resource.Name, resource.Other)
+			if err != nil {
+				if e, ok := err.(*googleapi.Error); ok {
+					if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
+						p.log.Info("access not configured. skipping.",
+							zap.String("project_id", projectID), zap.String("resource", resource.Name))
+						continue
+					} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
+						p.log.Info("access denied. skipping.",
+							zap.String("project_id", projectID), zap.String("resource", resource.Name))
+						continue
+					}
+				}
+				return err
+			}
 		}
 	}
 
 	return nil
 }
 
-func (p *Provider) resetClients() {
-	p.resourceClients = map[string]resource.ClientInterface{}
+func (p *Provider) initClients(projectID string) error{
+	var err error
+	for serviceName, newFunc := range resourceFactory {
+		zapLog := p.log.With(zap.String("project_id", projectID))
+		p.resourceClients[serviceName], err = newFunc(p.db, zapLog, projectID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
-func (p *Provider) collectResource(fullResourceName string, config interface{}) error {
+
+func (p *Provider) collectResource(projectID string, fullResourceName string, config interface{}) error {
 	resourcePath := strings.Split(fullResourceName, ".")
 	if len(resourcePath) != 2 {
 		return fmt.Errorf("resource %s should be in format {service}.{resource}", fullResourceName)
@@ -104,12 +134,5 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 		return fmt.Errorf("unsupported service %s", service)
 	}
 
-	if p.resourceClients[service] == nil {
-		var err error
-		p.resourceClients[service], err = resourceFactory[service](p.db, p.log, p.config.ProjectID, p.config.Region)
-		if err != nil {
-			return err
-		}
-	}
 	return p.resourceClients[service].CollectResource(resourceName, config)
 }

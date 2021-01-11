@@ -1,6 +1,7 @@
 providers:
   - name: gcp
-    project_id: <CHANGE_THIS_TO_YOUR_PROJECT_ID>
+    project_ids:
+      - <CHANGE_THIS_TO_YOUR_PROJECT_ID>
     resources:
       - name: compute.instances
       - name: compute.autoscalers
