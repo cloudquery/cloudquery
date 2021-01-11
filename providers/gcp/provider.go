@@ -11,7 +11,9 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/googleapi"
+	"log"
 	"strings"
+	"sync"
 )
 
 type Provider struct {
@@ -83,27 +85,20 @@ func (p *Provider) Run(config interface{}) error {
 	}
 
 	for _, projectID := range p.config.ProjectIDs {
+		if projectID == "<CHANGE_THIS_TO_YOUR_PROJECT_ID>" {
+			return fmt.Errorf("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
+		}
 		err := p.initClients(projectID)
 		if err != nil {
 			return err
 		}
+		var wg sync.WaitGroup
 		for _, resource := range p.config.Resources {
-			err := p.collectResource(projectID, resource.Name, resource.Other)
-			if err != nil {
-				if e, ok := err.(*googleapi.Error); ok {
-					if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
-						p.log.Info("access not configured. skipping.",
-							zap.String("project_id", projectID), zap.String("resource", resource.Name))
-						continue
-					} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
-						p.log.Info("access denied. skipping.",
-							zap.String("project_id", projectID), zap.String("resource", resource.Name))
-						continue
-					}
-				}
-				return err
-			}
+			wg.Add(1)
+			go p.collectResource(&wg, projectID, resource.Name, resource.Other)
+
 		}
+		wg.Wait()
 	}
 
 	return nil
@@ -122,17 +117,33 @@ func (p *Provider) initClients(projectID string) error{
 }
 
 
-func (p *Provider) collectResource(projectID string, fullResourceName string, config interface{}) error {
+func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullResourceName string, config interface{}) {
+	defer wg.Done()
 	resourcePath := strings.Split(fullResourceName, ".")
 	if len(resourcePath) != 2 {
-		return fmt.Errorf("resource %s should be in format {service}.{resource}", fullResourceName)
+		log.Fatalf("resource %s should be in format {service}.{resource}", fullResourceName)
 	}
 	service := resourcePath[0]
 	resourceName := resourcePath[1]
 
 	if resourceFactory[service] == nil {
-		return fmt.Errorf("unsupported service %s", service)
+		log.Fatalf("unsupported service %s", service)
 	}
 
-	return p.resourceClients[service].CollectResource(resourceName, config)
+	err := p.resourceClients[service].CollectResource(resourceName, config)
+	if err != nil {
+		if e, ok := err.(*googleapi.Error); ok {
+			if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
+				p.log.Info("access not configured. skipping.",
+					zap.String("project_id", projectID), zap.String("resource", fullResourceName))
+				return
+			} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
+				p.log.Info("access denied. skipping.",
+					zap.String("project_id", projectID), zap.String("resource", fullResourceName))
+				return
+			}
+		}
+		p.log.Error(err.Error())
+		return
+	}
 }
