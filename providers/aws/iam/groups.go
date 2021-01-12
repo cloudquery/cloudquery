@@ -16,33 +16,74 @@ type Group struct {
 	GroupId    *string
 	GroupName  *string
 	Path       *string
+	Policies []*GroupPolicy `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (Group) TableName() string {
 	return "aws_iam_groups"
 }
 
-func (c *Client) transformGroup(value *iam.Group) *Group {
-	return &Group{
-		AccountID:  c.accountID,
-		Arn:        value.Arn,
-		CreateDate: value.CreateDate,
-		GroupId:    value.GroupId,
-		GroupName:  value.GroupName,
-		Path:       value.Path,
-	}
+type GroupPolicy struct {
+	ID uint `gorm:"primarykey"`
+	GroupID uint `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	PolicyArn *string
+	PolicyName *string
 }
 
-func (c *Client) transformGroups(values []*iam.Group) []*Group {
-	var tValues []*Group
-	for _, v := range values {
-		tValues = append(tValues, c.transformGroup(v))
+func (GroupPolicy) TableName() string {
+	return "aws_iam_group_policies"
+}
+
+func (c *Client) transformGroupPolicies(values []*iam.AttachedPolicy) []*GroupPolicy {
+	var tValues []*GroupPolicy
+	for _, value := range values {
+		tValue := GroupPolicy{
+			AccountID: c.accountID,
+			PolicyArn: value.PolicyArn,
+			PolicyName: value.PolicyName,
+		}
+		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
+func (c *Client) transformGroups(values []*iam.Group) ([]*Group, error) {
+	var tValues []*Group
+	for _, value := range values {
+		tValue := &Group{
+			AccountID:  c.accountID,
+			Arn:        value.Arn,
+			CreateDate: value.CreateDate,
+			GroupId:    value.GroupId,
+			GroupName:  value.GroupName,
+			Path:       value.Path,
+		}
+
+		listAttachedUserPoliciesInput := iam.ListAttachedGroupPoliciesInput{
+			GroupName: value.GroupName,
+		}
+		for {
+			outputAttachedPolicies, err := c.svc.ListAttachedGroupPolicies(&listAttachedUserPoliciesInput)
+			if err != nil {
+				return nil, err
+			}
+			tValue.Policies = append(tValue.Policies, c.transformGroupPolicies(outputAttachedPolicies.AttachedPolicies)...)
+			if outputAttachedPolicies.Marker == nil {
+				break
+			}
+			listAttachedUserPoliciesInput.Marker = outputAttachedPolicies.Marker
+		}
+
+		tValues = append(tValues, tValue)
+
+	}
+	return tValues, nil
+}
+
 var GroupTables = []interface{}{
 	&Group{},
+	&GroupPolicy{},
 }
 
 func (c *Client) groups(gConfig interface{}) error {
@@ -58,7 +99,11 @@ func (c *Client) groups(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformGroups(output.Groups))
+		tValues, err := c.transformGroups(output.Groups)
+		if err != nil {
+			return err
+		}
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "iam.groups"), zap.Int("count", len(output.Groups)))
 		if aws.StringValue(output.Marker) == "" {
 			break
