@@ -3,45 +3,20 @@ before:
     - go mod download
     - go generate ./...
 builds:
-  - id: darwin-amd64
-    env:
-      - CGO_ENABLED=1
-      - GO111MODULE=on
-      - CC=o64-clang
-      - CXX=o64-clang++
-    main: ./main.go
-    ldflags:
-     - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
-    goos:
-      - darwin
-    goarch:
-      - amd64
-  - id: linux-amd64
-    env:
-      - CGO_ENABLED=1
-      - GO111MODULE=on
-      - CC=gcc
-      - CXX=g++
-    main: ./main.go
-    ldflags:
-     - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
-    goos:
-      - linux
-    goarch:
-      - amd64
-  - id: windows-amd64
-    flags:
+  - flags:
       - -buildmode=exe
     env:
       - CGO_ENABLED=1
       - GO111MODULE=on
-      - CC=x86_64-w64-mingw32-gcc
-      - CXX=x86_64-w64-mingw32-g++
+      - CC=$PWD/gencc.sh
+      - CXX=$PWD/gencpp.sh
     main: ./main.go
     ldflags:
      - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
     goos:
       - windows
+      - linux
+      - darwin
     goarch:
       - amd64
 archives:
