@@ -27,6 +27,7 @@ type Role struct {
 
 	RoleName *string
 	Tags     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
+	Policies  []*RolePolicy `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (Role) TableName() string {
@@ -45,60 +46,93 @@ func (RoleTag) TableName() string {
 	return "aws_iam_role_tags"
 }
 
-func (c *Client) transformRoleTag(value *iam.Tag) *RoleTag {
-	return &RoleTag{
-		AccountID: c.accountID,
-		Key:       value.Key,
-		Value:     value.Value,
+type RolePolicy struct {
+	ID uint `gorm:"primarykey"`
+	RoleID uint `neo:"ignore"`
+	AccountID string `gorm:"-"`
+	PolicyArn *string
+	PolicyName *string
+}
+
+func (RolePolicy) TableName() string {
+	return "aws_iam_role_policies"
+}
+
+func (c *Client) transformRolesPolicies(values []*iam.AttachedPolicy) []*RolePolicy {
+	var tValues []*RolePolicy
+	for _, value := range values {
+		tValue := RolePolicy{
+			AccountID: c.accountID,
+			PolicyArn: value.PolicyArn,
+			PolicyName: value.PolicyName,
+		}
+		tValues = append(tValues, &tValue)
 	}
+	return tValues
 }
 
 func (c *Client) transformRoleTags(values []*iam.Tag) []*RoleTag {
 	var tValues []*RoleTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformRoleTag(v))
+	for _, value := range values {
+		tValues = append(tValues, &RoleTag{
+			AccountID: c.accountID,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformRole(value *iam.Role) *Role {
-	res := Role{
-		AccountID:                c.accountID,
-		Arn:                      value.Arn,
-		AssumeRolePolicyDocument: value.AssumeRolePolicyDocument,
-		CreateDate:               value.CreateDate,
-		Description:              value.Description,
-		MaxSessionDuration:       value.MaxSessionDuration,
-		Path:                     value.Path,
-		RoleId:                   value.RoleId,
-		RoleName:                 value.RoleName,
-		Tags:                     c.transformRoleTags(value.Tags),
-	}
-
-	if value.PermissionsBoundary != nil {
-		res.PermissionsBoundaryArn = value.PermissionsBoundary.PermissionsBoundaryArn
-		res.PermissionsBoundaryType = value.PermissionsBoundary.PermissionsBoundaryType
-	}
-
-	if value.RoleLastUsed != nil {
-		res.LastUsedDate = value.RoleLastUsed.LastUsedDate
-		res.LastUsedRegion = value.RoleLastUsed.Region
-	}
-
-	return &res
-}
-
-func (c *Client) transformRoles(values []*iam.Role) []*Role {
+func (c *Client) transformRoles(values []*iam.Role) ([]*Role, error) {
 	var tValues []*Role
-	for _, v := range values {
-		tValues = append(tValues, c.transformRole(v))
+	for _, value := range values {
+		tValue := Role{
+			AccountID:                c.accountID,
+			Arn:                      value.Arn,
+			AssumeRolePolicyDocument: value.AssumeRolePolicyDocument,
+			CreateDate:               value.CreateDate,
+			Description:              value.Description,
+			MaxSessionDuration:       value.MaxSessionDuration,
+			Path:                     value.Path,
+			RoleId:                   value.RoleId,
+			RoleName:                 value.RoleName,
+			Tags:                     c.transformRoleTags(value.Tags),
+		}
+
+		if value.PermissionsBoundary != nil {
+			tValue.PermissionsBoundaryArn = value.PermissionsBoundary.PermissionsBoundaryArn
+			tValue.PermissionsBoundaryType = value.PermissionsBoundary.PermissionsBoundaryType
+		}
+
+		if value.RoleLastUsed != nil {
+			tValue.LastUsedDate = value.RoleLastUsed.LastUsedDate
+			tValue.LastUsedRegion = value.RoleLastUsed.Region
+		}
+
+		listAttachedRolePoliciesInput := iam.ListAttachedRolePoliciesInput{
+			RoleName: value.RoleName,
+		}
+		for {
+			outputAttachedPolicies, err := c.svc.ListAttachedRolePolicies(&listAttachedRolePoliciesInput)
+			if err != nil {
+				return nil, err
+			}
+			tValue.Policies = append(tValue.Policies, c.transformRolesPolicies(outputAttachedPolicies.AttachedPolicies)...)
+			if outputAttachedPolicies.Marker == nil {
+				break
+			}
+			listAttachedRolePoliciesInput.Marker = outputAttachedPolicies.Marker
+		}
+
+		tValues = append(tValues, &tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 var RoleTables = []interface{}{
 	&Role{},
 	&RoleTag{},
+	&RolePolicy{},
 }
 
 func (c *Client) roles(gConfig interface{}) error {
@@ -114,7 +148,11 @@ func (c *Client) roles(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformRoles(output.Roles))
+		tValues, err := c.transformRoles(output.Roles)
+		if err != nil {
+			return err
+		}
+		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "iam.roles"), zap.Int("count", len(output.Roles)))
 		if aws.StringValue(output.Marker) == "" {
 			break

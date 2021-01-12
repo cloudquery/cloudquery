@@ -29,10 +29,27 @@ type User struct {
 	UserName   *string                     `csv:"user"`
 	AccessKeys []*UserAccessKey            `gorm:"constraint:OnDelete:CASCADE;"`
 	AttachedPolicies []*UserAttachedPolicy `gorm:"constraint:OnDelete:CASCADE;"`
+	Groups []*UserGroup `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (User) TableName() string {
 	return "aws_iam_users"
+}
+
+type UserGroup struct {
+	ID        uint   `gorm:"primarykey"`
+	UserID    uint   `neo:"ignore"`
+	AccountID string `gorm:"-"`
+
+	Arn        *string
+	CreateDate *time.Time
+	GroupId    *string
+	GroupName  *string
+	Path       *string
+}
+
+func (UserGroup) TableName() string {
+	return "aws_iam_user_groups"
 }
 
 type UserAccessKey struct {
@@ -63,6 +80,22 @@ type UserTag struct {
 
 func (UserTag) TableName() string {
 	return "aws_iam_user_tags"
+}
+
+
+func (c *Client) transformUserGroups(values []*iam.Group) []*UserGroup {
+	var tValues []*UserGroup
+	for _, value := range values {
+		tValues = append(tValues, &UserGroup{
+			AccountID:  c.accountID,
+			Arn:        value.Arn,
+			CreateDate: value.CreateDate,
+			GroupId:    value.GroupId,
+			GroupName:  value.GroupName,
+			Path:       value.Path,
+		})
+	}
+	return tValues
 }
 
 func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) (*UserAccessKey, error) {
@@ -182,6 +215,20 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			listAttachedUserPoliciesInput.Marker = outputAttachedPolicies.Marker
 		}
 
+		listGroupsForUserInput := iam.ListGroupsForUserInput{
+			UserName: &reportUser.User,
+		}
+		for {
+			outputListGroupsForUsers, err := c.svc.ListGroupsForUser(&listGroupsForUserInput)
+			if err != nil {
+				return nil, err
+			}
+			res.Groups = append(res.Groups, c.transformUserGroups(outputListGroupsForUsers.Groups)...)
+			if outputListGroupsForUsers.Marker == nil {
+				break
+			}
+			listGroupsForUserInput.Marker = outputListGroupsForUsers.Marker
+		}
 	}
 
 	switch strings.ToLower(reportUser.PasswordEnabled) {
@@ -238,6 +285,7 @@ var UserTables = []interface{}{
 	&UserTag{},
 
 	&UserAttachedPolicy{},
+	&UserGroup{},
 }
 
 func (c *Client) users(_ interface{}) error {
