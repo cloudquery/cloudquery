@@ -8,8 +8,6 @@ import (
 	"strings"
 )
 
-var policyHeaderConfig = `queries:`
-
 var awsCIS = `
 views:
   - name: "aws_log_metric_filter_and_alarm"
@@ -234,10 +232,6 @@ var policyCmd = &cobra.Command{
 			return fmt.Errorf("invalid argument %s for cloudquery gen policy. choose from %v", args[0], validArgs)
 		}
 		var s strings.Builder
-		_, err = s.WriteString(policyHeaderConfig)
-		if err != nil {
-			return err
-		}
 		for _, provider := range args {
 			s.WriteString(policies[provider])
 		}
