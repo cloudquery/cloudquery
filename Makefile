@@ -31,14 +31,18 @@ release:
 		troian/golang-cross:${GOLANG_CROSS_VERSION} \
 		release --rm-dist
 
-.PHONY: docker
-docker:
-	@docker build -t cloudquery:latest .
+.PHONY: build
+build: config
+	@GOOS=linux go build -o bin/cloudquery
 
-.PHONY: docker-test
-docker-test:
-	@docker build -t cloudquery:test -f Dockerfile.test .
+.PHONY: config
+config:
+	@cp config.yml bin/config.yml
 
-.PHONY: docker-publish
-	@docker tag cloudquery-test:latest public.ecr.aws/d1r4a9i9/cloudquery-test:latest \
-	&& docker push public.ecr.aws/d1r4a9i9/cloudquery-test:latest
+.PHONY: plan
+plan:
+	@cd deploy/aws/terraform && terraform plan
+
+.PHONY: apply
+apply:
+	@cd deploy/aws/terraform && terraform apply
