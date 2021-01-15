@@ -3,6 +3,7 @@
 .vscode
 cloudquery
 cloudquery.db
+cloudquery.zip
 config.yml
 policy.yml
 dist/

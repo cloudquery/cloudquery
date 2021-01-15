@@ -17,9 +17,15 @@ resource "aws_iam_role" "iam_for_cloudquery" {
 EOF
 }
 
+data "archive_file" "zip" {
+  type        = "zip"
+  source_file = "../../../bin/cloudquery"
+  output_path = "cloudquery.zip"
+}
+
 
 resource "aws_iam_role_policy_attachment" "cloudquery_role_attachment" {
-  role       = aws_iam_role.iam_for_lambda.name
+  role       = aws_iam_role.iam_for_cloudquery.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
@@ -29,12 +35,14 @@ resource "aws_lambda_function" "cloudquery" {
   function_name = "cloudquery"
   filename      = "cloudquery.zip"
   runtime       = "go1.x"
-  role          = aws_iam_role.iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_cloudquery.arn
+
+  source_code_hash = data.archive_file.zip.output_base64sha256
 
   environment {
     variables = {
-      CLOUDQUERY_DRIVER = "mysql",
-      CLOUDQUERY_DATABASE_STRING = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/${aws_rds_cluster.cloudquery.database_name}"
+      CQ_DRIVER= "mysql",
+      CQ_DSN = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/cloudquery"
     }
   }
 }

@@ -1,55 +1,31 @@
-package cmd
+package deploy
 
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
-
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/cloudquery/cloudquery/cloudqueryclient"
-	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"log"
 )
 
-var DRIVER string
-var DSN string
 
 type Request struct {
 	TaskName string `json:"taskName"`
 }
 
-// lambdaCmd represents the lambda command
-var lambdaCmd = &cobra.Command{
-	Use:   "lambda",
-	Short: "Runs cloudquery compatibly with AWS Lambda",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		if env := os.Getenv("AWS_LAMBDA_RUNTIME_API"); env != "" {
-			lambda.Start(LambdaHandler)
-		} else if len(args) > 0 {
-			TaskExecutor(args[0])
-		} else {
-			return fmt.Errorf("No AWS_LAMBDA_RUNTIME_API environment variable detected, or no argument was passed.")
-		}
-		return nil
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(lambdaCmd)
-	DRIVER = os.Getenv("CLOUDQUERY_DRIVER")
-	DSN = os.Getenv("CLOUDQUERY_DATABASE_STRING")
-}
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
 	return TaskExecutor(req.TaskName)
 }
 
 func TaskExecutor(taskName string) (string, error) {
+	driver := viper.GetString("driver")
+	dsn := viper.GetString("dsn")
 	switch taskName {
 	case "fetch":
-		Fetch(DRIVER, DSN, false)
+		Fetch(driver, dsn, false)
 	case "policy":
-		Policy(DRIVER, DSN, false)
+		Policy(driver, dsn, false)
 	default:
 		return fmt.Sprintf("Unknown task: %s", taskName), fmt.Errorf("Unkown task: %s", taskName)
 	}

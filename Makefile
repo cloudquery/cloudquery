@@ -33,16 +33,19 @@ release:
 
 .PHONY: build
 build: config
-	@GOOS=linux go build -o bin/cloudquery
+	@GOOS=linux GOARCH=amd64 go build -o bin/cloudquery
+	cd bin
+	zip cloudquery cloudquery config.yml
+	mv cloudquery.zip deploy/aws/terraform/cloudquery.zip
 
 .PHONY: config
 config:
 	@cp config.yml bin/config.yml
 
 .PHONY: plan
-plan:
+plan: build
 	@cd deploy/aws/terraform && terraform plan
 
 .PHONY: apply
-apply:
+apply: build
 	@cd deploy/aws/terraform && terraform apply
