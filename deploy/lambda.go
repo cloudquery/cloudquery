@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/cloudqueryclient"
-	"github.com/spf13/viper"
+	"os"
 	"log"
 )
 
@@ -19,8 +19,8 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 }
 
 func TaskExecutor(taskName string) (string, error) {
-	driver := viper.GetString("driver")
-	dsn := viper.GetString("dsn")
+	driver := os.Getenv("CQ_DRIVER")
+	dsn := os.Getenv("CQ_DSN")
 	switch taskName {
 	case "fetch":
 		Fetch(driver, dsn, false)
@@ -46,5 +46,16 @@ func Fetch(driver, dsn string, verbose bool) {
 
 // Runs a policy SQL statement and returns results
 func Policy(driver, dsn string, verbose bool) {
-	fmt.Println("Running policy queries")
+	outputPath := "/tmp/result.json"
+	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
+	client, err := cloudqueryclient.New(driver, dsn, verbose)
+	if err != nil {
+		log.Fatalf("Unable to initialize client: %s", err)
+	}
+	err = client.RunQuery(queryPath, outputPath)
+	if err != nil {
+		log.Fatalf("Error running query: %s", err)
+	}
+
+
 }

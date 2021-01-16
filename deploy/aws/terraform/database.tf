@@ -4,7 +4,15 @@ resource "aws_rds_cluster" "cloudquery" {
   engine_version     = "5.7.mysql_aurora.2.07.1"
   engine_mode        = "serverless"
   master_username    = "cloudquery"
+  database_name      = "cloudquery"
   master_password    = random_password.password.result
+
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+
+  vpc_security_group_ids = [aws_security_group.allow_mysql.id]
+
+  skip_final_snapshot = true
+  apply_immediately = true
 
   scaling_configuration {
     auto_pause               = true
@@ -19,6 +27,15 @@ resource "random_password" "password" {
   length           = 16
   special          = true
   override_special = "_%@"
+}
+
+resource "aws_db_subnet_group" "rds_subnet_group" {
+  name       = "rds_subnet_group"
+  subnet_ids = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
+
+  tags = {
+    Name = "Cloudquery RDS Subnet group"
+  }
 }
 
 resource "aws_ssm_parameter" "cloudquery_master_password" {

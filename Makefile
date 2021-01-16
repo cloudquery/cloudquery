@@ -33,19 +33,23 @@ release:
 
 .PHONY: build
 build: config
-	@GOOS=linux GOARCH=amd64 go build -o bin/cloudquery
-	cd bin
-	zip cloudquery cloudquery config.yml
-	mv cloudquery.zip deploy/aws/terraform/cloudquery.zip
+	@docker run \
+		--rm -v "${PWD}":/var/task \
+		-w /var/task \
+		-e GOOS=linux \
+		-e GOARCH=amd64 \
+		-e CGO_ENABLED=1 \
+		lambci/lambda:build-go1.x \
+		go build -v -o bin/cloudquery
 
 .PHONY: config
 config:
 	@cp config.yml bin/config.yml
 
 .PHONY: plan
-plan: build
+plan:
 	@cd deploy/aws/terraform && terraform plan
 
 .PHONY: apply
-apply: build
+apply:
 	@cd deploy/aws/terraform && terraform apply
