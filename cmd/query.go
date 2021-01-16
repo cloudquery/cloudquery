@@ -11,6 +11,8 @@ var queryCmd = &cobra.Command{
 	Short:   "Run queries specified in a policy file",
 	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
+		viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")
@@ -29,8 +31,6 @@ func init() {
 	queryCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver (env CQ_DRIVER)")
 	queryCmd.Flags().String("path", "./policy.yml", "path to a policy file. can be generated with 'gen policy' command (env CQ_POLICY_PATH)")
 	queryCmd.Flags().String("output", "", "output path to store results as json file (env CQ_OUTPUT)")
-	viper.BindPFlag("dsn", queryCmd.Flags().Lookup("dsn"))
-	viper.BindPFlag("driver", queryCmd.Flags().Lookup("driver"))
 	viper.BindPFlag("policy_path", queryCmd.Flags().Lookup("path"))
 	viper.BindPFlag("output", queryCmd.Flags().Lookup("output"))
 

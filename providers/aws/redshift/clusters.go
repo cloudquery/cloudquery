@@ -137,13 +137,13 @@ func (ClusterParameterStatus) TableName() string {
 }
 
 type ClusterParameterGroupStatus struct {
-	ID                         uint                      `gorm:"primarykey"`
-	AccountID                  string                    `gorm:"-"`
-	Region                     string                    `gorm:"-"`
-	ClusterID                  uint                      `neo:"ignore"`
-	ClusterParameterStatusList []*ClusterParameterStatus `gorm:"constraint:OnDelete:CASCADE;"`
-	ParameterApplyStatus       *string
-	ParameterGroupName         *string
+	ID                   uint                      `gorm:"primarykey"`
+	AccountID            string                    `gorm:"-"`
+	Region               string                    `gorm:"-"`
+	ClusterID            uint                      `neo:"ignore"`
+	List                 []*ClusterParameterStatus `gorm:"constraint:OnDelete:CASCADE;"`
+	ParameterApplyStatus *string
+	ParameterGroupName   *string
 }
 
 func (ClusterParameterGroupStatus) TableName() string {
@@ -378,11 +378,11 @@ func (c *Client) transformClusterParameterGroupStatuss(values []*redshift.Cluste
 	var tValues []*ClusterParameterGroupStatus
 	for _, value := range values {
 		tValue := ClusterParameterGroupStatus{
-			AccountID:                  c.accountID,
-			Region:                     c.region,
-			ClusterParameterStatusList: c.transformClusterParameterStatuss(value.ClusterParameterStatusList),
-			ParameterApplyStatus:       value.ParameterApplyStatus,
-			ParameterGroupName:         value.ParameterGroupName,
+			AccountID:            c.accountID,
+			Region:               c.region,
+			List:                 c.transformClusterParameterStatuss(value.ClusterParameterStatusList),
+			ParameterApplyStatus: value.ParameterApplyStatus,
+			ParameterGroupName:   value.ParameterGroupName,
 		}
 		tValues = append(tValues, &tValue)
 	}

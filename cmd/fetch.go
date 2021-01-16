@@ -13,6 +13,8 @@ var fetchCmd = &cobra.Command{
 	Short:   "Fetch data from configured cloud APIs to specified SQL database",
 	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
+		viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		configPath := viper.GetString("config_path")
@@ -30,8 +32,6 @@ func init() {
 	fetchCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j (env: CQ_DRIVER)")
 	fetchCmd.Flags().String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	fetchCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
-	viper.BindPFlag("dsn", fetchCmd.Flags().Lookup("dsn"))
-	viper.BindPFlag("driver", fetchCmd.Flags().Lookup("driver"))
 	viper.BindPFlag("config_path", fetchCmd.Flags().Lookup("path"))
 
 	rootCmd.AddCommand(fetchCmd)
