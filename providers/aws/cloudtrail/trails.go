@@ -63,14 +63,15 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 	var tValues []*Trail
 	for _, value := range values {
 		groupName := ""
-		if value.CloudWatchLogsLogGroupArn == nil {
-			c.log.Warn("CloudWatchLogsLogGroupARN is empty")
+		if value.CloudWatchLogsLogGroupArn != nil {
 			matches := groupNameRegex.FindStringSubmatch(*value.CloudWatchLogsLogGroupArn)
 			if len(matches) < 2 {
 				c.log.Warn("CloudWatchLogsLogGroupARN doesn't fit standard regex", zap.String("arn", *value.CloudWatchLogsLogGroupArn))
 			} else {
 				groupName = matches[1]
 			}
+		} else {
+			c.log.Info("CloudWatchLogsLogGroupARN is empty")
 		}
 
 		statusOutput, err := c.svc.GetTrailStatus(&cloudtrail.GetTrailStatusInput{Name: value.TrailARN})

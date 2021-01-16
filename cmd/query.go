@@ -11,6 +11,8 @@ var queryCmd = &cobra.Command{
 	Short:   "Run queries specified in a policy file",
 	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
+		viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")

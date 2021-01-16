@@ -13,6 +13,8 @@ var fetchCmd = &cobra.Command{
 	Short:   "Fetch data from configured cloud APIs to specified SQL database",
 	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
+		viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		configPath := viper.GetString("config_path")
