@@ -180,7 +180,8 @@ func (p *Provider) Run(config interface{}) error {
 		return err
 	}
 	if len(p.config.Resources) == 0 {
-		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/aws/tables-reference")
+		p.log.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
+		return nil
 	}
 	regions := p.config.Regions
 	if len(regions) == 0 {

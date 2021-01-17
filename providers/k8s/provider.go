@@ -56,7 +56,7 @@ func (p *Provider) Run(config interface{}) error {
 		return err
 	}
 	if len(p.config.Resources) == 0 {
-		p.log.Warn("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/k8s/reference")
+		p.log.Info("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/k8s/reference")
 		return nil
 	}
 
