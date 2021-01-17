@@ -4,7 +4,6 @@ GOLANG_CROSS_VERSION  ?= v1.15.2
 .PHONY: release-dry-run
 release-dry-run:
 	@docker run \
-		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
 		-v /var/run/docker.sock:/var/run/docker.sock \
