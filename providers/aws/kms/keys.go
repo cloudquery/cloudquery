@@ -71,18 +71,21 @@ func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) (*Key, error) {
 	if err != nil {
 		return nil, err
 	}
-	outputKeyRotation, err := c.svc.GetKeyRotationStatus(&kms.GetKeyRotationStatusInput{
-		KeyId: value.KeyId,
-	})
-	if err != nil {
-		return nil, err
+	var outputKeyRotation *kms.GetKeyRotationStatusOutput
+	if aws.StringValue(output.KeyMetadata.Origin) != "EXTERNAL" {
+		outputKeyRotation, err = c.svc.GetKeyRotationStatus(&kms.GetKeyRotationStatusInput{
+			KeyId: value.KeyId,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	res := Key{
 		Region:                c.region,
 		AccountID:             c.accountID,
 		Arn:                   value.KeyArn,
 		KeyId:                 value.KeyId,
-		RotationEnabled:       outputKeyRotation.KeyRotationEnabled,
 		CloudHsmClusterId:     output.KeyMetadata.CloudHsmClusterId,
 		CreationDate:          output.KeyMetadata.CreationDate,
 		CustomKeyStoreId:      output.KeyMetadata.CustomKeyStoreId,
@@ -96,6 +99,10 @@ func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) (*Key, error) {
 		KeyUsage:              output.KeyMetadata.KeyUsage,
 		Origin:                output.KeyMetadata.Origin,
 		ValidTo:               output.KeyMetadata.ValidTo,
+	}
+
+	if outputKeyRotation != nil {
+		res.RotationEnabled = outputKeyRotation.KeyRotationEnabled
 	}
 
 	for _, algorithm := range output.KeyMetadata.EncryptionAlgorithms {

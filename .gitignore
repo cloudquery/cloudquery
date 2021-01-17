@@ -3,7 +3,7 @@
 .vscode
 cloudquery
 cloudquery.db
-config.yml
+/config.yml
 policy.yml
 dist/
 .release-env

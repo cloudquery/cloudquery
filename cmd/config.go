@@ -13,7 +13,7 @@ var headerConfig = `providers:`
 var awsConfig = `
   - name: aws
 #    accounts: # Optional. if you want to assume role to multiple account and fetch data from them
-#      - role_arn: arn:aws:iam::966797507899:role/user
+#      - role_arn: <CHANGE_THIS>
 #    regions: # Optional. if commented out assumes all regions
 #      - us-east-1
 #      - us-west-2
