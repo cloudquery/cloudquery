@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/cloudqueryclient"
-	"os"
 	"log"
+	"os"
 )
 
 

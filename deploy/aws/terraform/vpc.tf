@@ -23,7 +23,7 @@ resource "aws_subnet" "rds_subnet_b" {
   availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name = "Private RDS Subne B"
+    Name = "Private RDS Subnet B"
   }
 }
 

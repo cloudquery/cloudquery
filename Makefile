@@ -44,7 +44,7 @@ build: config
 
 .PHONY: config
 config:
-	@cp config.yml bin/config.yml
+	@go run main.go gen config aws --path ./bin/config.yml
 
 .PHONY: plan
 plan:

@@ -17,6 +17,31 @@ resource "aws_iam_role" "iam_for_cloudquery" {
 EOF
 }
 
+data "aws_iam_policy_document" "policy_document" {
+  statement {
+    sid = "1"
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = [
+      "arn:aws:s3:::${var.bucket}"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "policy" {
+  name = "cloudquery_policy"
+  path = "/"
+  policy = data.aws_iam_policy_document.policy_document.json
+}
+
+resource "aws_s3_bucket_object" "file_upload" {
+  bucket = var.bucket
+  key    = "lambda-functions/cloudquery.zip"
+  source = data.archive_file.zip.output_path
+
+}
+
 data "archive_file" "zip" {
   type        = "zip"
   source_dir = "../../../bin"
@@ -34,16 +59,26 @@ resource "aws_iam_role_policy_attachment" "cloudquery_role_attachment2" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "cloudquery_role_attachment3" {
+  role       = aws_iam_role.iam_for_cloudquery.name
+  policy_arn = aws_iam_policy.policy.arn
+}
+
 resource "aws_lambda_function" "cloudquery" {
   handler       = "cloudquery"
   function_name = "cloudquery"
-  filename      = "cloudquery.zip"
+  s3_bucket = var.bucket
+  s3_key = "lambda-functions/cloudquery.zip"
   runtime       = "go1.x"
   role          = aws_iam_role.iam_for_cloudquery.arn
   timeout       = 900
   memory_size   = 256
 
   source_code_hash = data.archive_file.zip.output_base64sha256
+
+  depends_on = [
+    aws_s3_bucket_object.file_upload
+  ]
 
   vpc_config {
     subnet_ids         = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
