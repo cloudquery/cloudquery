@@ -74,9 +74,11 @@ var gcpConfig = `
       - name: compute.interconnects
       - name: compute.ssl_certificates
       - name: compute.vpn_gateways
+      - name: compute.forwarding_rules
       - name: iam.project_roles
       - name: iam.service_accounts
-      - name: storage.buckets`
+      - name: storage.buckets
+      - name: sql.instances`
 
 var oktaConfig = `
   - name: okta
