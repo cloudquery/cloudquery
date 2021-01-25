@@ -27,11 +27,14 @@ var VirtualMFADeviceTables = []interface{}{
 func (c *Client) transformMFADevices(values []*iam.VirtualMFADevice) []*VirtualMFADevice {
 	var tValues []*VirtualMFADevice
 	for _, v := range values {
-		tValues = append(tValues, &VirtualMFADevice{
+		tValue := VirtualMFADevice{
 			SerialNumber: v.SerialNumber,
-			UserARN: 		v.User.Arn,
 			EnableDate:   v.EnableDate,
-		})
+		}
+		if v.User != nil {
+			tValue.UserARN = v.User.Arn
+		}
+		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
