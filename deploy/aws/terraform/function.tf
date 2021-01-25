@@ -82,7 +82,7 @@ resource "aws_lambda_function" "cloudquery" {
 
   vpc_config {
     subnet_ids         = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
-    security_group_ids = [aws_security_group.allow_mysql.id]
+    security_group_ids = [aws_security_group.allow_mysql.id, aws_security_group.allow_egress.id]
   }
 
   environment {
