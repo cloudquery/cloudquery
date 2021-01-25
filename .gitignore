@@ -5,7 +5,7 @@ crash.log
 cloudquery
 cloudquery.db
 cloudquery.zip
-config.yml
+/config.yml
 policy.yml
 dist/
 vendor/

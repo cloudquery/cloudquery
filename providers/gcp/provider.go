@@ -7,12 +7,13 @@ import (
 	"github.com/cloudquery/cloudquery/providers/gcp/compute"
 	"github.com/cloudquery/cloudquery/providers/gcp/iam"
 	"github.com/cloudquery/cloudquery/providers/gcp/resource"
+	"github.com/cloudquery/cloudquery/providers/gcp/sql"
 	"github.com/cloudquery/cloudquery/providers/gcp/storage"
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/googleapi"
 	"log"
 	"strings"
 	"sync"
@@ -41,12 +42,14 @@ var resourceFactory = map[string]NewResourceFunc{
 	"compute": compute.NewClient,
 	"iam":     iam.NewClient,
 	"storage": storage.NewClient,
+	"sql": sql.NewClient,
 }
 
 var tablesArr = [][]interface{}{
 	compute.AddressTables,
 	compute.AutoscalerTables,
 	compute.DiskTypeTables,
+	compute.ForwardingRuleTables,
 	compute.ImageTables,
 	compute.InstanceTables,
 	compute.InterconnectTables,
@@ -55,6 +58,7 @@ var tablesArr = [][]interface{}{
 	iam.RoleTables,
 	iam.ServiceAccountTables,
 	storage.BucketTables,
+	sql.DatabaseInstanceTables,
 }
 
 func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
@@ -81,7 +85,8 @@ func (p *Provider) Run(config interface{}) error {
 		return err
 	}
 	if len(p.config.Resources) == 0 {
-		return fmt.Errorf("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/gcp/tables-reference")
+		p.log.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/gcp/tables-reference")
+		return nil
 	}
 
 	var projectIDs []string

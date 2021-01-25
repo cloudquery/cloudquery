@@ -43,20 +43,20 @@ type Disk struct {
 	DiskSizeBytes                        *int64
 	UniqueID                             *string
 
-	EncryptionSettingsCollectionEnabled                   *bool
-	EncryptionSettingsCollectionEncryptionSettings        []*DiskEncryptionSettingsElement `gorm:"constraint:OnDelete:CASCADE;"`
-	EncryptionSettingsCollectionEncryptionSettingsVersion *string
-	ProvisioningState                                     *string
-	DiskIOPSReadWrite                                     *int64
-	DiskMBpsReadWrite                                     *int64
-	DiskIOPSReadOnly                                      *int64
-	DiskMBpsReadOnly                                      *int64
-	DiskState                                             string
+	EncryptionSettingsCollectionEnabled         *bool
+	EncryptionSettingsCollectionSettings        []*DiskEncryptionSetting `gorm:"constraint:OnDelete:CASCADE;"`
+	EncryptionSettingsCollectionSettingsVersion *string
+	ProvisioningState                           *string
+	DiskIOPSReadWrite                           *int64
+	DiskMBpsReadWrite                           *int64
+	DiskIOPSReadOnly                            *int64
+	DiskMBpsReadOnly                            *int64
+	DiskState                                   string
 
 	EncryptionDiskEncryptionSetID *string
 	EncryptionType                string
 	MaxShares                     *int32
-	ShareInfo                     []*DiskShareInfoElement `gorm:"constraint:OnDelete:CASCADE;"`
+	ShareInfo                     []*DiskShareInfo `gorm:"constraint:OnDelete:CASCADE;"`
 	NetworkAccessPolicy           string
 	DiskAccessID                  *string
 	ResourceID                    *string
@@ -82,7 +82,7 @@ type DiskZones struct {
 	SubscriptionID string `gorm:"-"`
 	Value          string
 }
-type DiskEncryptionSettingsElement struct {
+type DiskEncryptionSetting struct {
 	ID             uint   `gorm:"primarykey"`
 	DiskID         uint   `neo:"ignore"`
 	SubscriptionID string `gorm:"-"`
@@ -94,19 +94,19 @@ type DiskEncryptionSettingsElement struct {
 	KeyEncryptionKeyURL           *string
 }
 
-func (DiskEncryptionSettingsElement) TableName() string {
-	return "azure_compute_disk_encryption_settings_elements"
+func (DiskEncryptionSetting) TableName() string {
+	return "azure_compute_disk_encryption_settings"
 }
 
-type DiskShareInfoElement struct {
+type DiskShareInfo struct {
 	ID             uint   `gorm:"primarykey"`
 	DiskID         uint   `neo:"ignore"`
 	SubscriptionID string `gorm:"-"`
 	VMURI          *string
 }
 
-func (DiskShareInfoElement) TableName() string {
-	return "azure_compute_disk_share_info_elements"
+func (DiskShareInfo) TableName() string {
+	return "azure_compute_disk_share_info"
 }
 
 type DiskTag struct {
@@ -140,9 +140,9 @@ func transformDisks(subscriptionID string, values []compute.Disk) []*Disk {
 		}
 
 		if value.EncryptionSettingsCollection != nil {
-			tValue.EncryptionSettingsCollectionEncryptionSettings = transformDiskEncryptionSettingsElements(subscriptionID, value.EncryptionSettingsCollection.EncryptionSettings)
+			tValue.EncryptionSettingsCollectionSettings = transformDiskEncryptionSettingsElements(subscriptionID, value.EncryptionSettingsCollection.EncryptionSettings)
 			tValue.EncryptionSettingsCollectionEnabled = value.EncryptionSettingsCollection.Enabled
-			tValue.EncryptionSettingsCollectionEncryptionSettingsVersion = value.EncryptionSettingsCollection.EncryptionSettingsVersion
+			tValue.EncryptionSettingsCollectionSettingsVersion = value.EncryptionSettingsCollection.EncryptionSettingsVersion
 		}
 
 		if value.Encryption != nil {
@@ -211,10 +211,10 @@ func transformDiskZones(subscriptionID string, values []string) []*DiskZones {
 	return tValues
 }
 
-func transformDiskEncryptionSettingsElements(subscriptionID string, values *[]compute.EncryptionSettingsElement) []*DiskEncryptionSettingsElement {
-	var tValues []*DiskEncryptionSettingsElement
+func transformDiskEncryptionSettingsElements(subscriptionID string, values *[]compute.EncryptionSettingsElement) []*DiskEncryptionSetting {
+	var tValues []*DiskEncryptionSetting
 	for _, value := range *values {
-		tValue := DiskEncryptionSettingsElement{
+		tValue := DiskEncryptionSetting{
 			SubscriptionID: subscriptionID,
 		}
 		if value.DiskEncryptionKey != nil {
@@ -234,10 +234,10 @@ func transformDiskEncryptionSettingsElements(subscriptionID string, values *[]co
 	return tValues
 }
 
-func transformDiskShareInfoElements(subscriptionID string, values *[]compute.ShareInfoElement) []*DiskShareInfoElement {
-	var tValues []*DiskShareInfoElement
+func transformDiskShareInfoElements(subscriptionID string, values *[]compute.ShareInfoElement) []*DiskShareInfo {
+	var tValues []*DiskShareInfo
 	for _, value := range *values {
-		tValue := DiskShareInfoElement{
+		tValue := DiskShareInfo{
 			SubscriptionID: subscriptionID,
 			VMURI:          value.VMURI,
 		}
@@ -265,8 +265,8 @@ type DiskConfig struct {
 
 var DiskTables = []interface{}{
 	&Disk{},
-	&DiskEncryptionSettingsElement{},
-	&DiskShareInfoElement{},
+	&DiskEncryptionSetting{},
+	&DiskShareInfo{},
 	&DiskTag{},
 }
 
