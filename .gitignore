@@ -9,6 +9,7 @@ cloudquery.zip
 policy.yml
 dist/
 vendor/
+bin/
 .release-env
 
 *.tfstate*

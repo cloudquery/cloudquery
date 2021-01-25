@@ -43,12 +43,12 @@ build: config
 
 .PHONY: config
 config:
-	@go run main.go gen config aws --path ./bin/config.yml
+	@go run main.go gen config aws --force --path ./bin/config.yml
 
 .PHONY: plan
 plan:
-	@cd deploy/aws/terraform && terraform plan
+	@cd deploy/aws/terraform && terraform init && terraform plan
 
 .PHONY: apply
 apply:
-	@cd deploy/aws/terraform && terraform apply
+	@cd deploy/aws/terraform && terraform init && terraform apply

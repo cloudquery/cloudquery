@@ -116,6 +116,7 @@ var initialConfigs = map[string]string{
 
 var validArgs = []string{"aws", "gcp", "okta", "azure", "k8s"}
 var configPath = "./config.yml"
+var force = false
 
 var configCmd = &cobra.Command{
 	Use:       fmt.Sprintf("config [choose one or more of: %s]", strings.Join(validArgs, ",")),
@@ -136,9 +137,9 @@ var configCmd = &cobra.Command{
 			s.WriteString(initialConfigs[provider])
 		}
 		s.WriteString("\n")
-		if _, err := os.Stat(configPath); err == nil {
+		if _, err := os.Stat(configPath); err == nil && !force {
 			return fmt.Errorf("file %s already exists. Either delete it or specify other path via --path flag", configPath)
-		} else if os.IsNotExist(err) {
+		} else if os.IsNotExist(err) || force {
 			return ioutil.WriteFile(configPath, []byte(s.String()), 0644)
 		} else {
 			return err
@@ -149,4 +150,5 @@ var configCmd = &cobra.Command{
 func init() {
 	genCmd.AddCommand(configCmd)
 	configCmd.Flags().StringVar(&configPath, "path", configPath, "path to output generated config file")
+	configCmd.Flags().BoolVar(&force, "force", force, "override output")
 }
