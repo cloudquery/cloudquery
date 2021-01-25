@@ -1,9 +1,15 @@
 .DS_store
+crash.log
 .idea
 .vscode
 cloudquery
 cloudquery.db
+cloudquery.zip
 /config.yml
 policy.yml
 dist/
+vendor/
 .release-env
+
+*.tfstate*
+.terraform*
