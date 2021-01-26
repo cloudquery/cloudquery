@@ -1,11 +1,12 @@
 package iam
 
 import (
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"time"
 )
 
 type Role struct {
@@ -26,8 +27,8 @@ type Role struct {
 	LastUsedRegion *string
 
 	RoleName *string
-	Tags     []*RoleTag `gorm:"constraint:OnDelete:CASCADE;"`
-	Policies  []*RolePolicy `gorm:"constraint:OnDelete:CASCADE;"`
+	Tags     []*RoleTag    `gorm:"constraint:OnDelete:CASCADE;"`
+	Policies []*RolePolicy `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (Role) TableName() string {
@@ -47,10 +48,10 @@ func (RoleTag) TableName() string {
 }
 
 type RolePolicy struct {
-	ID uint `gorm:"primarykey"`
-	RoleID uint `neo:"ignore"`
-	AccountID string `gorm:"-"`
-	PolicyArn *string
+	ID         uint   `gorm:"primarykey"`
+	RoleID     uint   `neo:"ignore"`
+	AccountID  string `gorm:"-"`
+	PolicyArn  *string
 	PolicyName *string
 }
 
@@ -62,8 +63,8 @@ func (c *Client) transformRolesPolicies(values []*iam.AttachedPolicy) []*RolePol
 	var tValues []*RolePolicy
 	for _, value := range values {
 		tValue := RolePolicy{
-			AccountID: c.accountID,
-			PolicyArn: value.PolicyArn,
+			AccountID:  c.accountID,
+			PolicyArn:  value.PolicyArn,
 			PolicyName: value.PolicyName,
 		}
 		tValues = append(tValues, &tValue)
@@ -96,7 +97,6 @@ func (c *Client) transformRoles(values []*iam.Role) ([]*Role, error) {
 			Path:                     value.Path,
 			RoleId:                   value.RoleId,
 			RoleName:                 value.RoleName,
-			Tags:                     c.transformRoleTags(value.Tags),
 		}
 
 		if value.PermissionsBoundary != nil {
@@ -122,6 +122,21 @@ func (c *Client) transformRoles(values []*iam.Role) ([]*Role, error) {
 				break
 			}
 			listAttachedRolePoliciesInput.Marker = outputAttachedPolicies.Marker
+		}
+
+		listRoleTagsInput := iam.ListRoleTagsInput{
+			RoleName: value.RoleName,
+		}
+		for {
+			outputRoleTags, err := c.svc.ListRoleTags(&listRoleTagsInput)
+			if err != nil {
+				return nil, err
+			}
+			tValue.Tags = append(tValue.Tags, c.transformRoleTags(outputRoleTags.Tags)...)
+			if outputRoleTags.Marker == nil {
+				break
+			}
+			listRoleTagsInput.Marker = outputRoleTags.Marker
 		}
 
 		tValues = append(tValues, &tValue)
