@@ -1,12 +1,13 @@
 package iam
 
 import (
+	"strings"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
-	"strings"
-	"time"
 )
 
 type User struct {
@@ -24,12 +25,12 @@ type User struct {
 	PermissionsBoundaryArn  *string
 	PermissionsBoundaryType *string
 
-	Tags       []*UserTag `gorm:"constraint:OnDelete:CASCADE;"`
-	UserId     *string
-	UserName   *string                     `csv:"user"`
-	AccessKeys []*UserAccessKey            `gorm:"constraint:OnDelete:CASCADE;"`
+	Tags             []*UserTag `gorm:"constraint:OnDelete:CASCADE;"`
+	UserId           *string
+	UserName         *string               `csv:"user"`
+	AccessKeys       []*UserAccessKey      `gorm:"constraint:OnDelete:CASCADE;"`
 	AttachedPolicies []*UserAttachedPolicy `gorm:"constraint:OnDelete:CASCADE;"`
-	Groups []*UserGroup `gorm:"constraint:OnDelete:CASCADE;"`
+	Groups           []*UserGroup          `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (User) TableName() string {
@@ -81,7 +82,6 @@ type UserTag struct {
 func (UserTag) TableName() string {
 	return "aws_iam_user_tags"
 }
-
 
 func (c *Client) transformUserGroups(values []*iam.Group) []*UserGroup {
 	var tValues []*UserGroup
@@ -154,8 +154,8 @@ type ReportUser struct {
 	PasswordLastChanged   string    `csv:"password_last_changed"`
 	PasswordNextRotation  string    `csv:"password_next_rotation"`
 	MFAActive             bool      `csv:"mfa_active"`
-	AccessKey1Active        bool      `csv:"access_key_1_active"`
-	AccessKey2Active        bool      `csv:"access_key_2_active"`
+	AccessKey1Active      bool      `csv:"access_key_1_active"`
+	AccessKey2Active      bool      `csv:"access_key_2_active"`
 	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
 	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
 }
@@ -186,7 +186,6 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			res.PermissionsBoundaryType = output.User.PermissionsBoundary.PermissionsBoundaryType
 			res.PermissionsBoundaryArn = output.User.PermissionsBoundary.PermissionsBoundaryArn
 		}
-		res.Tags = c.transformUserTags(output.User.Tags)
 		res.UserId = output.User.UserId
 
 		outputAccessKeys, err := c.svc.ListAccessKeys(&iam.ListAccessKeysInput{
@@ -229,6 +228,22 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			}
 			listGroupsForUserInput.Marker = outputListGroupsForUsers.Marker
 		}
+
+		listUserTagsInput := iam.ListUserTagsInput{
+			UserName: &reportUser.User,
+		}
+		for {
+			outputUserTags, err := c.svc.ListUserTags(&listUserTagsInput)
+			if err != nil {
+				return nil, err
+			}
+			res.Tags = append(res.Tags, c.transformUserTags(outputUserTags.Tags)...)
+			if outputUserTags.Marker == nil {
+				break
+			}
+			listUserTagsInput.Marker = outputUserTags.Marker
+		}
+
 	}
 
 	switch strings.ToLower(reportUser.PasswordEnabled) {
