@@ -1,11 +1,13 @@
 package iam
 
 import (
+	"net/url"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"time"
 )
 
 type Policy struct {
@@ -22,14 +24,49 @@ type Policy struct {
 	PolicyId                      *string `neo:"unique"`
 	PolicyName                    *string
 	UpdateDate                    *time.Time
+	PolicyVersions                []*PolicyVersion `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (Policy) TableName() string {
 	return "aws_iam_policies"
 }
 
-func (c *Client) transformPolicy(value *iam.Policy) *Policy {
-	return &Policy{
+type PolicyVersion struct {
+	ID               uint   `gorm:"primarykey`
+	PolicyID         uint   `neo:"ignore"`
+	AccountID        string `gorm:"-"`
+	VersionID        *string
+	CreateDate       *time.Time
+	Document         *string
+	IsDefaultVersion *bool
+}
+
+func (PolicyVersion) TableName() string {
+	return "aws_iam_policy_versions"
+}
+
+func (c *Client) transformPolicyVersionList(values []*iam.PolicyVersion) ([]*PolicyVersion, error) {
+	var tValues []*PolicyVersion
+
+	for _, value := range values {
+		decodedDocument, err := url.QueryUnescape(*value.Document)
+		if err != nil {
+			return nil, err
+		}
+
+		tValues = append(tValues, &PolicyVersion{
+			AccountID:        c.accountID,
+			VersionID:        value.VersionId,
+			CreateDate:       value.CreateDate,
+			Document:         &decodedDocument,
+			IsDefaultVersion: value.IsDefaultVersion,
+		})
+	}
+	return tValues, nil
+}
+
+func (c *Client) transformPolicy(value *iam.ManagedPolicyDetail) (*Policy, error) {
+	tValue := &Policy{
 		AccountID:                     c.accountID,
 		Arn:                           value.Arn,
 		AttachmentCount:               value.AttachmentCount,
@@ -43,22 +80,35 @@ func (c *Client) transformPolicy(value *iam.Policy) *Policy {
 		PolicyName:                    value.PolicyName,
 		UpdateDate:                    value.UpdateDate,
 	}
+
+	policyVersions, err := c.transformPolicyVersionList(value.PolicyVersionList)
+	if err != nil {
+		return nil, err
+	}
+	tValue.PolicyVersions = append(tValue.PolicyVersions, policyVersions...)
+
+	return tValue, nil
 }
 
-func (c *Client) transformPolicies(values []*iam.Policy) []*Policy {
+func (c *Client) transformPolicies(values []*iam.ManagedPolicyDetail) ([]*Policy, error) {
 	var tValues []*Policy
 	for _, v := range values {
-		tValues = append(tValues, c.transformPolicy(v))
+		policy, err := c.transformPolicy(v)
+		if err != nil {
+			return nil, err
+		}
+		tValues = append(tValues, policy)
 	}
-	return tValues
+	return tValues, nil
 }
 
 var PolicyTables = []interface{}{
 	&Policy{},
+	&PolicyVersion{},
 }
 
 func (c *Client) policies(gConfig interface{}) error {
-	var config iam.ListPoliciesInput
+	var config iam.GetAccountAuthorizationDetailsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
@@ -66,11 +116,17 @@ func (c *Client) policies(gConfig interface{}) error {
 
 	c.db.Where("account_id", c.accountID).Delete(PolicyTables...)
 	for {
-		output, err := c.svc.ListPolicies(&config)
+		output, err := c.svc.GetAccountAuthorizationDetails(&config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformPolicies(output.Policies))
+
+		tValues, err := c.transformPolicies(output.Policies)
+		if err != nil {
+			return err
+		}
+		c.db.ChunkedCreate(tValues)
+
 		c.log.Info("Fetched resources", zap.String("resource", "iam.policies"), zap.Int("count", len(output.Policies)))
 		if aws.StringValue(output.Marker) == "" {
 			break
