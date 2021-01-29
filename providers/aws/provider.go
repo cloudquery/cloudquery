@@ -210,7 +210,8 @@ func (p *Provider) Run(config interface{}) error {
 	for _, account := range p.config.Accounts {
 
 		if account.ID != "default" && account.RoleARN != "" {
-			// assume role if different account
+			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
+			p.session, err = session.NewSession()
 			cred := stscreds.NewCredentials(p.session, account.RoleARN)
 			p.session, err = session.NewSession(&aws.Config{
 				Credentials: cred,
