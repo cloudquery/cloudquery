@@ -182,10 +182,15 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 		defer f.Close()
 	}
 
+	_, err = f.WriteString("[")
+	if err != nil {
+		return err
+	}
+
 	c.log.Info("Executing queries", zap.Int("count", len(config.Queries)))
-	for _, query := range config.Queries {
+	for idx, query := range config.Queries {
 		queryResult := QueryResult{
-			Name:          query.Name,
+			Name:        query.Name,
 			CheckPassed: true,
 		}
 		c.log.Info("Executing query", zap.String("name", query.Name))
@@ -243,11 +248,20 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 			if err != nil {
 				return err
 			}
-			_, err = f.WriteString(string(b) + "\n")
+			outputStr := string(b)
+			if idx != len(config.Queries)-1 {
+				outputStr = outputStr + ","
+			}
+			_, err = f.WriteString(outputStr)
 			if err != nil {
 				return err
 			}
 		}
+	}
+
+	_, err = f.WriteString("]")
+	if err != nil {
+		return err
 	}
 
 	return nil
