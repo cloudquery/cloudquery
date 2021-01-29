@@ -49,9 +49,13 @@ func (c *Client) transformPolicyVersionList(values []*iam.PolicyVersion) ([]*Pol
 	var tValues []*PolicyVersion
 
 	for _, value := range values {
-		decodedDocument, err := url.QueryUnescape(*value.Document)
-		if err != nil {
-			return nil, err
+		var decodedDocument string = ""
+		var err error = nil
+		if value.Document != nil {
+			decodedDocument, err = url.QueryUnescape(*value.Document)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		tValues = append(tValues, &PolicyVersion{

@@ -88,9 +88,13 @@ func (c *Client) transformRoleTags(values []*iam.Tag) []*RoleTag {
 func (c *Client) transformRoles(values []*iam.Role) ([]*Role, error) {
 	var tValues []*Role
 	for _, value := range values {
-		decodedDocument, err := url.QueryUnescape(*value.AssumeRolePolicyDocument)
-		if err != nil {
-			return nil, err
+		var decodedDocument string = ""
+		var err error = nil
+		if value.AssumeRolePolicyDocument != nil {
+			decodedDocument, err = url.QueryUnescape(*value.AssumeRolePolicyDocument)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		tValue := Role{
