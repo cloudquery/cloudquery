@@ -103,6 +103,21 @@ To run AWS CIS pack enter the following commands (make sure you fetched all the 
 ./cloudquery query 
 ``` 
 
+You can also create your own policy file. E.g.:
+
+```yaml
+views:
+  - name: "my_custom_view"
+    query: >
+        CREATE VIEW my_custom_view AS ...
+queries:
+  - name: "Find thing that violates policy"
+    query: >
+        SELECT account_id, arn FROM ...
+```
+
+The `query` command uses the policy file path `./policy.yml` by default, but this can be overridden via the `--path` flag, or the `CQ_POLICY_PATH` environment variable.
+
 Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
 
 ### Providers Authentication
