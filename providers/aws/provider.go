@@ -2,6 +2,10 @@ package aws
 
 import (
 	"fmt"
+	"log"
+	"strings"
+	"sync"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -25,6 +29,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/fsx"
 	"github.com/cloudquery/cloudquery/providers/aws/iam"
 	"github.com/cloudquery/cloudquery/providers/aws/kms"
+	"github.com/cloudquery/cloudquery/providers/aws/organizations"
 	"github.com/cloudquery/cloudquery/providers/aws/rds"
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
@@ -33,9 +38,6 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"log"
-	"strings"
-	"sync"
 )
 
 type Provider struct {
@@ -71,15 +73,16 @@ var globalCollectedResources = map[string]bool{}
 type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger, accountID string, region string) resource.ClientInterface
 
 var globalServices = map[string]ServiceNewFunction{
-	"iam": iam.NewClient,
-	"s3":  s3.NewClient,
+	"iam":           iam.NewClient,
+	"s3":            s3.NewClient,
+	"organizations": organizations.NewClient,
 }
 
 var regionalServices = map[string]ServiceNewFunction{
 	"autoscaling":      autoscaling.NewClient,
 	"cloudtrail":       cloudtrail.NewClient,
-	"cloudwatchlogs":       cloudwatchlogs.NewClient,
-	"cloudwatch": cloudwatch.NewClient,
+	"cloudwatchlogs":   cloudwatchlogs.NewClient,
+	"cloudwatch":       cloudwatch.NewClient,
 	"directconnect":    directconnect.NewClient,
 	"ec2":              ec2.NewClient,
 	"ecr":              ecr.NewClient,
@@ -92,7 +95,7 @@ var regionalServices = map[string]ServiceNewFunction{
 	"kms":              kms.NewClient,
 	"rds":              rds.NewClient,
 	"redshift":         redshift.NewClient,
-	"sns": sns.NewClient,
+	"sns":              sns.NewClient,
 }
 
 var tablesArr = [][]interface{}{
@@ -129,6 +132,7 @@ var tablesArr = [][]interface{}{
 	iam.UserTables,
 	iam.VirtualMFADeviceTables,
 	kms.KeyTables,
+	organizations.AccountTables,
 	rds.ClusterTables,
 	rds.CertificateTables,
 	rds.DBSubnetGroupTables,
