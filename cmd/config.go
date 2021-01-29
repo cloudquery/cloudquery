@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 var headerConfig = `providers:`
@@ -52,6 +53,7 @@ var awsConfig = `
       - name: iam.users
       - name: iam.virtual_mfa_devices
       - name: kms.keys
+      - name: organizations.accounts
       - name: rds.certificates
       - name: rds.clusters
       - name: rds.db_subnet_groups

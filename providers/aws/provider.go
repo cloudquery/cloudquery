@@ -29,6 +29,7 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/fsx"
 	"github.com/cloudquery/cloudquery/providers/aws/iam"
 	"github.com/cloudquery/cloudquery/providers/aws/kms"
+	"github.com/cloudquery/cloudquery/providers/aws/organizations"
 	"github.com/cloudquery/cloudquery/providers/aws/rds"
 	"github.com/cloudquery/cloudquery/providers/aws/redshift"
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
@@ -72,8 +73,9 @@ var globalCollectedResources = map[string]bool{}
 type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger, accountID string, region string) resource.ClientInterface
 
 var globalServices = map[string]ServiceNewFunction{
-	"iam": iam.NewClient,
-	"s3":  s3.NewClient,
+	"iam":           iam.NewClient,
+	"s3":            s3.NewClient,
+	"organizations": organizations.NewClient,
 }
 
 var regionalServices = map[string]ServiceNewFunction{
@@ -130,6 +132,7 @@ var tablesArr = [][]interface{}{
 	iam.UserTables,
 	iam.VirtualMFADeviceTables,
 	kms.KeyTables,
+	organizations.AccountTables,
 	rds.ClusterTables,
 	rds.CertificateTables,
 	rds.DBSubnetGroupTables,
