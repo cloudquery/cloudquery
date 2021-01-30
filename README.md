@@ -1,7 +1,7 @@
-# cloudquery
-
 <p align="center">
-<img alt="cloudquery logo" width="200px" height="200px" src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
+<a href="https://cloudquery.io">
+<img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
+</a>
 </p>
 
 cloudquery transforms your cloud infrastructure into queryable SQL or Graphs for easy monitoring, governance and security.
