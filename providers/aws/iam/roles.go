@@ -1,6 +1,7 @@
 package iam
 
 import (
+	"net/url"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -87,10 +88,19 @@ func (c *Client) transformRoleTags(values []*iam.Tag) []*RoleTag {
 func (c *Client) transformRoles(values []*iam.Role) ([]*Role, error) {
 	var tValues []*Role
 	for _, value := range values {
+		var decodedDocument string = ""
+		var err error = nil
+		if value.AssumeRolePolicyDocument != nil {
+			decodedDocument, err = url.QueryUnescape(*value.AssumeRolePolicyDocument)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		tValue := Role{
 			AccountID:                c.accountID,
 			Arn:                      value.Arn,
-			AssumeRolePolicyDocument: value.AssumeRolePolicyDocument,
+			AssumeRolePolicyDocument: &decodedDocument,
 			CreateDate:               value.CreateDate,
 			Description:              value.Description,
 			MaxSessionDuration:       value.MaxSessionDuration,
