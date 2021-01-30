@@ -2,6 +2,10 @@ package aws
 
 import (
 	"fmt"
+	"log"
+	"strings"
+	"sync"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -33,9 +37,6 @@ import (
 	"github.com/cloudquery/cloudquery/providers/provider"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
-	"log"
-	"strings"
-	"sync"
 )
 
 type Provider struct {
@@ -78,8 +79,8 @@ var globalServices = map[string]ServiceNewFunction{
 var regionalServices = map[string]ServiceNewFunction{
 	"autoscaling":      autoscaling.NewClient,
 	"cloudtrail":       cloudtrail.NewClient,
-	"cloudwatchlogs":       cloudwatchlogs.NewClient,
-	"cloudwatch": cloudwatch.NewClient,
+	"cloudwatchlogs":   cloudwatchlogs.NewClient,
+	"cloudwatch":       cloudwatch.NewClient,
 	"directconnect":    directconnect.NewClient,
 	"ec2":              ec2.NewClient,
 	"ecr":              ecr.NewClient,
@@ -92,7 +93,7 @@ var regionalServices = map[string]ServiceNewFunction{
 	"kms":              kms.NewClient,
 	"rds":              rds.NewClient,
 	"redshift":         redshift.NewClient,
-	"sns": sns.NewClient,
+	"sns":              sns.NewClient,
 }
 
 var tablesArr = [][]interface{}{
@@ -207,12 +208,10 @@ func (p *Provider) Run(config interface{}) error {
 	p.parseLogLevel()
 
 	for _, account := range p.config.Accounts {
-		p.session, err = session.NewSession()
-		if err != nil {
-			return err
-		}
-		if account.ID != "default" {
-			// assume role if different account
+
+		if account.ID != "default" && account.RoleARN != "" {
+			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
+			p.session, err = session.NewSession()
 			cred := stscreds.NewCredentials(p.session, account.RoleARN)
 			p.session, err = session.NewSession(&aws.Config{
 				Credentials: cred,
@@ -220,7 +219,15 @@ func (p *Provider) Run(config interface{}) error {
 			if err != nil {
 				return err
 			}
+		} else if account.ID != "default" {
+			p.session, err = session.NewSession(&aws.Config{Credentials: credentials.NewSharedCredentials("", account.ID)})
+		} else {
+			p.session, err = session.NewSession()
 		}
+		if err != nil {
+			return err
+		}
+
 		for _, region := range regions {
 			p.region = region
 
