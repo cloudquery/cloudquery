@@ -317,7 +317,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 		if awsErr, ok := err.(awserr.Error); ok {
 			switch awsErr.Code() {
 			case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
-				p.log.Warn("Skipping resource. Access denied", zap.String("resource", fullResourceName), zap.Error(err))
+				p.log.Info("Skipping resource. Access denied", zap.String("account_id", p.accountID), zap.String("resource", fullResourceName), zap.Error(err))
 				return
 			}
 		}

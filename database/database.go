@@ -9,6 +9,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"gorm.io/gorm/logger"
 	"log"
 	"net/url"
@@ -189,5 +190,23 @@ func (d *Database) ChunkedCreate(value interface{}) {
 	defer session.Close()
 
 	d.neo4jInsertMany(arr, session, nil, "")
+}
 
+func (d *Database) ChunkedUpsert(value interface{}) {
+	arr := reflect.ValueOf(value)
+	if d.GormDB != nil {
+		for i := 0; i < arr.Len(); i += chunkSize {
+			end := i + chunkSize
+			if i+chunkSize > arr.Len() {
+				end = arr.Len()
+			}
+			d.GormDB.Clauses(clause.OnConflict{DoNothing: true}).Create(arr.Slice(i, end).Interface())
+		}
+		return
+	}
+
+	session := d.neo4j.NewSession(neo4j.SessionConfig{})
+	defer session.Close()
+
+	d.neo4jInsertMany(arr, session, nil, "")
 }
