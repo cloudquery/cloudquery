@@ -180,12 +180,14 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 			return err
 		}
 		defer f.Close()
+
+		_, err = f.WriteString("[")
+		if err != nil {
+			return err
+		}
 	}
 
-	_, err = f.WriteString("[")
-	if err != nil {
-		return err
-	}
+
 
 	c.log.Info("Executing queries", zap.Int("count", len(config.Queries)))
 	for idx, query := range config.Queries {
@@ -259,9 +261,11 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 		}
 	}
 
-	_, err = f.WriteString("]")
-	if err != nil {
-		return err
+	if outputPath != "" {
+		_, err = f.WriteString("]")
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
