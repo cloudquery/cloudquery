@@ -1,15 +1,14 @@
-package okta
+package main
 
 import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/common"
-	"github.com/cloudquery/cloudquery/providers/provider"
-	"github.com/mitchellh/mapstructure"
+	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
+	"gopkg.in/yaml.v3"
 	"os"
 )
 
@@ -23,39 +22,43 @@ type Provider struct {
 }
 
 type Config struct {
-	Domain    string `mapstructure:"domain"`
+	Domain    string
 	Resources []struct {
 		Name  string
-		Other map[string]interface{} `mapstructure:",remain"`
+		Other map[string]interface{}
 	}
 }
-
-type NewResourceFunc func(client *okta.Client, db *gorm.DB, log *zap.Logger) (common.ClientInterface, error)
 
 var tablesArr = [][]interface{}{
 	applicationTables,
 	userTables,
 }
 
-func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
-	p := Provider{
-		db:               db,
-		resourceClients:  map[string]common.ClientInterface{},
-		resourceMigrated: map[string]bool{},
-		log:              log,
+func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+	var err error
+	p.db, err = database.Open(driver, dsn)
+	if err != nil {
+		return err
 	}
-	log.Info("Creating tables if needed")
+	zapLogger, err := sdk.NewLogger(verbose)
+	p.log = zapLogger
+
+	p.log.Info("Creating tables if needed")
 	for _, tables := range tablesArr {
 		err := p.db.AutoMigrate(tables...)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return &p, nil
+	return nil
 }
 
-func (p *Provider) Run(config interface{}) error {
-	err := mapstructure.Decode(config, &p.config)
+func (p *Provider) GenConfig() (string, error) {
+	return configYaml, nil
+}
+
+func (p *Provider) Fetch(data []byte) error {
+	err := yaml.Unmarshal(data, &p.config)
 	if err != nil {
 		return err
 	}
@@ -90,4 +93,9 @@ func (p *Provider) Run(config interface{}) error {
 	}
 
 	return nil
+}
+
+
+func main() {
+	sdk.ServePlugin(&Provider{})
 }

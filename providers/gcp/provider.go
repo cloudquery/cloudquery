@@ -1,4 +1,4 @@
-package gcp
+package main
 
 import (
 	"context"
@@ -9,11 +9,11 @@ import (
 	"github.com/cloudquery/cloudquery/providers/gcp/resource"
 	"github.com/cloudquery/cloudquery/providers/gcp/sql"
 	"github.com/cloudquery/cloudquery/providers/gcp/storage"
-	"github.com/cloudquery/cloudquery/providers/provider"
-	"github.com/mitchellh/mapstructure"
+	"github.com/cloudquery/cloudquery/sdk"
 	"go.uber.org/zap"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/googleapi"
+	"gopkg.in/yaml.v3"
 	"log"
 	"strings"
 	"sync"
@@ -27,11 +27,11 @@ type Provider struct {
 }
 
 type Config struct {
-	ProjectFilter string `mapstructure:"project_filter"`
-	ProjectIDs [] string `mapstructure:"project_ids"`
+	ProjectFilter string
+	ProjectIDs [] string
 	Resources []struct {
 		Name  string
-		Other map[string]interface{} `mapstructure:",remain"`
+		Other map[string]interface{} `yaml:",inline"`
 	}
 }
 
@@ -61,25 +61,33 @@ var tablesArr = [][]interface{}{
 	sql.DatabaseInstanceTables,
 }
 
-func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
-	p := Provider{
-		db:              db,
-		resourceClients: map[string]resource.ClientInterface{},
-		log:             log,
+func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+	var err error
+	p.db, err = database.Open(driver, dsn)
+	if err != nil {
+		return err
 	}
-
+	zapLogger, err := sdk.NewLogger(verbose)
+	p.log = zapLogger
 	for _, table := range tablesArr {
-		err := db.AutoMigrate(table...)
+		err := p.db.AutoMigrate(table...)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
 
-	return &p, nil
+	return nil
 }
 
-func (p *Provider) Run(config interface{}) error {
-	err := mapstructure.Decode(config, &p.config)
+func (p *Provider) GenConfig() (string, error) {
+	return configYaml, nil
+}
+
+func (p *Provider) Fetch(data []byte) error {
+	err := yaml.Unmarshal(data, &p.config)
+	if err != nil {
+		return err
+	}
 	ctx := context.Background()
 	if err != nil {
 		return err
@@ -181,4 +189,8 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullRes
 		p.log.Error(err.Error())
 		return
 	}
+}
+
+func main() {
+	sdk.ServePlugin(&Provider{})
 }

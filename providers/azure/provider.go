@@ -1,4 +1,4 @@
-package azure
+package main
 
 import (
 	"context"
@@ -11,12 +11,12 @@ import (
 	"github.com/cloudquery/cloudquery/providers/azure/postgresql"
 	"github.com/cloudquery/cloudquery/providers/azure/resources"
 	"github.com/cloudquery/cloudquery/providers/azure/sql"
+	"github.com/cloudquery/cloudquery/sdk"
+	"gopkg.in/yaml.v3"
 
 	//"github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"github.com/cloudquery/cloudquery/providers/provider"
-	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
 
@@ -32,10 +32,10 @@ type Provider struct {
 }
 
 type Config struct {
-	Subscriptions []string `mapstructure:"subscriptions"`
+	Subscriptions []string
 	Resources     []struct {
 		Name  string
-		Other map[string]interface{} `mapstructure:",remain"`
+		Other map[string]interface{} `yaml:",inline"`
 	}
 }
 
@@ -49,11 +49,15 @@ var TablesArr = [][]interface{}{
 	keyvault.VaultTables,
 }
 
-func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
-	p := Provider{
-		db:  db,
-		log: log,
+func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+	var err error
+	p.db, err = database.Open(driver, dsn)
+	if err != nil {
+		return err
 	}
+
+	zapLogger, err := sdk.NewLogger(verbose)
+	p.log = zapLogger
 	p.resourceFuncs = map[string]ResourceFunc{
 		"resources.groups":   resources.Groups,
 		"sql.servers":        sql.Servers,
@@ -63,22 +67,28 @@ func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, er
 		"compute.disks":      compute.Disks,
 		"keyvault.vaults":    keyvault.Vaults,
 	}
-	log.Info("Creating tables if needed")
+	p.log.Info("Creating tables if needed")
 	for _, tables := range TablesArr {
-		err := db.AutoMigrate(tables...)
+		err := p.db.AutoMigrate(tables...)
 		if err != nil {
-			return nil, err
+			return nil
 		}
 	}
-	return &p, nil
+	return nil
 }
 
-func (p *Provider) Run(config interface{}) error {
+func (p *Provider) GenConfig() (string, error) {
+	return configYaml, nil
+}
+
+func (p *Provider) Fetch(data []byte) error {
 	ctx := context.Background()
-	err := mapstructure.Decode(config, &p.config)
+
+	err := yaml.Unmarshal(data, &p.config)
 	if err != nil {
 		return err
 	}
+
 	if len(p.config.Resources) == 0 {
 		p.log.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/azure/tables-reference")
 		return nil
@@ -129,4 +139,8 @@ func (p *Provider) Run(config interface{}) error {
 	}
 
 	return nil
+}
+
+func main() {
+	sdk.ServePlugin(&Provider{})
 }

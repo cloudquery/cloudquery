@@ -1,12 +1,12 @@
-package k8s
+package main
 
 import (
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/providers/common"
-	"github.com/cloudquery/cloudquery/providers/provider"
-	"github.com/mitchellh/mapstructure"
+	"github.com/cloudquery/cloudquery/sdk"
 	"go.uber.org/zap"
+	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/tools/clientcmd"
@@ -22,10 +22,10 @@ type Provider struct {
 }
 
 type Config struct {
-	KubeConfig string `mapstructure:"domain"`
+	KubeConfig string
 	Resources  []struct {
 		Name  string
-		Other map[string]interface{} `mapstructure:",remain"`
+		Other map[string]interface{} `yaml:",inline"`
 	}
 }
 
@@ -34,24 +34,30 @@ var tablesArr = [][]interface{}{
 	podTables,
 }
 
-func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
-	p := Provider{
-		db:              db,
-		resourceClients: map[string]common.ClientInterface{},
-		log:             log,
+func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+	var err error
+	p.db, err = database.Open(driver, dsn)
+	if err != nil {
+		return err
 	}
+	zapLogger, err := sdk.NewLogger(verbose)
+	p.log = zapLogger
 
 	for _, tables := range tablesArr {
-		err := db.AutoMigrate(tables...)
+		err := p.db.AutoMigrate(tables...)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return &p, nil
+	return nil
 }
 
-func (p *Provider) Run(config interface{}) error {
-	err := mapstructure.Decode(config, &p.config)
+func (p *Provider) GenConfig() (string, error) {
+	return configYaml, nil
+}
+
+func (p *Provider) Fetch(data []byte) error {
+	err := yaml.Unmarshal(data, &p.config)
 	if err != nil {
 		return err
 	}
@@ -109,4 +115,8 @@ func (p *Provider) Run(config interface{}) error {
 	}
 
 	return nil
+}
+
+func main() {
+	sdk.ServePlugin(&Provider{})
 }

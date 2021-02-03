@@ -40,6 +40,10 @@ build: config
 		lambci/lambda:build-go1.x \
 		go build -v -o bin/cloudquery
 
+.PHONY: proto
+proto:
+	@protoc --go_out=. --go-grpc_out=. ./sdk/proto/plugin.proto
+
 .PHONY: config
 config:
 	@go run main.go gen config aws --force --path ./bin/config.yml
