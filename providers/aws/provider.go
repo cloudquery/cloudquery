@@ -1,7 +1,8 @@
-package aws
+package main
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/sdk"
 	"log"
 	"strings"
 	"sync"
@@ -35,9 +36,8 @@ import (
 	"github.com/cloudquery/cloudquery/providers/aws/resource"
 	"github.com/cloudquery/cloudquery/providers/aws/s3"
 	"github.com/cloudquery/cloudquery/providers/aws/sns"
-	"github.com/cloudquery/cloudquery/providers/provider"
-	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+	"gopkg.in/yaml.v3"
 )
 
 type Provider struct {
@@ -53,18 +53,18 @@ type Provider struct {
 }
 
 type Account struct {
-	ID      string `mapstructure:"id"`
-	RoleARN string `mapstructure:"role_arn"`
+	ID      string
+	RoleARN string
 }
 
 type Config struct {
 	Regions    []string
-	Accounts   []Account `mapstructure:"accounts"`
-	LogLevel   *string   `mapstructure:"log_level"`
-	MaxRetries *int      `mapstructure:"max_retries"`
+	Accounts   []Account
+	LogLevel   *string
+	MaxRetries *int
 	Resources  []struct {
 		Name  string
-		Other map[string]interface{} `mapstructure:",remain"`
+		Other map[string]interface{} `yaml:",inline"`
 	}
 }
 
@@ -143,20 +143,28 @@ var tablesArr = [][]interface{}{
 	sns.TopicTables,
 }
 
-func NewProvider(db *database.Database, log *zap.Logger) (provider.Interface, error) {
-	p := Provider{
-		db:              db,
-		resourceClients: map[string]resource.ClientInterface{},
-		log:             log,
+func (p *Provider) Init(driver string, dsn string, verbose bool) error {
+	var err error
+	p.db, err = database.Open(driver, dsn)
+	if err != nil {
+		return err
 	}
-	log.Info("Creating tables if needed")
+
+	zapLogger, err := sdk.NewLogger(verbose)
+	p.log = zapLogger
+	p.resourceClients = map[string]resource.ClientInterface{}
+	p.log.Info("Creating tables if needed")
 	for _, tables := range tablesArr {
-		err := db.AutoMigrate(tables...)
+		err := p.db.AutoMigrate(tables...)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return &p, nil
+	return nil
+}
+
+func (p *Provider) GenConfig() (string, error) {
+	return configYaml, nil
 }
 
 func (p *Provider) parseLogLevel() {
@@ -179,11 +187,12 @@ func (p *Provider) parseLogLevel() {
 	}
 }
 
-func (p *Provider) Run(config interface{}) error {
-	err := mapstructure.Decode(config, &p.config)
+func (p *Provider) Fetch(data []byte) error {
+	err := yaml.Unmarshal(data, &p.config)
 	if err != nil {
 		return err
 	}
+
 	if len(p.config.Resources) == 0 {
 		p.log.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
 		return nil
@@ -324,4 +333,8 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 		}
 		log.Fatal(err)
 	}
+}
+
+func main() {
+	sdk.ServePlugin(&Provider{})
 }

@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/aws"
-	"github.com/cloudquery/cloudquery/providers/azure"
-	"github.com/cloudquery/cloudquery/providers/gcp"
-	"github.com/cloudquery/cloudquery/providers/k8s"
-	"github.com/cloudquery/cloudquery/providers/okta"
-	"github.com/cloudquery/cloudquery/providers/provider"
+	//"github.com/cloudquery/cloudquery/providers/azure"
+	//"github.com/cloudquery/cloudquery/providers/gcp"
+	//"github.com/cloudquery/cloudquery/providers/k8s"
+	//"github.com/cloudquery/cloudquery/providers/okta"
+	//"github.com/cloudquery/cloudquery/providers/provider"
+	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -19,13 +19,6 @@ import (
 	"strings"
 )
 
-var ProviderMap = map[string]func(*database.Database, *zap.Logger) (provider.Interface, error){
-	"aws":   aws.NewProvider,
-	"gcp":   gcp.NewProvider,
-	"okta":  okta.NewProvider,
-	"azure": azure.NewProvider,
-	"k8s":   k8s.NewProvider,
-}
 
 type Config struct {
 	Providers []struct {
@@ -47,39 +40,28 @@ type PolicyConfig struct {
 }
 
 type Client struct {
+	driver string
+	dsn string
+	verbose string
 	db     *database.Database
 	config Config
 	log    *zap.Logger
 }
 
-func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
-	level := zap.NewAtomicLevelAt(zap.InfoLevel)
-	disableCaller := true
-	if verbose {
-		level = zap.NewAtomicLevelAt(zap.DebugLevel)
-		disableCaller = false
-	}
-	return zap.Config{
-		Sampling:         nil,
-		Level:            level,
-		Development:      true,
-		DisableCaller:    disableCaller,
-		Encoding:         "console",
-		EncoderConfig:    zap.NewDevelopmentEncoderConfig(),
-		OutputPaths:      []string{"stderr"},
-		ErrorOutputPaths: []string{"stderr"},
-	}.Build(options...)
-}
+
 
 func New(driver string, dsn string, verbose bool) (*Client, error) {
-	client := Client{}
+	client := Client{
+		driver: driver,
+		dsn: dsn,
+	}
 	var err error
 	client.db, err = database.Open(driver, dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	zapLogger, err := NewLogger(verbose)
+	zapLogger, err := sdk.NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
 		return nil, err
@@ -110,19 +92,29 @@ func (c *Client) Run(path string) error {
 		if provider.Name == "" {
 			return fmt.Errorf("provider must contain key: name")
 		}
-		if ProviderMap[provider.Name] == nil {
-			return fmt.Errorf("provider %s is not supported\n", provider.Name)
-		}
-		log := c.log.With(zap.String("provider", provider.Name))
-		p, err := ProviderMap[provider.Name](c.db, log)
-		if err != nil {
-			return err
-		}
-		err = p.Run(provider.Rest)
+		//if !ProviderMap[provider.Name] {
+		//	return fmt.Errorf("provider %s is not supported\n", provider.Name)
+		//}
+
+		p, err:= sdk.GetProviderPluginClient("./" + provider.Name)
 		if err != nil {
 			return err
 		}
 
+		err = p.Init(c.driver, c.dsn, true)
+		if err != nil {
+			return err
+		}
+
+		d, err := yaml.Marshal(&provider.Rest)
+		if err != nil {
+			return err
+		}
+
+		err = p.Fetch(d)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

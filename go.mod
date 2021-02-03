@@ -15,8 +15,8 @@ require (
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/containerd/continuity v0.0.0-20201208142359-180525291bb7 // indirect
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
-	github.com/golang/protobuf v1.4.2
-	github.com/hashicorp/go-hclog v0.15.0
+	github.com/golang/protobuf v1.4.3
+	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-plugin v1.4.0
 	github.com/iancoleman/strcase v0.1.2
 	github.com/mitchellh/mapstructure v1.3.3
@@ -31,10 +31,12 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
 	go.uber.org/zap v1.10.0
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
-	golang.org/x/sys v0.0.0-20210113181707-4bcb84eeeb78 // indirect
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
+	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
+	golang.org/x/text v0.3.5 // indirect
 	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect
 	google.golang.org/api v0.35.0
+	google.golang.org/genproto v0.0.0-20210202153253-cf70463f6119 // indirect
 	google.golang.org/grpc v1.35.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/yaml.v2 v2.3.0 // indirect
