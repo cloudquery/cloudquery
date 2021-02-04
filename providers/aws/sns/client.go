@@ -35,7 +35,9 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 	switch resource {
 	case "subscriptions":
 		return c.subscriptions(config)
+	case "topics":
+		return c.topics(config)
 	default:
-		return fmt.Errorf("unsupported resource ec2.%s", resource)
+		return fmt.Errorf("unsupported resource sns.%s", resource)
 	}
 }
