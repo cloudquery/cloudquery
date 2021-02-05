@@ -31,11 +31,11 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
 	go.uber.org/zap v1.10.0
+	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	golang.org/x/text v0.3.5 // indirect
-	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect
-	google.golang.org/api v0.35.0
+	google.golang.org/api v0.36.0
 	google.golang.org/genproto v0.0.0-20210202153253-cf70463f6119 // indirect
 	google.golang.org/grpc v1.35.0
 	google.golang.org/protobuf v1.25.0

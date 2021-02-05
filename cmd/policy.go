@@ -229,7 +229,7 @@ var policyCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := cobra.OnlyValidArgs(cmd, args)
 		if err != nil {
-			return fmt.Errorf("invalid argument %s for cloudquery gen policy. choose from %v", args[0], validArgs)
+			return fmt.Errorf("invalid argument %s for cloudquery gen policy. choose from %v", args[0], policyValidArgs)
 		}
 		var s strings.Builder
 		for _, provider := range args {
