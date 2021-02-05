@@ -30,32 +30,58 @@ func (Topic) TableName() string {
 	return "aws_sns_topics"
 }
 
-func GetTopicAttributes(c *Client, TopicArn *string) map[string]*string {
+func GetTopicAttributes(c *Client, TopicArn *string) (map[string]*string, error) {
 	params := &sns.GetTopicAttributesInput{
 		TopicArn: TopicArn,
 	}
-	output, _ := c.svc.GetTopicAttributes(params)
-	return output.Attributes
+	output, err := c.svc.GetTopicAttributes(params)
+	if err != nil {
+		return nil, err
+	}
+	return output.Attributes, nil
 }
 
-func getOrDefault(attrs map[string]*string, keyName string) string {
+func getOrZero(attrs map[string]*string, keyName string) string {
 	if v, found := attrs[keyName]; found {
 		return *v
 	}
 	return "0"
 }
 
-func (c *Client) transformTopics(values []*sns.Topic) []*Topic {
+func (c *Client) transformTopics(values []*sns.Topic) ([]*Topic, error) {
 	var tValues []*Topic
 	for _, value := range values {
 
-		output := GetTopicAttributes(c, value.TopicArn)
+		// All topic attributes are returned as a string; we have to handle type conversion
+		output, err := GetTopicAttributes(c, value.TopicArn)
+		if err != nil {
+			return nil, err
+		}
 
-		subsConfirmed, _ := strconv.Atoi(getOrDefault(output, "SubscriptionsConfirmed"))
-		subsDeleted, _ := strconv.Atoi(getOrDefault(output, "SubscriptionsDeleted"))
-		subsPending, _ := strconv.Atoi(getOrDefault(output, "SubscriptionsPending"))
-		isFifo, _ := strconv.ParseBool(getOrDefault(output, "FifoTopic"))
-		isContentBasedDeduped, _ := strconv.ParseBool(getOrDefault(output, "ContentBasedDeduplication"))
+		subsConfirmed, subsConfirmedErr := strconv.Atoi(getOrZero(output, "SubscriptionsConfirmed"))
+		if subsConfirmedErr != nil {
+			return nil, subsConfirmedErr
+		}
+
+		subsDeleted, subsDeletedErr := strconv.Atoi(getOrZero(output, "SubscriptionsDeleted"))
+		if subsDeletedErr != nil {
+			return nil, subsDeletedErr
+		}
+
+		subsPending, subsPendingErr := strconv.Atoi(getOrZero(output, "SubscriptionsPending"))
+		if subsPendingErr != nil {
+			return nil, subsPendingErr
+		}
+
+		isFifo, isFifoErr := strconv.ParseBool(getOrZero(output, "FifoTopic"))
+		if isFifoErr != nil {
+			return nil, isFifoErr
+		}
+
+		isContentBasedDeduped, isContentBasedDedupedErr := strconv.ParseBool(getOrZero(output, "ContentBasedDeduplication"))
+		if isContentBasedDedupedErr != nil {
+			return nil, isContentBasedDedupedErr
+		}
 
 		tValue := Topic{
 			AccountID:                 c.accountID,
@@ -74,7 +100,7 @@ func (c *Client) transformTopics(values []*sns.Topic) []*Topic {
 		}
 		tValues = append(tValues, &tValue)
 	}
-	return tValues
+	return tValues, nil
 }
 
 type TopicConfig struct {
@@ -94,11 +120,17 @@ func (c *Client) topics(gConfig interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(TopicTables...)
 
 	for {
-		output, err := c.svc.ListTopics(&config)
-		if err != nil {
-			return err
+		output, listErr := c.svc.ListTopics(&config)
+		if listErr != nil {
+			return listErr
 		}
-		c.db.ChunkedCreate(c.transformTopics(output.Topics))
+
+		topics, transformErr := c.transformTopics(output.Topics)
+		if transformErr != nil {
+			return transformErr
+		}
+
+		c.db.ChunkedCreate(topics)
 		c.log.Info("Fetched resources", zap.String("resource", "sns.topics"), zap.Int("count", len(output.Topics)))
 		if aws.StringValue(output.NextToken) == "" {
 			break
