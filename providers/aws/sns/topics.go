@@ -58,29 +58,29 @@ func (c *Client) transformTopics(values []*sns.Topic) ([]*Topic, error) {
 			return nil, err
 		}
 
-		subsConfirmed, subsConfirmedErr := strconv.Atoi(getOrZero(output, "SubscriptionsConfirmed"))
-		if subsConfirmedErr != nil {
-			return nil, subsConfirmedErr
+		subsConfirmed, err := strconv.Atoi(getOrZero(output, "SubscriptionsConfirmed"))
+		if err != nil {
+			return nil, err
 		}
 
-		subsDeleted, subsDeletedErr := strconv.Atoi(getOrZero(output, "SubscriptionsDeleted"))
-		if subsDeletedErr != nil {
-			return nil, subsDeletedErr
+		subsDeleted, err := strconv.Atoi(getOrZero(output, "SubscriptionsDeleted"))
+		if err != nil {
+			return nil, err
 		}
 
-		subsPending, subsPendingErr := strconv.Atoi(getOrZero(output, "SubscriptionsPending"))
-		if subsPendingErr != nil {
-			return nil, subsPendingErr
+		subsPending, err := strconv.Atoi(getOrZero(output, "SubscriptionsPending"))
+		if err != nil {
+			return nil, err
 		}
 
-		isFifo, isFifoErr := strconv.ParseBool(getOrZero(output, "FifoTopic"))
-		if isFifoErr != nil {
-			return nil, isFifoErr
+		isFifo, err := strconv.ParseBool(getOrZero(output, "FifoTopic"))
+		if err != nil {
+			return nil, err
 		}
 
-		isContentBasedDeduped, isContentBasedDedupedErr := strconv.ParseBool(getOrZero(output, "ContentBasedDeduplication"))
-		if isContentBasedDedupedErr != nil {
-			return nil, isContentBasedDedupedErr
+		isContentBasedDeduped, err := strconv.ParseBool(getOrZero(output, "ContentBasedDeduplication"))
+		if err != nil {
+			return nil, err
 		}
 
 		tValue := Topic{
