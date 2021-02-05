@@ -9,12 +9,15 @@ require (
 	github.com/Azure/go-autorest/autorest/date v0.3.0
 	github.com/Azure/go-autorest/autorest/to v0.4.0 // indirect
 	github.com/Azure/go-autorest/autorest/validation v0.3.1 // indirect
-	github.com/aws/aws-lambda-go v1.22.0
 	github.com/Microsoft/go-winio v0.4.16 // indirect
+	github.com/aws/aws-lambda-go v1.22.0
 	github.com/aws/aws-sdk-go v1.35.0
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/containerd/continuity v0.0.0-20201208142359-180525291bb7 // indirect
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
+	github.com/golang/protobuf v1.4.2
+	github.com/hashicorp/go-hclog v0.15.0
+	github.com/hashicorp/go-plugin v1.4.0
 	github.com/iancoleman/strcase v0.1.2
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635 // indirect
@@ -32,6 +35,8 @@ require (
 	golang.org/x/sys v0.0.0-20210113181707-4bcb84eeeb78 // indirect
 	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect
 	google.golang.org/api v0.35.0
+	google.golang.org/grpc v1.35.0
+	google.golang.org/protobuf v1.25.0
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 	gorm.io/driver/mysql v1.0.2

@@ -1,0 +1,28 @@
+syntax="proto3";
+package proto;
+
+message InitRequest {
+    string driver = 1;
+    string dsn = 2;
+    bool verbose = 3;
+}
+
+message InitResponse {}
+
+message GenConfigRequest {}
+
+message GenConfigResponse {
+    string yaml = 1;
+}
+
+message FetchRequest {
+    bytes data = 1;
+}
+
+message FetchResponse {}
+
+service Provider {
+    rpc Init(InitRequest) returns (InitResponse);
+    rpc Fetch(FetchRequest) returns (FetchResponse);
+    rpc GenConfig(GenConfigRequest) returns (GenConfigResponse);
+}
