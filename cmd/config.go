@@ -60,7 +60,8 @@ var awsConfig = `
       - name: redshift.clusters
       - name: redshift.cluster_subnet_groups
       - name: s3.buckets
-      - name: sns.subscriptions`
+      - name: sns.subscriptions
+      - name: sns.topics`
 
 var gcpConfig = `
   - name: gcp
