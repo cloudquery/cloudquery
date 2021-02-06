@@ -1,5 +1,4 @@
-PACKAGE_NAME          := github.com/troian/golang-cross-example
-GOLANG_CROSS_VERSION  ?= v1.15.2
+PACKAGE_NAME          := github.com/cloudquery/cloudquery
 
 .PHONY: release-dry-run
 release-dry-run:
@@ -9,7 +8,7 @@ release-dry-run:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
-		troian/golang-cross:${GOLANG_CROSS_VERSION} \
+		ghcr.io/cloudquery/golang-cross:latest \
 		--rm-dist --skip-validate --skip-publish
 
 .PHONY: release
@@ -27,7 +26,7 @@ release:
 		-v ~/.docker:/root/.docker \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
-		troian/golang-cross:${GOLANG_CROSS_VERSION} \
+		ghcr.io/cloudquery/golang-cross:latest \
 		release --rm-dist
 
 .PHONY: build
