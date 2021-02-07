@@ -17,8 +17,6 @@ jobs:
       - name: release dry run
         run: make release-dry-run
       - name: setup release environment
-        run: |-
-          echo "${{secrets.GORELEASER_GITHUB_TOKEN}}" | docker login ghcr.io --username $GITHUB_ACTOR --password-stdin
-          echo 'GITHUB_TOKEN=${{secrets.GORELEASER_GITHUB_TOKEN}}' > .release-env
+        run: echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
       - name: release publish
         run: make release

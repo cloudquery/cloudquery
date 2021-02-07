@@ -1,12 +1,10 @@
 .DS_store
 crash.log
-.idea
-.vscode
 cloudquery
 cloudquery.db
 cloudquery.zip
 /config.yml
 dist/
-vendor/
 bin/
 .release-env
+cq-provider-gcp
