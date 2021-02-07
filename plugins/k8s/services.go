@@ -136,7 +136,7 @@ func (p *Provider) transformServices(values []v1.Service) []*Service {
 			SpecExternalTrafficPolicy:    string(value.Spec.ExternalTrafficPolicy),
 			SpecHealthCheckNodePort:      value.Spec.HealthCheckNodePort,
 			SpecPublishNotReadyAddresses: value.Spec.PublishNotReadyAddresses,
-			SpecIPFamily:                 value.Spec.IPFamily,
+//			SpecIPFamily:                 value.Spec.IPFamilies,
 			SpecTopologyKeys:             p.transformServiceSpecTopologyKeys(value.Spec.TopologyKeys),
 
 			StatusLoadBalancerIngress: p.transformServiceLoadBalancerIngresses(value.Status.LoadBalancer.Ingress),

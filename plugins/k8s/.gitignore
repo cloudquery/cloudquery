@@ -1,7 +1,5 @@
 .DS_store
 crash.log
-.idea
-.vscode
 cloudquery
 cloudquery.db
 cloudquery.zip
@@ -10,3 +8,4 @@ dist/
 vendor/
 bin/
 .release-env
+cq-provider-k8s
