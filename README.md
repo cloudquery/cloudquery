@@ -7,7 +7,7 @@
 # CloudQuery Provider Plugin for AWS 
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery)
-provider enables transforming AWS resource to relational and graph databases.
+provider transforms AWS resource to relational and graph databases.
 
 ## What is CloudQuery
 
