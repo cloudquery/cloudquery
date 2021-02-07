@@ -1,9 +1,9 @@
-module github.com/cloudquery/cq-provder-okta
+module github.com/cloudquery/cq-provider-okta
 
 go 1.15
 
 require (
-	github.com/cloudquery/cloudquery v0.8.11
+	github.com/cloudquery/cloudquery v0.8.14
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/okta/okta-sdk-golang/v2 v2.3.0
 	go.uber.org/zap v1.16.0
