@@ -9,7 +9,7 @@ release-dry-run:
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
 		ghcr.io/cloudquery/golang-cross:latest \
-		--rm-dist --skip-validate --skip-publish
+		--rm-dist --skip-validate --skip-publish --skip-sign
 
 .PHONY: release
 release:
