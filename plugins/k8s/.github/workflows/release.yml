@@ -17,6 +17,8 @@ jobs:
       - name: release dry run
         run: make release-dry-run
       - name: setup release environment
-        run: echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
+        run: |
+          echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
+          echo 'PRIVATE_KEY=${{secrets.PRIVATE_KEY}}' >> .release-env
       - name: release publish
         run: make release
