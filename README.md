@@ -28,9 +28,8 @@ and [terraform](https://github.com/hashicorp/terraform), cool right?
 
 ### Supported providers (Actively expanding)
 
-Currently, we support: [AWS](https://docs.cloudquery.io/aws),
-[Azure](https://docs.cloudquery.io/azure), [GCP](https://docs.cloudquery.io/gcp), [Kubernetes (alpha support)](https://docs.cloudquery.io/k8s)
-and [Okta](https://docs.cloudquery.io/okta/table-reference).
+Checkout https://hub.cloudquery.io
+
 If you want us to add a new provider or resource please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
 ## Download & install
@@ -72,6 +71,7 @@ and transform resources to the specified SQL database by running the following c
 Once your `config.yml` is generated run the following command to fetch the resources:
 
 ```shell script
+./cloudquery init
 ./cloudquery fetch
 # you can choose a database backend via --driver sqlite/mysql/postgresql/sqlserver/neo4j --dsn <connection_string>
 # ./cloudquery fetch --help # Show all possible fetch flags
