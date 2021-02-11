@@ -140,7 +140,7 @@ func getProviderPath(name string, version string) (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s/.cq/providers/%s/%s/%s", workingDir, org, name, version), nil
+	return fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", workingDir, org, name, version, runtime.GOOS, runtime.GOARCH), nil
 }
 
 func downloadProvider(name string, version string) error {
