@@ -3,7 +3,7 @@ package rds
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/rds"
-	"github.com/cloudquery/cloudquery/providers/common"
+	"github.com/cloudquery/cq-provider-aws/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"

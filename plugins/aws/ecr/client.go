@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecr"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/aws/resource"
+	"github.com/cloudquery/cq-provider-aws/resource"
 	"go.uber.org/zap"
 )
 
