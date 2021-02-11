@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/cloudquery/cloudquery/sdk"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -15,7 +14,6 @@ import (
 type Provider struct {
 	db              *database.Database
 	config          Config
-	resourceClients map[string]common.ClientInterface
 	log             *zap.Logger
 	client          *kubernetes.Clientset
 	clusterName     string

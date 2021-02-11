@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cq-provider-aws
+PACKAGE_NAME          := github.com/cloudquery/cq-provider-k8s
 
 .PHONY: release-dry-run
 release-dry-run:
