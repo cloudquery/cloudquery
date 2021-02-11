@@ -140,6 +140,7 @@ var tablesArr = [][]interface{}{
 	redshift.ClusterSubnetGroupTables,
 	s3.BucketTables,
 	sns.SubscriptionTables,
+	sns.TopicTables,
 }
 
 func (p *Provider) Init(driver string, dsn string, verbose bool) error {
