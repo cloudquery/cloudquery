@@ -332,6 +332,7 @@ func (c *Client) services(clusters []*string) error {
 	var listInput ecs.ListServicesInput
 	for _, cluster := range clusters {
 		listInput.Cluster = cluster
+		listInput.NextToken = nil
 		for {
 			listOutput, err := c.svc.ListServices(&listInput)
 			if err != nil {
