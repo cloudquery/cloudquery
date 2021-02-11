@@ -27,7 +27,14 @@ func NewLogger(verbose bool, options ...zap.Option) (*zap.Logger, error) {
 	}.Build(options...)
 }
 
+var pluginClientRegistry = map[string]*plugin.Client{}
+var providerRegistry = map[string]CQProvider{}
+
 func GetProviderPluginClient(path string) (CQProvider, error) {
+	if pluginClientRegistry[path] != nil {
+		return providerRegistry[path], nil
+	}
+
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
@@ -56,6 +63,16 @@ func GetProviderPluginClient(path string) (CQProvider, error) {
 	}
 
 	p := raw.(CQProvider)
+	pluginClientRegistry[path] = client
+	providerRegistry[path] = p
 
 	return p, nil
+}
+
+func KillProviderPluginClient(path string) {
+	if pluginClientRegistry[path] != nil {
+		pluginClientRegistry[path].Kill()
+		pluginClientRegistry[path] = nil
+		providerRegistry[path] = nil
+	}
 }

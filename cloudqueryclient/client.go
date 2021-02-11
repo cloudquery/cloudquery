@@ -105,9 +105,11 @@ func GenConfig(providers []string) (string, error) {
 		}
 		configYaml, err := p.GenConfig()
 		if err != nil {
+			sdk.KillProviderPluginClient(providerPath)
 			return "", err
 		}
 		s.WriteString(configYaml)
+		sdk.KillProviderPluginClient(providerPath)
 	}
 	s.WriteString("\n")
 	return s.String(), nil
@@ -187,18 +189,22 @@ func (c *Client) Run(path string) error {
 
 		err = p.Init(c.driver, c.dsn, true)
 		if err != nil {
+			sdk.KillProviderPluginClient(pluginPath)
 			return err
 		}
 
 		d, err := yaml.Marshal(&provider.Rest)
 		if err != nil {
+			sdk.KillProviderPluginClient(pluginPath)
 			return err
 		}
 
 		err = p.Fetch(d)
 		if err != nil {
+			sdk.KillProviderPluginClient(pluginPath)
 			return err
 		}
+		sdk.KillProviderPluginClient(pluginPath)
 	}
 
 	return nil
