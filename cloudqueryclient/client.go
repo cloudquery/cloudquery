@@ -122,12 +122,6 @@ func New(driver string, dsn string, verbose bool) (*Client, error) {
 		driver: driver,
 		dsn: dsn,
 	}
-	var err error
-	client.db, err = database.Open(driver, dsn)
-	if err != nil {
-		return nil, err
-	}
-
 	zapLogger, err := sdk.NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
@@ -183,6 +177,7 @@ func (c *Client) Run(path string) error {
 		if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
 			return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
 		}
+		c.log.Info("Loading provider", zap.String("path", pluginPath))
 		p, err:= sdk.GetProviderPluginClient(pluginPath)
 		if err != nil {
 			return err

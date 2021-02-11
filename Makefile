@@ -29,6 +29,18 @@ release:
 		ghcr.io/cloudquery/golang-cross:latest \
 		release --rm-dist
 
+.PHONY: test
+test:
+	@docker run \
+		-P \
+		--privileged \
+		-e CGO_ENABLED=1 \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v `pwd`:/go/src/$(PACKAGE_NAME) \
+		-w /go/src/$(PACKAGE_NAME) \
+		golang:1.15 \
+		go test -v ./... -tags=integration
+
 .PHONY: build
 build: config
 	@docker run \
