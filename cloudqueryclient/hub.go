@@ -184,7 +184,7 @@ func downloadProvider(name string, version string) error {
 	if err != nil {
 		return err
 	}
-	pluginPath := pluginDir + "/" + version
+	pluginPath := fmt.Sprintf("%s/%s-%s-%s", pluginDir, version, runtime.GOOS, runtime.GOARCH)
 	checksumsPath := pluginDir + "/" + version + ".checksums.txt"
 
 	log.Printf("downloading provider plugin %s/%s...\n", org, name)

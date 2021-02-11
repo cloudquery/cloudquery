@@ -11,6 +11,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
+	"runtime"
 	"strings"
 )
 
@@ -178,7 +179,7 @@ func (c *Client) Run(path string) error {
 		if provider.Version != "" {
 			version = provider.Version
 		}
-		pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s", cwd, org, name, version)
+		pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", cwd, org, name, version, runtime.GOOS, runtime.GOARCH)
 		if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
 			return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
 		}
