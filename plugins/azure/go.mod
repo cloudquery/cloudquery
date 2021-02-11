@@ -7,7 +7,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.17
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.6
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/cloudquery v0.8.14
+	github.com/cloudquery/cloudquery v0.9.0
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/satori/go.uuid v1.2.0
 	go.uber.org/zap v1.16.0

@@ -6,7 +6,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/azure/utils"
+	"github.com/cloudquery/cq-provider-azure/utils"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"regexp"
