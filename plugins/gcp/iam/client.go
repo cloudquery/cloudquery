@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/gcp/resource"
+	"github.com/cloudquery/cq-provider-gcp/resource"
 	"go.uber.org/zap"
 	"google.golang.org/api/iam/v1"
 )
