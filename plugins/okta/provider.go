@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/providers/common"
 	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"go.uber.org/zap"
@@ -15,7 +14,6 @@ import (
 type Provider struct {
 	db               *database.Database
 	config           Config
-	resourceClients  map[string]common.ClientInterface
 	log              *zap.Logger
 	client           *okta.Client
 	resourceMigrated map[string]bool
