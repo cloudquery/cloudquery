@@ -34,7 +34,7 @@ func TaskExecutor(taskName string) (string, error) {
 
 // Fetches resources from a cloud provider and saves them in the configured database
 func Fetch(driver, dsn string, verbose bool) {
-	client, err := cloudqueryclient.New(driver, dsn, verbose)
+	client, err := cloudqueryclient.New(driver, dsn, verbose, false)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
@@ -48,7 +48,7 @@ func Fetch(driver, dsn string, verbose bool) {
 func Policy(driver, dsn string, verbose bool) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	client, err := cloudqueryclient.New(driver, dsn, verbose)
+	client, err := cloudqueryclient.New(driver, dsn, verbose, false)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}

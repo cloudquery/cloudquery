@@ -41,6 +41,7 @@ type Client struct {
 	dsn string
 	verbose string
 	db     *database.Database
+	runself bool
 	config Config
 	log    *zap.Logger
 }
@@ -77,11 +78,16 @@ func Init(configPath string) error {
 		if err != nil {
 			return err
 		}
-
-
 	}
 
 	return nil
+}
+
+var runSelfProvider sdk.CQProvider
+
+// This is for provider debug purposes (when --runself is passed)
+func RegisterRunSelfProvider(provider sdk.CQProvider) {
+	runSelfProvider = provider
 }
 
 func GenConfig(providers []string) (string, error) {
@@ -116,12 +122,13 @@ func GenConfig(providers []string) (string, error) {
 	return s.String(), nil
 }
 
-
-func New(driver string, dsn string, verbose bool) (*Client, error) {
+func New(driver string, dsn string, verbose bool, runSelf bool) (*Client, error) {
 	client := Client{
 		driver: driver,
 		dsn: dsn,
+		runself: runSelf,
 	}
+
 	zapLogger, err := sdk.NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
@@ -158,49 +165,60 @@ func (c *Client) Run(path string) error {
 
 
 	for _, provider := range config.Providers {
-		if provider.Name == "" {
-			return fmt.Errorf("provider must contain key: name")
-		}
+		err := func() error {
+			if provider.Name == "" {
+				return fmt.Errorf("provider must contain key: name")
+			}
+			org := "cloudquery"
+			name := provider.Name
+			split := strings.Split(provider.Name, "/")
+			if len(split) == 2 {
+				org = split[0]
+				name = split[1]
+			}
+			version := "latest"
+			if provider.Version != "" {
+				version = provider.Version
+			}
+			pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", cwd, org, name, version, runtime.GOOS, runtime.GOARCH)
+			if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
+				return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
+			}
+			var p sdk.CQProvider
+			if c.runself {
+				c.log.Info("Calling local provider (self)")
+				p = runSelfProvider
+			} else {
+				c.log.Info("Loading provider", zap.String("path", pluginPath))
+				p, err = sdk.GetProviderPluginClient(pluginPath)
+				if err != nil {
+					return err
+				}
+				defer sdk.KillProviderPluginClient(pluginPath)
+			}
 
-		org := "cloudquery"
-		name := provider.Name
-		split := strings.Split(provider.Name, "/")
-		if len(split) == 2 {
-			org = split[0]
-			name = split[1]
-		}
-		version := "latest"
-		if provider.Version != "" {
-			version = provider.Version
-		}
-		pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", cwd, org, name, version, runtime.GOOS, runtime.GOARCH)
-		if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
-			return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
-		}
-		c.log.Info("Loading provider", zap.String("path", pluginPath))
-		p, err:= sdk.GetProviderPluginClient(pluginPath)
+
+			err = p.Init(c.driver, c.dsn, true)
+			if err != nil {
+				return err
+			}
+
+			d, err := yaml.Marshal(&provider.Rest)
+			if err != nil {
+				return err
+			}
+
+			err = p.Fetch(d)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		}()
+
 		if err != nil {
 			return err
 		}
-
-		err = p.Init(c.driver, c.dsn, true)
-		if err != nil {
-			sdk.KillProviderPluginClient(pluginPath)
-			return err
-		}
-
-		d, err := yaml.Marshal(&provider.Rest)
-		if err != nil {
-			sdk.KillProviderPluginClient(pluginPath)
-			return err
-		}
-
-		err = p.Fetch(d)
-		if err != nil {
-			sdk.KillProviderPluginClient(pluginPath)
-			return err
-		}
-		sdk.KillProviderPluginClient(pluginPath)
 	}
 
 	return nil

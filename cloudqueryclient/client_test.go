@@ -73,7 +73,7 @@ func TestMigrationSQLServers(t *testing.T) {
 				port = resource.GetPort(tc.port)
 			}
 
-			client, err := New(tc.driver, fmt.Sprintf(tc.dsn, port), true)
+			client, err := New(tc.driver, fmt.Sprintf(tc.dsn, port), true, false)
 			if err != nil {
 				t.Fatal(err)
 			}
