@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/okta/okta-sdk-golang/v2/okta"
@@ -38,7 +39,7 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 	if err != nil {
 		return err
 	}
-	zapLogger, err := sdk.NewLogger(verbose)
+	zapLogger, err := cqlog.NewLogger(verbose)
 	p.log = zapLogger
 
 	p.log.Info("Creating tables if needed")
