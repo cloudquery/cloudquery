@@ -152,7 +152,7 @@ type DBInstanceReplicaName struct {
 }
 
 func (DBInstanceReplicaName) TableName() string {
-	return "aws_sql_db_instance_replica_names"
+	return "gcp_sql_db_instance_replica_names"
 }
 type DBInstanceSettingsAuthorizedGaeApplication struct {
 	ID           uint `gorm:"primarykey"`
@@ -161,7 +161,7 @@ type DBInstanceSettingsAuthorizedGaeApplication struct {
 }
 
 func (DBInstanceSettingsAuthorizedGaeApplication) TableName() string {
-	return "aws_sql_db_instance_settings_authorized_gae_applications"
+	return "gcp_sql_db_instance_settings_authorized_gae_applications"
 }
 
 type DBInstanceDatabaseFlag struct {
@@ -196,7 +196,7 @@ type DBInstanceSuspensionReason struct {
 }
 
 func (DBInstanceSuspensionReason) TableName() string {
-	return "aws_sql_db_instance_suspension_reasons"
+	return "gcp_sql_db_instance_suspension_reasons"
 }
 
 func (c *Client) transformDatabaseInstances(values []*sql.DatabaseInstance) []*DBInstance {

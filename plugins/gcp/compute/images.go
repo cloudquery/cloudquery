@@ -1,8 +1,6 @@
 package compute
 
 import (
-	"github.com/aws/aws-sdk-go/service/elb"
-	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"google.golang.org/api/compute/v1"
 )
@@ -202,12 +200,7 @@ var ImageTables = []interface{}{
 	&ImageStorageLocation{},
 }
 
-func (c *Client) images(gConfig interface{}) error {
-	var config elb.DescribeLoadBalancersInput
-	err := mapstructure.Decode(gConfig, &config)
-	if err != nil {
-		return err
-	}
+func (c *Client) images(_ interface{}) error {
 
 	c.db.Where("project_id", c.projectID).Delete(ImageTables...)
 	nextPageToken := ""

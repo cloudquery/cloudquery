@@ -26,6 +26,7 @@ func NewClient(db *database.Database, log *zap.Logger,
 		return nil, err
 	}
 
+
 	return &Client{
 		db:               db,
 		log:              log,

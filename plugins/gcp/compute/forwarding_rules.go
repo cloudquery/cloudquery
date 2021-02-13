@@ -70,7 +70,7 @@ type ForwardingRulePort struct {
 }
 
 func (ForwardingRulePort) TableName() string {
-	return "aws_compute_forwarding_rule_ports"
+	return "gcp_compute_forwarding_rule_ports"
 }
 
 func (c *Client) transformForwardingRules(values []*compute.ForwardingRule) []*ForwardingRule {
