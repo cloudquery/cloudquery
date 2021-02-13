@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/olekukonko/tablewriter"
@@ -122,7 +123,7 @@ func New(driver string, dsn string, verbose bool, runSelf bool) (*Client, error)
 		runself: runSelf,
 	}
 
-	zapLogger, err := plugin.NewLogger(verbose)
+	zapLogger, err := cqlog.NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
 		return nil, err
@@ -169,19 +170,20 @@ func (c *Client) Run(path string) error {
 				org = split[0]
 				name = split[1]
 			}
-			version := "latest"
-			if provider.Version != "" {
-				version = provider.Version
-			}
-			pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", cwd, org, name, version, runtime.GOOS, runtime.GOARCH)
-			if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
-				return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
-			}
+
 			var p plugin.CQProvider
 			if c.runself {
 				c.log.Info("Calling local provider (self)")
 				p = plugin.GetRunSelfProvider()
 			} else {
+				version := "latest"
+				if provider.Version != "" {
+					version = provider.Version
+				}
+				pluginPath := fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", cwd, org, name, version, runtime.GOOS, runtime.GOARCH)
+				if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
+					return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
+				}
 				c.log.Info("Loading provider", zap.String("path", pluginPath))
 				p, err = plugin.GetProviderPluginClient(pluginPath)
 				if err != nil {
