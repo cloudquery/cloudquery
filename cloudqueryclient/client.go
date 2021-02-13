@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/sdk"
+	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -83,13 +83,6 @@ func Init(configPath string) error {
 	return nil
 }
 
-var runSelfProvider sdk.CQProvider
-
-// This is for provider debug purposes (when --runself is passed)
-func RegisterRunSelfProvider(provider sdk.CQProvider) {
-	runSelfProvider = provider
-}
-
 func GenConfig(providers []string) (string, error) {
 	var s strings.Builder
 	_, err := s.WriteString(headerConfig)
@@ -106,17 +99,17 @@ func GenConfig(providers []string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		p, err:= sdk.GetProviderPluginClient(providerPath)
+		p, err:= plugin.GetProviderPluginClient(providerPath)
 		if err != nil {
 			return "", err
 		}
 		configYaml, err := p.GenConfig()
 		if err != nil {
-			sdk.KillProviderPluginClient(providerPath)
+			plugin.KillProviderPluginClient(providerPath)
 			return "", err
 		}
 		s.WriteString(configYaml)
-		sdk.KillProviderPluginClient(providerPath)
+		plugin.KillProviderPluginClient(providerPath)
 	}
 	s.WriteString("\n")
 	return s.String(), nil
@@ -129,7 +122,7 @@ func New(driver string, dsn string, verbose bool, runSelf bool) (*Client, error)
 		runself: runSelf,
 	}
 
-	zapLogger, err := sdk.NewLogger(verbose)
+	zapLogger, err := plugin.NewLogger(verbose)
 	client.log = zapLogger
 	if err != nil {
 		return nil, err
@@ -184,17 +177,17 @@ func (c *Client) Run(path string) error {
 			if _, err := os.Stat(pluginPath); os.IsNotExist(err) {
 				return fmt.Errorf("provider %s does not exist locally try downloading with cloudquery init", name)
 			}
-			var p sdk.CQProvider
+			var p plugin.CQProvider
 			if c.runself {
 				c.log.Info("Calling local provider (self)")
-				p = runSelfProvider
+				p = plugin.GetRunSelfProvider()
 			} else {
 				c.log.Info("Loading provider", zap.String("path", pluginPath))
-				p, err = sdk.GetProviderPluginClient(pluginPath)
+				p, err = plugin.GetProviderPluginClient(pluginPath)
 				if err != nil {
 					return err
 				}
-				defer sdk.KillProviderPluginClient(pluginPath)
+				defer plugin.KillProviderPluginClient(pluginPath)
 			}
 
 

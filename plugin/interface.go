@@ -1,8 +1,8 @@
-package sdk
+package plugin
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/sdk/proto"
+	"github.com/cloudquery/cloudquery/plugin/proto"
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
 )
@@ -41,15 +41,3 @@ func (p *CQPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c 
 	return &GRPCClient{client: proto.NewProviderClient(c)}, nil
 }
 
-func ServePlugin(provider CQProvider) {
-	plugin.Serve(&plugin.ServeConfig{
-		HandshakeConfig: Handshake,
-		VersionedPlugins: map[int]plugin.PluginSet {
-		1: {
-			"provider": &CQPlugin{Impl: provider},
-		}},
-
-		// A non-nil value here enables gRPC serving for this plugin...
-		GRPCServer: plugin.DefaultGRPCServer,
-	})
-}

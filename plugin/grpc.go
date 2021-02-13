@@ -1,8 +1,8 @@
-package sdk
+package plugin
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/sdk/proto"
+	"github.com/cloudquery/cloudquery/plugin/proto"
 )
 
 

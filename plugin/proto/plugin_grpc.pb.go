@@ -169,5 +169,5 @@ var Provider_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "sdk/proto/plugin.proto",
+	Metadata: "plugin/proto/plugin.proto",
 }
