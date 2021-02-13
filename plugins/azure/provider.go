@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/cloudquery/cq-provider-azure/compute"
@@ -56,7 +57,7 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 		return err
 	}
 
-	zapLogger, err := sdk.NewLogger(verbose)
+	zapLogger, err := cqlog.NewLogger(verbose)
 	p.log = zapLogger
 	p.resourceFuncs = map[string]ResourceFunc{
 		"resources.groups":   resources.Groups,
