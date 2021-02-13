@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/sdk"
 	"log"
 	"strings"
@@ -150,7 +151,7 @@ func (p *Provider) Init(driver string, dsn string, verbose bool) error {
 		return err
 	}
 
-	zapLogger, err := sdk.NewLogger(verbose)
+	zapLogger, err := cqlog.NewLogger(verbose)
 	p.log = zapLogger
 	p.resourceClients = map[string]resource.ClientInterface{}
 	p.log.Info("Creating tables if needed")
