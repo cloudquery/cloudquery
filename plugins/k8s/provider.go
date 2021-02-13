@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/sdk"
 	"go.uber.org/zap"
@@ -38,7 +39,7 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 	if err != nil {
 		return err
 	}
-	zapLogger, err := sdk.NewLogger(verbose)
+	zapLogger, err := cqlog.NewLogger(verbose)
 	p.log = zapLogger
 
 	for _, tables := range tablesArr {
