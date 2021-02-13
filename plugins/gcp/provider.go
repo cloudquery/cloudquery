@@ -29,8 +29,8 @@ type Provider struct {
 
 type Config struct {
 	ProjectFilter string
-	ProjectIDs [] string
-	Resources []struct {
+	ProjectIDs    []string
+	Resources     []struct {
 		Name  string
 		Other map[string]interface{} `yaml:",inline"`
 	}
@@ -43,12 +43,13 @@ var resourceFactory = map[string]NewResourceFunc{
 	"compute": compute.NewClient,
 	"iam":     iam.NewClient,
 	"storage": storage.NewClient,
-	"sql": sql.NewClient,
+	"sql":     sql.NewClient,
 }
 
 var tablesArr = [][]interface{}{
 	compute.AddressTables,
 	compute.AutoscalerTables,
+	compute.BackendServiceTables,
 	compute.DiskTypeTables,
 	compute.ForwardingRuleTables,
 	compute.ImageTables,
@@ -62,7 +63,7 @@ var tablesArr = [][]interface{}{
 	sql.DatabaseInstanceTables,
 }
 
-func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+func (p *Provider) Init(driver string, dsn string, verbose bool) error {
 	var err error
 	p.db, err = database.Open(driver, dsn)
 	if err != nil {
@@ -76,6 +77,8 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 			return err
 		}
 	}
+
+	p.resourceClients = map[string]resource.ClientInterface{}
 
 	return nil
 }
@@ -127,7 +130,6 @@ func (p *Provider) Fetch(data []byte) error {
 		projectIDs = p.config.ProjectIDs
 	}
 
-
 	for _, projectID := range projectIDs {
 		if projectID == "<CHANGE_THIS_TO_YOUR_PROJECT_ID>" {
 			return fmt.Errorf("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
@@ -148,7 +150,7 @@ func (p *Provider) Fetch(data []byte) error {
 	return nil
 }
 
-func (p *Provider) initClients(projectID string) error{
+func (p *Provider) initClients(projectID string) error {
 	var err error
 	for serviceName, newFunc := range resourceFactory {
 		zapLog := p.log.With(zap.String("project_id", projectID))
@@ -159,7 +161,6 @@ func (p *Provider) initClients(projectID string) error{
 	}
 	return nil
 }
-
 
 func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullResourceName string, config interface{}) {
 	defer wg.Done()
@@ -181,7 +182,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullRes
 				p.log.Info("access not configured. skipping.",
 					zap.String("project_id", projectID), zap.String("resource", fullResourceName))
 				return
-			} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
+			} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden" {
 				p.log.Info("access denied. skipping.",
 					zap.String("project_id", projectID), zap.String("resource", fullResourceName))
 				return
@@ -193,5 +194,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullRes
 }
 
 func main() {
-	sdk.ServePlugin(&Provider{})
+	sdk.ServePlugin(&Provider{
+
+	})
 }

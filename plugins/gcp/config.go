@@ -8,6 +8,7 @@ var configYaml = `
     resources:
       - name: compute.addresses
       - name: compute.autoscalers
+      - name: compute.backend_services
       - name: compute.disk_types
       - name: compute.images
       - name: compute.instances

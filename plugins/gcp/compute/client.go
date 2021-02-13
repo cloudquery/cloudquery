@@ -55,6 +55,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.vpnGateways(config)
 	case "forwarding_rules":
 		return c.forwardingRules(config)
+	case "backend_services":
+		return c.backendServices(config)
 	default:
 		return fmt.Errorf("unsupported resource compute.%s", resource)
 	}
