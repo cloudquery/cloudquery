@@ -1,53 +1,52 @@
 package sql
+
 import (
 	"go.uber.org/zap"
 	"google.golang.org/api/sql/v1beta4"
 )
 
-
 type DBInstance struct {
-	ID uint `gorm:"primarykey"`
-	ProjectID string
-	BackendType string
-	ConnectionName string
+	ID              uint `gorm:"primarykey"`
+	ProjectID       string
+	BackendType     string
+	ConnectionName  string
 	CurrentDiskSize int64
 	DatabaseVersion string
 
-	DiskEncryptionConfigurationKind string
+	DiskEncryptionConfigurationKind       string
 	DiskEncryptionConfigurationKmsKeyName string
 
-
-	DiskEncryptionStatusKind string
+	DiskEncryptionStatusKind              string
 	DiskEncryptionStatusKmsKeyVersionName string
 
 	Etag string
 
 	FailoverReplicaAvailable bool
-	FailoverReplicaName string
+	FailoverReplicaName      string
 
-	GceZone string
-	InstanceType string
-	IpAddresses []*DBInstanceIpMapping `gorm:"constraint:OnDelete:CASCADE;"`
-	Ipv6Address string
-	Kind string
+	GceZone            string
+	InstanceType       string
+	IpAddresses        []*DBInstanceIpMapping `gorm:"constraint:OnDelete:CASCADE;"`
+	Ipv6Address        string
+	Kind               string
 	MasterInstanceName string
-	MaxDiskSize int64
-	Name string
+	MaxDiskSize        int64
+	Name               string
 
-	OnPremisesConfigurationCaCertificate string
+	OnPremisesConfigurationCaCertificate     string
 	OnPremisesConfigurationClientCertificate string
-	OnPremisesConfigurationClientKey string
-	OnPremisesConfigurationDumpFilePath string
-	OnPremisesConfigurationHostPort string
-	OnPremisesConfigurationKind string
-	OnPremisesConfigurationPassword string
-	OnPremisesConfigurationUsername string
+	OnPremisesConfigurationClientKey         string
+	OnPremisesConfigurationDumpFilePath      string
+	OnPremisesConfigurationHostPort          string
+	OnPremisesConfigurationKind              string
+	OnPremisesConfigurationPassword          string
+	OnPremisesConfigurationUsername          string
 
 	Project string
-	Region string
+	Region  string
 
 	ReplicaConfigurationFailoverTarget bool
-	ReplicaConfigurationKind string
+	ReplicaConfigurationKind           string
 
 	MysqlReplicaConfigurationCaCertificate           string
 	MysqlReplicaConfigurationClientCertificate       string
@@ -61,13 +60,12 @@ type DBInstance struct {
 	MysqlReplicaConfigurationUsername                string
 	MysqlReplicaConfigurationVerifyServerCertificate bool
 
-
 	ReplicaNames []*DBInstanceReplicaName `gorm:"constraint:OnDelete:CASCADE;"`
 	RootPassword string
 
-	ScheduledMaintenanceCanDefer bool
+	ScheduledMaintenanceCanDefer      bool
 	ScheduledMaintenanceCanReschedule bool
-	ScheduledMaintenanceStartTime string
+	ScheduledMaintenanceStartTime     string
 
 	SelfLink string
 
@@ -83,23 +81,23 @@ type DBInstance struct {
 
 	ServiceAccountEmailAddress string
 
-	SettingsActivationPolicy string
+	SettingsActivationPolicy          string
 	SettingsAuthorizedGaeApplications []*DBInstanceSettingsAuthorizedGaeApplication `gorm:"constraint:OnDelete:CASCADE;"`
-	SettingsAvailabilityType string
+	SettingsAvailabilityType          string
 
-	SettingsBackupConfigurationBinaryLogEnabled bool
-	SettingsBackupConfigurationEnabled bool
-	SettingsBackupConfigurationKind string
-	SettingsBackupConfigurationLocation string
-	SettingsBackupConfigurationPointInTimeRecoveryEnabled bool
+	SettingsBackupConfigurationBinaryLogEnabled               bool
+	SettingsBackupConfigurationEnabled                        bool
+	SettingsBackupConfigurationKind                           string
+	SettingsBackupConfigurationLocation                       string
+	SettingsBackupConfigurationPointInTimeRecoveryEnabled     bool
 	SettingsBackupConfigurationReplicationLogArchivingEnabled bool
-	SettingsBackupConfigurationStartTime string
+	SettingsBackupConfigurationStartTime                      string
 
 	SettingsCrashSafeReplicationEnabled bool
-	SettingsDataDiskSizeGb int64
-	SettingsDataDiskType string
-	SettingsDatabaseFlags []*DBInstanceDatabaseFlag `gorm:"constraint:OnDelete:CASCADE;"`
-	SettingsDatabaseReplicationEnabled bool
+	SettingsDataDiskSizeGb              int64
+	SettingsDataDiskType                string
+	SettingsDatabaseFlags               []*DBInstanceDatabaseFlag `gorm:"constraint:OnDelete:CASCADE;"`
+	SettingsDatabaseReplicationEnabled  bool
 
 	SettingsIpConfigAuthorizedNetworks []*DBInstanceAclEntry `gorm:"constraint:OnDelete:CASCADE;"`
 	SettingsIpConfigIpv4Enabled        bool
@@ -109,23 +107,22 @@ type DBInstance struct {
 	SettingsKind string
 
 	SettingsLocationPreferenceFollowGaeApplication string
-	SettingsLocationPreferenceKind string
-	SettingsLocationPreferenceZone string
+	SettingsLocationPreferenceKind                 string
+	SettingsLocationPreferenceZone                 string
 
-
-	SettingsMaintenanceWindowDay int64
-	SettingsMaintenanceWindowHour int64
-	SettingsMaintenanceWindowKind string
+	SettingsMaintenanceWindowDay         int64
+	SettingsMaintenanceWindowHour        int64
+	SettingsMaintenanceWindowKind        string
 	SettingsMaintenanceWindowUpdateTrack string
 
-	SettingsPricingPlan string
-	SettingsReplicationType string
-	SettingsSettingsVersion int64
-	SettingsStorageAutoResize bool
+	SettingsPricingPlan            string
+	SettingsReplicationType        string
+	SettingsSettingsVersion        int64
+	SettingsStorageAutoResize      bool
 	SettingsStorageAutoResizeLimit int64
-	SettingsTier string
+	SettingsTier                   string
 
-	State string
+	State            string
 	SuspensionReason []*DBInstanceSuspensionReason `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
@@ -145,6 +142,7 @@ type DBInstanceIpMapping struct {
 func (DBInstanceIpMapping) TableName() string {
 	return "gcp_sql_database_instance_ip_mappings"
 }
+
 type DBInstanceReplicaName struct {
 	ID           uint `gorm:"primarykey"`
 	DBInstanceID uint
@@ -154,6 +152,7 @@ type DBInstanceReplicaName struct {
 func (DBInstanceReplicaName) TableName() string {
 	return "gcp_sql_db_instance_replica_names"
 }
+
 type DBInstanceSettingsAuthorizedGaeApplication struct {
 	ID           uint `gorm:"primarykey"`
 	DBInstanceID uint
@@ -189,6 +188,7 @@ type DBInstanceAclEntry struct {
 func (DBInstanceAclEntry) TableName() string {
 	return "gcp_sql_db_instance_acl_entries"
 }
+
 type DBInstanceSuspensionReason struct {
 	ID           uint `gorm:"primarykey"`
 	DBInstanceID uint
@@ -203,28 +203,28 @@ func (c *Client) transformDatabaseInstances(values []*sql.DatabaseInstance) []*D
 	var tValues []*DBInstance
 	for _, value := range values {
 		tValue := DBInstance{
-			ProjectID: c.projectID,
-			BackendType: value.BackendType,
-			ConnectionName: value.ConnectionName,
-			CurrentDiskSize: value.CurrentDiskSize,
-			DatabaseVersion: value.DatabaseVersion,
-			Etag: value.Etag,
-			GceZone: value.GceZone,
-			InstanceType: value.InstanceType,
-			IpAddresses: c.transformDatabaseInstanceIpMappings(value.IpAddresses),
-			Ipv6Address: value.Ipv6Address,
-			Kind: value.Kind,
-			MasterInstanceName: value.MasterInstanceName,
-			MaxDiskSize: value.MaxDiskSize,
-			Name: value.Name,
-			Project: value.Project,
-			Region: value.Region,
-			ReplicaNames: c.transformDatabaseInstanceReplicaNames(value.ReplicaNames),
-			RootPassword: value.RootPassword,
-			SelfLink: value.SelfLink,
+			ProjectID:                  c.projectID,
+			BackendType:                value.BackendType,
+			ConnectionName:             value.ConnectionName,
+			CurrentDiskSize:            value.CurrentDiskSize,
+			DatabaseVersion:            value.DatabaseVersion,
+			Etag:                       value.Etag,
+			GceZone:                    value.GceZone,
+			InstanceType:               value.InstanceType,
+			IpAddresses:                c.transformDatabaseInstanceIpMappings(value.IpAddresses),
+			Ipv6Address:                value.Ipv6Address,
+			Kind:                       value.Kind,
+			MasterInstanceName:         value.MasterInstanceName,
+			MaxDiskSize:                value.MaxDiskSize,
+			Name:                       value.Name,
+			Project:                    value.Project,
+			Region:                     value.Region,
+			ReplicaNames:               c.transformDatabaseInstanceReplicaNames(value.ReplicaNames),
+			RootPassword:               value.RootPassword,
+			SelfLink:                   value.SelfLink,
 			ServiceAccountEmailAddress: value.ServiceAccountEmailAddress,
-			State: value.State,
-			SuspensionReason: c.transformDatabaseInstanceSuspensionReason(value.SuspensionReason),
+			State:                      value.State,
+			SuspensionReason:           c.transformDatabaseInstanceSuspensionReason(value.SuspensionReason),
 		}
 		if value.DiskEncryptionConfiguration != nil {
 
@@ -310,10 +310,10 @@ func (c *Client) transformDatabaseInstanceIpMappings(values []*sql.IpMapping) []
 	var tValues []*DBInstanceIpMapping
 	for _, value := range values {
 		tValue := DBInstanceIpMapping{
-			ProjectID: c.projectID,
-			IpAddress: value.IpAddress,
+			ProjectID:    c.projectID,
+			IpAddress:    value.IpAddress,
 			TimeToRetire: value.TimeToRetire,
-			Type: value.Type,
+			Type:         value.Type,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -339,14 +339,13 @@ func (c *Client) transformDatabaseInstanceSettingsAuthorizedGaeApplications(valu
 	return tValues
 }
 
-
 func (c *Client) transformDatabaseInstanceDatabaseFlags(values []*sql.DatabaseFlags) []*DBInstanceDatabaseFlag {
 	var tValues []*DBInstanceDatabaseFlag
 	for _, value := range values {
 		tValue := DBInstanceDatabaseFlag{
 			ProjectID: c.projectID,
-			Name: value.Name,
-			Value: value.Value,
+			Name:      value.Name,
+			Value:     value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -357,17 +356,16 @@ func (c *Client) transformDatabaseInstanceAclEntries(values []*sql.AclEntry) []*
 	var tValues []*DBInstanceAclEntry
 	for _, value := range values {
 		tValue := DBInstanceAclEntry{
-			ProjectID: c.projectID,
+			ProjectID:      c.projectID,
 			ExpirationTime: value.ExpirationTime,
-			Kind: value.Kind,
-			Name: value.Name,
-			Value: value.Value,
+			Kind:           value.Kind,
+			Name:           value.Name,
+			Value:          value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
-
 
 func (c *Client) transformDatabaseInstanceSuspensionReason(values []string) []*DBInstanceSuspensionReason {
 	var tValues []*DBInstanceSuspensionReason
@@ -379,16 +377,14 @@ func (c *Client) transformDatabaseInstanceSuspensionReason(values []string) []*D
 	return tValues
 }
 
-
-var DatabaseInstanceTables = []interface{} {
+var DatabaseInstanceTables = []interface{}{
 	&DBInstance{},
 	&DBInstanceIpMapping{},
 	&DBInstanceDatabaseFlag{},
 	&DBInstanceAclEntry{},
 }
 
-
-func (c *Client)instances(_ interface{}) error {
+func (c *Client) instances(_ interface{}) error {
 
 	nextPageToken := ""
 	c.db.Where("project_id", c.projectID).Delete(DatabaseInstanceTables...)
@@ -409,4 +405,3 @@ func (c *Client)instances(_ interface{}) error {
 	}
 	return nil
 }
-

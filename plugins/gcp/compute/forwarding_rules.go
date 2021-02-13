@@ -5,35 +5,34 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-
 type ForwardingRule struct {
-	ID uint `gorm:"primarykey"`
-	ProjectID string
-	IPAddress string
-	IPProtocol string
-	AllPorts bool
-	AllowGlobalAccess bool
-	BackendService string
-	CreationTimestamp string
-	Description string
-	Fingerprint string
-	Id uint64
-	IpVersion string
+	ID                   uint `gorm:"primarykey"`
+	ProjectID            string
+	IPAddress            string
+	IPProtocol           string
+	AllPorts             bool
+	AllowGlobalAccess    bool
+	BackendService       string
+	CreationTimestamp    string
+	Description          string
+	Fingerprint          string
+	Id                   uint64
+	IpVersion            string
 	IsMirroringCollector bool
-	Kind string
-	LoadBalancingScheme string
-	MetadataFilters []*ForwardingRuleMetadataFilter `gorm:"constraint:OnDelete:CASCADE;"`
-	Name string
-	Network string
-	NetworkTier string
-	PortRange string
-	Ports []*ForwardingRulePort `gorm:"constraint:OnDelete:CASCADE;"`
-	Region string
-	SelfLink string
-	ServiceLabel string
-	ServiceName string
-	Subnetwork string
-	Target string
+	Kind                 string
+	LoadBalancingScheme  string
+	MetadataFilters      []*ForwardingRuleMetadataFilter `gorm:"constraint:OnDelete:CASCADE;"`
+	Name                 string
+	Network              string
+	NetworkTier          string
+	PortRange            string
+	Ports                []*ForwardingRulePort `gorm:"constraint:OnDelete:CASCADE;"`
+	Region               string
+	SelfLink             string
+	ServiceLabel         string
+	ServiceName          string
+	Subnetwork           string
+	Target               string
 }
 
 func (ForwardingRule) TableName() string {
@@ -41,11 +40,11 @@ func (ForwardingRule) TableName() string {
 }
 
 type ForwardingRuleMetadataFilterLabelMatch struct {
-	ID uint `gorm:"primarykey"`
-	ProjectID string `gorm:"-"`
-	ForwardingRuleMetadataFilterID uint `neo:"ignore"`
-	Name string
-	Value string
+	ID                             uint   `gorm:"primarykey"`
+	ProjectID                      string `gorm:"-"`
+	ForwardingRuleMetadataFilterID uint   `neo:"ignore"`
+	Name                           string
+	Value                          string
 }
 
 func (ForwardingRuleMetadataFilterLabelMatch) TableName() string {
@@ -63,10 +62,11 @@ type ForwardingRuleMetadataFilter struct {
 func (ForwardingRuleMetadataFilter) TableName() string {
 	return "gcp_compute_forwarding_rule_metadata_filters"
 }
+
 type ForwardingRulePort struct {
-	ID uint `gorm:"primarykey"`
+	ID               uint `gorm:"primarykey"`
 	ForwardingRuleID uint
-	Value string
+	Value            string
 }
 
 func (ForwardingRulePort) TableName() string {
@@ -76,33 +76,33 @@ func (ForwardingRulePort) TableName() string {
 func (c *Client) transformForwardingRules(values []*compute.ForwardingRule) []*ForwardingRule {
 	var tValues []*ForwardingRule
 	for _, value := range values {
-		tValue := ForwardingRule {
-			ProjectID: c.projectID,
-			IPAddress: value.IPAddress,
-			IPProtocol: value.IPProtocol,
-			AllPorts: value.AllPorts,
-			AllowGlobalAccess: value.AllowGlobalAccess,
-			BackendService: value.BackendService,
-			CreationTimestamp: value.CreationTimestamp,
-			Description: value.Description,
-			Fingerprint: value.Fingerprint,
-			Id: value.Id,
-			IpVersion: value.IpVersion,
+		tValue := ForwardingRule{
+			ProjectID:            c.projectID,
+			IPAddress:            value.IPAddress,
+			IPProtocol:           value.IPProtocol,
+			AllPorts:             value.AllPorts,
+			AllowGlobalAccess:    value.AllowGlobalAccess,
+			BackendService:       value.BackendService,
+			CreationTimestamp:    value.CreationTimestamp,
+			Description:          value.Description,
+			Fingerprint:          value.Fingerprint,
+			Id:                   value.Id,
+			IpVersion:            value.IpVersion,
 			IsMirroringCollector: value.IsMirroringCollector,
-			Kind: value.Kind,
-			LoadBalancingScheme: value.LoadBalancingScheme,
-			MetadataFilters: c.transformForwardingRuleMetadataFilters(value.MetadataFilters),
-			Name: value.Name,
-			Network: value.Network,
-			NetworkTier: value.NetworkTier,
-			PortRange: value.PortRange,
-			Ports: c.transformForwardingRulePorts(value.Ports),
-			Region: value.Region,
-			SelfLink: value.SelfLink,
-			ServiceLabel: value.ServiceLabel,
-			ServiceName: value.ServiceName,
-			Subnetwork: value.Subnetwork,
-			Target: value.Target,
+			Kind:                 value.Kind,
+			LoadBalancingScheme:  value.LoadBalancingScheme,
+			MetadataFilters:      c.transformForwardingRuleMetadataFilters(value.MetadataFilters),
+			Name:                 value.Name,
+			Network:              value.Network,
+			NetworkTier:          value.NetworkTier,
+			PortRange:            value.PortRange,
+			Ports:                c.transformForwardingRulePorts(value.Ports),
+			Region:               value.Region,
+			SelfLink:             value.SelfLink,
+			ServiceLabel:         value.ServiceLabel,
+			ServiceName:          value.ServiceName,
+			Subnetwork:           value.Subnetwork,
+			Target:               value.Target,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -112,10 +112,10 @@ func (c *Client) transformForwardingRules(values []*compute.ForwardingRule) []*F
 func (c *Client) transformForwardingRuleMetadataFilterLabelMatchs(values []*compute.MetadataFilterLabelMatch) []*ForwardingRuleMetadataFilterLabelMatch {
 	var tValues []*ForwardingRuleMetadataFilterLabelMatch
 	for _, value := range values {
-		tValue := ForwardingRuleMetadataFilterLabelMatch {
+		tValue := ForwardingRuleMetadataFilterLabelMatch{
 			ProjectID: c.projectID,
-			Name: value.Name,
-			Value: value.Value,
+			Name:      value.Name,
+			Value:     value.Value,
 		}
 		tValues = append(tValues, &tValue)
 	}
@@ -125,7 +125,7 @@ func (c *Client) transformForwardingRuleMetadataFilterLabelMatchs(values []*comp
 func (c *Client) transformForwardingRuleMetadataFilters(values []*compute.MetadataFilter) []*ForwardingRuleMetadataFilter {
 	var tValues []*ForwardingRuleMetadataFilter
 	for _, value := range values {
-		tValue := ForwardingRuleMetadataFilter {
+		tValue := ForwardingRuleMetadataFilter{
 			ProjectID:     c.projectID,
 			Labels:        c.transformForwardingRuleMetadataFilterLabelMatchs(value.FilterLabels),
 			MatchCriteria: value.FilterMatchCriteria,
@@ -144,14 +144,14 @@ func (c *Client) transformForwardingRulePorts(values []string) []*ForwardingRule
 	return tValues
 }
 
-var ForwardingRuleTables = []interface{} {
+var ForwardingRuleTables = []interface{}{
 	&ForwardingRule{},
 	&ForwardingRuleMetadataFilter{},
 	&ForwardingRuleMetadataFilterLabelMatch{},
 	&ForwardingRulePort{},
 }
 
-func (c *Client)forwardingRules(_ interface{}) error {
+func (c *Client) forwardingRules(_ interface{}) error {
 
 	nextPageToken := ""
 	c.db.Where("project_id", c.projectID).Delete(ForwardingRuleTables...)
@@ -174,4 +174,3 @@ func (c *Client)forwardingRules(_ interface{}) error {
 	}
 	return nil
 }
-

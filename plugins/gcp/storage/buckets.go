@@ -519,7 +519,7 @@ func (c *Client) transformBucket(value *storage.Bucket) (*Bucket, error) {
 	output, err := call.Do()
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
-			if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden"{
+			if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden" {
 				c.log.Info("access denied. skipping.",
 					zap.String("project_id", c.projectID), zap.String("resource", "storage.buckets"))
 				return &res, nil
