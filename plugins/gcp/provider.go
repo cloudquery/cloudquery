@@ -28,8 +28,8 @@ type Provider struct {
 }
 
 type Config struct {
-	ProjectFilter string
-	ProjectIDs    []string
+	ProjectFilter string   `yaml:"project_filter"`
+	ProjectIDs    []string `yaml:"project_ids"`
 	Resources     []struct {
 		Name  string
 		Other map[string]interface{} `yaml:",inline"`
@@ -194,7 +194,5 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, projectID string, fullRes
 }
 
 func main() {
-	sdk.ServePlugin(&Provider{
-
-	})
+	sdk.ServePlugin(&Provider{})
 }
