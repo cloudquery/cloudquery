@@ -55,14 +55,14 @@ type Provider struct {
 
 type Account struct {
 	ID      string
-	RoleARN string
+	RoleARN string `yaml:"role_arn"`
 }
 
 type Config struct {
-	Regions    []string
-	Accounts   []Account
-	LogLevel   *string
-	MaxRetries *int
+	Regions    []string  `yaml:"regions"`
+	Accounts   []Account `yaml:"accounts"`
+	LogLevel   *string   `yaml:"log_level"`
+	MaxRetries *int      `yaml:"max_retries"`
 	Resources  []struct {
 		Name  string
 		Other map[string]interface{} `yaml:",inline"`
