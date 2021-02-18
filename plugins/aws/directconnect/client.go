@@ -2,32 +2,31 @@ package directconnect
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cq-provider-aws/resource"
 	"go.uber.org/zap"
 )
 
 type Client struct {
-	session   *session.Session
 	db        *database.Database
 	log       *zap.Logger
 	accountID string
 	region    string
-	svc       *directconnect.DirectConnect
+	svc       *directconnect.Client
 }
 
-func NewClient(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger,
+func NewClient(awsConfig aws.Config, db *database.Database, log *zap.Logger,
 	accountID string, region string) resource.ClientInterface {
 	return &Client{
-		session:   session,
 		db:        db,
 		log:       log,
 		accountID: accountID,
 		region:    region,
-		svc:       directconnect.New(session, awsConfig),
+		svc:       directconnect.NewFromConfig(awsConfig, func(options *directconnect.Options) {
+			options.Region = region
+		}),
 	}
 }
 

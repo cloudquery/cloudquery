@@ -1,8 +1,10 @@
 package kms
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/kms"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/kms"
+	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -64,74 +66,66 @@ func (KeySigningAlgorithm) TableName() string {
 	return "aws_kms_key_signing_algorithms"
 }
 
-func (c *Client) transformKeyListEntry(value *kms.KeyListEntry) (*Key, error) {
-	output, err := c.svc.DescribeKey(&kms.DescribeKeyInput{
-		KeyId: value.KeyId,
-	})
-	if err != nil {
-		return nil, err
-	}
-	var outputKeyRotation *kms.GetKeyRotationStatusOutput
-	if aws.StringValue(output.KeyMetadata.Origin) != "EXTERNAL" {
-		outputKeyRotation, err = c.svc.GetKeyRotationStatus(&kms.GetKeyRotationStatusInput{
+func (c *Client) transformKeyListEntrys(values *[]types.KeyListEntry) ([]*Key, error) {
+	var tValues []*Key
+	ctx := context.Background()
+	for _, value := range *values {
+		output, err := c.svc.DescribeKey(ctx, &kms.DescribeKeyInput{
 			KeyId: value.KeyId,
 		})
 		if err != nil {
 			return nil, err
 		}
-	}
-
-	res := Key{
-		Region:                c.region,
-		AccountID:             c.accountID,
-		Arn:                   value.KeyArn,
-		KeyId:                 value.KeyId,
-		CloudHsmClusterId:     output.KeyMetadata.CloudHsmClusterId,
-		CreationDate:          output.KeyMetadata.CreationDate,
-		CustomKeyStoreId:      output.KeyMetadata.CustomKeyStoreId,
-		CustomerMasterKeySpec: output.KeyMetadata.CustomerMasterKeySpec,
-		DeletionDate:          output.KeyMetadata.DeletionDate,
-		Description:           output.KeyMetadata.Description,
-		Enabled:               output.KeyMetadata.Enabled,
-		ExpirationModel:       output.KeyMetadata.ExpirationModel,
-		Manager:               output.KeyMetadata.KeyManager,
-		KeyState:              output.KeyMetadata.KeyState,
-		KeyUsage:              output.KeyMetadata.KeyUsage,
-		Origin:                output.KeyMetadata.Origin,
-		ValidTo:               output.KeyMetadata.ValidTo,
-	}
-
-	if outputKeyRotation != nil {
-		res.RotationEnabled = outputKeyRotation.KeyRotationEnabled
-	}
-
-	for _, algorithm := range output.KeyMetadata.EncryptionAlgorithms {
-		res.EncryptionAlgorithms = append(res.EncryptionAlgorithms, &KeyEncryptionAlgorithm{
-			Region:    c.region,
-			AccountID: c.accountID,
-			name:      aws.StringValue(algorithm),
-		})
-	}
-
-	for _, algorithm := range output.KeyMetadata.SigningAlgorithms {
-		res.SigningAlgorithms = append(res.SigningAlgorithms, &KeySigningAlgorithm{
-			Region:    c.region,
-			AccountID: c.accountID,
-			name:      aws.StringValue(algorithm),
-		})
-	}
-
-	return &res, nil
-}
-
-func (c *Client) transformKeyListEntrys(values []*kms.KeyListEntry) ([]*Key, error) {
-	var tValues []*Key
-	for _, v := range values {
-		tValue, err := c.transformKeyListEntry(v)
-		if err != nil {
-			return nil, err
+		var outputKeyRotation *kms.GetKeyRotationStatusOutput
+		if string(output.KeyMetadata.Origin) != "EXTERNAL" {
+			outputKeyRotation, err = c.svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{
+				KeyId: value.KeyId,
+			})
+			if err != nil {
+				return nil, err
+			}
 		}
-		tValues = append(tValues, tValue)
+
+		res := Key{
+			Region:                c.region,
+			AccountID:             c.accountID,
+			Arn:                   value.KeyArn,
+			KeyId:                 value.KeyId,
+			CloudHsmClusterId:     output.KeyMetadata.CloudHsmClusterId,
+			CreationDate:          output.KeyMetadata.CreationDate,
+			CustomKeyStoreId:      output.KeyMetadata.CustomKeyStoreId,
+			CustomerMasterKeySpec: aws.String(string(output.KeyMetadata.CustomerMasterKeySpec)),
+			DeletionDate:          output.KeyMetadata.DeletionDate,
+			Description:           output.KeyMetadata.Description,
+			Enabled:               &output.KeyMetadata.Enabled,
+			ExpirationModel:       aws.String(string(output.KeyMetadata.ExpirationModel)),
+			Manager:               aws.String(string(output.KeyMetadata.KeyManager)),
+			KeyState:              aws.String(string(output.KeyMetadata.KeyState)),
+			KeyUsage:              aws.String(string(output.KeyMetadata.KeyUsage)),
+			Origin:                aws.String(string(output.KeyMetadata.Origin)),
+			ValidTo:               output.KeyMetadata.ValidTo,
+		}
+
+		if outputKeyRotation != nil {
+			res.RotationEnabled = &outputKeyRotation.KeyRotationEnabled
+		}
+
+		for _, algorithm := range output.KeyMetadata.EncryptionAlgorithms {
+			res.EncryptionAlgorithms = append(res.EncryptionAlgorithms, &KeyEncryptionAlgorithm{
+				Region:    c.region,
+				AccountID: c.accountID,
+				name:      string(algorithm),
+			})
+		}
+
+		for _, algorithm := range output.KeyMetadata.SigningAlgorithms {
+			res.SigningAlgorithms = append(res.SigningAlgorithms, &KeySigningAlgorithm{
+				Region:    c.region,
+				AccountID: c.accountID,
+				name:      string(algorithm),
+			})
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues, nil
 }
@@ -144,6 +138,7 @@ var KeyTables = []interface{}{
 
 func (c *Client) keys(gConfig interface{}) error {
 	var config kms.ListKeysInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
@@ -151,17 +146,17 @@ func (c *Client) keys(gConfig interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(KeyTables...)
 
 	for {
-		output, err := c.svc.ListKeys(&config)
+		output, err := c.svc.ListKeys(ctx, &config)
 		if err != nil {
 			return err
 		}
-		tValues, err := c.transformKeyListEntrys(output.Keys)
+		tValues, err := c.transformKeyListEntrys(&output.Keys)
 		if err != nil {
 			return err
 		}
 		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "kms.keys"), zap.Int("count", len(output.Keys)))
-		if aws.StringValue(output.NextMarker) == "" {
+		if aws.ToString(output.NextMarker) == "" {
 			break
 		}
 		config.Marker = output.NextMarker

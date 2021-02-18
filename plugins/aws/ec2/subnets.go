@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -14,7 +16,7 @@ type Subnet struct {
 	AssignIpv6AddressOnCreation *bool
 	AvailabilityZone            *string
 	AvailabilityZoneId          *string
-	AvailableIpAddressCount     *int64
+	AvailableIpAddressCount     *int32
 	CidrBlock                   *string
 	CustomerOwnedIpv4Pool       *string
 	DefaultForAz                *bool
@@ -64,74 +66,62 @@ func (SubnetTag) TableName() string {
 	return "aws_ec2_subnet_tags"
 }
 
-func (c *Client) transformSubnetIpv6CidrBlockAssociation(value *ec2.SubnetIpv6CidrBlockAssociation) *SubnetIpv6CidrBlockAssociation {
-	res := SubnetIpv6CidrBlockAssociation{
-		AccountID:     c.accountID,
-		Region:        c.region,
-		AssociationId: value.AssociationId,
-		Ipv6CidrBlock: value.Ipv6CidrBlock,
-	}
-	if value.Ipv6CidrBlock != nil {
-		res.State = value.Ipv6CidrBlockState.State
-		res.StatusMessage = value.Ipv6CidrBlockState.StatusMessage
-	}
-
-	return &res
-}
-
-func (c *Client) transformSubnetIpv6CidrBlockAssociations(values []*ec2.SubnetIpv6CidrBlockAssociation) []*SubnetIpv6CidrBlockAssociation {
+func (c *Client) transformSubnetIpv6CidrBlockAssociations(values *[]types.SubnetIpv6CidrBlockAssociation) []*SubnetIpv6CidrBlockAssociation {
 	var tValues []*SubnetIpv6CidrBlockAssociation
-	for _, v := range values {
-		tValues = append(tValues, c.transformSubnetIpv6CidrBlockAssociation(v))
+	for _, value := range *values {
+		res := SubnetIpv6CidrBlockAssociation{
+			AccountID:     c.accountID,
+			Region:        c.region,
+			AssociationId: value.AssociationId,
+			Ipv6CidrBlock: value.Ipv6CidrBlock,
+		}
+		if value.Ipv6CidrBlock != nil {
+			res.State = aws.String(string(value.Ipv6CidrBlockState.State))
+			res.StatusMessage = value.Ipv6CidrBlockState.StatusMessage
+		}
+
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
 
-func (c *Client) transformSubnetTag(value *ec2.Tag) *SubnetTag {
-	return &SubnetTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformSubnetTags(values []*ec2.Tag) []*SubnetTag {
+func (c *Client) transformSubnetTags(values *[]types.Tag) []*SubnetTag {
 	var tValues []*SubnetTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformSubnetTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SubnetTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSubnet(value *ec2.Subnet) *Subnet {
-	return &Subnet{
-		Region:                      c.region,
-		AccountID:                   c.accountID,
-		AssignIpv6AddressOnCreation: value.AssignIpv6AddressOnCreation,
-		AvailabilityZone:            value.AvailabilityZone,
-		AvailabilityZoneId:          value.AvailabilityZoneId,
-		AvailableIpAddressCount:     value.AvailableIpAddressCount,
-		CidrBlock:                   value.CidrBlock,
-		CustomerOwnedIpv4Pool:       value.CustomerOwnedIpv4Pool,
-		DefaultForAz:                value.DefaultForAz,
-		Ipv6CidrBlockAssociationSet: c.transformSubnetIpv6CidrBlockAssociations(value.Ipv6CidrBlockAssociationSet),
-		MapCustomerOwnedIpOnLaunch:  value.MapCustomerOwnedIpOnLaunch,
-		MapPublicIpOnLaunch:         value.MapPublicIpOnLaunch,
-		OutpostArn:                  value.OutpostArn,
-		OwnerId:                     value.OwnerId,
-		State:                       value.State,
-		SubnetArn:                   value.SubnetArn,
-		SubnetId:                    value.SubnetId,
-		Tags:                        c.transformSubnetTags(value.Tags),
-		VpcId:                       value.VpcId,
-	}
-}
-
-func (c *Client) transformSubnets(values []*ec2.Subnet) []*Subnet {
+func (c *Client) transformSubnets(values *[]types.Subnet) []*Subnet {
 	var tValues []*Subnet
-	for _, v := range values {
-		tValues = append(tValues, c.transformSubnet(v))
+	for _, value := range *values {
+		tValues = append(tValues, &Subnet{
+			Region:                      c.region,
+			AccountID:                   c.accountID,
+			AssignIpv6AddressOnCreation: &value.AssignIpv6AddressOnCreation,
+			AvailabilityZone:            value.AvailabilityZone,
+			AvailabilityZoneId:          value.AvailabilityZoneId,
+			AvailableIpAddressCount:     &value.AvailableIpAddressCount,
+			CidrBlock:                   value.CidrBlock,
+			CustomerOwnedIpv4Pool:       value.CustomerOwnedIpv4Pool,
+			DefaultForAz:                &value.DefaultForAz,
+			Ipv6CidrBlockAssociationSet: c.transformSubnetIpv6CidrBlockAssociations(&value.Ipv6CidrBlockAssociationSet),
+			MapCustomerOwnedIpOnLaunch:  &value.MapCustomerOwnedIpOnLaunch,
+			MapPublicIpOnLaunch:         &value.MapPublicIpOnLaunch,
+			OutpostArn:                  value.OutpostArn,
+			OwnerId:                     value.OwnerId,
+			State:                       aws.String(string(value.State)),
+			SubnetArn:                   value.SubnetArn,
+			SubnetId:                    value.SubnetId,
+			Tags:                        c.transformSubnetTags(&value.Tags),
+			VpcId:                       value.VpcId,
+		})
 	}
 	return tValues
 }
@@ -143,6 +133,7 @@ var SubnetTables = []interface{}{
 }
 
 func (c *Client) subnets(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeSubnetsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -150,13 +141,13 @@ func (c *Client) subnets(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(SubnetTables...)
 	for {
-		output, err := c.svc.DescribeSubnets(&config)
+		output, err := c.svc.DescribeSubnets(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformSubnets(output.Subnets))
+		c.db.ChunkedCreate(c.transformSubnets(&output.Subnets))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.subnets"), zap.Int("count", len(output.Subnets)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

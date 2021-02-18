@@ -2,32 +2,31 @@ package autoscaling
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cq-provider-aws/resource"
 	"go.uber.org/zap"
 )
 
 type Client struct {
-	session   *session.Session
 	db        *database.Database
 	log       *zap.Logger
 	accountID string
 	region    string
-	svc       *autoscaling.AutoScaling
+	svc       *autoscaling.Client
 }
 
-func NewClient(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger,
+func NewClient(awsConfig aws.Config, db *database.Database, log *zap.Logger,
 	accountID string, region string) resource.ClientInterface {
 	return &Client{
-		session:   session,
 		db:        db,
 		log:       log,
 		accountID: accountID,
 		region:    region,
-		svc:       autoscaling.New(session, awsConfig),
+		svc:       autoscaling.NewFromConfig(awsConfig, func(o *autoscaling.Options) {
+			o.Region = region
+		}),
 	}
 }
 

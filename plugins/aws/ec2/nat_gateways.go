@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -68,73 +70,60 @@ func (NatGatewayTag) TableName() string {
 	return "aws_ec2_nat_gateway_tags"
 }
 
-func (c *Client) transformNatGatewayAddress(value *ec2.NatGatewayAddress) *NatGatewayAddress {
-	return &NatGatewayAddress{
-		AccountID:          c.accountID,
-		Region:             c.region,
-		AllocationId:       value.AllocationId,
-		NetworkInterfaceId: value.NetworkInterfaceId,
-		PrivateIp:          value.PrivateIp,
-		PublicIp:           value.PublicIp,
-	}
-}
-
-func (c *Client) transformNatGatewayAddresss(values []*ec2.NatGatewayAddress) []*NatGatewayAddress {
+func (c *Client) transformNatGatewayAddresss(values *[]types.NatGatewayAddress) []*NatGatewayAddress {
 	var tValues []*NatGatewayAddress
-	for _, v := range values {
-		tValues = append(tValues, c.transformNatGatewayAddress(v))
+	for _, value := range *values {
+		tValues = append(tValues, &NatGatewayAddress{
+			AccountID:          c.accountID,
+			Region:             c.region,
+			AllocationId:       value.AllocationId,
+			NetworkInterfaceId: value.NetworkInterfaceId,
+			PrivateIp:          value.PrivateIp,
+			PublicIp:           value.PublicIp,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformNatGatewayTag(value *ec2.Tag) *NatGatewayTag {
-	return &NatGatewayTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformNatGatewayTags(values []*ec2.Tag) []*NatGatewayTag {
+func (c *Client) transformNatGatewayTags(values *[]types.Tag) []*NatGatewayTag {
 	var tValues []*NatGatewayTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformNatGatewayTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &NatGatewayTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformNatGateway(value *ec2.NatGateway) *NatGateway {
-	res := NatGateway{
-		Region:              c.region,
-		AccountID:           c.accountID,
-		CreateTime:          value.CreateTime,
-		DeleteTime:          value.DeleteTime,
-		FailureCode:         value.FailureCode,
-		FailureMessage:      value.FailureMessage,
-		NatGatewayAddresses: c.transformNatGatewayAddresss(value.NatGatewayAddresses),
-		NatGatewayId:        value.NatGatewayId,
-		State:               value.State,
-		SubnetId:            value.SubnetId,
-		Tags:                c.transformNatGatewayTags(value.Tags),
-		VpcId:               value.VpcId,
-	}
-
-	if value.ProvisionedBandwidth != nil {
-		res.ProvisionTime = value.ProvisionedBandwidth.ProvisionTime
-		res.Provisioned = value.ProvisionedBandwidth.Provisioned
-		res.ProvisionedRequestTime = value.ProvisionedBandwidth.RequestTime
-		res.ProvisionedRequested = value.ProvisionedBandwidth.Requested
-		res.ProvisionedStatus = value.ProvisionedBandwidth.Status
-	}
-
-	return &res
-}
-
-func (c *Client) transformNatGateways(values []*ec2.NatGateway) []*NatGateway {
+func (c *Client) transformNatGateways(values *[]types.NatGateway) []*NatGateway {
 	var tValues []*NatGateway
-	for _, v := range values {
-		tValues = append(tValues, c.transformNatGateway(v))
+	for _, value := range *values {
+		res := NatGateway{
+			Region:              c.region,
+			AccountID:           c.accountID,
+			CreateTime:          value.CreateTime,
+			DeleteTime:          value.DeleteTime,
+			FailureCode:         value.FailureCode,
+			FailureMessage:      value.FailureMessage,
+			NatGatewayAddresses: c.transformNatGatewayAddresss(&value.NatGatewayAddresses),
+			NatGatewayId:        value.NatGatewayId,
+			State:               aws.String(string(value.State)),
+			SubnetId:            value.SubnetId,
+			Tags:                c.transformNatGatewayTags(&value.Tags),
+			VpcId:               value.VpcId,
+		}
+
+		if value.ProvisionedBandwidth != nil {
+			res.ProvisionTime = value.ProvisionedBandwidth.ProvisionTime
+			res.Provisioned = value.ProvisionedBandwidth.Provisioned
+			res.ProvisionedRequestTime = value.ProvisionedBandwidth.RequestTime
+			res.ProvisionedRequested = value.ProvisionedBandwidth.Requested
+			res.ProvisionedStatus = value.ProvisionedBandwidth.Status
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -146,6 +135,7 @@ var NatGatewayTables = []interface{}{
 }
 
 func (c *Client) natGateways(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeNatGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -153,13 +143,13 @@ func (c *Client) natGateways(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(NatGatewayTables...)
 	for {
-		output, err := c.svc.DescribeNatGateways(&config)
+		output, err := c.svc.DescribeNatGateways(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformNatGateways(output.NatGateways))
+		c.db.ChunkedCreate(c.transformNatGateways(&output.NatGateways))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.nat_gateways"), zap.Int("count", len(output.NatGateways)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

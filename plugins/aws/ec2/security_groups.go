@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -29,12 +31,12 @@ type SecurityGroupIpPermission struct {
 	SecurityGroupID  uint   `neo:"ignore"`
 	AccountID        string `gorm:"-"`
 	Region           string `gorm:"-"`
-	FromPort         *int64
+	FromPort         *int32
 	IpProtocol       *string
 	IpRanges         []*SecurityGroupIpRange      `gorm:"constraint:OnDelete:CASCADE;"`
 	Ipv6Ranges       []*SecurityGroupIpv6Range    `gorm:"constraint:OnDelete:CASCADE;"`
 	PrefixListIds    []*SecurityGroupPrefixListId `gorm:"constraint:OnDelete:CASCADE;"`
-	ToPort           *int64
+	ToPort           *int32
 	UserIdGroupPairs []*SecurityGroupUserIdGroupPair `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
@@ -112,136 +114,109 @@ func (SecurityGroupTag) TableName() string {
 	return "aws_ec2_security_group_tags"
 }
 
-func (c *Client) transformSecurityGroupIpRange(value *ec2.IpRange) *SecurityGroupIpRange {
-	return &SecurityGroupIpRange{
-		AccountID:   c.accountID,
-		Region:      c.region,
-		CidrIp:      value.CidrIp,
-		Description: value.Description,
-	}
-}
-
-func (c *Client) transformSecurityGroupIpRanges(values []*ec2.IpRange) []*SecurityGroupIpRange {
+func (c *Client) transformSecurityGroupIpRanges(values *[]types.IpRange) []*SecurityGroupIpRange {
 	var tValues []*SecurityGroupIpRange
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupIpRange(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroupIpRange{
+			AccountID:   c.accountID,
+			Region:      c.region,
+			CidrIp:      value.CidrIp,
+			Description: value.Description,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroupIpv6Range(value *ec2.Ipv6Range) *SecurityGroupIpv6Range {
-	return &SecurityGroupIpv6Range{
-		AccountID:   c.accountID,
-		Region:      c.region,
-		CidrIpv6:    value.CidrIpv6,
-		Description: value.Description,
-	}
-}
-
-func (c *Client) transformSecurityGroupIpv6Ranges(values []*ec2.Ipv6Range) []*SecurityGroupIpv6Range {
+func (c *Client) transformSecurityGroupIpv6Ranges(values *[]types.Ipv6Range) []*SecurityGroupIpv6Range {
 	var tValues []*SecurityGroupIpv6Range
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupIpv6Range(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroupIpv6Range{
+			AccountID:   c.accountID,
+			Region:      c.region,
+			CidrIpv6:    value.CidrIpv6,
+			Description: value.Description,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroupPrefixListId(value *ec2.PrefixListId) *SecurityGroupPrefixListId {
-	return &SecurityGroupPrefixListId{
-		AccountID:    c.accountID,
-		Region:       c.region,
-		Description:  value.Description,
-		PrefixListId: value.PrefixListId,
-	}
-}
 
-func (c *Client) transformSecurityGroupPrefixListIds(values []*ec2.PrefixListId) []*SecurityGroupPrefixListId {
+func (c *Client) transformSecurityGroupPrefixListIds(values *[]types.PrefixListId) []*SecurityGroupPrefixListId {
 	var tValues []*SecurityGroupPrefixListId
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupPrefixListId(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroupPrefixListId{
+			AccountID:    c.accountID,
+			Region:       c.region,
+			Description:  value.Description,
+			PrefixListId: value.PrefixListId,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroupUserIdGroupPair(value *ec2.UserIdGroupPair) *SecurityGroupUserIdGroupPair {
-	return &SecurityGroupUserIdGroupPair{
-		AccountID:              c.accountID,
-		Region:                 c.region,
-		Description:            value.Description,
-		GroupId:                value.GroupId,
-		GroupName:              value.GroupName,
-		PeeringStatus:          value.PeeringStatus,
-		UserId:                 value.UserId,
-		VpcId:                  value.VpcId,
-		VpcPeeringConnectionId: value.VpcPeeringConnectionId,
-	}
-}
-
-func (c *Client) transformSecurityGroupUserIdGroupPairs(values []*ec2.UserIdGroupPair) []*SecurityGroupUserIdGroupPair {
+func (c *Client) transformSecurityGroupUserIdGroupPairs(values *[]types.UserIdGroupPair) []*SecurityGroupUserIdGroupPair {
 	var tValues []*SecurityGroupUserIdGroupPair
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupUserIdGroupPair(v))
+	for _, value := range *values {
+		tValues = append(tValues,  &SecurityGroupUserIdGroupPair{
+			AccountID:              c.accountID,
+			Region:                 c.region,
+			Description:            value.Description,
+			GroupId:                value.GroupId,
+			GroupName:              value.GroupName,
+			PeeringStatus:          value.PeeringStatus,
+			UserId:                 value.UserId,
+			VpcId:                  value.VpcId,
+			VpcPeeringConnectionId: value.VpcPeeringConnectionId,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroupIpPermission(value *ec2.IpPermission) *SecurityGroupIpPermission {
-	return &SecurityGroupIpPermission{
-		AccountID:        c.accountID,
-		Region:           c.region,
-		FromPort:         value.FromPort,
-		IpProtocol:       value.IpProtocol,
-		IpRanges:         c.transformSecurityGroupIpRanges(value.IpRanges),
-		Ipv6Ranges:       c.transformSecurityGroupIpv6Ranges(value.Ipv6Ranges),
-		PrefixListIds:    c.transformSecurityGroupPrefixListIds(value.PrefixListIds),
-		ToPort:           value.ToPort,
-		UserIdGroupPairs: c.transformSecurityGroupUserIdGroupPairs(value.UserIdGroupPairs),
-	}
-}
-
-func (c *Client) transformSecurityGroupIpPermissions(values []*ec2.IpPermission) []*SecurityGroupIpPermission {
+func (c *Client) transformSecurityGroupIpPermissions(values *[]types.IpPermission) []*SecurityGroupIpPermission {
 	var tValues []*SecurityGroupIpPermission
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupIpPermission(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroupIpPermission{
+			AccountID:        c.accountID,
+			Region:           c.region,
+			FromPort:         &value.FromPort,
+			IpProtocol:       value.IpProtocol,
+			IpRanges:         c.transformSecurityGroupIpRanges(&value.IpRanges),
+			Ipv6Ranges:       c.transformSecurityGroupIpv6Ranges(&value.Ipv6Ranges),
+			PrefixListIds:    c.transformSecurityGroupPrefixListIds(&value.PrefixListIds),
+			ToPort:           &value.ToPort,
+			UserIdGroupPairs: c.transformSecurityGroupUserIdGroupPairs(&value.UserIdGroupPairs),
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroupTag(value *ec2.Tag) *SecurityGroupTag {
-	return &SecurityGroupTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformSecurityGroupTags(values []*ec2.Tag) []*SecurityGroupTag {
+func (c *Client) transformSecurityGroupTags(values *[]types.Tag) []*SecurityGroupTag {
 	var tValues []*SecurityGroupTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroupTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroupTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformSecurityGroup(value *ec2.SecurityGroup) *SecurityGroup {
-	return &SecurityGroup{
-		Region:        c.region,
-		AccountID:     c.accountID,
-		Description:   value.Description,
-		GroupId:       value.GroupId,
-		GroupName:     value.GroupName,
-		IpPermissions: c.transformSecurityGroupIpPermissions(value.IpPermissions),
-		OwnerId:       value.OwnerId,
-		Tags:          c.transformSecurityGroupTags(value.Tags),
-		VpcId:         value.VpcId,
-	}
-}
-
-func (c *Client) transformSecurityGroups(values []*ec2.SecurityGroup) []*SecurityGroup {
+func (c *Client) transformSecurityGroups(values *[]types.SecurityGroup) []*SecurityGroup {
 	var tValues []*SecurityGroup
-	for _, v := range values {
-		tValues = append(tValues, c.transformSecurityGroup(v))
+	for _, value := range *values {
+		tValues = append(tValues, &SecurityGroup{
+			Region:        c.region,
+			AccountID:     c.accountID,
+			Description:   value.Description,
+			GroupId:       value.GroupId,
+			GroupName:     value.GroupName,
+			IpPermissions: c.transformSecurityGroupIpPermissions(&value.IpPermissions),
+			OwnerId:       value.OwnerId,
+			Tags:          c.transformSecurityGroupTags(&value.Tags),
+			VpcId:         value.VpcId,
+		})
 	}
 	return tValues
 }
@@ -257,6 +232,7 @@ var SecurityGroupTables = []interface{}{
 }
 
 func (c *Client) securityGroups(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeSecurityGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -264,13 +240,13 @@ func (c *Client) securityGroups(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(SecurityGroupTables...)
 	for {
-		output, err := c.svc.DescribeSecurityGroups(&config)
+		output, err := c.svc.DescribeSecurityGroups(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformSecurityGroups(output.SecurityGroups))
+		c.db.ChunkedCreate(c.transformSecurityGroups(&output.SecurityGroups))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.security_groups"), zap.Int("count", len(output.SecurityGroups)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

@@ -1,7 +1,7 @@
 package cloudtrail
 
 import (
-	"github.com/aws/aws-sdk-go/service/cloudtrail"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 )
 
 
@@ -11,7 +11,7 @@ type EventSelector struct {
 	AccountID string `gorm:"-"`
 	Region string `gorm:"-"`
 	IncludeManagementEvents *bool
-	ReadWriteType *string
+	ReadWriteType string
 }
 
 func (EventSelector) TableName() string {
@@ -19,14 +19,14 @@ func (EventSelector) TableName() string {
 }
 
 
-func (c *Client) transformEventSelectors(values []*cloudtrail.EventSelector) []*EventSelector {
+func (c *Client) transformEventSelectors(values []types.EventSelector) []*EventSelector {
 	var tValues []*EventSelector
 	for _, value := range values {
 		tValue := EventSelector {
 			AccountID: c.accountID,
 			Region: c.region,
 			IncludeManagementEvents: value.IncludeManagementEvents,
-			ReadWriteType: value.ReadWriteType,
+			ReadWriteType: string(value.ReadWriteType),
 		}
 		tValues = append(tValues, &tValue)
 	}

@@ -1,8 +1,10 @@
 package redshift
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/redshift"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -67,17 +69,17 @@ func (ClusterSubnetGroupSupportedPlatform) TableName() string {
 	return "aws_redshift_cluster_subnet_group_supported_platforms"
 }
 
-func (c *Client) transformClusterSubnetGroups(values []*redshift.ClusterSubnetGroup) []*ClusterSubnetGroup {
+func (c *Client) transformClusterSubnetGroups(values *[]types.ClusterSubnetGroup) []*ClusterSubnetGroup {
 	var tValues []*ClusterSubnetGroup
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterSubnetGroup{
 			AccountID:   c.accountID,
 			Region:      c.region,
 			Name:        value.ClusterSubnetGroupName,
 			Description: value.Description,
 			Status:      value.SubnetGroupStatus,
-			Subnets:     c.transformClusterSubnetGroupSubnets(value.Subnets),
-			Tags:        c.transformClusterSubnetGroupTags(value.Tags),
+			Subnets:     c.transformClusterSubnetGroupSubnets(&value.Subnets),
+			Tags:        c.transformClusterSubnetGroupTags(&value.Tags),
 			VpcId:       value.VpcId,
 		}
 		tValues = append(tValues, &tValue)
@@ -85,9 +87,9 @@ func (c *Client) transformClusterSubnetGroups(values []*redshift.ClusterSubnetGr
 	return tValues
 }
 
-func (c *Client) transformClusterSubnetGroupSupportedPlatforms(values []*redshift.SupportedPlatform) []*ClusterSubnetGroupSupportedPlatform {
+func (c *Client) transformClusterSubnetGroupSupportedPlatforms(values *[]types.SupportedPlatform) []*ClusterSubnetGroupSupportedPlatform {
 	var tValues []*ClusterSubnetGroupSupportedPlatform
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterSubnetGroupSupportedPlatform{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -98,9 +100,9 @@ func (c *Client) transformClusterSubnetGroupSupportedPlatforms(values []*redshif
 	return tValues
 }
 
-func (c *Client) transformClusterSubnetGroupSubnets(values []*redshift.Subnet) []*ClusterSubnetGroupSubnet {
+func (c *Client) transformClusterSubnetGroupSubnets(values *[]types.Subnet) []*ClusterSubnetGroupSubnet {
 	var tValues []*ClusterSubnetGroupSubnet
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterSubnetGroupSubnet{
 			AccountID:  c.accountID,
 			Region:     c.region,
@@ -109,16 +111,16 @@ func (c *Client) transformClusterSubnetGroupSubnets(values []*redshift.Subnet) [
 		}
 		if value.SubnetAvailabilityZone != nil {
 			tValue.AZName = value.SubnetAvailabilityZone.Name
-			tValue.AZPlatforms = c.transformClusterSubnetGroupSupportedPlatforms(value.SubnetAvailabilityZone.SupportedPlatforms)
+			tValue.AZPlatforms = c.transformClusterSubnetGroupSupportedPlatforms(&value.SubnetAvailabilityZone.SupportedPlatforms)
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func (c *Client) transformClusterSubnetGroupTags(values []*redshift.Tag) []*ClusterSubnetGroupTag {
+func (c *Client) transformClusterSubnetGroupTags(values *[]types.Tag) []*ClusterSubnetGroupTag {
 	var tValues []*ClusterSubnetGroupTag
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterSubnetGroupTag{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -143,16 +145,17 @@ func (c *Client) clusterSubnetGroups(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterSubnetGroupTables...)
 
 	for {
-		output, err := c.svc.DescribeClusterSubnetGroups(&config)
+		output, err := c.svc.DescribeClusterSubnetGroups(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformClusterSubnetGroups(output.ClusterSubnetGroups))
+		c.db.ChunkedCreate(c.transformClusterSubnetGroups(&output.ClusterSubnetGroups))
 		c.log.Info("Fetched resources", zap.String("resource", "redshift.cluster_subnet_groups"), zap.Int("count", len(output.ClusterSubnetGroups)))
-		if aws.StringValue(output.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker

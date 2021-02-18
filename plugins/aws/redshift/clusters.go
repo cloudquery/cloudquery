@@ -1,8 +1,10 @@
 package redshift
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/redshift"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -14,7 +16,7 @@ type Cluster struct {
 	AccountID                        string      `neo:"unique"`
 	Region                           string      `neo:"unique"`
 	AllowVersionUpgrade              *bool
-	AutomatedSnapshotRetentionPeriod *int64
+	AutomatedSnapshotRetentionPeriod *int32
 	AvailabilityZone                 *string
 	ClusterAvailabilityStatus        *string
 	ClusterCreateTime                *time.Time
@@ -26,7 +28,7 @@ type Cluster struct {
 	ClusterSecurityGroups            []*ClusterSecurityGroupMembership `gorm:"constraint:OnDelete:CASCADE;"`
 
 	ClusterSnapshotCopyStatusDestinationRegion             *string
-	ClusterSnapshotCopyStatusManualSnapshotRetentionPeriod *int64
+	ClusterSnapshotCopyStatusManualSnapshotRetentionPeriod *int32
 	ClusterSnapshotCopyStatusRetentionPeriod               *int64
 	ClusterSnapshotCopyStatusSnapshotCopyGrantName         *string
 
@@ -51,7 +53,7 @@ type Cluster struct {
 	Encrypted                        *bool
 
 	EndpointAddress *string
-	EndpointPort    *int64
+	EndpointPort    *int32
 
 	EnhancedVpcRouting                     *bool
 	ExpectedNextSnapshotScheduleTime       *time.Time
@@ -64,15 +66,15 @@ type Cluster struct {
 	IamRoles                       []*ClusterIamRole `gorm:"constraint:OnDelete:CASCADE;"`
 	KmsKeyId                       *string
 	MaintenanceTrackName           *string
-	ManualSnapshotRetentionPeriod  *int64
+	ManualSnapshotRetentionPeriod  *int32
 	MasterUsername                 *string
 	ModifyStatus                   *string
 	NextMaintenanceWindowStartTime *time.Time
 	NodeType                       *string
-	NumberOfNodes                  *int64
+	NumberOfNodes                  *int32
 	PendingActions                 []*ClusterPendingActions `gorm:"constraint:OnDelete:CASCADE;"`
 
-	PendingModifiedValuesAutomatedSnapshotRetentionPeriod *int64
+	PendingModifiedValuesAutomatedSnapshotRetentionPeriod *int32
 	PendingModifiedValuesClusterIdentifier                *string
 	PendingModifiedValuesClusterType                      *string
 	PendingModifiedValuesClusterVersion                   *string
@@ -81,7 +83,7 @@ type Cluster struct {
 	PendingModifiedValuesMaintenanceTrackName             *string
 	PendingModifiedValuesMasterUserPassword               *string
 	PendingModifiedValuesNodeType                         *string
-	PendingModifiedValuesNumberOfNodes                    *int64
+	PendingModifiedValuesNumberOfNodes                    *int32
 	PendingModifiedValuesPubliclyAccessible               *bool
 
 	PreferredMaintenanceWindow *string
@@ -193,7 +195,7 @@ func (ClusterIamRole) TableName() string {
 type ClusterPendingActions struct {
 	ID        uint `gorm:"primarykey"`
 	ClusterID uint
-	Value     *string
+	Value     string
 }
 
 func (ClusterPendingActions) TableName() string {
@@ -226,67 +228,65 @@ func (ClusterVpcSecurityGroupMembership) TableName() string {
 	return "aws_redshift_cluster_vpc_security_group_memberships"
 }
 
-func (c *Client) transformClusters(values []*redshift.Cluster) []*Cluster {
+func (c *Client) transformClusters(values *[]types.Cluster) []*Cluster {
 	var tValues []*Cluster
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := Cluster{
 			AccountID:                              c.accountID,
 			Region:                                 c.region,
-			AllowVersionUpgrade:                    value.AllowVersionUpgrade,
-			AutomatedSnapshotRetentionPeriod:       value.AutomatedSnapshotRetentionPeriod,
+			AllowVersionUpgrade:                    &value.AllowVersionUpgrade,
+			AutomatedSnapshotRetentionPeriod:       &value.AutomatedSnapshotRetentionPeriod,
 			AvailabilityZone:                       value.AvailabilityZone,
 			ClusterAvailabilityStatus:              value.ClusterAvailabilityStatus,
 			ClusterCreateTime:                      value.ClusterCreateTime,
 			ClusterIdentifier:                      value.ClusterIdentifier,
-			ClusterNodes:                           c.transformClusterNodes(value.ClusterNodes),
-			ClusterParameterGroups:                 c.transformClusterParameterGroupStatuss(value.ClusterParameterGroups),
+			ClusterNodes:                           c.transformClusterNodes(&value.ClusterNodes),
+			ClusterParameterGroups:                 c.transformClusterParameterGroupStatuss(&value.ClusterParameterGroups),
 			ClusterPublicKey:                       value.ClusterPublicKey,
 			ClusterRevisionNumber:                  value.ClusterRevisionNumber,
-			ClusterSecurityGroups:                  c.transformClusterSecurityGroupMemberships(value.ClusterSecurityGroups),
+			ClusterSecurityGroups:                  c.transformClusterSecurityGroupMemberships(&value.ClusterSecurityGroups),
 			ClusterStatus:                          value.ClusterStatus,
 			ClusterSubnetGroupName:                 value.ClusterSubnetGroupName,
 			ClusterVersion:                         value.ClusterVersion,
 			DBName:                                 value.DBName,
-			DeferredMaintenanceWindows:             c.transformClusterDeferredMaintenanceWindows(value.DeferredMaintenanceWindows),
+			DeferredMaintenanceWindows:             c.transformClusterDeferredMaintenanceWindows(&value.DeferredMaintenanceWindows),
 			ElasticResizeNumberOfNodeOptions:       value.ElasticResizeNumberOfNodeOptions,
-			Encrypted:                              value.Encrypted,
-			EnhancedVpcRouting:                     value.EnhancedVpcRouting,
+			Encrypted:                              &value.Encrypted,
+			EnhancedVpcRouting:                     &value.EnhancedVpcRouting,
 			ExpectedNextSnapshotScheduleTime:       value.ExpectedNextSnapshotScheduleTime,
 			ExpectedNextSnapshotScheduleTimeStatus: value.ExpectedNextSnapshotScheduleTimeStatus,
-			IamRoles:                               c.transformClusterIamRoles(value.IamRoles),
+			IamRoles:                               c.transformClusterIamRoles(&value.IamRoles),
 			KmsKeyId:                               value.KmsKeyId,
 			MaintenanceTrackName:                   value.MaintenanceTrackName,
-			ManualSnapshotRetentionPeriod:          value.ManualSnapshotRetentionPeriod,
+			ManualSnapshotRetentionPeriod:          &value.ManualSnapshotRetentionPeriod,
 			MasterUsername:                         value.MasterUsername,
 			ModifyStatus:                           value.ModifyStatus,
 			NextMaintenanceWindowStartTime:         value.NextMaintenanceWindowStartTime,
 			NodeType:                               value.NodeType,
-			NumberOfNodes:                          value.NumberOfNodes,
-			PendingActions:                         c.transformClusterPendingActions(value.PendingActions),
+			NumberOfNodes:                          &value.NumberOfNodes,
+			PendingActions:                         c.transformClusterPendingActions(&value.PendingActions),
 			PreferredMaintenanceWindow:             value.PreferredMaintenanceWindow,
-			PubliclyAccessible:                     value.PubliclyAccessible,
+			PubliclyAccessible:                     &value.PubliclyAccessible,
 			SnapshotScheduleIdentifier:             value.SnapshotScheduleIdentifier,
-			SnapshotScheduleState:                  value.SnapshotScheduleState,
-			Tags:                                   c.transformClusterTags(value.Tags),
+			SnapshotScheduleState:                  aws.String(string(value.SnapshotScheduleState)),
+			Tags:                                   c.transformClusterTags(&value.Tags),
 			VpcId:                                  value.VpcId,
-			VpcSecurityGroups:                      c.transformClusterVpcSecurityGroupMemberships(value.VpcSecurityGroups),
+			VpcSecurityGroups:                      c.transformClusterVpcSecurityGroupMemberships(&value.VpcSecurityGroups),
 		}
 		if value.ClusterSnapshotCopyStatus != nil {
-
 			tValue.ClusterSnapshotCopyStatusDestinationRegion = value.ClusterSnapshotCopyStatus.DestinationRegion
-			tValue.ClusterSnapshotCopyStatusManualSnapshotRetentionPeriod = value.ClusterSnapshotCopyStatus.ManualSnapshotRetentionPeriod
-			tValue.ClusterSnapshotCopyStatusRetentionPeriod = value.ClusterSnapshotCopyStatus.RetentionPeriod
+			tValue.ClusterSnapshotCopyStatusManualSnapshotRetentionPeriod = &value.ClusterSnapshotCopyStatus.ManualSnapshotRetentionPeriod
+			tValue.ClusterSnapshotCopyStatusRetentionPeriod = &value.ClusterSnapshotCopyStatus.RetentionPeriod
 			tValue.ClusterSnapshotCopyStatusSnapshotCopyGrantName = value.ClusterSnapshotCopyStatus.SnapshotCopyGrantName
 
 		}
 		if value.DataTransferProgress != nil {
-
 			tValue.DataTransferProgressCurrentRateInMegaBytesPerSecond = value.DataTransferProgress.CurrentRateInMegaBytesPerSecond
-			tValue.DataTransferProgressDataTransferredInMegaBytes = value.DataTransferProgress.DataTransferredInMegaBytes
+			tValue.DataTransferProgressDataTransferredInMegaBytes = &value.DataTransferProgress.DataTransferredInMegaBytes
 			tValue.DataTransferProgressElapsedTimeInSeconds = value.DataTransferProgress.ElapsedTimeInSeconds
 			tValue.DataTransferProgressEstimatedTimeToCompletionInSeconds = value.DataTransferProgress.EstimatedTimeToCompletionInSeconds
 			tValue.DataTransferProgressStatus = value.DataTransferProgress.Status
-			tValue.DataTransferProgressTotalDataInMegaBytes = value.DataTransferProgress.TotalDataInMegaBytes
+			tValue.DataTransferProgressTotalDataInMegaBytes = &value.DataTransferProgress.TotalDataInMegaBytes
 
 		}
 		if value.ElasticIpStatus != nil {
@@ -298,7 +298,7 @@ func (c *Client) transformClusters(values []*redshift.Cluster) []*Cluster {
 		if value.Endpoint != nil {
 
 			tValue.EndpointAddress = value.Endpoint.Address
-			tValue.EndpointPort = value.Endpoint.Port
+			tValue.EndpointPort = &value.Endpoint.Port
 
 		}
 		if value.HsmStatus != nil {
@@ -324,18 +324,16 @@ func (c *Client) transformClusters(values []*redshift.Cluster) []*Cluster {
 
 		}
 		if value.ResizeInfo != nil {
-
-			tValue.ResizeInfoAllowCancelResize = value.ResizeInfo.AllowCancelResize
+			tValue.ResizeInfoAllowCancelResize = &value.ResizeInfo.AllowCancelResize
 			tValue.ResizeInfoResizeType = value.ResizeInfo.ResizeType
-
 		}
 		if value.RestoreStatus != nil {
 
-			tValue.RestoreStatusCurrentRestoreRateInMegaBytesPerSecond = value.RestoreStatus.CurrentRestoreRateInMegaBytesPerSecond
-			tValue.RestoreStatusElapsedTimeInSeconds = value.RestoreStatus.ElapsedTimeInSeconds
-			tValue.RestoreStatusEstimatedTimeToCompletionInSeconds = value.RestoreStatus.EstimatedTimeToCompletionInSeconds
-			tValue.RestoreStatusProgressInMegaBytes = value.RestoreStatus.ProgressInMegaBytes
-			tValue.RestoreStatusSnapshotSizeInMegaBytes = value.RestoreStatus.SnapshotSizeInMegaBytes
+			tValue.RestoreStatusCurrentRestoreRateInMegaBytesPerSecond = &value.RestoreStatus.CurrentRestoreRateInMegaBytesPerSecond
+			tValue.RestoreStatusElapsedTimeInSeconds = &value.RestoreStatus.ElapsedTimeInSeconds
+			tValue.RestoreStatusEstimatedTimeToCompletionInSeconds = &value.RestoreStatus.EstimatedTimeToCompletionInSeconds
+			tValue.RestoreStatusProgressInMegaBytes = &value.RestoreStatus.ProgressInMegaBytes
+			tValue.RestoreStatusSnapshotSizeInMegaBytes = &value.RestoreStatus.SnapshotSizeInMegaBytes
 			tValue.RestoreStatusStatus = value.RestoreStatus.Status
 
 		}
@@ -344,9 +342,9 @@ func (c *Client) transformClusters(values []*redshift.Cluster) []*Cluster {
 	return tValues
 }
 
-func (c *Client) transformClusterNodes(values []*redshift.ClusterNode) []*ClusterNode {
+func (c *Client) transformClusterNodes(values *[]types.ClusterNode) []*ClusterNode {
 	var tValues []*ClusterNode
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterNode{
 			AccountID:        c.accountID,
 			Region:           c.region,
@@ -359,9 +357,9 @@ func (c *Client) transformClusterNodes(values []*redshift.ClusterNode) []*Cluste
 	return tValues
 }
 
-func (c *Client) transformClusterParameterStatuss(values []*redshift.ClusterParameterStatus) []*ClusterParameterStatus {
+func (c *Client) transformClusterParameterStatuss(values *[]types.ClusterParameterStatus) []*ClusterParameterStatus {
 	var tValues []*ClusterParameterStatus
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterParameterStatus{
 			AccountID:                      c.accountID,
 			Region:                         c.region,
@@ -374,13 +372,13 @@ func (c *Client) transformClusterParameterStatuss(values []*redshift.ClusterPara
 	return tValues
 }
 
-func (c *Client) transformClusterParameterGroupStatuss(values []*redshift.ClusterParameterGroupStatus) []*ClusterParameterGroupStatus {
+func (c *Client) transformClusterParameterGroupStatuss(values *[]types.ClusterParameterGroupStatus) []*ClusterParameterGroupStatus {
 	var tValues []*ClusterParameterGroupStatus
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterParameterGroupStatus{
 			AccountID:            c.accountID,
 			Region:               c.region,
-			List:                 c.transformClusterParameterStatuss(value.ClusterParameterStatusList),
+			List:                 c.transformClusterParameterStatuss(&value.ClusterParameterStatusList),
 			ParameterApplyStatus: value.ParameterApplyStatus,
 			ParameterGroupName:   value.ParameterGroupName,
 		}
@@ -389,9 +387,9 @@ func (c *Client) transformClusterParameterGroupStatuss(values []*redshift.Cluste
 	return tValues
 }
 
-func (c *Client) transformClusterSecurityGroupMemberships(values []*redshift.ClusterSecurityGroupMembership) []*ClusterSecurityGroupMembership {
+func (c *Client) transformClusterSecurityGroupMemberships(values *[]types.ClusterSecurityGroupMembership) []*ClusterSecurityGroupMembership {
 	var tValues []*ClusterSecurityGroupMembership
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterSecurityGroupMembership{
 			AccountID:                c.accountID,
 			Region:                   c.region,
@@ -403,9 +401,9 @@ func (c *Client) transformClusterSecurityGroupMemberships(values []*redshift.Clu
 	return tValues
 }
 
-func (c *Client) transformClusterDeferredMaintenanceWindows(values []*redshift.DeferredMaintenanceWindow) []*ClusterDeferredMaintenanceWindow {
+func (c *Client) transformClusterDeferredMaintenanceWindows(values *[]types.DeferredMaintenanceWindow) []*ClusterDeferredMaintenanceWindow {
 	var tValues []*ClusterDeferredMaintenanceWindow
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterDeferredMaintenanceWindow{
 			AccountID:                  c.accountID,
 			Region:                     c.region,
@@ -418,9 +416,9 @@ func (c *Client) transformClusterDeferredMaintenanceWindows(values []*redshift.D
 	return tValues
 }
 
-func (c *Client) transformClusterIamRoles(values []*redshift.ClusterIamRole) []*ClusterIamRole {
+func (c *Client) transformClusterIamRoles(values *[]types.ClusterIamRole) []*ClusterIamRole {
 	var tValues []*ClusterIamRole
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterIamRole{
 			AccountID:   c.accountID,
 			Region:      c.region,
@@ -431,9 +429,9 @@ func (c *Client) transformClusterIamRoles(values []*redshift.ClusterIamRole) []*
 	}
 	return tValues
 }
-func (c *Client) transformClusterPendingActions(values []*string) []*ClusterPendingActions {
+func (c *Client) transformClusterPendingActions(values *[]string) []*ClusterPendingActions {
 	var tValues []*ClusterPendingActions
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &ClusterPendingActions{
 			Value: v,
 		})
@@ -441,9 +439,9 @@ func (c *Client) transformClusterPendingActions(values []*string) []*ClusterPend
 	return tValues
 }
 
-func (c *Client) transformClusterTags(values []*redshift.Tag) []*ClusterTag {
+func (c *Client) transformClusterTags(values *[]types.Tag) []*ClusterTag {
 	var tValues []*ClusterTag
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterTag{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -455,9 +453,9 @@ func (c *Client) transformClusterTags(values []*redshift.Tag) []*ClusterTag {
 	return tValues
 }
 
-func (c *Client) transformClusterVpcSecurityGroupMemberships(values []*redshift.VpcSecurityGroupMembership) []*ClusterVpcSecurityGroupMembership {
+func (c *Client) transformClusterVpcSecurityGroupMemberships(values *[]types.VpcSecurityGroupMembership) []*ClusterVpcSecurityGroupMembership {
 	var tValues []*ClusterVpcSecurityGroupMembership
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ClusterVpcSecurityGroupMembership{
 			AccountID:          c.accountID,
 			Region:             c.region,
@@ -491,16 +489,17 @@ func (c *Client) clusters(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterTables...)
 
 	for {
-		output, err := c.svc.DescribeClusters(&config)
+		output, err := c.svc.DescribeClusters(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformClusters(output.Clusters))
+		c.db.ChunkedCreate(c.transformClusters(&output.Clusters))
 		c.log.Info("Fetched resources", zap.String("resource", "redshift.clusters"), zap.Int("count", len(output.Clusters)))
-		if aws.StringValue(output.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker

@@ -1,8 +1,10 @@
 package elbv2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/elbv2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
@@ -67,73 +69,60 @@ func (LoadBalancerAddress) TableName() string {
 	return "aws_elbv2_load_balancer_addresses"
 }
 
-func (c *Client) transformLoadBalancerAddress(value *elbv2.LoadBalancerAddress) *LoadBalancerAddress {
-	return &LoadBalancerAddress{
-		AccountID:          c.accountID,
-		Region:             c.region,
-		AllocationId:       value.AllocationId,
-		IpAddress:          value.IpAddress,
-		PrivateIPv4Address: value.PrivateIPv4Address,
-	}
-}
-
-func (c *Client) transformLoadBalancerAddresss(values []*elbv2.LoadBalancerAddress) []*LoadBalancerAddress {
+func (c *Client) transformLoadBalancerAddresss(values *[]types.LoadBalancerAddress) []*LoadBalancerAddress {
 	var tValues []*LoadBalancerAddress
-	for _, v := range values {
-		tValues = append(tValues, c.transformLoadBalancerAddress(v))
+	for _, value := range *values {
+		tValues = append(tValues, &LoadBalancerAddress{
+			AccountID:          c.accountID,
+			Region:             c.region,
+			AllocationId:       value.AllocationId,
+			IpAddress:          value.IpAddress,
+			PrivateIPv4Address: value.PrivateIPv4Address,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformLoadBalancerAvailabilityZone(value *elbv2.AvailabilityZone) *LoadBalancerAvailabilityZone {
-	return &LoadBalancerAvailabilityZone{
-		AccountID:             c.accountID,
-		Region:                c.region,
-		LoadBalancerAddresses: c.transformLoadBalancerAddresss(value.LoadBalancerAddresses),
-		OutpostId:             value.OutpostId,
-		SubnetId:              value.SubnetId,
-		ZoneName:              value.ZoneName,
-	}
-}
-
-func (c *Client) transformLoadBalancerAvailabilityZones(values []*elbv2.AvailabilityZone) []*LoadBalancerAvailabilityZone {
+func (c *Client) transformLoadBalancerAvailabilityZones(values *[]types.AvailabilityZone) []*LoadBalancerAvailabilityZone {
 	var tValues []*LoadBalancerAvailabilityZone
-	for _, v := range values {
-		tValues = append(tValues, c.transformLoadBalancerAvailabilityZone(v))
+	for _, value := range *values {
+		tValues = append(tValues, &LoadBalancerAvailabilityZone{
+			AccountID:             c.accountID,
+			Region:                c.region,
+			LoadBalancerAddresses: c.transformLoadBalancerAddresss(&value.LoadBalancerAddresses),
+			OutpostId:             value.OutpostId,
+			SubnetId:              value.SubnetId,
+			ZoneName:              value.ZoneName,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformLoadBalancer(value *elbv2.LoadBalancer) *LoadBalancer {
-	res := LoadBalancer{
-		Region:                c.region,
-		AccountID:             c.accountID,
-		AvailabilityZones:     c.transformLoadBalancerAvailabilityZones(value.AvailabilityZones),
-		CanonicalHostedZoneId: value.CanonicalHostedZoneId,
-		CreatedTime:           value.CreatedTime,
-		CustomerOwnedIpv4Pool: value.CustomerOwnedIpv4Pool,
-		DNSName:               value.DNSName,
-		IpAddressType:         value.IpAddressType,
-		LoadBalancerArn:       value.LoadBalancerArn,
-		LoadBalancerName:      value.LoadBalancerName,
-		Scheme:                value.Scheme,
-		SecurityGroups:        common.StringListToString(value.SecurityGroups),
-		Type:                  value.Type,
-		VpcId:                 value.VpcId,
-	}
-
-	if value.State != nil {
-		res.StateReason = value.State.Reason
-		res.StateCode = value.State.Code
-	}
-
-	return &res
-}
-
-func (c *Client) transformLoadBalancers(values []*elbv2.LoadBalancer) []*LoadBalancer {
+func (c *Client) transformLoadBalancers(values *[]types.LoadBalancer) []*LoadBalancer {
 	var tValues []*LoadBalancer
-	for _, v := range values {
-		tValues = append(tValues, c.transformLoadBalancer(v))
+	for _, value := range *values {
+		res := LoadBalancer{
+			Region:                c.region,
+			AccountID:             c.accountID,
+			AvailabilityZones:     c.transformLoadBalancerAvailabilityZones(&value.AvailabilityZones),
+			CanonicalHostedZoneId: value.CanonicalHostedZoneId,
+			CreatedTime:           value.CreatedTime,
+			CustomerOwnedIpv4Pool: value.CustomerOwnedIpv4Pool,
+			DNSName:               value.DNSName,
+			IpAddressType:         aws.String(string(value.IpAddressType)),
+			LoadBalancerArn:       value.LoadBalancerArn,
+			LoadBalancerName:      value.LoadBalancerName,
+			Scheme:                aws.String(string(value.Scheme)),
+			SecurityGroups:        common.StringListToString(&value.SecurityGroups),
+			Type:                  aws.String(string(value.Type)),
+			VpcId:                 value.VpcId,
+		}
+
+		if value.State != nil {
+			res.StateReason = value.State.Reason
+			res.StateCode = aws.String(string(value.State.Code))
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -145,6 +134,7 @@ var LoadBalancerTables = []interface{}{
 }
 
 func (c *Client) loadBalancers(gConfig interface{}) error {
+	ctx := context.Background()
 	var config elbv2.DescribeLoadBalancersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -153,13 +143,13 @@ func (c *Client) loadBalancers(gConfig interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(LoadBalancerTables...)
 
 	for {
-		output, err := c.svc.DescribeLoadBalancers(&config)
+		output, err := c.svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformLoadBalancers(output.LoadBalancers))
+		c.db.ChunkedCreate(c.transformLoadBalancers(&output.LoadBalancers))
 		c.log.Info("Fetched resources", zap.String("resource", "elbv2.load_balancers"), zap.Int("count", len(output.LoadBalancers)))
-		if aws.StringValue(output.NextMarker) == "" {
+		if aws.ToString(output.NextMarker) == "" {
 			break
 		}
 		config.Marker = output.NextMarker

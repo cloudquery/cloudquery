@@ -1,7 +1,10 @@
 package ecs
 
 import (
-	"github.com/aws/aws-sdk-go/service/ecs"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
+	"github.com/aws/aws-sdk-go/aws"
 	"go.uber.org/zap"
 	"time"
 )
@@ -17,27 +20,27 @@ type Service struct {
 	CreatedAt           *time.Time
 	CreatedBy           *string
 
-	DeploymentConfigurationMaximumPercent        *int64
-	DeploymentConfigurationMinimumHealthyPercent *int64
+	DeploymentConfigurationMaximumPercent        *int32
+	DeploymentConfigurationMinimumHealthyPercent *int32
 
 	DeploymentControllerType *string
-	DesiredCount             *int64
+	DesiredCount             int32
 	EnableECSManagedTags     *bool
 
-	HealthCheckGracePeriodSeconds *int64
+	HealthCheckGracePeriodSeconds *int32
 	LaunchType                    *string
 	LoadBalancers                 []*ServiceLoadBalancer `gorm:"constraint:OnDelete:CASCADE;"`
 
 	AssignPublicIp       *string
 	SecurityGroups       []*ServiceSecurityGroups `gorm:"constraint:OnDelete:CASCADE;"`
 	Subnets              []*ServiceSubnets        `gorm:"constraint:OnDelete:CASCADE;"`
-	PendingCount         *int64
+	PendingCount         *int32
 	PlacementConstraints []*ServicePlacementConstraint `gorm:"constraint:OnDelete:CASCADE;"`
 	PlacementStrategy    []*ServicePlacementStrategy   `gorm:"constraint:OnDelete:CASCADE;"`
 	PlatformVersion      *string
 	PropagateTags        *string
 	RoleArn              *string
-	RunningCount         *int64
+	RunningCount         *int32
 	SchedulingStrategy   *string
 	ServiceArn           *string `neo:"unique"`
 	ServiceName          *string
@@ -57,9 +60,9 @@ type ServiceCapProviderStrategy struct {
 	AccountID string `gorm:"-"`
 	Region    string `gorm:"-"`
 
-	Base             *int64
+	Base             *int32
 	CapacityProvider *string
-	Weight           *int64
+	Weight           *int32
 }
 
 func (ServiceCapProviderStrategy) TableName() string {
@@ -72,7 +75,7 @@ type ServiceSecurityGroups struct {
 	AccountID string `gorm:"-"`
 	Region    string `gorm:"-"`
 
-	Value *string
+	Value string
 }
 
 func (ServiceSecurityGroups) TableName() string {
@@ -85,7 +88,7 @@ type ServiceSubnets struct {
 	AccountID string `gorm:"-"`
 	Region    string `gorm:"-"`
 
-	Value *string
+	Value string
 }
 
 func (ServiceSubnets) TableName() string {
@@ -99,7 +102,7 @@ type ServiceLoadBalancer struct {
 	Region    string `gorm:"-"`
 
 	ContainerName    *string
-	ContainerPort    *int64
+	ContainerPort    *int32
 	LoadBalancerName *string
 	TargetGroupArn   *string
 }
@@ -143,8 +146,8 @@ type ServiceRegistry struct {
 	Region    string `gorm:"-"`
 
 	ContainerName *string
-	ContainerPort *int64
-	Port          *int64
+	ContainerPort *int32
+	Port          *int32
 	RegistryArn   *string
 }
 
@@ -166,34 +169,34 @@ func (ServiceTag) TableName() string {
 	return "aws_ecs_service_tags"
 }
 
-func (c *Client) transformServices(values []*ecs.Service) []*Service {
+func (c *Client) transformServices(values *[]types.Service) []*Service {
 	var tValues []*Service
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := Service{
 			AccountID:                     c.accountID,
 			Region:                        c.region,
-			CapProviderStrategy:           c.transformServiceCapacityProviderStrategyItems(value.CapacityProviderStrategy),
+			CapProviderStrategy:           c.transformServiceCapacityProviderStrategyItems(&value.CapacityProviderStrategy),
 			ClusterArn:                    value.ClusterArn,
 			CreatedAt:                     value.CreatedAt,
 			CreatedBy:                     value.CreatedBy,
 			DesiredCount:                  value.DesiredCount,
-			EnableECSManagedTags:          value.EnableECSManagedTags,
+			EnableECSManagedTags:          &value.EnableECSManagedTags,
 			HealthCheckGracePeriodSeconds: value.HealthCheckGracePeriodSeconds,
-			LaunchType:                    value.LaunchType,
-			LoadBalancers:                 c.transformServiceLoadBalancers(value.LoadBalancers),
-			PendingCount:                  value.PendingCount,
-			PlacementConstraints:          c.transformServicePlacementConstraints(value.PlacementConstraints),
-			PlacementStrategy:             c.transformServicePlacementStrategies(value.PlacementStrategy),
+			LaunchType:                    aws.String(string(value.LaunchType)),
+			LoadBalancers:                 c.transformServiceLoadBalancers(&value.LoadBalancers),
+			PendingCount:                  &value.PendingCount,
+			PlacementConstraints:          c.transformServicePlacementConstraints(&value.PlacementConstraints),
+			PlacementStrategy:             c.transformServicePlacementStrategies(&value.PlacementStrategy),
 			PlatformVersion:               value.PlatformVersion,
-			PropagateTags:                 value.PropagateTags,
+			PropagateTags:                 aws.String(string(value.PropagateTags)),
 			RoleArn:                       value.RoleArn,
-			RunningCount:                  value.RunningCount,
-			SchedulingStrategy:            value.SchedulingStrategy,
+			RunningCount:                  &value.RunningCount,
+			SchedulingStrategy:            aws.String(string(value.SchedulingStrategy)),
 			ServiceArn:                    value.ServiceArn,
 			ServiceName:                   value.ServiceName,
-			ServiceRegistries:             c.transformServiceRegistries(value.ServiceRegistries),
+			ServiceRegistries:             c.transformServiceRegistries(&value.ServiceRegistries),
 			Status:                        value.Status,
-			Tags:                          c.transformServiceTags(value.Tags),
+			Tags:                          c.transformServiceTags(&value.Tags),
 			TaskDefinition:                value.TaskDefinition,
 		}
 		if value.DeploymentConfiguration != nil {
@@ -201,34 +204,34 @@ func (c *Client) transformServices(values []*ecs.Service) []*Service {
 			tValue.DeploymentConfigurationMinimumHealthyPercent = value.DeploymentConfiguration.MinimumHealthyPercent
 		}
 		if value.DeploymentController != nil {
-			tValue.DeploymentControllerType = value.DeploymentController.Type
+			tValue.DeploymentControllerType = aws.String(string(value.DeploymentController.Type))
 		}
 		if value.NetworkConfiguration != nil && value.NetworkConfiguration.AwsvpcConfiguration != nil {
-			tValue.SecurityGroups = c.transformServiceAwsVpcConfigurationSecurityGroups(value.NetworkConfiguration.AwsvpcConfiguration.SecurityGroups)
-			tValue.Subnets = c.transformServiceAwsVpcConfigurationSubnets(value.NetworkConfiguration.AwsvpcConfiguration.Subnets)
+			tValue.SecurityGroups = c.transformServiceAwsVpcConfigurationSecurityGroups(&value.NetworkConfiguration.AwsvpcConfiguration.SecurityGroups)
+			tValue.Subnets = c.transformServiceAwsVpcConfigurationSubnets(&value.NetworkConfiguration.AwsvpcConfiguration.Subnets)
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func (c *Client) transformServiceCapacityProviderStrategyItems(values []*ecs.CapacityProviderStrategyItem) []*ServiceCapProviderStrategy {
+func (c *Client) transformServiceCapacityProviderStrategyItems(values *[]types.CapacityProviderStrategyItem) []*ServiceCapProviderStrategy {
 	var tValues []*ServiceCapProviderStrategy
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServiceCapProviderStrategy{
 			AccountID:        c.accountID,
 			Region:           c.region,
-			Base:             value.Base,
+			Base:             &value.Base,
 			CapacityProvider: value.CapacityProvider,
-			Weight:           value.Weight,
+			Weight:           &value.Weight,
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
-func (c *Client) transformServiceAwsVpcConfigurationSecurityGroups(values []*string) []*ServiceSecurityGroups {
+func (c *Client) transformServiceAwsVpcConfigurationSecurityGroups(values *[]string) []*ServiceSecurityGroups {
 	var tValues []*ServiceSecurityGroups
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &ServiceSecurityGroups{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -238,9 +241,9 @@ func (c *Client) transformServiceAwsVpcConfigurationSecurityGroups(values []*str
 	return tValues
 }
 
-func (c *Client) transformServiceAwsVpcConfigurationSubnets(values []*string) []*ServiceSubnets {
+func (c *Client) transformServiceAwsVpcConfigurationSubnets(values *[]string) []*ServiceSubnets {
 	var tValues []*ServiceSubnets
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &ServiceSubnets{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -250,9 +253,9 @@ func (c *Client) transformServiceAwsVpcConfigurationSubnets(values []*string) []
 	return tValues
 }
 
-func (c *Client) transformServiceLoadBalancers(values []*ecs.LoadBalancer) []*ServiceLoadBalancer {
+func (c *Client) transformServiceLoadBalancers(values *[]types.LoadBalancer) []*ServiceLoadBalancer {
 	var tValues []*ServiceLoadBalancer
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServiceLoadBalancer{
 			AccountID:        c.accountID,
 			Region:           c.region,
@@ -266,14 +269,14 @@ func (c *Client) transformServiceLoadBalancers(values []*ecs.LoadBalancer) []*Se
 	return tValues
 }
 
-func (c *Client) transformServicePlacementConstraints(values []*ecs.PlacementConstraint) []*ServicePlacementConstraint {
+func (c *Client) transformServicePlacementConstraints(values *[]types.PlacementConstraint) []*ServicePlacementConstraint {
 	var tValues []*ServicePlacementConstraint
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServicePlacementConstraint{
 			AccountID:  c.accountID,
 			Region:     c.region,
 			Expression: value.Expression,
-			Type:       value.Type,
+			Type:       aws.String(string(value.Type)),
 		}
 
 		tValues = append(tValues, &tValue)
@@ -281,14 +284,14 @@ func (c *Client) transformServicePlacementConstraints(values []*ecs.PlacementCon
 	return tValues
 }
 
-func (c *Client) transformServicePlacementStrategies(values []*ecs.PlacementStrategy) []*ServicePlacementStrategy {
+func (c *Client) transformServicePlacementStrategies(values *[]types.PlacementStrategy) []*ServicePlacementStrategy {
 	var tValues []*ServicePlacementStrategy
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServicePlacementStrategy{
 			AccountID: c.accountID,
 			Region:    c.region,
 			Field:     value.Field,
-			Type:      value.Type,
+			Type:      aws.String(string(value.Type)),
 		}
 
 		tValues = append(tValues, &tValue)
@@ -296,9 +299,9 @@ func (c *Client) transformServicePlacementStrategies(values []*ecs.PlacementStra
 	return tValues
 }
 
-func (c *Client) transformServiceRegistries(values []*ecs.ServiceRegistry) []*ServiceRegistry {
+func (c *Client) transformServiceRegistries(values *[]types.ServiceRegistry) []*ServiceRegistry {
 	var tValues []*ServiceRegistry
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServiceRegistry{
 			AccountID:     c.accountID,
 			Region:        c.region,
@@ -313,9 +316,9 @@ func (c *Client) transformServiceRegistries(values []*ecs.ServiceRegistry) []*Se
 	return tValues
 }
 
-func (c *Client) transformServiceTags(values []*ecs.Tag) []*ServiceTag {
+func (c *Client) transformServiceTags(values *[]types.Tag) []*ServiceTag {
 	var tValues []*ServiceTag
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := ServiceTag{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -327,14 +330,14 @@ func (c *Client) transformServiceTags(values []*ecs.Tag) []*ServiceTag {
 	return tValues
 }
 
-func (c *Client) services(clusters []*string) error {
-
+func (c *Client) services(clusters *[]string) error {
+	ctx := context.Background()
 	var listInput ecs.ListServicesInput
-	for _, cluster := range clusters {
-		listInput.Cluster = cluster
+	for _, cluster := range *clusters {
+		listInput.Cluster = &cluster
 		listInput.NextToken = nil
 		for {
-			listOutput, err := c.svc.ListServices(&listInput)
+			listOutput, err := c.svc.ListServices(ctx, &listInput)
 			if err != nil {
 				return err
 			}
@@ -342,14 +345,14 @@ func (c *Client) services(clusters []*string) error {
 				c.log.Info("Fetched resources", zap.String("resource", "ecs.services"), zap.Int("count", 0))
 				break
 			}
-			output, err := c.svc.DescribeServices(&ecs.DescribeServicesInput{
-				Cluster:  cluster,
+			output, err := c.svc.DescribeServices(ctx, &ecs.DescribeServicesInput{
+				Cluster:  &cluster,
 				Services: listOutput.ServiceArns,
 			})
 			if err != nil {
 				return err
 			}
-			c.db.ChunkedCreate(c.transformServices(output.Services))
+			c.db.ChunkedCreate(c.transformServices(&output.Services))
 			c.log.Info("Fetched resources", zap.String("resource", "ecs.services"), zap.Int("count", len(output.Services)))
 
 			if listOutput.NextToken == nil {

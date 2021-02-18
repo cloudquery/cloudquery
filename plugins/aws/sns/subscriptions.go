@@ -1,7 +1,9 @@
 package sns
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/sns"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -22,9 +24,9 @@ func (Subscription) TableName() string {
 	return "aws_sns_subscriptions"
 }
 
-func (c *Client) transformSubscriptions(values []*sns.Subscription) []*Subscription {
+func (c *Client) transformSubscriptions(values *[]types.Subscription) []*Subscription {
 	var tValues []*Subscription
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := Subscription {
 			AccountID: c.accountID,
 			Region: c.region,
@@ -52,16 +54,17 @@ func (c *Client)subscriptions(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(SubscriptionTables...)
 
 	for {
-		output, err := c.svc.ListSubscriptions(&config)
+		output, err := c.svc.ListSubscriptions(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformSubscriptions(output.Subscriptions))
+		c.db.ChunkedCreate(c.transformSubscriptions(&output.Subscriptions))
 		c.log.Info("Fetched resources", zap.String("resource", "sns.subscriptions"), zap.Int("count", len(output.Subscriptions)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

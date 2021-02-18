@@ -1,8 +1,10 @@
 package elasticbeanstalk
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/elasticbeanstalk"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
+	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -68,7 +70,7 @@ type EnvironmentListener struct {
 	AccountID     string `gorm:"-"`
 	Region        string `gorm:"-"`
 
-	Port     *int64
+	Port     *int32
 	Protocol *string
 }
 
@@ -76,87 +78,74 @@ func (EnvironmentListener) TableName() string {
 	return "aws_elasticbeanstalk_environment_listeners"
 }
 
-func (c *Client) transformEnvironmentLink(value *elasticbeanstalk.EnvironmentLink) *EnvironmentLink {
-	return &EnvironmentLink{
-		AccountID:       c.accountID,
-		Region:          c.region,
-		EnvironmentName: value.EnvironmentName,
-		LinkName:        value.LinkName,
-	}
-}
-
-func (c *Client) transformEnvironmentDescriptionEnvironmentLinks(values []*elasticbeanstalk.EnvironmentLink) []*EnvironmentLink {
+func (c *Client) transformEnvironmentDescriptionEnvironmentLinks(values *[]types.EnvironmentLink) []*EnvironmentLink {
 	var tValues []*EnvironmentLink
-	for _, v := range values {
-		tValues = append(tValues, c.transformEnvironmentLink(v))
+	for _, value := range *values {
+		tValues = append(tValues, &EnvironmentLink{
+			AccountID:       c.accountID,
+			Region:          c.region,
+			EnvironmentName: value.EnvironmentName,
+			LinkName:        value.LinkName,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformEnvironmentListener(value *elasticbeanstalk.Listener) *EnvironmentListener {
-	return &EnvironmentListener{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Port:      value.Port,
-		Protocol:  value.Protocol,
-	}
-}
-
-func (c *Client) transformEnvironmentListeners(values []*elasticbeanstalk.Listener) []*EnvironmentListener {
+func (c *Client) transformEnvironmentListeners(values *[]types.Listener) []*EnvironmentListener {
 	var tValues []*EnvironmentListener
-	for _, v := range values {
-		tValues = append(tValues, c.transformEnvironmentListener(v))
+	for _, value := range *values {
+		tValues = append(tValues, &EnvironmentListener{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Port:      &value.Port,
+			Protocol:  value.Protocol,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformEnvironment(value *elasticbeanstalk.EnvironmentDescription) *Environment {
-	res := Environment{
-		Region:                       c.region,
-		AccountID:                    c.accountID,
-		AbortableOperationInProgress: value.AbortableOperationInProgress,
-		ApplicationName:              value.ApplicationName,
-		CNAME:                        value.CNAME,
-		DateCreated:                  value.DateCreated,
-		DateUpdated:                  value.DateUpdated,
-		Description:                  value.Description,
-		EndpointURL:                  value.EndpointURL,
-		EnvironmentArn:               value.EnvironmentArn,
-		EnvironmentId:                value.EnvironmentId,
-		EnvironmentName:              value.EnvironmentName,
-		Health:                       value.Health,
-		HealthStatus:                 value.HealthStatus,
-		OperationsRole:               value.OperationsRole,
-		PlatformArn:                  value.PlatformArn,
-		SolutionStackName:            value.SolutionStackName,
-		Status:                       value.Status,
-		TemplateName:                 value.TemplateName,
-		VersionLabel:                 value.VersionLabel,
-	}
-
-	if value.Tier != nil {
-		res.TierName = value.Tier.Name
-		res.TierType = value.Tier.Type
-		res.TierVersion = value.Tier.Version
-	}
-
-	if value.EnvironmentLinks != nil {
-		res.EnvironmentLinks = c.transformEnvironmentDescriptionEnvironmentLinks(value.EnvironmentLinks)
-	}
-
-	if value.Resources != nil && value.Resources.LoadBalancer != nil {
-		res.LoadBalancerDomain = value.Resources.LoadBalancer.Domain
-		res.LoadBalancerListeners = c.transformEnvironmentListeners(value.Resources.LoadBalancer.Listeners)
-		res.LoadBalancerName = value.Resources.LoadBalancer.LoadBalancerName
-	}
-
-	return &res
-}
-
-func (c *Client) transformEnvironments(values []*elasticbeanstalk.EnvironmentDescription) []*Environment {
+func (c *Client) transformEnvironments(values *[]types.EnvironmentDescription) []*Environment {
 	var tValues []*Environment
-	for _, v := range values {
-		tValues = append(tValues, c.transformEnvironment(v))
+	for _, value := range *values {
+		res := Environment{
+			Region:                       c.region,
+			AccountID:                    c.accountID,
+			AbortableOperationInProgress: value.AbortableOperationInProgress,
+			ApplicationName:              value.ApplicationName,
+			CNAME:                        value.CNAME,
+			DateCreated:                  value.DateCreated,
+			DateUpdated:                  value.DateUpdated,
+			Description:                  value.Description,
+			EndpointURL:                  value.EndpointURL,
+			EnvironmentArn:               value.EnvironmentArn,
+			EnvironmentId:                value.EnvironmentId,
+			EnvironmentName:              value.EnvironmentName,
+			Health:                       aws.String(string(value.Health)),
+			HealthStatus:                 aws.String(string(value.HealthStatus)),
+			OperationsRole:               value.OperationsRole,
+			PlatformArn:                  value.PlatformArn,
+			SolutionStackName:            value.SolutionStackName,
+			Status:                       aws.String(string(value.Status)),
+			TemplateName:                 value.TemplateName,
+			VersionLabel:                 value.VersionLabel,
+		}
+
+		if value.Tier != nil {
+			res.TierName = value.Tier.Name
+			res.TierType = value.Tier.Type
+			res.TierVersion = value.Tier.Version
+		}
+
+		if value.EnvironmentLinks != nil {
+			res.EnvironmentLinks = c.transformEnvironmentDescriptionEnvironmentLinks(&value.EnvironmentLinks)
+		}
+
+		if value.Resources != nil && value.Resources.LoadBalancer != nil {
+			res.LoadBalancerDomain = value.Resources.LoadBalancer.Domain
+			res.LoadBalancerListeners = c.transformEnvironmentListeners(&value.Resources.LoadBalancer.Listeners)
+			res.LoadBalancerName = value.Resources.LoadBalancer.LoadBalancerName
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -168,6 +157,7 @@ var EnvironmentTables = []interface{}{
 }
 
 func (c *Client) environments(gConfig interface{}) error {
+	ctx := context.Background()
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -175,14 +165,14 @@ func (c *Client) environments(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(EnvironmentTables...)
 	for {
-		output, err := c.svc.DescribeEnvironments(&config)
+		output, err := c.svc.DescribeEnvironments(ctx, &config)
 		if err != nil {
 			return err
 		}
 
-		c.db.ChunkedCreate(c.transformEnvironments(output.Environments))
+		c.db.ChunkedCreate(c.transformEnvironments(&output.Environments))
 		c.log.Info("Fetched resources", zap.String("resource", "elasticbeanstalk.environments"), zap.Int("count", len(output.Environments)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

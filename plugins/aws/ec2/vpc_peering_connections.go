@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -121,21 +123,21 @@ func (VpcPeeringConnectionTag) TableName() string {
 	return "aws_ec2_vpc_peering_connection_tags"
 }
 
-func (c *Client) transformVpcPeeringConnectionAccepterCidrBlocks(values []*ec2.CidrBlock) []*VpcPeeringConnectionAccCidrBlock {
+func (c *Client) transformVpcPeeringConnectionAccepterCidrBlocks(values *[]types.CidrBlock) []*VpcPeeringConnectionAccCidrBlock {
 	var tValues []*VpcPeeringConnectionAccCidrBlock
-	for _, v := range values {
+	for _, value := range *values {
 		tValues = append(tValues, &VpcPeeringConnectionAccCidrBlock{
 			AccountID: c.accountID,
 			Region:    c.region,
-			CidrBlock: v.CidrBlock,
+			CidrBlock: value.CidrBlock,
 		})
 	}
 	return tValues
 }
 
-func (c *Client) transformVpcPeeringConnectionAccepterIpv6CidrBlocks(values []*ec2.Ipv6CidrBlock) []*VpcPeeringConnectionAccIpv6CidrBlock {
+func (c *Client) transformVpcPeeringConnectionAccepterIpv6CidrBlocks(values *[]types.Ipv6CidrBlock) []*VpcPeeringConnectionAccIpv6CidrBlock {
 	var tValues []*VpcPeeringConnectionAccIpv6CidrBlock
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &VpcPeeringConnectionAccIpv6CidrBlock{
 			AccountID:     c.accountID,
 			Region:        c.region,
@@ -145,9 +147,9 @@ func (c *Client) transformVpcPeeringConnectionAccepterIpv6CidrBlocks(values []*e
 	return tValues
 }
 
-func (c *Client) transformVpcPeeringConnectionRequesterCidrBlocks(values []*ec2.CidrBlock) []*VpcPeeringConnectionReqCidrBlock {
+func (c *Client) transformVpcPeeringConnectionRequesterCidrBlocks(values *[]types.CidrBlock) []*VpcPeeringConnectionReqCidrBlock {
 	var tValues []*VpcPeeringConnectionReqCidrBlock
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &VpcPeeringConnectionReqCidrBlock{
 			AccountID: c.accountID,
 			Region:    c.region,
@@ -157,9 +159,9 @@ func (c *Client) transformVpcPeeringConnectionRequesterCidrBlocks(values []*ec2.
 	return tValues
 }
 
-func (c *Client) transformVpcPeeringConnectionRequesterIpv6CidrBlocks(values []*ec2.Ipv6CidrBlock) []*VpcPeeringConnectionReqIpv6CidrBlock {
+func (c *Client) transformVpcPeeringConnectionRequesterIpv6CidrBlocks(values *[]types.Ipv6CidrBlock) []*VpcPeeringConnectionReqIpv6CidrBlock {
 	var tValues []*VpcPeeringConnectionReqIpv6CidrBlock
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &VpcPeeringConnectionReqIpv6CidrBlock{
 			AccountID:     c.accountID,
 			Region:        c.region,
@@ -169,73 +171,64 @@ func (c *Client) transformVpcPeeringConnectionRequesterIpv6CidrBlocks(values []*
 	return tValues
 }
 
-func (c *Client) transformVpcPeeringConnectionTag(value *ec2.Tag) *VpcPeeringConnectionTag {
-	return &VpcPeeringConnectionTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformVpcPeeringConnectionTags(values []*ec2.Tag) []*VpcPeeringConnectionTag {
+func (c *Client) transformVpcPeeringConnectionTags(values *[]types.Tag) []*VpcPeeringConnectionTag {
 	var tValues []*VpcPeeringConnectionTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpcPeeringConnectionTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &VpcPeeringConnectionTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformVpcPeeringConnection(value *ec2.VpcPeeringConnection) *VpcPeeringConnection {
-	res := VpcPeeringConnection{
-		Region:                 c.region,
-		AccountID:              c.accountID,
-		ExpirationTime:         value.ExpirationTime,
-		Tags:                   c.transformVpcPeeringConnectionTags(value.Tags),
-		VpcPeeringConnectionId: value.VpcPeeringConnectionId,
-	}
-
-	if value.Status != nil {
-		res.StatusMessage = value.Status.Message
-		res.StatusCode = value.Status.Code
-	}
-
-	if value.AccepterVpcInfo != nil {
-		res.AccCidrBlock = value.AccepterVpcInfo.CidrBlock
-		res.AccCidrBlockSet = c.transformVpcPeeringConnectionAccepterCidrBlocks(value.AccepterVpcInfo.CidrBlockSet)
-		res.AccIpv6CidrBlockSet = c.transformVpcPeeringConnectionAccepterIpv6CidrBlocks(value.AccepterVpcInfo.Ipv6CidrBlockSet)
-		res.AccOwnerId = value.AccepterVpcInfo.OwnerId
-		res.AccRegion = value.AccepterVpcInfo.Region
-		res.AccVpcId = value.AccepterVpcInfo.VpcId
-
-		if value.AccepterVpcInfo.PeeringOptions != nil {
-			res.AccOptAllowDnsResolutionFromRemoteVpc = value.AccepterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
-			res.AccOptAllowEgressFromLocalClassicLinkToRemoteVpc = value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
-			res.AccOptAllowEgressFromLocalVpcToRemoteClassicLink = value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
-		}
-	}
-
-	if value.RequesterVpcInfo != nil {
-		res.ReqCidrBlock = value.RequesterVpcInfo.CidrBlock
-		res.ReqCidrBlockSet = c.transformVpcPeeringConnectionRequesterCidrBlocks(value.RequesterVpcInfo.CidrBlockSet)
-		res.ReqIpv6CidrBlockSet = c.transformVpcPeeringConnectionRequesterIpv6CidrBlocks(value.RequesterVpcInfo.Ipv6CidrBlockSet)
-		res.ReqOwnerId = value.RequesterVpcInfo.OwnerId
-		res.ReqRegion = value.RequesterVpcInfo.Region
-		res.ReqVpcId = value.RequesterVpcInfo.VpcId
-		if value.RequesterVpcInfo.PeeringOptions != nil {
-			res.ReqOptAllowDnsResolutionFromRemoteVpc = value.RequesterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
-			res.ReqOptAllowEgressFromLocalClassicLinkToRemoteVpc = value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
-			res.ReqOptAllowEgressFromLocalVpcToRemoteClassicLink = value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
-		}
-	}
-
-	return &res
-}
-
-func (c *Client) transformVpcPeeringConnections(values []*ec2.VpcPeeringConnection) []*VpcPeeringConnection {
+func (c *Client) transformVpcPeeringConnections(values *[]types.VpcPeeringConnection) []*VpcPeeringConnection {
 	var tValues []*VpcPeeringConnection
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpcPeeringConnection(v))
+	for _, value := range *values {
+		res := VpcPeeringConnection{
+			Region:                 c.region,
+			AccountID:              c.accountID,
+			ExpirationTime:         value.ExpirationTime,
+			Tags:                   c.transformVpcPeeringConnectionTags(&value.Tags),
+			VpcPeeringConnectionId: value.VpcPeeringConnectionId,
+		}
+
+		if value.Status != nil {
+			res.StatusMessage = value.Status.Message
+			res.StatusCode = aws.String(string(value.Status.Code))
+		}
+
+		if value.AccepterVpcInfo != nil {
+			res.AccCidrBlock = value.AccepterVpcInfo.CidrBlock
+			res.AccCidrBlockSet = c.transformVpcPeeringConnectionAccepterCidrBlocks(&value.AccepterVpcInfo.CidrBlockSet)
+			res.AccIpv6CidrBlockSet = c.transformVpcPeeringConnectionAccepterIpv6CidrBlocks(&value.AccepterVpcInfo.Ipv6CidrBlockSet)
+			res.AccOwnerId = value.AccepterVpcInfo.OwnerId
+			res.AccRegion = value.AccepterVpcInfo.Region
+			res.AccVpcId = value.AccepterVpcInfo.VpcId
+
+			if value.AccepterVpcInfo.PeeringOptions != nil {
+				res.AccOptAllowDnsResolutionFromRemoteVpc = &value.AccepterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
+				res.AccOptAllowEgressFromLocalClassicLinkToRemoteVpc = &value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
+				res.AccOptAllowEgressFromLocalVpcToRemoteClassicLink = &value.AccepterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
+			}
+		}
+
+		if value.RequesterVpcInfo != nil {
+			res.ReqCidrBlock = value.RequesterVpcInfo.CidrBlock
+			res.ReqCidrBlockSet = c.transformVpcPeeringConnectionRequesterCidrBlocks(&value.RequesterVpcInfo.CidrBlockSet)
+			res.ReqIpv6CidrBlockSet = c.transformVpcPeeringConnectionRequesterIpv6CidrBlocks(&value.RequesterVpcInfo.Ipv6CidrBlockSet)
+			res.ReqOwnerId = value.RequesterVpcInfo.OwnerId
+			res.ReqRegion = value.RequesterVpcInfo.Region
+			res.ReqVpcId = value.RequesterVpcInfo.VpcId
+			if value.RequesterVpcInfo.PeeringOptions != nil {
+				res.ReqOptAllowDnsResolutionFromRemoteVpc = &value.RequesterVpcInfo.PeeringOptions.AllowDnsResolutionFromRemoteVpc
+				res.ReqOptAllowEgressFromLocalClassicLinkToRemoteVpc = &value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalClassicLinkToRemoteVpc
+				res.ReqOptAllowEgressFromLocalVpcToRemoteClassicLink = &value.RequesterVpcInfo.PeeringOptions.AllowEgressFromLocalVpcToRemoteClassicLink
+			}
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -250,6 +243,7 @@ var VPCPeeringConnectionTables = []interface{}{
 }
 
 func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeVpcPeeringConnectionsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -257,13 +251,13 @@ func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(VPCPeeringConnectionTables...)
 	for {
-		output, err := c.svc.DescribeVpcPeeringConnections(&config)
+		output, err := c.svc.DescribeVpcPeeringConnections(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformVpcPeeringConnections(output.VpcPeeringConnections))
+		c.db.ChunkedCreate(c.transformVpcPeeringConnections(&output.VpcPeeringConnections))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.vpc_peering_connections"), zap.Int("count", len(output.VpcPeeringConnections)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

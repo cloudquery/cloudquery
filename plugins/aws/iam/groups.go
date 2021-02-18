@@ -1,8 +1,10 @@
 package iam
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/iam"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -35,9 +37,9 @@ func (GroupPolicy) TableName() string {
 	return "aws_iam_group_policies"
 }
 
-func (c *Client) transformGroupPolicies(values []*iam.AttachedPolicy) []*GroupPolicy {
+func (c *Client) transformGroupPolicies(values *[]types.AttachedPolicy) []*GroupPolicy {
 	var tValues []*GroupPolicy
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := GroupPolicy{
 			AccountID: c.accountID,
 			PolicyArn: value.PolicyArn,
@@ -48,9 +50,10 @@ func (c *Client) transformGroupPolicies(values []*iam.AttachedPolicy) []*GroupPo
 	return tValues
 }
 
-func (c *Client) transformGroups(values []*iam.Group) ([]*Group, error) {
+func (c *Client) transformGroups(values *[]types.Group) ([]*Group, error) {
 	var tValues []*Group
-	for _, value := range values {
+	ctx := context.Background()
+	for _, value := range *values {
 		tValue := &Group{
 			AccountID:  c.accountID,
 			Arn:        value.Arn,
@@ -64,11 +67,11 @@ func (c *Client) transformGroups(values []*iam.Group) ([]*Group, error) {
 			GroupName: value.GroupName,
 		}
 		for {
-			outputAttachedPolicies, err := c.svc.ListAttachedGroupPolicies(&listAttachedUserPoliciesInput)
+			outputAttachedPolicies, err := c.svc.ListAttachedGroupPolicies(ctx, &listAttachedUserPoliciesInput)
 			if err != nil {
 				return nil, err
 			}
-			tValue.Policies = append(tValue.Policies, c.transformGroupPolicies(outputAttachedPolicies.AttachedPolicies)...)
+			tValue.Policies = append(tValue.Policies, c.transformGroupPolicies(&outputAttachedPolicies.AttachedPolicies)...)
 			if outputAttachedPolicies.Marker == nil {
 				break
 			}
@@ -88,6 +91,7 @@ var GroupTables = []interface{}{
 
 func (c *Client) groups(gConfig interface{}) error {
 	var config iam.ListGroupsInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
@@ -95,17 +99,17 @@ func (c *Client) groups(gConfig interface{}) error {
 	c.db.Where("account_id", c.accountID).Delete(GroupTables...)
 
 	for {
-		output, err := c.svc.ListGroups(&config)
+		output, err := c.svc.ListGroups(ctx, &config)
 		if err != nil {
 			return err
 		}
-		tValues, err := c.transformGroups(output.Groups)
+		tValues, err := c.transformGroups(&output.Groups)
 		if err != nil {
 			return err
 		}
 		c.db.ChunkedCreate(tValues)
 		c.log.Info("Fetched resources", zap.String("resource", "iam.groups"), zap.Int("count", len(output.Groups)))
-		if aws.StringValue(output.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker

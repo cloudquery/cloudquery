@@ -1,9 +1,11 @@
 package autoscaling
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/autoscaling"
-	"github.com/cloudquery/cq-provider-aws/common"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	//"github.com/cloudquery/cq-provider-aws/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -33,9 +35,9 @@ type LaunchConfiguration struct {
 	LaunchConfigurationARN  *string `neo:"unique"`
 	LaunchConfigurationName *string
 
-	MetadataHttpEndpoint            *string
-	MetadataHttpPutResponseHopLimit *int64
-	MetadataHttpTokens              *string
+	MetadataHttpEndpoint            string
+	MetadataHttpPutResponseHopLimit *int32
+	MetadataHttpTokens              string
 
 	PlacementTenancy *string
 	RamdiskId        *string
@@ -62,9 +64,9 @@ type LaunchConfigurationBlockDeviceMapping struct {
 
 	EbsDeleteOnTermination *bool
 	EbsEncrypted           *bool
-	EbsIops                *int64
+	EbsIops                *int32
 	EbsSnapshotId          *string
-	EbsVolumeSize          *int64
+	EbsVolumeSize          *int32
 	EbsVolumeType          *string
 
 	// If NoDevice is true for the root device, instances might fail the EC2 health
@@ -79,74 +81,67 @@ func (LaunchConfigurationBlockDeviceMapping) TableName() string {
 	return "aws_autoscaling_launch_configuration_block_device_mapping"
 }
 
-func (c *Client) transformLaunchConfigurationBlockDeviceMapping(value *autoscaling.BlockDeviceMapping) *LaunchConfigurationBlockDeviceMapping {
-	res := LaunchConfigurationBlockDeviceMapping{
-		AccountID:   c.accountID,
-		Region:      c.region,
-		DeviceName:  value.DeviceName,
-		NoDevice:    value.NoDevice,
-		VirtualName: value.VirtualName,
-	}
-	if value.Ebs != nil {
-		res.EbsDeleteOnTermination = value.Ebs.DeleteOnTermination
-		res.EbsEncrypted = value.Ebs.Encrypted
-		res.EbsIops = value.Ebs.Iops
-		res.EbsSnapshotId = value.Ebs.SnapshotId
-		res.EbsVolumeSize = value.Ebs.VolumeSize
-		res.EbsVolumeType = value.Ebs.VolumeType
-	}
-	return &res
-}
 
-func (c *Client) transformLaunchConfigurationBlockDeviceMappings(values []*autoscaling.BlockDeviceMapping) []*LaunchConfigurationBlockDeviceMapping {
+func (c *Client) transformLaunchConfigurationBlockDeviceMappings(values []types.BlockDeviceMapping) []*LaunchConfigurationBlockDeviceMapping {
 	var tValues []*LaunchConfigurationBlockDeviceMapping
 	for _, v := range values {
-		tValues = append(tValues, c.transformLaunchConfigurationBlockDeviceMapping(v))
+		tValue := LaunchConfigurationBlockDeviceMapping{
+			AccountID:   c.accountID,
+			Region:      c.region,
+			DeviceName:  v.DeviceName,
+			NoDevice:    v.NoDevice,
+			VirtualName: v.VirtualName,
+		}
+		if v.Ebs != nil {
+			tValue.EbsDeleteOnTermination = v.Ebs.DeleteOnTermination
+			tValue.EbsEncrypted = v.Ebs.Encrypted
+			tValue.EbsIops = v.Ebs.Iops
+			tValue.EbsSnapshotId = v.Ebs.SnapshotId
+			tValue.EbsVolumeSize = v.Ebs.VolumeSize
+			tValue.EbsVolumeType = v.Ebs.VolumeType
+		}
+		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func (c *Client) transformLaunchConfiguration(value *autoscaling.LaunchConfiguration) *LaunchConfiguration {
-	res := LaunchConfiguration{
-		Region:                       c.region,
-		AccountID:                    c.accountID,
-		AssociatePublicIpAddress:     value.AssociatePublicIpAddress,
-		BlockDeviceMappings:          c.transformLaunchConfigurationBlockDeviceMappings(value.BlockDeviceMappings),
-		ClassicLinkVPCId:             value.ClassicLinkVPCId,
-		ClassicLinkVPCSecurityGroups: common.StringListToString(value.ClassicLinkVPCSecurityGroups),
-		CreatedTime:                  value.CreatedTime,
-		EbsOptimized:                 value.EbsOptimized,
-		IamInstanceProfile:           value.IamInstanceProfile,
-		ImageId:                      value.ImageId,
-		InstanceType:                 value.InstanceType,
-		KernelId:                     value.KernelId,
-		KeyName:                      value.KeyName,
-		LaunchConfigurationARN:       value.LaunchConfigurationARN,
-		LaunchConfigurationName:      value.LaunchConfigurationName,
-		PlacementTenancy:             value.PlacementTenancy,
-		RamdiskId:                    value.RamdiskId,
-		SecurityGroups:               common.StringListToString(value.SecurityGroups),
-		SpotPrice:                    value.SpotPrice,
-		UserData:                     value.UserData,
-	}
 
-	if value.MetadataOptions != nil {
-		res.MetadataHttpEndpoint = value.MetadataOptions.HttpEndpoint
-		res.MetadataHttpPutResponseHopLimit = value.MetadataOptions.HttpPutResponseHopLimit
-		res.MetadataHttpTokens = value.MetadataOptions.HttpTokens
-	}
-
-	if value.InstanceMonitoring != nil {
-		res.InstanceMonitoringEnabled = value.InstanceMonitoring.Enabled
-	}
-
-	return &res
-}
-
-func (c *Client) transformLaunchConfigurations(values []*autoscaling.LaunchConfiguration) []*LaunchConfiguration {
+func (c *Client) transformLaunchConfigurations(values []types.LaunchConfiguration) []*LaunchConfiguration {
 	var tValues []*LaunchConfiguration
 	for _, v := range values {
-		tValues = append(tValues, c.transformLaunchConfiguration(v))
+		tValue := LaunchConfiguration{
+			Region:                       c.region,
+			AccountID:                    c.accountID,
+			AssociatePublicIpAddress:     v.AssociatePublicIpAddress,
+			BlockDeviceMappings:          c.transformLaunchConfigurationBlockDeviceMappings(v.BlockDeviceMappings),
+			ClassicLinkVPCId:             v.ClassicLinkVPCId,
+			//ClassicLinkVPCSecurityGroups: common.StringListToString(v.ClassicLinkVPCSecurityGroups),
+			CreatedTime:                  v.CreatedTime,
+			EbsOptimized:                 v.EbsOptimized,
+			IamInstanceProfile:           v.IamInstanceProfile,
+			ImageId:                      v.ImageId,
+			InstanceType:                 v.InstanceType,
+			KernelId:                     v.KernelId,
+			KeyName:                      v.KeyName,
+			LaunchConfigurationARN:       v.LaunchConfigurationARN,
+			LaunchConfigurationName:      v.LaunchConfigurationName,
+			PlacementTenancy:             v.PlacementTenancy,
+			RamdiskId:                    v.RamdiskId,
+			//SecurityGroups:               common.StringListToString(v.SecurityGroups),
+			SpotPrice:                    v.SpotPrice,
+			UserData:                     v.UserData,
+		}
+
+		if v.MetadataOptions != nil {
+			tValue.MetadataHttpEndpoint = string(v.MetadataOptions.HttpEndpoint)
+			tValue.MetadataHttpPutResponseHopLimit = v.MetadataOptions.HttpPutResponseHopLimit
+			tValue.MetadataHttpTokens = string(v.MetadataOptions.HttpTokens)
+		}
+
+		if v.InstanceMonitoring != nil {
+			tValue.InstanceMonitoringEnabled = v.InstanceMonitoring.Enabled
+		}
+		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
@@ -158,19 +153,20 @@ var LaunchConfigurationTables = []interface{}{
 
 func (c *Client) launchConfigurations(gConfig interface{}) error {
 	var config autoscaling.DescribeLaunchConfigurationsInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(LaunchConfigurationTables...)
 	for {
-		output, err := c.svc.DescribeLaunchConfigurations(&config)
+		output, err := c.svc.DescribeLaunchConfigurations(ctx, &config)
 		if err != nil {
 			return err
 		}
 		c.db.ChunkedCreate(c.transformLaunchConfigurations(output.LaunchConfigurations))
 		c.log.Info("Fetched resources", zap.String("resource", "auto_scaling.launch_configurations"), zap.Int("count", len(output.LaunchConfigurations)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken
