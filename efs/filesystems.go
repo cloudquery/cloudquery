@@ -1,8 +1,10 @@
 package efs
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/efs"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/efs"
+	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -21,7 +23,7 @@ type FileSystemDescription struct {
 	KmsKeyId                     *string
 	LifeCycleState               *string
 	Name                         *string
-	NumberOfMountTargets         *int64
+	NumberOfMountTargets         *int32
 	OwnerId                      *string
 	PerformanceMode              *string
 	ProvisionedThroughputInMibps *float64
@@ -53,57 +55,48 @@ func (FileSystemDescriptionTag) TableName() string {
 	return "aws_efs_file_system_description_tags"
 }
 
-func (c *Client) transformFileSystemDescriptionTag(value *efs.Tag) *FileSystemDescriptionTag {
-	return &FileSystemDescriptionTag{
-		Region:    c.region,
-		AccountID: c.accountID,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformFileSystemDescriptionTags(values []*efs.Tag) []*FileSystemDescriptionTag {
+func (c *Client) transformFileSystemDescriptionTags(values *[]types.Tag) []*FileSystemDescriptionTag {
 	var tValues []*FileSystemDescriptionTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformFileSystemDescriptionTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &FileSystemDescriptionTag{
+			Region:    c.region,
+			AccountID: c.accountID,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformFileSystemDescription(value *efs.FileSystemDescription) *FileSystemDescription {
-	res := FileSystemDescription{
-		Region:                       c.region,
-		AccountID:                    c.accountID,
-		CreationTime:                 value.CreationTime,
-		CreationToken:                value.CreationToken,
-		Encrypted:                    value.Encrypted,
-		FileSystemArn:                value.FileSystemArn,
-		FileSystemId:                 value.FileSystemId,
-		KmsKeyId:                     value.KmsKeyId,
-		LifeCycleState:               value.LifeCycleState,
-		Name:                         value.Name,
-		NumberOfMountTargets:         value.NumberOfMountTargets,
-		OwnerId:                      value.OwnerId,
-		PerformanceMode:              value.PerformanceMode,
-		ProvisionedThroughputInMibps: value.ProvisionedThroughputInMibps,
-		Tags:                         c.transformFileSystemDescriptionTags(value.Tags),
-		ThroughputMode:               value.ThroughputMode,
-	}
-
-	if value.SizeInBytes != nil {
-		res.SizeInBytesTimestamp = value.SizeInBytes.Timestamp
-		res.SizeInBytesValue = value.SizeInBytes.Value
-		res.SizeInBytesValueInIA = value.SizeInBytes.ValueInIA
-		res.SizeInBytesValueInStandard = value.SizeInBytes.ValueInStandard
-	}
-
-	return &res
-}
-
-func (c *Client) transformFileSystemDescriptions(values []*efs.FileSystemDescription) []*FileSystemDescription {
+func (c *Client) transformFileSystemDescriptions(values *[]types.FileSystemDescription) []*FileSystemDescription {
 	var tValues []*FileSystemDescription
-	for _, v := range values {
-		tValues = append(tValues, c.transformFileSystemDescription(v))
+	for _, value := range *values {
+		res := FileSystemDescription{
+			Region:                       c.region,
+			AccountID:                    c.accountID,
+			CreationTime:                 value.CreationTime,
+			CreationToken:                value.CreationToken,
+			Encrypted:                    value.Encrypted,
+			FileSystemArn:                value.FileSystemArn,
+			FileSystemId:                 value.FileSystemId,
+			KmsKeyId:                     value.KmsKeyId,
+			LifeCycleState:               aws.String(string(value.LifeCycleState)),
+			Name:                         value.Name,
+			NumberOfMountTargets:         &value.NumberOfMountTargets,
+			OwnerId:                      value.OwnerId,
+			PerformanceMode:              aws.String(string(value.PerformanceMode)),
+			ProvisionedThroughputInMibps: value.ProvisionedThroughputInMibps,
+			Tags:                         c.transformFileSystemDescriptionTags(&value.Tags),
+			ThroughputMode:               aws.String(string(value.ThroughputMode)),
+		}
+
+		if value.SizeInBytes != nil {
+			res.SizeInBytesTimestamp = value.SizeInBytes.Timestamp
+			res.SizeInBytesValue = &value.SizeInBytes.Value
+			res.SizeInBytesValueInIA = value.SizeInBytes.ValueInIA
+			res.SizeInBytesValueInStandard = value.SizeInBytes.ValueInStandard
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -114,6 +107,7 @@ var FileSystemTables = []interface{}{
 }
 
 func (c *Client) fileSystems(gConfig interface{}) error {
+	ctx := context.Background()
 	var config efs.DescribeFileSystemsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -121,13 +115,13 @@ func (c *Client) fileSystems(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(FileSystemTables...)
 	for {
-		output, err := c.svc.DescribeFileSystems(&config)
+		output, err := c.svc.DescribeFileSystems(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformFileSystemDescriptions(output.FileSystems))
+		c.db.ChunkedCreate(c.transformFileSystemDescriptions(&output.FileSystems))
 		c.log.Info("Fetched resources", zap.String("resource", "efs.filesystems"), zap.Int("count", len(output.FileSystems)))
-		if aws.StringValue(output.NextMarker) == "" {
+		if aws.ToString(output.NextMarker) == "" {
 			break
 		}
 		config.Marker = output.NextMarker

@@ -1,23 +1,13 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
-	"github.com/cloudquery/cloudquery/cqlog"
-	"github.com/cloudquery/cloudquery/sdk"
-	"log"
-	"strings"
-	"sync"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
-	"github.com/aws/aws-sdk-go/aws/endpoints"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/sts"
-	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cq-provider-aws/autoscaling"
-	"github.com/cloudquery/cq-provider-aws/cloudtrail"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/cloudwatch"
 	"github.com/cloudquery/cq-provider-aws/cloudwatchlogs"
 	"github.com/cloudquery/cq-provider-aws/directconnect"
@@ -34,23 +24,33 @@ import (
 	"github.com/cloudquery/cq-provider-aws/organizations"
 	"github.com/cloudquery/cq-provider-aws/rds"
 	"github.com/cloudquery/cq-provider-aws/redshift"
-	"github.com/cloudquery/cq-provider-aws/resource"
 	"github.com/cloudquery/cq-provider-aws/s3"
 	"github.com/cloudquery/cq-provider-aws/sns"
+
+	"github.com/cloudquery/cloudquery/cqlog"
+	"github.com/cloudquery/cloudquery/sdk"
+	"github.com/cloudquery/cq-provider-aws/autoscaling"
+	"github.com/cloudquery/cq-provider-aws/cloudtrail"
+	"log"
+	"strings"
+	"sync"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/cloudquery/cloudquery/database"
+	"github.com/cloudquery/cq-provider-aws/resource"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
 
 type Provider struct {
-	session         *session.Session
-	cred            *credentials.Credentials
+	cfg				aws.Config
 	region          string
 	db              *database.Database
 	config          Config
 	accountID       string
 	resourceClients map[string]resource.ClientInterface
 	log             *zap.Logger
-	logLevel        aws.LogLevelType
+	//logLevel        aws.LogLevelType
 }
 
 type Account struct {
@@ -71,7 +71,7 @@ type Config struct {
 
 var globalCollectedResources = map[string]bool{}
 
-type ServiceNewFunction func(session *session.Session, awsConfig *aws.Config, db *database.Database, log *zap.Logger, accountID string, region string) resource.ClientInterface
+type ServiceNewFunction func(awsConfig aws.Config, db *database.Database, log *zap.Logger, accountID string, region string) resource.ClientInterface
 
 var globalServices = map[string]ServiceNewFunction{
 	"iam":           iam.NewClient,
@@ -168,28 +168,55 @@ func (p *Provider) GenConfig() (string, error) {
 	return configYaml, nil
 }
 
-func (p *Provider) parseLogLevel() {
-	if p.config.LogLevel == nil {
-		return
-	}
-	switch *p.config.LogLevel {
-	case "debug", "debug_with_signing":
-		p.logLevel = aws.LogDebug
-	case "debug_with_http_body":
-		p.logLevel = aws.LogDebugWithSigning
-	case "debug_with_request_retries":
-		p.logLevel = aws.LogDebugWithRequestRetries
-	case "debug_with_request_error":
-		p.logLevel = aws.LogDebugWithRequestErrors
-	case "debug_with_event_stream_body":
-		p.logLevel = aws.LogDebugWithEventStreamBody
-	default:
-		log.Fatalf("unknown log_level %s", *p.config.LogLevel)
-	}
+//func (p *Provider) parseLogLevel() {
+//	if p.config.LogLevel == nil {
+//		return
+//	}
+//	switch *p.config.LogLevel {
+//	case "debug", "debug_with_signing":
+//		p.logLevel = aws.LogDebug
+//	case "debug_with_http_body":
+//		p.logLevel = aws.LogDebugWithSigning
+//	case "debug_with_request_retries":
+//		p.logLevel = aws.LogDebugWithRequestRetries
+//	case "debug_with_request_error":
+//		p.logLevel = aws.LogDebugWithRequestErrors
+//	case "debug_with_event_stream_body":
+//		p.logLevel = aws.LogDebugWithEventStreamBody
+//	default:
+//		log.Fatalf("unknown log_level %s", *p.config.LogLevel)
+//	}
+//}
+
+var allRegions = []string {
+	"us-east-1",
+	"us-east-2",
+	"us-west-1",
+	"us-west-2",
+	"af-south-1",
+	"ap-east-1",
+	"ap-south-1",
+	"ap-northeast-1",
+	"ap-northeast-2",
+	"ap-southeast-1",
+	"ap-southeast-2",
+	"ca-central-1",
+	"cn-north-1",
+	"cn-northwest-1",
+	"eu-central-1",
+	"eu-west-1",
+	"eu-west-2",
+	"eu-west-3",
+	"eu-south-1",
+	"eu-north-1",
+	"me-south-1",
+	"sa-east-1",
 }
 
 func (p *Provider) Fetch(data []byte) error {
 	err := yaml.Unmarshal(data, &p.config)
+	ctx := context.Background()
+	var ae smithy.APIError
 	if err != nil {
 		return err
 	}
@@ -200,15 +227,7 @@ func (p *Provider) Fetch(data []byte) error {
 	}
 	regions := p.config.Regions
 	if len(regions) == 0 {
-		resolver := endpoints.DefaultResolver()
-		partitions := resolver.(endpoints.EnumPartitions).Partitions()
-		for _, p := range partitions {
-			if p.ID() == "aws" {
-				for id, _ := range p.Regions() {
-					regions = append(regions, id)
-				}
-			}
-		}
+		regions = allRegions
 		p.log.Info(fmt.Sprintf("No regions specified in config.yml. Assuming all %d regions", len(regions)))
 	}
 
@@ -219,48 +238,52 @@ func (p *Provider) Fetch(data []byte) error {
 		})
 	}
 
-	p.parseLogLevel()
-
 	for _, account := range p.config.Accounts {
-
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
-			p.session, err = session.NewSession()
-			cred := stscreds.NewCredentials(p.session, account.RoleARN)
-			p.session, err = session.NewSession(&aws.Config{
-				Credentials: cred,
-			})
+			p.cfg, err = config.LoadDefaultConfig(ctx)
 			if err != nil {
 				return err
 			}
+			provider := stscreds.NewAssumeRoleProvider(sts.NewFromConfig(p.cfg), account.RoleARN)
+			_, err = provider.Retrieve(ctx)
+			if err != nil {
+				return err
+			}
+
 		} else if account.ID != "default" {
-			p.session, err = session.NewSession(&aws.Config{Credentials: credentials.NewSharedCredentials("", account.ID)})
+			p.cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID))
 		} else {
-			p.session, err = session.NewSession()
+			p.cfg, err = config.LoadDefaultConfig(ctx)
 		}
 		if err != nil {
 			return err
 		}
+		svc := sts.NewFromConfig(p.cfg)
+		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
+			o.Region = "us-east-1"
+		})
+		if err != nil {
+			return err
+		}
+		p.accountID = *output.Account
+
 
 		for _, region := range regions {
 			p.region = region
 
-			svc := sts.New(p.session, &aws.Config{
-				Region: aws.String(region),
+			// Find a better way in AWS SDK V2 to decide if a region is disabled.
+			_, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
+				o.Region = region
 			})
-			output, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
 			if err != nil {
-				if awsErr, ok := err.(awserr.Error); ok {
-					if awsErr.Code() == "InvalidClientTokenId" {
-						p.log.Debug("Region is disabled (to enable see: https://docs.aws.amazon.com/general/latest/gr/rande-manage.html#rande-manage-enable). skipping...",
-							zap.String("account_id", p.accountID),
-							zap.String("region", region))
-						continue
-					}
+				if errors.As(err, &ae) && (ae.ErrorCode() == "InvalidClientTokenId" || ae.ErrorCode() == "OptInRequired") {
+					p.log.Info("region disabled. skipping...", zap.String("region", region))
+					continue
 				}
 				return err
 			}
-			p.accountID = aws.StringValue(output.Account)
+
 			p.initRegionalClients()
 			var wg sync.WaitGroup
 			for _, resource := range p.config.Resources {
@@ -279,12 +302,7 @@ func (p *Provider) Fetch(data []byte) error {
 func (p *Provider) initRegionalClients() {
 	zapLog := p.log.With(zap.String("account_id", p.accountID), zap.String("region", p.region))
 	for serviceName, newFunc := range regionalServices {
-		p.resourceClients[serviceName] = newFunc(p.session,
-			&aws.Config{
-				Region:     aws.String(p.region),
-				LogLevel:   &p.logLevel,
-				MaxRetries: p.config.MaxRetries,
-			},
+		p.resourceClients[serviceName] = newFunc(p.cfg,
 			p.db, zapLog, p.accountID, p.region)
 	}
 }
@@ -309,11 +327,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 		globalCollectedResources[fullResourceName] = true
 		if p.resourceClients[service] == nil {
 			zapLog := p.log.With(zap.String("account_id", p.accountID))
-			p.resourceClients[service] = globalServices[service](p.session,
-				&aws.Config{Region: aws.String(p.region),
-					LogLevel:   &p.logLevel,
-					MaxRetries: p.config.MaxRetries,
-				},
+			p.resourceClients[service] = globalServices[service](p.cfg,
 				p.db, zapLog, p.accountID, p.region)
 		}
 		lock.Unlock()
@@ -325,10 +339,14 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 
 	err := p.resourceClients[service].CollectResource(resourceName, config)
 	if err != nil {
-		if awsErr, ok := err.(awserr.Error); ok {
-			switch awsErr.Code() {
+		var ae smithy.APIError
+		if errors.As(err, &ae) {
+			switch ae.ErrorCode() {
 			case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
-				p.log.Info("Skipping resource. Access denied", zap.String("account_id", p.accountID), zap.String("resource", fullResourceName), zap.Error(err))
+				p.log.Info("Skipping resource. Access denied", zap.String("account_id", p.accountID), zap.String("region", p.region), zap.String("resource", fullResourceName), zap.Error(err))
+				return
+			case "OptInRequired", "SubscriptionRequiredException":
+				p.log.Info("Skipping resource. Service disabled", zap.String("account_id", p.accountID), zap.String("region", p.region), zap.String("resource", fullResourceName), zap.Error(err))
 				return
 			}
 		}

@@ -1,8 +1,10 @@
 package rds
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/rds"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/rds"
+	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -27,25 +29,21 @@ func (Certificate) TableName() string {
 	return "aws_rds_certificates"
 }
 
-func (c *Client) transformCertificate(value *rds.Certificate) *Certificate {
-	return &Certificate{
-		Region:                    c.region,
-		AccountID:                 c.accountID,
-		CertificateArn:            value.CertificateArn,
-		CertificateIdentifier:     value.CertificateIdentifier,
-		CertificateType:           value.CertificateType,
-		CustomerOverride:          value.CustomerOverride,
-		CustomerOverrideValidTill: value.CustomerOverrideValidTill,
-		Thumbprint:                value.Thumbprint,
-		ValidFrom:                 value.ValidFrom,
-		ValidTill:                 value.ValidTill,
-	}
-}
-
-func (c *Client) transformCertificates(values []*rds.Certificate) []*Certificate {
+func (c *Client) transformCertificates(values *[]types.Certificate) []*Certificate {
 	var tValues []*Certificate
-	for _, v := range values {
-		tValues = append(tValues, c.transformCertificate(v))
+	for _, value := range *values {
+		tValues = append(tValues, &Certificate{
+			Region:                    c.region,
+			AccountID:                 c.accountID,
+			CertificateArn:            value.CertificateArn,
+			CertificateIdentifier:     value.CertificateIdentifier,
+			CertificateType:           value.CertificateType,
+			CustomerOverride:          value.CustomerOverride,
+			CustomerOverrideValidTill: value.CustomerOverrideValidTill,
+			Thumbprint:                value.Thumbprint,
+			ValidFrom:                 value.ValidFrom,
+			ValidTill:                 value.ValidTill,
+		})
 	}
 	return tValues
 }
@@ -60,16 +58,17 @@ func (c *Client) certificates(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(CertificateTables...)
 
 	for {
-		output, err := c.svc.DescribeCertificates(&config)
+		output, err := c.svc.DescribeCertificates(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformCertificates(output.Certificates))
+		c.db.ChunkedCreate(c.transformCertificates(&output.Certificates))
 		c.log.Info("Fetched resources", zap.String("resource", "rds.certificates"), zap.Int("count", len(output.Certificates)))
-		if aws.StringValue(output.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker

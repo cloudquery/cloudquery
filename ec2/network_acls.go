@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -50,17 +52,17 @@ type NetworkAclEntry struct {
 	CidrBlock *string
 	Egress    *bool
 
-	IcmpTypeCode *int64
-	IcmpTypeType *int64
+	IcmpTypeCode *int32
+	IcmpTypeType *int32
 
 	Ipv6CidrBlock *string
 
-	PortRangeFrom *int64
-	PortRangeTo   *int64
+	PortRangeFrom *int32
+	PortRangeTo   *int32
 
 	Protocol   *string
 	RuleAction *string
-	RuleNumber *int64
+	RuleNumber *int32
 }
 
 func (NetworkAclEntry) TableName() string {
@@ -82,95 +84,78 @@ func (NetworkAclTag) TableName() string {
 	return "aws_ec2_network_acl_tags"
 }
 
-func (c *Client) transformNetworkAclAssociation(value *ec2.NetworkAclAssociation) *NetworkAclAssociation {
-	return &NetworkAclAssociation{
-		AccountID:               c.accountID,
-		Region:                  c.region,
-		NetworkAclAssociationId: value.NetworkAclAssociationId,
-		NetworkAclId:            value.NetworkAclId,
-		SubnetId:                value.SubnetId,
-	}
-}
-
-func (c *Client) transformNetworkAclAssociations(values []*ec2.NetworkAclAssociation) []*NetworkAclAssociation {
+func (c *Client) transformNetworkAclAssociations(values *[]types.NetworkAclAssociation) []*NetworkAclAssociation {
 	var tValues []*NetworkAclAssociation
-	for _, v := range values {
-		tValues = append(tValues, c.transformNetworkAclAssociation(v))
+	for _, value := range *values {
+		tValues = append(tValues, &NetworkAclAssociation{
+			AccountID:               c.accountID,
+			Region:                  c.region,
+			NetworkAclAssociationId: value.NetworkAclAssociationId,
+			NetworkAclId:            value.NetworkAclId,
+			SubnetId:                value.SubnetId,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformNetworkAclEntry(value *ec2.NetworkAclEntry) *NetworkAclEntry {
-	res := NetworkAclEntry{
-		AccountID: c.accountID,
-		Region:    c.region,
-
-		CidrBlock: value.CidrBlock,
-		Egress:    value.Egress,
-
-		Ipv6CidrBlock: value.Ipv6CidrBlock,
-
-		Protocol:   value.Protocol,
-		RuleAction: value.RuleAction,
-		RuleNumber: value.RuleNumber,
-	}
-
-	if value.IcmpTypeCode != nil {
-		res.IcmpTypeCode = value.IcmpTypeCode.Code
-		res.IcmpTypeType = value.IcmpTypeCode.Type
-	}
-
-	if value.PortRange != nil {
-		res.PortRangeFrom = value.PortRange.From
-		res.PortRangeTo = value.PortRange.To
-	}
-
-	return &res
-}
-
-func (c *Client) transformNetworkAclEntrys(values []*ec2.NetworkAclEntry) []*NetworkAclEntry {
+func (c *Client) transformNetworkAclEntrys(values *[]types.NetworkAclEntry) []*NetworkAclEntry {
 	var tValues []*NetworkAclEntry
-	for _, v := range values {
-		tValues = append(tValues, c.transformNetworkAclEntry(v))
+	for _, value := range *values {
+		res := NetworkAclEntry{
+			AccountID: c.accountID,
+			Region:    c.region,
+
+			CidrBlock: value.CidrBlock,
+			Egress:    &value.Egress,
+
+			Ipv6CidrBlock: value.Ipv6CidrBlock,
+
+			Protocol:   value.Protocol,
+			RuleAction: aws.String(string(value.RuleAction)),
+			RuleNumber: &value.RuleNumber,
+		}
+
+		if value.IcmpTypeCode != nil {
+			res.IcmpTypeCode = &value.IcmpTypeCode.Code
+			res.IcmpTypeType = &value.IcmpTypeCode.Type
+		}
+
+		if value.PortRange != nil {
+			res.PortRangeFrom = &value.PortRange.From
+			res.PortRangeTo = &value.PortRange.To
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
 
-func (c *Client) transformNetworkAclTag(value *ec2.Tag) *NetworkAclTag {
-	return &NetworkAclTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformNetworkAclTags(values []*ec2.Tag) []*NetworkAclTag {
+func (c *Client) transformNetworkAclTags(values *[]types.Tag) []*NetworkAclTag {
 	var tValues []*NetworkAclTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformNetworkAclTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &NetworkAclTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformNetworkAcl(value *ec2.NetworkAcl) *NetworkAcl {
-	return &NetworkAcl{
-		Region:       c.region,
-		AccountID:    c.accountID,
-		Associations: c.transformNetworkAclAssociations(value.Associations),
-		Entries:      c.transformNetworkAclEntrys(value.Entries),
-		IsDefault:    value.IsDefault,
-		NetworkAclId: value.NetworkAclId,
-		OwnerId:      value.OwnerId,
-		Tags:         c.transformNetworkAclTags(value.Tags),
-		VpcId:        value.VpcId,
-	}
-}
-
-func (c *Client) transformNetworkAcls(values []*ec2.NetworkAcl) []*NetworkAcl {
+func (c *Client) transformNetworkAcls(values *[]types.NetworkAcl) []*NetworkAcl {
 	var tValues []*NetworkAcl
-	for _, v := range values {
-		tValues = append(tValues, c.transformNetworkAcl(v))
+	for _, value := range *values {
+		tValues = append(tValues, &NetworkAcl{
+			Region:       c.region,
+			AccountID:    c.accountID,
+			Associations: c.transformNetworkAclAssociations(&value.Associations),
+			Entries:      c.transformNetworkAclEntrys(&value.Entries),
+			IsDefault:    &value.IsDefault,
+			NetworkAclId: value.NetworkAclId,
+			OwnerId:      value.OwnerId,
+			Tags:         c.transformNetworkAclTags(&value.Tags),
+			VpcId:        value.VpcId,
+		})
 	}
 	return tValues
 }
@@ -183,6 +168,7 @@ var NetworkAclTables = []interface{}{
 }
 
 func (c *Client) networkAcls(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeNetworkAclsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -190,13 +176,13 @@ func (c *Client) networkAcls(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(NetworkAclTables...)
 	for {
-		output, err := c.svc.DescribeNetworkAcls(&config)
+		output, err := c.svc.DescribeNetworkAcls(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformNetworkAcls(output.NetworkAcls))
+		c.db.ChunkedCreate(c.transformNetworkAcls(&output.NetworkAcls))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.network_acls"), zap.Int("count", len(output.NetworkAcls)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

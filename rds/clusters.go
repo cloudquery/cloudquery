@@ -1,8 +1,10 @@
 package rds
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/rds"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/rds"
+	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/common"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
@@ -18,13 +20,13 @@ type Cluster struct {
 	ActivityStreamKmsKeyId           *string
 	ActivityStreamMode               *string
 	ActivityStreamStatus             *string
-	AllocatedStorage                 *int64
+	AllocatedStorage                 *int32
 	AssociatedRoles                  []*ClusterRole `gorm:"constraint:OnDelete:CASCADE;"`
 	AvailabilityZones                *string
 	BacktrackConsumedChangeRecords   *int64
 	BacktrackWindow                  *int64
-	BackupRetentionPeriod            *int64
-	Capacity                         *int64
+	BackupRetentionPeriod            *int32
+	Capacity                         *int32
 	CharacterSetName                 *string
 	CloneGroupId                     *string
 	ClusterCreateTime                *time.Time
@@ -58,7 +60,7 @@ type Cluster struct {
 	MasterUsername                   *string
 	MultiAZ                          *bool
 	PercentProgress                  *string
-	Port                             *int64
+	Port                             *int32
 	PreferredBackupWindow            *string
 	PreferredMaintenanceWindow       *string
 	ReadReplicaIdentifiers           *string
@@ -66,9 +68,9 @@ type Cluster struct {
 	ReplicationSourceIdentifier      *string
 
 	ScalingConfigAutoPause             *bool
-	ScalingConfigMaxCapacity           *int64
-	ScalingConfigMinCapacity           *int64
-	ScalingConfigSecondsUntilAutoPause *int64
+	ScalingConfigMaxCapacity           *int32
+	ScalingConfigMinCapacity           *int32
+	ScalingConfigSecondsUntilAutoPause *int32
 	ScalingConfigTimeoutAction         *string
 
 	Status            *string
@@ -104,7 +106,7 @@ type ClusterMember struct {
 	ClusterParameterGroupStatus *string
 	InstanceIdentifier          *string
 	IsClusterWriter             *bool
-	PromotionTier               *int64
+	PromotionTier               *int32
 }
 
 func (ClusterMember) TableName() string {
@@ -155,170 +157,147 @@ func (ClusterVpcSecurityGroupMembership) TableName() string {
 	return "aws_rds_cluster_vpc_security_group_memberships"
 }
 
-func (c *Client) transformClusterRole(value *rds.DBClusterRole) *ClusterRole {
-	return &ClusterRole{
-		AccountID:   c.accountID,
-		Region:      c.region,
-		FeatureName: value.FeatureName,
-		RoleArn:     value.RoleArn,
-		Status:      value.Status,
-	}
-}
 
-func (c *Client) transformClusterRoles(values []*rds.DBClusterRole) []*ClusterRole {
+func (c *Client) transformClusterRoles(values *[]types.DBClusterRole) []*ClusterRole {
 	var tValues []*ClusterRole
-	for _, v := range values {
-		tValues = append(tValues, c.transformClusterRole(v))
+	for _, value := range *values {
+		tValues = append(tValues, &ClusterRole{
+			AccountID:   c.accountID,
+			Region:      c.region,
+			FeatureName: value.FeatureName,
+			RoleArn:     value.RoleArn,
+			Status:      value.Status,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformClusterMember(value *rds.DBClusterMember) *ClusterMember {
-	return &ClusterMember{
-		AccountID:                   c.accountID,
-		Region:                      c.region,
-		ClusterParameterGroupStatus: value.DBClusterParameterGroupStatus,
-		InstanceIdentifier:          value.DBInstanceIdentifier,
-		IsClusterWriter:             value.IsClusterWriter,
-		PromotionTier:               value.PromotionTier,
-	}
-}
-
-func (c *Client) transformClusterMembers(values []*rds.DBClusterMember) []*ClusterMember {
+func (c *Client) transformClusterMembers(values *[]types.DBClusterMember) []*ClusterMember {
 	var tValues []*ClusterMember
-	for _, v := range values {
-		tValues = append(tValues, c.transformClusterMember(v))
+	for _, value := range *values {
+		tValues = append(tValues, &ClusterMember{
+			AccountID:                   c.accountID,
+			Region:                      c.region,
+			ClusterParameterGroupStatus: value.DBClusterParameterGroupStatus,
+			InstanceIdentifier:          value.DBInstanceIdentifier,
+			IsClusterWriter:             &value.IsClusterWriter,
+			PromotionTier:               value.PromotionTier,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformClusterOptionGroupStatus(value *rds.DBClusterOptionGroupStatus) *ClusterOptionGroupStatus {
-	return &ClusterOptionGroupStatus{
-		AccountID:              c.accountID,
-		Region:                 c.region,
-		ClusterOptionGroupName: value.DBClusterOptionGroupName,
-		Status:                 value.Status,
-	}
-}
-
-func (c *Client) transformClusterOptionGroupStatuss(values []*rds.DBClusterOptionGroupStatus) []*ClusterOptionGroupStatus {
+func (c *Client) transformClusterOptionGroupStatuss(values *[]types.DBClusterOptionGroupStatus) []*ClusterOptionGroupStatus {
 	var tValues []*ClusterOptionGroupStatus
-	for _, v := range values {
-		tValues = append(tValues, c.transformClusterOptionGroupStatus(v))
+	for _, value := range *values {
+		tValues = append(tValues, &ClusterOptionGroupStatus{
+			AccountID:              c.accountID,
+			Region:                 c.region,
+			ClusterOptionGroupName: value.DBClusterOptionGroupName,
+			Status:                 value.Status,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformClusterDomainMembership(value *rds.DomainMembership) *ClusterDomainMembership {
-	return &ClusterDomainMembership{
-		AccountID:   c.accountID,
-		Region:      c.region,
-		Domain:      value.Domain,
-		FQDN:        value.FQDN,
-		IAMRoleName: value.IAMRoleName,
-		Status:      value.Status,
-	}
-}
-
-func (c *Client) transformClusterDomainMemberships(values []*rds.DomainMembership) []*ClusterDomainMembership {
+func (c *Client) transformClusterDomainMemberships(values *[]types.DomainMembership) []*ClusterDomainMembership {
 	var tValues []*ClusterDomainMembership
-	for _, v := range values {
-		tValues = append(tValues, c.transformClusterDomainMembership(v))
+	for _, value := range *values {
+		tValues = append(tValues, &ClusterDomainMembership{
+			AccountID:   c.accountID,
+			Region:      c.region,
+			Domain:      value.Domain,
+			FQDN:        value.FQDN,
+			IAMRoleName: value.IAMRoleName,
+			Status:      value.Status,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformClusterVpcSecurityGroupMembership(value *rds.VpcSecurityGroupMembership) *ClusterVpcSecurityGroupMembership {
-	return &ClusterVpcSecurityGroupMembership{
-		AccountID:          c.accountID,
-		Region:             c.region,
-		Status:             value.Status,
-		VpcSecurityGroupId: value.VpcSecurityGroupId,
-	}
-}
-
-func (c *Client) transformClusterVpcSecurityGroupMemberships(values []*rds.VpcSecurityGroupMembership) []*ClusterVpcSecurityGroupMembership {
+func (c *Client) transformClusterVpcSecurityGroupMemberships(values *[]types.VpcSecurityGroupMembership) []*ClusterVpcSecurityGroupMembership {
 	var tValues []*ClusterVpcSecurityGroupMembership
-	for _, v := range values {
-		tValues = append(tValues, c.transformClusterVpcSecurityGroupMembership(v))
+	for _, value := range *values {
+		tValues = append(tValues, &ClusterVpcSecurityGroupMembership{
+			AccountID:          c.accountID,
+			Region:             c.region,
+			Status:             value.Status,
+			VpcSecurityGroupId: value.VpcSecurityGroupId,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformCluster(value *rds.DBCluster) *Cluster {
-	res := Cluster{
-		Region:                           c.region,
-		AccountID:                        c.accountID,
-		ActivityStreamKinesisStreamName:  value.ActivityStreamKinesisStreamName,
-		ActivityStreamKmsKeyId:           value.ActivityStreamKmsKeyId,
-		ActivityStreamMode:               value.ActivityStreamMode,
-		ActivityStreamStatus:             value.ActivityStreamStatus,
-		AllocatedStorage:                 value.AllocatedStorage,
-		AssociatedRoles:                  c.transformClusterRoles(value.AssociatedRoles),
-		AvailabilityZones:                common.StringListToString(value.AvailabilityZones),
-		BacktrackConsumedChangeRecords:   value.BacktrackConsumedChangeRecords,
-		BacktrackWindow:                  value.BacktrackWindow,
-		BackupRetentionPeriod:            value.BackupRetentionPeriod,
-		Capacity:                         value.Capacity,
-		CharacterSetName:                 value.CharacterSetName,
-		CloneGroupId:                     value.CloneGroupId,
-		ClusterCreateTime:                value.ClusterCreateTime,
-		CopyTagsToSnapshot:               value.CopyTagsToSnapshot,
-		CrossAccountClone:                value.CrossAccountClone,
-		CustomEndpoints:                  common.StringListToString(value.CustomEndpoints),
-		ClusterArn:                       value.DBClusterArn,
-		ClusterIdentifier:                value.DBClusterIdentifier,
-		ClusterMembers:                   c.transformClusterMembers(value.DBClusterMembers),
-		ClusterOptionGroupMemberships:    c.transformClusterOptionGroupStatuss(value.DBClusterOptionGroupMemberships),
-		ClusterParameterGroup:            value.DBClusterParameterGroup,
-		SubnetGroup:                      value.DBSubnetGroup,
-		DatabaseName:                     value.DatabaseName,
-		DbClusterResourceId:              value.DbClusterResourceId,
-		DeletionProtection:               value.DeletionProtection,
-		DomainMemberships:                c.transformClusterDomainMemberships(value.DomainMemberships),
-		EarliestBacktrackTime:            value.EarliestBacktrackTime,
-		EarliestRestorableTime:           value.EarliestRestorableTime,
-		EnabledCloudwatchLogsExports:     common.StringListToString(value.EnabledCloudwatchLogsExports),
-		Endpoint:                         value.Endpoint,
-		Engine:                           value.Engine,
-		EngineMode:                       value.EngineMode,
-		EngineVersion:                    value.EngineVersion,
-		GlobalWriteForwardingRequested:   value.GlobalWriteForwardingRequested,
-		GlobalWriteForwardingStatus:      value.GlobalWriteForwardingStatus,
-		HostedZoneId:                     value.HostedZoneId,
-		HttpEndpointEnabled:              value.HttpEndpointEnabled,
-		IAMDatabaseAuthenticationEnabled: value.IAMDatabaseAuthenticationEnabled,
-		KmsKeyId:                         value.KmsKeyId,
-		LatestRestorableTime:             value.LatestRestorableTime,
-		MasterUsername:                   value.MasterUsername,
-		MultiAZ:                          value.MultiAZ,
-		PercentProgress:                  value.PercentProgress,
-		Port:                             value.Port,
-		PreferredBackupWindow:            value.PreferredBackupWindow,
-		PreferredMaintenanceWindow:       value.PreferredMaintenanceWindow,
-		ReadReplicaIdentifiers:           common.StringListToString(value.ReadReplicaIdentifiers),
-		ReaderEndpoint:                   value.ReaderEndpoint,
-		ReplicationSourceIdentifier:      value.ReplicationSourceIdentifier,
-		Status:                           value.Status,
-		StorageEncrypted:                 value.StorageEncrypted,
-		VpcSecurityGroups:                c.transformClusterVpcSecurityGroupMemberships(value.VpcSecurityGroups),
-	}
 
-	if value.ScalingConfigurationInfo != nil {
-		res.ScalingConfigAutoPause = value.ScalingConfigurationInfo.AutoPause
-		res.ScalingConfigMaxCapacity = value.ScalingConfigurationInfo.MaxCapacity
-		res.ScalingConfigMinCapacity = value.ScalingConfigurationInfo.MinCapacity
-		res.ScalingConfigSecondsUntilAutoPause = value.ScalingConfigurationInfo.SecondsUntilAutoPause
-		res.ScalingConfigTimeoutAction = value.ScalingConfigurationInfo.TimeoutAction
-	}
-
-	return &res
-}
-
-func (c *Client) transformClusters(values []*rds.DBCluster) []*Cluster {
+func (c *Client) transformClusters(values *[]types.DBCluster) []*Cluster {
 	var tValues []*Cluster
-	for _, v := range values {
-		tValues = append(tValues, c.transformCluster(v))
+	for _, value := range *values {
+		res := Cluster{
+			Region:                           c.region,
+			AccountID:                        c.accountID,
+			ActivityStreamKinesisStreamName:  value.ActivityStreamKinesisStreamName,
+			ActivityStreamKmsKeyId:           value.ActivityStreamKmsKeyId,
+			ActivityStreamMode:               aws.String(string(value.ActivityStreamMode)),
+			ActivityStreamStatus:             aws.String(string(value.ActivityStreamStatus)),
+			AllocatedStorage:                 value.AllocatedStorage,
+			AssociatedRoles:                  c.transformClusterRoles(&value.AssociatedRoles),
+			AvailabilityZones:                common.StringListToString(&value.AvailabilityZones),
+			BacktrackConsumedChangeRecords:   value.BacktrackConsumedChangeRecords,
+			BacktrackWindow:                  value.BacktrackWindow,
+			BackupRetentionPeriod:            value.BackupRetentionPeriod,
+			Capacity:                         value.Capacity,
+			CharacterSetName:                 value.CharacterSetName,
+			CloneGroupId:                     value.CloneGroupId,
+			ClusterCreateTime:                value.ClusterCreateTime,
+			CopyTagsToSnapshot:               value.CopyTagsToSnapshot,
+			CrossAccountClone:                value.CrossAccountClone,
+			CustomEndpoints:                  common.StringListToString(&value.CustomEndpoints),
+			ClusterArn:                       value.DBClusterArn,
+			ClusterIdentifier:                value.DBClusterIdentifier,
+			ClusterMembers:                   c.transformClusterMembers(&value.DBClusterMembers),
+			ClusterOptionGroupMemberships:    c.transformClusterOptionGroupStatuss(&value.DBClusterOptionGroupMemberships),
+			ClusterParameterGroup:            value.DBClusterParameterGroup,
+			SubnetGroup:                      value.DBSubnetGroup,
+			DatabaseName:                     value.DatabaseName,
+			DbClusterResourceId:              value.DbClusterResourceId,
+			DeletionProtection:               value.DeletionProtection,
+			DomainMemberships:                c.transformClusterDomainMemberships(&value.DomainMemberships),
+			EarliestBacktrackTime:            value.EarliestBacktrackTime,
+			EarliestRestorableTime:           value.EarliestRestorableTime,
+			EnabledCloudwatchLogsExports:     common.StringListToString(&value.EnabledCloudwatchLogsExports),
+			Endpoint:                         value.Endpoint,
+			Engine:                           value.Engine,
+			EngineMode:                       value.EngineMode,
+			EngineVersion:                    value.EngineVersion,
+			GlobalWriteForwardingRequested:   value.GlobalWriteForwardingRequested,
+			GlobalWriteForwardingStatus:      aws.String(string(value.GlobalWriteForwardingStatus)),
+			HostedZoneId:                     value.HostedZoneId,
+			HttpEndpointEnabled:              value.HttpEndpointEnabled,
+			IAMDatabaseAuthenticationEnabled: value.IAMDatabaseAuthenticationEnabled,
+			KmsKeyId:                         value.KmsKeyId,
+			LatestRestorableTime:             value.LatestRestorableTime,
+			MasterUsername:                   value.MasterUsername,
+			MultiAZ:                          value.MultiAZ,
+			PercentProgress:                  value.PercentProgress,
+			Port:                             value.Port,
+			PreferredBackupWindow:            value.PreferredBackupWindow,
+			PreferredMaintenanceWindow:       value.PreferredMaintenanceWindow,
+			ReadReplicaIdentifiers:           common.StringListToString(&value.ReadReplicaIdentifiers),
+			ReaderEndpoint:                   value.ReaderEndpoint,
+			ReplicationSourceIdentifier:      value.ReplicationSourceIdentifier,
+			Status:                           value.Status,
+			StorageEncrypted:                 &value.StorageEncrypted,
+			VpcSecurityGroups:                c.transformClusterVpcSecurityGroupMemberships(&value.VpcSecurityGroups),
+		}
+
+		if value.ScalingConfigurationInfo != nil {
+			res.ScalingConfigAutoPause = value.ScalingConfigurationInfo.AutoPause
+			res.ScalingConfigMaxCapacity = value.ScalingConfigurationInfo.MaxCapacity
+			res.ScalingConfigMinCapacity = value.ScalingConfigurationInfo.MinCapacity
+			res.ScalingConfigSecondsUntilAutoPause = value.ScalingConfigurationInfo.SecondsUntilAutoPause
+			res.ScalingConfigTimeoutAction = value.ScalingConfigurationInfo.TimeoutAction
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
@@ -338,16 +317,17 @@ func (c *Client) clusters(gConfig interface{}) error {
 	if err != nil {
 		return err
 	}
+	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterTables...)
 
 	for {
-		output, err := c.svc.DescribeDBClusters(&config)
+		output, err := c.svc.DescribeDBClusters(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformClusters(output.DBClusters))
+		c.db.ChunkedCreate(c.transformClusters(&output.DBClusters))
 		c.log.Info("Fetched resources", zap.String("resource", "rds.clusters"), zap.Int("count", len(output.DBClusters)))
-		if aws.StringValue(output.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker

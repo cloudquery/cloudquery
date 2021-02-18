@@ -1,8 +1,10 @@
 package directconnect
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/directconnect"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -24,23 +26,19 @@ func (Gateway) TableName() string {
 	return "aws_directconnect_gateways"
 }
 
-func (c *Client) transformGateway(value *directconnect.Gateway) *Gateway {
-	return &Gateway{
-		Region:                    c.region,
-		AccountID:                 c.accountID,
-		AmazonSideAsn:             value.AmazonSideAsn,
-		DirectConnectGatewayId:    value.DirectConnectGatewayId,
-		DirectConnectGatewayName:  value.DirectConnectGatewayName,
-		DirectConnectGatewayState: value.DirectConnectGatewayState,
-		OwnerAccount:              value.OwnerAccount,
-		StateChangeError:          value.StateChangeError,
-	}
-}
-
-func (c *Client) transformGateways(values []*directconnect.Gateway) []*Gateway {
+func (c *Client) transformGateways(values *[]types.DirectConnectGateway) []*Gateway {
 	var tValues []*Gateway
-	for _, v := range values {
-		tValues = append(tValues, c.transformGateway(v))
+	for _, v := range *values {
+		tValues = append(tValues, &Gateway{
+			Region:                    c.region,
+			AccountID:                 c.accountID,
+			AmazonSideAsn:             v.AmazonSideAsn,
+			DirectConnectGatewayId:    v.DirectConnectGatewayId,
+			DirectConnectGatewayName:  v.DirectConnectGatewayName,
+			DirectConnectGatewayState: aws.String(string(v.DirectConnectGatewayState)),
+			OwnerAccount:              v.OwnerAccount,
+			StateChangeError:          v.StateChangeError,
+		})
 	}
 	return tValues
 }
@@ -50,6 +48,7 @@ var GatewayTables = []interface{}{
 }
 
 func (c *Client) gateways(gConfig interface{}) error {
+	ctx := context.Background()
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -57,13 +56,13 @@ func (c *Client) gateways(gConfig interface{}) error {
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(GatewayTables...)
 	for {
-		output, err := c.svc.DescribeDirectConnectGateways(&config)
+		output, err := c.svc.DescribeDirectConnectGateways(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformGateways(output.DirectConnectGateways))
+		c.db.ChunkedCreate(c.transformGateways(&output.DirectConnectGateways))
 		c.log.Info("Fetched resources", zap.String("resource", "directconnect.gateways"), zap.Int("count", len(output.DirectConnectGateways)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

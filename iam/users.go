@@ -1,11 +1,15 @@
 package iam
 
 import (
+	"context"
+	"errors"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
+	"github.com/aws/smithy-go"
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/gocarina/gocsv"
 	"go.uber.org/zap"
 )
@@ -83,9 +87,9 @@ func (UserTag) TableName() string {
 	return "aws_iam_user_tags"
 }
 
-func (c *Client) transformUserGroups(values []*iam.Group) []*UserGroup {
+func (c *Client) transformUserGroups(values *[]types.Group) []*UserGroup {
 	var tValues []*UserGroup
-	for _, value := range values {
+	for _, value := range *values {
 		tValues = append(tValues, &UserGroup{
 			AccountID:  c.accountID,
 			Arn:        value.Arn,
@@ -98,49 +102,38 @@ func (c *Client) transformUserGroups(values []*iam.Group) []*UserGroup {
 	return tValues
 }
 
-func (c *Client) transformAccessKey(value *iam.AccessKeyMetadata) (*UserAccessKey, error) {
-	output, err := c.svc.GetAccessKeyLastUsed(&iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
-	if err != nil {
-		return nil, err
-	}
-
-	res := UserAccessKey{
-		AccessKeyId:         value.AccessKeyId,
-		CreateDate:          value.CreateDate,
-		Status:              value.Status,
-		LastUsed:            output.AccessKeyLastUsed.LastUsedDate,
-		LastUsedServiceName: output.AccessKeyLastUsed.ServiceName,
-	}
-	if output.AccessKeyLastUsed != nil {
-		res.LastUsed = output.AccessKeyLastUsed.LastUsedDate
-		res.LastUsedServiceName = output.AccessKeyLastUsed.ServiceName
-	}
-	return &res, nil
-}
-
-func (c *Client) transformAccessKeys(values []*iam.AccessKeyMetadata) ([]*UserAccessKey, error) {
+func (c *Client) transformAccessKeys(values *[]types.AccessKeyMetadata) ([]*UserAccessKey, error) {
 	var tValues []*UserAccessKey
-	for _, v := range values {
-		tValue, err := c.transformAccessKey(v)
+	ctx := context.Background()
+	for _, value := range *values {
+		output, err := c.svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
 		if err != nil {
 			return nil, err
 		}
-		tValues = append(tValues, tValue)
+
+		res := UserAccessKey{
+			AccessKeyId:         value.AccessKeyId,
+			CreateDate:          value.CreateDate,
+			Status:              aws.String(string(value.Status)),
+			LastUsed:            output.AccessKeyLastUsed.LastUsedDate,
+			LastUsedServiceName: output.AccessKeyLastUsed.ServiceName,
+		}
+		if output.AccessKeyLastUsed != nil {
+			res.LastUsed = output.AccessKeyLastUsed.LastUsedDate
+			res.LastUsedServiceName = output.AccessKeyLastUsed.ServiceName
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues, nil
 }
 
-func (c *Client) transformUserTag(value *iam.Tag) *UserTag {
-	return &UserTag{
-		Key:   value.Key,
-		Value: value.Value,
-	}
-}
-
-func (c *Client) transformUserTags(values []*iam.Tag) []*UserTag {
+func (c *Client) transformUserTags(values *[]types.Tag) []*UserTag {
 	var tValues []*UserTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformUserTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &UserTag{
+			Key:   value.Key,
+			Value: value.Value,
+		})
 	}
 	return tValues
 }
@@ -162,6 +155,7 @@ type ReportUser struct {
 
 func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 	//var err error
+	ctx := context.Background()
 	location, err := time.LoadLocation("UTC")
 	if err != nil {
 		panic(err)
@@ -177,24 +171,24 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 	}
 
 	if reportUser.User != "<root_account>" {
-		output, err := c.svc.GetUser(&iam.GetUserInput{UserName: &reportUser.User})
+		output, err := c.svc.GetUser(ctx, &iam.GetUserInput{UserName: &reportUser.User})
 		if err != nil {
 			return nil, err
 		}
 		res.Path = output.User.Path
 		if output.User.PermissionsBoundary != nil {
-			res.PermissionsBoundaryType = output.User.PermissionsBoundary.PermissionsBoundaryType
+			res.PermissionsBoundaryType = aws.String(string(output.User.PermissionsBoundary.PermissionsBoundaryType))
 			res.PermissionsBoundaryArn = output.User.PermissionsBoundary.PermissionsBoundaryArn
 		}
 		res.UserId = output.User.UserId
 
-		outputAccessKeys, err := c.svc.ListAccessKeys(&iam.ListAccessKeysInput{
+		outputAccessKeys, err := c.svc.ListAccessKeys(ctx, &iam.ListAccessKeysInput{
 			UserName: &reportUser.User,
 		})
 		if err != nil {
 			return nil, err
 		}
-		res.AccessKeys, err = c.transformAccessKeys(outputAccessKeys.AccessKeyMetadata)
+		res.AccessKeys, err = c.transformAccessKeys(&outputAccessKeys.AccessKeyMetadata)
 		if err != nil {
 			return nil, err
 		}
@@ -203,11 +197,11 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			UserName: &reportUser.User,
 		}
 		for {
-			outputAttachedPolicies, err := c.svc.ListAttachedUserPolicies(&listAttachedUserPoliciesInput)
+			outputAttachedPolicies, err := c.svc.ListAttachedUserPolicies(ctx, &listAttachedUserPoliciesInput)
 			if err != nil {
 				return nil, err
 			}
-			res.AttachedPolicies = append(res.AttachedPolicies, c.transformAttachedPolicies(outputAttachedPolicies.AttachedPolicies)...)
+			res.AttachedPolicies = append(res.AttachedPolicies, c.transformAttachedPolicies(&outputAttachedPolicies.AttachedPolicies)...)
 			if outputAttachedPolicies.Marker == nil {
 				break
 			}
@@ -218,11 +212,11 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			UserName: &reportUser.User,
 		}
 		for {
-			outputListGroupsForUsers, err := c.svc.ListGroupsForUser(&listGroupsForUserInput)
+			outputListGroupsForUsers, err := c.svc.ListGroupsForUser(ctx, &listGroupsForUserInput)
 			if err != nil {
 				return nil, err
 			}
-			res.Groups = append(res.Groups, c.transformUserGroups(outputListGroupsForUsers.Groups)...)
+			res.Groups = append(res.Groups, c.transformUserGroups(&outputListGroupsForUsers.Groups)...)
 			if outputListGroupsForUsers.Marker == nil {
 				break
 			}
@@ -233,11 +227,11 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 			UserName: &reportUser.User,
 		}
 		for {
-			outputUserTags, err := c.svc.ListUserTags(&listUserTagsInput)
+			outputUserTags, err := c.svc.ListUserTags(ctx, &listUserTagsInput)
 			if err != nil {
 				return nil, err
 			}
-			res.Tags = append(res.Tags, c.transformUserTags(outputUserTags.Tags)...)
+			res.Tags = append(res.Tags, c.transformUserTags(&outputUserTags.Tags)...)
 			if outputUserTags.Marker == nil {
 				break
 			}
@@ -305,21 +299,27 @@ var UserTables = []interface{}{
 
 func (c *Client) users(_ interface{}) error {
 	var err error
+	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
-
+	ctx := context.Background()
 	c.db.Where("account_id", c.accountID).Delete(UserTables...)
 	for {
-		reportOutput, err = c.svc.GetCredentialReport(&iam.GetCredentialReportInput{})
+		reportOutput, err = c.svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
+
 		if err != nil {
-			if err.(awserr.Error).Code() != iam.ErrCodeCredentialReportNotPresentException ||
-				err.(awserr.Error).Code() != iam.ErrCodeCredentialReportExpiredException {
-				_, err := c.svc.GenerateCredentialReport(&iam.GenerateCredentialReportInput{})
-				if err != nil {
+			if errors.As(err, &apiErr) {
+				switch apiErr.ErrorCode() {
+				case "ReportNotPresent", "ReportExpired":
+					_, err := c.svc.GenerateCredentialReport(ctx, &iam.GenerateCredentialReportInput{})
+					if err != nil {
+						return err
+					}
+				case "ReportInProgress":
+					c.log.Info("Waiting for credential report to be generated", zap.String("resource", "iam.users"))
+					time.Sleep(2 * time.Second)
+				default:
 					return err
 				}
-			} else if err.(awserr.Error).Code() != iam.ErrCodeCredentialReportNotReadyException {
-				c.log.Info("Waiting for credential report to be generated", zap.String("resource", "iam.users"))
-				time.Sleep(2 * time.Second)
 			} else {
 				return err
 			}

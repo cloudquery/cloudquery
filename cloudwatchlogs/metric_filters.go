@@ -1,8 +1,10 @@
 package cloudwatchlogs
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -38,9 +40,9 @@ func (MetricFilterTransformations) TableName() string {
 	return "aws_cloudwatchlogs_metric_filter_transformations"
 }
 
-func (c *Client) transformMetricFilters(values []*cloudwatchlogs.MetricFilter) []*MetricFilter {
+func (c *Client) transformMetricFilters(values *[]types.MetricFilter) []*MetricFilter {
 	var tValues []*MetricFilter
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := MetricFilter {
 			AccountID: c.accountID,
 			Region: c.region,
@@ -48,16 +50,16 @@ func (c *Client) transformMetricFilters(values []*cloudwatchlogs.MetricFilter) [
 			FilterName: value.FilterName,
 			FilterPattern: value.FilterPattern,
 			LogGroupName: value.LogGroupName,
-			Transformations: c.transformMetricFilterMetricTransformations(value.MetricTransformations),
+			Transformations: c.transformMetricFilterMetricTransformations(&value.MetricTransformations),
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func (c *Client) transformMetricFilterMetricTransformations(values []*cloudwatchlogs.MetricTransformation) []*MetricFilterTransformations {
+func (c *Client) transformMetricFilterMetricTransformations(values *[]types.MetricTransformation) []*MetricFilterTransformations {
 	var tValues []*MetricFilterTransformations
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := MetricFilterTransformations{
 			AccountID: c.accountID,
 			Region: c.region,
@@ -80,6 +82,7 @@ var MetricFilterTables = []interface{} {
 }
 
 func (c *Client)metricFilters(gConfig interface{}) error {
+	ctx := context.Background()
 	var config cloudwatchlogs.DescribeMetricFiltersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -88,13 +91,13 @@ func (c *Client)metricFilters(gConfig interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(MetricFilterTables...)
 
 	for {
-		output, err := c.svc.DescribeMetricFilters(&config)
+		output, err := c.svc.DescribeMetricFilters(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformMetricFilters(output.MetricFilters))
+		c.db.ChunkedCreate(c.transformMetricFilters(&output.MetricFilters))
 		c.log.Info("Fetched resources", zap.String("resource", "cloudwatchlogs.metric_filters"), zap.Int("count", len(output.MetricFilters)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

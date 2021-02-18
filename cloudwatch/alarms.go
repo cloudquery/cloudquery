@@ -1,8 +1,10 @@
 package cloudwatch
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/cloudwatch"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"time"
@@ -20,14 +22,14 @@ type MetricAlarm struct {
 	AlarmDescription *string
 	AlarmName *string
 	ComparisonOperator *string
-	DatapointsToAlarm *int64
+	DatapointsToAlarm *int32
 	EvaluateLowSampleCountPercentile *string
-	EvaluationPeriods *int64
+	EvaluationPeriods *int32
 	ExtendedStatistic *string
 	MetricName *string
 	Metrics []*MetricAlarmMetric `gorm:"constraint:OnDelete:CASCADE;"`
 	Namespace *string
-	Period *int64
+	Period *int32
 	StateReason *string
 	StateReasonData *string
 	StateUpdatedTimestamp *time.Time
@@ -47,7 +49,7 @@ type MetricAlarmActions struct {
 	AccountID string `gorm:"-"`
 	Region string `gorm:"-"`
 	MetricAlarmID uint `neo:"ignore"`
-	Value * string
+	Value string
 }
 
 func (MetricAlarmActions) TableName() string {
@@ -66,11 +68,11 @@ type MetricAlarmMetric struct {
 	Name      *string
 	Namespace *string
 
-	StatPeriod *int64
+	StatPeriod *int32
 	StatStat   *string
-	StatUnit   *string
+	StatUnit   string
 
-	Period *int64
+	Period *int32
 	ReturnData *bool
 }
 
@@ -79,45 +81,45 @@ func (MetricAlarmMetric) TableName() string {
 }
 
 
-func (c *Client) transformMetricAlarms(values []*cloudwatch.MetricAlarm) []*MetricAlarm {
+func (c *Client) transformMetricAlarms(values *[]types.MetricAlarm) []*MetricAlarm {
 	var tValues []*MetricAlarm
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := MetricAlarm {
 			AccountID: c.accountID,
 			Region: c.region,
 			ActionsEnabled: value.ActionsEnabled,
-			AlarmActions: c.transformMetricAlarmActions(value.AlarmActions),
+			AlarmActions: c.transformMetricAlarmActions(&value.AlarmActions),
 			AlarmArn: value.AlarmArn,
 			AlarmConfigurationUpdatedTimestamp: value.AlarmConfigurationUpdatedTimestamp,
 			AlarmDescription: value.AlarmDescription,
 			AlarmName: value.AlarmName,
-			ComparisonOperator: value.ComparisonOperator,
+			ComparisonOperator: aws.String(string(value.ComparisonOperator)),
 			DatapointsToAlarm: value.DatapointsToAlarm,
 			EvaluateLowSampleCountPercentile: value.EvaluateLowSampleCountPercentile,
 			EvaluationPeriods: value.EvaluationPeriods,
 			ExtendedStatistic: value.ExtendedStatistic,
 			MetricName: value.MetricName,
-			Metrics: c.transformMetricAlarmMetrics(value.Metrics),
+			Metrics: c.transformMetricAlarmMetrics(&value.Metrics),
 			Namespace: value.Namespace,
 			Period: value.Period,
 			StateReason: value.StateReason,
 			StateReasonData: value.StateReasonData,
 			StateUpdatedTimestamp: value.StateUpdatedTimestamp,
-			StateValue: value.StateValue,
-			Statistic: value.Statistic,
+			StateValue: aws.String(string(value.StateValue)),
+			Statistic: aws.String(string(value.Statistic)),
 			Threshold: value.Threshold,
 			ThresholdMetricId: value.ThresholdMetricId,
 			TreatMissingData: value.TreatMissingData,
-			Unit: value.Unit,
+			Unit: aws.String(string(value.Unit)),
 		}
 		tValues = append(tValues, &tValue)
 	}
 	return tValues
 }
 
-func (c *Client) transformMetricAlarmMetrics(values []*cloudwatch.MetricDataQuery) []*MetricAlarmMetric {
+func (c *Client) transformMetricAlarmMetrics(values *[]types.MetricDataQuery) []*MetricAlarmMetric {
 	var tValues []*MetricAlarmMetric
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := MetricAlarmMetric{
 			AccountID: c.accountID,
 			Region: c.region,
@@ -130,7 +132,7 @@ func (c *Client) transformMetricAlarmMetrics(values []*cloudwatch.MetricDataQuer
 		if value.MetricStat != nil {
 			tValue.StatPeriod = value.MetricStat.Period
 			tValue.StatStat = value.MetricStat.Stat
-			tValue.StatUnit = value.MetricStat.Unit
+			tValue.StatUnit = string(value.MetricStat.Unit)
 			if value.MetricStat.Metric != nil {
 				tValue.Name = value.MetricStat.Metric.MetricName
 				tValue.Namespace = value.MetricStat.Metric.Namespace
@@ -142,9 +144,9 @@ func (c *Client) transformMetricAlarmMetrics(values []*cloudwatch.MetricDataQuer
 	return tValues
 }
 
-func (c *Client) transformMetricAlarmActions(values []*string) []*MetricAlarmActions {
+func (c *Client) transformMetricAlarmActions(values *[]string) []*MetricAlarmActions {
 	var tValues []*MetricAlarmActions
-	for _, v := range values {
+	for _, v := range *values {
 		tValues = append(tValues, &MetricAlarmActions{
 			Value: v,
 		})
@@ -163,6 +165,7 @@ var MetricAlarmTables = []interface{} {
 }
 
 func (c *Client)alarms(gConfig interface{}) error {
+	ctx := context.Background()
 	var config cloudwatch.DescribeAlarmsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -171,13 +174,13 @@ func (c *Client)alarms(gConfig interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(MetricAlarmTables...)
 
 	for {
-		output, err := c.svc.DescribeAlarms(&config)
+		output, err := c.svc.DescribeAlarms(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformMetricAlarms(output.MetricAlarms))
+		c.db.ChunkedCreate(c.transformMetricAlarms(&output.MetricAlarms))
 		c.log.Info("Fetched resources", zap.String("resource", "cloudwatch.alarms"), zap.Int("count", len(output.MetricAlarms)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

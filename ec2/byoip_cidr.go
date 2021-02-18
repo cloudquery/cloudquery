@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"go.uber.org/zap"
 )
 
@@ -21,21 +23,17 @@ func (ByoipCidr) TableName() string {
 	return "aws_ec2_byoip_cidrs"
 }
 
-func (c *Client) transformByoipCidr(value *ec2.ByoipCidr) *ByoipCidr {
-	return &ByoipCidr{
-		Region:        c.region,
-		AccountID:     c.accountID,
-		Cidr:          value.Cidr,
-		Description:   value.Description,
-		State:         value.State,
-		StatusMessage: value.StatusMessage,
-	}
-}
-
-func (c *Client) transformByoipCidrs(values []*ec2.ByoipCidr) []*ByoipCidr {
+func (c *Client) transformByoipCidrs(values *[]types.ByoipCidr) []*ByoipCidr {
 	var tValues []*ByoipCidr
-	for _, v := range values {
-		tValues = append(tValues, c.transformByoipCidr(v))
+	for _, v := range *values {
+		tValues = append(tValues, &ByoipCidr{
+			Region:        c.region,
+			AccountID:     c.accountID,
+			Cidr:          v.Cidr,
+			Description:   v.Description,
+			State:         aws.String(string(v.State)),
+			StatusMessage: v.StatusMessage,
+		})
 	}
 	return tValues
 }
@@ -45,19 +43,19 @@ var ByoipCidrTables = []interface{}{
 }
 
 func (c *Client) byoipCidrs(_ interface{}) error {
-	MaxResults := int64(100)
+	ctx := context.Background()
 	config := ec2.DescribeByoipCidrsInput{
-		MaxResults: &MaxResults,
+		MaxResults: 100,
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ByoipCidrTables...)
 	for {
-		output, err := c.svc.DescribeByoipCidrs(&config)
+		output, err := c.svc.DescribeByoipCidrs(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformByoipCidrs(output.ByoipCidrs))
+		c.db.ChunkedCreate(c.transformByoipCidrs(&output.ByoipCidrs))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.byoip_cidrs"), zap.Int("count", len(output.ByoipCidrs)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

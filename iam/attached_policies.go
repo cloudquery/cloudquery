@@ -1,6 +1,6 @@
 package iam
 import (
-	"github.com/aws/aws-sdk-go/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 )
 
 
@@ -16,9 +16,9 @@ func (UserAttachedPolicy) TableName() string {
 	return "aws_iam_user_attached_policies"
 }
 
-func (c *Client) transformAttachedPolicies(values []*iam.AttachedPolicy) []*UserAttachedPolicy {
+func (c *Client) transformAttachedPolicies(values *[]types.AttachedPolicy) []*UserAttachedPolicy {
 	var tValues []*UserAttachedPolicy
-	for _, value := range values {
+	for _, value := range *values {
 		tValue := UserAttachedPolicy{
 			AccountID: c.accountID,
 			PolicyArn: value.PolicyArn,

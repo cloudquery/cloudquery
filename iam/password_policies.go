@@ -1,8 +1,11 @@
 package iam
 
 import (
-	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/service/iam"
+	"context"
+	"errors"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
+	"github.com/aws/smithy-go"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -13,9 +16,9 @@ type PasswordPolicy struct {
 	AllowUsersToChangePassword *bool
 	ExpirePasswords            *bool
 	HardExpiry                 *bool
-	MaxPasswordAge             *int64
-	MinimumPasswordLength      *int64
-	PasswordReusePrevention    *int64
+	MaxPasswordAge             *int32
+	MinimumPasswordLength      *int32
+	PasswordReusePrevention    *int32
 	RequireLowercaseCharacters *bool
 	RequireNumbers             *bool
 	RequireSymbols             *bool
@@ -26,19 +29,19 @@ func (PasswordPolicy) TableName() string {
 	return "aws_iam_password_policies"
 }
 
-func (c *Client) transformPasswordPolicy(value *iam.PasswordPolicy) *PasswordPolicy {
+func (c *Client) transformPasswordPolicy(value *types.PasswordPolicy) *PasswordPolicy {
 	return &PasswordPolicy{
 		AccountID:                  c.accountID,
-		AllowUsersToChangePassword: value.AllowUsersToChangePassword,
-		ExpirePasswords:            value.ExpirePasswords,
+		AllowUsersToChangePassword: &value.AllowUsersToChangePassword,
+		ExpirePasswords:            &value.ExpirePasswords,
 		HardExpiry:                 value.HardExpiry,
 		MaxPasswordAge:             value.MaxPasswordAge,
 		MinimumPasswordLength:      value.MinimumPasswordLength,
 		PasswordReusePrevention:    value.PasswordReusePrevention,
-		RequireLowercaseCharacters: value.RequireLowercaseCharacters,
-		RequireNumbers:             value.RequireNumbers,
-		RequireSymbols:             value.RequireSymbols,
-		RequireUppercaseCharacters: value.RequireUppercaseCharacters,
+		RequireLowercaseCharacters: &value.RequireLowercaseCharacters,
+		RequireNumbers:             &value.RequireNumbers,
+		RequireSymbols:             &value.RequireSymbols,
+		RequireUppercaseCharacters: &value.RequireUppercaseCharacters,
 	}
 }
 
@@ -48,14 +51,16 @@ var PasswordPolicyTables = []interface{}{
 
 func (c *Client) passwordPolicies(gConfig interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
 
-	output, err := c.svc.GetAccountPasswordPolicy(&config)
+	output, err := c.svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
-		if err.(awserr.Error).Code() == "NoSuchEntity" {
+		var ae smithy.APIError
+		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
 			c.log.Info("Fetched PasswordPolicy", zap.Int("count", 0))
 			return nil
 		}

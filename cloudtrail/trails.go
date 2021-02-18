@@ -1,7 +1,9 @@
 package cloudtrail
 
 import (
-	"github.com/aws/aws-sdk-go/service/cloudtrail"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 	"regexp"
@@ -59,7 +61,7 @@ func (Trail) TableName() string {
 //log-group:([a-zA-Z0-9/]+):
 var groupNameRegex = regexp.MustCompile("arn:aws:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
-func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
+func (c *Client) transformTrails(ctx context.Context, values []types.Trail) ([]*Trail, error) {
 	var tValues []*Trail
 	for _, value := range values {
 		groupName := ""
@@ -74,7 +76,7 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 			c.log.Info("CloudWatchLogsLogGroupARN is empty")
 		}
 
-		statusOutput, err := c.svc.GetTrailStatus(&cloudtrail.GetTrailStatusInput{Name: value.TrailARN})
+		statusOutput, err := c.svc.GetTrailStatus(ctx, &cloudtrail.GetTrailStatusInput{Name: value.TrailARN})
 		if err != nil {
 			return nil, err
 		}
@@ -117,7 +119,7 @@ func (c *Client) transformTrails(values []*cloudtrail.Trail) ([]*Trail, error) {
 			TimeLoggingStopped: statusOutput.TimeLoggingStopped,
 		}
 
-		output, err := c.svc.GetEventSelectors(&cloudtrail.GetEventSelectorsInput{TrailName: value.TrailARN})
+		output, err := c.svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: value.TrailARN})
 		if err != nil {
 			return nil, err
 		}
@@ -137,17 +139,18 @@ var TrailTables = []interface{}{
 
 func (c *Client) trails(gConfig interface{}) error {
 	var config cloudtrail.DescribeTrailsInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
 
-	output, err := c.svc.DescribeTrails(&config)
+	output, err := c.svc.DescribeTrails(ctx, &config)
 	if err != nil {
 		return err
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(TrailTables...)
-	tValues, err := c.transformTrails(output.TrailList)
+	tValues, err := c.transformTrails(ctx, output.TrailList)
 	if err != nil {
 		return err
 	}

@@ -1,8 +1,10 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -82,93 +84,75 @@ func (VpcTag) TableName() string {
 	return "aws_ec2_vpc_tags"
 }
 
-func (c *Client) transformVpcCidrBlockAssociation(value *ec2.VpcCidrBlockAssociation) *VpcCidrBlockAssociation {
-	res := VpcCidrBlockAssociation{
-		AccountID:     c.accountID,
-		Region:        c.region,
-		AssociationId: value.AssociationId,
-		CidrBlock:     value.CidrBlock,
-	}
-	if value.CidrBlockState != nil {
-		res.State = value.CidrBlockState.State
-		res.StatusMessage = value.CidrBlockState.State
-	}
-
-	return &res
-}
-
-func (c *Client) transformVpcCidrBlockAssociations(values []*ec2.VpcCidrBlockAssociation) []*VpcCidrBlockAssociation {
+func (c *Client) transformVpcCidrBlockAssociations(values *[]types.VpcCidrBlockAssociation) []*VpcCidrBlockAssociation {
 	var tValues []*VpcCidrBlockAssociation
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpcCidrBlockAssociation(v))
+	for _, value := range *values {
+		res := VpcCidrBlockAssociation{
+			AccountID:     c.accountID,
+			Region:        c.region,
+			AssociationId: value.AssociationId,
+			CidrBlock:     value.CidrBlock,
+		}
+		if value.CidrBlockState != nil {
+			res.State = aws.String(string(value.CidrBlockState.State))
+			res.StatusMessage = aws.String(string(value.CidrBlockState.State))
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
 
-func (c *Client) transformVpcIpv6CidrBlockAssociation(value *ec2.VpcIpv6CidrBlockAssociation) *VpcIpv6CidrBlockAssociation {
-	res := VpcIpv6CidrBlockAssociation{
-		AccountID:          c.accountID,
-		Region:             c.region,
-		AssociationId:      value.AssociationId,
-		Ipv6CidrBlock:      value.Ipv6CidrBlock,
-		Ipv6Pool:           value.Ipv6Pool,
-		NetworkBorderGroup: value.NetworkBorderGroup,
-	}
-
-	if value.Ipv6CidrBlockState != nil {
-		res.State = value.Ipv6CidrBlockState.State
-		res.StatusMessage = value.Ipv6CidrBlockState.StatusMessage
-	}
-
-	return &res
-}
-
-func (c *Client) transformVpcIpv6CidrBlockAssociations(values []*ec2.VpcIpv6CidrBlockAssociation) []*VpcIpv6CidrBlockAssociation {
+func (c *Client) transformVpcIpv6CidrBlockAssociations(values *[]types.VpcIpv6CidrBlockAssociation) []*VpcIpv6CidrBlockAssociation {
 	var tValues []*VpcIpv6CidrBlockAssociation
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpcIpv6CidrBlockAssociation(v))
+	for _, value := range *values {
+		res := VpcIpv6CidrBlockAssociation{
+			AccountID:          c.accountID,
+			Region:             c.region,
+			AssociationId:      value.AssociationId,
+			Ipv6CidrBlock:      value.Ipv6CidrBlock,
+			Ipv6Pool:           value.Ipv6Pool,
+			NetworkBorderGroup: value.NetworkBorderGroup,
+		}
+
+		if value.Ipv6CidrBlockState != nil {
+			res.State = aws.String(string(value.Ipv6CidrBlockState.State))
+			res.StatusMessage = value.Ipv6CidrBlockState.StatusMessage
+		}
+		tValues = append(tValues, &res)
 	}
 	return tValues
 }
 
-func (c *Client) transformVpcTag(value *ec2.Tag) *VpcTag {
-	return &VpcTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformVpcTags(values []*ec2.Tag) []*VpcTag {
+func (c *Client) transformVpcTags(values *[]types.Tag) []*VpcTag {
 	var tValues []*VpcTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpcTag(v))
+	for _, value := range *values {
+		tValues = append(tValues, &VpcTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       value.Key,
+			Value:     value.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformVpc(value *ec2.Vpc) *Vpc {
-	return &Vpc{
-		Region:                    c.region,
-		AccountID:                 c.accountID,
-		CidrBlock:                 value.CidrBlock,
-		CidrBlockAssociations:     c.transformVpcCidrBlockAssociations(value.CidrBlockAssociationSet),
-		DhcpOptionsId:             value.DhcpOptionsId,
-		InstanceTenancy:           value.InstanceTenancy,
-		Ipv6CidrBlockAssociations: c.transformVpcIpv6CidrBlockAssociations(value.Ipv6CidrBlockAssociationSet),
-		IsDefault:                 value.IsDefault,
-		OwnerId:                   value.OwnerId,
-		State:                     value.State,
-		Tags:                      c.transformVpcTags(value.Tags),
-		VpcId:                     value.VpcId,
-	}
-}
-
-func (c *Client) transformVpcs(values []*ec2.Vpc) []*Vpc {
+func (c *Client) transformVpcs(values *[]types.Vpc) []*Vpc {
 	var tValues []*Vpc
-	for _, v := range values {
-		tValues = append(tValues, c.transformVpc(v))
+	for _, value := range *values {
+		tValues = append(tValues, &Vpc{
+			Region:                    c.region,
+			AccountID:                 c.accountID,
+			CidrBlock:                 value.CidrBlock,
+			CidrBlockAssociations:     c.transformVpcCidrBlockAssociations(&value.CidrBlockAssociationSet),
+			DhcpOptionsId:             value.DhcpOptionsId,
+			InstanceTenancy:           aws.String(string(value.InstanceTenancy)),
+			Ipv6CidrBlockAssociations: c.transformVpcIpv6CidrBlockAssociations(&value.Ipv6CidrBlockAssociationSet),
+			IsDefault:                 &value.IsDefault,
+			OwnerId:                   value.OwnerId,
+			State:                     aws.String(string(value.State)),
+			Tags:                      c.transformVpcTags(&value.Tags),
+			VpcId:                     value.VpcId,
+		})
 	}
 	return tValues
 }
@@ -182,19 +166,20 @@ var VPCTables = []interface{}{
 
 func (c *Client) vpcs(gConfig interface{}) error {
 	var config ec2.DescribeVpcsInput
+	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(VPCTables...)
 	for {
-		output, err := c.svc.DescribeVpcs(&config)
+		output, err := c.svc.DescribeVpcs(ctx, &config)
 		if err != nil {
 			return err
 		}
-		c.db.ChunkedCreate(c.transformVpcs(output.Vpcs))
+		c.db.ChunkedCreate(c.transformVpcs(&output.Vpcs))
 		c.log.Info("Fetched resources", zap.String("resource", "ec2.vpcs"), zap.Int("count", len(output.Vpcs)))
-		if aws.StringValue(output.NextToken) == "" {
+		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken

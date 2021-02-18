@@ -1,7 +1,9 @@
 package ec2
 
 import (
-	"github.com/aws/aws-sdk-go/service/ec2"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )
@@ -39,42 +41,34 @@ func (CustomerGatewayTag) TableName() string {
 	return "aws_ec2_customer_gateway_tags"
 }
 
-func (c *Client) transformCustomerGatewayTag(value *ec2.Tag) *CustomerGatewayTag {
-	return &CustomerGatewayTag{
-		AccountID: c.accountID,
-		Region:    c.region,
-		Key:       value.Key,
-		Value:     value.Value,
-	}
-}
-
-func (c *Client) transformCustomerGatewayTags(values []*ec2.Tag) []*CustomerGatewayTag {
+func (c *Client) transformCustomerGatewayTags(values *[]types.Tag) []*CustomerGatewayTag {
 	var tValues []*CustomerGatewayTag
-	for _, v := range values {
-		tValues = append(tValues, c.transformCustomerGatewayTag(v))
+	for _, v := range *values {
+		tValues = append(tValues, &CustomerGatewayTag{
+			AccountID: c.accountID,
+			Region:    c.region,
+			Key:       v.Key,
+			Value:     v.Value,
+		})
 	}
 	return tValues
 }
 
-func (c *Client) transformCustomerGateway(value *ec2.CustomerGateway) *CustomerGateway {
-	return &CustomerGateway{
-		Region:            c.region,
-		AccountID:         c.accountID,
-		BgpAsn:            value.BgpAsn,
-		CertificateArn:    value.CertificateArn,
-		CustomerGatewayId: value.CustomerGatewayId,
-		DeviceName:        value.DeviceName,
-		IpAddress:         value.IpAddress,
-		State:             value.State,
-		Tags:              c.transformCustomerGatewayTags(value.Tags),
-		Type:              value.Type,
-	}
-}
-
-func (c *Client) transformCustomerGateways(values []*ec2.CustomerGateway) []*CustomerGateway {
+func (c *Client) transformCustomerGateways(values *[]types.CustomerGateway) []*CustomerGateway {
 	var tValues []*CustomerGateway
-	for _, v := range values {
-		tValues = append(tValues, c.transformCustomerGateway(v))
+	for _, v := range *values {
+		tValues = append(tValues, &CustomerGateway{
+			Region:            c.region,
+			AccountID:         c.accountID,
+			BgpAsn:            v.BgpAsn,
+			CertificateArn:    v.CertificateArn,
+			CustomerGatewayId: v.CustomerGatewayId,
+			DeviceName:        v.DeviceName,
+			IpAddress:         v.IpAddress,
+			State:             v.State,
+			Tags:              c.transformCustomerGatewayTags(&v.Tags),
+			Type:              v.Type,
+		})
 	}
 	return tValues
 }
@@ -85,18 +79,19 @@ var CustomerGatewayTables = []interface{}{
 }
 
 func (c *Client) customerGateways(gConfig interface{}) error {
+	ctx := context.Background()
 	var config ec2.DescribeCustomerGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
 
-	output, err := c.svc.DescribeCustomerGateways(&config)
+	output, err := c.svc.DescribeCustomerGateways(ctx, &config)
 	if err != nil {
 		return err
 	}
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(CustomerGatewayTables...)
-	c.db.ChunkedCreate(c.transformCustomerGateways(output.CustomerGateways))
+	c.db.ChunkedCreate(c.transformCustomerGateways(&output.CustomerGateways))
 	c.log.Info("Fetched resources", zap.String("resource", "ec2.customer_gateways"), zap.Int("count", len(output.CustomerGateways)))
 	return nil
 }
