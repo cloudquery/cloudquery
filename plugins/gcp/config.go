@@ -13,8 +13,11 @@ var configYaml = `
       - name: compute.images
       - name: compute.instances
       - name: compute.interconnects
+      - name: compute.networks
       - name: compute.ssl_certificates
       - name: compute.vpn_gateways
+      - name: compute.subnetworks
+      - name: compute.firewalls
       - name: compute.forwarding_rules
       - name: iam.project_roles
       - name: iam.service_accounts

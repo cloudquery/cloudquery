@@ -49,6 +49,10 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.autoscalers(config)
 	case "interconnects":
 		return c.interconnects(config)
+	case "networks":
+		return c.networks(config)
+	case "subnetworks":
+		return c.subnetworks(config)
 	case "ssl_certificates":
 		return c.sslCertificates(config)
 	case "vpn_gateways":
@@ -57,6 +61,8 @@ func (c *Client) CollectResource(resource string, config interface{}) error {
 		return c.forwardingRules(config)
 	case "backend_services":
 		return c.backendServices(config)
+	case "firewalls":
+		return c.firewalls(config)
 	default:
 		return fmt.Errorf("unsupported resource compute.%s", resource)
 	}
