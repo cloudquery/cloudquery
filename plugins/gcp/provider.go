@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/cloudquery/cq-provider-gcp/compute"
+	"github.com/cloudquery/cq-provider-gcp/crm"
 	"github.com/cloudquery/cq-provider-gcp/iam"
 	"github.com/cloudquery/cq-provider-gcp/resource"
 	"github.com/cloudquery/cq-provider-gcp/sql"
@@ -44,6 +45,7 @@ var resourceFactory = map[string]NewResourceFunc{
 	"iam":     iam.NewClient,
 	"storage": storage.NewClient,
 	"sql":     sql.NewClient,
+	"crm":		crm.NewClient,
 }
 
 var tablesArr = [][]interface{}{
@@ -60,6 +62,7 @@ var tablesArr = [][]interface{}{
 	compute.VPNGatewayTables,
 	compute.SubnetworkTables,
 	compute.FirewallTables,
+	crm.ProjectTables,
 	iam.RoleTables,
 	iam.ServiceAccountTables,
 	storage.BucketTables,
