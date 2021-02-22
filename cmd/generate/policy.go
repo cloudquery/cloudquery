@@ -1,4 +1,4 @@
-package cmd
+package generate
 
 import (
 	"fmt"
@@ -247,6 +247,6 @@ var policyCmd = &cobra.Command{
 }
 
 func init() {
-	genCmd.AddCommand(policyCmd)
+	Cmd.AddCommand(policyCmd)
 	policyCmd.Flags().StringVar(&policyPath, "path", "./policy.yml", "path to output generated policy file")
 }

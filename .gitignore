@@ -14,3 +14,4 @@ bin/
 
 *.tfstate*
 .terraform*
+*.log

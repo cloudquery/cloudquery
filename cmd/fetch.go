@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/cloudquery/cloudquery/cloudqueryclient"
+	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -31,11 +31,8 @@ var fetchCmd = &cobra.Command{
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		configPath := viper.GetString("config_path")
-		runSelf, err := cmd.Flags().GetBool("runself")
-		if err != nil {
-			return err
-		}
-		client, err := cloudqueryclient.New(driver, dsn, verbose, runSelf)
+
+		client, err := client.New(driver, dsn)
 		if err != nil {
 			return err
 		}

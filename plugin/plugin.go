@@ -1,70 +1,30 @@
 package plugin
 
 import (
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-plugin"
+	"fmt"
 	"os"
-	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
+const defaultOrganization = "cloudquery"
 
-var pluginClientRegistry = map[string]*plugin.Client{}
-var providerRegistry = map[string]CQProvider{}
-
-var runSelfProvider CQProvider
-
-// This is for provider debug purposes (when --runself is passed)
-func RegisterRunSelfProvider(provider CQProvider) {
-	runSelfProvider = provider
-}
-
-func GetRunSelfProvider() CQProvider {
-	return runSelfProvider
-}
-
-func GetProviderPluginClient(path string) (CQProvider, error) {
-	if pluginClientRegistry[path] != nil {
-		return providerRegistry[path], nil
+func getProviderPath(name string, version string) (string, error) {
+	org := defaultOrganization
+	split := strings.Split(name, "/")
+	if len(split) == 2 {
+		org = split[0]
+		name = split[1]
 	}
 
-	client := plugin.NewClient(&plugin.ClientConfig{
-		HandshakeConfig: Handshake,
-		VersionedPlugins: map[int]plugin.PluginSet{
-			1: PluginMap,
-		},
-		Cmd:             exec.Command(path),
-		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
-		SyncStderr: os.Stderr,
-		SyncStdout: os.Stdout,
-		Logger: hclog.New(&hclog.LoggerOptions{
-			Output: hclog.DefaultOutput,
-			Level:  hclog.Info,
-			Name:   "plugin",
-		}),
-	})
-	rpcClient, err := client.Client()
+	workingDir, err := os.Getwd()
 	if err != nil {
-		client.Kill()
-		return nil, err
+		return "", err
 	}
-
-	raw, err := rpcClient.Dispense("provider")
-	if err != nil {
-		client.Kill()
-		return nil, err
+	extension := ""
+	if runtime.GOOS == "windows" {
+		extension = ".exe"
 	}
-
-	p := raw.(CQProvider)
-	pluginClientRegistry[path] = client
-	providerRegistry[path] = p
-
-	return p, nil
-}
-
-func KillProviderPluginClient(path string) {
-	if pluginClientRegistry[path] != nil {
-		pluginClientRegistry[path].Kill()
-		pluginClientRegistry[path] = nil
-		providerRegistry[path] = nil
-	}
+	return filepath.Join(workingDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension)), nil
 }
