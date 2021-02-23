@@ -40,8 +40,8 @@ func init() {
 	// add inner commands
 	rootCmd.AddCommand(generate.Cmd)
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", false, "Enable console logging")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encodeLogsAsJson", true, "EncodeLogsAsJson makes the logging framework logging JSON")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", true, "Enable console logging")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encodeLogsAsJson", false, "EncodeLogsAsJson makes the logging framework logging JSON")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.FileLoggingEnabled, "enableFileLogging", true, "enableFileLogging makes the framework logging to a file")
 	rootCmd.PersistentFlags().StringVar(&loggerConfig.Directory, "logDirectory", ".", "Directory to logging to to when file logging is enabled")
 	rootCmd.PersistentFlags().StringVar(&loggerConfig.Filename, "logFile", "cloudquery.log", "Filename is the name of the logfile which will be placed inside the directory")

@@ -85,7 +85,7 @@ queries:
       SELECT aws_cloudtrail_trails.account_id, trail_arn, is_multi_region_trail, read_write_type, include_management_events FROM aws_cloudtrail_trails
       JOIN aws_cloudtrail_trail_event_selectors on aws_cloudtrail_trails.id = aws_cloudtrail_trail_event_selectors.trail_id
       WHERE is_multi_region_trail = FALSE OR (is_multi_region_trail = TRUE AND (read_write_type != 'All' OR include_management_events = FALSE))
-  - name: "AWS CIS 2.2 Ensure CloudTrail logging file validation is enabled"
+  - name: "AWS CIS 2.2 Ensure CloudTrail log file validation is enabled"
     query: >
       SELECT aws_cloudtrail_trails.account_id, region, trail_arn, log_file_validation_enabled FROM aws_cloudtrail_trails
       WHERE log_file_validation_enabled = 0
@@ -109,77 +109,77 @@ queries:
     query: >
       SELECT aws_ec2_vpcs.account_id, aws_ec2_vpcs. region, vpc_id FROM aws_ec2_vpcs
       LEFT JOIN aws_ec2_flow_logs ON aws_ec2_vpcs.vpc_id = aws_ec2_flow_logs.resource_id WHERE aws_ec2_flow_logs.resource_id is NULL
-  - name: "AWS CIS 3.1.1 Ensure a logging metric filter and alarm exist for unauthorized API calls (Scored)"
+  - name: "AWS CIS 3.1.1 Ensure a log metric filter and alarm exist for unauthorized API calls (Scored)"
     query: >
       SELECT account_id, region, trail_arn FROM aws_cloudtrail_trails
         JOIN aws_cloudtrail_trail_event_selectors actes on aws_cloudtrail_trails.id = actes.trail_id
         WHERE is_multi_region_trail=true AND is_logging=false
-  - name: "AWS CIS 3.1 Ensure a logging metric filter and alarm exist for unauthorized API calls (Scored)"
+  - name: "AWS CIS 3.1 Ensure a log metric filter and alarm exist for unauthorized API calls (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
-  - name: "AWS CIS 3.2 Ensure a logging metric filter and alarm exist for Management Console sign-in without MFA (Scored)"
+  - name: "AWS CIS 3.2 Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.errorCode = "ConsoleLogin") || ($.additionalEventData.MFAUsed != "Yes")  }'
-  - name: "AWS CIS 3.3  Ensure a logging metric filter and alarm exist for usage of 'root' account (Score)"
+  - name: "AWS CIS 3.3  Ensure a log metric filter and alarm exist for usage of 'root' account (Score)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
-  - name: "AWS CIS 3.4 Ensure a logging metric filter and alarm exist for IAM policy changes (Score)"
+  - name: "AWS CIS 3.4 Ensure a log metric filter and alarm exist for IAM policy changes (Score)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = DeleteGroupPolicy) || ($.eventName = DeleteRolePolicy) || ($.eventName = DeleteUserPolicy) || ($.eventName = PutGroupPolicy) || ($.eventName = PutRolePolicy) || ($.eventName = PutUserPolicy) || ($.eventName = CreatePolicy) || ($.eventName = DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName = DetachUserPolicy) || ($.eventName = AttachGroupPolicy) || ($.eventName = DetachGroupPolicy)}'
-  - name: "AWS CIS 3.5 Ensure a logging metric filter and alarm exist for CloudTrail configuration changes (Scored)"
+  - name: "AWS CIS 3.5 Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
-  - name: "AWS CIS 3.6 Ensure a logging metric filter and alarm exist for AWS Management Console authentication failures (Scored)"
+  - name: "AWS CIS 3.6 Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failed authentication") }'
-  - name: "AWS CIS 3.7 Ensure a logging metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)"
+  - name: "AWS CIS 3.7 Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion)) }"'
-  - name: "AWS CIS 3.8 Ensure a logging metric filter and alarm exist for S3 bucket policy changes (Scored)"
+  - name: "AWS CIS 3.8 Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
-  - name: "AWS CIS 3.9 Ensure a logging metric filter and alarm exist for AWS Config configuration changes (Scored)"
+  - name: "AWS CIS 3.9 Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventSource = config.amazonaws.com) && (($.eventName = StopConfigurationRecorder) || ($.eventName = DeleteDeliveryChannel) || ($.eventName = PutDeliveryChannel) || ($.eventName = PutConfigurationRecorder)) }'
-  - name: "AWS CIS 3.10 Ensure a logging metric filter and alarm exist for security group changes (Scored)"
+  - name: "AWS CIS 3.10 Ensure a log metric filter and alarm exist for security group changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }'
-  - name: "AWS CIS 3.11 Ensure a logging metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)"
+  - name: "AWS CIS 3.11 Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
-  - name: "AWS CIS 3.12 Ensure a logging metric filter and alarm exist for changes to network gateways (Scored)"
+  - name: "AWS CIS 3.12 Ensure a log metric filter and alarm exist for changes to network gateways (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'
-  - name: "AWS CIS 3.13 Ensure a logging metric filter and alarm exist for route table changes (Scored)"
+  - name: "AWS CIS 3.13 Ensure a log metric filter and alarm exist for route table changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
       WHERE filter_pattern='{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'
-  - name: "AWS CIS 3.14 Ensure a logging metric filter and alarm exist for VPC changes (Scored)"
+  - name: "AWS CIS 3.14 Ensure a log metric filter and alarm exist for VPC changes (Scored)"
     invert: true
     query: >
       SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm

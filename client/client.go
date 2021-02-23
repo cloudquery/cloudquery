@@ -75,9 +75,17 @@ func (c *Client) Run(path string) error {
 			log.Error().Msg("provider must contain key 'name' in configuration, skipping...")
 			continue
 		}
+		version := provider.Version
+		if provider.Version == "" {
+			version = "latest"
+		}
 
-		log.Debug().Str("provider", provider.Name).Str("version", provider.Version).Msg("getting or creating provider")
-		cqProvider, err := manager.GetOrCreateProvider(provider.Name, provider.Version)
+		log.Debug().Str("provider", provider.Name).Str("version", version).Msg("getting or creating provider")
+		cqProvider, err := manager.GetOrCreateProvider(provider.Name, version)
+		if err != nil {
+			log.Error().Err(err).Str("provider", provider.Name).Str("version", version).Msg("failed to create provider plugin")
+			continue
+		}
 		// create intermediate variable
 		provider := provider
 		errGroup.Go(func() error {

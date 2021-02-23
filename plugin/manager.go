@@ -69,17 +69,16 @@ func (p *Manager) KillProvider(providerName string) error {
 func (p *Manager) GetOrCreateProvider(providerName, version string) (CQProvider, error) {
 
 	provider, err := p.GetProvider(providerName, version)
-	if provider != nil {
+	if provider != nil && err == nil {
 		return provider, err
 	}
+	// Create RPC client and initialize CQProvider
+	return p.createProvider(providerName, version)
+}
 
-	p.lock.Lock()
-	version = ""
-	if version == "" {
-		version = "latest"
-	}
+
+func (p *Manager) createProvider(providerName, version string) (CQProvider, error) {
 	pluginPath, _ := getProviderPath(providerName, version)
-
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
@@ -107,16 +106,12 @@ func (p *Manager) GetOrCreateProvider(providerName, version string) (CQProvider,
 		client.Kill()
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
-
 	p.activeClients[providerName] = client
-	p.lock.Unlock()
-	p.SetProvider(providerName, provider)
+	p.registry[providerName] = provider
 	return provider, nil
 }
 
-
 func GetManager() *Manager {
-
 	doOnce.Do(
 		func() {
 			instance = &Manager{

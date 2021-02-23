@@ -43,11 +43,12 @@ func ServePlugin(opts ServeOpts) {
 	if os.Getenv("CQ_PROVIDER_DEBUG") != "" {
 		plugin.GetManager().SetProvider(opts.Name, opts.Provider)
 		cmd.Execute()
+		return
 	}
 
 	if !opts.NoLogOutputOverride {
 		// In order to allow go-plugin to correctly pass log-levels through to
-		// terraform, we need to use an hclog.Logger with JSON output. We can
+		// cloudquery, we need to use an hclog.Logger with JSON output. We can
 		// inject this into the std `log` package here, so existing providers will
 		// make use of it automatically.
 		logger := hclog.New(&hclog.LoggerOptions{

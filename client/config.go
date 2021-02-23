@@ -73,10 +73,6 @@ func GenerateConfig(configPath string, providers []string, force bool) error {
 		if err != nil {
 			return err
 		}
-		providerPath, err := getProviderPath(provider, "latest")
-		if err != nil {
-			return err
-		}
 		p, err := plugin.GetManager().GetOrCreateProvider(provider, "latest")
 		if err != nil {
 			return err
@@ -84,11 +80,11 @@ func GenerateConfig(configPath string, providers []string, force bool) error {
 		log.Debug().Str("provider", provider).Msg("Building provider configuration yaml")
 		configYaml, err := p.GenConfig()
 		if err != nil {
-			_ = plugin.GetManager().KillProvider(providerPath)
+			_ = plugin.GetManager().KillProvider(provider)
 			return err
 		}
 		s.WriteString(configYaml)
-		if err := plugin.GetManager().KillProvider(providerPath); err != nil {
+		if err := plugin.GetManager().KillProvider(provider); err != nil {
 			return err
 		}
 	}
