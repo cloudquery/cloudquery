@@ -1,14 +1,10 @@
-package cmd
+package generate
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/cloudqueryclient"
+	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
-	"io/ioutil"
-	"os"
 )
-
-var headerConfig = `providers:`
 
 var configPath = "./config.yml"
 var force = false
@@ -18,23 +14,12 @@ var configCmd = &cobra.Command{
 	Short:     "Generate initial config.yml for fetch command",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config, err := cloudqueryclient.GenConfig(args)
-		if err != nil {
-			return err
-		}
-
-		if _, err := os.Stat(configPath); err == nil && !force {
-			return fmt.Errorf("file %s already exists. Either delete it, specify other path via --path or use --force", configPath)
-		} else if os.IsNotExist(err) || force {
-			return ioutil.WriteFile(configPath, []byte(config), 0644)
-		} else {
-			return err
-		}
+		return client.GenerateConfig(configPath, args, force)
 	},
 }
 
 func init() {
-	genCmd.AddCommand(configCmd)
+	Cmd.AddCommand(configCmd)
 	configCmd.Flags().StringVar(&configPath, "path", configPath, "path to output generated config file")
 	configCmd.Flags().BoolVar(&force, "force", force, "override output")
 }
