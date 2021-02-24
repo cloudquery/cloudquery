@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/plugin"
@@ -72,8 +73,8 @@ func (c *Client) Run(path string) error {
 	for _, provider := range config.Providers {
 
 		if provider.Name == "" {
-			log.Error().Msg("provider must contain key 'name' in configuration, skipping...")
-			continue
+			log.Error().Msg("provider must contain key 'name' in configuration")
+			return errors.New("provider must contain key 'name' in configuration")
 		}
 		version := provider.Version
 		if provider.Version == "" {

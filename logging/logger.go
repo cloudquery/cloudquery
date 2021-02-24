@@ -69,7 +69,7 @@ func Configure(config Config) zerolog.Logger {
 	logger.Info().
 		Bool("fileLogging", config.FileLoggingEnabled).
 		Bool("jsonLogOutput", config.EncodeLogsAsJson).
-		Bool("verbose", config.Verbose).
+			Bool("verbose", config.Verbose).
 		Str("logDirectory", config.Directory).
 		Str("fileName", config.Filename).
 		Int("maxSizeMB", config.MaxSize).

@@ -41,7 +41,7 @@ func ServePlugin(opts ServeOpts) {
 	// CloudQuery main command line accepting any args same as the main binary. The client will execute the
 	// only this plugin instead of using the downloaded provider plugins
 	if os.Getenv("CQ_PROVIDER_DEBUG") != "" {
-		plugin.GetManager().SetProvider(opts.Name, opts.Provider)
+		plugin.GetManager().AddEmbeddedPlugin(opts.Name, opts.Provider)
 		cmd.Execute()
 		return
 	}

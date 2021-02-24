@@ -45,10 +45,5 @@ func init() {
 	fetchCmd.Flags().String( "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite (env: CQ_DSN)")
 	fetchCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j (env: CQ_DRIVER)")
 	fetchCmd.Flags().String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
-	fetchCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
-	// This is for debug purposes to run plugin as is when developing a new provider or trying to debug it.
-	// This eliminates the gRPC communication and provide easier way to debug providers.
-	fetchCmd.Flags().Bool("runself", false, "run provider without gRPC communication (for debug purposes)")
-
 	rootCmd.AddCommand(fetchCmd)
 }
