@@ -11,7 +11,7 @@ dist/
 vendor/
 bin/
 .release-env
-
 *.tfstate*
 .terraform*
 cloud_sql_proxy
+*.log

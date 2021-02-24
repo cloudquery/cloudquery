@@ -1,15 +1,16 @@
-package cloudqueryclient
+package client
 
 import (
 	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/openpgp"
 	"io"
-	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
@@ -56,6 +57,12 @@ I8Hs4e6+i4/g8yyp1aO9jClsLVJL4Xp9o6O6aYpSDj17MEXhV5U053grDEuvvNCA
 NdQkdLbveQ+US4vVAzRFJjRAvGVq14lRxiTreQ==
 =9Zuc
 -----END PGP PUBLIC KEY BLOCK-----`
+
+
+const (
+	defaultOrganization = "cloudquery"
+	defaultVersion = "latest"
+)
 
 func sha256File(filePath string) (string, error){
 	f, err := os.Open(filePath)
@@ -117,10 +124,9 @@ func validateFile(targetPath string, signaturePath string) error {
 	}
 	defer signature.Close()
 
-	log.Println("validating provider signature...")
+
 	_, err = openpgp.CheckDetachedSignature(keyring, target, signature)
 	if err != nil {
-		log.Println("provider signature validation failed")
 		return err
 	}
 
@@ -128,7 +134,7 @@ func validateFile(targetPath string, signaturePath string) error {
 }
 
 func getProviderPath(name string, version string) (string, error) {
-	org := "cloudquery"
+	org := defaultOrganization
 	split := strings.Split(name, "/")
 	if len(split) == 2 {
 		org = split[0]
@@ -139,39 +145,59 @@ func getProviderPath(name string, version string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	return fmt.Sprintf("%s/.cq/providers/%s/%s/%s-%s-%s", workingDir, org, name, version, runtime.GOOS, runtime.GOARCH), nil
+	extension := ""
+	if runtime.GOOS == "windows" {
+		extension = ".exe"
+	}
+	return filepath.Join(workingDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension)), nil
 }
 
-func downloadProvider(name string, version string) error {
-	org := "cloudquery"
-	split := strings.Split(name, "/")
-	if len(split) == 2 {
-		org = split[0]
-		name = split[1]
+
+func getProviderPluginName(providerName string) string {
+	var suffix = ""
+	if runtime.GOOS == "windows" {
+		suffix = ".exe"
+	}
+	return fmt.Sprintf("cq-provider-%s_%s_%s%s", providerName, runtime.GOOS, runtime.GOARCH, suffix)
+}
+
+func downloadProviderPlugin(pluginName string, version string) error {
+
+	if version == "" {
+		version = defaultVersion
 	}
 
-	isRegistered, err := isProviderRegistered(org, name)
+	logger := log.With().Str("pluginName", pluginName).Str("version", version).Logger()
+
+	logger.Info().Msg("downloading provider plugin")
+
+	org := "cloudquery"
+	split := strings.Split(pluginName, "/")
+	if len(split) == 2 {
+		org = split[0]
+		pluginName = split[1]
+	}
+
+
+	isRegistered, err := isProviderRegistered(org, pluginName)
 	if err != nil {
 		return err
 	}
 	if !isRegistered {
-		return fmt.Errorf("provider %s is not registered at https://hub.cloudquery.io", name)
+		return fmt.Errorf("provider %s is not registered at https://hub.cloudquery.io", pluginName)
 	}
 
 	providerURL := ""
 	checksumsURL := ""
+
+	fullPluginName := getProviderPluginName(pluginName)
 	if version == "" || version == "latest" {
 		version = "latest"
-		providerURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/cq-provider-%s_%s_%s",
-			org, name, name, runtime.GOOS, runtime.GOARCH)
-		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt",
-			org, name)
+		providerURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/%s", org, pluginName, fullPluginName)
+		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt", org, pluginName)
 	} else {
-		providerURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/cq-provider-%s_%s_%s",
-			org, name, version, name, runtime.GOOS, runtime.GOARCH)
-		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/checksums.txt",
-			org, name, version)
+		providerURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", org, pluginName, version, fullPluginName)
+		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/checksums.txt", org, pluginName, version)
 	}
 
 	workingDir, err := os.Getwd()
@@ -179,15 +205,15 @@ func downloadProvider(name string, version string) error {
 		return err
 	}
 
-	pluginDir := fmt.Sprintf("%s/.cq/providers/%s/%s", workingDir, org, name)
+	pluginDir := filepath.Join(workingDir, ".cq", "providers", org, pluginName)
 	err = os.MkdirAll(pluginDir, os.ModePerm)
 	if err != nil {
 		return err
 	}
-	pluginPath := fmt.Sprintf("%s/%s-%s-%s", pluginDir, version, runtime.GOOS, runtime.GOARCH)
+	pluginPath, _ := getProviderPath(pluginName, version)
 	checksumsPath := pluginDir + "/" + version + ".checksums.txt"
 
-	log.Printf("downloading provider plugin %s/%s...\n", org, name)
+	logger.Debug().Str("url", providerURL).Str("path", pluginPath).Msg("downloading provider plugin from url")
 	err = downloadFile(pluginPath, providerURL)
 	if err != nil {
 		return err
@@ -198,20 +224,24 @@ func downloadProvider(name string, version string) error {
 		return err
 	}
 
+	logger.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
 	// download checksums
 	err = downloadFile(checksumsPath, checksumsURL)
 	if err != nil {
 		return err
 	}
 
+	logger.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums signature")
 	// download checksums signature
 	err = downloadFile(checksumsPath + ".sig", checksumsURL + ".sig")
 	if err != nil {
 		return err
 	}
 
+	log.Debug().Str("provider", pluginName).Msg("validating provider signature")
 	err = validateFile(checksumsPath, checksumsPath + ".sig")
 	if err != nil {
+		log.Error().Err(err).Msg("validating provider signature failed")
 		return err
 	}
 

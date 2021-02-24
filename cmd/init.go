@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/cloudquery/cloudquery/cloudqueryclient"
+	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -13,7 +13,7 @@ var initCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		viper.BindPFlag("config_path", cmd.Flags().Lookup("path"))
 		configPath := viper.GetString("config_path")
-		return cloudqueryclient.Init(configPath)
+		return client.Init(configPath)
 	},
 }
 

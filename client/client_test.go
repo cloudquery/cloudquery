@@ -1,6 +1,6 @@
 // +build integration
 
-package cloudqueryclient
+package client
 
 import (
 	"fmt"
@@ -22,12 +22,12 @@ func TestMigrationSQLServers(t *testing.T) {
 	}
 
 	tests := []struct {
-		dockerName string
+		dockerName    string
 		dockerVersion string
-		env []string
-		driver string
-		dsn string
-		port string
+		env           []string
+		driver        string
+		dsn           string
+		port          string
 	}{
 		{"sqlite",
 			"5",
@@ -73,7 +73,7 @@ func TestMigrationSQLServers(t *testing.T) {
 				port = resource.GetPort(tc.port)
 			}
 
-			client, err := New(tc.driver, fmt.Sprintf(tc.dsn, port), true, false)
+			client, err := New(tc.driver, fmt.Sprintf(tc.dsn, port))
 			if err != nil {
 				t.Fatal(err)
 			}
