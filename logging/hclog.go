@@ -9,6 +9,7 @@ import (
 	"reflect"
 )
 
+// Creates hclog.Logger adapter from a zerolog log
 func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
 	return &ZerologKVAdapter{l, name, nil}
 }

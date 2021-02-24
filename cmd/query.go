@@ -17,7 +17,7 @@ var queryCmd = &cobra.Command{
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")
 		queryOutputJsonPath := viper.GetString("output")
-		client, err := client.New(driver, dsn)
+		client, err := client.New("", driver, dsn)
 		if err != nil {
 			return err
 		}

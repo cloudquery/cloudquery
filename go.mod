@@ -6,10 +6,12 @@ require (
 	github.com/aws/aws-lambda-go v1.22.0
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/containerd/continuity v0.0.0-20201208142359-180525291bb7 // indirect
+	github.com/creasty/defaults v1.5.1
 	github.com/golang/protobuf v1.4.3
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-plugin v1.4.0
 	github.com/iancoleman/strcase v0.1.2
+	github.com/imdario/mergo v0.3.11
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635 // indirect
 	github.com/neo4j/neo4j-go-driver/v4 v4.2.1-0.20201216094814-003230e3e54b
 	github.com/olekukonko/tablewriter v0.0.4

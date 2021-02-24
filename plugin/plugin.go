@@ -14,28 +14,23 @@ import (
 
 const defaultOrganization = "cloudquery"
 
-type ManagedPlugin interface {
+type managedPlugin interface {
 	Name() string
 	Version() string
 	Provider() CQProvider
 	Close()
 }
 
-type RemotePlugin struct {
+type remotePlugin struct {
 	name     string
 	version  string
 	client   *plugin.Client
 	provider CQProvider
 }
 
-type EmbeddedPlugin struct {
-	name     string
-	version  string
-	provider CQProvider
-}
-
-func NewRemotePlugin(providerName, version string) (*RemotePlugin, error) {
-	pluginPath, _ := getProviderPath(providerName, version)
+// NewRemotePlugin creates a new remoted plugin using go_plugin
+func newRemotePlugin(providerName, version string) (*remotePlugin, error) {
+	pluginPath, _ := GetProviderPath(providerName, version)
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
@@ -63,7 +58,7 @@ func NewRemotePlugin(providerName, version string) (*RemotePlugin, error) {
 		client.Kill()
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
-	return &RemotePlugin{
+	return &remotePlugin{
 		name:     providerName,
 		version:  version,
 		client:   client,
@@ -71,36 +66,45 @@ func NewRemotePlugin(providerName, version string) (*RemotePlugin, error) {
 	}, nil
 }
 
-func NewEmbeddedPlugin(providerName, version string, p CQProvider) *EmbeddedPlugin {
-	return &EmbeddedPlugin{
-		name:     providerName,
-		version:  version,
-		provider: p,
-	}
-}
+func (r remotePlugin) Name() string { return r.name }
 
-func (e EmbeddedPlugin) Name() string { return e.name }
+func (r remotePlugin) Version() string { return r.version }
 
-func (e EmbeddedPlugin) Version() string { return e.version }
+func (r remotePlugin) Provider() CQProvider { return r.provider }
 
-func (e EmbeddedPlugin) Provider() CQProvider { return e.provider }
-
-func (e EmbeddedPlugin) Close() { return }
-
-func (r RemotePlugin) Name() string { return r.name }
-
-func (r RemotePlugin) Version() string { return r.version }
-
-func (r RemotePlugin) Provider() CQProvider { return r.provider }
-
-func (r RemotePlugin) Close() {
+func (r remotePlugin) Close() {
 	if r.client == nil {
 		return
 	}
 	r.client.Kill()
 }
 
-func getProviderPath(name string, version string) (string, error) {
+type embeddedPlugin struct {
+	name     string
+	version  string
+	provider CQProvider
+}
+
+// NewEmbeddedPlugin is a managed plugin that is created in-process, usually used for debugging purposes
+func newEmbeddedPlugin(providerName, version string, p CQProvider) *embeddedPlugin {
+	return &embeddedPlugin{
+		name:     providerName,
+		version:  version,
+		provider: p,
+	}
+}
+
+func (e embeddedPlugin) Name() string { return e.name }
+
+func (e embeddedPlugin) Version() string { return e.version }
+
+func (e embeddedPlugin) Provider() CQProvider { return e.provider }
+
+func (e embeddedPlugin) Close() { return }
+
+
+// GetProviderPath returns expected path of provider on file system from name and version of plugin
+func GetProviderPath(name string, version string) (string, error) {
 	org := defaultOrganization
 	split := strings.Split(name, "/")
 	if len(split) == 2 {

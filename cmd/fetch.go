@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var verbose bool
 
 var fetchCmd = &cobra.Command{
 	Use:     "fetch",
@@ -21,7 +20,7 @@ var fetchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = viper.BindPFlag("config_path", cmd.Flags().Lookup("path"))
+		err = viper.BindPFlag("configPath", cmd.Flags().Lookup("path"))
 		if err != nil {
 			return err
 		}
@@ -30,13 +29,13 @@ var fetchCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
-		configPath := viper.GetString("config_path")
+		configPath := viper.GetString("configPath")
 
-		client, err := client.New(driver, dsn)
+		c, err := client.New(configPath, driver, dsn)
 		if err != nil {
 			return err
 		}
-		return client.Run(configPath)
+		return c.Run(configPath)
 
 	},
 }
