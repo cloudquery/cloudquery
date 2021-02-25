@@ -115,7 +115,7 @@ func (c *Client)functions(_ interface{}) error {
 		}
 
 		c.db.ChunkedCreate(c.transformCloudFunctions(output.Functions))
-		c.log.Info("populating CloudFunctions", zap.Int("count", len(output.Functions)))
+		c.log.Info("Fetched resources", zap.String("resource", "cloudfunctions.functions"), zap.Int("count", len(output.Functions)))
 		if output.NextPageToken == "" {
 			break
 		}

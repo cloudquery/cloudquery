@@ -24,4 +24,5 @@ var configYaml = `
       - name: iam.service_accounts
       - name: storage.buckets
       - name: sql.instances
+      - name: kms.keys
       - name: crm.projects`

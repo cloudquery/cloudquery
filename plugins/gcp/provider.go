@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/compute"
 	"github.com/cloudquery/cq-provider-gcp/crm"
 	"github.com/cloudquery/cq-provider-gcp/iam"
+	"github.com/cloudquery/cq-provider-gcp/kms"
 	"github.com/cloudquery/cq-provider-gcp/resource"
 	"github.com/cloudquery/cq-provider-gcp/sql"
 	"github.com/cloudquery/cq-provider-gcp/storage"
@@ -48,6 +49,7 @@ var resourceFactory = map[string]NewResourceFunc{
 	"sql":     sql.NewClient,
 	"crm":		crm.NewClient,
 	"cloudfunctions": cloudfunctions.NewClient,
+	"kms": kms.NewClient,
 }
 
 var tablesArr = [][]interface{}{
@@ -70,6 +72,7 @@ var tablesArr = [][]interface{}{
 	storage.BucketTables,
 	sql.DatabaseInstanceTables,
 	cloudfunctions.CloudFunctionTables,
+	kms.CryptoKeyTables,
 }
 
 func (p *Provider) Init(driver string, dsn string, verbose bool) error {
