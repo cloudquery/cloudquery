@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resource"
 	"github.com/cloudquery/cq-provider-gcp/sql"
 	"github.com/cloudquery/cq-provider-gcp/storage"
+	"github.com/cloudquery/cq-provider-gcp/cloudfunctions"
 	"go.uber.org/zap"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/googleapi"
@@ -46,6 +47,7 @@ var resourceFactory = map[string]NewResourceFunc{
 	"storage": storage.NewClient,
 	"sql":     sql.NewClient,
 	"crm":		crm.NewClient,
+	"cloudfunctions": cloudfunctions.NewClient,
 }
 
 var tablesArr = [][]interface{}{
@@ -67,6 +69,7 @@ var tablesArr = [][]interface{}{
 	iam.ServiceAccountTables,
 	storage.BucketTables,
 	sql.DatabaseInstanceTables,
+	cloudfunctions.CloudFunctionTables,
 }
 
 func (p *Provider) Init(driver string, dsn string, verbose bool) error {

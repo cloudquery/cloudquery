@@ -19,6 +19,7 @@ var configYaml = `
       - name: compute.subnetworks
       - name: compute.firewalls
       - name: compute.forwarding_rules
+      - name: cloudfunctions.functions
       - name: iam.project_roles
       - name: iam.service_accounts
       - name: storage.buckets
