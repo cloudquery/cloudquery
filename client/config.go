@@ -1,101 +1,69 @@
 package client
 
 import (
-	"bytes"
-	"fmt"
+	"errors"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/plugin"
+	"github.com/cloudquery/cloudquery/plugin/hub"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 )
 
-// Configuration provider header
-const headerConfig = `providers:`
+// GenerateConfig generates or adds provider configurations templates
+// providers - list of providers to generate configuration for
+// allowAppend - if the configuration file already exists, will append missing providers in an existing configuration
+// force - replace the current configuration with a newly generated configuration based on given providers
+func GenerateConfig(configPath string, providers []string, allowAppend bool, force bool) error {
 
-type Config struct {
-	Providers []ProviderData
-}
-
-type ProviderData struct {
-	Name    string
-	Version string `default:"latest"`
-	Rest    map[string]interface{} `yaml:",inline"`
-}
-
-func Init(configPath string) error {
-
-	log.Debug().Str("path", configPath).Msg("reading configuration file")
-	data, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		return err
-	}
-
-	config := Config{}
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		return err
-	}
-
-	workingDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
-	cqProvidersDir := workingDir + "/.cq/providers/"
-	err = os.MkdirAll(cqProvidersDir, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	for _, provider := range config.Providers {
-		if provider.Name == "" {
-			return fmt.Errorf("provider must contain key: name")
-		}
-		log.Debug().Str("path", configPath).Msg("reading configuration file")
-		err := downloadProviderPlugin(provider.Name, provider.Version)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func GenerateConfig(configPath string, providers []string, force bool) error {
-	var s bytes.Buffer
-	_, err := s.WriteString(headerConfig)
-	if err != nil {
-		return err
-	}
-
-	for _, provider := range providers {
-		err := downloadProviderPlugin(provider, "latest")
-		if err != nil {
-			return err
-		}
-		p, err := plugin.GetManager().GetOrCreateProvider(provider, "latest")
-		if err != nil {
-			return err
-		}
-		log.Debug().Str("provider", provider).Msg("Building provider configuration yaml")
-		configYaml, err := p.GenConfig()
-		if err != nil {
-			_ = plugin.GetManager().KillProvider(provider)
-			return err
-		}
-		s.WriteString(configYaml)
-		if err := plugin.GetManager().KillProvider(provider); err != nil {
-			return err
-		}
-	}
-	s.WriteString("\n")
-
-	if _, err := os.Stat(configPath); err == nil && !force {
-		log.Error().Str("path", configPath).Msg("configuration file already exists. Either delete it, specify other path via --path or use --force")
+	var cfg *config.Config
+	cfg, err := config.Parse(configPath)
+	if err == nil && !allowAppend{
+		log.Error().Str("path", configPath).Msg("configuration file already exists. Either delete it, specify other path via --path or use --append/force to append/replace to existing providers")
 		return os.ErrExist
-	} else if os.IsNotExist(err) || force {
-		return ioutil.WriteFile(configPath, s.Bytes(), 0644)
-	} else {
+	}
+	// if configuration is null, or we are forcing a remake of the configuration
+	if cfg == nil || force {
+		cfg = &config.Config{Providers: make([]config.Provider, 0, len(providers))}
+	}
+
+	pluginHub := hub.NewHub(false)
+	for _, provider := range providers {
+		if cfg.ProviderExists(provider) {
+			log.Err(err).Str("provider", provider).Msg("provider already exists in configuration, use --force to replace")
+			return errors.New("provider already exists in configuration, use --force to replace")
+		}
+
+		providerCfg, err := getProviderConfig(pluginHub, provider)
+		if err != nil {
+			log.Err(err).Str("provider", provider).Msg("failed to get providers configuration")
+			return err
+		}
+		cfg.Providers = append(cfg.Providers, providerCfg.Providers...)
+	}
+	data, err := yaml.Marshal(cfg)
+	if err != nil {
 		return err
 	}
+	return ioutil.WriteFile(configPath, data, 0644)
+}
+
+
+func getProviderConfig(hub hub.Hub, providerName string) (config.Config, error){
+	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil{
+		return config.Config{}, err
+	}
+	p, err := plugin.GetManager().GetOrCreateProvider(providerName, "latest")
+	if err != nil {
+		return config.Config{}, err
+	}
+	defer plugin.GetManager().KillProvider(providerName)
+
+	log.Debug().Str("provider", providerName).Msg("Building provider configuration yaml")
+	configYaml, err := p.GenConfig()
+	if err != nil {
+		return config.Config{}, err
+	}
+	return config.LoadFromString(configYaml)
 }

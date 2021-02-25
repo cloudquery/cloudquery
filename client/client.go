@@ -6,8 +6,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/plugin"
+	"github.com/cloudquery/cloudquery/plugin/hub"
 	"github.com/olekukonko/tablewriter"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/errgroup"
@@ -29,48 +31,59 @@ type PolicyConfig struct {
 	}
 }
 
+type QueryResult struct {
+	Name          string
+	CheckPassed   bool
+	ResultHeaders []string
+	ResultRows    [][]string
+}
+
+
 type Client struct {
 	driver  string
 	dsn     string
-	verbose string
 	db      *database.Database
-	runSelf bool
-	config  Config
+	// config is the client's configuration regarding all providers, client details etc'
+	config  *config.Config
+	// access to CloudQuery plugin hub
+	hub *hub.Hub
 }
 
-func New(driver string, dsn string) (*Client, error) {
-	client := Client{
-		driver:  driver,
-		dsn:     dsn,
+func New(configPath, driver string, dsn string) (*Client, error) {
+	cfg, err := config.Parse(configPath)
+	if err != nil {
+		return nil, err
 	}
-	return &client, nil
+	return &Client{
+		driver: driver,
+		dsn:    dsn,
+		hub:    hub.NewHub(false),
+		config: cfg,
+	}, nil
+}
+
+func (c Client) Initialize() error {
+	// Initialize every provider by downloading the plugin
+	for _, provider := range c.config.Providers {
+		if provider.Name == "" {
+			return fmt.Errorf("bad configuration file: provider must contain key 'name'")
+		}
+		if err:= c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (c *Client) Run(path string) error {
-	_, err := os.Stat(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return fmt.Errorf("%s doesn't exist. you can create one via 'gen config' command", path)
-		}
-		return err
-	}
 
-	data, err := ioutil.ReadFile(path)
+	cfg, err := config.Parse(path)
 	if err != nil {
 		return err
 	}
-
-	config := Config{}
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		return err
-	}
-	// New code
 	manager := plugin.GetManager()
-	// Shutdown all plugins once we finish our run
-	defer plugin.GetManager().Shutdown()
 	errGroup, _ := errgroup.WithContext(context.Background())
-	for _, provider := range config.Providers {
+	for _, provider := range cfg.Providers {
 
 		if provider.Name == "" {
 			log.Error().Msg("provider must contain key 'name' in configuration")
@@ -144,29 +157,19 @@ func (c *Client) RunQuery(path string, outputPath string) error {
 		return err
 	}
 
-	config := PolicyConfig{}
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
+	var policyConfig PolicyConfig
+	if err := yaml.Unmarshal(data, &policyConfig); err != nil {
 		return err
 	}
 
-	err = c.createViews(&config)
-	if err != nil {
+	if err = c.createViews(&policyConfig); err != nil {
 		return err
 	}
 
-	err = c.runQueries(&config, outputPath)
-	if err != nil {
+	if 	err = c.runQueries(&policyConfig, outputPath); err != nil {
 		return err
 	}
 	return nil
-}
-
-type QueryResult struct {
-	Name          string
-	CheckPassed   bool
-	ResultHeaders []string
-	ResultRows    [][]string
 }
 
 func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {

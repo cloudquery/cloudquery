@@ -10,16 +10,19 @@ var (
 	instance *Manager
 )
 
+// Manager handles CQProviders that can be either embedded (self-run provider for example) or remote using go_plugin
+// Important: manager is currently not thread safe
 type Manager struct {
-	clients map[string]ManagedPlugin
+	clients map[string]managedPlugin
 }
 
+// Shutdown closes all clients and cleans the managed clients
 func (p *Manager) Shutdown() {
 	for _, c := range p.clients {
 		c.Close()
 	}
 	// create fresh map
-	p.clients = make(map[string]ManagedPlugin)
+	p.clients = make(map[string]managedPlugin)
 }
 
 func (p *Manager) GetProvider(providerName, version string) (CQProvider, error) {
@@ -31,7 +34,7 @@ func (p *Manager) GetProvider(providerName, version string) (CQProvider, error) 
 }
 
 func (p *Manager) AddEmbeddedPlugin(providerName string, cqp CQProvider) {
-	p.clients[providerName] = NewEmbeddedPlugin(providerName, "latest", cqp)
+	p.clients[providerName] = newEmbeddedPlugin(providerName, "latest", cqp)
 }
 
 func (p *Manager) KillProvider(providerName string) error {
@@ -55,7 +58,7 @@ func (p *Manager) GetOrCreateProvider(providerName, version string) (CQProvider,
 }
 
 func (p *Manager) createProvider(providerName, version string) (CQProvider, error) {
-	mPlugin, err := NewRemotePlugin(providerName, version)
+	mPlugin, err := newRemotePlugin(providerName, version)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +70,7 @@ func GetManager() *Manager {
 	doOnce.Do(
 		func() {
 			instance = &Manager{
-				clients: make(map[string]ManagedPlugin),
+				clients: make(map[string]managedPlugin),
 			}
 		})
 	return instance
