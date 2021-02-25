@@ -46,15 +46,15 @@ type Client struct {
 	// config is the client's configuration regarding all providers, client details etc'
 	config  *config.Config
 	// access to CloudQuery plugin hub
-	hub hub.Hub
+	hub *hub.Hub
 }
 
-func New(configPath, driver string, dsn string) (Client, error) {
+func New(configPath, driver string, dsn string) (*Client, error) {
 	cfg, err := config.Parse(configPath)
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
-	return Client{
+	return &Client{
 		driver: driver,
 		dsn:    dsn,
 		hub:    hub.NewHub(false),

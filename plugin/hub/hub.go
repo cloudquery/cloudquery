@@ -70,12 +70,12 @@ type Hub struct {
 	pluginDirectory string
 }
 
-func NewHub(skipRegistry bool) Hub {
+func NewHub(skipRegistry bool) *Hub {
 	dir, err := os.Getwd()
 	if err != nil {
 		dir = "."
 	}
-	return Hub{
+	return &Hub{
 		registryURL:     defaultHub,
 		skipRegistry:    skipRegistry,
 		pluginDirectory: dir,
