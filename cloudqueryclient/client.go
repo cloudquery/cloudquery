@@ -228,6 +228,11 @@ func (c *Client) RunQuery(path string, outputPath string) error {
 		return err
 	}
 
+	c.db, err = database.Open(c.driver, c.dsn)
+	if err != nil {
+		return err
+	}
+
 	if c.db.Driver == "neo4j" {
 		return fmt.Errorf("query command doesn't support neo4j driver yet")
 	}
