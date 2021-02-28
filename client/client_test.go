@@ -1,9 +1,8 @@
-// +build integration
-
-package client
+package client_test
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/client"
 	"github.com/ory/dockertest/v3"
 	"log"
 	"testing"
@@ -15,9 +14,11 @@ func TestMigrationSQLServers(t *testing.T) {
 	if err != nil {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
-
-	err = Init("./testdata/config.yml")
+	c, err := client.New("./testdata/config.yml", "", "")
 	if err != nil {
+		t.Fatal(err)
+	}
+	if err := c.Initialize(); err != nil {
 		t.Fatal(err)
 	}
 
@@ -73,7 +74,7 @@ func TestMigrationSQLServers(t *testing.T) {
 				port = resource.GetPort(tc.port)
 			}
 
-			client, err := New(tc.driver, fmt.Sprintf(tc.dsn, port))
+			client, err := client.New("./testdata/config.yml", tc.driver, fmt.Sprintf(tc.dsn, port))
 			if err != nil {
 				t.Fatal(err)
 			}
