@@ -9,3 +9,4 @@ bin/
 .release-env
 cq-provider-gcp
 *.exe
+*.log
