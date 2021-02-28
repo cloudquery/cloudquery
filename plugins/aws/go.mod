@@ -32,5 +32,6 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
 	github.com/mitchellh/mapstructure v1.3.3
 	go.uber.org/zap v1.16.0
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
