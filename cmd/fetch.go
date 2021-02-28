@@ -11,6 +11,19 @@ var verbose bool
 var fetchCmd = &cobra.Command{
 	Use:     "fetch",
 	Short:   "Fetch data from configured cloud APIs to specified SQL database",
+	Long: `Examples: 
+# Fetch to SQLite
+./cloudquery fetch
+
+# Fetch to MySQL
+./cloudquery fetch --driver mysql --dsn "root:pass@tcp(127.0.0.1:3306)/dbname"
+
+# Fetch to PostgreSQL
+./cloudquery fetch --driver postgresql --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+
+# Fetch to SQL Server
+./cloudquery fetch --driver sqlserver --dsn "sqlserver://sa:yourStrong(!)Password@localhost:1433?database=cloudquery"
+`,
 	Version: Version,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		err := viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
