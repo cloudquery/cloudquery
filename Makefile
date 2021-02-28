@@ -39,7 +39,7 @@ test:
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
 		golang:1.15 \
-		go test -v ./... -tags=integration
+		go test -v ./... 
 
 .PHONY: build
 build: config
