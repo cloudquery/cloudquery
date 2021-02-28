@@ -26,12 +26,12 @@ import (
 	"github.com/cloudquery/cq-provider-aws/redshift"
 	"github.com/cloudquery/cq-provider-aws/s3"
 	"github.com/cloudquery/cq-provider-aws/sns"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/sdk"
 	"github.com/cloudquery/cq-provider-aws/autoscaling"
 	"github.com/cloudquery/cq-provider-aws/cloudtrail"
-	"log"
 	"strings"
 	"sync"
 
@@ -285,12 +285,18 @@ func (p *Provider) Fetch(data []byte) error {
 			}
 
 			p.initRegionalClients()
-			var wg sync.WaitGroup
+			g := errgroup.Group{}
 			for _, resource := range p.config.Resources {
-				wg.Add(1)
-				go p.collectResource(&wg, resource.Name, resource.Other)
+				resourceName := resource.Name
+				resourceConfig := resource.Other
+				g.Go(func() error {
+					return p.collectResource(resourceName, resourceConfig)
+				})
 			}
-			wg.Wait()
+			if err := g.Wait(); err != nil {
+				return err
+			}
+
 		}
 		globalCollectedResources = map[string]bool{}
 		p.resourceClients = map[string]resource.ClientInterface{}
@@ -309,11 +315,10 @@ func (p *Provider) initRegionalClients() {
 
 var lock = sync.RWMutex{}
 
-func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, config interface{}) {
-	defer wg.Done()
+func (p *Provider) collectResource(fullResourceName string, config interface{}) error {
 	resourcePath := strings.Split(fullResourceName, ".")
 	if len(resourcePath) != 2 {
-		log.Fatalf("resource %s should be in format {service}.{resource}", fullResourceName)
+		return fmt.Errorf("resource %s should be in format {service}.{resource}", fullResourceName)
 	}
 	service := resourcePath[0]
 	resourceName := resourcePath[1]
@@ -322,7 +327,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 		lock.Lock()
 		if globalCollectedResources[fullResourceName] {
 			lock.Unlock()
-			return
+			return nil
 		}
 		globalCollectedResources[fullResourceName] = true
 		if p.resourceClients[service] == nil {
@@ -334,7 +339,7 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 	}
 
 	if p.resourceClients[service] == nil {
-		log.Fatalf("unsupported service %s for resource %s", service, resourceName)
+		return fmt.Errorf("unsupported service %s for resource %s", service, resourceName)
 	}
 
 	err := p.resourceClients[service].CollectResource(resourceName, config)
@@ -344,14 +349,15 @@ func (p *Provider) collectResource(wg *sync.WaitGroup, fullResourceName string, 
 			switch ae.ErrorCode() {
 			case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
 				p.log.Info("Skipping resource. Access denied", zap.String("account_id", p.accountID), zap.String("region", p.region), zap.String("resource", fullResourceName), zap.Error(err))
-				return
+				return nil
 			case "OptInRequired", "SubscriptionRequiredException":
 				p.log.Info("Skipping resource. Service disabled", zap.String("account_id", p.accountID), zap.String("region", p.region), zap.String("resource", fullResourceName), zap.Error(err))
-				return
+				return nil
 			}
 		}
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
 
 func main() {
