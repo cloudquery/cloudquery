@@ -28,10 +28,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.1.1
 	github.com/aws/smithy-go v1.1.0
-	github.com/cloudquery/cloudquery v0.9.6
+	github.com/cloudquery/cloudquery v0.10.0
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
+	github.com/hashicorp/go-hclog v0.15.0
 	github.com/mitchellh/mapstructure v1.3.3
-	go.uber.org/zap v1.16.0
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )

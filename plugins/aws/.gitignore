@@ -11,3 +11,5 @@ vendor/
 bin/
 .release-env
 cq-provider-aws
+*.exe
+*.log
