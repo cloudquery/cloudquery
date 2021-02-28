@@ -50,7 +50,7 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 }
 
 
-func getProviderConfig(hub hub.Hub, providerName string) (config.Config, error){
+func getProviderConfig(hub *hub.Hub, providerName string) (config.Config, error){
 	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil{
 		return config.Config{}, err
 	}
