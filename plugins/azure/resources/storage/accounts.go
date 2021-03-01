@@ -5,8 +5,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"time"
 )
 
@@ -416,7 +416,7 @@ func MigrateAccount(db *database.Database) error {
 	return nil
 }
 
-func Accounts(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Accounts(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config AccountConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -431,15 +431,9 @@ func Accounts(subscriptionID string, auth autorest.Authorizer, db *database.Data
 	for output.NotDone() {
 		vals := output.Values()
 		db.ChunkedCreate(transformAccounts(vals))
-		log.Info("populating Accounts", zap.Int("count", len(vals)))
+		log.Info("populating Accounts", "count", len(vals))
 		output.NextWithContext(ctx)
 	}
-
-	//db.Where("project_id = ?", c.projectID).Delete(&Account{})
-	//var tValues []*Account
-	//for _, items := range output.Items {
-	//	tValues = append(tValues, transformAccounts(items)...)
-	//}
 
 	return nil
 }

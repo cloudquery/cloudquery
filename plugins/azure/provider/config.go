@@ -1,4 +1,4 @@
-package main
+package provider
 
 var configYaml = `
   - name: azure

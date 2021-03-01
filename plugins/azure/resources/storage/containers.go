@@ -5,8 +5,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"time"
 )
 
@@ -185,7 +185,7 @@ func MigrateListContainerItem(db *database.Database) error {
 	return nil
 }
 
-func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config ListContainerItemConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -202,7 +202,7 @@ func ListContainerItems(subscriptionID string, auth autorest.Authorizer, db *dat
 	for output.NotDone() {
 		vals := output.Values()
 		db.ChunkedCreate(transformListContainerItems(vals))
-		log.Info("populating ListContainerItems", zap.Int("count", len(vals)))
+		log.Info("populating ListContainerItems", "count", len(vals))
 		output.NextWithContext(ctx)
 	}
 

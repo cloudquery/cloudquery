@@ -1,27 +1,23 @@
-package main
+package provider
 
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cloudquery/cqlog"
-	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/sdk"
-	"github.com/cloudquery/cq-provider-azure/compute"
-	"github.com/cloudquery/cq-provider-azure/keyvault"
-	"github.com/cloudquery/cq-provider-azure/mysql"
-	"github.com/cloudquery/cq-provider-azure/postgresql"
-	"github.com/cloudquery/cq-provider-azure/resources"
-	"github.com/cloudquery/cq-provider-azure/sql"
-	"gopkg.in/yaml.v3"
-
-	//"github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"go.uber.org/zap"
+	"github.com/cloudquery/cloudquery/database"
+	"github.com/cloudquery/cq-provider-azure/resources/compute"
+	"github.com/cloudquery/cq-provider-azure/resources/keyvault"
+	"github.com/cloudquery/cq-provider-azure/resources/mysql"
+	"github.com/cloudquery/cq-provider-azure/resources/postgresql"
+	"github.com/cloudquery/cq-provider-azure/resources/resources"
+	"github.com/cloudquery/cq-provider-azure/resources/sql"
+	"github.com/hashicorp/go-hclog"
+	"gopkg.in/yaml.v3"
 )
 
-type ResourceFunc func(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error
+type ResourceFunc func(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error
 
 type Provider struct {
 	region         string
@@ -29,7 +25,7 @@ type Provider struct {
 	config         Config
 	subscriptionID string
 	resourceFuncs  map[string]ResourceFunc
-	log            *zap.Logger
+	Logger         hclog.Logger
 }
 
 type Config struct {
@@ -57,8 +53,6 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 		return err
 	}
 
-	zapLogger, err := cqlog.NewLogger(verbose)
-	p.log = zapLogger
 	p.resourceFuncs = map[string]ResourceFunc{
 		"resources.groups":   resources.Groups,
 		"sql.servers":        sql.Servers,
@@ -68,7 +62,7 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 		"compute.disks":      compute.Disks,
 		"keyvault.vaults":    keyvault.Vaults,
 	}
-	p.log.Info("Creating tables if needed")
+	p.Logger.Info("Creating tables if needed")
 	for _, tables := range TablesArr {
 		err := p.db.AutoMigrate(tables...)
 		if err != nil {
@@ -91,7 +85,7 @@ func (p *Provider) Fetch(data []byte) error {
 	}
 
 	if len(p.config.Resources) == 0 {
-		p.log.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/azure/tables-reference")
+		p.Logger.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/azure/tables-reference")
 		return nil
 	}
 
@@ -116,32 +110,25 @@ func (p *Provider) Fetch(data []byte) error {
 				return err
 			}
 		}
-		p.log.Info(fmt.Sprintf("No subscriptions specified going to use: %v", subscriptions))
+		p.Logger.Info(fmt.Sprintf("No subscriptions specified going to use: %v", subscriptions))
 	} else {
 		subscriptions = p.config.Subscriptions
 	}
 
 	for _, subscriptionID := range subscriptions {
-		logger := p.log.With(zap.String("subscription_id", subscriptionID))
-		//var wg sync.WaitGroup
+		logger := p.Logger.With("subscription_id", subscriptionID)
 		for _, resource := range p.config.Resources {
 			f := p.resourceFuncs[resource.Name]
 			if f == nil {
 				return fmt.Errorf("resource %s is not supported", resource.Name)
 			}
-			logger := logger.With(zap.String("resource", resource.Name))
-			//wg.Add(1)
+			logger := logger.With("resource", resource.Name)
 			err := f(subscriptionID, azureAuth, p.db, logger, resource.Other)
 			if err != nil {
 				return err
 			}
 		}
-		//wg.Wait()
 	}
 
 	return nil
-}
-
-func main() {
-	sdk.ServePlugin(&Provider{})
 }

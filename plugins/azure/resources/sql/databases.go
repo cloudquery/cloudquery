@@ -6,8 +6,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"regexp"
 	"time"
 )
@@ -186,7 +186,7 @@ var DatabaseTables = []interface{}{
 	&DatabaseTag{},
 }
 
-func Databases(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Databases(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config DatabaseConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -204,7 +204,7 @@ func Databases(subscriptionID string, auth autorest.Authorizer, db *database.Dat
 	resourceGroupRe := regexp.MustCompile("resourceGroups/([a-zA-Z0-9-_]+)/")
 	db.Where("subscription_id", subscriptionID).Delete(DatabaseTables...)
 	if len(*serverResult.Value) == 0 {
-		log.Info("Fetched resources", zap.Int("count", 0))
+		log.Info("Fetched resources", "count", 0)
 	}
 	for _, server := range *serverResult.Value {
 		svc := sql.NewDatabasesClient(subscriptionID)
@@ -219,7 +219,7 @@ func Databases(subscriptionID string, auth autorest.Authorizer, db *database.Dat
 		}
 		tValues := transformDatabases(subscriptionID, output.Value)
 		db.ChunkedCreate(tValues)
-		log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		log.Info("Fetched resources", "count", len(tValues))
 	}
 
 	return nil

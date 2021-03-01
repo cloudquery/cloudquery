@@ -7,8 +7,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -102,7 +102,7 @@ func MigrateUser(db *gorm.DB) error {
 	return nil
 }
 
-func Users(auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Users(auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config UserConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -138,7 +138,7 @@ func Users(auth autorest.Authorizer, db *database.Database, log *zap.Logger, gCo
 	//	tValues = append(tValues, transformUsers(items)...)
 	//}
 	db.ChunkedCreate(tValues)
-	log.Info("populating Users", zap.Int("count", len(tValues)))
+	log.Info("populating Users", "count", len(tValues))
 
 	return nil
 }

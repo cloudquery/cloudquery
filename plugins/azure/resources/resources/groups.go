@@ -5,8 +5,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 )
 
 type Group struct {
@@ -27,6 +27,7 @@ func (Group) TableName() string {
 }
 
 type GroupTag struct {
+	ID uint `gorm:"primarykey"`
 	GroupID uint
 	Key     string
 	Value   *string
@@ -76,7 +77,7 @@ var GroupTables = []interface{}{
 	&GroupTag{},
 }
 
-func Groups(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Groups(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config GroupConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -100,7 +101,7 @@ func Groups(subscriptionID string, auth autorest.Authorizer, db *database.Databa
 		}
 		tValues := transformGroups(subscriptionID, &values)
 		db.ChunkedCreate(tValues)
-		log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		log.Info("Fetched resources", "count", len(tValues))
 	}
 
 	return nil

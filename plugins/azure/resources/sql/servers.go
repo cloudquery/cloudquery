@@ -5,8 +5,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 )
 
 type Server struct {
@@ -100,7 +100,7 @@ var ServerTables = []interface{}{
 	&ServerTag{},
 }
 
-func Servers(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Servers(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config ServerConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -118,7 +118,7 @@ func Servers(subscriptionID string, auth autorest.Authorizer, db *database.Datab
 	db.Where("subscription_id", subscriptionID).Delete(ServerTables...)
 	tValues := transformServers(subscriptionID, output.Value)
 	db.ChunkedCreate(tValues)
-	log.Info("Fetched resources", zap.Int("count", len(tValues)))
+	log.Info("Fetched resources", "count", len(tValues))
 
 	return nil
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cq-provider-azure/utils"
+	"github.com/hashicorp/go-hclog"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"regexp"
 )
 
@@ -385,7 +385,7 @@ var VaultTables = []interface{}{
 	&KeyTag{},
 }
 
-func Vaults(subscriptionID string, auth autorest.Authorizer, db *database.Database, log *zap.Logger, gConfig interface{}) error {
+func Vaults(subscriptionID string, auth autorest.Authorizer, db *database.Database, log hclog.Logger, gConfig interface{}) error {
 	var config VaultConfig
 	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
@@ -403,7 +403,7 @@ func Vaults(subscriptionID string, auth autorest.Authorizer, db *database.Databa
 
 	db.Where("subscription_id", subscriptionID).Delete(VaultTables...)
 	if !output.NotDone() {
-		log.Info("Fetched resources", zap.Int("count", 0))
+		log.Info("Fetched resources", "count", 0)
 	}
 	for output.NotDone() {
 		values := output.Values()
@@ -416,7 +416,7 @@ func Vaults(subscriptionID string, auth autorest.Authorizer, db *database.Databa
 			return err
 		}
 		db.ChunkedCreate(tValues)
-		log.Info("Fetched resources", zap.Int("count", len(tValues)))
+		log.Info("Fetched resources", "count", len(tValues))
 	}
 
 	return nil

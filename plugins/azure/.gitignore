@@ -10,3 +10,4 @@ vendor/
 bin/
 .release-env
 cq-provider-azure
+*.log
