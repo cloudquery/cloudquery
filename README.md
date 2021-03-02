@@ -63,21 +63,46 @@ First generate a `config.yml` file that will describe which resources you want c
 and transform resources to the specified SQL database by running the following command:
  
 ```shell script
-./cloudquery gen config aws # choose one or more from: [aws azure gcp okta]
-# ./cloudquery gen config gcp okta # This will generate a config containing gcp and okta providers
-# ./cloudquery gen config --help # Show all possible auto generated configs and flags
+cloudquery gen config aws # choose one or more from: [aws azure gcp okta]
+# cloudquery gen config gcp okta # This will generate a config containing gcp and okta providers
+# cloudquery gen config --help # Show all possible auto generated configs and flags
  ```
 
 Once your `config.yml` is generated run the following command to fetch the resources:
 
 ```shell script
-./cloudquery init
-./cloudquery fetch
+cloudquery init
+cloudquery fetch
 # you can choose a database backend via --driver sqlite/mysql/postgresql/sqlserver/neo4j --dsn <connection_string>
-# ./cloudquery fetch --help # Show all possible fetch flags
+# cloudquery fetch --help # Show all possible fetch flags
 ```
 
-If you used the default `sqlite` provider you run the following example queries from `sqlite` shell
+Using sqlite
+
+```shell script
+sqlite3 cloudquery.db
+SQLite version 3.28.0 2019-04-15 14:49:49
+Enter ".help" for usage hints.
+sqlite> .databases
+main: /Users/user/git/cloudquery/cloudquery.db
+sqlite> .tables
+...
+aws_ec2_images
+aws_s3_buckets
+...
+sqlite> .schema --indent aws_ec2_images
+CREATE TABLE `aws_ec2_images`(
+  `id` integer,
+  `account_id` text,
+  `region` text,
+  `architecture` text,
+  `creation_date` text,
+  `description` text,
+  `ena_support` numeric,
+...
+```
+
+Run the following example queries from `sqlite` shell
 
 List ec2_images
 ```sql
@@ -99,8 +124,8 @@ policy pack (it is under active development, so it doesn't cover the whole spec 
 To run AWS CIS pack enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
 
 ```shell script
-./cloudquery gen policy aws_cis
-./cloudquery query 
+cloudquery gen policy aws_cis
+cloudquery query 
 ``` 
 
 You can also create your own policy file. E.g.:
