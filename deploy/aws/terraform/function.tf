@@ -40,11 +40,15 @@ resource "aws_s3_bucket_object" "file_upload" {
   key    = "lambda-functions/cloudquery.zip"
   source = data.archive_file.zip.output_path
 
+  etag   = filemd5(data.archive_file.zip.output_path)
+
+  depends_on = [aws_s3_bucket.deploy_bucket]
+
 }
 
 data "archive_file" "zip" {
   type        = "zip"
-  source_dir = "../../../bin"
+  source_file = "../../../bin/cloudquery"
   output_path = "cloudquery.zip"
 }
 
@@ -88,7 +92,8 @@ resource "aws_lambda_function" "cloudquery" {
   environment {
     variables = {
       CQ_DRIVER= "mysql",
-      CQ_DSN = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/cloudquery"
+      CQ_DSN = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/cloudquery",
+      CQ_PLUGIN_DIR = "/tmp"
     }
   }
 }
