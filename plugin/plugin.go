@@ -111,14 +111,19 @@ func GetProviderPath(name string, version string) (string, error) {
 		org = split[0]
 		name = split[1]
 	}
-
-	workingDir, err := os.Getwd()
-	if err != nil {
-		return "", err
+	var pluginDir string
+	var err error
+	pluginDir = os.Getenv("CQ_PLUGIN_DIR")
+	if pluginDir == "" {
+		pluginDir, err = os.Getwd()
+		if err != nil {
+			return "", err
+		}
 	}
+
 	extension := ""
 	if runtime.GOOS == "windows" {
 		extension = ".exe"
 	}
-	return filepath.Join(workingDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension)), nil
+	return filepath.Join(pluginDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension)), nil
 }
