@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
@@ -211,20 +212,20 @@ func (p *Provider) Fetch(data []byte) error {
 			RoleARN: "default",
 		})
 	}
-
+	retryOpt := config.WithRetryer(func() aws.Retryer {return retry.NewStandard()})
 	for _, account := range p.config.Accounts {
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
-			p.cfg, err = config.LoadDefaultConfig(ctx)
+			p.cfg, err = config.LoadDefaultConfig(ctx, retryOpt)
 			if err != nil {
 				return err
 			}
 			p.cfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(p.cfg), account.RoleARN)
 
 		} else if account.ID != "default" {
-			p.cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID))
+			p.cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID), retryOpt)
 		} else {
-			p.cfg, err = config.LoadDefaultConfig(ctx)
+			p.cfg, err = config.LoadDefaultConfig(ctx, retryOpt)
 		}
 		if err != nil {
 			return err
