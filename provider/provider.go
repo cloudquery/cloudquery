@@ -219,11 +219,7 @@ func (p *Provider) Fetch(data []byte) error {
 			if err != nil {
 				return err
 			}
-			provider := stscreds.NewAssumeRoleProvider(sts.NewFromConfig(p.cfg), account.RoleARN)
-			_, err = provider.Retrieve(ctx)
-			if err != nil {
-				return err
-			}
+			p.cfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(p.cfg), account.RoleARN)
 
 		} else if account.ID != "default" {
 			p.cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID))
