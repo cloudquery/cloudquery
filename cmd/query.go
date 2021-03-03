@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -17,7 +18,7 @@ var queryCmd = &cobra.Command{
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")
 		queryOutputJsonPath := viper.GetString("output")
-		client, err := client.New("", driver, dsn)
+		client, err := client.New(driver, dsn, &config.Config{})
 		if err != nil {
 			return err
 		}

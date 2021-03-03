@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/cloudquery/cloudquery/plugin/hub"
@@ -50,20 +51,20 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 }
 
 
-func getProviderConfig(hub *hub.Hub, providerName string) (config.Config, error){
+func getProviderConfig(hub *hub.Hub, providerName string) (*config.Config, error){
 	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil{
-		return config.Config{}, err
+		return &config.Config{}, err
 	}
 	p, err := plugin.GetManager().GetOrCreateProvider(providerName, "latest")
 	if err != nil {
-		return config.Config{}, err
+		return &config.Config{}, err
 	}
 	defer plugin.GetManager().KillProvider(providerName)
 
 	log.Debug().Str("provider", providerName).Msg("Building provider configuration yaml")
 	configYaml, err := p.GenConfig()
 	if err != nil {
-		return config.Config{}, err
+		return &config.Config{}, err
 	}
-	return config.LoadFromString(configYaml)
+	return config.LoadFromString(fmt.Sprintf("providers:\n%s", configYaml))
 }

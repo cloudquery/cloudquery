@@ -49,11 +49,7 @@ type Client struct {
 	hub *hub.Hub
 }
 
-func New(configPath, driver string, dsn string) (*Client, error) {
-	cfg, err := config.Parse(configPath)
-	if err != nil {
-		return nil, err
-	}
+func New(driver, dsn string, cfg *config.Config) (*Client, error) {
 	return &Client{
 		driver: driver,
 		dsn:    dsn,
@@ -75,15 +71,13 @@ func (c Client) Initialize() error {
 	return nil
 }
 
-func (c *Client) Run(path string) error {
-
-	cfg, err := config.Parse(path)
-	if err != nil {
-		return err
+func (c *Client) Run() error {
+	if c.config == nil {
+		log.Fatal().Msg("No config initialized")
 	}
 	manager := plugin.GetManager()
 	errGroup, _ := errgroup.WithContext(context.Background())
-	for _, provider := range cfg.Providers {
+	for _, provider := range c.config.Providers {
 
 		if provider.Name == "" {
 			log.Error().Msg("provider must contain key 'name' in configuration")

@@ -3,6 +3,7 @@ package client_test
 import (
 	"fmt"
 	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/ory/dockertest/v3"
 	"log"
 	"testing"
@@ -14,7 +15,11 @@ func TestMigrationSQLServers(t *testing.T) {
 	if err != nil {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
-	c, err := client.New("./testdata/config.yml", "", "")
+	cfg, err := config.Parse("./testdata/config.yml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := client.New("", "", cfg)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,13 +78,16 @@ func TestMigrationSQLServers(t *testing.T) {
 				time.Sleep(20 * time.Second)
 				port = resource.GetPort(tc.port)
 			}
-
-			client, err := client.New("./testdata/config.yml", tc.driver, fmt.Sprintf(tc.dsn, port))
+			cfg, err := config.Parse("./testdata/config.yml")
+			if err != nil {
+				t.Fatal(err)
+			}
+			client, err := client.New(tc.driver, fmt.Sprintf(tc.dsn, port), cfg)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			testErr := client.Run("./testdata/config.yml")
+			testErr := client.Run()
 
 			if tc.dockerName != "sqlite" {
 				if err := pool.Purge(resource); err != nil {
