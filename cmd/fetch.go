@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"log"
@@ -36,12 +37,16 @@ var fetchCmd = &cobra.Command{
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		configPath := viper.GetString("configPath")
-
 		c, err := client.New(driver, dsn)
 		if err != nil {
 			return err
 		}
-		return c.Run(configPath)
+		cfg, err := config.Parse(configPath)
+		if err != nil {
+			return err
+		}
+
+		return c.Run(cfg)
 
 	},
 }
