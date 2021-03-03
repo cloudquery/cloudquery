@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
@@ -10,6 +11,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/mysql"
+	"github.com/cloudquery/cq-provider-azure/resources/network"
 	"github.com/cloudquery/cq-provider-azure/resources/postgresql"
 	"github.com/cloudquery/cq-provider-azure/resources/resources"
 	"github.com/cloudquery/cq-provider-azure/resources/sql"
@@ -44,9 +46,10 @@ var TablesArr = [][]interface{}{
 	mysql.ServerTables,
 	compute.DiskTables,
 	keyvault.VaultTables,
+	network.VirtualNetworkTables,
 }
 
-func (p *Provider)Init(driver string, dsn string, verbose bool) error {
+func (p *Provider) Init(driver string, dsn string, verbose bool) error {
 	var err error
 	p.db, err = database.Open(driver, dsn)
 	if err != nil {
@@ -54,13 +57,14 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 	}
 
 	p.resourceFuncs = map[string]ResourceFunc{
-		"resources.groups":   resources.Groups,
-		"sql.servers":        sql.Servers,
-		"sql.databases":      sql.Databases,
-		"postgresql.servers": postgresql.Servers,
-		"mysql.servers":      mysql.Servers,
-		"compute.disks":      compute.Disks,
-		"keyvault.vaults":    keyvault.Vaults,
+		"resources.groups":         resources.Groups,
+		"sql.servers":              sql.Servers,
+		"sql.databases":            sql.Databases,
+		"postgresql.servers":       postgresql.Servers,
+		"mysql.servers":            mysql.Servers,
+		"compute.disks":            compute.Disks,
+		"keyvault.vaults":          keyvault.Vaults,
+		"network.virtual_networks": network.VirtualNetworks,
 	}
 	p.Logger.Info("Creating tables if needed")
 	for _, tables := range TablesArr {

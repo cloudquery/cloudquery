@@ -11,4 +11,5 @@ var configYaml = `
       - name: postgresql.servers
       - name: mysql.servers
       - name: compute.disks
-      - name: keyvault.vaults`
+      - name: keyvault.vaults
+      - name: network.virtual_networks`
