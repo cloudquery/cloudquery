@@ -6,12 +6,9 @@ builds:
   - flags:
       - -buildmode=exe
     env:
-      - CGO_ENABLED=1
       - GO111MODULE=on
-      - CC=/usr/bin/gencc.sh
-      - CXX=/usr/bin/gencpp.sh
     ldflags:
-     - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
+      - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
     goos:
       - windows
       - linux

@@ -9,7 +9,7 @@ require (
 	github.com/Azure/go-autorest/autorest/date v0.3.0
 	github.com/Azure/go-autorest/autorest/to v0.4.0 // indirect
 	github.com/Azure/go-autorest/autorest/validation v0.3.1 // indirect
-	github.com/cloudquery/cloudquery v0.10.0
+	github.com/cloudquery/cloudquery v0.11.0
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/satori/go.uuid v1.2.0
