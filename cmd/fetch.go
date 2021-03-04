@@ -4,24 +4,17 @@ import (
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
 )
 
 
 var fetchCmd = &cobra.Command{
 	Use:     "fetch",
 	Short:   "Fetch data from configured cloud APIs to specified SQL database",
-	Long: `Examples: 
-# Fetch to SQLite
-./cloudquery fetch
-
-# Fetch to MySQL
-./cloudquery fetch --driver mysql --dsn "root:pass@tcp(127.0.0.1:3306)/dbname"
-
+	Long: `Examples:
 # Fetch to PostgreSQL
-./cloudquery fetch --driver postgresql --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+./cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 
-# Fetch to SQL Server
-./cloudquery fetch --driver sqlserver --dsn "sqlserver://sa:yourStrong(!)Password@localhost:1433?database=cloudquery"
 `,
 	Version: Version,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
@@ -54,8 +47,12 @@ var fetchCmd = &cobra.Command{
 }
 
 func init() {
-	fetchCmd.Flags().String( "dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite (env: CQ_DSN)")
-	fetchCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver/neo4j (env: CQ_DRIVER)")
-	fetchCmd.Flags().String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
+	flags := fetchCmd.Flags()
+	flags.String( "dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
+	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env: CQ_DRIVER)")
+	flags.String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
+	if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
+		log.Fatal(err)
+	}
 	rootCmd.AddCommand(fetchCmd)
 }

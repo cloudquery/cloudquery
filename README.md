@@ -72,37 +72,25 @@ Once your `config.yml` is generated run the following command to fetch the resou
 
 ```shell script
 cloudquery init
-cloudquery fetch
-# you can choose a database backend via --driver sqlite/mysql/postgresql/sqlserver/neo4j --dsn <connection_string>
+# you can spawn a local postgresql with docker
+# docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres 
+cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+# you can choose a database backend via --driver postgresql/neo4j --dsn <connection_string>
 # cloudquery fetch --help # Show all possible fetch flags
 ```
 
-Using sqlite
+Using `psql -h localhost -p 5432 -U postgres -d postgres`
 
 ```shell script
-sqlite3 cloudquery.db
-SQLite version 3.28.0 2019-04-15 14:49:49
-Enter ".help" for usage hints.
-sqlite> .databases
-main: /Users/user/git/cloudquery/cloudquery.db
-sqlite> .tables
-...
-aws_ec2_images
-aws_s3_buckets
-...
-sqlite> .schema --indent aws_ec2_images
-CREATE TABLE `aws_ec2_images`(
-  `id` integer,
-  `account_id` text,
-  `region` text,
-  `architecture` text,
-  `creation_date` text,
-  `description` text,
-  `ena_support` numeric,
-...
+postgres=# \dt
+                                    List of relations
+ Schema |                            Name                             | Type  |  Owner   
+--------+-------------------------------------------------------------+-------+----------
+ public | aws_autoscaling_launch_configuration_block_device_mapping   | table | postgres
+ public | aws_autoscaling_launch_configurations                       | table | postgres
 ```
 
-Run the following example queries from `sqlite` shell
+Run the following example queries from `psql` shell
 
 List ec2_images
 ```sql
@@ -125,7 +113,7 @@ To run AWS CIS pack enter the following commands (make sure you fetched all the 
 
 ```shell script
 cloudquery gen policy aws_cis
-cloudquery query 
+cloudquery query --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 ``` 
 
 You can also create your own policy file. E.g.:

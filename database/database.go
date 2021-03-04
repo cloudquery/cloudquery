@@ -4,10 +4,7 @@ import (
 	"fmt"
 	"github.com/iancoleman/strcase"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
-	"gorm.io/driver/sqlite"
-	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/logger"
@@ -33,29 +30,8 @@ func Open(driver string, dsn string) (*Database, error) {
 		Driver: driver,
 	}
 	switch driver {
-	case "sqlite":
-		r.GormDB, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-		if err != nil {
-			return nil, err
-		}
-		r.GormDB.Exec("PRAGMA foreign_keys = ON")
-		sqlDB, err := r.GormDB.DB()
-		if err != nil {
-			return nil, err
-		}
-		sqlDB.SetMaxOpenConns(1)
 	case "postgresql":
 		r.GormDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-	case "mysql":
-		r.GormDB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-			Logger: gormLogger,
-		})
-	case "sqlserver":
-		r.GormDB, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{
 			Logger: gormLogger,
 		})
 	case "neo4j":
@@ -66,7 +42,7 @@ func Open(driver string, dsn string) (*Database, error) {
 		password, _ := u.User.Password()
 		r.neo4j, err = neo4j.NewDriver(dsn, neo4j.BasicAuth(u.User.Username(), password, ""))
 	default:
-		return nil, fmt.Errorf("database driver only supports one of sqlite,postgresql,mysql,sqlserver")
+		return nil, fmt.Errorf("database driver only supports one of postgresql,neo4j")
 	}
 
 	if err != nil {

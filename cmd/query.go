@@ -4,15 +4,30 @@ import (
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
 )
 
 var queryCmd = &cobra.Command{
 	Use:     "query",
 	Short:   "Run queries specified in a policy file",
 	Version: Version,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn")); err != nil {
+			return err
+		}
+		if err := viper.BindPFlag("driver", cmd.Flags().Lookup("driver")); err != nil {
+			return err
+		}
+		if err := viper.BindPFlag("policy_path", cmd.Flags().Lookup("policy_path")); err != nil {
+			return err
+		}
+		if err := viper.BindPFlag("output", cmd.Flags().Lookup("output")); err != nil {
+			return err
+		}
+
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
-		viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
 		driver := viper.GetString("driver")
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")
@@ -22,17 +37,19 @@ var queryCmd = &cobra.Command{
 			return err
 		}
 		return client.RunQuery(queryConfigPath, queryOutputJsonPath)
-
 	},
 }
 
 func init() {
-	queryCmd.Flags().String("dsn", "./cloudquery.db", "database connection string or filepath if driver is sqlite (env CQ_DSN)")
-	queryCmd.Flags().String("driver", "sqlite", "database driver sqlite/postgresql/mysql/sqlserver (env CQ_DRIVER)")
-	queryCmd.Flags().String("path", "./policy.yml", "path to a policy file. can be generated with 'gen policy' command (env CQ_POLICY_PATH)")
-	queryCmd.Flags().String("output", "", "output path to store results as json file (env CQ_OUTPUT)")
-	viper.BindPFlag("policy_path", queryCmd.Flags().Lookup("path"))
-	viper.BindPFlag("output", queryCmd.Flags().Lookup("output"))
+	flags := queryCmd.Flags()
+	flags.String("dsn", "", "database connection string (env CQ_DSN)")
+	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env CQ_DRIVER)")
+	flags.String("path", "./policy.yml", "path to a policy file. can be generated with 'gen policy' command (env CQ_POLICY_PATH)")
+	flags.String("output", "", "output path to store results as json file (env CQ_OUTPUT)")
+
+	if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
+		log.Fatal(err)
+	}
 
 	rootCmd.AddCommand(queryCmd)
 }
