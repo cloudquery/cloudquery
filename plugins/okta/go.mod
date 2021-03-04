@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-okta
 go 1.15
 
 require (
-	github.com/cloudquery/cloudquery v0.10.0
+	github.com/cloudquery/cloudquery v0.11.0
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/okta/okta-sdk-golang/v2 v2.3.0
