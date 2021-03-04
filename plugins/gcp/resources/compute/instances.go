@@ -538,6 +538,8 @@ func (c *Client) transformInstance(value *compute.Instance) *Instance {
 		res.ShieldedInstanceConfigEnableIntegrityMonitoring = value.ShieldedInstanceConfig.EnableIntegrityMonitoring
 		res.ShieldedInstanceConfigEnableSecureBoot = value.ShieldedInstanceConfig.EnableSecureBoot
 		res.ShieldedInstanceConfigEnableVtpm = value.ShieldedInstanceConfig.EnableVtpm
+	}
+	if value.ShieldedInstanceIntegrityPolicy != nil {
 		res.ShieldedInstanceIntegrityPolicyUpdateAutoLearnPolicy = value.ShieldedInstanceIntegrityPolicy.UpdateAutoLearnPolicy
 	}
 
