@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.15
 
 require (
-	github.com/cloudquery/cloudquery v0.10.0
+	github.com/cloudquery/cloudquery v0.11.0
 	github.com/hashicorp/go-hclog v0.15.0
 	github.com/mitchellh/mapstructure v1.3.3
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
