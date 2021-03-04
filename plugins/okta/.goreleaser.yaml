@@ -6,6 +6,7 @@ builds:
   - flags:
       - -buildmode=exe
     env:
+      - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
