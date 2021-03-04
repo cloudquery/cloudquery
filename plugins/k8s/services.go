@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"github.com/mitchellh/mapstructure"
-	"go.uber.org/zap"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -250,7 +249,7 @@ func (p *Provider) services(gConfig interface{}) error {
 	}
 	p.db.Where("cluster_name", p.clusterName).Delete(serviceTables...)
 	p.db.ChunkedCreate(p.transformServices(output.Items))
-	p.log.Info("Fetched resources", zap.String("resource", "k8s.services"), zap.Int("count", len(output.Items)))
+	p.Logger.Info("Fetched resources", "resource", "k8s.services", "count", len(output.Items))
 
 	return nil
 }

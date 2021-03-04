@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/cqlog"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/sdk"
-	"go.uber.org/zap"
+	"github.com/hashicorp/go-hclog"
 	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -15,7 +14,7 @@ import (
 type Provider struct {
 	db              *database.Database
 	config          Config
-	log             *zap.Logger
+	Logger          hclog.Logger
 	client          *kubernetes.Clientset
 	clusterName     string
 }
@@ -39,8 +38,6 @@ func (p *Provider)Init(driver string, dsn string, verbose bool) error {
 	if err != nil {
 		return err
 	}
-	zapLogger, err := cqlog.NewLogger(verbose)
-	p.log = zapLogger
 
 	for _, tables := range tablesArr {
 		err := p.db.AutoMigrate(tables...)
@@ -61,7 +58,7 @@ func (p *Provider) Fetch(data []byte) error {
 		return err
 	}
 	if len(p.config.Resources) == 0 {
-		p.log.Info("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/k8s/reference")
+		p.Logger.Info("please specify at least 1 resource in config.yml. see: https://docs.cloudquery.io/k8s/reference")
 		return nil
 	}
 
@@ -117,5 +114,17 @@ func (p *Provider) Fetch(data []byte) error {
 }
 
 func main() {
-	sdk.ServePlugin(&Provider{})
+	logger := hclog.New(&hclog.LoggerOptions{
+		Level:      hclog.Trace,
+		JSONFormat: true,
+	})
+
+	p := &Provider{Logger: logger.Named("k8s")}
+
+	sdk.ServePlugin(sdk.ServeOpts{
+		Name:                "k8s",
+		Provider:            p,
+		Logger:              logger,
+		NoLogOutputOverride: false,
+	})
 }
