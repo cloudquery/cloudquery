@@ -24,7 +24,7 @@ jobs:
           version: latest
           args: release --rm-dist --skip-validate --skip-publish
       -
-        name: Run GoReleaser Dry-Run
+        name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
