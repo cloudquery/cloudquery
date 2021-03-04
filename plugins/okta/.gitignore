@@ -8,4 +8,5 @@ dist/
 vendor/
 bin/
 .release-env
-cq-provider-okta
+cq-provider-okta*
+*.log
