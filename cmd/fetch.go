@@ -37,7 +37,7 @@ var fetchCmd = &cobra.Command{
 		dsn := viper.GetString("dsn")
 		configPath := viper.GetString("configPath")
 
-		c, err := client.New(configPath, driver, dsn)
+		c, err := client.New(driver, dsn)
 		if err != nil {
 			return err
 		}

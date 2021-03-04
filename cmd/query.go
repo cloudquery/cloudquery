@@ -18,7 +18,7 @@ var queryCmd = &cobra.Command{
 		if err := viper.BindPFlag("driver", cmd.Flags().Lookup("driver")); err != nil {
 			return err
 		}
-		if err := viper.BindPFlag("policy_path", cmd.Flags().Lookup("policy_path")); err != nil {
+		if err := viper.BindPFlag("policy_path", cmd.Flags().Lookup("path")); err != nil {
 			return err
 		}
 		if err := viper.BindPFlag("output", cmd.Flags().Lookup("output")); err != nil {
@@ -32,7 +32,7 @@ var queryCmd = &cobra.Command{
 		dsn := viper.GetString("dsn")
 		queryConfigPath := viper.GetString("policy_path")
 		queryOutputJsonPath := viper.GetString("output")
-		client, err := client.New("", driver, dsn)
+		client, err := client.New(driver, dsn)
 		if err != nil {
 			return err
 		}
@@ -42,7 +42,7 @@ var queryCmd = &cobra.Command{
 
 func init() {
 	flags := queryCmd.Flags()
-	flags.String("dsn", "", "database connection string (env CQ_DSN)")
+	flags.String("dsn", "", "database connection string (env CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
 	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env CQ_DRIVER)")
 	flags.String("path", "./policy.yml", "path to a policy file. can be generated with 'gen policy' command (env CQ_POLICY_PATH)")
 	flags.String("output", "", "output path to store results as json file (env CQ_OUTPUT)")

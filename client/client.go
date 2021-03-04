@@ -16,7 +16,6 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
-	"strings"
 )
 
 type PolicyConfig struct {
@@ -49,22 +48,21 @@ type Client struct {
 	hub *hub.Hub
 }
 
-func New(configPath, driver string, dsn string) (*Client, error) {
-	cfg, err := config.Parse(configPath)
-	if err != nil {
-		return nil, err
-	}
+func New(driver string, dsn string) (*Client, error) {
 	return &Client{
 		driver: driver,
 		dsn:    dsn,
 		hub:    hub.NewHub(false),
-		config: cfg,
 	}, nil
 }
 
-func (c Client) Initialize() error {
+func (c *Client) Initialize(configPath string) error {
+	cfg, err := config.Parse(configPath)
+	if err != nil {
+		return err
+	}
 	// Initialize every provider by downloading the plugin
-	for _, provider := range c.config.Providers {
+	for _, provider := range cfg.Providers {
 		if provider.Name == "" {
 			return fmt.Errorf("bad configuration file: provider must contain key 'name'")
 		}
@@ -277,7 +275,7 @@ func (c *Client) createViews(config *PolicyConfig) error {
 		fmt.Println(view.Query)
 		err := c.db.GormDB.Exec(view.Query).Error
 		if err != nil {
-			if strings.HasPrefix(err.Error(), "table") {
+			if err.Error() == "ERROR: relation \"aws_log_metric_filter_and_alarm\" already exists (SQLSTATE 42P07)" {
 				log.Info().Str("name", view.Name).Msg("table already exist. skipping.")
 				continue
 			}

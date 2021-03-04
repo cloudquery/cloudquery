@@ -14,11 +14,11 @@ func TestMigrationSQLServers(t *testing.T) {
 	if err != nil {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
-	c, err := client.New("./testdata/config.yml", "", "")
+	c, err := client.New( "", "")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := c.Initialize(); err != nil {
+	if err := c.Initialize("./testdata/config.yml"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -50,7 +50,7 @@ func TestMigrationSQLServers(t *testing.T) {
 			time.Sleep(20 * time.Second)
 			port = resource.GetPort(tc.port)
 
-			client, err := client.New("./testdata/config.yml", tc.driver, fmt.Sprintf(tc.dsn, port))
+			client, err := client.New(tc.driver, fmt.Sprintf(tc.dsn, port))
 			if err != nil {
 				t.Fatal(err)
 			}
