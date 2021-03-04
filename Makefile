@@ -1,21 +1,5 @@
 PACKAGE_NAME          := github.com/cloudquery/cloudquery
 
-.PHONY: release-dry-run
-release-dry-run:
-	@goreleaser releaser --rm-dist --skip-validate --skip-publish
-
-.PHONY: test
-test:
-	@docker run \
-		-P \
-		--privileged \
-		-e CGO_ENABLED=1 \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v `pwd`:/go/src/$(PACKAGE_NAME) \
-		-w /go/src/$(PACKAGE_NAME) \
-		golang:1.15 \
-		go test -v ./... 
-
 .PHONY: build
 build: config
 	@docker run \
