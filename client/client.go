@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/database"
@@ -49,7 +48,6 @@ type Client struct {
 	hub *hub.Hub
 }
 
-
 func New(driver string, dsn string) (*Client, error) {
 	return &Client{
 		driver: driver,
@@ -85,7 +83,7 @@ func (c *Client) Run(cfg *config.Config) error {
 			version = "latest"
 		}
 
-		if err:= c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+		if err := c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
 			return err
 		}
 

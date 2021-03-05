@@ -1,6 +1,8 @@
 package config
 
 import (
+	"io/ioutil"
+
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
 )

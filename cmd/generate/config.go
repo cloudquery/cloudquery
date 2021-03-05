@@ -1,8 +1,6 @@
 package generate
 
 import (
-	"fmt"
-
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 )
@@ -12,7 +10,7 @@ var (
 	appendProviders = false
 	force           = false
 	configCmd       = &cobra.Command{
-		Use:   fmt.Sprintf("config [choose one or more providers (aws,gcp,azure,okta,...)]"),
+		Use:   "config [choose one or more providers (aws,gcp,azure,okta,...)]",
 		Short: "Generate initial config.yml for fetch command",
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
