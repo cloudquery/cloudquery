@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
+	"sync"
+
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
@@ -18,6 +21,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/ecr"
 	"github.com/cloudquery/cq-provider-aws/resources/ecs"
 	"github.com/cloudquery/cq-provider-aws/resources/efs"
+	"github.com/cloudquery/cq-provider-aws/resources/eks"
 	"github.com/cloudquery/cq-provider-aws/resources/elasticbeanstalk"
 	"github.com/cloudquery/cq-provider-aws/resources/elbv2"
 	"github.com/cloudquery/cq-provider-aws/resources/emr"
@@ -31,8 +35,6 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/sns"
 	"github.com/hashicorp/go-hclog"
 	"golang.org/x/sync/errgroup"
-	"strings"
-	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/database"
@@ -86,6 +88,7 @@ var regionalServices = map[string]ServiceNewFunction{
 	"ecr":              ecr.NewClient,
 	"ecs":              ecs.NewClient,
 	"efs":              efs.NewClient,
+	"eks":              eks.NewClient,
 	"elasticbeanstalk": elasticbeanstalk.NewClient,
 	"elbv2":            elbv2.NewClient,
 	"emr":              emr.NewClient,
@@ -118,6 +121,7 @@ var tablesArr = [][]interface{}{
 	ecr.ImageTables,
 	ecs.ClusterTables,
 	efs.FileSystemTables,
+	eks.ClusterTables,
 	elasticbeanstalk.EnvironmentTables,
 	elbv2.LoadBalancerTables,
 	elbv2.TargetGroupTables,
@@ -212,7 +216,7 @@ func (p *Provider) Fetch(data []byte) error {
 			RoleARN: "default",
 		})
 	}
-	retryOpt := config.WithRetryer(func() aws.Retryer {return retry.NewStandard()})
+	retryOpt := config.WithRetryer(func() aws.Retryer { return retry.NewStandard() })
 	for _, account := range p.config.Accounts {
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
