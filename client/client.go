@@ -82,6 +82,10 @@ func (c *Client) Run(cfg *config.Config) error {
 			version = "latest"
 		}
 
+		if err:= c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+			return err
+		}
+
 		log.Debug().Str("provider", provider.Name).Str("version", version).Msg("getting or creating provider")
 		cqProvider, err := manager.GetOrCreateProvider(provider.Name, version)
 		if err != nil {
