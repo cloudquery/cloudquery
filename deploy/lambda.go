@@ -54,7 +54,7 @@ func Fetch(driver, dsn string, cfg config.Config) {
 func Policy(driver, dsn string) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	c, err := client.New(driver, dsn, &config.Config{})
+	c, err := client.New(driver, dsn, nil)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
