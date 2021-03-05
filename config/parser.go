@@ -26,7 +26,7 @@ func LoadFromString(data string) (*Config, error) {
 	var cfg Config
 	err := yaml.Unmarshal([]byte(data), &cfg)
 	if err != nil {
-		return &Config{}, err
+		return nil, err
 	}
 	return &cfg, nil
 }
