@@ -8,6 +8,9 @@ import (
 	"log"
 	"testing"
 	"time"
+
+	"github.com/cloudquery/cloudquery/client"
+	"github.com/ory/dockertest/v3"
 )
 
 func TestMigrationSQLServers(t *testing.T) {

@@ -2,10 +2,11 @@ package generate
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 var awsCIS = `

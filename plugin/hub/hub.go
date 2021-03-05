@@ -16,6 +16,10 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/plugin"
+	"github.com/rs/zerolog/log"
+	"golang.org/x/crypto/openpgp"
 )
 
 const (

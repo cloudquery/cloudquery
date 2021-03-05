@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugin/proto"
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
@@ -40,4 +41,3 @@ func (p *CQPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) error {
 func (p *CQPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (interface{}, error) {
 	return &GRPCClient{client: proto.NewProviderClient(c)}, nil
 }
-

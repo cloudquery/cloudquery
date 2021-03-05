@@ -15,6 +15,7 @@ require (
 	github.com/neo4j/neo4j-go-driver/v4 v4.2.1-0.20201216094814-003230e3e54b
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/ory/dockertest/v3 v3.6.3
+	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.20.0
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.7.0 // indirect

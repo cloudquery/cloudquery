@@ -2,14 +2,15 @@ package database
 
 import (
 	"fmt"
-	"github.com/iancoleman/strcase"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
 	"reflect"
 	"strconv"
 	"strings"
 	"text/template"
 	"time"
+
+	"github.com/iancoleman/strcase"
+	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
 var basicTypes = map[reflect.Kind]bool{

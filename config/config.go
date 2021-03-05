@@ -6,16 +6,13 @@ import (
 	"github.com/creasty/defaults"
 )
 
-
-const configHeader = "providers:"
-
 type Config struct {
 	Providers []Provider
 }
 
 type Provider struct {
 	Name    string
-	Version string `default:"latest"`
+	Version string                 `default:"latest"`
 	Rest    map[string]interface{} `yaml:",inline"`
 }
 
@@ -38,6 +35,7 @@ func (c *Config) ProviderExists(providerName string) bool {
 	}
 	return false
 }
+<<<<<<< HEAD
 
 // Default JSON unmarshaler will not populate the Rest field
 // and there are no type annotations that make this happen.
@@ -83,3 +81,5 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+=======
+>>>>>>> 4539027 (Linting action)

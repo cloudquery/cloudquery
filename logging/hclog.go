@@ -1,12 +1,13 @@
 package logging
 
 import (
-	"github.com/cloudquery/cloudquery/logging/keyvals"
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog"
 	"io"
 	"log"
 	"reflect"
+
+	"github.com/cloudquery/cloudquery/logging/keyvals"
+	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
 // Creates hclog.Logger adapter from a zerolog log

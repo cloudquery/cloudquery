@@ -1,10 +1,11 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
 )
 
 var queryCmd = &cobra.Command{

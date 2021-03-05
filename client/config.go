@@ -8,8 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugin/hub"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
-	"os"
 )
 
 // GenerateConfig generates or adds provider configurations templates
@@ -20,7 +18,7 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 
 	var cfg *config.Config
 	cfg, err := config.Parse(configPath)
-	if err == nil && !allowAppend{
+	if err == nil && !allowAppend {
 		log.Error().Str("path", configPath).Msg("configuration file already exists. Either delete it, specify other path via --path or use --append/force to append/replace to existing providers")
 		return os.ErrExist
 	}
@@ -59,8 +57,11 @@ func getProviderConfig(hub *hub.Hub, providerName string) (*config.Config, error
 	if err != nil {
 		return &config.Config{}, err
 	}
-	defer plugin.GetManager().KillProvider(providerName)
-
+	defer func() {
+		if err := plugin.GetManager().KillProvider(providerName); err != nil {
+			log.Warn().Err(err).Str("provider", providerName).Msg("failed to kill provider")
+		}
+	}()
 	log.Debug().Str("provider", providerName).Msg("Building provider configuration yaml")
 	configYaml, err := p.GenConfig()
 	if err != nil {

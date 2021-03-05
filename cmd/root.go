@@ -1,31 +1,31 @@
 package cmd
 
 import (
+	stdlog "log"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/cloudquery/cloudquery/cmd/generate"
 	"github.com/cloudquery/cloudquery/logging"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	stdlog "log"
-	"os"
-	"strings"
-	"time"
 )
 
 // Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
-
 var (
 	Version = "development"
-	Commit = "development"
-	Date = time.Now().String()
+	Commit  = "development"
+	Date    = time.Now().String()
 
 	loggerConfig logging.Config
 
 	rootCmd = &cobra.Command{
-	Use:     "cloudquery",
-	Short:   "cloudquery CLI",
-	Version: Version,
+		Use:     "cloudquery",
+		Short:   "cloudquery CLI",
+		Version: Version,
 	}
 )
 

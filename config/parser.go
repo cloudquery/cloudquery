@@ -3,7 +3,6 @@ package config
 import (
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 )
 
 func Parse(configPath string) (*Config, error) {

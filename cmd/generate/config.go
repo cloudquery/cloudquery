@@ -2,6 +2,7 @@ package generate
 
 import (
 	"fmt"
+
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/spf13/cobra"
 )

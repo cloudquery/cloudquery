@@ -7,14 +7,14 @@ import (
 	"github.com/cloudquery/cloudquery/config"
 	"log"
 	"os"
-)
 
+	"github.com/cloudquery/cloudquery/client"
+)
 
 type Request struct {
 	TaskName string 		`json:"taskName"`
 	Config   config.Config 	`json:"config"`
 }
-
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
 	return TaskExecutor(req)
@@ -29,7 +29,7 @@ func TaskExecutor(req Request) (string, error) {
 	case "policy":
 		Policy(driver, dsn)
 	default:
-		return fmt.Sprintf("Unknown task: %s", req.TaskName), fmt.Errorf("Unkown task: %s", req.TaskName)
+		return fmt.Sprintf("Unknown task: %s", taskName), fmt.Errorf("unknown task: %s", taskName)
 	}
 	return fmt.Sprintf("Completed task %s", req.TaskName), nil
 }

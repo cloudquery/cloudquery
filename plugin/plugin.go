@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
 )
 
 const defaultOrganization = "cloudquery"
@@ -77,20 +78,23 @@ func (r remotePlugin) Close() {
 	if r.client == nil {
 		return
 	}
+
 	r.client.Kill()
 }
 
 type embeddedPlugin struct {
-	name     string
-	version  string
+	name    string
+	version string
+
 	provider CQProvider
 }
 
 // NewEmbeddedPlugin is a managed plugin that is created in-process, usually used for debugging purposes
 func newEmbeddedPlugin(providerName, version string, p CQProvider) *embeddedPlugin {
 	return &embeddedPlugin{
-		name:     providerName,
-		version:  version,
+		name:    providerName,
+		version: version,
+
 		provider: p,
 	}
 }
@@ -101,8 +105,7 @@ func (e embeddedPlugin) Version() string { return e.version }
 
 func (e embeddedPlugin) Provider() CQProvider { return e.provider }
 
-func (e embeddedPlugin) Close() { return }
-
+func (e embeddedPlugin) Close() {}
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin
 func GetProviderPath(name string, version string) (string, error) {
