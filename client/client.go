@@ -42,8 +42,6 @@ type Client struct {
 	driver  string
 	dsn     string
 	db      *database.Database
-	// config is the client's configuration regarding all providers, client details etc'
-	config  *config.Config
 	// access to CloudQuery plugin hub
 	hub *hub.Hub
 }
@@ -71,9 +69,6 @@ func (c *Client) Initialize(cfg *config.Config) error {
 }
 
 func (c *Client) Run(cfg *config.Config) error {
-	if c.config == nil {
-		log.Fatal().Msg("No config initialized")
-	}
 	manager := plugin.GetManager()
 	errGroup, _ := errgroup.WithContext(context.Background())
 	for _, provider := range cfg.Providers {
