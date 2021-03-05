@@ -6,10 +6,7 @@ builds:
   - flags:
       - -buildmode=exe
     env:
-      - CGO_ENABLED=1
       - GO111MODULE=on
-      - CC=/usr/bin/gencc.sh
-      - CXX=/usr/bin/gencpp.sh
     main: ./main.go
     ldflags:
      - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
@@ -39,6 +36,17 @@ archives:
       386: i386
       amd64: x86_64
     format: zip
+dockers:
+  -
+    goos: linux
+    goarch: amd64
+    dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/cloudquery:latest"
+      - "ghcr.io/cloudquery/cloudquery:{{.Version}}"
+      - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
 checksum:
   name_template: 'checksums.txt'
 changelog:
@@ -47,7 +55,6 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-
 brews:
   -
     name: cloudquery

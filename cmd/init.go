@@ -11,8 +11,13 @@ var initCmd = &cobra.Command{
 	Use:     "init",
 	Short:   "Initialize CloudQuery by downloading appropriate providers",
 	Version: Version,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := viper.BindPFlag("configPath", cmd.Flags().Lookup("path")); err != nil {
+			return err
+		}
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		viper.BindPFlag("configPath", cmd.Flags().Lookup("path"))
 		configPath := viper.GetString("configPath")
 		cfg, err := config.Parse(configPath)
 		if err != nil {
