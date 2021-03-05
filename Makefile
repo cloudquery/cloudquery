@@ -1,7 +1,7 @@
 PACKAGE_NAME          := github.com/cloudquery/cloudquery
 
 .PHONY: build
-build: config
+build:
 	@docker run \
 		--rm -v "${PWD}":/var/task \
 		-w /var/task \
@@ -14,10 +14,6 @@ build: config
 .PHONY: proto
 proto:
 	@protoc --go_out=. --go-grpc_out=. ./sdk/proto/plugin.proto
-
-.PHONY: config
-config:
-	@go run main.go gen config aws --force --path ./bin/config.yml
 
 .PHONY: plan
 plan:

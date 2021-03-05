@@ -1,7 +1,6 @@
 package config
 
 import (
-	"bytes"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
@@ -23,15 +22,11 @@ func Parse(configPath string) (*Config, error) {
 }
 
 // Load Config data from string input
-func LoadFromString(data string) (Config, error) {
-	var b bytes.Buffer
-	b.WriteString("providers:\n")
-	b.WriteString(data)
-
+func LoadFromString(data string) (*Config, error) {
 	var cfg Config
-	err := yaml.Unmarshal(b.Bytes(), &cfg)
+	err := yaml.Unmarshal([]byte(data), &cfg)
 	if err != nil {
-		return Config{}, err
+		return nil, err
 	}
-	return cfg, nil
+	return &cfg, nil
 }

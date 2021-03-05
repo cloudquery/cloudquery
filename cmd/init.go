@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,7 +23,11 @@ var initCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		return c.Initialize(configPath)
+		cfg, err := config.Parse(configPath)
+		if err != nil {
+			return err
+		}
+		return c.Initialize(cfg)
 	},
 }
 

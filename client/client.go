@@ -42,11 +42,10 @@ type Client struct {
 	driver  string
 	dsn     string
 	db      *database.Database
-	// config is the client's configuration regarding all providers, client details etc'
-	config  *config.Config
 	// access to CloudQuery plugin hub
 	hub *hub.Hub
 }
+
 
 func New(driver string, dsn string) (*Client, error) {
 	return &Client{
@@ -56,11 +55,7 @@ func New(driver string, dsn string) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) Initialize(configPath string) error {
-	cfg, err := config.Parse(configPath)
-	if err != nil {
-		return err
-	}
+func (c *Client) Initialize(cfg *config.Config) error {
 	// Initialize every provider by downloading the plugin
 	for _, provider := range cfg.Providers {
 		if provider.Name == "" {
@@ -73,12 +68,7 @@ func (c *Client) Initialize(configPath string) error {
 	return nil
 }
 
-func (c *Client) Run(path string) error {
-
-	cfg, err := config.Parse(path)
-	if err != nil {
-		return err
-	}
+func (c *Client) Run(cfg *config.Config) error {
 	manager := plugin.GetManager()
 	errGroup, _ := errgroup.WithContext(context.Background())
 	for _, provider := range cfg.Providers {
