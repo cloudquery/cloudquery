@@ -30,6 +30,7 @@ const configYaml = `
       - name: ecs.clusters
       - name: ecr.images
       - name: efs.filesystems
+      - name: eks.clusters
       - name: elasticbeanstalk.environments
       - name: elbv2.load_balancers
       - name: elbv2.target_groups
