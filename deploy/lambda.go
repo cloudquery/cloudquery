@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/cloudquery/cloudquery/config"
+	"github.com/spf13/viper"
 	"log"
 	"os"
 )
@@ -23,6 +24,11 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 func TaskExecutor(req Request) (string, error) {
 	driver := os.Getenv("CQ_DRIVER")
 	dsn := os.Getenv("CQ_DSN")
+	pluginDir, present := os.LookupEnv("CQ_PLUGIN_DIR")
+	if !present {
+		pluginDir = "."
+	}
+	viper.Set("plugin-dir", pluginDir)
 	switch req.TaskName {
 	case "fetch":
 		Fetch(driver, dsn, req.Config)
