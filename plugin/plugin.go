@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/logging"
 	"github.com/hashicorp/go-plugin"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -111,15 +112,8 @@ func GetProviderPath(name string, version string) (string, error) {
 		org = split[0]
 		name = split[1]
 	}
-	var pluginDir string
-	var err error
-	pluginDir = os.Getenv("CQ_PLUGIN_DIR")
-	if pluginDir == "" {
-		pluginDir, err = os.Getwd()
-		if err != nil {
-			return "", err
-		}
-	}
+
+	pluginDir := viper.GetString("plugin-dir")
 
 	extension := ""
 	if runtime.GOOS == "windows" {
