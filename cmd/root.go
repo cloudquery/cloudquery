@@ -48,7 +48,11 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "maxSize", 30, "MaxSize the max size in MB of the logfile before it's rolled")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "maxBackups", 3, "MaxBackups the max number of rolled files to keep")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "maxAge", 3, "MaxAge the max age in days to keep a logfile")
-	rootCmd.PersistentFlags().String( "plugin-dir", ".", "Directory to save and load Cloudquery plugins from (env: CQ_PLUGIN_DIR)")
+	workingDir, err := os.Getwd()
+	if err != nil {
+		workingDir = "."
+	}
+	rootCmd.PersistentFlags().String( "plugin-dir", workingDir, "Directory to save and load Cloudquery plugins from (env: CQ_PLUGIN_DIR)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	cobra.OnInitialize(initConfig, initLogging)
 }
