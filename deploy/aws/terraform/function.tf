@@ -86,13 +86,13 @@ resource "aws_lambda_function" "cloudquery" {
 
   vpc_config {
     subnet_ids         = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
-    security_group_ids = [aws_security_group.allow_mysql.id, aws_security_group.allow_egress.id]
+    security_group_ids = [aws_security_group.allow_postgresql.id, aws_security_group.allow_egress.id]
   }
 
   environment {
     variables = {
-      CQ_DRIVER= "mysql",
-      CQ_DSN = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/cloudquery",
+      CQ_DRIVER= "postgresql",
+      CQ_DSN = "user=${aws_rds_cluster.cloudquery.master_username} password=${aws_rds_cluster.cloudquery.master_password} host=${aws_rds_cluster.cloudquery.endpoint} port=5432 dbname=cloudquery",
       CQ_PLUGIN_DIR = "/tmp"
     }
   }
