@@ -13,6 +13,7 @@ resource "aws_rds_cluster" "cloudquery" {
 
   skip_final_snapshot = true
   apply_immediately = true
+  enable_http_endpoint = true
 
   scaling_configuration {
     auto_pause               = true
