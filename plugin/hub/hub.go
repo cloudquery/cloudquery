@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/openpgp"
 	"io"
 	"net/http"
@@ -71,14 +72,12 @@ type Hub struct {
 }
 
 func NewHub(skipRegistry bool) *Hub {
-	dir, err := os.Getwd()
-	if err != nil {
-		dir = "."
-	}
+	pluginDir := viper.GetString("plugin-dir")
+
 	return &Hub{
 		registryURL:     defaultHub,
 		skipRegistry:    skipRegistry,
-		pluginDirectory: dir,
+		pluginDirectory: pluginDir,
 	}
 }
 
@@ -107,7 +106,7 @@ func (h Hub) DownloadPlugin(organization, pluginName, version string, overrideEx
 	}
 
 
-	// build fully qualified plugin directory for givien plugin
+	// build fully qualified plugin directory for given plugin
 	pluginDir := filepath.Join(h.pluginDirectory, ".cq", "providers", organization, pluginName)
 	if err := os.MkdirAll(pluginDir, os.ModePerm); err != nil {
 		return err
