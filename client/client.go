@@ -224,7 +224,7 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 			return err
 		}
 		if resultsCount > 0 && !query.Invert {
-			log.Info().Str("query", query.Name).Msg("Check failed. Query returned results.")
+			log.Warn().Str("query", query.Name).Msg("Check failed. Query returned results.")
 			table.Render()
 			queryResult.CheckPassed = false
 		} else {
