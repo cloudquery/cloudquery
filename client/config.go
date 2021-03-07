@@ -21,7 +21,7 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 
 	var cfg *config.Config
 	cfg, err := config.Parse(configPath)
-	if err == nil && !allowAppend {
+	if err == nil && !(allowAppend || force) {
 		log.Error().Str("path", configPath).Msg("configuration file already exists. Either delete it, specify other path via --path or use --append/force to append/replace to existing providers")
 		return os.ErrExist
 	}
