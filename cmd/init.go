@@ -19,7 +19,7 @@ var initCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
-		c, err := client.New( "", "")
+		c, err := client.New("", "")
 		if err != nil {
 			return err
 		}

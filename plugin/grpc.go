@@ -2,24 +2,23 @@ package plugin
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugin/proto"
 )
-
 
 type GRPCClient struct{ client proto.ProviderClient }
 
 func (m *GRPCClient) Init(driver string, dsn string, verbose bool) error {
 	_, err := m.client.Init(context.Background(), &proto.InitRequest{
-		Driver: driver,
-		Dsn: dsn,
+		Driver:  driver,
+		Dsn:     dsn,
 		Verbose: verbose,
 	})
 	return err
 }
 
 func (m *GRPCClient) GenConfig() (string, error) {
-	res, err := m.client.GenConfig(context.Background(), &proto.GenConfigRequest{
-	})
+	res, err := m.client.GenConfig(context.Background(), &proto.GenConfigRequest{})
 	if err != nil {
 		return "", err
 	}
@@ -39,7 +38,6 @@ type GRPCServer struct {
 	Impl CQProvider
 	proto.UnimplementedProviderServer
 }
-
 
 func (m *GRPCServer) Init(ctx context.Context, req *proto.InitRequest) (*proto.InitResponse, error) {
 	return &proto.InitResponse{}, m.Impl.Init(req.Driver, req.Dsn, req.Verbose)

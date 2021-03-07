@@ -1,14 +1,14 @@
 package sdk
 
 import (
+	"log"
+	"os"
+
 	"github.com/cloudquery/cloudquery/cmd"
 	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/hashicorp/go-hclog"
 	goplugin "github.com/hashicorp/go-plugin"
-	"log"
-	"os"
 )
-
 
 type ServeOpts struct {
 	// Required: Name of provider.
@@ -25,7 +25,6 @@ type ServeOpts struct {
 	// acceptance tests.
 	NoLogOutputOverride bool
 }
-
 
 func ServePlugin(opts ServeOpts) {
 
@@ -67,6 +66,6 @@ func ServePlugin(opts ServeOpts) {
 				"provider": &plugin.CQPlugin{Impl: opts.Provider},
 			}},
 		GRPCServer: goplugin.DefaultGRPCServer,
-		Logger: opts.Logger,
+		Logger:     opts.Logger,
 	})
 }

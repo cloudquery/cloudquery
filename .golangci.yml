@@ -1,0 +1,44 @@
+run:
+  tests: true
+  skip-dirs:
+    - bin
+    - docs
+  skip-files:
+    # TODO: exclude neo4j file for now, remove once database module is refactored
+    - database/neo4j.go
+    - plugin/proto/*
+
+linters-settings:
+  errcheck:
+    check-blank: false
+    ignore: fmt:.*,[rR]ead|[wW]rite|[cC]lose,io:Copy
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dupl
+    - errcheck
+    - gocritic
+    - gofmt
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - misspell
+    - nakedret
+    - prealloc
+    - staticcheck
+    - structcheck
+    - unconvert
+    - varcheck
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - dupl

@@ -2,8 +2,7 @@ package config
 
 import "testing"
 
-const test1 =
-`
+const test1 = `
 {"providers": 
 	[
 		{
@@ -25,8 +24,7 @@ const test1 =
 	]
 }
 `
-const test2 =
-`
+const test2 = `
 {"providers": 
 	[
 		{
@@ -59,13 +57,13 @@ func TestConfig_UnmarshalJSON(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "basicUnmarshal",
-			args: args{[]byte(test1)},
+			name:    "basicUnmarshal",
+			args:    args{[]byte(test1)},
 			wantErr: false,
 		},
 		{
-			name: "basicUnmarshalFail",
-			args: args{[]byte(test2)},
+			name:    "basicUnmarshalFail",
+			args:    args{[]byte(test2)},
 			wantErr: true,
 		},
 	}

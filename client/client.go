@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
+
 	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/database"
 	"github.com/cloudquery/cloudquery/plugin"
@@ -14,8 +17,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
-	"os"
 )
 
 type PolicyConfig struct {
@@ -37,15 +38,13 @@ type QueryResult struct {
 	ResultRows    [][]string
 }
 
-
 type Client struct {
-	driver  string
-	dsn     string
-	db      *database.Database
+	driver string
+	dsn    string
+	db     *database.Database
 	// access to CloudQuery plugin hub
 	hub *hub.Hub
 }
-
 
 func New(driver string, dsn string) (*Client, error) {
 	return &Client{
@@ -61,7 +60,7 @@ func (c *Client) Initialize(cfg *config.Config) error {
 		if provider.Name == "" {
 			return fmt.Errorf("bad configuration file: provider must contain key 'name'")
 		}
-		if err:= c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+		if err := c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
 			return err
 		}
 	}
@@ -82,7 +81,7 @@ func (c *Client) Run(cfg *config.Config) error {
 			version = "latest"
 		}
 
-		if err:= c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+		if err := c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
 			return err
 		}
 
@@ -119,7 +118,6 @@ func (c *Client) Run(cfg *config.Config) error {
 	}
 	return nil
 }
-
 
 func (c *Client) RunQuery(path string, outputPath string) error {
 	_, err := os.Stat(path)
@@ -158,7 +156,7 @@ func (c *Client) RunQuery(path string, outputPath string) error {
 		return err
 	}
 
-	if 	err = c.runQueries(&policyConfig, outputPath); err != nil {
+	if err = c.runQueries(&policyConfig, outputPath); err != nil {
 		return err
 	}
 	return nil
@@ -243,7 +241,7 @@ func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
 			}
 			outputStr := string(b)
 			if idx != len(config.Queries)-1 {
-				outputStr = outputStr + ","
+				outputStr += ","
 			}
 			_, err = f.WriteString(outputStr)
 			if err != nil {

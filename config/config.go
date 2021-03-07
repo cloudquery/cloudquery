@@ -3,11 +3,9 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/creasty/defaults"
 )
-
-
-const configHeader = "providers:"
 
 type Config struct {
 	Providers []Provider
@@ -15,7 +13,7 @@ type Config struct {
 
 type Provider struct {
 	Name    string
-	Version string `default:"latest"`
+	Version string                 `default:"latest"`
 	Rest    map[string]interface{} `yaml:",inline"`
 }
 
@@ -63,7 +61,7 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 			numKnownKeys++
 		}
 
-		rest := make(map[string]interface{}, len(provMap) - numKnownKeys)
+		rest := make(map[string]interface{}, len(provMap)-numKnownKeys)
 
 		if prov.Name, ok = provMap["name"].(string); !ok {
 			return fmt.Errorf("Could not parse provider config")
@@ -73,7 +71,9 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 		}
 
 		for key, value := range provMap {
-			if key == "name" || key == "version" { continue }
+			if key == "name" || key == "version" {
+				continue
+			}
 			rest[key] = value
 		}
 		prov.Rest = rest
