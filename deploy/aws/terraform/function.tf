@@ -27,6 +27,20 @@ data "aws_iam_policy_document" "policy_document" {
       "arn:aws:s3:::${var.bucket}"
     ]
   }
+
+  statement {
+    effect  = "Allow"
+    actions = ["lambda:InvokeFunction"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [
+      aws_lambda_function.cloudquery.arn
+    ]
+  }
 }
 
 resource "aws_iam_policy" "policy" {
