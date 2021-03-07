@@ -8,6 +8,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugin/hub"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
+	"io/ioutil"
+	"os"
 )
 
 // GenerateConfig generates or adds provider configurations templates
@@ -48,9 +50,8 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 	return ioutil.WriteFile(configPath, data, 0644)
 }
 
-
-func getProviderConfig(hub *hub.Hub, providerName string) (*config.Config, error){
-	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil{
+func getProviderConfig(hub *hub.Hub, providerName string) (*config.Config, error) {
+	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil {
 		return &config.Config{}, err
 	}
 	p, err := plugin.GetManager().GetOrCreateProvider(providerName, "latest")

@@ -7,9 +7,6 @@ import (
 	"github.com/cloudquery/cloudquery/config"
 	"log"
 	"os"
-
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
 )
 
 type Request struct {

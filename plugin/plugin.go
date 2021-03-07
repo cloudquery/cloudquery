@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-
 )
 
 const defaultOrganization = "cloudquery"

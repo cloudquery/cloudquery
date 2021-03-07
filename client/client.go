@@ -17,8 +17,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
-	"os"
 )
 
 type PolicyConfig struct {

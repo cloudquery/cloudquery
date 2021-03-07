@@ -52,7 +52,7 @@ func init() {
 	if err != nil {
 		workingDir = "."
 	}
-	rootCmd.PersistentFlags().String( "plugin-dir", workingDir, "Directory to save and load Cloudquery plugins from (env: CQ_PLUGIN_DIR)")
+	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load Cloudquery plugins from (env: CQ_PLUGIN_DIR)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	cobra.OnInitialize(initConfig, initLogging)
 }
