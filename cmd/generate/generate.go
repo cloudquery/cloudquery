@@ -5,8 +5,6 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:       "gen",
-	Short:     "Generate initial config.yml for fetch command or policy.yml for query command",
+	Use:   "gen",
+	Short: "Generate initial config.yml for fetch command or policy.yml for query command",
 }
-
-

@@ -1,17 +1,17 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/cloudquery/cloudquery/client"
 	"github.com/cloudquery/cloudquery/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
 )
 
-
 var fetchCmd = &cobra.Command{
-	Use:     "fetch",
-	Short:   "Fetch data from configured cloud APIs to specified SQL database",
+	Use:   "fetch",
+	Short: "Fetch data from configured cloud APIs to specified SQL database",
 	Long: `Examples:
 # Fetch to PostgreSQL
 ./cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
@@ -53,7 +53,7 @@ var fetchCmd = &cobra.Command{
 
 func init() {
 	flags := fetchCmd.Flags()
-	flags.String( "dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
+	flags.String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
 	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env: CQ_DRIVER)")
 	flags.String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {

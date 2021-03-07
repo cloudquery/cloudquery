@@ -2,17 +2,19 @@ package database
 
 import (
 	"fmt"
-	"github.com/iancoleman/strcase"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
-	"gorm.io/gorm/logger"
 	"log"
 	"net/url"
 	"reflect"
 	"strings"
 	"text/template"
+
+	"github.com/iancoleman/strcase"
+	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	"github.com/pkg/errors"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+	"gorm.io/gorm/logger"
 )
 
 type Database struct {
@@ -41,6 +43,9 @@ func Open(driver string, dsn string) (*Database, error) {
 		}
 		password, _ := u.User.Password()
 		r.neo4j, err = neo4j.NewDriver(dsn, neo4j.BasicAuth(u.User.Username(), password, ""))
+		if err != nil {
+			return nil, errors.WithMessage(err, "failed to connect to neo4j")
+		}
 	default:
 		return nil, fmt.Errorf("database driver only supports one of postgresql,neo4j")
 	}
@@ -107,12 +112,12 @@ DETACH DELETE (n)
 			"Fields": d.neo4jKeys,
 		})
 		if err != nil {
-			log.Fatal(err)
+			log.Panic(err)
 		}
 
 		_, err = session.Run(s.String(), params)
 		if err != nil {
-			log.Fatal(err)
+			log.Panic(err)
 		}
 	}
 

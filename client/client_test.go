@@ -2,12 +2,13 @@ package client_test
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
-	"github.com/ory/dockertest/v3"
 	"log"
 	"testing"
 	"time"
+
+	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
+	"github.com/ory/dockertest/v3"
 )
 
 func TestMigrationSQLServers(t *testing.T) {
@@ -55,12 +56,15 @@ func TestMigrationSQLServers(t *testing.T) {
 			time.Sleep(20 * time.Second)
 			port = resource.GetPort(tc.port)
 
-			client, err := client.New(tc.driver, fmt.Sprintf(tc.dsn, port))
+			c, err := client.New(tc.driver, fmt.Sprintf(tc.dsn, port))
+			if err != nil {
+				t.Fatal(err)
+			}
 			cfg, err := config.Parse("./testdata/config.yml")
 			if err != nil {
 				t.Fatal(err)
 			}
-			testErr := client.Run(cfg)
+			testErr := c.Run(cfg)
 
 			if err := pool.Purge(resource); err != nil {
 				log.Fatalf("Could not purge resource: %s", err)

@@ -3,19 +3,18 @@ package deploy
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
 	"github.com/spf13/viper"
 	"log"
 	"os"
+
+	"github.com/cloudquery/cloudquery/client"
+	"github.com/cloudquery/cloudquery/config"
 )
 
-
 type Request struct {
-	TaskName string 		`json:"taskName"`
-	Config   config.Config 	`json:"config"`
+	TaskName string        `json:"taskName"`
+	Config   config.Config `json:"config"`
 }
-
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
 	return TaskExecutor(req)
@@ -35,7 +34,7 @@ func TaskExecutor(req Request) (string, error) {
 	case "policy":
 		Policy(driver, dsn)
 	default:
-		return fmt.Sprintf("Unknown task: %s", req.TaskName), fmt.Errorf("Unkown task: %s", req.TaskName)
+		return fmt.Sprintf("Unknown task: %s", req.TaskName), fmt.Errorf("unknown task: %s", req.TaskName)
 	}
 	return fmt.Sprintf("Completed task %s", req.TaskName), nil
 }

@@ -5,10 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/cloudquery/cloudquery/plugin"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
-	"golang.org/x/crypto/openpgp"
 	"io"
 	"net/http"
 	"os"
@@ -16,6 +12,11 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/plugin"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
+	"golang.org/x/crypto/openpgp"
 )
 
 const (
@@ -104,7 +105,6 @@ func (h Hub) DownloadPlugin(organization, pluginName, version string, overrideEx
 	if !h.verifyRegistered(organization, pluginName, version) {
 		return fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", pluginName, version)
 	}
-
 
 	// build fully qualified plugin directory for given plugin
 	pluginDir := filepath.Join(h.pluginDirectory, ".cq", "providers", organization, pluginName)
