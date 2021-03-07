@@ -3,13 +3,14 @@ package client
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
+
 	"github.com/cloudquery/cloudquery/config"
 	"github.com/cloudquery/cloudquery/plugin"
 	"github.com/cloudquery/cloudquery/plugin/hub"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
-	"os"
 )
 
 // GenerateConfig generates or adds provider configurations templates

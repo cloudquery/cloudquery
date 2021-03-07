@@ -2,15 +2,16 @@ package plugin
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/logging"
-	"github.com/hashicorp/go-plugin"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/cloudquery/cloudquery/logging"
+	"github.com/hashicorp/go-plugin"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 )
 
 const defaultOrganization = "cloudquery"

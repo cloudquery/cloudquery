@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/creasty/defaults"
 )
 
@@ -35,7 +36,6 @@ func (c *Config) ProviderExists(providerName string) bool {
 	}
 	return false
 }
-<<<<<<< HEAD
 
 // Default JSON unmarshaler will not populate the Rest field
 // and there are no type annotations that make this happen.
@@ -61,7 +61,7 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 			numKnownKeys++
 		}
 
-		rest := make(map[string]interface{}, len(provMap) - numKnownKeys)
+		rest := make(map[string]interface{}, len(provMap)-numKnownKeys)
 
 		if prov.Name, ok = provMap["name"].(string); !ok {
 			return fmt.Errorf("Could not parse provider config")
@@ -71,7 +71,9 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 		}
 
 		for key, value := range provMap {
-			if key == "name" || key == "version" { continue }
+			if key == "name" || key == "version" {
+				continue
+			}
 			rest[key] = value
 		}
 		prov.Rest = rest
@@ -81,5 +83,3 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
-=======
->>>>>>> 4539027 (Linting action)
