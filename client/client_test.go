@@ -2,9 +2,6 @@ package client_test
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
-	"github.com/ory/dockertest/v3"
 	"log"
 	"testing"
 	"time"

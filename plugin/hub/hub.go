@@ -5,10 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/cloudquery/cloudquery/plugin"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
-	"golang.org/x/crypto/openpgp"
 	"io"
 	"net/http"
 	"os"
@@ -16,6 +12,11 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/plugin"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
+	"golang.org/x/crypto/openpgp"
 )
 
 const (
