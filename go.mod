@@ -30,6 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.1.1
 	github.com/aws/smithy-go v1.1.0
 	github.com/cloudquery/cloudquery v0.11.0
+	github.com/creasty/defaults v1.5.1
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
 	github.com/hashicorp/go-hclog v0.15.0
 	github.com/mitchellh/mapstructure v1.3.3
