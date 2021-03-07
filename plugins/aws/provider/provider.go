@@ -4,9 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
-	"sync"
-
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
@@ -33,8 +30,12 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/redshift"
 	"github.com/cloudquery/cq-provider-aws/resources/s3"
 	"github.com/cloudquery/cq-provider-aws/resources/sns"
+	"github.com/creasty/defaults"
 	"github.com/hashicorp/go-hclog"
 	"golang.org/x/sync/errgroup"
+	"strings"
+	"sync"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/database"
@@ -61,7 +62,8 @@ type Config struct {
 	Regions    []string  `yaml:"regions"`
 	Accounts   []Account `yaml:"accounts"`
 	LogLevel   *string   `yaml:"log_level"`
-	MaxRetries *int      `yaml:"max_retries"`
+	MaxRetries int       `yaml:"max_retries" default:"5"`
+	MaxBackoff int       `yaml:"max_backoff" default:"30"`
 	Resources  []struct {
 		Name  string
 		Other map[string]interface{} `yaml:",inline"`
@@ -193,6 +195,8 @@ var allRegions = []string{
 }
 
 func (p *Provider) Fetch(data []byte) error {
+
+	defaults.MustSet(&p.config)
 	err := yaml.Unmarshal(data, &p.config)
 	ctx := context.Background()
 	var ae smithy.APIError
@@ -216,7 +220,11 @@ func (p *Provider) Fetch(data []byte) error {
 			RoleARN: "default",
 		})
 	}
-	retryOpt := config.WithRetryer(func() aws.Retryer { return retry.NewStandard() })
+	p.Logger.Info("Configuring SDK retryer", "retry_attempts", p.config.MaxRetries, "max_backoff", p.config.MaxBackoff)
+	retryOpt := config.WithRetryer(func() aws.Retryer {
+		return retry.AddWithMaxBackoffDelay(retry.AddWithMaxAttempts(retry.NewStandard(), p.config.MaxRetries), time.Second*time.Duration(p.config.MaxBackoff))
+	})
+
 	for _, account := range p.config.Accounts {
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
@@ -241,6 +249,7 @@ func (p *Provider) Fetch(data []byte) error {
 		if err != nil {
 			return err
 		}
+
 		p.accountID = *output.Account
 
 		for _, region := range regions {
@@ -260,9 +269,9 @@ func (p *Provider) Fetch(data []byte) error {
 
 			p.initRegionalClients()
 			g := errgroup.Group{}
-			for _, resource := range p.config.Resources {
-				resourceName := resource.Name
-				resourceConfig := resource.Other
+			for _, r := range p.config.Resources {
+				resourceName := r.Name
+				resourceConfig := r.Other
 				g.Go(func() error {
 					return p.collectResource(resourceName, resourceConfig)
 				})
@@ -275,7 +284,6 @@ func (p *Provider) Fetch(data []byte) error {
 		globalCollectedResources = map[string]bool{}
 		p.resourceClients = map[string]resource.ClientInterface{}
 	}
-
 	return nil
 }
 

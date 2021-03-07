@@ -8,7 +8,8 @@ const configYaml = `
 #      - us-east-1
 #      - us-west-2
 #    log_level: debug # Optional. if commented out will enable AWS SDK debug logging. possible values: debug, debug_with_signing, debug_with_http_body, debug_with_request_retries, debug_with_request_error, debug_with_event_stream_body
-#    max_retries: # Optional. The maximum number of times that a request will be retried for failures. Defaults to -1, which defers the max retry setting to the service specific configuration. 	
+#    max_retries: 5  # Optional. The maximum number of times that a request will be retried for failures. Defaults to 5 retry attempts.
+#    max_backoff: 30 # Optional. The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 60 seconds.
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
       - name: cloudtrail.trails
