@@ -17,28 +17,20 @@ resource "aws_iam_role" "iam_for_cloudquery" {
 EOF
 }
 
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.cloudquery.function_name
+  principal     = "events.amazonaws.com"
+}
+
 data "aws_iam_policy_document" "policy_document" {
   statement {
-    sid = "1"
     actions = [
       "s3:GetObject"
     ]
     resources = [
       "arn:aws:s3:::${var.bucket}"
-    ]
-  }
-
-  statement {
-    effect  = "Allow"
-    actions = ["lambda:InvokeFunction"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["events.amazonaws.com"]
-    }
-
-    resources = [
-      aws_lambda_function.cloudquery.arn
     ]
   }
 }
