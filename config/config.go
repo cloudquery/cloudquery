@@ -45,34 +45,34 @@ func (c *Config) ProviderExists(providerName string) bool {
 //
 // Function assumes config keys are lowercase
 func (c *Config) UnmarshalJSON(data []byte) error {
-	var v map[string][]map[string]interface{}
+	var conf map[string][]map[string]interface{}
 
-	if err := json.Unmarshal(data, &v); err != nil {
+	if err := json.Unmarshal(data, &conf); err != nil {
 		return err
 	}
 
-	for _, d := range v["providers"] {
+	for _, provMap := range conf["providers"] {
 		prov := Provider{}
 		var ok bool
 		numKnownKeys := 0
 
-		if _, ok := d["name"]; ok {
+		if _, ok := provMap["name"]; ok {
 			numKnownKeys++
 		}
-		if _, ok := d["version"]; ok {
+		if _, ok := provMap["version"]; ok {
 			numKnownKeys++
 		}
 
-		rest := make(map[string]interface{}, len(d) - numKnownKeys)
+		rest := make(map[string]interface{}, len(provMap) - numKnownKeys)
 
-		if prov.Name, ok = d["name"].(string); !ok {
+		if prov.Name, ok = provMap["name"].(string); !ok {
 			return fmt.Errorf("Could not parse provider config")
 		}
-		if prov.Version, ok = d["version"].(string); !ok {
+		if prov.Version, ok = provMap["version"].(string); !ok {
 			prov.Version = "latest"
 		}
 
-		for key, value := range d {
+		for key, value := range provMap {
 			if key == "name" || key == "version" { continue }
 			rest[key] = value
 		}
