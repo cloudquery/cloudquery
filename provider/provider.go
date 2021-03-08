@@ -251,7 +251,7 @@ func (p *Provider) Fetch(data []byte) error {
 		}
 
 		p.accountID = *output.Account
-
+		p.initGlobalClients()
 		for _, region := range regions {
 			p.region = region
 
@@ -287,6 +287,14 @@ func (p *Provider) Fetch(data []byte) error {
 	return nil
 }
 
+func (p *Provider) initGlobalClients() {
+	innerLog := p.Logger.With("account_id", p.accountID)
+	for serviceName, newFunc := range globalServices {
+		p.resourceClients[serviceName] = newFunc(p.cfg,
+			p.db, innerLog, p.accountID, "us-east-1")
+	}
+}
+
 func (p *Provider) initRegionalClients() {
 	innerLog := p.Logger.With("account_id", p.accountID, "region", p.region)
 	for serviceName, newFunc := range regionalServices {
@@ -312,11 +320,6 @@ func (p *Provider) collectResource(fullResourceName string, config interface{}) 
 			return nil
 		}
 		globalCollectedResources[fullResourceName] = true
-		if p.resourceClients[service] == nil {
-			innerLogger := p.Logger.With("account_id", p.accountID)
-			p.resourceClients[service] = globalServices[service](p.cfg,
-				p.db, innerLogger, p.accountID, p.region)
-		}
 		lock.Unlock()
 	}
 
