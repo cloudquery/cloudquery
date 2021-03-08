@@ -1,7 +1,7 @@
 resource "aws_rds_cluster" "cloudquery" {
   cluster_identifier = "cloudquery"
-  engine             = "aurora-mysql"
-  engine_version     = "5.7.mysql_aurora.2.07.1"
+  engine             = "aurora-postgresql"
+  engine_version     = "10.12"
   engine_mode        = "serverless"
   master_username    = "cloudquery"
   database_name      = "cloudquery"
@@ -9,15 +9,16 @@ resource "aws_rds_cluster" "cloudquery" {
 
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
 
-  vpc_security_group_ids = [aws_security_group.allow_mysql.id]
+  vpc_security_group_ids = [aws_security_group.allow_postgresql.id]
 
   skip_final_snapshot = true
   apply_immediately = true
+  enable_http_endpoint = true
 
   scaling_configuration {
     auto_pause               = true
     max_capacity             = 4
-    min_capacity             = 1
+    min_capacity             = 2
     seconds_until_auto_pause = 300
     timeout_action           = "ForceApplyCapacityChange"
   }

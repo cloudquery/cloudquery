@@ -17,9 +17,15 @@ resource "aws_iam_role" "iam_for_cloudquery" {
 EOF
 }
 
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.cloudquery.function_name
+  principal     = "events.amazonaws.com"
+}
+
 data "aws_iam_policy_document" "policy_document" {
   statement {
-    sid = "1"
     actions = [
       "s3:GetObject"
     ]
@@ -40,11 +46,15 @@ resource "aws_s3_bucket_object" "file_upload" {
   key    = "lambda-functions/cloudquery.zip"
   source = data.archive_file.zip.output_path
 
+  etag   = filemd5(data.archive_file.zip.output_path)
+
+  depends_on = [aws_s3_bucket.deploy_bucket]
+
 }
 
 data "archive_file" "zip" {
   type        = "zip"
-  source_dir = "../../../bin"
+  source_file = "../../../bin/cloudquery"
   output_path = "cloudquery.zip"
 }
 
@@ -82,13 +92,14 @@ resource "aws_lambda_function" "cloudquery" {
 
   vpc_config {
     subnet_ids         = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
-    security_group_ids = [aws_security_group.allow_mysql.id, aws_security_group.allow_egress.id]
+    security_group_ids = [aws_security_group.allow_postgresql.id, aws_security_group.allow_egress.id]
   }
 
   environment {
     variables = {
-      CQ_DRIVER= "mysql",
-      CQ_DSN = "${aws_rds_cluster.cloudquery.master_username}:${aws_rds_cluster.cloudquery.master_password}@tcp(${aws_rds_cluster.cloudquery.endpoint}:3306)/cloudquery"
+      CQ_DRIVER= "postgresql",
+      CQ_DSN = "user=${aws_rds_cluster.cloudquery.master_username} password=${aws_rds_cluster.cloudquery.master_password} host=${aws_rds_cluster.cloudquery.endpoint} port=5432 dbname=cloudquery",
+      CQ_PLUGIN_DIR = "/tmp"
     }
   }
 }

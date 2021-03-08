@@ -1,0 +1,24 @@
+{
+  "taskName": "fetch",
+  "config": {
+    "providers": [
+      {
+        "name": "aws",
+        "regions": [
+          "us-east-1"
+        ],
+        "resources": [
+          {
+            "name": "ec2.images"
+          },
+          {
+            "name": "ec2.instances"
+          },
+          {
+            "name": "s3.buckets"
+          }
+        ]
+      }
+    ]
+  }
+}

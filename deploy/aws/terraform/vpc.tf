@@ -50,28 +50,28 @@ resource "aws_nat_gateway" "nat_gw" {
   subnet_id     = aws_subnet.rds_subnet_pub.id
 }
 
-resource "aws_security_group" "allow_mysql" {
-  name        = "allow_mysql"
-  description = "Allow inbound mysql connections"
+resource "aws_security_group" "allow_postgresql" {
+  name        = "allow_postgresql"
+  description = "Allow inbound postresql connections"
   vpc_id      = aws_vpc.rds_vpc.id
 
   ingress {
-    description = "Mysql from security group"
-    from_port   = 3306
-    to_port     = 3306
+    description = "Postgresql from security group"
+    from_port   = 5432
+    to_port     = 5432
     protocol    = "tcp"
     self        = true
   }
 
   egress {
-    from_port   = 3306
-    to_port     = 3306
+    from_port   = 5432
+    to_port     = 5432
     protocol    = "tcp"
     self        = true
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "Allow Postgresql"
   }
 }
 
