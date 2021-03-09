@@ -254,11 +254,15 @@ func transformVirtualNetworkSubnets(subscriptionID string, values *[]network.Sub
 			Etag:                              value.Etag,
 			Purpose:                           value.Purpose,
 			AddressPrefix:                     value.AddressPrefix,
-			AddressPrefixes:                   transformSubnetAddressPrefixes(subscriptionID, value.AddressPrefixes),
 			ProvisioningState:                 string(value.ProvisioningState),
 			PrivateEndpointNetworkPolicies:    value.PrivateEndpointNetworkPolicies,
 			PrivateLinkServiceNetworkPolicies: value.PrivateLinkServiceNetworkPolicies,
-			NatGatewayID:                      value.NatGateway.ID,
+		}
+		if value.AddressPrefixes != nil {
+			tValue.AddressPrefixes = transformSubnetAddressPrefixes(subscriptionID, value.AddressPrefixes)
+		}
+		if value.NatGateway != nil {
+			tValue.NatGatewayID = value.NatGateway.ID
 		}
 		tValues = append(tValues, &tValue)
 	}
