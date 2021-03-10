@@ -34,7 +34,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"golang.org/x/sync/errgroup"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -44,13 +43,11 @@ import (
 )
 
 type Provider struct {
-	cfg             aws.Config
-	region          string
 	db              *database.Database
 	config          Config
-	accountID       string
-	resourceClients map[string]resource.ClientInterface
 	Logger          hclog.Logger
+	retryOpt        config.LoadOptionsFunc
+	regions         []string
 }
 
 type Account struct {
@@ -69,8 +66,6 @@ type Config struct {
 		Other map[string]interface{} `yaml:",inline"`
 	}
 }
-
-var globalCollectedResources = map[string]bool{}
 
 type ServiceNewFunction func(awsConfig aws.Config, db *database.Database, log hclog.Logger, accountID string, region string) resource.ClientInterface
 
@@ -154,7 +149,6 @@ func (p *Provider) Init(driver string, dsn string, verbose bool) error {
 		return err
 	}
 
-	p.resourceClients = map[string]resource.ClientInterface{}
 	p.Logger.Info("Creating tables if needed")
 	for _, tables := range tablesArr {
 		err := p.db.AutoMigrate(tables...)
@@ -194,24 +188,114 @@ var allRegions = []string{
 	"sa-east-1",
 }
 
-func (p *Provider) Fetch(data []byte) error {
+func (p *Provider) validateFetchConfig() error {
+	if len(p.config.Resources) == 0 {
+		p.Logger.Warn("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
+		return nil
+	}
 
-	defaults.MustSet(&p.config)
-	err := yaml.Unmarshal(data, &p.config)
-	ctx := context.Background()
+	for _, r := range p.config.Resources {
+		resourcePath := strings.Split(r.Name, ".")
+		if len(resourcePath) != 2 {
+			return fmt.Errorf("resource %s should be in format {service}.{resource}", r.Name)
+		}
+		service := resourcePath[0]
+		resourceName := resourcePath[1]
+
+		if regionalServices[service] == nil && globalServices[service] == nil {
+			return fmt.Errorf("unsupported service %s for resource %s", service, resourceName)
+		}
+	}
+
+	return nil
+}
+
+func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Client) error {
 	var ae smithy.APIError
-	if err != nil {
+	ctx := context.Background()
+	resourceClients := map[string]resource.ClientInterface{}
+
+	innerLog := p.Logger.With("account_id", accountID)
+	for serviceName, newFunc := range globalServices {
+		resourceClients[serviceName] = newFunc(awsCfg,
+			p.db, innerLog, accountID, "us-east-1")
+	}
+	globalServicesFetched := map[string]bool{}
+	for _, region := range p.regions {
+		//Find a better way in AWS SDK V2 to decide if a region is disabled.
+		_, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
+			o.Region = region
+		})
+		if err != nil {
+			if errors.As(err, &ae) && (ae.ErrorCode() == "InvalidClientTokenId" || ae.ErrorCode() == "OptInRequired") {
+				p.Logger.Info("region disabled. skipping...", "region", region)
+				continue
+			}
+			return err
+		}
+
+		innerLog := p.Logger.With("account_id", accountID, "region", region)
+		for serviceName, newFunc := range regionalServices {
+			resourceClients[serviceName] = newFunc(awsCfg,
+				p.db, innerLog, accountID, region)
+		}
+
+		g := errgroup.Group{}
+		for _, r := range p.config.Resources {
+			resourcePath := strings.Split(r.Name, ".")
+			serviceName := resourcePath[0]
+			resourceName := resourcePath[1]
+			resourceConfig := r.Other
+			if globalServices[serviceName] != nil {
+				if globalServicesFetched[serviceName] {
+					continue
+				}
+				globalServicesFetched[serviceName] = true
+			}
+			g.Go(func() error {
+				err := resourceClients[serviceName].CollectResource(resourceName, resourceConfig)
+				if err != nil {
+					var ae smithy.APIError
+					if errors.As(err, &ae) {
+						switch ae.ErrorCode() {
+						case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
+							p.Logger.Info("Skipping resource. Access denied", "account_id", accountID, "region", region, "resource", resourceName, "error", err)
+							return nil
+						case "OptInRequired", "SubscriptionRequiredException":
+							p.Logger.Info("Skipping resource. Service disabled", "account_id", accountID, "region", region, "resource", resourceName, "error", err)
+
+							return nil
+						}
+					}
+					return err
+				}
+				return nil
+			})
+		}
+		if err := g.Wait(); err != nil {
+			return err
+		}
+
+	}
+	return nil
+}
+
+func (p *Provider) Fetch(data []byte) error {
+	var awsCfg aws.Config
+	ctx := context.Background()
+	defaults.MustSet(&p.config)
+	if err := yaml.Unmarshal(data, &p.config); err != nil {
 		return err
 	}
 
-	if len(p.config.Resources) == 0 {
-		p.Logger.Info("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
-		return nil
+	if err := p.validateFetchConfig(); err != nil {
+		return err
 	}
-	regions := p.config.Regions
-	if len(regions) == 0 {
-		regions = allRegions
-		p.Logger.Info(fmt.Sprintf("No regions specified in config.yml. Assuming all %d regions", len(regions)))
+
+	p.regions = p.config.Regions
+	if len(p.regions) == 0 {
+		p.regions = allRegions
+		p.Logger.Info(fmt.Sprintf("No regions specified in config.yml. Assuming all %d regions", len(p.regions)))
 	}
 
 	if len(p.config.Accounts) == 0 {
@@ -221,126 +305,44 @@ func (p *Provider) Fetch(data []byte) error {
 		})
 	}
 	p.Logger.Info("Configuring SDK retryer", "retry_attempts", p.config.MaxRetries, "max_backoff", p.config.MaxBackoff)
-	retryOpt := config.WithRetryer(func() aws.Retryer {
+	p.retryOpt = config.WithRetryer(func() aws.Retryer {
 		return retry.AddWithMaxBackoffDelay(retry.AddWithMaxAttempts(retry.NewStandard(), p.config.MaxRetries), time.Second*time.Duration(p.config.MaxBackoff))
 	})
 
+	g := errgroup.Group{}
 	for _, account := range p.config.Accounts {
+		var err error
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
-			p.cfg, err = config.LoadDefaultConfig(ctx, retryOpt)
+			awsCfg, err = config.LoadDefaultConfig(ctx, p.retryOpt)
 			if err != nil {
+				_ = g.Wait()
 				return err
 			}
-			p.cfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(p.cfg), account.RoleARN)
-
+			awsCfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN)
 		} else if account.ID != "default" {
-			p.cfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID), retryOpt)
+			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID), p.retryOpt)
 		} else {
-			p.cfg, err = config.LoadDefaultConfig(ctx, retryOpt)
+			awsCfg, err = config.LoadDefaultConfig(ctx, p.retryOpt)
 		}
 		if err != nil {
+			_ = g.Wait()
 			return err
 		}
-		svc := sts.NewFromConfig(p.cfg)
+		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
 			o.Region = "us-east-1"
 		})
 		if err != nil {
+			_ = g.Wait()
 			return err
 		}
-
-		p.accountID = *output.Account
-		p.initGlobalClients()
-		for _, region := range regions {
-			p.region = region
-
-			// Find a better way in AWS SDK V2 to decide if a region is disabled.
-			_, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
-				o.Region = region
-			})
-			if err != nil {
-				if errors.As(err, &ae) && (ae.ErrorCode() == "InvalidClientTokenId" || ae.ErrorCode() == "OptInRequired") {
-					p.Logger.Info("region disabled. skipping...", "region", region)
-					continue
-				}
-				return err
-			}
-
-			p.initRegionalClients()
-			g := errgroup.Group{}
-			for _, r := range p.config.Resources {
-				resourceName := r.Name
-				resourceConfig := r.Other
-				g.Go(func() error {
-					return p.collectResource(resourceName, resourceConfig)
-				})
-			}
-			if err := g.Wait(); err != nil {
-				return err
-			}
-
-		}
-		globalCollectedResources = map[string]bool{}
-		p.resourceClients = map[string]resource.ClientInterface{}
+		accountID := *output.Account
+		g.Go(func() error {
+			return p.fetchAccount(accountID, awsCfg, svc)
+		})
 	}
-	return nil
-}
-
-func (p *Provider) initGlobalClients() {
-	innerLog := p.Logger.With("account_id", p.accountID)
-	for serviceName, newFunc := range globalServices {
-		p.resourceClients[serviceName] = newFunc(p.cfg,
-			p.db, innerLog, p.accountID, "us-east-1")
-	}
-}
-
-func (p *Provider) initRegionalClients() {
-	innerLog := p.Logger.With("account_id", p.accountID, "region", p.region)
-	for serviceName, newFunc := range regionalServices {
-		p.resourceClients[serviceName] = newFunc(p.cfg,
-			p.db, innerLog, p.accountID, p.region)
-	}
-}
-
-var lock = sync.RWMutex{}
-
-func (p *Provider) collectResource(fullResourceName string, config interface{}) error {
-	resourcePath := strings.Split(fullResourceName, ".")
-	if len(resourcePath) != 2 {
-		return fmt.Errorf("resource %s should be in format {service}.{resource}", fullResourceName)
-	}
-	service := resourcePath[0]
-	resourceName := resourcePath[1]
-
-	if globalServices[service] != nil {
-		lock.Lock()
-		if globalCollectedResources[fullResourceName] {
-			lock.Unlock()
-			return nil
-		}
-		globalCollectedResources[fullResourceName] = true
-		lock.Unlock()
-	}
-
-	if p.resourceClients[service] == nil {
-		return fmt.Errorf("unsupported service %s for resource %s", service, resourceName)
-	}
-
-	err := p.resourceClients[service].CollectResource(resourceName, config)
-	if err != nil {
-		var ae smithy.APIError
-		if errors.As(err, &ae) {
-			switch ae.ErrorCode() {
-			case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
-				p.Logger.Info("Skipping resource. Access denied", "account_id", p.accountID, "region", p.region, "resource", fullResourceName, "error", err)
-				return nil
-			case "OptInRequired", "SubscriptionRequiredException":
-				p.Logger.Info("Skipping resource. Service disabled", "account_id", p.accountID, "region", p.region, "resource", fullResourceName, "error", err)
-
-				return nil
-			}
-		}
+	if err := g.Wait(); err != nil {
 		return err
 	}
 	return nil
