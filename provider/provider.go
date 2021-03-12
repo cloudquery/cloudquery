@@ -189,11 +189,6 @@ var allRegions = []string{
 }
 
 func (p *Provider) validateFetchConfig() error {
-	if len(p.config.Resources) == 0 {
-		p.Logger.Warn("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
-		return nil
-	}
-
 	for _, r := range p.config.Resources {
 		resourcePath := strings.Split(r.Name, ".")
 		if len(resourcePath) != 2 {
@@ -287,7 +282,10 @@ func (p *Provider) Fetch(data []byte) error {
 	if err := yaml.Unmarshal(data, &p.config); err != nil {
 		return err
 	}
-
+	if len(p.config.Resources) == 0 {
+		p.Logger.Warn("no resources specified. See available resources: see: https://docs.cloudquery.io/aws/tables-reference")
+		return nil
+	}
 	if err := p.validateFetchConfig(); err != nil {
 		return err
 	}
