@@ -242,10 +242,10 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 			resourceName := resourcePath[1]
 			resourceConfig := r.Other
 			if globalServices[serviceName] != nil {
-				if globalServicesFetched[serviceName] {
+				if globalServicesFetched[r.Name] {
 					continue
 				}
-				globalServicesFetched[serviceName] = true
+				globalServicesFetched[r.Name] = true
 			}
 			g.Go(func() error {
 				err := resourceClients[serviceName].CollectResource(resourceName, resourceConfig)
