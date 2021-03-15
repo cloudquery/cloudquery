@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-aws
 go 1.15
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.2.0
+	github.com/aws/aws-sdk-go-v2 v1.2.1
 	github.com/aws/aws-sdk-go-v2/config v1.1.1
 	github.com/aws/aws-sdk-go-v2/credentials v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.1.1
@@ -25,10 +25,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/rds v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.1.1
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.2.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.1.1
-	github.com/aws/smithy-go v1.1.0
+	github.com/aws/smithy-go v1.2.0
 	github.com/cloudquery/cloudquery v0.11.0
 	github.com/creasty/defaults v1.5.1
 	github.com/gocarina/gocsv v0.0.0-20201208093247-67c824bc04d4
