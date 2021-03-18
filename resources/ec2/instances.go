@@ -587,10 +587,12 @@ func (c *Client) instances(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
+		var instances []*Instance
 		for _, reservation := range output.Reservations {
-			c.log.Info("Fetched resources", "resource", "ec2.instances", "count", len(reservation.Instances))
-			c.db.ChunkedCreate(c.transformInstances(&reservation.Instances))
+			instances = append(instances, c.transformInstances(&reservation.Instances)...)
 		}
+		c.log.Info("Fetched resources", "resource", "ec2.instances", "count", len(instances))
+		c.db.ChunkedCreate(instances)
 		if aws.ToString(output.NextToken) == "" {
 			break
 		}
