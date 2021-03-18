@@ -283,7 +283,6 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 }
 
 func (p *Provider) Fetch(data []byte) error {
-	var awsCfg aws.Config
 	ctx := context.Background()
 	defaults.MustSet(&p.config)
 	if err := yaml.Unmarshal(data, &p.config); err != nil {
@@ -314,6 +313,7 @@ func (p *Provider) Fetch(data []byte) error {
 	g := errgroup.Group{}
 	for _, account := range p.config.Accounts {
 		var err error
+		var awsCfg aws.Config
 		// This is a try to solve https://aws.amazon.com/premiumsupport/knowledge-center/iam-validate-access-credentials/
 		// with this https://github.com/aws/aws-sdk-go-v2/issues/515#issuecomment-607387352
 		defaultRegion := "us-east-1"
