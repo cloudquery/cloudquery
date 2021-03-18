@@ -57,7 +57,7 @@ type Account struct {
 type Config struct {
 	Regions    []string  `yaml:"regions"`
 	Accounts   []Account `yaml:"accounts"`
-	LogLevel   *string   `yaml:"log_level"`
+	AWSDebug   bool 	 `yaml:"aws_debug"`
 	MaxRetries int       `yaml:"max_retries" default:"5"`
 	MaxBackoff int       `yaml:"max_backoff" default:"30"`
 	Resources  []struct {
@@ -334,6 +334,9 @@ func (p *Provider) Fetch(data []byte) error {
 		if err != nil {
 			_ = g.Wait()
 			return err
+		}
+		if p.config.AWSDebug {
+			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
 		}
 		awsCfg.Retryer = p.NewRetryer()
 		svc := sts.NewFromConfig(awsCfg)
