@@ -314,18 +314,22 @@ func (p *Provider) Fetch(data []byte) error {
 	g := errgroup.Group{}
 	for _, account := range p.config.Accounts {
 		var err error
+		// This is a try to solve https://aws.amazon.com/premiumsupport/knowledge-center/iam-validate-access-credentials/
+		// with this https://github.com/aws/aws-sdk-go-v2/issues/515#issuecomment-607387352
+		defaultRegion := "us-east-1"
+
 		if account.ID != "default" && account.RoleARN != "" {
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
-			awsCfg, err = config.LoadDefaultConfig(ctx)
+			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion))
 			if err != nil {
 				_ = g.Wait()
 				return err
 			}
 			awsCfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN)
 		} else if account.ID != "default" {
-			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(account.ID))
+			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion), config.WithSharedConfigProfile(account.ID))
 		} else {
-			awsCfg, err = config.LoadDefaultConfig(ctx)
+			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion))
 		}
 		if err != nil {
 			_ = g.Wait()
