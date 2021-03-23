@@ -1,6 +1,7 @@
 package ec2
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -30,34 +31,34 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "images":
-		return c.images(config)
+		return c.images(ctx, config)
 	case "instances":
-		return c.instances(config)
+		return c.instances(ctx, config)
 	case "byoip_cidrs":
-		return c.byoipCidrs(config)
+		return c.byoipCidrs(ctx, config)
 	case "customer_gateways":
-		return c.customerGateways(config)
+		return c.customerGateways(ctx, config)
 	case "internet_gateways":
-		return c.internetGateways(config)
+		return c.internetGateways(ctx, config)
 	case "nat_gateways":
-		return c.natGateways(config)
+		return c.natGateways(ctx, config)
 	case "network_acls":
-		return c.networkAcls(config)
+		return c.networkAcls(ctx, config)
 	case "route_tables":
-		return c.routeTables(config)
+		return c.routeTables(ctx, config)
 	case "security_groups":
-		return c.securityGroups(config)
+		return c.securityGroups(ctx, config)
 	case "vpcs":
-		return c.vpcs(config)
+		return c.vpcs(ctx, config)
 	case "subnets":
-		return c.subnets(config)
+		return c.subnets(ctx, config)
 	case "flow_logs":
-		return c.FlowLogs(config)
+		return c.FlowLogs(ctx, config)
 	case "vpc_peering_connections":
-		return c.vpcPeeringConnections(config)
+		return c.vpcPeeringConnections(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource ec2.%s", resource)
 	}

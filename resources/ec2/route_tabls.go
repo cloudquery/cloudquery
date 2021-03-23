@@ -200,8 +200,7 @@ var RouteTableTables = []interface{}{
 	&RouteTableTag{},
 }
 
-func (c *Client) routeTables(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) routeTables(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeRouteTablesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

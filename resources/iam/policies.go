@@ -103,13 +103,12 @@ var PolicyTables = []interface{}{
 	&PolicyVersion{},
 }
 
-func (c *Client) policies(gConfig interface{}) error {
+func (c *Client) policies(ctx context.Context, gConfig interface{}) error {
 	var config iam.GetAccountAuthorizationDetailsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
 
 	c.db.Where("account_id", c.accountID).Delete(PolicyTables...)
 	for {

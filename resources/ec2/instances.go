@@ -574,8 +574,7 @@ var InstanceTables = []interface{}{
 	&InstanceTag{},
 }
 
-func (c *Client) instances(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) instances(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeInstancesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

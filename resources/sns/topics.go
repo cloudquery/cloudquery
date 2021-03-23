@@ -105,13 +105,12 @@ var TopicTables = []interface{}{
 	&Topic{},
 }
 
-func (c *Client) topics(gConfig interface{}) error {
+func (c *Client) topics(ctx context.Context, gConfig interface{}) error {
 	var config sns.ListTopicsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(TopicTables...)
 
 	for {

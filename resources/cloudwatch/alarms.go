@@ -163,8 +163,7 @@ var MetricAlarmTables = []interface{} {
 	&MetricAlarmMetric{},
 }
 
-func (c *Client)alarms(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client)alarms(ctx context.Context, gConfig interface{}) error {
 	var config cloudwatch.DescribeAlarmsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

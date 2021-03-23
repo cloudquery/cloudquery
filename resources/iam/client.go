@@ -1,6 +1,7 @@
 package iam
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -28,20 +29,20 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "users":
-		return c.users(config)
+		return c.users(ctx, config)
 	case "groups":
-		return c.groups(config)
+		return c.groups(ctx, config)
 	case "policies":
-		return c.policies(config)
+		return c.policies(ctx, config)
 	case "roles":
-		return c.roles(config)
+		return c.roles(ctx, config)
 	case "password_policies":
-		return c.passwordPolicies(config)
+		return c.passwordPolicies(ctx, config)
 	case "virtual_mfa_devices":
-		return c.virtualMFADevices(config)
+		return c.virtualMFADevices(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource iam.%s", resource)
 	}

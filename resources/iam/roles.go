@@ -162,8 +162,7 @@ var RoleTables = []interface{}{
 	&RolePolicy{},
 }
 
-func (c *Client) roles(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) roles(ctx context.Context, gConfig interface{}) error {
 	var config iam.ListRolesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

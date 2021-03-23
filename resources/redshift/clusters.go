@@ -482,13 +482,12 @@ var ClusterTables = []interface{}{
 	&ClusterVpcSecurityGroupMembership{},
 }
 
-func (c *Client) clusters(gConfig interface{}) error {
+func (c *Client) clusters(ctx context.Context, gConfig interface{}) error {
 	var config redshift.DescribeClustersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterTables...)
 
 	for {

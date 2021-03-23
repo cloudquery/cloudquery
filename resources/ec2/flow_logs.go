@@ -92,9 +92,8 @@ var FlowLogsTables = []interface{}{
 	&FlowLogTag{},
 }
 
-func (c *Client) FlowLogs(gConfig interface{}) error {
+func (c *Client) FlowLogs(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeFlowLogsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

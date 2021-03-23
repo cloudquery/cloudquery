@@ -88,9 +88,8 @@ var GroupTables = []interface{}{
 	&GroupPolicy{},
 }
 
-func (c *Client) groups(gConfig interface{}) error {
+func (c *Client) groups(ctx context.Context, gConfig interface{}) error {
 	var config iam.ListGroupsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

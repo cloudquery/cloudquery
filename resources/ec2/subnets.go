@@ -131,8 +131,7 @@ var SubnetTables = []interface{}{
 	&SubnetTag{},
 }
 
-func (c *Client) subnets(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) subnets(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeSubnetsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

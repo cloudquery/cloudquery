@@ -40,13 +40,12 @@ func (c *Client) transformMFADevices(values *[]types.VirtualMFADevice) []*Virtua
 	return tValues
 }
 
-func (c *Client) virtualMFADevices(gConfig interface{}) error {
+func (c *Client) virtualMFADevices(ctx context.Context, gConfig interface{}) error {
 	var config iam.ListVirtualMFADevicesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
 	c.db.Where("account_id", c.accountID).Delete(VirtualMFADeviceTables...)
 
 	for {

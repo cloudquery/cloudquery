@@ -166,8 +166,7 @@ var NetworkAclTables = []interface{}{
 	&NetworkAclTag{},
 }
 
-func (c *Client) networkAcls(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) networkAcls(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeNetworkAclsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

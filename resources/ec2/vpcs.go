@@ -163,9 +163,8 @@ var VPCTables = []interface{}{
 	&VpcTag{},
 }
 
-func (c *Client) vpcs(gConfig interface{}) error {
+func (c *Client) vpcs(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeVpcsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

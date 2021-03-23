@@ -105,8 +105,7 @@ var FileSystemTables = []interface{}{
 	&FileSystemDescriptionTag{},
 }
 
-func (c *Client) fileSystems(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) fileSystems(ctx context.Context, gConfig interface{}) error {
 	var config efs.DescribeFileSystemsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

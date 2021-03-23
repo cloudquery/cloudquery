@@ -138,13 +138,13 @@ var ClusterSubnetGroupTables = []interface{}{
 	&ClusterSubnetGroupTag{},
 }
 
-func (c *Client) clusterSubnetGroups(gConfig interface{}) error {
+func (c *Client) clusterSubnetGroups(ctx context.Context, gConfig interface{}) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
+
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ClusterSubnetGroupTables...)
 
 	for {

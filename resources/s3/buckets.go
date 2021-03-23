@@ -280,13 +280,13 @@ var BucketTables = []interface{}{
 	&BucketEncryptionRule{},
 }
 
-func (c *Client) buckets(gConfig interface{}) error {
+func (c *Client) buckets(ctx context.Context, gConfig interface{}) error {
 	var config s3.ListBucketsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
+
 	output, err := c.svc.ListBuckets(ctx, &config)
 	if err != nil {
 		return err

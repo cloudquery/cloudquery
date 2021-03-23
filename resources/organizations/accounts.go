@@ -47,14 +47,13 @@ var AccountTables = []interface{}{
 	&Account{},
 }
 
-func (c *Client) accounts(gConfig interface{}) error {
+func (c *Client) accounts(ctx context.Context, gConfig interface{}) error {
 	var config organizations.ListAccountsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-
-	ctx := context.Background()
+	
 	// TODO: This doesn't work, since the account ids are not coming from the client but from the sdk call
 	c.db.Where("caller_account_id", c.accountID).Delete(AccountTables...)
 

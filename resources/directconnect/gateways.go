@@ -46,8 +46,7 @@ var GatewayTables = []interface{}{
 	&Gateway{},
 }
 
-func (c *Client) gateways(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) gateways(ctx context.Context, gConfig interface{}) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

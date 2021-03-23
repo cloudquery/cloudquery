@@ -136,9 +136,8 @@ var TrailTables = []interface{}{
 	&EventSelector{},
 }
 
-func (c *Client) trails(gConfig interface{}) error {
+func (c *Client) trails(ctx context.Context, gConfig interface{}) error {
 	var config cloudtrail.DescribeTrailsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

@@ -67,9 +67,8 @@ var ClusterTables = []interface{}{
 	&Cluster{},
 }
 
-func (c *Client) clusters(gConfig interface{}) error {
+func (c *Client) clusters(ctx context.Context, gConfig interface{}) error {
 	var config emr.ListClustersInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

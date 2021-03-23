@@ -100,8 +100,7 @@ var InternetGatewayTables = []interface{}{
 	&InternetGatewayTag{},
 }
 
-func (c *Client) internetGateways(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) internetGateways(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeInternetGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

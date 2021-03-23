@@ -1,6 +1,7 @@
 package rds
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -30,14 +31,14 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "certificates":
-		return c.certificates(config)
+		return c.certificates(ctx, config)
 	case "clusters":
-		return c.clusters(config)
+		return c.clusters(ctx, config)
 	case "db_subnet_groups":
-		return c.dbSubnetGroups(config)
+		return c.dbSubnetGroups(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource rds.%s", resource)
 	}

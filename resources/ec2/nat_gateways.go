@@ -133,8 +133,7 @@ var NatGatewayTables = []interface{}{
 	&NatGatewayTag{},
 }
 
-func (c *Client) natGateways(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) natGateways(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeNatGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

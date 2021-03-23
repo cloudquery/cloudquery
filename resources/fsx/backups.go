@@ -94,9 +94,8 @@ var BackupTables = []interface{}{
 	&BackupTag{},
 }
 
-func (c *Client) backups(gConfig interface{}) error {
+func (c *Client) backups(ctx context.Context, gConfig interface{}) error {
 	var config fsx.DescribeBackupsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

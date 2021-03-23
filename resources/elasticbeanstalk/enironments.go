@@ -155,8 +155,7 @@ var EnvironmentTables = []interface{}{
 	&EnvironmentListener{},
 }
 
-func (c *Client) environments(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) environments(ctx context.Context, gConfig interface{}) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
