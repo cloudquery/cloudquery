@@ -165,9 +165,8 @@ func (c *Client) transformEncryptionRules(values *[]types.ServerSideEncryptionRu
 	return tValues
 }
 
-func (c *Client) transformBucket(value *types.Bucket) (*Bucket, error) {
+func (c *Client) transformBucket(ctx context.Context, value *types.Bucket) (*Bucket, error) {
 	var ae smithy.APIError
-	ctx := context.Background()
 	loggingOutput, err := c.svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: value.Name})
 	if err != nil {
 		return nil, err
@@ -238,10 +237,9 @@ func (c *Client) transformBucket(value *types.Bucket) (*Bucket, error) {
 	return &res, nil
 }
 
-func (c *Client) transformBuckets(values *[]types.Bucket) ([]*Bucket, error) {
+func (c *Client) transformBuckets(ctx context.Context, values *[]types.Bucket) ([]*Bucket, error) {
 	var tValues []*Bucket
 	var ae smithy.APIError
-	ctx := context.Background()
 	for _, v := range *values {
 		output, err := c.svc.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
 			Bucket: v.Name,
@@ -264,7 +262,7 @@ func (c *Client) transformBuckets(values *[]types.Bucket) ([]*Bucket, error) {
 		c.awsConfig.Region = c.region
 		c.svc = s3.NewFromConfig(c.awsConfig)
 
-		tBucket, err := c.transformBucket(&v)
+		tBucket, err := c.transformBucket(ctx, &v)
 		if err != nil {
 			return nil, err
 		}
@@ -292,7 +290,7 @@ func (c *Client) buckets(ctx context.Context, gConfig interface{}) error {
 		return err
 	}
 	c.db.Where("account_id", c.accountID).Delete(BucketTables...)
-	tBuckets, err := c.transformBuckets(&output.Buckets)
+	tBuckets, err := c.transformBuckets(ctx, &output.Buckets)
 	if err != nil {
 		return err
 	}

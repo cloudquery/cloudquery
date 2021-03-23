@@ -101,9 +101,8 @@ func (c *Client) transformUserGroups(values *[]types.Group) []*UserGroup {
 	return tValues
 }
 
-func (c *Client) transformAccessKeys(values *[]types.AccessKeyMetadata) ([]*UserAccessKey, error) {
+func (c *Client) transformAccessKeys(ctx context.Context, values *[]types.AccessKeyMetadata) ([]*UserAccessKey, error) {
 	var tValues []*UserAccessKey
-	ctx := context.Background()
 	for _, value := range *values {
 		output, err := c.svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: value.AccessKeyId})
 		if err != nil {
@@ -152,9 +151,8 @@ type ReportUser struct {
 	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
 }
 
-func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
+func (c *Client) transformReportUser(ctx context.Context, reportUser *ReportUser) (*User, error) {
 	//var err error
-	ctx := context.Background()
 	location, err := time.LoadLocation("UTC")
 	if err != nil {
 		panic(err)
@@ -187,7 +185,7 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 		if err != nil {
 			return nil, err
 		}
-		res.AccessKeys, err = c.transformAccessKeys(&outputAccessKeys.AccessKeyMetadata)
+		res.AccessKeys, err = c.transformAccessKeys(ctx, &outputAccessKeys.AccessKeyMetadata)
 		if err != nil {
 			return nil, err
 		}
@@ -275,10 +273,10 @@ func (c *Client) transformReportUser(reportUser *ReportUser) (*User, error) {
 	return &res, nil
 }
 
-func (c *Client) transformReportUsers(values []*ReportUser) ([]*User, error) {
+func (c *Client) transformReportUsers(ctx context.Context, values []*ReportUser) ([]*User, error) {
 	var tValues []*User
 	for _, v := range values {
-		tValue, err := c.transformReportUser(v)
+		tValue, err := c.transformReportUser(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -331,7 +329,7 @@ func (c *Client) users(ctx context.Context, _ interface{}) error {
 		return err
 	}
 
-	tValues, err := c.transformReportUsers(users)
+	tValues, err := c.transformReportUsers(ctx, users)
 	if err != nil {
 		return err
 	}

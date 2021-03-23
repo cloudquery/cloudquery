@@ -65,9 +65,8 @@ func (KeySigningAlgorithm) TableName() string {
 	return "aws_kms_key_signing_algorithms"
 }
 
-func (c *Client) transformKeyListEntrys(values *[]types.KeyListEntry) ([]*Key, error) {
+func (c *Client) transformKeyListEntrys(ctx context.Context, values *[]types.KeyListEntry) ([]*Key, error) {
 	var tValues []*Key
-	ctx := context.Background()
 	for _, value := range *values {
 		output, err := c.svc.DescribeKey(ctx, &kms.DescribeKeyInput{
 			KeyId: value.KeyId,
@@ -148,7 +147,7 @@ func (c *Client) keys(ctx context.Context, gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		tValues, err := c.transformKeyListEntrys(&output.Keys)
+		tValues, err := c.transformKeyListEntrys(ctx, &output.Keys)
 		if err != nil {
 			return err
 		}

@@ -86,9 +86,8 @@ func (c *Client) transformRoleTags(values *[]types.Tag) []*RoleTag {
 	return tValues
 }
 
-func (c *Client) transformRoles(values *[]types.Role) ([]*Role, error) {
+func (c *Client) transformRoles(ctx context.Context, values *[]types.Role) ([]*Role, error) {
 	var tValues []*Role
-	ctx := context.Background()
 	for _, value := range *values {
 		var decodedDocument string = ""
 		var err error = nil
@@ -175,7 +174,7 @@ func (c *Client) roles(ctx context.Context, gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		tValues, err := c.transformRoles(&output.Roles)
+		tValues, err := c.transformRoles(ctx, &output.Roles)
 		if err != nil {
 			return err
 		}
