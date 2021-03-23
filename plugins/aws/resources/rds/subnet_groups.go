@@ -82,13 +82,12 @@ var DBSubnetGroupTables = []interface{}{
 	&DBSubnetGroupSubnet{},
 }
 
-func (c *Client) dbSubnetGroups(gConfig interface{}) error {
+func (c *Client) dbSubnetGroups(ctx context.Context, gConfig interface{}) error {
 	var config rds.DescribeDBSubnetGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(DBSubnetGroupTables...)
 
 	for {

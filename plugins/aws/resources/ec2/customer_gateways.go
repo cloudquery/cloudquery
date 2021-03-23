@@ -77,8 +77,7 @@ var CustomerGatewayTables = []interface{}{
 	&CustomerGatewayTag{},
 }
 
-func (c *Client) customerGateways(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) customerGateways(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeCustomerGatewaysInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

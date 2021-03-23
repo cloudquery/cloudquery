@@ -80,8 +80,7 @@ var MetricFilterTables = []interface{} {
 	&MetricFilterTransformations{},
 }
 
-func (c *Client)metricFilters(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client)metricFilters(ctx context.Context, gConfig interface{}) error {
 	var config cloudwatchlogs.DescribeMetricFiltersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

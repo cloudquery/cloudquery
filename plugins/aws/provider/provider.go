@@ -60,6 +60,8 @@ type Config struct {
 	AWSDebug   bool 	 `yaml:"aws_debug"`
 	MaxRetries int       `yaml:"max_retries" default:"5"`
 	MaxBackoff int       `yaml:"max_backoff" default:"30"`
+	// context timeout in seconds
+	Timeout    int       `yaml:"timeout" default:"30"`
 	Resources  []struct {
 		Name  string
 		Other map[string]interface{} `yaml:",inline"`
@@ -255,7 +257,9 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 				globalServicesFetched[r.Name] = true
 			}
 			g.Go(func() error {
-				err := resourceClients[serviceName].CollectResource(resourceName, resourceConfig)
+				ctx, cancel := context.WithTimeout(ctx, time.Duration(p.config.Timeout)*time.Second)
+				defer cancel()
+				err := resourceClients[serviceName].CollectResource(ctx, resourceName, resourceConfig)
 				if err != nil {
 					var ae smithy.APIError
 					if errors.As(err, &ae) {
@@ -295,6 +299,7 @@ func (p *Provider) Fetch(data []byte) error {
 	if err := p.validateFetchConfig(); err != nil {
 		return err
 	}
+
 
 	p.regions = p.config.Regions
 	if len(p.regions) == 0 {

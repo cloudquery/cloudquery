@@ -329,8 +329,7 @@ func (c *Client) transformServiceTags(values *[]types.Tag) []*ServiceTag {
 	return tValues
 }
 
-func (c *Client) services(clusters *[]string) error {
-	ctx := context.Background()
+func (c *Client) services(ctx context.Context, clusters *[]string) error {
 	var listInput ecs.ListServicesInput
 	for _, cluster := range *clusters {
 		listInput.Cluster = &cluster

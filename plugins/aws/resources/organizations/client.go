@@ -1,6 +1,7 @@
 package organizations
 
 import (
+	"context"
 	"fmt"
 	"github.com/hashicorp/go-hclog"
 
@@ -29,10 +30,10 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "accounts":
-		return c.accounts(config)
+		return c.accounts(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource organizations.%s", resource)
 	}

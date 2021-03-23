@@ -296,11 +296,10 @@ var UserTables = []interface{}{
 	&UserGroup{},
 }
 
-func (c *Client) users(_ interface{}) error {
+func (c *Client) users(ctx context.Context, _ interface{}) error {
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
-	ctx := context.Background()
 	c.db.Where("account_id", c.accountID).Delete(UserTables...)
 	for {
 		reportOutput, err = c.svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})

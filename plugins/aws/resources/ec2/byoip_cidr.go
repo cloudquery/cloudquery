@@ -41,8 +41,7 @@ var ByoipCidrTables = []interface{}{
 	&ByoipCidr{},
 }
 
-func (c *Client) byoipCidrs(_ interface{}) error {
-	ctx := context.Background()
+func (c *Client) byoipCidrs(ctx context.Context, _ interface{}) error {
 	config := ec2.DescribeByoipCidrsInput{
 		MaxResults: 100,
 	}

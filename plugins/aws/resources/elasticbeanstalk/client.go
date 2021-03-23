@@ -1,6 +1,7 @@
 package elasticbeanstalk
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
@@ -30,10 +31,10 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "environments":
-		return c.environments(config)
+		return c.environments(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource autoscaling.%s", resource)
 	}

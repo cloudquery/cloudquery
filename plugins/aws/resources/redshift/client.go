@@ -1,6 +1,7 @@
 package redshift
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -30,12 +31,12 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "clusters":
-		return c.clusters(config)
+		return c.clusters(ctx, config)
 	case "cluster_subnet_groups":
-		return c.clusterSubnetGroups(config)
+		return c.clusterSubnetGroups(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource redshift.%s", resource)
 	}

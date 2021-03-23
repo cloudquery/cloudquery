@@ -48,9 +48,8 @@ var PasswordPolicyTables = []interface{}{
 	&PasswordPolicy{},
 }
 
-func (c *Client) passwordPolicies(gConfig interface{}) error {
+func (c *Client) passwordPolicies(ctx context.Context, gConfig interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

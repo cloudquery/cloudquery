@@ -185,8 +185,7 @@ var ClusterTables = []interface{}{
 	&ServiceTag{},
 }
 
-func (c *Client) clusters(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) clusters(ctx context.Context, gConfig interface{}) error {
 	var config ecs.DescribeClustersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
@@ -200,7 +199,7 @@ func (c *Client) clusters(gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		err = c.services(&listOutput.ClusterArns)
+		err = c.services(ctx, &listOutput.ClusterArns)
 		if err != nil {
 			return err
 		}

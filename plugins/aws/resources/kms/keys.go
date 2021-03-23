@@ -135,9 +135,8 @@ var KeyTables = []interface{}{
 	&KeyEncryptionAlgorithm{},
 }
 
-func (c *Client) keys(gConfig interface{}) error {
+func (c *Client) keys(ctx context.Context, gConfig interface{}) error {
 	var config kms.ListKeysInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

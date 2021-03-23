@@ -241,8 +241,7 @@ var VPCPeeringConnectionTables = []interface{}{
 	&VpcPeeringConnectionTag{},
 }
 
-func (c *Client) vpcPeeringConnections(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) vpcPeeringConnections(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeVpcPeeringConnectionsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

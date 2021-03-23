@@ -172,9 +172,8 @@ var ImageTables = []interface{}{
 	&ImageTags{},
 }
 
-func (c *Client) images(_ interface{}) error {
+func (c *Client) images(ctx context.Context, _ interface{}) error {
 	c.db.Where("region", c.region).Where("account_id", c.accountID).Delete(ImageTables...)
-	ctx := context.Background()
 	var describeRepositoriesInput ecr.DescribeRepositoriesInput
 	var describeImagesInput ecr.DescribeImagesInput
 	var maxResults int32

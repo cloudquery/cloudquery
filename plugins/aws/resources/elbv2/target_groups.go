@@ -95,8 +95,7 @@ var TargetGroupTables = []interface{}{
 	&TargetGroupLoadBalancerArns{},
 }
 
-func (c *Client) targetGroups(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) targetGroups(ctx context.Context, gConfig interface{}) error {
 	var config elbv2.DescribeTargetGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

@@ -229,8 +229,7 @@ var SecurityGroupTables = []interface{}{
 	&SecurityGroupTag{},
 }
 
-func (c *Client) securityGroups(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) securityGroups(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeSecurityGroupsInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {

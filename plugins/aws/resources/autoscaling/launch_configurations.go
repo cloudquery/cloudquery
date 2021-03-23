@@ -150,9 +150,8 @@ var LaunchConfigurationTables = []interface{}{
 	&LaunchConfigurationBlockDeviceMapping{},
 }
 
-func (c *Client) launchConfigurations(gConfig interface{}) error {
+func (c *Client) launchConfigurations(ctx context.Context, gConfig interface{}) error {
 	var config autoscaling.DescribeLaunchConfigurationsInput
-	ctx := context.Background()
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
 		return err

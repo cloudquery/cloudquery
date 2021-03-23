@@ -1,5 +1,7 @@
 package resource
 
+import "context"
+
 type ClientInterface interface {
-	CollectResource(resource string, config interface{}) error
+	CollectResource(ctx context.Context, resource string, config interface{}) error
 }

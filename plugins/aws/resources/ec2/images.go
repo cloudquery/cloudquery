@@ -203,8 +203,7 @@ var ImageTables = []interface{}{
 	&ImageTag{},
 }
 
-func (c *Client) images(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) images(ctx context.Context, gConfig interface{}) error {
 	var config ec2.DescribeImagesInput
 	err := mapstructure.Decode(gConfig, &config)
 	if config.Owners == nil {

@@ -1,6 +1,7 @@
 package elbv2
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
@@ -30,12 +31,12 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "load_balancers":
-		return c.loadBalancers(config)
+		return c.loadBalancers(ctx, config)
 	case "target_groups":
-		return c.targetGroups(config)
+		return c.targetGroups(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource elbv2.%s", resource)
 	}

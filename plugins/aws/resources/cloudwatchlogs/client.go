@@ -1,6 +1,7 @@
 package cloudwatchlogs
 
 import (
+	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -30,10 +31,10 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger,
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "metric_filters":
-		return c.metricFilters(config)
+		return c.metricFilters(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource autoscaling.%s", resource)
 	}

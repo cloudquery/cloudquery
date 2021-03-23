@@ -1,6 +1,7 @@
 package eks
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -30,10 +31,10 @@ func NewClient(awsConfig aws.Config, db *database.Database, log hclog.Logger, ac
 	}
 }
 
-func (c *Client) CollectResource(resource string, config interface{}) error {
+func (c *Client) CollectResource(ctx context.Context, resource string, config interface{}) error {
 	switch resource {
 	case "clusters":
-		return c.clusters(config)
+		return c.clusters(ctx, config)
 	default:
 		return fmt.Errorf("unsupported resource eks.%s", resource)
 	}

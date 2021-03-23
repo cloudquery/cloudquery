@@ -132,8 +132,7 @@ var LoadBalancerTables = []interface{}{
 	&LoadBalancerAddress{},
 }
 
-func (c *Client) loadBalancers(gConfig interface{}) error {
-	ctx := context.Background()
+func (c *Client) loadBalancers(ctx context.Context, gConfig interface{}) error {
 	var config elbv2.DescribeLoadBalancersInput
 	err := mapstructure.Decode(gConfig, &config)
 	if err != nil {
