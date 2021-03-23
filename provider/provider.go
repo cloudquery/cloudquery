@@ -245,7 +245,8 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 				p.db, innerLog, accountID, region)
 		}
 
-		g := errgroup.Group{}
+		ctx, cancel = context.WithTimeout(context.Background(), time.Duration(p.config.Timeout)*time.Second + time.Second*10)
+		g, _ := errgroup.WithContext(ctx)
 		for _, r := range p.config.Resources {
 			resourcePath := strings.Split(r.Name, ".")
 			serviceName := resourcePath[0]
@@ -280,9 +281,10 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 			})
 		}
 		if err := g.Wait(); err != nil {
+			cancel()
 			return err
 		}
-
+		cancel()
 	}
 	return nil
 }
@@ -315,7 +317,9 @@ func (p *Provider) Fetch(data []byte) error {
 		})
 	}
 	p.Logger.Info("Configuring SDK retryer", "retry_attempts", p.config.MaxRetries, "max_backoff", p.config.MaxBackoff)
-	g := errgroup.Group{}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(p.config.Timeout*len(p.config.Regions))*time.Second + time.Second*10)
+	defer cancel()
+	g, _ := errgroup.WithContext(ctx)
 	for _, account := range p.config.Accounts {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(p.config.Timeout)*time.Second)
 		var err error
