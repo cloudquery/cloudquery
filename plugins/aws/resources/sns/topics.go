@@ -38,9 +38,8 @@ func getOrZero(attrs map[string]string, keyName string) string {
 	return "0"
 }
 
-func (c *Client) transformTopics(values *[]types.Topic) ([]*Topic, error) {
+func (c *Client) transformTopics(ctx context.Context, values *[]types.Topic) ([]*Topic, error) {
 	var tValues []*Topic
-	ctx := context.Background()
 	for _, value := range *values {
 
 		// All topic attributes are returned as a string; we have to handle type conversion
@@ -119,7 +118,7 @@ func (c *Client) topics(ctx context.Context, gConfig interface{}) error {
 			return listErr
 		}
 
-		topics, transformErr := c.transformTopics(&output.Topics)
+		topics, transformErr := c.transformTopics(ctx, &output.Topics)
 		if transformErr != nil {
 			return transformErr
 		}

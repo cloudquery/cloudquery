@@ -49,9 +49,8 @@ func (c *Client) transformGroupPolicies(values *[]types.AttachedPolicy) []*Group
 	return tValues
 }
 
-func (c *Client) transformGroups(values *[]types.Group) ([]*Group, error) {
+func (c *Client) transformGroups(ctx context.Context, values *[]types.Group) ([]*Group, error) {
 	var tValues []*Group
-	ctx := context.Background()
 	for _, value := range *values {
 		tValue := &Group{
 			AccountID:  c.accountID,
@@ -101,7 +100,7 @@ func (c *Client) groups(ctx context.Context, gConfig interface{}) error {
 		if err != nil {
 			return err
 		}
-		tValues, err := c.transformGroups(&output.Groups)
+		tValues, err := c.transformGroups(ctx, &output.Groups)
 		if err != nil {
 			return err
 		}
