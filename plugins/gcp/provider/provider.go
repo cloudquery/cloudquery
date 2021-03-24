@@ -126,7 +126,11 @@ func (p *Provider) Fetch(data []byte) error {
 				return err
 			}
 			for _, project := range output.Projects {
-				projectIDs = append(projectIDs, project.ProjectId)
+				if project.LifecycleState == "ACTIVE" {
+					projectIDs = append(projectIDs, project.ProjectId)
+				} else {
+					p.Logger.Debug("Project state is not active. Project will be ignored", "project_id", project.ProjectId)
+				}
 			}
 			if output.NextPageToken == "" {
 				break
