@@ -7,4 +7,4 @@ Official plugins are located:
 - https://github.com/cloudquery/cq-provider-azure
 - https://github.com/cloudquery/cq-provider-gcp
 - https://github.com/cloudquery/cq-provider-okta
-- https://github.com/cloudquery/cq-provider-ok8s
+- https://github.com/cloudquery/cq-provider-k8s
