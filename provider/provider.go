@@ -232,7 +232,7 @@ func (p *Provider) fetchAccount(accountID string, awsCfg aws.Config, svc *sts.Cl
 		cancel()
 		if err != nil {
 			if errors.As(err, &ae) && (ae.ErrorCode() == "InvalidClientTokenId" || ae.ErrorCode() == "OptInRequired") {
-				p.Logger.Info("region disabled. skipping...", "region", region)
+				p.Logger.Info("region disabled. skipping...", "region", region, "account_id", accountID)
 				continue
 			}
 			return err
