@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.1.2
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/eks v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.2.0

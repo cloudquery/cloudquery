@@ -3,6 +3,8 @@ package resources
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
 )
@@ -46,37 +48,37 @@ func EcsClusters() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "configuration_execute_command_configuration_kms_key_id",
+				Name:     "execute_config_kms_key_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.KmsKeyId"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_log_configuration_cloud_watch_encryption_enabled",
+				Name:     "execute_config_logs_cloud_watch_encryption_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.CloudWatchEncryptionEnabled"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_log_configuration_cloud_watch_log_group_name",
+				Name:     "execute_config_log_cloud_watch_log_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.CloudWatchLogGroupName"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_log_configuration_s_3_bucket_name",
+				Name:     "execute_config_log_s3_bucket_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.S3BucketName"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_log_configuration_s_3_encryption_enabled",
+				Name:     "execute_config_log_s3_encryption_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.S3EncryptionEnabled"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_log_configuration_s_3_key_prefix",
+				Name:     "execute_config_log_s3_key_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.S3KeyPrefix"),
 			},
 			{
-				Name:     "configuration_execute_command_configuration_logging",
+				Name:     "execute_config_logging",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.ExecuteCommandConfiguration.Logging"),
 			},
@@ -118,13 +120,14 @@ func EcsClusters() *schema.Table {
 				Resolver: fetchEcsClusterAttachments,
 				Columns: []schema.Column{
 					{
-						Name:     "clusters_id",
+						Name:     "cluster_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
 					{
-						Name: "id",
-						Type: schema.TypeString,
+						Name:     "attachment_id",
+						Type:     schema.TypeString,
+						Resolver: schema.PathResolver("Id"),
 					},
 					{
 						Name: "status",
@@ -134,26 +137,10 @@ func EcsClusters() *schema.Table {
 						Name: "type",
 						Type: schema.TypeString,
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:     "aws_ecs_cluster_attachment_details",
-						Resolver: fetchEcsClusterAttachmentDetails,
-						Columns: []schema.Column{
-							{
-								Name:     "clusterattachments_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
-							},
-							{
-								Name: "name",
-								Type: schema.TypeString,
-							},
-							{
-								Name: "value",
-								Type: schema.TypeString,
-							},
-						},
+						Name:     "details",
+						Type:     schema.TypeJSON,
+						Resolver: resolveEcsClusterAttachmentDetails,
 					},
 				},
 			},
@@ -162,7 +149,7 @@ func EcsClusters() *schema.Table {
 				Resolver: fetchEcsClusterDefaultCapacityProviderStrategies,
 				Columns: []schema.Column{
 					{
-						Name:     "clusters_id",
+						Name:     "cluster_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -187,24 +174,75 @@ func EcsClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	panic("not implemented")
+func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+	var config ecs.ListClustersInput
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().ECS
+	for {
+		listClustersOutput, err := svc.ListClusters(ctx, &config, func(o *ecs.Options) {
+			o.Region = region
+		})
+		if err != nil {
+			return err
+		}
+		describeClusterOutput, err := svc.DescribeClusters(ctx, &ecs.DescribeClustersInput{Clusters: listClustersOutput.ClusterArns}, func(o *ecs.Options) {
+			o.Region = region
+		})
+		if err != nil {
+			return err
+		}
+		res <- describeClusterOutput.Clusters
+
+		if listClustersOutput.NextToken == nil {
+			break
+		}
+		config.NextToken = listClustersOutput.NextToken
+	}
+	return nil
 }
-func resolveEcsClusterSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	panic("not implemented")
+func resolveEcsClusterSettings(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	cluster := resource.Item.(types.Cluster)
+	settings := make(map[string]*string)
+	for _, s := range cluster.Settings {
+		settings[string(s.Name)] = s.Value
+	}
+	resource.Set("settings", settings)
+	return nil
 }
-func resolveEcsClusterStatistics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	panic("not implemented")
+func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	cluster := resource.Item.(types.Cluster)
+	stats := make(map[string]*string)
+	for _, s := range cluster.Statistics {
+		stats[*s.Name] = s.Value
+	}
+	resource.Set("statistics", stats)
+	return nil
 }
-func resolveEcsClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	panic("not implemented")
+func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	cluster := resource.Item.(types.Cluster)
+	stats := make(map[string]*string)
+	for _, s := range cluster.Tags {
+		stats[*s.Key] = s.Value
+	}
+	resource.Set("tags", stats)
+	return nil
 }
-func fetchEcsClusterAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	panic("not implemented")
+func fetchEcsClusterAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	cluster := parent.Item.(types.Cluster)
+	res <- cluster.Attachments
+	return nil
 }
-func fetchEcsClusterAttachmentDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	panic("not implemented")
+func resolveEcsClusterAttachmentDetails(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	attachment := resource.Item.(types.Attachment)
+	details := make(map[string]*string)
+	for _, s := range attachment.Details {
+		details[*s.Name] = s.Value
+	}
+	resource.Set("details", details)
+	return nil
 }
-func fetchEcsClusterDefaultCapacityProviderStrategies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	panic("not implemented")
+func fetchEcsClusterDefaultCapacityProviderStrategies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	cluster := parent.Item.(types.Cluster)
+	res <- cluster.DefaultCapacityProviderStrategy
+	return nil
 }
