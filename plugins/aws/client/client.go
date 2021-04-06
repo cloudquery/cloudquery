@@ -70,7 +70,7 @@ type Services struct {
 	CloudwatchLogs   CloudwatchLogsClient
 	Directconnect    DirectconnectClient
 	ECR              EcrClient
-	ECS              *ecs.Client
+	ECS              EcsClient
 	EC2              Ec2Client
 	EFS              EfsClient
 	Eks              EksClient

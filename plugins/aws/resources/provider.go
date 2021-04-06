@@ -33,6 +33,7 @@ func Provider() *plugin.Provider {
 			"ecr.repositories":                  EcrRepositories(),
 			"efs.filesystems":                   EfsFilesystems(),
 			"eks.clusters":                      EksClusters(),
+			"ecs.clusters":                      EcsClusters(),
 			"elasticbeanstalk.environments":     ElasticbeanstalkEnvironments(),
 			"elbv2.target_groups":               Elbv2TargetGroups(),
 			"elbv2.load_balancers":              Elbv2LoadBalancers(),

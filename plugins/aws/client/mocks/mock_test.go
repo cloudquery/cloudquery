@@ -266,6 +266,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.RedshiftSubnetGroups(),
 			mockBuilder: buildRedshiftSubnetGroupsMock,
 		},
+		{
+			resource:    "ecs.clusters",
+			mainTable:   resources.EcsClusters(),
+			mockBuilder: buildEcsClusterMock,
+		},
 	}
 	for _, tc := range testResourcesTable {
 		t.Run(tc.resource, func(t *testing.T) {

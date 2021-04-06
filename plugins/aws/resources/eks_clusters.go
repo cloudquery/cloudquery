@@ -193,18 +193,18 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchEksClusterEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEksClusterEncryptionConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(*types.Cluster)
 	res <- p.EncryptionConfig
 	return nil
 }
-func fetchEksClusterLoggingClusterLoggings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEksClusterLoggingClusterLoggings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(*types.Cluster)
 	res <- p.Logging.ClusterLogging
 	return nil
 }
 
-func resolveEksClusterLoggingClusterLoggingsLogType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEksClusterLoggingClusterLoggingsLogType(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	logSetup := resource.Item.(types.LogSetup)
 	logTypes := make([]string, len(logSetup.Types))
 	for i, l := range logSetup.Types {
