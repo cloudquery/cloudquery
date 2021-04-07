@@ -2,9 +2,10 @@ package resources
 
 import (
 	"context"
-
+	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
 )
@@ -80,6 +81,10 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
+		var ae smithy.APIError
+		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
+			return nil
+		}
 		return err
 	}
 	passwordPolicies = append(passwordPolicies, response.PasswordPolicy)
