@@ -43,14 +43,20 @@ type Client struct {
 	dsn    string
 	db     *database.Database
 	// access to CloudQuery plugin hub
-	hub *hub.Hub
+	hub     *hub.Hub
+	manager *plugin.Manager
 }
 
 func New(driver string, dsn string) (*Client, error) {
+	manager, err := plugin.NewManager()
+	if err != nil {
+		return nil, err
+	}
 	return &Client{
-		driver: driver,
-		dsn:    dsn,
-		hub:    hub.NewHub(false),
+		driver:  driver,
+		dsn:     dsn,
+		hub:     hub.NewHub(false),
+		manager: manager,
 	}, nil
 }
 
@@ -68,7 +74,6 @@ func (c *Client) Initialize(cfg *config.Config) error {
 }
 
 func (c *Client) Run(cfg *config.Config) error {
-	manager := plugin.GetManager()
 	errGroup, _ := errgroup.WithContext(context.Background())
 	for _, provider := range cfg.Providers {
 
@@ -86,7 +91,7 @@ func (c *Client) Run(cfg *config.Config) error {
 		}
 
 		log.Debug().Str("provider", provider.Name).Str("version", version).Msg("getting or creating provider")
-		cqProvider, err := manager.GetOrCreateProvider(provider.Name, version)
+		cqProvider, err := c.manager.GetOrCreateProvider(provider.Name, version)
 		if err != nil {
 			log.Error().Err(err).Str("provider", provider.Name).Str("version", version).Msg("failed to create provider plugin")
 			continue
