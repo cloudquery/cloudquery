@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2Instances() *schema.Table {

@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/cq-provider-sdk/plugin/schema"
+import "github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 func DeleteAccountFilter(meta schema.ClientMeta) []interface{} {
 	client := meta.(*Client)

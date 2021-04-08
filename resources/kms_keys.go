@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func KmsKeys() *schema.Table {

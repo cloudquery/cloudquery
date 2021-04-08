@@ -2,12 +2,12 @@ package resources
 
 import (
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/plugin"
-	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func Provider() *plugin.Provider {
-	return &plugin.Provider{
+func Provider() *provider.Provider {
+	return &provider.Provider{
 		Name:      "aws",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{

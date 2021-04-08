@@ -32,7 +32,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/cloudquery/cq-provider-sdk/plugin/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
 
@@ -89,7 +89,7 @@ type Services struct {
 
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
-	// config directly. pretty much as in terraform
+	// config directly.
 	regions    []string
 	logLevel   *string
 	maxRetries int
