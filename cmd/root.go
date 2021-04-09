@@ -39,6 +39,7 @@ func Execute() {
 func init() {
 	// add inner commands
 	rootCmd.AddCommand(generate.Cmd)
+	// TODO: change flags to kebab-case
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", true, "Enable console logging")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encodeLogsAsJson", false, "EncodeLogsAsJson makes the logging framework logging JSON")
@@ -52,8 +53,11 @@ func init() {
 	if err != nil {
 		workingDir = "."
 	}
-	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load Cloudquery plugins from (env: CQ_PLUGIN_DIR)")
+	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
+	rootCmd.PersistentFlags().String("reattach-providers", workingDir, "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
+	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
+
 	cobra.OnInitialize(initConfig, initLogging)
 }
 

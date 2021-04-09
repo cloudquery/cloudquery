@@ -52,15 +52,19 @@ func GenerateConfig(configPath string, providers []string, allowAppend bool, for
 }
 
 func getProviderConfig(hub *hub.Hub, providerName string) (*config.Config, error) {
+	manager, err := plugin.NewManager()
+	if err != nil {
+		return nil, err
+	}
 	if err := hub.DownloadPlugin("cloudquery", providerName, "latest", true); err != nil {
 		return &config.Config{}, err
 	}
-	p, err := plugin.GetManager().GetOrCreateProvider(providerName, "latest")
+	p, err := manager.GetOrCreateProvider(providerName, "latest")
 	if err != nil {
 		return &config.Config{}, err
 	}
 	defer func() {
-		if err := plugin.GetManager().KillProvider(providerName); err != nil {
+		if err := manager.KillProvider(providerName); err != nil {
 			log.Warn().Err(err).Str("provider", providerName).Msg("failed to kill provider")
 		}
 	}()

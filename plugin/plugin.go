@@ -2,6 +2,8 @@ package plugin
 
 import (
 	"fmt"
+	"github.com/cloudquery/cq-provider-sdk/proto"
+	"github.com/cloudquery/cq-provider-sdk/serve"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -16,27 +18,27 @@ import (
 
 const defaultOrganization = "cloudquery"
 
-type managedPlugin interface {
+type Plugin interface {
 	Name() string
 	Version() string
-	Provider() CQProvider
+	Provider() proto.CQProvider
 	Close()
 }
 
-type remotePlugin struct {
+type managedPlugin struct {
 	name     string
 	version  string
 	client   *plugin.Client
-	provider CQProvider
+	provider proto.CQProvider
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
-func newRemotePlugin(providerName, version string) (*remotePlugin, error) {
+func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 	pluginPath, _ := GetProviderPath(providerName, version)
 	client := plugin.NewClient(&plugin.ClientConfig{
-		HandshakeConfig: Handshake,
+		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
-			1: PluginMap,
+			1: serve.PluginMap,
 		},
 		Cmd:              exec.Command(pluginPath),
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
@@ -55,12 +57,12 @@ func newRemotePlugin(providerName, version string) (*remotePlugin, error) {
 		return nil, err
 	}
 
-	provider, ok := raw.(CQProvider)
+	provider, ok := raw.(proto.CQProvider)
 	if !ok {
 		client.Kill()
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
-	return &remotePlugin{
+	return &managedPlugin{
 		name:     providerName,
 		version:  version,
 		client:   client,
@@ -68,44 +70,65 @@ func newRemotePlugin(providerName, version string) (*remotePlugin, error) {
 	}, nil
 }
 
-func (r remotePlugin) Name() string { return r.name }
+func (m managedPlugin) Name() string { return m.name }
 
-func (r remotePlugin) Version() string { return r.version }
+func (m managedPlugin) Version() string { return m.version }
 
-func (r remotePlugin) Provider() CQProvider { return r.provider }
+func (m managedPlugin) Provider() proto.CQProvider { return m.provider }
 
-func (r remotePlugin) Close() {
-	if r.client == nil {
+func (m managedPlugin) Close() {
+	if m.client == nil {
 		return
 	}
-
-	r.client.Kill()
+	m.client.Kill()
 }
 
-type embeddedPlugin struct {
-	name    string
-	version string
-
-	provider CQProvider
+type unmanagedPlugin struct {
+	name     string
+	config   *plugin.ReattachConfig
+	client   *plugin.Client
+	provider proto.CQProvider
 }
 
-// NewEmbeddedPlugin is a managed plugin that is created in-process, usually used for debugging purposes
-func newEmbeddedPlugin(providerName, version string, p CQProvider) *embeddedPlugin {
-	return &embeddedPlugin{
-		name:    providerName,
-		version: version,
-
-		provider: p,
+// newUnmanagedPlugin attaches to and existing running plugin  a new unmanaged plugin using go_plugin
+func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*unmanagedPlugin, error) {
+	client := plugin.NewClient(&plugin.ClientConfig{
+		HandshakeConfig: serve.Handshake,
+		Plugins: serve.PluginMap,
+		Reattach:         config,
+		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
+		SyncStderr:       os.Stderr,
+		SyncStdout:       os.Stdout,
+		Logger:           logging.NewZHcLog(&log.Logger, ""),
+	})
+	rpcClient, err := client.Client()
+	if err != nil {
+		return nil, err
 	}
+	raw, err := rpcClient.Dispense("provider")
+	if err != nil {
+		return nil, err
+	}
+
+	provider, ok := raw.(proto.CQProvider)
+	if !ok {
+		return nil, fmt.Errorf("failed to cast plugin")
+	}
+	return &unmanagedPlugin{
+		name:     providerName,
+		config:   config,
+		client:   client,
+		provider: provider,
+	}, nil
 }
 
-func (e embeddedPlugin) Name() string { return e.name }
+func (m unmanagedPlugin) Name() string { return m.name }
 
-func (e embeddedPlugin) Version() string { return e.version }
+func (m unmanagedPlugin) Version() string { return "testing" }
 
-func (e embeddedPlugin) Provider() CQProvider { return e.provider }
+func (m unmanagedPlugin) Provider() proto.CQProvider { return m.provider }
 
-func (e embeddedPlugin) Close() {}
+func (m unmanagedPlugin) Close() {}
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin
 func GetProviderPath(name string, version string) (string, error) {
