@@ -35,7 +35,7 @@ const DefaultConfigYaml = `
       - name: autoscaling.launch_configurations
       - name: cloudtrail.trails
       - name: cloudwatch.alarms
-      - name: cloudwatchlogs.metric_filters
+      - name: cloudwatchlogs.filters
       - name: directconnect.gateways
       - name: ec2.customer_gateways
       - name: ec2.flow_logs
@@ -50,7 +50,7 @@ const DefaultConfigYaml = `
       - name: ec2.vpc_peering_connections
       - name: ec2.vpcs
       - name: ecs.clusters
-      - name: ecr.images
+      - name: ecr.repositories
       - name: efs.filesystems
       - name: eks.clusters
       - name: elasticbeanstalk.environments
@@ -71,7 +71,7 @@ const DefaultConfigYaml = `
       - name: rds.db_subnet_groups
       - name: rds.instances
       - name: redshift.clusters
-      - name: redshift.cluster_subnet_groups
+      - name: redshift.subnet_groups
       - name: s3.buckets
       - name: sns.subscriptions
       - name: sns.topics`
