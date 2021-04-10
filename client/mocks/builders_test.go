@@ -945,6 +945,11 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+	bencryption := s3.GetBucketEncryptionOutput{}
+	err = faker.FakeData(&bencryption)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any()).Return(
 		&s3.ListBucketsOutput{
@@ -966,6 +971,8 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&s3.GetBucketCorsOutput{
 			CORSRules: []s3Types.CORSRule{bcors},
 		}, nil)
+	m.EXPECT().GetBucketEncryption(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&bencryption, nil)
 	return client.Services{
 		S3: m,
 	}

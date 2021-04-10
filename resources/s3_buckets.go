@@ -100,6 +100,27 @@ func S3Buckets() *schema.Table {
 				},
 			},
 			{
+				Name:     "aws_s3_bucket_encryption_rules",
+				Resolver: fetchS3BucketEncryptionRules,
+				Columns: []schema.Column{
+					{
+						Name:     "bucket_id",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
+					},
+					{
+						Name:     "kms_master_key_id",
+						Type:     schema.TypeString,
+						Resolver: schema.PathResolver("ApplyServerSideEncryptionByDefault.KMSMasterKeyID"),
+					},
+					{
+						Name:     "sse_algorithm",
+						Type:     schema.TypeString,
+						Resolver: schema.PathResolver("ApplyServerSideEncryptionByDefault.SSEAlgorithm"),
+					},
+				},
+			},
+			{
 				Name:     "aws_s3_bucket_cors_rules",
 				Resolver: fetchS3BucketCorsRules,
 				Columns: []schema.Column{
@@ -217,6 +238,22 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 		return err
 	}
 	res <- aclOutput.Grants
+	return nil
+}
+func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	var ae smithy.APIError
+	r := parent.Item.(types.Bucket)
+	svc := meta.(*client.Client).Services().S3
+	aclOutput, err := svc.GetBucketEncryption(ctx, &s3.GetBucketEncryptionInput{Bucket: r.Name}, func(options *s3.Options) {
+		options.Region = parent.Get("region").(string)
+	})
+	if err != nil {
+		if errors.As(err, &ae) && ae.ErrorCode() == "ServerSideEncryptionConfigurationNotFoundError" {
+			return nil
+		}
+		return err
+	}
+	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
 	return nil
 }
 func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
