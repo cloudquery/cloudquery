@@ -8,9 +8,8 @@ cloudquery transforms your cloud infrastructure into queryable SQL or Graphs for
 
 ### What is cloudquery and why use it?
 
-cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL or Graph(Neo4j) database.
-This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL
- or [Cypher(Neo4j)](https://neo4j.com/developer/cypher/).
+cloudquery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL database.
+This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
 
 cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
 
@@ -75,7 +74,6 @@ cloudquery init
 # you can spawn a local postgresql with docker
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres 
 cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
-# you can choose a database backend via --driver postgresql/neo4j --dsn <connection_string>
 # cloudquery fetch --help # Show all possible fetch flags
 ```
 
