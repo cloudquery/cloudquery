@@ -55,7 +55,7 @@ func init() {
 	}
 	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
-	rootCmd.PersistentFlags().String("reattach-providers", workingDir, "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
+	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
 
 	cobra.OnInitialize(initConfig, initLogging)
