@@ -2,9 +2,10 @@ package client
 
 import (
 	"fmt"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"regexp"
 	"strings"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`

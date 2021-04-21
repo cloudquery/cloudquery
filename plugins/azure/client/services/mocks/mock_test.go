@@ -3,11 +3,12 @@ package mocks_test
 import (
 	"context"
 	"fmt"
+	"os"
+	"testing"
+
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/client/services"
 	"github.com/cloudquery/cq-provider-azure/resources"
-	"os"
-	"testing"
 
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
