@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
