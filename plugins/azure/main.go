@@ -1,23 +1,15 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/sdk"
-	"github.com/cloudquery/cq-provider-azure/provider"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/cq-provider-azure/resources"
+	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
 func main() {
-	logger := hclog.New(&hclog.LoggerOptions{
-		Level:      hclog.Trace,
-		JSONFormat: true,
-	})
-
-	p := &provider.Provider{Logger: logger.Named("azure")}
-
-	sdk.ServePlugin(sdk.ServeOpts{
+	serve.Serve(&serve.Options{
 		Name:                "azure",
-		Provider:            p,
-		Logger:              logger,
+		Provider:            resources.Provider(),
+		Logger:              nil,
 		NoLogOutputOverride: false,
 	})
 }

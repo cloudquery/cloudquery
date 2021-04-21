@@ -4,18 +4,18 @@
 </a>
 </p>
 
-# CloudQuery Provider Plugin for Azure
+CloudQuery Azure Provider ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cq-provider-azure/test?style=flat-square) ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
+==================================
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery)
-provider transforms Azure resource to relational and graph databases.
+provider transforms Azure resource to relational tables.
 
 ## What is CloudQuery
 
-CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL or Graph(Neo4j) database.
+CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as a SQL database.
 This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL
- or [Cypher(Neo4j)](https://neo4j.com/developer/cypher/).
 
-cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
+cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)).
 
 Think about cloudquery as a compliance-as-code tool inspired by tools like [osquery](https://github.com/osquery/osquery)
 and [terraform](https://github.com/hashicorp/terraform), cool right?

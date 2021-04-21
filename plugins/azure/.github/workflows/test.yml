@@ -8,12 +8,29 @@ on:
     branches: [ main ]
 
 jobs:
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+  postgres:
+    strategy:
+      matrix:
+        dbversion: ['postgres:latest']
+        go: ['1.15']
+        platform: [ubuntu-latest] # can not run in macOS and widnowsOS
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
-
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:

@@ -1,5 +1,6 @@
 .DS_store
 crash.log
+.idea
 .vscode
 cloudquery
 cloudquery.db
@@ -9,5 +10,13 @@ dist/
 vendor/
 bin/
 .release-env
-cq-provider-azure
+cq-provider-*
+*.exe
 *.log
+.cq_reattach
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
