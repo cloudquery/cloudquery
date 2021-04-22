@@ -82,7 +82,7 @@ func SnsTopics() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	config := sns.ListTopicsInput{}
@@ -113,7 +113,9 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 	params := sns.GetTopicAttributesInput{
 		TopicArn: topic.TopicArn,
 	}
-	output, err := svc.GetTopicAttributes(ctx, &params)
+	output, err := svc.GetTopicAttributes(ctx, &params, func(o *sns.Options) {
+		o.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
