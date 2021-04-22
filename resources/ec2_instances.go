@@ -529,8 +529,8 @@ func Ec2Instances() *schema.Table {
 						},
 					},
 					{
-						Name:     "aws_ec2_instance_network_interface_instance_private_ip_addresses",
-						Resolver: fetchEc2InstanceNetworkInterfaceInstancePrivateIpAddresses,
+						Name:     "aws_ec2_instance_network_interface_private_ip_addresses",
+						Resolver: fetchEc2InstanceNetworkInterfacePrivateIpAddresses,
 						Columns: []schema.Column{
 							{
 								Name:     "instance_network_interface_id",
@@ -701,7 +701,7 @@ func fetchEc2InstanceNetworkInterfaceIpv6Addresses(_ context.Context, _ schema.C
 	res <- instanceNetworkInterface.Ipv6Addresses
 	return nil
 }
-func fetchEc2InstanceNetworkInterfaceInstancePrivateIpAddresses(__ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(__ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
 	if !ok {
 		return fmt.Errorf("not ec2 instance network interface")

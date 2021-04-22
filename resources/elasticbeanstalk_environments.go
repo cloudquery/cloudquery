@@ -149,8 +149,8 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				},
 			},
 			{
-				Name:     "aws_elasticbeanstalk_environment_resources_load_balancer_listeners",
-				Resolver: fetchElasticbeanstalkEnvironmentResourcesLoadBalancerListeners,
+				Name:     "aws_elasticbeanstalk_env_resources_load_balancer_listeners",
+				Resolver: fetchElasticbeanstalkEnvResourcesLoadBalancerListeners,
 				Columns: []schema.Column{
 					{
 						Name:     "environment_id",
@@ -198,7 +198,7 @@ func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.Clie
 	res <- p.EnvironmentLinks
 	return nil
 }
-func fetchElasticbeanstalkEnvironmentResourcesLoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvResourcesLoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	res <- p.Resources.LoadBalancer.Listeners
 	return nil

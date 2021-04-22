@@ -398,8 +398,8 @@ func RedshiftClusters() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_redshift_cluster_parameter_group_cluster_parameter_status_lists",
-						Resolver: fetchRedshiftClusterParameterGroupClusterParameterStatusLists,
+						Name:     "aws_redshift_cluster_parameter_group_status_lists",
+						Resolver: fetchRedshiftClusterParameterGroupStatusLists,
 						Columns: []schema.Column{
 							{
 								Name:     "cluster_parameter_group_id",
@@ -601,7 +601,7 @@ func fetchRedshiftClusterParameterGroups(_ context.Context, _ schema.ClientMeta,
 	res <- cluster.ClusterParameterGroups
 	return nil
 }
-func fetchRedshiftClusterParameterGroupClusterParameterStatusLists(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterParameterGroupStatusLists(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	parameterGroup, ok := parent.Item.(types.ClusterParameterGroupStatus)
 	if !ok {
 		return fmt.Errorf("not redshift cluster parameter group")
