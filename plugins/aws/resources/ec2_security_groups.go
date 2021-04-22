@@ -204,7 +204,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionsEgressIpRanges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permissions_egress_id",
+								Name:     "security_group_ip_permissions_egress_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -223,7 +223,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permissions_egress_id",
+								Name:     "security_group_ip_permissions_egress_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -242,7 +242,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permissions_egress_id",
+								Name:     "security_group_ip_permissions_egress_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -257,11 +257,11 @@ func Ec2SecurityGroups() *schema.Table {
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permissions_egress_user_id_group_pairs",
+						Name:     "aws_ec2_security_group_ip_permissions_egress_user_group_pairs",
 						Resolver: fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permissions_egress_id",
+								Name:     "security_group_ip_permissions_egress_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},

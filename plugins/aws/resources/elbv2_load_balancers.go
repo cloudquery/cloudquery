@@ -109,11 +109,11 @@ func Elbv2LoadBalancers() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_elbv2_load_balancer_availability_zone_load_balancer_addresses",
-						Resolver: fetchElbv2LoadBalancerAvailabilityZoneLoadBalancerAddresses,
+						Name:     "aws_elbv2_load_balancer_availability_zone_addresses",
+						Resolver: fetchElbv2LoadBalancerAvailabilityZoneAddresses,
 						Columns: []schema.Column{
 							{
-								Name:     "load_balanceravailability_zone_id",
+								Name:     "load_balancer_availability_zone_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -170,7 +170,7 @@ func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.Cl
 	res <- p.AvailabilityZones
 	return nil
 }
-func fetchElbv2LoadBalancerAvailabilityZoneLoadBalancerAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.AvailabilityZone)
 	res <- p.LoadBalancerAddresses
 	return nil
