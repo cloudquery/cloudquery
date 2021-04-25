@@ -4,16 +4,16 @@
 </a>
 </p>
 
-# CloudQuery Provider Plugin for GCP
+CloudQuery GCP Provider ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cq-provider-gcp/test?style=flat-square) ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
+==================================
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery)
 provider transforms GCP resource to relational and graph databases.
 
 ## What is CloudQuery
 
-CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL or Graph(Neo4j) database.
-This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL
- or [Cypher(Neo4j)](https://neo4j.com/developer/cypher/).
+CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as an SQL database.
+This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
 
 cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)). 
 
