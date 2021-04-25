@@ -907,6 +907,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
+	mgr := mocks.NewMockS3ManagerClient(ctrl)
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
 	err := faker.FakeData(&b)
@@ -955,8 +956,6 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&s3.ListBucketsOutput{
 			Buckets: []s3Types.Bucket{b},
 		}, nil)
-	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bloc, nil)
 	m.EXPECT().GetBucketLogging(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&blog, nil)
 	m.EXPECT().GetBucketPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -973,7 +972,10 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 	m.EXPECT().GetBucketEncryption(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&bencryption, nil)
+	mgr.EXPECT().GetBucketRegion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		"us-east-1", nil)
 	return client.Services{
-		S3: m,
+		S3:        m,
+		S3Manager: mgr,
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
@@ -85,6 +86,7 @@ type Services struct {
 	Redshift         RedshiftClient
 	RDS              RdsClient
 	S3               S3Client
+	S3Manager        S3ManagerClient
 }
 
 type Client struct {
@@ -103,6 +105,24 @@ type Client struct {
 
 	// this is for iam.user specific use-case
 	ReportUsers interface{}
+}
+
+// This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
+// has different structure then all other services (i.e no service but just a function) and we need
+// the ability to mock it.
+// Also we need to use s3 manager to be able to query the bucket-region https://github.com/aws/aws-sdk-go-v2/pull/1027#issuecomment-759818990
+type S3Manager struct {
+	s3Client *s3.Client
+}
+
+func newS3ManagerFromConfig(cfg aws.Config) S3Manager {
+	return S3Manager{
+		s3Client: s3.NewFromConfig(cfg),
+	}
+}
+
+func (s3Manager S3Manager) GetBucketRegion(ctx context.Context, bucket string, optFns ...func(*s3.Options)) (string, error) {
+	return manager.GetBucketRegion(ctx, s3Manager.s3Client, bucket, optFns...)
 }
 
 func NewAwsClient(logger hclog.Logger, regions []string) Client {
@@ -195,17 +215,21 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
 		}
-		awsCfg.Retryer = newRetryer(awsConfig.MaxRetries, awsConfig.MaxRetries)
+		awsCfg.Retryer = newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
-			o.Region = "us-east-1"
+			o.Region = "aws-global"
 		})
 		if err != nil {
 			return nil, err
 		}
 		// This is a work-around to skip disabled regions
 		// https://github.com/aws/aws-sdk-go-v2/issues/1068
-		res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx, nil)
+		res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx,
+			&ec2.DescribeRegionsInput{AllRegions: false},
+			func(o *ec2.Options) {
+				o.Region = "us-east-1"
+			})
 		if err != nil {
 			return nil, err
 		}
@@ -245,6 +269,7 @@ func initServices(awsCfg aws.Config) Services {
 		Organizations:    organizations.NewFromConfig(awsCfg),
 		RDS:              rds.NewFromConfig(awsCfg),
 		Redshift:         redshift.NewFromConfig(awsCfg),
+		S3Manager:        newS3ManagerFromConfig(awsCfg),
 	}
 }
 
