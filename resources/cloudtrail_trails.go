@@ -212,9 +212,13 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Cloudtrail
+	c := meta.(*client.Client)
+	svc := c.Services().Cloudtrail
 	r := resource.Item.(types.Trail)
-	response, err := svc.GetTrailStatus(ctx, &cloudtrail.GetTrailStatusInput{Name: r.TrailARN})
+	response, err := svc.GetTrailStatus(ctx,
+		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {
+			o.Region = c.Region
+		})
 	if err != nil {
 		return err
 	}

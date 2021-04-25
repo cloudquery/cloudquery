@@ -20,3 +20,4 @@ cq-provider-aws
 # .tfstate files
 *.tfstate
 *.tfstate.*
+.swp

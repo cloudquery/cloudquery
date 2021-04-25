@@ -176,10 +176,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	var ae smithy.APIError
 	log := meta.Logger()
 	r := resource.Item.(types.Bucket)
-	svc := meta.(*client.Client).Services().S3
-	output, err := svc.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
-		Bucket: r.Name,
-	})
+	log.Info("bucket name", r.Name)
+	mgr := meta.(*client.Client).Services().S3Manager
+	output, err := mgr.GetBucketRegion(ctx, *r.Name)
 	if err != nil {
 		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchBucket" {
 			// https://aws.amazon.com/premiumsupport/knowledge-center/s3-listing-deleted-bucket/
@@ -189,10 +188,11 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		}
 		return err
 	}
+	svc := meta.(*client.Client).Services().S3
 	bucketRegion := "us-east-1"
-	if output.LocationConstraint != "" {
+	if output != "" {
 		// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
-		bucketRegion = string(output.LocationConstraint)
+		bucketRegion = output
 	}
 	resource.Set("region", bucketRegion)
 
