@@ -487,6 +487,9 @@ func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, _ 
 }
 func resolveComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*compute.BackendService)
+	if r.CdnPolicy == nil {
+		return nil
+	}
 	headers := make([]string, len(r.CdnPolicy.BypassCacheOnRequestHeaders))
 	for i, v := range r.CdnPolicy.BypassCacheOnRequestHeaders {
 		headers[i] = v.HeaderName
