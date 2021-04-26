@@ -240,6 +240,9 @@ func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, pa
 }
 func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	metric := resource.Item.(types.MetricDataQuery)
+	if metric.MetricStat == nil || metric.MetricStat.Metric == nil {
+		return nil
+	}
 	dimensions := make(map[string]*string)
 	for _, d := range metric.MetricStat.Metric.Dimensions {
 		dimensions[*d.Name] = d.Value
