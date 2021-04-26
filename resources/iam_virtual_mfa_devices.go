@@ -130,6 +130,9 @@ func resolveIamVirtualMfaDeviceTags(ctx context.Context, meta schema.ClientMeta,
 }
 func resolveIamVirtualMfaDeviceUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VirtualMFADevice)
+	if r.User == nil {
+		return nil
+	}
 	tags := map[string]*string{}
 	for _, t := range r.User.Tags {
 		tags[*t.Key] = t.Value
