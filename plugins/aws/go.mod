@@ -30,7 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/sts v1.3.0
 	github.com/aws/smithy-go v1.3.1
-	github.com/cloudquery/cq-provider-sdk v0.1.6
+	github.com/cloudquery/cq-provider-sdk v0.1.7
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/golang/mock v1.5.0
 	github.com/hashicorp/go-hclog v0.16.0
