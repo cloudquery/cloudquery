@@ -10,7 +10,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-// Configuration for logging
+// Config for logging
 type Config struct {
 	// Enable console logging
 	ConsoleLoggingEnabled bool

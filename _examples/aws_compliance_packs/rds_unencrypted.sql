@@ -1,0 +1,1 @@
+SELECT * from aws_rds_clusters where storage_encrypted = 0;

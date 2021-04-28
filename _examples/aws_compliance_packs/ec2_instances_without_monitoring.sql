@@ -1,0 +1,1 @@
+SELECT account_id, region, instance_id, launch_time FROM aws_ec2_instances WHERE monitoring_state = 'disabled';

@@ -2,114 +2,155 @@ package client
 
 import (
 	"context"
-	"database/sql"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"os"
-
 	"github.com/cloudquery/cloudquery/config"
-	"github.com/cloudquery/cloudquery/database"
-	"github.com/cloudquery/cloudquery/plugin"
-	"github.com/cloudquery/cloudquery/plugin/hub"
-	"github.com/olekukonko/tablewriter"
-	"github.com/rs/zerolog/log"
+	"github.com/cloudquery/cloudquery/hub"
+	"github.com/cloudquery/cloudquery/logging"
+	"github.com/hashicorp/go-hclog"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v3"
 )
 
-type PolicyConfig struct {
-	Views []struct {
-		Name  string
-		Query string
-	}
-	Queries []struct {
-		Name   string
-		Invert bool
-		Query  string
-	}
+// UpgradeRequest is provided to the Client to execute an upgrade of one or more providers
+type UpgradeRequest struct {
+	Provider string
+	Version  string
 }
 
-type QueryResult struct {
-	Name          string
-	CheckPassed   bool
-	ResultHeaders []string
-	ResultRows    [][]string
+// FetchRequest is provided to the Client to execute a fetch on one or more providers
+type FetchRequest struct {
+	Providers []config.Provider
 }
 
+type Option func(options *Client)
+
+// ConnectionOptions is provided by Client consumers to control connection to database.
+type ConnectionOptions struct {
+	DriverName string
+	DSN        string
+}
+
+type FetchUpdate struct {
+	Provider string
+	Version  string
+	// Map of resources that have finished fetching
+	FinishedResources map[string]bool
+	// Amount of resources collected so far
+	ResourceCount string
+	// True if provider has finished fetching
+	Done bool
+}
+
+type FetchDoneResult struct {
+	// Map of providers and resources that have finished fetching
+	DoneResources map[string]map[string]bool
+	// Amount of resources collected so far
+	ResourceCount string
+}
+
+type NoOpFetchHooks struct{}
+
+func (n NoOpFetchHooks) OnFetchStart(_ context.Context, _ FetchRequest) error { return nil }
+
+func (n NoOpFetchHooks) OnFetchUpdate(_ context.Context, _ FetchUpdate) error { return nil }
+
+func (n NoOpFetchHooks) OnFetchDone(_ context.Context, _ FetchDoneResult) error { return nil }
+
+// Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
-	driver string
-	dsn    string
-	db     *database.Database
-	// access to CloudQuery plugin hub
-	hub     *hub.Hub
-	manager *plugin.Manager
+	// Optional: database connection options. If not specified client will connect to a local postgres
+	ConnectionOptions ConnectionOptions
+
+	// Optional: Logger framework can use to log.
+	// default: default logger provided.
+	Logger hclog.Logger
+
+	// Optional: client will download missing providers in fetch execution
+	// default: true.
+	DownloadMissingProviders bool
+
+	// Optional: Hub client will use to download plugins, the Hub is used to download and pluginManager providers binaries
+	Hub hub.Registry
+
+	// manager manages all plugins lifecycle
+	manager *pluginManager
+
+	// pool is a list of connection that are used for policy/query execution
+	pool *pgxpool.Pool
+
+	// map of providers downloaded and are kept in the state for a fetch call
+	providers map[string]hub.ProviderDetails
 }
 
-func New(driver string, dsn string) (*Client, error) {
-	manager, err := plugin.NewManager()
+func New(options ...Option) (*Client, error) {
+	m, err := newManager()
 	if err != nil {
 		return nil, err
 	}
-	return &Client{
-		driver:  driver,
-		dsn:     dsn,
-		hub:     hub.NewHub(false),
-		manager: manager,
-	}, nil
+	c := &Client{
+		ConnectionOptions: ConnectionOptions{
+			DriverName: "postgres",
+			DSN:        "",
+		},
+		Logger:                   logging.NewZHcLog(&zerolog.Logger, ""),
+		DownloadMissingProviders: true,
+		manager:                  m,
+		providers:                make(map[string]hub.ProviderDetails),
+	}
+	for _, o := range options {
+		o(c)
+	}
+	if c.Hub == nil {
+		c.Hub = hub.NewRegistryHub(hub.CloudQueryRegistryURl)
+	}
+
+	return c, nil
+
 }
 
-func (c *Client) Initialize(cfg *config.Config) error {
-	// Initialize every provider by downloading the plugin
-	for _, provider := range cfg.Providers {
-		if provider.Name == "" {
-			return fmt.Errorf("bad configuration file: provider must contain key 'name'")
-		}
-		if err := c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
+func (c *Client) Initialize(ctx context.Context, providers []config.RequiredProvider) error {
+	c.Logger.Info("Initializing required providers")
+	for _, p := range providers {
+		c.Logger.Info("Initializing provider", "name", p.Name, "version", p.Version)
+		// TODO: when we support multiple organization use the source attribute
+		details, err := c.Hub.GetProvider(ctx, defaultOrganization, p.Name, p.Version)
+		if err != nil {
 			return err
 		}
+		c.providers[p.Name] = details
 	}
 	return nil
 }
 
-func (c *Client) Run(cfg *config.Config) error {
-	errGroup, _ := errgroup.WithContext(context.Background())
-	for _, provider := range cfg.Providers {
-
-		if provider.Name == "" {
-			log.Error().Msg("provider must contain key 'name' in configuration")
-			return errors.New("provider must contain key 'name' in configuration")
+func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
+	errGroup, _ := errgroup.WithContext(ctx)
+	for _, provider := range request.Providers {
+		details, ok := c.providers[provider.Name]
+		if !ok {
+			return fmt.Errorf("provider plugin %s missing from plugin directory", provider.Name)
 		}
-		version := provider.Version
-		if provider.Version == "" {
-			version = "latest"
-		}
-
-		if err := c.hub.DownloadPlugin("cloudquery", provider.Name, provider.Version, false); err != nil {
-			return err
-		}
-
-		log.Debug().Str("provider", provider.Name).Str("version", version).Msg("getting or creating provider")
-		cqProvider, err := c.manager.GetOrCreateProvider(provider.Name, version)
+		c.Logger.Debug("creating provider plugin", "provider", provider.Name)
+		// TODO: pass filepath instead
+		cqProvider, err := c.manager.GetOrCreateProvider(provider.Name, details.Version)
 		if err != nil {
-			log.Error().Err(err).Str("provider", provider.Name).Str("version", version).Msg("failed to create provider plugin")
+			c.Logger.Error("failed to create provider plugin", "provider", provider.Name)
 			continue
 		}
 		// create intermediate variable
 		provider := provider
 		errGroup.Go(func() error {
-
-			log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("requesting provider initialize")
-			err = cqProvider.Init(c.driver, c.dsn, true)
+			c.Logger.Info("requesting provider initialize", "provider", provider.Name, "version", details.Version)
+			err = cqProvider.Init(c.ConnectionOptions.DriverName, c.ConnectionOptions.DSN, true)
 			if err != nil {
 				return err
 			}
-			d, err := yaml.Marshal(&provider.Rest)
+			d, err := yaml.Marshal(&provider)
 			if err != nil {
 				return err
 			}
-			log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("requesting provider fetch")
+			c.Logger.Info("requesting provider fetch", "provider", provider.Name, "version", details.Version)
 			err = cqProvider.Fetch(d)
 			if err != nil {
 				return err
@@ -124,160 +165,15 @@ func (c *Client) Run(cfg *config.Config) error {
 	return nil
 }
 
-func (c *Client) RunQuery(path string, outputPath string) error {
-	_, err := os.Stat(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return fmt.Errorf("%s doesn't exist. you can create one via 'gen policy' command", path)
-		}
-		return err
-	}
-
-	c.db, err = database.Open(c.driver, c.dsn)
-	if err != nil {
-		return err
-	}
-
-	if c.db.Driver == "neo4j" {
-		return fmt.Errorf("query command doesn't support neo4j driver yet")
-	}
-
-	c.db, err = database.Open(c.driver, c.dsn)
-	if err != nil {
-		return err
-	}
-
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-
-	var policyConfig PolicyConfig
-	if err := yaml.Unmarshal(data, &policyConfig); err != nil {
-		return err
-	}
-
-	if err = c.createViews(&policyConfig); err != nil {
-		return err
-	}
-
-	if err = c.runQueries(&policyConfig, outputPath); err != nil {
-		return err
-	}
-	return nil
+func (c Client) ExecutePolicy(ctx context.Context, request interface{}) (interface{}, error) {
+	panic("implement me")
 }
 
-func (c *Client) runQueries(config *PolicyConfig, outputPath string) error {
-	var f *os.File
-	var err error
-	if outputPath != "" {
-		f, err = os.Create(outputPath)
-		if err != nil {
-			return err
-		}
-		defer f.Close()
-
-		_, err = f.WriteString("[")
-		if err != nil {
-			return err
-		}
-	}
-
-	log.Info().Int("count", len(config.Queries)).Msg("Executing queries")
-	for idx, query := range config.Queries {
-		queryResult := QueryResult{
-			Name:        query.Name,
-			CheckPassed: true,
-		}
-		log.Info().Str("query", query.Name).Msg("Executing query")
-		rows, err := c.db.GormDB.Raw(query.Query).Rows()
-		if err != nil {
-			return err
-		}
-		columns, err := rows.Columns()
-		if err != nil {
-			return err
-		}
-		table := tablewriter.NewWriter(os.Stdout)
-		table.SetAutoFormatHeaders(false)
-		table.SetHeader(columns)
-		nc := len(columns)
-		queryResult.ResultHeaders = columns
-		prettyRow := make([]string, nc)
-		res := make([]sql.NullString, nc)
-		resPtrs := make([]interface{}, nc)
-		for i := 0; i < nc; i++ {
-			resPtrs[i] = &res[i]
-		}
-		resultsCount := 0
-		for rows.Next() {
-			err := rows.Scan(resPtrs...)
-			if err != nil {
-				return err
-			}
-			resultsCount += 1
-			for i, v := range res {
-				prettyRow[i] = v.String
-			}
-			table.Append(prettyRow)
-			queryResult.ResultRows = append(queryResult.ResultRows, prettyRow)
-		}
-		err = rows.Close()
-		if err != nil {
-			return err
-		}
-		if resultsCount > 0 && !query.Invert {
-			log.Warn().Str("query", query.Name).Msg("Check failed. Query returned results.")
-			table.Render()
-			queryResult.CheckPassed = false
-		} else {
-			if query.Invert {
-				log.Warn().Str("query", query.Name).Msg("Check failed. Query returned no results.")
-				queryResult.CheckPassed = false
-			} else {
-				log.Info().Str("query", query.Name).Msg("Check passed. Query returned no results.")
-			}
-		}
-
-		if outputPath != "" {
-			b, err := json.Marshal(&queryResult)
-			if err != nil {
-				return err
-			}
-			outputStr := string(b)
-			if idx != len(config.Queries)-1 {
-				outputStr += ","
-			}
-			_, err = f.WriteString(outputStr)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	if outputPath != "" {
-		_, err = f.WriteString("]")
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+func (c Client) Query(ctx context.Context, query interface{}) (interface{}, error) {
+	panic("not implemented")
 }
 
-func (c *Client) createViews(config *PolicyConfig) error {
-	log.Info().Int("count", len(config.Views)).Msg("Creating views")
-	for _, view := range config.Views {
-		log.Info().Str("name", view.Name).Msg("Creating view")
-		fmt.Println(view.Query)
-		err := c.db.GormDB.Exec(view.Query).Error
-		if err != nil {
-			if err.Error() == "ERROR: relation \"aws_log_metric_filter_and_alarm\" already exists (SQLSTATE 42P07)" {
-				log.Info().Str("name", view.Name).Msg("table already exist. skipping.")
-				continue
-			}
-			return err
-		}
-	}
-	return nil
+func (c Client) Close() {
+	c.manager.Shutdown()
+	c.pool.Close()
 }

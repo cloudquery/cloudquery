@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// Creates hclog.Logger adapter from a zerolog log
+// NewZHcLog Creates hclog.Logger adapter from a zerolog log
 func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
 	return &ZerologKVAdapter{l, name, nil}
 }

@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"log"
-
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
+	"context"
+	"github.com/cloudquery/cloudquery/terminal"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -34,19 +32,11 @@ var fetchCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		driver := viper.GetString("driver")
-		dsn := viper.GetString("dsn")
+		//driver := viper.GetString("driver")
+		//dsn := viper.GetString("dsn")
 		configPath := viper.GetString("configPath")
-		c, err := client.New(driver, dsn)
-		if err != nil {
-			return err
-		}
-		cfg, err := config.Parse(configPath)
-		if err != nil {
-			return err
-		}
+		return terminal.Fetch(context.TODO(), configPath)
 
-		return c.Run(cfg)
 
 	},
 }
@@ -55,9 +45,9 @@ func init() {
 	flags := fetchCmd.Flags()
 	flags.String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
 	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env: CQ_DRIVER)")
-	flags.String("path", "./config.yml", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
-	if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
-		log.Fatal(err)
-	}
+	flags.String("path", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
+	//if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
+	//	log.Fatal(err)
+	//}
 	rootCmd.AddCommand(fetchCmd)
 }

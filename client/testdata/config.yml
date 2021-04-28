@@ -1,6 +1,0 @@
-providers:
-  - name: aws
-  - name: gcp
-  - name: azure
-  - name: k8s
-  - name: okta

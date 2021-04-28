@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cmd/generate"
 	"github.com/cloudquery/cloudquery/logging"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -38,10 +37,9 @@ func Execute() {
 
 func init() {
 	// add inner commands
-	rootCmd.AddCommand(generate.Cmd)
 	// TODO: change flags to kebab-case
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", true, "Enable console logging")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", false, "Enable console logging")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encodeLogsAsJson", false, "EncodeLogsAsJson makes the logging framework logging JSON")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.FileLoggingEnabled, "enableFileLogging", true, "enableFileLogging makes the framework logging to a file")
 	rootCmd.PersistentFlags().StringVar(&loggerConfig.Directory, "logDirectory", ".", "Directory to logging to to when file logging is enabled")

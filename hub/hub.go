@@ -1,0 +1,332 @@
+package hub
+
+import (
+	"context"
+	"fmt"
+	"github.com/cloudquery/cloudquery/logging"
+	"github.com/google/go-github/v35/github"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/afero"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+)
+
+const (
+	CloudQueryRegistryURl = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
+)
+
+type VerifyStatus string
+
+const (
+	Verifying    VerifyStatus = "verifying"
+	BadSignature VerifyStatus = "bad signature"
+	BadChecksum  VerifyStatus = "bad checksum"
+	Verified     VerifyStatus = "verified"
+)
+
+type ProgressUpdater interface {
+	OnDownload(providerName string, version string, size int64, data io.Reader) io.Reader
+	OnVerify(providerName string, status VerifyStatus)
+}
+
+type ProviderDetails struct {
+	Name         string
+	Version      string
+	Organization string
+	FilePath     string
+}
+
+type Registry interface {
+	VerifyProvider(organization, providerName, version string) bool
+	GetProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error)
+}
+
+type Hub struct {
+	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
+	NoVerify bool
+	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
+	PluginDirectory string
+	// Optional: Download propagator allows the creator to get called back on download progress and completion.
+	// defaults to NoOpPropagator
+	ProgressUpdater ProgressUpdater
+	// Optional: logger to use, if not defined global logger is used.
+	Logger hclog.Logger
+	// Url for hub to connect to download and verify plugins
+	url string
+	// map of downloaded providers
+	providers map[string]ProviderDetails
+
+	fs        afero.Fs
+}
+
+type Option func(h *Hub)
+
+func NewRegistryHub(url string, opts ...Option) *Hub {
+	h := &Hub{
+		NoVerify:               false,
+		PluginDirectory:        filepath.Join(".", ".cq", "providers"),
+		ProgressUpdater:        nil,
+		Logger:                 logging.NewZHcLog(&zerolog.Logger, ""),
+		url:                    url,
+		fs:                     afero.NewOsFs(),
+		providers:              make(map[string]ProviderDetails),
+	}
+
+	// apply the list of options to hub
+	for _, opt := range opts {
+		opt(h)
+	}
+	_ = h.loadExisting()
+	return h
+}
+
+func (h Hub) VerifyProvider(organization, providerName, version string) bool {
+	l := h.Logger.With("provider", providerName, "version", version)
+	checksumsPath := filepath.Join(h.PluginDirectory, organization, providerName, version+".checksums.txt")
+	checksumsURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt", organization, providerName)
+	if version != "latest" {
+		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/checksums.txt", organization, providerName, version)
+	}
+	if h.ProgressUpdater != nil {
+		h.ProgressUpdater.OnVerify(providerName, Verifying)
+	}
+	l.Debug("downloading checksums file", "url", checksumsURL, "path", checksumsPath)
+	// download checksums
+	if err := h.downloadFile(providerName, version, checksumsPath, checksumsURL, false); err != nil {
+		l.Error("failed to download checksums file", "providerName", providerName, "error", err)
+		return false
+	}
+	l.Debug("downloading checksums signature", "url", checksumsURL, "path", checksumsPath)
+	// download checksums signature
+	if err := h.downloadFile(providerName, version, checksumsPath+".sig", checksumsURL+".sig", false); err != nil {
+		l.Error("failed to download signature file", "providerName", providerName, "error", err)
+		return false
+	}
+	err := validateFile(checksumsPath, checksumsPath+".sig")
+	if err != nil {
+		l.Error("validating provider signature failed", "providerName", providerName, "error", err)
+		if h.ProgressUpdater != nil {
+			h.ProgressUpdater.OnVerify(providerName, BadSignature)
+		}
+		return false
+	}
+	providerPath := h.getProviderPath(organization, providerName, version)
+	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
+		l.Error("validating provider checksum failed", "providerName", providerName, "error", err)
+		if h.ProgressUpdater != nil {
+			h.ProgressUpdater.OnVerify(providerName, BadChecksum)
+		}
+		return false
+	}
+	if h.ProgressUpdater != nil {
+		h.ProgressUpdater.OnVerify(providerName, Verified)
+	}
+	return true
+}
+
+func (h Hub) GetProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error) {
+	if providerVersion == "latest" {
+		release, err := h.getRelease(ctx, organization, providerName, providerVersion)
+		if err != nil {
+			return ProviderDetails{}, err
+		}
+		providerVersion = release.GetTagName()
+	}
+	p, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
+	if !ok {
+		return h.downloadProvider(organization, providerName, providerVersion)
+	}
+	if p.Version != providerVersion {
+		h.Logger.Info("Current version is not as requested version updating provider", "current", p.Version, "requested", providerVersion)
+		return h.downloadProvider(organization, providerName, providerVersion)
+	}
+
+	if h.NoVerify {
+		return p, nil
+	}
+	if h.ProgressUpdater != nil {
+		// Setup a done download progress
+		_ = h.ProgressUpdater.OnDownload(providerName, providerVersion, 0, nil)
+	}
+
+	if !h.VerifyProvider(organization, providerName, providerVersion) {
+		return ProviderDetails{}, fmt.Errorf("provider %s@%s verfication failed", providerName, providerVersion)
+	}
+	return p, nil
+}
+
+func (h Hub) downloadProvider(organization, providerName, providerVersion string) (ProviderDetails, error) {
+
+	// TODO: split provider name to get organization if different if not assume it's cloudquery
+	if !h.verifyRegistered(organization, providerName, providerVersion) {
+		return ProviderDetails{}, fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", providerName, providerVersion)
+	}
+	// build fully qualified plugin directory for given plugin
+	pluginDir := filepath.Join(h.PluginDirectory, organization, providerName)
+	if err := h.fs.MkdirAll(pluginDir, os.ModePerm); err != nil {
+		return ProviderDetails{}, err
+	}
+
+	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
+	providerPath := h.getProviderPath(organization, providerName, providerVersion)
+	if err := h.downloadFile(providerName, providerVersion, providerPath, providerURL, true); err != nil {
+		return ProviderDetails{}, err
+	}
+
+	if ok := h.VerifyProvider(organization, providerName, providerVersion); !ok {
+		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
+	}
+
+	details := ProviderDetails{
+		Name:         providerName,
+		Version:      providerVersion,
+		Organization: organization,
+		FilePath:     providerPath,
+	}
+	h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)] = details
+
+	return details, nil
+}
+
+// DownloadFile will download a url to a local file. It's efficient because it will
+// write as it downloads and not load the whole file into memory. We pass an io.TeeReader
+// into Copy() to report progress on the download.
+func (h Hub) downloadFile(providerName, version, filepath, url string, updateProgress bool) error {
+	// Create the file, but give it a tmp file extension, this means we won't overwrite a
+	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
+	out, err := h.fs.Create(filepath + ".tmp")
+	if err != nil {
+		return err
+	}
+
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		out.Close()
+		return err
+	}
+	defer resp.Body.Close()
+
+	var reader io.Reader = resp.Body
+	if h.ProgressUpdater != nil && updateProgress {
+		reader = h.ProgressUpdater.OnDownload(providerName, version, resp.ContentLength, resp.Body)
+	}
+	// Create our progress reporter and pass it to be used alongside our writer
+	if _, err = io.Copy(out, reader); err != nil {
+		out.Close()
+		return err
+	}
+	// Close the file without defer so it can happen before Rename()
+	out.Close()
+
+	if err = os.Rename(filepath+".tmp", filepath); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (h Hub) getRelease(ctx context.Context, organization, providerName, version string) (*github.RepositoryRelease, error) {
+	client := github.NewClient(nil)
+	if version != "latest" {
+		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName), version)
+		return release, err
+	}
+	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
+	return release, err
+}
+
+func (h Hub) getLatestReleaseVersion(ctx context.Context, organization, providerName string) (*version.Version, error) {
+	client := github.NewClient(nil)
+	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
+	if err != nil {
+		return nil, err
+	}
+	return version.NewVersion(release.GetTagName())
+}
+
+func (h Hub) verifyRegistered(organization, providerName, version string) bool {
+	if h.NoVerify {
+		h.Logger.Warn("skipping plugin registry verification", "provider", providerName)
+		return true
+	}
+
+	h.Logger.Debug("verifying provider plugin is registered", "provider", providerName, "version", version)
+	if !h.isProviderRegistered(organization, providerName) {
+		return false
+	}
+
+	h.Logger.Debug("provider plugin is registered", "provider", providerName, "version", version)
+	return true
+}
+
+func (h Hub) isProviderRegistered(org, provider string) bool {
+	url := fmt.Sprintf(h.url, org, provider)
+	res, err := http.Get(url)
+	if err != nil {
+		h.Logger.Error("failed to check if provider is registered", "error", err)
+		return false
+	}
+	if res.StatusCode != http.StatusOK {
+		switch res.StatusCode {
+		case http.StatusNotFound:
+			return false
+		default:
+			return false
+		}
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+	return true
+}
+
+// GetProviderPath returns expected path of provider on file system from name and version of plugin
+func (h Hub) getProviderPath(org, name, version string) string {
+	extension := ""
+	if runtime.GOOS == "windows" {
+		extension = ".exe"
+	}
+	return filepath.Join(h.PluginDirectory, org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension))
+}
+
+func (h Hub) loadExisting() error {
+	return afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
+		}
+		if info.IsDir() {
+			return nil
+		}
+		// skip checksum files, they will be downloaded again
+		if strings.Contains(info.Name(), "checksums") {
+			return nil
+		}
+		provider := filepath.Base(filepath.Dir(path))
+		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
+		pVersion := strings.Split(filepath.Base(path), "-")[0]
+
+		h.providers[fmt.Sprintf("%s-%s", provider, pVersion)] = ProviderDetails{
+			Name:         provider,
+			Version:      pVersion,
+			Organization: organization,
+			FilePath:     path,
+		}
+		h.Logger.Debug("found existing provider", "provider", provider, "version", pVersion)
+		return nil
+	})
+}
+
+// getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
+func getPluginBinaryName(providerName string) string {
+	var suffix = ""
+	if runtime.GOOS == "windows" {
+		suffix = ".exe"
+	}
+	return fmt.Sprintf("cq-provider-%s_%s_%s%s", providerName, runtime.GOOS, runtime.GOARCH, suffix)
+}
