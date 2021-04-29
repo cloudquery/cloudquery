@@ -76,6 +76,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.DirectconnectGateways(),
 		},
 		{
+			resource:    "directconnect.virtual_interfaces",
+			mockBuilder: buildDirectconnectVirtualInterfacesMock,
+			mainTable:   resources.DirectconnectVirtualInterfaces(),
+		},
+		{
 			resource:    "ec2.byoip_cidrs",
 			mockBuilder: buildEc2ByoipCidrsMock,
 			mainTable:   resources.Ec2ByoipCidrs(),

@@ -248,6 +248,22 @@ func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
+func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockDirectconnectClient(ctrl)
+	l := directconnectTypes.VirtualInterface{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVirtualInterfaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&directconnect.DescribeVirtualInterfacesOutput{
+			VirtualInterfaces: []directconnectTypes.VirtualInterface{l},
+		}, nil)
+	return client.Services{
+		Directconnect: m,
+	}
+}
+
 func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := ec2Types.ByoipCidr{}
