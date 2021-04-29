@@ -21,3 +21,5 @@ cq-provider-aws
 *.tfstate
 *.tfstate.*
 .swp
+
+__debug_bin

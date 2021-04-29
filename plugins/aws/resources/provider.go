@@ -17,6 +17,7 @@ func Provider() *provider.Provider {
 			"cloudwatchlogs.filters":            CloudwatchlogsFilters(),
 			"s3.buckets":                        S3Buckets(),
 			"directconnect.gateways":            DirectconnectGateways(),
+			"directconnect.virtual_interfaces":  DirectconnectVirtualInterfaces(),
 			"ec2.byoip_cidrs":                   Ec2ByoipCidrs(),
 			"ec2.customer_gateways":             Ec2CustomerGateways(),
 			"ec2.flow_logs":                     Ec2FlowLogs(),

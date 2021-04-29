@@ -287,6 +287,26 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGateways(arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDirectConnectGateways", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeDirectConnectGateways), varargs...)
 }
 
+// DescribeVirtualInterfaces mocks base method.
+func (m *MockDirectconnectClient) DescribeVirtualInterfaces(arg0 context.Context, arg1 *directconnect.DescribeVirtualInterfacesInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVirtualInterfaces", varargs...)
+	ret0, _ := ret[0].(*directconnect.DescribeVirtualInterfacesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVirtualInterfaces indicates an expected call of DescribeVirtualInterfaces.
+func (mr *MockDirectconnectClientMockRecorder) DescribeVirtualInterfaces(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVirtualInterfaces", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeVirtualInterfaces), varargs...)
+}
+
 // MockEc2Client is a mock of Ec2Client interface.
 type MockEc2Client struct {
 	ctrl     *gomock.Controller

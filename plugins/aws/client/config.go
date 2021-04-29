@@ -37,6 +37,7 @@ const DefaultConfigYaml = `
       - name: cloudwatch.alarms
       - name: cloudwatchlogs.filters
       - name: directconnect.gateways
+      - name: directconnect.virtual_interfaces
       - name: ec2.customer_gateways
       - name: ec2.flow_logs
       - name: ec2.images
