@@ -550,6 +550,126 @@ func (mr *MockEc2ClientMockRecorder) DescribeSubnets(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSubnets", reflect.TypeOf((*MockEc2Client)(nil).DescribeSubnets), varargs...)
 }
 
+// DescribeTransitGatewayAttachments mocks base method.
+func (m *MockEc2Client) DescribeTransitGatewayAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayAttachmentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGatewayAttachments", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewayAttachmentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGatewayAttachments indicates an expected call of DescribeTransitGatewayAttachments.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayAttachments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGatewayAttachments", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGatewayAttachments), varargs...)
+}
+
+// DescribeTransitGatewayMulticastDomains mocks base method.
+func (m *MockEc2Client) DescribeTransitGatewayMulticastDomains(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayMulticastDomainsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayMulticastDomainsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGatewayMulticastDomains", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewayMulticastDomainsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGatewayMulticastDomains indicates an expected call of DescribeTransitGatewayMulticastDomains.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayMulticastDomains(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGatewayMulticastDomains", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGatewayMulticastDomains), varargs...)
+}
+
+// DescribeTransitGatewayPeeringAttachments mocks base method.
+func (m *MockEc2Client) DescribeTransitGatewayPeeringAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayPeeringAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayPeeringAttachmentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGatewayPeeringAttachments", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewayPeeringAttachmentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGatewayPeeringAttachments indicates an expected call of DescribeTransitGatewayPeeringAttachments.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayPeeringAttachments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGatewayPeeringAttachments", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGatewayPeeringAttachments), varargs...)
+}
+
+// DescribeTransitGatewayRouteTables mocks base method.
+func (m *MockEc2Client) DescribeTransitGatewayRouteTables(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayRouteTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayRouteTablesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGatewayRouteTables", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewayRouteTablesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGatewayRouteTables indicates an expected call of DescribeTransitGatewayRouteTables.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayRouteTables(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGatewayRouteTables", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGatewayRouteTables), varargs...)
+}
+
+// DescribeTransitGatewayVpcAttachments mocks base method.
+func (m *MockEc2Client) DescribeTransitGatewayVpcAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayVpcAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayVpcAttachmentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGatewayVpcAttachments", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewayVpcAttachmentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGatewayVpcAttachments indicates an expected call of DescribeTransitGatewayVpcAttachments.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayVpcAttachments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGatewayVpcAttachments", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGatewayVpcAttachments), varargs...)
+}
+
+// DescribeTransitGateways mocks base method.
+func (m *MockEc2Client) DescribeTransitGateways(arg0 context.Context, arg1 *ec2.DescribeTransitGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewaysOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTransitGateways", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeTransitGatewaysOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTransitGateways indicates an expected call of DescribeTransitGateways.
+func (mr *MockEc2ClientMockRecorder) DescribeTransitGateways(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGateways", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGateways), varargs...)
+}
+
 // DescribeVpcPeeringConnections mocks base method.
 func (m *MockEc2Client) DescribeVpcPeeringConnections(arg0 context.Context, arg1 *ec2.DescribeVpcPeeringConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcPeeringConnectionsOutput, error) {
 	m.ctrl.T.Helper()

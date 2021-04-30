@@ -136,6 +136,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.Ec2Subnets(),
 		},
 		{
+			resource:    "ec2.transit_gateways",
+			mockBuilder: buildEc2TransitGateways,
+			mainTable:   resources.Ec2TransitGateways(),
+		},
+		{
 			resource:    "ec2.vpcs",
 			mockBuilder: buildEc2Vpcs,
 			mainTable:   resources.Ec2Vpcs(),
