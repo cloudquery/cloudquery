@@ -48,6 +48,7 @@ const DefaultConfigYaml = `
       - name: ec2.route_tables
       - name: ec2.security_groups
       - name: ec2.subnets
+      - name: ec2.transit_gateways
       - name: ec2.vpc_peering_connections
       - name: ec2.vpcs
       - name: ecs.clusters
