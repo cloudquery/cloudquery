@@ -174,7 +174,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
@@ -193,13 +193,15 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvironmentLinks(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	res <- p.EnvironmentLinks
 	return nil
 }
-func fetchElasticbeanstalkEnvResourcesLoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvResourcesLoadBalancerListeners(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.EnvironmentDescription)
-	res <- p.Resources.LoadBalancer.Listeners
+	if p.Resources != nil && p.Resources.LoadBalancer != nil {
+		res <- p.Resources.LoadBalancer.Listeners
+	}
 	return nil
 }
