@@ -76,6 +76,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.DirectconnectGateways(),
 		},
 		{
+			resource:    "directconnect.virtual_gateways",
+			mockBuilder: buildDirectconnectVirtualGatewaysMock,
+			mainTable:   resources.DirectconnectVirtualGateways(),
+		},
+		{
 			resource:    "directconnect.virtual_interfaces",
 			mockBuilder: buildDirectconnectVirtualInterfacesMock,
 			mainTable:   resources.DirectconnectVirtualInterfaces(),

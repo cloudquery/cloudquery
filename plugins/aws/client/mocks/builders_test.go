@@ -248,6 +248,22 @@ func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
+func buildDirectconnectVirtualGatewaysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockDirectconnectClient(ctrl)
+	l := directconnectTypes.VirtualGateway{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVirtualGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&directconnect.DescribeVirtualGatewaysOutput{
+			VirtualGateways: []directconnectTypes.VirtualGateway{l},
+		}, nil)
+	return client.Services{
+		Directconnect: m,
+	}
+}
+
 func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	l := directconnectTypes.VirtualInterface{}
