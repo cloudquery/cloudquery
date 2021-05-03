@@ -91,6 +91,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.Ec2CustomerGateways(),
 		},
 		{
+			resource:    "ec2.ebs_volumes",
+			mockBuilder: buildEc2EbsVolumes,
+			mainTable:   resources.Ec2EbsVolumes(),
+		},
+		{
 			resource:    "ec2.flow_logs",
 			mockBuilder: buildEc2FlowLogsMock,
 			mainTable:   resources.Ec2FlowLogs(),

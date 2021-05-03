@@ -670,6 +670,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGateways(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTransitGateways", reflect.TypeOf((*MockEc2Client)(nil).DescribeTransitGateways), varargs...)
 }
 
+// DescribeVolumes mocks base method.
+func (m *MockEc2Client) DescribeVolumes(arg0 context.Context, arg1 *ec2.DescribeVolumesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVolumes", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVolumesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVolumes indicates an expected call of DescribeVolumes.
+func (mr *MockEc2ClientMockRecorder) DescribeVolumes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVolumes", reflect.TypeOf((*MockEc2Client)(nil).DescribeVolumes), varargs...)
+}
+
 // DescribeVpcPeeringConnections mocks base method.
 func (m *MockEc2Client) DescribeVpcPeeringConnections(arg0 context.Context, arg1 *ec2.DescribeVpcPeeringConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcPeeringConnectionsOutput, error) {
 	m.ctrl.T.Helper()

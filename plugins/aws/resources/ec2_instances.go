@@ -701,7 +701,7 @@ func fetchEc2InstanceNetworkInterfaceIpv6Addresses(_ context.Context, _ schema.C
 	res <- instanceNetworkInterface.Ipv6Addresses
 	return nil
 }
-func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(__ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
 	if !ok {
 		return fmt.Errorf("not ec2 instance network interface")
