@@ -296,6 +296,22 @@ func buildEc2CustomerGateways(t *testing.T, ctrl *gomock.Controller) client.Serv
 	}
 }
 
+func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockEc2Client(ctrl)
+	l := ec2Types.Volume{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVolumes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ec2.DescribeVolumesOutput{
+			Volumes: []ec2Types.Volume{l},
+		}, nil)
+	return client.Services{
+		EC2: m,
+	}
+}
+
 func buildEc2InternetGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := ec2Types.InternetGateway{}

@@ -32,6 +32,7 @@ func Provider() *provider.Provider {
 			"ec2.vpcs":                          Ec2Vpcs(),
 			"ec2.instances":                     Ec2Instances(),
 			"ec2.security_groups":               Ec2SecurityGroups(),
+			"ec2.ebs_volumes":                   Ec2EbsVolumes(),
 			"ecr.repositories":                  EcrRepositories(),
 			"efs.filesystems":                   EfsFilesystems(),
 			"eks.clusters":                      EksClusters(),
