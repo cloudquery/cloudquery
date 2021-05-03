@@ -39,6 +39,7 @@ const DefaultConfigYaml = `
       - name: directconnect.gateways
       - name: directconnect.virtual_interfaces
       - name: ec2.customer_gateways
+      - name: ec2.ebs_volumes
       - name: ec2.flow_logs
       - name: ec2.images
       - name: ec2.instances
