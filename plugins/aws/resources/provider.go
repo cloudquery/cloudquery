@@ -12,6 +12,7 @@ func Provider() *provider.Provider {
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
 			"autoscaling.launch_configurations": AutoscalingLaunchConfigurations(),
+			"cloudfront.distributions":          CloudfrontDistributions(),
 			"cloudtrail.trails":                 CloudtrailTrails(),
 			"cloudwatch.alarms":                 CloudwatchAlarms(),
 			"cloudwatchlogs.filters":            CloudwatchlogsFilters(),
