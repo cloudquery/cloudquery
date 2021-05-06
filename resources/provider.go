@@ -32,6 +32,7 @@ func Provider() *provider.Provider {
 			"ec2.subnets":                       Ec2Subnets(),
 			"ec2.transit_gateways":              Ec2TransitGateways(),
 			"ec2.vpc_peering_connections":       Ec2VpcPeeringConnections(),
+			"ec2.vpc_endpoints":                 Ec2VpcEndpoints(),
 			"ec2.vpcs":                          Ec2Vpcs(),
 			"ec2.instances":                     Ec2Instances(),
 			"ec2.security_groups":               Ec2SecurityGroups(),

@@ -557,6 +557,21 @@ func buildEc2Vpcs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 
+func buildEc2VpcEndpoints(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockEc2Client(ctrl)
+	e := ec2Types.VpcEndpoint{}
+	if err := faker.FakeData(&e); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVpcEndpoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ec2.DescribeVpcEndpointsOutput{
+			VpcEndpoints: []ec2Types.VpcEndpoint{e},
+		}, nil)
+	return client.Services{
+		EC2: m,
+	}
+}
+
 func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := ec2Types.VpcPeeringConnection{}

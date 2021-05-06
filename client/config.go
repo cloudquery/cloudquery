@@ -55,6 +55,7 @@ const DefaultConfigYaml = `
       - name: ec2.transit_gateways
       - name: ec2.vpc_peering_connections
       - name: ec2.vpcs
+      - name: ec2.vpc_endpoints
       - name: ecs.clusters
       - name: ecr.repositories
       - name: efs.filesystems
