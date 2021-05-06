@@ -99,6 +99,26 @@ func (m *MockCloudfrontClient) EXPECT() *MockCloudfrontClientMockRecorder {
 	return m.recorder
 }
 
+// ListCachePolicies mocks base method.
+func (m *MockCloudfrontClient) ListCachePolicies(arg0 context.Context, arg1 *cloudfront.ListCachePoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListCachePoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListCachePolicies", varargs...)
+	ret0, _ := ret[0].(*cloudfront.ListCachePoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListCachePolicies indicates an expected call of ListCachePolicies.
+func (mr *MockCloudfrontClientMockRecorder) ListCachePolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCachePolicies", reflect.TypeOf((*MockCloudfrontClient)(nil).ListCachePolicies), varargs...)
+}
+
 // ListDistributions mocks base method.
 func (m *MockCloudfrontClient) ListDistributions(arg0 context.Context, arg1 *cloudfront.ListDistributionsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsOutput, error) {
 	m.ctrl.T.Helper()

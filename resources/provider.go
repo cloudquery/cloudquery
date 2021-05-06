@@ -13,6 +13,7 @@ func Provider() *provider.Provider {
 		ResourceMap: map[string]*schema.Table{
 			"autoscaling.launch_configurations": AutoscalingLaunchConfigurations(),
 			"cloudfront.distributions":          CloudfrontDistributions(),
+			"cloudfront.cache_policies":         CloudfrontCachePolicies(),
 			"cloudtrail.trails":                 CloudtrailTrails(),
 			"cloudwatch.alarms":                 CloudwatchAlarms(),
 			"cloudwatchlogs.filters":            CloudwatchlogsFilters(),

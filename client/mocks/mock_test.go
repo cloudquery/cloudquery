@@ -345,6 +345,12 @@ func TestResources(t *testing.T) {
 			mockBuilder:        buildCloudfrontDistributionsMock,
 			verifyEmptyColumns: true,
 		},
+		{
+			resource:           "cloudfront.cache_policies",
+			mainTable:          resources.CloudfrontCachePolicies(),
+			mockBuilder:        buildCloudfrontCachePoliciesMock,
+			verifyEmptyColumns: true,
+		},
 	}
 	for _, tc := range testResourcesTable {
 		t.Run(tc.resource, func(t *testing.T) {

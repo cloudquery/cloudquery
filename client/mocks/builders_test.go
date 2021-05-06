@@ -1,9 +1,10 @@
 package mocks_test
 
 import (
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
-	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	autoscalingTypes "github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
@@ -103,6 +104,28 @@ func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) cli
 		},
 	}
 	m.EXPECT().ListDistributions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		cloudfrontOutput,
+		nil,
+	)
+	return services
+}
+
+func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockCloudfrontClient(ctrl)
+	services := client.Services{
+		Cloudfront: m,
+	}
+	cp := cloudfrontTypes.CachePolicySummary{}
+	if err := faker.FakeData(&cp); err != nil {
+		t.Fatal(err)
+	}
+
+	cloudfrontOutput := &cloudfront.ListCachePoliciesOutput{
+		CachePolicyList: &cloudfrontTypes.CachePolicyList{
+			Items: []cloudfrontTypes.CachePolicySummary{cp},
+		},
+	}
+	m.EXPECT().ListCachePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		cloudfrontOutput,
 		nil,
 	)
