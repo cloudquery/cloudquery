@@ -33,6 +33,8 @@ const DefaultConfigYaml = `
 #    max_backoff: 30 # Optional. The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 60 seconds.
     resources: # You can comment resources your are not interested in for faster fetching.
       - name: autoscaling.launch_configurations
+      - name: cloudfront.cache_policies
+      - name: cloudfront.distributions
       - name: cloudtrail.trails
       - name: cloudwatch.alarms
       - name: cloudwatchlogs.filters
