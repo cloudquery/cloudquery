@@ -1,11 +1,11 @@
 package logging
 
 import (
+	"github.com/cloudquery/cloudquery/internal/logging/keyvals"
 	"io"
 	"log"
 	"reflect"
 
-	"github.com/cloudquery/cloudquery/logging/keyvals"
 	"github.com/hashicorp/go-hclog"
 	"github.com/rs/zerolog"
 )

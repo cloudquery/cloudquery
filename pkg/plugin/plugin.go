@@ -1,8 +1,9 @@
-package client
+package plugin
 
 import (
 	"fmt"
-	"github.com/cloudquery/cq-provider-sdk/proto"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"os"
 	"os/exec"
@@ -10,18 +11,17 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/logging"
 	"github.com/hashicorp/go-plugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
-const defaultOrganization = "cloudquery"
+const DefaultOrganization = "cloudquery"
 
 type Plugin interface {
 	Name() string
 	Version() string
-	Provider() proto.CQProvider
+	Provider() cqproto.CQProvider
 	Close()
 }
 
@@ -29,7 +29,7 @@ type managedPlugin struct {
 	name     string
 	version  string
 	client   *plugin.Client
-	provider proto.CQProvider
+	provider cqproto.CQProvider
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
@@ -57,7 +57,7 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 		return nil, err
 	}
 
-	provider, ok := raw.(proto.CQProvider)
+	provider, ok := raw.(cqproto.CQProvider)
 	if !ok {
 		client.Kill()
 		return nil, fmt.Errorf("failed to cast plugin")
@@ -74,7 +74,7 @@ func (m managedPlugin) Name() string { return m.name }
 
 func (m managedPlugin) Version() string { return m.version }
 
-func (m managedPlugin) Provider() proto.CQProvider { return m.provider }
+func (m managedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
 func (m managedPlugin) Close() {
 	if m.client == nil {
@@ -87,7 +87,7 @@ type unmanagedPlugin struct {
 	name     string
 	config   *plugin.ReattachConfig
 	client   *plugin.Client
-	provider proto.CQProvider
+	provider cqproto.CQProvider
 }
 
 // newUnmanagedPlugin attaches to and existing running plugin  a new unmanaged plugin using go_plugin
@@ -110,7 +110,7 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 		return nil, err
 	}
 
-	provider, ok := raw.(proto.CQProvider)
+	provider, ok := raw.(cqproto.CQProvider)
 	if !ok {
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
@@ -124,15 +124,15 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 
 func (m unmanagedPlugin) Name() string { return m.name }
 
-func (m unmanagedPlugin) Version() string { return "testing" }
+func (m unmanagedPlugin) Version() string { return "unmanaged" }
 
-func (m unmanagedPlugin) Provider() proto.CQProvider { return m.provider }
+func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
 func (m unmanagedPlugin) Close() {}
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin
 func GetProviderPath(name string, version string) (string, error) {
-	org := defaultOrganization
+	org := DefaultOrganization
 	split := strings.Split(name, "/")
 	if len(split) == 2 {
 		org = split[0]

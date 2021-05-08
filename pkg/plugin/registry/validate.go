@@ -1,4 +1,4 @@
-package hub
+package registry
 
 import (
 	"bufio"

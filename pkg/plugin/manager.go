@@ -1,19 +1,20 @@
-package client
+package plugin
 
 import (
 	"fmt"
-	"github.com/cloudquery/cq-provider-sdk/proto"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
-// pluginManager handles lifecycle execution of CloudQuery providers
-type pluginManager struct {
+// Manager handles lifecycle execution of CloudQuery providers
+type Manager struct {
 	clients map[string]Plugin
 }
 
-func newManager() (*pluginManager, error) {
+func NewManager() (*Manager, error) {
 	// primarily by the SDK's acceptance testing framework.
 	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
 	if err != nil {
@@ -29,13 +30,13 @@ func newManager() (*pluginManager, error) {
 		}
 		clients[name] = plugin
 	}
-	return &pluginManager{
+	return &Manager{
 		clients: clients,
 	}, nil
 }
 
 // Shutdown closes all clients and cleans the managed clients
-func (p *pluginManager) Shutdown() {
+func (p *Manager) Shutdown() {
 	for _, c := range p.clients {
 		c.Close()
 	}
@@ -43,7 +44,7 @@ func (p *pluginManager) Shutdown() {
 	p.clients = make(map[string]Plugin)
 }
 
-func (p *pluginManager) GetProvider(providerName, version string) (proto.CQProvider, error) {
+func (p *Manager) GetProvider(providerName, version string) (cqproto.CQProvider, error) {
 	cq, ok := p.clients[providerName]
 	if !ok {
 		return nil, fmt.Errorf("plugin %s@%s does not exist", providerName, version)
@@ -51,7 +52,7 @@ func (p *pluginManager) GetProvider(providerName, version string) (proto.CQProvi
 	return cq.Provider(), nil
 }
 
-func (p *pluginManager) KillProvider(providerName string) error {
+func (p *Manager) KillProvider(providerName string) error {
 
 	client, ok := p.clients[providerName]
 	if !ok {
@@ -62,7 +63,7 @@ func (p *pluginManager) KillProvider(providerName string) error {
 	return nil
 }
 
-func (p *pluginManager) GetOrCreateProvider(providerName, version string) (proto.CQProvider, error) {
+func (p *Manager) GetOrCreateProvider(providerName, version string) (cqproto.CQProvider, error) {
 	provider, err := p.GetProvider(providerName, version)
 	if provider != nil || err == nil {
 		return provider, err
@@ -71,11 +72,25 @@ func (p *pluginManager) GetOrCreateProvider(providerName, version string) (proto
 	return p.createProvider(providerName, version)
 }
 
-func (p *pluginManager) createProvider(providerName, version string) (proto.CQProvider, error) {
+func (p *Manager) createProvider(providerName, version string) (cqproto.CQProvider, error) {
 	mPlugin, err := newRemotePlugin(providerName, version)
 	if err != nil {
 		return nil, err
 	}
 	p.clients[providerName] = mPlugin
 	return mPlugin.Provider(), nil
+}
+
+func (p *Manager) ListUnmanaged() map[string]registry.ProviderDetails {
+	unmanged := make(map[string]registry.ProviderDetails)
+	for k, v := range p.clients {
+		if _, ok := v.(*unmanagedPlugin); !ok {
+			continue
+		}
+		unmanged[k] = registry.ProviderDetails{
+			Name:    v.Name(),
+			Version: v.Version(),
+		}
+	}
+	return unmanged
 }

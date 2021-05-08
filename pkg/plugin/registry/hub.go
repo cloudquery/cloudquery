@@ -1,9 +1,9 @@
-package hub
+package registry
 
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/logging"
+	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -69,20 +69,20 @@ type Option func(h *Hub)
 
 func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
-		NoVerify:               false,
-		PluginDirectory:        filepath.Join(".", ".cq", "providers"),
-		ProgressUpdater:        nil,
-		Logger:                 logging.NewZHcLog(&zerolog.Logger, ""),
-		url:                    url,
-		fs:                     afero.NewOsFs(),
-		providers:              make(map[string]ProviderDetails),
+		NoVerify:        false,
+		PluginDirectory: filepath.Join(".", ".cq", "providers"),
+		ProgressUpdater: nil,
+		Logger:          logging.NewZHcLog(&zerolog.Logger, ""),
+		url:             url,
+		fs:              afero.NewOsFs(),
+		providers:       make(map[string]ProviderDetails),
 	}
 
 	// apply the list of options to hub
 	for _, opt := range opts {
 		opt(h)
 	}
-	_ = h.loadExisting()
+	h.loadExisting()
 	return h
 }
 
@@ -159,6 +159,34 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 		return ProviderDetails{}, fmt.Errorf("provider %s@%s verfication failed", providerName, providerVersion)
 	}
 	return p, nil
+}
+
+// Cleanup removes all unused plugins from the plugin directory
+func (h Hub) Cleanup() error {
+	return afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
+		}
+		if info.IsDir() {
+			return nil
+		}
+		// skip checksum files, they will be downloaded again
+		if strings.Contains(info.Name(), "checksums") {
+			return nil
+		}
+		provider := filepath.Base(filepath.Dir(path))
+		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
+		pVersion := strings.Split(filepath.Base(path), "-")[0]
+
+		h.providers[fmt.Sprintf("%s-%s", provider, pVersion)] = ProviderDetails{
+			Name:         provider,
+			Version:      pVersion,
+			Organization: organization,
+			FilePath:     path,
+		}
+		h.Logger.Debug("found existing provider", "provider", provider, "version", pVersion)
+		return nil
+	})
 }
 
 func (h Hub) downloadProvider(organization, providerName, providerVersion string) (ProviderDetails, error) {
@@ -295,8 +323,8 @@ func (h Hub) getProviderPath(org, name, version string) string {
 	return filepath.Join(h.PluginDirectory, org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension))
 }
 
-func (h Hub) loadExisting() error {
-	return afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
+func (h Hub) loadExisting() {
+	_ = afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
 		}
@@ -308,6 +336,13 @@ func (h Hub) loadExisting() error {
 			return nil
 		}
 		provider := filepath.Base(filepath.Dir(path))
+		if strings.HasSuffix(provider, ".tmp") {
+			h.Logger.Debug("found temp provider file, cleaning up", "provider", provider)
+			if err := h.fs.Remove(path); err != nil {
+				h.Logger.Warn("failed to remove temp provider file", "provider", provider)
+			}
+			return nil
+		}
 		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
 		pVersion := strings.Split(filepath.Base(path), "-")[0]
 

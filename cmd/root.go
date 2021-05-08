@@ -1,12 +1,12 @@
 package cmd
 
 import (
+	"github.com/cloudquery/cloudquery/internal/logging"
 	stdlog "log"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/logging"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,8 +23,16 @@ var (
 
 	rootCmd = &cobra.Command{
 		Use:     "cloudquery",
-		Short:   "cloudquery CLI",
+		Short:   "CloudQuery CLI",
+		Long: `
+CloudQuery CLI
+
+Query your cloud assets & configuration with SQL. 
+Solve compliance, security and cost challenges with standard SQL queries and relational tables.
+Find more information at:
+	https://docs.cloudquery.io`	,
 		Version: Version,
+		Run: runHelp,
 	}
 )
 
@@ -39,14 +47,16 @@ func init() {
 	// add inner commands
 	// TODO: change flags to kebab-case
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enableConsoleLog", false, "Enable console logging")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encodeLogsAsJson", false, "EncodeLogsAsJson makes the logging framework logging JSON")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.FileLoggingEnabled, "enableFileLogging", true, "enableFileLogging makes the framework logging to a file")
-	rootCmd.PersistentFlags().StringVar(&loggerConfig.Directory, "logDirectory", ".", "Directory to logging to to when file logging is enabled")
-	rootCmd.PersistentFlags().StringVar(&loggerConfig.Filename, "logFile", "cloudquery.log", "Filename is the name of the logfile which will be placed inside the directory")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "maxSize", 30, "MaxSize the max size in MB of the logfile before it's rolled")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "maxBackups", 3, "MaxBackups the max number of rolled files to keep")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "maxAge", 3, "MaxAge the max age in days to keep a logfile")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enable-console-log", false, "Enable console logging")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encode-json", false, "EncodeLogsAsJson makes the logging framework logging JSON instead of KV")
+	rootCmd.PersistentFlags().BoolVar(&loggerConfig.FileLoggingEnabled, "enable-file-logging", true, "enableFileLogging makes the framework logging to a file")
+	rootCmd.PersistentFlags().StringVar(&loggerConfig.Directory, "log-directory", ".", "Directory to logging to to when file logging is enabled")
+	rootCmd.PersistentFlags().StringVar(&loggerConfig.Filename, "log-file", "cloudquery.log", "Filename is the name of the logfile which will be placed inside the directory")
+	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
+	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
+	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
+	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
+	rootCmd.PersistentFlags().Bool("no-download", false, "No Download will make hub not download any provider but use existing")
 	workingDir, err := os.Getwd()
 	if err != nil {
 		workingDir = "."
@@ -56,7 +66,12 @@ func init() {
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
 
+	rootCmd.AddCommand(initCmd)
 	cobra.OnInitialize(initConfig, initLogging)
+}
+
+func runHelp(cmd *cobra.Command, args []string) {
+	cmd.Help()
 }
 
 func initConfig() {

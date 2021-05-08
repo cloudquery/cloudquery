@@ -13,26 +13,26 @@ import (
 // Config for logging
 type Config struct {
 	// Enable console logging
-	ConsoleLoggingEnabled bool
+	ConsoleLoggingEnabled bool `hcl:"enable_console_logging" json:"console_logging_enabled,optional"`
 	// Enable Verbose logging
-	Verbose bool
+	Verbose bool `hcl:"verbose,optional"`
 	// EncodeLogsAsJson makes the logging framework logging JSON
-	EncodeLogsAsJson bool
+	EncodeLogsAsJson bool `hcl:"encode_logs_as_json,optional"`
 	// FileLoggingEnabled makes the framework logging to a file
 	// the fields below can be skipped if this value is false!
-	FileLoggingEnabled bool
+	FileLoggingEnabled bool `hcl:"file_logging_enabled,optional"`
 	// Directory to logging to to when file logging is enabled
-	Directory string
+	Directory string `hcl:"directory,optional"`
 	// Filename is the name of the logfile which will be placed inside the directory
-	Filename string
+	Filename string `hcl:"filename,optional"`
 	// MaxSize the max size in MB of the logfile before it's rolled
-	MaxSize int
+	MaxSize int `hcl:"max_size,optional"`
 	// MaxBackups the max number of rolled files to keep
-	MaxBackups int
+	MaxBackups int `hcl:"max_backups,optional"`
 	// MaxAge the max age in days to keep a logfile
-	MaxAge int
+	MaxAge int `hcl:"max_age,optional"`
 	// Console logging will be without color, console logging must be enabled first.
-	ConsoleNoColor bool
+	ConsoleNoColor bool `hcl:"console_no_color,optional"`
 }
 
 // Configure sets up the logging framework

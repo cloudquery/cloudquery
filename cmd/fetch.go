@@ -2,7 +2,10 @@ package cmd
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/terminal"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
+	"github.com/cloudquery/cloudquery/pkg/console"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -32,19 +35,19 @@ var fetchCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		//driver := viper.GetString("driver")
-		//dsn := viper.GetString("dsn")
 		configPath := viper.GetString("configPath")
-		return terminal.Fetch(context.TODO(), configPath)
-
-
+		ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+		c, err := console.CreateClient(ctx, configPath)
+		if err != nil {
+			return err
+		}
+		return c.Fetch(ctx)
 	},
 }
 
 func init() {
 	flags := fetchCmd.Flags()
 	flags.String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
-	flags.String("driver", "postgresql", "database driver postgresql/neo4j (env: CQ_DRIVER)")
 	flags.String("path", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	//if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
 	//	log.Fatal(err)

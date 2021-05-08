@@ -16,5 +16,5 @@ func main() {
 	//
 	//
 	//
-	//cli.Fetch(context.TODO(), "C:\\Users\\Ron-Work\\Projects\\cloudquery\\internal\\test.hcl")
+	//terminal.Fetch(context.TODO(), "C:\\Users\\Ron-Work\\Projects\\cloudquery\\config.hcl", true)
 }

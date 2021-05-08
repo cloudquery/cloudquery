@@ -3,18 +3,17 @@ package deploy
 import (
 	"context"
 	"fmt"
+	client2 "github.com/cloudquery/cloudquery/pkg/client"
+	config2 "github.com/cloudquery/cloudquery/pkg/config"
 	"log"
 	"os"
 
 	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
 )
 
 type Request struct {
-	TaskName string        `json:"taskName"`
-	Config   config.Config `json:"config"`
+	TaskName string         `json:"taskName"`
+	Config   config2.Config `json:"config"`
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
@@ -41,8 +40,8 @@ func TaskExecutor(req Request) (string, error) {
 }
 
 // Fetches resources from a cloud provider and saves them in the configured database
-func Fetch(driver, dsn string, cfg config.Config) {
-	c, err := client.New(driver, dsn)
+func Fetch(driver, dsn string, cfg config2.Config) {
+	c, err := client2.New(driver, dsn)
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}
@@ -60,7 +59,7 @@ func Fetch(driver, dsn string, cfg config.Config) {
 func Policy(driver, dsn string) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	c, err := client.New(driver, dsn)
+	c, err := client2.New(driver, dsn)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
