@@ -13,10 +13,10 @@ import (
 // ColorizedOutput outputs a colored message directly to the terminal.
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
-	if !IsTerminal() {
-		log.WithLevel(colorToLevel(c)).Msgf(msg, values...)
+	if IsTerminal() {
+		_, _ = c.Printf(msg, values...)
 	}
-	_, _ = c.Printf(msg, values)
+	log.WithLevel(colorToLevel(c)).Msgf(msg, values...)
 }
 
 func IsTerminal() bool {

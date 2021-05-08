@@ -14,6 +14,8 @@ import (
 type Client struct {
 	c   *client.Client
 	cfg *config.Config
+
+	progressUpdate ProgressUpdater
 }
 
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
@@ -25,13 +27,14 @@ func CreateClient(ctx context.Context, configPath string, opts ...client.Option)
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
+	p := ProgressUpdater{
+		mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
+		make(map[string]string), make(map[string]*mpb.Bar), ""}
+
 	if IsTerminal() {
 		opts = append(opts, func(c *client.Client) {
 			c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
-				h.ProgressUpdater = ProgressUpdater{
-					mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
-					make(map[string]string), make(map[string]*mpb.Bar), ""}
-
+				h.ProgressUpdater = p
 			})
 		})
 	}
@@ -40,7 +43,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ColorizedOutput(ColorError, "❌ Failed to initialize client.\n\n")
 		return nil, err
 	}
-	return &Client{c, cfg}, err
+	return &Client{c, cfg, p}, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
@@ -53,6 +56,9 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	}
 	// sleep some extra 100 milliseconds for progress refresh
 	time.Sleep(100 * time.Millisecond)
+	if IsTerminal() {
+		c.progressUpdate.progress.Wait()
+	}
 	ColorizedOutput(ColorProgress, "\nFinished provider initialization...\n")
 	return nil
 }
@@ -61,7 +67,7 @@ func (c Client) Fetch(ctx context.Context) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	ColorizedOutput(ColorProgress, "\nStarting provider fetch...\n\n")
+	ColorizedOutput(ColorProgress, "\nStarting provider fetch...\n")
 	fetchProgress, fetchCallback := buildFetchProgress(ctx, c.cfg.Providers)
 	request := client.FetchRequest{Providers: c.cfg.Providers}
 	if IsTerminal() {

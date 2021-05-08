@@ -16,3 +16,4 @@ bin/
 cloud_sql_proxy
 *.log
 .cq_reattach
+config.hcl

@@ -17,6 +17,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.10.0
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/leaanthony/spinner v0.5.3 // indirect
+	github.com/mattn/go-isatty v0.0.12
 	github.com/mitchellh/go-glint v0.0.0-20201119015200-53f6eb3bf4d2 // indirect
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
@@ -31,6 +32,7 @@ require (
 	github.com/zclconf/go-cty v1.8.0
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
+	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 	google.golang.org/genproto v0.0.0-20210202153253-cf70463f6119 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
