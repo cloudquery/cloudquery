@@ -4,11 +4,15 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/console"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"os"
@@ -27,15 +31,12 @@ var (
 
 func Initialize(providers []string) {
 	fs := afero.NewOsFs()
-
 	if info, _ := fs.Stat("config.hcl"); info != nil {
-		console.ColorizedOutput(console.ColorError, "Error: Config file already exists")
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file already exists")
 		return
 	}
-
 	f := hclwrite.NewEmptyFile()
 	rootBody := f.Body()
-
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
 		requiredProviders[i] = &config.RequiredProvider{
@@ -45,7 +46,6 @@ func Initialize(providers []string) {
 		}
 	}
 	// TODO: build this manually with block and add comments as well
-
 	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
 		PluginDirectory: ".",
 		Providers:       requiredProviders,
@@ -55,13 +55,13 @@ func Initialize(providers []string) {
 	}, "cloudquery")
 
 	rootBody.AppendBlock(cqBlock)
-
 	cfg, diags := config.NewParser(nil).LoadConfigFromSource("init.hcl", f.Bytes())
 	if diags != nil {
 		fmt.Println(diags)
 		return
 	}
-	ctx := context.TODO()
+
+	ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
 	c, err := console.CreateClientFromConfig(ctx, cfg)
 	if err != nil {
 		return
@@ -70,7 +70,6 @@ func Initialize(providers []string) {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return
 	}
-
 	rootBody.AppendNewline()
 	rootBody.AppendUnstructuredTokens(hclwrite.Tokens{
 		{

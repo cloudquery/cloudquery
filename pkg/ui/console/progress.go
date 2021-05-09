@@ -1,0 +1,163 @@
+package console
+
+import (
+	"context"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/fatih/color"
+	"github.com/vbauerster/mpb/v6"
+	"github.com/vbauerster/mpb/v6/decor"
+	"io"
+	"sync"
+	"time"
+)
+
+//
+var emojiStatus = map[string]string{
+	ui.StatusOK:         color.GreenString("✓"),
+	ui.StatusError:      color.RedString("❌"),
+	ui.StatusWarn:       "⚠️",
+	ui.StatusInProgress: "⌛",
+}
+
+type Bar struct {
+	b       *mpb.Bar
+	Name    string
+	Message string
+	Status  string
+	Total   int64
+}
+
+func (b *Bar) SetTotal(total int64, triggerComplete bool) {
+	b.b.SetTotal(total, triggerComplete)
+}
+
+type ConsoleProgress struct {
+	p       *mpb.Progress
+	bars    map[string]*Bar
+	lock    sync.RWMutex
+	options *ProgressOptions
+}
+
+type ProgressOptions struct {
+	Filler           string
+	StatusFunc       func(b *Bar, statistics decor.Statistics) string
+	MessageHook      func(b *Bar, statistics decor.Statistics) string
+	AppendDecorators []decor.Decorator
+}
+
+type ProgressOption func(o *ProgressOptions)
+
+func NewProgress(ctx context.Context, opts ...ProgressOption) *ConsoleProgress {
+	u := &ConsoleProgress{
+		p:    mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
+		bars: make(map[string]*Bar),
+		options: &ProgressOptions{
+			Filler:           "[=>-|",
+			StatusFunc:       defaultStatusUpdater,
+			MessageHook:      defaultMessageUpdater,
+			AppendDecorators: nil,
+		},
+	}
+	for _, o := range opts {
+		o(u.options)
+	}
+	return u
+}
+
+func (u *ConsoleProgress) Add(name, displayName, message string, total int64) {
+	bar := u.p.Add(total, // total of file + 2 verify results
+		// progress bar filler with customized style
+		mpb.NewBarFiller(u.options.Filler),
+		mpb.BarFillerOnComplete(""),
+		mpb.PrependDecorators(
+			decor.Any(
+				func(statistics decor.Statistics) string {
+					if u.options.StatusFunc == nil {
+						return ""
+					}
+					u.lock.RLock()
+					defer u.lock.RUnlock()
+					uiBar := u.bars[name]
+					return u.options.StatusFunc(uiBar, statistics)
+				}, decor.WC{W: 2, C: 1}),
+			// display our name with one space on the right
+			decor.Name(displayName, decor.WC{W: len(displayName) + 1, C: decor.DidentRight}),
+			decor.Any(func(statistics decor.Statistics) string {
+				if u.options.MessageHook == nil {
+					return ""
+				}
+				u.lock.RLock()
+				defer u.lock.RUnlock()
+				uiBar := u.bars[name]
+				return u.options.MessageHook(uiBar, statistics)
+			}, decor.WC{W: len(name) + 1, C: decor.DidentRight}),
+			// replace ETA decorator with nothing, OnComplete event
+			decor.Elapsed(decor.ET_STYLE_GO, decor.WC{W: 4}),
+		),
+		mpb.AppendDecorators(u.options.AppendDecorators...),
+	)
+	u.bars[name] = &Bar{
+		b:       bar,
+		Name:    name,
+		Message: message,
+		Status:  ui.StatusInProgress,
+		Total:   total,
+	}
+}
+
+func (u *ConsoleProgress) Increment(name string, n int) {
+	u.lock.RLock()
+	defer u.lock.RUnlock()
+	bar, ok := u.bars[name]
+	if !ok {
+		return
+	}
+	bar.b.IncrBy(n)
+}
+
+func (u *ConsoleProgress) Update(name, status, msg string, n int) {
+	u.lock.RLock()
+	defer u.lock.RUnlock()
+	bar, ok := u.bars[name]
+	if !ok {
+		return
+	}
+	bar.Message = msg
+	bar.Status = status
+	if n > 0 {
+		bar.b.IncrBy(n)
+	}
+}
+
+func (u *ConsoleProgress) AttachReader(name string, data io.Reader) {
+	u.lock.RLock()
+	defer u.lock.RUnlock()
+	bar, ok := u.bars[name]
+	if !ok {
+		return
+	}
+	bar.b.ProxyReader(io.LimitReader(data, bar.Total))
+}
+
+func (u *ConsoleProgress) Wait() {
+	time.Sleep(100 * time.Millisecond)
+	u.p.Wait()
+}
+
+func (u *ConsoleProgress) GetBar(name string) *Bar {
+	u.lock.RLock()
+	defer u.lock.RUnlock()
+	bar, ok := u.bars[name]
+	if !ok {
+		return nil
+	}
+	return bar
+}
+
+func defaultStatusUpdater(u *Bar, _ decor.Statistics) string {
+	return emojiStatus[u.Status]
+}
+
+func defaultMessageUpdater(u *Bar, _ decor.Statistics) string {
+	return u.Message
+}

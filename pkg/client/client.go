@@ -80,7 +80,7 @@ type FetchUpdateCallback func(update FetchUpdate)
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
 	// Optional: Logger framework can use to log.
-	// default: default logger provided.
+	// default: global logger provided.
 	Logger hclog.Logger
 
 	// Optional: Hub client will use to download plugins, the Hub is used to download and pluginManager providers binaries
@@ -139,7 +139,6 @@ func (c *Client) Initialize(ctx context.Context) error {
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
-
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, provider := range request.Providers {
 		details, ok := c.providers[provider.Name]

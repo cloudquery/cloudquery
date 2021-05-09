@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -20,20 +21,6 @@ import (
 const (
 	CloudQueryRegistryURl = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
 )
-
-type VerifyStatus string
-
-const (
-	Verifying    VerifyStatus = "verifying"
-	BadSignature VerifyStatus = "bad signature"
-	BadChecksum  VerifyStatus = "bad checksum"
-	Verified     VerifyStatus = "verified"
-)
-
-type ProgressUpdater interface {
-	OnDownload(providerName string, version string, size int64, data io.Reader) io.Reader
-	OnVerify(providerName string, status VerifyStatus)
-}
 
 type ProviderDetails struct {
 	Name         string
@@ -54,7 +41,7 @@ type Hub struct {
 	PluginDirectory string
 	// Optional: Download propagator allows the creator to get called back on download progress and completion.
 	// defaults to NoOpPropagator
-	ProgressUpdater ProgressUpdater
+	ProgressUpdater ui.Progress
 	// Optional: logger to use, if not defined global logger is used.
 	Logger hclog.Logger
 	// Url for hub to connect to download and verify plugins
@@ -62,7 +49,7 @@ type Hub struct {
 	// map of downloaded providers
 	providers map[string]ProviderDetails
 
-	fs        afero.Fs
+	fs afero.Fs
 }
 
 type Option func(h *Hub)
@@ -71,7 +58,6 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
 		NoVerify:        false,
 		PluginDirectory: filepath.Join(".", ".cq", "providers"),
-		ProgressUpdater: nil,
 		Logger:          logging.NewZHcLog(&zerolog.Logger, ""),
 		url:             url,
 		fs:              afero.NewOsFs(),
@@ -94,7 +80,7 @@ func (h Hub) VerifyProvider(organization, providerName, version string) bool {
 		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/checksums.txt", organization, providerName, version)
 	}
 	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.OnVerify(providerName, Verifying)
+		h.ProgressUpdater.Update(providerName, ui.StatusInProgress, "Verifying...", 1)
 	}
 	l.Debug("downloading checksums file", "url", checksumsURL, "path", checksumsPath)
 	// download checksums
@@ -112,7 +98,7 @@ func (h Hub) VerifyProvider(organization, providerName, version string) bool {
 	if err != nil {
 		l.Error("validating provider signature failed", "providerName", providerName, "error", err)
 		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.OnVerify(providerName, BadSignature)
+			h.ProgressUpdater.Update(providerName, ui.StatusError, "Bad signature", 0)
 		}
 		return false
 	}
@@ -120,12 +106,12 @@ func (h Hub) VerifyProvider(organization, providerName, version string) bool {
 	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
 		l.Error("validating provider checksum failed", "providerName", providerName, "error", err)
 		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.OnVerify(providerName, BadChecksum)
+			h.ProgressUpdater.Update(providerName, ui.StatusError, "Bad checksum", 0)
 		}
 		return false
 	}
 	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.OnVerify(providerName, Verified)
+		h.ProgressUpdater.Update(providerName, ui.StatusOK, "verified", 1)
 	}
 	return true
 }
@@ -152,7 +138,7 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 	}
 	if h.ProgressUpdater != nil {
 		// Setup a done download progress
-		_ = h.ProgressUpdater.OnDownload(providerName, providerVersion, 0, nil)
+		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, providerVersion), providerVersion, 2)
 	}
 
 	if !h.VerifyProvider(organization, providerName, providerVersion) {
@@ -243,7 +229,8 @@ func (h Hub) downloadFile(providerName, version, filepath, url string, updatePro
 
 	var reader io.Reader = resp.Body
 	if h.ProgressUpdater != nil && updateProgress {
-		reader = h.ProgressUpdater.OnDownload(providerName, version, resp.ContentLength, resp.Body)
+		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, version), "downloading...", resp.ContentLength+2)
+		h.ProgressUpdater.AttachReader(providerName, resp.Body)
 	}
 	// Create our progress reporter and pass it to be used alongside our writer
 	if _, err = io.Copy(out, reader); err != nil {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/pkg/console"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
