@@ -82,7 +82,7 @@ func (c Client) Fetch(ctx context.Context) error {
 
 func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
-	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
+	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
 		if passed {
 			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-120s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
 		} else {

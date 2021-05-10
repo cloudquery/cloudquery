@@ -40,6 +40,8 @@ type ExecutePolicyRequest struct {
 	UpdateCallback PolicyExecutionCallback
 	// if True policy execution will stop on first failure
 	StopOnFailure bool
+	// Path to save policy result
+	OutputPath string
 }
 
 type PolicyExecutionResult struct {
@@ -298,7 +300,7 @@ func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest)
 	if err := createViews(ctx, conn, policy.Views); err != nil {
 		return nil, fmt.Errorf("failed to create policy views %w", err)
 	}
-	exec := PolicyExecutionResult{
+	exec := &PolicyExecutionResult{
 		Passed:  false,
 		Results: make(map[string]*PolicyResult, len(policy.Queries)),
 	}
@@ -323,7 +325,12 @@ func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest)
 			request.UpdateCallback(q.Name, result.Passed, len(result.Data))
 		}
 	}
-	return &exec, nil
+	if request.OutputPath != "" {
+		if err := createPolicyOutput(request.OutputPath, exec); err != nil {
+			return nil, fmt.Errorf("failed to create policy output %s. Err: %w", request.OutputPath, err)
+		}
+	}
+	return exec, nil
 }
 
 func (c Client) Close() {

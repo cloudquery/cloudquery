@@ -2,6 +2,8 @@ package client
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/spf13/afero"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -9,10 +11,10 @@ import (
 )
 
 type PolicyResult struct {
-	Name    string
-	Columns []string
-	Data    [][]interface{}
-	Passed  bool
+	Name    string          `json:"name"`
+	Columns []string        `json:"result_headers"`
+	Data    [][]interface{} `json:"result_rows"`
+	Passed  bool            `json:"check_passed"`
 }
 
 func createViews(ctx context.Context, conn *pgxpool.Conn, views []config.PolicyView) error {
@@ -55,4 +57,21 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 	}
 	result.Passed = len(result.Data) == 0 && !query.Invert
 	return result, nil
+}
+
+func createPolicyOutput(output string, result *PolicyExecutionResult) error {
+	f, err := afero.NewOsFs().Open(output)
+	defer f.Close()
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(&result)
+	if err != nil {
+		return err
+	}
+	if _, err := f.Write(data); err != nil {
+		return err
+	}
+	return nil
 }
