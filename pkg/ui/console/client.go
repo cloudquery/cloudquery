@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6/decor"
 	"time"
 )
@@ -78,6 +79,22 @@ func (c Client) Fetch(ctx context.Context) error {
 	return nil
 }
 
+func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
+	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
+		if passed {
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-120s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
+		} else {
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-120s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
+		}
+	}})
+	if err != nil {
+		return err
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Policy Executed successfully\n")
+	return nil
+}
+
 func (c Client) Client() *client.Client {
 	return c.c
 }
@@ -119,7 +136,6 @@ func loadConfig(path string) (*config.Config, error) {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
 			ui.ColorizedOutput(ui.ColorError, "❌ %s\n", d.Error())
-			ui.ColorizedOutput(ui.ColorInfo, "%s\n", d.Detail)
 		}
 		return nil, fmt.Errorf("bad configuration")
 	}

@@ -230,7 +230,7 @@ func (h Hub) downloadFile(providerName, version, filepath, url string, updatePro
 	var reader io.Reader = resp.Body
 	if h.ProgressUpdater != nil && updateProgress {
 		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, version), "downloading...", resp.ContentLength+2)
-		h.ProgressUpdater.AttachReader(providerName, resp.Body)
+		reader = h.ProgressUpdater.AttachReader(providerName, resp.Body)
 	}
 	// Create our progress reporter and pass it to be used alongside our writer
 	if _, err = io.Copy(out, reader); err != nil {

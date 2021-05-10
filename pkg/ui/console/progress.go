@@ -129,14 +129,14 @@ func (u *ConsoleProgress) Update(name, status, msg string, n int) {
 	}
 }
 
-func (u *ConsoleProgress) AttachReader(name string, data io.Reader) {
+func (u *ConsoleProgress) AttachReader(name string, data io.Reader) io.Reader {
 	u.lock.RLock()
 	defer u.lock.RUnlock()
 	bar, ok := u.bars[name]
 	if !ok {
-		return
+		return data
 	}
-	bar.b.ProxyReader(io.LimitReader(data, bar.Total))
+	return bar.b.ProxyReader(io.LimitReader(data, bar.Total))
 }
 
 func (u *ConsoleProgress) Wait() {

@@ -12,7 +12,9 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/afero"
 	"golang.org/x/sync/errgroup"
+	"gopkg.in/yaml.v3"
 	"io"
 )
 
@@ -28,6 +30,22 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
+}
+
+type ExecutePolicyRequest struct {
+	// Path to the policy, currently we still use the old .yml format, future versions will change to HCL
+	PolicyPath string
+	// UpdateCallback allows gets called when the client receives updates on policy execution.
+	UpdateCallback PolicyExecutionCallback
+	// if True policy execution will stop on first failure
+	StopOnFailure bool
+}
+
+type PolicyExecutionResult struct {
+	// True if all policies have passed
+	Passed bool
+	// Map of all query result sets
+	Results map[string]*PolicyResult
 }
 
 type Option func(options *Client)
@@ -77,6 +95,8 @@ type FetchDoneResult struct {
 
 type FetchUpdateCallback func(update FetchUpdate)
 
+type PolicyExecutionCallback func(name string, passed bool, resultCount int)
+
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
 	// Optional: Logger framework can use to log.
@@ -119,6 +139,16 @@ func New(config *config.Config, options ...Option) (*Client, error) {
 	}
 	for k, v := range c.Manager.ListUnmanaged() {
 		c.providers[k] = v
+	}
+
+	poolCfg, err := pgxpool.ParseConfig(c.config.CloudQuery.Connection.DSN)
+	if err != nil {
+		return nil, err
+	}
+	poolCfg.LazyConnect = true
+	c.pool, err = pgxpool.ConnectConfig(context.Background(), poolCfg)
+	if err != nil {
+		return nil, err
 	}
 	return c, nil
 }
@@ -246,12 +276,53 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 	return cqProvider.GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
-func (c Client) ExecutePolicy(ctx context.Context, request interface{}) (interface{}, error) {
-	panic("implement me")
-}
+func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {
 
-func (c Client) Query(ctx context.Context, query interface{}) (interface{}, error) {
-	panic("not implemented")
+	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Release()
+	data, err := afero.ReadFile(afero.NewOsFs(), request.PolicyPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var policy config.Policy
+	// TODO: convert to hcl
+	if err := yaml.Unmarshal(data, &policy); err != nil {
+		return nil, err
+	}
+	// Create Views
+	if err := createViews(ctx, conn, policy.Views); err != nil {
+		return nil, fmt.Errorf("failed to create policy views %w", err)
+	}
+	exec := PolicyExecutionResult{
+		Passed:  false,
+		Results: make(map[string]*PolicyResult, len(policy.Queries)),
+	}
+
+	for _, q := range policy.Queries {
+		result, err := executePolicyQuery(ctx, conn, q)
+		if err != nil {
+			c.Logger.Error("failed to execute policy query", "policy", q.Name, "error", err)
+			if request.StopOnFailure {
+				return nil, fmt.Errorf("failed to execute policy query %s. Err: %w", q.Name, err)
+			}
+			if request.UpdateCallback != nil {
+				request.UpdateCallback(q.Name, false, 0)
+			}
+			continue
+		}
+		if !result.Passed {
+			exec.Passed = false
+		}
+		exec.Results[q.Name] = result
+		if request.UpdateCallback != nil {
+			request.UpdateCallback(q.Name, result.Passed, len(result.Data))
+		}
+	}
+	return &exec, nil
 }
 
 func (c Client) Close() {

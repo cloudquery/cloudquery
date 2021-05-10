@@ -66,7 +66,7 @@ func Initialize(providers []string) {
 	if err != nil {
 		return
 	}
-
+	defer c.Client().Close()
 	if err := c.DownloadProviders(ctx); err != nil {
 		return
 	}
@@ -95,5 +95,5 @@ func Initialize(providers []string) {
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
 	_ = afero.WriteFile(fs, "config.hcl", formattedData, os.ModePerm)
-	fmt.Println(string(formattedData))
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s", "config.hcl")
 }

@@ -16,7 +16,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-const DefaultOrganization = "cloudquery"
+const (
+	DefaultOrganization = "cloudquery"
+)
 
 type Plugin interface {
 	Name() string
@@ -38,7 +40,7 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
-			1: serve.PluginMap,
+			2: serve.PluginMap,
 		},
 		Cmd:              exec.Command(pluginPath),
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},

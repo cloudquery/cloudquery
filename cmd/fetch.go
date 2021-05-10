@@ -19,21 +19,6 @@ var fetchCmd = &cobra.Command{
 
 `,
 	Version: Version,
-	PreRunE: func(cmd *cobra.Command, args []string) error {
-		err := viper.BindPFlag("dsn", cmd.Flags().Lookup("dsn"))
-		if err != nil {
-			return err
-		}
-		err = viper.BindPFlag("driver", cmd.Flags().Lookup("driver"))
-		if err != nil {
-			return err
-		}
-		err = viper.BindPFlag("configPath", cmd.Flags().Lookup("path"))
-		if err != nil {
-			return err
-		}
-		return nil
-	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
 		ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
@@ -41,16 +26,7 @@ var fetchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		defer c.Client().Close()
 		return c.Fetch(ctx)
 	},
-}
-
-func init() {
-	flags := fetchCmd.Flags()
-	flags.String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
-	flags.String("path", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
-	//if err := cobra.MarkFlagRequired(flags, "dsn"); err != nil {
-	//	log.Fatal(err)
-	//}
-	rootCmd.AddCommand(fetchCmd)
 }
