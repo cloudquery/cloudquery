@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/rs/zerolog/log"
@@ -36,10 +37,10 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 	}
 
 	result := &PolicyResult{
-		Name:      query.Name,
-		Columns:   make([]string, 0),
-		Data:      make([][]interface{}, 0),
-		Passed: true,
+		Name:    query.Name,
+		Columns: make([]string, 0),
+		Data:    make([][]interface{}, 0),
+		Passed:  true,
 	}
 	for _, fd := range data.FieldDescriptions() {
 		result.Columns = append(result.Columns, string(fd.Name))

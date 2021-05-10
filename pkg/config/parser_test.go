@@ -1,8 +1,9 @@
 package config
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const testConfig = `cloudquery {
@@ -31,7 +32,6 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
-
 func TestParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser(nil)
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
@@ -48,7 +48,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 				Version: "v0.0.0",
 			}},
 		},
-		Providers:  []*Provider{
+		Providers: []*Provider{
 			{
 				Name:          "aws",
 				Resources:     []string{"slow_resource"},

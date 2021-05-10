@@ -3,6 +3,13 @@ package registry
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/google/go-github/v35/github"
@@ -10,12 +17,6 @@ import (
 	"github.com/hashicorp/go-version"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 const (
@@ -142,7 +143,7 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 	}
 
 	if !h.VerifyProvider(organization, providerName, providerVersion) {
-		return ProviderDetails{}, fmt.Errorf("provider %s@%s verfication failed", providerName, providerVersion)
+		return ProviderDetails{}, fmt.Errorf("provider %s@%s verification failed", providerName, providerVersion)
 	}
 	return p, nil
 }

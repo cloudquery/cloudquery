@@ -3,10 +3,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
-	"time"
 )
 
 type Configuration struct {
@@ -14,7 +15,7 @@ type Configuration struct {
 }
 
 func (c Configuration) Example() string {
-	return`
+	return `
   configuration {
     account "1" {
       regions = ["asdas"]
@@ -26,8 +27,8 @@ func (c Configuration) Example() string {
 }
 
 type Account struct {
-	Name string `hcl:"name,label"`
-	Id string `hcl:"id"`
+	Name      string   `hcl:"name,label"`
+	Id        string   `hcl:"id"`
 	Regions   []string `hcl:"regions,optional"`
 	Resources []string `hcl:"resources,optional"`
 }
@@ -42,10 +43,10 @@ func (t TestClient) Logger() hclog.Logger {
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:      "test",
-		Version:   "v0.0.0",
+		Name:    "test",
+		Version: "v0.0.0",
 		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
-				return &TestClient{l: logger}, nil
+			return &TestClient{l: logger}, nil
 		},
 		ResourceMap: map[string]*schema.Table{
 			"slow_resource": {
@@ -82,6 +83,6 @@ func Provider() *provider.Provider {
 		Config: func() provider.Config {
 			return &Configuration{}
 		},
-		Logger:                 nil,
+		Logger: nil,
 	}
 }

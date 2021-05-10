@@ -2,13 +2,14 @@ package console
 
 import (
 	"context"
+	"io"
+	"sync"
+	"time"
+
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6"
 	"github.com/vbauerster/mpb/v6/decor"
-	"io"
-	"sync"
-	"time"
 )
 
 //

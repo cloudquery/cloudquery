@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"

@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/cloudquery/cloudquery/pkg/client"
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"log"
 	"os"
+
+	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/spf13/viper"
 )
@@ -22,15 +23,12 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 }
 
 func TaskExecutor(ctx context.Context, req Request) (string, error) {
-	dsn := os.Getenv("CQ_DSN")
+	// dsn := os.Getenv("CQ_DSN")
 	pluginDir, present := os.LookupEnv("CQ_PLUGIN_DIR")
 	if !present {
 		pluginDir = "."
 	}
 	viper.Set("plugin-dir", pluginDir)
-	if dsn != "" {
-
-	}
 	data, err := json.Marshal(req.Config)
 	if err != nil {
 		return "", fmt.Errorf("failed to parse request config: %w", err)

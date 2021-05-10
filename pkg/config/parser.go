@@ -2,11 +2,12 @@ package config
 
 import (
 	"fmt"
+	"path/filepath"
+
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
-	"path/filepath"
 )
 
 type SourceType string

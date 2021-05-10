@@ -13,7 +13,7 @@ import (
 // Config for logging
 type Config struct {
 	// Enable console logging
-	ConsoleLoggingEnabled bool `hcl:"enable_console_logging" json:"console_logging_enabled,optional"`
+	ConsoleLoggingEnabled bool `hcl:"enable_console_logging,optional"`
 	// Enable Verbose logging
 	Verbose bool `hcl:"verbose,optional"`
 	// EncodeLogsAsJson makes the logging framework logging JSON

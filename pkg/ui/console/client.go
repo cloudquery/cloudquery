@@ -3,13 +3,14 @@ package console
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6/decor"
-	"time"
 )
 
 type Client struct {

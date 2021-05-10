@@ -3,7 +3,6 @@ run:
   skip-dirs:
     - bin
     - docs
-    - plugin/proto
   skip-files:
     # TODO: exclude neo4j file for now, remove once database module is refactored
     - database/neo4j.go

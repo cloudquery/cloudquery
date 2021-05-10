@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
+	"io"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
@@ -15,7 +17,6 @@ import (
 	"github.com/spf13/afero"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v3"
-	"io"
 )
 
 // UpgradeRequest is provided to the Client to execute an upgrade of one or more providers

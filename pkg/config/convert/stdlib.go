@@ -8,7 +8,7 @@ import (
 
 // a subset of functions used in terraform
 // that can be used when simplifying during conversion
-var evalContext = hcl.EvalContext {
+var evalContext = hcl.EvalContext{
 	Functions: map[string]function.Function{
 		// numeric
 		"abs":      stdlib.AbsoluteFunc,
@@ -22,37 +22,35 @@ var evalContext = hcl.EvalContext {
 		"signum":   stdlib.SignumFunc,
 
 		// string
-		"chomp": stdlib.ChompFunc,
-		"format": stdlib.FormatFunc,
+		"chomp":      stdlib.ChompFunc,
+		"format":     stdlib.FormatFunc,
 		"formatlist": stdlib.FormatListFunc,
-		"indent": stdlib.IndentFunc,
-		"join": stdlib.JoinFunc,
-		"split": stdlib.SplitFunc,
-		"strrev": stdlib.ReverseFunc,
-		"trim": stdlib.TrimFunc,
+		"indent":     stdlib.IndentFunc,
+		"join":       stdlib.JoinFunc,
+		"split":      stdlib.SplitFunc,
+		"strrev":     stdlib.ReverseFunc,
+		"trim":       stdlib.TrimFunc,
 		"trimprefix": stdlib.TrimPrefixFunc,
 		"trimsuffix": stdlib.TrimSuffixFunc,
-		"trimspace": stdlib.TrimSpaceFunc,
+		"trimspace":  stdlib.TrimSpaceFunc,
 
 		// collections
 		"chunklist": stdlib.ChunklistFunc,
-		"concat": stdlib.ConcatFunc,
-		"distinct": stdlib.DistinctFunc,
-		"flatten": stdlib.FlattenFunc,
-		"length": stdlib.LengthFunc,
-		"merge": stdlib.MergeFunc,
-		"reverse": stdlib.ReverseListFunc,
-		"sort": stdlib.SortFunc,
+		"concat":    stdlib.ConcatFunc,
+		"distinct":  stdlib.DistinctFunc,
+		"flatten":   stdlib.FlattenFunc,
+		"length":    stdlib.LengthFunc,
+		"merge":     stdlib.MergeFunc,
+		"reverse":   stdlib.ReverseListFunc,
+		"sort":      stdlib.SortFunc,
 
 		// encoding
-		"csvdecode": stdlib.CSVDecodeFunc,
+		"csvdecode":  stdlib.CSVDecodeFunc,
 		"jsondecode": stdlib.JSONDecodeFunc,
 		"jsonencode": stdlib.JSONEncodeFunc,
 
-
 		// time
 		"formatdate": stdlib.FormatDateFunc,
-		"timeadd": stdlib.TimeAddFunc,
-
+		"timeadd":    stdlib.TimeAddFunc,
 	},
 }

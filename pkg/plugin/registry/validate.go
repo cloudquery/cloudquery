@@ -5,11 +5,12 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"golang.org/x/crypto/openpgp"
 	"io"
 	"os"
 	"runtime"
 	"strings"
+
+	"golang.org/x/crypto/openpgp"
 )
 
 const cloudQueryPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----

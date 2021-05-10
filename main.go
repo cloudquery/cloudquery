@@ -1,10 +1,11 @@
 package main
 
 import (
+	"os"
+
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/cloudquery/cloudquery/cmd"
 	"github.com/cloudquery/cloudquery/deploy"
-	"os"
 )
 
 func main() {

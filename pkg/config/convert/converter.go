@@ -48,7 +48,6 @@ func File(file *hcl.File, options Options) ([]byte, error) {
 	return jsonBytes, nil
 }
 
-
 // Body takes the contents of an HCL Body, and converts
 // them into a JSON representation of the HCL file.
 func Body(hclBody hcl.Body, options Options) ([]byte, error) {
@@ -74,7 +73,6 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 
 	return jsonBytes, nil
 }
-
 
 type jsonObj map[string]interface{}
 
@@ -305,7 +303,7 @@ func (c *converter) convertTemplateConditional(expr *hclsyntax.ConditionalExpr) 
 		return "", nil
 	}
 	builder.WriteString(trueResult)
-	falseResult, err := c.convertStringPart(expr.FalseResult)
+	falseResult, _ := c.convertStringPart(expr.FalseResult)
 	if len(falseResult) > 0 {
 		builder.WriteString("%{else}")
 		builder.WriteString(falseResult)

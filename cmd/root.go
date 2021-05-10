@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/cloudquery/cloudquery/internal/logging"
 	stdlog "log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
 
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -32,7 +33,6 @@ Solve compliance, security and cost challenges with standard SQL queries and rel
 Find more information at:
 	https://docs.cloudquery.io`,
 		Version: Version,
-		Run:     runHelp,
 	}
 )
 
@@ -72,10 +72,6 @@ func init() {
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	rootCmd.AddCommand(initCmd, fetchCmd)
 	cobra.OnInitialize(initConfig, initLogging)
-}
-
-func runHelp(cmd *cobra.Command, args []string) {
-	cmd.Help()
 }
 
 func initConfig() {

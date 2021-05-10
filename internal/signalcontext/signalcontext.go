@@ -1,11 +1,11 @@
 package signalcontext
 
 import (
-"context"
-"os"
-"os/signal"
+	"context"
+	"os"
+	"os/signal"
 
-"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-hclog"
 )
 
 // WithInterrupt returns a Context that is done when an interrupt signal is received.

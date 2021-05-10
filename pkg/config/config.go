@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -48,22 +49,6 @@ var configFileSchema = &hcl.BodySchema{
 		{
 			Type:       "provider",
 			LabelNames: []string{"name"},
-		},
-	},
-}
-
-// cloudqueryBlockSchema is the schema for a top-level "cloudquery" block in
-// a configuration file.
-var cloudqueryBlockSchema = &hcl.BodySchema{
-	Attributes: []hcl.AttributeSchema{
-		{Name: "plugin_directory"},
-	},
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "connection",
-		},
-		{
-			Type: "required_providers",
 		},
 	},
 }

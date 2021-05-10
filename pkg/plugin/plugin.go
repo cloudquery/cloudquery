@@ -2,14 +2,15 @@ package plugin
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/serve"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/serve"
 
 	"github.com/hashicorp/go-plugin"
 	"github.com/rs/zerolog/log"
