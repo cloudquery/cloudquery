@@ -53,12 +53,6 @@ type PolicyExecutionResult struct {
 
 type Option func(options *Client)
 
-// ConnectionOptions is provided by Client consumers to control connection to database.
-type ConnectionOptions struct {
-	DriverName string
-	DSN        string
-}
-
 type FetchUpdate struct {
 	Provider string
 	Version  string
@@ -297,6 +291,7 @@ func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest)
 		return nil, err
 	}
 	// Create Views
+	c.Logger.Debug("creating policy views", "policy", request.PolicyPath)
 	if err := createViews(ctx, conn, policy.Views); err != nil {
 		return nil, fmt.Errorf("failed to create policy views %w", err)
 	}

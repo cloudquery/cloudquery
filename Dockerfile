@@ -2,9 +2,9 @@
 # STEP 1 build executable binary
 ############################
 FROM golang:alpine AS builder
-COPY . .
-# Fetch dependencies.
-RUN go get -d -v
+RUN mkdir /build
+ADD . /build/
+WORKDIR /build
 # Build the binary.
 RUN go build -o /go/bin/cloudquery
 ############################

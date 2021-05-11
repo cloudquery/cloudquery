@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.1.7
+	github.com/cloudquery/cq-provider-sdk v0.2.0-alpha1
 	github.com/fatih/color v1.10.0
 	github.com/georgysavva/scany v0.2.8 // indirect
 	github.com/google/go-github/v35 v35.1.0
@@ -33,4 +33,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )
 
-replace github.com/cloudquery/cq-provider-sdk v0.1.7 => ../cq-provider-sdk
