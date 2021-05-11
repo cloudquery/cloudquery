@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
@@ -19,11 +20,10 @@ import (
 )
 
 func TestCrmProjects(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.CrmProjects(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "crm.projects"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			crmSvc, err := createCrmTestServer()
@@ -38,7 +38,7 @@ func TestCrmProjects(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 
 func createCrmTestServer() (*cloudresourcemanager.Service, error) {

@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
@@ -19,13 +21,10 @@ import (
 )
 
 func TestComputeBackendServices(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.ComputeBackendServices(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources: []client.Resource{
-				{Name: "compute.backend_services"},
-			},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			computeSvc, err := createBackendServiceServer()
@@ -40,7 +39,7 @@ func TestComputeBackendServices(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 
 func createBackendServiceServer() (*compute.Service, error) {

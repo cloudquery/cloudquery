@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
@@ -92,11 +93,10 @@ func createKmsTestServer() (*kms.Service, error) {
 }
 
 func TestKmsKeyring(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.KmsKeyring(),
-		Config: client.Config{
+		Config: &client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "kms.keys"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			kmsSvc, err := createKmsTestServer()
@@ -111,5 +111,5 @@ func TestKmsKeyring(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }

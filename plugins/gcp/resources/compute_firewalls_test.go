@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
@@ -19,13 +20,10 @@ import (
 )
 
 func TestComputeFirewalls(t *testing.T) {
-	resource := ResourceTestData{
-		Table: resources.ComputeBackendServices(),
+	resource := providertest.ResourceTestData{
+		Table: resources.ComputeFirewalls(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources: []client.Resource{
-				{Name: "compute.firewalls"},
-			},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			computeSvc, err := createFirewallServer()
@@ -40,7 +38,7 @@ func TestComputeFirewalls(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 
 func createFirewallServer() (*compute.Service, error) {

@@ -145,7 +145,7 @@ func ComputeFirewalls() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, _ chan interface{}) error {
+func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -154,7 +154,7 @@ func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schem
 		if err != nil {
 			return err
 		}
-
+		res <- output.Items
 		if output.NextPageToken == "" {
 			break
 		}

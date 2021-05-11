@@ -364,8 +364,7 @@ func resolveDomainsRegistrationCustomDNSDsRecords(_ context.Context, _ schema.Cl
 	if err != nil {
 		return fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err)
 	}
-	resource.Set("custom_dns_ds_records", data)
-	return nil
+	return resource.Set("custom_dns_ds_records", data)
 }
 
 func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
@@ -374,9 +373,9 @@ func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(_ context.Context, _ sc
 	if err != nil {
 		return fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err)
 	}
-	resource.Set("google_domains_dns_ds_records", data)
-	return nil
+	return resource.Set("google_domains_dns_ds_records", data)
 }
+
 func fetchDomainsRegistrationGlueRecords(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	reg := parent.Item.(*domains.Registration)
 	if reg.DnsSettings != nil {

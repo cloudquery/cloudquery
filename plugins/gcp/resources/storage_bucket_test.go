@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
@@ -46,11 +47,10 @@ func createStorageTestServer() (*storage.Service, error) {
 }
 
 func TestStorageBucket(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.StorageBucket(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "storage.buckets"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			storageSvc, err := createStorageTestServer()
@@ -65,5 +65,5 @@ func TestStorageBucket(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }

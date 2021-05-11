@@ -596,8 +596,7 @@ func resolveComputeInstanceGuestAccelerators(_ context.Context, _ schema.ClientM
 	for _, v := range r.GuestAccelerators {
 		res[v.AcceleratorType] = v.AcceleratorCount
 	}
-	resource.Set("guest_accelerators", res)
-	return nil
+	return resource.Set("guest_accelerators", res)
 }
 func resolveComputeInstanceMetadataItems(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*compute.Instance)
@@ -607,8 +606,7 @@ func resolveComputeInstanceMetadataItems(_ context.Context, _ schema.ClientMeta,
 			res[v.Key] = *v.Value
 		}
 	}
-	resource.Set("metadata_items", res)
-	return nil
+	return resource.Set("metadata_items", res)
 }
 func fetchComputeInstanceDisks(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(*compute.Instance)
@@ -621,8 +619,7 @@ func resolveComputeInstanceDiskGuestOsFeatures(_ context.Context, _ schema.Clien
 	for i, v := range r.GuestOsFeatures {
 		res[i] = v.Type
 	}
-	resource.Set("guest_os_features", res)
-	return nil
+	return resource.Set("guest_os_features", res)
 }
 
 func fetchComputeInstanceNetworkInterfaces(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {

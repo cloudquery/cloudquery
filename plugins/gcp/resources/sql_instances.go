@@ -321,52 +321,52 @@ func SQLInstances() *schema.Table {
 				Resolver: schema.PathResolver("Settings.AvailabilityType"),
 			},
 			{
-				Name:     "settings_backup_configuration_backup_retention_settings_retained_backups",
+				Name:     "settings_backup_retention_settings_retained_backups",
 				Type:     schema.TypeBigInt,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups"),
 			},
 			{
-				Name:     "settings_backup_configuration_backup_retention_settings_retention_unit",
+				Name:     "settings_backup_retention_settings_retention_unit",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit"),
 			},
 			{
-				Name:     "settings_backup_configuration_binary_log_enabled",
+				Name:     "settings_backup_binary_log_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.BinaryLogEnabled"),
 			},
 			{
-				Name:     "settings_backup_configuration_enabled",
+				Name:     "settings_backup_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.Enabled"),
 			},
 			{
-				Name:     "settings_backup_configuration_kind",
+				Name:     "settings_backup_kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.Kind"),
 			},
 			{
-				Name:     "settings_backup_configuration_location",
+				Name:     "settings_backup_location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.Location"),
 			},
 			{
-				Name:     "settings_backup_configuration_point_in_time_recovery_enabled",
+				Name:     "settings_backup_point_in_time_recovery_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.PointInTimeRecoveryEnabled"),
 			},
 			{
-				Name:     "settings_backup_configuration_replication_log_archiving_enabled",
+				Name:     "settings_backup_replication_log_archiving_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.ReplicationLogArchivingEnabled"),
 			},
 			{
-				Name:     "settings_backup_configuration_start_time",
+				Name:     "settings_backup_start_time",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.StartTime"),
 			},
 			{
-				Name:     "settings_backup_configuration_transaction_log_retention_days",
+				Name:     "settings_backup_transaction_log_retention_days",
 				Type:     schema.TypeBigInt,
 				Resolver: schema.PathResolver("Settings.BackupConfiguration.TransactionLogRetentionDays"),
 			},
@@ -629,9 +629,9 @@ func resolveSQLInstanceSettingsDatabaseFlags(_ context.Context, _ schema.ClientM
 	for _, f := range db.Settings.DatabaseFlags {
 		flags[f.Name] = f.Value
 	}
-	resource.Set("settings_database_flags", flags)
-	return nil
+	return resource.Set("settings_database_flags", flags)
 }
+
 func fetchSqlInstanceIpAddresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)
 	res <- db.IpAddresses

@@ -494,8 +494,7 @@ func resolveComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders(_ context.
 	for i, v := range r.CdnPolicy.BypassCacheOnRequestHeaders {
 		headers[i] = v.HeaderName
 	}
-	resource.Set("cdn_policy_bypass_cache_on_request_headers", headers)
-	return nil
+	return resource.Set("cdn_policy_bypass_cache_on_request_headers", headers)
 }
 func fetchComputeBackendServiceBackends(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(*compute.BackendService)

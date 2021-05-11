@@ -34,12 +34,8 @@ func Provider() *provider.Provider {
 			"domains.registrations":    DomainsRegistration(),
 			"crm.projects":             CrmProjects(),
 		},
-		Config: func() interface{} {
+		Config: func() provider.Config {
 			return &client.Config{}
 		},
-		DefaultConfigGenerator: func() (string, error) {
-			return client.DefaultConfig, nil
-		},
 	}
-
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
@@ -19,11 +20,10 @@ import (
 )
 
 func TestIamRoles(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.IamRoles(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "iam.project_roles"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			iamSvc, err := createIamTestServer()
@@ -38,14 +38,13 @@ func TestIamRoles(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 func TestIamServiceAccounts(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.IamServiceAccounts(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "iam.service_accounts"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			iamSvc, err := createIamTestServer()
@@ -60,7 +59,7 @@ func TestIamServiceAccounts(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 
 func createIamTestServer() (*iam.Service, error) {

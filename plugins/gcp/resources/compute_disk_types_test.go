@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
@@ -19,13 +21,10 @@ import (
 )
 
 func TestComputeDiskTypes(t *testing.T) {
-	resource := ResourceTestData{
-		Table: resources.ComputeBackendServices(),
+	resource := providertest.ResourceTestData{
+		Table: resources.ComputeDiskTypes(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources: []client.Resource{
-				{Name: "compute.disk_types"},
-			},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			computeSvc, err := createDiskTypeServer()
@@ -40,7 +39,7 @@ func TestComputeDiskTypes(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }
 
 func createDiskTypeServer() (*compute.Service, error) {

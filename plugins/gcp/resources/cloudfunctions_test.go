@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
@@ -48,11 +50,10 @@ func createCloudFunctionsTestServer() (*cloudfunctions.Service, error) {
 }
 
 func TestCloudfunctionsFunction(t *testing.T) {
-	resource := ResourceTestData{
+	resource := providertest.ResourceTestData{
 		Table: resources.CloudfunctionsFunction(),
 		Config: client.Config{
 			ProjectIDs: []string{"testProject"},
-			Resources:  []client.Resource{{Name: "cloudfunctions.functions"}},
 		},
 		Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 			cfSvc, err := createCloudFunctionsTestServer()
@@ -67,5 +68,5 @@ func TestCloudfunctionsFunction(t *testing.T) {
 			return c, nil
 		},
 	}
-	testResource(t, resources.Provider, resource)
+	providertest.TestResource(t, resources.Provider, resource)
 }

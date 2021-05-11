@@ -247,6 +247,5 @@ func resolveComputeDiskGuestOsFeatures(_ context.Context, _ schema.ClientMeta, r
 	for i, v := range r.GuestOsFeatures {
 		res[i] = v.Type
 	}
-	resource.Set("guest_os_features", res)
-	return nil
+	return resource.Set("guest_os_features", res)
 }

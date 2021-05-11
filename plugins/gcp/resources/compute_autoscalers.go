@@ -206,8 +206,7 @@ func resolveComputeAutoscalerStatusDetails(_ context.Context, _ schema.ClientMet
 	for _, v := range autoscaler.StatusDetails {
 		res[v.Type] = v.Message
 	}
-	resource.Set("status_details", res)
-	return nil
+	return resource.Set("status_details", res)
 }
 func fetchComputeAutoscalerCustomMetricUtilizations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	autoscaler := parent.Item.(*compute.Autoscaler)
