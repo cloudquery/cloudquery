@@ -6,11 +6,12 @@ builds:
   - flags:
       - -buildmode=exe
     env:
+      - GOGC=off
       - CGO_ENABLED=0
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-     - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
+      - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
     goos:
       - windows
       - linux
@@ -65,3 +66,11 @@ brews:
     url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Easily monitor and ask questions about your infrastructure."
+    install: |-
+      bin.install "cloudquery"
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "bash")
+      (bash_completion/"cloudquery").write output
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "zsh")
+      (zsh_completion/"_cloudquery").write output
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
+      (fish_completion/"cloudquery.fish").write output
