@@ -1,36 +1,27 @@
 package ui
 
 import (
-	"os"
-
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"golang.org/x/term"
+	"os"
 )
 
 // ColorizedOutput outputs a colored message directly to the terminal.
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
-	if IsTerminal() {
-		_, _ = c.Printf(msg, values...)
+	if !IsTerminal() {
+		return
 	}
-	log.WithLevel(colorToLevel(c)).Msgf(msg, values...)
+	_, _ = c.Printf(msg, values...)
 }
 
 func IsTerminal() bool {
+	if viper.GetBool("enable-console-log") {
+		return false
+	}
 	return isatty.IsTerminal(os.Stdout.Fd()) && term.IsTerminal(int(os.Stdout.Fd()))
-}
-
-func colorToLevel(c *color.Color) zerolog.Level {
-	if c.Equals(ColorError) || c.Equals(ColorErrorBold) {
-		return zerolog.ErrorLevel
-	}
-	if c.Equals(ColorWarning) || c.Equals(ColorWarningBold) {
-		return zerolog.WarnLevel
-	}
-	return zerolog.InfoLevel
 }
 
 var (

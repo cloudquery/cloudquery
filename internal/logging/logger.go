@@ -67,6 +67,7 @@ func Configure(config Config) zerolog.Logger {
 
 	logger := zerolog.New(mw).With().Timestamp().Logger()
 
+
 	logger.Info().
 		Bool("fileLogging", config.FileLoggingEnabled).
 		Bool("jsonLogOutput", config.EncodeLogsAsJson).

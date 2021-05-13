@@ -3,6 +3,7 @@ package console
 import (
 	"context"
 	"fmt"
+	"github.com/spf13/viper"
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -16,6 +17,7 @@ import (
 type Client struct {
 	c   *client.Client
 	cfg *config.Config
+	updater *Progress
 }
 
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
@@ -27,25 +29,29 @@ func CreateClient(ctx context.Context, configPath string, opts ...client.Option)
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
-	if ui.IsTerminal() {
-		opts = append(opts, func(c *client.Client) {
-			c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
-				h.ProgressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
-					o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-				})
-			})
+
+	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
+		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+	})
+	opts = append(opts, func(c *client.Client) {
+		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
+			if ui.IsTerminal() {
+				h.ProgressUpdater = progressUpdater
+			}
+			h.NoVerify = viper.GetBool("no-verify")
+
 		})
-	}
+	})
 	c, err := client.New(cfg, opts...)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client.\n\n")
 		return nil, err
 	}
-	return &Client{c, cfg}, err
+	return &Client{c, cfg, progressUpdater}, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
-	ui.ColorizedOutput(ui.ColorProgress, "\nInitializing CloudQuery Providers...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.Initialize(ctx)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
@@ -55,8 +61,9 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	// sleep some extra 300 milliseconds for progress refresh
 	if ui.IsTerminal() {
 		time.Sleep(300 * time.Millisecond)
+		c.updater.Wait()
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "\nFinished provider initialization...\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
 	return nil
 }
 
@@ -64,19 +71,20 @@ func (c Client) Fetch(ctx context.Context) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "\nStarting provider fetch...\n")
-	fetchProgress, fetchCallback := buildFetchProgress(ctx, c.cfg.Providers)
-	request := client.FetchRequest{Providers: c.cfg.Providers}
+	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
+	var fetchProgress *Progress
+	var fetchCallback client.FetchUpdateCallback
 	if ui.IsTerminal() {
-		request.UpdateCallback = fetchCallback
+		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
+	request := client.FetchRequest{Providers: c.cfg.Providers, UpdateCallback: fetchCallback}
 	if err := c.c.Fetch(ctx, request); err != nil {
 		return err
 	}
-	if ui.IsTerminal() {
+	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.Wait()
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "\nProvider fetch complete.\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	return nil
 }
 
@@ -100,7 +108,7 @@ func (c Client) Client() *client.Client {
 	return c.c
 }
 
-func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*ConsoleProgress, client.FetchUpdateCallback) {
+func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
 	})

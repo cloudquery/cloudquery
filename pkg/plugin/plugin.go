@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/serve"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/rs/zerolog/log"
+	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
@@ -43,11 +43,10 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 		VersionedPlugins: map[int]plugin.PluginSet{
 			2: serve.PluginMap,
 		},
+		Managed: true,
 		Cmd:              exec.Command(pluginPath),
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
-		SyncStderr:       os.Stderr,
-		SyncStdout:       os.Stdout,
-		Logger:           logging.NewZHcLog(&log.Logger, ""),
+		Logger:           logging.NewZHcLog(&zerolog.Logger, ""),
 	})
 	rpcClient, err := client.Client()
 	if err != nil {
@@ -102,7 +101,7 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
 		SyncStderr:       os.Stderr,
 		SyncStdout:       os.Stdout,
-		Logger:           logging.NewZHcLog(&log.Logger, ""),
+		Logger:           logging.NewZHcLog(&zerolog.Logger, ""),
 	})
 	rpcClient, err := client.Client()
 	if err != nil {

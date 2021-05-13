@@ -134,12 +134,16 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 		return h.downloadProvider(organization, providerName, providerVersion)
 	}
 
-	if h.NoVerify {
-		return p, nil
-	}
 	if h.ProgressUpdater != nil {
 		// Setup a done download progress
 		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, providerVersion), providerVersion, 2)
+	}
+
+	if h.NoVerify {
+		if h.ProgressUpdater != nil {
+			h.ProgressUpdater.Update(providerName, ui.StatusWarn, "skipped verification...", 2)
+		}
+		return p, nil
 	}
 
 	if !h.VerifyProvider(organization, providerName, providerVersion) {
@@ -332,7 +336,7 @@ func (h Hub) loadExisting() {
 			return nil
 		}
 		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
-		pVersion := strings.Split(filepath.Base(path), "-")[0]
+		pVersion := strings.Split(filepath.Base(path), "-"+getBinarySuffix())[0]
 
 		h.providers[fmt.Sprintf("%s-%s", provider, pVersion)] = ProviderDetails{
 			Name:         provider,
@@ -347,9 +351,13 @@ func (h Hub) loadExisting() {
 
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
 func getPluginBinaryName(providerName string) string {
+	return fmt.Sprintf("cq-provider-%s-%s", providerName, getBinarySuffix())
+}
+
+func getBinarySuffix() string {
 	var suffix = ""
 	if runtime.GOOS == "windows" {
 		suffix = ".exe"
 	}
-	return fmt.Sprintf("cq-provider-%s_%s_%s%s", providerName, runtime.GOOS, runtime.GOARCH, suffix)
+	return fmt.Sprintf("%s-%s%s", runtime.GOOS, runtime.GOARCH, suffix)
 }

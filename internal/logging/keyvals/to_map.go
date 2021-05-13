@@ -56,3 +56,4 @@ func safeString(str fmt.Stringer) (s string) {
 
 	return
 }
+

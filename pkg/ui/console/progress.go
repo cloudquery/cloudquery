@@ -2,6 +2,7 @@ package console
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"sync"
 	"time"
@@ -32,7 +33,7 @@ func (b *Bar) SetTotal(total int64, triggerComplete bool) {
 	b.b.SetTotal(total, triggerComplete)
 }
 
-type ConsoleProgress struct {
+type Progress struct {
 	p       *mpb.Progress
 	bars    map[string]*Bar
 	lock    sync.RWMutex
@@ -48,8 +49,8 @@ type ProgressOptions struct {
 
 type ProgressOption func(o *ProgressOptions)
 
-func NewProgress(ctx context.Context, opts ...ProgressOption) *ConsoleProgress {
-	u := &ConsoleProgress{
+func NewProgress(ctx context.Context, opts ...ProgressOption) *Progress {
+	u := &Progress{
 		p:    mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
 		bars: make(map[string]*Bar),
 		options: &ProgressOptions{
@@ -65,7 +66,7 @@ func NewProgress(ctx context.Context, opts ...ProgressOption) *ConsoleProgress {
 	return u
 }
 
-func (u *ConsoleProgress) Add(name, displayName, message string, total int64) {
+func (u *Progress) Add(name, displayName, message string, total int64) {
 	bar := u.p.Add(total, // total of file + 2 verify results
 		// progress bar filler with customized style
 		mpb.NewBarFiller(u.options.Filler),
@@ -106,7 +107,7 @@ func (u *ConsoleProgress) Add(name, displayName, message string, total int64) {
 	}
 }
 
-func (u *ConsoleProgress) Increment(name string, n int) {
+func (u *Progress) Increment(name string, n int) {
 	u.lock.RLock()
 	defer u.lock.RUnlock()
 	bar, ok := u.bars[name]
@@ -116,7 +117,7 @@ func (u *ConsoleProgress) Increment(name string, n int) {
 	bar.b.IncrBy(n)
 }
 
-func (u *ConsoleProgress) Update(name, status, msg string, n int) {
+func (u *Progress) Update(name, status, msg string, n int) {
 	u.lock.RLock()
 	defer u.lock.RUnlock()
 	bar, ok := u.bars[name]
@@ -130,7 +131,7 @@ func (u *ConsoleProgress) Update(name, status, msg string, n int) {
 	}
 }
 
-func (u *ConsoleProgress) AttachReader(name string, data io.Reader) io.Reader {
+func (u *Progress) AttachReader(name string, data io.Reader) io.Reader {
 	u.lock.RLock()
 	defer u.lock.RUnlock()
 	bar, ok := u.bars[name]
@@ -140,12 +141,13 @@ func (u *ConsoleProgress) AttachReader(name string, data io.Reader) io.Reader {
 	return bar.b.ProxyReader(io.LimitReader(data, bar.Total))
 }
 
-func (u *ConsoleProgress) Wait() {
+func (u *Progress) Wait() {
 	time.Sleep(100 * time.Millisecond)
 	u.p.Wait()
+	fmt.Println()
 }
 
-func (u *ConsoleProgress) GetBar(name string) *Bar {
+func (u *Progress) GetBar(name string) *Bar {
 	u.lock.RLock()
 	defer u.lock.RUnlock()
 	bar, ok := u.bars[name]
