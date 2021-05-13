@@ -7,9 +7,7 @@ import (
 
 func main() {
 	serve.Serve(&serve.Options{
-		Name:                "gcp",
-		Provider:            resources.Provider(),
-		Logger:              nil,
-		NoLogOutputOverride: false,
+		Name:     "gcp",
+		Provider: resources.Provider(),
 	})
 }
