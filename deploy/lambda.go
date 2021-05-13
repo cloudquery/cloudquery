@@ -2,8 +2,8 @@ package deploy
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
+		"fmt"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"log"
 	"os"
 
@@ -13,9 +13,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+
 type Request struct {
-	TaskName string                 `json:"taskName"`
-	Config   map[string]interface{} `json:"config"`
+	TaskName string `json:"taskName"`
+	Config   []byte `json:"config"`
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
@@ -23,19 +24,19 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 }
 
 func TaskExecutor(ctx context.Context, req Request) (string, error) {
-	// dsn := os.Getenv("CQ_DSN")
+	dsn := os.Getenv("CQ_DSN")
 	pluginDir, present := os.LookupEnv("CQ_PLUGIN_DIR")
 	if !present {
 		pluginDir = "."
 	}
 	viper.Set("plugin-dir", pluginDir)
-	data, err := json.Marshal(req.Config)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse request config: %w", err)
-	}
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("lambda_config.json", data)
+	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.json", req.Config)
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
+	}
+	// Override dsn env if set
+	if dsn != "" {
+		cfg.CloudQuery.Connection.DSN = dsn
 	}
 
 	switch req.TaskName {
@@ -51,7 +52,11 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 
 // Fetch fetches resources from a cloud provider and saves them in the configured database
 func Fetch(ctx context.Context, cfg *config.Config) {
-	c, err := client.New(cfg)
+	c, err := client.New(cfg, func(c *client.Client) {
+		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
+			h.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		})
+	})
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}

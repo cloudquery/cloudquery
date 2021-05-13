@@ -6,12 +6,12 @@ RUN mkdir /build
 ADD . /build/
 WORKDIR /build
 # Build the binary.
-RUN go build -o /go/bin/cloudquery
+RUN export CGO_ENABLED=0 && go build -o /go/bin/cloudquery
 ############################
 # STEP 2 build a small image
 ############################
-FROM public.ecr.aws/lambda/provided:al2 as build
+FROM lambci/lambda:go1.x as build
 # Copy our static executable.
 COPY --from=builder /go/bin/cloudquery ./cloudquery
-# Run the hello binary.
-ENTRYPOINT ["./cloudquery"]
+# Run the cloudquery binary.
+ENTRYPOINT ["/var/runtime/aws-lambda-go", "./cloudquery"]

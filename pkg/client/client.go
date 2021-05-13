@@ -100,7 +100,7 @@ type Client struct {
 	// default: global logger provided.
 	Logger hclog.Logger
 
-	// Optional: Hub client will use to download plugins, the Hub is used to download and pluginManager providers binaries
+	// Optional: Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
 	// if not specified, default cloudquery registry is used.
 	Hub registry.Registry
 
