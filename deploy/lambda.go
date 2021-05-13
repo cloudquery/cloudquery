@@ -69,14 +69,18 @@ func Fetch(ctx context.Context, cfg *config.Config) {
 
 // Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) {
-	//outputPath := "/tmp/result.json"
-	//queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	//c, err := client.New(cfg)
-	//if err != nil {
-	//	log.Fatalf("Unable to initialize client: %s", err)
-	//}
-	////err = c.ExecutePolicy(context.Background(), queryPath, outputPath)
-	//if err != nil {
-	//	log.Fatalf("Error running query: %s", err)
-	//}
+	outputPath := "/tmp/result.json"
+	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
+	c, err := client.New(cfg)
+	if err != nil {
+		log.Fatalf("Unable to create client: %s", err)
+	}
+	_, err = c.ExecutePolicy(ctx, client.ExecutePolicyRequest{
+		PolicyPath:    queryPath,
+		StopOnFailure: false,
+		OutputPath:    outputPath,
+	})
+	if err != nil {
+		log.Fatalf("Error running query: %s", err)
+	}
 }

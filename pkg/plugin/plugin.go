@@ -43,7 +43,7 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 		VersionedPlugins: map[int]plugin.PluginSet{
 			2: serve.PluginMap,
 		},
-		Managed: true,
+		Managed:          true,
 		Cmd:              exec.Command(pluginPath),
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
 		Logger:           logging.NewZHcLog(&zerolog.Logger, ""),

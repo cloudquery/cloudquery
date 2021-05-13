@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/serve"
+
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -83,6 +85,17 @@ func Provider() *provider.Provider {
 		Config: func() provider.Config {
 			return &Configuration{}
 		},
-		Logger: nil,
+	}
+}
+
+func ServeTestPlugin(ctx context.Context) {
+	opts := &serve.Options{
+		Name:                "test",
+		Provider:            Provider(),
+		Logger:              nil,
+		NoLogOutputOverride: false,
+	}
+	if err := serve.Debug(context.Background(), opts.Name, opts); err != nil {
+		panic(fmt.Errorf("failed to run debug: %w", err))
 	}
 }

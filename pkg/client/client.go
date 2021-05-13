@@ -191,7 +191,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			}
 			c.Logger.Info("requesting provider to configure", "provider", provider.Name, "version", details.Version)
 			_, err = cqProvider.ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
-				CloudQueryVersion: "",
+				CloudQueryVersion: "", // TODO pass cloudquery version
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.config.CloudQuery.Connection.DSN,
 				},
@@ -202,7 +202,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				return err
 			}
 			c.Logger.Info("provider configured successfully", "provider", provider.Name, "version", details.Version)
-			c.Logger.Info("requesting provider fetch", "provider", provider.Name, "version", details.Version)
+			c.Logger.Debug("requesting provider fetch", "provider", provider.Name, "version", details.Version)
 			stream, err := cqProvider.FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: provider.Resources})
 			if err != nil {
 				return err
@@ -211,6 +211,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
+					c.Logger.Info("provider finished fetch", "provider", providerCfg.Name, "version", details.Version)
 					return nil
 				}
 				if err != nil {

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/spf13/afero"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -61,7 +62,9 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 
 func createPolicyOutput(output string, result *PolicyExecutionResult) error {
 	f, err := afero.NewOsFs().Open(output)
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 	if err != nil {
 		return err
 	}

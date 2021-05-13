@@ -3,8 +3,9 @@ package console
 import (
 	"context"
 	"fmt"
-	"github.com/spf13/viper"
 	"time"
+
+	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -15,8 +16,8 @@ import (
 )
 
 type Client struct {
-	c   *client.Client
-	cfg *config.Config
+	c       *client.Client
+	cfg     *config.Config
 	updater *Progress
 }
 

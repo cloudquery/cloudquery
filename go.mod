@@ -7,22 +7,16 @@ require (
 	github.com/aws/aws-lambda-go v1.23.0
 	github.com/cloudquery/cq-provider-sdk v0.2.0-alpha1
 	github.com/fatih/color v1.10.0
-	github.com/georgysavva/scany v0.2.8 // indirect
 	github.com/google/go-github/v35 v35.1.0
 	github.com/hashicorp/go-hclog v0.16.1
 	github.com/hashicorp/go-plugin v1.4.1
 	github.com/hashicorp/go-version v1.3.0
 	github.com/hashicorp/hcl/v2 v2.10.0
 	github.com/jackc/pgx/v4 v4.11.0
-	github.com/json-iterator/go v1.1.11
 	github.com/mattn/go-isatty v0.0.12
-	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
-	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
-	github.com/mitchellh/mapstructure v1.4.1
+	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/rs/zerolog v1.20.0
-	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/afero v1.1.2
-	github.com/spf13/cast v1.3.0
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.0
