@@ -203,10 +203,10 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 	dir, _ := os.Getwd()
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	if err := watcher.Add(dir); err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	defer watcher.Close()
 
@@ -219,12 +219,12 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 
 	unmanaged, err := serve.ParseReattachProviders(os.Getenv("CQ_REATTACH_PROVIDERS"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	for _, u := range unmanaged {
 		_, err := net.DialTimeout(u.Addr.Network(), u.Addr.String(), time.Second*5)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 	}
 
