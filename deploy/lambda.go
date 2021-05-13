@@ -2,17 +2,17 @@ package deploy
 
 import (
 	"context"
-		"fmt"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"fmt"
 	"log"
 	"os"
+
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/spf13/viper"
 )
-
 
 type Request struct {
 	TaskName string `json:"taskName"`

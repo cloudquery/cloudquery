@@ -2,11 +2,15 @@ package client
 
 import (
 	"context"
+	"net"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 
@@ -18,7 +22,7 @@ import (
 )
 
 func TestClient_FetchTimeout(t *testing.T) {
-	cancelServe := setupTestPlugin()
+	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
 	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
@@ -51,7 +55,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 }
 
 func TestClient_Fetch(t *testing.T) {
-	cancelServe := setupTestPlugin()
+	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
 	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
@@ -82,7 +86,7 @@ func TestClient_Fetch(t *testing.T) {
 }
 
 func TestClient_GetProviderSchema(t *testing.T) {
-	cancelServe := setupTestPlugin()
+	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
 	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
@@ -112,7 +116,7 @@ func TestClient_GetProviderSchema(t *testing.T) {
 }
 
 func TestClient_GetProviderConfig(t *testing.T) {
-	cancelServe := setupTestPlugin()
+	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
 	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
@@ -194,15 +198,35 @@ provider "test" {
   ]
 }`
 
-func setupTestPlugin() context.CancelFunc {
+func setupTestPlugin(t *testing.T) context.CancelFunc {
 	debugCtx, cancelServe := context.WithCancel(context.Background())
-	go provider.ServeTestPlugin(debugCtx)
-	// sleep to allow test plugin to start
-	time.Sleep(time.Second * 2)
 	dir, _ := os.Getwd()
-	_ = os.Setenv("CQ_REATTACH_PROVIDERS", path.Join(dir, ".cq_reattach"))
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		panic(err)
+	}
+	if err := watcher.Add(dir); err != nil {
+		panic(err)
+	}
+	defer watcher.Close()
+
+	go provider.ServeTestPlugin(debugCtx)
+	_ = os.Setenv("CQ_REATTACH_PROVIDERS", filepath.Join(dir, ".cq_reattach"))
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+	_ = <-watcher.Events
+
+	unmanaged, err := serve.ParseReattachProviders(os.Getenv("CQ_REATTACH_PROVIDERS"))
+	if err != nil {
+		panic(err)
+	}
+	for _, u := range unmanaged {
+		_, err := net.DialTimeout(u.Addr.Network(), u.Addr.String(), time.Second*5)
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	return cancelServe
 }

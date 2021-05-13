@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-lambda-go v1.23.0
 	github.com/cloudquery/cq-provider-sdk v0.2.0-alpha1
 	github.com/fatih/color v1.10.0
+	github.com/fsnotify/fsnotify v1.4.7
 	github.com/google/go-github/v35 v35.1.0
 	github.com/hashicorp/go-hclog v0.16.1
 	github.com/hashicorp/go-plugin v1.4.1
