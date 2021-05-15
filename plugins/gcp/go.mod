@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.16
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.2.0-rc2
+	github.com/cloudquery/cq-provider-sdk v0.2.0-rc3
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/hashicorp/go-hclog v0.16.1
 	github.com/julienschmidt/httprouter v1.3.0
