@@ -6,65 +6,85 @@ import (
 	"log"
 	"os"
 
-	"github.com/spf13/viper"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
-	"github.com/cloudquery/cloudquery/client"
-	"github.com/cloudquery/cloudquery/config"
+	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/config"
+
+	"github.com/spf13/viper"
 )
 
 type Request struct {
-	TaskName string        `json:"taskName"`
-	Config   config.Config `json:"config"`
+	TaskName string `json:"taskName"`
+	Config   []byte `json:"config"`
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
-	return TaskExecutor(req)
+	return TaskExecutor(ctx, req)
 }
 
-func TaskExecutor(req Request) (string, error) {
-	driver := os.Getenv("CQ_DRIVER")
+func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	dsn := os.Getenv("CQ_DSN")
 	pluginDir, present := os.LookupEnv("CQ_PLUGIN_DIR")
 	if !present {
 		pluginDir = "."
 	}
 	viper.Set("plugin-dir", pluginDir)
+	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.json", req.Config)
+	if diags != nil {
+		return "", fmt.Errorf("bad configuration: %s", diags)
+	}
+	// Override dsn env if set
+	if dsn != "" {
+		cfg.CloudQuery.Connection.DSN = dsn
+	}
+
 	switch req.TaskName {
 	case "fetch":
-		Fetch(driver, dsn, req.Config)
+		Fetch(ctx, cfg)
 	case "policy":
-		Policy(driver, dsn)
+		Policy(ctx, cfg)
 	default:
 		return fmt.Sprintf("Unknown task: %s", req.TaskName), fmt.Errorf("unknown task: %s", req.TaskName)
 	}
 	return fmt.Sprintf("Completed task %s", req.TaskName), nil
 }
 
-// Fetches resources from a cloud provider and saves them in the configured database
-func Fetch(driver, dsn string, cfg config.Config) {
-	c, err := client.New(driver, dsn)
+// Fetch fetches resources from a cloud provider and saves them in the configured database
+func Fetch(ctx context.Context, cfg *config.Config) {
+	c, err := client.New(cfg, func(c *client.Client) {
+		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
+			h.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		})
+	})
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}
-	err = c.Initialize(&cfg)
+	err = c.Initialize(ctx)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
-	err = c.Run(&cfg)
+	err = c.Fetch(ctx, client.FetchRequest{
+		Providers: cfg.Providers,
+	})
 	if err != nil {
 		log.Fatalf("Error fetching resources: %s", err)
 	}
 }
 
-// Runs a policy SQL statement and returns results
-func Policy(driver, dsn string) {
+// Policy Runs a policy SQL statement and returns results
+func Policy(ctx context.Context, cfg *config.Config) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	c, err := client.New(driver, dsn)
+	c, err := client.New(cfg)
 	if err != nil {
-		log.Fatalf("Unable to initialize client: %s", err)
+		log.Fatalf("Unable to create client: %s", err)
 	}
-	err = c.RunQuery(queryPath, outputPath)
+	_, err = c.ExecutePolicy(ctx, client.ExecutePolicyRequest{
+		PolicyPath:    queryPath,
+		StopOnFailure: false,
+		OutputPath:    outputPath,
+	})
 	if err != nil {
 		log.Fatalf("Error running query: %s", err)
 	}

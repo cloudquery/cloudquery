@@ -18,3 +18,4 @@ plan:
 .PHONY: apply
 apply:
 	@cd deploy/aws/terraform && terraform init && terraform apply
+

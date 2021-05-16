@@ -11,8 +11,7 @@ import (
 func main() {
 	if env := os.Getenv("AWS_LAMBDA_FUNCTION_NAME"); env != "" {
 		lambda.Start(deploy.LambdaHandler)
-	} else {
-		cmd.Execute()
+		return
 	}
-
+	cmd.Execute()
 }
