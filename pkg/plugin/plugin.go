@@ -22,6 +22,11 @@ const (
 	DefaultOrganization = "cloudquery"
 )
 
+// PluginMap is the map of plugins we can dispense.
+var pluginMap = map[string]plugin.Plugin{
+	"provider": &cqproto.CQPlugin{},
+}
+
 type Plugin interface {
 	Name() string
 	Version() string
@@ -42,7 +47,7 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
-			2: serve.PluginMap,
+			2: pluginMap,
 		},
 		Managed:          true,
 		Cmd:              exec.Command(pluginPath),
@@ -97,7 +102,7 @@ type unmanagedPlugin struct {
 func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*unmanagedPlugin, error) {
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig:  serve.Handshake,
-		Plugins:          serve.PluginMap,
+		Plugins:          pluginMap,
 		Reattach:         config,
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
 		SyncStderr:       os.Stderr,
