@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"path/filepath"
 
 	"github.com/hashicorp/hcl/v2"
@@ -116,6 +117,13 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 		case "cloudquery":
 			contentDiags = gohcl.DecodeBody(block.Body, nil, &config.CloudQuery)
 			diags = append(diags, contentDiags...)
+			// TODO: decode in a more generic way
+			if dsn := viper.GetString("dsn"); dsn != "" {
+				config.CloudQuery.Connection.DSN = dsn
+			}
+			if dir := viper.GetString("plugin-dir"); dir != "" {
+				config.CloudQuery.PluginDirectory = dir
+			}
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block)
 			diags = append(diags, cfgDiags...)
