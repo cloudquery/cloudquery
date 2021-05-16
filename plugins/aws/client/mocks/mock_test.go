@@ -304,6 +304,18 @@ func TestResources(t *testing.T) {
 			verifyEmptyColumns: true,
 		},
 		{
+			resource:           "iam.openid_connect_identity_providers",
+			mainTable:          resources.IamOpenidConnectIdentityProviders(),
+			mockBuilder:        buildIamOpenIDConnectProviders,
+			verifyEmptyColumns: true,
+		},
+		{
+			resource:           "iam.saml_identity_providers",
+			mainTable:          resources.IamSamlIdentityProviders(),
+			mockBuilder:        buildIamSAMLProviders,
+			verifyEmptyColumns: true,
+		},
+		{
 			resource:           "kms.keys",
 			mainTable:          resources.KmsKeys(),
 			mockBuilder:        buildKmsKeys,

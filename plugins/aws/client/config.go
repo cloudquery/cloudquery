@@ -71,6 +71,8 @@ const DefaultConfigYaml = `
       - name: iam.roles
       - name: iam.users
       - name: iam.virtual_mfa_devices
+      - name: iam.openid_connect_identity_providers
+      - name: iam.saml_identity_providers
       - name: kms.keys
       - name: organizations.accounts
       - name: rds.certificates

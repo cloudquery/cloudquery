@@ -1016,6 +1016,54 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 
+func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockIamClient(ctrl)
+	l := iamTypes.OpenIDConnectProviderListEntry{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListOpenIDConnectProviders(gomock.Any(), gomock.Any()).Return(
+		&iam.ListOpenIDConnectProvidersOutput{
+			OpenIDConnectProviderList: []iamTypes.OpenIDConnectProviderListEntry{l},
+		}, nil)
+
+	p := iam.GetOpenIDConnectProviderOutput{}
+	err = faker.FakeData(&p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
+
+	return client.Services{
+		IAM: m,
+	}
+}
+
+func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockIamClient(ctrl)
+	l := iamTypes.SAMLProviderListEntry{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListSAMLProviders(gomock.Any(), gomock.Any()).Return(
+		&iam.ListSAMLProvidersOutput{
+			SAMLProviderList: []iamTypes.SAMLProviderListEntry{l},
+		}, nil)
+
+	p := iam.GetSAMLProviderOutput{}
+	err = faker.FakeData(&p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetSAMLProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
+
+	return client.Services{
+		IAM: m,
+	}
+}
+
 func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockKmsClient(ctrl)
 	k := kmsTypes.KeyListEntry{}
