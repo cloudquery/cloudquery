@@ -98,7 +98,7 @@ func ServeTestPlugin(ctx context.Context) {
 	opts := &serve.Options{
 		Name:                "test",
 		Provider:            Provider(),
-		Logger:              nil,
+		Logger:              hclog.NewNullLogger(),
 		NoLogOutputOverride: false,
 	}
 	if err := serve.Debug(context.Background(), opts.Name, opts); err != nil {
