@@ -202,6 +202,10 @@ func (h Hub) downloadProvider(organization, providerName, providerVersion string
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
 	}
 
+	if err := h.fs.Chmod(providerPath, 0754); err != nil {
+		return ProviderDetails{}, err
+	}
+
 	details := ProviderDetails{
 		Name:         providerName,
 		Version:      providerVersion,
