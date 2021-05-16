@@ -11,8 +11,8 @@ jobs:
   postgres:
     strategy:
       matrix:
-        dbversion: ['postgres:latest', 'postgres:12', 'postgres:11']
-        go: ['1.15', '1.16']
+        dbversion: ['postgres:latest']
+        go: ['1.15']
         platform: [ubuntu-latest] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
     services:
@@ -47,5 +47,5 @@ jobs:
         run: go build -v .
 
       - name: Test
-        run: go test -v ./... --tags=integration
+        run: go test -v ./...
 
