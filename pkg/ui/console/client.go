@@ -15,6 +15,7 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
+// Client console client is a wrapper around client.Client for console execution of CloudQuery
 type Client struct {
 	c       *client.Client
 	cfg     *config.Config
@@ -30,7 +31,6 @@ func CreateClient(ctx context.Context, configPath string, opts ...client.Option)
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
-
 	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
 	})
@@ -40,7 +40,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 				h.ProgressUpdater = progressUpdater
 			}
 			h.NoVerify = viper.GetBool("no-verify")
-
+			h.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		})
 	})
 	c, err := client.New(cfg, opts...)

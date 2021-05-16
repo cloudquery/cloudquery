@@ -297,7 +297,7 @@ func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest)
 		return nil, fmt.Errorf("failed to create policy views %w", err)
 	}
 	exec := &PolicyExecutionResult{
-		Passed:  false,
+		Passed:  true,
 		Results: make(map[string]*PolicyResult, len(policy.Queries)),
 	}
 

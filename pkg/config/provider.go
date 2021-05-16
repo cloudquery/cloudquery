@@ -47,9 +47,6 @@ func decodeProviderBlock(block *hcl.Block) (*Provider, hcl.Diagnostics) {
 var providerBlockSchema = &hcl.BodySchema{
 	Attributes: []hcl.AttributeSchema{
 		{
-			Name: "alias",
-		},
-		{
 			Name: "resources",
 		},
 	},

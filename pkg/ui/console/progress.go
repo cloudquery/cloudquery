@@ -13,7 +13,6 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
-//
 var emojiStatus = map[string]string{
 	ui.StatusOK:         color.GreenString("✓"),
 	ui.StatusError:      color.RedString("❌"),

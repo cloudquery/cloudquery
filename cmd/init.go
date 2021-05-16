@@ -96,5 +96,5 @@ func Initialize(providers []string) {
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
 	_ = afero.WriteFile(fs, "config.hcl", formattedData, os.ModePerm)
-	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s", "config.hcl")
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", "config.hcl")
 }

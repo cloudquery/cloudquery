@@ -62,6 +62,12 @@ func Provider() *provider.Provider {
 						return nil
 					}
 				},
+				Columns: []schema.Column{
+					{
+						Name: "some_bool",
+						Type: schema.TypeBool,
+					},
+				},
 			},
 			"very_slow_resource": {
 				Name: "slow_resource",

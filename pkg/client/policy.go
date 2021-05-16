@@ -43,7 +43,7 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 		Name:    query.Name,
 		Columns: make([]string, 0),
 		Data:    make([][]interface{}, 0),
-		Passed:  true,
+		Passed:  false,
 	}
 	for _, fd := range data.FieldDescriptions() {
 		result.Columns = append(result.Columns, string(fd.Name))
@@ -56,7 +56,9 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 		}
 		result.Data = append(result.Data, values)
 	}
-	result.Passed = len(result.Data) == 0 && !query.Invert
+	if (len(result.Data) == 0 && !query.Invert) || (query.Invert && len(result.Data) > 0) {
+		result.Passed = true
+	}
 	return result, nil
 }
 

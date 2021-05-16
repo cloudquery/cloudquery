@@ -41,7 +41,6 @@ type Hub struct {
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
 	// Optional: Download propagator allows the creator to get called back on download progress and completion.
-	// defaults to NoOpPropagator
 	ProgressUpdater ui.Progress
 	// Optional: logger to use, if not defined global logger is used.
 	Logger hclog.Logger
@@ -49,7 +48,7 @@ type Hub struct {
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderDetails
-
+	// fs for hub to access to save and load providers from
 	fs afero.Fs
 }
 
@@ -69,6 +68,7 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 	for _, opt := range opts {
 		opt(h)
 	}
+	h.PluginDirectory = filepath.Join(h.PluginDirectory, ".cq", "providers")
 	h.loadExisting()
 	return h
 }
@@ -227,7 +227,6 @@ func (h Hub) downloadFile(providerName, version, filepath, url string, updatePro
 	if err != nil {
 		return err
 	}
-
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {

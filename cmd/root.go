@@ -48,7 +48,6 @@ func init() {
 	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
 	rootCmd.PersistentFlags().Bool("no-download", false, "No Download will make hub not download any provider but use existing")
-	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
 	// Logging Flags
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
@@ -67,11 +66,12 @@ func init() {
 		workingDir = "."
 	}
 	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
-	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
+	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
+	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	rootCmd.AddCommand(initCmd, fetchCmd)
 	cobra.OnInitialize(initConfig, initLogging)
 }

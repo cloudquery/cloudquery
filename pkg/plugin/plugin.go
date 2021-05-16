@@ -2,11 +2,12 @@ package plugin
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
