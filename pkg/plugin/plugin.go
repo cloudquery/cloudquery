@@ -2,10 +2,10 @@ package plugin
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -140,12 +140,6 @@ func GetProviderPath(name string, version string) (string, error) {
 		org = split[0]
 		name = split[1]
 	}
-
 	pluginDir := viper.GetString("plugin-dir")
-
-	extension := ""
-	if runtime.GOOS == "windows" {
-		extension = ".exe"
-	}
-	return filepath.Join(pluginDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension)), nil
+	return filepath.Join(pluginDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s", version, registry.GetBinarySuffix())), nil
 }

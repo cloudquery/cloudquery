@@ -308,11 +308,7 @@ func (h Hub) isProviderRegistered(org, provider string) bool {
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin
 func (h Hub) getProviderPath(org, name, version string) string {
-	extension := ""
-	if runtime.GOOS == "windows" {
-		extension = ".exe"
-	}
-	return filepath.Join(h.PluginDirectory, org, name, fmt.Sprintf("%s-%s-%s%s", version, runtime.GOOS, runtime.GOARCH, extension))
+	return filepath.Join(h.PluginDirectory, org, name, fmt.Sprintf("%s-%s", version, GetBinarySuffix()))
 }
 
 func (h Hub) loadExisting() {
@@ -337,7 +333,7 @@ func (h Hub) loadExisting() {
 			return nil
 		}
 		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
-		pVersion := strings.Split(filepath.Base(path), "-"+getBinarySuffix())[0]
+		pVersion := strings.Split(filepath.Base(path), "-"+GetBinarySuffix())[0]
 
 		h.providers[fmt.Sprintf("%s-%s", provider, pVersion)] = ProviderDetails{
 			Name:         provider,
@@ -352,13 +348,13 @@ func (h Hub) loadExisting() {
 
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
 func getPluginBinaryName(providerName string) string {
-	return fmt.Sprintf("cq-provider-%s-%s", providerName, getBinarySuffix())
+	return fmt.Sprintf("cq-provider-%s_%s", providerName, GetBinarySuffix())
 }
 
-func getBinarySuffix() string {
+func GetBinarySuffix() string {
 	var suffix = ""
 	if runtime.GOOS == "windows" {
 		suffix = ".exe"
 	}
-	return fmt.Sprintf("%s-%s%s", runtime.GOOS, runtime.GOARCH, suffix)
+	return fmt.Sprintf("%s_%s%s", runtime.GOOS, runtime.GOARCH, suffix)
 }
