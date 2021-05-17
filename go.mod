@@ -27,6 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/rds v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.3.0
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.4.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.5.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/sts v1.3.0

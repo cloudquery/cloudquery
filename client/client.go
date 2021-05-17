@@ -5,16 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/go-hclog"
-
-	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -34,10 +31,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/hashicorp/go-hclog"
 )
 
 // Provider Client passed as meta to all table fetchers
@@ -88,6 +87,7 @@ type Services struct {
 	KMS              KmsClient
 	Organizations    OrganizationsClient
 	Redshift         RedshiftClient
+	Route53          Route53Client
 	RDS              RdsClient
 	S3               S3Client
 	S3Manager        S3ManagerClient
@@ -274,6 +274,7 @@ func initServices(awsCfg aws.Config) Services {
 		Organizations:    organizations.NewFromConfig(awsCfg),
 		RDS:              rds.NewFromConfig(awsCfg),
 		Redshift:         redshift.NewFromConfig(awsCfg),
+		Route53:          route53.NewFromConfig(awsCfg),
 		S3Manager:        newS3ManagerFromConfig(awsCfg),
 	}
 }

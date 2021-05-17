@@ -1,13 +1,13 @@
 package mocks_test
 
 import (
+	"fmt"
 	"testing"
-
-	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
-	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	autoscalingTypes "github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
@@ -41,6 +41,8 @@ import (
 	rdsTypes "github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	redshiftTypes "github.com/aws/aws-sdk-go-v2/service/redshift/types"
+	"github.com/aws/aws-sdk-go-v2/service/route53"
+	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	s3Types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -257,6 +259,151 @@ func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client
 		}, nil)
 	return client.Services{
 		Redshift: m,
+	}
+}
+
+func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRoute53Client(ctrl)
+	h := route53Types.HostedZone{}
+	if err := faker.FakeData(&h); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListHostedZones(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListHostedZonesOutput{
+			HostedZones: []route53Types.HostedZone{h},
+		}, nil)
+	tag := route53Types.Tag{}
+	if err := faker.FakeData(&tag); err != nil {
+		t.Fatal(err)
+	}
+	//create id that is usually returned by aws
+	hzId := *h.Id
+	newId := fmt.Sprintf("/%s/%s", route53Types.TagResourceTypeHostedzone, *h.Id)
+	h.Id = &newId
+	m.EXPECT().ListTagsForResources(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListTagsForResourcesOutput{
+			ResourceTagSets: []route53Types.ResourceTagSet{
+				{
+					ResourceId: &hzId,
+					Tags:       []route53Types.Tag{tag},
+				},
+			},
+		}, nil)
+	qlc := route53Types.QueryLoggingConfig{}
+	if err := faker.FakeData(&qlc); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListQueryLoggingConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListQueryLoggingConfigsOutput{
+			QueryLoggingConfigs: []route53Types.QueryLoggingConfig{qlc},
+		}, nil)
+	rrs := route53Types.ResourceRecordSet{}
+	if err := faker.FakeData(&rrs); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListResourceRecordSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListResourceRecordSetsOutput{
+			ResourceRecordSets: []route53Types.ResourceRecordSet{rrs},
+		}, nil)
+	tpi := route53Types.TrafficPolicyInstance{}
+	if err := faker.FakeData(&tpi); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTrafficPolicyInstancesByHostedZone(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListTrafficPolicyInstancesByHostedZoneOutput{
+			TrafficPolicyInstances: []route53Types.TrafficPolicyInstance{tpi},
+		}, nil)
+	vpc := route53Types.VPC{}
+	if err := faker.FakeData(&vpc); err != nil {
+		t.Fatal(err)
+	}
+	ds := route53Types.DelegationSet{}
+	if err := faker.FakeData(&ds); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetHostedZone(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.GetHostedZoneOutput{
+			HostedZone:    &h,
+			DelegationSet: &ds,
+			VPCs:          []route53Types.VPC{vpc},
+		}, nil)
+	return client.Services{
+		Route53: m,
+	}
+}
+
+func buildRoute53TrafficPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRoute53Client(ctrl)
+	tps := route53Types.TrafficPolicySummary{}
+	if err := faker.FakeData(&tps); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTrafficPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListTrafficPoliciesOutput{
+			TrafficPolicySummaries: []route53Types.TrafficPolicySummary{tps},
+		}, nil)
+	tp := route53Types.TrafficPolicy{}
+	if err := faker.FakeData(&tp); err != nil {
+		t.Fatal(err)
+	}
+	tp.Id = tps.Id
+	jsonStr := "{\"test\": \"test\"}"
+	tp.Document = &jsonStr
+	m.EXPECT().ListTrafficPolicyVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListTrafficPolicyVersionsOutput{
+			TrafficPolicies: []route53Types.TrafficPolicy{tp},
+		}, nil)
+	return client.Services{
+		Route53: m,
+	}
+}
+
+func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRoute53Client(ctrl)
+	ds := route53Types.DelegationSet{}
+	if err := faker.FakeData(&ds); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListReusableDelegationSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListReusableDelegationSetsOutput{
+			DelegationSets: []route53Types.DelegationSet{ds},
+		}, nil)
+	return client.Services{
+		Route53: m,
+	}
+}
+
+func buildRoute53HealthChecksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRoute53Client(ctrl)
+	hc := route53Types.HealthCheck{}
+	if err := faker.FakeData(&hc); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListHealthChecks(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListHealthChecksOutput{
+			HealthChecks: []route53Types.HealthCheck{hc},
+		}, nil)
+	tag := route53Types.Tag{}
+	if err := faker.FakeData(&tag); err != nil {
+		t.Fatal(err)
+	}
+	//m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	//	&route53.ListTagsForResourceOutput{
+	//		ResourceTagSet: &route53Types.ResourceTagSet{
+	//			Tags: []route53Types.Tag{tag},
+	//		},
+	//	}, nil)
+	m.EXPECT().ListTagsForResources(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&route53.ListTagsForResourcesOutput{
+			ResourceTagSets: []route53Types.ResourceTagSet{
+				{
+					ResourceId: hc.Id,
+					Tags:       []route53Types.Tag{tag},
+				},
+			},
+		}, nil)
+	return client.Services{
+		Route53: m,
 	}
 }
 

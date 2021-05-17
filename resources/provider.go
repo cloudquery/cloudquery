@@ -64,6 +64,10 @@ func Provider() *provider.Provider {
 			"rds.instances":                         RdsInstances(),
 			"redshift.clusters":                     RedshiftClusters(),
 			"redshift.subnet_groups":                RedshiftSubnetGroups(),
+			"route53.reusable_delegation_sets":      Route53ReusableDelegationSets(),
+			"route53.health_checks":                 Route53HealthChecks(),
+			"route53.hosted_zones":                  Route53HostedZones(),
+			"route53.traffic_policies":              Route53TrafficPolicies(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

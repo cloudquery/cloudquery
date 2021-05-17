@@ -260,6 +260,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(_ context.Context, meta sc
 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
+
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(types.Trail)
 	c := meta.(*client.Client)
