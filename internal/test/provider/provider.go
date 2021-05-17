@@ -91,15 +91,16 @@ func Provider() *provider.Provider {
 		Config: func() provider.Config {
 			return &Configuration{}
 		},
+		Logger: hclog.NewNullLogger(),
 	}
 }
 
-func ServeTestPlugin(ctx context.Context) {
+func ServeTestPlugin(_ context.Context) {
 	opts := &serve.Options{
 		Name:                "test",
 		Provider:            Provider(),
 		Logger:              hclog.NewNullLogger(),
-		NoLogOutputOverride: false,
+		NoLogOutputOverride: true,
 	}
 	if err := serve.Debug(context.Background(), opts.Name, opts); err != nil {
 		panic(fmt.Errorf("failed to run debug: %w", err))
