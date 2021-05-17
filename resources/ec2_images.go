@@ -233,8 +233,7 @@ func resolveEc2imageProductCodes(ctx context.Context, meta schema.ClientMeta, re
 	for _, t := range r.ProductCodes {
 		productCodes[*t.ProductCodeId] = string(t.ProductCodeType)
 	}
-	resource.Set("product_codes", productCodes)
-	return nil
+	return resource.Set("product_codes", productCodes)
 }
 func resolveEc2imageTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Image)
@@ -242,8 +241,7 @@ func resolveEc2imageTags(ctx context.Context, meta schema.ClientMeta, resource *
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchEc2ImageBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(types.Image)

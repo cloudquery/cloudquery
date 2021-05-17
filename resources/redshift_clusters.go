@@ -582,8 +582,7 @@ func resolveRedshiftClusterTags(_ context.Context, _ schema.ClientMeta, resource
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchRedshiftClusterNodes(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)

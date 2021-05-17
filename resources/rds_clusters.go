@@ -440,8 +440,7 @@ func resolveRdsClusterTags(_ context.Context, _ schema.ClientMeta, resource *sch
 	for _, t := range r.TagList {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchRdsClusterAssociatedRoles(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)

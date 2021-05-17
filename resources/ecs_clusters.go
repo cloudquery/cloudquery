@@ -206,8 +206,7 @@ func resolveEcsClusterSettings(_ context.Context, _ schema.ClientMeta, resource 
 	for _, s := range cluster.Settings {
 		settings[string(s.Name)] = s.Value
 	}
-	resource.Set("settings", settings)
-	return nil
+	return resource.Set("settings", settings)
 }
 func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
@@ -215,8 +214,7 @@ func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resourc
 	for _, s := range cluster.Statistics {
 		stats[*s.Name] = s.Value
 	}
-	resource.Set("statistics", stats)
-	return nil
+	return resource.Set("statistics", stats)
 }
 func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
@@ -224,8 +222,7 @@ func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *sch
 	for _, s := range cluster.Tags {
 		stats[*s.Key] = s.Value
 	}
-	resource.Set("tags", stats)
-	return nil
+	return resource.Set("tags", stats)
 }
 func fetchEcsClusterAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster := parent.Item.(types.Cluster)
@@ -238,8 +235,7 @@ func resolveEcsClusterAttachmentDetails(_ context.Context, _ schema.ClientMeta, 
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
 	}
-	resource.Set("details", details)
-	return nil
+	return resource.Set("details", details)
 }
 func fetchEcsClusterDefaultCapacityProviderStrategies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster := parent.Item.(types.Cluster)

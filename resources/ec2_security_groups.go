@@ -324,8 +324,7 @@ func resolveEc2securityGroupTags(_ context.Context, _ schema.ClientMeta, resourc
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchEc2SecurityGroupIpPermissions(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroup, ok := parent.Item.(types.SecurityGroup)

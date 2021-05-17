@@ -65,12 +65,8 @@ func Provider() *provider.Provider {
 			"redshift.clusters":                     RedshiftClusters(),
 			"redshift.subnet_groups":                RedshiftSubnetGroups(),
 		},
-		Config: func() interface{} {
+		Config: func() provider.Config {
 			return &client.Config{}
 		},
-		DefaultConfigGenerator: func() (string, error) {
-			return client.DefaultConfigYaml, nil
-		},
 	}
-
 }

@@ -138,31 +138,60 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 		return err
 	}
 	if output.KeyMetadata != nil {
-		resource.Set("cloud_hsm_cluster_id", output.KeyMetadata.CloudHsmClusterId)
-		resource.Set("creation_date", output.KeyMetadata.CreationDate)
-		resource.Set("custom_key_store_id", output.KeyMetadata.CustomKeyStoreId)
-		resource.Set("customer_master_key_spec", output.KeyMetadata.CustomerMasterKeySpec)
-		resource.Set("deletion_date", output.KeyMetadata.DeletionDate)
-		resource.Set("description", output.KeyMetadata.Description)
-		resource.Set("enabled", output.KeyMetadata.Enabled)
-		resource.Set("expiration_model", output.KeyMetadata.ExpirationModel)
-		resource.Set("manager", output.KeyMetadata.KeyManager)
-		resource.Set("key_state", output.KeyMetadata.KeyState)
-		resource.Set("key_usage", output.KeyMetadata.KeyUsage)
-		resource.Set("origin", output.KeyMetadata.Origin)
-		resource.Set("valid_to", output.KeyMetadata.ValidTo)
-
+		if err := resource.Set("cloud_hsm_cluster_id", output.KeyMetadata.CloudHsmClusterId); err != nil {
+			return err
+		}
+		if err := resource.Set("creation_date", output.KeyMetadata.CreationDate); err != nil {
+			return err
+		}
+		if err := resource.Set("custom_key_store_id", output.KeyMetadata.CustomKeyStoreId); err != nil {
+			return err
+		}
+		if err := resource.Set("customer_master_key_spec", output.KeyMetadata.CustomerMasterKeySpec); err != nil {
+			return err
+		}
+		if err := resource.Set("deletion_date", output.KeyMetadata.DeletionDate); err != nil {
+			return err
+		}
+		if err := resource.Set("description", output.KeyMetadata.Description); err != nil {
+			return err
+		}
+		if err := resource.Set("enabled", output.KeyMetadata.Enabled); err != nil {
+			return err
+		}
+		if err := resource.Set("expiration_model", output.KeyMetadata.ExpirationModel); err != nil {
+			return err
+		}
+		if err := resource.Set("manager", output.KeyMetadata.KeyManager); err != nil {
+			return err
+		}
+		if err := resource.Set("key_state", output.KeyMetadata.KeyState); err != nil {
+			return err
+		}
+		if err := resource.Set("key_usage", output.KeyMetadata.KeyUsage); err != nil {
+			return err
+		}
+		if err := resource.Set("origin", output.KeyMetadata.Origin); err != nil {
+			return err
+		}
+		if err := resource.Set("valid_to", output.KeyMetadata.ValidTo); err != nil {
+			return err
+		}
 		var encryptionAlgorithms []string
 		for _, algorithm := range output.KeyMetadata.EncryptionAlgorithms {
 			encryptionAlgorithms = append(encryptionAlgorithms, string(algorithm))
 		}
-		resource.Set("encryption_algorithms", encryptionAlgorithms)
+		if err := resource.Set("encryption_algorithms", encryptionAlgorithms); err != nil {
+			return err
+		}
 
 		var signingAlgorithms []string
 		for _, algorithm := range output.KeyMetadata.SigningAlgorithms {
 			signingAlgorithms = append(signingAlgorithms, string(algorithm))
 		}
-		resource.Set("signing_algorithms", signingAlgorithms)
+		if err := resource.Set("signing_algorithms", signingAlgorithms); err != nil {
+			return err
+		}
 	}
 
 	if string(output.KeyMetadata.Origin) != "EXTERNAL" {
@@ -172,7 +201,9 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 		if err != nil {
 			return err
 		}
-		resource.Set("rotation_enabled", output.KeyRotationEnabled)
+		if err := resource.Set("rotation_enabled", output.KeyRotationEnabled); err != nil {
+			return err
+		}
 	}
 	return nil
 }

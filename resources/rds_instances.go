@@ -628,8 +628,7 @@ func resolveRdsInstanceTags(_ context.Context, _ schema.ClientMeta, resource *sc
 	for _, t := range r.TagList {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchRdsInstanceAssociatedRoles(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
@@ -693,8 +692,7 @@ func resolveRdsInstancePendingModifiedValuesProcessorFeatures(_ context.Context,
 	for _, t := range r.PendingModifiedValues.ProcessorFeatures {
 		pendingProcessorFeatures[*t.Name] = t.Value
 	}
-	resource.Set("aws_rds_instance_pending_modified_values_processor_features", pendingProcessorFeatures)
-	return nil
+	return resource.Set("aws_rds_instance_pending_modified_values_processor_features", pendingProcessorFeatures)
 }
 func resolveRdsInstanceProcessorFeatures(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
@@ -702,8 +700,7 @@ func resolveRdsInstanceProcessorFeatures(_ context.Context, _ schema.ClientMeta,
 	for _, t := range r.ProcessorFeatures {
 		processorFeatures[*t.Name] = t.Value
 	}
-	resource.Set("aws_rds_instance_processor_features", processorFeatures)
-	return nil
+	return resource.Set("aws_rds_instance_processor_features", processorFeatures)
 }
 func fetchRdsInstanceStatusInfos(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)

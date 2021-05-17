@@ -77,6 +77,5 @@ func resolveIamOpenidConnectIdentityProviderTags(ctx context.Context, meta schem
 		response[*t.Key] = t.Value
 	}
 
-	resource.Set(c.Name, response)
-	return nil
+	return resource.Set(c.Name, response)
 }

@@ -86,6 +86,5 @@ func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }

@@ -154,8 +154,7 @@ func resolveEc2EbsVolumeTags(_ context.Context, _ schema.ClientMeta, resource *s
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchEc2EbsVolumeAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	volume, ok := parent.Item.(types.Volume)

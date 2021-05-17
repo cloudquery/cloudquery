@@ -642,8 +642,7 @@ func resolveEc2instanceTags(_ context.Context, _ schema.ClientMeta, resource *sc
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func fetchEc2InstanceBlockDeviceMappings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instance, ok := parent.Item.(types.Instance)

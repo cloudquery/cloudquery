@@ -177,8 +177,7 @@ func resolveVirtualInterfaceRouteFilterPrefixes(_ context.Context, _ schema.Clie
 	for i, prefix := range r.RouteFilterPrefixes {
 		routeFilterPrefixes[i] = prefix.Cidr
 	}
-	resource.Set("route_filter_prefixes", routeFilterPrefixes)
-	return nil
+	return resource.Set("route_filter_prefixes", routeFilterPrefixes)
 }
 
 func fetchVirtualInterfaceBGPPeers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
@@ -196,8 +195,7 @@ func resolveDirectconnectVirtualInterfaceTags(_ context.Context, _ schema.Client
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 
 func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {

@@ -130,8 +130,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		input.Marker = response.Marker
 	}
-	resource.Set("policies", policies)
-	return nil
+	return resource.Set("policies", policies)
 }
 func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Role)
@@ -140,7 +139,7 @@ func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return err
 		}
-		resource.Set("assume_role_policy_document", decodedDocument)
+		return resource.Set("assume_role_policy_document", decodedDocument)
 	}
 	return nil
 }
@@ -150,6 +149,5 @@ func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
