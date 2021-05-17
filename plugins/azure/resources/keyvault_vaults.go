@@ -328,8 +328,7 @@ func resolveKeyvaultVaultNetworkAclsIPRules(_ context.Context, _ schema.ClientMe
 	for i, ip := range *vault.Properties.NetworkAcls.IPRules {
 		ips[i] = ip.Value
 	}
-	resource.Set("network_acls_ip_rules", ips)
-	return nil
+	return resource.Set("network_acls_ip_rules", ips)
 }
 
 func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
@@ -341,8 +340,7 @@ func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(_ context.Context, _ sch
 	for i, rule := range *vault.Properties.NetworkAcls.VirtualNetworkRules {
 		ipRules[i] = rule.ID
 	}
-	resource.Set("network_acls_virtual_network_rules", ipRules)
-	return nil
+	return resource.Set("network_acls_virtual_network_rules", ipRules)
 }
 func fetchKeyvaultVaultAccessPolicies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vault := parent.Item.(keyvault.Vault)

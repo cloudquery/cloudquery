@@ -657,6 +657,5 @@ func resolveRestoreStatusParametersBlobRanges(_ context.Context, _ schema.Client
 	if err != nil {
 		return err
 	}
-	resource.Set("blob_restore_status_parameters_blob_ranges", data)
-	return nil
+	return resource.Set("blob_restore_status_parameters_blob_ranges", data)
 }

@@ -20,11 +20,8 @@ func Provider() *provider.Provider {
 			"sql.servers":              SQLServers(),
 			"network.virtual_networks": NetworkVirtualNetworks(),
 		},
-		Config: func() interface{} {
+		Config: func() provider.Config {
 			return &client.Config{}
-		},
-		DefaultConfigGenerator: func() (string, error) {
-			return client.DefaultConfig, nil
 		},
 	}
 

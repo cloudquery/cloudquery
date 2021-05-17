@@ -158,8 +158,7 @@ func resolveImmutabilityPolicy(_ context.Context, _ schema.ClientMeta, resource 
 	if err != nil {
 		return err
 	}
-	resource.Set("immutability_policy", data)
-	return nil
+	return resource.Set("immutability_policy", data)
 }
 
 func resolveLegalHold(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -169,6 +168,5 @@ func resolveLegalHold(_ context.Context, _ schema.ClientMeta, resource *schema.R
 	if err != nil {
 		return err
 	}
-	resource.Set("legal_hold", data)
-	return nil
+	return resource.Set("legal_hold", data)
 }
