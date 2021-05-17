@@ -125,8 +125,7 @@ func resolveIamVirtualMfaDeviceTags(ctx context.Context, meta schema.ClientMeta,
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }
 func resolveIamVirtualMfaDeviceUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VirtualMFADevice)
@@ -137,6 +136,5 @@ func resolveIamVirtualMfaDeviceUserTags(ctx context.Context, meta schema.ClientM
 	for _, t := range r.User.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("user_tags", tags)
-	return nil
+	return resource.Set("user_tags", tags)
 }

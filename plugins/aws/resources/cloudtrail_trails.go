@@ -199,7 +199,7 @@ func CloudtrailTrails() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
@@ -222,26 +222,28 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err != nil {
 		return err
 	}
-	resource.Set("is_logging", response.IsLogging)
-	resource.Set("latest_cloudwatch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError)
-	resource.Set("latest_cloudwatch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime)
-	resource.Set("latest_delivery_attempt_succeeded", response.LatestDeliveryAttemptSucceeded)
-	resource.Set("latest_delivery_attempt_time", response.LatestDeliveryAttemptTime)
-	resource.Set("latest_delivery_error", response.LatestDeliveryError)
-	resource.Set("latest_delivery_time", response.LatestDeliveryTime)
-	resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError)
-	resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime)
-	resource.Set("latest_notification_attempt_succeeded", response.LatestNotificationAttemptSucceeded)
-	resource.Set("latest_notification_attempt_time", response.LatestNotificationAttemptTime)
-	resource.Set("latest_notification_error", response.LatestNotificationError)
-	resource.Set("latest_notification_time", response.LatestNotificationTime)
-	resource.Set("start_logging_time", response.StartLoggingTime)
-	resource.Set("stop_logging_time", response.StopLoggingTime)
-	resource.Set("time_logging_started", response.TimeLoggingStarted)
-	resource.Set("time_logging_stopped", response.TimeLoggingStopped)
+	if err := resource.Set("is_logging", response.IsLogging); err != nil {
+		return err
+	}
+	_ = resource.Set("latest_cloudwatch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError)
+	_ = resource.Set("latest_cloudwatch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime)
+	_ = resource.Set("latest_delivery_attempt_succeeded", response.LatestDeliveryAttemptSucceeded)
+	_ = resource.Set("latest_delivery_attempt_time", response.LatestDeliveryAttemptTime)
+	_ = resource.Set("latest_delivery_error", response.LatestDeliveryError)
+	_ = resource.Set("latest_delivery_time", response.LatestDeliveryTime)
+	_ = resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError)
+	_ = resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime)
+	_ = resource.Set("latest_notification_attempt_succeeded", response.LatestNotificationAttemptSucceeded)
+	_ = resource.Set("latest_notification_attempt_time", response.LatestNotificationAttemptTime)
+	_ = resource.Set("latest_notification_error", response.LatestNotificationError)
+	_ = resource.Set("latest_notification_time", response.LatestNotificationTime)
+	_ = resource.Set("start_logging_time", response.StartLoggingTime)
+	_ = resource.Set("stop_logging_time", response.StopLoggingTime)
+	_ = resource.Set("time_logging_started", response.TimeLoggingStarted)
+	_ = resource.Set("time_logging_stopped", response.TimeLoggingStopped)
 	return nil
 }
-func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveCloudtrailTrailCloudwatchLogsLogGroupName(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	groupName := ""
 	log := meta.(*client.Client).Logger()
 	trail := resource.Item.(types.Trail)
@@ -256,8 +258,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 		log.Info("CloudWatchLogsLogGroupARN is empty")
 	}
 
-	resource.Set("cloudwatch_logs_log_group_name", groupName)
-	return nil
+	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(types.Trail)

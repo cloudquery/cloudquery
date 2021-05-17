@@ -120,21 +120,41 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 		return err
 	}
 	// Set all attributes
-	resource.Set("subscriptions_confirmed", cast.ToInt(output.Attributes["SubscriptionsConfirmed"]))
-	resource.Set("subscriptions_deleted", cast.ToInt(output.Attributes["SubscriptionsDeleted"]))
-	resource.Set("subscriptions_pending", cast.ToInt(output.Attributes["SubscriptionsPending"]))
-	resource.Set("fifo_topic", cast.ToBool(output.Attributes["FifoTopic"]))
-	resource.Set("content_based_deduplication", cast.ToBool(output.Attributes["ContentBasedDeduplication"]))
+	if err := resource.Set("subscriptions_confirmed", cast.ToInt(output.Attributes["SubscriptionsConfirmed"])); err != nil {
+		return err
+	}
+	if err := resource.Set("subscriptions_deleted", cast.ToInt(output.Attributes["SubscriptionsDeleted"])); err != nil {
+		return err
+	}
+	if err := resource.Set("subscriptions_pending", cast.ToInt(output.Attributes["SubscriptionsPending"])); err != nil {
+		return err
+	}
+	if err := resource.Set("fifo_topic", cast.ToBool(output.Attributes["FifoTopic"])); err != nil {
+		return err
+	}
+	if err := resource.Set("content_based_deduplication", cast.ToBool(output.Attributes["ContentBasedDeduplication"])); err != nil {
+		return err
+	}
 	if p, ok := output.Attributes["Policy"]; ok && p != "" {
-		resource.Set("policy", p)
+		if err := resource.Set("policy", p); err != nil {
+			return err
+		}
 	}
 	if p, ok := output.Attributes["DeliveryPolicy"]; ok && p != "" {
-		resource.Set("delivery_policy", p)
+		if err := resource.Set("delivery_policy", p); err != nil {
+			return err
+		}
 	}
-	resource.Set("display_name", output.Attributes["DisplayName"])
-	resource.Set("owner", output.Attributes["Owner"])
+	if err := resource.Set("display_name", output.Attributes["DisplayName"]); err != nil {
+		return err
+	}
+	if err := resource.Set("owner", output.Attributes["Owner"]); err != nil {
+		return err
+	}
 	if p, ok := output.Attributes["EffectiveDeliveryPolicy"]; ok && p != "" {
-		resource.Set("effective_delivery_policy", p)
+		if err := resource.Set("effective_delivery_policy", p); err != nil {
+			return err
+		}
 	}
 
 	return nil

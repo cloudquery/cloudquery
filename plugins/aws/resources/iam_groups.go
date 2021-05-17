@@ -90,6 +90,5 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 	for _, p := range response.AttachedPolicies {
 		policyMap[*p.PolicyArn] = p.PolicyName
 	}
-	resource.Set("policies", policyMap)
-	return nil
+	return resource.Set("policies", policyMap)
 }

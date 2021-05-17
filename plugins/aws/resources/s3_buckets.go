@@ -163,7 +163,7 @@ func S3Buckets() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().S3
 	response, err := svc.ListBuckets(ctx, nil)
 	if err != nil {
@@ -194,7 +194,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
 		bucketRegion = output
 	}
-	resource.Set("region", bucketRegion)
+	if err := resource.Set("region", bucketRegion); err != nil {
+		return err
+	}
 
 	loggingOutput, err := svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = bucketRegion
@@ -203,8 +205,12 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		return err
 	}
 	if loggingOutput.LoggingEnabled != nil {
-		resource.Set("logging_target_bucket", loggingOutput.LoggingEnabled.TargetBucket)
-		resource.Set("logging_target_prefix", loggingOutput.LoggingEnabled.TargetPrefix)
+		if err := resource.Set("logging_target_bucket", loggingOutput.LoggingEnabled.TargetBucket); err != nil {
+			return err
+		}
+		if err := resource.Set("logging_target_prefix", loggingOutput.LoggingEnabled.TargetPrefix); err != nil {
+			return err
+		}
 	}
 
 	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: r.Name}, func(options *s3.Options) {
@@ -214,7 +220,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		return err
 	}
 	if policyOutput != nil {
-		resource.Set("policy", policyOutput.Policy)
+		if err := resource.Set("policy", policyOutput.Policy); err != nil {
+			return err
+		}
 	}
 
 	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: r.Name}, func(options *s3.Options) {
@@ -223,9 +231,13 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	if err != nil {
 		return err
 	}
-	resource.Set("versioning_status", versioningOutput.Status)
-	resource.Set("versioning_mfa_delete", versioningOutput.MFADelete)
 
+	if err := resource.Set("versioning_status", versioningOutput.Status); err != nil {
+		return err
+	}
+	if err := resource.Set("versioning_mfa_delete", versioningOutput.MFADelete); err != nil {
+		return err
+	}
 	return nil
 }
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {

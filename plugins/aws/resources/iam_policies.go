@@ -138,7 +138,7 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		resource.Set("document", decodedDocument)
+		return resource.Set("document", decodedDocument)
 	}
 	return nil
 }

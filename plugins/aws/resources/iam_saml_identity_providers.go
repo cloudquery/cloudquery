@@ -73,6 +73,5 @@ func resolveIamSamlIdentityProviderTags(ctx context.Context, meta schema.ClientM
 		response[*t.Key] = t.Value
 	}
 
-	resource.Set(c.Name, response)
-	return nil
+	return resource.Set(c.Name, response)
 }

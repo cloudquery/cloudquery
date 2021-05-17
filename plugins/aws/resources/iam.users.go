@@ -321,8 +321,12 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 		return err
 	}
 	if output.AccessKeyLastUsed != nil {
-		resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate)
-		resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName)
+		if err := resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate); err != nil {
+			return err
+		}
+		if err := resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -352,6 +356,5 @@ func resolveEc2UserTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	resource.Set("tags", tags)
-	return nil
+	return resource.Set("tags", tags)
 }

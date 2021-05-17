@@ -524,8 +524,7 @@ func resolveCloudfrontDistributionOriginCustomHeaders(_ context.Context, _ schem
 	for _, t := range r.CustomHeaders.Items {
 		tags[*t.HeaderName] = *t.HeaderValue
 	}
-	resource.Set("custom_headers", tags)
-	return nil
+	return resource.Set("custom_headers", tags)
 }
 
 func fetchCloudfrontDistributionOrigins(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
@@ -568,8 +567,7 @@ func resolveCloudfrontDistributionOriginGroupMembers(_ context.Context, _ schema
 	for _, t := range r.Members.Items {
 		members = append(members, *t.OriginId)
 	}
-	resource.Set("members_origin_ids", members)
-	return nil
+	return resource.Set("members_origin_ids", members)
 }
 
 func resolveFailoverCriteriaStatusCodeItems(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -581,8 +579,7 @@ func resolveFailoverCriteriaStatusCodeItems(_ context.Context, _ schema.ClientMe
 	for _, item := range r.FailoverCriteria.StatusCodes.Items {
 		members = append(members, int(item))
 	}
-	resource.Set(c.Name, members)
-	return nil
+	return resource.Set(c.Name, members)
 }
 
 func fetchCloudfrontDistributionDefaultCacheBehaviourLambdaFunctionAssociations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {

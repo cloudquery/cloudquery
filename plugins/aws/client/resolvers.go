@@ -8,12 +8,10 @@ import (
 
 func ResolveAWSAccount(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
 	client := meta.(*Client)
-	r.Set("account_id", client.AccountID)
-	return nil
+	return r.Set("account_id", client.AccountID)
 }
 
 func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
 	client := meta.(*Client)
-	r.Set("region", client.Region)
-	return nil
+	return r.Set("region", client.Region)
 }

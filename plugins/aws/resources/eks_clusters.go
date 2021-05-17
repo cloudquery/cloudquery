@@ -210,6 +210,5 @@ func resolveEksClusterLoggingClusterLoggingsLogType(_ context.Context, _ schema.
 	for i, l := range logSetup.Types {
 		logTypes[i] = string(l)
 	}
-	resource.Set("types", logTypes)
-	return nil
+	return resource.Set("types", logTypes)
 }
