@@ -181,7 +181,7 @@ func TestClient_ExecutePolicy(t *testing.T) {
 
 type MockRegistry struct{}
 
-func (m MockRegistry) VerifyProvider(_, _, _ string) bool {
+func (m MockRegistry) VerifyProvider(_ context.Context, _, _, _ string) bool {
 	return true
 }
 func (m MockRegistry) GetProvider(_ context.Context, organization, providerName, providerVersion string) (registry.ProviderDetails, error) {
