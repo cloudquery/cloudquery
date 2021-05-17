@@ -31,7 +31,7 @@ type ProviderDetails struct {
 }
 
 type Registry interface {
-	VerifyProvider(organization, providerName, version string) bool
+	VerifyProvider(ctx context.Context, organization, providerName, version string) bool
 	GetProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error)
 }
 
@@ -73,7 +73,7 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 	return h
 }
 
-func (h Hub) VerifyProvider(organization, providerName, version string) bool {
+func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, version string) bool {
 	l := h.Logger.With("provider", providerName, "version", version)
 	checksumsPath := filepath.Join(h.PluginDirectory, organization, providerName, version+".checksums.txt")
 	checksumsURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt", organization, providerName)
@@ -85,13 +85,13 @@ func (h Hub) VerifyProvider(organization, providerName, version string) bool {
 	}
 	l.Debug("downloading checksums file", "url", checksumsURL, "path", checksumsPath)
 	// download checksums
-	if err := h.downloadFile(providerName, version, checksumsPath, checksumsURL, false); err != nil {
+	if err := h.downloadFile(ctx, providerName, version, checksumsPath, checksumsURL, false); err != nil {
 		l.Error("failed to download checksums file", "providerName", providerName, "error", err)
 		return false
 	}
 	l.Debug("downloading checksums signature", "url", checksumsURL, "path", checksumsPath)
 	// download checksums signature
-	if err := h.downloadFile(providerName, version, checksumsPath+".sig", checksumsURL+".sig", false); err != nil {
+	if err := h.downloadFile(ctx, providerName, version, checksumsPath+".sig", checksumsURL+".sig", false); err != nil {
 		l.Error("failed to download signature file", "providerName", providerName, "error", err)
 		return false
 	}
@@ -127,11 +127,11 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 	}
 	p, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
 	if !ok {
-		return h.downloadProvider(organization, providerName, providerVersion)
+		return h.downloadProvider(ctx, organization, providerName, providerVersion)
 	}
 	if p.Version != providerVersion {
 		h.Logger.Info("Current version is not as requested version updating provider", "current", p.Version, "requested", providerVersion)
-		return h.downloadProvider(organization, providerName, providerVersion)
+		return h.downloadProvider(ctx, organization, providerName, providerVersion)
 	}
 
 	if h.ProgressUpdater != nil {
@@ -146,7 +146,7 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 		return p, nil
 	}
 
-	if !h.VerifyProvider(organization, providerName, providerVersion) {
+	if !h.VerifyProvider(ctx, organization, providerName, providerVersion) {
 		return ProviderDetails{}, fmt.Errorf("provider %s@%s verification failed", providerName, providerVersion)
 	}
 	return p, nil
@@ -180,7 +180,7 @@ func (h Hub) Cleanup() error {
 	})
 }
 
-func (h Hub) downloadProvider(organization, providerName, providerVersion string) (ProviderDetails, error) {
+func (h Hub) downloadProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error) {
 
 	// TODO: split provider name to get organization if different if not assume it's cloudquery
 	if !h.verifyRegistered(organization, providerName, providerVersion) {
@@ -194,11 +194,11 @@ func (h Hub) downloadProvider(organization, providerName, providerVersion string
 
 	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
 	providerPath := h.getProviderPath(organization, providerName, providerVersion)
-	if err := h.downloadFile(providerName, providerVersion, providerPath, providerURL, true); err != nil {
+	if err := h.downloadFile(ctx, providerName, providerVersion, providerPath, providerURL, true); err != nil {
 		return ProviderDetails{}, err
 	}
 
-	if ok := h.VerifyProvider(organization, providerName, providerVersion); !ok {
+	if ok := h.VerifyProvider(ctx, organization, providerName, providerVersion); !ok {
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
 	}
 
@@ -220,7 +220,7 @@ func (h Hub) downloadProvider(organization, providerName, providerVersion string
 // DownloadFile will download a url to a local file. It's efficient because it will
 // write as it downloads and not load the whole file into memory. We pass an io.TeeReader
 // into Copy() to report progress on the download.
-func (h Hub) downloadFile(providerName, version, filepath, url string, updateProgress bool) error {
+func (h Hub) downloadFile(ctx context.Context, providerName, version, filepath, url string, updateProgress bool) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := h.fs.Create(filepath + ".tmp")
@@ -228,7 +228,11 @@ func (h Hub) downloadFile(providerName, version, filepath, url string, updatePro
 		return err
 	}
 	// Get the data
-	resp, err := http.Get(url)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		out.Close()
 		return err
@@ -328,7 +332,7 @@ func (h Hub) loadExisting() {
 			return nil
 		}
 		provider := filepath.Base(filepath.Dir(path))
-		if strings.HasSuffix(provider, ".tmp") {
+		if strings.HasSuffix(path, ".tmp") {
 			h.Logger.Debug("found temp provider file, cleaning up", "provider", provider)
 			if err := h.fs.Remove(path); err != nil {
 				h.Logger.Warn("failed to remove temp provider file", "provider", provider)
