@@ -23,6 +23,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
+	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
@@ -81,6 +82,7 @@ type Services struct {
 	ElasticBeanstalk ElasticbeanstalkClient
 	EMR              EmrClient
 	SNS              SnsClient
+	ELBv1            ElbV1Client
 	ELBv2            ElbV2Client
 	FSX              FsxClient
 	IAM              IamClient
@@ -268,6 +270,7 @@ func initServices(awsCfg aws.Config) Services {
 		FSX:              fsx.NewFromConfig(awsCfg),
 		S3:               s3.NewFromConfig(awsCfg),
 		SNS:              sns.NewFromConfig(awsCfg),
+		ELBv1:            elbv1.NewFromConfig(awsCfg),
 		ELBv2:            elbv2.NewFromConfig(awsCfg),
 		IAM:              iam.NewFromConfig(awsCfg),
 		KMS:              kms.NewFromConfig(awsCfg),
