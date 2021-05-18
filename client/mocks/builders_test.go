@@ -1075,6 +1075,28 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.ListAttachedGroupPoliciesOutput{
 			AttachedPolicies: []iamTypes.AttachedPolicy{p},
 		}, nil)
+
+	//list policies
+	var l []string
+	err = faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListGroupPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListGroupPoliciesOutput{
+			PolicyNames: l,
+		}, nil)
+
+	//get policy
+	gp := iam.GetGroupPolicyOutput{}
+	err = faker.FakeData(&gp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	document := "{\"test\": {\"t1\":1}}"
+	gp.PolicyDocument = &document
+	m.EXPECT().GetGroupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&gp, nil)
 	return client.Services{
 		IAM: m,
 	}
@@ -1162,6 +1184,28 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.ListAttachedRolePoliciesOutput{
 			AttachedPolicies: []iamTypes.AttachedPolicy{p},
 		}, nil)
+
+	// list policies by role
+	var l []string
+	err = faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListRolePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListRolePoliciesOutput{
+			PolicyNames: l,
+		}, nil)
+
+	//get policy
+	pd := iam.GetRolePolicyOutput{}
+	err = faker.FakeData(&pd)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pd.PolicyDocument = &document
+	m.EXPECT().GetRolePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&pd, nil)
+
 	return client.Services{
 		IAM: m,
 	}
@@ -1214,6 +1258,29 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
+
+	//list user inline policies
+	var l []string
+	err = faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListUserPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListUserPoliciesOutput{
+			PolicyNames: l,
+		}, nil)
+
+	//get policy
+	p := iam.GetUserPolicyOutput{}
+	err = faker.FakeData(&p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	document := "{\"test\": {\"t1\":1}}"
+	p.PolicyDocument = &document
+	m.EXPECT().GetUserPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&p, nil)
+
 	return client.Services{
 		IAM: m,
 	}

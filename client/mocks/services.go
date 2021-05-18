@@ -1359,6 +1359,26 @@ func (mr *MockIamClientMockRecorder) GetCredentialReport(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredentialReport", reflect.TypeOf((*MockIamClient)(nil).GetCredentialReport), varargs...)
 }
 
+// GetGroupPolicy mocks base method.
+func (m *MockIamClient) GetGroupPolicy(arg0 context.Context, arg1 *iam.GetGroupPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetGroupPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetGroupPolicy", varargs...)
+	ret0, _ := ret[0].(*iam.GetGroupPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetGroupPolicy indicates an expected call of GetGroupPolicy.
+func (mr *MockIamClientMockRecorder) GetGroupPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGroupPolicy", reflect.TypeOf((*MockIamClient)(nil).GetGroupPolicy), varargs...)
+}
+
 // GetOpenIDConnectProvider mocks base method.
 func (m *MockIamClient) GetOpenIDConnectProvider(arg0 context.Context, arg1 *iam.GetOpenIDConnectProviderInput, arg2 ...func(*iam.Options)) (*iam.GetOpenIDConnectProviderOutput, error) {
 	m.ctrl.T.Helper()
@@ -1377,6 +1397,26 @@ func (mr *MockIamClientMockRecorder) GetOpenIDConnectProvider(arg0, arg1 interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOpenIDConnectProvider", reflect.TypeOf((*MockIamClient)(nil).GetOpenIDConnectProvider), varargs...)
+}
+
+// GetRolePolicy mocks base method.
+func (m *MockIamClient) GetRolePolicy(arg0 context.Context, arg1 *iam.GetRolePolicyInput, arg2 ...func(*iam.Options)) (*iam.GetRolePolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRolePolicy", varargs...)
+	ret0, _ := ret[0].(*iam.GetRolePolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRolePolicy indicates an expected call of GetRolePolicy.
+func (mr *MockIamClientMockRecorder) GetRolePolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRolePolicy", reflect.TypeOf((*MockIamClient)(nil).GetRolePolicy), varargs...)
 }
 
 // GetSAMLProvider mocks base method.
@@ -1417,6 +1457,26 @@ func (mr *MockIamClientMockRecorder) GetUser(arg0, arg1 interface{}, arg2 ...int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*MockIamClient)(nil).GetUser), varargs...)
+}
+
+// GetUserPolicy mocks base method.
+func (m *MockIamClient) GetUserPolicy(arg0 context.Context, arg1 *iam.GetUserPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetUserPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetUserPolicy", varargs...)
+	ret0, _ := ret[0].(*iam.GetUserPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserPolicy indicates an expected call of GetUserPolicy.
+func (mr *MockIamClientMockRecorder) GetUserPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserPolicy", reflect.TypeOf((*MockIamClient)(nil).GetUserPolicy), varargs...)
 }
 
 // ListAccessKeys mocks base method.
@@ -1499,6 +1559,26 @@ func (mr *MockIamClientMockRecorder) ListAttachedUserPolicies(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAttachedUserPolicies", reflect.TypeOf((*MockIamClient)(nil).ListAttachedUserPolicies), varargs...)
 }
 
+// ListGroupPolicies mocks base method.
+func (m *MockIamClient) ListGroupPolicies(arg0 context.Context, arg1 *iam.ListGroupPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListGroupPoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListGroupPolicies", varargs...)
+	ret0, _ := ret[0].(*iam.ListGroupPoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListGroupPolicies indicates an expected call of ListGroupPolicies.
+func (mr *MockIamClientMockRecorder) ListGroupPolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListGroupPolicies", reflect.TypeOf((*MockIamClient)(nil).ListGroupPolicies), varargs...)
+}
+
 // ListGroups mocks base method.
 func (m *MockIamClient) ListGroups(arg0 context.Context, arg1 *iam.ListGroupsInput, arg2 ...func(*iam.Options)) (*iam.ListGroupsOutput, error) {
 	m.ctrl.T.Helper()
@@ -1559,6 +1639,26 @@ func (mr *MockIamClientMockRecorder) ListOpenIDConnectProviders(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOpenIDConnectProviders", reflect.TypeOf((*MockIamClient)(nil).ListOpenIDConnectProviders), varargs...)
 }
 
+// ListRolePolicies mocks base method.
+func (m *MockIamClient) ListRolePolicies(arg0 context.Context, arg1 *iam.ListRolePoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListRolePoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRolePolicies", varargs...)
+	ret0, _ := ret[0].(*iam.ListRolePoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRolePolicies indicates an expected call of ListRolePolicies.
+func (mr *MockIamClientMockRecorder) ListRolePolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRolePolicies", reflect.TypeOf((*MockIamClient)(nil).ListRolePolicies), varargs...)
+}
+
 // ListRoles mocks base method.
 func (m *MockIamClient) ListRoles(arg0 context.Context, arg1 *iam.ListRolesInput, arg2 ...func(*iam.Options)) (*iam.ListRolesOutput, error) {
 	m.ctrl.T.Helper()
@@ -1597,6 +1697,26 @@ func (mr *MockIamClientMockRecorder) ListSAMLProviders(arg0, arg1 interface{}, a
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSAMLProviders", reflect.TypeOf((*MockIamClient)(nil).ListSAMLProviders), varargs...)
+}
+
+// ListUserPolicies mocks base method.
+func (m *MockIamClient) ListUserPolicies(arg0 context.Context, arg1 *iam.ListUserPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListUserPoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListUserPolicies", varargs...)
+	ret0, _ := ret[0].(*iam.ListUserPoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListUserPolicies indicates an expected call of ListUserPolicies.
+func (mr *MockIamClientMockRecorder) ListUserPolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUserPolicies", reflect.TypeOf((*MockIamClient)(nil).ListUserPolicies), varargs...)
 }
 
 // ListUserTags mocks base method.

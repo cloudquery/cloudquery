@@ -169,6 +169,7 @@ func IamUsers() *schema.Table {
 					},
 				},
 			},
+			iamUserPolicies(),
 		},
 	}
 }

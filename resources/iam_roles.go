@@ -88,6 +88,9 @@ func IamRoles() *schema.Table {
 				Resolver: resolveIamRoleTags,
 			},
 		},
+		Relations: []*schema.Table{
+			iamRolePolicies(),
+		},
 	}
 }
 
