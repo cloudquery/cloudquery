@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"google.golang.org/api/cloudresourcemanager/v3"
 )
 
 func CrmProjects() *schema.Table {
@@ -64,20 +65,11 @@ func CrmProjects() *schema.Table {
 // ====================================================================================================================
 func fetchCrmProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
-	call := c.Services.Crm.Projects.List().Context(ctx)
-	for {
-		call.PageToken(nextPageToken)
-		resp, err := call.Do()
-		if err != nil {
-			return err
-		}
-		res <- resp.Projects
-
-		if resp.NextPageToken == "" {
-			break
-		}
-		nextPageToken = resp.NextPageToken
+	call := c.Services.Crm.Projects.Get("projects/" + c.ProjectId).Context(ctx)
+	project, err := call.Do()
+	if err != nil {
+		return err
 	}
+	res <- []*cloudresourcemanager.Project{project}
 	return nil
 }

@@ -48,11 +48,8 @@ func createCrmTestServer() (*cloudresourcemanager.Service, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/v3/projects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &cloudresourcemanager.ListProjectsResponse{
-			Projects: []*cloudresourcemanager.Project{&project},
-		}
-		b, err := json.Marshal(resp)
+	mux.GET("/v3/projects/testProject", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		b, err := json.Marshal(project)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return

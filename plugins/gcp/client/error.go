@@ -1,12 +1,17 @@
 package client
 
-import "google.golang.org/api/googleapi"
+import (
+	"google.golang.org/api/googleapi"
+)
+
+const QuotaExceeded = 429
+const Forbidden = 403
 
 func IgnoreErrorHandler(err error) bool {
 	if e, ok := err.(*googleapi.Error); ok {
-		if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
+		if e.Code == Forbidden && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
 			return true
-		} else if e.Code == 403 && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden" {
+		} else if e.Code == Forbidden && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden" {
 			return true
 		}
 	}
