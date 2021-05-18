@@ -54,6 +54,9 @@ func IamGroups() *schema.Table {
 				Type: schema.TypeString,
 			},
 		},
+		Relations: []*schema.Table{
+			iamGroupPolicies(),
+		},
 	}
 }
 
