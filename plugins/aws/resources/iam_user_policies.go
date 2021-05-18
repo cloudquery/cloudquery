@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -54,7 +52,7 @@ func iamUserPolicies() *schema.Table {
 // ====================================================================================================================
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().IAM
-	user := parent.Item.(types.User)
+	user := parent.Item.(wrappedUser)
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)

@@ -1,0 +1,36 @@
+package resources
+
+import (
+	"testing"
+
+	"github.com/cloudquery/cq-provider-aws/client"
+
+	"github.com/cloudquery/cq-provider-sdk/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/golang/mock/gomock"
+	"github.com/hashicorp/go-hclog"
+)
+
+func awsTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) client.Services) {
+	ctrl := gomock.NewController(t)
+
+	cfg := client.Config{
+		Regions:    []string{"us-east-1"},
+		Accounts:   []client.Account{{ID: "testAccount", RoleARN: ""}},
+		AWSDebug:   false,
+		MaxRetries: 3,
+		MaxBackoff: 60,
+	}
+	providertest.TestResource(t, Provider, providertest.ResourceTestData{
+		Table:  table,
+		Config: cfg,
+		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
+			c := client.NewAwsClient(logging.New(&hclog.LoggerOptions{
+				Level: hclog.Warn,
+			}), []string{"test-1"})
+			c.SetAccountServices("testAccount", builder(t, ctrl))
+			return &c, nil
+		},
+	})
+}
