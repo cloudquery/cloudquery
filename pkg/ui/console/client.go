@@ -93,9 +93,9 @@ func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output str
 	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
 	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
 		if passed {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-120s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
 		} else {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-120s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
 		}
 	}})
 	if err != nil {

@@ -224,6 +224,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 					ResourceCount:     resp.ResourceCount,
 					Error:             resp.Error,
 				}
+				if resp.Error != "" {
+					c.Logger.Error("received error fetching", "provider", provider.Name, "error", resp.Error)
+				}
 				c.Logger.Debug("fetch update", "provider", provider.Name, "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
