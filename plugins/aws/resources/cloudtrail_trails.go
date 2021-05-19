@@ -38,11 +38,11 @@ func CloudtrailTrails() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "latest_cloudwatch_logs_delivery_error",
+				Name: "latest_cloud_watch_logs_delivery_error",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "latest_cloudwatch_logs_delivery_time",
+				Name: "latest_cloud_watch_logs_delivery_time",
 				Type: schema.TypeTimestamp,
 			},
 			{
@@ -225,22 +225,54 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err := resource.Set("is_logging", response.IsLogging); err != nil {
 		return err
 	}
-	_ = resource.Set("latest_cloudwatch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError)
-	_ = resource.Set("latest_cloudwatch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime)
-	_ = resource.Set("latest_delivery_attempt_succeeded", response.LatestDeliveryAttemptSucceeded)
-	_ = resource.Set("latest_delivery_attempt_time", response.LatestDeliveryAttemptTime)
-	_ = resource.Set("latest_delivery_error", response.LatestDeliveryError)
-	_ = resource.Set("latest_delivery_time", response.LatestDeliveryTime)
-	_ = resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError)
-	_ = resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime)
-	_ = resource.Set("latest_notification_attempt_succeeded", response.LatestNotificationAttemptSucceeded)
-	_ = resource.Set("latest_notification_attempt_time", response.LatestNotificationAttemptTime)
-	_ = resource.Set("latest_notification_error", response.LatestNotificationError)
-	_ = resource.Set("latest_notification_time", response.LatestNotificationTime)
-	_ = resource.Set("start_logging_time", response.StartLoggingTime)
-	_ = resource.Set("stop_logging_time", response.StopLoggingTime)
-	_ = resource.Set("time_logging_started", response.TimeLoggingStarted)
-	_ = resource.Set("time_logging_stopped", response.TimeLoggingStopped)
+	if err := resource.Set("latest_cloud_watch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_cloud_watch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_delivery_attempt_succeeded", response.LatestDeliveryAttemptSucceeded); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_delivery_attempt_time", response.LatestDeliveryAttemptTime); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_delivery_error", response.LatestDeliveryError); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_delivery_time", response.LatestDeliveryTime); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_notification_attempt_succeeded", response.LatestNotificationAttemptSucceeded); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_notification_attempt_time", response.LatestNotificationAttemptTime); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_notification_error", response.LatestNotificationError); err != nil {
+		return err
+	}
+	if err := resource.Set("latest_notification_time", response.LatestNotificationTime); err != nil {
+		return err
+	}
+	if err := resource.Set("start_logging_time", response.StartLoggingTime); err != nil {
+		return err
+	}
+	if err := resource.Set("stop_logging_time", response.StopLoggingTime); err != nil {
+		return err
+	}
+	if err := resource.Set("time_logging_started", response.TimeLoggingStarted); err != nil {
+		return err
+	}
+	if err := resource.Set("time_logging_stopped", response.TimeLoggingStopped); err != nil {
+		return err
+	}
 	return nil
 }
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {

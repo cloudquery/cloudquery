@@ -151,6 +151,10 @@ func IamUsers() *schema.Table {
 						Type: schema.TypeTimestamp,
 					},
 					{
+						Name: "last_rotated",
+						Type: schema.TypeTimestamp,
+					},
+					{
 						Name: "last_used_service_name",
 						Type: schema.TypeString,
 					},
@@ -381,7 +385,26 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 		if err != nil {
 			return err
 		}
-		res <- output.AccessKeyMetadata
+
+		keys := make([]wrappedKey, len(output.AccessKeyMetadata))
+		for i, key := range output.AccessKeyMetadata {
+			switch i {
+			case 0:
+				rotated := parent.Get("access_key_1_last_rotated")
+				if rotated != nil {
+					keys[i] = wrappedKey{key, rotated.(time.Time)}
+				}
+			case 1:
+				rotated := parent.Get("access_key_2_last_rotated")
+				if rotated != nil {
+					keys[i] = wrappedKey{key, rotated.(time.Time)}
+				}
+			default:
+				keys[i] = wrappedKey{key, time.Time{}}
+			}
+
+		}
+		res <- keys
 		if output.Marker == nil {
 			break
 		}
@@ -391,7 +414,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 }
 
 func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	r := resource.Item.(types.AccessKeyMetadata)
+	r := resource.Item.(wrappedKey)
 	svc := meta.(*client.Client).Services().IAM
 	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
 	if err != nil {
@@ -434,6 +457,11 @@ func resolveUserTags(_ context.Context, _ schema.ClientMeta, resource *schema.Re
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set("tags", tags)
+}
+
+type wrappedKey struct {
+	types.AccessKeyMetadata
+	LastRotated time.Time
 }
 
 type wrappedUser struct {
