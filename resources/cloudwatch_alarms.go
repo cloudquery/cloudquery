@@ -90,8 +90,9 @@ func CloudwatchAlarms() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "o_k_actions",
-				Type: schema.TypeStringArray,
+				Name:     "ok_actions",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("OKActions"),
 			},
 			{
 				Name: "period",
@@ -204,7 +205,7 @@ func CloudwatchAlarms() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	var config cloudwatch.DescribeAlarmsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatch
@@ -224,7 +225,7 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveCloudwatchAlarmDimensions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	alarm := resource.Item.(types.MetricAlarm)
 	dimensions := make(map[string]*string)
 	for _, d := range alarm.Dimensions {
@@ -232,12 +233,12 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 	}
 	return resource.Set("dimensions", dimensions)
 }
-func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchAlarmMetrics(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	alarm := parent.Item.(types.MetricAlarm)
 	res <- alarm.Metrics
 	return nil
 }
-func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	metric := resource.Item.(types.MetricDataQuery)
 	if metric.MetricStat == nil || metric.MetricStat.Metric == nil {
 		return nil

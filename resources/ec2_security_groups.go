@@ -83,7 +83,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionIpRanges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permission_id",
+								Name:     "security_group_ip_permission_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -102,7 +102,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionIpv6Ranges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permission_id",
+								Name:     "security_group_ip_permission_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -121,7 +121,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionPrefixListIds,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permission_id",
+								Name:     "security_group_ip_permission_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
@@ -140,7 +140,7 @@ func Ec2SecurityGroups() *schema.Table {
 						Resolver: fetchEc2SecurityGroupIpPermissionUserIdGroupPairs,
 						Columns: []schema.Column{
 							{
-								Name:     "security_groupip_permission_id",
+								Name:     "security_group_ip_permission_id",
 								Type:     schema.TypeUUID,
 								Resolver: schema.ParentIdResolver,
 							},
