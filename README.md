@@ -62,15 +62,14 @@ First generate a `config.yml` file that will describe which resources you want c
 and transform resources to the specified SQL database by running the following command:
  
 ```shell script
-cloudquery gen config aws # choose one or more from: [aws azure gcp okta]
-# cloudquery gen config gcp okta # This will generate a config containing gcp and okta providers
-# cloudquery gen config --help # Show all possible auto generated configs and flags
+cloudquery init aws # choose one or more from: [aws azure gcp okta]
+# cloudquery init gcp azure # This will generate a config containing gcp and azure providers
+# cloudquery init --help # Show all possible auto generated configs and flags
  ```
 
 Once your `config.yml` is generated run the following command to fetch the resources:
 
 ```shell script
-cloudquery init
 # you can spawn a local postgresql with docker
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres 
 cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
@@ -110,8 +109,7 @@ policy pack (it is under active development, so it doesn't cover the whole spec 
 To run AWS CIS pack enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
 
 ```shell script
-cloudquery gen policy aws_cis
-cloudquery query --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+./cloudquery policy --path=<PATH_TO_POLICY_FILE> --output=<PATH_TO_OUTPUT_POLICY_RESULT> --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 ``` 
 
 You can also create your own policy file. E.g.:
@@ -127,7 +125,7 @@ queries:
         SELECT account_id, arn FROM ...
 ```
 
-The `query` command uses the policy file path `./policy.yml` by default, but this can be overridden via the `--path` flag, or the `CQ_POLICY_PATH` environment variable.
+The `policy` command uses the policy file path `./policy.yml` by default, but this can be overridden via the `--path` flag, or the `CQ_POLICY_PATH` environment variable.
 
 Full Documentation, resources and SQL schema definitions are available [here](https://docs.cloudquery.io)
 
@@ -141,10 +139,12 @@ You should be authenticated with an AWS account with correct permission with eit
  
 Multi-account AWS support is available by using an account which can [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to other accounts.
 
-In your config.yml you need to specify role_arns if you want to query multiple accounts in the following way:
-```yaml
- accounts:
-     - role_arn: <arn>
+In your config.hcl you need to specify role_arns if you want to query multiple accounts in the following way:
+```hcl
+accounts "<YOUR ACCOUNT ID>"{
+ // Optional. Role ARN we want to assume when accessing this account
+ role_arn = "<YOUR_ROLE_ARN>"
+}
 ```
  
 #### Azure
