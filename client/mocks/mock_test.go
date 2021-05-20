@@ -351,8 +351,8 @@ func TestResources(t *testing.T) {
 				Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 					c := client.NewAwsClient(logging.New(&hclog.LoggerOptions{
 						Level: hclog.Warn,
-					}), []string{"test-1"})
-					c.SetAccountServices("testAccount", tc.mockBuilder(t, ctrl))
+					}), []string{"us-east-1"})
+					c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", tc.mockBuilder(t, ctrl))
 					return &c, nil
 				},
 			})
