@@ -20,8 +20,18 @@ provider "gcp" {
     // project_ids = [<CHANGE_THIS_TO_YOUR_PROJECT_ID>
   }
   resources = [
+    "compute.addresses",
+    "compute.autoscalers",
+    "compute.disk_types",
+    "compute.images",
+    "compute.instances",
+    "compute.interconnects",
+    "compute.ssl_certificates",
+    "compute.vpn_gateways",
+    "iam.project_roles",
+    "iam.service_accounts",
     "storage.buckets",
-    "kms.keys",
-    "iam.project_roles"
   ]
 }
+
+
