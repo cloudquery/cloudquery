@@ -67,6 +67,8 @@ var allRegions = []string{
 	"sa-east-1",
 }
 
+const defaultRegion = "us-east-1"
+
 type Services struct {
 	Autoscaling      AutoscalingClient
 	Cloudfront       CloudfrontClient
@@ -95,15 +97,36 @@ type Services struct {
 	S3Manager        S3ManagerClient
 }
 
+type ServicesAccountRegionMap map[string]map[string]*Services
+
+// ServicesManager will hold the entire map of (account X region) services
+type ServicesManager struct {
+	services ServicesAccountRegionMap
+}
+
+func (s *ServicesManager) ServicesByAccountAndRegion(accountId string, region string) *Services {
+	if region == "" {
+		region = defaultRegion
+	}
+	return s.services[accountId][region]
+}
+
+func (s *ServicesManager) InitServicesForAccountAndRegion(accountId string, region string, services Services) {
+	if s.services[accountId] == nil {
+		s.services[accountId] = make(map[string]*Services, len(allRegions))
+	}
+	s.services[accountId][region] = &services
+}
+
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	regions    []string
-	logLevel   *string
-	maxRetries int
-	maxBackoff int
-	services   map[string]*Services
-	logger     hclog.Logger
+	regions         []string
+	logLevel        *string
+	maxRetries      int
+	maxBackoff      int
+	ServicesManager ServicesManager
+	logger          hclog.Logger
 
 	// this is set by table clientList
 	AccountID string
@@ -133,9 +156,11 @@ func (s3Manager S3Manager) GetBucketRegion(ctx context.Context, bucket string, o
 
 func NewAwsClient(logger hclog.Logger, regions []string) Client {
 	return Client{
-		services: map[string]*Services{},
-		logger:   logger,
-		regions:  regions,
+		ServicesManager: ServicesManager{
+			services: ServicesAccountRegionMap{},
+		},
+		logger:  logger,
+		regions: regions,
 	}
 }
 
@@ -144,37 +169,33 @@ func (c *Client) Logger() hclog.Logger {
 }
 
 func (c *Client) Services() *Services {
-	return c.services[c.AccountID]
+	return c.ServicesManager.ServicesByAccountAndRegion(c.AccountID, c.Region)
 }
 
 func (c *Client) withAccountID(accountID string) *Client {
 	return &Client{
-		regions:    c.regions,
-		logLevel:   c.logLevel,
-		maxRetries: c.maxRetries,
-		maxBackoff: c.maxBackoff,
-		services:   c.services,
-		logger:     c.logger.With("account_id", accountID),
-		AccountID:  accountID,
-		Region:     c.Region,
+		regions:         c.regions,
+		logLevel:        c.logLevel,
+		maxRetries:      c.maxRetries,
+		maxBackoff:      c.maxBackoff,
+		ServicesManager: c.ServicesManager,
+		logger:          c.logger.With("account_id", accountID),
+		AccountID:       accountID,
+		Region:          c.Region,
 	}
 }
 
 func (c *Client) withAccountIDAndRegion(accountID string, region string) *Client {
 	return &Client{
-		regions:    c.regions,
-		logLevel:   c.logLevel,
-		maxRetries: c.maxRetries,
-		maxBackoff: c.maxBackoff,
-		services:   c.services,
-		logger:     c.logger.With("account_id", accountID, "Region", region),
-		AccountID:  accountID,
-		Region:     region,
+		regions:         c.regions,
+		logLevel:        c.logLevel,
+		maxRetries:      c.maxRetries,
+		maxBackoff:      c.maxBackoff,
+		ServicesManager: c.ServicesManager,
+		logger:          c.logger.With("account_id", accountID, "Region", region),
+		AccountID:       accountID,
+		Region:          region,
 	}
-}
-
-func (c Client) SetAccountServices(accountId string, s Services) {
-	c.services[accountId] = &s
 }
 
 func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, error) {
@@ -199,19 +220,31 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		var awsCfg aws.Config
 		// This is a try to solve https://aws.amazon.com/premiumsupport/knowledge-center/iam-validate-access-credentials/
 		// with this https://github.com/aws/aws-sdk-go-v2/issues/515#issuecomment-607387352
-		defaultRegion := "us-east-1"
 		switch {
 		case account.ID != "default" && account.RoleARN != "":
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
-			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion))
+			awsCfg, err = config.LoadDefaultConfig(
+				ctx,
+				config.WithDefaultRegion(defaultRegion),
+				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+			)
 			if err != nil {
 				return nil, err
 			}
 			awsCfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN)
 		case account.ID != "default":
-			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion), config.WithSharedConfigProfile(account.ID))
+			awsCfg, err = config.LoadDefaultConfig(
+				ctx,
+				config.WithDefaultRegion(defaultRegion),
+				config.WithSharedConfigProfile(account.ID),
+				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+			)
 		default:
-			awsCfg, err = config.LoadDefaultConfig(ctx, config.WithDefaultRegion(defaultRegion))
+			awsCfg, err = config.LoadDefaultConfig(
+				ctx,
+				config.WithDefaultRegion(defaultRegion),
+				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+			)
 		}
 
 		if err != nil {
@@ -221,7 +254,6 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
 		}
-		awsCfg.Retryer = newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
 			o.Region = "aws-global"
@@ -246,7 +278,9 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			client.AccountID = *output.Account
 			client.Region = client.regions[0]
 		}
-		client.SetAccountServices(*output.Account, initServices(awsCfg))
+		for _, region := range client.regions {
+			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(awsCfg))
+		}
 	}
 
 	return &client, nil
@@ -284,7 +318,10 @@ func initServices(awsCfg aws.Config) Services {
 
 func newRetryer(maxRetries int, maxBackoff int) func() aws.Retryer {
 	return func() aws.Retryer {
-		return retry.AddWithMaxBackoffDelay(retry.AddWithMaxAttempts(retry.NewStandard(), maxRetries), time.Second*time.Duration(maxBackoff))
+		return retry.NewStandard(func(o *retry.StandardOptions) {
+			o.MaxAttempts = maxRetries
+			o.MaxBackoff = time.Second * time.Duration(maxBackoff)
+		})
 	}
 }
 
