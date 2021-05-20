@@ -196,16 +196,55 @@ SELECT * from aws_s3_buckets
 
 More examples are available [here](https://docs.cloudquery.io)
 
-## License
-
-By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.
-
 ## Compile and run
 
 ```
 go build .
 ./cloudquery # --help to see all options
 ```
+
+## Running on AWS (Lambda, Terraform)
+You can use the `Makefile` to build, deploy, and destroy the entire tf infrastructure.
+The default execution configuration file can be found on: `./deploy/aws/terraform/tasks/us-east-1`
+
+You can define more tasks by adding cloudwatch periodic events.
+
+#### For example:
+The default configuration will execute the cloudquery every one day with the default configuration.
+```terraform
+resource "aws_cloudwatch_event_rule" "scan_schedule" {
+  name = "Cloudquery-us-east-1-scan"
+  description = "Run cloudquery everyday on us-east-1 resources"
+
+  schedule_expression = "rate(1 day)"
+}
+
+resource "aws_cloudwatch_event_target" "sns" {
+  rule      = aws_cloudwatch_event_rule.scan_schedule.name
+  arn       = aws_lambda_function.cloudquery.arn
+  input     = file("tasks/us-east-1/input.json")
+}
+
+```
+
+Install terraform if not exists:
+`https://learn.hashicorp.com/tutorials/terraform/install-cli`
+
+Build cloudquery binary
+```
+make build
+```
+
+Deploy to aws using terraform
+```
+make apply
+```
+
+You can also use `init`, `plan` and `destroy` 
+
+## License
+
+By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.
 
 ## Contribution
 

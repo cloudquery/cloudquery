@@ -89,12 +89,20 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 	return file.Body, diags
 }
 
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
-	body, diags := p.loadFromSource(name, data, SourceHCL)
+func (p *Parser) loadConfigFromSource(name string, data []byte, source SourceType) (*Config, hcl.Diagnostics) {
+	body, diags := p.loadFromSource(name, data, source)
 	if body == nil {
 		return nil, diags
 	}
 	return p.decodeConfig(body, diags)
+}
+
+func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
+	return p.loadConfigFromSource(name, data, SourceHCL)
+}
+
+func (p *Parser) LoadConfigFromJson(name string, data []byte) (*Config, hcl.Diagnostics) {
+	return p.loadConfigFromSource(name, data, SourceJSON)
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {

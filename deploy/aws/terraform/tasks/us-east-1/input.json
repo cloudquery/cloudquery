@@ -1,23 +1,35 @@
 {
   "taskName": "fetch",
   "config": {
-    "providers": [
-      {
-        "name": "aws",
-        "regions": [
-          "us-east-1"
-        ],
-        "resources": [
-          {
-            "name": "ec2.images"
-          },
-          {
-            "name": "ec2.instances"
-          },
-          {
-            "name": "s3.buckets"
+    "cloudquery": {
+      "connection": {
+        "dsn": ""
+      },
+      "provider": [
+        {
+          "aws": {
+            "source": "cloudquery/cq-provider-aws",
+            "version": "v0.4.0"
           }
-        ]
+        }
+      ]
+    },
+    "provider": [
+      {
+        "aws": {
+          "configuration": {
+            "regions": [
+              "us-east-1"
+            ],
+            "max_retries": 20,
+            "max_backoff": 30
+          },
+          "resources": [
+            "ec2.images",
+            "ec2.instances",
+            "s3.buckets"
+          ]
+        }
       }
     ]
   }

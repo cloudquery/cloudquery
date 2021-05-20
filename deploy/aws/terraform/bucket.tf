@@ -3,6 +3,6 @@ resource "aws_s3_bucket" "deploy_bucket" {
   acl    = "private"
 
   tags = {
-    Name        = var.bucket
+    Name = var.bucket
   }
 }
