@@ -1,17 +1,16 @@
-#views:
-#  - name: "aws_log_metric_filter_and_alarm"
-#    query: >
-#      CREATE VIEW aws_log_metric_filter_and_alarm AS
-#      SELECT aws_cloudtrail_trails.account_id, aws_cloudtrail_trails.region, cloud_watch_logs_log_group_arn, filter_pattern FROM aws_cloudtrail_trails
-#        JOIN aws_cloudtrail_trail_event_selectors on aws_cloudtrail_trails.id = aws_cloudtrail_trail_event_selectors.trail_id
-#        JOIN aws_cloudwatchlogs_metric_filters on aws_cloudtrail_trails.cloud_watch_logs_log_group_name = aws_cloudwatchlogs_metric_filters.log_group_name
-#        JOIN aws_cloudwatch_metric_alarm_metrics on aws_cloudwatchlogs_metric_filters.filter_name = aws_cloudwatch_metric_alarm_metrics.name
-#        JOIN aws_cloudwatch_metric_alarms on aws_cloudwatch_metric_alarm_metrics.metric_alarm_id = aws_cloudwatch_metric_alarms.id
-#        JOIN aws_cloudwatch_metric_alarm_actions ON aws_cloudwatch_metric_alarm_metrics.id = aws_cloudwatch_metric_alarm_actions.metric_alarm_id
-#        JOIN aws_sns_subscriptions ON aws_cloudwatch_metric_alarm_actions.value = aws_sns_subscriptions.topic_arn
-#      WHERE is_multi_region_trail=true AND is_logging=true
-#            AND include_management_events=true AND read_write_type = 'All'
-#            AND subscription_arn LIKE 'aws:arn:%'
+views:
+  - name: "aws_log_metric_filter_and_alarm"
+    query: >
+      CREATE VIEW aws_log_metric_filter_and_alarm AS
+        SELECT aws_cloudtrail_trails.account_id, aws_cloudtrail_trails.region, cloud_watch_logs_log_group_arn, pattern FROM aws_cloudtrail_trails
+          JOIN aws_cloudtrail_trail_event_selectors on aws_cloudtrail_trails.id = aws_cloudtrail_trail_event_selectors.trail_id
+          JOIN aws_cloudwatchlogs_filters on aws_cloudtrail_trails.cloudwatch_logs_log_group_name = aws_cloudwatchlogs_filters.log_group_name
+          JOIN aws_cloudwatch_alarm_metrics on aws_cloudwatchlogs_filters.name = aws_cloudwatch_alarm_metrics.metric_stat_metric_name
+          JOIN aws_cloudwatch_alarms on aws_cloudwatch_alarm_metrics.alarm_id = aws_cloudwatch_alarms.id
+          JOIN aws_sns_subscriptions ON aws_sns_subscriptions.topic_arn = ANY(aws_cloudwatch_alarms.alarm_actions)
+        WHERE is_multi_region_trail=true AND is_logging=true
+          AND include_management_events=true AND read_write_type = 'All'
+          AND subscription_arn LIKE 'aws:arn:%'
 queries:
   - name: "AWS CIS 1.1 Avoid the use of 'root' account. Show used in last 30 days (Scored)"
     query: >
@@ -72,9 +71,9 @@ queries:
   - name: "AWS CIS 1.14 Ensure hardware MFA is enabled for the 'root' account (Scored)"
     invert: true
     query: >
-      SELECT aws_iam_users.account_id, arn, password_last_used, user_name, mfa_active FROM aws_iam_users
-          JOIN aws_iam_virtual_mfa_devices ON aws_iam_virtual_mfa_devices.user_arn = aws_iam_users.arn
-      WHERE user_name = '<root_account>' AND mfa_active
+      SELECT aiu.account_id, arn, password_last_used, aiu.user_name, mfa_active FROM aws_iam_users as aiu
+      JOIN aws_iam_virtual_mfa_devices ON aws_iam_virtual_mfa_devices.user_arn = aiu.arn
+      WHERE aiu.user_name = '<root_account>' AND aiu.mfa_active
   - name: "AWS CIS 1.16 Ensure IAM policies are attached only to groups or roles (Scored)"
     query: >
       SELECT aws_iam_users.account_id, arn, user_name FROM aws_iam_users
@@ -113,91 +112,92 @@ queries:
       SELECT account_id, region, trail_arn FROM aws_cloudtrail_trails
         JOIN aws_cloudtrail_trail_event_selectors actes on aws_cloudtrail_trails.id = actes.trail_id
         WHERE is_multi_region_trail=true AND is_logging=false
-#  - name: "AWS CIS 3.1 Ensure a log metric filter and alarm exist for unauthorized API calls (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
-#  - name: "AWS CIS 3.2 Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.errorCode = "ConsoleLogin") || ($.additionalEventData.MFAUsed != "Yes")  }'
-#  - name: "AWS CIS 3.3  Ensure a log metric filter and alarm exist for usage of 'root' account (Score)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
-#  - name: "AWS CIS 3.4 Ensure a log metric filter and alarm exist for IAM policy changes (Score)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = DeleteGroupPolicy) || ($.eventName = DeleteRolePolicy) || ($.eventName = DeleteUserPolicy) || ($.eventName = PutGroupPolicy) || ($.eventName = PutRolePolicy) || ($.eventName = PutUserPolicy) || ($.eventName = CreatePolicy) || ($.eventName = DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName = DetachUserPolicy) || ($.eventName = AttachGroupPolicy) || ($.eventName = DetachGroupPolicy)}'
-#  - name: "AWS CIS 3.5 Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
-#  - name: "AWS CIS 3.6 Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failed authentication") }'
-#  - name: "AWS CIS 3.7 Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion)) }"'
-#  - name: "AWS CIS 3.8 Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
-#  - name: "AWS CIS 3.9 Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventSource = config.amazonaws.com) && (($.eventName = StopConfigurationRecorder) || ($.eventName = DeleteDeliveryChannel) || ($.eventName = PutDeliveryChannel) || ($.eventName = PutConfigurationRecorder)) }'
-#  - name: "AWS CIS 3.10 Ensure a log metric filter and alarm exist for security group changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }'
-#  - name: "AWS CIS 3.11 Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
-#  - name: "AWS CIS 3.12 Ensure a log metric filter and alarm exist for changes to network gateways (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'
-#  - name: "AWS CIS 3.13 Ensure a log metric filter and alarm exist for route table changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'
-#  - name: "AWS CIS 3.14 Ensure a log metric filter and alarm exist for VPC changes (Scored)"
-#    invert: true
-#    query: >
-#      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
-#      WHERE filter_pattern='{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'
+  - name: "AWS CIS 3.1 Ensure a log metric filter and alarm exist for unauthorized API calls (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
+  - name: "AWS CIS 3.2 Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.errorCode = "ConsoleLogin") || ($.additionalEventData.MFAUsed != "Yes")  }'
+  - name: "AWS CIS 3.3  Ensure a log metric filter and alarm exist for usage of 'root' account (Score)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
+  - name: "AWS CIS 3.4 Ensure a log metric filter and alarm exist for IAM policy changes (Score)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = DeleteGroupPolicy) || ($.eventName = DeleteRolePolicy) || ($.eventName = DeleteUserPolicy) || ($.eventName = PutGroupPolicy) || ($.eventName = PutRolePolicy) || ($.eventName = PutUserPolicy) || ($.eventName = CreatePolicy) || ($.eventName = DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName = DetachUserPolicy) || ($.eventName = AttachGroupPolicy) || ($.eventName = DetachGroupPolicy)}'
+  - name: "AWS CIS 3.5 Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
+  - name: "AWS CIS 3.6 Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failed authentication") }'
+  - name: "AWS CIS 3.7 Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion)) }"'
+  - name: "AWS CIS 3.8 Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
+  - name: "AWS CIS 3.9 Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventSource = config.amazonaws.com) && (($.eventName = StopConfigurationRecorder) || ($.eventName = DeleteDeliveryChannel) || ($.eventName = PutDeliveryChannel) || ($.eventName = PutConfigurationRecorder)) }'
+  - name: "AWS CIS 3.10 Ensure a log metric filter and alarm exist for security group changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }'
+  - name: "AWS CIS 3.11 Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
+  - name: "AWS CIS 3.12 Ensure a log metric filter and alarm exist for changes to network gateways (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'
+  - name: "AWS CIS 3.13 Ensure a log metric filter and alarm exist for route table changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'
+  - name: "AWS CIS 3.14 Ensure a log metric filter and alarm exist for VPC changes (Scored)"
+    invert: true
+    query: >
+      SELECT account_id, region, cloud_watch_logs_log_group_arn  FROM aws_log_metric_filter_and_alarm
+      WHERE pattern='{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'
   - name: "AWS CIS 4.1 Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)"
     query: >
       select account_id, region, group_name, from_port, to_port, cidr_ip from aws_ec2_security_groups
           JOIN aws_ec2_security_group_ip_permissions on aws_ec2_security_groups.id = aws_ec2_security_group_ip_permissions.security_group_id
-          JOIN aws_ec2_security_group_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_ranges.security_group_ip_permission_id
+          JOIN aws_ec2_security_group_ip_permission_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_permission_ip_ranges.security_group_ip_permission_id
       WHERE from_port >= 0 AND to_port <= 22 AND cidr_ip = '0.0.0.0/0'
   - name: "AWS CIS 4.2 Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)"
     query: >
       select account_id, region, group_name, from_port, to_port, cidr_ip from aws_ec2_security_groups
           JOIN aws_ec2_security_group_ip_permissions on aws_ec2_security_groups.id = aws_ec2_security_group_ip_permissions.security_group_id
-          JOIN aws_ec2_security_group_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_ranges.security_group_ip_permission_id
+          JOIN aws_ec2_security_group_ip_permission_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_permission_ip_ranges.security_group_ip_permission_id
       WHERE from_port >= 0 AND to_port <= 3389 AND cidr_ip = '0.0.0.0/0'
   - name: "AWS CIS 4.3  Ensure the default security group of every VPC restricts all traffic (Scored)"
     query: >
       select account_id, region, group_name, from_port, to_port, cidr_ip from aws_ec2_security_groups
-          JOIN aws_ec2_security_group_ip_permissions on aws_ec2_security_groups.id = aws_ec2_security_group_ip_permissions.security_group_id
-          JOIN aws_ec2_security_group_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_ranges.security_group_ip_permission_id
+        JOIN aws_ec2_security_group_ip_permissions on aws_ec2_security_groups.id = aws_ec2_security_group_ip_permissions.security_group_id
+        JOIN aws_ec2_security_group_ip_permission_ip_ranges on aws_ec2_security_group_ip_permissions.id = aws_ec2_security_group_ip_permission_ip_ranges.security_group_ip_permission_id
       WHERE group_name='default' AND cidr_ip = '0.0.0.0/0'
+

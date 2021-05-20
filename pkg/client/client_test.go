@@ -139,8 +139,7 @@ func TestClient_GetProviderConfig(t *testing.T) {
 		t.FailNow()
 	}
 	assert.NotNil(t, pConfig)
-	assert.Equal(t, pConfig.Config, []byte(expectedProviderConfig))
-
+	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
 	_, diags = hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
 }
