@@ -12,6 +12,12 @@ func Provider() *provider.Provider {
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
 			"autoscaling.launch_configurations":     AutoscalingLaunchConfigurations(),
+			"apigateway.rest_apis":                  ApigatewayRestApis(),
+			"apigateway.domain_names":               ApigatewayDomainNames(),
+			"apigateway.client_certificates":        ApigatewayClientCertificates(),
+			"apigateway.usage_plans":                ApigatewayUsagePlans(),
+			"apigateway.api_keys":                   ApigatewayAPIKeys(),
+			"apigateway.vpc_links":                  ApigatewayVpcLinks(),
 			"cloudfront.distributions":              CloudfrontDistributions(),
 			"cloudfront.cache_policies":             CloudfrontCachePolicies(),
 			"cloudtrail.trails":                     CloudtrailTrails(),
