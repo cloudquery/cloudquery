@@ -89,6 +89,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.2.2 h1:aU8H58DoYxNo8R1
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.2.2/go.mod h1:nnutjMLuna0s3GVY/MAkpLX03thyNER06gXvnMAPj5g=
 github.com/aws/aws-sdk-go-v2/service/kms v1.2.1 h1:X77wgZdglt2hU9zZS3DufyJiR4ZGW4F5x72OauDMSsM=
 github.com/aws/aws-sdk-go-v2/service/kms v1.2.1/go.mod h1:VJL8/fcYPX11A7hdOPAXtzU6+yDifhKW5MgwaA6HIwY=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0 h1:ChVmaOi+4HHvbmVrYlWzoj+4EmrrPCR8zvz2PRujlWM=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0/go.mod h1:XDPNosc+4N9cdxyFr9iTaphCN1G3l2a4MLawIagr1Qk=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.2.1 h1:TvDVD1mBXP60NIHrqbP8uuzTf4vu48HlOm5jtoQQcW0=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.2.1/go.mod h1:iy7PhC7Wxk3aRePrvaUU7ngXjcAedbTBeKYAYVhnvfI=
 github.com/aws/aws-sdk-go-v2/service/rds v1.2.1 h1:nh6V70gwG0bE6Ocz34rg5VZvmthKuDSa785CBpvY2g8=
