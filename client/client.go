@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -95,6 +97,7 @@ type Services struct {
 	RDS              RdsClient
 	S3               S3Client
 	S3Manager        S3ManagerClient
+	Lambda           LambdaClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -313,6 +316,7 @@ func initServices(awsCfg aws.Config) Services {
 		Redshift:         redshift.NewFromConfig(awsCfg),
 		Route53:          route53.NewFromConfig(awsCfg),
 		S3Manager:        newS3ManagerFromConfig(awsCfg),
+		Lambda:           lambda.NewFromConfig(awsCfg),
 	}
 }
 

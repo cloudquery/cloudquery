@@ -69,6 +69,8 @@ func Provider() *provider.Provider {
 			"route53.health_checks":                 Route53HealthChecks(),
 			"route53.hosted_zones":                  Route53HostedZones(),
 			"route53.traffic_policies":              Route53TrafficPolicies(),
+			"lambda.functions":                      LambdaFunctions(),
+			"lambda.layers":                         LambdaLayers(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
