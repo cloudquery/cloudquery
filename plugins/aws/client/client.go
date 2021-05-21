@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/service/lambda"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
@@ -31,6 +30,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -97,6 +97,7 @@ type Services struct {
 	RDS              RdsClient
 	S3               S3Client
 	S3Manager        S3ManagerClient
+	Apigateway       ApigatewayClient
 	Lambda           LambdaClient
 }
 
@@ -316,6 +317,7 @@ func initServices(awsCfg aws.Config) Services {
 		Redshift:         redshift.NewFromConfig(awsCfg),
 		Route53:          route53.NewFromConfig(awsCfg),
 		S3Manager:        newS3ManagerFromConfig(awsCfg),
+		Apigateway:       apigateway.NewFromConfig(awsCfg),
 		Lambda:           lambda.NewFromConfig(awsCfg),
 	}
 }
