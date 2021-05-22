@@ -54,6 +54,15 @@ brew install cloudquery/tap/cloudquery
 brew upgrade cloudquery
 ```
 
+FreeBSD
+```shell script
+# via packages
+pkg install cloudquery
+# via Ports
+cd /usr/ports/net/cloudquery
+make config-recursive install clean
+```
+
 ## Quick Start
 
 ### Running
