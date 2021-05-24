@@ -36,8 +36,8 @@ data "aws_iam_policy_document" "policy_document" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name = "cloudquery_policy"
-  path = "/"
+  name   = "cloudquery_policy"
+  path   = "/"
   policy = data.aws_iam_policy_document.policy_document.json
 }
 
@@ -46,7 +46,7 @@ resource "aws_s3_bucket_object" "file_upload" {
   key    = "lambda-functions/cloudquery.zip"
   source = data.archive_file.zip.output_path
 
-  etag   = filemd5(data.archive_file.zip.output_path)
+  etag = filemd5(data.archive_file.zip.output_path)
 
   depends_on = [aws_s3_bucket.deploy_bucket]
 
@@ -57,7 +57,6 @@ data "archive_file" "zip" {
   source_file = "../../../bin/cloudquery"
   output_path = "cloudquery.zip"
 }
-
 
 resource "aws_iam_role_policy_attachment" "cloudquery_role_attachment1" {
   role       = aws_iam_role.iam_for_cloudquery.name
@@ -77,8 +76,8 @@ resource "aws_iam_role_policy_attachment" "cloudquery_role_attachment3" {
 resource "aws_lambda_function" "cloudquery" {
   handler       = "cloudquery"
   function_name = "cloudquery"
-  s3_bucket = var.bucket
-  s3_key = "lambda-functions/cloudquery.zip"
+  s3_bucket     = var.bucket
+  s3_key        = "lambda-functions/cloudquery.zip"
   runtime       = "go1.x"
   role          = aws_iam_role.iam_for_cloudquery.arn
   timeout       = 900
@@ -97,8 +96,8 @@ resource "aws_lambda_function" "cloudquery" {
 
   environment {
     variables = {
-      CQ_DRIVER= "postgresql",
-      CQ_DSN = "user=${aws_rds_cluster.cloudquery.master_username} password=${aws_rds_cluster.cloudquery.master_password} host=${aws_rds_cluster.cloudquery.endpoint} port=5432 dbname=cloudquery",
+      CQ_DRIVER     = "postgresql",
+      CQ_DSN        = "user=${aws_rds_cluster.cloudquery.master_username} password=${aws_rds_cluster.cloudquery.master_password} host=${aws_rds_cluster.cloudquery.endpoint} port=5432 dbname=cloudquery",
       CQ_PLUGIN_DIR = "/tmp"
     }
   }

@@ -11,8 +11,8 @@ resource "aws_rds_cluster" "cloudquery" {
 
   vpc_security_group_ids = [aws_security_group.allow_postgresql.id]
 
-  skip_final_snapshot = true
-  apply_immediately = true
+  skip_final_snapshot  = true
+  apply_immediately    = true
   enable_http_endpoint = true
 
   scaling_configuration {

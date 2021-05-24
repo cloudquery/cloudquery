@@ -1,7 +1,7 @@
-variable region {
+variable "region" {
   type = string
 }
 
-variable bucket {
+variable "bucket" {
   type = string
 }

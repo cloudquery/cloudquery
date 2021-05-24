@@ -2,6 +2,7 @@ package deploy
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -15,8 +16,8 @@ import (
 )
 
 type Request struct {
-	TaskName string `json:"taskName"`
-	Config   []byte `json:"config"`
+	TaskName string      `json:"taskName"`
+	Config   interface{} `json:"config"`
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
@@ -30,7 +31,12 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 		pluginDir = "."
 	}
 	viper.Set("plugin-dir", pluginDir)
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.json", req.Config)
+	b, err := json.Marshal(req.Config)
+
+	if err != nil {
+		return "", err
+	}
+	cfg, diags := config.NewParser(nil).LoadConfigFromJson("config.json", b)
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
 	}

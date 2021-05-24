@@ -3,8 +3,8 @@ resource "aws_vpc" "rds_vpc" {
 }
 
 resource "aws_subnet" "rds_subnet_a" {
-  vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.1.1.0/24"
+  vpc_id            = aws_vpc.rds_vpc.id
+  cidr_block        = "10.1.1.0/24"
   availability_zone = data.aws_availability_zones.available.names[0]
 
 
@@ -18,8 +18,8 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_subnet" "rds_subnet_b" {
-  vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.1.2.0/24"
+  vpc_id            = aws_vpc.rds_vpc.id
+  cidr_block        = "10.1.2.0/24"
   availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_eip" {
-  vpc      = true
+  vpc = true
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -64,10 +64,10 @@ resource "aws_security_group" "allow_postgresql" {
   }
 
   egress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    self        = true
+    from_port = 5432
+    to_port   = 5432
+    protocol  = "tcp"
+    self      = true
   }
 
   tags = {
@@ -114,7 +114,7 @@ resource "aws_route_table" "private_egress" {
   vpc_id = aws_vpc.rds_vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gw.id
   }
 
