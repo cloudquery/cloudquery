@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
@@ -98,6 +99,7 @@ type Services struct {
 	S3               S3Client
 	S3Manager        S3ManagerClient
 	Apigateway       ApigatewayClient
+	Apigatewayv2     Apigatewayv2Client
 	Lambda           LambdaClient
 }
 
@@ -319,6 +321,7 @@ func initServices(awsCfg aws.Config) Services {
 		S3Manager:        newS3ManagerFromConfig(awsCfg),
 		Apigateway:       apigateway.NewFromConfig(awsCfg),
 		Lambda:           lambda.NewFromConfig(awsCfg),
+		Apigatewayv2:     apigatewayv2.NewFromConfig(awsCfg),
 	}
 }
 
