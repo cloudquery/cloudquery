@@ -3,11 +3,13 @@ module github.com/cloudquery/cq-provider-aws
 go 1.15
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.5.0
+	github.com/aws/aws-sdk-go-v2 v1.6.0
 	github.com/aws/aws-sdk-go-v2/config v1.1.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.1.6
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.1.3
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.4.0
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.1.2

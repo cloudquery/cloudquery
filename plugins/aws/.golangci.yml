@@ -13,6 +13,9 @@ linters-settings:
   gocritic:
     disabled-checks:
       - commentFormatting
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 500
 
 linters:
   disable-all: true
