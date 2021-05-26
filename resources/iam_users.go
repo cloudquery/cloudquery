@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/gocarina/gocsv"
@@ -15,6 +16,8 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+const rootName = "<root_account>"
 
 func IamUsers() *schema.Table {
 	return &schema.Table{
@@ -224,6 +227,18 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	}
 	meta.(*client.Client).ReportUsers = nil
 
+	root := report.GetUser(fmt.Sprintf("arn:aws:iam::%s:root", meta.(*client.Client).AccountID))
+	if root != nil {
+		res <- wrappedUser{
+			User: types.User{
+				Arn:        aws.String(root.ARN),
+				CreateDate: aws.Time(root.UserCreationTime),
+				UserName:   aws.String(root.User),
+			},
+			reportUser: root,
+		}
+	}
+
 	for {
 		output, err := svc.ListUsers(ctx, &config)
 		if err != nil {
@@ -269,7 +284,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.PasswordNextRotation == "N/A" {
+	if r.PasswordNextRotation == "N/A" || r.PasswordNextRotation == "not_supported" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
 			return err
 		}
@@ -283,7 +298,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.PasswordLastChanged == "N/A" {
+	if r.PasswordLastChanged == "N/A" || r.PasswordLastChanged == "not_supported" {
 		if err := resource.Set("password_last_changed", nil); err != nil {
 			return err
 		}
@@ -297,7 +312,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.Cert1LastRotated == "N/A" {
+	if r.Cert1LastRotated == "N/A" || r.Cert1LastRotated == "not_supported" {
 		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
 			return err
 		}
@@ -311,7 +326,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.Cert2LastRotated == "N/A" {
+	if r.Cert2LastRotated == "N/A" || r.Cert2LastRotated == "not_supported" {
 		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
 			return err
 		}
@@ -325,7 +340,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.AccessKey1LastRotated == "N/A" {
+	if r.AccessKey1LastRotated == "N/A" || r.AccessKey1LastRotated == "not_supported" {
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
 			return err
 		}
@@ -339,7 +354,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.AccessKey2LastRotated == "N/A" {
+	if r.AccessKey2LastRotated == "N/A" || r.AccessKey2LastRotated == "not_supported" {
 		if err := resource.Set("access_key_2_last_rotated", nil); err != nil {
 			return err
 		}
@@ -359,6 +374,9 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(wrappedUser)
+	if aws.ToString(p.UserName) == rootName {
+		return nil
+	}
 	svc := meta.(*client.Client).Services().IAM
 	config.UserName = p.UserName
 	for {
@@ -379,6 +397,9 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(wrappedUser)
 	svc := meta.(*client.Client).Services().IAM
+	if aws.ToString(p.UserName) == rootName {
+		return nil
+	}
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
@@ -434,6 +455,9 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(wrappedUser)
+	if aws.ToString(p.UserName) == rootName {
+		return nil
+	}
 	svc := meta.(*client.Client).Services().IAM
 	config.UserName = p.UserName
 	for {

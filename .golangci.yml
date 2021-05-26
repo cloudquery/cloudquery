@@ -50,3 +50,7 @@ issues:
     - path: resources(\\|\/).*\.go
       linters:
         - dupl
+    # Exclude some linters from running on services files.
+    - path: services\.go
+      linters:
+        - dupl

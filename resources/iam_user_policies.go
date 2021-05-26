@@ -53,6 +53,9 @@ func iamUserPolicies() *schema.Table {
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().IAM
 	user := parent.Item.(wrappedUser)
+	if aws.ToString(user.UserName) == rootName {
+		return nil
+	}
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)

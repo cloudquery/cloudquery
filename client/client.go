@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
+	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -73,6 +74,7 @@ var allRegions = []string{
 const defaultRegion = "us-east-1"
 
 type Services struct {
+	Analyzer         AnalyzerClient
 	Autoscaling      AutoscalingClient
 	Cloudfront       CloudfrontClient
 	Cloudtrail       CloudtrailClient
@@ -322,6 +324,7 @@ func initServices(awsCfg aws.Config) Services {
 		Apigateway:       apigateway.NewFromConfig(awsCfg),
 		Lambda:           lambda.NewFromConfig(awsCfg),
 		Apigatewayv2:     apigatewayv2.NewFromConfig(awsCfg),
+		Analyzer:         accessanalyzer.NewFromConfig(awsCfg),
 	}
 }
 

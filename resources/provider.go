@@ -11,6 +11,7 @@ func Provider() *provider.Provider {
 		Name:      "aws",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
+			"accessanalyzer.analyzers":              AccessAnalyzerAnalyzer(),
 			"autoscaling.launch_configurations":     AutoscalingLaunchConfigurations(),
 			"apigateway.rest_apis":                  ApigatewayRestApis(),
 			"apigateway.domain_names":               ApigatewayDomainNames(),
@@ -56,6 +57,7 @@ func Provider() *provider.Provider {
 			"elbv2.load_balancers":                  Elbv2LoadBalancers(),
 			"emr.clusters":                          EmrClusters(),
 			"fsx.backups":                           FsxBackups(),
+			"iam.accounts":                          Accounts(),
 			"iam.groups":                            IamGroups(),
 			"iam.policies":                          IamPolicies(),
 			"iam.password_policies":                 IamPasswordPolicies(),
@@ -64,6 +66,7 @@ func Provider() *provider.Provider {
 			"iam.virtual_mfa_devices":               IamVirtualMfaDevices(),
 			"iam.openid_connect_identity_providers": IamOpenidConnectIdentityProviders(),
 			"iam.saml_identity_providers":           IamSamlIdentityProviders(),
+			"iam.server_certificates":               IamServerCertificates(),
 			"kms.keys":                              KmsKeys(),
 			"organizations.accounts":                OrganizationsAccounts(),
 			"sns.topics":                            SnsTopics(),
