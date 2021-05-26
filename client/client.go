@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+
+	"github.com/aws/aws-sdk-go-v2/service/configservice"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	_ "github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -18,6 +22,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	_ "github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -103,6 +108,7 @@ type Services struct {
 	Apigateway       ApigatewayClient
 	Apigatewayv2     Apigatewayv2Client
 	Lambda           LambdaClient
+	ConfigService    ConfigServiceClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -325,6 +331,7 @@ func initServices(awsCfg aws.Config) Services {
 		Lambda:           lambda.NewFromConfig(awsCfg),
 		Apigatewayv2:     apigatewayv2.NewFromConfig(awsCfg),
 		Analyzer:         accessanalyzer.NewFromConfig(awsCfg),
+		ConfigService:    configservice.NewFromConfig(awsCfg),
 	}
 }
 
