@@ -17,6 +17,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2
+	github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.2.0
