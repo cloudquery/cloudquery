@@ -48,6 +48,8 @@ github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.1.3 h1:uJ7ZQbDAzCb0lQ/gmk6lzM
 github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.1.3/go.mod h1:m3OfJqvCXS+jU83bUDtBiPQODurln7id6zL3nNRQSHA=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.0.0 h1:k7I9E6tyVWBo7H9ffpnxDWudtjau6Qt9rnOYgV+ciEQ=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.0.0/go.mod h1:g3XMXuxvqSMUjnsXXp/960152w0wFS4CXVYgQaSVOHE=
+github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.4.1 h1:rGY4jUqM06SztzHgdU56MQr2gq2w3n1ByxLH0+caXR4=
+github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.4.1/go.mod h1:GeaOk4gKBZZ8DMw+UF4jk3gR8rwEL1g116HN2E0YKYU=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.4.0 h1:B40GhhE15B/fQq6jxFa3CWVftqIrbeacfB9H0hcSLMw=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.4.0/go.mod h1:ybNHWxmf5nVxSUnqCCwrYLF2IZYZHusxX/uVAET1SVM=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1 h1:JbtOhT/gRUVyna1ZaPct002pVoBTkkHqYgiuBfV5PMY=
@@ -445,6 +447,7 @@ github.com/mitchellh/go-wordwrap v1.0.1/go.mod h1:R62XHJLzvMFRBbcrT7m7WgmE1eOyTS
 github.com/mitchellh/gox v0.4.0/go.mod h1:Sd9lOJ0+aimLBi73mGofS1ycjY8lL3uZM3JPS42BGNg=
 github.com/mitchellh/iochan v1.0.0/go.mod h1:JwYml1nuB7xOzsp52dPpHFffvOCDupsG0QubkSMEySY=
 github.com/mitchellh/mapstructure v0.0.0-20160808181253-ca63d7c062ee/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
+github.com/mitchellh/mapstructure v1.1.2 h1:fmNYVwqnSfB9mZU6OS2O6GsXM+wcskZDuKQzvN1EDeE=
 github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=

@@ -45,8 +45,6 @@ import (
 	redshiftTypes "github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	s3Types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	snsTypes "github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -1306,79 +1304,5 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		}, nil)
 	return client.Services{
 		Organizations: m,
-	}
-}
-
-func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mgr := mocks.NewMockS3ManagerClient(ctrl)
-	m := mocks.NewMockS3Client(ctrl)
-	b := s3Types.Bucket{}
-	err := faker.FakeData(&b)
-	if err != nil {
-		t.Fatal(err)
-	}
-	bloc := s3.GetBucketLocationOutput{}
-	err = faker.FakeData(&bloc)
-	if err != nil {
-		t.Fatal(err)
-	}
-	blog := s3.GetBucketLoggingOutput{}
-	err = faker.FakeData(&blog)
-	if err != nil {
-		t.Fatal(err)
-	}
-	bpol := s3.GetBucketPolicyOutput{}
-	err = faker.FakeData(&bpol)
-	if err != nil {
-		t.Fatal(err)
-	}
-	jsonDoc := `{"stuff": 3}`
-	bpol.Policy = &jsonDoc
-	bver := s3.GetBucketVersioningOutput{}
-	err = faker.FakeData(&bver)
-	if err != nil {
-		t.Fatal(err)
-	}
-	bgrant := s3Types.Grant{}
-	err = faker.FakeData(&bgrant)
-	if err != nil {
-		t.Fatal(err)
-	}
-	bcors := s3Types.CORSRule{}
-	err = faker.FakeData(&bcors)
-	if err != nil {
-		t.Fatal(err)
-	}
-	bencryption := s3.GetBucketEncryptionOutput{}
-	err = faker.FakeData(&bencryption)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any()).Return(
-		&s3.ListBucketsOutput{
-			Buckets: []s3Types.Bucket{b},
-		}, nil)
-	m.EXPECT().GetBucketLogging(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&blog, nil)
-	m.EXPECT().GetBucketPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bpol, nil)
-	m.EXPECT().GetBucketVersioning(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bver, nil)
-	m.EXPECT().GetBucketAcl(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&s3.GetBucketAclOutput{
-			Grants: []s3Types.Grant{bgrant},
-		}, nil)
-	m.EXPECT().GetBucketCors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&s3.GetBucketCorsOutput{
-			CORSRules: []s3Types.CORSRule{bcors},
-		}, nil)
-	m.EXPECT().GetBucketEncryption(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bencryption, nil)
-	mgr.EXPECT().GetBucketRegion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		"us-east-1", nil)
-	return client.Services{
-		S3:        m,
-		S3Manager: mgr,
 	}
 }

@@ -281,11 +281,6 @@ func TestResources(t *testing.T) {
 			mockBuilder: buildOrganizationsAccounts,
 		},
 		{
-			resource:    "s3.buckets",
-			mainTable:   resources.S3Buckets(),
-			mockBuilder: buildS3Buckets,
-		},
-		{
 			resource:    "redshift.clusters",
 			mainTable:   resources.RedshiftClusters(),
 			mockBuilder: buildRedshiftClustersMock,
