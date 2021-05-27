@@ -54,6 +54,39 @@ func TestClient_FetchTimeout(t *testing.T) {
 	assert.True(t, ok)
 }
 
+// Test Client fetch but with a nil configuration, provider won't crash but use it's default configuration method
+func TestClient_FetchNilConfig(t *testing.T) {
+	cancelServe := setupTestPlugin(t)
+	defer cancelServe()
+	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
+	assert.Nil(t, diags)
+	// Set configuration to nil
+	cfg.Providers[0].Configuration = nil
+	c, err := New(cfg, func(c *Client) {
+		c.Hub = &MockRegistry{}
+	})
+
+	assert.Nil(t, err)
+	if c == nil {
+		assert.FailNow(t, "failed to create client")
+	}
+
+	err = c.Initialize(context.Background())
+	assert.Nil(t, err)
+
+	ctx := context.Background()
+	err = c.Fetch(ctx, FetchRequest{
+		Providers: []*config.Provider{
+			{
+				Name:      "test",
+				Resources: []string{"slow_resource"},
+			},
+		},
+	})
+	assert.Nil(t, err)
+
+}
+
 func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()

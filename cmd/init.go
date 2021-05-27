@@ -19,8 +19,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const defaultConfigFilePath = "config.hcl"
-
 var (
 	initCmd = &cobra.Command{
 		Use:   "init [choose one or more providers (aws,gcp,azure,okta,...)]",
@@ -34,12 +32,11 @@ var (
 
 func Initialize(providers []string) {
 	fs := afero.NewOsFs()
-	configFilePath := defaultConfigFilePath
-	if argPath := viper.GetString("configPath"); argPath != "" {
-		configFilePath = argPath
-	}
-	if info, _ := fs.Stat(configFilePath); info != nil {
-		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists", configFilePath)
+
+	configPath := viper.GetString("configPath")
+
+	if info, _ := fs.Stat(configPath); info != nil {
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists", configPath)
 		return
 	}
 	f := hclwrite.NewEmptyFile()
@@ -48,7 +45,7 @@ func Initialize(providers []string) {
 	for i, p := range providers {
 		requiredProviders[i] = &config.RequiredProvider{
 			Name:    p,
-			Source:  fmt.Sprintf("cloudquery/cq-provider-%s", p),
+			Source:  viper.GetString("source"),
 			Version: "latest",
 		}
 	}
@@ -101,6 +98,6 @@ func Initialize(providers []string) {
 		buffer.WriteString("\n")
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
-	_ = afero.WriteFile(fs, configFilePath, formattedData, 0644)
-	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configFilePath)
+	_ = afero.WriteFile(fs, configPath, formattedData, 0644)
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configPath)
 }

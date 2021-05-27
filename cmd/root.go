@@ -72,6 +72,10 @@ func init() {
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
+
+	initCmd.Flags().String("source", "cloudquery", "Name of organization the provider belongs too, defaults to cloudquery")
+	_ = viper.BindPFlag("source", initCmd.Flags().Lookup("source"))
+
 	rootCmd.AddCommand(initCmd, fetchCmd)
 	cobra.OnInitialize(initConfig, initLogging)
 }
