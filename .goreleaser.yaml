@@ -24,7 +24,7 @@ builds:
         goarch: arm64
 archives:
   -
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ end }}"
     replacements:
       darwin: Darwin
       linux: Linux
@@ -34,7 +34,7 @@ archives:
     format: binary
   -
     id: homebrew
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ end }}"
     replacements:
       darwin: Darwin
       linux: Linux
