@@ -17,7 +17,10 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+const defaultConfigFilePath = "config.hcl"
 
 var (
 	initCmd = &cobra.Command{
@@ -32,8 +35,12 @@ var (
 
 func Initialize(providers []string) {
 	fs := afero.NewOsFs()
-	if info, _ := fs.Stat("config.hcl"); info != nil {
-		ui.ColorizedOutput(ui.ColorError, "Error: Config file already exists")
+	configFilePath := defaultConfigFilePath
+	if argPath := viper.GetString("configPath"); argPath != "" {
+		configFilePath = argPath
+	}
+	if info, _ := fs.Stat(configFilePath); info != nil {
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists", configFilePath)
 		return
 	}
 	f := hclwrite.NewEmptyFile()
@@ -95,6 +102,6 @@ func Initialize(providers []string) {
 		buffer.WriteString("\n")
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
-	_ = afero.WriteFile(fs, "config.hcl", formattedData, os.ModePerm)
-	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", "config.hcl")
+	_ = afero.WriteFile(fs, configFilePath, formattedData, os.ModePerm)
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configFilePath)
 }
