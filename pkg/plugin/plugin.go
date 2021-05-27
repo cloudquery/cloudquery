@@ -5,11 +5,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 
@@ -42,8 +40,8 @@ type managedPlugin struct {
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
-func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
-	pluginPath, _ := GetProviderPath(providerName, version)
+func newRemotePlugin(details *registry.ProviderDetails) (*managedPlugin, error) {
+	pluginPath, _ := GetProviderPath(details)
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
@@ -71,8 +69,8 @@ func newRemotePlugin(providerName, version string) (*managedPlugin, error) {
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
 	return &managedPlugin{
-		name:     providerName,
-		version:  version,
+		name:     details.Name,
+		version:  details.Version,
 		client:   client,
 		provider: provider,
 	}, nil
@@ -139,13 +137,7 @@ func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 func (m unmanagedPlugin) Close() {}
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin
-func GetProviderPath(name string, version string) (string, error) {
-	org := DefaultOrganization
-	split := strings.Split(name, "/")
-	if len(split) == 2 {
-		org = split[0]
-		name = split[1]
-	}
+func GetProviderPath(details *registry.ProviderDetails) (string, error) {
 	pluginDir := viper.GetString("plugin-dir")
-	return filepath.Join(pluginDir, ".cq", "providers", org, name, fmt.Sprintf("%s-%s", version, registry.GetBinarySuffix())), nil
+	return filepath.Join(pluginDir, ".cq", "providers", details.Organization, details.Name, fmt.Sprintf("%s-%s", details.Version, registry.GetBinarySuffix())), nil
 }

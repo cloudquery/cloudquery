@@ -64,21 +64,21 @@ func (p *Manager) KillProvider(providerName string) error {
 	return nil
 }
 
-func (p *Manager) GetOrCreateProvider(providerName, version string) (cqproto.CQProvider, error) {
-	provider, err := p.GetProvider(providerName, version)
+func (p *Manager) GetOrCreateProvider(details *registry.ProviderDetails) (cqproto.CQProvider, error) {
+	provider, err := p.GetProvider(details.Name, details.Version)
 	if provider != nil || err == nil {
 		return provider, err
 	}
 	// Create RPC client and initialize CQProvider
-	return p.createProvider(providerName, version)
+	return p.createProvider(details)
 }
 
-func (p *Manager) createProvider(providerName, version string) (cqproto.CQProvider, error) {
-	mPlugin, err := newRemotePlugin(providerName, version)
+func (p *Manager) createProvider(details *registry.ProviderDetails) (cqproto.CQProvider, error) {
+	mPlugin, err := newRemotePlugin(details)
 	if err != nil {
 		return nil, err
 	}
-	p.clients[providerName] = mPlugin
+	p.clients[details.Name] = mPlugin
 	return mPlugin.Provider(), nil
 }
 

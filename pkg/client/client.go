@@ -178,7 +178,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			return fmt.Errorf("failed to find provider %s inside config", provider.Name)
 		}
 		// TODO: pass filepath instead
-		cqProvider, err := c.Manager.GetOrCreateProvider(provider.Name, details.Version)
+		cqProvider, err := c.Manager.GetOrCreateProvider(&details)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", provider.Name, "error", err)
 			return err
@@ -246,7 +246,7 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 	if !ok {
 		return nil, fmt.Errorf("provider plugin %s missing from plugin directory", providerName)
 	}
-	cqProvider, err := c.Manager.GetOrCreateProvider(providerName, details.Version)
+	cqProvider, err := c.Manager.GetOrCreateProvider(&details)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -264,7 +264,7 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 	if !ok {
 		return nil, fmt.Errorf("provider plugin %s missing from plugin directory", providerName)
 	}
-	cqProvider, err := c.Manager.GetOrCreateProvider(providerName, details.Version)
+	cqProvider, err := c.Manager.GetOrCreateProvider(&details)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
