@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"os"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -102,6 +100,6 @@ func Initialize(providers []string) {
 		buffer.WriteString("\n")
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
-	_ = afero.WriteFile(fs, configFilePath, formattedData, os.ModePerm)
+	_ = afero.WriteFile(fs, configFilePath, formattedData, 0644)
 	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configFilePath)
 }
