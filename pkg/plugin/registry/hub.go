@@ -195,7 +195,7 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
 	providerPath := h.getProviderPath(organization, providerName, providerVersion)
 	if err := h.downloadFile(ctx, providerName, providerVersion, providerPath, providerURL, true); err != nil {
-		return ProviderDetails{}, err
+		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to download: %s", organization, providerName, providerVersion, err)
 	}
 
 	if ok := h.VerifyProvider(ctx, organization, providerName, providerVersion); !ok {

@@ -177,7 +177,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		if err != nil {
 			return fmt.Errorf("failed to find provider %s inside config", provider.Name)
 		}
-		// TODO: pass filepath instead
+
 		cqProvider, err := c.Manager.GetOrCreateProvider(&details)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", provider.Name, "error", err)
