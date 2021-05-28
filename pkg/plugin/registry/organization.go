@@ -7,7 +7,6 @@ import (
 
 const (
 	defaultOrganization = "cloudquery"
-
 )
 
 // ParseProviderName parses a name of a provider which can be just a name or a name + organization

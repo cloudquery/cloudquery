@@ -1,9 +1,10 @@
 package config
 
 import (
+	"testing"
+
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2/hclsimple"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -32,7 +33,6 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
-
 type Account struct {
 	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`
@@ -45,7 +45,6 @@ type AwsConfig struct {
 	MaxRetries int       `hcl:"max_retries,optional" default:"5"`
 	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
 }
-
 
 func TestParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser(nil)
@@ -85,6 +84,5 @@ func TestProviderLoadConfiguration(t *testing.T) {
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.json", res, nil, &c)
 	assert.Nil(t, errs)
-
 
 }
