@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -45,7 +44,6 @@ func Initialize(providers []string) {
 	for i, p := range providers {
 		requiredProviders[i] = &config.RequiredProvider{
 			Name:    p,
-			Source:  viper.GetString("source"),
 			Version: "latest",
 		}
 	}

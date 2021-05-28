@@ -34,7 +34,7 @@ type Connection struct {
 
 type RequiredProvider struct {
 	Name    string `hcl:"name,label"`
-	Source  string `hcl:"source"`
+	Source  string `hcl:"source,optional"`
 	Version string `hcl:"version"`
 }
 

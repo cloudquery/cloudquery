@@ -149,8 +149,11 @@ func (c *Client) Initialize(ctx context.Context) error {
 	c.Logger.Info("Initializing required providers")
 	for _, p := range c.config.CloudQuery.Providers {
 		c.Logger.Info("Initializing provider", "name", p.Name, "version", p.Version)
-		// TODO: when we will support multiple organization use the source attribute
-		details, err := c.Hub.GetProvider(ctx, p.Source, p.Name, p.Version)
+		org, name, err := registry.ParseProviderName(p.Name)
+		if err != nil {
+			return err
+		}
+		details, err := c.Hub.GetProvider(ctx, org, name, p.Version)
 		if err != nil {
 			return err
 		}
@@ -181,7 +184,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		errGroup.Go(func() error {
 			var cfg []byte
 			if provider.Configuration != nil {
-				cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: false})
+				cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
 				if err != nil {
 					return err
 				}
