@@ -1507,6 +1507,46 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcs(arg0, arg1 interface{}, arg2 .
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVpcs", reflect.TypeOf((*MockEc2Client)(nil).DescribeVpcs), varargs...)
 }
 
+// GetEbsDefaultKmsKeyId mocks base method.
+func (m *MockEc2Client) GetEbsDefaultKmsKeyId(arg0 context.Context, arg1 *ec2.GetEbsDefaultKmsKeyIdInput, arg2 ...func(*ec2.Options)) (*ec2.GetEbsDefaultKmsKeyIdOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetEbsDefaultKmsKeyId", varargs...)
+	ret0, _ := ret[0].(*ec2.GetEbsDefaultKmsKeyIdOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEbsDefaultKmsKeyId indicates an expected call of GetEbsDefaultKmsKeyId.
+func (mr *MockEc2ClientMockRecorder) GetEbsDefaultKmsKeyId(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEbsDefaultKmsKeyId", reflect.TypeOf((*MockEc2Client)(nil).GetEbsDefaultKmsKeyId), varargs...)
+}
+
+// GetEbsEncryptionByDefault mocks base method.
+func (m *MockEc2Client) GetEbsEncryptionByDefault(arg0 context.Context, arg1 *ec2.GetEbsEncryptionByDefaultInput, arg2 ...func(*ec2.Options)) (*ec2.GetEbsEncryptionByDefaultOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetEbsEncryptionByDefault", varargs...)
+	ret0, _ := ret[0].(*ec2.GetEbsEncryptionByDefaultOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEbsEncryptionByDefault indicates an expected call of GetEbsEncryptionByDefault.
+func (mr *MockEc2ClientMockRecorder) GetEbsEncryptionByDefault(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEbsEncryptionByDefault", reflect.TypeOf((*MockEc2Client)(nil).GetEbsEncryptionByDefault), varargs...)
+}
+
 // MockEcrClient is a mock of EcrClient interface.
 type MockEcrClient struct {
 	ctrl     *gomock.Controller
