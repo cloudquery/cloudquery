@@ -311,11 +311,6 @@ func TestResources(t *testing.T) {
 			mockBuilder: buildEc2VpcEndpoints,
 		},
 		{
-			resource:    "route53.hosted_zones",
-			mainTable:   resources.Route53HostedZones(),
-			mockBuilder: buildRoute53HostedZonesMock,
-		},
-		{
 			resource:    "route53.traffic_policies",
 			mainTable:   resources.Route53TrafficPolicies(),
 			mockBuilder: buildRoute53TrafficPoliciesMock,
