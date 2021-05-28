@@ -270,10 +270,14 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			}
 			tags := getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)
 
+			var delegationSetId *string
+			if gotHostedZone.DelegationSet != nil {
+				delegationSetId = gotHostedZone.DelegationSet.Id
+			}
 			wrapper := Route53HostedZoneWrapper{
 				HostedZone:      h,
 				Tags:            make(map[string]interface{}, len(tags)),
-				DelegationSetId: gotHostedZone.DelegationSet.Id,
+				DelegationSetId: delegationSetId,
 				VPCs:            gotHostedZone.VPCs,
 			}
 
