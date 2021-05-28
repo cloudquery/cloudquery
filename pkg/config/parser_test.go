@@ -22,13 +22,9 @@ const testConfig = `cloudquery {
 provider "aws" {
   configuration {
 	account "dev" {
-		regions = ["us-east1"]
-		resources = ["ec2"]
+		role_arn ="12312312"
 	}
-	account "ron" {
-		regions = ["us-east1"]
-		resources = ["ec2"]
-	}
+	account "ron" {}
   }
   resources = ["slow_resource"]
 }`
