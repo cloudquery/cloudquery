@@ -1,7 +1,7 @@
 package client
 
 type Account struct {
-	ID      string `hcl:"label,optional"`
+	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`
 }
 
@@ -16,7 +16,7 @@ type Config struct {
 func (c Config) Example() string {
 	return `configuration {
 	// Optional. if you want to assume role to multiple account and fetch data from them
-    //accounts "<YOUR ID>"{
+    //accounts "<YOUR ID>" {
 	// Optional. Role ARN we want to assume when accessing this account
 	// role_arn = <YOUR_ROLE_ARN>
 	// }

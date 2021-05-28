@@ -446,33 +446,41 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		return err
-	}
-	if err := resource.Set("block_public_acls", publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls); err != nil {
-		return err
-	}
-	if err := resource.Set("block_public_policy", publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy); err != nil {
-		return err
-	}
-	if err := resource.Set("ignore_public_acls", publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls); err != nil {
-		return err
-	}
-	if err := resource.Set("restrict_public_buckets", publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets); err != nil {
-		return err
+		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
+		if !errors.As(err, &ae) && ae.ErrorCode() != "NoSuchPublicAccessBlockConfiguration" {
+			return err
+		}
+	} else {
+		if err := resource.Set("block_public_acls", publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls); err != nil {
+			return err
+		}
+		if err := resource.Set("block_public_policy", publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy); err != nil {
+			return err
+		}
+		if err := resource.Set("ignore_public_acls", publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls); err != nil {
+			return err
+		}
+		if err := resource.Set("restrict_public_buckets", publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets); err != nil {
+			return err
+		}
 	}
 
 	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
-	if errors.As(err, &ae) && ae.ErrorCode() == "ReplicationConfigurationNotFoundError" {
-		return nil
-	}
-	if replicationOutput.ReplicationConfiguration != nil {
-		if err := resource.Set("replication_role", replicationOutput.ReplicationConfiguration.Role); err != nil {
+	if err != nil {
+		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
+		if errors.As(err, &ae) && ae.ErrorCode() != "ReplicationConfigurationNotFoundError" {
 			return err
 		}
-		// We set this here for fetchReplicationRules to get and insert
-		resource.Item.(*WrappedBucket).ReplicationRules = replicationOutput.ReplicationConfiguration.Rules
+	} else {
+		if replicationOutput.ReplicationConfiguration != nil {
+			if err := resource.Set("replication_role", replicationOutput.ReplicationConfiguration.Role); err != nil {
+				return err
+			}
+			// We set this here for fetchReplicationRules to get and insert
+			resource.Item.(*WrappedBucket).ReplicationRules = replicationOutput.ReplicationConfiguration.Rules
+		}
 	}
 
 	taggingOutput, err := svc.GetBucketTagging(ctx, &s3.GetBucketTaggingInput{Bucket: r.Name}, func(options *s3.Options) {
