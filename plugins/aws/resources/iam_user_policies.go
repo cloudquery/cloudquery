@@ -3,8 +3,11 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
+
+	"github.com/aws/smithy-go"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -51,6 +54,7 @@ func iamUserPolicies() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	var ae smithy.APIError
 	svc := meta.(*client.Client).Services().IAM
 	user := parent.Item.(wrappedUser)
 	if aws.ToString(user.UserName) == rootName {
@@ -60,6 +64,9 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)
 		if err != nil {
+			if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
+				return nil
+			}
 			return err
 		}
 		for _, p := range output.PolicyNames {
