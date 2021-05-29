@@ -72,6 +72,7 @@ func init() {
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
+
 	rootCmd.AddCommand(initCmd, fetchCmd)
 	cobra.OnInitialize(initConfig, initLogging)
 }

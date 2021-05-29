@@ -19,12 +19,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// UpgradeRequest is provided to the Client to execute an upgrade of one or more providers
-type UpgradeRequest struct {
-	Provider string
-	Version  string
-}
-
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
 type FetchRequest struct {
 	// UpdateCallback allows gets called when the client receives updates on fetch.
@@ -50,8 +44,6 @@ type PolicyExecutionResult struct {
 	// Map of all query result sets
 	Results map[string]*PolicyResult
 }
-
-type Option func(options *Client)
 
 type FetchUpdate struct {
 	Provider string
@@ -93,6 +85,8 @@ type FetchDoneResult struct {
 type FetchUpdateCallback func(update FetchUpdate)
 
 type PolicyExecutionCallback func(name string, passed bool, resultCount int)
+
+type Option func(options *Client)
 
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
@@ -155,8 +149,11 @@ func (c *Client) Initialize(ctx context.Context) error {
 	c.Logger.Info("Initializing required providers")
 	for _, p := range c.config.CloudQuery.Providers {
 		c.Logger.Info("Initializing provider", "name", p.Name, "version", p.Version)
-		// TODO: when we will support multiple organization use the source attribute
-		details, err := c.Hub.GetProvider(ctx, plugin.DefaultOrganization, p.Name, p.Version)
+		org, name, err := registry.ParseProviderName(p.Name)
+		if err != nil {
+			return err
+		}
+		details, err := c.Hub.GetProvider(ctx, org, name, p.Version)
 		if err != nil {
 			return err
 		}
@@ -185,9 +182,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		}
 		provider := provider
 		errGroup.Go(func() error {
-			cfg, err := convert.Body(providerCfg.Configuration, convert.Options{Simplify: false})
-			if err != nil {
-				return err
+			var cfg []byte
+			if provider.Configuration != nil {
+				cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
+				if err != nil {
+					return err
+				}
 			}
 			c.Logger.Info("requesting provider to configure", "provider", provider.Name, "version", details.Version)
 			_, err = cqProvider.ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{

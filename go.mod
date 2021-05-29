@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.2.0
+	github.com/cloudquery/cq-provider-sdk v0.2.2
 	github.com/fatih/color v1.10.0
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/google/go-github/v35 v35.1.0
