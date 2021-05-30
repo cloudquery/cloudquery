@@ -3,13 +3,14 @@ package registry
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/ui"

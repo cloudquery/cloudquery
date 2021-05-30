@@ -3,6 +3,7 @@ package plugin
 import (
 	"context"
 	"fmt"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"

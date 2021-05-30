@@ -2,12 +2,13 @@ package plugin
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
-	"os"
-	"os/exec"
 
 	"github.com/hashicorp/go-plugin"
 	zerolog "github.com/rs/zerolog/log"

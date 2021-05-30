@@ -3,9 +3,10 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"io"
 	"path/filepath"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -145,10 +146,6 @@ func New(options ...Option) (*Client, error) {
 		return nil, err
 	}
 	return c, nil
-}
-
-type DownloadRequest struct {
-	providers []config.RequiredProvider
 }
 
 // DownloadProviders downloads all provider binaries
