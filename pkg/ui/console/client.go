@@ -42,7 +42,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
-	c, err := client.New(opts...)
+	c, err := client.New(ctx, opts...)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client.\n\n")
 		return nil, err

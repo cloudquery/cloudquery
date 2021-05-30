@@ -117,7 +117,7 @@ type Client struct {
 	pool *pgxpool.Pool
 }
 
-func New(options ...Option) (*Client, error) {
+func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	c := &Client{
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
@@ -136,12 +136,12 @@ func New(options ...Option) (*Client, error) {
 		return nil, err
 	}
 
-	poolCfg, err := pgxpool.ParseConfig("")
+	poolCfg, err := pgxpool.ParseConfig(c.DSN)
 	if err != nil {
 		return nil, err
 	}
 	poolCfg.LazyConnect = true
-	c.pool, err = pgxpool.ConnectConfig(context.Background(), poolCfg)
+	c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
 	if err != nil {
 		return nil, err
 	}

@@ -23,7 +23,7 @@ import (
 func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -54,7 +54,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 	assert.Nil(t, diags)
 	// Set configuration to nil
 	cfg.Providers[0].Configuration = nil
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -77,7 +77,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -101,7 +101,7 @@ func TestClient_Fetch(t *testing.T) {
 func TestClient_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -123,7 +123,7 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -143,7 +143,7 @@ func TestClient_GetProviderConfig(t *testing.T) {
 }
 
 func TestClient_ExecutePolicy(t *testing.T) {
-	c, err := New(func(options *Client) {
+	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
@@ -152,6 +152,10 @@ func TestClient_ExecutePolicy(t *testing.T) {
 	}
 	ctx := context.Background()
 	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		assert.Nil(t, err)
+		t.FailNow()
+	}
 	defer conn.Release()
 	_, err = conn.Exec(ctx, `Truncate public.slow_resource`)
 	if !assert.Nil(t, err) {

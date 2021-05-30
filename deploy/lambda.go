@@ -56,7 +56,7 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 
 // Fetch fetches resources from a cloud provider and saves them in the configured database
 func Fetch(ctx context.Context, cfg *config.Config) {
-	c, err := client.New(func(c *client.Client) {
+	c, err := client.New(ctx, func(c *client.Client) {
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
@@ -79,7 +79,7 @@ func Fetch(ctx context.Context, cfg *config.Config) {
 func Policy(ctx context.Context, cfg *config.Config) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	c, err := client.New(func(c *client.Client) {
+	c, err := client.New(ctx, func(c *client.Client) {
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
