@@ -157,6 +157,7 @@ func (c *Client) DownloadProviders(ctx context.Context) error {
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
+		providerConfig := providerConfig
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
