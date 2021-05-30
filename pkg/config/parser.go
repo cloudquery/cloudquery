@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -130,8 +131,14 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if dsn := viper.GetString("dsn"); dsn != "" {
 				config.CloudQuery.Connection.DSN = dsn
 			}
-			if dir := viper.GetString("plugin-dir"); dir != "" {
-				config.CloudQuery.PluginDirectory = dir
+			if dir := viper.GetString("plugin-dir"); dir != "." {
+				if dir == "." {
+					if dir, err := os.Getwd(); err == nil {
+						config.CloudQuery.PluginDirectory = dir
+					}
+				} else {
+					config.CloudQuery.PluginDirectory = dir
+				}
 			}
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block)

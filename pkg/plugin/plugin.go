@@ -2,18 +2,15 @@ package plugin
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
+	"os"
+	"os/exec"
 
 	"github.com/hashicorp/go-plugin"
 	zerolog "github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -40,15 +37,17 @@ type managedPlugin struct {
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
-func newRemotePlugin(details *registry.ProviderDetails) (*managedPlugin, error) {
-	pluginPath, _ := GetProviderPath(details)
+func newRemotePlugin(details *registry.ProviderDetails, alias string, env []string) (*managedPlugin, error) {
+	cmd := exec.Command(details.FilePath)
+	cmd.Env = append(cmd.Env, env...)
+
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
 			2: pluginMap,
 		},
 		Managed:          true,
-		Cmd:              exec.Command(pluginPath),
+		Cmd:              cmd,
 		AllowedProtocols: []plugin.Protocol{plugin.ProtocolGRPC},
 		Logger:           logging.NewZHcLog(&zerolog.Logger, ""),
 	})
@@ -68,8 +67,12 @@ func newRemotePlugin(details *registry.ProviderDetails) (*managedPlugin, error) 
 		client.Kill()
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
+	name := details.Name
+	if alias != "" {
+		name = fmt.Sprintf("%s_%s", name, alias)
+	}
 	return &managedPlugin{
-		name:     details.Name,
+		name:     name,
 		version:  details.Version,
 		client:   client,
 		provider: provider,
@@ -135,9 +138,3 @@ func (m unmanagedPlugin) Version() string { return "unmanaged" }
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
 func (m unmanagedPlugin) Close() {}
-
-// GetProviderPath returns expected path of provider on file system from name and version of plugin
-func GetProviderPath(details *registry.ProviderDetails) (string, error) {
-	pluginDir := viper.GetString("plugin-dir")
-	return filepath.Join(pluginDir, ".cq", "providers", details.Organization, details.Name, fmt.Sprintf("%s-%s", details.Version, registry.GetBinarySuffix())), nil
-}

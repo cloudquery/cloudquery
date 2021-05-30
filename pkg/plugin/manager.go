@@ -1,10 +1,13 @@
 package plugin
 
 import (
+	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/hashicorp/go-hclog"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -12,86 +15,93 @@ import (
 
 // Manager handles lifecycle execution of CloudQuery providers
 type Manager struct {
-	clients map[string]Plugin
+	hub       *registry.Hub
+	clients   map[string]Plugin
+	providers map[string]registry.ProviderDetails
+	logger    hclog.Logger
 }
 
-func NewManager() (*Manager, error) {
+func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string, updater ui.Progress) (*Manager, error) {
 	// primarily by the SDK's acceptance testing framework.
 	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
 	if err != nil {
 		return nil, err
 	}
-
 	clients := make(map[string]Plugin)
-	for name, config := range unmanagedProviders {
-		log.Debug().Str("name", name).Str("address", config.Addr.String()).Int("pid", config.Pid).Msg("reattaching unmanaged plugin")
-		plugin, err := newUnmanagedPlugin(name, config)
+	for name, cfg := range unmanagedProviders {
+		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("reattaching unmanaged plugin")
+		plugin, err := newUnmanagedPlugin(name, cfg)
 		if err != nil {
 			return nil, err
 		}
 		clients[name] = plugin
 	}
 	return &Manager{
-		clients: clients,
+		clients:   clients,
+		logger:    logger,
+		providers: make(map[string]registry.ProviderDetails),
+		hub: registry.NewRegistryHub(registryURL, func(h *registry.Hub) {
+			h.ProgressUpdater = updater
+			h.PluginDirectory = pluginDirectory
+		}),
 	}, nil
 }
 
+func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
+	m.logger.Info("Downloading required providers")
+	for _, rp := range providers {
+		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
+		details, err := m.hub.DownloadProvider(ctx, rp, noVerify)
+		if err != nil {
+			return err
+		}
+		m.providers[rp.Name] = details
+	}
+	return nil
+}
+
+func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin, error) {
+	p, ok := m.clients[providerName]
+	if ok {
+		return p, nil
+	}
+	m.logger.Info("plugin doesn't existing, creating..", "provider", providerName, "name", alias)
+	details, ok := m.providers[providerName]
+	if !ok {
+		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)
+	}
+	p, err := m.createProvider(&details, alias, env)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
 // Shutdown closes all clients and cleans the managed clients
-func (p *Manager) Shutdown() {
-	for _, c := range p.clients {
+func (m *Manager) Shutdown() {
+	for _, c := range m.clients {
 		c.Close()
 	}
 	// create fresh map
-	p.clients = make(map[string]Plugin)
+	m.clients = make(map[string]Plugin)
 }
 
-func (p *Manager) GetProvider(providerName, version string) (cqproto.CQProvider, error) {
-	cq, ok := p.clients[providerName]
-	if !ok {
-		return nil, fmt.Errorf("plugin %s@%s does not exist", providerName, version)
-	}
-	return cq.Provider(), nil
-}
+func (m *Manager) KillProvider(providerName string) error {
 
-func (p *Manager) KillProvider(providerName string) error {
-
-	client, ok := p.clients[providerName]
+	client, ok := m.clients[providerName]
 	if !ok {
 		return fmt.Errorf("client for provider %s does not exist", providerName)
 	}
 	client.Close()
-	delete(p.clients, providerName)
+	delete(m.clients, providerName)
 	return nil
 }
 
-func (p *Manager) GetOrCreateProvider(details *registry.ProviderDetails) (cqproto.CQProvider, error) {
-	provider, err := p.GetProvider(details.Name, details.Version)
-	if provider != nil || err == nil {
-		return provider, err
-	}
-	// Create RPC client and initialize CQProvider
-	return p.createProvider(details)
-}
-
-func (p *Manager) createProvider(details *registry.ProviderDetails) (cqproto.CQProvider, error) {
-	mPlugin, err := newRemotePlugin(details)
+func (m *Manager) createProvider(details *registry.ProviderDetails, alias string, env []string) (Plugin, error) {
+	mPlugin, err := newRemotePlugin(details, alias, env)
 	if err != nil {
 		return nil, err
 	}
-	p.clients[details.Name] = mPlugin
-	return mPlugin.Provider(), nil
-}
-
-func (p *Manager) ListUnmanaged() map[string]registry.ProviderDetails {
-	unmanged := make(map[string]registry.ProviderDetails)
-	for k, v := range p.clients {
-		if _, ok := v.(*unmanagedPlugin); !ok {
-			continue
-		}
-		unmanged[k] = registry.ProviderDetails{
-			Name:    v.Name(),
-			Version: v.Version(),
-		}
-	}
-	return unmanged
+	m.clients[mPlugin.Name()] = mPlugin
+	return mPlugin, nil
 }

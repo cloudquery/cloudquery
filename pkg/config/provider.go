@@ -9,7 +9,9 @@ import (
 
 type Provider struct {
 	Name          string   `hcl:"name,label"`
+	Alias         string   `hcl:"alias,optional"`
 	Resources     []string `hcl:"resources,optional"`
+	Env           []string `hcl:"env,optional"`
 	Configuration hcl.Body `hcl:"configuration,body"`
 }
 

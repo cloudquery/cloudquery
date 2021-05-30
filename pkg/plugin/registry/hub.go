@@ -3,6 +3,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"io"
 	"net/http"
 	"os"
@@ -30,14 +31,7 @@ type ProviderDetails struct {
 	FilePath     string
 }
 
-type Registry interface {
-	VerifyProvider(ctx context.Context, organization, providerName, version string) bool
-	GetProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error)
-}
-
 type Hub struct {
-	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
-	NoVerify bool
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
 	// Optional: Download propagator allows the creator to get called back on download progress and completion.
@@ -56,19 +50,16 @@ type Option func(h *Hub)
 
 func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
-		NoVerify:        false,
 		PluginDirectory: filepath.Join(".", ".cq", "providers"),
 		Logger:          logging.NewZHcLog(&zerolog.Logger, ""),
 		url:             url,
 		fs:              afero.NewOsFs(),
 		providers:       make(map[string]ProviderDetails),
 	}
-
 	// apply the list of options to hub
 	for _, opt := range opts {
 		opt(h)
 	}
-	h.PluginDirectory = filepath.Join(h.PluginDirectory, ".cq", "providers")
 	h.loadExisting()
 	return h
 }
@@ -117,7 +108,14 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 	return true
 }
 
-func (h Hub) GetProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error) {
+func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.RequiredProvider, noVerify bool) (ProviderDetails, error) {
+
+	providerVersion := requestedProvider.Version
+	organization, providerName, err := ParseProviderName(requestedProvider.Name)
+	if err != nil {
+		return ProviderDetails{}, err
+	}
+
 	if providerVersion == "latest" {
 		release, err := h.getRelease(ctx, organization, providerName, providerVersion)
 		if err != nil {
@@ -127,11 +125,11 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 	}
 	p, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
 	if !ok {
-		return h.downloadProvider(ctx, organization, providerName, providerVersion)
+		return h.downloadProvider(ctx, organization, providerName, providerVersion, noVerify)
 	}
 	if p.Version != providerVersion {
 		h.Logger.Info("Current version is not as requested version updating provider", "current", p.Version, "requested", providerVersion)
-		return h.downloadProvider(ctx, organization, providerName, providerVersion)
+		return h.downloadProvider(ctx, organization, providerName, providerVersion, noVerify)
 	}
 
 	if h.ProgressUpdater != nil {
@@ -139,7 +137,7 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, providerVersion), providerVersion, 2)
 	}
 
-	if h.NoVerify {
+	if noVerify {
 		if h.ProgressUpdater != nil {
 			h.ProgressUpdater.Update(providerName, ui.StatusWarn, "skipped verification...", 2)
 		}
@@ -180,10 +178,9 @@ func (h Hub) Cleanup() error {
 	})
 }
 
-func (h Hub) downloadProvider(ctx context.Context, organization, providerName, providerVersion string) (ProviderDetails, error) {
+func (h Hub) downloadProvider(ctx context.Context, organization, providerName, providerVersion string, noVerify bool) (ProviderDetails, error) {
 
-	// TODO: split provider name to get organization if different if not assume it's cloudquery
-	if !h.verifyRegistered(organization, providerName, providerVersion) {
+	if !h.verifyRegistered(organization, providerName, providerVersion, noVerify) {
 		return ProviderDetails{}, fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", providerName, providerVersion)
 	}
 	// build fully qualified plugin directory for given plugin
@@ -281,12 +278,11 @@ func (h Hub) getLatestReleaseVersion(ctx context.Context, organization, provider
 	return version.NewVersion(release.GetTagName())
 }
 
-func (h Hub) verifyRegistered(organization, providerName, version string) bool {
-	if h.NoVerify {
+func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
+	if noVerify {
 		h.Logger.Warn("skipping plugin registry verification", "provider", providerName)
 		return true
 	}
-
 	h.Logger.Debug("verifying provider plugin is registered", "provider", providerName, "version", version)
 	if !h.isProviderRegistered(organization, providerName) {
 		return false
