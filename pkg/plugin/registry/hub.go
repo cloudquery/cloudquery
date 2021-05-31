@@ -74,6 +74,14 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 }
 
 func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, version string) bool {
+
+	if organization != defaultOrganization {
+		if h.ProgressUpdater != nil {
+			h.ProgressUpdater.Update(providerName, ui.StatusWarn, "skipped community provider verification...", 2)
+		}
+		return true
+	}
+
 	l := h.Logger.With("provider", providerName, "version", version)
 	checksumsPath := filepath.Join(h.PluginDirectory, organization, providerName, version+".checksums.txt")
 	checksumsURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt", organization, providerName)
