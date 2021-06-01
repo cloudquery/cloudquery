@@ -2,7 +2,7 @@
 cloudquery {
   provider "gcp" {
     source = "cloudquery/cq-provider-gcp"
-    version = "v0.3.0"
+    version = "latest"
   }
   // Can be configured via CLI variables
   connection {
