@@ -251,11 +251,6 @@ func TestResources(t *testing.T) {
 			mockBuilder: buildIamPasswordPolicies,
 		},
 		{
-			resource:    "iam.roles",
-			mainTable:   resources.IamRoles(),
-			mockBuilder: buildIamRoles,
-		},
-		{
 			resource:    "iam.virtual_mfa_devices",
 			mainTable:   resources.IamVirtualMfaDevices(),
 			mockBuilder: buildIamVirtualMfaDevices,

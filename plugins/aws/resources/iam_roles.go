@@ -148,8 +148,13 @@ func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.Cli
 }
 func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Role)
+	svc := meta.(*client.Client).Services().IAM
+	response, err := svc.ListRoleTags(ctx, &iam.ListRoleTagsInput{RoleName: r.RoleName})
+	if err != nil {
+		return err
+	}
 	tags := map[string]*string{}
-	for _, t := range r.Tags {
+	for _, t := range response.Tags {
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set("tags", tags)
