@@ -102,7 +102,7 @@ queries:
       WHERE kms_key_id is NULL
   - name: "AWS CIS 2.8 Ensure rotation for customer created CMKs is enabled (Scored)"
     query: >
-      SELECT account_id, region, arn FROM aws_kms_keys WHERE rotation_enabled = FALSE AND manager = 'CUSTOMER'
+      SELECT account_id, region, key_arn FROM aws_kms_keys WHERE rotation_enabled = FALSE AND manager = 'CUSTOMER'
   - name: "AWS CIS 2.9 Ensure VPC flow logging is enabled in all VPCs (Scored)"
     query: >
       SELECT aws_ec2_vpcs.account_id, aws_ec2_vpcs. region, vpc_id FROM aws_ec2_vpcs
