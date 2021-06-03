@@ -160,6 +160,11 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.Ec2VpcPeeringConnections(),
 		},
 		{
+			resource:    "ec2.vpn_gateways",
+			mockBuilder: buildEc2VpnGateways,
+			mainTable:   resources.Ec2VpnGateways(),
+		},
+		{
 			resource:    "ecr.repositories",
 			mockBuilder: buildEcrRepositoriesMock,
 			mainTable:   resources.EcrRepositories(),
