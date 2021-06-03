@@ -664,6 +664,22 @@ func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
+func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockEc2Client(ctrl)
+	l := ec2Types.VpnGateway{}
+	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVpnGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ec2.DescribeVpnGatewaysOutput{
+			VpnGateways: []ec2Types.VpnGateway{l},
+		}, nil)
+	return client.Services{
+		EC2: m,
+	}
+}
+
 func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := ec2Types.Reservation{}

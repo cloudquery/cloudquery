@@ -47,6 +47,7 @@ func Provider() *provider.Provider {
 			"ec2.vpc_peering_connections":           Ec2VpcPeeringConnections(),
 			"ec2.vpc_endpoints":                     Ec2VpcEndpoints(),
 			"ec2.vpcs":                              Ec2Vpcs(),
+			"ec2.vpn_gateways":                      Ec2VpnGateways(),
 			"ec2.instances":                         Ec2Instances(),
 			"ec2.security_groups":                   Ec2SecurityGroups(),
 			"ec2.ebs_volumes":                       Ec2EbsVolumes(),
