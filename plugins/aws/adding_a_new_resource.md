@@ -12,6 +12,7 @@ As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-
 If the service to which the resource belongs has not been used before in cq-provider-aws, there are a few steps that need to be done to configure it.
 
 1. Create the service interface in [client/services.go](./client/services.go)
+   * Don't forget to add the new service interface name to the go:generate comment.
 1. Add the service to the `Services` struct in the [client/client.go](./client/client.go)
 1. Init the service in the `initServices` function in [client/client.go](./client/client.go)
 1. Run `go generate client/services.go` to create a mock for your new service. This will update [client/mocks/services.go](./client/mocks/services.go) automatically

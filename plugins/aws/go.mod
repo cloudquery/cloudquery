@@ -16,8 +16,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.1.2
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.2.0
@@ -38,6 +38,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.5.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/sts v1.3.0
+	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/smithy-go v1.4.0
 	github.com/cloudquery/cq-provider-sdk v0.2.1
 	github.com/cloudquery/faker/v3 v3.7.4
