@@ -1,8 +1,9 @@
 package client
 
 type Account struct {
-	ID      string `hcl:",label"`
-	RoleARN string `hcl:"role_arn,optional"`
+	ID         string `hcl:",label"`
+	RoleARN    string `hcl:"role_arn,optional"`
+	ExternalID string `hcl:"external_id,optional"`
 }
 
 type Config struct {
