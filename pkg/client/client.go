@@ -227,7 +227,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
-		c.Logger.Error("failed to create provider plugin", "provider", providerPlugin.Name, "error", err)
+		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
 	}
 	defer func() {
@@ -241,7 +241,7 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 func (c Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
-		c.Logger.Error("failed to create provider plugin", "provider", providerPlugin.Name, "error", err)
+		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
 	}
 	defer func() {
