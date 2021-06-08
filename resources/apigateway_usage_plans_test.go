@@ -40,5 +40,5 @@ func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestApigatewayUsagePlans(t *testing.T) {
-	awsTestHelper(t, ApigatewayUsagePlans(), buildApigatewayUsagePlans)
+	awsTestHelper(t, ApigatewayUsagePlans(), buildApigatewayUsagePlans, TestOptions{})
 }

@@ -91,6 +91,9 @@ func Provider() *provider.Provider {
 			"waf.rule_groups":                       WafRuleGroups(),
 			"waf.subscribed_rule_groups":            WafSubscribedRuleGroups(),
 			"waf.rules":                             WafRules(),
+			"wafv2.web_acls":                        Wafv2WebAcls(),
+			"wafv2.managed_rule_groups":             Wafv2ManagedRuleGroups(),
+			"wafv2.rule_groups":                     Wafv2RuleGroups(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

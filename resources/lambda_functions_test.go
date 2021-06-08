@@ -113,5 +113,5 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestLambdaFunctions(t *testing.T) {
-	awsTestHelper(t, LambdaFunctions(), buildLambdaFunctionsMock)
+	awsTestHelper(t, LambdaFunctions(), buildLambdaFunctionsMock, TestOptions{})
 }

@@ -30,5 +30,5 @@ func buildIamServerCerts(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestIamServerCertificates(t *testing.T) {
-	awsTestHelper(t, IamServerCertificates(), buildIamServerCerts)
+	awsTestHelper(t, IamServerCertificates(), buildIamServerCerts, TestOptions{})
 }

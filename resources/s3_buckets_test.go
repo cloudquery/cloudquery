@@ -147,5 +147,5 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestS3Buckets(t *testing.T) {
-	awsTestHelper(t, S3Buckets(), buildS3Buckets)
+	awsTestHelper(t, S3Buckets(), buildS3Buckets, TestOptions{})
 }

@@ -12,7 +12,11 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
-func awsTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) client.Services) {
+type TestOptions struct {
+	SkipEmptyJsonB bool
+}
+
+func awsTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) client.Services, options TestOptions) {
 	ctrl := gomock.NewController(t)
 
 	cfg := client.Config{
@@ -32,5 +36,6 @@ func awsTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *
 			c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", builder(t, ctrl))
 			return &c, nil
 		},
+		SkipEmptyJsonB: options.SkipEmptyJsonB,
 	})
 }

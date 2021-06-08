@@ -25,5 +25,5 @@ func buildWAFSubscribedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 }
 
 func TestWafSubscribedRuleGroups(t *testing.T) {
-	awsTestHelper(t, WafSubscribedRuleGroups(), buildWAFSubscribedRuleGroupsMock)
+	awsTestHelper(t, WafSubscribedRuleGroups(), buildWAFSubscribedRuleGroupsMock, TestOptions{})
 }

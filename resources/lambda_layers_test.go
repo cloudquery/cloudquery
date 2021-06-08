@@ -50,5 +50,5 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestLambdaLayers(t *testing.T) {
-	awsTestHelper(t, LambdaLayers(), buildLambdaLayersMock)
+	awsTestHelper(t, LambdaLayers(), buildLambdaLayersMock, TestOptions{})
 }
