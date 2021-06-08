@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/network/mgmt/network"
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-08-01/network"
 	"github.com/Azure/go-autorest/autorest"
 )
 
