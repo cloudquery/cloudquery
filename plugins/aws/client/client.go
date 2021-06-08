@@ -111,6 +111,7 @@ type Services struct {
 	Lambda           LambdaClient
 	ConfigService    ConfigServiceClient
 	Waf              WafClient
+	WafV2            WafV2Client
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services

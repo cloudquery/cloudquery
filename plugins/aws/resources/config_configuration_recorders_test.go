@@ -30,5 +30,5 @@ func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) cl
 }
 
 func TestConfigConfigurationRecorders(t *testing.T) {
-	awsTestHelper(t, ConfigConfigurationRecorders(), buildConfigConfigurationRecorders)
+	awsTestHelper(t, ConfigConfigurationRecorders(), buildConfigConfigurationRecorders, TestOptions{})
 }

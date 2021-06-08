@@ -78,5 +78,5 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamRoles(t *testing.T) {
-	awsTestHelper(t, IamRoles(), buildIamRoles)
+	awsTestHelper(t, IamRoles(), buildIamRoles, TestOptions{})
 }

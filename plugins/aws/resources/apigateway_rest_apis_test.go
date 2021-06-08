@@ -128,5 +128,5 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestApigatewayRestApis(t *testing.T) {
-	awsTestHelper(t, ApigatewayRestApis(), buildApigatewayRestApis)
+	awsTestHelper(t, ApigatewayRestApis(), buildApigatewayRestApis, TestOptions{})
 }

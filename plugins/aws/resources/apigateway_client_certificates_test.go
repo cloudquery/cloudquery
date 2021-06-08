@@ -30,5 +30,5 @@ func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) cl
 }
 
 func TestApigatewayClientCertificates(t *testing.T) {
-	awsTestHelper(t, ApigatewayClientCertificates(), buildApigatewayClientCertificates)
+	awsTestHelper(t, ApigatewayClientCertificates(), buildApigatewayClientCertificates, TestOptions{})
 }

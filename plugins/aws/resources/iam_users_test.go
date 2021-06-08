@@ -112,5 +112,5 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamUsers(t *testing.T) {
-	awsTestHelper(t, IamUsers(), buildIamUsers)
+	awsTestHelper(t, IamUsers(), buildIamUsers, TestOptions{})
 }

@@ -113,7 +113,7 @@ func resolveWafRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resourc
 func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
-		return fmt.Errorf("not an RuleGroup instance: %#v", resource.Item)
+		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
 	}
 
 	// Resolves rule group rules

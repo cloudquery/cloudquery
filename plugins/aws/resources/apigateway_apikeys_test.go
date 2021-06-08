@@ -30,5 +30,5 @@ func buildApigatewayApiKeys(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestApigatewayAPIKeys(t *testing.T) {
-	awsTestHelper(t, ApigatewayAPIKeys(), buildApigatewayApiKeys)
+	awsTestHelper(t, ApigatewayAPIKeys(), buildApigatewayApiKeys, TestOptions{})
 }

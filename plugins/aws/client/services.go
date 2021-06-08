@@ -1,12 +1,12 @@
 package client
 
 // define interfaces so we can easily mock AWS calls
-//go:generate mockgen -destination=./mocks/services.go -package=mocks . AutoscalingClient,ApigatewayClient,Apigatewayv2Client,CloudfrontClient,CloudtrailClient,CloudwatchClient,CloudwatchLogsClient,DirectconnectClient,Ec2Client,EcrClient,EfsClient,ElasticbeanstalkClient,ElbV1Client,ElbV2Client,EmrClient,FsxClient,IamClient,KmsClient,OrganizationsClient,RdsClient,S3Client,SnsClient,EksClient,RedshiftClient,Route53Client,EcsClient,S3ManagerClient,LambdaClient,ConfigServiceClient,AnalyzerClient,WafClient
+//go:generate mockgen -destination=./mocks/services.go -package=mocks . AutoscalingClient,ApigatewayClient,Apigatewayv2Client,CloudfrontClient,CloudtrailClient,CloudwatchClient,CloudwatchLogsClient,DirectconnectClient,Ec2Client,EcrClient,EfsClient,ElasticbeanstalkClient,ElbV1Client,ElbV2Client,EmrClient,FsxClient,IamClient,KmsClient,OrganizationsClient,RdsClient,S3Client,SnsClient,EksClient,RedshiftClient,Route53Client,EcsClient,S3ManagerClient,LambdaClient,ConfigServiceClient,AnalyzerClient,WafClient,WafV2Client
 
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/service/configservice"
+	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -306,4 +307,16 @@ type WafClient interface {
 	ListRules(ctx context.Context, params *waf.ListRulesInput, optFns ...func(*waf.Options)) (*waf.ListRulesOutput, error)
 	GetRule(ctx context.Context, params *waf.GetRuleInput, optFns ...func(*waf.Options)) (*waf.GetRuleOutput, error)
 	ListTagsForResource(ctx context.Context, params *waf.ListTagsForResourceInput, optFns ...func(*waf.Options)) (*waf.ListTagsForResourceOutput, error)
+}
+
+type WafV2Client interface {
+	ListWebACLs(ctx context.Context, params *wafv2.ListWebACLsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListWebACLsOutput, error)
+	GetWebACL(ctx context.Context, params *wafv2.GetWebACLInput, optFns ...func(*wafv2.Options)) (*wafv2.GetWebACLOutput, error)
+	ListRuleGroups(ctx context.Context, params *wafv2.ListRuleGroupsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListRuleGroupsOutput, error)
+	GetRuleGroup(ctx context.Context, params *wafv2.GetRuleGroupInput, optFns ...func(*wafv2.Options)) (*wafv2.GetRuleGroupOutput, error)
+	ListAvailableManagedRuleGroups(ctx context.Context, params *wafv2.ListAvailableManagedRuleGroupsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListAvailableManagedRuleGroupsOutput, error)
+	DescribeManagedRuleGroup(ctx context.Context, params *wafv2.DescribeManagedRuleGroupInput, optFns ...func(*wafv2.Options)) (*wafv2.DescribeManagedRuleGroupOutput, error)
+	ListResourcesForWebACL(ctx context.Context, params *wafv2.ListResourcesForWebACLInput, optFns ...func(*wafv2.Options)) (*wafv2.ListResourcesForWebACLOutput, error)
+	ListTagsForResource(ctx context.Context, params *wafv2.ListTagsForResourceInput, optFns ...func(*wafv2.Options)) (*wafv2.ListTagsForResourceOutput, error)
+	GetPermissionPolicy(ctx context.Context, params *wafv2.GetPermissionPolicyInput, optFns ...func(*wafv2.Options)) (*wafv2.GetPermissionPolicyOutput, error)
 }

@@ -30,5 +30,5 @@ func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestConfigConformancePack(t *testing.T) {
-	awsTestHelper(t, ConfigConformancePack(), buildConfigConformancePack)
+	awsTestHelper(t, ConfigConformancePack(), buildConfigConformancePack, TestOptions{})
 }
