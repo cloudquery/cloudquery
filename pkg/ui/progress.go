@@ -2,6 +2,8 @@ package ui
 
 import (
 	"io"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -28,4 +30,13 @@ type Progress interface {
 
 	// Wait for all progress bars to finish
 	Wait()
+}
+
+// CreateProgressUpdater creates a progress update callback method for periodic updates.
+func CreateProgressUpdater(progress Progress, displayName string) func(reader io.Reader, total int64) io.Reader {
+	return func(reader io.Reader, total int64) io.Reader {
+		id := uuid.NewV4()
+		progress.Add(id.String(), displayName, "downloading...", total+2)
+		return progress.AttachReader(id.String(), reader)
+	}
 }

@@ -252,6 +252,10 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
+func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+	return nil
+}
+
 func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {
 
 	conn, err := c.pool.Acquire(ctx)
