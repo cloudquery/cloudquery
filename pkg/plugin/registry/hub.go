@@ -3,20 +3,19 @@ package registry
 import (
 	"context"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	zerolog "github.com/rs/zerolog/log"
-	"github.com/spf13/afero"
 )
 
 const (
@@ -48,9 +47,11 @@ type Hub struct {
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderDetails
-	// fs for hub to access to save and load providers from
-	fs afero.Fs
 }
+
+const (
+	providerDisplayMsg = "cq-provider-%s@%s"
+)
 
 type Option func(h *Hub)
 
@@ -60,7 +61,6 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 		PluginDirectory: filepath.Join(".", ".cq", "providers"),
 		Logger:          logging.NewZHcLog(&zerolog.Logger, ""),
 		url:             url,
-		fs:              afero.NewOsFs(),
 		providers:       make(map[string]ProviderDetails),
 	}
 
@@ -93,13 +93,14 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 	}
 	l.Debug("downloading checksums file", "url", checksumsURL, "path", checksumsPath)
 	// download checksums
-	if err := h.downloadFile(ctx, providerName, version, checksumsPath, checksumsURL, false); err != nil {
+	osFs := file.NewOsFs()
+	if err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil); err != nil {
 		l.Error("failed to download checksums file", "providerName", providerName, "error", err)
 		return false
 	}
 	l.Debug("downloading checksums signature", "url", checksumsURL, "path", checksumsPath)
 	// download checksums signature
-	if err := h.downloadFile(ctx, providerName, version, checksumsPath+".sig", checksumsURL+".sig", false); err != nil {
+	if err := osFs.DownloadFile(ctx, checksumsPath+".sig", checksumsURL+".sig", nil); err != nil {
 		l.Error("failed to download signature file", "providerName", providerName, "error", err)
 		return false
 	}
@@ -161,8 +162,9 @@ func (h Hub) GetProvider(ctx context.Context, organization, providerName, provid
 }
 
 // Cleanup removes all unused plugins from the plugin directory
+// TODO: Seems to be obsolete since it is never used?
 func (h Hub) Cleanup() error {
-	return afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
+	return file.NewOsFs().WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
 		}
@@ -196,13 +198,17 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	}
 	// build fully qualified plugin directory for given plugin
 	pluginDir := filepath.Join(h.PluginDirectory, organization, providerName)
-	if err := h.fs.MkdirAll(pluginDir, os.ModePerm); err != nil {
+	osFs := file.NewOsFs()
+	if err := osFs.MkdirAll(pluginDir, os.ModePerm); err != nil {
 		return ProviderDetails{}, err
 	}
 
+	// Create a new progress updater callback func
+	progressCB := ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf(providerDisplayMsg, providerName, providerVersion))
+
 	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
 	providerPath := h.getProviderPath(organization, providerName, providerVersion)
-	if err := h.downloadFile(ctx, providerName, providerVersion, providerPath, providerURL, true); err != nil {
+	if err := osFs.DownloadFile(ctx, providerPath, providerURL, progressCB); err != nil {
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", organization, providerName, providerVersion, err)
 	}
 
@@ -210,7 +216,7 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
 	}
 
-	if err := h.fs.Chmod(providerPath, 0754); err != nil {
+	if err := osFs.Chmod(providerPath, 0754); err != nil {
 		return ProviderDetails{}, err
 	}
 
@@ -223,51 +229,6 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)] = details
 
 	return details, nil
-}
-
-// DownloadFile will download a url to a local file. It's efficient because it will
-// write as it downloads and not load the whole file into memory. We pass an io.TeeReader
-// into Copy() to report progress on the download.
-func (h Hub) downloadFile(ctx context.Context, providerName, version, filepath, url string, updateProgress bool) error {
-	// Create the file, but give it a tmp file extension, this means we won't overwrite a
-	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
-	out, err := h.fs.Create(filepath + ".tmp")
-	if err != nil {
-		return err
-	}
-	// Get the data
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return err
-	}
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		out.Close()
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("got %d http code instead expected %d", resp.StatusCode, http.StatusOK)
-	}
-
-	var reader io.Reader = resp.Body
-	if h.ProgressUpdater != nil && updateProgress {
-		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, version), "downloading...", resp.ContentLength+2)
-		reader = h.ProgressUpdater.AttachReader(providerName, resp.Body)
-	}
-	// Create our progress reporter and pass it to be used alongside our writer
-	if _, err = io.Copy(out, reader); err != nil {
-		out.Close()
-		return err
-	}
-	// Close the file without defer so it can happen before Rename()
-	out.Close()
-
-	if err = os.Rename(filepath+".tmp", filepath); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (h Hub) getRelease(ctx context.Context, organization, providerName, version string) (*github.RepositoryRelease, error) {
@@ -331,7 +292,8 @@ func (h Hub) getProviderPath(org, name, version string) string {
 }
 
 func (h Hub) loadExisting() {
-	_ = afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
+	osFs := file.NewOsFs()
+	_ = osFs.WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
 			return nil
@@ -346,7 +308,7 @@ func (h Hub) loadExisting() {
 		provider := filepath.Base(filepath.Dir(path))
 		if strings.HasSuffix(path, ".tmp") {
 			h.Logger.Debug("found temp provider file, cleaning up", "provider", provider)
-			if err := h.fs.Remove(path); err != nil {
+			if err := osFs.Remove(path); err != nil {
 				h.Logger.Warn("failed to remove temp provider file", "provider", provider)
 			}
 			return nil

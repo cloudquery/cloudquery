@@ -17,6 +17,7 @@ require (
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/rs/zerolog v1.20.0
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/spf13/afero v1.1.2
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1

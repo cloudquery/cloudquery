@@ -89,6 +89,23 @@ func (c Client) Fetch(ctx context.Context) error {
 	return nil
 }
 
+func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
+	err := c.c.DownloadPolicy(ctx, args)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
+		return err
+	}
+	// sleep some extra 300 milliseconds for progress refresh
+	if ui.IsTerminal() {
+		time.Sleep(300 * time.Millisecond)
+		c.updater.Wait()
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n\n")
+	return nil
+}
+
 func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
 	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
