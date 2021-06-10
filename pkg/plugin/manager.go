@@ -66,7 +66,7 @@ func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin
 	if ok {
 		return p, nil
 	}
-	m.logger.Info("plugin doesn't existing, creating..", "provider", providerName, "name", alias)
+	m.logger.Info("plugin doesn't exist, creating..", "provider", providerName, "name", alias)
 	details, ok := m.providers[providerName]
 	if !ok {
 		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)

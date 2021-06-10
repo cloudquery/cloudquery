@@ -161,7 +161,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
-			c.Logger.Error("failed to create provider plugin", "provider", providerPlugin.Name, "error", err)
+			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return err
 		}
 		errGroup.Go(func() error {
