@@ -10,10 +10,10 @@ var (
 		Short: "Policy command that unifies policy subcommands.",
 		Long: `Examples:
 # Download policy from Policy Hub
-./cloudquery policy download cq-aws/cis-v1.3.0
+./cloudquery policy download cq-aws 
 
-# Run policy
-./cloudquery policy run cq-aws/cis-v1.3.0
+# Run cis-v1.3.0 policy
+./cloudquery policy run cq-aws cis-v1.3.0
 
 `,
 		Version: Version,

@@ -17,7 +17,7 @@ var (
 		Short: "Download a policy from the CloudQuery Policy Hub",
 		Long: `Examples:
 # Download policy from Policy Hub
-./cloudquery policy download cq-aws/cis-v1.3.0
+./cloudquery policy download cq-aws
 
 See https://hub.cloudquery.io for additional policies.
 

@@ -31,6 +31,11 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 		pluginDir = "."
 	}
 	viper.Set("plugin-dir", pluginDir)
+	policyDir, present := os.LookupEnv("CQ_POLICY_DIR")
+	if !present {
+		policyDir = "."
+	}
+	viper.Set("policy-dir", policyDir)
 	b, err := json.Marshal(req.Config)
 
 	if err != nil {

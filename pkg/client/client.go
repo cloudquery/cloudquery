@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -278,7 +279,16 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
-	return nil
+	c.Logger.Info("Downloading policy from GitHub", "args", args)
+	m := policy.NewManager(c.config)
+
+	// Parse input args
+	policy, err := m.ParsePolicyHubPath(args, "")
+	if err != nil {
+		return err
+	}
+	c.Logger.Debug("Parsed policy download input arguments", "policy", policy)
+	return m.DownloadPolicy(ctx, policy)
 }
 
 func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {

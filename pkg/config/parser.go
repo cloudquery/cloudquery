@@ -133,6 +133,9 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if dir := viper.GetString("plugin-dir"); dir != "" {
 				config.CloudQuery.PluginDirectory = dir
 			}
+			if dir := viper.GetString("policy-dir"); dir != "" {
+				config.CloudQuery.PolicyDirectory = dir
+			}
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block)
 			diags = append(diags, cfgDiags...)
