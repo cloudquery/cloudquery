@@ -8,6 +8,7 @@ require (
 	github.com/cloudquery/cq-provider-sdk v0.2.2
 	github.com/fatih/color v1.10.0
 	github.com/fsnotify/fsnotify v1.4.7
+	github.com/go-git/go-git/v5 v5.4.2 // indirect
 	github.com/google/go-github/v35 v35.1.0
 	github.com/hashicorp/go-hclog v0.16.1
 	github.com/hashicorp/go-plugin v1.4.1

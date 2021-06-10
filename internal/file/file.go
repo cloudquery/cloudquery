@@ -99,6 +99,12 @@ func (o *OsFs) MkdirAll(path string, perm os.FileMode) error {
 	return o.fs.MkdirAll(path, perm)
 }
 
+// Stat is a wrapper around afero.Stat that returns the FileInfo for
+// the given path.
+func (o *OsFs) Stat(path string) (os.FileInfo, error) {
+	return o.fs.Stat(path)
+}
+
 // SetFSInstance sets the FS instance. Should be only used for testing purpose.
 func (o *OsFs) SetFSInstance(fs afero.Fs) {
 	o.fs = fs
