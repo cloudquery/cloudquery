@@ -24,10 +24,10 @@ func (c Config) GetProvider(name string) (*Provider, error) {
 
 type CloudQuery struct {
 	PluginDirectory string              `hcl:"plugin_directory,optional"`
+	PolicyDirectory string              `hcl:"policy_directory,optional"`
 	Logger          *logging.Config     `hcl:"logging,block"`
 	Providers       []*RequiredProvider `hcl:"provider,block"`
 	Connection      Connection          `hcl:"connection,block"`
-	PolicyDirectory string              `hcl:"policy_directory,optional"`
 }
 
 type Connection struct {

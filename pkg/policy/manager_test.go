@@ -1,4 +1,4 @@
-package hub
+package policy
 
 import (
 	"context"
@@ -25,6 +25,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 		},
 	})
 
+	// TODO: Add test for official cloudquery org
 	policyHubPath := []string{"michelvocks/my-cq-policy"}
 	p, err := m.ParsePolicyHubPath(policyHubPath, "")
 	if err != nil {
@@ -37,7 +38,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	}
 
 	// Make sure downloaded policy folder exists
-	policyFolder := filepath.Join(tmpDir, p.Organization, p.Repository)
+	policyFolder := filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
 	osFs := file.NewOsFs()
 	if _, err := osFs.Stat(policyFolder); err != nil {
 		t.Fatal(err)

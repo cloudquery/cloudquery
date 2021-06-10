@@ -1,4 +1,4 @@
-package hub
+package policy
 
 import (
 	"context"
@@ -20,6 +20,8 @@ const (
 
 	cloudQueryOrg = "cloudquery"
 	gitHubUrl     = "https://github.com/"
+
+	defaultLocalSubPath = ".cq/policy/"
 )
 
 // ManagerImpl is the manager implementation struct.
@@ -114,17 +116,11 @@ func (m *ManagerImpl) ParsePolicyHubPath(args []string, subPolicyPath string) (*
 
 // DownloadPolicy downloads the given policy from GitHub and stores it in the local policy directory.
 func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
-	// Make sure that the local policy folder exists
+	// Make sure that the local policy organization folder exists
 	osFs := file.NewOsFs()
-	policyDir := m.config.CloudQuery.PolicyDirectory
-	if info, err := osFs.Stat(policyDir); err != nil || !info.IsDir() {
-		return fmt.Errorf("policy directory invalid. %s does not exist or is not a directory", policyDir)
-	}
-
-	// Create org folder
-	orgFolder := filepath.Join(policyDir, p.Organization)
-	if err := osFs.MkdirAll(orgFolder, 0744); err != nil {
-		return fmt.Errorf("failed to create organization folder inside policy directory: %s", err.Error())
+	policyOrgFolder := filepath.Join(m.config.CloudQuery.PolicyDirectory, defaultLocalSubPath, p.Organization)
+	if err := osFs.MkdirAll(policyOrgFolder, 0744); err != nil {
+		return fmt.Errorf("failed to create organization policy directory: %s", policyOrgFolder)
 	}
 
 	// Get GitHub URL
@@ -143,7 +139,7 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 	}
 
 	// Clone the repository
-	repoPath := filepath.Join(orgFolder, p.Repository)
+	repoPath := filepath.Join(policyOrgFolder, p.Repository)
 	r, err := git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
 	switch err {
 	case nil:
