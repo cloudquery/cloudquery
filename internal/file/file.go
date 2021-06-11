@@ -8,6 +8,8 @@ import (
 	"os"
 	"sync"
 
+	"github.com/cloudquery/cloudquery/pkg/ui"
+
 	"github.com/spf13/afero"
 )
 
@@ -35,7 +37,7 @@ func NewOsFs() *OsFs {
 // DownloadFile will download a url to a local file. It's efficient because it will
 // write as it downloads and not load the whole file into memory. We pass an io.TeeReader
 // into Copy() to report progress on the download.
-func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressUpdater func(reader io.Reader, total int64) io.Reader) error {
+func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := o.fs.Create(filepath + ".tmp")
