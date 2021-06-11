@@ -4,9 +4,12 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -26,6 +29,7 @@ const (
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
+	// Pointer to the client config
 	config *config.Config
 }
 
@@ -136,6 +140,20 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 		Depth:         1,
 		SingleBranch:  true,
 		Tags:          git.AllTags,
+	}
+
+	// Output progress information if necessary
+	if ui.IsTerminal() {
+		// Print initial information
+		switch {
+		case p.Version != "":
+			ui.ColorizedOutput(ui.ColorProgress, fmt.Sprintf("Cloning Policy %s/%s@%s\n", p.Organization, p.Repository, p.Version))
+		default:
+			ui.ColorizedOutput(ui.ColorProgress, fmt.Sprintf("Cloning Policy %s/%s\n", p.Organization, p.Repository))
+		}
+
+		// Set output to stdout
+		cloneOptions.Progress = os.Stdout
 	}
 
 	// Clone the repository

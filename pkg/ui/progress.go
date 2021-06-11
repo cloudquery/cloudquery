@@ -32,8 +32,10 @@ type Progress interface {
 	Wait()
 }
 
+type ProgressUpdateFunc func(io.Reader, int64) io.Reader
+
 // CreateProgressUpdater creates a progress update callback method for periodic updates.
-func CreateProgressUpdater(progress Progress, displayName string) func(reader io.Reader, total int64) io.Reader {
+func CreateProgressUpdater(progress Progress, displayName string) ProgressUpdateFunc {
 	return func(reader io.Reader, total int64) io.Reader {
 		id := uuid.NewV4()
 		progress.Add(id.String(), displayName, "downloading...", total+2)
