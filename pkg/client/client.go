@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"path/filepath"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -90,144 +93,124 @@ type Option func(options *Client)
 
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
+	// Required: List of providers that are required, these providers will be download if DownloadProviders is called.
+	Providers []*config.RequiredProvider
+	// Optional: Registry url to verify plugins from, defaults to CloudQuery hub
+	RegistryURL string
+	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
+	PluginDirectory string
+	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
+	NoVerify bool
+	// Optional: DSN connection information for database client will connect to
+	DSN string
+	// Optional: HubProgressUpdater allows the client creator to get called back on download progress and completion.
+	HubProgressUpdater ui.Progress
 	// Optional: Logger framework can use to log.
 	// default: global logger provided.
 	Logger hclog.Logger
-
 	// Optional: Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
 	// if not specified, default cloudquery registry is used.
-	Hub registry.Registry
-
+	Hub registry.Hub
 	// manager manages all plugins lifecycle
 	Manager *plugin.Manager
-
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool
-
-	// Configuration of CloudQuery Client
-	config *config.Config
-
-	// map of providers downloaded and are kept in the state for a fetch call
-	providers map[string]registry.ProviderDetails
 }
 
-func New(config *config.Config, options ...Option) (*Client, error) {
-	m, err := plugin.NewManager()
-	if err != nil {
-		return nil, err
-	}
+func New(ctx context.Context, options ...Option) (*Client, error) {
+
 	c := &Client{
-		config:    config,
-		Logger:    logging.NewZHcLog(&zerolog.Logger, ""),
-		Manager:   m,
-		providers: make(map[string]registry.ProviderDetails),
+		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
+		NoVerify:           false,
+		HubProgressUpdater: nil,
+		RegistryURL:        registry.CloudQueryRegistryURl,
+		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
 	}
 	for _, o := range options {
 		o(c)
 	}
-	if c.Hub == nil {
-		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl)
-	}
-	for k, v := range c.Manager.ListUnmanaged() {
-		c.providers[k] = v
+
+	var err error
+	c.Manager, err = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
+	if err != nil {
+		return nil, err
 	}
 
-	poolCfg, err := pgxpool.ParseConfig(c.config.CloudQuery.Connection.DSN)
+	poolCfg, err := pgxpool.ParseConfig(c.DSN)
 	if err != nil {
 		return nil, err
 	}
 	poolCfg.LazyConnect = true
-	c.pool, err = pgxpool.ConnectConfig(context.Background(), poolCfg)
+	c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
 	if err != nil {
 		return nil, err
 	}
 	return c, nil
 }
 
-// Initialize downloads all provider binaries
-func (c *Client) Initialize(ctx context.Context) error {
-	c.Logger.Info("Initializing required providers")
-	for _, p := range c.config.CloudQuery.Providers {
-		c.Logger.Info("Initializing provider", "name", p.Name, "version", p.Version)
-		org, name, err := registry.ParseProviderName(p.Name)
-		if err != nil {
-			return err
-		}
-		details, err := c.Hub.GetProvider(ctx, org, name, p.Version)
-		if err != nil {
-			return err
-		}
-		c.providers[p.Name] = details
-	}
-	return nil
+// DownloadProviders downloads all provider binaries
+func (c *Client) DownloadProviders(ctx context.Context) error {
+	c.Logger.Info("Downloading required providers")
+	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 	errGroup, gctx := errgroup.WithContext(ctx)
-	for _, provider := range request.Providers {
-		details, ok := c.providers[provider.Name]
-		if !ok {
-			return fmt.Errorf("provider plugin %s missing from plugin directory", provider.Name)
-		}
-		c.Logger.Debug("creating provider plugin", "provider", provider.Name)
-		providerCfg, err := c.config.GetProvider(provider.Name)
+	for _, providerConfig := range request.Providers {
+		providerConfig := providerConfig
+		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
+		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
-			return fmt.Errorf("failed to find provider %s inside config", provider.Name)
-		}
-
-		cqProvider, err := c.Manager.GetOrCreateProvider(&details)
-		if err != nil {
-			c.Logger.Error("failed to create provider plugin", "provider", provider.Name, "error", err)
+			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return err
 		}
-		provider := provider
 		errGroup.Go(func() error {
 			var cfg []byte
-			if provider.Configuration != nil {
-				cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
+			if providerConfig.Configuration != nil {
+				cfg, err = convert.Body(providerConfig.Configuration, convert.Options{Simplify: true})
 				if err != nil {
 					return err
 				}
 			}
-			c.Logger.Info("requesting provider to configure", "provider", provider.Name, "version", details.Version)
-			_, err = cqProvider.ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
+			c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: "", // TODO pass cloudquery version
 				Connection: cqproto.ConnectionDetails{
-					DSN: c.config.CloudQuery.Connection.DSN,
+					DSN: c.DSN,
 				},
 				Config: cfg,
 			})
 			if err != nil {
-				c.Logger.Error("failed to configure provider", "error", err, "provider", provider.Name)
+				c.Logger.Error("failed to configure provider", "error", err, "provider", providerPlugin.Name())
 				return err
 			}
-			c.Logger.Info("provider configured successfully", "provider", provider.Name, "version", details.Version)
-			c.Logger.Debug("requesting provider fetch", "provider", provider.Name, "version", details.Version)
-			stream, err := cqProvider.FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: provider.Resources})
+			c.Logger.Info("provider configured successfully", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			c.Logger.Debug("requesting provider fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources})
 			if err != nil {
 				return err
 			}
-			c.Logger.Info("provider started fetching resources", "provider", providerCfg.Name, "version", details.Version)
+			c.Logger.Info("provider started fetching resources", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
-					c.Logger.Info("provider finished fetch", "provider", providerCfg.Name, "version", details.Version)
+					c.Logger.Info("provider finished fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
 					return nil
 				}
 				if err != nil {
 					return err
 				}
 				update := FetchUpdate{
-					Provider:          provider.Name,
-					Version:           details.Version,
+					Provider:          providerPlugin.Name(),
+					Version:           providerPlugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
 					Error:             resp.Error,
 				}
 				if resp.Error != "" {
-					c.Logger.Error("received error fetching", "provider", provider.Name, "error", resp.Error)
+					c.Logger.Error("received error fetching", "provider", providerPlugin.Name(), "error", resp.Error)
 				}
-				c.Logger.Debug("fetch update", "provider", provider.Name, "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
+				c.Logger.Debug("fetch update", "provider", providerPlugin.Name(), "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
@@ -242,11 +225,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 }
 
 func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
-	details, ok := c.providers[providerName]
-	if !ok {
-		return nil, fmt.Errorf("provider plugin %s missing from plugin directory", providerName)
-	}
-	cqProvider, err := c.Manager.GetOrCreateProvider(&details)
+	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -256,15 +235,11 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 			c.Logger.Warn("failed to kill provider", "provider", providerName)
 		}
 	}()
-	return cqProvider.GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	return providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 }
 
 func (c Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
-	details, ok := c.providers[providerName]
-	if !ok {
-		return nil, fmt.Errorf("provider plugin %s missing from plugin directory", providerName)
-	}
-	cqProvider, err := c.Manager.GetOrCreateProvider(&details)
+	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -274,7 +249,7 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 			c.Logger.Warn("failed to kill provider", "provider", providerName)
 		}
 	}()
-	return cqProvider.GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
+	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
 func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {

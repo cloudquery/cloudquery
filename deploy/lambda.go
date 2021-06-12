@@ -7,8 +7,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 
@@ -58,15 +56,14 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 
 // Fetch fetches resources from a cloud provider and saves them in the configured database
 func Fetch(ctx context.Context, cfg *config.Config) {
-	c, err := client.New(cfg, func(c *client.Client) {
-		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
-			h.PluginDirectory = cfg.CloudQuery.PluginDirectory
-		})
+	c, err := client.New(ctx, func(c *client.Client) {
+		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}
-	err = c.Initialize(ctx)
+	err = c.DownloadProviders(ctx)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
@@ -82,7 +79,10 @@ func Fetch(ctx context.Context, cfg *config.Config) {
 func Policy(ctx context.Context, cfg *config.Config) {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
-	c, err := client.New(cfg)
+	c, err := client.New(ctx, func(c *client.Client) {
+		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.DSN = cfg.CloudQuery.Connection.DSN
+	})
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}

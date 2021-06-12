@@ -47,7 +47,6 @@ func init() {
 	// add inner commands
 	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
-	rootCmd.PersistentFlags().Bool("no-download", false, "No Download will make hub not download any provider but use existing")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
 	// Logging Flags
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
@@ -60,12 +59,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
-
-	workingDir, err := os.Getwd()
-	if err != nil {
-		workingDir = "."
-	}
-	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
+	rootCmd.PersistentFlags().String("plugin-dir", ".", "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))

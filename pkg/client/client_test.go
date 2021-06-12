@@ -15,7 +15,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -24,21 +23,14 @@ import (
 func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(options *Client) {
-		options.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-
-	err = c.Initialize(context.Background())
 	assert.Nil(t, err)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	err = c.Fetch(ctx, FetchRequest{
@@ -62,18 +54,13 @@ func TestClient_FetchNilConfig(t *testing.T) {
 	assert.Nil(t, diags)
 	// Set configuration to nil
 	cfg.Providers[0].Configuration = nil
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
-
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-
-	err = c.Initialize(context.Background())
-	assert.Nil(t, err)
-
 	ctx := context.Background()
 	err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
@@ -90,20 +77,13 @@ func TestClient_FetchNilConfig(t *testing.T) {
 func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
-
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-
-	err = c.Initialize(context.Background())
 	assert.Nil(t, err)
 
 	ctx := context.Background()
@@ -121,22 +101,13 @@ func TestClient_Fetch(t *testing.T) {
 func TestClient_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
-
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-
-	err = c.Initialize(context.Background())
-	assert.Nil(t, err)
-
 	ctx := context.Background()
 	schema, err := c.GetProviderSchema(ctx, "test")
 	if schema == nil {
@@ -152,19 +123,13 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-
-	err = c.Initialize(context.Background())
-	assert.Nil(t, err)
 
 	ctx := context.Background()
 	pConfig, err := c.GetProviderConfiguration(ctx, "test")
@@ -173,16 +138,13 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	}
 	assert.NotNil(t, pConfig)
 	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
-	_, diags = hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
+	_, diags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
 }
 
 func TestClient_ExecutePolicy(t *testing.T) {
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -190,6 +152,10 @@ func TestClient_ExecutePolicy(t *testing.T) {
 	}
 	ctx := context.Background()
 	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		assert.Nil(t, err)
+		t.FailNow()
+	}
 	defer conn.Release()
 	_, err = conn.Exec(ctx, `Truncate public.slow_resource`)
 	if !assert.Nil(t, err) {
@@ -209,19 +175,6 @@ func TestClient_ExecutePolicy(t *testing.T) {
 	})
 	assert.NotNil(t, resp)
 	assert.True(t, resp.Passed)
-}
-
-type MockRegistry struct{}
-
-func (m MockRegistry) VerifyProvider(_ context.Context, _, _, _ string) bool {
-	return true
-}
-func (m MockRegistry) GetProvider(_ context.Context, organization, providerName, providerVersion string) (registry.ProviderDetails, error) {
-	return registry.ProviderDetails{
-		Name:         providerName,
-		Version:      providerVersion,
-		Organization: organization,
-	}, nil
 }
 
 const testConfig = `cloudquery {
