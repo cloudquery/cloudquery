@@ -43,14 +43,14 @@ const testPolicy = `policy "aws-cis-v1.3.0" {
 
 func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser(nil)
-	policyModuleWrapper, diags := p.LoadPoliciesFromHCL("policy.hcl", []byte(testPolicy))
+	policiesRaw, diags := p.loadFromSource("policy.hcl", []byte(testPolicy), SourceHCL)
 	if diags != nil && diags.HasErrors() {
 		t.Fatal(diags.Errs())
 	}
-	assert.Nil(t, diags)
+	policiesWrapper, diags := p.DecodePolicies(policiesRaw, diags)
 
 	// Only one module should be defined for this test case
-	assert.Equal(t, 1, len(policyModuleWrapper.Policies))
+	assert.Equal(t, 1, len(policiesWrapper.Policies))
 
 	// Define expected struct
 	exp := &Policy{
@@ -110,5 +110,5 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		},
 	}
 
-	assert.EqualValues(t, exp, policyModuleWrapper.Policies[0])
+	assert.EqualValues(t, exp, policiesWrapper.Policies[0])
 }

@@ -3,6 +3,7 @@ package policy
 import (
 	"context"
 	"fmt"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -28,13 +29,19 @@ const (
 	cloudQueryOrg = "cloudquery"
 	gitHubUrl     = "https://github.com/"
 
-	defaultLocalSubPath = ".cq/policy/"
+	defaultLocalSubPath   = ".cq/policy/"
+	defaultPolicyFileName = "policy"
 )
+
+var defaultSupportedPolicyExtensions = []string{"hcl", "json"}
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	// Pointer to the client config
 	config *config.Config
+
+	// Instance of a database connection pool
+	pool *pgxpool.Pool
 }
 
 var (
@@ -74,11 +81,12 @@ type Manager interface {
 }
 
 // NewManager returns the manager instance.
-func NewManager(c *config.Config) Manager {
+func NewManager(c *config.Config, pool *pgxpool.Pool) Manager {
 	// Singleton instantiation
 	once.Do(func() {
 		managerInstance = &ManagerImpl{
 			config: c,
+			pool:   pool,
 		}
 	})
 	return managerInstance
@@ -208,6 +216,52 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) error {
 	// Checkout policy repository tag
 	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
 		return fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+	}
+
+	// Make sure policy file exists
+	var policyFilePath string
+	for _, extensionName := range defaultSupportedPolicyExtensions {
+		currPolicyFile := filepath.Join(repoFolder, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
+		if _, err := osFs.Stat(currPolicyFile); err == nil {
+			policyFilePath = currPolicyFile
+			break
+		}
+	}
+	if policyFilePath == "" {
+		return fmt.Errorf("failed to find policy file; policy.%#v not found", defaultSupportedPolicyExtensions)
+	}
+
+	// Read policy file
+	parser := config.NewParser(nil)
+	policiesRaw, diags := parser.LoadHCLFile(policyFilePath)
+	if diags != nil && diags.HasErrors() {
+		return fmt.Errorf("failed to load policy file: %#v", diags.Errs())
+	}
+	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags)
+	if diagsDecode != nil && diagsDecode.HasErrors() {
+		return fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Errs())
+	}
+
+	// Acquire connection from the connection pool
+	conn, err := m.pool.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
+	}
+	defer conn.Release()
+
+	// Iterate all policies
+	var subLevelPath string
+	for _, policy := range policies.Policies {
+		// Set sub level path
+		subLevelPath = filepath.Join(subLevelPath, policy.Name)
+
+		// Check if the user wants to only execute a specific sub-policy/view/query
+		switch {
+		case p.SubPath != "" && !strings.HasPrefix(p.SubPath, subLevelPath){
+			// Sub path was defined but this is not the right leaf
+			continue
+		}
+		}
 	}
 
 	return nil
