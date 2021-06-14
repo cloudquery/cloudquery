@@ -291,6 +291,19 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return m.DownloadPolicy(ctx, policy)
 }
 
+func (c Client) RunPolicy(ctx context.Context, args []string, subpath string) error {
+	c.Logger.Info("Running policy", "args", args)
+	m := policy.NewManager(c.config)
+
+	// Parse input args
+	policy, err := m.ParsePolicyHubPath(args, subpath)
+	if err != nil {
+		return err
+	}
+	c.Logger.Debug("Parsed policy run input arguments", "policy", policy)
+	return m.RunPolicy(ctx, policy)
+}
+
 func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {
 
 	conn, err := c.pool.Acquire(ctx)
