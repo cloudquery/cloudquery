@@ -47,5 +47,5 @@ jobs:
       run: go build -v .
 
     - name: Test
-      run: go test -v ./... --tags=integration
+      run: go test -v $(go list ./... | grep -v /resources/integration_tests)
     

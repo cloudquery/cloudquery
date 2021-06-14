@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+// todo implement tags
 func DirectconnectGateways() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_directconnect_gateways",

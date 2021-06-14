@@ -17,7 +17,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func iamGroupPolicies() *schema.Table {
+func IamGroupPolicies() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_group_policies",
 		Resolver:     fetchIamGroupPolicies,
