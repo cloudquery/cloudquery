@@ -67,6 +67,8 @@ func init() {
 	}
 	rootCmd.PersistentFlags().String("plugin-dir", workingDir, "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	rootCmd.PersistentFlags().String("policy-dir", workingDir, "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
+	rootCmd.PersistentFlags().String("plugin-dir", ".", "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
+	rootCmd.PersistentFlags().String("policy-dir", ".", "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))

@@ -6,8 +6,12 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
+
+	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/hashicorp/go-version"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
@@ -64,6 +68,9 @@ type Manager interface {
 
 	// DownloadPolicy downloads the given policy.
 	DownloadPolicy(ctx context.Context, p *Policy) error
+
+	// RunPolicy runs the given policy.
+	RunPolicy(ctx context.Context, p *Policy) error
 }
 
 // NewManager returns the manager instance.
@@ -158,17 +165,17 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 
 	// Clone the repository
 	repoPath := filepath.Join(policyOrgFolder, p.Repository)
-	r, err := git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
+	_, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
 	switch err {
 	case nil:
 	case git.ErrRepositoryAlreadyExists:
-		r, err = git.PlainOpen(repoPath)
+		_, err = git.PlainOpen(repoPath)
 		if err != nil {
 			return fmt.Errorf("failed to open repository: %s", err.Error())
 		}
 	case git.ErrBranchNotFound:
 		cloneOptions.ReferenceName = plumbing.NewBranchReferenceName("master")
-		r, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
+		_, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
 		if err != nil && err != git.ErrRepositoryAlreadyExists {
 			return fmt.Errorf("failed to clone repository: %s", err.Error())
 		}
@@ -176,29 +183,33 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 		return fmt.Errorf("failed to clone repository: %s", err.Error())
 	}
 
-	// Switch to version tag if provided
-	if p.Version != "" {
-		ref, err := r.Tag(p.Version)
-		if err != nil {
-			return fmt.Errorf("failed to find provided tag (%s): %s", p.Version, err.Error())
-		}
+	return nil
+}
 
-		// Get working tree
-		workTree, err := r.Worktree()
-		if err != nil {
-			return fmt.Errorf("failed to get work tree: %s", err.Error())
-		}
+// RunPolicy runs the given policy.
+func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) error {
+	// Check if given policy exists in our policy folder
+	osFs := file.NewOsFs()
+	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
+	repoFolder := filepath.Join(m.config.CloudQuery.PolicyDirectory, defaultLocalSubPath, orgPolicyStr)
+	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
+		return fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
+	}
 
-		// Checkout given tag
-		if err := workTree.Checkout(&git.CheckoutOptions{
-			Hash:   ref.Hash(),
-			Create: false,
-			Force:  true,
-			Keep:   false,
-		}); err != nil {
-			return fmt.Errorf("failed to checkout tag (%s): %s", p.Version, err.Error())
+	// If repository path was specified, also check if that exists
+	policyFolder := repoFolder
+	if p.RepositoryPath != "" {
+		policyFolder = filepath.Join(repoFolder, p.RepositoryPath)
+		if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
+			return fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
 		}
 	}
+
+	// Checkout policy repository tag
+	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
+		return fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+	}
+
 	return nil
 }
 
@@ -216,4 +227,93 @@ func (p *Policy) getGitHubURL() (string, error) {
 		return "", err
 	}
 	return base.ResolveReference(org).ResolveReference(repo).String(), nil
+}
+
+func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
+	// Open git repo folder
+	r, err := git.PlainOpen(repoFolder)
+	if err != nil {
+		return fmt.Errorf("failed to open policy repository folder: %s", err.Error())
+	}
+
+	// Make sure we have the correct version checked out before we proceed.
+	// NOTE: This is not "Thread-Safe" e.g. two threads or processes could interfere here and the output
+	// could be unpredictable. A better solution would be to create a local lock file that prevents other
+	// threads to execute at the same time.
+	checkoutVersion := p.Version
+	if checkoutVersion == "" {
+		// Create a new map that stores the version->tag reference
+		versionTagMap := make(map[*version.Version]string)
+
+		// List all annotated tags
+		tagRefs, err := r.Tags()
+		if err != nil {
+			return fmt.Errorf("failed to list annotated repository tags: %s", err.Error())
+		}
+		_ = tagRefs.ForEach(func(reference *plumbing.Reference) error {
+			// Try to convert tag to a version
+			v, err := version.NewSemver(reference.Name().String())
+			if err != nil {
+				// Ignore this tag if it is not a valid version
+				return nil
+			}
+
+			// Add to our data structure
+			versionTagMap[v] = reference.Name().String()
+			return nil
+		})
+
+		// List all lightweight tags
+		tags, err := r.TagObjects()
+		if err != nil {
+			return fmt.Errorf("failed to list lightweight repository tags: %s", err.Error())
+		}
+		_ = tags.ForEach(func(tag *object.Tag) error {
+			// Try to convert tag to a version
+			v, err := version.NewSemver(tag.Name)
+			if err != nil {
+				// Ignore this tag if it is not a valid version
+				return nil
+			}
+
+			// Add to our data structures
+			versionTagMap[v] = tag.Name
+			return nil
+		})
+
+		// Sort versions
+		var sortedVersions version.Collection
+		for v := range versionTagMap {
+			sortedVersions = append(sortedVersions, v)
+		}
+		sort.Sort(sortedVersions)
+		if len(sortedVersions) != 0 {
+			// TODO: Find the latest version for the used provider
+			checkoutVersion = versionTagMap[sortedVersions[0]]
+		}
+	}
+
+	// Get the tag reference
+	ref, err := r.Tag(checkoutVersion)
+	if err != nil {
+		return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
+	}
+
+	// Get working tree
+	workTree, err := r.Worktree()
+	if err != nil {
+		return fmt.Errorf("failed to get work tree: %s", err.Error())
+	}
+
+	// Checkout given tag
+	if err := workTree.Checkout(&git.CheckoutOptions{
+		Hash:   ref.Hash(),
+		Create: false,
+		Force:  true,
+		Keep:   false,
+	}); err != nil {
+		return fmt.Errorf("failed to checkout tag (%s): %s", checkoutVersion, err.Error())
+	}
+
+	return nil
 }

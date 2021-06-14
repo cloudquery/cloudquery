@@ -105,6 +105,23 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
+func (c Client) RunPolicy(ctx context.Context, args []string, subpolicy string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
+	err := c.c.RunPolicy(ctx, args, subpolicy)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
+		return err
+	}
+	// sleep some extra 300 milliseconds for progress refresh
+	if ui.IsTerminal() {
+		time.Sleep(300 * time.Millisecond)
+		c.updater.Wait()
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished policy run...\n\n")
+	return nil
+}
+
 func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
 	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
