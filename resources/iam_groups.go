@@ -55,7 +55,7 @@ func IamGroups() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			iamGroupPolicies(),
+			IamGroupPolicies(),
 		},
 	}
 }

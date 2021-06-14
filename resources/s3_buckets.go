@@ -487,16 +487,19 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		return err
+		if !errors.As(err, &ae) || ae.ErrorCode() != "NoSuchTagSet" {
+			return err
+		}
 	}
-	tags := make(map[string]*string, len(taggingOutput.TagSet))
-	for _, t := range taggingOutput.TagSet {
-		tags[*t.Key] = t.Value
+	if taggingOutput != nil {
+		tags := make(map[string]*string, len(taggingOutput.TagSet))
+		for _, t := range taggingOutput.TagSet {
+			tags[*t.Key] = t.Value
+		}
+		if err := resource.Set("tags", tags); err != nil {
+			return err
+		}
 	}
-	if err := resource.Set("tags", tags); err != nil {
-		return err
-	}
-
 	return nil
 }
 

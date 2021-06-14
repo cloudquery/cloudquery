@@ -812,8 +812,11 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			funcResponse, err := svc.GetFunction(ctx, &getFunctionInput, func(options *lambda.Options) {
 				options.Region = c.Region
 			})
+			var ae smithy.APIError
 			if err != nil {
-				return err
+				if !errors.As(err, &ae) || ae.ErrorCode() != "ResourceNotFoundException" {
+					return err
+				}
 			}
 			res <- funcResponse
 		}

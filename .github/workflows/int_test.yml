@@ -1,0 +1,53 @@
+name: integration_test
+
+on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  postgres:
+    strategy:
+      matrix:
+        dbversion: ['postgres:latest']
+        go: ['1.15']
+        platform: [ubuntu-latest] # can not run in macOS and widnowsOS
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.14
+      - name: Set up terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: Check terraform
+        run: |
+          whereis terraform
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+      - name: Build
+        run: go build -v .
+      - name: Integration Test
+        run: go test -v -p 20 ./resources/integration_tests
+

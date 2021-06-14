@@ -5,6 +5,8 @@ run:
     - docs
     - client/mocks
   timeout: 3m
+  build-tags:
+    - all
 
 linters-settings:
   errcheck:

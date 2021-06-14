@@ -23,3 +23,5 @@ cq-provider-aws
 .swp
 
 __debug_bin
+#test directories
+**/.test/*
