@@ -4,6 +4,7 @@ package convert
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/hcl/v2/hclparse"
 	"strings"
 
 	hcl "github.com/hashicorp/hcl/v2"
@@ -56,8 +57,11 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 		return nil, fmt.Errorf("convert file body to body type")
 	}
 
+	fileParser := hclparse.NewParser()
+	file, _ := fileParser.ParseHCLFile(body.SrcRange.Filename)
+
 	c := converter{
-		bytes:   nil,
+		bytes:   file.Bytes,
 		options: options,
 	}
 
