@@ -18,9 +18,13 @@ builds:
       - darwin
     goarch:
       - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
 archives:
   -
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     replacements:
       darwin: Darwin
       linux: Linux
@@ -30,7 +34,7 @@ archives:
     format: binary
   -
     id: homebrew
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     replacements:
       darwin: Darwin
       linux: Linux

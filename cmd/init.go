@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
@@ -17,6 +16,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -32,8 +32,11 @@ var (
 
 func Initialize(providers []string) {
 	fs := afero.NewOsFs()
-	if info, _ := fs.Stat("config.hcl"); info != nil {
-		ui.ColorizedOutput(ui.ColorError, "Error: Config file already exists")
+
+	configPath := viper.GetString("configPath")
+
+	if info, _ := fs.Stat(configPath); info != nil {
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists", configPath)
 		return
 	}
 	f := hclwrite.NewEmptyFile()
@@ -42,7 +45,6 @@ func Initialize(providers []string) {
 	for i, p := range providers {
 		requiredProviders[i] = &config.RequiredProvider{
 			Name:    p,
-			Source:  fmt.Sprintf("cloudquery/cq-provider-%s", p),
 			Version: "latest",
 		}
 	}
@@ -95,6 +97,6 @@ func Initialize(providers []string) {
 		buffer.WriteString("\n")
 	}
 	formattedData := hclwrite.Format(buffer.Bytes())
-	_ = afero.WriteFile(fs, "config.hcl", formattedData, os.ModePerm)
-	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", "config.hcl")
+	_ = afero.WriteFile(fs, configPath, formattedData, 0644)
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configPath)
 }

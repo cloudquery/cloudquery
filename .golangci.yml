@@ -27,7 +27,6 @@ linters:
     - gosimple
     - govet
     - ineffassign
-    - interfacer
     - misspell
     - nakedret
     - prealloc

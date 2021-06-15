@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -89,12 +90,20 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 	return file.Body, diags
 }
 
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
-	body, diags := p.loadFromSource(name, data, SourceHCL)
+func (p *Parser) loadConfigFromSource(name string, data []byte, source SourceType) (*Config, hcl.Diagnostics) {
+	body, diags := p.loadFromSource(name, data, source)
 	if body == nil {
 		return nil, diags
 	}
 	return p.decodeConfig(body, diags)
+}
+
+func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
+	return p.loadConfigFromSource(name, data, SourceHCL)
+}
+
+func (p *Parser) LoadConfigFromJson(name string, data []byte) (*Config, hcl.Diagnostics) {
+	return p.loadConfigFromSource(name, data, SourceJSON)
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
@@ -122,8 +131,14 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if dsn := viper.GetString("dsn"); dsn != "" {
 				config.CloudQuery.Connection.DSN = dsn
 			}
-			if dir := viper.GetString("plugin-dir"); dir != "" {
-				config.CloudQuery.PluginDirectory = dir
+			if dir := viper.GetString("plugin-dir"); dir != "." {
+				if dir == "." {
+					if dir, err := os.Getwd(); err == nil {
+						config.CloudQuery.PluginDirectory = dir
+					}
+				} else {
+					config.CloudQuery.PluginDirectory = dir
+				}
 			}
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block)

@@ -3,6 +3,9 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/spf13/afero"
 
@@ -21,7 +24,7 @@ type PolicyResult struct {
 func createViews(ctx context.Context, conn *pgxpool.Conn, views []config.PolicyView) error {
 	log.Info().Int("count", len(views)).Msg("Creating views")
 	for _, view := range views {
-		if _, err := conn.Exec(ctx, "DROP VIEW IF EXISTS %s", view.Name); err != nil {
+		if _, err := conn.Exec(ctx, fmt.Sprintf("DROP VIEW IF EXISTS %s", strconv.Quote(view.Name))); err != nil {
 			return err
 		}
 		log.Info().Str("name", view.Name).Msg("Creating view")
@@ -62,14 +65,15 @@ func executePolicyQuery(ctx context.Context, conn *pgxpool.Conn, query config.Po
 	return result, nil
 }
 
-func createPolicyOutput(output string, result *PolicyExecutionResult) error {
-	f, err := afero.NewOsFs().Open(output)
-	defer func() {
-		_ = f.Close()
-	}()
+func createPolicyOutput(outputPath string, result *PolicyExecutionResult) error {
+	fs := afero.NewOsFs()
+	f, err := fs.OpenFile(outputPath, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
+	defer func() {
+		_ = f.Close()
+	}()
 
 	data, err := json.Marshal(&result)
 	if err != nil {

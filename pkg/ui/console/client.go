@@ -9,7 +9,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6/decor"
@@ -35,15 +34,15 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
 	})
 	opts = append(opts, func(c *client.Client) {
-		c.Hub = registry.NewRegistryHub(registry.CloudQueryRegistryURl, func(h *registry.Hub) {
-			if ui.IsTerminal() {
-				h.ProgressUpdater = progressUpdater
-			}
-			h.NoVerify = viper.GetBool("no-verify")
-			h.PluginDirectory = cfg.CloudQuery.PluginDirectory
-		})
+		if ui.IsTerminal() {
+			c.HubProgressUpdater = progressUpdater
+		}
+		c.Providers = cfg.CloudQuery.Providers
+		c.NoVerify = viper.GetBool("no-verify")
+		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
-	c, err := client.New(cfg, opts...)
+	c, err := client.New(ctx, opts...)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client.\n\n")
 		return nil, err
@@ -53,7 +52,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-	err := c.c.Initialize(ctx)
+	err := c.c.DownloadProviders(ctx)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
@@ -93,9 +92,9 @@ func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output str
 	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
 	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
 		if passed {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-120s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
 		} else {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-120s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
+			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
 		}
 	}})
 	if err != nil {

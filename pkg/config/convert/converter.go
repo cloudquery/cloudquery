@@ -52,10 +52,8 @@ func File(file *hcl.File, options Options) ([]byte, error) {
 // Body takes the contents of an HCL Body, and converts
 // them into a JSON representation of the HCL file.
 func Body(hclBody hcl.Body, options Options) ([]byte, error) {
-	body, ok := hclBody.(*hclsyntax.Body)
-	if !ok {
-		return nil, fmt.Errorf("convert file body to body type")
-	}
+	var out jsonObj
+	var err error
 
 	fileParser := hclparse.NewParser()
 	file, _ := fileParser.ParseHCLFile(body.SrcRange.Filename)
@@ -65,7 +63,18 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 		options: options,
 	}
 
-	out, err := c.convertBody(body)
+	body, ok := hclBody.(*hclsyntax.Body)
+	if !ok {
+		// body is hcl.json and cannot converted to hclsyntax
+		attrs, diags := hclBody.JustAttributes()
+		if diags != nil {
+			return nil, fmt.Errorf("convert body: %w", diags)
+		}
+		out, err = c.convertAttributes(attrs)
+	} else {
+		out, err = c.convertBody(body)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("convert body: %w", err)
 	}
@@ -182,6 +191,19 @@ func (c *converter) convertBlock(block *hclsyntax.Block, out jsonObj) error {
 	}
 
 	return nil
+}
+
+func (c *converter) convertAttributes(attributes hcl.Attributes) (jsonObj, error) {
+	var out = make(jsonObj)
+
+	for _, attr := range attributes {
+		val, err := attr.Expr.Value(&evalContext)
+		if err != nil {
+			return nil, fmt.Errorf("convert expression: %w", err)
+		}
+		out[attr.Name] = ctyjson.SimpleJSONValue{Value: val}
+	}
+	return out, nil
 }
 
 func (c *converter) convertExpression(expr hclsyntax.Expression) (interface{}, error) {
