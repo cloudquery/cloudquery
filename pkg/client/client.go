@@ -39,13 +39,6 @@ type ExecutePolicyRequest struct {
 	OutputPath string
 }
 
-type PolicyExecutionResult struct {
-	// True if all policies have passed
-	Passed bool
-	// Map of all query result sets
-	Results map[string]*PolicyResult
-}
-
 type FetchUpdate struct {
 	Provider string
 	Version  string
@@ -283,12 +276,12 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	m := policy.NewManager(c.config, c.pool)
 
 	// Parse input args
-	policy, err := m.ParsePolicyHubPath(args, "")
+	p, err := m.ParsePolicyHubPath(args, "")
 	if err != nil {
 		return err
 	}
-	c.Logger.Debug("Parsed policy download input arguments", "policy", policy)
-	return m.DownloadPolicy(ctx, policy)
+	c.Logger.Debug("Parsed policy download input arguments", "policy", p)
+	return m.DownloadPolicy(ctx, p)
 }
 
 func (c Client) RunPolicy(ctx context.Context, args []string, subpath string) error {
@@ -296,12 +289,12 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subpath string) er
 	m := policy.NewManager(c.config, c.pool)
 
 	// Parse input args
-	policy, err := m.ParsePolicyHubPath(args, subpath)
+	p, err := m.ParsePolicyHubPath(args, subpath)
 	if err != nil {
 		return err
 	}
-	c.Logger.Debug("Parsed policy run input arguments", "policy", policy)
-	return m.RunPolicy(ctx, policy)
+	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
+	return m.RunPolicy(ctx, p)
 }
 
 func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {

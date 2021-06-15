@@ -3,13 +3,14 @@ package policy
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"net/url"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
+
+	"github.com/jackc/pgx/v4/pgxpool"
 
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/hashicorp/go-version"
@@ -77,7 +78,7 @@ type Manager interface {
 	DownloadPolicy(ctx context.Context, p *Policy) error
 
 	// RunPolicy runs the given policy.
-	RunPolicy(ctx context.Context, p *Policy) error
+	RunPolicy(ctx context.Context, p *Policy) (*ExecutionResult, error)
 }
 
 // NewManager returns the manager instance.
@@ -195,13 +196,13 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 }
 
 // RunPolicy runs the given policy.
-func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) error {
+func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) (*ExecutionResult, error) {
 	// Check if given policy exists in our policy folder
 	osFs := file.NewOsFs()
 	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
 	repoFolder := filepath.Join(m.config.CloudQuery.PolicyDirectory, defaultLocalSubPath, orgPolicyStr)
 	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
-		return fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
+		return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
 	}
 
 	// If repository path was specified, also check if that exists
@@ -209,62 +210,152 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) error {
 	if p.RepositoryPath != "" {
 		policyFolder = filepath.Join(repoFolder, p.RepositoryPath)
 		if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
-			return fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
+			return nil, fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
 		}
 	}
 
 	// Checkout policy repository tag
 	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
-		return fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+		return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
 	}
 
 	// Make sure policy file exists
 	var policyFilePath string
 	for _, extensionName := range defaultSupportedPolicyExtensions {
-		currPolicyFile := filepath.Join(repoFolder, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
+		currPolicyFile := filepath.Join(policyFolder, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
 		if _, err := osFs.Stat(currPolicyFile); err == nil {
 			policyFilePath = currPolicyFile
 			break
 		}
 	}
 	if policyFilePath == "" {
-		return fmt.Errorf("failed to find policy file; policy.%#v not found", defaultSupportedPolicyExtensions)
+		return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, policyFolder)
 	}
 
 	// Read policy file
 	parser := config.NewParser(nil)
 	policiesRaw, diags := parser.LoadHCLFile(policyFilePath)
 	if diags != nil && diags.HasErrors() {
-		return fmt.Errorf("failed to load policy file: %#v", diags.Errs())
+		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Errs())
 	}
 	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags)
 	if diagsDecode != nil && diagsDecode.HasErrors() {
-		return fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Errs())
+		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Errs())
 	}
 
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
+		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
 	}
 	defer conn.Release()
 
-	// Iterate all policies
-	var subLevelPath string
-	for _, policy := range policies.Policies {
-		// Set sub level path
-		subLevelPath = filepath.Join(subLevelPath, policy.Name)
+	// Prepare execution
+	executor := NewExecutor(conn)
+	execResults := &ExecutionResult{
+		Passed:  true,
+		Results: make(map[string]*QueryResult),
+	}
 
-		// Check if the user wants to only execute a specific sub-policy/view/query
-		switch {
-		case p.SubPath != "" && !strings.HasPrefix(p.SubPath, subLevelPath){
-			// Sub path was defined but this is not the right leaf
-			continue
+	// Traverse all policies recursively
+	policyMap := make(map[string]*config.Policy)
+	policyMap = traversePolicies(policies.Policies, "", policyMap)
+
+	// No sub path provided. Execute everything.
+	if p.SubPath == "" {
+		for _, policy := range policyMap {
+			// Execute policy
+			results, err := executor.ExecutePolicy(ctx, policy)
+			if err != nil {
+				return nil, err
+			}
+
+			// Collect results
+			collectExecutionResults(execResults, results...)
 		}
+		return execResults, nil
+	}
+
+	// If we are here, the user only wants to execute a sub policy/view/query so we have to
+	// find the corresponding element.
+
+	// If the given path points directly to a sub policy
+	if executePolicy, ok := policyMap[p.SubPath]; ok {
+		// Execute policy
+		results, err := executor.ExecutePolicy(ctx, executePolicy)
+		if err != nil {
+			return nil, err
+		}
+
+		// Make sure we also execute sub policies from this policy
+		for _, subPolicy := range executePolicy.Policies {
+			subPolicyResults, err := executor.ExecutePolicy(ctx, subPolicy)
+			if err != nil {
+				return nil, err
+			}
+			results = append(results, subPolicyResults...)
+		}
+
+		// Collect results
+		collectExecutionResults(execResults, results...)
+		return execResults, nil
+	}
+
+	// Must be a query so get the policy path and the last element
+	pathSplit := strings.Split(p.SubPath, pathDelimiter)
+	if len(pathSplit) <= 1 {
+		// Sub path is malformed
+		return nil, fmt.Errorf("malformed sub path: %s", p.SubPath)
+	}
+
+	// Get the policy path and last element
+	policyPath := pathSplit[len(pathSplit)-2]
+	elementName := pathSplit[len(pathSplit)-1]
+
+	// Get query parent policy
+	parentPolicy, ok := policyMap[policyPath]
+	if !ok {
+		return nil, fmt.Errorf("cannot find sub query parent policy %s in %s", policyPath, p.SubPath)
+	}
+
+	for _, query := range parentPolicy.Queries {
+		if query.Name == elementName {
+			// Execute query
+			res, err := executor.ExecuteQuery(ctx, query)
+			if err != nil {
+				return nil, err
+			}
+
+			// Collect results
+			collectExecutionResults(execResults, res)
+			return execResults, nil
 		}
 	}
 
-	return nil
+	return nil, fmt.Errorf("cannot find sub query %s in %s", elementName, p.SubPath)
+}
+
+// traversePolicies is a recursive function that traverses p until all policies are resolved.
+// All traversed policies gets stored into m where the policy level is used as a key.
+func traversePolicies(p []*config.Policy, levelPath string, m map[string]*config.Policy) map[string]*config.Policy {
+	for id, policy := range p {
+		// Add current level to level path
+		levelPath = strings.ToLower(filepath.Join(levelPath, policy.Name))
+
+		// Add policy to map
+		m[levelPath] = p[id]
+
+		// Check if this policy has sub policies
+		if len(policy.Policies) > 0 {
+			newM := traversePolicies(policy.Policies, levelPath, m)
+
+			// Merge maps
+			for k, v := range newM {
+				m[k] = v
+			}
+		}
+	}
+	return m
 }
 
 func (p *Policy) getGitHubURL() (string, error) {
@@ -370,4 +461,15 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 	}
 
 	return nil
+}
+
+// collectExecutionResults collects all query results and adds them to the
+// execution results struct.
+func collectExecutionResults(execResult *ExecutionResult, results ...*QueryResult) {
+	for _, res := range results {
+		if !res.Passed {
+			execResult.Passed = false
+		}
+		execResult.Results[res.Name] = res
+	}
 }

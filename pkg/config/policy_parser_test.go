@@ -100,11 +100,9 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 			{
 				Name:        "aws-cis-view",
 				Description: "AWS CIS View",
-				Queries: []*Query{
-					{
-						Name:  "test-query-view",
-						Query: "SELECT * FROM my.view",
-					},
+				Query: &Query{
+					Name:  "test-query-view",
+					Query: "SELECT * FROM my.view",
 				},
 			},
 		},

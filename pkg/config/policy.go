@@ -18,7 +18,7 @@ type View struct {
 	Name        string `hcl:"name,label"`
 	Description string `hcl:"description,optional"`
 
-	Queries []*Query `hcl:"query,block"`
+	Query *Query `hcl:"query,block"`
 }
 
 type Configuration struct {
