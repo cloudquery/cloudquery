@@ -4,10 +4,10 @@ package convert
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/hcl/v2/hclparse"
 	"strings"
 
 	hcl "github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/zclconf/go-cty/cty"
 	ctyconvert "github.com/zclconf/go-cty/cty/convert"
@@ -55,6 +55,8 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 	var out jsonObj
 	var err error
 
+	body, ok := hclBody.(*hclsyntax.Body)
+
 	fileParser := hclparse.NewParser()
 	file, _ := fileParser.ParseHCLFile(body.SrcRange.Filename)
 
@@ -63,7 +65,6 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 		options: options,
 	}
 
-	body, ok := hclBody.(*hclsyntax.Body)
 	if !ok {
 		// body is hcl.json and cannot converted to hclsyntax
 		attrs, diags := hclBody.JustAttributes()
