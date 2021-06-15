@@ -1,4 +1,6 @@
 FROM alpine:latest
-ENTRYPOINT ["/app/cloudquery"]
+
 WORKDIR /app
 COPY cloudquery .
+
+ENTRYPOINT ["/app/cloudquery"]
