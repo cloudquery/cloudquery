@@ -12,32 +12,38 @@ import (
 func WafSubscribedRuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_waf_subscribed_rule_groups",
+		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafSubscribedRuleGroups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "metric_name",
-				Type: schema.TypeString,
+				Name:        "metric_name",
+				Description: "A friendly name or description for the metrics for this RuleGroup",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "A friendly name or description of the RuleGroup",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "rule_group_id",
-				Type: schema.TypeString,
+				Name:        "rule_group_id",
+				Description: "A unique identifier for a RuleGroup.  ",
+				Type:        schema.TypeString,
 			},
 		},
 	}

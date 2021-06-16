@@ -15,6 +15,7 @@ import (
 func SnsTopics() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_sns_topics",
+		Description:          "A wrapper type for the topic's Amazon Resource Name (ARN).",
 		Resolver:             fetchSnsTopics,
 		Multiplex:            client.AccountRegionMultiplex,
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
@@ -22,58 +23,71 @@ func SnsTopics() *schema.Table {
 		PostResourceResolver: resolveTopicAttributes,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "owner",
-				Type: schema.TypeString,
+				Name:        "owner",
+				Description: "The AWS account ID of the topic's owner.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "policy",
-				Type: schema.TypeJSON,
+				Name:        "policy",
+				Description: "The JSON serialization of the topic's access control policy.",
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "delivery_policy",
-				Type: schema.TypeJSON,
+				Name:        "delivery_policy",
+				Description: "The JSON serialization of the topic's delivery policy.",
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "display_name",
-				Type: schema.TypeString,
+				Name:        "display_name",
+				Description: "The human-readable name used in the From field for notifications to email and email-json endpoints.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "subscriptions_confirmed",
-				Type: schema.TypeBigInt,
+				Name:        "subscriptions_confirmed",
+				Description: "The number of confirmed subscriptions for the topic.",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name: "subscriptions_deleted",
-				Type: schema.TypeBigInt,
+				Name:        "subscriptions_deleted",
+				Description: "The number of deleted subscriptions for the topic.",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name: "subscriptions_pending",
-				Type: schema.TypeBigInt,
+				Name:        "subscriptions_pending",
+				Description: "The number of subscriptions pending confirmation for the topic.",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name: "effective_delivery_policy",
-				Type: schema.TypeJSON,
+				Name:        "effective_delivery_policy",
+				Description: "The JSON serialization of the effective delivery policy, taking system defaults into account.",
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "fifo_topic",
-				Type: schema.TypeBool,
+				Name:        "fifo_topic",
+				Description: "When this is set to true, a FIFO topic is created.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "content_based_deduplication",
-				Type: schema.TypeBool,
+				Name:        "content_based_deduplication",
+				Description: "Enables content-based deduplication for FIFO topics.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "topic_arn",
-				Type: schema.TypeString,
+				Name:        "topic_arn",
+				Description: "The topic's ARN.",
+				Type:        schema.TypeString,
 			},
 		},
 	}
@@ -82,7 +96,7 @@ func SnsTopics() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	config := sns.ListTopicsInput{}

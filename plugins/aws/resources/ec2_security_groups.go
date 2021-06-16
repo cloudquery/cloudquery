@@ -13,285 +13,346 @@ import (
 func Ec2SecurityGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_security_groups",
+		Description:  "Describes a security group .",
 		Resolver:     fetchEc2SecurityGroups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "description",
-				Type: schema.TypeString,
+				Name:        "description",
+				Description: "A description of the security group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "group_id",
-				Type: schema.TypeString,
+				Name:        "group_id",
+				Description: "The ID of the security group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "group_name",
-				Type: schema.TypeString,
+				Name:        "group_name",
+				Description: "The name of the security group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "owner_id",
-				Type: schema.TypeString,
+				Name:        "owner_id",
+				Description: "The AWS account ID of the owner of the security group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveEc2securityGroupTags,
+				Name:        "tags",
+				Description: "Any tags assigned to the security group.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveEc2securityGroupTags,
 			},
 			{
-				Name: "vpc_id",
-				Type: schema.TypeString,
+				Name:        "vpc_id",
+				Description: "[VPC only] The ID of the VPC for the security group.",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_ec2_security_group_ip_permissions",
-				Resolver: fetchEc2SecurityGroupIpPermissions,
+				Name:        "aws_ec2_security_group_ip_permissions",
+				Description: "Describes a set of permissions for a security group rule.",
+				Resolver:    fetchEc2SecurityGroupIpPermissions,
 				Columns: []schema.Column{
 					{
-						Name:     "security_group_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "security_group_id",
+						Description: "Unique ID of aws_ec2_security_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "from_port",
-						Type: schema.TypeInt,
+						Name:        "from_port",
+						Description: "The start of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 type number.",
+						Type:        schema.TypeInt,
 					},
 					{
-						Name: "ip_protocol",
-						Type: schema.TypeString,
+						Name:        "ip_protocol",
+						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number (see Protocol Numbers (http://www.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "to_port",
-						Type: schema.TypeInt,
+						Name:        "to_port",
+						Description: "The end of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 code.",
+						Type:        schema.TypeInt,
 					},
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_ec2_security_group_ip_permission_ip_ranges",
-						Resolver: fetchEc2SecurityGroupIpPermissionIpRanges,
+						Name:        "aws_ec2_security_group_ip_permission_ip_ranges",
+						Description: "Describes an IPv4 range.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionIpRanges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permission_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permission_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "cidr_ip",
-								Type: schema.TypeString,
+								Name:        "cidr_ip",
+								Description: "The IPv4 CIDR range.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this IPv4 address range.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permission_ipv6_ranges",
-						Resolver: fetchEc2SecurityGroupIpPermissionIpv6Ranges,
+						Name:        "aws_ec2_security_group_ip_permission_ipv6_ranges",
+						Description: "[EC2-VPC only] Describes an IPv6 range.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionIpv6Ranges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permission_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permission_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "cidr_ipv6",
-								Type: schema.TypeString,
+								Name:        "cidr_ipv6",
+								Description: "The IPv6 CIDR range.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this IPv6 address range.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permission_prefix_list_ids",
-						Resolver: fetchEc2SecurityGroupIpPermissionPrefixListIds,
+						Name:        "aws_ec2_security_group_ip_permission_prefix_list_ids",
+						Description: "Describes a prefix list ID.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionPrefixListIds,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permission_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permission_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this prefix list ID.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "prefix_list_id",
-								Type: schema.TypeString,
+								Name:        "prefix_list_id",
+								Description: "The ID of the prefix.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permission_user_id_group_pairs",
-						Resolver: fetchEc2SecurityGroupIpPermissionUserIdGroupPairs,
+						Name:        "aws_ec2_security_group_ip_permission_user_id_group_pairs",
+						Description: "Describes a security group and AWS account ID pair.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionUserIdGroupPairs,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permission_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permission_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this user ID group pair.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "group_id",
-								Type: schema.TypeString,
+								Name:        "group_id",
+								Description: "The ID of the security group.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "group_name",
-								Type: schema.TypeString,
+								Name:        "group_name",
+								Description: "The name of the security group.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "peering_status",
-								Type: schema.TypeString,
+								Name:        "peering_status",
+								Description: "The status of a VPC peering connection, if applicable.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "user_id",
-								Type: schema.TypeString,
+								Name:        "user_id",
+								Description: "The ID of an AWS account.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "vpc_id",
-								Type: schema.TypeString,
+								Name:        "vpc_id",
+								Description: "The ID of the VPC for the referenced security group, if applicable.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "vpc_peering_connection_id",
-								Type: schema.TypeString,
+								Name:        "vpc_peering_connection_id",
+								Description: "The ID of the VPC peering connection, if applicable.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 				},
 			},
 			{
-				Name:     "aws_ec2_security_group_ip_permissions_egresses",
-				Resolver: fetchEc2SecurityGroupIpPermissionsEgresses,
+				Name:        "aws_ec2_security_group_ip_permissions_egresses",
+				Description: "Describes a set of permissions for a security group rule.",
+				Resolver:    fetchEc2SecurityGroupIpPermissionsEgresses,
 				Columns: []schema.Column{
 					{
-						Name:     "security_group_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "security_group_id",
+						Description: "Unique ID of aws_ec2_security_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "from_port",
-						Type: schema.TypeInt,
+						Name:        "from_port",
+						Description: "The start of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 type number.",
+						Type:        schema.TypeInt,
 					},
 					{
-						Name: "ip_protocol",
-						Type: schema.TypeString,
+						Name:        "ip_protocol",
+						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number (see Protocol Numbers (http://www.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "to_port",
-						Type: schema.TypeInt,
+						Name:        "to_port",
+						Description: "The end of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 code.",
+						Type:        schema.TypeInt,
 					},
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_ec2_security_group_ip_permissions_egress_ip_ranges",
-						Resolver: fetchEc2SecurityGroupIpPermissionsEgressIpRanges,
+						Name:        "aws_ec2_security_group_ip_permissions_egress_ip_ranges",
+						Description: "Describes an IPv4 range.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressIpRanges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permissions_egress_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permissions_egress_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "cidr_ip",
-								Type: schema.TypeString,
+								Name:        "cidr_ip",
+								Description: "The IPv4 CIDR range.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this IPv4 address range.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permissions_egress_ipv6_ranges",
-						Resolver: fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges,
+						Name:        "aws_ec2_security_group_ip_permissions_egress_ipv6_ranges",
+						Description: "[EC2-VPC only] Describes an IPv6 range.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permissions_egress_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permissions_egress_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "cidr_ipv6",
-								Type: schema.TypeString,
+								Name:        "cidr_ipv6",
+								Description: "The IPv6 CIDR range.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this IPv6 address range.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permissions_egress_prefix_list_ids",
-						Resolver: fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds,
+						Name:        "aws_ec2_security_group_ip_permissions_egress_prefix_list_ids",
+						Description: "Describes a prefix list ID.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permissions_egress_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permissions_egress_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this prefix list ID.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "prefix_list_id",
-								Type: schema.TypeString,
+								Name:        "prefix_list_id",
+								Description: "The ID of the prefix.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
 					{
-						Name:     "aws_ec2_security_group_ip_permissions_egress_user_group_pairs",
-						Resolver: fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs,
+						Name:        "aws_ec2_security_group_ip_permissions_egress_user_group_pairs",
+						Description: "Describes a security group and AWS account ID pair.",
+						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs,
 						Columns: []schema.Column{
 							{
-								Name:     "security_group_ip_permissions_egress_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "security_group_ip_permissions_egress_id",
+								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "description",
-								Type: schema.TypeString,
+								Name:        "description",
+								Description: "A description for the security group rule that references this user ID group pair.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "group_id",
-								Type: schema.TypeString,
+								Name:        "group_id",
+								Description: "The ID of the security group.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "group_name",
-								Type: schema.TypeString,
+								Name:        "group_name",
+								Description: "The name of the security group.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "peering_status",
-								Type: schema.TypeString,
+								Name:        "peering_status",
+								Description: "The status of a VPC peering connection, if applicable.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "user_id",
-								Type: schema.TypeString,
+								Name:        "user_id",
+								Description: "The ID of an AWS account.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "vpc_id",
-								Type: schema.TypeString,
+								Name:        "vpc_id",
+								Description: "The ID of the VPC for the referenced security group, if applicable.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "vpc_peering_connection_id",
-								Type: schema.TypeString,
+								Name:        "vpc_peering_connection_id",
+								Description: "The ID of the VPC peering connection, if applicable.",
+								Type:        schema.TypeString,
 							},
 						},
 					},
@@ -304,7 +365,7 @@ func Ec2SecurityGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	var config ec2.DescribeSecurityGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -318,7 +379,7 @@ func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, _ *sche
 	res <- response.SecurityGroups
 	return nil
 }
-func resolveEc2securityGroupTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveEc2securityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.SecurityGroup)
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
@@ -326,7 +387,7 @@ func resolveEc2securityGroupTags(_ context.Context, _ schema.ClientMeta, resourc
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2SecurityGroupIpPermissions(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroup, ok := parent.Item.(types.SecurityGroup)
 	if !ok {
 		return fmt.Errorf("not ec2 security group")
@@ -334,7 +395,7 @@ func fetchEc2SecurityGroupIpPermissions(_ context.Context, _ schema.ClientMeta, 
 	res <- securityGroup.IpPermissions
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionIpRanges(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermission, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission")
@@ -342,7 +403,7 @@ func fetchEc2SecurityGroupIpPermissionIpRanges(_ context.Context, _ schema.Clien
 	res <- securityGroupIpPermission.IpRanges
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionIpv6Ranges(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionIpv6Ranges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermission, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission")
@@ -350,7 +411,7 @@ func fetchEc2SecurityGroupIpPermissionIpv6Ranges(_ context.Context, _ schema.Cli
 	res <- securityGroupIpPermission.Ipv6Ranges
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionPrefixListIds(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionPrefixListIds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermission, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission")
@@ -358,7 +419,7 @@ func fetchEc2SecurityGroupIpPermissionPrefixListIds(_ context.Context, _ schema.
 	res <- securityGroupIpPermission.PrefixListIds
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionUserIdGroupPairs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionUserIdGroupPairs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermission, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission")
@@ -366,7 +427,7 @@ func fetchEc2SecurityGroupIpPermissionUserIdGroupPairs(_ context.Context, _ sche
 	res <- securityGroupIpPermission.UserIdGroupPairs
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionsEgresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionsEgresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroup, ok := parent.Item.(types.SecurityGroup)
 	if !ok {
 		return fmt.Errorf("not ec2 security group")
@@ -374,7 +435,7 @@ func fetchEc2SecurityGroupIpPermissionsEgresses(_ context.Context, _ schema.Clie
 	res <- securityGroup.IpPermissionsEgress
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionsEgressIpRanges(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionsEgressIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermissionEgress, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission egress")
@@ -382,7 +443,7 @@ func fetchEc2SecurityGroupIpPermissionsEgressIpRanges(_ context.Context, _ schem
 	res <- securityGroupIpPermissionEgress.IpRanges
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermissionEgress, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission egress")
@@ -390,7 +451,7 @@ func fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges(_ context.Context, _ sch
 	res <- securityGroupIpPermissionEgress.Ipv6Ranges
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermissionEgress, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission egress")
@@ -398,7 +459,7 @@ func fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds(_ context.Context, _ 
 	res <- securityGroupIpPermissionEgress.PrefixListIds
 	return nil
 }
-func fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	securityGroupIpPermissionEgress, ok := parent.Item.(types.IpPermission)
 	if !ok {
 		return fmt.Errorf("not ec2 security group ip permission egress")

@@ -13,69 +13,83 @@ import (
 func FsxBackups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_backups",
+		Description:  "A backup of an Amazon FSx file system.",
 		Resolver:     fetchFsxBackups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "backup_id",
-				Type: schema.TypeString,
+				Name:        "backup_id",
+				Description: "The ID of the backup.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "creation_time",
-				Type: schema.TypeTimestamp,
+				Name:        "creation_time",
+				Description: "The time when a particular backup was created.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "lifecycle",
-				Type: schema.TypeString,
+				Name:        "lifecycle",
+				Description: "The lifecycle status of the backup.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "type",
-				Type: schema.TypeString,
+				Name:        "type",
+				Description: "The type of the file system backup.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "directory_information_active_directory_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DirectoryInformation.ActiveDirectoryId"),
+				Name:        "directory_information_active_directory_id",
+				Description: "The ID of the AWS Managed Microsoft Active Directory instance to which the file system is joined.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DirectoryInformation.ActiveDirectoryId"),
 			},
 			{
-				Name:     "directory_information_domain_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DirectoryInformation.DomainName"),
+				Name:        "directory_information_domain_name",
+				Description: "The fully qualified domain name of the self-managed AD directory.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DirectoryInformation.DomainName"),
 			},
 			{
-				Name:     "failure_details_message",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FailureDetails.Message"),
+				Name:        "failure_details_message",
+				Description: "A message describing the backup creation failure.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FailureDetails.Message"),
 			},
 			{
-				Name: "kms_key_id",
-				Type: schema.TypeString,
+				Name:        "kms_key_id",
+				Description: "The ID of the AWS Key Management Service (AWS KMS) key used to encrypt the backup of the Amazon FSx file system's data at rest.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "progress_percent",
-				Type: schema.TypeInt,
+				Name:        "progress_percent",
+				Description: "The current percent of progress of an asynchronous task.",
+				Type:        schema.TypeInt,
 			},
 			{
-				Name:     "resource_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceARN"),
+				Name:        "resource_arn",
+				Description: "The Amazon Resource Name (ARN) for the backup resource.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ResourceARN"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveFsxBackupTags,
+				Name:        "tags",
+				Description: "Tags associated with a particular file system.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveFsxBackupTags,
 			},
 		},
 	}
@@ -109,5 +123,5 @@ func resolveFsxBackupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return resource.Set(c.Name, tags)
 }

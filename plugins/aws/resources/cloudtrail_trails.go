@@ -12,6 +12,7 @@ import (
 func CloudtrailTrails() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_cloudtrail_trails",
+		Description:          "The settings for a trail.",
 		Resolver:             fetchCloudtrailTrails,
 		Multiplex:            client.AccountRegionMultiplex,
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
@@ -19,14 +20,16 @@ func CloudtrailTrails() *schema.Table {
 		PostResourceResolver: postCloudtrailTrailResolver,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:     "cloudwatch_logs_log_group_name",
@@ -34,161 +37,169 @@ func CloudtrailTrails() *schema.Table {
 				Resolver: resolveCloudtrailTrailCloudwatchLogsLogGroupName,
 			},
 			{
-				Name: "is_logging",
-				Type: schema.TypeBool,
+				Name:        "is_logging",
+				Description: " Whether the CloudTrail is currently logging AWS API calls.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "latest_cloud_watch_logs_delivery_error",
-				Type: schema.TypeString,
+				Name:        "latest_cloud_watch_logs_delivery_error",
+				Description: "Displays any CloudWatch Logs error that CloudTrail encountered when attempting to deliver logs to CloudWatch Logs.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "latest_cloud_watch_logs_delivery_time",
-				Type: schema.TypeTimestamp,
+				Name:        "latest_cloud_watch_logs_delivery_time",
+				Description: "Displays the most recent date and time when CloudTrail delivered logs to CloudWatch Logs.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_delivery_attempt_succeeded",
-				Type: schema.TypeString,
+				Name:        "latest_delivery_error",
+				Description: "Displays any Amazon S3 error that CloudTrail encountered when attempting to deliver log files to the designated bucket.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "latest_delivery_attempt_time",
-				Type: schema.TypeString,
+				Name:        "latest_delivery_time",
+				Description: "Specifies the date and time that CloudTrail last delivered log files to an account's Amazon S3 bucket.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_delivery_error",
-				Type: schema.TypeString,
+				Name:        "latest_digest_delivery_error",
+				Description: "Displays any Amazon S3 error that CloudTrail encountered when attempting to deliver a digest file to the designated bucket.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "latest_delivery_time",
-				Type: schema.TypeTimestamp,
+				Name:        "latest_digest_delivery_time",
+				Description: "Specifies the date and time that CloudTrail last delivered a digest file to an account's Amazon S3 bucket.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_digest_delivery_error",
-				Type: schema.TypeString,
+				Name:        "latest_notification_error",
+				Description: " Displays any Amazon SNS error that CloudTrail encountered when attempting to send a notification.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "latest_digest_delivery_time",
-				Type: schema.TypeTimestamp,
+				Name:        "latest_notification_time",
+				Description: "Specifies the date and time of the most recent Amazon SNS notification that CloudTrail has written a new log file to an account's Amazon S3 bucket.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_notification_attempt_succeeded",
-				Type: schema.TypeString,
+				Name:        "start_logging_time",
+				Description: "Specifies the most recent date and time when CloudTrail started recording API calls for an AWS account.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_notification_attempt_time",
-				Type: schema.TypeString,
+				Name:        "stop_logging_time",
+				Description: "Specifies the most recent date and time when CloudTrail stopped recording API calls for an AWS account.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "latest_notification_error",
-				Type: schema.TypeString,
+				Name:        "cloud_watch_logs_log_group_arn",
+				Description: "Specifies an Amazon Resource Name (ARN), a unique identifier that represents the log group to which CloudTrail logs will be delivered.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "latest_notification_time",
-				Type: schema.TypeTimestamp,
+				Name:        "cloud_watch_logs_role_arn",
+				Description: "Specifies the role for the CloudWatch Logs endpoint to assume to write to a user's log group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "start_logging_time",
-				Type: schema.TypeTimestamp,
+				Name:        "has_custom_event_selectors",
+				Description: "Specifies if the trail has custom event selectors.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "stop_logging_time",
-				Type: schema.TypeTimestamp,
+				Name:        "has_insight_selectors",
+				Description: "Specifies whether a trail has insight types specified in an InsightSelector list.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "time_logging_started",
-				Type: schema.TypeString,
+				Name:        "home_region",
+				Description: "The region in which the trail was created.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "time_logging_stopped",
-				Type: schema.TypeString,
+				Name:        "include_global_service_events",
+				Description: "Set to True to include AWS API calls from AWS global services such as IAM.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "cloud_watch_logs_log_group_arn",
-				Type: schema.TypeString,
+				Name:        "is_multi_region_trail",
+				Description: "Specifies whether the trail exists only in one region or exists in all regions.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "cloud_watch_logs_role_arn",
-				Type: schema.TypeString,
+				Name:        "is_organization_trail",
+				Description: "Specifies whether the trail is an organization trail.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "has_custom_event_selectors",
-				Type: schema.TypeBool,
+				Name:        "kms_key_id",
+				Description: "Specifies the KMS key ID that encrypts the logs delivered by CloudTrail.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "has_insight_selectors",
-				Type: schema.TypeBool,
+				Name:        "log_file_validation_enabled",
+				Description: "Specifies whether log file validation is enabled.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "home_region",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "Name of the trail set by calling CreateTrail.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "include_global_service_events",
-				Type: schema.TypeBool,
+				Name:        "s3_bucket_name",
+				Description: "Name of the Amazon S3 bucket into which CloudTrail delivers your trail files.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "is_multi_region_trail",
-				Type: schema.TypeBool,
+				Name:        "s3_key_prefix",
+				Description: "Specifies the Amazon S3 key prefix that comes after the name of the bucket you have designated for log file delivery.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "is_organization_trail",
-				Type: schema.TypeBool,
+				Name:        "sns_topic_arn",
+				Description: "Specifies the ARN of the Amazon SNS topic that CloudTrail uses to send notifications when log files are delivered.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SnsTopicARN"),
 			},
 			{
-				Name: "kms_key_id",
-				Type: schema.TypeString,
+				Name:        "sns_topic_name",
+				Description: "This field is no longer in use.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "log_file_validation_enabled",
-				Type: schema.TypeBool,
-			},
-			{
-				Name: "name",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "s3_bucket_name",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "s3_key_prefix",
-				Type: schema.TypeString,
-			},
-			{
-				Name:     "sns_topic_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SnsTopicARN"),
-			},
-			{
-				Name: "sns_topic_name",
-				Type: schema.TypeString,
-			},
-			{
-				Name:     "trail_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TrailARN"),
+				Name:        "trail_arn",
+				Description: "Specifies the ARN of the trail.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TrailARN"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_cloudtrail_trail_event_selectors",
-				Resolver: fetchCloudtrailTrailEventSelectors,
+				Name:        "aws_cloudtrail_trail_event_selectors",
+				Description: "Use event selectors to further specify the management and data event settings for your trail.",
+				Resolver:    fetchCloudtrailTrailEventSelectors,
 				Columns: []schema.Column{
 					{
-						Name:     "trail_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "trail_id",
+						Description: "Unique ID of aws_cloudtrail_trails table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "exclude_management_event_sources",
-						Type: schema.TypeStringArray,
+						Name:        "exclude_management_event_sources",
+						Description: "An optional list of service event sources from which you do not want management events to be logged on your trail.",
+						Type:        schema.TypeStringArray,
 					},
 					{
-						Name: "include_management_events",
-						Type: schema.TypeBool,
+						Name:        "include_management_events",
+						Description: "Specify if you want your event selector to include management events for your trail.",
+						Type:        schema.TypeBool,
 					},
 					{
-						Name: "read_write_type",
-						Type: schema.TypeString,
+						Name:        "read_write_type",
+						Description: "Specify if you want your trail to log read-only events, write-only events, or all.",
+						Type:        schema.TypeString,
 					},
 				},
 			},
@@ -199,7 +210,7 @@ func CloudtrailTrails() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
@@ -231,12 +242,6 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err := resource.Set("latest_cloud_watch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime); err != nil {
 		return err
 	}
-	if err := resource.Set("latest_delivery_attempt_succeeded", response.LatestDeliveryAttemptSucceeded); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_delivery_attempt_time", response.LatestDeliveryAttemptTime); err != nil {
-		return err
-	}
 	if err := resource.Set("latest_delivery_error", response.LatestDeliveryError); err != nil {
 		return err
 	}
@@ -247,12 +252,6 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 		return err
 	}
 	if err := resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_notification_attempt_succeeded", response.LatestNotificationAttemptSucceeded); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_notification_attempt_time", response.LatestNotificationAttemptTime); err != nil {
 		return err
 	}
 	if err := resource.Set("latest_notification_error", response.LatestNotificationError); err != nil {
@@ -267,15 +266,9 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err := resource.Set("stop_logging_time", response.StopLoggingTime); err != nil {
 		return err
 	}
-	if err := resource.Set("time_logging_started", response.TimeLoggingStarted); err != nil {
-		return err
-	}
-	if err := resource.Set("time_logging_stopped", response.TimeLoggingStopped); err != nil {
-		return err
-	}
 	return nil
 }
-func resolveCloudtrailTrailCloudwatchLogsLogGroupName(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	groupName := ""
 	log := meta.(*client.Client).Logger()
 	trail := resource.Item.(types.Trail)
@@ -292,7 +285,6 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(_ context.Context, meta sc
 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
-
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r := parent.Item.(types.Trail)
 	c := meta.(*client.Client)

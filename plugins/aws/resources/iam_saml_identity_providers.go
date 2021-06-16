@@ -12,33 +12,39 @@ import (
 func IamSamlIdentityProviders() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_saml_identity_providers",
+		Description:  "SAML provider resource objects defined in IAM for the AWS account.",
 		Resolver:     fetchIamSamlIdentityProviders,
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name: "create_date",
-				Type: schema.TypeTimestamp,
+				Name:        "create_date",
+				Description: "The date and time when the SAML provider was created. ",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:     "saml_metadata_document",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SAMLMetadataDocument"),
+				Name:        "saml_metadata_document",
+				Description: "The XML metadata document that includes information about an identity provider. ",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SAMLMetadataDocument"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamSamlIdentityProviderTags,
+				Name:        "tags",
+				Description: "A list of tags that are attached to the specified IAM SAML provider. The returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveIamSamlIdentityProviderTags,
 			},
 			{
-				Name: "valid_until",
-				Type: schema.TypeTimestamp,
+				Name:        "valid_until",
+				Description: "The expiration date and time for the SAML provider. ",
+				Type:        schema.TypeTimestamp,
 			},
 		},
 	}

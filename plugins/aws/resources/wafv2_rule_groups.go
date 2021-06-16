@@ -15,20 +15,23 @@ import (
 func Wafv2RuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafv2_rule_groups",
+		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
 		Resolver:     fetchWafv2RuleGroups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:     "tags",
@@ -41,84 +44,101 @@ func Wafv2RuleGroups() *schema.Table {
 				Resolver: resolveWafv2ruleGroupPolicy,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) of the entity.  ",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ARN"),
 			},
 			{
-				Name: "capacity",
-				Type: schema.TypeBigInt,
+				Name:        "capacity",
+				Description: "The web ACL capacity units (WCUs) required for this rule group",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name:     "resource_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
+				Name:        "resource_id",
+				Description: "A unique identifier for the rule group",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Id"),
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "The name of the rule group",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "visibility_config_cloud_watch_metrics_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("VisibilityConfig.CloudWatchMetricsEnabled"),
+				Name:        "visibility_config_cloud_watch_metrics_enabled",
+				Description: "A boolean indicating whether the associated resource sends metrics to CloudWatch",
+				Type:        schema.TypeBool,
+				Resolver:    schema.PathResolver("VisibilityConfig.CloudWatchMetricsEnabled"),
 			},
 			{
-				Name:     "visibility_config_metric_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VisibilityConfig.MetricName"),
+				Name:        "visibility_config_metric_name",
+				Description: "A name of the CloudWatch metric",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VisibilityConfig.MetricName"),
 			},
 			{
-				Name:     "visibility_config_sampled_requests_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("VisibilityConfig.SampledRequestsEnabled"),
+				Name:        "visibility_config_sampled_requests_enabled",
+				Description: "A boolean indicating whether AWS WAF should store a sampling of the web requests that match the rules",
+				Type:        schema.TypeBool,
+				Resolver:    schema.PathResolver("VisibilityConfig.SampledRequestsEnabled"),
 			},
 			{
-				Name: "custom_response_bodies",
-				Type: schema.TypeJSON,
+				Name:        "custom_response_bodies",
+				Description: "A map of custom response keys and content bodies",
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "description",
-				Type: schema.TypeString,
+				Name:        "description",
+				Description: "A description of the rule group that helps with identification.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "label_namespace",
-				Type: schema.TypeString,
+				Name:        "label_namespace",
+				Description: "The label namespace prefix for this rule group",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "rules",
-				Type:     schema.TypeJSON,
-				Resolver: resolveWafv2ruleGroupRules,
+				Name:        "rules",
+				Description: "The Rule statements used to identify the web requests that you want to allow, block, or count",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveWafv2ruleGroupRules,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_wafv2_rule_group_available_labels",
-				Resolver: fetchWafv2RuleGroupAvailableLabels,
+				Name:        "aws_wafv2_rule_group_available_labels",
+				Description: "List of labels used by one or more of the rules of a RuleGroup",
+				Resolver:    fetchWafv2RuleGroupAvailableLabels,
 				Columns: []schema.Column{
 					{
-						Name:     "rule_group_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "rule_group_id",
+						Description: "Unique ID of aws_wafv2_rule_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "name",
-						Type: schema.TypeString,
+						Name:        "name",
+						Description: "An individual label specification.",
+						Type:        schema.TypeString,
 					},
 				},
 			},
 			{
-				Name:     "aws_wafv2_rule_group_consumed_labels",
-				Resolver: fetchWafv2RuleGroupConsumedLabels,
+				Name:        "aws_wafv2_rule_group_consumed_labels",
+				Description: "List of labels used by one or more of the rules of a RuleGroup",
+				Resolver:    fetchWafv2RuleGroupConsumedLabels,
 				Columns: []schema.Column{
 					{
-						Name:     "rule_group_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "rule_group_id",
+						Description: "Unique ID of aws_wafv2_rule_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "name",
-						Type: schema.TypeString,
+						Name:        "name",
+						Description: "An individual label specification.",
+						Type:        schema.TypeString,
 					},
 				},
 			},
@@ -160,35 +180,6 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-
-func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
-
-	client := meta.(*client.Client)
-	service := client.Services().WafV2
-
-	// Resolve rule group policy
-	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {
-		options.Region = client.Region
-	})
-	if err != nil {
-		return err
-	}
-	if policy.Policy != nil {
-		data, err := json.Marshal(policy.Policy)
-		if err != nil {
-			return nil
-		}
-		if err := resource.Set(c.Name, data); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
@@ -218,7 +209,33 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set(c.Name, outputTags)
 }
+func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ruleGroup, ok := resource.Item.(*types.RuleGroup)
+	if !ok {
+		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
+	}
 
+	client := meta.(*client.Client)
+	service := client.Services().WafV2
+
+	// Resolve rule group policy
+	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {
+		options.Region = client.Region
+	})
+	if err != nil {
+		return err
+	}
+	if policy.Policy != nil {
+		data, err := json.Marshal(policy.Policy)
+		if err != nil {
+			return nil
+		}
+		if err := resource.Set(c.Name, data); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
@@ -233,7 +250,6 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set(c.Name, data)
 }
-
 func fetchWafv2RuleGroupAvailableLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	ruleGroup, ok := parent.Item.(*types.RuleGroup)
 	if !ok {
@@ -242,7 +258,6 @@ func fetchWafv2RuleGroupAvailableLabels(ctx context.Context, meta schema.ClientM
 	res <- ruleGroup.AvailableLabels
 	return nil
 }
-
 func fetchWafv2RuleGroupConsumedLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	ruleGroup, ok := parent.Item.(*types.RuleGroup)
 	if !ok {

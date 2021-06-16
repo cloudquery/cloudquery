@@ -14,70 +14,84 @@ import (
 func RedshiftSubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_redshift_subnet_groups",
+		Description:  "Describes a subnet group.",
 		Resolver:     fetchRedshiftSubnetGroups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "cluster_subnet_group_name",
-				Type: schema.TypeString,
+				Name:        "cluster_subnet_group_name",
+				Description: "The name of the cluster subnet group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "description",
-				Type: schema.TypeString,
+				Name:        "description",
+				Description: "The description of the cluster subnet group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "subnet_group_status",
-				Type: schema.TypeString,
+				Name:        "subnet_group_status",
+				Description: "The status of the cluster subnet group.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveRedshiftSubnetGroupTags,
+				Name:        "tags",
+				Description: "The list of tags for the cluster subnet group.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveRedshiftSubnetGroupTags,
 			},
 			{
-				Name: "vpc_id",
-				Type: schema.TypeString,
+				Name:        "vpc_id",
+				Description: "The VPC ID of the cluster subnet group.",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_redshift_subnet_group_subnets",
-				Resolver: fetchRedshiftSubnetGroupSubnets,
+				Name:        "aws_redshift_subnet_group_subnets",
+				Description: "Describes a subnet.",
+				Resolver:    fetchRedshiftSubnetGroupSubnets,
 				Columns: []schema.Column{
 					{
-						Name:     "subnet_group_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "subnet_group_id",
+						Description: "Unique ID of aws_redshift_subnet_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:     "subnet_availability_zone_name",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("SubnetAvailabilityZone.Name"),
+						Name:        "subnet_availability_zone_name",
+						Description: "The name of the availability zone.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("SubnetAvailabilityZone.Name"),
 					},
 					{
-						Name:     "subnet_availability_zone_supported_platforms",
-						Type:     schema.TypeStringArray,
-						Resolver: resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms,
+						Name:        "subnet_availability_zone_supported_platforms",
+						Description: "A list of supported platforms for orderable clusters.",
+						Type:        schema.TypeStringArray,
+						Resolver:    resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms,
 					},
 					{
-						Name: "subnet_identifier",
-						Type: schema.TypeString,
+						Name:        "subnet_identifier",
+						Description: "The identifier of the subnet.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "subnet_status",
-						Type: schema.TypeString,
+						Name:        "subnet_status",
+						Description: "The status of the subnet.",
+						Type:        schema.TypeString,
 					},
 				},
 			},
@@ -88,7 +102,7 @@ func RedshiftSubnetGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
@@ -107,7 +121,7 @@ func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, _ *s
 	}
 	return nil
 }
-func resolveRedshiftSubnetGroupTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveRedshiftSubnetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ClusterSubnetGroup)
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
@@ -115,7 +129,7 @@ func resolveRedshiftSubnetGroupTags(_ context.Context, _ schema.ClientMeta, reso
 	}
 	return resource.Set("tags", tags)
 }
-func fetchRedshiftSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	clusterSubnetGroup, ok := parent.Item.(types.ClusterSubnetGroup)
 	if !ok {
 		return fmt.Errorf("not redshift cluster subnet group")
@@ -123,7 +137,7 @@ func fetchRedshiftSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, par
 	res <- clusterSubnetGroup.Subnets
 	return nil
 }
-func resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Subnet)
 	platforms := make([]*string, len(r.SubnetAvailabilityZone.SupportedPlatforms))
 	for i, p := range r.SubnetAvailabilityZone.SupportedPlatforms {

@@ -7,44 +7,49 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/aws/smithy-go"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func iamUserPolicies() *schema.Table {
+func IamUserPolicies() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_user_policies",
+		Description:  "Inline policies that are embedded in the specified IAM user",
 		Resolver:     fetchIamUserPolicies,
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "user_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIdResolver,
+				Name:        "user_id",
+				Description: "Unique ID of aws_iam_users table (FK)",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
 			},
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "policy_document",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamUserPolicyPolicyDocument,
+				Name:        "policy_document",
+				Description: "The policy document. IAM stores policies in JSON format. However, resources that were created using AWS CloudFormation templates can be formatted in YAML. AWS CloudFormation always converts a YAML policy to JSON format before submitting it to IAM.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveIamUserPolicyPolicyDocument,
 			},
 			{
-				Name: "policy_name",
-				Type: schema.TypeString,
+				Name:        "policy_name",
+				Description: "The name of the policy.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "user_name",
-				Type: schema.TypeString,
+				Name:        "user_name",
+				Description: "The user the policy is associated with.",
+				Type:        schema.TypeString,
 			},
 		},
 	}

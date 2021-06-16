@@ -12,53 +12,64 @@ import (
 func Ec2CustomerGateways() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_customer_gateways",
+		Description:  "Describes a customer gateway.",
 		Resolver:     fetchEc2CustomerGateways,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "bgp_asn",
-				Type: schema.TypeString,
+				Name:        "bgp_asn",
+				Description: "The customer gateway's Border Gateway Protocol (BGP) Autonomous System Number (ASN).",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "certificate_arn",
-				Type: schema.TypeString,
+				Name:        "certificate_arn",
+				Description: "The Amazon Resource Name (ARN) for the customer gateway certificate.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "customer_gateway_id",
-				Type: schema.TypeString,
+				Name:        "customer_gateway_id",
+				Description: "The ID of the customer gateway.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "device_name",
-				Type: schema.TypeString,
+				Name:        "device_name",
+				Description: "The name of customer gateway device.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "ip_address",
-				Type: schema.TypeString,
+				Name:        "ip_address",
+				Description: "The Internet-routable IP address of the customer gateway's outside interface.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "state",
-				Type: schema.TypeString,
+				Name:        "state",
+				Description: "The current state of the customer gateway (pending | available | deleting | deleted).",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveEc2customerGatewayTags,
+				Name:        "tags",
+				Description: "Any tags assigned to the customer gateway.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveEc2customerGatewayTags,
 			},
 			{
-				Name: "type",
-				Type: schema.TypeString,
+				Name:        "type",
+				Description: "The type of VPN connection the customer gateway supports (ipsec.",
+				Type:        schema.TypeString,
 			},
 		},
 	}
@@ -78,7 +89,6 @@ func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	res <- response.CustomerGateways
 	return nil
-
 }
 func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.CustomerGateway)

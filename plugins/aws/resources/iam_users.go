@@ -213,7 +213,7 @@ func IamUsers() *schema.Table {
 					},
 				},
 			},
-			iamUserPolicies(),
+			IamUserPolicies(),
 		},
 	}
 }

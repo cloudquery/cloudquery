@@ -14,6 +14,7 @@ import (
 func WafRules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_waf_rules",
+		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafRules,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
@@ -40,39 +41,47 @@ func WafRules() *schema.Table {
 				Resolver: resolveWafRuleTags,
 			},
 			{
-				Name: "rule_id",
-				Type: schema.TypeString,
+				Name:        "rule_id",
+				Description: "A unique identifier for a Rule",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "metric_name",
-				Type: schema.TypeString,
+				Name:        "metric_name",
+				Description: "A friendly name or description for the metrics for this Rule",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "The friendly name or description for the Rule",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_waf_rule_predicates",
-				Resolver: fetchWafRulePredicates,
+				Name:        "aws_waf_rule_predicates",
+				Description: "This is AWS WAF Classic documentation",
+				Resolver:    fetchWafRulePredicates,
 				Columns: []schema.Column{
 					{
-						Name:     "rule_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "rule_id",
+						Description: "Unique ID of aws_waf_rules table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "data_id",
-						Type: schema.TypeString,
+						Name:        "data_id",
+						Description: "A unique identifier for a predicate in a Rule, such as ByteMatchSetId or IPSetId",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "negated",
-						Type: schema.TypeBool,
+						Name:        "negated",
+						Description: "Set Negated to False if you want AWS WAF to allow, block, or count requests based on the settings in the specified ByteMatchSet, IPSet, SqlInjectionMatchSet, XssMatchSet, RegexMatchSet, GeoMatchSet, or SizeConstraintSet",
+						Type:        schema.TypeBool,
 					},
 					{
-						Name: "type",
-						Type: schema.TypeString,
+						Name:        "type",
+						Description: "The type of predicate in a Rule, such as ByteMatch or IPSet.  ",
+						Type:        schema.TypeString,
 					},
 				},
 			},
@@ -111,7 +120,6 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
-
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule, ok := resource.Item.(*types.Rule)
 	if !ok {
@@ -129,7 +137,6 @@ func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 	return resource.Set(c.Name, arnStr)
 }
-
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule, ok := resource.Item.(*types.Rule)
 	if !ok {
@@ -167,7 +174,6 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	return resource.Set("tags", outputTags)
 }
-
 func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	rule, ok := parent.Item.(*types.Rule)
 	if !ok {

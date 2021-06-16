@@ -5,18 +5,18 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/spf13/cast"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/spf13/cast"
 )
 
 func Wafv2ManagedRuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_wafv2_managed_rule_groups",
+		Description:          "High-level information about a managed rule group, returned by ListAvailableManagedRuleGroups",
 		Resolver:             fetchWafv2ManagedRuleGroups,
 		Multiplex:            client.AccountRegionMultiplex,
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
@@ -24,14 +24,16 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 		PostResourceResolver: resolveDescribeManagedRuleGroup,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name: "available_labels",
@@ -54,16 +56,19 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "description",
-				Type: schema.TypeString,
+				Name:        "description",
+				Description: "The description of the managed rule group, provided by AWS Managed Rules or the AWS Marketplace seller who manages it.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "The name of the managed rule group",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "vendor_name",
-				Type: schema.TypeString,
+				Name:        "vendor_name",
+				Description: "The name of the managed rule group vendor",
+				Type:        schema.TypeString,
 			},
 		},
 	}
@@ -92,7 +97,6 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-
 func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	managedRuleGroupSum, ok := resource.Item.(types.ManagedRuleGroupSummary)
 	if !ok {
