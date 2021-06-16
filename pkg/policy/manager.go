@@ -10,9 +10,10 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/go-git/go-git/v5/plumbing/object"
+
 	"github.com/jackc/pgx/v4/pgxpool"
 
-	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/hashicorp/go-version"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -180,7 +181,7 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 		if err != nil {
 			return fmt.Errorf("failed to open repository: %s", err.Error())
 		}
-	case git.ErrBranchNotFound:
+	case git.ErrBranchNotFound, plumbing.ErrReferenceNotFound:
 		cloneOptions.ReferenceName = plumbing.NewBranchReferenceName("master")
 		_, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
 		if err != nil && err != git.ErrRepositoryAlreadyExists {
@@ -348,13 +349,16 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 		return fmt.Errorf("failed to open policy repository folder: %s", err.Error())
 	}
 
-	// Pull first to make sure we're up-to-date
+	// Fetch first to make sure we're up-to-date
+	if err := r.Fetch(&git.FetchOptions{
+		Tags:  git.AllTags,
+		Force: true,
+	}); err != nil && err != git.NoErrAlreadyUpToDate {
+		return fmt.Errorf("failed to fetch latest changes: %s", err.Error())
+	}
 	w, err := r.Worktree()
 	if err != nil {
 		return fmt.Errorf("failed to get work tree: %s", err.Error())
-	}
-	if err := w.Pull(&git.PullOptions{}); err != nil && err != git.NoErrAlreadyUpToDate {
-		return fmt.Errorf("failed to pull latest changes: %s", err.Error())
 	}
 
 	// Make sure we have the correct version checked out before we proceed.
@@ -366,7 +370,7 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 		// Create a new map that stores the version->tag reference
 		versionTagMap := make(map[*version.Version]string)
 
-		// List all annotated tags
+		// List all lightweight tags
 		tagRefs, err := r.Tags()
 		if err != nil {
 			return fmt.Errorf("failed to list annotated repository tags: %s", err.Error())
@@ -384,7 +388,7 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 			return nil
 		})
 
-		// List all lightweight tags
+		// List all annotated tags
 		tags, err := r.TagObjects()
 		if err != nil {
 			return fmt.Errorf("failed to list lightweight repository tags: %s", err.Error())
@@ -398,7 +402,7 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 			}
 
 			// Add to our data structures
-			versionTagMap[v] = tag.Name
+			versionTagMap[v] = tag.Hash.String()
 			return nil
 		})
 
@@ -410,19 +414,31 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 		sort.Sort(sortedVersions)
 		if len(sortedVersions) != 0 {
 			// TODO: Find the latest version for the used provider
-			checkoutVersion = versionTagMap[sortedVersions[0]]
+			checkoutVersion = versionTagMap[sortedVersions[len(sortedVersions)-1]]
 		}
 	}
 
 	// Get the tag reference
+	var tagHash string
 	ref, err := r.Tag(checkoutVersion)
 	if err != nil {
-		return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
+		// It could be an annotated tag
+		objRef, err := r.TagObject(plumbing.NewHash(checkoutVersion))
+		if err != nil {
+			return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
+		}
+		commit, err := objRef.Commit()
+		if err != nil {
+			return fmt.Errorf("failed to find annotated tag associated commit: %s", err.Error())
+		}
+		tagHash = commit.Hash.String()
+	} else {
+		tagHash = ref.Hash().String()
 	}
 
 	// Checkout given tag
 	if err := w.Checkout(&git.CheckoutOptions{
-		Hash:   ref.Hash(),
+		Hash:   plumbing.NewHash(tagHash),
 		Create: false,
 		Force:  true,
 		Keep:   false,
