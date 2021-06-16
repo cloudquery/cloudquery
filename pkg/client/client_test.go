@@ -177,40 +177,6 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Nil(t, diags)
 }
 
-func TestClient_ExecutePolicy(t *testing.T) {
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
-	assert.Nil(t, diags)
-
-	c, err := New(cfg, func(c *Client) {
-		c.Hub = &MockRegistry{}
-	})
-	assert.Nil(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-	}
-	ctx := context.Background()
-	conn, err := c.pool.Acquire(ctx)
-	defer conn.Release()
-	_, err = conn.Exec(ctx, `Truncate public.slow_resource`)
-	if !assert.Nil(t, err) {
-		t.FailNow()
-	}
-	resp, err := c.ExecutePolicy(ctx, ExecutePolicyRequest{
-		PolicyPath:    "../../internal/test/provider/test_policy_success.yml",
-		StopOnFailure: false,
-	})
-	assert.NotNil(t, resp)
-	assert.False(t, resp.Passed)
-	_, err = conn.Exec(ctx, `INSERT INTO public.slow_resource(id, some_bool) VALUES (uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), true);`)
-	assert.Nil(t, err)
-	resp, err = c.ExecutePolicy(ctx, ExecutePolicyRequest{
-		PolicyPath:    "../../internal/test/provider/test_policy_success.yml",
-		StopOnFailure: false,
-	})
-	assert.NotNil(t, resp)
-	assert.True(t, resp.Passed)
-}
-
 type MockRegistry struct{}
 
 func (m MockRegistry) VerifyProvider(_ context.Context, _, _, _ string) bool {

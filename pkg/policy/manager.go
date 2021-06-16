@@ -78,7 +78,7 @@ type Manager interface {
 	DownloadPolicy(ctx context.Context, p *Policy) error
 
 	// RunPolicy runs the given policy.
-	RunPolicy(ctx context.Context, p *Policy) (*ExecutionResult, error)
+	RunPolicy(ctx context.Context, execRequest *ExecuteRequest) (*ExecutionResult, error)
 }
 
 // NewManager returns the manager instance.
@@ -153,8 +153,6 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 	cloneOptions := &git.CloneOptions{
 		URL:           gitURL,
 		ReferenceName: plumbing.NewBranchReferenceName("main"),
-		Depth:         1,
-		SingleBranch:  true,
 		Tags:          git.AllTags,
 	}
 
@@ -196,7 +194,9 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 }
 
 // RunPolicy runs the given policy.
-func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) (*ExecutionResult, error) {
+func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error) {
+	p := execReq.Policy
+
 	// Check if given policy exists in our policy folder
 	osFs := file.NewOsFs()
 	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
@@ -250,55 +250,31 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) (*ExecutionResul
 	}
 	defer conn.Release()
 
-	// Prepare execution
-	executor := NewExecutor(conn)
-	execResults := &ExecutionResult{
-		Passed:  true,
-		Results: make(map[string]*QueryResult),
-	}
-
 	// Traverse all policies recursively
 	policyMap := make(map[string]*config.Policy)
 	policyMap = traversePolicies(policies.Policies, "", policyMap)
 
 	// No sub path provided. Execute everything.
+	executor := NewExecutor(conn)
 	if p.SubPath == "" {
-		for _, policy := range policyMap {
-			// Execute policy
-			results, err := executor.ExecutePolicy(ctx, policy)
-			if err != nil {
-				return nil, err
-			}
-
-			// Collect results
-			collectExecutionResults(execResults, results...)
-		}
-		return execResults, nil
+		return executor.ExecutePolicies(ctx, execReq, policyMap)
 	}
 
 	// If we are here, the user only wants to execute a sub policy/view/query so we have to
 	// find the corresponding element.
 
 	// If the given path points directly to a sub policy
-	if executePolicy, ok := policyMap[p.SubPath]; ok {
-		// Execute policy
-		results, err := executor.ExecutePolicy(ctx, executePolicy)
-		if err != nil {
-			return nil, err
-		}
-
-		// Make sure we also execute sub policies from this policy
-		for _, subPolicy := range executePolicy.Policies {
-			subPolicyResults, err := executor.ExecutePolicy(ctx, subPolicy)
-			if err != nil {
-				return nil, err
+	if _, ok := policyMap[p.SubPath]; ok {
+		// Collect all sub policies from this policy
+		subPolicyMap := make(map[string]*config.Policy)
+		for k, v := range policyMap {
+			// Add policy if prefix is the same.
+			// This will also add the actual policy since k == p.SubPath.
+			if strings.HasPrefix(k, p.SubPath) {
+				subPolicyMap[k] = v
 			}
-			results = append(results, subPolicyResults...)
 		}
-
-		// Collect results
-		collectExecutionResults(execResults, results...)
-		return execResults, nil
+		return executor.ExecutePolicies(ctx, execReq, subPolicyMap)
 	}
 
 	// Must be a query so get the policy path and the last element
@@ -327,7 +303,14 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) (*ExecutionResul
 			}
 
 			// Collect results
-			collectExecutionResults(execResults, res)
+			execResults := &ExecutionResult{
+				Passed:  true,
+				Results: make(map[string]*QueryResult),
+			}
+			collectExecutionResults(execResults, policyPath, res)
+			if execReq.UpdateCallback != nil {
+				execReq.UpdateCallback(query.Name, execResults.Passed)
+			}
 			return execResults, nil
 		}
 	}
@@ -340,14 +323,14 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, p *Policy) (*ExecutionResul
 func traversePolicies(p []*config.Policy, levelPath string, m map[string]*config.Policy) map[string]*config.Policy {
 	for id, policy := range p {
 		// Add current level to level path
-		levelPath = strings.ToLower(filepath.Join(levelPath, policy.Name))
+		subLevelPath := filepath.Join(levelPath, policy.Name)
 
 		// Add policy to map
-		m[levelPath] = p[id]
+		m[subLevelPath] = p[id]
 
 		// Check if this policy has sub policies
 		if len(policy.Policies) > 0 {
-			newM := traversePolicies(policy.Policies, levelPath, m)
+			newM := traversePolicies(policy.Policies, subLevelPath, m)
 
 			// Merge maps
 			for k, v := range newM {
@@ -358,27 +341,20 @@ func traversePolicies(p []*config.Policy, levelPath string, m map[string]*config
 	return m
 }
 
-func (p *Policy) getGitHubURL() (string, error) {
-	base, err := url.Parse(gitHubUrl)
-	if err != nil {
-		return "", err
-	}
-	org, err := url.Parse(p.Organization + "/")
-	if err != nil {
-		return "", err
-	}
-	repo, err := url.Parse(p.Repository + ".git")
-	if err != nil {
-		return "", err
-	}
-	return base.ResolveReference(org).ResolveReference(repo).String(), nil
-}
-
 func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 	// Open git repo folder
 	r, err := git.PlainOpen(repoFolder)
 	if err != nil {
 		return fmt.Errorf("failed to open policy repository folder: %s", err.Error())
+	}
+
+	// Pull first to make sure we're up-to-date
+	w, err := r.Worktree()
+	if err != nil {
+		return fmt.Errorf("failed to get work tree: %s", err.Error())
+	}
+	if err := w.Pull(&git.PullOptions{}); err != nil && err != git.NoErrAlreadyUpToDate {
+		return fmt.Errorf("failed to pull latest changes: %s", err.Error())
 	}
 
 	// Make sure we have the correct version checked out before we proceed.
@@ -444,14 +420,8 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 		return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
 	}
 
-	// Get working tree
-	workTree, err := r.Worktree()
-	if err != nil {
-		return fmt.Errorf("failed to get work tree: %s", err.Error())
-	}
-
 	// Checkout given tag
-	if err := workTree.Checkout(&git.CheckoutOptions{
+	if err := w.Checkout(&git.CheckoutOptions{
 		Hash:   ref.Hash(),
 		Create: false,
 		Force:  true,
@@ -463,13 +433,18 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 	return nil
 }
 
-// collectExecutionResults collects all query results and adds them to the
-// execution results struct.
-func collectExecutionResults(execResult *ExecutionResult, results ...*QueryResult) {
-	for _, res := range results {
-		if !res.Passed {
-			execResult.Passed = false
-		}
-		execResult.Results[res.Name] = res
+func (p *Policy) getGitHubURL() (string, error) {
+	base, err := url.Parse(gitHubUrl)
+	if err != nil {
+		return "", err
 	}
+	org, err := url.Parse(p.Organization + "/")
+	if err != nil {
+		return "", err
+	}
+	repo, err := url.Parse(p.Repository + ".git")
+	if err != nil {
+		return "", err
+	}
+	return base.ResolveReference(org).ResolveReference(repo).String(), nil
 }

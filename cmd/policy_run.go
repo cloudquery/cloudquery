@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
@@ -35,13 +36,22 @@ See https://hub.cloudquery.io for additional policies.
 				return err
 			}
 			defer c.Client().Close()
-			subpath := cmd.PersistentFlags().Lookup("subpolicy")
-			return c.RunPolicy(ctx, args, subpath)
+			subPath := cmd.PersistentFlags().Lookup("subpath")
+			outputPath := cmd.PersistentFlags().Lookup("output")
+			stopOnFailureRaw := cmd.PersistentFlags().Lookup("stoponfailure")
+			stopOnFailure, _ := strconv.ParseBool(stopOnFailureRaw.Value.String())
+			return c.RunPolicy(ctx, args, subPath.Value.String(), outputPath.Value.String(), stopOnFailure)
 		},
 	}
+	subPath       string
+	outputPath    string
+	stopOnFailure bool
 )
 
 func init() {
-	policyRunCmd.PersistentFlags().String("subpolicy", "", "Forces the policy run command to only execute this sub policy/view/query")
+	flags := policyRunCmd.Flags()
+	flags.StringVar(&subPath, "subpath", "", "Forces the policy run command to only execute this sub policy/query")
+	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
+	flags.BoolVar(&stopOnFailure, "stoponfailure", false, "Stops the execution on the first failure")
 	policyCmd.AddCommand(policyRunCmd)
 }

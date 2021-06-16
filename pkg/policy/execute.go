@@ -3,16 +3,19 @@ package policy
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"sync"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var onceExec sync.Once
+var (
+	onceExec         sync.Once
+	executorInstance *Executor
+)
 
-var executorInstance *Executor
-
+// Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
 	conn *pgxpool.Conn
@@ -35,6 +38,22 @@ type ExecutionResult struct {
 	Results map[string]*QueryResult
 }
 
+// ExecutionCallback represents the format of the policy callback function.
+type ExecutionCallback func(name string, passed bool)
+
+// ExecuteRequest is a request that triggers policy execution.
+type ExecuteRequest struct {
+	// Policy is the policy that should be executed.
+	Policy *Policy
+
+	// UpdateCallback gets called when the client receives updates on policy execution (optional).
+	UpdateCallback ExecutionCallback
+
+	// StopOnFailure if true policy execution will stop on first failure
+	StopOnFailure bool
+}
+
+// NewExecutor creates a new executor singleton instance and/or returns one.
 func NewExecutor(conn *pgxpool.Conn) *Executor {
 	onceExec.Do(func() {
 		executorInstance = &Executor{
@@ -44,10 +63,42 @@ func NewExecutor(conn *pgxpool.Conn) *Executor {
 	return executorInstance
 }
 
-// ExecutePolicy executes the given policy and its sub views/queries.
-// Note: It does not execute sub policies that are attached to this policy.
-// It is the callers responsibility to do that.
-func (e *Executor) ExecutePolicy(ctx context.Context, p *config.Policy) ([]*QueryResult, error) {
+// ExecutePolicies executes multiple given policies and the related sub queries/views.
+// Note: It does not execute sub policies that are attached to the policies.
+// Is is the callers responsibility to do that.
+func (e *Executor) ExecutePolicies(ctx context.Context, execReq *ExecuteRequest, policyMap map[string]*config.Policy) (*ExecutionResult, error) {
+	execResults := &ExecutionResult{
+		Passed:  true,
+		Results: make(map[string]*QueryResult),
+	}
+
+	// Iterate over all given policies
+	for path, policy := range policyMap {
+		// Execute policy
+		results, err := e.executePolicy(ctx, policy, execReq)
+		if err != nil {
+			return nil, err
+		}
+
+		// Collect results
+		collectExecutionResults(execResults, path, results...)
+
+		// Execute callback method
+		if execReq.UpdateCallback != nil {
+			execReq.UpdateCallback(policy.Name, execResults.Passed)
+		}
+
+		// Skip further execution if exit on error is defined
+		if execReq.StopOnFailure && !execResults.Passed {
+			break
+		}
+	}
+	return execResults, nil
+}
+
+// executePolicy executes the given policy and its sub views/queries.
+// Please use ExecutePolicies if possible.
+func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) ([]*QueryResult, error) {
 	var results []*QueryResult
 
 	// Create temporary Views
@@ -64,6 +115,11 @@ func (e *Executor) ExecutePolicy(ctx context.Context, p *config.Policy) ([]*Quer
 			return nil, err
 		}
 		results = append(results, res)
+
+		// Stop execution if defined on error
+		if execReq.StopOnFailure && !res.Passed {
+			return results, nil
+		}
 	}
 
 	return results, nil
@@ -107,4 +163,15 @@ func (e *Executor) CreateView(ctx context.Context, v *config.View) error {
 	// Create view and ignore the output
 	_, err := e.ExecuteQuery(ctx, v.Query)
 	return err
+}
+
+// collectExecutionResults collects all query results and adds them to the
+// execution results struct.
+func collectExecutionResults(execResult *ExecutionResult, path string, results ...*QueryResult) {
+	for _, res := range results {
+		if !res.Passed {
+			execResult.Passed = false
+		}
+		execResult.Results[filepath.Join(path, res.Name)] = res
+	}
 }
