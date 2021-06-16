@@ -15,141 +15,172 @@ import (
 func AccessAnalyzerAnalyzer() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_access_analyzer_analyzers",
+		Description:  "Contains information about the analyzer.",
 		Resolver:     fetchAccessAnalyzerAnalyzers,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
+		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
+				Name:        "arn",
+				Description: "The ARN of the analyzer.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "created_at",
-				Type: schema.TypeTimestamp,
+				Name:        "created_at",
+				Description: "A timestamp for the time at which the analyzer was created.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "The name of the analyzer.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
+				Name:        "status",
+				Description: "The status of the analyzer. An Active analyzer successfully monitors supported resources and generates new findings. The analyzer is Disabled when a user action, such as removing trusted access for AWS IAM Access Analyzer from AWS Organizations, causes the analyzer to stop generating new findings. The status is Creating when the analyzer creation is in progress and Failed when the analyzer creation has failed.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "type",
-				Type: schema.TypeString,
+				Name:        "type",
+				Description: "The type of analyzer, which corresponds to the zone of trust chosen for the analyzer.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "last_resource_analyzed",
-				Type: schema.TypeString,
+				Name:        "last_resource_analyzed",
+				Description: "The resource that was most recently analyzed by the analyzer.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "last_resource_analyzed_at",
-				Type: schema.TypeTimestamp,
+				Name:        "last_resource_analyzed_at",
+				Description: "The time at which the most recently analyzed resource was analyzed.",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:     "status_reason_code",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StatusReason.Code"),
+				Name:        "status_reason_code",
+				Description: "The reason code for the current status of the analyzer.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("StatusReason.Code"),
 			},
 			{
-				Name: "tags",
-				Type: schema.TypeJSON,
+				Name:        "tags",
+				Description: "The tags added to the analyzer.",
+				Type:        schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_access_analyzer_analyzer_findings",
-				Resolver: fetchAccessAnalyzerAnalyzerFindings,
+				Name:        "aws_access_analyzer_analyzer_findings",
+				Description: "Contains information about a finding.",
+				Resolver:    fetchAccessAnalyzerAnalyzerFindings,
 				Columns: []schema.Column{
 					{
-						Name:     "analyzer_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "analyzer_id",
+						Description: "Analyzer ID that belongs to aws_access_analyzer_analyzers",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "analyzed_at",
-						Type: schema.TypeTimestamp,
+						Name:        "analyzed_at",
+						Description: "The time at which the resource-based policy that generated the finding was analyzed.",
+						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name: "condition",
-						Type: schema.TypeJSON,
+						Name:        "condition",
+						Description: "The condition in the analyzed policy statement that resulted in a finding.",
+						Type:        schema.TypeJSON,
 					},
 					{
-						Name: "created_at",
-						Type: schema.TypeTimestamp,
+						Name:        "created_at",
+						Description: "The time at which the finding was created.",
+						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:     "finding_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Id"),
+						Name:        "finding_id",
+						Description: "The ID of the finding.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Id"),
 					},
 					{
-						Name: "resource_owner_account",
-						Type: schema.TypeString,
+						Name:        "resource_owner_account",
+						Description: "The AWS account ID that owns the resource.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "resource_type",
-						Type: schema.TypeString,
+						Name:        "resource_type",
+						Description: "The type of the resource that the external principal has access to.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "status",
-						Type: schema.TypeString,
+						Name:        "status",
+						Description: "The status of the finding.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "updated_at",
-						Type: schema.TypeTimestamp,
+						Name:        "updated_at",
+						Description: "The time at which the finding was most recently updated.",
+						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name: "action",
-						Type: schema.TypeStringArray,
+						Name:        "action",
+						Description: "The action in the analyzed policy statement that an external principal has permission to use.",
+						Type:        schema.TypeStringArray,
 					},
 					{
-						Name: "error",
-						Type: schema.TypeString,
+						Name:        "error",
+						Description: "The error that resulted in an Error finding.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "is_public",
-						Type: schema.TypeBool,
+						Name:        "is_public",
+						Description: "Indicates whether the finding reports a resource that has a policy that allows public access.",
+						Type:        schema.TypeBool,
 					},
 					{
-						Name: "principal",
-						Type: schema.TypeJSON,
+						Name:        "principal",
+						Description: "The external principal that has access to a resource within the zone of trust.",
+						Type:        schema.TypeJSON,
 					},
 					{
-						Name: "resource",
-						Type: schema.TypeString,
+						Name:        "resource",
+						Description: "The resource that the external principal has access to.",
+						Type:        schema.TypeString,
 					},
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_access_analyzer_analyzer_finding_sources",
-						Resolver: fetchAccessAnalyzerAnalyzerFindingSources,
+						Name:        "aws_access_analyzer_analyzer_finding_sources",
+						Description: "The source of the finding.",
+						Resolver:    fetchAccessAnalyzerAnalyzerFindingSources,
 						Columns: []schema.Column{
 							{
-								Name:     "analyzer_finding_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "analyzer_finding_id",
+								Description: "AnalyzerFinding ID that belongs to aws_access_analyzer_analyzer_findings",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "type",
-								Type: schema.TypeString,
+								Name:        "type",
+								Description: "Indicates the type of access that generated the finding.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name:     "detail_access_point_arn",
-								Type:     schema.TypeString,
-								Resolver: schema.PathResolver("Detail.AccessPointArn"),
+								Name:        "detail_access_point_arn",
+								Description: "The ARN of the access point that generated the finding.",
+								Type:        schema.TypeString,
+								Resolver:    schema.PathResolver("Detail.AccessPointArn"),
 							},
 						},
 					},
@@ -162,7 +193,7 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	config := accessanalyzer.ListAnalyzersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Analyzer
@@ -225,7 +256,7 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	}
 	return nil
 }
-func fetchAccessAnalyzerAnalyzerFindingSources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAccessAnalyzerAnalyzerFindingSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	finding := parent.Item.(types.FindingSummary)
 	res <- finding.Sources
 	return nil

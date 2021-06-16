@@ -14,15 +14,17 @@ import (
 func WafWebAcls() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_waf_web_acls",
+		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafWebAcls,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:     "tags",
@@ -30,70 +32,84 @@ func WafWebAcls() *schema.Table {
 				Resolver: resolveWafWebACLTags,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "default_action_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultAction.Type"),
+				Name:        "default_action_type",
+				Description: "Specifies how you want AWS WAF to respond to requests that match the settings in a Rule",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DefaultAction.Type"),
 			},
 			{
-				Name:     "web_acl_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebACLId"),
+				Name:        "web_acl_id",
+				Description: "A unique identifier for a WebACL",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("WebACLId"),
 			},
 			{
-				Name: "metric_name",
-				Type: schema.TypeString,
+				Name:        "metric_name",
+				Description: "A friendly name or description for the metrics for this WebACL",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "A friendly name or description of the WebACL",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:     "web_acl_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebACLArn"),
+				Name:        "web_acl_arn",
+				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("WebACLArn"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_waf_web_acl_rules",
-				Resolver: fetchWafWebAclRules,
+				Name:        "aws_waf_web_acl_rules",
+				Description: "This is AWS WAF Classic documentation",
+				Resolver:    fetchWafWebAclRules,
 				Columns: []schema.Column{
 					{
-						Name:     "web_acl_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "web_acl_id",
+						Description: "Unique ID of aws_waf_web_acls table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "priority",
-						Type: schema.TypeInt,
+						Name:        "priority",
+						Description: "Specifies the order in which the Rules in a WebACL are evaluated",
+						Type:        schema.TypeInt,
 					},
 					{
-						Name: "rule_id",
-						Type: schema.TypeString,
+						Name:        "rule_id",
+						Description: "The RuleId for a Rule",
+						Type:        schema.TypeString,
 					},
 					{
-						Name:     "action_type",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Action.Type"),
+						Name:        "action_type",
+						Description: "Specifies how you want AWS WAF to respond to requests that match the settings in a Rule",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Action.Type"),
 					},
 					{
-						Name:     "excluded_rules",
-						Type:     schema.TypeStringArray,
-						Resolver: resolveWafWebACLRuleExcludedRules,
+						Name:        "excluded_rules",
+						Description: "An array of rules to exclude from a rule group",
+						Type:        schema.TypeStringArray,
+						Resolver:    resolveWafWebACLRuleExcludedRules,
 					},
 					{
-						Name:     "override_action_type",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("OverrideAction.Type"),
+						Name:        "override_action_type",
+						Description: "COUNT overrides the action specified by the individual rule within a RuleGroup . If set to NONE, the rule's action will take place.  ",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("OverrideAction.Type"),
 					},
 					{
-						Name: "type",
-						Type: schema.TypeString,
+						Name:        "type",
+						Description: "The rule type, either REGULAR, as defined by Rule, RATE_BASED, as defined by RateBasedRule, or GROUP, as defined by RuleGroup",
+						Type:        schema.TypeString,
 					},
 				},
 			},
@@ -133,7 +149,6 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 	return nil
 }
-
 func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL, ok := resource.Item.(*types.WebACL)
 	if !ok {
@@ -162,7 +177,6 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return resource.Set("tags", outputTags)
 }
-
 func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	webACL, ok := parent.Item.(*types.WebACL)
 	if !ok {
@@ -171,7 +185,6 @@ func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *sc
 	res <- webACL.Rules
 	return nil
 }
-
 func resolveWafWebACLRuleExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule, ok := resource.Item.(types.ActivatedRule)
 	if !ok {

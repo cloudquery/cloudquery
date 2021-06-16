@@ -13,65 +13,78 @@ import (
 func CloudwatchlogsFilters() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_cloudwatchlogs_filters",
+		Description:  "Metric filters express how CloudWatch Logs would extract metric observations from ingested log events and transform them into metric data in a CloudWatch metric.",
 		Resolver:     fetchCloudwatchlogsFilters,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name: "creation_time",
-				Type: schema.TypeBigInt,
+				Name:        "creation_time",
+				Description: "The creation time of the metric filter, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FilterName"),
+				Name:        "name",
+				Description: "The name of the metric filter.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FilterName"),
 			},
 			{
-				Name:     "pattern",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FilterPattern"),
+				Name:        "pattern",
+				Description: "A symbolic description of how CloudWatch Logs should interpret the data in each log event.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FilterPattern"),
 			},
 			{
-				Name: "log_group_name",
-				Type: schema.TypeString,
+				Name:        "log_group_name",
+				Description: "The name of the log group.",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_cloudwatchlogs_filter_metric_transformations",
-				Resolver: fetchCloudwatchlogsFilterMetricTransformations,
+				Name:        "aws_cloudwatchlogs_filter_metric_transformations",
+				Description: "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
+				Resolver:    fetchCloudwatchlogsFilterMetricTransformations,
 				Columns: []schema.Column{
 					{
-						Name:     "filter_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "filter_id",
+						Description: "Unique ID of aws_cloudwatchlogs_filters table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "metric_name",
-						Type: schema.TypeString,
+						Name:        "metric_name",
+						Description: "The name of the CloudWatch metric.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "metric_namespace",
-						Type: schema.TypeString,
+						Name:        "metric_namespace",
+						Description: "A custom namespace to contain your metric in CloudWatch.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "metric_value",
-						Type: schema.TypeString,
+						Name:        "metric_value",
+						Description: "The value to publish to the CloudWatch metric when a filter pattern matches a log event.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "default_value",
-						Type: schema.TypeFloat,
+						Name:        "default_value",
+						Description: "(Optional) The value to emit when a filter pattern does not match a log event.",
+						Type:        schema.TypeFloat,
 					},
 				},
 			},
@@ -100,10 +113,8 @@ func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, par
 		config.NextToken = response.NextToken
 	}
 	return nil
-
 }
 func fetchCloudwatchlogsFilterMetricTransformations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	res <- parent.Item.(types.MetricFilter).MetricTransformations
 	return nil
-
 }

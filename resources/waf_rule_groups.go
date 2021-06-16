@@ -14,20 +14,23 @@ import (
 func WafRuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_waf_rule_groups",
+		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafRuleGroups,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:     "arn",
@@ -45,16 +48,19 @@ func WafRuleGroups() *schema.Table {
 				Resolver: resolveWafRuleGroupTags,
 			},
 			{
-				Name: "rule_group_id",
-				Type: schema.TypeString,
+				Name:        "rule_group_id",
+				Description: "A unique identifier for a RuleGroup",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "metric_name",
-				Type: schema.TypeString,
+				Name:        "metric_name",
+				Description: "A friendly name or description for the metrics for this RuleGroup",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:        "name",
+				Description: "The friendly name or description for the RuleGroup",
+				Type:        schema.TypeString,
 			},
 		},
 	}
@@ -91,7 +97,6 @@ func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-
 func resolveWafRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
@@ -109,7 +114,6 @@ func resolveWafRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resourc
 
 	return resource.Set(c.Name, arnStr)
 }
-
 func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
@@ -117,13 +121,13 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 	}
 
 	// Resolves rule group rules
-	client := meta.(*client.Client)
-	service := client.Services().Waf
+	awsClient := meta.(*client.Client)
+	service := awsClient.Services().Waf
 	listActivatedRulesConfig := waf.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
 		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig, func(options *waf.Options) {
-			options.Region = client.Region
+			options.Region = awsClient.Region
 		})
 		if err != nil {
 			return err
@@ -139,7 +143,6 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set("rule_ids", ruleIDs)
 }
-
 func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {

@@ -5,11 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/aws/smithy-go"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
+	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -17,93 +16,112 @@ import (
 func LambdaLayers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lambda_layers",
+		Description:  "Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 		Resolver:     fetchLambdaLayers,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "latest_matching_version_compatible_runtimes",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("LatestMatchingVersion.CompatibleRuntimes"),
+				Name:        "latest_matching_version_compatible_runtimes",
+				Description: "The layer's compatible runtimes.",
+				Type:        schema.TypeStringArray,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.CompatibleRuntimes"),
 			},
 			{
-				Name:     "latest_matching_version_created_date",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LatestMatchingVersion.CreatedDate"),
+				Name:        "latest_matching_version_created_date",
+				Description: "The date that the version was created, in ISO 8601 format",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.CreatedDate"),
 			},
 			{
-				Name:     "latest_matching_version_description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LatestMatchingVersion.Description"),
+				Name:        "latest_matching_version_description",
+				Description: "The description of the version.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.Description"),
 			},
 			{
-				Name:     "latest_matching_version_layer_version_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LatestMatchingVersion.LayerVersionArn"),
+				Name:        "latest_matching_version_layer_version_arn",
+				Description: "The ARN of the layer version.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.LayerVersionArn"),
 			},
 			{
-				Name:     "latest_matching_version_license_info",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LatestMatchingVersion.LicenseInfo"),
+				Name:        "latest_matching_version_license_info",
+				Description: "The layer's open-source license.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.LicenseInfo"),
 			},
 			{
-				Name:     "latest_matching_version",
-				Type:     schema.TypeBigInt,
-				Resolver: schema.PathResolver("LatestMatchingVersion.Version"),
+				Name:        "latest_matching_version",
+				Description: "The version number.",
+				Type:        schema.TypeBigInt,
+				Resolver:    schema.PathResolver("LatestMatchingVersion.Version"),
 			},
 			{
-				Name: "layer_arn",
-				Type: schema.TypeString,
+				Name:        "layer_arn",
+				Description: "The Amazon Resource Name (ARN) of the function layer.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name: "layer_name",
-				Type: schema.TypeString,
+				Name:        "layer_name",
+				Description: "The name of the layer.",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_lambda_layer_versions",
-				Resolver: fetchLambdaLayerVersions,
+				Name:        "aws_lambda_layer_versions",
+				Description: "Details about a version of an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
+				Resolver:    fetchLambdaLayerVersions,
 				Columns: []schema.Column{
 					{
-						Name:     "layer_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
+						Name:        "layer_id",
+						Description: "Unique ID of aws_lambda_layers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name: "compatible_runtimes",
-						Type: schema.TypeStringArray,
+						Name:        "compatible_runtimes",
+						Description: "The layer's compatible runtimes.",
+						Type:        schema.TypeStringArray,
 					},
 					{
-						Name: "created_date",
-						Type: schema.TypeString,
+						Name:        "created_date",
+						Description: "The date that the version was created, in ISO 8601 format",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "description",
-						Type: schema.TypeString,
+						Name:        "description",
+						Description: "The description of the version.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "layer_version_arn",
-						Type: schema.TypeString,
+						Name:        "layer_version_arn",
+						Description: "The ARN of the layer version.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "license_info",
-						Type: schema.TypeString,
+						Name:        "license_info",
+						Description: "The layer's open-source license.",
+						Type:        schema.TypeString,
 					},
 					{
-						Name: "version",
-						Type: schema.TypeBigInt,
+						Name:        "version",
+						Description: "The version number.",
+						Type:        schema.TypeBigInt,
 					},
 				},
 				Relations: []*schema.Table{
@@ -112,17 +130,20 @@ func LambdaLayers() *schema.Table {
 						Resolver: fetchLambdaLayerVersionPolicies,
 						Columns: []schema.Column{
 							{
-								Name:     "layer_version_id",
-								Type:     schema.TypeUUID,
-								Resolver: schema.ParentIdResolver,
+								Name:        "layer_version_id",
+								Description: "Unique ID of aws_lambda_layer_versions table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name: "policy",
-								Type: schema.TypeString,
+								Name:        "policy",
+								Description: "The policy document.",
+								Type:        schema.TypeString,
 							},
 							{
-								Name: "revision_id",
-								Type: schema.TypeString,
+								Name:        "revision_id",
+								Description: "A unique identifier for the current revision of the policy.",
+								Type:        schema.TypeString,
 							},
 						},
 					},

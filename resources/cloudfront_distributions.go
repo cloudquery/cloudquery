@@ -43,8 +43,6 @@ func CloudfrontDistributions() *schema.Table {
 				Name: "comment",
 				Type: schema.TypeString,
 			},
-
-			// DefaultCacheBehavior start
 			{
 				Name:     "cache_behaviour_target_origin_id",
 				Type:     schema.TypeString,
