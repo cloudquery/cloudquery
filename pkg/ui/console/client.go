@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -105,36 +104,15 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, subpolicy string) error {
+func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
-	err := c.c.RunPolicy(ctx, args, subpolicy)
+	err := c.c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
-	if ui.IsTerminal() {
-		time.Sleep(300 * time.Millisecond)
-		c.updater.Wait()
-	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policy run...\n\n")
-	return nil
-}
-
-func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
-	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
-		if passed {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-		} else {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
-		}
-	}})
-	if err != nil {
-		return err
-	}
-	ui.ColorizedOutput(ui.ColorProgress, "Policy Executed successfully\n")
 	return nil
 }
 
