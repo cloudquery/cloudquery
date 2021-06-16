@@ -7,10 +7,6 @@ import (
 	"io"
 	"os"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
-	"github.com/fatih/color"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
@@ -42,6 +38,24 @@ type FetchUpdate struct {
 	ResourceCount uint64
 	// Error if any returned by the provider
 	Error string
+}
+
+// PolicyRunRequest is the request used to run a policy.
+type PolicyRunRequest struct {
+	// Args are the given arguments from the policy run command.
+	Args []string
+
+	// SubPath is the optional sub path for sub policy/query execution only.
+	SubPath string
+
+	// OutputPath is the output path for policy execution output.
+	OutputPath string
+
+	// StopOnFailure signals policy execution to stop after first failure.
+	StopOnFailure bool
+
+	// RunCallBack is the callback method that is called after every policy execution.
+	RunCallBack policy.ExecutionCallback
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -276,28 +290,22 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return m.DownloadPolicy(ctx, p)
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool) error {
-	c.Logger.Info("Running policy", "args", args)
+func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
+	c.Logger.Info("Running policy", "args", req.Args)
 	m := policy.NewManager(c.config, c.pool)
 
 	// Parse input args
-	p, err := m.ParsePolicyHubPath(args, subPath)
+	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
 	if err != nil {
 		return err
 	}
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: stopOnFailure, UpdateCallback: func(name string, passed bool) {
-		if passed {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", console.EmojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-		} else {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", console.EmojiStatus[ui.StatusError], name, color.RedString("failed"))
-		}
-	}})
+	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, UpdateCallback: req.RunCallBack})
 
 	// Store output in file if requested
-	if outputPath != "" {
+	if req.OutputPath != "" {
 		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(outputPath, os.O_RDWR|os.O_CREATE, 0644)
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			return err
 		}

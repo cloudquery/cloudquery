@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/fatih/color"
+
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -107,7 +109,20 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 
 func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
-	err := c.c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure)
+	req := client.PolicyRunRequest{
+		Args:          args,
+		SubPath:       subPath,
+		OutputPath:    outputPath,
+		StopOnFailure: stopOnFailure,
+		RunCallBack: func(name string, passed bool) {
+			if passed {
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
+			} else {
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
+			}
+		},
+	}
+	err := c.c.RunPolicy(ctx, req)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
