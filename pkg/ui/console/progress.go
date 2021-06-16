@@ -13,7 +13,7 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
-var EmojiStatus = map[string]string{
+var emojiStatus = map[string]string{
 	ui.StatusOK:         color.GreenString("✓"),
 	ui.StatusError:      color.RedString("❌"),
 	ui.StatusWarn:       "⚠️",
@@ -157,7 +157,7 @@ func (u *Progress) GetBar(name string) *Bar {
 }
 
 func defaultStatusUpdater(u *Bar, _ decor.Statistics) string {
-	return EmojiStatus[u.Status]
+	return emojiStatus[u.Status]
 }
 
 func defaultMessageUpdater(u *Bar, _ decor.Statistics) string {

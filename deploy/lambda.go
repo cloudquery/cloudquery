@@ -83,7 +83,7 @@ func Fetch(ctx context.Context, cfg *config.Config) {
 // Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) {
 	outputPath := "/tmp/result.json"
-	queryPath := os.Getenv("CQ_QUERY_PATH") // TODO: if path is an S3 URI, pull file down
+	queryPath := os.Getenv("CQ_QUERY_HUB_PATH") // TODO: if path is an S3 URI, pull file down
 	c, err := client.New(ctx, func(c *client.Client) {
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
@@ -91,8 +91,8 @@ func Policy(ctx context.Context, cfg *config.Config) {
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
 	}
-	_, err = c.ExecutePolicy(ctx, client.ExecutePolicyRequest{
-		PolicyPath:    queryPath,
+	err = c.RunPolicy(ctx, client.PolicyRunRequest{
+		Args:          []string{queryPath},
 		StopOnFailure: false,
 		OutputPath:    outputPath,
 	})
