@@ -301,6 +301,9 @@ func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	}
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
 	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, UpdateCallback: req.RunCallBack})
+	if err != nil {
+		return err
+	}
 
 	// Store output in file if requested
 	if req.OutputPath != "" {

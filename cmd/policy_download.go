@@ -32,7 +32,8 @@ See https://hub.cloudquery.io for additional policies.
 				return err
 			}
 			defer c.Client().Close()
-			return c.DownloadPolicy(ctx, args)
+			_ = c.DownloadPolicy(ctx, args)
+			return nil
 		},
 	}
 )

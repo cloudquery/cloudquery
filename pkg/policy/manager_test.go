@@ -27,6 +27,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	}, nil)
 
 	// TODO: Add test for official cloudquery org
+	// Checkout repo with "main" branch
 	policyHubPath := []string{"michelvocks/my-cq-policy"}
 	p, err := m.ParsePolicyHubPath(policyHubPath, "")
 	assert.NoError(t, err)
@@ -45,24 +46,18 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	err = m.DownloadPolicy(context.Background(), p)
 	assert.NoError(t, err)
 
-	/*
-		// Make sure version changed e.g. tag was checked out
-		r, err := git.PlainOpen(policyFolder)
-		if err != nil {
-			t.Fatal(err)
-		}
-		ref, err := r.Head()
-		if err != nil {
-			t.Fatal(err)
-		}
-		versionTag, err := r.Tag(p.Version)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if ref.Hash() != versionTag.Hash() {
-			t.Fatalf("reference is not equal to version. Got %s want %s", ref.Hash().String(), versionTag.Hash().String())
-		}
-	*/
+	// Checkout repo with "master" branch
+	policyHubPath = []string{"michelvocks/cq-test-policy"}
+	p, err = m.ParsePolicyHubPath(policyHubPath, "")
+	assert.NoError(t, err)
+
+	err = m.DownloadPolicy(context.Background(), p)
+	assert.NoError(t, err)
+
+	// Make sure downloaded policy folder exists
+	policyFolder = filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
+	_, err = osFs.Stat(policyFolder)
+	assert.NoError(t, err)
 }
 
 func TestManagerImpl_RunPolicy(t *testing.T) {

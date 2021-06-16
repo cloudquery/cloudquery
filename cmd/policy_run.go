@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
@@ -36,11 +35,8 @@ See https://hub.cloudquery.io for additional policies.
 				return err
 			}
 			defer c.Client().Close()
-			subPath := cmd.PersistentFlags().Lookup("subpath")
-			outputPath := cmd.PersistentFlags().Lookup("output")
-			stopOnFailureRaw := cmd.PersistentFlags().Lookup("stoponfailure")
-			stopOnFailure, _ := strconv.ParseBool(stopOnFailureRaw.Value.String())
-			return c.RunPolicy(ctx, args, subPath.Value.String(), outputPath.Value.String(), stopOnFailure)
+			_ = c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure)
+			return nil
 		},
 	}
 	subPath       string
