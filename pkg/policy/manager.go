@@ -146,11 +146,10 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 		return fmt.Errorf("failed to parse GitHub URL: %s", err.Error())
 	}
 
-	// Define clone options (start with main branch)
+	// Define clone options
 	cloneOptions := &git.CloneOptions{
-		URL:           gitURL,
-		ReferenceName: plumbing.NewBranchReferenceName("main"),
-		Tags:          git.AllTags,
+		URL:  gitURL,
+		Tags: git.AllTags,
 	}
 
 	// Output progress information if necessary
@@ -176,12 +175,6 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 		_, err = git.PlainOpen(repoPath)
 		if err != nil {
 			return fmt.Errorf("failed to open repository: %s", err.Error())
-		}
-	case git.ErrBranchNotFound, plumbing.ErrReferenceNotFound:
-		cloneOptions.ReferenceName = plumbing.NewBranchReferenceName("master")
-		_, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
-		if err != nil && err != git.ErrRepositoryAlreadyExists {
-			return fmt.Errorf("failed to clone repository: %s", err.Error())
 		}
 	default:
 		return fmt.Errorf("failed to clone repository: %s", err.Error())
