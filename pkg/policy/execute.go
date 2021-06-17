@@ -99,7 +99,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, execReq *ExecuteRequest,
 // executePolicy executes the given policy and its sub views/queries.
 // Please use ExecutePolicies if possible.
 func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) ([]*QueryResult, error) {
-	results := make([]*QueryResult, len(p.Queries))
+	results := make([]*QueryResult, 0)
 
 	// Create temporary Views
 	for _, v := range p.Views {
