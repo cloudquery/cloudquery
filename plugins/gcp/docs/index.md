@@ -1,6 +1,6 @@
 ## GCP Provider
 
-The CloudQuery GCP provider pulls configuration out of GCP resources, normalizes them and store them in PostgreSQL database.
+The CloudQuery GCP provider pulls configuration out of GCP resources, normalizes them and stores them in PostgreSQL database.
 
 ### Install
 
