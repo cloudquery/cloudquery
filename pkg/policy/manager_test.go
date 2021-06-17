@@ -7,9 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cloudquery/internal/file"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestManagerImpl_DownloadPolicy(t *testing.T) {

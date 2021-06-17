@@ -10,18 +10,14 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/go-git/go-git/v5/plumbing/object"
-
-	"github.com/jackc/pgx/v4/pgxpool"
-
-	"github.com/hashicorp/go-version"
-
-	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 const (
