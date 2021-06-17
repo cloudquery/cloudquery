@@ -30,5 +30,5 @@ func buildResourceGroupMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 }
 
 func TestResourceGroups(t *testing.T) {
-	azureTestHelper(t, resources.ResourceGroups(), buildResourceGroupMock)
+	azureTestHelper(t, resources.ResourcesGroups(), buildResourceGroupMock)
 }
