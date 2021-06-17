@@ -39,8 +39,8 @@ var defaultSupportedPolicyExtensions = []string{"hcl", "json"}
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
-	// Pointer to the client config
-	config *config.Config
+	// policyDirectory points to the local policy directory
+	policyDirectory string
 
 	// Instance of a database connection pool
 	pool *pgxpool.Pool
@@ -83,12 +83,12 @@ type Manager interface {
 }
 
 // NewManager returns the manager instance.
-func NewManager(c *config.Config, pool *pgxpool.Pool) Manager {
+func NewManager(policyDir string, pool *pgxpool.Pool) Manager {
 	// Singleton instantiation
 	once.Do(func() {
 		managerInstance = &ManagerImpl{
-			config: c,
-			pool:   pool,
+			policyDirectory: policyDir,
+			pool:            pool,
 		}
 	})
 	return managerInstance
@@ -139,7 +139,7 @@ func (m *ManagerImpl) ParsePolicyHubPath(args []string, subPolicyPath string) (*
 func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 	// Make sure that the local policy organization folder exists
 	osFs := file.NewOsFs()
-	policyOrgFolder := filepath.Join(m.config.CloudQuery.PolicyDirectory, defaultLocalSubPath, p.Organization)
+	policyOrgFolder := filepath.Join(m.policyDirectory, defaultLocalSubPath, p.Organization)
 	if err := osFs.MkdirAll(policyOrgFolder, 0744); err != nil {
 		return fmt.Errorf("failed to create organization policy directory: %s", policyOrgFolder)
 	}
@@ -201,7 +201,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	// Check if given policy exists in our policy folder
 	osFs := file.NewOsFs()
 	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
-	repoFolder := filepath.Join(m.config.CloudQuery.PolicyDirectory, defaultLocalSubPath, orgPolicyStr)
+	repoFolder := filepath.Join(m.policyDirectory, defaultLocalSubPath, orgPolicyStr)
 	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
 		return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
 	}

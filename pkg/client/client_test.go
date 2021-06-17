@@ -11,7 +11,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
 	"github.com/hashicorp/hcl/v2/hclparse"
@@ -139,19 +138,6 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
 	_, diags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
-}
-
-type MockRegistry struct{}
-
-func (m MockRegistry) VerifyProvider(_ context.Context, _, _, _ string) bool {
-	return true
-}
-func (m MockRegistry) GetProvider(_ context.Context, organization, providerName, providerVersion string) (registry.ProviderDetails, error) {
-	return registry.ProviderDetails{
-		Name:         providerName,
-		Version:      providerVersion,
-		Organization: organization,
-	}, nil
 }
 
 const testConfig = `cloudquery {

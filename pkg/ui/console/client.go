@@ -41,6 +41,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.Providers = cfg.CloudQuery.Providers
 		c.NoVerify = viper.GetBool("no-verify")
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
 	c, err := client.New(ctx, opts...)

@@ -97,6 +97,8 @@ type Client struct {
 	RegistryURL string
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
+	// Optional: Where to save downloaded policies, by default current working directory, defaults to ./cq/policy
+	PolicyDirectory string
 	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
 	NoVerify bool
 	// Optional: DSN connection information for database client will connect to
@@ -119,6 +121,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	c := &Client{
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
+		PolicyDirectory:    ".",
 		NoVerify:           false,
 		HubProgressUpdater: nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
@@ -252,7 +255,7 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
-	m := policy.NewManager(c.config, c.pool)
+	m := policy.NewManager(c.PolicyDirectory, c.pool)
 
 	// Parse input args
 	p, err := m.ParsePolicyHubPath(args, "")
@@ -265,7 +268,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 
 func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
-	m := policy.NewManager(c.config, c.pool)
+	m := policy.NewManager(c.PolicyDirectory, c.pool)
 
 	// Parse input args
 	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
