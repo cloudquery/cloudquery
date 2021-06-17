@@ -17,3 +17,21 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.37.1
+
+  docs:
+    name: docs verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.15
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: build-docs
+        run: |
+          go run ./docs/docs.go
+      - name: Fail if docs are changed
+        run: |
+          if [ $(git status -- ./docs/tables | grep 'modified:' | wc -l) -gt 0 ]; then exit 1; fi
