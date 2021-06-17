@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/cloudquery/cloudquery/internal/file"
-	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 func TestManagerImpl_DownloadPolicy(t *testing.T) {
@@ -20,11 +19,11 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	m := NewManager(&config.Config{
-		CloudQuery: config.CloudQuery{
-			PolicyDirectory: tmpDir,
-		},
-	}, nil)
+	// Setup database
+	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
+	defer tearDownFunc(t)
+
+	m := NewManager(tmpDir, pool)
 
 	// TODO: Add test for official cloudquery org
 	// Checkout repo with "main" branch
@@ -71,11 +70,7 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
 	defer tearDownFunc(t)
 
-	m := NewManager(&config.Config{
-		CloudQuery: config.CloudQuery{
-			PolicyDirectory: tmpDir,
-		},
-	}, pool)
+	m := NewManager(tmpDir, pool)
 
 	// TODO: Add test for official cloudquery org
 	policyHubPath := []string{"michelvocks/my-cq-policy"}
