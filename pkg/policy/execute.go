@@ -4,15 +4,9 @@ import (
 	"context"
 	"fmt"
 	"path/filepath"
-	"sync"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
-)
-
-var (
-	onceExec         sync.Once
-	executorInstance *Executor
 )
 
 // Executor implements the execution framework.
@@ -53,14 +47,11 @@ type ExecuteRequest struct {
 	StopOnFailure bool
 }
 
-// NewExecutor creates a new executor singleton instance and/or returns one.
+// NewExecutor creates a new executor.
 func NewExecutor(conn *pgxpool.Conn) *Executor {
-	onceExec.Do(func() {
-		executorInstance = &Executor{
-			conn: conn,
-		}
-	})
-	return executorInstance
+	return &Executor{
+		conn: conn,
+	}
 }
 
 // ExecutePolicies executes multiple given policies and the related sub queries/views.
