@@ -5,16 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-
-	"github.com/aws/aws-sdk-go-v2/service/configservice"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	_ "github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -22,7 +18,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
-	_ "github.com/aws/aws-sdk-go-v2/service/configservice"
+	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -38,6 +34,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -100,6 +97,7 @@ type Services struct {
 	FSX              FsxClient
 	IAM              IamClient
 	KMS              KmsClient
+	MQ               MQClient
 	Organizations    OrganizationsClient
 	Redshift         RedshiftClient
 	Route53          Route53Client
@@ -331,6 +329,7 @@ func initServices(awsCfg aws.Config) Services {
 		ELBv2:            elbv2.NewFromConfig(awsCfg),
 		IAM:              iam.NewFromConfig(awsCfg),
 		KMS:              kms.NewFromConfig(awsCfg),
+		MQ:               mq.NewFromConfig(awsCfg),
 		Organizations:    organizations.NewFromConfig(awsCfg),
 		RDS:              rds.NewFromConfig(awsCfg),
 		Redshift:         redshift.NewFromConfig(awsCfg),
