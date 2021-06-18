@@ -278,7 +278,7 @@ func CloudfrontDistributions() *schema.Table {
 				},
 			},
 			{
-				Name:     "cache_behaviour_lambda_function_associations",
+				Name:     "aws_cache_behaviour_lambda_function_associations",
 				Resolver: fetchCloudfrontDistributionDefaultCacheBehaviourLambdaFunctionAssociations,
 				Columns: []schema.Column{
 					{
