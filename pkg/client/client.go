@@ -255,7 +255,7 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool)
+	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
 	// Parse input args
 	p, err := m.ParsePolicyHubPath(args, "")
@@ -268,7 +268,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 
 func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool)
+	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
 	// Parse input args
 	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
