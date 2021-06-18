@@ -13,7 +13,7 @@ import (
 
 var (
 	policyRunCmd = &cobra.Command{
-		Use:   "run [policy hub path]",
+		Use:   "run [policy path]",
 		Short: "Runs a policy",
 		Long: `Examples:
 # Download policy from Policy Hub
@@ -46,8 +46,8 @@ See https://hub.cloudquery.io for additional policies.
 
 func init() {
 	flags := policyRunCmd.Flags()
-	flags.StringVar(&subPath, "subpath", "", "Forces the policy run command to only execute this sub policy/query")
+	flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
 	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
-	flags.BoolVar(&stopOnFailure, "stoponfailure", false, "Stops the execution on the first failure")
+	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
 	policyCmd.AddCommand(policyRunCmd)
 }

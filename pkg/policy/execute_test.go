@@ -84,6 +84,7 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 		Views         []*config.View
 		ShouldBeEmpty bool
 		Pass          bool
+		ErrorOutput   string
 	}{
 		{
 			Name: "multiple_queries",
@@ -123,6 +124,33 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 			Pass:          true,
 			ShouldBeEmpty: false,
 		},
+		{
+			Name: "broken_policy_query",
+			Queries: []*config.Query{
+				{
+					Name:  "broken-query",
+					Query: "SECT * OM testview",
+				},
+			},
+			ErrorOutput:   "ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+			ShouldBeEmpty: true,
+			Pass:          true,
+		},
+		{
+			Name: "broken_policy_view",
+			Views: []*config.View{
+				{
+					Name: "brokenview",
+					Query: &config.Query{
+						Name:  "broken-query-view",
+						Query: "TCELES * MOFR *",
+					},
+				},
+			},
+			ErrorOutput:   "ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			ShouldBeEmpty: true,
+			Pass:          true,
+		},
 	}
 
 	pool, tearDownFunc := setupDatabase(t, t.Name())
@@ -146,13 +174,19 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 			policyMap[tc.Name] = p
 
 			res, err := executor.ExecutePolicies(context.Background(), execReq, policyMap)
-			assert.NoError(t, err)
-			if tc.ShouldBeEmpty {
-				assert.Empty(t, res.Results)
+			if tc.ErrorOutput != "" {
+				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {
-				assert.NotEmpty(t, res.Results)
+				assert.NoError(t, err)
 			}
-			assert.Equal(t, tc.Pass, res.Passed)
+			if tc.ShouldBeEmpty {
+				assert.Empty(t, res)
+			} else {
+				assert.NotEmpty(t, res)
+			}
+			if res != nil {
+				assert.Equal(t, tc.Pass, res.Passed)
+			}
 		})
 	}
 }

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/hashicorp/go-hclog"
+
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,7 +24,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
 	defer tearDownFunc(t)
 
-	m := NewManager(tmpDir, pool)
+	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
 
 	// TODO: Add test for official cloudquery org
 	// Checkout repo with "main" branch
@@ -69,7 +71,7 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
 	defer tearDownFunc(t)
 
-	m := NewManager(tmpDir, pool)
+	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
 
 	// TODO: Add test for official cloudquery org
 	policyHubPath := []string{"michelvocks/my-cq-policy"}
