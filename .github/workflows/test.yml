@@ -13,7 +13,7 @@ jobs:
       matrix:
         dbversion: ['postgres:latest']
         go: ['1.16']
-        platform: [ ubuntu-latest, 	macos-latest]
+        platform: [ ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     services:
       postgres:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Build
         run: go build -v .
-        
+
       - name: Sanity
         run: go run .\main.go fetch --config=internal/test/test_config.hcl
 
