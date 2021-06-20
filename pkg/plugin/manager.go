@@ -49,7 +49,7 @@ func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string,
 }
 
 func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
-	m.logger.Info("Downloading required providers")
+	m.logger.Debug("Downloading required providers", "providers", providers)
 	for _, rp := range providers {
 		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
 		details, err := m.hub.DownloadProvider(ctx, rp, noVerify)
@@ -66,7 +66,7 @@ func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin
 	if ok {
 		return p, nil
 	}
-	m.logger.Info("plugin doesn't exist, creating..", "provider", providerName, "name", alias)
+	m.logger.Info("plugin doesn't exist, creating..", "provider", providerName, "alias", alias)
 	details, ok := m.providers[providerName]
 	if !ok {
 		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)
