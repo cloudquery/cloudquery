@@ -8,12 +8,12 @@ on:
     branches: [ main ]
 
 jobs:
-  postgres:
+  unitests:
     strategy:
       matrix:
         dbversion: ['postgres:latest']
         go: ['1.16']
-        platform: [ubuntu-latest] # can not run in macOS and Windows OS
+        platform: [ ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     services:
       postgres:
@@ -45,6 +45,9 @@ jobs:
 
       - name: Build
         run: go build -v .
+
+      - name: Sanity
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log
 
       - name: Test
         run: go test -v ./...

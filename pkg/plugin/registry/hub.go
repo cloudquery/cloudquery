@@ -330,7 +330,7 @@ func (h Hub) getProviderPath(org, name, version string) string {
 func (h Hub) loadExisting() {
 	_ = afero.Walk(h.fs, h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
+			h.Logger.Warn("failed to read plugin directory, no existing plugins loaded", "directory", h.PluginDirectory)
 			return nil
 		}
 		if info.IsDir() {

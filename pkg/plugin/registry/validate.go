@@ -55,6 +55,8 @@ NdQkdLbveQ+US4vVAzRFJjRAvGVq14lRxiTreQ==
 =9Zuc
 -----END PGP PUBLIC KEY BLOCK-----`
 
+const checksumSeparator = "  "
+
 func validateChecksumProvider(providerPath string, checksumPath string) error {
 	sha256sum, err := sha256File(providerPath)
 	if err != nil {
@@ -68,11 +70,11 @@ func validateChecksumProvider(providerPath string, checksumPath string) error {
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		split := strings.Split(scanner.Text(), "  ")
+		split := strings.Split(scanner.Text(), checksumSeparator)
 		if len(split) != 2 {
 			return fmt.Errorf("checksum file in incorrect format")
 		}
-		if strings.Contains(split[1], runtime.GOOS) {
+		if strings.Contains(split[1], runtime.GOOS) && strings.Contains(split[1], runtime.GOARCH) {
 			if split[0] == sha256sum {
 				return nil
 			}

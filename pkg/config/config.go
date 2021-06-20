@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/hashicorp/hcl/v2"
@@ -36,6 +37,10 @@ type RequiredProvider struct {
 	Name    string `hcl:"name,label"`
 	Source  string `hcl:"source,optional"`
 	Version string `hcl:"version"`
+}
+
+func (r RequiredProvider) String() string {
+	return fmt.Sprintf("%s/cq-provider-%s@%s", r.Source, r.Name, r.Version)
 }
 
 // configFileSchema is the schema for the top-level of a config file. We use
