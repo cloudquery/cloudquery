@@ -47,7 +47,7 @@ jobs:
         run: go build -v .
 
       - name: Sanity
-        run: go run .\main.go fetch --config=internal/test/test_config.hcl
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl
 
       - name: Test
         run: go test -v ./...
