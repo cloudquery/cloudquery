@@ -53,6 +53,7 @@ func Provider() *provider.Provider {
 			"ec2.ebs_volumes":                       Ec2EbsVolumes(),
 			"ecr.repositories":                      EcrRepositories(),
 			"efs.filesystems":                       EfsFilesystems(),
+			"elasticsearch.domains":                 ElasticsearchDomains(),
 			"eks.clusters":                          EksClusters(),
 			"ecs.clusters":                          EcsClusters(),
 			"elasticbeanstalk.environments":         ElasticbeanstalkEnvironments(),

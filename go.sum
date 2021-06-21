@@ -108,6 +108,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.3.0 h1:jcx18EAelE2w
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.3.0/go.mod h1:5AcWE9oBNguXvA3Ky2fYuBYrwz+mX4U4GzDaJnljr5I=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.2.0 h1:9lADbVulXuffsnKXULr1p82sHd9t8JiMF41jmgIRbkg=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.2.0/go.mod h1:78leP5ag2ke3L727+st+WAS6IxhLYzROUWMgSzvMonc=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.4.0 h1:OQn0Xv5Lz5gbl06+spqW5dqX/2nXIvcm3m5ft7mX2Aw=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.4.0/go.mod h1:NZHoBllYu3R6sNv/0ziycaBPGlAcj/2FnY8rvMfpJoY=
 github.com/aws/aws-sdk-go-v2/service/emr v1.2.0 h1:JwDNxHv2oazaknN1la3lskZWvOS56cpyG+JZVJc7cIA=
 github.com/aws/aws-sdk-go-v2/service/emr v1.2.0/go.mod h1:EbPeddhwfEWE6ZJh5WM2+OoHhUEko8/zuloAs/4bqrA=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.2.0 h1:/hxERAW8wfc5F+aC8rwsB2tqMkWApAWJoaVM0cuhBg4=
