@@ -2,6 +2,7 @@ package client
 
 // define interfaces so we can easily mock AWS calls
 //go:generate mockgen -destination=./mocks/services.go -package=mocks . AutoscalingClient,ApigatewayClient,Apigatewayv2Client,CloudfrontClient,CloudtrailClient,CloudwatchClient,CloudwatchLogsClient,DirectconnectClient,Ec2Client,EcrClient,EfsClient,ElasticbeanstalkClient,ElbV1Client,ElbV2Client,EmrClient,FsxClient,IamClient,KmsClient,MQClient,OrganizationsClient,RdsClient,S3Client,SnsClient,EksClient,RedshiftClient,Route53Client,EcsClient,S3ManagerClient,LambdaClient,ConfigServiceClient,AnalyzerClient,WafClient,WafV2Client
+//go:generate mockgen -destination=./mocks/mock_elasticsearch.go -package=mocks . ElasticSearch
 
 import (
 	"context"
@@ -26,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -253,6 +255,11 @@ type SnsClient interface {
 type EcsClient interface {
 	DescribeClusters(ctx context.Context, params *ecs.DescribeClustersInput, optFns ...func(*ecs.Options)) (*ecs.DescribeClustersOutput, error)
 	ListClusters(ctx context.Context, params *ecs.ListClustersInput, optFns ...func(*ecs.Options)) (*ecs.ListClustersOutput, error)
+}
+
+type ElasticSearch interface {
+	ListDomainNames(ctx context.Context, params *elasticsearchservice.ListDomainNamesInput, optFns ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListDomainNamesOutput, error)
+	DescribeElasticsearchDomain(ctx context.Context, params *elasticsearchservice.DescribeElasticsearchDomainInput, optFns ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchDomainOutput, error)
 }
 
 type EksClient interface {
