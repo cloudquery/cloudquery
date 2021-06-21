@@ -1007,6 +1007,46 @@ func (m *MockDirectconnectClient) EXPECT() *MockDirectconnectClientMockRecorder 
 	return m.recorder
 }
 
+// DescribeDirectConnectGatewayAssociations mocks base method.
+func (m *MockDirectconnectClient) DescribeDirectConnectGatewayAssociations(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewayAssociationsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAssociationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDirectConnectGatewayAssociations", varargs...)
+	ret0, _ := ret[0].(*directconnect.DescribeDirectConnectGatewayAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDirectConnectGatewayAssociations indicates an expected call of DescribeDirectConnectGatewayAssociations.
+func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGatewayAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDirectConnectGatewayAssociations", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeDirectConnectGatewayAssociations), varargs...)
+}
+
+// DescribeDirectConnectGatewayAttachments mocks base method.
+func (m *MockDirectconnectClient) DescribeDirectConnectGatewayAttachments(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewayAttachmentsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAttachmentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDirectConnectGatewayAttachments", varargs...)
+	ret0, _ := ret[0].(*directconnect.DescribeDirectConnectGatewayAttachmentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDirectConnectGatewayAttachments indicates an expected call of DescribeDirectConnectGatewayAttachments.
+func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGatewayAttachments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDirectConnectGatewayAttachments", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeDirectConnectGatewayAttachments), varargs...)
+}
+
 // DescribeDirectConnectGateways mocks base method.
 func (m *MockDirectconnectClient) DescribeDirectConnectGateways(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewaysInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewaysOutput, error) {
 	m.ctrl.T.Helper()
