@@ -44,6 +44,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
+	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
@@ -344,6 +345,7 @@ func initServices(awsCfg aws.Config) Services {
 		Analyzer:         accessanalyzer.NewFromConfig(awsCfg),
 		ConfigService:    configservice.NewFromConfig(awsCfg),
 		Waf:              waf.NewFromConfig(awsCfg),
+		WafV2:            wafv2.NewFromConfig(awsCfg),
 	}
 }
 
