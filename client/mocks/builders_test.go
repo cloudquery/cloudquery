@@ -355,13 +355,31 @@ func buildCloudwatchLogsFiltersMock(t *testing.T, ctrl *gomock.Controller) clien
 func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	l := directconnectTypes.DirectConnectGateway{}
+	association := directconnectTypes.DirectConnectGatewayAssociation{}
+	attachment := directconnectTypes.DirectConnectGatewayAttachment{}
 	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = faker.FakeData(&association)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = faker.FakeData(&attachment)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeDirectConnectGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&directconnect.DescribeDirectConnectGatewaysOutput{
 			DirectConnectGateways: []directconnectTypes.DirectConnectGateway{l},
+		}, nil)
+	m.EXPECT().DescribeDirectConnectGatewayAssociations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&directconnect.DescribeDirectConnectGatewayAssociationsOutput{
+			DirectConnectGatewayAssociations: []directconnectTypes.DirectConnectGatewayAssociation{association},
+		}, nil)
+	m.EXPECT().DescribeDirectConnectGatewayAttachments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&directconnect.DescribeDirectConnectGatewayAttachmentsOutput{
+			DirectConnectGatewayAttachments: []directconnectTypes.DirectConnectGatewayAttachment{attachment},
 		}, nil)
 	return client.Services{
 		Directconnect: m,

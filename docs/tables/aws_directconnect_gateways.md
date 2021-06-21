@@ -12,3 +12,4 @@ Information about a Direct Connect gateway, which enables you to connect virtual
 |direct_connect_gateway_state|text|The state of the Direct Connect gateway.|
 |owner_account|text|The ID of the AWS account that owns the Direct Connect gateway.|
 |state_change_error|text|The error message if the state of an object failed to advance.|
+|resource_id|text|The ID of the Direct Connect gateway.|
