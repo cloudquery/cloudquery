@@ -7,9 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hashicorp/go-hclog"
-
 	"github.com/cloudquery/cloudquery/internal/file"
+	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,11 +19,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	// Setup database
-	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
-	defer tearDownFunc(t)
-
-	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
+	m := NewManager(tmpDir, nil, hclog.New(&hclog.LoggerOptions{}))
 
 	cases := []struct {
 		Name           string
