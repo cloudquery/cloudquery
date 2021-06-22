@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -152,10 +153,18 @@ func Wafv2RuleGroups() *schema.Table {
 func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
-	config := wafv2.ListRuleGroupsInput{}
+
+	// Dependent on the region select the right scope
+	scope := types.ScopeRegional
+	region := c.Region
+	if region == strings.ToLower("global") {
+		region = "us-east-1"
+		scope = types.ScopeCloudfront
+	}
+	config := wafv2.ListRuleGroupsInput{Scope: scope}
 	for {
 		output, err := service.ListRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = c.Region
+			options.Region = region
 		})
 		if err != nil {
 			return err
@@ -164,8 +173,9 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 		// Get RuleGroup object
 		for _, ruleGroupOutput := range output.RuleGroups {
 			ruleGroup, err := service.GetRuleGroup(ctx, &wafv2.GetRuleGroupInput{
-				Name: ruleGroupOutput.Name,
-				Id:   ruleGroupOutput.Id,
+				Name:  ruleGroupOutput.Name,
+				Id:    ruleGroupOutput.Id,
+				Scope: scope,
 			})
 			if err != nil {
 				return err

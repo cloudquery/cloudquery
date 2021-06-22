@@ -5,7 +5,6 @@ This is AWS WAF Classic documentation
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
 |arn|text||
 |rule_ids|text[]||
 |tags|jsonb||

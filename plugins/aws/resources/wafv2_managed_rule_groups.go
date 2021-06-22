@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -80,10 +81,18 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
-	config := wafv2.ListAvailableManagedRuleGroupsInput{}
+
+	// Dependent on the region select the right scope
+	scope := types.ScopeRegional
+	region := c.Region
+	if region == strings.ToLower("global") {
+		region = "us-east-1"
+		scope = types.ScopeCloudfront
+	}
+	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: scope}
 	for {
 		output, err := service.ListAvailableManagedRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = c.Region
+			options.Region = region
 		})
 		if err != nil {
 			return err
@@ -106,12 +115,21 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
+	// Dependent on the region select the right scope
+	scope := types.ScopeRegional
+	region := c.Region
+	if region == strings.ToLower("global") {
+		region = "us-east-1"
+		scope = types.ScopeCloudfront
+	}
+
 	// Resolve managed rule group via describe managed rule group
 	descrManagedRuleGroup, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{
 		Name:       managedRuleGroupSum.Name,
 		VendorName: managedRuleGroupSum.VendorName,
+		Scope:      scope,
 	}, func(options *wafv2.Options) {
-		options.Region = c.Region
+		options.Region = region
 	})
 	if err != nil {
 		return err

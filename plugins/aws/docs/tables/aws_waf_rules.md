@@ -5,7 +5,6 @@ This is AWS WAF Classic documentation
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text||
-|region|text||
 |arn|text||
 |tags|jsonb||
 |rule_id|text|A unique identifier for a Rule|
