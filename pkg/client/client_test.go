@@ -9,12 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/test/provider"
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
-
-	"github.com/cloudquery/cloudquery/internal/test/provider"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -140,41 +138,6 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
 	_, diags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
-}
-
-func TestClient_ExecutePolicy(t *testing.T) {
-	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
-	})
-	assert.Nil(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-	}
-	ctx := context.Background()
-	conn, err := c.pool.Acquire(ctx)
-	if err != nil {
-		assert.Nil(t, err)
-		t.FailNow()
-	}
-	defer conn.Release()
-	_, err = conn.Exec(ctx, `Truncate public.slow_resource`)
-	if !assert.Nil(t, err) {
-		t.FailNow()
-	}
-	resp, err := c.ExecutePolicy(ctx, ExecutePolicyRequest{
-		PolicyPath:    "../../internal/test/provider/test_policy_success.yml",
-		StopOnFailure: false,
-	})
-	assert.NotNil(t, resp)
-	assert.False(t, resp.Passed)
-	_, err = conn.Exec(ctx, `INSERT INTO public.slow_resource(id, some_bool) VALUES (uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), true);`)
-	assert.Nil(t, err)
-	resp, err = c.ExecutePolicy(ctx, ExecutePolicyRequest{
-		PolicyPath:    "../../internal/test/provider/test_policy_success.yml",
-		StopOnFailure: false,
-	})
-	assert.NotNil(t, resp)
-	assert.True(t, resp.Passed)
 }
 
 const testConfig = `cloudquery {

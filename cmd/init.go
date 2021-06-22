@@ -50,7 +50,8 @@ func Initialize(providers []string) {
 	}
 	// TODO: build this manually with block and add comments as well
 	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
-		PluginDirectory: ".",
+		PluginDirectory: "./cq/providers",
+		PolicyDirectory: "./cq/policies",
 		Providers:       requiredProviders,
 		Connection: config.Connection{
 			DSN: "host=localhost user=postgres password=pass DB.name=postgres port=5432",

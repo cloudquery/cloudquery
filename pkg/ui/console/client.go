@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/fatih/color"
+
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -40,6 +41,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.Providers = cfg.CloudQuery.Providers
 		c.NoVerify = viper.GetBool("no-verify")
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
 	c, err := client.New(ctx, opts...)
@@ -88,19 +90,45 @@ func (c Client) Fetch(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) ExecutePolicy(ctx context.Context, policyPath string, output string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Executing Policy %s...\n", policyPath)
-	_, err := c.c.ExecutePolicy(ctx, client.ExecutePolicyRequest{OutputPath: output, PolicyPath: policyPath, UpdateCallback: func(name string, passed bool, resultCount int) {
-		if passed {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-		} else {
-			ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
-		}
-	}})
+func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
+	err := c.c.DownloadPolicy(ctx, args)
 	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Policy Executed successfully\n")
+	// sleep some extra 300 milliseconds for progress refresh
+	if ui.IsTerminal() {
+		time.Sleep(300 * time.Millisecond)
+		c.updater.Wait()
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n\n")
+	return nil
+}
+
+func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
+	req := client.PolicyRunRequest{
+		Args:          args,
+		SubPath:       subPath,
+		OutputPath:    outputPath,
+		StopOnFailure: stopOnFailure,
+		RunCallBack: func(name string, passed bool) {
+			if passed {
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
+			} else {
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
+			}
+		},
+	}
+	err := c.c.RunPolicy(ctx, req)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
+		return err
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished policy run...\n\n")
 	return nil
 }
 

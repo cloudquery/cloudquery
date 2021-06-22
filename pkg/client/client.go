@@ -2,24 +2,24 @@ package client
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"io"
+	"os"
 	"path/filepath"
-
-	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"golang.org/x/sync/errgroup"
-	"gopkg.in/yaml.v3"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -28,24 +28,6 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
-}
-
-type ExecutePolicyRequest struct {
-	// Path to the policy, currently we still use the old .yml format, future versions will change to HCL
-	PolicyPath string
-	// UpdateCallback allows gets called when the client receives updates on policy execution.
-	UpdateCallback PolicyExecutionCallback
-	// if True policy execution will stop on first failure
-	StopOnFailure bool
-	// Path to save policy result
-	OutputPath string
-}
-
-type PolicyExecutionResult struct {
-	// True if all policies have passed
-	Passed bool
-	// Map of all query result sets
-	Results map[string]*PolicyResult
 }
 
 type FetchUpdate struct {
@@ -57,6 +39,24 @@ type FetchUpdate struct {
 	ResourceCount uint64
 	// Error if any returned by the provider
 	Error string
+}
+
+// PolicyRunRequest is the request used to run a policy.
+type PolicyRunRequest struct {
+	// Args are the given arguments from the policy run command.
+	Args []string
+
+	// SubPath is the optional sub path for sub policy/query execution only.
+	SubPath string
+
+	// OutputPath is the output path for policy execution output.
+	OutputPath string
+
+	// StopOnFailure signals policy execution to stop after first failure.
+	StopOnFailure bool
+
+	// RunCallBack is the callback method that is called after every policy execution.
+	RunCallBack policy.ExecutionCallback
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -87,8 +87,6 @@ type FetchDoneResult struct {
 
 type FetchUpdateCallback func(update FetchUpdate)
 
-type PolicyExecutionCallback func(name string, passed bool, resultCount int)
-
 type Option func(options *Client)
 
 // Client is the client for executing providers, fetching data and running queries and polices
@@ -99,6 +97,8 @@ type Client struct {
 	RegistryURL string
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
+	// Optional: Where to save downloaded policies, by default current working directory, defaults to ./cq/policy
+	PolicyDirectory string
 	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
 	NoVerify bool
 	// Optional: DSN connection information for database client will connect to
@@ -121,6 +121,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	c := &Client{
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
+		PolicyDirectory:    ".",
 		NoVerify:           false,
 		HubProgressUpdater: nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
@@ -252,59 +253,54 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
-func (c Client) ExecutePolicy(ctx context.Context, request ExecutePolicyRequest) (*PolicyExecutionResult, error) {
+func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+	c.Logger.Info("Downloading policy from GitHub", "args", args)
+	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	conn, err := c.pool.Acquire(ctx)
+	// Parse input args
+	p, err := m.ParsePolicyHubPath(args, "")
 	if err != nil {
-		return nil, err
+		return err
 	}
-	defer conn.Release()
-	data, err := afero.ReadFile(afero.NewOsFs(), request.PolicyPath)
+	c.Logger.Debug("Parsed policy download input arguments", "policy", p)
+	return m.DownloadPolicy(ctx, p)
+}
+
+func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
+	c.Logger.Info("Running policy", "args", req.Args)
+	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+
+	// Parse input args
+	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
+	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, UpdateCallback: req.RunCallBack})
+	if err != nil {
+		return err
 	}
 
-	var policy config.Policy
-	// TODO: convert to hcl
-	if err := yaml.Unmarshal(data, &policy); err != nil {
-		return nil, err
-	}
-	// Create Views
-	c.Logger.Debug("creating policy views", "policy", request.PolicyPath)
-	if err := createViews(ctx, conn, policy.Views); err != nil {
-		return nil, fmt.Errorf("failed to create policy views %w", err)
-	}
-	exec := &PolicyExecutionResult{
-		Passed:  true,
-		Results: make(map[string]*PolicyResult, len(policy.Queries)),
-	}
-
-	for _, q := range policy.Queries {
-		result, err := executePolicyQuery(ctx, conn, q)
+	// Store output in file if requested
+	if req.OutputPath != "" {
+		fs := afero.NewOsFs()
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
-			c.Logger.Error("failed to execute policy query", "policy", q.Name, "error", err)
-			if request.StopOnFailure {
-				return nil, fmt.Errorf("failed to execute policy query %s. Err: %w", q.Name, err)
-			}
-			if request.UpdateCallback != nil {
-				request.UpdateCallback(q.Name, false, 0)
-			}
-			continue
+			return err
 		}
-		if !result.Passed {
-			exec.Passed = false
+		defer func() {
+			_ = f.Close()
+		}()
+
+		data, err := json.Marshal(&output)
+		if err != nil {
+			return err
 		}
-		exec.Results[q.Name] = result
-		if request.UpdateCallback != nil {
-			request.UpdateCallback(q.Name, result.Passed, len(result.Data))
+		if _, err := f.Write(data); err != nil {
+			return err
 		}
 	}
-	if request.OutputPath != "" {
-		if err := createPolicyOutput(request.OutputPath, exec); err != nil {
-			return nil, fmt.Errorf("failed to create policy output %s. Err: %w", request.OutputPath, err)
-		}
-	}
-	return exec, nil
+	return nil
 }
 
 func (c Client) Close() {
