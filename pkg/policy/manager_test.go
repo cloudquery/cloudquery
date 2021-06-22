@@ -26,38 +26,47 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 
 	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
 
-	// TODO: Add test for official cloudquery org
-	// Checkout repo with "main" branch
-	policyHubPath := []string{"michelvocks/my-cq-policy"}
-	p, err := m.ParsePolicyHubPath(policyHubPath, "")
-	assert.NoError(t, err)
+	cases := []struct {
+		Name           string
+		PolicyPath     string
+		RepositoryPath string
+	}{
+		{
+			Name:           "policy_hub_policy",
+			PolicyPath:     "cq-policy-core",
+			RepositoryPath: "test",
+		},
+		{
+			Name:       "private_policy_main_branch",
+			PolicyPath: "michelvocks/my-cq-policy",
+		},
+		{
+			Name:       "private_policy_master_branch",
+			PolicyPath: "michelvocks/cq-test-policy",
+		},
+	}
 
-	// Download policy
-	err = m.DownloadPolicy(context.Background(), p)
-	assert.NoError(t, err)
-
-	// Make sure downloaded policy folder exists
-	policyFolder := filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
 	osFs := file.NewOsFs()
-	_, err = osFs.Stat(policyFolder)
-	assert.NoError(t, err)
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			policyPath := []string{tc.PolicyPath, tc.RepositoryPath}
+			p, err := m.ParsePolicyHubPath(policyPath, "")
+			assert.NoError(t, err)
 
-	// Download policy again (which should always work)
-	err = m.DownloadPolicy(context.Background(), p)
-	assert.NoError(t, err)
+			// Download policy
+			err = m.DownloadPolicy(context.Background(), p)
+			assert.NoError(t, err)
 
-	// Checkout repo with "master" branch
-	policyHubPath = []string{"michelvocks/cq-test-policy"}
-	p, err = m.ParsePolicyHubPath(policyHubPath, "")
-	assert.NoError(t, err)
+			// Make sure downloaded policy folder exists
+			policyFolder := filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
+			_, err = osFs.Stat(policyFolder)
+			assert.NoError(t, err)
 
-	err = m.DownloadPolicy(context.Background(), p)
-	assert.NoError(t, err)
-
-	// Make sure downloaded policy folder exists
-	policyFolder = filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
-	_, err = osFs.Stat(policyFolder)
-	assert.NoError(t, err)
+			// Download policy again (which should always work)
+			err = m.DownloadPolicy(context.Background(), p)
+			assert.NoError(t, err)
+		})
+	}
 }
 
 func TestManagerImpl_RunPolicy(t *testing.T) {
@@ -73,33 +82,49 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 
 	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
 
-	// TODO: Add test for official cloudquery org
-	policyHubPath := []string{"michelvocks/my-cq-policy"}
-	p, err := m.ParsePolicyHubPath(policyHubPath, "")
-	assert.NoError(t, err)
-
-	// Download policy
-	if err := m.DownloadPolicy(context.Background(), p); err != nil {
-		t.Fatal(err)
+	cases := []struct {
+		Name           string
+		PolicyPath     string
+		RepositoryPath string
+	}{
+		{
+			Name:           "policy_hub_policy",
+			PolicyPath:     "cq-policy-core",
+			RepositoryPath: "test",
+		},
+		{
+			Name:       "private_policy_main_branch",
+			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
+		},
 	}
 
-	// Run policy with specific version
-	p.Version = "v0.0.2"
-	results, err := m.RunPolicy(context.Background(), &ExecuteRequest{
-		Policy:         p,
-		UpdateCallback: nil,
-		StopOnFailure:  true,
-	})
-	assert.NoError(t, err)
-	assert.True(t, results.Passed)
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			policyHubPath := []string{tc.PolicyPath, tc.RepositoryPath}
+			p, err := m.ParsePolicyHubPath(policyHubPath, "")
+			assert.NoError(t, err)
 
-	// Make sure all expected keys are contained
-	expectedKeys := []string{
-		"test-policy/top-level-query",
-		"test-policy/sub-policy-1/sub-level-query",
-		"test-policy/sub-policy-2/sub-level-query",
-	}
-	for k := range results.Results {
-		assert.Contains(t, expectedKeys, k)
+			if err := m.DownloadPolicy(context.Background(), p); err != nil {
+				t.Fatal(err)
+			}
+
+			results, err := m.RunPolicy(context.Background(), &ExecuteRequest{
+				Policy:         p,
+				UpdateCallback: nil,
+				StopOnFailure:  true,
+			})
+			assert.NoError(t, err)
+			assert.True(t, results.Passed)
+
+			// Make sure all expected keys are contained
+			expectedKeys := []string{
+				"test-policy/top-level-query",
+				"test-policy/sub-policy-1/sub-level-query",
+				"test-policy/sub-policy-2/sub-level-query",
+			}
+			for k := range results.Results {
+				assert.Contains(t, expectedKeys, k)
+			}
+		})
 	}
 }

@@ -384,14 +384,14 @@ func (p *Policy) checkoutPolicyVersion(repoFolder string) error {
 		}
 		_ = tagRefs.ForEach(func(reference *plumbing.Reference) error {
 			// Try to convert tag to a version
-			v, err := version.NewSemver(reference.Name().String())
+			v, err := version.NewSemver(reference.Name().Short())
 			if err != nil {
 				// Ignore this tag if it is not a valid version
 				return nil
 			}
 
 			// Add to our data structure
-			versionTagMap[v] = reference.Name().String()
+			versionTagMap[v] = reference.Name().Short()
 			return nil
 		})
 
