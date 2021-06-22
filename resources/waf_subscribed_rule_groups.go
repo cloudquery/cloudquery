@@ -14,21 +14,15 @@ func WafSubscribedRuleGroups() *schema.Table {
 		Name:         "aws_waf_subscribed_rule_groups",
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafSubscribedRuleGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		DeleteFilter: client.DeleteAccountFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:        "metric_name",
@@ -58,7 +52,8 @@ func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, p
 	config := waf.ListSubscribedRuleGroupsInput{}
 	for {
 		output, err := service.ListSubscribedRuleGroups(ctx, &config, func(options *waf.Options) {
-			options.Region = c.Region
+			// Set region to default global region
+			options.Region = "us-east-1"
 		})
 		if err != nil {
 			return err

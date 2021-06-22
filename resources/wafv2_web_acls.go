@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -290,18 +291,26 @@ func Wafv2WebAcls() *schema.Table {
 func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
-	config := wafv2.ListWebACLsInput{}
+
+	// Dependent on the region select the right scope
+	scope := types.ScopeRegional
+	region := c.Region
+	if region == strings.ToLower("global") {
+		region = "us-east-1"
+		scope = types.ScopeCloudfront
+	}
+	config := wafv2.ListWebACLsInput{Scope: scope}
 	for {
 		output, err := service.ListWebACLs(ctx, &config, func(options *wafv2.Options) {
-			options.Region = c.Region
+			options.Region = region
 		})
 		if err != nil {
 			return err
 		}
 		for _, webAcl := range output.WebACLs {
-			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id}
+			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Scope: scope}
 			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
-				options.Region = c.Region
+				options.Region = region
 			})
 			if err != nil {
 				return err

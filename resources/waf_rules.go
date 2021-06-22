@@ -16,19 +16,14 @@ func WafRules() *schema.Table {
 		Name:         "aws_waf_rules",
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafRules,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		DeleteFilter: client.DeleteAccountFilter,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "arn",
@@ -152,14 +147,15 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		"waf",
 		"rule",
 		aws.ToString(rule.RuleId),
-		usedClient.Region,
+		"",
 		usedClient.AccountID)
 
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(options *waf.Options) {
-			options.Region = usedClient.Region
+			// Set region to default global region
+			options.Region = "us-east-1"
 		})
 		if err != nil {
 			return err
