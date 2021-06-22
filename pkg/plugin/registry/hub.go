@@ -201,7 +201,10 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	}
 
 	// Create a new progress updater callback func
-	progressCB := ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf(providerDisplayMsg, providerName, providerVersion))
+	var progressCB ui.ProgressUpdateFunc
+	if h.ProgressUpdater != nil {
+		progressCB = ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf(providerDisplayMsg, providerName, providerVersion))
+	}
 
 	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
 	providerPath := h.getProviderPath(organization, providerName, providerVersion)
