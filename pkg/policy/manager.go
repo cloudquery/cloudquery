@@ -28,7 +28,6 @@ const (
 	cloudQueryOrg = "cloudquery"
 	gitHubUrl     = "https://github.com/"
 
-	defaultLocalSubPath   = ".cq/policy/"
 	defaultPolicyFileName = "policy"
 )
 
@@ -131,7 +130,7 @@ func (m *ManagerImpl) ParsePolicyHubPath(args []string, subPolicyPath string) (*
 func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 	// Make sure that the local policy organization folder exists
 	osFs := file.NewOsFs()
-	policyOrgFolder := filepath.Join(m.policyDirectory, defaultLocalSubPath, p.Organization)
+	policyOrgFolder := filepath.Join(m.policyDirectory, p.Organization)
 	if err := osFs.MkdirAll(policyOrgFolder, 0744); err != nil {
 		return fmt.Errorf("failed to create organization policy directory: %s", policyOrgFolder)
 	}
@@ -183,7 +182,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	// Check if given policy exists in our policy folder
 	osFs := file.NewOsFs()
 	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
-	repoFolder := filepath.Join(m.policyDirectory, defaultLocalSubPath, orgPolicyStr)
+	repoFolder := filepath.Join(m.policyDirectory, orgPolicyStr)
 	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
 		return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
 	}

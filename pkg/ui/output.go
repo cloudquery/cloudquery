@@ -5,6 +5,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"golang.org/x/term"
 )
@@ -13,6 +14,13 @@ import (
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if !IsTerminal() {
+		// Print output to log
+		if len(values) != 0 {
+			log.Info().Msgf(msg, values)
+		} else {
+			log.Info().Msg(msg)
+		}
+
 		return
 	}
 	_, _ = c.Printf(msg, values...)

@@ -53,7 +53,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 			assert.NoError(t, err)
 
 			// Make sure downloaded policy folder exists
-			policyFolder := filepath.Join(tmpDir, defaultLocalSubPath, p.Organization, p.Repository)
+			policyFolder := filepath.Join(tmpDir, p.Organization, p.Repository)
 			_, err = osFs.Stat(policyFolder)
 			assert.NoError(t, err)
 
