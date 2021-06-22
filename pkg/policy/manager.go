@@ -9,14 +9,13 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/go-hclog"
-
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -150,9 +149,9 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 	// Print initial information
 	switch {
 	case p.Version != "":
-		ui.ColorizedOutput(ui.ColorProgress, fmt.Sprintf("Cloning Policy %s/%s@%s\n", p.Organization, p.Repository, p.Version))
+		ui.ColorizedOutput(ui.ColorProgress, "Cloning Policy %s/%s@%s\n", p.Organization, p.Repository, p.Version)
 	default:
-		ui.ColorizedOutput(ui.ColorProgress, fmt.Sprintf("Cloning Policy %s/%s\n", p.Organization, p.Repository))
+		ui.ColorizedOutput(ui.ColorProgress, "Cloning Policy %s/%s\n", p.Organization, p.Repository)
 	}
 
 	// Set output to stdout

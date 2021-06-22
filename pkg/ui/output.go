@@ -15,11 +15,7 @@ import (
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if !IsTerminal() {
 		// Print output to log
-		if len(values) != 0 {
-			log.Info().Msgf(msg, values)
-		} else {
-			log.Info().Msg(msg)
-		}
+		log.Info().Msgf(msg, values...)
 
 		return
 	}
