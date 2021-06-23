@@ -187,6 +187,11 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	}
 	m.logger.Debug("found repo folder", "path", repoFolder)
 
+	// Checkout policy repository tag
+	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
+		return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+	}
+
 	// If repository path was specified, also check if that exists
 	policyFolder := repoFolder
 	if p.RepositoryPath != "" {
@@ -195,11 +200,6 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 			return nil, fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
 		}
 		m.logger.Debug("internal repo folder set", "path", policyFolder)
-	}
-
-	// Checkout policy repository tag
-	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
-		return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
 	}
 
 	// Make sure policy file exists
@@ -220,11 +220,11 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	parser := config.NewParser(nil)
 	policiesRaw, diags := parser.LoadHCLFile(policyFilePath)
 	if diags != nil && diags.HasErrors() {
-		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Errs())
+		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Error())
 	}
-	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags)
+	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags, policyFolder)
 	if diagsDecode != nil && diagsDecode.HasErrors() {
-		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Errs())
+		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
 	}
 	m.logger.Debug("parsed policy file", "policies", policies)
 
