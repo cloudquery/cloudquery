@@ -1,7 +1,11 @@
 package convert
 
 import (
+	"io/ioutil"
+
+	"github.com/cloudquery/cloudquery/internal/file"
 	hcl "github.com/hashicorp/hcl/v2"
+	"github.com/zclconf/go-cty/cty"
 	"github.com/zclconf/go-cty/cty/function"
 	"github.com/zclconf/go-cty/cty/function/stdlib"
 )
@@ -52,5 +56,36 @@ var evalContext = hcl.EvalContext{
 		// time
 		"formatdate": stdlib.FormatDateFunc,
 		"timeadd":    stdlib.TimeAddFunc,
+
+		// file
+		"file": MakeFileFunc(),
 	},
+}
+
+func MakeFileFunc() function.Function {
+	return function.New(&function.Spec{
+		Params: []function.Parameter{
+			{
+				Name: "path",
+				Type: cty.String,
+			},
+		},
+		Type: function.StaticReturnType(cty.String),
+		Impl: func(args []cty.Value, retType cty.Type) (cty.Value, error) {
+			path := args[0].AsString()
+			osFs := file.NewOsFs()
+			f, err := osFs.Open(path)
+			if err != nil {
+				err = function.NewArgError(0, err)
+				return cty.UnknownVal(cty.String), err
+			}
+			defer f.Close()
+			src, err := ioutil.ReadAll(f)
+			if err != nil {
+				err = function.NewArgError(0, err)
+				return cty.UnknownVal(cty.String), err
+			}
+			return cty.StringVal(string(src)), nil
+		},
+	})
 }
