@@ -1,13 +1,7 @@
 package client
 
-// define interfaces so we can easily mock AWS calls
-//go:generate mockgen -destination=./mocks/services.go -package=mocks . AutoscalingClient,ApigatewayClient,Apigatewayv2Client,CloudfrontClient,CloudtrailClient,CloudwatchClient,CloudwatchLogsClient,DirectconnectClient,Ec2Client,EcrClient,EfsClient,ElasticbeanstalkClient,ElbV1Client,ElbV2Client,EmrClient,FsxClient,IamClient,KmsClient,MQClient,OrganizationsClient,RdsClient,S3Client,SnsClient,EksClient,RedshiftClient,Route53Client,EcsClient,S3ManagerClient,LambdaClient,ConfigServiceClient,AnalyzerClient,WafClient,WafV2Client
-//go:generate mockgen -destination=./mocks/mock_elasticsearch.go -package=mocks . ElasticSearch
-
 import (
 	"context"
-
-	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -41,12 +35,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
+	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 )
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_autoscaling.go . AutoscalingClient
 type AutoscalingClient interface {
 	DescribeLaunchConfigurations(context.Context, *autoscaling.DescribeLaunchConfigurationsInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeLaunchConfigurationsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_apigateway.go . ApigatewayClient
 type ApigatewayClient interface {
 	GetRestApis(ctx context.Context, params *apigateway.GetRestApisInput, optFns ...func(*apigateway.Options)) (*apigateway.GetRestApisOutput, error)
 	GetAuthorizers(ctx context.Context, params *apigateway.GetAuthorizersInput, optFns ...func(*apigateway.Options)) (*apigateway.GetAuthorizersOutput, error)
@@ -68,6 +65,7 @@ type ApigatewayClient interface {
 	GetVpcLinks(ctx context.Context, params *apigateway.GetVpcLinksInput, optFns ...func(*apigateway.Options)) (*apigateway.GetVpcLinksOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_apigatewayv2.go . Apigatewayv2Client
 type Apigatewayv2Client interface {
 	GetApis(ctx context.Context, params *apigatewayv2.GetApisInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApisOutput, error)
 	GetApiMappings(ctx context.Context, params *apigatewayv2.GetApiMappingsInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApiMappingsOutput, error)
@@ -84,30 +82,36 @@ type Apigatewayv2Client interface {
 	GetDomainNames(ctx context.Context, params *apigatewayv2.GetDomainNamesInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetDomainNamesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudfront.go . CloudfrontClient
 type CloudfrontClient interface {
 	ListDistributions(ctx context.Context, params *cloudfront.ListDistributionsInput, optFns ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsOutput, error)
 	ListCachePolicies(ctx context.Context, params *cloudfront.ListCachePoliciesInput, optFns ...func(*cloudfront.Options)) (*cloudfront.ListCachePoliciesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudtrail.go . CloudtrailClient
 type CloudtrailClient interface {
 	GetEventSelectors(ctx context.Context, params *cloudtrail.GetEventSelectorsInput, optFns ...func(*cloudtrail.Options)) (*cloudtrail.GetEventSelectorsOutput, error)
 	DescribeTrails(ctx context.Context, params *cloudtrail.DescribeTrailsInput, optFns ...func(*cloudtrail.Options)) (*cloudtrail.DescribeTrailsOutput, error)
 	GetTrailStatus(ctx context.Context, params *cloudtrail.GetTrailStatusInput, optFns ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailStatusOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudwatch.go . CloudwatchClient
 type CloudwatchClient interface {
 	DescribeAlarms(ctx context.Context, params *cloudwatch.DescribeAlarmsInput, optFns ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAlarmsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudwatchlogs.go . CloudwatchLogsClient
 type CloudwatchLogsClient interface {
 	DescribeMetricFilters(ctx context.Context, params *cloudwatchlogs.DescribeMetricFiltersInput, optFns ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeMetricFiltersOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_configservice.go . ConfigServiceClient
 type ConfigServiceClient interface {
 	DescribeConfigurationRecorders(ctx context.Context, params *configservice.DescribeConfigurationRecordersInput, optFns ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecordersOutput, error)
 	configservice.DescribeConformancePacksAPIClient
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_directconnect.go . DirectconnectClient
 type DirectconnectClient interface {
 	DescribeDirectConnectGateways(ctx context.Context, params *directconnect.DescribeDirectConnectGatewaysInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewaysOutput, error)
 	DescribeDirectConnectGatewayAssociations(ctx context.Context, params *directconnect.DescribeDirectConnectGatewayAssociationsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAssociationsOutput, error)
@@ -115,6 +119,8 @@ type DirectconnectClient interface {
 	DescribeVirtualGateways(ctx context.Context, params *directconnect.DescribeVirtualGatewaysInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualGatewaysOutput, error)
 	DescribeVirtualInterfaces(ctx context.Context, params *directconnect.DescribeVirtualInterfacesInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error)
 }
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ec2.go . Ec2Client
 type Ec2Client interface {
 	DescribeByoipCidrs(ctx context.Context, params *ec2.DescribeByoipCidrsInput, optFns ...func(*ec2.Options)) (*ec2.DescribeByoipCidrsOutput, error)
 	DescribeCustomerGateways(ctx context.Context, params *ec2.DescribeCustomerGatewaysInput, optFns ...func(*ec2.Options)) (*ec2.DescribeCustomerGatewaysOutput, error)
@@ -142,24 +148,29 @@ type Ec2Client interface {
 	GetEbsDefaultKmsKeyId(ctx context.Context, params *ec2.GetEbsDefaultKmsKeyIdInput, optFns ...func(*ec2.Options)) (*ec2.GetEbsDefaultKmsKeyIdOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecr.go . EcrClient
 type EcrClient interface {
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_efs.go . EfsClient
 type EfsClient interface {
 	DescribeFileSystems(ctx context.Context, params *efs.DescribeFileSystemsInput, optFns ...func(*efs.Options)) (*efs.DescribeFileSystemsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_elasticbeanstalk.go . ElasticbeanstalkClient
 type ElasticbeanstalkClient interface {
 	DescribeEnvironments(ctx context.Context, params *elasticbeanstalk.DescribeEnvironmentsInput, optFns ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_elbv2.go . ElbV2Client
 type ElbV2Client interface {
 	DescribeLoadBalancers(ctx context.Context, params *elbv2.DescribeLoadBalancersInput, optFns ...func(*elbv2.Options)) (*elbv2.DescribeLoadBalancersOutput, error)
 	DescribeTargetGroups(ctx context.Context, params *elbv2.DescribeTargetGroupsInput, optFns ...func(*elbv2.Options)) (*elbv2.DescribeTargetGroupsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_elbv1.go . ElbV1Client
 type ElbV1Client interface {
 	DescribeLoadBalancers(ctx context.Context, params *elbv1.DescribeLoadBalancersInput, optFns ...func(*elbv1.Options)) (*elbv1.DescribeLoadBalancersOutput, error)
 	DescribeLoadBalancerPolicies(ctx context.Context, params *elbv1.DescribeLoadBalancerPoliciesInput, optFns ...func(*elbv1.Options)) (*elbv1.DescribeLoadBalancerPoliciesOutput, error)
@@ -167,14 +178,17 @@ type ElbV1Client interface {
 	DescribeLoadBalancerAttributes(ctx context.Context, params *elbv1.DescribeLoadBalancerAttributesInput, optFns ...func(*elbv1.Options)) (*elbv1.DescribeLoadBalancerAttributesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_emr.go . EmrClient
 type EmrClient interface {
 	ListClusters(ctx context.Context, params *emr.ListClustersInput, optFns ...func(*emr.Options)) (*emr.ListClustersOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_fsx.go . FsxClient
 type FsxClient interface {
 	DescribeBackups(ctx context.Context, params *fsx.DescribeBackupsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeBackupsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_iam.go . IamClient
 type IamClient interface {
 	GetAccountAuthorizationDetails(context.Context, *iam.GetAccountAuthorizationDetailsInput, ...func(*iam.Options)) (*iam.GetAccountAuthorizationDetailsOutput, error)
 	ListGroups(ctx context.Context, params *iam.ListGroupsInput, optFns ...func(*iam.Options)) (*iam.ListGroupsOutput, error)
@@ -209,12 +223,14 @@ type IamClient interface {
 	GetAccountSummary(ctx context.Context, params *iam.GetAccountSummaryInput, optFns ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_kms.go . KmsClient
 type KmsClient interface {
 	ListKeys(ctx context.Context, params *kms.ListKeysInput, optFns ...func(*kms.Options)) (*kms.ListKeysOutput, error)
 	DescribeKey(ctx context.Context, params *kms.DescribeKeyInput, optFns ...func(*kms.Options)) (*kms.DescribeKeyOutput, error)
 	GetKeyRotationStatus(ctx context.Context, params *kms.GetKeyRotationStatusInput, optFns ...func(*kms.Options)) (*kms.GetKeyRotationStatusOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_mq.go . MQClient
 type MQClient interface {
 	DescribeBroker(ctx context.Context, params *mq.DescribeBrokerInput, optFns ...func(*mq.Options)) (*mq.DescribeBrokerOutput, error)
 	DescribeConfiguration(ctx context.Context, params *mq.DescribeConfigurationInput, optFns ...func(*mq.Options)) (*mq.DescribeConfigurationOutput, error)
@@ -222,10 +238,12 @@ type MQClient interface {
 	ListBrokers(ctx context.Context, params *mq.ListBrokersInput, optFns ...func(*mq.Options)) (*mq.ListBrokersOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_organizations.go . OrganizationsClient
 type OrganizationsClient interface {
 	ListAccounts(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_rds.go . RdsClient
 type RdsClient interface {
 	DescribeDBInstances(ctx context.Context, params *rds.DescribeDBInstancesInput, optFns ...func(*rds.Options)) (*rds.DescribeDBInstancesOutput, error)
 	DescribeDBClusters(ctx context.Context, params *rds.DescribeDBClustersInput, optFns ...func(*rds.Options)) (*rds.DescribeDBClustersOutput, error)
@@ -233,6 +251,7 @@ type RdsClient interface {
 	DescribeCertificates(ctx context.Context, params *rds.DescribeCertificatesInput, optFns ...func(*rds.Options)) (*rds.DescribeCertificatesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_s3.go . S3Client
 type S3Client interface {
 	ListBuckets(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
 	GetBucketLocation(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)
@@ -248,31 +267,38 @@ type S3Client interface {
 	GetBucketTagging(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_sns.go . SnsClient
 type SnsClient interface {
 	ListTopics(ctx context.Context, params *sns.ListTopicsInput, optFns ...func(*sns.Options)) (*sns.ListTopicsOutput, error)
 	ListSubscriptions(ctx context.Context, params *sns.ListSubscriptionsInput, optFns ...func(*sns.Options)) (*sns.ListSubscriptionsOutput, error)
 	GetTopicAttributes(ctx context.Context, params *sns.GetTopicAttributesInput, optFns ...func(*sns.Options)) (*sns.GetTopicAttributesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecs.go . EcsClient
 type EcsClient interface {
 	DescribeClusters(ctx context.Context, params *ecs.DescribeClustersInput, optFns ...func(*ecs.Options)) (*ecs.DescribeClustersOutput, error)
 	ListClusters(ctx context.Context, params *ecs.ListClustersInput, optFns ...func(*ecs.Options)) (*ecs.ListClustersOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_elasticsearch.go . ElasticSearch
 type ElasticSearch interface {
 	ListDomainNames(ctx context.Context, params *elasticsearchservice.ListDomainNamesInput, optFns ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListDomainNamesOutput, error)
 	DescribeElasticsearchDomain(ctx context.Context, params *elasticsearchservice.DescribeElasticsearchDomainInput, optFns ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchDomainOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_eks.go . EksClient
 type EksClient interface {
 	ListClusters(ctx context.Context, params *eks.ListClustersInput, optFns ...func(*eks.Options)) (*eks.ListClustersOutput, error)
 	DescribeCluster(ctx context.Context, params *eks.DescribeClusterInput, optFns ...func(*eks.Options)) (*eks.DescribeClusterOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_redshift.go . RedshiftClient
 type RedshiftClient interface {
 	DescribeClusters(ctx context.Context, params *redshift.DescribeClustersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClustersOutput, error)
 	DescribeClusterSubnetGroups(ctx context.Context, params *redshift.DescribeClusterSubnetGroupsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterSubnetGroupsOutput, error)
 }
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_route53.go . Route53Client
 type Route53Client interface {
 	ListHostedZones(ctx context.Context, params *route53.ListHostedZonesInput, optFns ...func(*route53.Options)) (*route53.ListHostedZonesOutput, error)
 	ListTagsForResource(ctx context.Context, params *route53.ListTagsForResourceInput, optFns ...func(*route53.Options)) (*route53.ListTagsForResourceOutput, error)
@@ -289,10 +315,12 @@ type Route53Client interface {
 	ListReusableDelegationSets(ctx context.Context, params *route53.ListReusableDelegationSetsInput, optFns ...func(*route53.Options)) (*route53.ListReusableDelegationSetsOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_s3manager.go . S3ManagerClient
 type S3ManagerClient interface {
 	GetBucketRegion(ctx context.Context, bucket string, optFns ...func(*s3.Options)) (string, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_lambda.go . LambdaClient
 type LambdaClient interface {
 	ListFunctions(ctx context.Context, params *lambda.ListFunctionsInput, optFns ...func(*lambda.Options)) (*lambda.ListFunctionsOutput, error)
 	GetFunction(ctx context.Context, params *lambda.GetFunctionInput, optFns ...func(*lambda.Options)) (*lambda.GetFunctionOutput, error)
@@ -309,11 +337,13 @@ type LambdaClient interface {
 	GetLayerVersionPolicy(ctx context.Context, params *lambda.GetLayerVersionPolicyInput, optFns ...func(*lambda.Options)) (*lambda.GetLayerVersionPolicyOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_analyzer.go . AnalyzerClient
 type AnalyzerClient interface {
 	accessanalyzer.ListAnalyzersAPIClient
 	accessanalyzer.ListFindingsAPIClient
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_waf.go . WafClient
 type WafClient interface {
 	ListWebACLs(ctx context.Context, params *waf.ListWebACLsInput, optFns ...func(*waf.Options)) (*waf.ListWebACLsOutput, error)
 	GetWebACL(ctx context.Context, params *waf.GetWebACLInput, optFns ...func(*waf.Options)) (*waf.GetWebACLOutput, error)
@@ -326,6 +356,7 @@ type WafClient interface {
 	ListTagsForResource(ctx context.Context, params *waf.ListTagsForResourceInput, optFns ...func(*waf.Options)) (*waf.ListTagsForResourceOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_wafv2.go . WafV2Client
 type WafV2Client interface {
 	ListWebACLs(ctx context.Context, params *wafv2.ListWebACLsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListWebACLsOutput, error)
 	GetWebACL(ctx context.Context, params *wafv2.GetWebACLInput, optFns ...func(*wafv2.Options)) (*wafv2.GetWebACLOutput, error)
