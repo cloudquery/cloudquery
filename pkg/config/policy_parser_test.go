@@ -47,7 +47,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	if diags != nil && diags.HasErrors() {
 		t.Fatal(diags.Errs())
 	}
-	policiesWrapper, diags := p.DecodePolicies(policiesRaw, diags)
+	policiesWrapper, diags := p.DecodePolicies(policiesRaw, diags, "")
 	assert.Nil(t, diags)
 
 	// Only one module should be defined for this test case

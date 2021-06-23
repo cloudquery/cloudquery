@@ -12,7 +12,7 @@ import (
 func TestFileFunc(t *testing.T) {
 	osFs := file.NewOsFs()
 	osFs.SetFSInstance(afero.NewMemMapFs())
-	fileFunc := MakeFileFunc()
+	fileFunc := MakeFileFunc("")
 
 	// Create file with content
 	testFilePath := "/testfile"

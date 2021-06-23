@@ -83,11 +83,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 		RepositoryPath string
 	}{
 		{
-			Name:           "aws-cis-v1.20",
-			PolicyPath:     "michelvocks/cq-policy-core",
-			RepositoryPath: "aws/cis-v1.20",
-		},
-		{
 			Name:           "policy_hub_policy",
 			PolicyPath:     "cq-policy-core",
 			RepositoryPath: "test",
