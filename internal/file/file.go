@@ -107,6 +107,16 @@ func (o *OsFs) Stat(path string) (os.FileInfo, error) {
 	return o.fs.Stat(path)
 }
 
+// Open is a wrapper around afero.Open that opens a file.
+func (o *OsFs) Open(path string) (afero.File, error) {
+	return o.fs.Open(path)
+}
+
+// Create is a wrapper around afero.Create that creates a file.
+func (o *OsFs) Create(path string) (afero.File, error) {
+	return o.fs.Create(path)
+}
+
 // SetFSInstance sets the FS instance. Should be only used for testing purpose.
 func (o *OsFs) SetFSInstance(fs afero.Fs) {
 	o.fs = fs

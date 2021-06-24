@@ -193,7 +193,7 @@ func (c *converter) convertAttributes(attributes hcl.Attributes) (jsonObj, error
 	var out = make(jsonObj)
 
 	for _, attr := range attributes {
-		val, err := attr.Expr.Value(&evalContext)
+		val, err := attr.Expr.Value(evalContext)
 		if err != nil {
 			return nil, fmt.Errorf("convert expression: %w", err)
 		}
@@ -204,7 +204,7 @@ func (c *converter) convertAttributes(attributes hcl.Attributes) (jsonObj, error
 
 func (c *converter) convertExpression(expr hclsyntax.Expression) (interface{}, error) {
 	if c.options.Simplify {
-		value, err := expr.Value(&evalContext)
+		value, err := expr.Value(evalContext)
 		if err == nil {
 			return ctyjson.SimpleJSONValue{Value: value}, nil
 		}
