@@ -3,10 +3,11 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"github.com/cloudquery/cloudquery/pkg/database"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/cloudquery/cloudquery/pkg/database"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"

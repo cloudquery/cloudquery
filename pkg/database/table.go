@@ -3,16 +3,17 @@ package database
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"runtime"
+	"strconv"
+	"strings"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/thoas/go-funk"
-	"reflect"
-	"runtime"
-	"strconv"
-	"strings"
 )
 
 const (
