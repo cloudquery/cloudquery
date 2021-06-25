@@ -11,14 +11,15 @@ func Provider() *provider.Provider {
 		Name:      "azure",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
+			"ad.users":                 AdUsers(),
 			"compute.disks":            ComputeDisks(),
-			"resources.groups":         ResourcesGroups(),
 			"keyvault.vaults":          KeyVaultVaults(),
-			"storage.accounts":         StorageAccounts(),
 			"mysql.servers":            MySQLServers(),
-			"postgresql.servers":       PostgresqlServers(),
-			"sql.servers":              SQLServers(),
 			"network.virtual_networks": NetworkVirtualNetworks(),
+			"postgresql.servers":       PostgresqlServers(),
+			"resources.groups":         ResourcesGroups(),
+			"sql.servers":              SQLServers(),
+			"storage.accounts":         StorageAccounts(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

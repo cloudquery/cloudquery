@@ -11,7 +11,7 @@ import (
 	compute "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-01/compute"
 	keyvault "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	mysql "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
-	network "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-11-01/network"
+	network "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-08-01/network"
 	postgresql "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 	resources "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 	sql "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
