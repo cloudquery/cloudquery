@@ -7,8 +7,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cloudquery/cloudquery/pkg/database"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
@@ -17,6 +15,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
@@ -87,6 +87,11 @@ type FetchDoneResult struct {
 	ResourceCount string
 }
 
+// TableCreator creates tables based on schema received from providers
+type TableCreator interface {
+	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
+}
+
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -118,7 +123,7 @@ type Client struct {
 	// manager manages all plugins lifecycle
 	Manager *plugin.Manager
 	// TableCreator defines how table are created in the database
-	TableCreator database.TableCreator
+	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool
 }
@@ -144,7 +149,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		return nil, err
 	}
 	if c.TableCreator == nil {
-		c.TableCreator = database.NewBaseTableCreator(c.Logger)
+		c.TableCreator = provider.NewMigrator(c.Logger)
 	}
 	poolCfg, err := pgxpool.ParseConfig(c.DSN)
 	if err != nil {
@@ -166,8 +171,8 @@ func (c *Client) DownloadProviders(ctx context.Context) error {
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 	if !c.SkipBuildTables {
-		for _, provider := range request.Providers {
-			if err := c.BuildProviderTables(ctx, provider.Name); err != nil {
+		for _, p := range request.Providers {
+			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
 				return err
 			}
 		}
@@ -278,7 +283,7 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) error {
-	schema, err := c.GetProviderSchema(ctx, providerName)
+	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
 	}
@@ -287,8 +292,8 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 		return err
 	}
 	defer conn.Release()
-	for name, t := range schema.ResourceTables {
-		c.Logger.Info("creating tables for resource for provider", "resource_name", name, "provider", schema.Name, "version", schema.Version)
+	for name, t := range s.ResourceTables {
+		c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
 		if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
 			return err
 		}
