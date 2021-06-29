@@ -11,6 +11,8 @@ func Provider() *provider.Provider {
 		Name:      "azure",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
+			"ad.groups":                AdGroups(),
+			"ad.service_principals":    AdServicePrincipals(),
 			"ad.users":                 AdUsers(),
 			"compute.disks":            ComputeDisks(),
 			"keyvault.vaults":          KeyVaultVaults(),
@@ -25,5 +27,4 @@ func Provider() *provider.Provider {
 			return &client.Config{}
 		},
 	}
-
 }
