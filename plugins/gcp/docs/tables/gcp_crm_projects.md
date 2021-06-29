@@ -11,6 +11,6 @@ A project is a high-level Google Cloud entity
 |labels|jsonb|The labels associated with this project|
 |name|text|The unique resource name of the project It is an int64 generated number prefixed by "projects/"|
 |parent|text|A reference to a parent Resource eg, `organizations/123` or `folders/876`|
-|project_id|text|Immutable The unique, user-assigned id of the project It must be 6 to 30 lowercase ASCII letters, digits, or hyphens It must start with a letter Trailing hyphens are prohibited|
+|project_id|text|Immutable The unique, user-assigned id of the project|
 |state|text|The project lifecycle state  Possible values:   "STATE_UNSPECIFIED" - Unspecified state This is only used/useful for distinguishing unset values   "ACTIVE" - The normal and active state   "DELETE_REQUESTED" - The project has been marked for deletion by the user (by invoking DeleteProject) or by the system (Google Cloud Platform) This can generally be reversed by invoking UndeleteProject|
 |update_time|text|The most recent time this resource was modified|

@@ -54,7 +54,7 @@ func CrmProjects() *schema.Table {
 			},
 			{
 				Name:        "project_id",
-				Description: "Immutable The unique, user-assigned id of the project It must be 6 to 30 lowercase ASCII letters, digits, or hyphens It must start with a letter Trailing hyphens are prohibited",
+				Description: "Immutable The unique, user-assigned id of the project",
 				Type:        schema.TypeString,
 			},
 			{

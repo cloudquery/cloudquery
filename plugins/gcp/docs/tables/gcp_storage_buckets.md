@@ -14,7 +14,7 @@ The Buckets resource represents a bucket in Cloud Storage
 |iam_configuration_public_access_prevention|text|The bucket's Public Access Prevention configuration Currently, 'unspecified' and 'enforced' are supported|
 |iam_configuration_uniform_bucket_level_access_enabled|boolean|If set, access is controlled only by bucket-level or above IAM policies|
 |iam_configuration_uniform_bucket_level_access_locked_time|text|The deadline for changing iamConfigurationuniformBucketLevelAccessenabled from true to false in RFC 3339  format iamConfigurationuniformBucketLevelAccessenabled may be changed from true to false until the locked time, after which the field is immutable|
-|resource_id|text|The ID of the bucket For buckets, the id and name properties are the same|
+|resource_id|text|Original Id of the resource|
 |kind|text|The kind of item this is For buckets, this is always storage#bucket|
 |labels|jsonb|User-provided labels, in key/value pairs|
 |location|text|The location of the bucket Object data for objects in the bucket resides in physical storage within this region Defaults to US See the developer's guide for the authoritative list|

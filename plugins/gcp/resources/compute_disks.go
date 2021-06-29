@@ -51,7 +51,7 @@ func ComputeDisks() *schema.Table {
 			},
 			{
 				Name:        "disk_encryption_key_sha256",
-				Description: "[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
+				Description: "The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DiskEncryptionKey.Sha256"),
 			},
@@ -62,7 +62,7 @@ func ComputeDisks() *schema.Table {
 				Resolver:    resolveComputeDiskGuestOsFeatures,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "disk_id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -187,7 +187,7 @@ func ComputeDisks() *schema.Table {
 			},
 			{
 				Name:        "source_image_encryption_key_sha256",
-				Description: "[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
+				Description: "The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("SourceImageEncryptionKey.Sha256"),
 			},
@@ -221,7 +221,7 @@ func ComputeDisks() *schema.Table {
 			},
 			{
 				Name:        "source_snapshot_encryption_key_sha256",
-				Description: "[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
+				Description: "The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("SourceSnapshotEncryptionKey.Sha256"),
 			},

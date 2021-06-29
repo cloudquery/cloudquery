@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
@@ -9,7 +10,7 @@ import (
 	cloudkms "google.golang.org/api/cloudkms/v1"
 )
 
-func KmsKeyring() *schema.Table {
+func KmsKeyrings() *schema.Table {
 	return &schema.Table{
 		Name:                 "gcp_kms_keyrings",
 		Description:          "A KeyRing is a toplevel logical grouping of CryptoKeys.",
@@ -33,7 +34,8 @@ func KmsKeyring() *schema.Table {
 			{
 				Name:        "create_time",
 				Description: "The time at which this KeyRing was created",
-				Type:        schema.TypeString,
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ISODateResolver("CreateTime"),
 			},
 			{
 				Name:        "name",
@@ -46,6 +48,7 @@ func KmsKeyring() *schema.Table {
 				Name:                 "gcp_kms_keyring_crypto_keys",
 				Description:          "A CryptoKey represents a logical key that can be used for cryptographic operations.",
 				Resolver:             fetchKmsKeyringCryptoKeys,
+				IgnoreError:          client.IgnoreErrorHandler,
 				PostResourceResolver: client.AddGcpMetadata,
 				Columns: []schema.Column{
 					{
@@ -66,9 +69,16 @@ func KmsKeyring() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
+						Name:        "policy",
+						Description: "Access control policy for a resource",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveKmsKeyringCryptoKeyPolicy,
+					},
+					{
 						Name:        "create_time",
 						Description: "The time at which this CryptoKey was created",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("CreateTime"),
 					},
 					{
 						Name:        "labels",
@@ -83,11 +93,12 @@ func KmsKeyring() *schema.Table {
 					{
 						Name:        "next_rotation_time",
 						Description: "At next_rotation_time, the Key Management Service will automatically: 1 Create a new version of this CryptoKey 2 Mark the new version as primary Key rotations performed manually via CreateCryptoKeyVersion and UpdateCryptoKeyPrimaryVersion do not affect next_rotation_time Keys with purpose ENCRYPT_DECRYPT support automatic rotation For other keys, this field must be omitted",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("NextRotationTime"),
 					},
 					{
 						Name:        "primary_algorithm",
-						Description: "The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports",
+						Description: "The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports  Possible values:   \"CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\" - Not specified   \"GOOGLE_SYMMETRIC_ENCRYPTION\" - Creates symmetric encryption keys   \"RSA_SIGN_PSS_2048_SHA256\" - RSASSA-PSS 2048 bit key with a SHA256 digest   \"RSA_SIGN_PSS_3072_SHA256\" - RSASSA-PSS 3072 bit key with a SHA256 digest   \"RSA_SIGN_PSS_4096_SHA256\" - RSASSA-PSS 4096 bit key with a SHA256 digest   \"RSA_SIGN_PSS_4096_SHA512\" - RSASSA-PSS 4096 bit key with a SHA512 digest   \"RSA_SIGN_PKCS1_2048_SHA256\" - RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest   \"RSA_SIGN_PKCS1_3072_SHA256\" - RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest   \"RSA_SIGN_PKCS1_4096_SHA256\" - RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest   \"RSA_SIGN_PKCS1_4096_SHA512\" - RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest   \"RSA_DECRYPT_OAEP_2048_SHA256\" - RSAES-OAEP 2048 bit key with a SHA256 digest   \"RSA_DECRYPT_OAEP_3072_SHA256\" - RSAES-OAEP 3072 bit key with a SHA256 digest   \"RSA_DECRYPT_OAEP_4096_SHA256\" - RSAES-OAEP 4096 bit key with a SHA256 digest   \"RSA_DECRYPT_OAEP_4096_SHA512\" - RSAES-OAEP 4096 bit key with a SHA512 digest   \"EC_SIGN_P256_SHA256\" - ECDSA on the NIST P-256 curve with a SHA256 digest   \"EC_SIGN_P384_SHA384\" - ECDSA on the NIST P-384 curve with a SHA384 digest   \"EXTERNAL_SYMMETRIC_ENCRYPTION\" - Algorithm representing symmetric encryption by an external key manager",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Primary.Algorithm"),
 					},
@@ -117,27 +128,27 @@ func KmsKeyring() *schema.Table {
 					},
 					{
 						Name:        "primary_attestation_format",
-						Description: "The format of the attestation data",
+						Description: "The format of the attestation data  Possible values:   \"ATTESTATION_FORMAT_UNSPECIFIED\" - Not specified   \"CAVIUM_V1_COMPRESSED\" - Cavium HSM attestation compressed with gzip Note that this format is defined by Cavium and subject to change at any time   \"CAVIUM_V2_COMPRESSED\" - Cavium HSM attestation V2 compressed with gzip This is a new format introduced in Cavium's version 32-08",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Primary.Attestation.Format"),
 					},
 					{
 						Name:        "primary_create_time",
 						Description: "The time at which this CryptoKeyVersion was created",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Primary.CreateTime"),
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("Primary.CreateTime"),
 					},
 					{
 						Name:        "primary_destroy_event_time",
 						Description: "The time this CryptoKeyVersion's key material was destroyed Only present if state is DESTROYED",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Primary.DestroyEventTime"),
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("Primary.DestroyEventTime"),
 					},
 					{
 						Name:        "primary_destroy_time",
 						Description: "The time this CryptoKeyVersion's key material is scheduled for destruction Only present if state is DESTROY_SCHEDULED",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Primary.DestroyTime"),
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("Primary.DestroyTime"),
 					},
 					{
 						Name:        "primary_external_protection_level_options_external_key_uri",
@@ -148,8 +159,8 @@ func KmsKeyring() *schema.Table {
 					{
 						Name:        "primary_generate_time",
 						Description: "The time this CryptoKeyVersion's key material was generated",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Primary.GenerateTime"),
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("Primary.GenerateTime"),
 					},
 					{
 						Name:        "primary_import_failure_reason",
@@ -166,8 +177,8 @@ func KmsKeyring() *schema.Table {
 					{
 						Name:        "primary_import_time",
 						Description: "The time at which this CryptoKeyVersion's key material was imported",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Primary.ImportTime"),
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ISODateResolver("Primary.ImportTime"),
 					},
 					{
 						Name:        "primary_name",
@@ -199,7 +210,7 @@ func KmsKeyring() *schema.Table {
 					},
 					{
 						Name:        "version_template_algorithm",
-						Description: "Required Algorithm to use when creating a CryptoKeyVersion based on this template For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both this field is omitted and CryptoKeypurpose is ENCRYPT_DECRYPT",
+						Description: "Algorithm to use when creating a CryptoKeyVersion based on this template",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("VersionTemplate.Algorithm"),
 					},
@@ -245,7 +256,10 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
-	keyRing := parent.Item.(*cloudkms.KeyRing)
+	keyRing, ok := parent.Item.(*cloudkms.KeyRing)
+	if !ok {
+		return fmt.Errorf("expected *cloudkms.KeyRing but got %T", keyRing)
+	}
 	nextPageToken := ""
 	call := c.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.List(keyRing.Name).Context(ctx)
 	for {
@@ -262,6 +276,29 @@ func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, pare
 		nextPageToken = resp.NextPageToken
 	}
 	return nil
+}
+func resolveKmsKeyringCryptoKeyPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	client_ := meta.(*client.Client)
+	p, ok := resource.Item.(*cloudkms.CryptoKey)
+	if !ok {
+		return fmt.Errorf("expected *cloudkms.CryptoKey but got %T", p)
+	}
+	call := client_.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.GetIamPolicy(p.Name).Context(ctx)
+	resp, err := call.Do()
+	if err != nil {
+		return err
+	}
+
+	var policy map[string]interface{}
+	data, err := json.Marshal(resp)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(data, &policy); err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, policy)
 }
 
 // ====================================================================================================================

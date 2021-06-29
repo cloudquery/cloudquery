@@ -42,7 +42,7 @@ func IamRoles() *schema.Table {
 			},
 			{
 				Name:        "name",
-				Description: "The name of the role When Role is used in CreateRole, the role name must not be set When Role is used in output and other input such as UpdateRole, the role name is the complete path, eg, roles/loggingviewer for predefined roles and organizations/{ORGANIZATION_ID}/roles/loggingviewer for custom roles",
+				Description: "The name of the role",
 				Type:        schema.TypeString,
 			},
 			{

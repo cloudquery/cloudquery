@@ -8,8 +8,7 @@ An IAM service account A service account is an account for an application or a v
 |disabled|boolean|Whether the service account is disabled|
 |display_name|text|A user-specified, human-readable name for the service account The maximum length is 100 UTF-8 bytes|
 |email|text|The email address of the service account|
-|etag|text|Deprecated Do not use|
-|name|text|The resource name of the service account Use one of the following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}` As an alternative, you can use the `-` wildcard character instead of the project ID: * `projects/-/serviceAccounts/{EMAIL_ADDRESS}` * `projects/-/serviceAccounts/{UNIQUE_ID}` When possible, avoid using the `-` wildcard character, because it can cause response messages to contain misleading error codes For example, if you try to get the service account `projects/-/serviceAccounts/fake@examplecom`, which does not exist, the response contains an HTTP `403 Forbidden` error instead of a `404 Not Found` error|
+|name|text|The resource name of the service account In one of the following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` OR `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}` OR `projects/-/serviceAccounts/{UNIQUE_ID}|
 |oauth2_client_id|text|The OAuth 20 client ID for the service account|
 |project_id|text|The ID of the project that owns the service account|
 |unique_id|text|The unique, stable numeric ID for the service account Each service account retains its unique ID even if you delete the service account For example, if you delete a service account, then create a new service account with the same name, the new service account has a different unique ID than the deleted service account|

@@ -25,7 +25,7 @@ A Cloud SQL instance resource
 |name|text|Name of the Cloud SQL instance This does not include the project ID|
 |on_premises_configuration_ca_certificate|text|PEM representation of the trusted CA's x509 certificate|
 |on_premises_configuration_client_certificate|text|PEM representation of the replica's x509 certificate|
-|on_premises_configuration_client_key|text|PEM representation of the replica's private key The corresponding public key is encoded in the client's certificate|
+|on_premises_configuration_client_key|text||
 |on_premises_configuration_dump_file_path|text|The dump file to create the Cloud SQL replica|
 |on_premises_configuration_host_port|text||
 |on_premises_configuration_kind|text|This is always *sql#onPremisesConfiguration*|
@@ -34,10 +34,10 @@ A Cloud SQL instance resource
 |project|text|The project ID of the project containing the Cloud SQL instance The Google apps domain is prefixed if applicable|
 |region|text|The geographical region Can be *us-central* (*FIRST_GEN* instances only) *us-central1* (*SECOND_GEN* instances only) *asia-east1* or *europe-west1* Defaults to *us-central* or *us-central1* depending on the instance type The region cannot be changed after instance creation|
 |failover_target|boolean|Specifies if the replica is the failover target If the field is set to *true* the replica will be designated as a failover replica In case the primary instance fails, the replica instance will be promoted as the new primary instance Only one replica can be specified as failover target, and the replica has to be in different zone with the primary instance|
-|configuration_kind|text|This is always *sql#replicaConfiguration*|
+|configuration_kind|text||
 |mysql_replica_configuration_ca_certificate|text|PEM representation of the trusted CA's x509 certificate|
 |mysql_replica_configuration_client_certificate|text|PEM representation of the replica's x509 certificate|
-|mysql_replica_configuration_client_key|text|PEM representation of the replica's private key The corresponding public key is encoded in the client's certificate|
+|mysql_replica_configuration_client_key|text||
 |mysql_replica_configuration_connect_retry_interval|bigint|Seconds to wait between connect retries MySQL's default is 60 seconds|
 |mysql_replica_configuration_dump_file_path|text|Path to a SQL dump file in Google Cloud Storage from which the replica instance is to be created The URI is in the form gs://bucketName/fileName Compressed gzip files (gz) are also supported Dumps have the binlog co-ordinates from which replication begins This can be accomplished by setting --master-data to 1 when using mysqldump|
 |mysql_replica_configuration_kind|text|This is always *sql#mysqlReplicaConfiguration*|
@@ -71,14 +71,14 @@ A Cloud SQL instance resource
 |settings_availability_type|text|Availability type Potential values: *ZONAL*: The instance serves data from only one zone Outages in that zone affect data accessibility *REGIONAL*: The instance can serve data from more than one zone in a region (it is highly available) For more information, see Overview of the High Availability Configuration  Possible values:   "SQL_AVAILABILITY_TYPE_UNSPECIFIED" - This is an unknown Availability type   "ZONAL" - Zonal available instance   "REGIONAL" - Regional available instance|
 |settings_backup_retention_settings_retained_backups|bigint|Depending on the value of retention_unit, this is used to determine if a backup needs to be deleted If retention_unit is 'COUNT', we will retain this many backups|
 |settings_backup_retention_settings_retention_unit|text|The unit that 'retained_backups' represents  Possible values:   "RETENTION_UNIT_UNSPECIFIED" - Backup retention unit is unspecified, will be treated as COUNT   "COUNT" - Retention will be by count, eg "retain the most recent 7 backups"|
-|settings_backup_binary_log_enabled|boolean|(MySQL only) Whether binary log is enabled If backup configuration is disabled, binarylog must be disabled as well|
-|settings_backup_enabled|boolean|Whether this configuration is enabled|
-|settings_backup_kind|text|This is always *sql#backupConfiguration*|
+|settings_backup_binary_log_enabled|boolean||
+|settings_backup_enabled|boolean||
+|settings_backup_kind|text||
 |settings_backup_location|text||
-|settings_backup_point_in_time_recovery_enabled|boolean|Reserved for future use|
-|settings_backup_replication_log_archiving_enabled|boolean|Reserved for future use|
-|settings_backup_start_time|text|Start time for the daily backup configuration in UTC timezone in the 24 hour format - *HH:MM*|
-|settings_backup_transaction_log_retention_days|bigint|The number of days of transaction logs we retain for point in time restore, from 1-7|
+|settings_backup_point_in_time_recovery_enabled|boolean||
+|settings_backup_replication_log_archiving_enabled|boolean||
+|settings_backup_start_time|text||
+|settings_backup_transaction_log_retention_days|bigint||
 |settings_collation|text|The name of server Instance collation|
 |settings_crash_safe_replication_enabled|boolean|Configuration specific to read replica instances Indicates whether database flags for crash-safe replication are enabled This property was only applicable to First Generation instances|
 |settings_data_disk_size_gb|bigint|The size of data disk, in GB The data disk size minimum is 10GB|
