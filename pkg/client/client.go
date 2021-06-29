@@ -30,6 +30,11 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
+	// Optional: Disable deletion of data from tables.
+	// Use this with caution, as it can create duplicates of data!
+	DisableDataDelete bool
+	// Optional: Adds extra fields to the provider, this is used for testing purposes.
+	ExtraFields map[string]interface{}
 }
 
 type FetchUpdate struct {
@@ -200,7 +205,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
 				},
-				Config: cfg,
+				Config:        cfg,
+				DisableDelete: request.DisableDataDelete,
+				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
 				c.Logger.Error("failed to configure provider", "error", err, "provider", providerPlugin.Name())
