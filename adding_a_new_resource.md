@@ -26,8 +26,7 @@ If the service to which the resource belongs has not been used before in cq-prov
 1. Create a file under `resources/` that follows the pattern of `<service>_<resource>`.
 1. In that file, create a function that returns a `*schema.Table`
 1. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
-1. In [client/config.go](./client/config.go), add the key that you used in the map in the previous step to the config template
-1. Add a test in [clients/mocks/mock_test.go](./client/mocks/mock_test.go) and the corresponding test implementation in [clients/mocks/builders_test.go](./client/mocks/builders_test.go) for the resource following the existing examples.
+1. Add a test in [clients/mocks/resources_test.go](./client/mocks/resources_test.go) and the corresponding test implementation in [clients/mocks/builders_test.go](./client/mocks/builders_test.go) for the resource following the existing examples.
 
 ### Implementation
 

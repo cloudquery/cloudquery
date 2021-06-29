@@ -92,6 +92,8 @@ github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1 h1:igD4rC85NHdUmiuQXan
 github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1/go.mod h1:efUKiPp2CUVafK4KyqmqZYQ6hDGNsTk4KBnXMo88wqQ=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2 h1:+Gw97nOQgSpA7Pr196h4mZI0uvFAFHpIikLxkSMmMlQ=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.1.2/go.mod h1:CVkAVmwMf79foskd4lS7XL1ToD5smbPZ30tasE/6EJQ=
+github.com/aws/aws-sdk-go-v2/service/directconnect v1.4.1 h1:5rRF1Jf+PPIV9AmcbH54MPUlAFvon2+L+gnPZP0zzvI=
+github.com/aws/aws-sdk-go-v2/service/directconnect v1.4.1/go.mod h1:LqxpptZWyNW7ussTuz4Sy9QWt5Y1X7o/f1hskqQ+qU0=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.2.0 h1:9NdeHYuvWL/Phh2HsQmv8U6zAtXyfOSt+uLBPE0VUd4=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.2.0/go.mod h1:ZINomqzd+JbTXCcUphZLGVRyPw8kidb32cONJr5+zI0=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0 h1:6ExOoVgntAVuVARounLgbXnMLWjy0l5iXf/wAu90NgI=
