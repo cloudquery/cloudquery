@@ -113,6 +113,7 @@ type ConfigServiceClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_directconnect.go . DirectconnectClient
 type DirectconnectClient interface {
+	DescribeConnections(ctx context.Context, params *directconnect.DescribeConnectionsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeConnectionsOutput, error)
 	DescribeDirectConnectGateways(ctx context.Context, params *directconnect.DescribeDirectConnectGatewaysInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewaysOutput, error)
 	DescribeDirectConnectGatewayAssociations(ctx context.Context, params *directconnect.DescribeDirectConnectGatewayAssociationsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAssociationsOutput, error)
 	DescribeDirectConnectGatewayAttachments(ctx context.Context, params *directconnect.DescribeDirectConnectGatewayAttachmentsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAttachmentsOutput, error)

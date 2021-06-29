@@ -30,6 +30,7 @@ func Provider() *provider.Provider {
 			"config.configuration_recorders":        ConfigConfigurationRecorders(),
 			"config.conformance_packs":              ConfigConformancePack(),
 			"s3.buckets":                            S3Buckets(),
+			"directconnect.connections":             DirectconnectConnections(),
 			"directconnect.gateways":                DirectconnectGateways(),
 			"directconnect.virtual_gateways":        DirectconnectVirtualGateways(),
 			"directconnect.virtual_interfaces":      DirectconnectVirtualInterfaces(),
