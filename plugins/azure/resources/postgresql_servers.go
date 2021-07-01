@@ -249,6 +249,55 @@ func PostgresqlServers() *schema.Table {
 				},
 			},
 			{
+				Name:        "azure_postgresql_server_private_endpoint_connections",
+				Description: "Azure postgresql server private endpoint connection",
+				Resolver:    fetchPostgresqlServerPrivateEndpointConnections,
+				Columns: []schema.Column{
+					{
+						Name:        "server_id",
+						Description: "Unique ID of azure_postgresql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "resource_id",
+						Description: "Resource ID of the Private Endpoint Connection",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "private_endpoint_id",
+						Description: "Resource id of the private endpoint",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Properties.PrivateEndpoint.ID"),
+					},
+					{
+						Name:        "private_link_service_connection_state_status",
+						Description: "The private link service connection status Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.Status"),
+					},
+					{
+						Name:        "private_link_service_connection_state_description",
+						Description: "The private link service connection description",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.Description"),
+					},
+					{
+						Name:        "private_link_service_connection_state_actions_required",
+						Description: "The actions required for private link service connection Possible values include: 'None'",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.ActionsRequired"),
+					},
+					{
+						Name:        "provisioning_state",
+						Description: "State of the private endpoint connection Possible values include: 'Approving', 'Ready', 'Dropping', 'Failed', 'Rejecting'",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Properties.ProvisioningState"),
+					},
+				},
+			},
+			{
 				Name:        "azure_postgresql_server_configurations",
 				Description: "Azure postgresql server configuration",
 				Resolver:    fetchPostgresqlServerConfigurations,
@@ -313,6 +362,47 @@ func PostgresqlServers() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_postgresql_server_firewall_rules",
+				Description: "Azure postgresql server firewall rule",
+				Resolver:    fetchPostgresqlServerFirewallRules,
+				Columns: []schema.Column{
+					{
+						Name:        "server_id",
+						Description: "Unique ID of azure_postgresql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "start_ip_address",
+						Description: "The start IP address of the server firewall rule Must be IPv4 format",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("FirewallRuleProperties.StartIPAddress"),
+					},
+					{
+						Name:        "end_ip_address",
+						Description: "The end IP address of the server firewall rule Must be IPv4 format",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("FirewallRuleProperties.EndIPAddress"),
+					},
+					{
+						Name:        "resource_id",
+						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "The name of the resource",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "type",
+						Description: "The type of the resource Eg \"MicrosoftCompute/virtualMachines\" or \"MicrosoftStorage/storageAccounts\"",
+						Type:        schema.TypeString,
+					},
+				},
+			},
 		},
 	}
 }
@@ -320,7 +410,7 @@ func PostgresqlServers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().PostgreSQL.Servers
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -332,7 +422,7 @@ func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, _ *sche
 	res <- *response.Value
 	return nil
 }
-func fetchPostgresqlServerPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	server := parent.Item.(postgresql.Server)
 	if server.PrivateEndpointConnections == nil {
 		return nil
@@ -356,5 +446,24 @@ func fetchPostgresqlServerConfigurations(ctx context.Context, meta schema.Client
 		return nil
 	}
 	res <- *configurations.Value
+	return nil
+}
+
+func fetchPostgresqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	server := parent.Item.(postgresql.Server)
+	svc := meta.(*client.Client).Services().PostgreSQL.FirewallRule
+
+	resourceDetails, err := client.ParseResourceID(*server.ID)
+	if err != nil {
+		return err
+	}
+	firewallRules, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
+	if err != nil {
+		return err
+	}
+	if firewallRules.Value == nil {
+		return nil
+	}
+	res <- *firewallRules.Value
 	return nil
 }

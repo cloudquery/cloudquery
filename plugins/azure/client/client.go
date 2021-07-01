@@ -34,7 +34,6 @@ func (c Client) Logger() hclog.Logger {
 // SetSubscriptionServices adds a set of services to an azure subscription
 func (c *Client) SetSubscriptionServices(subscriptionId string, services services.Services) {
 	c.services[subscriptionId] = &services
-
 }
 
 // Services returns all available services of client, returns subscriptionId's specific services

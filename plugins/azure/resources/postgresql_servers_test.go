@@ -14,10 +14,12 @@ import (
 func buildPostgresServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	serverSvc := mocks.NewMockPostgresqlServerClient(ctrl)
 	configSvc := mocks.NewMockPostgresqlConfigurationClient(ctrl)
+	firewallRuleSvc := mocks.NewMockPostgresqlFirewallRuleClient(ctrl)
 	s := services.Services{
 		PostgreSQL: services.PostgreSQL{
 			Servers:       serverSvc,
 			Configuration: configSvc,
+			FirewallRule:  firewallRuleSvc,
 		},
 	}
 	server := postgresql.Server{}
@@ -36,6 +38,12 @@ func buildPostgresServerMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 		t.Errorf("failed building mock %s", err)
 	}
 	configSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(postgresql.ConfigurationListResult{Value: &[]postgresql.Configuration{config}}, nil)
+
+	firewallRule := postgresql.FirewallRule{}
+	if err := faker.FakeData(&firewallRule); err != nil {
+		t.Errorf("failed building mock %s", err)
+	}
+	firewallRuleSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(postgresql.FirewallRuleListResult{Value: &[]postgresql.FirewallRule{firewallRule}}, nil)
 	return s
 }
 

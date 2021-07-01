@@ -10,6 +10,7 @@ import (
 type PostgreSQL struct {
 	Servers       PostgresqlServerClient
 	Configuration PostgresqlConfigurationClient
+	FirewallRule  PostgresqlFirewallRuleClient
 }
 
 func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreSQL {
@@ -26,4 +27,8 @@ type PostgresqlServerClient interface {
 
 type PostgresqlConfigurationClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ConfigurationListResult, err error)
+}
+
+type PostgresqlFirewallRuleClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.FirewallRuleListResult, err error)
 }
