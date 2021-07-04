@@ -173,9 +173,9 @@ provider "test" {
     regions = ["adsa"]
   }
   resources = [
-    "error_resource"
+    "error_resource",
     "slow_resource",
-    "very_slow_resource",
+    "very_slow_resource"
   ]
 }`
 
