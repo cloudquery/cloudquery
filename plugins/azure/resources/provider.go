@@ -11,6 +11,7 @@ func Provider() *provider.Provider {
 		Name:      "azure",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
+			"ad.applications":          AdApplications(),
 			"ad.groups":                AdGroups(),
 			"ad.service_principals":    AdServicePrincipals(),
 			"ad.users":                 AdUsers(),

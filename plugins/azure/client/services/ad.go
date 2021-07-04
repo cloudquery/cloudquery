@@ -7,6 +7,10 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+type ADApplicationsClient interface {
+	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
+}
+
 type ADGroupsClient interface {
 	List(ctx context.Context, filter string) (result graphrbac.GroupListResultPage, err error)
 }
@@ -20,12 +24,15 @@ type ADUsersClient interface {
 }
 
 type AD struct {
+	Applications      ADApplicationsClient
 	Groups            ADGroupsClient
 	ServicePrincipals ADServicePrinicpals
 	Users             ADUsersClient
 }
 
 func NewADClient(subscriptionId string, auth autorest.Authorizer) AD {
+	apps := graphrbac.NewApplicationsClient(subscriptionId)
+	apps.Authorizer = auth
 	groups := graphrbac.NewGroupsClient(subscriptionId)
 	groups.Authorizer = auth
 	users := graphrbac.NewUsersClient(subscriptionId)
@@ -33,6 +40,7 @@ func NewADClient(subscriptionId string, auth autorest.Authorizer) AD {
 	sp := graphrbac.NewServicePrincipalsClient(subscriptionId)
 	sp.Authorizer = auth
 	return AD{
+		Applications:      apps,
 		Groups:            groups,
 		ServicePrincipals: sp,
 		Users:             users,

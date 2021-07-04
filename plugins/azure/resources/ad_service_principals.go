@@ -11,10 +11,11 @@ import (
 
 func AdServicePrincipals() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_ad_service_principals",
-		Description: "ServicePrincipal active Directory service principal information",
-		Resolver:    fetchAdServicePrincipals,
-		Multiplex:   client.SubscriptionMultiplex,
+		Name:         "azure_ad_service_principals",
+		Description:  "ServicePrincipal active Directory service principal information",
+		Resolver:     fetchAdServicePrincipals,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

@@ -9,10 +9,11 @@ import (
 
 func AdGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_ad_groups",
-		Description: "ADGroup active Directory group information",
-		Resolver:    fetchAdGroups,
-		Multiplex:   client.SubscriptionMultiplex,
+		Name:         "azure_ad_groups",
+		Description:  "ADGroup active Directory group information",
+		Resolver:     fetchAdGroups,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
