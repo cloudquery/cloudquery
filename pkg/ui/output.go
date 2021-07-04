@@ -1,13 +1,14 @@
 package ui
 
 import (
+	"os"
+	"strings"
+
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"golang.org/x/term"
-	"os"
-	"strings"
 )
 
 // ColorizedOutput outputs a colored message directly to the terminal.
