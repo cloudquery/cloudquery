@@ -1,14 +1,13 @@
 package ui
 
 import (
-	"os"
-	"strings"
-
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"golang.org/x/term"
+	"os"
+	"strings"
 )
 
 // ColorizedOutput outputs a colored message directly to the terminal.
@@ -16,11 +15,10 @@ import (
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if !IsTerminal() {
 		// Print output to log
-		log.Info().Msgf(msg, values...)
-
+		log.Info().Msgf(strings.ReplaceAll(msg, "\n", ""), values...)
 		return
 	}
-	_, _ = c.Printf(strings.ReplaceAll(msg, "\n", ""), values...)
+	_, _ = c.Printf(msg, values...)
 }
 
 func IsTerminal() bool {
