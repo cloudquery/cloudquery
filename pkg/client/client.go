@@ -15,6 +15,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
@@ -28,6 +30,11 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
+	// Optional: Disable deletion of data from tables.
+	// Use this with caution, as it can create duplicates of data!
+	DisableDataDelete bool
+	// Optional: Adds extra fields to the provider, this is used for testing purposes.
+	ExtraFields map[string]interface{}
 }
 
 type FetchUpdate struct {
@@ -85,6 +92,11 @@ type FetchDoneResult struct {
 	ResourceCount string
 }
 
+// TableCreator creates tables based on schema received from providers
+type TableCreator interface {
+	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
+}
+
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -103,6 +115,8 @@ type Client struct {
 	NoVerify bool
 	// Optional: DSN connection information for database client will connect to
 	DSN string
+	// Optional: Skips Building tables on fetch execution
+	SkipBuildTables bool
 	// Optional: HubProgressUpdater allows the client creator to get called back on download progress and completion.
 	HubProgressUpdater ui.Progress
 	// Optional: Logger framework can use to log.
@@ -113,6 +127,8 @@ type Client struct {
 	Hub registry.Hub
 	// manager manages all plugins lifecycle
 	Manager *plugin.Manager
+	// TableCreator defines how table are created in the database
+	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool
 }
@@ -123,6 +139,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
 		PolicyDirectory:    ".",
 		NoVerify:           false,
+		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
@@ -136,7 +153,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	if c.TableCreator == nil {
+		c.TableCreator = provider.NewMigrator(c.Logger)
+	}
 	poolCfg, err := pgxpool.ParseConfig(c.DSN)
 	if err != nil {
 		return nil, err
@@ -156,6 +175,13 @@ func (c *Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
+	if !c.SkipBuildTables {
+		for _, p := range request.Providers {
+			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
+				return err
+			}
+		}
+	}
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
@@ -179,7 +205,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
 				},
-				Config: cfg,
+				Config:        cfg,
+				DisableDelete: request.DisableDataDelete,
+				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
 				c.Logger.Error("failed to configure provider", "error", err, "provider", providerPlugin.Name())
@@ -232,6 +260,10 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 		return nil, err
 	}
 	defer func() {
+		if providerPlugin.Version() == plugin.Unmanaged {
+			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
+			return
+		}
 		if err := c.Manager.KillProvider(providerName); err != nil {
 			c.Logger.Warn("failed to kill provider", "provider", providerName)
 		}
@@ -246,11 +278,34 @@ func (c Client) GetProviderConfiguration(ctx context.Context, providerName strin
 		return nil, err
 	}
 	defer func() {
+		if providerPlugin.Version() == plugin.Unmanaged {
+			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
+			return
+		}
 		if err := c.Manager.KillProvider(providerName); err != nil {
-			c.Logger.Warn("failed to kill provider", "provider", providerName)
+			c.Logger.Warn("failed to close provider", "provider", providerName)
 		}
 	}()
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
+}
+
+func (c *Client) BuildProviderTables(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+	for name, t := range s.ResourceTables {
+		c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
+		if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {

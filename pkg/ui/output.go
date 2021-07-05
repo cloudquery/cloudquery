@@ -2,6 +2,7 @@ package ui
 
 import (
 	"os"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
@@ -15,8 +16,7 @@ import (
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if !IsTerminal() {
 		// Print output to log
-		log.Info().Msgf(msg, values...)
-
+		log.Info().Msgf(strings.ReplaceAll(msg, "\n", ""), values...)
 		return
 	}
 	_, _ = c.Printf(msg, values...)

@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	DefaultOrganization = "cloudquery"
+	Unmanaged = "unmanaged"
 )
 
 // PluginMap is the map of plugins we can dispense.
@@ -134,7 +134,7 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 
 func (m unmanagedPlugin) Name() string { return m.name }
 
-func (m unmanagedPlugin) Version() string { return "unmanaged" }
+func (m unmanagedPlugin) Version() string { return Unmanaged }
 
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
