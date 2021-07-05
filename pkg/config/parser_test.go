@@ -51,7 +51,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	cfg.Providers[0].Configuration = nil
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
-			Connection: Connection{DSN: "host=localhost user=postgres password=pass DB.name=postgres port=5432"},
+			Connection: &Connection{DSN: "host=localhost user=postgres password=pass DB.name=postgres port=5432"},
 			Providers: []*RequiredProvider{{
 				Name:    "test",
 				Source:  "cloudquery",

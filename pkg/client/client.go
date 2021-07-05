@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -149,6 +150,11 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 
 	var err error
+
+	if c.DSN == "" {
+		return nil, errors.New("missing DSN, make sure to pass it either cq config connection block or CLI arg --dsn")
+	}
+
 	c.Manager, err = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
 	if err != nil {
 		return nil, err
