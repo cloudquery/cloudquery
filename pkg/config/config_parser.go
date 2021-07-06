@@ -46,6 +46,13 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			contentDiags = gohcl.DecodeBody(block.Body, nil, &config.CloudQuery)
 			diags = append(diags, contentDiags...)
 			// TODO: decode in a more generic way
+
+			if config.CloudQuery.Connection == nil {
+				config.CloudQuery.Connection = &Connection{
+					DSN: "",
+				}
+			}
+
 			if dsn := viper.GetString("dsn"); dsn != "" {
 				config.CloudQuery.Connection.DSN = dsn
 			}
