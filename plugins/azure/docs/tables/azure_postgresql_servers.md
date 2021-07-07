@@ -32,6 +32,6 @@ Azure postgresql server
 |public_network_access|text|Whether or not public network access is allowed for this server Value is optional but if passed in, must be 'Enabled' or 'Disabled' Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'|
 |tags|jsonb|Resource tags|
 |location|text|The geo-location where the resource lives|
-|resource_id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
+|id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
 |name|text|The name of the resource|
 |type|text|The type of the resource Eg "MicrosoftCompute/virtualMachines" or "MicrosoftStorage/storageAccounts"|

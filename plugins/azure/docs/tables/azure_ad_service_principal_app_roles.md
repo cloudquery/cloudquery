@@ -4,8 +4,8 @@ AppRole
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|service_principal_id|uuid|Unique ID of azure_ad_service_principals table (FK)|
-|resource_id|text|Unique role identifier inside the appRoles collection|
+|service_principal_cq_id|uuid|Unique ID of azure_ad_service_principals table (FK)|
+|id|text|Unique role identifier inside the appRoles collection|
 |allowed_member_types|text[]|Specifies whether this app role definition can be assigned to users and groups by setting to 'User', or to other applications (that are accessing this application in daemon service scenarios) by setting to 'Application', or to both|
 |description|text|Permission help text that appears in the admin app assignment and consent experiences|
 |display_name|text|Display name for the permission that appears in the admin consent and app assignment experiences|

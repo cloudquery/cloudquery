@@ -17,6 +17,7 @@ func AdApplications() *schema.Table {
 		Resolver:     fetchAdApplications,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "object_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -206,15 +207,16 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_app_roles",
 				Description: "AppRole",
 				Resolver:    fetchAdApplicationAppRoles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique role identifier inside the appRoles collection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -251,9 +253,10 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_key_credentials",
 				Description: "KeyCredential active Directory Key Credential information",
 				Resolver:    fetchAdApplicationKeyCredentials,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "key_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -305,9 +308,10 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_oauth2_permissions",
 				Description: "OAuth2Permission represents an OAuth 20 delegated permission scope The specified OAuth 20 delegated permission scopes may be requested by client applications (through the requiredResourceAccess collection on the Application object) when calling a resource application The oauth2Permissions property of the ServicePrincipal entity and of the Application entity is a collection of OAuth2Permission",
 				Resolver:    fetchAdApplicationOauth2Permissions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -323,7 +327,7 @@ func AdApplications() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique scope permission identifier inside the oauth2Permissions collection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -361,9 +365,10 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_password_credentials",
 				Description: "PasswordCredential active Directory Password Credential information",
 				Resolver:    fetchAdApplicationPasswordCredentials,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "key_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -405,9 +410,10 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_pre_authorized_applications",
 				Description: "PreAuthorizedApplication contains information about pre authorized client application",
 				Resolver:    fetchAdApplicationPreAuthorizedApplications,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "app_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -436,9 +442,10 @@ func AdApplications() *schema.Table {
 				Name:        "azure_ad_application_required_resource_accesses",
 				Description: "RequiredResourceAccess specifies the set of OAuth 20 permission scopes and app roles under the specified resource that an application requires access to The specified OAuth 20 permission scopes may be requested by client applications (through the requiredResourceAccess collection) when calling a resource application The requiredResourceAccess property of the Application entity is a collection of RequiredResourceAccess",
 				Resolver:    fetchAdApplicationRequiredResourceAccesses,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"application_cq_id", "resource_app_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "application_id",
+						Name:        "application_cq_id",
 						Description: "Unique ID of azure_ad_applications table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

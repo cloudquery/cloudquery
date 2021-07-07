@@ -40,7 +40,7 @@ Azure compute disk
 |share_info|text[]|Details of the list of all VMs that have the disk attached maxShares should be set to a value greater than one for disks to allow attaching them to multiple VMs|
 |network_access_policy|text|Possible values include: 'AllowAll', 'AllowPrivate', 'DenyAll'|
 |disk_access_id|text|ARM id of the DiskAccess resource for using private endpoints on disks|
-|resource_id|text|Resource Id|
+|id|text|Resource Id|
 |name|text|Resource name|
 |type|text|Resource type|
 |location|text|Resource location|

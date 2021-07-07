@@ -4,7 +4,7 @@ PreAuthorizedApplication contains information about pre authorized client applic
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|application_id|uuid|Unique ID of azure_ad_applications table (FK)|
+|application_cq_id|uuid|Unique ID of azure_ad_applications table (FK)|
 |app_id|text|Represents the application id|
 |permissions|jsonb|Collection of required app permissions/entitlements from the resource application|
 |extensions|jsonb|Collection of extensions from the resource application|

@@ -15,6 +15,7 @@ func AdUsers() *schema.Table {
 		Description: "User active Directory user information",
 		Resolver:    fetchAdUsers,
 		Multiplex:   client.SubscriptionMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "object_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -100,9 +101,10 @@ func AdUsers() *schema.Table {
 				Name:        "azure_ad_user_sign_in_names",
 				Description: "SignInName contains information about a sign-in name of a local account user in an Azure Active Directory B2C tenant",
 				Resolver:    fetchAdUserSignInNames,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "signin_type", "signin_value"}},
 				Columns: []schema.Column{
 					{
-						Name:        "user_id",
+						Name:        "user_cq_id",
 						Description: "Unique ID of azure_ad_users table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

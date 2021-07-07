@@ -5,7 +5,7 @@ Azure resource group
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |subscription_id|text|Azure subscription id|
-|resource_id|text|The ID of the resource group|
+|id|text|The ID of the resource group|
 |name|text|The name of the resource group|
 |type|text|The type of the resource group|
 |properties_provisioning_state|text|The provisioning state|

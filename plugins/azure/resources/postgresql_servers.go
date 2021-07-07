@@ -14,6 +14,7 @@ func PostgresqlServers() *schema.Table {
 		Description: "Azure postgresql server",
 		Resolver:    fetchPostgresqlServers,
 		Multiplex:   client.SubscriptionMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -182,7 +183,7 @@ func PostgresqlServers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -203,64 +204,16 @@ func PostgresqlServers() *schema.Table {
 				Name:        "azure_postgresql_server_private_endpoint_connections",
 				Description: "Azure postgresql server private endpoint connection",
 				Resolver:    fetchPostgresqlServerPrivateEndpointConnections,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "server_id",
+						Name:        "server_cq_id",
 						Description: "Unique ID of azure_postgresql_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
-						Description: "Resource ID of the Private Endpoint Connection",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "private_endpoint_id",
-						Description: "Resource id of the private endpoint",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.PrivateEndpoint.ID"),
-					},
-					{
-						Name:        "private_link_service_connection_state_status",
-						Description: "The private link service connection status Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.Status"),
-					},
-					{
-						Name:        "private_link_service_connection_state_description",
-						Description: "The private link service connection description",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.Description"),
-					},
-					{
-						Name:        "private_link_service_connection_state_actions_required",
-						Description: "The actions required for private link service connection Possible values include: 'None'",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.ActionsRequired"),
-					},
-					{
-						Name:        "provisioning_state",
-						Description: "State of the private endpoint connection Possible values include: 'Approving', 'Ready', 'Dropping', 'Failed', 'Rejecting'",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.ProvisioningState"),
-					},
-				},
-			},
-			{
-				Name:        "azure_postgresql_server_private_endpoint_connections",
-				Description: "Azure postgresql server private endpoint connection",
-				Resolver:    fetchPostgresqlServerPrivateEndpointConnections,
-				Columns: []schema.Column{
-					{
-						Name:        "server_id",
-						Description: "Unique ID of azure_postgresql_servers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Resource ID of the Private Endpoint Connection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -301,9 +254,10 @@ func PostgresqlServers() *schema.Table {
 				Name:        "azure_postgresql_server_configurations",
 				Description: "Azure postgresql server configuration",
 				Resolver:    fetchPostgresqlServerConfigurations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "server_id",
+						Name:        "server_cq_id",
 						Description: "Unique ID of azure_postgresql_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -345,7 +299,7 @@ func PostgresqlServers() *schema.Table {
 						Resolver:    schema.PathResolver("ConfigurationProperties.Source"),
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -366,9 +320,10 @@ func PostgresqlServers() *schema.Table {
 				Name:        "azure_postgresql_server_firewall_rules",
 				Description: "Azure postgresql server firewall rule",
 				Resolver:    fetchPostgresqlServerFirewallRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "server_id",
+						Name:        "server_cq_id",
 						Description: "Unique ID of azure_postgresql_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -386,7 +341,7 @@ func PostgresqlServers() *schema.Table {
 						Resolver:    schema.PathResolver("FirewallRuleProperties.EndIPAddress"),
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),

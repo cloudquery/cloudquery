@@ -31,6 +31,6 @@ Azure sql database
 |zone_redundant|boolean|Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones|
 |location|text|Resource location|
 |tags|jsonb|Resource tags|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|

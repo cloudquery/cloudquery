@@ -15,6 +15,7 @@ func NetworkVirtualNetworks() *schema.Table {
 		Resolver:     fetchNetworkVirtualNetworks,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -94,7 +95,7 @@ func NetworkVirtualNetworks() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Resource ID",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -125,9 +126,10 @@ func NetworkVirtualNetworks() *schema.Table {
 				Name:        "azure_networks_virtual_network_subnets",
 				Description: "Azure virtual network subnet",
 				Resolver:    fetchNetworksVirtualNetworkSubnets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "virtual_network_id",
+						Name:        "virtual_network_cq_id",
 						Description: "Unique ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -287,7 +289,7 @@ func NetworkVirtualNetworks() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Resource ID",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -298,9 +300,10 @@ func NetworkVirtualNetworks() *schema.Table {
 				Name:        "azure_networks_virtual_network_peerings",
 				Description: "Azure virtual network peering",
 				Resolver:    fetchNetworksVirtualNetworkPeerings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "virtual_network_id",
+						Name:        "virtual_network_cq_id",
 						Description: "Unique ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -376,7 +379,7 @@ func NetworkVirtualNetworks() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Resource ID",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -387,15 +390,16 @@ func NetworkVirtualNetworks() *schema.Table {
 				Name:        "azure_networks_virtual_network_ip_allocations",
 				Description: "Azure virtual network ip allocation",
 				Resolver:    fetchNetworksVirtualNetworkIpAllocations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "virtual_network_id",
+						Name:        "virtual_network_cq_id",
 						Description: "Unique ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Resource ID",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),

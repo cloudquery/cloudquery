@@ -15,6 +15,7 @@ func KeyVaultVaults() *schema.Table {
 		Resolver:     fetchKeyvaultVaults,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -23,7 +24,7 @@ func KeyVaultVaults() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Fully qualified identifier of the key vault resource",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -150,9 +151,10 @@ func KeyVaultVaults() *schema.Table {
 				Name:        "azure_keyvault_vault_access_policies",
 				Description: "AccessPolicyEntry an identity that have access to the key vault",
 				Resolver:    fetchKeyvaultVaultAccessPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "object_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vault_id",
+						Name:        "vault_cq_id",
 						Description: "Unique ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -205,9 +207,10 @@ func KeyVaultVaults() *schema.Table {
 				Name:        "azure_keyvault_vault_private_endpoint_connections",
 				Description: "Azure ketvault vault endpoint connection",
 				Resolver:    fetchKeyvaultVaultPrivateEndpointConnections,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vault_id",
+						Name:        "vault_cq_id",
 						Description: "Unique ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -248,9 +251,10 @@ func KeyVaultVaults() *schema.Table {
 				Name:        "azure_keyvault_vault_keys",
 				Description: "Azure ketvault vault key",
 				Resolver:    fetchKeyvaultVaultKeys,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vault_id",
+						Name:        "vault_cq_id",
 						Description: "Unique ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -328,7 +332,7 @@ func KeyVaultVaults() *schema.Table {
 						Resolver:    schema.PathResolver("KeyProperties.KeyURIWithVersion"),
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Fully qualified identifier of the key vault resource",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),

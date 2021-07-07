@@ -17,7 +17,7 @@ Azure virtual network
 |bgp_communities_virtual_network_community|text|The BGP community associated with the virtual network|
 |bgp_communities_regional_community|text|The BGP community associated with the region of the virtual network|
 |etag|text|A unique read-only string that changes whenever the resource is updated|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|
 |location|text|Resource location|

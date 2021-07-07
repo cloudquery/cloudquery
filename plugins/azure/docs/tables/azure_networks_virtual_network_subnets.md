@@ -4,7 +4,7 @@ Azure virtual network subnet
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_network_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
+|virtual_network_cq_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
 |address_prefix|text|The address prefix for the subnet|
 |address_prefixes|text[]|List of address prefixes for the subnet|
 |security_group_properties_format_resource_guid|text|The resource GUID property of the network security group resource|
@@ -31,4 +31,4 @@ Azure virtual network subnet
 |private_link_service_network_policies|text|Enable or Disable apply network policies on private link service in the subnet|
 |name|text|The name of the resource that is unique within a resource group This name can be used to access the resource|
 |etag|text|A unique read-only string that changes whenever the resource is updated|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|

@@ -15,6 +15,6 @@ Azure sql server
 |state|text|The state of the server Possible values include: 'ServerStateReady', 'ServerStateDisabled'|
 |location|text|Resource location|
 |tags|jsonb|Resource tags|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|

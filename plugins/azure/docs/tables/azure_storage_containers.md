@@ -23,6 +23,6 @@ Azure storage container
 |has_legal_hold|boolean|The hasLegalHold public property is set to true by SRP if there are at least one existing tag The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account|
 |has_immutability_policy|boolean|The hasImmutabilityPolicy public property is set to true by SRP if ImmutabilityPolicy has been created for this container The hasImmutabilityPolicy public property is set to false by SRP if ImmutabilityPolicy has not been created for this container|
 |etag|text|Resource Etag|
-|resource_id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
+|id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
 |name|text|The name of the resource|
 |type|text|The type of the resource Eg "MicrosoftCompute/virtualMachines" or "MicrosoftStorage/storageAccounts"|

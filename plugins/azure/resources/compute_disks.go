@@ -15,6 +15,7 @@ func ComputeDisks() *schema.Table {
 		Resolver:     fetchComputeDisks,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -230,7 +231,7 @@ func ComputeDisks() *schema.Table {
 				Resolver:    schema.PathResolver("DiskProperties.DiskAccessID"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Resource Id",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -261,9 +262,10 @@ func ComputeDisks() *schema.Table {
 				Name:        "azure_compute_disk_encryption_settings",
 				Description: "Azure compute disk encryption setting",
 				Resolver:    fetchComputeDiskEncryptionSettings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"disk_cq_id", "disk_encryption_key_source_vault_id", "key_encryption_key_source_vault_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "disk_id",
+						Name:        "disk_cq_id",
 						Description: "Unique ID of azure_compute_disks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

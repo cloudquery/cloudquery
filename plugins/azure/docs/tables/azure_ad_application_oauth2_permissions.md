@@ -4,10 +4,10 @@ OAuth2Permission represents an OAuth 20 delegated permission scope The specified
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|application_id|uuid|Unique ID of azure_ad_applications table (FK)|
+|application_cq_id|uuid|Unique ID of azure_ad_applications table (FK)|
 |admin_consent_description|text|Permission help text that appears in the admin consent and app assignment experiences|
 |admin_consent_display_name|text|Display name for the permission that appears in the admin consent and app assignment experiences|
-|resource_id|text|Unique scope permission identifier inside the oauth2Permissions collection|
+|id|text|Unique scope permission identifier inside the oauth2Permissions collection|
 |is_enabled|boolean|When creating or updating a permission, this property must be set to true (which is the default) To delete a permission, this property must first be set to false At that point, in a subsequent call, the permission may be removed|
 |permission_type|text|Specifies whether this scope permission can be consented to by an end user, or whether it is a tenant-wide permission that must be consented to by a Company Administrator Possible values are "User" or "Admin"|
 |user_consent_description|text|Permission help text that appears in the end user consent experience|

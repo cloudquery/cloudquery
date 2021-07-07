@@ -4,7 +4,7 @@ KeyCredential active Directory Key Credential information
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|service_principal_id|uuid|Unique ID of azure_ad_service_principals table (FK)|
+|service_principal_cq_id|uuid|Unique ID of azure_ad_service_principals table (FK)|
 |additional_properties|jsonb|Unmatched properties from the message are deserialized this collection|
 |start_date|timestamp without time zone|Start date.|
 |end_date|timestamp without time zone|End date.|

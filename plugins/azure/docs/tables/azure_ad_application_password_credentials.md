@@ -4,7 +4,7 @@ PasswordCredential active Directory Password Credential information
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|application_id|uuid|Unique ID of azure_ad_applications table (FK)|
+|application_cq_id|uuid|Unique ID of azure_ad_applications table (FK)|
 |additional_properties|jsonb|Unmatched properties from the message are deserialized this collection|
 |start_date_time|timestamp without time zone||
 |end_date_time|timestamp without time zone||

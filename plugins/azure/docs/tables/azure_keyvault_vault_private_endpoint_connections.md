@@ -4,7 +4,7 @@ Azure ketvault vault endpoint connection
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|vault_id|uuid|Unique ID of azure_keyvault_vaults table (FK)|
+|vault_cq_id|uuid|Unique ID of azure_keyvault_vaults table (FK)|
 |private_endpoint_id|text|Full identifier of the private endpoint resource|
 |private_link_service_connection_state_status|text|Indicates whether the connection has been approved, rejected or removed by the key vault owner Possible values include: 'PrivateEndpointServiceConnectionStatusPending', 'PrivateEndpointServiceConnectionStatusApproved', 'PrivateEndpointServiceConnectionStatusRejected', 'PrivateEndpointServiceConnectionStatusDisconnected'|
 |private_link_service_connection_state_description|text|The reason for approval or rejection|

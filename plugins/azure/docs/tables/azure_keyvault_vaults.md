@@ -5,7 +5,7 @@ Azure ketvault vault
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |subscription_id|text|Azure subscription id|
-|resource_id|text|Fully qualified identifier of the key vault resource|
+|id|text|Fully qualified identifier of the key vault resource|
 |name|text|Name of the key vault resource|
 |type|text|Resource type of the key vault resource|
 |location|text|Azure location of the key vault resource|

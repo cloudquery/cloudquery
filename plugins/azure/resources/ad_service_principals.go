@@ -16,6 +16,7 @@ func AdServicePrincipals() *schema.Table {
 		Resolver:     fetchAdServicePrincipals,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "object_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -141,15 +142,16 @@ func AdServicePrincipals() *schema.Table {
 				Name:        "azure_ad_service_principal_app_roles",
 				Description: "AppRole",
 				Resolver:    fetchAdServicePrincipalAppRoles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"service_principal_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "service_principal_id",
+						Name:        "service_principal_cq_id",
 						Description: "Unique ID of azure_ad_service_principals table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique role identifier inside the appRoles collection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -186,9 +188,10 @@ func AdServicePrincipals() *schema.Table {
 				Name:        "azure_ad_service_principal_key_credentials",
 				Description: "KeyCredential active Directory Key Credential information",
 				Resolver:    fetchAdServicePrincipalKeyCredentials,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"service_principal_cq_id", "key_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "service_principal_id",
+						Name:        "service_principal_cq_id",
 						Description: "Unique ID of azure_ad_service_principals table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -244,9 +247,10 @@ func AdServicePrincipals() *schema.Table {
 				Name:        "azure_ad_service_principal_oauth2_permissions",
 				Description: "OAuth2Permission represents an OAuth 20 delegated permission scope The specified OAuth 20 delegated permission scopes may be requested by client applications (through the requiredResourceAccess collection on the Application object) when calling a resource application The oauth2Permissions property of the ServicePrincipal entity and of the Application entity is a collection of OAuth2Permission",
 				Resolver:    fetchAdServicePrincipalOauth2Permissions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"service_principal_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "service_principal_id",
+						Name:        "service_principal_cq_id",
 						Description: "Unique ID of azure_ad_service_principals table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -262,7 +266,7 @@ func AdServicePrincipals() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique scope permission identifier inside the oauth2Permissions collection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -300,9 +304,10 @@ func AdServicePrincipals() *schema.Table {
 				Name:        "azure_ad_service_principal_password_credentials",
 				Description: "PasswordCredential active Directory Password Credential information",
 				Resolver:    fetchAdServicePrincipalPasswordCredentials,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"service_principal_cq_id", "key_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "service_principal_id",
+						Name:        "service_principal_cq_id",
 						Description: "Unique ID of azure_ad_service_principals table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

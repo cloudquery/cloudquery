@@ -14,6 +14,7 @@ func MySQLServers() *schema.Table {
 		Description: "Azure mysql server",
 		Resolver:    fetchMySQLServers,
 		Multiplex:   client.SubscriptionMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -182,7 +183,7 @@ func MySQLServers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -203,15 +204,16 @@ func MySQLServers() *schema.Table {
 				Name:        "azure_mysql_server_private_endpoint_connections",
 				Description: "Azure mysql server private endpoint connection",
 				Resolver:    fetchMySQLServerPrivateEndpointConnections,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "server_id",
+						Name:        "server_cq_id",
 						Description: "Unique ID of azure_mysql_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Resource Id of the private endpoint connection",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -252,9 +254,10 @@ func MySQLServers() *schema.Table {
 				Name:        "azure_mysql_server_configurations",
 				Description: "Azure mysql server configuration",
 				Resolver:    fetchMySQLServerConfigurations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "server_id",
+						Name:        "server_cq_id",
 						Description: "Unique ID of azure_mysql_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -296,7 +299,7 @@ func MySQLServers() *schema.Table {
 						Resolver:    schema.PathResolver("ConfigurationProperties.Source"),
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),

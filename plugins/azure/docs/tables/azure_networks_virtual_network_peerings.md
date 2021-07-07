@@ -4,7 +4,7 @@ Azure virtual network peering
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_network_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
+|virtual_network_cq_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
 |allow_virtual_network_access|boolean|Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space|
 |allow_forwarded_traffic|boolean|Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network|
 |allow_gateway_transit|boolean|If gateway links can be used in remote virtual networking to link to this virtual network|
@@ -17,4 +17,4 @@ Azure virtual network peering
 |provisioning_state|text|The provisioning state of the virtual network peering resource Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'|
 |name|text|The name of the resource that is unique within a resource group This name can be used to access the resource|
 |etag|text|A unique read-only string that changes whenever the resource is updated|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|

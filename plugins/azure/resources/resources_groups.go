@@ -14,6 +14,7 @@ func ResourcesGroups() *schema.Table {
 		Resolver:     fetchResourcesGroups,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -22,7 +23,7 @@ func ResourcesGroups() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID of the resource group",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),

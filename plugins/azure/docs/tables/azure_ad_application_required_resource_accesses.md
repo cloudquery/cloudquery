@@ -4,7 +4,7 @@ RequiredResourceAccess specifies the set of OAuth 20 permission scopes and app r
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|application_id|uuid|Unique ID of azure_ad_applications table (FK)|
+|application_cq_id|uuid|Unique ID of azure_ad_applications table (FK)|
 |additional_properties|jsonb|Unmatched properties from the message are deserialized this collection|
 |resource_access|jsonb|The list of OAuth20 permission scopes and app roles that the application requires from the specified resource|
 |resource_app_id|text|The unique identifier for the resource that the application requires access to This should be equal to the appId declared on the target resource application|

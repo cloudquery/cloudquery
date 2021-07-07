@@ -4,9 +4,9 @@ Azure sql database encryption
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|database_id|uuid|Unique ID of azure_sql_databases table (FK)|
+|database_cq_id|uuid|Unique ID of azure_sql_databases table (FK)|
 |location|text|Resource location|
 |status|text|The status of the database transparent data encryption Possible values include: 'TransparentDataEncryptionStatusEnabled', 'TransparentDataEncryptionStatusDisabled'|
-|resource_id|text|Resource ID|
+|id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|

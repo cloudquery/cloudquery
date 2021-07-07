@@ -16,6 +16,7 @@ func StorageAccounts() *schema.Table {
 		Resolver:     fetchStorageAccounts,
 		Multiplex:    client.SubscriptionMultiplex,
 		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -591,7 +592,7 @@ func StorageAccounts() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
@@ -612,9 +613,10 @@ func StorageAccounts() *schema.Table {
 				Name:        "azure_storage_account_network_rule_set_virtual_network_rules",
 				Description: "VirtualNetworkRule virtual Network rule. ",
 				Resolver:    fetchStorageAccountNetworkRuleSetVirtualNetworkRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "virtual_network_resource_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "account_id",
+						Name:        "account_cq_id",
 						Description: "Unique ID of azure_storage_accounts table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -627,7 +629,7 @@ func StorageAccounts() *schema.Table {
 					},
 					{
 						Name:        "action",
-						Description: "The action of virtual network rule Possible values include: 'Allow'",
+						Description: "The action of virtual network rule.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -641,9 +643,10 @@ func StorageAccounts() *schema.Table {
 				Name:        "azure_storage_account_network_rule_set_ip_rules",
 				Description: "IPRule IP rule with specific IP or IP range in CIDR format. ",
 				Resolver:    fetchStorageAccountNetworkRuleSetIpRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "ip_address_or_range"}},
 				Columns: []schema.Column{
 					{
-						Name:        "account_id",
+						Name:        "account_cq_id",
 						Description: "Unique ID of azure_storage_accounts table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -665,9 +668,10 @@ func StorageAccounts() *schema.Table {
 				Name:        "azure_storage_account_private_endpoint_connections",
 				Description: "Azure storage account private endpoint connection",
 				Resolver:    fetchStorageAccountPrivateEndpointConnections,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "account_id",
+						Name:        "account_cq_id",
 						Description: "Unique ID of azure_storage_accounts table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -703,7 +707,7 @@ func StorageAccounts() *schema.Table {
 						Resolver:    schema.PathResolver("PrivateEndpointConnectionProperties.ProvisioningState"),
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
