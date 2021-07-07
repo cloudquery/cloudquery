@@ -29,9 +29,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
+      - name: remove all docs
+        run: |
+          rm -f ./docs/tables/*.md
       - name: build-docs
         run: |
           go run ./docs/docs.go
       - name: Fail if docs are changed
         run: |
-          if [ $(git status -- ./docs/tables | grep 'modified:' | wc -l) -gt 0 ]; then exit 1; fi
+          test "$(git status -s ./docs/tables | wc -l)" -eq 0
