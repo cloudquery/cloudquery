@@ -3,6 +3,7 @@
 //go:generate mockgen -destination=./mocks/ad_groups.go -package=mocks . ADGroupsClient
 //go:generate mockgen -destination=./mocks/ad_service_principals.go -package=mocks . ADServicePrinicpals
 //go:generate mockgen -destination=./mocks/ad_users.go -package=mocks . ADUsersClient
+//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
 package services
 
@@ -16,6 +17,7 @@ type Services struct {
 	Network    NetworksClient
 	PostgreSQL PostgreSQL
 	Resources  ResourcesClient
+	Security   SecurityClient
 	SQL        SQLClient
 	Storage    StorageClient
 }
@@ -29,6 +31,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		Network:    NewNetworksClient(subscriptionId, auth),
 		PostgreSQL: NewPostgresClient(subscriptionId, auth),
 		Resources:  NewResourcesClient(subscriptionId, auth),
+		Security:   NewSecurityClient(subscriptionId, auth),
 		SQL:        NewSQLClient(subscriptionId, auth),
 		Storage:    NewStorageClient(subscriptionId, auth),
 	}
