@@ -45,9 +45,6 @@ type ExecuteRequest struct {
 
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
-
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
 }
 
 // NewExecutor creates a new executor.
@@ -98,7 +95,7 @@ func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq 
 	// Create temporary Views
 	for _, v := range p.Views {
 		if err := e.CreateView(ctx, v); err != nil {
-			return nil, fmt.Errorf("%s: %w", p.Name, err)
+			return nil, err
 		}
 	}
 
@@ -106,7 +103,7 @@ func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq 
 	for _, q := range p.Queries {
 		res, err := e.ExecuteQuery(ctx, q)
 		if err != nil {
-			return nil, fmt.Errorf("%s: %w", p.Name, err)
+			return nil, err
 		}
 		results = append(results, res)
 

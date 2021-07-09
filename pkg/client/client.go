@@ -65,9 +65,6 @@ type PolicyRunRequest struct {
 
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallBack policy.ExecutionCallback
-
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -115,8 +112,6 @@ type Client struct {
 	PluginDirectory string
 	// Optional: Where to save downloaded policies, by default current working directory, defaults to ./cq/policy
 	PolicyDirectory string
-	// Optional: If true cloudquery just runs policy files without using git tag to select a version
-	SkipVersioning bool
 	// Optional: if this flag is true, plugins downloaded from URL won't be verified when downloaded
 	NoVerify bool
 	// Optional: DSN connection information for database client will connect to
@@ -342,7 +337,7 @@ func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		return err
 	}
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, SkipVersioning: req.SkipVersioning, UpdateCallback: req.RunCallBack})
+	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, UpdateCallback: req.RunCallBack})
 	if err != nil {
 		return err
 	}
