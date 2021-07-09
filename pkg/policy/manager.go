@@ -187,9 +187,11 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	}
 	m.logger.Debug("found repo folder", "path", repoFolder)
 
-	// Checkout policy repository tag
-	if err := p.checkoutPolicyVersion(repoFolder); err != nil {
-		return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+	if !execReq.SkipVersioning {
+		// Checkout policy repository tag
+		if err := p.checkoutPolicyVersion(repoFolder); err != nil {
+			return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+		}
 	}
 
 	// If repository path was specified, also check if that exists
