@@ -107,14 +107,13 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
+func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
 	req := client.PolicyRunRequest{
-		Args:           args,
-		SubPath:        subPath,
-		OutputPath:     outputPath,
-		StopOnFailure:  stopOnFailure,
-		SkipVersioning: skipVersioning,
+		Args:          args,
+		SubPath:       subPath,
+		OutputPath:    outputPath,
+		StopOnFailure: stopOnFailure,
 		RunCallBack: func(name string, passed bool) {
 			if passed {
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
