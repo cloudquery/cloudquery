@@ -1,8 +1,9 @@
-//go:generate mockgen -destination=./mocks/services.go -package=mocks  . DisksClient,GroupsClient,KeyClient,VaultClient,StorageAccountClient,StorageContainerClient,SqlServerClient,SqlDatabaseClient,MySQLServerClient,MySQLConfigurationClient,VirtualNetworksClient
+//go:generate mockgen -destination=./mocks/services.go -package=mocks  . DisksClient,GroupsClient,KeyClient,VaultClient,StorageAccountClient,StorageContainerClient,SqlServerClient,SqlDatabaseClient,MySQLServerClient,MySQLConfigurationClient
 //go:generate mockgen -destination=./mocks/ad_applications.go -package=mocks . ADApplicationsClient
 //go:generate mockgen -destination=./mocks/ad_groups.go -package=mocks . ADGroupsClient
 //go:generate mockgen -destination=./mocks/ad_service_principals.go -package=mocks . ADServicePrinicpals
 //go:generate mockgen -destination=./mocks/ad_users.go -package=mocks . ADUsersClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . WatchersClient,VirtualNetworksClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . LogProfilesClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
