@@ -12,7 +12,7 @@ const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/provid
 
 var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
 
-func DeleteSubscriptionFilter(meta schema.ClientMeta) []interface{} {
+func DeleteSubscriptionFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
 	client := meta.(*Client)
 	return []interface{}{"subscription_id", client.SubscriptionId}
 }

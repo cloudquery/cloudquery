@@ -16,8 +16,16 @@ type PostgreSQL struct {
 func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreSQL {
 	servers := postgresql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
+
+	confSvc := postgresql.NewConfigurationsClient(subscriptionId)
+	confSvc.Authorizer = auth
+
+	firewallSvc := postgresql.NewFirewallRulesClient(subscriptionId)
+	firewallSvc.Authorizer = auth
 	return PostgreSQL{
-		Servers: servers,
+		Servers:       servers,
+		Configuration: confSvc,
+		FirewallRule:  firewallSvc,
 	}
 }
 

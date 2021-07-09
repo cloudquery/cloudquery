@@ -20,6 +20,7 @@ func Provider() *provider.Provider {
 			"monitor.log_profiles":                MonitorLogProfiles(),
 			"mysql.servers":                       MySQLServers(),
 			"network.virtual_networks":            NetworkVirtualNetworks(),
+			"network.security_groups":             NetworkSecurityGroups(),
 			"network.watchers":                    NetworkWatchers(),
 			"postgresql.servers":                  PostgresqlServers(),
 			"resources.groups":                    ResourcesGroups(),
