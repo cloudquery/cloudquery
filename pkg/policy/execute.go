@@ -98,7 +98,7 @@ func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq 
 	// Create temporary Views
 	for _, v := range p.Views {
 		if err := e.CreateView(ctx, v); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%s: %w", p.Name, err)
 		}
 	}
 
@@ -106,7 +106,7 @@ func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq 
 	for _, q := range p.Queries {
 		res, err := e.ExecuteQuery(ctx, q)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%s: %w", p.Name, err)
 		}
 		results = append(results, res)
 

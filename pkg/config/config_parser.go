@@ -74,7 +74,6 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 					config.CloudQuery.PolicyDirectory = dir
 				}
 			}
-			config.CloudQuery.SkipVersioning = viper.GetBool("skip-versioning")
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block)
 			diags = append(diags, cfgDiags...)

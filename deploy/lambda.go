@@ -88,7 +88,6 @@ func Policy(ctx context.Context, cfg *config.Config) {
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
-		c.SkipVersioning = cfg.CloudQuery.SkipVersioning
 	})
 	if err != nil {
 		log.Fatalf("Unable to create client: %s", err)
