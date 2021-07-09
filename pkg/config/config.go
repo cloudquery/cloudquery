@@ -28,6 +28,7 @@ type CloudQuery struct {
 	Logger          *logging.Config     `hcl:"logging,block"`
 	Providers       []*RequiredProvider `hcl:"provider,block"`
 	Connection      *Connection         `hcl:"connection,block"`
+	SkipVersioning  bool                `hcl:"skip_versioning,optional"`
 }
 
 type Connection struct {
