@@ -17,6 +17,7 @@ func Provider() *provider.Provider {
 			"ad.users":                            AdUsers(),
 			"compute.disks":                       ComputeDisks(),
 			"keyvault.vaults":                     KeyVaultVaults(),
+			"monitor.log_profiles":                MonitorLogProfiles(),
 			"mysql.servers":                       MySQLServers(),
 			"network.virtual_networks":            NetworkVirtualNetworks(),
 			"postgresql.servers":                  PostgresqlServers(),

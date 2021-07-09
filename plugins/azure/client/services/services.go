@@ -3,8 +3,9 @@
 //go:generate mockgen -destination=./mocks/ad_groups.go -package=mocks . ADGroupsClient
 //go:generate mockgen -destination=./mocks/ad_service_principals.go -package=mocks . ADServicePrinicpals
 //go:generate mockgen -destination=./mocks/ad_users.go -package=mocks . ADUsersClient
-//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
+//go:generate mockgen -destination=./mocks/monitor.go -package=mocks . LogProfilesClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
+//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
 package services
 
 import "github.com/Azure/go-autorest/autorest"
@@ -13,6 +14,7 @@ type Services struct {
 	AD         AD
 	Compute    ComputeClient
 	KeyVault   KeyVaultClient
+	Monitor    MonitorClient
 	MySQL      MySQL
 	Network    NetworksClient
 	PostgreSQL PostgreSQL
@@ -27,6 +29,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		AD:         NewADClient(subscriptionId, auth),
 		Compute:    NewComputeClient(subscriptionId, auth),
 		KeyVault:   NewKeyVaultClient(subscriptionId, auth),
+		Monitor:    NewMonitorClient(subscriptionId, auth),
 		MySQL:      NewMySQLClient(subscriptionId, auth),
 		Network:    NewNetworksClient(subscriptionId, auth),
 		PostgreSQL: NewPostgresClient(subscriptionId, auth),
