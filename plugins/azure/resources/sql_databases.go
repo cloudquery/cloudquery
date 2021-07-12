@@ -3,7 +3,7 @@ package resources
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
+	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -24,33 +24,86 @@ func SQLDatabases() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
+				Name:        "sku_name",
+				Description: "The name of the SKU, typically, a letter + Number code, eg P3",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Sku.Name"),
+			},
+			{
+				Name:        "sku_tier",
+				Description: "The tier or edition of the particular SKU, eg Basic, Premium",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Sku.Tier"),
+			},
+			{
+				Name:        "sku_size",
+				Description: "Size of the particular SKU",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Sku.Size"),
+			},
+			{
+				Name:        "sku_family",
+				Description: "If the service has different generations of hardware, for the same SKU, then that can be captured here",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Sku.Family"),
+			},
+			{
+				Name:        "sku_capacity",
+				Description: "Capacity of the particular SKU",
+				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("Sku.Capacity"),
+			},
+			{
 				Name:        "kind",
-				Description: "Kind of database  This is metadata used for the Azure portal experience",
+				Description: "Kind of database This is metadata used for the Azure portal experience",
 				Type:        schema.TypeString,
 			},
 			{
+				Name:        "managed_by",
+				Description: "Resource that manages the database",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "create_mode",
+				Description: "Specifies the mode of database creation  Default: regular database creation  Copy: creates a database as a copy of an existing database sourceDatabaseId must be specified as the resource ID of the source database  Secondary: creates a database as a secondary replica of an existing database sourceDatabaseId must be specified as the resource ID of the existing primary database  PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified  Recovery: Creates a database by restoring a geo-replicated backup sourceDatabaseId must be specified as the recoverable database resource ID to restore  Restore: Creates a database by restoring a backup of a deleted database sourceDatabaseId must be specified If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored restorePointInTime may also be specified to restore from an earlier point in time  RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID  Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition Possible values include: 'CreateModeDefault', 'CreateModeCopy', 'CreateModeSecondary', 'CreateModePointInTimeRestore', 'CreateModeRestore', 'CreateModeRecovery', 'CreateModeRestoreExternalBackup', 'CreateModeRestoreExternalBackupSecondary', 'CreateModeRestoreLongTermRetentionBackup', 'CreateModeOnlineSecondary'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CreateMode"),
+			},
+			{
 				Name:        "collation",
-				Description: "The collation of the database If createMode is not Default, this value is ignored",
+				Description: "The collation of the database",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DatabaseProperties.Collation"),
 			},
 			{
-				Name:        "creation_date_time",
-				Description: "The creation date of the database (ISO8601 format)",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("DatabaseProperties.CreationDate.Time"),
-			},
-			{
-				Name:        "containment_state",
-				Description: "The containment state of the database",
+				Name:        "max_size_bytes",
+				Description: "The max size of the database expressed in bytes",
 				Type:        schema.TypeBigInt,
-				Resolver:    schema.PathResolver("DatabaseProperties.ContainmentState"),
+				Resolver:    schema.PathResolver("DatabaseProperties.MaxSizeBytes"),
 			},
 			{
-				Name:        "current_service_objective_id",
-				Description: "The current service level objective ID of the database This is the ID of the service level objective that is currently active",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("DatabaseProperties.CurrentServiceObjectiveID"),
+				Name:        "sample_name",
+				Description: "The name of the sample schema to apply when creating this database Possible values include: 'AdventureWorksLT', 'WideWorldImportersStd', 'WideWorldImportersFull'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.SampleName"),
+			},
+			{
+				Name:        "elastic_pool_id",
+				Description: "The resource identifier of the elastic pool containing this database",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.ElasticPoolID"),
+			},
+			{
+				Name:        "source_database_id",
+				Description: "The resource identifier of the source database associated with create operation of this database",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.SourceDatabaseID"),
+			},
+			{
+				Name:        "status",
+				Description: "The status of the database Possible values include: 'DatabaseStatusOnline', 'DatabaseStatusRestoring', 'DatabaseStatusRecoveryPending', 'DatabaseStatusRecovering', 'DatabaseStatusSuspect', 'DatabaseStatusOffline', 'DatabaseStatusStandby', 'DatabaseStatusShutdown', 'DatabaseStatusEmergencyMode', 'DatabaseStatusAutoClosed', 'DatabaseStatusCopying', 'DatabaseStatusCreating', 'DatabaseStatusInaccessible', 'DatabaseStatusOfflineSecondary', 'DatabaseStatusPausing', 'DatabaseStatusPaused', 'DatabaseStatusResuming', 'DatabaseStatusScaling', 'DatabaseStatusOfflineChangingDwPerformanceTiers', 'DatabaseStatusOnlineChangingDwPerformanceTiers', 'DatabaseStatusDisabled'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.Status"),
 			},
 			{
 				Name:        "database_id",
@@ -59,82 +112,22 @@ func SQLDatabases() *schema.Table {
 				Resolver:    schema.PathResolver("DatabaseProperties.DatabaseID"),
 			},
 			{
-				Name:        "earliest_restore_date_time",
-				Description: "This records the earliest start date and time that restore is available for this database (ISO8601 format)",
+				Name:        "creation_date_time",
+				Description: "The creation date of the database (ISO8601 format)",
 				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("DatabaseProperties.EarliestRestoreDate.Time"),
+				Resolver:    schema.PathResolver("DatabaseProperties.CreationDate.Time"),
 			},
 			{
-				Name:        "create_mode",
-				Description: "Specifies the mode of database creation Default: regular database creation Copy: creates a database as a copy of an existing database sourceDatabaseId must be specified as the resource ID of the source database OnlineSecondary/NonReadableSecondary: creates a database as a (readable or nonreadable) secondary replica of an existing database sourceDatabaseId must be specified as the resource ID of the existing primary database PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified Recovery: Creates a database by restoring a geo-replicated backup sourceDatabaseId must be specified as the recoverable database resource ID to restore Restore: Creates a database by restoring a backup of a deleted database sourceDatabaseId must be specified If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored restorePointInTime may also be specified to restore from an earlier point in time RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID Copy, NonReadableSecondary, OnlineSecondary and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition Possible values include: 'CreateModeCopy', 'CreateModeDefault', 'CreateModeNonReadableSecondary', 'CreateModeOnlineSecondary', 'CreateModePointInTimeRestore', 'CreateModeRecovery', 'CreateModeRestore', 'CreateModeRestoreLongTermRetentionBackup'",
+				Name:        "current_service_objective_name",
+				Description: "The current service level objective name of the database",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.CreateMode"),
-			},
-			{
-				Name:        "source_database_id",
-				Description: "Conditional If createMode is Copy, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, or Restore, then this value is required Specifies the resource ID of the source database If createMode is NonReadableSecondary or OnlineSecondary, the name of the source database must be the same as the new database being created",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.SourceDatabaseID"),
-			},
-			{
-				Name:        "source_database_deletion_date_time",
-				Description: "Conditional If createMode is Restore and sourceDatabaseId is the deleted database's original resource id when it existed (as opposed to its current restorable dropped database id), then this value is required Specifies the time that the database was deleted",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("DatabaseProperties.SourceDatabaseDeletionDate.Time"),
-			},
-			{
-				Name:        "restore_point_in_time",
-				Description: "Conditional If createMode is PointInTimeRestore, this value is required If createMode is Restore, this value is optional Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database Must be greater than or equal to the source database's earliestRestoreDate value",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("DatabaseProperties.RestorePointInTime.Time"),
-			},
-			{
-				Name:        "recovery_services_recovery_point_resource_id",
-				Description: "Conditional If createMode is RestoreLongTermRetentionBackup, then this value is required Specifies the resource ID of the recovery point to restore from",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.RecoveryServicesRecoveryPointResourceID"),
-			},
-			{
-				Name:        "edition",
-				Description: "The edition of the database The DatabaseEditions enumeration contains all the valid editions If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored  The list of SKUs may vary by region and support offer To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:  ```azurecli az sql db list-editions -l <location> -o table ````  ```powershell Get-AzSqlServerServiceObjective -Location <location> ````  Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2', 'GeneralPurpose', 'BusinessCritical', 'Hyperscale'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.Edition"),
-			},
-			{
-				Name:        "max_size_bytes",
-				Description: "The max size of the database expressed in bytes If createMode is not Default, this value is ignored To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/MicrosoftSql/locations/{locationID}/capabilities) referred to by operationId: \"Capabilities_ListByLocation\"",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.MaxSizeBytes"),
-			},
-			{
-				Name:        "requested_service_objective_id",
-				Description: "The configured service level objective ID of the database This is the service level objective that is in the process of being applied to the database Once successfully updated, it will match the value of currentServiceObjectiveId property If requestedServiceObjectiveId and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveId overrides the value of requestedServiceObjectiveName  The list of SKUs may vary by region and support offer To determine the service objective ids that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("DatabaseProperties.RequestedServiceObjectiveID"),
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentServiceObjectiveName"),
 			},
 			{
 				Name:        "requested_service_objective_name",
-				Description: "The name of the configured service level objective of the database This is the service level objective that is in the process of being applied to the database Once successfully updated, it will match the value of serviceLevelObjective property  The list of SKUs may vary by region and support offer To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:  ```azurecli az sql db list-editions -l <location> -o table ````  ```powershell Get-AzSqlServerServiceObjective -Location <location> ````  Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'",
+				Description: "The requested service level objective name of the database",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DatabaseProperties.RequestedServiceObjectiveName"),
-			},
-			{
-				Name:        "service_level_objective",
-				Description: "The current service level objective of the database Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.ServiceLevelObjective"),
-			},
-			{
-				Name:        "status",
-				Description: "The status of the database",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.Status"),
-			},
-			{
-				Name:        "elastic_pool_name",
-				Description: "The name of the elastic pool the database is in If elasticPoolName and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveName is ignored Not supported for DataWarehouse edition",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.ElasticPoolName"),
 			},
 			{
 				Name:        "default_secondary_location",
@@ -144,27 +137,157 @@ func SQLDatabases() *schema.Table {
 			},
 			{
 				Name:        "failover_group_id",
-				Description: "The resource identifier of the failover group containing this database",
+				Description: "Failover Group resource identifier that this database belongs to",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DatabaseProperties.FailoverGroupID"),
 			},
 			{
-				Name:        "read_scale",
-				Description: "Conditional If the database is a geo-secondary, readScale indicates whether read-only connections are allowed to this database or not Not supported for DataWarehouse edition Possible values include: 'ReadScaleEnabled', 'ReadScaleDisabled'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.ReadScale"),
+				Name:        "restore_point_in_time",
+				Description: "Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database",
+				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("DatabaseProperties.RestorePointInTime.Time"),
 			},
 			{
-				Name:        "sample_name",
-				Description: "Indicates the name of the sample schema to apply when creating this database If createMode is not Default, this value is ignored Not supported for DataWarehouse edition Possible values include: 'AdventureWorksLT'",
+				Name:        "source_database_deletion_date_time",
+				Description: "Specifies the time that the database was deleted",
+				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("DatabaseProperties.SourceDatabaseDeletionDate.Time"),
+			},
+			{
+				Name:        "recovery_services_recovery_point_id",
+				Description: "The resource identifier of the recovery point associated with create operation of this database",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseProperties.SampleName"),
+				Resolver:    schema.PathResolver("DatabaseProperties.RecoveryServicesRecoveryPointID"),
+			},
+			{
+				Name:        "long_term_retention_backup_resource_id",
+				Description: "The resource identifier of the long term retention backup associated with create operation of this database",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.LongTermRetentionBackupResourceID"),
+			},
+			{
+				Name:        "recoverable_database_id",
+				Description: "The resource identifier of the recoverable database associated with create operation of this database",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.RecoverableDatabaseID"),
+			},
+			{
+				Name:        "restorable_dropped_database_id",
+				Description: "The resource identifier of the restorable dropped database associated with create operation of this database",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.RestorableDroppedDatabaseID"),
+			},
+			{
+				Name:        "catalog_collation",
+				Description: "Collation of the metadata catalog Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CatalogCollation"),
 			},
 			{
 				Name:        "zone_redundant",
 				Description: "Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("DatabaseProperties.ZoneRedundant"),
+			},
+			{
+				Name:        "license_type",
+				Description: "The license type to apply for this database `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit Possible values include: 'LicenseIncluded', 'BasePrice'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.LicenseType"),
+			},
+			{
+				Name:        "max_log_size_bytes",
+				Description: "The max log size for this database",
+				Type:        schema.TypeBigInt,
+				Resolver:    schema.PathResolver("DatabaseProperties.MaxLogSizeBytes"),
+			},
+			{
+				Name:        "earliest_restore_date_time",
+				Description: "This records the earliest start date and time that restore is available for this database (ISO8601 format)",
+				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("DatabaseProperties.EarliestRestoreDate.Time"),
+			},
+			{
+				Name:        "read_scale",
+				Description: "The state of read-only routing If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.ReadScale"),
+			},
+			{
+				Name:        "high_availability_replica_count",
+				Description: "The number of secondary replicas associated with the database that are used to provide high availability",
+				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("DatabaseProperties.HighAvailabilityReplicaCount"),
+			},
+			{
+				Name:        "secondary_type",
+				Description: "The secondary type of the database if it is a secondary  Valid values are Geo and Named Possible values include: 'Geo', 'Named'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.SecondaryType"),
+			},
+			{
+				Name:        "current_sku_name",
+				Description: "The name of the SKU, typically, a letter + Number code, eg P3",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentSku.Name"),
+			},
+			{
+				Name:        "current_sku_tier",
+				Description: "The tier or edition of the particular SKU, eg Basic, Premium",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentSku.Tier"),
+			},
+			{
+				Name:        "current_sku_size",
+				Description: "Size of the particular SKU",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentSku.Size"),
+			},
+			{
+				Name:        "current_sku_family",
+				Description: "If the service has different generations of hardware, for the same SKU, then that can be captured here",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentSku.Family"),
+			},
+			{
+				Name:        "current_sku_capacity",
+				Description: "Capacity of the particular SKU",
+				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("DatabaseProperties.CurrentSku.Capacity"),
+			},
+			{
+				Name:        "auto_pause_delay",
+				Description: "Time in minutes after which database is automatically paused A value of -1 means that automatic pause is disabled",
+				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("DatabaseProperties.AutoPauseDelay"),
+			},
+			{
+				Name:        "storage_account_type",
+				Description: "The storage account type used to store backups for this database Possible values include: 'GRS', 'LRS', 'ZRS'",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.StorageAccountType"),
+			},
+			{
+				Name:        "min_capacity",
+				Description: "Minimal capacity that database will always have allocated, if not paused",
+				Type:        schema.TypeFloat,
+				Resolver:    schema.PathResolver("DatabaseProperties.MinCapacity"),
+			},
+			{
+				Name:     "paused_date_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("DatabaseProperties.PausedDate.Time"),
+			},
+			{
+				Name:     "resumed_date_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("DatabaseProperties.ResumedDate.Time"),
+			},
+			{
+				Name:        "maintenance_configuration_id",
+				Description: "Maintenance configuration id assigned to the database This configuration defines the period when the maintenance updates will occur",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DatabaseProperties.MaintenanceConfigurationID"),
 			},
 			{
 				Name:        "location",
@@ -193,49 +316,6 @@ func SQLDatabases() *schema.Table {
 				Type:        schema.TypeString,
 			},
 		},
-		Relations: []*schema.Table{
-			{
-				Name:        "azure_sql_database_transparent_data_encryptions",
-				Description: "Azure sql database encryption",
-				Resolver:    fetchSqlDatabaseTransparentDataEncryptions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
-				Columns: []schema.Column{
-					{
-						Name:        "database_cq_id",
-						Description: "Unique ID of azure_sql_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "location",
-						Description: "Resource location",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the database transparent data encryption Possible values include: 'TransparentDataEncryptionStatusEnabled', 'TransparentDataEncryptionStatusDisabled'",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TransparentDataEncryptionProperties.Status"),
-					},
-					{
-						Name:        "id",
-						Description: "Resource ID",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "name",
-						Description: "Resource name",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "Resource type",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-		},
 	}
 }
 
@@ -243,28 +323,21 @@ func SQLDatabases() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.Database
+	svc := meta.(*client.Client).Services().SQL.Databases
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return err
 	}
-	databases, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name, "true", "")
+	databases, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
 		return err
 	}
-	if databases.Value == nil {
-		return nil
+	for databases.NotDone() {
+		res <- databases.Values()
+		if err := databases.NextWithContext(ctx); err != nil {
+			return err
+		}
 	}
-	res <- *databases.Value
-	return nil
-}
-
-func fetchSqlDatabaseTransparentDataEncryptions(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	database := parent.Item.(sql.Database)
-	if database.TransparentDataEncryption == nil {
-		return nil
-	}
-	res <- *database.TransparentDataEncryption
 	return nil
 }
