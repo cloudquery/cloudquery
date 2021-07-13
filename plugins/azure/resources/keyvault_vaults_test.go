@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
+	keyvault71 "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
 	"github.com/cloudquery/cq-provider-azure/client/services"
 	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
 	"github.com/cloudquery/cq-provider-azure/resources"
@@ -17,10 +18,12 @@ var fakeResourceGroup = "/subscriptions/00000000-0000-0000-0000-000000000000/res
 func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	k := mocks.NewMockKeyClient(ctrl)
 	v := mocks.NewMockVaultClient(ctrl)
+	secrets := mocks.NewMockSecretsClient(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{
-			Vaults: v,
-			Keys:   k,
+			Keys:    k,
+			Secrets: secrets,
+			Vaults:  v,
 		},
 	}
 	vault := keyvault.Vault{}
@@ -43,6 +46,20 @@ func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		return keyvault.KeyListResult{}, nil
 	})
 	k.EXPECT().List(gomock.Any(), "test", *vault.Name).Return(keyPage, nil)
+
+	var secret keyvault71.SecretItem
+	if err := faker.FakeData(&secret); err != nil {
+		t.Fatal(err)
+	}
+	secrets.EXPECT().GetSecrets(gomock.Any(), *vault.Properties.VaultURI, nil).Return(
+		keyvault71.NewSecretListResultPage(
+			keyvault71.SecretListResult{Value: &[]keyvault71.SecretItem{secret}},
+			func(context.Context, keyvault71.SecretListResult) (keyvault71.SecretListResult, error) {
+				return keyvault71.SecretListResult{}, nil
+			},
+		), nil,
+	)
+
 	return s
 }
 

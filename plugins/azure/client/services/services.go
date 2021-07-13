@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/services.go -package=mocks  . DisksClient,GroupsClient,KeyClient,VaultClient,StorageAccountClient,StorageContainerClient,MySQLServerClient,MySQLConfigurationClient
+//go:generate mockgen -destination=./mocks/services.go -package=mocks  . DisksClient,GroupsClient,StorageAccountClient,StorageContainerClient,MySQLServerClient,MySQLConfigurationClient
 //go:generate mockgen -destination=./mocks/ad_applications.go -package=mocks . ADApplicationsClient
 //go:generate mockgen -destination=./mocks/ad_groups.go -package=mocks . ADGroupsClient
 //go:generate mockgen -destination=./mocks/ad_service_principals.go -package=mocks . ADServicePrinicpals
@@ -9,6 +9,7 @@
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
 //go:generate mockgen -destination=./mocks/sql.go -package=mocks . SqlDatabaseClient,SQLFirewallClient,SQLServerAdminClient,SqlServerClient
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyClient,SecretsClient,VaultClient
 package services
 
 import "github.com/Azure/go-autorest/autorest"

@@ -1,6 +1,6 @@
 
 # Table: azure_keyvault_vault_private_endpoint_connections
-Azure ketvault vault endpoint connection
+Azure keyvault vault endpoint connection
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

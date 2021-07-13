@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -205,7 +206,7 @@ func KeyVaultVaults() *schema.Table {
 			},
 			{
 				Name:        "azure_keyvault_vault_private_endpoint_connections",
-				Description: "Azure ketvault vault endpoint connection",
+				Description: "Azure keyvault vault endpoint connection",
 				Resolver:    fetchKeyvaultVaultPrivateEndpointConnections,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
 				Columns: []schema.Column{
@@ -359,6 +360,59 @@ func KeyVaultVaults() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_keyvault_vault_secrets",
+				Description: "Azure keyvault secrets",
+				Resolver:    fetchKeyvaultVaultSecrets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "vault_cq_id",
+						Description: "Unique ID of azure_keyvault_vaults table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "id",
+						Description: "Secret identifier",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "recoverable_days",
+						Description: "softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("Attributes.RecoverableDays"),
+					},
+					{
+						Name:        "recovery_level",
+						Description: "Reflects the deletion recovery level currently in effect for secrets in the current vault If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription', 'CustomizedRecoverablePurgeable', 'CustomizedRecoverable', 'CustomizedRecoverableProtectedSubscription'",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Attributes.RecoveryLevel"),
+					},
+					{
+						Name:        "enabled",
+						Description: "Determines whether the object is enabled",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("Attributes.Enabled"),
+					},
+					{
+						Name:        "tags",
+						Description: "Application specific metadata in the form of key-value pairs",
+						Type:        schema.TypeJSON,
+					},
+					{
+						Name:        "content_type",
+						Description: "Type of the secret value such as a password",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "managed",
+						Description: "True if the secret's lifetime is managed by key vault If this is a key backing a certificate, then managed will be true",
+						Type:        schema.TypeBool,
+					},
+				},
+			},
 		},
 	}
 }
@@ -434,6 +488,24 @@ func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	vault, ok := parent.Item.(keyvault.Vault)
+	if !ok {
+		return fmt.Errorf("not a keyvault.Vault instance: %#v", parent.Item)
+	}
+	svc := meta.(*client.Client).Services().KeyVault.Secrets
+	result, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, nil)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err := result.NextWithContext(ctx); err != nil {
 			return err
 		}
 	}
