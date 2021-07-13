@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/cloudquery/cq-provider-sdk/provider"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/cloudquery/cq-provider-sdk/provider"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
