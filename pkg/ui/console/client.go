@@ -43,6 +43,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
+		c.SkipBuildTables = viper.GetBool("skip-build-tables")
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -79,7 +80,10 @@ func (c Client) Fetch(ctx context.Context) error {
 	if ui.IsTerminal() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
-	request := client.FetchRequest{Providers: c.cfg.Providers, UpdateCallback: fetchCallback}
+	request := client.FetchRequest{
+		Providers:      c.cfg.Providers,
+		UpdateCallback: fetchCallback,
+	}
 	if err := c.c.Fetch(ctx, request); err != nil {
 		return err
 	}
