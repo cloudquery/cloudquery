@@ -30,4 +30,3 @@ require (
 	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
-
