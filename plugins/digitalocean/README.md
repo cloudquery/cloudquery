@@ -1,0 +1,1 @@
+See documentation at https://docs.cloudquery.io/developers/developing-new-provider
