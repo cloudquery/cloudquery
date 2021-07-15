@@ -36,60 +36,61 @@ type Services struct {
 
 func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services, error) {
 
-	var options option.ClientOption
+	// Add a fake request reason because it is not possible to pass nil options
+	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
-		options = option.WithCredentialsJSON(serviceAccountKeyJSON)
+		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	kmsSvc, err := kms.NewService(ctx, options)
+	kmsSvc, err := kms.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	storageSvc, err := storage.NewService(ctx, options)
+	storageSvc, err := storage.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	sqlSvc, err := sql.NewService(ctx, options)
+	sqlSvc, err := sql.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	iamSvc, err := iam.NewService(ctx, options)
+	iamSvc, err := iam.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	crmSvc, err := cloudresourcemanager.NewService(ctx, options)
+	crmSvc, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	cfSvc, err := cloudfunctions.NewService(ctx, options)
+	cfSvc, err := cloudfunctions.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	domainSvc, err := domains.NewService(ctx, options)
+	domainSvc, err := domains.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	computeSvc, err := compute.NewService(ctx, options)
+	computeSvc, err := compute.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	bigquerySvc, err := bigquery.NewService(ctx, options)
+	bigquerySvc, err := bigquery.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	dnsSvc, err := dns.NewService(ctx, options)
+	dnsSvc, err := dns.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	loggingSvc, err := logging.NewService(ctx, options)
+	loggingSvc, err := logging.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	monitoringSvc, err := monitoring.NewService(ctx, options)
+	monitoringSvc, err := monitoring.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	resourceManagerSvc, err := cloudresourcemanager.NewService(ctx, options)
+	resourceManagerSvc, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}

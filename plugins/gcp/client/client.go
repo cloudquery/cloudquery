@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"google.golang.org/api/option"
@@ -13,6 +14,8 @@ import (
 )
 
 const defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
+
+const serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
 
 type Client struct {
 	projects []string
@@ -49,6 +52,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
 	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
+
+	if len(serviceAccountKeyJSON) == 0 {
+		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
+	}
+
 	var err error
 	if len(providerConfig.ProjectIDs) == 0 {
 		projects, err = getProjects(serviceAccountKeyJSON, logger, providerConfig.ProjectFilter)
@@ -81,12 +89,13 @@ func getProjects(serviceAccountKeyJSON []byte, logger hclog.Logger, filter strin
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
-	var options option.ClientOption
+	// Add a fake request reason because it is not possible to pass nil options
+	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
-		options = option.WithCredentialsJSON(serviceAccountKeyJSON)
+		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	service, err := cloudresourcemanager.NewService(ctx, options)
+	service, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
