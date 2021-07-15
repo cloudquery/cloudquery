@@ -23,6 +23,7 @@ func IamGroupPolicies() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"group_cq_id", "policy_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +32,16 @@ func IamGroupPolicies() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "group_id",
-				Description: "Unique ID of aws_iam_groups table (FK)",
+				Name:        "group_cq_id",
+				Description: "Unique CloudQuery ID of aws_iam_groups table (FK)",
 				Type:        schema.TypeUUID,
 				Resolver:    schema.ParentIdResolver,
+			},
+			{
+				Name:        "group_id",
+				Description: "Group ID the policy belongs too.",
+				Type:        schema.TypeString,
+				Resolver:    schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:        "group_name",

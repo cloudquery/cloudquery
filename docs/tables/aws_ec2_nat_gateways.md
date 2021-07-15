@@ -6,11 +6,11 @@ Describes a NAT gateway.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|id|text|The ID of the NAT gateway.|
 |create_time|timestamp without time zone|The date and time the NAT gateway was created.|
 |delete_time|timestamp without time zone|The date and time the NAT gateway was deleted, if applicable.|
 |failure_code|text|If the NAT gateway could not be created, specifies the error code for the failure.|
 |failure_message|text|If the NAT gateway could not be created, specifies the error message for the failure, that corresponds to the error code.|
-|nat_gateway_id|text|The ID of the NAT gateway.|
 |provisioned_bandwidth_provision_time|timestamp without time zone|Reserved.|
 |provisioned_bandwidth_provisioned|text|Reserved.|
 |provisioned_bandwidth_request_time|timestamp without time zone|Reserved.|

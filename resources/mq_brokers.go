@@ -18,6 +18,7 @@ func MqBrokers() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "broker_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -42,9 +43,10 @@ func MqBrokers() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "broker_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the broker.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("BrokerArn"),
 			},
 			{
 				Name:        "broker_id",
@@ -181,10 +183,11 @@ func MqBrokers() *schema.Table {
 				Multiplex:    client.AccountRegionMultiplex,
 				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 				DeleteFilter: client.DeleteAccountRegionFilter,
+				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "broker_id",
-						Description: "Unique ID of aws_mq_brokers table (FK)",
+						Name:        "broker_cq_id",
+						Description: "Unique CloudQuery ID of aws_mq_brokers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -231,7 +234,7 @@ func MqBrokers() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "The unique ID that Amazon MQ generates for the configuration.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),
@@ -272,10 +275,11 @@ func MqBrokers() *schema.Table {
 				Multiplex:    client.AccountRegionMultiplex,
 				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 				DeleteFilter: client.DeleteAccountRegionFilter,
+				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "username"}},
 				Columns: []schema.Column{
 					{
-						Name:        "broker_id",
-						Description: "Unique ID of aws_mq_brokers table (FK)",
+						Name:        "broker_cq_id",
+						Description: "Unique CloudQuery ID of aws_mq_brokers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

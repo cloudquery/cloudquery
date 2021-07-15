@@ -17,12 +17,18 @@ func IamSamlIdentityProviders() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:        "arn",
+				Description: "Amazon Resource Name (ARN) of the saml identity provider.",
+				Type:        schema.TypeString,
 			},
 			{
 				Name:        "create_date",
@@ -65,12 +71,12 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 		if err != nil {
 			return err
 		}
-		res <- providerResponse
+		res <- IamSamlIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
 	}
 	return nil
 }
 func resolveIamSamlIdentityProviderTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(*iam.GetSAMLProviderOutput)
+	r, ok := resource.Item.(IamSamlIdentityProviderWrapper)
 	if !ok {
 		return fmt.Errorf("not iam identity provider")
 	}
@@ -80,4 +86,9 @@ func resolveIamSamlIdentityProviderTags(ctx context.Context, meta schema.ClientM
 	}
 
 	return resource.Set(c.Name, response)
+}
+
+type IamSamlIdentityProviderWrapper struct {
+	*iam.GetSAMLProviderOutput
+	Arn string
 }

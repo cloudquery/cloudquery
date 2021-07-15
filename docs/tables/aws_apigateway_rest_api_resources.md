@@ -4,8 +4,9 @@ Represents an API resource.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|rest_api_id|uuid|Unique ID of aws_apigateway_rest_apis table (FK)|
-|resource_id|text|The resource's identifier.|
+|rest_api_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_rest_apis table (FK)|
+|rest_api_id|text|The API's identifier. This identifier is unique across all of your APIs in API Gateway.|
+|id|text|The resource's identifier.|
 |parent_id|text|The parent resource's identifier.|
 |path|text|The full path for this resource.|
 |path_part|text|The last path segment for this resource.|

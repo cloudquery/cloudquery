@@ -7,8 +7,6 @@ import (
 	autoscalingTypes "github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
-	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	cloudwatchTypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -19,17 +17,9 @@ import (
 	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	ecrTypes "github.com/aws/aws-sdk-go-v2/service/ecr/types"
-	"github.com/aws/aws-sdk-go-v2/service/ecs"
-	ecsTypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	efsTypes "github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
-	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
-	elasticbeanstalkTypes "github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
-	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
-	elbv1Types "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
-	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
-	elbv2Types "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	emrTypes "github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -38,10 +28,6 @@ import (
 	kmsTypes "github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	organizationsTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
-	"github.com/aws/aws-sdk-go-v2/service/rds"
-	rdsTypes "github.com/aws/aws-sdk-go-v2/service/rds/types"
-	"github.com/aws/aws-sdk-go-v2/service/redshift"
-	redshiftTypes "github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -69,48 +55,6 @@ func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Control
 	return services
 }
 
-func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEcsClient(ctrl)
-	services := client.Services{
-		ECS: m,
-	}
-	c := ecsTypes.Cluster{}
-	err := faker.FakeData(&c)
-	if err != nil {
-		t.Fatal(err)
-	}
-	ecsOutput := &ecs.DescribeClustersOutput{
-		Clusters: []ecsTypes.Cluster{c},
-	}
-	m.EXPECT().DescribeClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsOutput, nil)
-	ecsListOutput := &ecs.ListClustersOutput{
-		ClusterArns: []string{"randomClusteArn"},
-	}
-	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsListOutput, nil)
-	return services
-}
-
-func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCloudfrontClient(ctrl)
-	services := client.Services{
-		Cloudfront: m,
-	}
-	ds := cloudfrontTypes.DistributionSummary{}
-	if err := faker.FakeData(&ds); err != nil {
-		t.Fatal(err)
-	}
-	cloudfrontOutput := &cloudfront.ListDistributionsOutput{
-		DistributionList: &cloudfrontTypes.DistributionList{
-			Items: []cloudfrontTypes.DistributionSummary{ds},
-		},
-	}
-	m.EXPECT().ListDistributions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		cloudfrontOutput,
-		nil,
-	)
-	return services
-}
-
 func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudfrontClient(ctrl)
 	services := client.Services{
@@ -128,45 +72,6 @@ func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) cli
 	}
 	m.EXPECT().ListCachePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		cloudfrontOutput,
-		nil,
-	)
-	return services
-}
-
-func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCloudtrailClient(ctrl)
-	services := client.Services{
-		Cloudtrail: m,
-	}
-	trail := cloudtrailTypes.Trail{}
-	err := faker.FakeData(&trail)
-	if err != nil {
-		t.Fatal(err)
-	}
-	trailStatus := cloudtrail.GetTrailStatusOutput{}
-	err = faker.FakeData(&trailStatus)
-	if err != nil {
-		t.Fatal(err)
-	}
-	eventSelector := cloudtrailTypes.EventSelector{}
-	err = faker.FakeData(&eventSelector)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeTrails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&cloudtrail.DescribeTrailsOutput{
-			TrailList: []cloudtrailTypes.Trail{trail},
-		},
-		nil,
-	)
-	m.EXPECT().GetTrailStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&trailStatus,
-		nil,
-	)
-	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&cloudtrail.GetEventSelectorsOutput{
-			EventSelectors: []cloudtrailTypes.EventSelector{eventSelector},
-		},
 		nil,
 	)
 	return services
@@ -223,41 +128,6 @@ func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		}, nil)
 	return client.Services{
 		EC2: m,
-	}
-}
-
-func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRedshiftClient(ctrl)
-	g := redshiftTypes.Cluster{}
-	err := faker.FakeData(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&redshift.DescribeClustersOutput{
-			Clusters: []redshiftTypes.Cluster{g},
-		}, nil)
-	return client.Services{
-		Redshift: m,
-	}
-}
-
-func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRedshiftClient(ctrl)
-
-	g := redshiftTypes.ClusterSubnetGroup{}
-	err := faker.FakeData(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeClusterSubnetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&redshift.DescribeClusterSubnetGroupsOutput{
-			ClusterSubnetGroups: []redshiftTypes.ClusterSubnetGroup{g},
-		}, nil)
-	return client.Services{
-		Redshift: m,
 	}
 }
 
@@ -565,76 +435,6 @@ func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 
-func buildEc2TransitGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEc2Client(ctrl)
-	tgw := ec2Types.TransitGateway{}
-	err := faker.FakeData(&tgw)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tgwvpca := ec2Types.TransitGatewayVpcAttachment{}
-	err = faker.FakeData(&tgwvpca)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tgwpeera := ec2Types.TransitGatewayPeeringAttachment{}
-	err = faker.FakeData(&tgwpeera)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tgwrt := ec2Types.TransitGatewayRouteTable{}
-	err = faker.FakeData(&tgwrt)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tgwmcd := ec2Types.TransitGatewayMulticastDomain{}
-	err = faker.FakeData(&tgwmcd)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tgwa := ec2Types.TransitGatewayAttachment{}
-	err = faker.FakeData(&tgwa)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeTransitGatewayVpcAttachments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewayVpcAttachmentsOutput{
-			TransitGatewayVpcAttachments: []ec2Types.TransitGatewayVpcAttachment{tgwvpca},
-		}, nil)
-
-	m.EXPECT().DescribeTransitGatewayPeeringAttachments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewayPeeringAttachmentsOutput{
-			TransitGatewayPeeringAttachments: []ec2Types.TransitGatewayPeeringAttachment{tgwpeera},
-		}, nil)
-
-	m.EXPECT().DescribeTransitGatewayRouteTables(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewayRouteTablesOutput{
-			TransitGatewayRouteTables: []ec2Types.TransitGatewayRouteTable{tgwrt},
-		}, nil)
-
-	m.EXPECT().DescribeTransitGatewayMulticastDomains(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewayMulticastDomainsOutput{
-			TransitGatewayMulticastDomains: []ec2Types.TransitGatewayMulticastDomain{tgwmcd},
-		}, nil)
-	m.EXPECT().DescribeTransitGatewayAttachments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewayAttachmentsOutput{
-			TransitGatewayAttachments: []ec2Types.TransitGatewayAttachment{tgwa},
-		}, nil)
-	m.EXPECT().DescribeTransitGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeTransitGatewaysOutput{
-			TransitGateways: []ec2Types.TransitGateway{tgw},
-		}, nil)
-	return client.Services{
-		EC2: m,
-	}
-}
-
 func buildEc2Vpcs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := ec2Types.Vpc{}
@@ -682,37 +482,6 @@ func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
-func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEc2Client(ctrl)
-	l := ec2Types.VpnGateway{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeVpnGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeVpnGatewaysOutput{
-			VpnGateways: []ec2Types.VpnGateway{l},
-		}, nil)
-	return client.Services{
-		EC2: m,
-	}
-}
-
-func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEc2Client(ctrl)
-	l := ec2Types.Reservation{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ec2.DescribeInstancesOutput{
-			Reservations: []ec2Types.Reservation{l},
-		}, nil)
-	return client.Services{
-		EC2: m,
-	}
-}
 func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEfsClient(ctrl)
 	l := efsTypes.FileSystemDescription{}
@@ -753,111 +522,6 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 	return client.Services{
 		ECR: m,
-	}
-}
-
-func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElasticbeanstalkClient(ctrl)
-	l := elasticbeanstalkTypes.EnvironmentDescription{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticbeanstalk.DescribeEnvironmentsOutput{
-			Environments: []elasticbeanstalkTypes.EnvironmentDescription{l},
-		}, nil)
-	return client.Services{
-		ElasticBeanstalk: m,
-	}
-}
-
-func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV1Client(ctrl)
-	l := elbv1Types.LoadBalancerDescription{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancing.DescribeLoadBalancersOutput{
-			LoadBalancerDescriptions: []elbv1Types.LoadBalancerDescription{l},
-		}, nil)
-
-	tag := elbv1Types.Tag{}
-	err = faker.FakeData(&tag)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancing.DescribeTagsOutput{
-			TagDescriptions: []elbv1Types.TagDescription{
-				{
-					LoadBalancerName: l.LoadBalancerName,
-					Tags:             []elbv1Types.Tag{tag},
-				},
-			},
-		}, nil)
-
-	a := elbv1Types.LoadBalancerAttributes{}
-	err = faker.FakeData(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeLoadBalancerAttributes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancing.DescribeLoadBalancerAttributesOutput{
-			LoadBalancerAttributes: &a,
-		}, nil)
-
-	p := elbv1Types.PolicyDescription{}
-	err = faker.FakeData(&p)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeLoadBalancerPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancing.DescribeLoadBalancerPoliciesOutput{
-			PolicyDescriptions: []elbv1Types.PolicyDescription{p},
-		}, nil)
-
-	return client.Services{
-		ELBv1: m,
-	}
-}
-
-func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
-	l := elbv2Types.LoadBalancer{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancingv2.DescribeLoadBalancersOutput{
-			LoadBalancers: []elbv2Types.LoadBalancer{l},
-		}, nil)
-	return client.Services{
-		ELBv2: m,
-	}
-}
-
-func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
-	l := elbv2Types.TargetGroup{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeTargetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancingv2.DescribeTargetGroupsOutput{
-			TargetGroups: []elbv2Types.TargetGroup{l},
-		}, nil)
-	return client.Services{
-		ELBv2: m,
 	}
 }
 
@@ -943,74 +607,6 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 	return client.Services{
 		SNS: m,
-	}
-}
-
-func buildRdsCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRdsClient(ctrl)
-	l := rdsTypes.Certificate{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&rds.DescribeCertificatesOutput{
-			Certificates: []rdsTypes.Certificate{l},
-		}, nil)
-	return client.Services{
-		RDS: m,
-	}
-}
-
-func buildRdsDBClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRdsClient(ctrl)
-	l := rdsTypes.DBCluster{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeDBClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&rds.DescribeDBClustersOutput{
-			DBClusters: []rdsTypes.DBCluster{l},
-		}, nil)
-	return client.Services{
-		RDS: m,
-	}
-}
-
-func buildRdsDBInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRdsClient(ctrl)
-	l := rdsTypes.DBInstance{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&rds.DescribeDBInstancesOutput{
-			DBInstances: []rdsTypes.DBInstance{l},
-		}, nil)
-	return client.Services{
-		RDS: m,
-	}
-}
-
-func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRdsClient(ctrl)
-	l := rdsTypes.DBSubnetGroup{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().DescribeDBSubnetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&rds.DescribeDBSubnetGroupsOutput{
-			DBSubnetGroups: []rdsTypes.DBSubnetGroup{l},
-		}, nil)
-	return client.Services{
-		RDS: m,
 	}
 }
 

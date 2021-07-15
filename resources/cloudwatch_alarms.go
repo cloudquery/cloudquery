@@ -18,6 +18,7 @@ func CloudwatchAlarms() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,29 +38,34 @@ func CloudwatchAlarms() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "alarm_actions",
+				Name:        "actions",
 				Description: "The actions to execute when this alarm transitions to the ALARM state from any other state.",
 				Type:        schema.TypeStringArray,
+				Resolver:    schema.PathResolver("AlarmActions"),
 			},
 			{
-				Name:        "alarm_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the alarm.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("AlarmArn"),
 			},
 			{
-				Name:        "alarm_configuration_updated_timestamp",
+				Name:        "configuration_updated_timestamp",
 				Description: "The time stamp of the last update to the alarm configuration.",
 				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("AlarmConfigurationUpdatedTimestamp"),
 			},
 			{
-				Name:        "alarm_description",
+				Name:        "description",
 				Description: "The description of the alarm.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("AlarmDescription"),
 			},
 			{
-				Name:        "alarm_name",
+				Name:        "name",
 				Description: "The name of the alarm.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("AlarmName"),
 			},
 			{
 				Name:        "comparison_operator",
@@ -169,15 +175,28 @@ func CloudwatchAlarms() *schema.Table {
 				Name:        "aws_cloudwatch_alarm_metrics",
 				Description: "This structure is used in both GetMetricData and PutMetricAlarm.",
 				Resolver:    fetchCloudwatchAlarmMetrics,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"alarm_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "alarm_id",
-						Description: "Unique ID of aws_cloudwatch_alarms table (FK)",
+						Name:        "alarm_cq_id",
+						Description: "Unique CloudQuery ID of aws_cloudwatch_alarms table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "metric_id",
+						Name:        "alarm_arn",
+						Description: "The Amazon Resource Name (ARN) of the alarm.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("arn"),
+					},
+					{
+						Name:        "alarm_name",
+						Description: "The name of the alarm.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
+					},
+					{
+						Name:        "id",
 						Description: "A short name used to tie this object to the results in the response.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),

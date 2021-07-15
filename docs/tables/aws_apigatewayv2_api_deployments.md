@@ -4,7 +4,8 @@ An immutable representation of an API that can be called by users.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|api_id|uuid|Unique ID of aws_apigatewayv2_apis table (FK)|
+|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
+|api_id|text|The API ID.|
 |auto_deployed|boolean|Specifies whether a deployment was automatically released.|
 |created_date|timestamp without time zone|The date and time when the Deployment resource was created.|
 |deployment_id|text|The identifier for the deployment.|

@@ -7,7 +7,7 @@ An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual P
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |description|text|The description of the VPC link.|
-|resource_id|text|The identifier of the VpcLink. It is used in an Integration to reference this VpcLink.|
+|id|text|The identifier of the VpcLink. It is used in an Integration to reference this VpcLink.|
 |name|text|The name used to label and identify the VPC link.|
 |status|text|The status of the VPC link. The valid values are AVAILABLE, PENDING, DELETING, or FAILED. Deploying an API will wait if the status is PENDING and will fail if the status is DELETING.|
 |status_message|text|A description about the VPC link status.|

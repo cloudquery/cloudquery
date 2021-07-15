@@ -17,6 +17,7 @@ func Elbv2TargetGroups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -98,19 +99,22 @@ func Elbv2TargetGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "target_group_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the target group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TargetGroupArn"),
 			},
 			{
-				Name:        "target_group_name",
+				Name:        "name",
 				Description: "The name of the target group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TargetGroupName"),
 			},
 			{
 				Name:        "target_type",
 				Description: "The type of target that you must specify when registering targets with this target group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TargetType"),
 			},
 			{
 				Name:        "unhealthy_threshold_count",

@@ -19,6 +19,7 @@ func KmsKeys() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveKmsKey,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -113,9 +114,10 @@ func KmsKeys() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "key_arn",
+				Name:        "arn",
 				Description: "ARN of the key",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("KeyArn"),
 			},
 			{
 				Name:        "key_id",

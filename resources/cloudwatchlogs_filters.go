@@ -18,6 +18,7 @@ func CloudwatchlogsFilters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name", "log_group_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -59,10 +60,11 @@ func CloudwatchlogsFilters() *schema.Table {
 				Name:        "aws_cloudwatchlogs_filter_metric_transformations",
 				Description: "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
 				Resolver:    fetchCloudwatchlogsFilterMetricTransformations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"filter_cq_id", "metric_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "filter_id",
-						Description: "Unique ID of aws_cloudwatchlogs_filters table (FK)",
+						Name:        "filter_cq_id",
+						Description: "Unique CloudQuery ID of aws_cloudwatchlogs_filters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

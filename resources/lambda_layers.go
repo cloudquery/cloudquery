@@ -21,6 +21,7 @@ func LambdaLayers() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -71,14 +72,16 @@ func LambdaLayers() *schema.Table {
 				Resolver:    schema.PathResolver("LatestMatchingVersion.Version"),
 			},
 			{
-				Name:        "layer_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the function layer.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LayerArn"),
 			},
 			{
-				Name:        "layer_name",
+				Name:        "name",
 				Description: "The name of the layer.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LayerName"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -86,10 +89,11 @@ func LambdaLayers() *schema.Table {
 				Name:        "aws_lambda_layer_versions",
 				Description: "Details about a version of an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 				Resolver:    fetchLambdaLayerVersions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"layer_cq_id", "version"}},
 				Columns: []schema.Column{
 					{
-						Name:        "layer_id",
-						Description: "Unique ID of aws_lambda_layers table (FK)",
+						Name:        "layer_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_layers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -128,12 +132,19 @@ func LambdaLayers() *schema.Table {
 					{
 						Name:     "aws_lambda_layer_version_policies",
 						Resolver: fetchLambdaLayerVersionPolicies,
+						Options:  schema.TableCreationOptions{PrimaryKeys: []string{"layer_version_cq_id", "revision_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "layer_version_id",
-								Description: "Unique ID of aws_lambda_layer_versions table (FK)",
+								Name:        "layer_version_cq_id",
+								Description: "Unique CloudQuery ID of aws_lambda_layer_versions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "layer_version",
+								Description: "The version number.",
+								Type:        schema.TypeBigInt,
+								Resolver:    schema.ParentResourceFieldResolver("version"),
 							},
 							{
 								Name:        "policy",

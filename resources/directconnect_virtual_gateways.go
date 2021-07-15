@@ -16,6 +16,7 @@ func DirectconnectVirtualGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,14 +31,16 @@ func DirectconnectVirtualGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "virtual_gateway_id",
+				Name:        "id",
 				Description: "The ID of the virtual private gateway.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VirtualGatewayId"),
 			},
 			{
-				Name:        "virtual_gateway_state",
+				Name:        "state",
 				Description: "The state of the virtual private gateway.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VirtualGatewayState"),
 			},
 		},
 	}

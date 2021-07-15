@@ -6,6 +6,6 @@ Describes an internet gateway.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|internet_gateway_id|text|The ID of the internet gateway.|
+|id|text|The ID of the internet gateway.|
 |owner_id|text|The ID of the AWS account that owns the internet gateway.|
 |tags|jsonb|Any tags assigned to the internet gateway.|

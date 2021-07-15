@@ -4,7 +4,7 @@ Information about the resource record set to create or delete.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|hosted_zone_id|uuid|Unique ID of aws_route53_hosted_zones table (FK)|
+|hosted_zone_cq_id|uuid|Unique CloudQuery ID of aws_route53_hosted_zones table (FK)|
 |resource_records|text[]||
 |name|text|For ChangeResourceRecordSets requests, the name of the record that you want to create, update, or delete.|
 |type|text|The DNS record type.|

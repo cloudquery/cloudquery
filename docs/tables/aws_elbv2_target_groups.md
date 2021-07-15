@@ -19,8 +19,8 @@ Information about a target group.
 |port|integer|The port on which the targets are listening.|
 |protocol|text|The protocol to use for routing traffic to the targets.|
 |protocol_version|text|[HTTP/HTTPS protocol] The protocol version.|
-|target_group_arn|text|The Amazon Resource Name (ARN) of the target group.|
-|target_group_name|text|The name of the target group.|
+|arn|text|The Amazon Resource Name (ARN) of the target group.|
+|name|text|The name of the target group.|
 |target_type|text|The type of target that you must specify when registering targets with this target group.|
 |unhealthy_threshold_count|integer|The number of consecutive health check failures required before considering the target unhealthy.|
 |vpc_id|text|The ID of the VPC for the targets.|

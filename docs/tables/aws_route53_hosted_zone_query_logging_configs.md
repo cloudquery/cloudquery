@@ -4,6 +4,6 @@ A complex type that contains information about a configuration for DNS query log
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|hosted_zone_id|uuid|Unique ID of aws_route53_hosted_zones table (FK)|
+|hosted_zone_cq_id|uuid|Unique CloudQuery ID of aws_route53_hosted_zones table (FK)|
 |cloud_watch_logs_log_group_arn|text|The Amazon Resource Name (ARN) of the CloudWatch Logs log group that Amazon Route 53 is publishing logs to.|
-|query_logging_config_id|text|The ID for a configuration for DNS query logging.|
+|id|text|The ID for a configuration for DNS query logging.|

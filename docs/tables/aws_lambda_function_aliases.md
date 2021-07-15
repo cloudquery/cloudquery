@@ -4,8 +4,9 @@ Provides configuration information about a Lambda function alias (https://docs.a
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|function_id|uuid|Unique ID of aws_lambda_functions table (FK)|
-|alias_arn|text|The Amazon Resource Name (ARN) of the alias.|
+|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
+|function_arn|text|The Amazon Resource Name (ARN) of the lambda function|
+|arn|text|The Amazon Resource Name (ARN) of the alias.|
 |description|text|A description of the alias.|
 |function_version|text|The function version that the alias invokes.|
 |name|text|The name of the alias.|

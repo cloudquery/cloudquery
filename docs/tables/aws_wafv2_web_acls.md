@@ -10,7 +10,7 @@ A Web ACL defines a collection of rules to use to inspect and control web reques
 |tags|jsonb||
 |arn|text|The Amazon Resource Name (ARN) of the Web ACL that you want to associate with the resource.  |
 |default_action|jsonb|The action to perform if none of the Rules contained in the WebACL match.  |
-|resource_id|text|A unique identifier for the WebACL|
+|id|text|A unique identifier for the WebACL|
 |name|text|The name of the Web ACL|
 |visibility_config_cloud_watch_metrics_enabled|boolean|A boolean indicating whether the associated resource sends metrics to CloudWatch|
 |visibility_config_metric_name|text|A name of the CloudWatch metric|

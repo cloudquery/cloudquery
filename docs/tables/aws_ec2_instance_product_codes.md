@@ -4,6 +4,6 @@ Describes a product code.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_id|uuid|Unique ID of aws_ec2_instances table (FK)|
+|instance_cq_id|uuid|Unique CloudQuery ID of aws_ec2_instances table (FK)|
 |product_code_id|text|The product code.|
 |product_code_type|text|The type of product code.|

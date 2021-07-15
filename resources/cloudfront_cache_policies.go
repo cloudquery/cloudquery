@@ -17,6 +17,7 @@ func CloudfrontCachePolicies() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -121,7 +122,7 @@ func CloudfrontCachePolicies() *schema.Table {
 				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.EnableAcceptEncodingBrotli"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the cache policy",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("CachePolicy.Id"),

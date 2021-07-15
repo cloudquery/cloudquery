@@ -24,6 +24,7 @@ func LambdaFunctions() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolvePolicyCodeSigningConfig,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -138,12 +139,12 @@ func LambdaFunctions() *schema.Table {
 				Resolver: schema.PathResolver("Configuration.Environment.Variables"),
 			},
 			{
-				Name:     "function_arn",
+				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.FunctionArn"),
 			},
 			{
-				Name:     "function_name",
+				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.FunctionName"),
 			},
@@ -298,12 +299,19 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_file_system_configs",
 				Description: "Details about the connection between a Lambda function and an Amazon EFS file system. ",
 				Resolver:    fetchLambdaFunctionFileSystemConfigs,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "function_arn",
+						Description: "The Amazon Resource Name (ARN) of the lambda function",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("arn"),
 					},
 					{
 						Name:        "arn",
@@ -321,12 +329,19 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_layers",
 				Description: "An AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 				Resolver:    fetchLambdaFunctionLayers,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "function_arn",
+						Description: "The Amazon Resource Name (ARN) of the lambda function",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("arn"),
 					},
 					{
 						Name:        "arn",
@@ -354,17 +369,25 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_aliases",
 				Description: "Provides configuration information about a Lambda function alias (https://docs.aws.amazon.com/lambda/latest/dg/versioning-aliases.html). ",
 				Resolver:    fetchLambdaFunctionAliases,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "alias_arn",
+						Name:        "function_arn",
+						Description: "The Amazon Resource Name (ARN) of the lambda function",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("arn"),
+					},
+					{
+						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) of the alias.",
 						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AliasArn"),
 					},
 					{
 						Name:        "description",
@@ -398,10 +421,11 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_event_invoke_configs",
 				Description: "A configuration object that specifies the destination of an event after Lambda processes it. ",
 				Resolver:    fetchLambdaFunctionEventInvokeConfigs,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "on_failure_destination", "on_success_destination"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -443,10 +467,11 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_versions",
 				Description: "Details about a function's configuration. ",
 				Resolver:    fetchLambdaFunctionVersions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "version"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -657,8 +682,8 @@ func LambdaFunctions() *schema.Table {
 						Resolver:    fetchLambdaFunctionVersionFileSystemConfigs,
 						Columns: []schema.Column{
 							{
-								Name:        "function_version_id",
-								Description: "Unique ID of aws_lambda_function_versions table (FK)",
+								Name:        "function_version_cq_id",
+								Description: "Unique CloudQuery ID of aws_lambda_function_versions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -678,10 +703,11 @@ func LambdaFunctions() *schema.Table {
 						Name:        "aws_lambda_function_version_layers",
 						Description: "An AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 						Resolver:    fetchLambdaFunctionVersionLayers,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_version_cq_id", "arn"}},
 						Columns: []schema.Column{
 							{
-								Name:        "function_version_id",
-								Description: "Unique ID of aws_lambda_function_versions table (FK)",
+								Name:        "function_version_cq_id",
+								Description: "Unique CloudQuery ID of aws_lambda_function_versions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -715,8 +741,8 @@ func LambdaFunctions() *schema.Table {
 				Resolver:    fetchLambdaFunctionConcurrencyConfigs,
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -761,10 +787,11 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_event_source_mappings",
 				Description: "A mapping between an AWS resource and an AWS Lambda function",
 				Resolver:    fetchLambdaFunctionEventSourceMappings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "uuid"}},
 				Columns: []schema.Column{
 					{
-						Name:        "function_id",
-						Description: "Unique ID of aws_lambda_functions table (FK)",
+						Name:        "function_cq_id",
+						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -882,31 +909,11 @@ func LambdaFunctions() *schema.Table {
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("UUID"),
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:        "aws_lambda_function_event_source_mapping_access_configurations",
-						Description: "You can specify the authentication protocol, or the VPC components to secure access to your event source.",
-						Resolver:    fetchLambdaFunctionEventSourceMappingAccessConfigurations,
-						Columns: []schema.Column{
-							{
-								Name:        "function_event_source_mapping_id",
-								Description: "Unique ID of aws_lambda_function_event_source_mappings table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "type",
-								Description: "The type of authentication protocol or the VPC components for your event source.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "uri",
-								Description: "The value for your chosen configuration in Type",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("URI"),
-							},
-						},
+						Name:        "source_access_configurations",
+						Description: "An array of the authentication protocol, or the VPC components to secure your event source.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveLambdaFunctionEventSourceMappingAccessConfigurations,
 					},
 				},
 			},
@@ -1191,11 +1198,14 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	}
 	return nil
 }
-func fetchLambdaFunctionEventSourceMappingAccessConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	p, ok := parent.Item.(types.EventSourceMappingConfiguration)
+func resolveLambdaFunctionEventSourceMappingAccessConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.EventSourceMappingConfiguration)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of EventSourceMappingConfiguration", p)
 	}
-	res <- p.SourceAccessConfigurations
-	return nil
+	data, err := json.Marshal(p.SourceAccessConfigurations)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
 }

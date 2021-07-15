@@ -23,12 +23,19 @@ func IamRolePolicies() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"role_cq_id", "policy_name"}},
 		Columns: []schema.Column{
+			{
+				Name:        "role_cq_id",
+				Description: "Role CloudQuery ID the policy belongs too.",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
+			},
 			{
 				Name:        "role_id",
 				Description: "Role ID the policy belongs too.",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.ParentIdResolver,
+				Type:        schema.TypeString,
+				Resolver:    schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:        "account_id",

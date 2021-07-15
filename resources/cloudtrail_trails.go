@@ -18,6 +18,7 @@ func CloudtrailTrails() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: postCloudtrailTrailResolver,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -168,7 +169,7 @@ func CloudtrailTrails() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "trail_arn",
+				Name:        "arn",
 				Description: "Specifies the ARN of the trail.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("TrailARN"),
@@ -179,12 +180,19 @@ func CloudtrailTrails() *schema.Table {
 				Name:        "aws_cloudtrail_trail_event_selectors",
 				Description: "Use event selectors to further specify the management and data event settings for your trail.",
 				Resolver:    fetchCloudtrailTrailEventSelectors,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"trail_cq_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "trail_id",
-						Description: "Unique ID of aws_cloudtrail_trails table (FK)",
+						Name:        "trail_cq_id",
+						Description: "Unique CloudQuery ID of aws_cloudtrail_trails table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "trail_arn",
+						Description: "Specifies the ARN of the trail.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentPathResolver("TrailARN"),
 					},
 					{
 						Name:        "exclude_management_event_sources",

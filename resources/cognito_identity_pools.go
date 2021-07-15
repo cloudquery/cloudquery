@@ -18,6 +18,7 @@ func CognitoIdentityPools() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,9 +38,10 @@ func CognitoIdentityPools() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "identity_pool_id",
+				Name:        "id",
 				Description: "An identity pool ID in the format REGION:GUID.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("IdentityPoolId"),
 			},
 			{
 				Name:        "identity_pool_name",
@@ -84,12 +86,19 @@ func CognitoIdentityPools() *schema.Table {
 				Name:        "aws_cognito_identity_pool_cognito_identity_providers",
 				Description: "A provider representing an Amazon Cognito user pool and its client ID.",
 				Resolver:    fetchCognitoIdentityPoolCognitoIdentityProviders,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"identity_pool_cq_id", "client_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "identity_pool_id",
-						Description: "Unique ID of aws_cognito_identity_pools table (FK)",
+						Name:        "identity_pool_cq_id",
+						Description: "Unique CloudQuery ID of aws_cognito_identity_pools table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "identity_pool_id",
+						Description: "An identity pool ID in the format REGION:GUID.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "client_id",

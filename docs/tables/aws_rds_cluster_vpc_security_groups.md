@@ -4,6 +4,6 @@ This data type is used as a response element for queries on VPC security group m
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|cluster_id|uuid|Unique ID of aws_rds_clusters table (FK)|
+|cluster_id|uuid|Unique CloudQuery ID of aws_rds_clusters table (FK)|
 |status|text|The status of the VPC security group.|
 |vpc_security_group_id|text|The name of the VPC security group.|

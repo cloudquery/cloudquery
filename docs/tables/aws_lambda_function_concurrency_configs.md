@@ -4,7 +4,7 @@ Details about the provisioned concurrency configuration for a function alias or 
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|function_id|uuid|Unique ID of aws_lambda_functions table (FK)|
+|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
 |allocated_provisioned_concurrent_executions|integer|The amount of provisioned concurrency allocated.|
 |available_provisioned_concurrent_executions|integer|The amount of provisioned concurrency available.|
 |function_arn|text|The Amazon Resource Name (ARN) of the alias or version.|

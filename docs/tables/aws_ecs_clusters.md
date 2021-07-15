@@ -9,8 +9,8 @@
 |active_services_count|integer||
 |attachments_status|text||
 |capacity_providers|text[]||
-|cluster_arn|text||
-|cluster_name|text||
+|arn|text||
+|name|text||
 |execute_config_kms_key_id|text||
 |execute_config_logs_cloud_watch_encryption_enabled|boolean||
 |execute_config_log_cloud_watch_log_group_name|text||
@@ -25,3 +25,4 @@
 |statistics|jsonb||
 |status|text||
 |tags|jsonb||
+|default_capacity_provider_strategy|jsonb||

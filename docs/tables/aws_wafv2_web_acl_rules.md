@@ -4,7 +4,7 @@ A single rule, which you can use in a WebACL or RuleGroup to identify web reques
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|web_acl_id|uuid|Unique ID of aws_wafv2_web_acls table (FK)|
+|web_acl_cq_id|uuid|Unique CloudQuery ID of aws_wafv2_web_acls table (FK)|
 |name|text|The name of the rule|
 |priority|integer|If you define more than one Rule in a WebACL, AWS WAF evaluates each request against the Rules in order based on the value of Priority|
 |statement|jsonb|The AWS WAF processing statement for the rule, for example ByteMatchStatement or SizeConstraintStatement.  |

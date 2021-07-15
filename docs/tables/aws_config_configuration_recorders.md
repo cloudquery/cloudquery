@@ -6,6 +6,7 @@ An object that represents the recording of configuration changes of an AWS resou
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|Amazon Resource Name (ARN) of the config recorder.|
 |name|text|The name of the recorder.|
 |recording_group_all_supported|boolean|Specifies whether AWS Config records configuration changes for every supported type of regional resource.|
 |recording_group_include_global_resource_types|boolean|Specifies whether AWS Config includes all supported types of global resources (for example, IAM resources) with the resources that it records.|

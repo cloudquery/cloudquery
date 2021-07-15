@@ -17,6 +17,7 @@ func ApigatewayVpcLinks() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,7 +37,7 @@ func ApigatewayVpcLinks() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The identifier of the VpcLink. It is used in an Integration to reference this VpcLink.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),

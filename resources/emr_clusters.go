@@ -17,6 +17,7 @@ func EmrClusters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,12 +32,13 @@ func EmrClusters() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "cluster_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name of the cluster.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ClusterArn"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the cluster.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),

@@ -19,6 +19,7 @@ func IamRoles() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -48,14 +49,16 @@ func IamRoles() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "role_id",
+				Name:        "id",
 				Description: "The stable and unique string identifying the role. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RoleId"),
 			},
 			{
-				Name:        "role_name",
+				Name:        "name",
 				Description: "The friendly name that identifies the role.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RoleName"),
 			},
 			{
 				Name:        "assume_role_policy_document",

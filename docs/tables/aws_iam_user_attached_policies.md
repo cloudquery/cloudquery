@@ -4,6 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|user_id|uuid||
+|user_cq_id|uuid||
+|user_id|text||
 |policy_arn|text||
 |policy_name|text||

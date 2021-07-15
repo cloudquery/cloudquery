@@ -12,5 +12,5 @@ Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/
 |latest_matching_version_layer_version_arn|text|The ARN of the layer version.|
 |latest_matching_version_license_info|text|The layer's open-source license.|
 |latest_matching_version|bigint|The version number.|
-|layer_arn|text|The Amazon Resource Name (ARN) of the function layer.|
-|layer_name|text|The name of the layer.|
+|arn|text|The Amazon Resource Name (ARN) of the function layer.|
+|name|text|The name of the layer.|

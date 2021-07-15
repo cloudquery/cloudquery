@@ -18,6 +18,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -95,7 +96,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "launch_configuration_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the launch configuration.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LaunchConfigurationARN"),
@@ -149,10 +150,11 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Name:        "aws_autoscaling_launch_configuration_block_device_mappings",
 				Description: "Describes a block device mapping.",
 				Resolver:    fetchAutoscalingLaunchConfigurationBlockDeviceMappings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"launch_configuration_cq_id", "device_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "launch_configuration_id",
-						Description: "Unique ID of aws_autoscaling_launch_configurations table (FK)",
+						Name:        "launch_configuration_cq_id",
+						Description: "Unique CloudQuery ID of aws_autoscaling_launch_configurations table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

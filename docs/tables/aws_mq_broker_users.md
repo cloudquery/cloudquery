@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|broker_id|uuid|Unique ID of aws_mq_brokers table (FK)|
+|broker_cq_id|uuid|Unique CloudQuery ID of aws_mq_brokers table (FK)|
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |console_access|boolean|Enables access to the the ActiveMQ Web Console for the ActiveMQ user.|

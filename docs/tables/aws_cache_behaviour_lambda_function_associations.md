@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |event_type|text||
 |lambda_function_arn|text||
 |include_body|boolean||

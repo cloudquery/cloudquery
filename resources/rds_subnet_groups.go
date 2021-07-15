@@ -19,6 +19,7 @@ func RdsSubnetGroups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -33,27 +34,28 @@ func RdsSubnetGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "db_subnet_group_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroupArn"),
 			},
 			{
-				Name:        "db_subnet_group_description",
+				Name:        "description",
 				Description: "Provides the description of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroupDescription"),
 			},
 			{
-				Name:        "db_subnet_group_name",
+				Name:        "name",
 				Description: "The name of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroupName"),
 			},
 			{
-				Name:        "subnet_group_status",
+				Name:        "status",
 				Description: "Provides the status of the DB subnet group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SubnetGroupStatus"),
 			},
 			{
 				Name:        "vpc_id",
@@ -66,10 +68,11 @@ func RdsSubnetGroups() *schema.Table {
 				Name:        "aws_rds_subnet_group_subnets",
 				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
 				Resolver:    fetchRdsSubnetGroupSubnets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_group_cq_id", "subnet_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "subnet_group_id",
-						Description: "Unique ID of aws_rds_subnet_groups table (FK)",
+						Name:        "subnet_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_subnet_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

@@ -8,6 +8,6 @@ This is AWS WAF Classic documentation
 |arn|text||
 |rule_ids|text[]||
 |tags|jsonb||
-|rule_group_id|text|A unique identifier for a RuleGroup|
+|id|text|A unique identifier for a RuleGroup|
 |metric_name|text|A friendly name or description for the metrics for this RuleGroup|
 |name|text|The friendly name or description for the RuleGroup|

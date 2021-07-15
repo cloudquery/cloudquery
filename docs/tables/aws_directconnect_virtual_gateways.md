@@ -6,5 +6,5 @@ Information about a virtual private gateway for a private virtual interface.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|virtual_gateway_id|text|The ID of the virtual private gateway.|
-|virtual_gateway_state|text|The state of the virtual private gateway.|
+|id|text|The ID of the virtual private gateway.|
+|state|text|The state of the virtual private gateway.|

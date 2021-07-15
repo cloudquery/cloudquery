@@ -11,7 +11,7 @@ Represents an API.
 |route_selection_expression|text|The route selection expression for the API. For HTTP APIs, the routeSelectionExpression must be ${request.method} ${request.path}. If not provided, this will be the default for HTTP APIs. This property is required for WebSocket APIs.|
 |api_endpoint|text|The URI of the API, of the form {api-id}.execute-api.{region}.amazonaws.com. The stage name is typically appended to this URI to form a complete path to a deployed API stage.|
 |api_gateway_managed|boolean|Specifies whether an API is managed by API Gateway. You can't update or delete a managed API by using API Gateway. A managed API can be deleted only through the tooling or service that created it.|
-|api_id|text|The API ID.|
+|id|text|The API ID.|
 |api_key_selection_expression|text|An API key selection expression. Supported only for WebSocket APIs. See API Key Selection Expressions (https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-selection-expressions.html#apigateway-websocket-api-apikey-selection-expressions).|
 |cors_configuration_allow_credentials|boolean|Specifies whether credentials are included in the CORS request. Supported only for HTTP APIs.|
 |cors_configuration_allow_headers|text[]|Represents a collection of allowed headers. Supported only for HTTP APIs.|

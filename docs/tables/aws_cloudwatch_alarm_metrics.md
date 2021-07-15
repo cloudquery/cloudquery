@@ -4,8 +4,10 @@ This structure is used in both GetMetricData and PutMetricAlarm.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|alarm_id|uuid|Unique ID of aws_cloudwatch_alarms table (FK)|
-|metric_id|text|A short name used to tie this object to the results in the response.|
+|alarm_cq_id|uuid|Unique CloudQuery ID of aws_cloudwatch_alarms table (FK)|
+|alarm_arn|text|The Amazon Resource Name (ARN) of the alarm.|
+|alarm_name|text|The name of the alarm.|
+|id|text|A short name used to tie this object to the results in the response.|
 |expression|text|The math expression to be performed on the returned data, if this object is performing a math expression.|
 |label|text|A human-readable label for this metric or expression.|
 |metric_stat_metric_dimensions|jsonb|The dimensions for the metric.|

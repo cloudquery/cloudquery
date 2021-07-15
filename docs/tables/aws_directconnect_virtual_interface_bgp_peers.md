@@ -4,7 +4,8 @@ Information about a BGP peer.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_interface_id|uuid|Unique ID of aws_directconnect_virtual_interfaces table (FK)|
+|virtual_interface_cq_id|uuid|Unique CloudQuery ID of aws_directconnect_virtual_interfaces table (FK)|
+|virtual_interface_id|text|The ID of the virtual interface.|
 |address_family|text|The address family for the BGP peer.|
 |amazon_address|text|The IP address assigned to the Amazon interface.|
 |asn|integer|The autonomous system (AS) number for Border Gateway Protocol (BGP) configuration.|

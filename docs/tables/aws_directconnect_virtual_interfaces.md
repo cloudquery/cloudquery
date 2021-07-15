@@ -23,7 +23,7 @@ Information about a virtual interface. A virtual interface (VLAN) transmits the 
 |route_filter_prefixes|text[]|The routes to be advertised to the AWS network in this Region|
 |tags|jsonb|The tags associated with the virtual interface.|
 |virtual_gateway_id|text|The ID of the virtual private gateway|
-|virtual_interface_id|text|The ID of the virtual interface.|
+|id|text|The ID of the virtual interface.|
 |virtual_interface_name|text|The name of the virtual interface assigned by the customer network|
 |virtual_interface_state|text|The state of the virtual interface|
 |virtual_interface_type|text|The type of virtual interface|

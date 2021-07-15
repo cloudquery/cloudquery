@@ -17,6 +17,7 @@ func ApigatewayAPIKeys() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -51,7 +52,7 @@ func ApigatewayAPIKeys() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The identifier of the API Key.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),

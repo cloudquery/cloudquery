@@ -4,7 +4,7 @@ An Active Directory Domain membership record associated with the DB instance or 
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|cluster_id|uuid|Unique ID of aws_rds_clusters table (FK)|
+|cluster_id|uuid|Unique CloudQuery ID of aws_rds_clusters table (FK)|
 |domain|text|The identifier of the Active Directory Domain.|
 |fqdn|text|The fully qualified domain name of the Active Directory Domain.|
 |iam_role_name|text|The name of the IAM role to be used when making API calls to the Directory Service.|

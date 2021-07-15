@@ -19,6 +19,7 @@ func RedshiftClusters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,6 +33,7 @@ func RedshiftClusters() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
+
 			{
 				Name:        "allow_version_upgrade",
 				Description: "A boolean value that, if true, indicates that major version upgrades will be applied automatically to the cluster during the maintenance window.",
@@ -63,9 +65,10 @@ func RedshiftClusters() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "cluster_identifier",
+				Name:        "id",
 				Description: "The unique identifier of the cluster.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ClusterIdentifier"),
 			},
 			{
 				Name:        "cluster_namespace_arn",
@@ -431,10 +434,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_nodes",
 				Description: "The identifier of a node in a cluster.",
 				Resolver:    fetchRedshiftClusterNodes,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "private_ip_address"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -461,10 +465,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_parameter_groups",
 				Description: "Describes the status of a parameter group.",
 				Resolver:    fetchRedshiftClusterParameterGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "parameter_group_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -484,10 +489,11 @@ func RedshiftClusters() *schema.Table {
 						Name:        "aws_redshift_cluster_parameter_group_status_lists",
 						Description: "Describes the status of a parameter group.",
 						Resolver:    fetchRedshiftClusterParameterGroupStatusLists,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_parameter_group_cq_id", "parameter_name"}},
 						Columns: []schema.Column{
 							{
-								Name:        "cluster_parameter_group_id",
-								Description: "Unique ID of aws_redshift_cluster_parameter_groups table (FK)",
+								Name:        "cluster_parameter_group_cq_id",
+								Description: "Unique CloudQuery ID of aws_redshift_cluster_parameter_groups table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -514,10 +520,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_security_groups",
 				Description: "Describes a cluster security group.",
 				Resolver:    fetchRedshiftClusterSecurityGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "cluster_security_group_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -537,10 +544,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_deferred_maintenance_windows",
 				Description: "Describes a deferred maintenance window .",
 				Resolver:    fetchRedshiftClusterDeferredMaintenanceWindows,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "defer_maintenance_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -565,10 +573,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_endpoint_vpc_endpoints",
 				Description: "The connection endpoint for connecting to an Amazon Redshift cluster through the proxy.",
 				Resolver:    fetchRedshiftClusterEndpointVpcEndpoints,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "vpc_endpoint_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -588,10 +597,11 @@ func RedshiftClusters() *schema.Table {
 						Name:        "aws_redshift_cluster_endpoint_vpc_endpoint_network_interfaces",
 						Description: "Describes a network interface.",
 						Resolver:    fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_endpoint_vpc_endpoint_cq_id", "network_interface_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "cluster_endpoint_vpc_endpoint_id",
-								Description: "Unique ID of aws_redshift_cluster_endpoint_vpc_endpoints table (FK)",
+								Name:        "cluster_endpoint_vpc_endpoint_cq_id",
+								Description: "Unique CloudQuery ID of aws_redshift_cluster_endpoint_vpc_endpoints table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -623,10 +633,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_iam_roles",
 				Description: "An AWS Identity and Access Management (IAM) role that can be used by the associated Amazon Redshift cluster to access other AWS services.",
 				Resolver:    fetchRedshiftClusterIamRoles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "iam_role_arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -646,10 +657,11 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_vpc_security_groups",
 				Description: "Describes the members of a VPC security group.",
 				Resolver:    fetchRedshiftClusterVpcSecurityGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "vpc_security_group_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique ID of aws_redshift_clusters table (FK)",
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

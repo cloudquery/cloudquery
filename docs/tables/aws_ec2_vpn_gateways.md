@@ -11,4 +11,4 @@
 |state|text||
 |tags|jsonb||
 |type|text||
-|vpn_gateway_id|text||
+|id|text||

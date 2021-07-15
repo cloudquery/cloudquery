@@ -6,12 +6,12 @@ Describes an image.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|id|text|The ID of the AMI.|
 |architecture|text|The architecture of the image.|
 |creation_date|text|The date and time the image was created.|
 |description|text|The description of the AMI that was provided during image creation.|
 |ena_support|boolean|Specifies whether enhanced networking with ENA is enabled.|
 |hypervisor|text|The hypervisor type of the image.|
-|image_id|text|The ID of the AMI.|
 |image_location|text|The location of the AMI.|
 |image_owner_alias|text|The AWS account alias (for example, amazon, self) or the AWS account ID of the AMI owner.|
 |image_type|text|The type of image.|

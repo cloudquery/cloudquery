@@ -4,7 +4,7 @@ A configuration object that specifies the destination of an event after Lambda p
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|function_id|uuid|Unique ID of aws_lambda_functions table (FK)|
+|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
 |on_failure_destination|text|The Amazon Resource Name (ARN) of the destination resource.|
 |on_success_destination|text|The Amazon Resource Name (ARN) of the destination resource.|
 |function_arn|text|The Amazon Resource Name (ARN) of the function.|

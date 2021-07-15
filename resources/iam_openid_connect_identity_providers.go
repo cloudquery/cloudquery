@@ -17,12 +17,18 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:        "arn",
+				Description: "Amazon Resource Name (ARN) of the openid connect identity provider.",
+				Type:        schema.TypeString,
 			},
 			{
 				Name:        "client_id_list",
@@ -70,14 +76,14 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return err
 		}
-		res <- providerResponse
+		res <- IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
 	}
 	return nil
 }
 func resolveIamOpenidConnectIdentityProviderTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(*iam.GetOpenIDConnectProviderOutput)
+	r, ok := resource.Item.(IamOpenIdIdentityProviderWrapper)
 	if !ok {
-		return fmt.Errorf("not iam identity provider")
+		return fmt.Errorf("not iam IamOpenIdIdentityProviderWrapper")
 	}
 	response := make(map[string]interface{}, len(r.Tags))
 	for _, t := range r.Tags {
@@ -85,4 +91,9 @@ func resolveIamOpenidConnectIdentityProviderTags(ctx context.Context, meta schem
 	}
 
 	return resource.Set(c.Name, response)
+}
+
+type IamOpenIdIdentityProviderWrapper struct {
+	*iam.GetOpenIDConnectProviderOutput
+	Arn string
 }

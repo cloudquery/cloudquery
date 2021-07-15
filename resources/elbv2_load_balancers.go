@@ -18,6 +18,7 @@ func Elbv2LoadBalancers() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -58,14 +59,16 @@ func Elbv2LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "load_balancer_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the load balancer.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LoadBalancerArn"),
 			},
 			{
-				Name:        "load_balancer_name",
+				Name:        "name",
 				Description: "The name of the load balancer.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LoadBalancerName"),
 			},
 			{
 				Name:        "scheme",
@@ -105,12 +108,19 @@ func Elbv2LoadBalancers() *schema.Table {
 				Name:        "aws_elbv2_load_balancer_availability_zones",
 				Description: "Information about an Availability Zone.",
 				Resolver:    fetchElbv2LoadBalancerAvailabilityZones,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "zone_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv2_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv2_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "load_balance_name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "outpost_id",
@@ -133,12 +143,19 @@ func Elbv2LoadBalancers() *schema.Table {
 						Name:        "aws_elbv2_load_balancer_availability_zone_addresses",
 						Description: "Information about a static IP address for a load balancer.",
 						Resolver:    fetchElbv2LoadBalancerAvailabilityZoneAddresses,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_availability_zone_cq_id", "ip_address"}},
 						Columns: []schema.Column{
 							{
-								Name:        "load_balancer_availability_zone_id",
-								Description: "Unique ID of aws_elbv2_load_balancer_availability_zones table (FK)",
+								Name:        "load_balancer_availability_zone_cq_id",
+								Description: "Unique CloudQuery ID of aws_elbv2_load_balancer_availability_zones table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "zone_name",
+								Description: "The name of the Availability Zone..",
+								Type:        schema.TypeString,
+								Resolver:    schema.ParentResourceFieldResolver("zone_name"),
 							},
 							{
 								Name:        "allocation_id",

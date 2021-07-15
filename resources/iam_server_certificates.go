@@ -17,12 +17,19 @@ func IamServerCertificates() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:        "id",
+				Description: "The stable and unique string identifying the server certificate.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ServerCertificateId"),
 			},
 			{
 				Name:        "arn",
@@ -35,14 +42,10 @@ func IamServerCertificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "server_certificate_id",
-				Description: "The stable and unique string identifying the server certificate. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "server_certificate_name",
+				Name:        "name",
 				Description: "The name that identifies the server certificate.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ServerCertificateName"),
 			},
 			{
 				Name:        "expiration",

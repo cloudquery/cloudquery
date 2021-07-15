@@ -21,5 +21,5 @@
 |tags|jsonb||
 |transit_gateway_arn|text||
 |transit_gateway_cidr_blocks|text[]||
-|transit_gateway_id|text||
+|id|text||
 |vpn_ecmp_support|text||

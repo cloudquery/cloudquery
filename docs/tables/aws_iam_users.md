@@ -5,6 +5,7 @@
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text||
+|id|text||
 |password_last_used|timestamp without time zone||
 |arn|text||
 |password_enabled|boolean||

@@ -17,6 +17,7 @@ func Ec2EbsVolumes() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -29,8 +30,15 @@ func Ec2EbsVolumes() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name: "volume_id",
-				Type: schema.TypeString,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("VolumeId"),
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the ebs volume",
+				Type:        schema.TypeString,
+				Resolver:    resolveEbsVolumeArn,
 			},
 			{
 				Name: "availability_zone",
@@ -94,9 +102,10 @@ func Ec2EbsVolumes() *schema.Table {
 			{
 				Name:     "aws_ec2_ebs_volume_attachments",
 				Resolver: fetchEc2EbsVolumeAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"ebs_volume_cq_id", "device"}},
 				Columns: []schema.Column{
 					{
-						Name:     "ebs_volume_id",
+						Name:     "ebs_volume_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -163,4 +172,10 @@ func fetchEc2EbsVolumeAttachments(_ context.Context, _ schema.ClientMeta, parent
 	}
 	res <- volume.Attachments
 	return nil
+}
+
+func resolveEbsVolumeArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	ebs := resource.Item.(types.Volume)
+	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "volume", *ebs.VolumeId, cl.Region, cl.AccountID))
 }

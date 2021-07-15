@@ -4,7 +4,7 @@ Describes a security group and AWS account ID pair.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|security_group_ip_permissions_egress_id|uuid|Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)|
+|security_group_ip_permissions_egress_cq_id|uuid|Unique CloudQuery ID of aws_ec2_security_group_ip_permissions_egresses table (FK)|
 |description|text|A description for the security group rule that references this user ID group pair.|
 |group_id|text|The ID of the security group.|
 |group_name|text|The name of the security group.|

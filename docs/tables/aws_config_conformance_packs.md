@@ -6,7 +6,7 @@ Returns details of a conformance pack.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|conformance_pack_arn|text|Amazon Resource Name (ARN) of the conformance pack.|
+|arn|text|Amazon Resource Name (ARN) of the conformance pack.|
 |conformance_pack_id|text|ID of the conformance pack.|
 |conformance_pack_name|text|Name of the conformance pack.|
 |conformance_pack_input_parameters|jsonb|A list of ConformancePackInputParameter objects.|

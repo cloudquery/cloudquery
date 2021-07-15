@@ -4,7 +4,8 @@ The MAC Security (MACsec) security keys associated with the connection.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|connection_id|uuid|Unique ID of aws_directconnect_connections table (FK)|
+|connection_cq_id|uuid|Unique CloudQuery ID of aws_directconnect_connections table (FK)|
+|connection_id|text|The ID of the connection.|
 |ckn|text|The Connection Key Name (CKN) for the MAC Security secret key.|
 |secret_arn|text|The Amazon Resource Name (ARN) of the MAC Security (MACsec) secret key.|
 |start_on|text|The date that the MAC Security (MACsec) secret key takes effect. The value is displayed in UTC format.|

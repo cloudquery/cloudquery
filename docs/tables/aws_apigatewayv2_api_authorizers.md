@@ -4,7 +4,8 @@ Represents an authorizer.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|api_id|uuid|Unique ID of aws_apigatewayv2_apis table (FK)|
+|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
+|api_id|text|The API ID.|
 |name|text|The name of the authorizer.|
 |authorizer_credentials_arn|text|Specifies the required credentials as an IAM role for API Gateway to invoke the authorizer. To specify an IAM role for API Gateway to assume, use the role's Amazon Resource Name (ARN). To use resource-based permissions on the Lambda function, don't specify this parameter. Supported only for REQUEST authorizers.|
 |authorizer_id|text|The authorizer identifier.|

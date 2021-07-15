@@ -4,7 +4,7 @@ Information about the attachment between a Direct Connect gateway and virtual in
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|directconnect_gateway_id|uuid|Unique ID of aws_directconnect_gateways table (FK)|
+|directconnect_gateway_id|uuid|Unique CloudQuery ID of aws_directconnect_gateways table (FK)|
 |attachment_state|text|The state of the attachment.|
 |attachment_type|text|The type of attachment.|
 |state_change_error|text|The error message if the state of an object failed to advance.|

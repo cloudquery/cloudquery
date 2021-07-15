@@ -6,6 +6,7 @@ Describes an instance.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|id|text|The ID of the instance.|
 |ami_launch_index|integer|The AMI launch index, which can be used to find this instance in the launch group.|
 |architecture|text|The architecture of the image.|
 |capacity_reservation_id|text|The ID of the Capacity Reservation.|
@@ -23,7 +24,6 @@ Describes an instance.
 |iam_instance_profile_arn|text|The Amazon Resource Name (ARN) of the instance profile.|
 |iam_instance_profile_id|text|The ID of the instance profile.|
 |image_id|text|The ID of the AMI used to launch the instance.|
-|instance_id|text|The ID of the instance.|
 |instance_lifecycle|text|Indicates whether this is a Spot Instance or a Scheduled Instance.|
 |instance_type|text|The instance type.|
 |kernel_id|text|The kernel associated with this instance, if applicable.|
@@ -59,7 +59,8 @@ Describes an instance.
 |state_reason_code|text|The reason code for the state change.|
 |state_reason_message|text|The message for the state change.|
 |state_transition_reason|text|The reason for the most recent state transition.|
-|subnet_id|text|[EC2-VPC] The ID of the subnet in which the instance is running.|
+|subnet_id|text|The ID of the subnet in which the instance is running.|
 |tags|jsonb|Any tags assigned to the instance.|
 |virtualization_type|text|The virtualization type of the instance.|
-|vpc_id|text|[EC2-VPC] The ID of the VPC in which the instance is running.|
+|vpc_id|text|The ID of the VPC in which the instance is running.|
+|licenses|text[]|The license configurations.|

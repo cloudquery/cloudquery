@@ -4,7 +4,8 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|user_id|uuid||
+|user_cq_id|uuid||
+|user_id|text||
 |access_key_id|text||
 |create_date|timestamp without time zone||
 |status|text||

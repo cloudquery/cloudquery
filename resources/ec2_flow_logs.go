@@ -18,6 +18,7 @@ func Ec2FlowLogs() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,6 +31,12 @@ func Ec2FlowLogs() *schema.Table {
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "id",
+				Description: "The flow log ID.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FlowLogId"),
 			},
 			{
 				Name:        "creation_time",

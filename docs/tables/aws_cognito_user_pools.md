@@ -29,7 +29,7 @@ A container for information about the user pool.
 |email_verification_message|text|The contents of the email verification message.|
 |email_verification_subject|text|The subject of the email verification message.|
 |estimated_number_of_users|integer|A number estimating the size of the user pool.|
-|resource_id|text|The ID of the user pool.|
+|id|text|The ID of the user pool.|
 |lambda_config_create_auth_challenge|text|Creates an authentication challenge.|
 |lambda_config_custom_email_sender_lambda_arn|text|The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send email notifications to users.  This member is required.|
 |lambda_config_custom_email_sender_lambda_version|text|The Lambda version represents the signature of the "request" attribute in the "event" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0.  This member is required.|

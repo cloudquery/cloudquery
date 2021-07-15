@@ -149,7 +149,7 @@ func EksClusters() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_id",
-						Description: "Unique ID of aws_eks_clusters table (FK)",
+						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -173,7 +173,7 @@ func EksClusters() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_id",
-						Description: "Unique ID of aws_eks_clusters table (FK)",
+						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -197,7 +197,7 @@ func EksClusters() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_id",
-						Description: "Unique ID of aws_eks_clusters table (FK)",
+						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

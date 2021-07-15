@@ -19,6 +19,7 @@ func RedshiftSubnetGroups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cluster_subnet_group_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -64,10 +65,11 @@ func RedshiftSubnetGroups() *schema.Table {
 				Name:        "aws_redshift_subnet_group_subnets",
 				Description: "Describes a subnet.",
 				Resolver:    fetchRedshiftSubnetGroupSubnets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_group_cq_id", "subnet_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "subnet_group_id",
-						Description: "Unique ID of aws_redshift_subnet_groups table (FK)",
+						Name:        "subnet_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_redshift_subnet_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

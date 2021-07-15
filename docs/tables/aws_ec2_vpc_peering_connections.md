@@ -28,4 +28,4 @@ Describes a VPC peering connection.
 |status_code|text|The status of the VPC peering connection.|
 |status_message|text|A message that provides more information about the status, if applicable.|
 |tags|jsonb|Any tags assigned to the resource.|
-|vpc_peering_connection_id|text|The ID of the VPC peering connection.|
+|id|text|The ID of the VPC peering connection.|

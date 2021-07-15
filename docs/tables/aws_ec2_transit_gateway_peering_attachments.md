@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|transit_gateway_id|uuid||
+|transit_gateway_cq_id|uuid||
 |accepter_owner_id|text||
 |accepter_region|text||
 |accepter_transit_gateway_id|text||

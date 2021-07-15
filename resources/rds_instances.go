@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -19,6 +20,7 @@ func RdsInstances() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -79,13 +81,13 @@ func RdsInstances() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "db_cluster_identifier",
+				Name:        "cluster_identifier",
 				Description: "If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBClusterIdentifier"),
 			},
 			{
-				Name:        "db_instance_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the DB instance.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBInstanceArn"),
@@ -97,7 +99,7 @@ func RdsInstances() *schema.Table {
 				Resolver:    schema.PathResolver("DBInstanceClass"),
 			},
 			{
-				Name:        "db_instance_identifier",
+				Name:        "user_instance_id",
 				Description: "Contains a user-supplied database identifier",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBInstanceIdentifier"),
@@ -115,44 +117,46 @@ func RdsInstances() *schema.Table {
 				Resolver:    schema.PathResolver("DBName"),
 			},
 			{
-				Name:        "db_subnet_group_arn",
+				Name:        "subnet_group_arn",
 				Description: "The Amazon Resource Name (ARN) for the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroup.DBSubnetGroupArn"),
 			},
 			{
-				Name:        "db_subnet_group_description",
+				Name:        "subnet_group_description",
 				Description: "Provides the description of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroup.DBSubnetGroupDescription"),
 			},
 			{
-				Name:        "db_subnet_group_name",
+				Name:        "subnet_group_name",
 				Description: "The name of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroup.DBSubnetGroupName"),
 			},
 			{
-				Name:        "db_subnet_group_subnet_group_status",
+				Name:        "subnet_group_subnet_group_status",
 				Description: "Provides the status of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroup.SubnetGroupStatus"),
 			},
 			{
-				Name:        "db_subnet_group_vpc_id",
+				Name:        "subnet_group_vpc_id",
 				Description: "Provides the VpcId of the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroup.VpcId"),
 			},
 			{
-				Name:        "db_instance_port",
+				Name:        "instance_port",
 				Description: "Specifies the port that the DB instance listens on",
 				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("DbInstancePort"),
 			},
 			{
-				Name:        "dbi_resource_id",
+				Name:        "id",
 				Description: "The AWS Region-unique, immutable identifier for the DB instance",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DbiResourceId"),
 			},
 			{
 				Name:        "deletion_protection",
@@ -475,18 +479,31 @@ func RdsInstances() *schema.Table {
 				Description: "The time zone of the DB instance",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "status_infos",
+				Description: "The status of a read replica. If the instance isn't a read replica, this is  blank.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveRdsInstanceStatusInfos,
+			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_rds_instance_associated_roles",
 				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
 				Resolver:    fetchRdsInstanceAssociatedRoles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "role_arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "feature_name",
@@ -509,12 +526,19 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_instance_automated_backups_replications",
 				Description: "Automated backups of a DB instance replicated to another AWS Region",
 				Resolver:    fetchRdsInstanceDbInstanceAutomatedBackupsReplications,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_instance_automated_backups_arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "db_instance_automated_backups_arn",
@@ -528,12 +552,19 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_parameter_groups",
 				Description: "The status of the DB parameter group",
 				Resolver:    fetchRdsInstanceDbParameterGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_parameter_group_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "db_parameter_group_name",
@@ -552,12 +583,19 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_security_groups",
 				Description: "This data type is used as a response element in the following actions:  * ModifyDBInstance  * RebootDBInstance  * RestoreDBInstanceFromDBSnapshot  * RestoreDBInstanceToPointInTime ",
 				Resolver:    fetchRdsInstanceDbSecurityGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_security_group_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "db_security_group_name",
@@ -576,12 +614,19 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_subnet_group_subnets",
 				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
 				Resolver:    fetchRdsInstanceDbSubnetGroupSubnets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "subnet_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "subnet_availability_zone_name",
@@ -611,12 +656,19 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
 				Resolver:    fetchRdsInstanceDomainMemberships,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "domain"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "domain",
@@ -646,10 +698,11 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_option_group_memberships",
 				Description: "Provides information on the option groups the DB instance is a member of. ",
 				Resolver:    fetchRdsInstanceOptionGroupMemberships,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "option_group_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -666,48 +719,22 @@ func RdsInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_rds_instance_status_infos",
-				Description: "Provides a list of status information for a DB instance. ",
-				Resolver:    fetchRdsInstanceStatusInfos,
-				Columns: []schema.Column{
-					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "message",
-						Description: "Details of the error if there is an error for the instance",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "normal",
-						Description: "Boolean value that is true if the instance is operating normally, or false if the instance is in an error state.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "status",
-						Description: "Status of the DB instance",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status_type",
-						Description: "This value is currently \"read replication.\"",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
 				Name:        "aws_rds_instance_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
 				Resolver:    fetchRdsInstanceVpcSecurityGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "vpc_security_group_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
-						Description: "Unique ID of aws_rds_instances table (FK)",
+						Name:        "instance_cq_id",
+						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "instance_id",
+						Description: "The AWS Region-unique, immutable identifier for the DB instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "status",
@@ -827,13 +854,16 @@ func fetchRdsInstanceOptionGroupMemberships(ctx context.Context, meta schema.Cli
 	res <- instance.OptionGroupMemberships
 	return nil
 }
-func fetchRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	instance, ok := parent.Item.(types.DBInstance)
+func resolveRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instance, ok := resource.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
 	}
-	res <- instance.StatusInfos
-	return nil
+	data, err := json.Marshal(instance.StatusInfos)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
 }
 func fetchRdsInstanceVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)

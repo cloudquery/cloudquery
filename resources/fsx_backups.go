@@ -18,6 +18,7 @@ func FsxBackups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,9 +33,10 @@ func FsxBackups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "backup_id",
+				Name:        "id",
 				Description: "The ID of the backup.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("BackupId"),
 			},
 			{
 				Name:        "creation_time",
@@ -80,7 +82,7 @@ func FsxBackups() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "resource_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the backup resource.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ResourceARN"),

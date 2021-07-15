@@ -4,7 +4,7 @@ Describes a block device mapping.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|image_id|uuid|Unique ID of aws_ec2_images table (FK)|
+|image_id|uuid|Unique CloudQuery ID of aws_ec2_images table (FK)|
 |device_name|text|The device name (for example, /dev/sdh or xvdh).|
 |ebs_delete_on_termination|boolean|Indicates whether the EBS volume is deleted on instance termination.|
 |ebs_encrypted|boolean|Indicates whether the encryption state of an EBS volume is changed while being restored from a backing snapshot.|

@@ -4,7 +4,7 @@ This is AWS WAF Classic documentation
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|web_acl_id|uuid|Unique ID of aws_waf_web_acls table (FK)|
+|web_acl_cq_id|uuid|Unique CloudQuery ID of aws_waf_web_acls table (FK)|
 |priority|integer|Specifies the order in which the Rules in a WebACL are evaluated|
 |rule_id|text|The RuleId for a Rule|
 |action_type|text|Specifies how you want AWS WAF to respond to requests that match the settings in a Rule|

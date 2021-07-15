@@ -19,6 +19,7 @@ func ApigatewayDomainNames() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "domain_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -138,12 +139,19 @@ func ApigatewayDomainNames() *schema.Table {
 				Name:        "aws_apigateway_domain_name_base_path_mappings",
 				Description: "Represents the base path that callers of the API must provide as part of the URL after the domain name.",
 				Resolver:    fetchApigatewayDomainNameBasePathMappings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"domain_name_cq_id", "rest_api_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "domain_name_id",
-						Description: "Unique ID of aws_apigateway_domain_names table (FK)",
+						Name:        "domain_name_cq_id",
+						Description: "Unique CloudQuery ID of aws_apigateway_domain_names table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "domain_name",
+						Description: "The custom domain name as an API host name, for example, my-api.example.com.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("domain_name"),
 					},
 					{
 						Name:        "base_path",

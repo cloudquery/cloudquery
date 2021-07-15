@@ -18,7 +18,7 @@ Describes a launch configuration.
 |instance_monitoring_enabled|boolean|If true, detailed monitoring is enabled. Otherwise, basic monitoring is enabled.|
 |kernel_id|text|The ID of the kernel associated with the AMI.|
 |key_name|text|The name of the key pair. For more information, see Amazon EC2 Key Pairs (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) in the Amazon EC2 User Guide for Linux Instances.|
-|launch_configuration_arn|text|The Amazon Resource Name (ARN) of the launch configuration.|
+|arn|text|The Amazon Resource Name (ARN) of the launch configuration.|
 |metadata_options_http_endpoint|text|This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is enabled. If you specify a value of disabled, you will not be able to access your instance metadata.|
 |metadata_options_http_put_response_hop_limit|integer|The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel. Default: 1|
 |metadata_options_http_tokens|text|The state of token usage for your instance metadata requests.|

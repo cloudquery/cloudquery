@@ -16,6 +16,7 @@ func Route53ReusableDelegationSets() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,7 +32,7 @@ func Route53ReusableDelegationSets() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "resource_id",
+				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
 			},

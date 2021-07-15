@@ -34,7 +34,7 @@
 |domain_name|text||
 |enabled|boolean||
 |http_version|text||
-|resource_id|text||
+|id|text||
 |ip_v6_enabled|boolean||
 |last_modified_time|timestamp without time zone||
 |price_class|text||

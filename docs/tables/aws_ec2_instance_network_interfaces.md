@@ -4,7 +4,7 @@ Describes a network interface.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_id|uuid|Unique ID of aws_ec2_instances table (FK)|
+|instance_cq_id|uuid|Unique CloudQuery ID of aws_ec2_instances table (FK)|
 |association_carrier_ip|text|The carrier IP address associated with the network interface.|
 |association_ip_owner_id|text|The ID of the owner of the Elastic IP address.|
 |association_public_dns_name|text|The public DNS name.|

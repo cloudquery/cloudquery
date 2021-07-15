@@ -17,6 +17,9 @@ func ConfigConformancePack() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{"arn"},
+		},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,9 +34,10 @@ func ConfigConformancePack() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "conformance_pack_arn",
+				Name:        "arn",
 				Description: "Amazon Resource Name (ARN) of the conformance pack.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ConformancePackArn"),
 			},
 			{
 				Name:        "conformance_pack_id",

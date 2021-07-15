@@ -18,6 +18,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -69,19 +70,22 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Resolver:    schema.PathResolver("EndpointURL"),
 			},
 			{
-				Name:        "environment_arn",
+				Name:        "arn",
 				Description: "The environment's Amazon Resource Name (ARN), which can be used in other API requests that require an ARN.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EnvironmentArn"),
 			},
 			{
-				Name:        "environment_id",
+				Name:        "id",
 				Description: "The ID of this environment.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EnvironmentId"),
 			},
 			{
 				Name:        "environment_name",
 				Description: "The name of this environment.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EnvironmentName"),
 			},
 			{
 				Name:        "health",
@@ -165,10 +169,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Name:        "aws_elasticbeanstalk_environment_links",
 				Description: "A link to another environment, defined in the environment's manifest.",
 				Resolver:    fetchElasticbeanstalkEnvironmentLinks,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "link_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "environment_id",
-						Description: "Unique ID of aws_elasticbeanstalk_environments table (FK)",
+						Name:        "environment_cq_id",
+						Description: "Unique CloudQuery ID of aws_elasticbeanstalk_environments table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
