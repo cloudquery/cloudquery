@@ -27,7 +27,8 @@ func buildMySQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	}
 	name := "testServer"
 	server.Name = &name
-	server.ID = &fakeResourceGroup
+	fakeId := fakeResourceGroup + "/" + *server.ID
+	server.ID = &fakeId
 	page := mysql.ServerListResult{Value: &[]mysql.Server{server}}
 	serverSvc.EXPECT().List(gomock.Any()).Return(page, nil)
 

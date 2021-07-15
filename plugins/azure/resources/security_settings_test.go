@@ -43,6 +43,8 @@ func TestSecuritySettings(t *testing.T) {
 		if err := faker.FakeData(&setting); err != nil {
 			t.Fatal(err)
 		}
+		id := fakeResourceGroup + "/" + *setting.ID
+		setting.ID = &id
 		azureTestHelper(t, resources.SecuritySettings(), buildSecuritySettings(setting))
 	})
 }

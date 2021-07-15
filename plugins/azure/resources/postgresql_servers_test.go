@@ -29,7 +29,8 @@ func buildPostgresServerMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 	}
 	name := "testServer"
 	server.Name = &name
-	server.ID = &fakeResourceGroup
+	id := fakeResourceGroup + "/" + *server.ID
+	server.ID = &id
 	page := postgresql.ServerListResult{Value: &[]postgresql.Server{server}}
 	serverSvc.EXPECT().List(gomock.Any()).Return(page, nil)
 
