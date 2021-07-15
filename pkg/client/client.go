@@ -3,10 +3,11 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/cloudquery/cq-provider-sdk/provider"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -16,7 +17,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -155,11 +155,6 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 
 	var err error
-
-	if c.DSN == "" {
-		return nil, errors.New("missing DSN, make sure to pass it either cq config connection block or CLI arg --dsn")
-	}
-
 	c.Manager, err = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
 	if err != nil {
 		return nil, err
@@ -167,14 +162,18 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	if c.TableCreator == nil {
 		c.TableCreator = provider.NewMigrator(c.Logger)
 	}
-	poolCfg, err := pgxpool.ParseConfig(c.DSN)
-	if err != nil {
-		return nil, err
-	}
-	poolCfg.LazyConnect = true
-	c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
-	if err != nil {
-		return nil, err
+	if c.DSN == "" {
+		c.Logger.Warn("missing DSN, some commands won't work")
+	} else {
+		poolCfg, err := pgxpool.ParseConfig(c.DSN)
+		if err != nil {
+			return nil, err
+		}
+		poolCfg.LazyConnect = true
+		c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return c, nil
 }
@@ -193,6 +192,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			}
 		}
 	}
+	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
