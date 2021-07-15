@@ -19,6 +19,7 @@ func Apigatewayv2DomainNames() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "domain_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -71,10 +72,11 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Name:        "aws_apigatewayv2_domain_name_configurations",
 				Description: "The domain name configuration.",
 				Resolver:    fetchApigatewayv2DomainNameConfigurations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"domain_name_cq_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "domain_name_id",
-						Description: "Unique ID of aws_apigatewayv2_domain_names table (FK)",
+						Name:        "domain_name_cq_id",
+						Description: "Unique CloudQuery ID of aws_apigatewayv2_domain_names table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -129,10 +131,11 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Name:        "aws_apigatewayv2_domain_name_rest_api_mappings",
 				Description: "Represents an API mapping.",
 				Resolver:    fetchApigatewayv2DomainNameRestApiMappings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"domain_name_cq_id", "api_mapping_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "domain_name_id",
-						Description: "Unique ID of aws_apigatewayv2_domain_names table (FK)",
+						Name:        "domain_name_cq_id",
+						Description: "Unique CloudQuery ID of aws_apigatewayv2_domain_names table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

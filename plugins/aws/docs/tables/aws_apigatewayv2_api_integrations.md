@@ -4,7 +4,8 @@ Represents an integration.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|api_id|uuid|Unique ID of aws_apigatewayv2_apis table (FK)|
+|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
+|api_id|text|The API ID.|
 |api_gateway_managed|boolean|Specifies whether an integration is managed by API Gateway. If you created an API using using quick create, the resulting integration is managed by API Gateway. You can update a managed integration, but you can't delete it.|
 |connection_id|text|The ID of the VPC link for a private integration. Supported only for HTTP APIs.|
 |connection_type|text|The type of the network connection to the integration endpoint. Specify INTERNET for connections through the public routable internet or VPC_LINK for private connections between API Gateway and resources in a VPC. The default value is INTERNET.|

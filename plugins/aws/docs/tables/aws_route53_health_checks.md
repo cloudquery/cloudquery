@@ -27,7 +27,7 @@ A complex type that contains information about one health check that is associat
 |resource_path|text|The path, if any, that you want Amazon Route 53 to request when performing health checks.|
 |search_string|text|If the value of Type is HTTP_STR_MATCH or HTTPS_STR_MATCH, the string that you want Amazon Route 53 to search for in the response body from the specified resource.|
 |health_check_version|bigint|The version of the health check.|
-|resource_id|text|The identifier that Amazon Route 53 assigned to the health check when you created it.|
+|id|text|The identifier that Amazon Route 53 assigned to the health check when you created it.|
 |cloud_watch_alarm_config_comparison_operator|text|For the metric that the CloudWatch alarm is associated with, the arithmetic operation that is used for the comparison.|
 |cloud_watch_alarm_config_evaluation_periods|integer|For the metric that the CloudWatch alarm is associated with, the number of periods that the metric is compared to the threshold.|
 |cloud_watch_alarm_config_metric_name|text|The name of the CloudWatch metric that the alarm is associated with.|

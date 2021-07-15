@@ -7,4 +7,4 @@
 |account_id|text||
 |name_servers|text[]||
 |caller_reference|text||
-|resource_id|text||
+|id|text||

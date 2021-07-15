@@ -4,7 +4,8 @@ Represents an API stage.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|api_id|uuid|Unique ID of aws_apigatewayv2_apis table (FK)|
+|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
+|api_id|text|The API ID.|
 |stage_name|text|The name of the stage.|
 |access_log_settings_destination_arn|text|The ARN of the CloudWatch Logs log group to receive access logs.|
 |access_log_settings_format|text|A single line format of the access logs of data, as specified by selected $context variables. The format must include at least $context.requestId.|

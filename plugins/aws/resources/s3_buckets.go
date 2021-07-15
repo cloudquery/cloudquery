@@ -21,6 +21,7 @@ func S3Buckets() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountFilter,
 		PostResourceResolver: resolveS3BucketsAttributes,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -99,16 +100,17 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_grants",
 				Description: "Container for grant information.",
 				Resolver:    fetchS3BucketGrants,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "grantee_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
-						Description: "Unique ID of aws_s3_buckets table (FK)",
+						Name:        "bucket_cq_id",
+						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
 						Name:        "type",
-						Description: "Type of grantee  ",
+						Description: "Type of grantee",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Grantee.Type"),
 					},
@@ -147,10 +149,11 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_cors_rules",
 				Description: "Specifies a cross-origin access rule for an Amazon S3 bucket.",
 				Resolver:    fetchS3BucketCorsRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
-						Description: "Unique ID of aws_s3_buckets table (FK)",
+						Name:        "bucket_cq_id",
+						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -161,7 +164,7 @@ func S3Buckets() *schema.Table {
 					},
 					{
 						Name:        "allowed_origins",
-						Description: "One or more origins you want customers to be able to access the bucket from.  ",
+						Description: "One or more origins you want customers to be able to access the bucket from.",
 						Type:        schema.TypeStringArray,
 					},
 					{
@@ -175,7 +178,7 @@ func S3Buckets() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique identifier for the rule",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -191,16 +194,17 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_encryption_rules",
 				Description: "Specifies the default server-side encryption configuration.",
 				Resolver:    fetchS3BucketEncryptionRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
-						Description: "Unique ID of aws_s3_buckets table (FK)",
+						Name:        "bucket_cq_id",
+						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
 						Name:        "sse_algorithm",
-						Description: "Server-side encryption algorithm to use for the default encryption.  ",
+						Description: "Server-side encryption algorithm to use for the default encryption.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ApplyServerSideEncryptionByDefault.SSEAlgorithm"),
 					},
@@ -221,16 +225,17 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_replication_rules",
 				Description: "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
 				Resolver:    fetchS3BucketReplicationRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
-						Description: "Unique ID of aws_s3_buckets table (FK)",
+						Name:        "bucket_cq_id",
+						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
 						Name:        "destination_bucket",
-						Description: "The Amazon Resource Name (ARN) of the bucket where you want Amazon S3 to store the results.  ",
+						Description: "The Amazon Resource Name (ARN) of the bucket where you want Amazon S3 to store the results.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Destination.Bucket"),
 					},
@@ -254,7 +259,7 @@ func S3Buckets() *schema.Table {
 					},
 					{
 						Name:        "destination_metrics_status",
-						Description: "Specifies whether the replication metrics are enabled.  ",
+						Description: "Specifies whether the replication metrics are enabled.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Destination.Metrics.Status"),
 					},
@@ -266,7 +271,7 @@ func S3Buckets() *schema.Table {
 					},
 					{
 						Name:        "destination_replication_time_status",
-						Description: "Specifies whether the replication time is enabled.  ",
+						Description: "Specifies whether the replication time is enabled.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Destination.ReplicationTime.Status"),
 					},
@@ -284,7 +289,7 @@ func S3Buckets() *schema.Table {
 					},
 					{
 						Name:        "status",
-						Description: "Specifies whether the rule is enabled.  ",
+						Description: "Specifies whether the rule is enabled.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -294,10 +299,9 @@ func S3Buckets() *schema.Table {
 						Resolver:    schema.PathResolver("DeleteMarkerReplication.Status"),
 					},
 					{
-						Name:        "existing_object_replication_status",
-						Description: "",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ExistingObjectReplication.Status"),
+						Name:     "existing_object_replication_status",
+						Type:     schema.TypeString,
+						Resolver: schema.PathResolver("ExistingObjectReplication.Status"),
 					},
 					{
 						Name:        "filter",
@@ -306,7 +310,7 @@ func S3Buckets() *schema.Table {
 						Resolver:    resolveS3BucketReplicationRuleFilter,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "A unique identifier for the rule",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
@@ -323,13 +327,13 @@ func S3Buckets() *schema.Table {
 					},
 					{
 						Name:        "source_replica_modifications_status",
-						Description: "Specifies whether Amazon S3 replicates modifications on replicas.  ",
+						Description: "Specifies whether Amazon S3 replicates modifications on replicas.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SourceSelectionCriteria.ReplicaModifications.Status"),
 					},
 					{
 						Name:        "source_sse_kms_encrypted_objects_status",
-						Description: "Specifies whether Amazon S3 replicates objects created with server-side encryption using a customer master key (CMK) stored in AWS Key Management Service.  ",
+						Description: "Specifies whether Amazon S3 replicates objects created with server-side encryption using a customer master key (CMK) stored in AWS Key Management Service.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SourceSelectionCriteria.SseKmsEncryptedObjects.Status"),
 					},
@@ -339,10 +343,11 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_lifecycles",
 				Description: "A lifecycle rule for individual objects in an Amazon S3 bucket.",
 				Resolver:    fetchS3BucketLifecycles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
-						Description: "Unique ID of aws_s3_buckets table (FK)",
+						Name:        "bucket_cq_id",
+						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -382,7 +387,7 @@ func S3Buckets() *schema.Table {
 						Resolver:    resolveS3BucketLifecycleFilter,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "Unique identifier for the rule",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),

@@ -17,6 +17,7 @@ func Ec2ByoipCidrs() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

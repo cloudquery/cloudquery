@@ -17,6 +17,7 @@ func WafSubscribedRuleGroups() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "rule_group_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,7 +37,7 @@ func WafSubscribedRuleGroups() *schema.Table {
 			},
 			{
 				Name:        "rule_group_id",
-				Description: "A unique identifier for a RuleGroup.  ",
+				Description: "A unique identifier for a RuleGroup.",
 				Type:        schema.TypeString,
 			},
 		},

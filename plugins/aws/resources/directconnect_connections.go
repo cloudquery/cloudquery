@@ -18,6 +18,7 @@ func DirectconnectConnections() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -42,14 +43,16 @@ func DirectconnectConnections() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "connection_id",
+				Name:        "id",
 				Description: "The ID of the connection.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ConnectionId"),
 			},
 			{
-				Name:        "connection_name",
+				Name:        "name",
 				Description: "The name of the connection.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ConnectionName"),
 			},
 			{
 				Name:        "connection_state",
@@ -128,12 +131,19 @@ func DirectconnectConnections() *schema.Table {
 				Name:        "aws_directconnect_connection_mac_sec_keys",
 				Description: "The MAC Security (MACsec) security keys associated with the connection.",
 				Resolver:    fetchDirectconnectConnectionMacSecKeys,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"connection_cq_id", "secret_arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "connection_id",
-						Description: "Unique ID of aws_directconnect_connections table (FK)",
+						Name:        "connection_cq_id",
+						Description: "Unique CloudQuery ID of aws_directconnect_connections table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "connection_id",
+						Description: "The ID of the connection.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "ckn",

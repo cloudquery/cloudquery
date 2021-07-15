@@ -17,6 +17,7 @@ func SnsSubscriptions() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -46,9 +47,10 @@ func SnsSubscriptions() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "subscription_arn",
+				Name:        "arn",
 				Description: "The subscription's ARN.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SubscriptionArn"),
 			},
 			{
 				Name:        "topic_arn",

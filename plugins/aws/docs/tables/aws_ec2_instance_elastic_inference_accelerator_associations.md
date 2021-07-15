@@ -4,7 +4,7 @@ Describes the association between an instance and an elastic inference accelerat
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_id|uuid|Unique ID of aws_ec2_instances table (FK)|
+|instance_cq_id|uuid|Unique CloudQuery ID of aws_ec2_instances table (FK)|
 |elastic_inference_accelerator_arn|text|The Amazon Resource Name (ARN) of the elastic inference accelerator.|
 |elastic_inference_accelerator_association_id|text|The ID of the association.|
 |elastic_inference_accelerator_association_state|text|The state of the elastic inference accelerator.|

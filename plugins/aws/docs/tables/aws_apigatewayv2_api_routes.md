@@ -4,7 +4,8 @@ Represents a route.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|api_id|uuid|Unique ID of aws_apigatewayv2_apis table (FK)|
+|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
+|api_id|text|The API ID.|
 |route_key|text|The route key for the route.|
 |api_gateway_managed|boolean|Specifies whether a route is managed by API Gateway. If you created an API using quick create, the $default route is managed by API Gateway. You can't modify the $default route key.|
 |api_key_required|boolean|Specifies whether an API key is required for this route. Supported only for WebSocket APIs.|

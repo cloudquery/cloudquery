@@ -17,6 +17,7 @@ func ApigatewayClientCertificates() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,9 +32,10 @@ func ApigatewayClientCertificates() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "client_certificate_id",
+				Name:        "id",
 				Description: "The identifier of the client certificate.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ClientCertificateId"),
 			},
 			{
 				Name:        "created_date",

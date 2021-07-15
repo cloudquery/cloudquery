@@ -69,6 +69,7 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeData(&tempPolicyOutput); err != nil {
 		t.Fatal(err)
 	}
+	tempPolicyOutput.Policy = aws.String(`{"test": 1}`)
 	var tempTags []types.Tag
 	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)

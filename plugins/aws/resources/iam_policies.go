@@ -19,6 +19,7 @@ func IamPolicies() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -67,14 +68,16 @@ func IamPolicies() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "policy_id",
+				Name:        "id",
 				Description: "The stable and unique string identifying the policy. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide. ",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("PolicyId"),
 			},
 			{
-				Name:        "policy_name",
+				Name:        "name",
 				Description: "The friendly name (not ARN) identifying the policy. ",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("PolicyName"),
 			},
 			{
 				Name:        "update_date",
@@ -87,12 +90,19 @@ func IamPolicies() *schema.Table {
 				Name:        "aws_iam_policy_versions",
 				Description: "Contains information about a version of a managed policy.",
 				Resolver:    fetchIamPolicyVersions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"policy_cq_id", "version_id"}},
 				Columns: []schema.Column{
+					{
+						Name:        "policy_cq_id",
+						Description: "Policy CloudQuery ID the policy versions belongs too.",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
 					{
 						Name:        "policy_id",
 						Description: "Policy ID the policy versions belongs too.",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "create_date",

@@ -16,6 +16,7 @@ func ElasticsearchDomains() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,14 +37,16 @@ func ElasticsearchDomains() *schema.Table {
 				Resolver:    schema.PathResolver("ARN"),
 			},
 			{
-				Name:        "domain_id",
-				Description: "The unique identifier for the specified Elasticsearch domain.  This member is required.",
+				Name:        "id",
+				Description: "The unique identifier for the specified Elasticsearch domain.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DomainId"),
 			},
 			{
-				Name:        "domain_name",
+				Name:        "name",
 				Description: "The name of an Elasticsearch domain",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DomainName"),
 			},
 			{
 				Name:        "cluster_cold_storage_options_enabled",

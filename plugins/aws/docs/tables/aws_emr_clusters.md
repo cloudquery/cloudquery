@@ -6,8 +6,8 @@ The summary description of the cluster.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|cluster_arn|text|The Amazon Resource Name of the cluster.|
-|resource_id|text|The unique identifier for the cluster.|
+|arn|text|The Amazon Resource Name of the cluster.|
+|id|text|The unique identifier for the cluster.|
 |name|text|The name of the cluster.|
 |normalized_instance_hours|integer|An approximation of the cost of the cluster, represented in m1.|
 |outpost_arn|text|The Amazon Resource Name (ARN) of the Outpost where the cluster is launched.|

@@ -20,6 +20,7 @@ func Route53TrafficPolicies() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -28,7 +29,7 @@ func Route53TrafficPolicies() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID that Amazon Route 53 assigned to the traffic policy when you created it.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -59,10 +60,11 @@ func Route53TrafficPolicies() *schema.Table {
 				Name:        "aws_route53_traffic_policy_versions",
 				Description: "A complex type that contains settings for a traffic policy.",
 				Resolver:    fetchRoute53TrafficPolicyVersions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"traffic_policy_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "traffic_policy_id",
-						Description: "Unique ID of aws_route53_traffic_policies table (FK)",
+						Name:        "traffic_policy_cq_id",
+						Description: "Unique CloudQuery ID of aws_route53_traffic_policies table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -73,7 +75,7 @@ func Route53TrafficPolicies() *schema.Table {
 						Resolver:    resolveRoute53trafficPolicyVersionDocument,
 					},
 					{
-						Name:        "version_id",
+						Name:        "id",
 						Description: "The ID that Amazon Route 53 assigned to a traffic policy when you created it.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),

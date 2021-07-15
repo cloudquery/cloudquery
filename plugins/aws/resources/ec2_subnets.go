@@ -18,6 +18,7 @@ func Ec2Subnets() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -97,9 +98,10 @@ func Ec2Subnets() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "subnet_id",
+				Name:        "id",
 				Description: "The ID of the subnet.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SubnetId"),
 			},
 			{
 				Name:        "tags",
@@ -117,11 +119,12 @@ func Ec2Subnets() *schema.Table {
 			{
 				Name:        "aws_ec2_subnet_ipv6_cidr_block_association_sets",
 				Description: "Describes an IPv6 CIDR block associated with a subnet.",
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
 				Resolver:    fetchEc2SubnetIpv6CidrBlockAssociationSets,
 				Columns: []schema.Column{
 					{
-						Name:        "subnet_id",
-						Description: "Unique ID of aws_ec2_subnets table (FK)",
+						Name:        "subnet_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_subnets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

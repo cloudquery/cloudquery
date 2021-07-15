@@ -13,4 +13,4 @@ Describes a VPC.
 |owner_id|text|The ID of the AWS account that owns the VPC.|
 |state|text|The current state of the VPC.|
 |tags|jsonb|Any tags assigned to the VPC.|
-|vpc_id|text|The ID of the VPC.|
+|id|text|The ID of the VPC.|

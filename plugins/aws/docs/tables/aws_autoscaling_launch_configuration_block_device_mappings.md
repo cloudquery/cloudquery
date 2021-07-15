@@ -4,7 +4,7 @@ Describes a block device mapping.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|launch_configuration_id|uuid|Unique ID of aws_autoscaling_launch_configurations table (FK)|
+|launch_configuration_cq_id|uuid|Unique CloudQuery ID of aws_autoscaling_launch_configurations table (FK)|
 |device_name|text|The device name exposed to the EC2 instance (for example, /dev/sdh or xvdh). For more information, see Device Naming on Linux Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html) in the Amazon EC2 User Guide for Linux Instances.|
 |ebs_delete_on_termination|boolean|Indicates whether the volume is deleted on instance termination. For Amazon EC2 Auto Scaling, the default value is true.|
 |ebs_encrypted|boolean|Specifies whether the volume should be encrypted.|

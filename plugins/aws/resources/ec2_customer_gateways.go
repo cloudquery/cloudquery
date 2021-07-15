@@ -17,6 +17,7 @@ func Ec2CustomerGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,6 +32,12 @@ func Ec2CustomerGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "id",
+				Description: "The ID of the customer gateway.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("CustomerGatewayId"),
+			},
+			{
 				Name:        "bgp_asn",
 				Description: "The customer gateway's Border Gateway Protocol (BGP) Autonomous System Number (ASN).",
 				Type:        schema.TypeString,
@@ -41,9 +48,10 @@ func Ec2CustomerGateways() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "customer_gateway_id",
-				Description: "The ID of the customer gateway.",
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the customer gateway",
 				Type:        schema.TypeString,
+				Resolver:    resolveCustomerGatewayArn,
 			},
 			{
 				Name:        "device_name",
@@ -97,4 +105,10 @@ func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set("tags", tags)
+}
+
+func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	cg := resource.Item.(types.CustomerGateway)
+	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "customer-gateway", *cg.CustomerGatewayId, cl.Region, cl.AccountID))
 }

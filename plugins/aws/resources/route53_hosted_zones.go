@@ -20,6 +20,7 @@ func Route53HostedZones() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -33,6 +34,12 @@ func Route53HostedZones() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
+				Name:        "arn",
+				Description: "Amazon Resource Name (ARN) of the route53 hosted zone.",
+				Type:        schema.TypeString,
+				Resolver:    generateRoute53HostedZoneArn,
+			},
+			{
 				Name:        "delegation_set_id",
 				Description: "A complex type that lists the Amazon Route 53 name servers for the specified hosted zone.",
 				Type:        schema.TypeString,
@@ -43,7 +50,7 @@ func Route53HostedZones() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID that Amazon Route 53 assigned to the hosted zone when you created it.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -88,10 +95,11 @@ func Route53HostedZones() *schema.Table {
 				Name:        "aws_route53_hosted_zone_query_logging_configs",
 				Description: "A complex type that contains information about a configuration for DNS query logging.",
 				Resolver:    fetchRoute53HostedZoneQueryLoggingConfigs,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "hosted_zone_id",
-						Description: "Unique ID of aws_route53_hosted_zones table (FK)",
+						Name:        "hosted_zone_cq_id",
+						Description: "Unique CloudQuery ID of aws_route53_hosted_zones table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -101,7 +109,7 @@ func Route53HostedZones() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "query_logging_config_id",
+						Name:        "id",
 						Description: "The ID for a configuration for DNS query logging.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),
@@ -112,10 +120,11 @@ func Route53HostedZones() *schema.Table {
 				Name:        "aws_route53_hosted_zone_resource_record_sets",
 				Description: "Information about the resource record set to create or delete.",
 				Resolver:    fetchRoute53HostedZoneResourceRecordSets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "set_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "hosted_zone_id",
-						Description: "Unique ID of aws_route53_hosted_zones table (FK)",
+						Name:        "hosted_zone_cq_id",
+						Description: "Unique CloudQuery ID of aws_route53_hosted_zones table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -211,15 +220,16 @@ func Route53HostedZones() *schema.Table {
 				Name:        "aws_route53_hosted_zone_traffic_policy_instances",
 				Description: "A complex type that contains settings for the new traffic policy instance.",
 				Resolver:    fetchRoute53HostedZoneTrafficPolicyInstances,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "hosted_zone_id",
-						Description: "Unique ID of aws_route53_hosted_zones table (FK)",
+						Name:        "hosted_zone_cq_id",
+						Description: "Unique CloudQuery ID of aws_route53_hosted_zones table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "policy_id",
+						Name:        "id",
 						Description: "The ID that Amazon Route 53 assigned to the new traffic policy instance.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),
@@ -266,10 +276,11 @@ func Route53HostedZones() *schema.Table {
 				Name:        "aws_route53_hosted_zone_vpc_association_authorizations",
 				Description: "(Private hosted zones only) A complex type that contains information about an Amazon VPC.",
 				Resolver:    fetchRoute53HostedZoneVpcAssociationAuthorizations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "vpc_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "hosted_zone_id",
-						Description: "Unique ID of aws_route53_hosted_zones table (FK)",
+						Name:        "hosted_zone_cq_id",
+						Description: "Unique CloudQuery ID of aws_route53_hosted_zones table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -436,4 +447,26 @@ func fetchRoute53HostedZoneVpcAssociationAuthorizations(ctx context.Context, met
 	}
 	res <- r.VPCs
 	return nil
+}
+
+type Route53HostedZoneWrapper struct {
+	types.HostedZone
+	Tags            map[string]interface{}
+	DelegationSetId *string
+	VPCs            []types.VPC
+}
+
+func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.Tag {
+	for _, s := range set {
+		if *s.ResourceId == id {
+			return s.Tags
+		}
+	}
+	return nil
+}
+
+func generateRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	hz := resource.Item.(Route53HostedZoneWrapper)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "hostedzone", *hz.Id, cl.Region, cl.AccountID))
 }

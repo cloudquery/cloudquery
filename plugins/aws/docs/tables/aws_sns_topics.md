@@ -1,6 +1,6 @@
 
 # Table: aws_sns_topics
-A wrapper type for the topic's Amazon Resource Name (ARN).
+AWS SNS topic
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
@@ -16,4 +16,4 @@ A wrapper type for the topic's Amazon Resource Name (ARN).
 |effective_delivery_policy|jsonb|The JSON serialization of the effective delivery policy, taking system defaults into account.|
 |fifo_topic|boolean|When this is set to true, a FIFO topic is created.|
 |content_based_deduplication|boolean|Enables content-based deduplication for FIFO topics.|
-|topic_arn|text|The topic's ARN.|
+|arn|text|The topic's ARN.|

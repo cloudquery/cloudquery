@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
@@ -16,6 +17,7 @@ func EcsClusters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -40,12 +42,14 @@ func EcsClusters() *schema.Table {
 				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "cluster_arn",
-				Type: schema.TypeString,
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ClusterArn"),
 			},
 			{
-				Name: "cluster_name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ClusterName"),
 			},
 			{
 				Name:     "execute_config_kms_key_id",
@@ -113,14 +117,20 @@ func EcsClusters() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: resolveEcsClusterTags,
 			},
+			{
+				Name:     "default_capacity_provider_strategy",
+				Type:     schema.TypeJSON,
+				Resolver: resolveEcsClusterDefaultCapacityProviderStrategies,
+			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:     "aws_ecs_cluster_attachments",
 				Resolver: fetchEcsClusterAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "attachment_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "cluster_id",
+						Name:     "cluster_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -141,29 +151,6 @@ func EcsClusters() *schema.Table {
 						Name:     "details",
 						Type:     schema.TypeJSON,
 						Resolver: resolveEcsClusterAttachmentDetails,
-					},
-				},
-			},
-			{
-				Name:     "aws_ecs_cluster_default_capacity_provider_strategies",
-				Resolver: fetchEcsClusterDefaultCapacityProviderStrategies,
-				Columns: []schema.Column{
-					{
-						Name:     "cluster_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
-					},
-					{
-						Name: "capacity_provider",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "base",
-						Type: schema.TypeInt,
-					},
-					{
-						Name: "weight",
-						Type: schema.TypeInt,
 					},
 				},
 			},
@@ -200,45 +187,48 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	}
 	return nil
 }
-func resolveEcsClusterSettings(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveEcsClusterSettings(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
 	settings := make(map[string]*string)
 	for _, s := range cluster.Settings {
 		settings[string(s.Name)] = s.Value
 	}
-	return resource.Set("settings", settings)
+	return resource.Set(col.Name, settings)
 }
-func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
 	stats := make(map[string]*string)
 	for _, s := range cluster.Statistics {
 		stats[*s.Name] = s.Value
 	}
-	return resource.Set("statistics", stats)
+	return resource.Set(col.Name, stats)
 }
-func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
 	stats := make(map[string]*string)
 	for _, s := range cluster.Tags {
 		stats[*s.Key] = s.Value
 	}
-	return resource.Set("tags", stats)
+	return resource.Set(col.Name, stats)
 }
 func fetchEcsClusterAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	res <- cluster.Attachments
 	return nil
 }
-func resolveEcsClusterAttachmentDetails(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveEcsClusterAttachmentDetails(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	attachment := resource.Item.(types.Attachment)
 	details := make(map[string]*string)
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
 	}
-	return resource.Set("details", details)
+	return resource.Set(col.Name, details)
 }
-func fetchEcsClusterDefaultCapacityProviderStrategies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.DefaultCapacityProviderStrategy
-	return nil
+func resolveEcsClusterDefaultCapacityProviderStrategies(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	cluster := resource.Item.(types.Cluster)
+	data, err := json.Marshal(cluster.DefaultCapacityProviderStrategy)
+	if err != nil {
+		return err
+	}
+	return resource.Set(col.Name, data)
 }

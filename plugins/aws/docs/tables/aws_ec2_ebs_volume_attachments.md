@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|ebs_volume_id|uuid||
+|ebs_volume_cq_id|uuid||
 |attach_time|timestamp without time zone||
 |delete_on_termination|boolean||
 |device|text||

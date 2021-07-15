@@ -4,7 +4,7 @@ Describes a route in a route table.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|route_table_id|uuid|Unique ID of aws_ec2_route_tables table (FK)|
+|route_table_cq_id|uuid|Unique CloudQuery ID of aws_ec2_route_tables table (FK)|
 |carrier_gateway_id|text|The ID of the carrier gateway.|
 |destination_cidr_block|text|The IPv4 CIDR block used for the destination match.|
 |destination_ipv6_cidr_block|text|The IPv6 CIDR block used for the destination match.|

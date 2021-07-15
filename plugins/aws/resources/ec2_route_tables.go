@@ -18,6 +18,7 @@ func Ec2RouteTables() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,7 +38,7 @@ func Ec2RouteTables() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID of the route table.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RouteTableId"),
@@ -59,12 +60,19 @@ func Ec2RouteTables() *schema.Table {
 				Name:        "aws_ec2_route_table_associations",
 				Description: "Describes an association between a route table and a subnet or gateway.",
 				Resolver:    fetchEc2RouteTableAssociations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "route_table_id",
-						Description: "Unique ID of aws_ec2_route_tables table (FK)",
+						Name:        "route_table_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_route_tables table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "id",
+						Description: "The ID of the association.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("RouteTableAssociationId"),
 					},
 					{
 						Name:        "association_state",
@@ -89,11 +97,6 @@ func Ec2RouteTables() *schema.Table {
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "route_table_association_id",
-						Description: "The ID of the association.",
-						Type:        schema.TypeString,
-					},
-					{
 						Name:        "subnet_id",
 						Description: "The ID of the subnet.",
 						Type:        schema.TypeString,
@@ -104,10 +107,11 @@ func Ec2RouteTables() *schema.Table {
 				Name:        "aws_ec2_route_table_propagating_vgws",
 				Description: "Describes a virtual private gateway propagating route.",
 				Resolver:    fetchEc2RouteTablePropagatingVgws,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "gateway_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "route_table_id",
-						Description: "Unique ID of aws_ec2_route_tables table (FK)",
+						Name:        "route_table_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_route_tables table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -122,10 +126,12 @@ func Ec2RouteTables() *schema.Table {
 				Name:        "aws_ec2_route_table_routes",
 				Description: "Describes a route in a route table.",
 				Resolver:    fetchEc2RouteTableRoutes,
+				// Note: not sure about this
+				Options: schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "destination_cidr_block"}},
 				Columns: []schema.Column{
 					{
-						Name:        "route_table_id",
-						Description: "Unique ID of aws_ec2_route_tables table (FK)",
+						Name:        "route_table_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_route_tables table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

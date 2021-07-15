@@ -18,6 +18,7 @@ func Ec2Vpcs() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -68,9 +69,10 @@ func Ec2Vpcs() *schema.Table {
 				Resolver:    resolveEc2vpcTags,
 			},
 			{
-				Name:        "vpc_id",
+				Name:        "id",
 				Description: "The ID of the VPC.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VpcId"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -78,10 +80,11 @@ func Ec2Vpcs() *schema.Table {
 				Name:        "aws_ec2_vpc_cidr_block_association_sets",
 				Description: "Describes an IPv4 CIDR block associated with a VPC.",
 				Resolver:    fetchEc2VpcCidrBlockAssociationSets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_cq_id", "association_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vpc_id",
-						Description: "Unique ID of aws_ec2_vpcs table (FK)",
+						Name:        "vpc_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_vpcs table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -113,10 +116,11 @@ func Ec2Vpcs() *schema.Table {
 				Name:        "aws_ec2_vpc_ipv6_cidr_block_association_sets",
 				Description: "Describes an IPv6 CIDR block associated with a VPC.",
 				Resolver:    fetchEc2VpcIpv6CidrBlockAssociationSets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_cq_id", "association_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vpc_id",
-						Description: "Unique ID of aws_ec2_vpcs table (FK)",
+						Name:        "vpc_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_vpcs table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

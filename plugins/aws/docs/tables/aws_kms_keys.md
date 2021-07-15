@@ -22,5 +22,5 @@ Contains information about each entry in the key list.
 |origin|text|The source of the CMK's key material.|
 |signing_algorithms|text[]|The signing algorithms that the CMK supports.|
 |valid_to|timestamp without time zone|The time at which the imported key material expires.|
-|key_arn|text|ARN of the key|
+|arn|text|ARN of the key|
 |key_id|text|Unique identifier of the key|

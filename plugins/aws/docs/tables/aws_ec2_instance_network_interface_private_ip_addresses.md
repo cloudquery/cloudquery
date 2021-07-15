@@ -4,7 +4,7 @@ Describes a private IPv4 address.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_network_interface_id|uuid|Unique ID of aws_ec2_instance_network_interfaces table (FK)|
+|instance_network_interface_id|uuid|Unique CloudQuery ID of aws_ec2_instance_network_interfaces table (FK)|
 |association_carrier_ip|text|The carrier IP address associated with the network interface.|
 |association_ip_owner_id|text|The ID of the owner of the Elastic IP address.|
 |association_public_dns_name|text|The public DNS name.|

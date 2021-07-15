@@ -20,6 +20,7 @@ func CognitoUserPools() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -162,7 +163,7 @@ func CognitoUserPools() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID of the user pool.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -404,12 +405,19 @@ func CognitoUserPools() *schema.Table {
 				Name:        "aws_cognito_user_pool_schema_attributes",
 				Description: "Contains information about the schema attribute.",
 				Resolver:    fetchCognitoUserPoolSchemaAttributes,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"user_pool_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "user_pool_id",
-						Description: "Unique ID of aws_cognito_user_pools table (FK)",
+						Name:        "user_pool_cq_id",
+						Description: "Unique CloudQuery ID of aws_cognito_user_pools table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "user_pool_id",
+						Description: "The ID of the user pool.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "attribute_data_type",
@@ -469,12 +477,19 @@ func CognitoUserPools() *schema.Table {
 				Multiplex:    client.AccountRegionMultiplex,
 				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 				DeleteFilter: client.DeleteAccountRegionFilter,
+				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"user_pool_cq_id", "provider_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "user_pool_id",
-						Description: "Unique ID of aws_cognito_user_pools table (FK)",
+						Name:        "user_pool_cq_id",
+						Description: "Unique CloudQuery ID of aws_cognito_user_pools table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "user_pool_id",
+						Description: "The ID of the user pool.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "account_id",

@@ -60,11 +60,6 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.CloudwatchAlarms(),
 		},
 		{
-			resource:    "cloudtrail.trails",
-			mockBuilder: buildCloudtrailTrailsMock,
-			mainTable:   resources.CloudtrailTrails(),
-		},
-		{
 			resource:    "cloudwatchlogs.filters",
 			mockBuilder: buildCloudwatchLogsFiltersMock,
 			mainTable:   resources.CloudwatchlogsFilters(),
@@ -130,11 +125,6 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.Ec2RouteTables(),
 		},
 		{
-			resource:    "ec2.instances",
-			mockBuilder: buildEc2Instances,
-			mainTable:   resources.Ec2Instances(),
-		},
-		{
 			resource:    "ec2.security_groups",
 			mockBuilder: buildEc2SecurityGroups,
 			mainTable:   resources.Ec2SecurityGroups(),
@@ -144,11 +134,7 @@ func TestResources(t *testing.T) {
 			mockBuilder: buildEc2Subnets,
 			mainTable:   resources.Ec2Subnets(),
 		},
-		{
-			resource:    "ec2.transit_gateways",
-			mockBuilder: buildEc2TransitGateways,
-			mainTable:   resources.Ec2TransitGateways(),
-		},
+
 		{
 			resource:    "ec2.vpcs",
 			mockBuilder: buildEc2Vpcs,
@@ -160,11 +146,6 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.Ec2VpcPeeringConnections(),
 		},
 		{
-			resource:    "ec2.vpn_gateways",
-			mockBuilder: buildEc2VpnGateways,
-			mainTable:   resources.Ec2VpnGateways(),
-		},
-		{
 			resource:    "ecr.repositories",
 			mockBuilder: buildEcrRepositoriesMock,
 			mainTable:   resources.EcrRepositories(),
@@ -173,46 +154,6 @@ func TestResources(t *testing.T) {
 			resource:    "efs.filesystems",
 			mockBuilder: buildEfsFilesystemsMock,
 			mainTable:   resources.EfsFilesystems(),
-		},
-		{
-			resource:    "rds.certificates",
-			mockBuilder: buildRdsCertificates,
-			mainTable:   resources.RdsCertificates(),
-		},
-		{
-			resource:    "rds.clusters",
-			mockBuilder: buildRdsDBClusters,
-			mainTable:   resources.RdsClusters(),
-		},
-		{
-			resource:    "rds.instances",
-			mockBuilder: buildRdsDBInstances,
-			mainTable:   resources.RdsInstances(),
-		},
-		{
-			resource:    "rds.db_subnet_groups",
-			mockBuilder: buildRdsDBSubnetGroups,
-			mainTable:   resources.RdsSubnetGroups(),
-		},
-		{
-			resource:    "elasticbeanstalk.environments",
-			mockBuilder: buildElasticbeanstalkEnvironments,
-			mainTable:   resources.ElasticbeanstalkEnvironments(),
-		},
-		{
-			resource:    "elbv1.load_balancers",
-			mockBuilder: buildElbv1LoadBalancers,
-			mainTable:   resources.Elbv1LoadBalancers(),
-		},
-		{
-			resource:    "elbv2.load_balancers",
-			mockBuilder: buildElbv2LoadBalancers,
-			mainTable:   resources.Elbv2LoadBalancers(),
-		},
-		{
-			resource:    "elbv2.target_groups",
-			mockBuilder: buildElbv2TargetGroups,
-			mainTable:   resources.Elbv2TargetGroups(),
 		},
 		{
 			resource:    "emr.clusters",
@@ -279,26 +220,6 @@ func TestResources(t *testing.T) {
 			resource:    "organizations.accounts",
 			mainTable:   resources.OrganizationsAccounts(),
 			mockBuilder: buildOrganizationsAccounts,
-		},
-		{
-			resource:    "redshift.clusters",
-			mainTable:   resources.RedshiftClusters(),
-			mockBuilder: buildRedshiftClustersMock,
-		},
-		{
-			resource:    "redshift.subnet_groups",
-			mainTable:   resources.RedshiftSubnetGroups(),
-			mockBuilder: buildRedshiftSubnetGroupsMock,
-		},
-		{
-			resource:    "ecs.clusters",
-			mainTable:   resources.EcsClusters(),
-			mockBuilder: buildEcsClusterMock,
-		},
-		{
-			resource:    "cloudfront.distributions",
-			mainTable:   resources.CloudfrontDistributions(),
-			mockBuilder: buildCloudfrontDistributionsMock,
 		},
 		{
 			resource:    "cloudfront.cache_policies",

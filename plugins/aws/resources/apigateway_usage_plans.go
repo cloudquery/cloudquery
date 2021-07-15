@@ -19,6 +19,7 @@ func ApigatewayUsagePlans() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,7 +39,7 @@ func ApigatewayUsagePlans() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The identifier of a UsagePlan resource.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -94,12 +95,19 @@ func ApigatewayUsagePlans() *schema.Table {
 				Name:        "aws_apigateway_usage_plan_api_stages",
 				Description: "API stage name of the associated API stage in a usage plan.",
 				Resolver:    fetchApigatewayUsagePlanApiStages,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "api_id", "stage"}},
 				Columns: []schema.Column{
 					{
-						Name:        "usage_plan_id",
-						Description: "Unique ID of aws_apigateway_usage_plans table (FK)",
+						Name:        "usage_plan_cq_id",
+						Description: "Unique CloudQuery ID of aws_apigateway_usage_plans table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "usage_plan_id",
+						Description: "The identifier of a UsagePlan resource.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "api_id",
@@ -122,15 +130,22 @@ func ApigatewayUsagePlans() *schema.Table {
 				Name:        "aws_apigateway_usage_plan_keys",
 				Description: "Represents a usage plan key to identify a plan customer.",
 				Resolver:    fetchApigatewayUsagePlanKeys,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "usage_plan_id",
-						Description: "Unique ID of aws_apigateway_usage_plans table (FK)",
+						Name:        "usage_plan_cq_id",
+						Description: "Unique CloudQuery ID of aws_apigateway_usage_plans table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "usage_plan_id",
+						Description: "The identifier of a UsagePlan resource.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "id",
 						Description: "The Id of a usage plan key.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),

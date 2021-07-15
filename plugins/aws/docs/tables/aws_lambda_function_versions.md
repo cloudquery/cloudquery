@@ -4,7 +4,7 @@ Details about a function's configuration.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|function_id|uuid|Unique ID of aws_lambda_functions table (FK)|
+|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
 |code_sha256|text|The SHA256 hash of the function's deployment package.|
 |code_size|bigint|The size of the function's deployment package, in bytes.|
 |dead_letter_config_target_arn|text|The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.|

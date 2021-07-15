@@ -4,7 +4,7 @@ An object that describes an image returned by a DescribeImages operation.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|repository_id|uuid|Unique ID of aws_ecr_repositories table (FK)|
+|repository_cq_id|uuid|Unique CloudQuery ID of aws_ecr_repositories table (FK)|
 |account_id|text|The AWS Account ID of the resource.|
 |region|text||
 |artifact_media_type|text|The artifact media type of the image.|

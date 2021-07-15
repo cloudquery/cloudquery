@@ -9,5 +9,5 @@ A wrapper type for the attributes of an Amazon SNS subscription.
 |endpoint|text|The subscription's endpoint (format depends on the protocol).|
 |owner|text|The subscription's owner.|
 |protocol|text|The subscription's protocol.|
-|subscription_arn|text|The subscription's ARN.|
+|arn|text|The subscription's ARN.|
 |topic_arn|text|The ARN of the subscription's topic.|

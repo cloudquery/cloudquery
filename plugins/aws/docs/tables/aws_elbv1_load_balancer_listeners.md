@@ -4,7 +4,8 @@ The policies enabled for a listener.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|load_balancer_id|uuid|Unique ID of aws_elbv1_load_balancers table (FK)|
+|load_balancer_cq_id|uuid|Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)|
+|load_balance_name|text|The name of the load balancer.|
 |listener_instance_port|integer|The port on which the instance is listening.|
 |listener_load_balancer_port|integer|The port on which the load balancer is listening.|
 |listener_protocol|text|The load balancer transport protocol to use for routing: HTTP, HTTPS, TCP, or SSL.|

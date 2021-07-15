@@ -21,6 +21,6 @@ Contains a cache policy.
 |query_strings_quantity|integer|The number of query string names in the Items list|
 |query_strings|text[]|A list of query string names|
 |enable_accept_encoding_brotli|boolean|A flag that can affect whether the Accept-Encoding HTTP header is included in the cache key and included in requests that CloudFront sends to the origin|
-|resource_id|text|The unique identifier for the cache policy|
+|id|text|The unique identifier for the cache policy|
 |last_modified_time|timestamp without time zone|The date and time when the cache policy was last modified|
 |type|text|The type of cache policy, either managed (created by AWS) or custom (created in this AWS account)|

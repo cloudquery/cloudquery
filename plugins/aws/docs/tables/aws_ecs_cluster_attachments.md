@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|cluster_id|uuid||
+|cluster_cq_id|uuid||
 |attachment_id|text||
 |status|text||
 |type|text||

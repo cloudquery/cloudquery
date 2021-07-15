@@ -27,11 +27,17 @@ func IamUsers() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountFilter,
 		PostResourceResolver: postIamUserResolver,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UserId"),
 			},
 			{
 				Name: "password_last_used",
@@ -131,11 +137,17 @@ func IamUsers() *schema.Table {
 				Name:                 "aws_iam_user_access_keys",
 				Resolver:             fetchIamUserAccessKeys,
 				PostResourceResolver: postIamUserAccessKeyResolver,
+				Options:              schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "access_key_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "user_id",
+						Name:     "user_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
+					},
+					{
+						Name:     "user_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("user_id"),
 					},
 					{
 						Name: "access_key_id",
@@ -166,11 +178,17 @@ func IamUsers() *schema.Table {
 			{
 				Name:     "aws_iam_user_groups",
 				Resolver: fetchIamUserGroups,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "group_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "user_id",
+						Name:     "user_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
+					},
+					{
+						Name:     "user_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("user_id"),
 					},
 					{
 						Name: "arn",
@@ -197,11 +215,17 @@ func IamUsers() *schema.Table {
 			{
 				Name:     "aws_iam_user_attached_policies",
 				Resolver: fetchIamUserAttachedPolicies,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "policy_name"}},
 				Columns: []schema.Column{
 					{
-						Name:     "user_id",
+						Name:     "user_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
+					},
+					{
+						Name:     "user_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("user_id"),
 					},
 					{
 						Name: "policy_arn",

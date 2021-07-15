@@ -4,7 +4,7 @@ Describes an IPv6 CIDR block associated with a VPC.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|vpc_id|uuid|Unique ID of aws_ec2_vpcs table (FK)|
+|vpc_cq_id|uuid|Unique CloudQuery ID of aws_ec2_vpcs table (FK)|
 |association_id|text|The association ID for the IPv6 CIDR block.|
 |ipv6_cidr_block|text|The IPv6 CIDR block.|
 |ipv6_cidr_block_state|text|The state of the CIDR block.|

@@ -4,8 +4,8 @@ A complex type that contains settings for the new traffic policy instance.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|hosted_zone_id|uuid|Unique ID of aws_route53_hosted_zones table (FK)|
-|policy_id|text|The ID that Amazon Route 53 assigned to the new traffic policy instance.|
+|hosted_zone_cq_id|uuid|Unique CloudQuery ID of aws_route53_hosted_zones table (FK)|
+|id|text|The ID that Amazon Route 53 assigned to the new traffic policy instance.|
 |message|text|If State is Failed, an explanation of the reason for the failure.|
 |name|text|The DNS name, such as www.|
 |state|text|The value of State is one of the following values: Applied Amazon Route 53 has finished creating resource record sets, and changes have propagated to all Route 53 edge locations.|

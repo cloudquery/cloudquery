@@ -4,7 +4,7 @@ Describes an entry in a network ACL.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|network_acl_id|uuid|Unique ID of aws_ec2_network_acls table (FK)|
+|network_acl_cq_id|uuid|Unique CloudQuery ID of aws_ec2_network_acls table (FK)|
 |cidr_block|text|The IPv4 network range to allow or deny, in CIDR notation.|
 |egress|boolean|Indicates whether the rule is an egress rule (applied to traffic leaving the subnet).|
 |icmp_type_code|integer|The ICMP code.|

@@ -18,6 +18,7 @@ func Ec2VpcPeeringConnections() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -163,9 +164,10 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Resolver:    resolveEc2vpcPeeringConnectionTags,
 			},
 			{
-				Name:        "vpc_peering_connection_id",
+				Name:        "id",
 				Description: "The ID of the VPC peering connection.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VpcPeeringConnectionId"),
 			},
 		},
 	}

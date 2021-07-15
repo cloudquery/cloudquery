@@ -19,6 +19,7 @@ func WafWebAcls() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -44,7 +45,7 @@ func WafWebAcls() *schema.Table {
 				Resolver:    schema.PathResolver("DefaultAction.Type"),
 			},
 			{
-				Name:        "web_acl_id",
+				Name:        "id",
 				Description: "A unique identifier for a WebACL",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("WebACLId"),
@@ -60,7 +61,7 @@ func WafWebAcls() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "web_acl_arn",
+				Name:        "arn",
 				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("WebACLArn"),
@@ -71,10 +72,11 @@ func WafWebAcls() *schema.Table {
 				Name:        "aws_waf_web_acl_rules",
 				Description: "This is AWS WAF Classic documentation",
 				Resolver:    fetchWafWebAclRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "rule_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "web_acl_id",
-						Description: "Unique ID of aws_waf_web_acls table (FK)",
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_waf_web_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

@@ -19,6 +19,7 @@ func Route53HealthChecks() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -156,7 +157,7 @@ func Route53HealthChecks() *schema.Table {
 				Type:        schema.TypeBigInt,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The identifier that Amazon Route 53 assigned to the health check when you created it.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -294,4 +295,9 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 		tags[*t.Name] = t.Value
 	}
 	return resource.Set(c.Name, tags)
+}
+
+type Route53HealthCheckWrapper struct {
+	types.HealthCheck
+	Tags map[string]interface{}
 }

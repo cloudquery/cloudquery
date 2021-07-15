@@ -4,7 +4,7 @@ A mapping between an AWS resource and an AWS Lambda function
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|function_id|uuid|Unique ID of aws_lambda_functions table (FK)|
+|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
 |batch_size|integer|The maximum number of items to retrieve in a single batch.|
 |bisect_batch_on_function_error|boolean|(Streams) If the function returns an error, split the batch in two and retry. The default value is false.|
 |on_failure_destination|text|The Amazon Resource Name (ARN) of the destination resource.|
@@ -27,3 +27,4 @@ A mapping between an AWS resource and an AWS Lambda function
 |topics|text[]|The name of the Kafka topic.|
 |tumbling_window_in_seconds|integer|(Streams) The duration in seconds of a processing window|
 |uuid|text|The identifier of the event source mapping.|
+|source_access_configurations|jsonb|An array of the authentication protocol, or the VPC components to secure your event source.|

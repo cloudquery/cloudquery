@@ -18,6 +18,7 @@ func Ec2InternetGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,9 +33,10 @@ func Ec2InternetGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "internet_gateway_id",
+				Name:        "id",
 				Description: "The ID of the internet gateway.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("InternetGatewayId"),
 			},
 			{
 				Name:        "owner_id",
@@ -53,10 +55,11 @@ func Ec2InternetGateways() *schema.Table {
 				Name:        "aws_ec2_internet_gateway_attachments",
 				Description: "Describes the attachment of a VPC to an internet gateway or an egress-only internet gateway.",
 				Resolver:    fetchEc2InternetGatewayAttachments,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"internet_gateway_cq_id", "vpc_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "internet_gateway_id",
-						Description: "Unique ID of aws_ec2_internet_gateways table (FK)",
+						Name:        "internet_gateway_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_internet_gateways table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

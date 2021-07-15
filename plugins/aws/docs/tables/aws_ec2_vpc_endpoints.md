@@ -19,6 +19,6 @@ Describes a VPC endpoint.
 |state|text|The state of the VPC endpoint.|
 |subnet_ids|text[]|(Interface endpoint) One or more subnets in which the endpoint is located.|
 |tags|jsonb|Any tags assigned to the VPC endpoint.|
-|vpc_endpoint_id|text|The ID of the VPC endpoint.|
+|id|text|The ID of the VPC endpoint.|
 |vpc_endpoint_type|text|The type of endpoint.|
 |vpc_id|text|The ID of the VPC to which the endpoint is associated.|

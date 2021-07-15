@@ -4,9 +4,9 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |domain_name|text||
-|origin_id|text||
+|id|text||
 |connection_attempts|integer||
 |connection_timeout|integer||
 |custom_headers|jsonb||

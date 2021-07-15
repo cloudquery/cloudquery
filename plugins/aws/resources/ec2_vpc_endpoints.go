@@ -19,6 +19,7 @@ func Ec2VpcEndpoints() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -101,9 +102,10 @@ func Ec2VpcEndpoints() *schema.Table {
 				Resolver:    resolveEc2vpcEndpointTags,
 			},
 			{
-				Name:        "vpc_endpoint_id",
+				Name:        "id",
 				Description: "The ID of the VPC endpoint.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("VpcEndpointId"),
 			},
 			{
 				Name:        "vpc_endpoint_type",
@@ -121,10 +123,11 @@ func Ec2VpcEndpoints() *schema.Table {
 				Name:        "aws_ec2_vpc_endpoint_dns_entries",
 				Description: "Describes a DNS entry.",
 				Resolver:    fetchEc2VpcEndpointDnsEntries,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "dns_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vpc_endpoint_id",
-						Description: "Unique ID of aws_ec2_vpc_endpoints table (FK)",
+						Name:        "vpc_endpoint_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_vpc_endpoints table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -144,10 +147,11 @@ func Ec2VpcEndpoints() *schema.Table {
 				Name:        "aws_ec2_vpc_endpoint_groups",
 				Description: "Describes a security group.",
 				Resolver:    fetchEc2VpcEndpointGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "group_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "vpc_endpoint_id",
-						Description: "Unique ID of aws_ec2_vpc_endpoints table (FK)",
+						Name:        "vpc_endpoint_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_vpc_endpoints table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

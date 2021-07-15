@@ -7,7 +7,7 @@ An object representing an Amazon Cognito identity pool.
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |allow_unauthenticated_identities|boolean|TRUE if the identity pool supports unauthenticated logins.|
-|identity_pool_id|text|An identity pool ID in the format REGION:GUID.|
+|id|text|An identity pool ID in the format REGION:GUID.|
 |identity_pool_name|text|A string that you provide.|
 |allow_classic_flow|boolean|Enables or disables the Basic (Classic) authentication flow|
 |developer_provider_name|text|The "domain" by which Cognito will refer to your users.|

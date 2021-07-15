@@ -18,6 +18,7 @@ func Ec2NatGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,6 +31,12 @@ func Ec2NatGateways() *schema.Table {
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "id",
+				Description: "The ID of the NAT gateway.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("NatGatewayId"),
 			},
 			{
 				Name:        "create_time",
@@ -49,11 +56,6 @@ func Ec2NatGateways() *schema.Table {
 			{
 				Name:        "failure_message",
 				Description: "If the NAT gateway could not be created, specifies the error message for the failure, that corresponds to the error code.",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "nat_gateway_id",
-				Description: "The ID of the NAT gateway.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -113,10 +115,11 @@ func Ec2NatGateways() *schema.Table {
 				Name:        "aws_ec2_nat_gateway_addresses",
 				Description: "Describes the IP addresses and network interface associated with a NAT gateway.",
 				Resolver:    fetchEc2NatGatewayAddresses,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"nat_gateway_cq_id", "allocation_id", "network_interface_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "nat_gateway_id",
-						Description: "Unique ID of aws_ec2_nat_gateways table (FK)",
+						Name:        "nat_gateway_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_nat_gateways table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

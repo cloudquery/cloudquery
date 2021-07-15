@@ -15,19 +15,19 @@ Contains the details of an Amazon RDS DB instance
 |character_set_name|text|If present, specifies the name of the character set that this instance is associated with.|
 |copy_tags_to_snapshot|boolean|Specifies whether tags are copied from the DB instance to snapshots of the DB instance|
 |customer_owned_ip_enabled|boolean|Specifies whether a customer-owned IP address (CoIP) is enabled for an RDS on Outposts DB instance|
-|db_cluster_identifier|text|If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.|
-|db_instance_arn|text|The Amazon Resource Name (ARN) for the DB instance.|
+|cluster_identifier|text|If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.|
+|arn|text|The Amazon Resource Name (ARN) for the DB instance.|
 |db_instance_class|text|Contains the name of the compute and memory capacity class of the DB instance.|
-|db_instance_identifier|text|Contains a user-supplied database identifier|
+|user_instance_id|text|Contains a user-supplied database identifier|
 |db_instance_status|text|Specifies the current state of this database|
 |db_name|text|The meaning of this parameter differs according to the database engine you use. MySQL, MariaDB, SQL Server, PostgreSQL Contains the name of the initial database of this instance that was provided at create time, if one was specified when the DB instance was created|
-|db_subnet_group_arn|text|The Amazon Resource Name (ARN) for the DB subnet group.|
-|db_subnet_group_description|text|Provides the description of the DB subnet group.|
-|db_subnet_group_name|text|The name of the DB subnet group.|
-|db_subnet_group_subnet_group_status|text|Provides the status of the DB subnet group.|
-|db_subnet_group_vpc_id|text|Provides the VpcId of the DB subnet group.|
-|db_instance_port|integer|Specifies the port that the DB instance listens on|
-|dbi_resource_id|text|The AWS Region-unique, immutable identifier for the DB instance|
+|subnet_group_arn|text|The Amazon Resource Name (ARN) for the DB subnet group.|
+|subnet_group_description|text|Provides the description of the DB subnet group.|
+|subnet_group_name|text|The name of the DB subnet group.|
+|subnet_group_subnet_group_status|text|Provides the status of the DB subnet group.|
+|subnet_group_vpc_id|text|Provides the VpcId of the DB subnet group.|
+|instance_port|integer|Specifies the port that the DB instance listens on|
+|id|text|The AWS Region-unique, immutable identifier for the DB instance|
 |deletion_protection|boolean|Indicates if the DB instance has deletion protection enabled|
 |enabled_cloudwatch_logs_exports|text[]|A list of log types that this DB instance is configured to export to CloudWatch Logs|
 |endpoint_address|text|Specifies the DNS address of the DB instance.|
@@ -86,3 +86,4 @@ Contains the details of an Amazon RDS DB instance
 |tags|jsonb|A list of tags|
 |tde_credential_arn|text|The ARN from the key store with which the instance is associated for TDE encryption.|
 |timezone|text|The time zone of the DB instance|
+|status_infos|jsonb|The status of a read replica. If the instance isn't a read replica, this is  blank.|

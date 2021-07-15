@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |error_code|integer||
 |error_caching_min_ttl|bigint||
 |response_code|text||

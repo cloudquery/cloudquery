@@ -19,6 +19,6 @@ Describes a subnet.
 |owner_id|text|The ID of the AWS account that owns the subnet.|
 |state|text|The current state of the subnet.|
 |subnet_arn|text|The Amazon Resource Name (ARN) of the subnet.|
-|subnet_id|text|The ID of the subnet.|
+|id|text|The ID of the subnet.|
 |tags|jsonb|Any tags assigned to the subnet.|
 |vpc_id|text|The ID of the VPC the subnet is in.|

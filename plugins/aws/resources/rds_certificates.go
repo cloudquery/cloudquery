@@ -12,11 +12,12 @@ import (
 func RdsCertificates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_rds_certificates",
-		Description:  "A CA certificate for an AWS account. ",
+		Description:  "A CA certificate for an AWS account.",
 		Resolver:     fetchRdsCertificates,
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,9 +31,10 @@ func RdsCertificates() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "certificate_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the certificate.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("CertificateArn"),
 			},
 			{
 				Name:        "certificate_identifier",

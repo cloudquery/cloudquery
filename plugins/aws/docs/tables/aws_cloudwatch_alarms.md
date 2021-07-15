@@ -7,11 +7,11 @@ The details about a metric alarm.
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |actions_enabled|boolean|Indicates whether actions should be executed during any changes to the alarm state.|
-|alarm_actions|text[]|The actions to execute when this alarm transitions to the ALARM state from any other state.|
-|alarm_arn|text|The Amazon Resource Name (ARN) of the alarm.|
-|alarm_configuration_updated_timestamp|timestamp without time zone|The time stamp of the last update to the alarm configuration.|
-|alarm_description|text|The description of the alarm.|
-|alarm_name|text|The name of the alarm.|
+|actions|text[]|The actions to execute when this alarm transitions to the ALARM state from any other state.|
+|arn|text|The Amazon Resource Name (ARN) of the alarm.|
+|configuration_updated_timestamp|timestamp without time zone|The time stamp of the last update to the alarm configuration.|
+|description|text|The description of the alarm.|
+|name|text|The name of the alarm.|
 |comparison_operator|text|The arithmetic operation to use when comparing the specified statistic and threshold.|
 |datapoints_to_alarm|integer|The number of data points that must be breaching to trigger the alarm.|
 |dimensions|jsonb|The dimensions for the metric associated with the alarm.|

@@ -26,8 +26,8 @@ AWS Lambda is a serverless compute service that lets you run code without provis
 |environment_error_code|text||
 |environment_error_message|text||
 |environment_variables|jsonb||
-|function_arn|text||
-|function_name|text||
+|arn|text||
+|name|text||
 |handler|text||
 |error_code|text||
 |error_message|text||

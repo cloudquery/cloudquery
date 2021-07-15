@@ -19,6 +19,7 @@ func WafRules() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -36,9 +37,10 @@ func WafRules() *schema.Table {
 				Resolver: resolveWafRuleTags,
 			},
 			{
-				Name:        "rule_id",
+				Name:        "id",
 				Description: "A unique identifier for a Rule",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RuleId"),
 			},
 			{
 				Name:        "metric_name",
@@ -56,10 +58,11 @@ func WafRules() *schema.Table {
 				Name:        "aws_waf_rule_predicates",
 				Description: "This is AWS WAF Classic documentation",
 				Resolver:    fetchWafRulePredicates,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"rule_cq_id", "data_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "rule_id",
-						Description: "Unique ID of aws_waf_rules table (FK)",
+						Name:        "rule_cq_id",
+						Description: "Unique CloudQuery ID of aws_waf_rules table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -75,7 +78,7 @@ func WafRules() *schema.Table {
 					},
 					{
 						Name:        "type",
-						Description: "The type of predicate in a Rule, such as ByteMatch or IPSet.  ",
+						Description: "The type of predicate in a Rule, such as ByteMatch or IPSet.",
 						Type:        schema.TypeString,
 					},
 				},

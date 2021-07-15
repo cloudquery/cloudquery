@@ -4,6 +4,7 @@ This data type is used as a response element in the following actions:  * Modify
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_id|uuid|Unique ID of aws_rds_instances table (FK)|
+|instance_cq_id|uuid|Unique CloudQuery ID of aws_rds_instances table (FK)|
+|instance_id|text|The AWS Region-unique, immutable identifier for the DB instance|
 |db_security_group_name|text|The name of the DB security group.|
 |status|text|The status of the DB security group.|

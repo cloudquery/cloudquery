@@ -17,6 +17,7 @@ func Ec2TransitGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -99,8 +100,9 @@ func Ec2TransitGateways() *schema.Table {
 				Resolver: schema.PathResolver("Options.TransitGatewayCidrBlocks"),
 			},
 			{
-				Name: "transit_gateway_id",
-				Type: schema.TypeString,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitGatewayId"),
 			},
 			{
 				Name:     "vpn_ecmp_support",
@@ -112,9 +114,10 @@ func Ec2TransitGateways() *schema.Table {
 			{
 				Name:     "aws_ec2_transit_gateway_attachments",
 				Resolver: fetchEc2TransitGatewayAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"transit_gateway_cq_id", "resource_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "transit_gateway_id",
+						Name:     "transit_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -162,9 +165,10 @@ func Ec2TransitGateways() *schema.Table {
 			{
 				Name:     "aws_ec2_transit_gateway_route_tables",
 				Resolver: fetchEc2TransitGatewayRouteTables,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"transit_gateway_cq_id", "transit_gateway_route_table_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "transit_gateway_id",
+						Name:     "transit_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -198,9 +202,10 @@ func Ec2TransitGateways() *schema.Table {
 			{
 				Name:     "aws_ec2_transit_gateway_vpc_attachments",
 				Resolver: fetchEc2TransitGatewayVpcAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"transit_gateway_cq_id", "vpc_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "transit_gateway_id",
+						Name:     "transit_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -249,9 +254,10 @@ func Ec2TransitGateways() *schema.Table {
 			{
 				Name:     "aws_ec2_transit_gateway_peering_attachments",
 				Resolver: fetchEc2TransitGatewayPeeringAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"transit_gateway_cq_id", "transit_gateway_attachment_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "transit_gateway_id",
+						Name:     "transit_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},
@@ -317,9 +323,10 @@ func Ec2TransitGateways() *schema.Table {
 			{
 				Name:     "aws_ec2_transit_gateway_multicast_domains",
 				Resolver: fetchEc2TransitGatewayMulticastDomains,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"transit_gateway_cq_id", "transit_gateway_multicast_domain_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "transit_gateway_id",
+						Name:     "transit_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},

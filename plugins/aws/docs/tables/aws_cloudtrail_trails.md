@@ -33,4 +33,4 @@ The settings for a trail.
 |s3_key_prefix|text|Specifies the Amazon S3 key prefix that comes after the name of the bucket you have designated for log file delivery.|
 |sns_topic_arn|text|Specifies the ARN of the Amazon SNS topic that CloudTrail uses to send notifications when log files are delivered.|
 |sns_topic_name|text|This field is no longer in use.|
-|trail_arn|text|Specifies the ARN of the trail.|
+|arn|text|Specifies the ARN of the trail.|

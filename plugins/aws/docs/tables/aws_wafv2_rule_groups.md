@@ -10,7 +10,7 @@ A rule group defines a collection of rules to inspect and control web requests t
 |policy|jsonb||
 |arn|text|The Amazon Resource Name (ARN) of the entity.  |
 |capacity|bigint|The web ACL capacity units (WCUs) required for this rule group|
-|resource_id|text|A unique identifier for the rule group|
+|id|text|A unique identifier for the rule group|
 |name|text|The name of the rule group|
 |visibility_config_cloud_watch_metrics_enabled|boolean|A boolean indicating whether the associated resource sends metrics to CloudWatch|
 |visibility_config_metric_name|text|A name of the CloudWatch metric|
@@ -19,3 +19,5 @@ A rule group defines a collection of rules to inspect and control web requests t
 |description|text|A description of the rule group that helps with identification.|
 |label_namespace|text|The label namespace prefix for this rule group|
 |rules|jsonb|The Rule statements used to identify the web requests that you want to allow, block, or count|
+|available_labels|text[]|The labels that one or more rules in this rule group add to matching web ACLs.|
+|consumed_labels|text[]|The labels that one or more rules in this rule group add to matching web ACLs.|

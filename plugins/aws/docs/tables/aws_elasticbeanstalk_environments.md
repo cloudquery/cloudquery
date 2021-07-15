@@ -13,8 +13,8 @@ Describes the properties of an environment.
 |date_updated|timestamp without time zone|The last modified date for this environment.|
 |description|text|Describes this environment.|
 |endpoint_url|text|For load-balanced, autoscaling environments, the URL to the LoadBalancer.|
-|environment_arn|text|The environment's Amazon Resource Name (ARN), which can be used in other API requests that require an ARN.|
-|environment_id|text|The ID of this environment.|
+|arn|text|The environment's Amazon Resource Name (ARN), which can be used in other API requests that require an ARN.|
+|id|text|The ID of this environment.|
 |environment_name|text|The name of this environment.|
 |health|text|Describes the health status of the environment.|
 |health_status|text|Returns the health status of the application running in your environment.|

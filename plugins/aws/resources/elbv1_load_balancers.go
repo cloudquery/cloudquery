@@ -19,6 +19,7 @@ func Elbv1LoadBalancers() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -145,9 +146,10 @@ func Elbv1LoadBalancers() *schema.Table {
 				Resolver:    resolveElbv1loadBalancerInstances,
 			},
 			{
-				Name:        "load_balancer_name",
+				Name:        "name",
 				Description: "The name of the load balancer.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("LoadBalancerName"),
 			},
 			{
 				Name:        "other_policies",
@@ -193,13 +195,20 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:        "aws_elbv1_load_balancer_backend_server_descriptions",
 				Description: "Information about the configuration of an EC2 instance.",
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "instance_port"}},
 				Resolver:    fetchElbv1LoadBalancerBackendServerDescriptions,
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv1_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "instance_port",
@@ -217,12 +226,19 @@ func Elbv1LoadBalancers() *schema.Table {
 				Name:        "aws_elbv1_load_balancer_listeners",
 				Description: "The policies enabled for a listener.",
 				Resolver:    fetchElbv1LoadBalancerListeners,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "listener_instance_port", "listener_load_balancer_port"}},
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv1_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "load_balance_name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "listener_instance_port",
@@ -262,15 +278,22 @@ func Elbv1LoadBalancers() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_elbv1_load_balancer_policies_app_cookie_stickiness_policies",
+				Name:        "aws_elbv1_load_balancer_policies_app_cookie_stickiness",
 				Description: "Information about a policy for application-controlled session stickiness.",
 				Resolver:    fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "cookie_name", "policy_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv1_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "load_balance_name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "cookie_name",
@@ -285,15 +308,22 @@ func Elbv1LoadBalancers() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_elbv1_load_balancer_policies_lb_cookie_stickiness_policies",
+				Name:        "aws_elbv1_load_balancer_policies_lb_cookie_stickiness",
 				Description: "Information about a policy for duration-based session stickiness.",
 				Resolver:    fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "policy_name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv1_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "load_balance_name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "cookie_expiration_period",
@@ -310,13 +340,20 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:        "aws_elbv1_load_balancer_policies",
 				Description: "Information about a policy.",
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "policy_name"}},
 				Resolver:    fetchElbv1LoadBalancerPolicies,
 				Columns: []schema.Column{
 					{
-						Name:        "load_balancer_id",
-						Description: "Unique ID of aws_elbv1_load_balancers table (FK)",
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "load_balance_name",
+						Description: "The name of the load balancer.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "policy_attribute_descriptions",

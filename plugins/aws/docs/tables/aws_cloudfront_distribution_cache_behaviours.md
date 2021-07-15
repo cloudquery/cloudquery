@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |path_pattern|text||
 |target_origin_id|text||
 |viewer_protocol_policy|text||

@@ -18,6 +18,7 @@ func Ec2NetworkAcls() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,9 +38,10 @@ func Ec2NetworkAcls() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "network_acl_id",
+				Name:        "id",
 				Description: "The ID of the network ACL.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("NetworkAclId"),
 			},
 			{
 				Name:        "owner_id",
@@ -63,10 +65,11 @@ func Ec2NetworkAcls() *schema.Table {
 				Name:        "aws_ec2_network_acl_associations",
 				Description: "Describes an association between a network ACL and a subnet.",
 				Resolver:    fetchEc2NetworkAclAssociations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"network_acl_cq_id", "network_acl_association_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "network_acl_id",
-						Description: "Unique ID of aws_ec2_network_acls table (FK)",
+						Name:        "network_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_network_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -86,10 +89,11 @@ func Ec2NetworkAcls() *schema.Table {
 				Name:        "aws_ec2_network_acl_entries",
 				Description: "Describes an entry in a network ACL.",
 				Resolver:    fetchEc2NetworkAclEntries,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"network_acl_cq_id", "egress", "rule_number"}},
 				Columns: []schema.Column{
 					{
-						Name:        "network_acl_id",
-						Description: "Unique ID of aws_ec2_network_acls table (FK)",
+						Name:        "network_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_network_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

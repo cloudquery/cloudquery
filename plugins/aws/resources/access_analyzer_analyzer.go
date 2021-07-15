@@ -20,6 +20,7 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -85,10 +86,11 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 				Name:        "aws_access_analyzer_analyzer_findings",
 				Description: "Contains information about a finding.",
 				Resolver:    fetchAccessAnalyzerAnalyzerFindings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"analyzer_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "analyzer_id",
-						Description: "Analyzer ID that belongs to aws_access_analyzer_analyzers",
+						Name:        "analyzer_cq_id",
+						Description: "Analyzer CloudQuery ID that belongs to aws_access_analyzer_analyzers",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -108,7 +110,7 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "finding_id",
+						Name:        "id",
 						Description: "The ID of the finding.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),
@@ -164,10 +166,11 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 						Name:        "aws_access_analyzer_analyzer_finding_sources",
 						Description: "The source of the finding.",
 						Resolver:    fetchAccessAnalyzerAnalyzerFindingSources,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"analyzer_finding_cq_id", "type", "detail_access_point_arn"}},
 						Columns: []schema.Column{
 							{
-								Name:        "analyzer_finding_id",
-								Description: "AnalyzerFinding ID that belongs to aws_access_analyzer_analyzer_findings",
+								Name:        "analyzer_finding_cq_id",
+								Description: "AnalyzerFinding CloudQuery ID that belongs to aws_access_analyzer_analyzer_findings",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},

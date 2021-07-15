@@ -18,6 +18,7 @@ func EcrRepositories() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -88,10 +89,11 @@ func EcrRepositories() *schema.Table {
 				Name:        "aws_ecr_repository_images",
 				Description: "An object that describes an image returned by a DescribeImages operation.",
 				Resolver:    fetchEcrRepositoryImages,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"repository_cq_id", "image_digest"}},
 				Columns: []schema.Column{
 					{
-						Name:        "repository_id",
-						Description: "Unique ID of aws_ecr_repositories table (FK)",
+						Name:        "repository_cq_id",
+						Description: "Unique CloudQuery ID of aws_ecr_repositories table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

@@ -4,7 +4,7 @@ The domain name configuration.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|domain_name_id|uuid|Unique ID of aws_apigatewayv2_domain_names table (FK)|
+|domain_name_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_domain_names table (FK)|
 |api_gateway_domain_name|text|A domain name for the API.|
 |certificate_arn|text|An AWS-managed certificate that will be used by the edge-optimized endpoint for this domain name. AWS Certificate Manager is the only supported source.|
 |certificate_name|text|The user-friendly name of the certificate that will be used by the edge-optimized endpoint for this domain name.|

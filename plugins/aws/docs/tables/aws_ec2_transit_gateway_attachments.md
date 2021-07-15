@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|transit_gateway_id|uuid||
+|transit_gateway_cq_id|uuid||
 |association_state|text||
 |association_route_table_id|text||
 |creation_time|timestamp without time zone||

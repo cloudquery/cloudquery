@@ -4,6 +4,6 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |cname|text||
 |icp_recordal_status|text||

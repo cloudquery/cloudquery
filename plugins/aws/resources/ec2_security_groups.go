@@ -18,6 +18,7 @@ func Ec2SecurityGroups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,9 +38,10 @@ func Ec2SecurityGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "group_id",
+				Name:        "id",
 				Description: "The ID of the security group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("GroupId"),
 			},
 			{
 				Name:        "group_name",
@@ -59,7 +61,7 @@ func Ec2SecurityGroups() *schema.Table {
 			},
 			{
 				Name:        "vpc_id",
-				Description: "[VPC only] The ID of the VPC for the security group.",
+				Description: "The ID of the VPC for the security group.",
 				Type:        schema.TypeString,
 			},
 		},
@@ -68,10 +70,11 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "aws_ec2_security_group_ip_permissions",
 				Description: "Describes a set of permissions for a security group rule.",
 				Resolver:    fetchEc2SecurityGroupIpPermissions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "from_port", "to_port"}},
 				Columns: []schema.Column{
 					{
-						Name:        "security_group_id",
-						Description: "Unique ID of aws_ec2_security_groups table (FK)",
+						Name:        "security_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_security_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -96,10 +99,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permission_ip_ranges",
 						Description: "Describes an IPv4 range.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionIpRanges,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permission_cq_id", "cidr_ip"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permission_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Name:        "security_group_ip_permission_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -119,10 +123,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permission_ipv6_ranges",
 						Description: "[EC2-VPC only] Describes an IPv6 range.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionIpv6Ranges,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permission_cq_id", "cidr_ipv6"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permission_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Name:        "security_group_ip_permission_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -142,10 +147,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permission_prefix_list_ids",
 						Description: "Describes a prefix list ID.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionPrefixListIds,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permission_cq_id", "prefix_list_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permission_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Name:        "security_group_ip_permission_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -165,10 +171,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permission_user_id_group_pairs",
 						Description: "Describes a security group and AWS account ID pair.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionUserIdGroupPairs,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permission_cq_id", "group_id", "user_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permission_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions table (FK)",
+								Name:        "security_group_ip_permission_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -215,10 +222,11 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "aws_ec2_security_group_ip_permissions_egresses",
 				Description: "Describes a set of permissions for a security group rule.",
 				Resolver:    fetchEc2SecurityGroupIpPermissionsEgresses,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "from_port", "to_port"}},
 				Columns: []schema.Column{
 					{
-						Name:        "security_group_id",
-						Description: "Unique ID of aws_ec2_security_groups table (FK)",
+						Name:        "security_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_ec2_security_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -243,10 +251,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permissions_egress_ip_ranges",
 						Description: "Describes an IPv4 range.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressIpRanges,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permissions_egress_cq_id", "cidr_ip"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permissions_egress_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Name:        "security_group_ip_permissions_egress_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -266,10 +275,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permissions_egress_ipv6_ranges",
 						Description: "[EC2-VPC only] Describes an IPv6 range.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressIpv6Ranges,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permissions_egress_cq_id", "cidr_ipv6"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permissions_egress_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Name:        "security_group_ip_permissions_egress_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -289,10 +299,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permissions_egress_prefix_list_ids",
 						Description: "Describes a prefix list ID.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permissions_egress_cq_id", "prefix_list_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permissions_egress_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Name:        "security_group_ip_permissions_egress_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -312,10 +323,11 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permissions_egress_user_group_pairs",
 						Description: "Describes a security group and AWS account ID pair.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permissions_egress_cq_id", "group_id", "user_id"}},
 						Columns: []schema.Column{
 							{
-								Name:        "security_group_ip_permissions_egress_id",
-								Description: "Unique ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
+								Name:        "security_group_ip_permissions_egress_cq_id",
+								Description: "Unique CloudQuery ID of aws_ec2_security_group_ip_permissions_egresses table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},

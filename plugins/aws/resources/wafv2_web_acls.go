@@ -21,6 +21,7 @@ func Wafv2WebAcls() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -55,7 +56,7 @@ func Wafv2WebAcls() *schema.Table {
 				Resolver:    resolveWafv2webACLDefaultAction,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "A unique identifier for the WebACL",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -114,10 +115,11 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "aws_wafv2_web_acl_rules",
 				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
 				Resolver:    fetchWafv2WebAclRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "web_acl_id",
-						Description: "Unique ID of aws_wafv2_web_acls table (FK)",
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -179,10 +181,11 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "aws_wafv2_web_acl_post_process_firewall_manager_rule_groups",
 				Description: "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
 				Resolver:    fetchWafv2WebAclPostProcessFirewallManagerRuleGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "web_acl_id",
-						Description: "Unique ID of aws_wafv2_web_acls table (FK)",
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -232,10 +235,11 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups",
 				Description: "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
 				Resolver:    fetchWafv2WebAclPreProcessFirewallManagerRuleGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "web_acl_id",
-						Description: "Unique ID of aws_wafv2_web_acls table (FK)",
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

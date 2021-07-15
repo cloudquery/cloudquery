@@ -21,6 +21,7 @@ func Wafv2RuleGroups() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -56,7 +57,7 @@ func Wafv2RuleGroups() *schema.Table {
 				Type:        schema.TypeBigInt,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "A unique identifier for the rule group",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Id"),
@@ -105,43 +106,17 @@ func Wafv2RuleGroups() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveWafv2ruleGroupRules,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_wafv2_rule_group_available_labels",
-				Description: "List of labels used by one or more of the rules of a RuleGroup",
-				Resolver:    fetchWafv2RuleGroupAvailableLabels,
-				Columns: []schema.Column{
-					{
-						Name:        "rule_group_id",
-						Description: "Unique ID of aws_wafv2_rule_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "An individual label specification.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "available_labels",
+				Description: "The labels that one or more rules in this rule group add to matching web ACLs.",
+				Type:        schema.TypeStringArray,
+				Resolver:    resolveWafv2AvailableLabels,
 			},
 			{
-				Name:        "aws_wafv2_rule_group_consumed_labels",
-				Description: "List of labels used by one or more of the rules of a RuleGroup",
-				Resolver:    fetchWafv2RuleGroupConsumedLabels,
-				Columns: []schema.Column{
-					{
-						Name:        "rule_group_id",
-						Description: "Unique ID of aws_wafv2_rule_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "An individual label specification.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "consumed_labels",
+				Description: "The labels that one or more rules in this rule group add to matching web ACLs.",
+				Type:        schema.TypeStringArray,
+				Resolver:    resolveWafv2ConsumedLabels,
 			},
 		},
 	}
@@ -225,26 +200,18 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
 	}
 
-	client := meta.(*client.Client)
-	service := client.Services().WafV2
+	cl := meta.(*client.Client)
+	service := cl.Services().WafV2
 
 	// Resolve rule group policy
 	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {
-		options.Region = client.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
 	}
-	if policy.Policy != nil {
-		data, err := json.Marshal(policy.Policy)
-		if err != nil {
-			return nil
-		}
-		if err := resource.Set(c.Name, data); err != nil {
-			return err
-		}
-	}
-	return nil
+
+	return resource.Set(c.Name, policy.Policy)
 }
 func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup, ok := resource.Item.(*types.RuleGroup)
@@ -260,19 +227,25 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchWafv2RuleGroupAvailableLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	ruleGroup, ok := parent.Item.(*types.RuleGroup)
+func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", parent.Item)
+		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
 	}
-	res <- ruleGroup.AvailableLabels
-	return nil
+	labels := make([]string, len(ruleGroup.AvailableLabels))
+	for i, l := range ruleGroup.AvailableLabels {
+		labels[i] = *l.Name
+	}
+	return resource.Set(c.Name, labels)
 }
-func fetchWafv2RuleGroupConsumedLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	ruleGroup, ok := parent.Item.(*types.RuleGroup)
+func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ruleGroup, ok := resource.Item.(*types.RuleGroup)
 	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", parent.Item)
+		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
 	}
-	res <- ruleGroup.ConsumedLabels
-	return nil
+	labels := make([]string, len(ruleGroup.ConsumedLabels))
+	for i, l := range ruleGroup.ConsumedLabels {
+		labels[i] = *l.Name
+	}
+	return resource.Set(c.Name, labels)
 }

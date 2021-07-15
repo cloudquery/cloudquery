@@ -12,7 +12,7 @@ Describes a cluster.
 |availability_zone_relocation_status|text|Describes the status of the Availability Zone relocation operation.|
 |cluster_availability_status|text|The availability status of the cluster for queries.|
 |cluster_create_time|timestamp without time zone|The date and time that the cluster was created.|
-|cluster_identifier|text|The unique identifier of the cluster.|
+|id|text|The unique identifier of the cluster.|
 |cluster_namespace_arn|text|The namespace Amazon Resource Name (ARN) of the cluster.|
 |cluster_public_key|text|The public key for the cluster.|
 |cluster_revision_number|text|The specific revision number of the database in the cluster.|

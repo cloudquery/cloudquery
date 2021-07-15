@@ -4,6 +4,6 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|vpn_gateway_id|uuid||
+|vpn_gateway_cq_id|uuid||
 |state|text||
 |vpc_id|text||

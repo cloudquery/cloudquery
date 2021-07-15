@@ -7,8 +7,8 @@ The current status of an Elasticsearch domain.
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |arn|text|The Amazon resource name (ARN) of an Elasticsearch domain|
-|domain_id|text|The unique identifier for the specified Elasticsearch domain.  This member is required.|
-|domain_name|text|The name of an Elasticsearch domain|
+|id|text|The unique identifier for the specified Elasticsearch domain.|
+|name|text|The name of an Elasticsearch domain|
 |cluster_cold_storage_options_enabled|boolean|True to enable cold storage for an Elasticsearch domain.|
 |cluster_dedicated_master_count|integer|Total number of dedicated master nodes, active and on standby, for the cluster.|
 |cluster_dedicated_master_enabled|boolean|A boolean value to indicate whether a dedicated master node is enabled|

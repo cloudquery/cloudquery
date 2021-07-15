@@ -15,12 +15,13 @@ import (
 func SnsTopics() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_sns_topics",
-		Description:          "A wrapper type for the topic's Amazon Resource Name (ARN).",
+		Description:          "AWS SNS topic",
 		Resolver:             fetchSnsTopics,
 		Multiplex:            client.AccountRegionMultiplex,
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveTopicAttributes,
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -85,9 +86,10 @@ func SnsTopics() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "topic_arn",
+				Name:        "arn",
 				Description: "The topic's ARN.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TopicArn"),
 			},
 		},
 	}

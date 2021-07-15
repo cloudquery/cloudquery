@@ -20,6 +20,7 @@ func DirectconnectGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -64,7 +65,7 @@ func DirectconnectGateways() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The ID of the Direct Connect gateway.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DirectConnectGatewayId"),
@@ -75,12 +76,19 @@ func DirectconnectGateways() *schema.Table {
 				Name:        "aws_directconnect_gateway_associations",
 				Description: "Information about the association between an Direct Connect Gateway and either a Virtual Private Gateway, or Transit Gateway",
 				Resolver:    fetchDirectconnectGatewayAssociations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"directconnect_gateway_cq_id", "association_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "directconnect_gateway_id",
-						Description: "Unique ID of aws_directconnect_gateways table (FK)",
+						Name:        "directconnect_gateway_cq_id",
+						Description: "Unique CloudQuery ID of aws_directconnect_gateways table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "directconnect_gateway_id",
+						Description: "The ID of the Direct Connect gateway.",
+						Type:        schema.TypeString,
+						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "allowed_prefixes_to_direct_connect_gateway",
@@ -157,7 +165,7 @@ func DirectconnectGateways() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "directconnect_gateway_id",
-						Description: "Unique ID of aws_directconnect_gateways table (FK)",
+						Description: "Unique CloudQuery ID of aws_directconnect_gateways table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},

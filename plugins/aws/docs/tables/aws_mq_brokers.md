@@ -8,7 +8,7 @@
 |region|text|The AWS Region of the resource.|
 |authentication_strategy|text|The authentication strategy used to secure the broker.|
 |auto_minor_version_upgrade|boolean|Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions.|
-|broker_arn|text|The Amazon Resource Name (ARN) of the broker.|
+|arn|text|The Amazon Resource Name (ARN) of the broker.|
 |broker_id|text|The unique ID that Amazon MQ generates for the broker.|
 |broker_instances|jsonb|A list of information about allocated brokers.|
 |broker_name|text|The name of the broker|

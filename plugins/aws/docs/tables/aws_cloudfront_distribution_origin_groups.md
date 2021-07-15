@@ -4,7 +4,7 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|distribution_id|uuid||
+|distribution_cq_id|uuid||
 |failover_criteria_status_codes_items|integer[]||
-|origin_group_id|text||
+|id|text||
 |members_origin_ids|text[]||

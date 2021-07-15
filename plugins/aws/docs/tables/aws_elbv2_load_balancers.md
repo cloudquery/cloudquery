@@ -11,8 +11,8 @@ Information about a load balancer.
 |customer_owned_ipv4_pool|text|[Application Load Balancers on Outposts] The ID of the customer-owned address pool.|
 |dns_name|text|The public DNS name of the load balancer.|
 |ip_address_type|text|The type of IP addresses used by the subnets for your load balancer.|
-|load_balancer_arn|text|The Amazon Resource Name (ARN) of the load balancer.|
-|load_balancer_name|text|The name of the load balancer.|
+|arn|text|The Amazon Resource Name (ARN) of the load balancer.|
+|name|text|The name of the load balancer.|
 |scheme|text|The nodes of an Internet-facing load balancer have public IP addresses.|
 |security_groups|text[]|The IDs of the security groups for the load balancer.|
 |state_code|text|The state code.|

@@ -16,6 +16,7 @@ func Ec2VpnGateways() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -49,17 +50,19 @@ func Ec2VpnGateways() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "vpn_gateway_id",
-				Type: schema.TypeString,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("VpnGatewayId"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:     "aws_ec2_vpc_attachment",
 				Resolver: fetchEc2VpcAttachments,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"vpn_gateway_cq_id", "vpc_id"}},
 				Columns: []schema.Column{
 					{
-						Name:     "vpn_gateway_id",
+						Name:     "vpn_gateway_cq_id",
 						Type:     schema.TypeUUID,
 						Resolver: schema.ParentIdResolver,
 					},

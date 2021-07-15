@@ -4,7 +4,7 @@ A rule group that's defined for an AWS Firewall Manager WAF policy.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|web_acl_id|uuid|Unique ID of aws_wafv2_web_acls table (FK)|
+|web_acl_cq_id|uuid|Unique CloudQuery ID of aws_wafv2_web_acls table (FK)|
 |statement|jsonb|The processing guidance for an AWS Firewall Manager rule|
 |name|text|The name of the rule group|
 |override_action|jsonb|The override action to apply to the rules in a rule group|

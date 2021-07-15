@@ -27,7 +27,7 @@ Information about a load balancer.
 |health_check_timeout|integer|The amount of time, in seconds, during which no response means a failed health check.|
 |health_check_unhealthy_threshold|integer|The number of consecutive health check failures required before moving the instance to the Unhealthy state.|
 |instances|text[]|The IDs of the instances for the load balancer.|
-|load_balancer_name|text|The name of the load balancer.|
+|name|text|The name of the load balancer.|
 |other_policies|text[]|The policies other than the stickiness policies.|
 |scheme|text|The type of load balancer.|
 |security_groups|text[]|The security groups for the load balancer.|

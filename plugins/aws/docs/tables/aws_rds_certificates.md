@@ -1,12 +1,12 @@
 
 # Table: aws_rds_certificates
-A CA certificate for an AWS account. 
+A CA certificate for an AWS account.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text||
 |region|text|The AWS Region of the resource.|
-|certificate_arn|text|The Amazon Resource Name (ARN) for the certificate.|
+|arn|text|The Amazon Resource Name (ARN) for the certificate.|
 |certificate_identifier|text|The unique key that identifies a certificate.|
 |certificate_type|text|The type of the certificate.|
 |customer_override|boolean|Whether there is an override for the default certificate identifier.|
