@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"google.golang.org/api/option"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/api/cloudresourcemanager/v1"
@@ -46,9 +48,10 @@ func (c Client) withProject(project string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
+	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
 	var err error
 	if len(providerConfig.ProjectIDs) == 0 {
-		projects, err = getProjects(logger, providerConfig.ProjectFilter)
+		projects, err = getProjects(serviceAccountKeyJSON, logger, providerConfig.ProjectFilter)
 		if err != nil {
 			return nil, err
 		}
@@ -57,13 +60,14 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	if err := validateProjects(projects); err != nil {
 		return nil, err
 	}
-	services, err := initServices(context.Background())
+	services, err := initServices(context.Background(), serviceAccountKeyJSON)
 	if err != nil {
 		return nil, err
 	}
 	client := NewGcpClient(logger, projects, services)
 	return client, nil
 }
+
 func validateProjects(projects []string) error {
 	for _, project := range projects {
 		if project == defaultProjectIdName {
@@ -73,10 +77,16 @@ func validateProjects(projects []string) error {
 	return nil
 }
 
-func getProjects(logger hclog.Logger, filter string) ([]string, error) {
+func getProjects(serviceAccountKeyJSON []byte, logger hclog.Logger, filter string) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
-	service, err := cloudresourcemanager.NewService(ctx)
+
+	var options option.ClientOption
+	if len(serviceAccountKeyJSON) != 0 {
+		options = option.WithCredentialsJSON(serviceAccountKeyJSON)
+	}
+
+	service, err := cloudresourcemanager.NewService(ctx, options)
 	if err != nil {
 		return nil, err
 	}
