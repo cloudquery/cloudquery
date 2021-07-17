@@ -19,6 +19,7 @@ func Provider() *provider.Provider {
 			"compute.virtual_machines":            ComputeVirtualMachines(),
 			"keyvault.vaults":                     KeyVaultVaults(),
 			"monitor.log_profiles":                MonitorLogProfiles(),
+			"monitor.diagnostic_settings":         MonitorDiagnosticSettings(),
 			"monitor.activity_log_alerts":         MonitorActivityLogAlerts(),
 			"mysql.servers":                       MySQLServers(),
 			"network.virtual_networks":            NetworkVirtualNetworks(),

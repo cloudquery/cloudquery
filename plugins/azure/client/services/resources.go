@@ -8,7 +8,8 @@ import (
 )
 
 type ResourcesClient struct {
-	Groups GroupsClient
+	Groups    GroupsClient
+	Resources ResClient
 }
 
 func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) ResourcesClient {
@@ -21,4 +22,8 @@ func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) Resourc
 
 type GroupsClient interface {
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)
+}
+
+type ResClient interface {
+	List(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
 }
