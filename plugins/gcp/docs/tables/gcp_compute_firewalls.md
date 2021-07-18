@@ -10,7 +10,7 @@ Represents a Firewall Rule resource  Firewall rules allow or deny ingress traffi
 |destination_ranges|text[]|If destination ranges are specified, the firewall rule applies only to traffic that has destination IP address in these ranges These ranges must be expressed in CIDR format Only IPv4 is supported|
 |direction|text|Direction of traffic to which this firewall applies, either `INGRESS` or `EGRESS` The default is `INGRESS` For `INGRESS` traffic, you cannot specify the destinationRanges field, and for `EGRESS` traffic, you cannot specify the sourceRanges or sourceTags fields|
 |disabled|boolean|Denotes whether the firewall rule is disabled When set to true, the firewall rule is not enforced and the network behaves as if it did not exist If this is unspecified, the firewall rule will be enabled|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#firewall for firewall rules|
 |log_config_enable|boolean|This field denotes whether to enable logging for a particular firewall rule|
 |log_config_metadata|text|This field can only be specified for a particular firewall rule if logging is enabled for that rule This field denotes whether to include or exclude metadata for firewall logs|

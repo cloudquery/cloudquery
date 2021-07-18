@@ -4,7 +4,7 @@ A condition is a true/false test that determines when an alerting policy should 
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|alert_policy_id|uuid|Unique ID of gcp_monitoring_alert_policies table (FK)|
+|alert_policy_cq_id|uuid|Unique ID of gcp_monitoring_alert_policies table (FK)|
 |absent_duration|text|The amount of time that a time series must fail to report new data to be considered failing The minimum value of this field is 120 seconds Larger values that are a multiple of a minute--for example, 240 or 300 seconds--are supported If an invalid value is given, an error will be returned The Durationnanos field is ignored|
 |absent_filter|text|A filter (https://cloudgooglecom/monitoring/api/v3/filters) that identifies which time series should be compared with the thresholdThe filter is similar to the one that is specified in the ListTimeSeries request (https://cloudgooglecom/monitoring/api/ref_v3/rest/v3/projectstimeSeries/list) (that call is useful to verify the time series that will be retrieved / processed) The filter must specify the metric type and the resource type Optionally, it can specify resource labels and metric labels This field must not exceed 2048 Unicode characters in length|
 |absent_trigger_count|bigint|The absolute number of time series that must fail the predicate for the condition to be triggered|

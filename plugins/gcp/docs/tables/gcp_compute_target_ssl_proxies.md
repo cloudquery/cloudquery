@@ -7,7 +7,7 @@ Represents a Target SSL Proxy resource
 |project_id|text|GCP Project Id of the resource|
 |creation_timestamp|timestamp without time zone|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource|
-|ssl_proxy_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#targetSslProxy for target SSL proxies|
 |name|text|Name of the resource|
 |proxy_header|text|Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1 The default is NONE|

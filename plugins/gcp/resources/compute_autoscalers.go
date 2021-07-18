@@ -10,10 +10,12 @@ import (
 
 func ComputeAutoscalers() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_autoscalers",
-		Description: "Represents an Autoscaler resource.",
-		Resolver:    fetchComputeAutoscalers,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_autoscalers",
+		Description:  "Represents an Autoscaler resource.",
+		Resolver:     fetchComputeAutoscalers,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -104,7 +106,7 @@ func ComputeAutoscalers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -166,12 +168,18 @@ func ComputeAutoscalers() *schema.Table {
 				Name:        "gcp_compute_autoscaler_custom_metric_utilizations",
 				Description: "Custom utilization metric policy",
 				Resolver:    fetchComputeAutoscalerCustomMetricUtilizations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"autoscaler_id", "metric"}},
 				Columns: []schema.Column{
 					{
-						Name:        "autoscaler_id",
+						Name:        "autoscaler_cq_id",
 						Description: "Unique ID of gcp_compute_autoscalers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "autoscaler_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "filter",

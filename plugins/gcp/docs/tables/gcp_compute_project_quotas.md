@@ -4,7 +4,8 @@ A quotas entry
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|project_id|uuid|Unique ID of gcp_compute_projects table (FK)|
+|project_cq_id|uuid|Unique ID of gcp_compute_projects table (FK)|
+|project_id|text||
 |limit|float|Quota limit for this metric|
 |metric|text|Name of the quota metric|
 |owner|text|Owning resource This is the resource on which this quota is applied|

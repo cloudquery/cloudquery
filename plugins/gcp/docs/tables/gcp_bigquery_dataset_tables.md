@@ -4,7 +4,8 @@ Model options used for the first training run These options are immutable for su
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|dataset_id|uuid||
+|dataset_cq_id|uuid||
+|dataset_id|text||
 |clustering_fields|text[]|One or more fields on which data should be clustered Only top-level, non-repeated, simple-type fields are supported When you cluster a table using multiple columns, the order of columns you specify is important The order of the specified columns determines the sort order of the data|
 |creation_time|bigint|The time when this table was created, in milliseconds since the epoch|
 |description|text|A user-friendly description of this table|
@@ -20,7 +21,7 @@ Model options used for the first training run These options are immutable for su
 |external_data_configuration_source_format|text|The data format For CSV files, specify "CSV" For Google sheets, specify "GOOGLE_SHEETS" For newline-delimited JSON, specify "NEWLINE_DELIMITED_JSON" For Avro files, specify "AVRO" For Google Cloud Datastore backups, specify "DATASTORE_BACKUP" [Beta] For Google Cloud Bigtable, specify "BIGTABLE"|
 |external_data_configuration_source_uris|text[]|The fully-qualified URIs that point to your data in Google Cloud For Google Cloud Storage URIs: Each URI can contain one '*' wildcard character and it must come after the 'bucket' name Size limits related to load jobs apply to external data sources For Google Cloud Bigtable URIs: Exactly one URI can be specified and it has be a fully specified and valid HTTPS URL for a Google Cloud Bigtable table For Google Cloud Datastore backups, exactly one URI can be specified Also, the '*' wildcard character is not allowed|
 |friendly_name|text|A descriptive name for this table|
-|table_id|text|An opaque ID uniquely identifying the table|
+|id|text|An opaque ID uniquely identifying the table|
 |kind|text|The type of the resource|
 |labels|jsonb|The labels associated with this table You can use these to organize and group your tables Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes International characters are allowed Label values are optional Label keys must start with a letter and each label in the list must have a different key|
 |last_modified_time|bigint|The time when this table was last modified, in milliseconds since the epoch|

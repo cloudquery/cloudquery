@@ -19,7 +19,7 @@ Represents an Autoscaler resource.
 |scaling_schedules|jsonb|Scaling schedules defined for an autoscaler Multiple schedules can be set on an autoscaler, and they can overlap During overlapping periods the greatest min_required_replicas of all scaling schedules is applied Up to 128 scaling schedules are allowed|
 |creation_timestamp|text|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource Provide this property when you create the resource|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#autoscaler for autoscalers|
 |name|text|Name of the resource Provided by the client when the resource is created The name must be 1-63 characters long, and comply with RFC1035 Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash|
 |recommended_size|bigint|Target recommended MIG size (number of instances) computed by autoscaler Autoscaler calculates the recommended MIG size even when the autoscaling policy mode is different from ON This field is empty when autoscaler is not connected to an existing managed instance group or autoscaler did not generate its prediction|

@@ -10,7 +10,7 @@ Represents a VPC Network resource  Networks connect resources to each other and 
 |creation_timestamp|text|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource Provide this field when you create the resource|
 |gateway_ip_v4|text|The gateway address for default routing out of the network, selected by GCP|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#network for networks|
 |mtu|bigint|Maximum Transmission Unit in bytes The minimum value for this field is 1460 and the maximum value is 1500 bytes|
 |name|text|Name of the resource Provided by the client when the resource is created|

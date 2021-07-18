@@ -10,10 +10,12 @@ import (
 
 func SQLInstances() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_sql_instances",
-		Description: "A Cloud SQL instance resource",
-		Resolver:    fetchSqlInstances,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_sql_instances",
+		Description:  "A Cloud SQL instance resource",
+		Resolver:     fetchSqlInstances,
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -622,10 +624,15 @@ func SQLInstances() *schema.Table {
 				Resolver:    fetchSqlInstanceIpAddresses,
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_sql_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_name",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "ip_address",
@@ -650,10 +657,15 @@ func SQLInstances() *schema.Table {
 				Resolver:    fetchSqlInstanceSettingsDenyMaintenancePeriods,
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_sql_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_name",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "end_date",
@@ -673,15 +685,20 @@ func SQLInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "gcp_sql_instance_settings_ip_configuration_authorized_networks",
+				Name:        "gcp_sql_instance_settings_ip_config_authorized_networks",
 				Description: "An entry for an Access Control list",
 				Resolver:    fetchSqlInstanceSettingsIpConfigurationAuthorizedNetworks,
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_sql_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_name",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "expiration_time",

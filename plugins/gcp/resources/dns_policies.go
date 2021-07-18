@@ -16,6 +16,7 @@ func DNSPolicies() *schema.Table {
 		Resolver:     fetchDnsPolicies,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
@@ -46,7 +47,7 @@ func DNSPolicies() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "policy_id",
+				Name:        "id",
 				Description: "Unique identifier for the resource; defined by the server (output only)",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -66,12 +67,18 @@ func DNSPolicies() *schema.Table {
 			{
 				Name:     "gcp_dns_policy_alternative_name_servers",
 				Resolver: fetchDnsPolicyAlternativeNameServers,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"policy_cq_id", "ipv4_address"}},
 				Columns: []schema.Column{
 					{
-						Name:        "policy_id",
+						Name:        "policy_cq_id",
 						Description: "Unique ID of gcp_dns_policies table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "policy_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "forwarding_path",
@@ -93,12 +100,18 @@ func DNSPolicies() *schema.Table {
 			{
 				Name:     "gcp_dns_policy_networks",
 				Resolver: fetchDnsPolicyNetworks,
+				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"policy_cq_id", "network_url"}},
 				Columns: []schema.Column{
 					{
-						Name:        "policy_id",
+						Name:        "policy_cq_id",
 						Description: "Unique ID of gcp_dns_policies table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "policy_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "kind",

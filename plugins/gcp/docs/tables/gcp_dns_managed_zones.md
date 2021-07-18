@@ -12,7 +12,7 @@ A zone is a subtree of the DNS namespace under one administrative responsibility
 |dnssec_config_non_existence|text|Specifies the mechanism for authenticated denial-of-existence responses Can only be changed while the state is OFF|
 |dnssec_config_state|text|Specifies whether DNSSEC is enabled, and what mode it is in  Possible values:   "off" - DNSSEC is disabled; the zone is not signed   "on" - DNSSEC is enabled; the zone is signed and fully managed   "transfer" - DNSSEC is enabled, but in a "transfer" mode|
 |forwarding_config_kind|text||
-|managed_zone_id|text||
+|id|text||
 |kind|text|The resource type|
 |labels|jsonb|User assigned labels for this resource|
 |name|text|User assigned name for this resource|

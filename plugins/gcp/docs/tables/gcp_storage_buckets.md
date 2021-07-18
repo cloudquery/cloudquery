@@ -14,7 +14,7 @@ The Buckets resource represents a bucket in Cloud Storage
 |iam_configuration_public_access_prevention|text|The bucket's Public Access Prevention configuration Currently, 'unspecified' and 'enforced' are supported|
 |iam_configuration_uniform_bucket_level_access_enabled|boolean|If set, access is controlled only by bucket-level or above IAM policies|
 |iam_configuration_uniform_bucket_level_access_locked_time|text|The deadline for changing iamConfigurationuniformBucketLevelAccessenabled from true to false in RFC 3339  format iamConfigurationuniformBucketLevelAccessenabled may be changed from true to false until the locked time, after which the field is immutable|
-|resource_id|text|Original Id of the resource|
+|id|text|Original Id of the resource|
 |kind|text|The kind of item this is For buckets, this is always storage#bucket|
 |labels|jsonb|User-provided labels, in key/value pairs|
 |location|text|The location of the bucket Object data for objects in the bucket resides in physical storage within this region Defaults to US See the developer's guide for the authoritative list|
@@ -38,3 +38,4 @@ The Buckets resource represents a bucket in Cloud Storage
 |website_main_page_suffix|text|If the requested object path is missing, the service will ensure the path has a trailing '/', append this suffix, and attempt to retrieve the resulting object This allows the creation of indexhtml objects to represent directory pages|
 |website_not_found_page|text|If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result|
 |zone_affinity|text[]|The zone or zones from which the bucket is intended to use zonal quota Requests for data from outside the specified affinities are still allowed but won't be able to use zonal quota The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response|
+|policy|jsonb|Bucket's policy|

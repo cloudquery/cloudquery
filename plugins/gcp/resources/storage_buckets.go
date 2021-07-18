@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
@@ -16,6 +17,7 @@ func StorageBuckets() *schema.Table {
 		Resolver:     fetchStorageBuckets,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
@@ -77,10 +79,9 @@ func StorageBuckets() *schema.Table {
 				Resolver:    schema.PathResolver("IamConfiguration.UniformBucketLevelAccess.LockedTime"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "Original Id of the resource",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Id"),
 			},
 			{
 				Name:        "kind",
@@ -208,18 +209,30 @@ func StorageBuckets() *schema.Table {
 				Description: "The zone or zones from which the bucket is intended to use zonal quota Requests for data from outside the specified affinities are still allowed but won't be able to use zonal quota The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response",
 				Type:        schema.TypeStringArray,
 			},
+			{
+				Name:        "policy",
+				Description: "Bucket's policy",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveBucketPolicy,
+			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "gcp_storage_bucket_acls",
 				Description: "Access controls on the bucket.",
 				Resolver:    fetchStorageBucketAcls,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
+						Name:        "bucket_cq_id",
 						Description: "Unique ID of gcp_storage_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "bucket_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "bucket",
@@ -252,10 +265,9 @@ func StorageBuckets() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "The ID of the access-control entry",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Id"),
 					},
 					{
 						Name:        "kind",
@@ -292,10 +304,15 @@ func StorageBuckets() *schema.Table {
 				Resolver:    fetchStorageBucketCors,
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
+						Name:        "bucket_cq_id",
 						Description: "Unique ID of gcp_storage_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "bucket_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "max_age_seconds",
@@ -323,12 +340,18 @@ func StorageBuckets() *schema.Table {
 				Name:        "gcp_storage_bucket_default_object_acls",
 				Description: "Default access controls to apply to new objects when no ACL is provided.",
 				Resolver:    fetchStorageBucketDefaultObjectAcls,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
+						Name:        "bucket_cq_id",
 						Description: "Unique ID of gcp_storage_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "bucket_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "bucket",
@@ -366,10 +389,9 @@ func StorageBuckets() *schema.Table {
 						Type:        schema.TypeBigInt,
 					},
 					{
-						Name:        "resource_id",
+						Name:        "id",
 						Description: "The ID of the access-control entry",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Id"),
 					},
 					{
 						Name:        "kind",
@@ -411,10 +433,15 @@ func StorageBuckets() *schema.Table {
 				Resolver:    fetchStorageBucketLifecycleRules,
 				Columns: []schema.Column{
 					{
-						Name:        "bucket_id",
+						Name:        "bucket_cq_id",
 						Description: "Unique ID of gcp_storage_buckets table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "bucket_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "action_storage_class",
@@ -490,88 +517,6 @@ func StorageBuckets() *schema.Table {
 					},
 				},
 			},
-			{
-				Name:        "gcp_storage_bucket_policies",
-				Description: "A bucket/object IAM policy",
-				Resolver:    fetchStorageBucketPolicies,
-				Columns: []schema.Column{
-					{
-						Name:        "bucket_id",
-						Description: "Unique ID of gcp_storage_buckets table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "etag",
-						Description: "HTTP 11  Entity tag for the policy",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "kind",
-						Description: "The kind of item this is For policies, this is always storage#policy This field is ignored on input",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "resource_id",
-						Description: "The ID of the resource to which this policy belongs Will be of the form projects/_/buckets/bucket for buckets, and projects/_/buckets/bucket/objects/object for objects A specific generation may be specified by appending #generationNumber to the end of the object name, eg projects/_/buckets/my-bucket/objects/datatxt#17 The current generation can be denoted with #0 This field is ignored on input",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "version",
-						Description: "The IAM policy format version",
-						Type:        schema.TypeBigInt,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:        "gcp_storage_bucket_policy_bindings",
-						Description: "Represents an expression text Example: title: \"User account presence\" description: \"Determines whether the request has a user account\" expression: \"size(request",
-						Resolver:    fetchStorageBucketPolicyBindings,
-						Columns: []schema.Column{
-							{
-								Name:        "bucket_policy_id",
-								Description: "Unique ID of gcp_storage_bucket_policies table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "condition_description",
-								Description: "An optional description of the expression This is a longer text which describes the expression, eg when hovered over it in a UI",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Condition.Description"),
-							},
-							{
-								Name:        "condition_expression",
-								Description: "Textual representation of an expression in Common Expression Language syntax The application context of the containing message determines which well-known feature set of CEL is supported",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Condition.Expression"),
-							},
-							{
-								Name:        "condition_location",
-								Description: "An optional string indicating the location of the expression for error reporting, eg a file name and a position in the file",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Condition.Location"),
-							},
-							{
-								Name:        "condition_title",
-								Description: "An optional title for the expression, ie a short string describing its purpose This can be used eg in UIs which allow to enter the expression",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Condition.Title"),
-							},
-							{
-								Name:        "members",
-								Description: "A collection of identifiers for members who may assume the provided role Recognized identifiers are as follows: - allUsers — A special identifier that represents anyone on the internet; with or without a Google account - allAuthenticatedUsers — A special identifier that represents anyone who is authenticated with a Google account or a service account - user:emailid — An email address that represents a specific account For example, user:alice@gmailcom or user:joe@examplecom  - serviceAccount:emailid — An email address that represents a service account For example, serviceAccount:my-other-app@appspotgserviceaccountcom  - group:emailid — An email address that represents a Google group For example, group:admins@examplecom - domain:domain — A Google Apps domain name that represents all the users of that domain For example, domain:googlecom or domain:examplecom - projectOwner:projectid — Owners of the given project For example, projectOwner:my-example-project - projectEditor:projectid — Editors of the given project For example, projectEditor:my-example-project - projectViewer:projectid — Viewers of the given project",
-								Type:        schema.TypeStringArray,
-							},
-							{
-								Name:        "role",
-								Description: "The role to which members belong Two types of roles are supported: new IAM roles, which grant permissions that do not map directly to those provided by ACLs, and legacy IAM roles, which do map directly to ACL permissions All roles are of the format roles/storagespecificRole The new IAM roles are: - roles/storageadmin — Full control of Google Cloud Storage resources - roles/storageobjectViewer — Read-Only access to Google Cloud Storage objects - roles/storageobjectCreator — Access to create objects in Google Cloud Storage - roles/storageobjectAdmin — Full control of Google Cloud Storage objects   The legacy IAM roles are: - roles/storagelegacyObjectReader — Read-only access to objects without listing Equivalent to an ACL entry on an object with the READER role - roles/storagelegacyObjectOwner — Read/write access to existing objects without listing Equivalent to an ACL entry on an object with the OWNER role - roles/storagelegacyBucketReader — Read access to buckets with object listing Equivalent to an ACL entry on a bucket with the READER role - roles/storagelegacyBucketWriter — Read access to buckets with object listing/creation/deletion Equivalent to an ACL entry on a bucket with the WRITER role - roles/storagelegacyBucketOwner — Read and write access to existing buckets with object listing/creation/deletion Equivalent to an ACL entry on a bucket with the OWNER role",
-								Type:        schema.TypeString,
-							},
-						},
-					},
-				},
-			},
 		},
 	}
 }
@@ -619,25 +564,25 @@ func fetchStorageBucketLifecycleRules(ctx context.Context, meta schema.ClientMet
 	}
 	return nil
 }
-func fetchStorageBucketPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	p, ok := parent.Item.(*storage.Bucket)
+func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(*storage.Bucket)
 	if !ok {
 		return fmt.Errorf("expected *storage.Bucket but got %T", p)
 	}
-	c := meta.(*client.Client)
-	call := c.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
+	client := meta.(*client.Client)
+	call := client.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
 	output, err := call.Do()
 	if err != nil {
 		return err
 	}
-	res <- output
-	return nil
-}
-func fetchStorageBucketPolicyBindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	p, ok := parent.Item.(*storage.Policy)
-	if !ok {
-		return fmt.Errorf("expected *storage.Policy but got %T", p)
+	var policy map[string]interface{}
+	data, err := json.Marshal(output)
+	if err != nil {
+		return err
 	}
-	res <- p.Bindings
-	return nil
+	if err := json.Unmarshal(data, &policy); err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, policy)
 }

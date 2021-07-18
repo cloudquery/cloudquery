@@ -14,11 +14,17 @@ func BigqueryDatasetTables() *schema.Table {
 		Name:        "gcp_bigquery_dataset_tables",
 		Description: "Model options used for the first training run These options are immutable for subsequent training runs Default values are used for any options not specified in the input query",
 		Resolver:    fetchBigqueryDatasetTables,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:     "dataset_id",
+				Name:     "dataset_cq_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIdResolver,
+			},
+			{
+				Name:     "dataset_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:        "clustering_fields",
@@ -106,10 +112,9 @@ func BigqueryDatasetTables() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "table_id",
+				Name:        "id",
 				Description: "An opaque ID uniquely identifying the table",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Id"),
 			},
 			{
 				Name:        "kind",
@@ -294,12 +299,18 @@ func BigqueryDatasetTables() *schema.Table {
 				Name:        "gcp_bigquery_dataset_table_dataset_model_training_runs",
 				Description: "Training options used by this training run These options are mutable for subsequent training runs Default values are explicitly stored for options not specified in the input query of the first training run For subsequent training runs, any option not explicitly specified in the input query will be copied from the previous training run",
 				Resolver:    fetchBigqueryDatasetTableDatasetModelTrainingRuns,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "start_time"}},
 				Columns: []schema.Column{
 					{
-						Name:        "dataset_table_id",
+						Name:        "dataset_table_cq_id",
 						Description: "Unique ID of gcp_bigquery_dataset_tables table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "dataset_table_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "start_time",
@@ -362,12 +373,18 @@ func BigqueryDatasetTables() *schema.Table {
 				Name:        "gcp_bigquery_dataset_table_user_defined_functions",
 				Description: "This is used for defining User Defined Function (UDF) resources only when using legacy SQL",
 				Resolver:    fetchBigqueryDatasetTableUserDefinedFunctions,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "resource_uri"}},
 				Columns: []schema.Column{
 					{
-						Name:        "dataset_table_id",
+						Name:        "dataset_table_cq_id",
 						Description: "Unique ID of gcp_bigquery_dataset_tables table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "dataset_table_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "inline_code",

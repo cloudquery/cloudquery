@@ -9,7 +9,7 @@ Represents an SSL Certificate resource.
 |creation_timestamp|text|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource Provide this property when you create the resource|
 |expire_time|text|Expire time of the certificate|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#sslCertificate for SSL certificates|
 |managed_domain_status|jsonb|[Output only] Detailed statuses of the domains specified for managed certificate resource|
 |managed_domains|text[]|The domains for which a managed SSL certificate will be generated Each Google-managed SSL certificate supports up to the maximum number of domains per Google-managed SSL certificate (/load-balancing/docs/quotas#ssl_certificates)|

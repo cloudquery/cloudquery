@@ -14,6 +14,7 @@ func ComputeTargetSslProxies() *schema.Table {
 		Resolver:     fetchComputeTargetSslProxies,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
@@ -34,7 +35,7 @@ func ComputeTargetSslProxies() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "ssl_proxy_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,

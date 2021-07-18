@@ -4,7 +4,7 @@ A CryptoKey represents a logical key that can be used for cryptographic operatio
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|keyring_id|uuid|Unique ID of gcp_kms_keyrings table (FK)|
+|keyring_cq_id|uuid|Unique ID of gcp_kms_keyrings table (FK)|
 |project_id|text|GCP Project Id of the resource|
 |location|text|Location of the resource|
 |policy|jsonb|Access control policy for a resource|

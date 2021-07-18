@@ -13,7 +13,7 @@ Represents a Disk Type resource.
 |deprecated_replacement|text|The URL of the suggested replacement for a deprecated resource The suggested replacement resource must be the same kind of resource as the deprecated resource|
 |deprecated_state|text|The deprecation state of this resource This can be ACTIVE, DEPRECATED, OBSOLETE, or DELETED Operations which communicate the end of life date for an image, can use ACTIVE Operations which create a new resource using a DEPRECATED resource will return successfully, but with a warning indicating the deprecated resource and recommending its replacement Operations which use OBSOLETE or DELETED resources will be rejected and result in an error|
 |description|text|An optional description of this resource|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#diskType for disk types|
 |name|text|Name of the resource|
 |region|text|URL of the region where the disk type resides Only applicable for regional resources You must specify this field as part of the HTTP request URL It is not settable as a field in the request body|

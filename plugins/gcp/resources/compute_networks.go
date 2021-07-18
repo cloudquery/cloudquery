@@ -10,10 +10,12 @@ import (
 
 func ComputeNetworks() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_networks",
-		Description: "Represents a VPC Network resource  Networks connect resources to each other and to the internet",
-		Resolver:    fetchComputeNetworks,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_networks",
+		Description:  "Represents a VPC Network resource  Networks connect resources to each other and to the internet",
+		Resolver:     fetchComputeNetworks,
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -49,7 +51,7 @@ func ComputeNetworks() *schema.Table {
 				Resolver:    schema.PathResolver("GatewayIPv4"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -91,12 +93,18 @@ func ComputeNetworks() *schema.Table {
 				Name:        "gcp_compute_network_peerings",
 				Description: "A network peering attached to a network resource The message includes the peering name, peer network, peering state, and a flag indicating whether Google Compute Engine should automatically create routes for the peering",
 				Resolver:    fetchComputeNetworkPeerings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"network_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "network_id",
+						Name:        "network_cq_id",
 						Description: "Unique ID of gcp_compute_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "network_name",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("name"),
 					},
 					{
 						Name:        "auto_create_routes",

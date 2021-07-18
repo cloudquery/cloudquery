@@ -11,7 +11,7 @@ Represents an Interconnect resource  An Interconnect resource is a dedicated con
 |description|text|An optional description of this resource Provide this property when you create the resource|
 |google_ip_address|text|IP address configured on the Google side of the Interconnect link This can be used only for ping tests|
 |google_reference_id|text|Google reference ID to be used when raising support tickets with Google or otherwise to debug backend connectivity issues|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |interconnect_attachments|text[]|A list of the URLs of all InterconnectAttachments configured to use this Interconnect|
 |interconnect_type|text|Type of interconnect, which can take one of the following values: - PARTNER: A partner-managed interconnection shared between customers though a partner - DEDICATED: A dedicated physical interconnection with the customer Note that a value IT_PRIVATE has been deprecated in favor of DEDICATED|
 |kind|text|Type of the resource Always compute#interconnect for interconnects|

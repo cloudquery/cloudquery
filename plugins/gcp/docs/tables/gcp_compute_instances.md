@@ -16,7 +16,7 @@ Represents an Instance resource  An instance is a virtual machine that is hosted
 |fingerprint|text|Specifies a fingerprint for this resource|
 |guest_accelerators|jsonb|A list of the type and count of accelerator cards attached to the instance|
 |hostname|text|Specifies the hostname of the instance The specified hostname must be RFC1035 compliant If hostname is not specified, the default hostname is [INSTANCE_NAME]c[PROJECT_ID]internal when using the global DNS, and [INSTANCE_NAME][ZONE]c[PROJECT_ID]internal when using zonal DNS|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#instance for instances|
 |label_fingerprint|text|A fingerprint for the labels being applied to this image|
 |labels|jsonb|Labels for this resource|

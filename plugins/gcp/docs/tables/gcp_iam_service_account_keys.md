@@ -4,7 +4,8 @@ Represents a service account key A service account has two sets of key-pairs: us
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|service_account_id|uuid|Unique ID of gcp_iam_service_accounts table (FK)|
+|service_account_cq_id|uuid|Unique ID of gcp_iam_service_accounts table (FK)|
+|service_account_name|text||
 |key_algorithm|text|Specifies the algorithm (and possibly key size) for the key  Possible values:   "KEY_ALG_UNSPECIFIED" - An unspecified key algorithm   "KEY_ALG_RSA_1024" - 1k RSA Key   "KEY_ALG_RSA_2048" - 2k RSA Key|
 |key_origin|text|The key origin  Possible values:   "ORIGIN_UNSPECIFIED" - Unspecified key origin   "USER_PROVIDED" - Key is provided by user   "GOOGLE_PROVIDED" - Key is provided by Google|
 |key_type|text|The key type  Possible values:   "KEY_TYPE_UNSPECIFIED" - Unspecified key type The presence of this in the message will immediately result in an error   "USER_MANAGED" - User-managed keys (managed and rotated by the user)   "SYSTEM_MANAGED" - System-managed keys (managed and rotated by Google)|

@@ -16,6 +16,7 @@ func ComputeSslPolicies() *schema.Table {
 		Resolver:     fetchComputeSslPolicies,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
@@ -51,7 +52,7 @@ func ComputeSslPolicies() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "ssl_policy_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -88,10 +89,15 @@ func ComputeSslPolicies() *schema.Table {
 				Resolver: fetchComputeSslPolicyWarnings,
 				Columns: []schema.Column{
 					{
-						Name:        "ssl_policy_id",
+						Name:        "ssl_policy_cq_id",
 						Description: "Unique ID of gcp_compute_ssl_policies table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "policy_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "code",

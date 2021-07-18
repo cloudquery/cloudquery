@@ -4,7 +4,8 @@ Default access controls to apply to new objects when no ACL is provided.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|bucket_id|uuid|Unique ID of gcp_storage_buckets table (FK)|
+|bucket_cq_id|uuid|Unique ID of gcp_storage_buckets table (FK)|
+|bucket_id|text||
 |bucket|text|The name of the bucket|
 |domain|text|The domain associated with the entity, if any|
 |email|text|The email address associated with the entity, if any|
@@ -12,7 +13,7 @@ Default access controls to apply to new objects when no ACL is provided.
 |entity_id|text|The ID for the entity, if any|
 |etag|text|HTTP 11 Entity tag for the access-control entry|
 |generation|bigint|The content generation of the object, if applied to an object|
-|resource_id|text|The ID of the access-control entry|
+|id|text|The ID of the access-control entry|
 |kind|text|The kind of item this is For object access control entries, this is always storage#objectAccessControl|
 |object|text|The name of the object, if applied to an object|
 |project_team_project_number|text|The project number|

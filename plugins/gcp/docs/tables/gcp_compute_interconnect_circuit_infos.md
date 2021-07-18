@@ -4,7 +4,8 @@ Describes a single physical circuit between the Customer and Google CircuitInfo 
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|interconnect_id|uuid|Unique ID of gcp_compute_interconnects table (FK)|
+|interconnect_cq_id|uuid|Unique ID of gcp_compute_interconnects table (FK)|
+|interconnect_id|text||
 |customer_demarc_id|text|Customer-side demarc ID for this circuit|
 |google_circuit_id|text|Google-assigned unique ID for this circuit Assigned at circuit turn-up|
 |google_demarc_id|text|Google-side demarc ID for this circuit Assigned at circuit turn-up and provided by Google to the customer in the LOA|

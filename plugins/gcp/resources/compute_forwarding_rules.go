@@ -10,10 +10,12 @@ import (
 
 func ComputeForwardingRules() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_forwarding_rules",
-		Description: "Represents a Forwarding Rule resource  Forwarding rule resources in GCP can be either regional or global.",
-		Resolver:    fetchComputeForwardingRules,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_forwarding_rules",
+		Description:  "Represents a Forwarding Rule resource  Forwarding rule resources in GCP can be either regional or global.",
+		Resolver:     fetchComputeForwardingRules,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -64,7 +66,7 @@ func ComputeForwardingRules() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,

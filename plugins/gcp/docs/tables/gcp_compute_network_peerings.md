@@ -4,7 +4,8 @@ A network peering attached to a network resource The message includes the peerin
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|network_id|uuid|Unique ID of gcp_compute_networks table (FK)|
+|network_cq_id|uuid|Unique ID of gcp_compute_networks table (FK)|
+|network_name|text||
 |auto_create_routes|boolean|This field will be deprecated soon Use the exchange_subnet_routes field instead Indicates whether full mesh connectivity is created and managed automatically between peered networks Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE|
 |exchange_subnet_routes|boolean|Indicates whether full mesh connectivity is created and managed automatically between peered networks Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE|
 |export_custom_routes|boolean|Whether to export the custom routes to peer network|

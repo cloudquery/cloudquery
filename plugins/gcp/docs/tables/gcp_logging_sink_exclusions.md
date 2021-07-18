@@ -4,7 +4,7 @@ Specifies a set of log entries that are not to be stored in Logging If your GCP 
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|sink_id|uuid|Unique ID of gcp_logging_sinks table (FK)|
+|sink_cq_id|uuid|Unique ID of gcp_logging_sinks table (FK)|
 |create_time|text|The creation timestamp of the exclusionThis field may not be present for older exclusions|
 |description|text|A description of this exclusion|
 |disabled|boolean|If set to True, then this exclusion is disabled and it does not exclude any log entries You can update an exclusion to change the value of this field|

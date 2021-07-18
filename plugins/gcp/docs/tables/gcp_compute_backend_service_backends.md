@@ -4,7 +4,8 @@ Message containing information of one individual backend
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|backend_service_id|uuid|Unique ID of gcp_compute_backend_services table (FK)|
+|backend_service_cq_id|uuid|Unique ID of gcp_compute_backend_services table (FK)|
+|backend_service_id|text||
 |balancing_mode|text|Specifies how to determine whether the backend of a load balancer can handle additional traffic or is fully loaded For usage guidelines, see  Connection balancing mode|
 |capacity_scaler|float|A multiplier applied to the backend's target capacity of its balancing mode The default value is 1, which means the group serves up to 100% of its configured capacity (depending on balancingMode) A setting of 0 means the group is completely drained, offering 0% of its available capacity The valid ranges are 00 and [01,10] You cannot configure a setting larger than 0 and smaller than 01 You cannot configure a setting of 0 when there is only one backend attached to the backend service|
 |description|text|An optional description of this resource Provide this property when you create the resource|

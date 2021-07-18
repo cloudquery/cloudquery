@@ -4,7 +4,8 @@
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|dataset_id|uuid||
+|dataset_cq_id|uuid||
+|dataset_id|text||
 |target_types|text[]|Which resources in the dataset this entry applies to.|
 |domain|text|A domain to grant access to Any users signed in with the domain specified will be granted the specified access Example: "examplecom" Maps to IAM policy member "domain:DOMAIN"|
 |group_by_email|text|An email address of a Google Group to grant access to Maps to IAM policy member "group:GROUP"|

@@ -10,7 +10,7 @@ Represents a Subnetwork resource  A subnetwork (also known as a subnet) is a log
 |enable_flow_logs|boolean|Whether to enable flow logging for this subnetwork If this field is not explicitly set, it will not appear in get listings If not set the default behavior is to disable flow logging This field isn't supported with the purpose field set to INTERNAL_HTTPS_LOAD_BALANCER|
 |fingerprint|text|Fingerprint of this resource A hash of the contents stored in this object This field is used in optimistic locking This field will be ignored when inserting a Subnetwork An up-to-date fingerprint must be provided in order to update the Subnetwork, otherwise the request will fail with error 412 conditionNotMet  To see the latest fingerprint, make a get() request to retrieve a Subnetwork|
 |gateway_address|text|The gateway address for default routes to reach destination addresses outside this subnetwork|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |ip_cidr_range|text|The range of internal addresses that are owned by this subnetwork Provide this property when you create the subnetwork For example, 10000/8 or 1006400/10 Ranges must be unique and non-overlapping within a network Only IPv4 is supported This field is set at resource creation time The range can be any range listed in the Valid ranges list The range can be expanded after creation using expandIpCidrRange|
 |ipv6_cidr_range|text|The range of internal IPv6 addresses that are owned by this subnetwork|
 |kind|text|Type of the resource Always compute#subnetwork for Subnetwork resources|

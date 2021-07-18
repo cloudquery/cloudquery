@@ -10,10 +10,12 @@ import (
 
 func ComputeImages() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_images",
-		Description: "Represents an Image resource  You can use images to create boot disks for your VM instances",
-		Resolver:    fetchComputeImages,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_images",
+		Description:  "Represents an Image resource  You can use images to create boot disks for your VM instances",
+		Resolver:     fetchComputeImages,
+		Multiplex:    client.ProjectMultiplex,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -82,7 +84,7 @@ func ComputeImages() *schema.Table {
 				Resolver:    resolveComputeImageGuestOsFeatures,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,

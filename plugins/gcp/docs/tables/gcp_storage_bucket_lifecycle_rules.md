@@ -4,7 +4,8 @@ A lifecycle management rule, which is made of an action to take and the conditio
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|bucket_id|uuid|Unique ID of gcp_storage_buckets table (FK)|
+|bucket_cq_id|uuid|Unique ID of gcp_storage_buckets table (FK)|
+|bucket_id|text||
 |action_storage_class|text|Target storage class Required iff the type of the action is SetStorageClass|
 |action_type|text|Type of the action Currently, only Delete and SetStorageClass are supported|
 |condition_age|bigint|Age of an object (in days) This condition is satisfied when an object reaches the specified age|

@@ -17,6 +17,7 @@ func ResourceManagerProjects() *schema.Table {
 		Resolver:     fetchResourceManagerProjects,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{

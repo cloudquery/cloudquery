@@ -16,7 +16,7 @@ Represents an Image resource  You can use images to create boot disks for your V
 |disk_size_gb|bigint|Size of the image when restored onto a persistent disk (in GB)|
 |family|text|The name of the image family to which this image belongs You can create disks by specifying an image family instead of a specific image name The image family always returns its latest image that is not deprecated The name of the image family must comply with RFC1035|
 |guest_os_features|text[]|A list of features to enable on the guest operating system Applicable only for bootable images Read  Enabling guest operating system features to see a list of available options|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |image_encryption_key_kms_key_name|text|The name of the encryption key that is stored in Google Cloud KMS|
 |image_encryption_key_kms_key_service_account|text|The service account being used for the encryption request for the given KMS key If absent, the Compute Engine default service account is used|
 |image_encryption_key_raw_key|text|Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource|

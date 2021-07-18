@@ -4,7 +4,8 @@ Description of a planned outage on this Interconnect
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|interconnect_id|uuid|Unique ID of gcp_compute_interconnects table (FK)|
+|interconnect_cq_id|uuid|Unique ID of gcp_compute_interconnects table (FK)|
+|interconnect_id|text||
 |affected_circuits|text[]|If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit IDs that will be affected|
 |description|text|A description about the purpose of the outage|
 |end_time|bigint|Scheduled end time for the outage (milliseconds since Unix epoch)|

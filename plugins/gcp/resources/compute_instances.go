@@ -14,6 +14,7 @@ func ComputeInstances() *schema.Table {
 		Description: "Represents an Instance resource  An instance is a virtual machine that is hosted on Google Cloud Platform For more information, read Virtual Machine Instances",
 		Resolver:    fetchComputeInstances,
 		Multiplex:   client.ProjectMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -81,7 +82,7 @@ func ComputeInstances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -286,10 +287,15 @@ func ComputeInstances() *schema.Table {
 				Resolver:    fetchComputeInstanceDisks,
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_compute_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "auto_delete",
@@ -420,7 +426,7 @@ func ComputeInstances() *schema.Table {
 					},
 					{
 						Name:        "source_image_encryption_key_sha256",
-						Description: "[Output only] The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
+						Description: "The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("InitializeParams.SourceImageEncryptionKey.Sha256"),
 					},
@@ -502,12 +508,18 @@ func ComputeInstances() *schema.Table {
 				Name:        "gcp_compute_instance_network_interfaces",
 				Description: "A network interface resource attached to an instance",
 				Resolver:    fetchComputeInstanceNetworkInterfaces,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_compute_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "fingerprint",
@@ -556,12 +568,18 @@ func ComputeInstances() *schema.Table {
 						Name:        "gcp_compute_instance_network_interface_access_configs",
 						Description: "An access configuration attached to an instance's network interface Only one access config per instance is supported",
 						Resolver:    fetchComputeInstanceNetworkInterfaceAccessConfigs,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_network_interface_cq_id", "name"}},
 						Columns: []schema.Column{
 							{
-								Name:        "instance_network_interface_id",
+								Name:        "instance_network_interface_cq_id",
 								Description: "Unique ID of gcp_compute_instance_network_interfaces table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:     "instance_network_interface_name",
+								Type:     schema.TypeString,
+								Resolver: schema.ParentResourceFieldResolver("name"),
 							},
 							{
 								Name:        "kind",
@@ -605,12 +623,18 @@ func ComputeInstances() *schema.Table {
 						Name:        "gcp_compute_instance_network_interface_alias_ip_ranges",
 						Description: "An alias IP range attached to an instance's network interface",
 						Resolver:    fetchComputeInstanceNetworkInterfaceAliasIpRanges,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_network_interface_cq_id", "subnetwork_range_name"}},
 						Columns: []schema.Column{
 							{
-								Name:        "instance_network_interface_id",
+								Name:        "instance_network_interface_cq_id",
 								Description: "Unique ID of gcp_compute_instance_network_interfaces table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:     "instance_network_interface_name",
+								Type:     schema.TypeString,
+								Resolver: schema.ParentResourceFieldResolver("name"),
 							},
 							{
 								Name:        "ip_cidr_range",
@@ -630,12 +654,18 @@ func ComputeInstances() *schema.Table {
 				Name:        "gcp_compute_instance_scheduling_node_affinities",
 				Description: "Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled",
 				Resolver:    fetchComputeInstanceSchedulingNodeAffinities,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "key"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_compute_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "key",
@@ -658,12 +688,18 @@ func ComputeInstances() *schema.Table {
 				Name:        "gcp_compute_instance_service_accounts",
 				Description: "A service account",
 				Resolver:    fetchComputeInstanceServiceAccounts,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "email"}},
 				Columns: []schema.Column{
 					{
-						Name:        "instance_id",
+						Name:        "instance_cq_id",
 						Description: "Unique ID of gcp_compute_instances table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "instance_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "email",

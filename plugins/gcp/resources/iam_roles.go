@@ -9,10 +9,12 @@ import (
 
 func IamRoles() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_iam_roles",
-		Description: "A role in the Identity and Access Management API",
-		Resolver:    fetchIamRoles,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_iam_roles",
+		Description:  "A role in the Identity and Access Management API",
+		Resolver:     fetchIamRoles,
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

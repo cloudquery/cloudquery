@@ -11,10 +11,12 @@ import (
 
 func ComputeBackendServices() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_backend_services",
-		Description: "Represents a Backend Service resource  A backend service defines how Google Cloud load balancers distribute traffic The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts These settings provide fine-grained control over how your load balancer behaves.",
-		Resolver:    fetchComputeBackendServices,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_backend_services",
+		Description:  "Represents a Backend Service resource  A backend service defines how Google Cloud load balancers distribute traffic The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts These settings provide fine-grained control over how your load balancer behaves.",
+		Resolver:     fetchComputeBackendServices,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -274,7 +276,7 @@ func ComputeBackendServices() *schema.Table {
 				Resolver:    schema.PathResolver("Iap.Oauth2ClientSecretSha256"),
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -466,10 +468,15 @@ func ComputeBackendServices() *schema.Table {
 				Resolver:    fetchComputeBackendServiceBackends,
 				Columns: []schema.Column{
 					{
-						Name:        "backend_service_id",
+						Name:        "backend_service_cq_id",
 						Description: "Unique ID of gcp_compute_backend_services table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "backend_service_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "balancing_mode",

@@ -10,10 +10,12 @@ import (
 
 func ComputeSslCertificates() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_ssl_certificates",
-		Description: "Represents an SSL Certificate resource.",
-		Resolver:    fetchComputeSslCertificates,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_ssl_certificates",
+		Description:  "Represents an SSL Certificate resource.",
+		Resolver:     fetchComputeSslCertificates,
+		Multiplex:    client.ProjectMultiplex,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -42,7 +44,7 @@ func ComputeSslCertificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,

@@ -10,7 +10,7 @@ Represents an SSL Policy resource
 |description|text|An optional description of this resource|
 |enabled_features|text[]|The list of features enabled in the SSL policy|
 |fingerprint|text|Fingerprint of this resource|
-|ssl_policy_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#sslPolicy for SSL policies|
 |min_tls_version|text|The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer This can be one of TLS_1_0, TLS_1_1, TLS_1_2|
 |name|text|Name of the resource|

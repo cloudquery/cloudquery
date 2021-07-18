@@ -16,6 +16,7 @@ func ComputeProjects() *schema.Table {
 		Resolver:     fetchComputeProjects,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
@@ -112,12 +113,18 @@ func ComputeProjects() *schema.Table {
 				Name:        "gcp_compute_project_quotas",
 				Description: "A quotas entry",
 				Resolver:    fetchComputeProjectQuotas,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_cq_id", "metric"}},
 				Columns: []schema.Column{
 					{
-						Name:        "project_id",
+						Name:        "project_cq_id",
 						Description: "Unique ID of gcp_compute_projects table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "project_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("project_id"),
 					},
 					{
 						Name:        "limit",

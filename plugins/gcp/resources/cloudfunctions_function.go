@@ -9,10 +9,12 @@ import (
 
 func CloudfunctionsFunction() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_cloudfunctions_functions",
-		Description: "Describes a Cloud Function that contains user computation executed in response to an event It encapsulate function and triggers configurations",
-		Resolver:    fetchCloudfunctionsFunctions,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_cloudfunctions_functions",
+		Description:  "Describes a Cloud Function that contains user computation executed in response to an event It encapsulate function and triggers configurations",
+		Resolver:     fetchCloudfunctionsFunctions,
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

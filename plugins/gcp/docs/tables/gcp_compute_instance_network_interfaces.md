@@ -4,7 +4,8 @@ A network interface resource attached to an instance
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_id|uuid|Unique ID of gcp_compute_instances table (FK)|
+|instance_cq_id|uuid|Unique ID of gcp_compute_instances table (FK)|
+|instance_id|text||
 |fingerprint|text|Fingerprint hash of contents stored in this network interface This field will be ignored when inserting an Instance or adding a NetworkInterface An up-to-date fingerprint must be provided in order to update the NetworkInterface The request will fail with error 400 Bad Request if the fingerprint is not provided, or 412 Precondition Failed if the fingerprint is out of date|
 |ipv6_address|text|An IPv6 internal network address for this network interface|
 |kind|text|Type of the resource Always compute#networkInterface for network interfaces|

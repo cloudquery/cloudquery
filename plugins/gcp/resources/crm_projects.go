@@ -15,6 +15,7 @@ func CrmProjects() *schema.Table {
 		Multiplex:    client.ProjectMultiplex,
 		DeleteFilter: client.DeleteProjectFilter,
 		IgnoreError:  client.IgnoreErrorHandler,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
 		Resolver:     fetchCrmProjects,
 		Columns: []schema.Column{
 			{

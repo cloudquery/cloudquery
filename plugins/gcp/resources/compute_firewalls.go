@@ -10,10 +10,12 @@ import (
 
 func ComputeFirewalls() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_firewalls",
-		Description: "Represents a Firewall Rule resource  Firewall rules allow or deny ingress traffic to, and egress traffic from your instances For more information, read Firewall rules",
-		Resolver:    fetchComputeFirewalls,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_firewalls",
+		Description:  "Represents a Firewall Rule resource  Firewall rules allow or deny ingress traffic to, and egress traffic from your instances For more information, read Firewall rules",
+		Resolver:     fetchComputeFirewalls,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -47,7 +49,7 @@ func ComputeFirewalls() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "resource_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
@@ -121,10 +123,15 @@ func ComputeFirewalls() *schema.Table {
 				Resolver: fetchComputeFirewallAllowed,
 				Columns: []schema.Column{
 					{
-						Name:        "firewall_id",
+						Name:        "firewall_cq_id",
 						Description: "Unique ID of gcp_compute_firewalls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "firewall_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "ip_protocol",
@@ -144,10 +151,15 @@ func ComputeFirewalls() *schema.Table {
 				Resolver: fetchComputeFirewallDenied,
 				Columns: []schema.Column{
 					{
-						Name:        "firewall_id",
+						Name:        "firewall_cq_id",
 						Description: "Unique ID of gcp_compute_firewalls table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:     "firewall_id",
+						Type:     schema.TypeString,
+						Resolver: schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "ip_protocol",

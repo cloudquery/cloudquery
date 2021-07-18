@@ -12,7 +12,7 @@ dataset resources in the project
 |description|text|A user-friendly description of the dataset|
 |etag|text|A hash of the resource|
 |friendly_name|text|A descriptive name for the dataset|
-|dataset_id|text|The fully-qualified unique name of the dataset in the format projectId:datasetId The dataset name without the project name is given in the datasetId field When creating a new dataset, leave this field blank, and instead specify the datasetId field|
+|id|text|The fully-qualified unique name of the dataset in the format projectId:datasetId The dataset name without the project name is given in the datasetId field When creating a new dataset, leave this field blank, and instead specify the datasetId field|
 |kind|text|The resource type|
 |labels|jsonb|The labels associated with this dataset You can use these to organize and group your datasets You can set this property when inserting or updating a dataset See Creating and Updating Dataset Labels for more information|
 |last_modified_time|bigint|The date when this dataset or any of its tables was last modified, in milliseconds since the epoch|

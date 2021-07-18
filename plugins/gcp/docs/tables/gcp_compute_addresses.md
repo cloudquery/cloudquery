@@ -9,7 +9,7 @@ Addresses for GFE-based external HTTP(S) load balancers.
 |address_type|text|The type of address to reserve, either INTERNAL or EXTERNAL If unspecified, defaults to EXTERNAL|
 |creation_timestamp|text|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource Provide this field when you create the resource|
-|address_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |ip_version|text|The IP version that will be used by this address Valid options are IPV4 or IPV6 This can only be specified for a global address|
 |kind|text|Type of the resource Always compute#address for addresses|
 |name|text|Name of the resource Provided by the client when the resource is created|

@@ -13,7 +13,7 @@ Represents a Forwarding Rule resource  Forwarding rule resources in GCP can be e
 |creation_timestamp|text|Creation timestamp in RFC3339 text format|
 |description|text|An optional description of this resource Provide this property when you create the resource|
 |fingerprint|text|Fingerprint of this resource A hash of the contents stored in this object|
-|resource_id|text|The unique identifier for the resource This identifier is defined by the server|
+|id|text|The unique identifier for the resource This identifier is defined by the server|
 |ip_version|text|The IP Version that will be used by this forwarding rule Valid options are IPV4 or IPV6 This can only be specified for an external global forwarding rule|
 |is_mirroring_collector|boolean|Indicates whether or not this load balancer can be used as a collector for packet mirroring To prevent mirroring loops, instances behind this load balancer will not have their traffic mirrored even if a PacketMirroring rule applies to them This can only be set to true for load balancers that have their loadBalancingScheme set to INTERNAL|
 |kind|text|Type of the resource Always compute#forwardingRule for Forwarding Rule resources|

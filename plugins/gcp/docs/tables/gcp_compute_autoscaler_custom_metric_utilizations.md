@@ -4,7 +4,8 @@ Custom utilization metric policy
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|autoscaler_id|uuid|Unique ID of gcp_compute_autoscalers table (FK)|
+|autoscaler_cq_id|uuid|Unique ID of gcp_compute_autoscalers table (FK)|
+|autoscaler_id|text||
 |filter|text|A filter string, compatible with a Stackdriver Monitoring filter string|
 |metric|text|The identifier (type) of the Stackdriver Monitoring metric The metric cannot have negative values  The metric must have a value type of INT64 or DOUBLE|
 |single_instance_assignment|float|per-group metric value that represents the total amount of work to be done or resource usage|

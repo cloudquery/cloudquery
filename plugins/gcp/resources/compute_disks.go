@@ -10,10 +10,12 @@ import (
 
 func ComputeDisks() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_compute_disks",
-		Description: "Represents a Persistent Disk resource.",
-		Resolver:    fetchComputeDisks,
-		Multiplex:   client.ProjectMultiplex,
+		Name:         "gcp_compute_disks",
+		Description:  "Represents a Persistent Disk resource.",
+		Resolver:     fetchComputeDisks,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:    client.ProjectMultiplex,
+		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -62,7 +64,7 @@ func ComputeDisks() *schema.Table {
 				Resolver:    resolveComputeDiskGuestOsFeatures,
 			},
 			{
-				Name:        "disk_id",
+				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveResourceId,
