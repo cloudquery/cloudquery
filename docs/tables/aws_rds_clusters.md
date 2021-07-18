@@ -25,9 +25,10 @@ Contains the details of an Amazon Aurora DB cluster
 |db_cluster_arn|text|The Amazon Resource Name (ARN) for the DB cluster.|
 |db_cluster_identifier|text|Contains a user-supplied DB cluster identifier|
 |db_cluster_parameter_group|text|Specifies the name of the DB cluster parameter group for the DB cluster.|
+|db_cluster_option_group_memberships|jsonb|Provides the map of option group memberships for this DB cluster.|
 |db_subnet_group|text|Specifies information on the subnet group associated with the DB cluster, including the name, description, and subnets in the subnet group.|
 |database_name|text|Contains the name of the initial database of this DB cluster that was provided at create time, if one was specified when the DB cluster was created|
-|db_cluster_resource_id|text|The AWS Region-unique, immutable identifier for the DB cluster|
+|id|text|The AWS Region-unique, immutable identifier for the DB cluster|
 |deletion_protection|boolean|Indicates if the DB cluster has deletion protection enabled|
 |earliest_backtrack_time|timestamp without time zone|The earliest time to which a DB cluster can be backtracked.|
 |earliest_restorable_time|timestamp without time zone|The earliest time to which a database can be restored with point-in-time restore.|

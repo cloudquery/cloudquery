@@ -17,6 +17,7 @@ func EksClusters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -148,7 +149,7 @@ func EksClusters() *schema.Table {
 				Resolver:    fetchEksClusterEncryptionConfigs,
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -172,31 +173,7 @@ func EksClusters() *schema.Table {
 				Resolver:    fetchEksClusterLoggings,
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
-						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "enabled",
-						Description: "If a log type is enabled, that log type exports its control plane logs to CloudWatch Logs.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "types",
-						Description: "The available cluster control plane log types.",
-						Type:        schema.TypeStringArray,
-						Resolver:    resolveEksClusterLoggingTypes,
-					},
-				},
-			},
-			{
-				Name:        "aws_eks_cluster_loggings",
-				Description: "An object representing the enabled or disabled Kubernetes control plane logs for your cluster.",
-				Resolver:    fetchEksClusterLoggings,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

@@ -18,6 +18,7 @@ func EfsFilesystems() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -42,9 +43,10 @@ func EfsFilesystems() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "file_system_id",
+				Name:        "id",
 				Description: "The ID of the file system, assigned by Amazon EFS.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FileSystemId"),
 			},
 			{
 				Name:        "life_cycle_state",
@@ -79,7 +81,7 @@ func EfsFilesystems() *schema.Table {
 				Resolver:    schema.PathResolver("SizeInBytes.Timestamp"),
 			},
 			{
-				Name:        "size_in_bytes_value_in_i_a",
+				Name:        "size_in_bytes_value_in_ia",
 				Description: "The latest known metered size (in bytes) of data stored in the Infrequent Access storage class.",
 				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("SizeInBytes.ValueInIA"),
