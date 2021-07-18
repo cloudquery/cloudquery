@@ -175,7 +175,7 @@ func Ec2Images() *schema.Table {
 				Resolver:    fetchEc2ImageBlockDeviceMappings,
 				Columns: []schema.Column{
 					{
-						Name:        "image_id",
+						Name:        "image_cq_id",
 						Description: "Unique CloudQuery ID of aws_ec2_images table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,

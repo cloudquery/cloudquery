@@ -8,14 +8,14 @@ A description of the file system.
 |region|text|The AWS Region of the resource.|
 |creation_time|timestamp without time zone|The time that the file system was created, in seconds (since 1970-01-01T00:00:00Z).|
 |creation_token|text|The opaque string specified in the request.|
-|file_system_id|text|The ID of the file system, assigned by Amazon EFS.|
+|id|text|The ID of the file system, assigned by Amazon EFS.|
 |life_cycle_state|text|The lifecycle phase of the file system.|
 |number_of_mount_targets|integer|The current number of mount targets that the file system has.|
 |owner_id|text|The AWS account that created the file system.|
 |performance_mode|text|The performance mode of the file system.|
 |size_in_bytes_value|bigint|The latest known metered size (in bytes) of data stored in the file system.|
 |size_in_bytes_timestamp|timestamp without time zone|The time at which the size of data, returned in the Value field, was determined.|
-|size_in_bytes_value_in_i_a|bigint|The latest known metered size (in bytes) of data stored in the Infrequent Access storage class.|
+|size_in_bytes_value_in_ia|bigint|The latest known metered size (in bytes) of data stored in the Infrequent Access storage class.|
 |size_in_bytes_value_in_standard|bigint|The latest known metered size (in bytes) of data stored in the Standard storage class.|
 |tags|jsonb|The tags associated with the file system, presented as an array of Tag objects.|
 |availability_zone_id|text|The unique and consistent identifier of the Availability Zone in which the file system's One Zone storage classes exist.|

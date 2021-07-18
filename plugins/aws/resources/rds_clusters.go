@@ -19,6 +19,7 @@ func RdsClusters() *schema.Table {
 		Multiplex:    client.AccountRegionMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -131,6 +132,12 @@ func RdsClusters() *schema.Table {
 				Resolver:    schema.PathResolver("DBClusterParameterGroup"),
 			},
 			{
+				Name:        "db_cluster_option_group_memberships",
+				Description: "Provides the map of option group memberships for this DB cluster.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveRdsClusterDbClusterOptionGroupMemberships,
+			},
+			{
 				Name:        "db_subnet_group",
 				Description: "Specifies information on the subnet group associated with the DB cluster, including the name, description, and subnets in the subnet group.",
 				Type:        schema.TypeString,
@@ -142,9 +149,10 @@ func RdsClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "db_cluster_resource_id",
+				Name:        "id",
 				Description: "The AWS Region-unique, immutable identifier for the DB cluster",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("DbClusterResourceId"),
 			},
 			{
 				Name:        "deletion_protection",
@@ -356,9 +364,10 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_associated_roles",
 				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB cluster. ",
 				Resolver:    fetchRdsClusterAssociatedRoles,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "role_arn"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -384,9 +393,10 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_db_cluster_members",
 				Description: "Contains information about an instance that is part of a DB cluster. ",
 				Resolver:    fetchRdsClusterDbClusterMembers,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "db_instance_identifier"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -416,36 +426,13 @@ func RdsClusters() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_rds_cluster_db_cluster_option_group_memberships",
-				Description: "Contains status information for a DB cluster option group. ",
-				Resolver:    fetchRdsClusterDbClusterOptionGroupMemberships,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_id",
-						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "db_cluster_option_group_name",
-						Description: "Specifies the name of the DB cluster option group.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DBClusterOptionGroupName"),
-					},
-					{
-						Name:        "status",
-						Description: "Specifies the status of the DB cluster option group.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
 				Name:        "aws_rds_cluster_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
 				Resolver:    fetchRdsClusterDomainMemberships,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "domain"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -478,9 +465,10 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
 				Resolver:    fetchRdsClusterVpcSecurityGroups,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "vpc_security_group_id"}},
 				Columns: []schema.Column{
 					{
-						Name:        "cluster_id",
+						Name:        "cluster_cq_id",
 						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
@@ -547,14 +535,21 @@ func fetchRdsClusterDbClusterMembers(ctx context.Context, meta schema.ClientMeta
 	res <- cluster.DBClusterMembers
 	return nil
 }
-func fetchRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	cluster, ok := parent.Item.(types.DBCluster)
+func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cluster, ok := resource.Item.(types.DBCluster)
 	if !ok {
 		return fmt.Errorf("not db cluster")
 	}
-	res <- cluster.DBClusterOptionGroupMemberships
-	return nil
+	if cluster.DBClusterOptionGroupMemberships == nil {
+		return nil
+	}
+	memberships := make(map[string]interface{}, len(cluster.DBClusterOptionGroupMemberships))
+	for _, m := range cluster.DBClusterOptionGroupMemberships {
+		memberships[*m.DBClusterOptionGroupName] = m.Status
+	}
+	return resource.Set(c.Name, memberships)
 }
+
 func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)
 	if !ok {
