@@ -4,6 +4,7 @@
 //go:generate mockgen -destination=./mocks/ad_users.go -package=mocks . ADUsersClient
 //go:generate mockgen -destination=./mocks/authorization.go -package=mocks . RoleAssignmentsClient,RoleDefinitionsClient
 //go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient
+//go:generate mockgen -destination=./mocks/containerservice.go -package=mocks . ManagedClustersClient
 //go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyClient,SecretsClient,VaultClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient
 //go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
@@ -22,6 +23,7 @@ type Services struct {
 	AD            AD
 	Authorization AuthorizationClient
 	Compute       ComputeClient
+	Container     ContainerServiceClient
 	KeyVault      KeyVaultClient
 	Monitor       MonitorClient
 	MySQL         MySQL
@@ -39,6 +41,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		AD:            NewADClient(subscriptionId, auth),
 		Authorization: NewAuthorizationClient(subscriptionId, auth),
 		Compute:       NewComputeClient(subscriptionId, auth),
+		Container:     NewContainerServiceClient(subscriptionId, auth),
 		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
 		Monitor:       NewMonitorClient(subscriptionId, auth),
 		MySQL:         NewMySQLClient(subscriptionId, auth),

@@ -19,6 +19,7 @@ func Provider() *provider.Provider {
 			"authorization.role_definitions":      AuthorizationRoleDefinitions(),
 			"compute.disks":                       ComputeDisks(),
 			"compute.virtual_machines":            ComputeVirtualMachines(),
+			"container.managed_clusters":          ContainerManagedClusters(),
 			"keyvault.vaults":                     KeyVaultVaults(),
 			"monitor.log_profiles":                MonitorLogProfiles(),
 			"monitor.diagnostic_settings":         MonitorDiagnosticSettings(),

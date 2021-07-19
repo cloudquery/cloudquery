@@ -12,4 +12,5 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/golang/mock v1.5.0
 	github.com/hashicorp/go-hclog v0.16.1
+	github.com/stretchr/testify v1.7.0
 )
