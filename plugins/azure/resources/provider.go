@@ -28,6 +28,7 @@ func Provider() *provider.Provider {
 			"mysql.servers":                       MySQLServers(),
 			"network.virtual_networks":            NetworkVirtualNetworks(),
 			"network.security_groups":             NetworkSecurityGroups(),
+			"network.public_ip_addresses":         NetworkPublicIPAddresses(),
 			"network.watchers":                    NetworkWatchers(),
 			"postgresql.servers":                  PostgresqlServers(),
 			"resources.groups":                    ResourcesGroups(),

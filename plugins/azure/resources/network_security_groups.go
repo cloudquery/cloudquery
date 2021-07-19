@@ -11,11 +11,12 @@ import (
 
 func NetworkSecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_security_groups",
-		Description: "Azure network security group",
-		Resolver:    fetchNetworkSecurityGroups,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:         "azure_network_security_groups",
+		Description:  "Azure network security group",
+		Resolver:     fetchNetworkSecurityGroups,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -76,15 +77,9 @@ func NetworkSecurityGroups() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
-						Description: "Unique ID of azure_network_security_groups table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_security_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "security_group_id",
-						Description: "ID of azure_network_security_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "description",
@@ -201,15 +196,9 @@ func NetworkSecurityGroups() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
-						Description: "Unique ID of azure_network_security_groups table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_security_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "security_group_id",
-						Description: "ID of azure_network_security_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "target_resource_id",
@@ -336,15 +325,9 @@ func NetworkSecurityGroups() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
-						Description: "Unique ID of azure_network_security_groups table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_security_groups table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "security_group_id",
-						Description: "ID of azure_network_security_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
 						Name:        "description",

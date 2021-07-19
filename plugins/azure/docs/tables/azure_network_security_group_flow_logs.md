@@ -4,8 +4,7 @@ FlowLog a flow log resource
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|security_group_cq_id|uuid|Unique ID of azure_network_security_groups table (FK)|
-|security_group_id|uuid|ID of azure_network_security_groups table (FK)|
+|security_group_cq_id|uuid|Unique CloudQuery ID of azure_network_security_groups table (FK)|
 |target_resource_id|text|ID of network security group to which flow log will be applied|
 |target_resource_guid|text|Guid of network security group to which flow log will be applied|
 |storage_id|text|ID of the storage account which is used to store the flow log|

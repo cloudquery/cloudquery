@@ -4,8 +4,7 @@ SecurityRule network security rule
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|security_group_cq_id|uuid|Unique ID of azure_network_security_groups table (FK)|
-|security_group_id|uuid|ID of azure_network_security_groups table (FK)|
+|security_group_cq_id|uuid|Unique CloudQuery ID of azure_network_security_groups table (FK)|
 |description|text|A description for this rule Restricted to 140 chars|
 |protocol|text|Network protocol this rule applies to Possible values include: 'SecurityRuleProtocolTCP', 'SecurityRuleProtocolUDP', 'SecurityRuleProtocolIcmp', 'SecurityRuleProtocolEsp', 'SecurityRuleProtocolAsterisk', 'SecurityRuleProtocolAh'|
 |source_port_range|text|The source port or range Integer or range between 0 and 65535 Asterisk '*' can also be used to match all ports|
