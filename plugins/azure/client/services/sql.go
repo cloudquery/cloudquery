@@ -8,26 +8,34 @@ import (
 )
 
 type SQLClient struct {
-	Databases    SqlDatabaseClient
-	Firewall     SQLFirewallClient
-	ServerAdmins SQLServerAdminClient
-	Servers      SqlServerClient
+	Databases                    SqlDatabaseClient
+	DatabaseBlobAuditingPolicies SQLDatabaseBlobAuditingPoliciesClient
+	Firewall                     SQLFirewallClient
+	ServerAdmins                 SQLServerAdminClient
+	ServerBlobAuditingPolicies   SQLServerBlobAuditingPolicies
+	Servers                      SqlServerClient
 }
 
 func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
-	servers := sql.NewServersClient(subscriptionId)
-	servers.Authorizer = auth
 	databases := sql.NewDatabasesClient(subscriptionId)
 	databases.Authorizer = auth
+	dbap := sql.NewDatabaseBlobAuditingPoliciesClient(subscriptionId)
+	dbap.Authorizer = auth
 	firewall := sql.NewFirewallRulesClient(subscriptionId)
 	firewall.Authorizer = auth
+	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
+	sbap.Authorizer = auth
 	serverAdmins := sql.NewServerAzureADAdministratorsClient(subscriptionId)
 	serverAdmins.Authorizer = auth
+	servers := sql.NewServersClient(subscriptionId)
+	servers.Authorizer = auth
 	return SQLClient{
-		Databases:    databases,
-		Firewall:     firewall,
-		ServerAdmins: serverAdmins,
-		Servers:      servers,
+		Databases:                    databases,
+		DatabaseBlobAuditingPolicies: dbap,
+		Firewall:                     firewall,
+		ServerAdmins:                 serverAdmins,
+		ServerBlobAuditingPolicies:   sbap,
+		Servers:                      servers,
 	}
 }
 
@@ -43,6 +51,14 @@ type SQLServerAdminClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
 }
 
+type SQLServerBlobAuditingPolicies interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
+}
+
 type SqlDatabaseClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
+}
+
+type SQLDatabaseBlobAuditingPoliciesClient interface {
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultPage, err error)
 }

@@ -32,7 +32,7 @@ func SQLServers() *schema.Table {
 			},
 			{
 				Name:        "identity_type",
-				Description: "The identity type Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource Possible values include: 'None', 'SystemAssigned', 'UserAssigned'",
+				Description: "The identity type.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
@@ -44,7 +44,7 @@ func SQLServers() *schema.Table {
 			},
 			{
 				Name:        "kind",
-				Description: "Kind of sql server This is metadata used for the Azure portal experience",
+				Description: "Kind of sql server.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -85,7 +85,7 @@ func SQLServers() *schema.Table {
 			},
 			{
 				Name:        "public_network_access",
-				Description: "Whether or not public endpoint access is allowed for this server  Value is optional but if passed in, must be 'Enabled' or 'Disabled' Possible values include: 'ServerPublicNetworkAccessEnabled', 'ServerPublicNetworkAccessDisabled'",
+				Description: "Whether or not public endpoint access is allowed for this server.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ServerProperties.PublicNetworkAccess"),
 			},
@@ -144,7 +144,7 @@ func SQLServers() *schema.Table {
 					},
 					{
 						Name:        "private_link_service_connection_state_status",
-						Description: "The private link service connection status Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'",
+						Description: "The private link service connection status.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.Status"),
 					},
@@ -156,13 +156,13 @@ func SQLServers() *schema.Table {
 					},
 					{
 						Name:        "private_link_service_connection_state_actions_required",
-						Description: "The actions required for private link service connection Possible values include: 'PrivateLinkServiceConnectionStateActionsRequireNone'",
+						Description: "The actions required for private link service connection.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Properties.PrivateLinkServiceConnectionState.ActionsRequired"),
 					},
 					{
 						Name:        "provisioning_state",
-						Description: "State of the private endpoint connection Possible values include: 'PrivateEndpointProvisioningStateApproving', 'PrivateEndpointProvisioningStateReady', 'PrivateEndpointProvisioningStateDropping', 'PrivateEndpointProvisioningStateFailed', 'PrivateEndpointProvisioningStateRejecting'",
+						Description: "State of the private endpoint connection.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Properties.ProvisioningState"),
 					},
@@ -192,13 +192,13 @@ func SQLServers() *schema.Table {
 					},
 					{
 						Name:        "start_ip_address",
-						Description: "The start IP address of the firewall rule Must be IPv4 format Use value '0000' to represent all Azure-internal IP addresses",
+						Description: "The start IP address of the firewall rule.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("FirewallRuleProperties.StartIPAddress"),
 					},
 					{
 						Name:        "end_ip_address",
-						Description: "The end IP address of the firewall rule Must be IPv4 format Must be greater than or equal to startIpAddress Use value '0000' to represent all Azure-internal IP addresses",
+						Description: "The end IP address of the firewall rule. Must be IPv4.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("FirewallRuleProperties.EndIPAddress"),
 					},
@@ -261,6 +261,90 @@ func SQLServers() *schema.Table {
 						Description: "Azure Active Directory only Authentication enabled",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("AdministratorProperties.AzureADOnlyAuthentication"),
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "type",
+						Description: "Resource type",
+						Type:        schema.TypeString,
+					},
+				},
+			},
+			{
+				Name:        "azure_sql_server_db_blob_auditing_policies",
+				Description: "Database blob auditing policy",
+				Resolver:    fetchSqlServerDbBlobAuditingPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "server_cq_id",
+						Description: "Unique ID of azure_sql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "state",
+						Description: "Specifies the state of the policy.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.State"),
+					},
+					{
+						Name:        "storage_endpoint",
+						Description: "Specifies the blob storage endpoint.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.StorageEndpoint"),
+					},
+					{
+						Name:        "storage_account_access_key",
+						Description: "Specifies the identifier key of the auditing storage account.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.StorageAccountAccessKey"),
+					},
+					{
+						Name:        "retention_days",
+						Description: "Specifies the number of days to keep in the audit logs in the storage account",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.RetentionDays"),
+					},
+					{
+						Name:        "audit_actions_and_groups",
+						Description: "Specifies the Actions-Groups and Actions to audit.",
+						Type:        schema.TypeStringArray,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.AuditActionsAndGroups"),
+					},
+					{
+						Name:        "storage_account_subscription_id",
+						Description: "Specifies the blob storage subscription Id",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.StorageAccountSubscriptionID"),
+					},
+					{
+						Name:        "is_storage_secondary_key_in_use",
+						Description: "Specifies whether storageAccountAccessKey value is the storage's secondary key",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.IsStorageSecondaryKeyInUse"),
+					},
+					{
+						Name:        "is_azure_monitor_target_enabled",
+						Description: "Specifies whether audit events are sent to Azure Monitor.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.IsAzureMonitorTargetEnabled"),
+					},
+					{
+						Name:        "queue_delay_ms",
+						Description: "Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("ServerBlobAuditingPolicyProperties.QueueDelayMs"),
 					},
 					{
 						Name:        "id",
@@ -344,6 +428,26 @@ func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *s
 		return err
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err := result.NextWithContext(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.ServerBlobAuditingPolicies
+	s := parent.Item.(sql.Server)
+	details, err := client.ParseResourceID(*s.ID)
+	if err != nil {
+		return err
+	}
+	result, err := svc.ListByServer(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
 		return err
 	}

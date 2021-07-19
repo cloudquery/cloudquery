@@ -7,7 +7,7 @@
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
 //go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
-//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SqlDatabaseClient,SQLFirewallClient,SQLServerAdminClient,SqlServerClient
+//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SqlDatabaseClient,SqlServerClient
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
 //go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyClient,SecretsClient,VaultClient
 //go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient
