@@ -47,3 +47,8 @@ func ParseResourceID(resourceID string) (ResourceDetails, error) {
 
 	return result, nil
 }
+
+// ScopeSubscription returns a scope for the given subscription
+func ScopeSubscription(subscriptionID string) string {
+	return "subscriptions/" + subscriptionID
+}

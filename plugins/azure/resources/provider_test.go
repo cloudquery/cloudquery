@@ -13,16 +13,18 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
+const testSubscriptionID = "test_sub"
+
 func azureTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.Services) {
 	ctrl := gomock.NewController(t)
 	providertest.TestResource(t, resources.Provider, providertest.ResourceTestData{
 		Table:  table,
-		Config: client.Config{Subscriptions: []string{"test_sub"}},
+		Config: client.Config{Subscriptions: []string{testSubscriptionID}},
 		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 			c := client.NewAzureClient(logging.New(&hclog.LoggerOptions{
 				Level: hclog.Warn,
-			}), []string{"test_sub"})
-			c.SetSubscriptionServices("test_sub", builder(t, ctrl))
+			}), []string{testSubscriptionID})
+			c.SetSubscriptionServices(testSubscriptionID, builder(t, ctrl))
 			return c, nil
 		},
 	})
