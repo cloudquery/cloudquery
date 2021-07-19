@@ -23,6 +23,7 @@ func Provider() *provider.Provider {
 			"keyvault.vaults":                     KeyVaultVaults(),
 			"monitor.log_profiles":                MonitorLogProfiles(),
 			"monitor.diagnostic_settings":         MonitorDiagnosticSettings(),
+			"monitor.activity_logs":               MonitorActivityLogs(),
 			"monitor.activity_log_alerts":         MonitorActivityLogAlerts(),
 			"mysql.servers":                       MySQLServers(),
 			"network.virtual_networks":            NetworkVirtualNetworks(),

@@ -8,31 +8,35 @@ import (
 )
 
 type MonitorClient struct {
-	LogProfiles        LogProfilesClient
-	DiagnosticSettings DiagnosticSettingsClient
 	ActivityLogAlerts  ActivityLogAlertsClient
+	LogProfiles        LogProfilesClient
+	ActivityLogs       ActivityLogClient
+	DiagnosticSettings DiagnosticSettingsClient
 }
 
 func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorClient {
 	servers := insights.NewActivityLogAlertsClient(subscriptionId)
 	servers.Authorizer = auth
-
 	logProfiles := insights.NewLogProfilesClient(subscriptionId)
 	logProfiles.Authorizer = auth
-
+	activityLogs := insights.NewActivityLogsClient(subscriptionId)
+	activityLogs.Authorizer = auth
 	diagnosticSettings := insights.NewDiagnosticSettingsClient(subscriptionId)
 	diagnosticSettings.Authorizer = auth
 	return MonitorClient{
-		LogProfiles:        logProfiles,
-		DiagnosticSettings: diagnosticSettings,
 		ActivityLogAlerts:  servers,
+		LogProfiles:        logProfiles,
+		ActivityLogs:       activityLogs,
+		DiagnosticSettings: diagnosticSettings,
 	}
 }
 
 type ActivityLogAlertsClient interface {
 	ListBySubscriptionID(ctx context.Context) (result insights.ActivityLogAlertList, err error)
 }
-
+type ActivityLogClient interface {
+	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+}
 type LogProfilesClient interface {
 	List(ctx context.Context) (result insights.LogProfileCollection, err error)
 }
