@@ -434,7 +434,6 @@ func RedshiftClusters() *schema.Table {
 				Name:        "aws_redshift_cluster_nodes",
 				Description: "The identifier of a node in a cluster.",
 				Resolver:    fetchRedshiftClusterNodes,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "private_ip_address"}},
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",

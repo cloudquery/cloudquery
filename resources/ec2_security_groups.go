@@ -70,7 +70,6 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "aws_ec2_security_group_ip_permissions",
 				Description: "Describes a set of permissions for a security group rule.",
 				Resolver:    fetchEc2SecurityGroupIpPermissions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "from_port", "to_port"}},
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
@@ -85,7 +84,7 @@ func Ec2SecurityGroups() *schema.Table {
 					},
 					{
 						Name:        "ip_protocol",
-						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number (see Protocol Numbers (http://www.",
+						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number",
 						Type:        schema.TypeString,
 					},
 					{
@@ -147,7 +146,6 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permission_prefix_list_ids",
 						Description: "Describes a prefix list ID.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionPrefixListIds,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permission_cq_id", "prefix_list_id"}},
 						Columns: []schema.Column{
 							{
 								Name:        "security_group_ip_permission_cq_id",
@@ -222,7 +220,6 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "aws_ec2_security_group_ip_permissions_egresses",
 				Description: "Describes a set of permissions for a security group rule.",
 				Resolver:    fetchEc2SecurityGroupIpPermissionsEgresses,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "from_port", "to_port"}},
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
@@ -237,7 +234,7 @@ func Ec2SecurityGroups() *schema.Table {
 					},
 					{
 						Name:        "ip_protocol",
-						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number (see Protocol Numbers (http://www.",
+						Description: "The IP protocol name (tcp, udp, icmp, icmpv6) or number",
 						Type:        schema.TypeString,
 					},
 					{
@@ -299,7 +296,6 @@ func Ec2SecurityGroups() *schema.Table {
 						Name:        "aws_ec2_security_group_ip_permissions_egress_prefix_list_ids",
 						Description: "Describes a prefix list ID.",
 						Resolver:    fetchEc2SecurityGroupIpPermissionsEgressPrefixListIds,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_ip_permissions_egress_cq_id", "prefix_list_id"}},
 						Columns: []schema.Column{
 							{
 								Name:        "security_group_ip_permissions_egress_cq_id",

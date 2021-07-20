@@ -126,8 +126,6 @@ func Ec2RouteTables() *schema.Table {
 				Name:        "aws_ec2_route_table_routes",
 				Description: "Describes a route in a route table.",
 				Resolver:    fetchEc2RouteTableRoutes,
-				// Note: not sure about this
-				Options: schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "destination_cidr_block"}},
 				Columns: []schema.Column{
 					{
 						Name:        "route_table_cq_id",

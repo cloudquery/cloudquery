@@ -509,8 +509,8 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
-		if !errors.As(err, &ae) && ae.ErrorCode() != "NoSuchPublicAccessBlockConfiguration" {
+		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
+		if errors.As(err, &ae) && ae.ErrorCode() != "NoSuchPublicAccessBlockConfiguration" {
 			return err
 		}
 	} else {
