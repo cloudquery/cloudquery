@@ -421,7 +421,6 @@ func LambdaFunctions() *schema.Table {
 				Name:        "aws_lambda_function_event_invoke_configs",
 				Description: "A configuration object that specifies the destination of an event after Lambda processes it. ",
 				Resolver:    fetchLambdaFunctionEventInvokeConfigs,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"function_cq_id", "on_failure_destination", "on_success_destination"}},
 				Columns: []schema.Column{
 					{
 						Name:        "function_cq_id",

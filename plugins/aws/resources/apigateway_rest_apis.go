@@ -321,7 +321,6 @@ func ApigatewayRestApis() *schema.Table {
 				Name:        "aws_apigateway_rest_api_gateway_responses",
 				Description: "A gateway response of a given response type and status code, with optional response parameters and mapping templates.",
 				Resolver:    fetchApigatewayRestApiGatewayResponses,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"rest_api_cq_id", "response_type", "status_code"}},
 				Columns: []schema.Column{
 					{
 						Name:        "rest_api_cq_id",
@@ -352,7 +351,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "response_type",
-						Description: "The response type of the associated GatewayResponse. Valid values are",
+						Description: "The response type of the associated GatewayResponse.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -504,7 +503,6 @@ func ApigatewayRestApis() *schema.Table {
 				Name:        "aws_apigateway_rest_api_stages",
 				Description: "Represents a unique identifier for a version of a deployed RestApi that is callable by users.",
 				Resolver:    fetchApigatewayRestApiStages,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"rest_api_cq_id", "stage_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "rest_api_cq_id",
