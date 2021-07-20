@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aws/smithy-go/logging"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -281,6 +283,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
+			awsCfg.Logger = AwsLogger{logger}
 		}
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
@@ -377,4 +380,16 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 		}
 	}
 	return filteredRegions
+}
+
+type AwsLogger struct {
+	l hclog.Logger
+}
+
+func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
+	if classification == logging.Warn {
+		a.l.Warn(fmt.Sprintf(format, v...))
+	} else {
+		a.l.Debug(fmt.Sprintf(format, v...))
+	}
 }
