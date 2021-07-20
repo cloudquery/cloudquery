@@ -48,7 +48,7 @@ func createDomainTestServer() (*domains.Service, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/v1beta1/projects/testProject/location/-/registrations", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.GET("/v1beta1/projects/testProject/locations/-/registrations", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &domains.ListRegistrationsResponse{
 			Registrations: []*domains.Registration{&reg},
 		}
