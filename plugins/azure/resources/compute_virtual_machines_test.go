@@ -14,9 +14,11 @@ import (
 
 func buildComputeVirtualMachineMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	v := mocks.NewMockVirtualMachinesClient(ctrl)
+	ve := mocks.NewMockVirtualMachineExtensionsClient(ctrl)
 	s := services.Services{
 		Compute: services.ComputeClient{
-			VirtualMachines: v,
+			VirtualMachines:          v,
+			VirtualMachineExtensions: ve,
 		},
 	}
 	virtualMachine := compute.VirtualMachine{}
@@ -26,16 +28,27 @@ func buildComputeVirtualMachineMock(t *testing.T, ctrl *gomock.Controller) servi
 		t.Errorf("failed building mock %s", err)
 	}
 
+	id := fakeResourceGroup + "/" + *virtualMachine.ID
+	virtualMachine.ID = &id
+
 	res := *virtualMachine.Resources
 	res[0].Settings = "test"
 	res[0].ProtectedSettings = "test"
 
 	vmPage := compute.NewVirtualMachineListResultPage(compute.VirtualMachineListResult{Value: &[]compute.VirtualMachine{virtualMachine}}, func(ctx context.Context, result compute.VirtualMachineListResult) (compute.VirtualMachineListResult, error) {
-		//return result, nil
 		return compute.VirtualMachineListResult{}, nil
 	})
 
 	v.EXPECT().ListAll(gomock.Any(), gomock.Any()).Return(vmPage, nil)
+
+	extension := compute.VirtualMachineExtension{}
+	err = faker.FakeData(&extension)
+	if err != nil {
+		t.Errorf("failed building mock %s", err)
+	}
+	ve.EXPECT().
+		List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(compute.VirtualMachineExtensionsListResult{Value: &[]compute.VirtualMachineExtension{extension}}, nil)
 
 	return s
 }

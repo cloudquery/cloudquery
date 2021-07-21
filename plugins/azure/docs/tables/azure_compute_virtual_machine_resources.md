@@ -4,8 +4,9 @@ VirtualMachineExtension describes a Virtual Machine Extension
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_machine_cq_id|uuid|Unique ID of azure_compute_virtual_machines table (FK)|
+|virtual_machine_cq_id|uuid|Unique CloudQuery ID of azure_compute_virtual_machines table (FK)|
 |virtual_machine_id|text|ID of azure_compute_virtual_machines table (FK)|
+|virtual_machine_extension_properties|jsonb||
 |id|text|Resource Id|
 |name|text|Resource name|
 |type|text|Resource type|

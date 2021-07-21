@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
@@ -55,7 +56,13 @@ func ComputeVirtualMachines() *schema.Table {
 				Resolver:    schema.PathResolver("VirtualMachineProperties.HardwareProfile.VMSize"),
 			},
 			{
-				Name:        "additional_capabilities_ultra_s_s_d_enabled",
+				Name:        "storage_profile",
+				Description: "Specifies the storage settings for the virtual machine disks",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveComputeVirtualMachineStorageProfile,
+			},
+			{
+				Name:        "additional_capabilities_ultra_ssd_enabled",
 				Description: "The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("VirtualMachineProperties.AdditionalCapabilities.UltraSSDEnabled"),
@@ -101,6 +108,12 @@ func ComputeVirtualMachines() *schema.Table {
 				Description: "Specifies the time zone of the virtual machine eg \"Pacific Standard Time\" <br><br> Possible values can be [TimeZoneInfoId](https://docsmicrosoftcom/en-us/dotnet/api/systemtimezoneinfoid?#System_TimeZoneInfo_Id) value from time zones returned by [TimeZoneInfoGetSystemTimeZones](https://docsmicrosoftcom/en-us/dotnet/api/systemtimezoneinfogetsystemtimezones)",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("VirtualMachineProperties.OsProfile.WindowsConfiguration.TimeZone"),
+			},
+			{
+				Name:        "windows_configuration_additional_unattend_content",
+				Description: "Specifies additional base-64 encoded XML formatted information that can be included in the Unattendxml file, which is used by Windows Setup",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveComputeVirtualMachineWindowsConfigurationAdditionalUnattendContent,
 			},
 			{
 				Name:        "windows_configuration_patch_settings_patch_mode",
@@ -149,6 +162,12 @@ func ComputeVirtualMachines() *schema.Table {
 				Description: "Specifies whether the guest provision signal is required to infer provision success of the virtual machine  **Note: This property is for private testing only, and all customers must not set the property to false**",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("VirtualMachineProperties.OsProfile.RequireGuestProvisionSignal"),
+			},
+			{
+				Name:        "network_profile_network_interfaces",
+				Description: "Specifies the list of resource Ids for the network interfaces associated with the virtual machine",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveComputeVirtualMachineNetworkProfileNetworkInterfaces,
 			},
 			{
 				Name:        "security_profile_uefi_settings_secure_boot_enabled",
@@ -241,6 +260,12 @@ func ComputeVirtualMachines() *schema.Table {
 				Resolver:    schema.PathResolver("VirtualMachineProperties.ProvisioningState"),
 			},
 			{
+				Name:        "instance_view",
+				Description: "The virtual machine instance view",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveComputeVirtualMachineInstanceView,
+			},
+			{
 				Name:        "license_type",
 				Description: "Specifies that the image or disk that is being used was licensed on-premises <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docsmicrosoftcom/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docsmicrosoftcom/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15",
 				Type:        schema.TypeString,
@@ -260,7 +285,7 @@ func ComputeVirtualMachines() *schema.Table {
 			},
 			{
 				Name:        "platform_fault_domain",
-				Description: "1<li>This property cannot be updated once the Virtual Machine is created<li>Fault domain assignment can be viewed in the Virtual Machine Instance View<br><br>Minimum api‐version: 2020‐12‐01",
+				Description: "Specifies the scale set logical fault domain into which the Virtual Machine will be created.",
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("VirtualMachineProperties.PlatformFaultDomain"),
 			},
@@ -340,7 +365,7 @@ func ComputeVirtualMachines() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
-						Description: "Unique ID of azure_compute_virtual_machines table (FK)",
+						Description: "Unique CloudQuery ID of azure_compute_virtual_machines table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -371,7 +396,7 @@ func ComputeVirtualMachines() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
-						Description: "Unique ID of azure_compute_virtual_machines table (FK)",
+						Description: "Unique CloudQuery ID of azure_compute_virtual_machines table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -397,7 +422,7 @@ func ComputeVirtualMachines() *schema.Table {
 						Columns: []schema.Column{
 							{
 								Name:        "virtual_machine_secret_cq_id",
-								Description: "Unique ID of azure_compute_virtual_machine_secrets table (FK)",
+								Description: "Unique CloudQuery ID of azure_compute_virtual_machine_secrets table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
 							},
@@ -424,7 +449,7 @@ func ComputeVirtualMachines() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
-						Description: "Unique ID of azure_compute_virtual_machines table (FK)",
+						Description: "Unique CloudQuery ID of azure_compute_virtual_machines table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -433,6 +458,11 @@ func ComputeVirtualMachines() *schema.Table {
 						Description: "ID of azure_compute_virtual_machines table (FK)",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:     "virtual_machine_extension_properties",
+						Type:     schema.TypeJSON,
+						Resolver: resolveComputeVirtualMachineResourceVirtualMachineExtensionProperties,
 					},
 					{
 						Name:        "id",
@@ -463,14 +493,14 @@ func ComputeVirtualMachines() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_compute_virtual_machine_resource_network_interfaces",
+				Name:        "azure_compute_virtual_machine_network_interfaces",
 				Description: "NetworkInterfaceReference describes a network interface reference",
-				Resolver:    fetchComputeVirtualMachineResourceNetworkInterfaces,
+				Resolver:    fetchComputeVirtualMachineNetworkInterfaces,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_machine_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
-						Description: "Unique ID of azure_compute_virtual_machine_resources table (FK)",
+						Description: "Unique CloudQuery ID of azure_compute_virtual_machines table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -515,6 +545,38 @@ func fetchComputeVirtualMachines(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
+func resolveComputeVirtualMachineStorageProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(compute.VirtualMachine)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
+	}
+
+	if p.StorageProfile == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.StorageProfile)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveComputeVirtualMachineWindowsConfigurationAdditionalUnattendContent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(compute.VirtualMachine)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
+	}
+
+	if p.OsProfile == nil ||
+		p.OsProfile.WindowsConfiguration == nil ||
+		p.OsProfile.WindowsConfiguration.AdditionalUnattendContent == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.OsProfile.WindowsConfiguration.AdditionalUnattendContent)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
 func resolveComputeVirtualMachineLinuxConfigurationSSHPublicKeys(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p, ok := resource.Item.(compute.VirtualMachine)
 	if !ok {
@@ -534,6 +596,37 @@ func resolveComputeVirtualMachineLinuxConfigurationSSHPublicKeys(ctx context.Con
 	}
 
 	return resource.Set(c.Name, result)
+}
+func resolveComputeVirtualMachineNetworkProfileNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(compute.VirtualMachine)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
+	}
+
+	if p.NetworkProfile == nil || p.NetworkProfile.NetworkInterfaces == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.NetworkProfile.NetworkInterfaces)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveComputeVirtualMachineInstanceView(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(compute.VirtualMachine)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
+	}
+
+	if p.InstanceView == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.InstanceView)
+
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
 }
 func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p, ok := parent.Item.(compute.VirtualMachine)
@@ -563,22 +656,6 @@ func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMe
 	res <- *p.OsProfile.Secrets
 	return nil
 }
-
-func fetchComputeVirtualMachineResourceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	p, ok := parent.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
-	}
-
-	if p.VirtualMachineProperties == nil ||
-		p.VirtualMachineProperties.NetworkProfile == nil ||
-		p.VirtualMachineProperties.NetworkProfile.NetworkInterfaces == nil {
-		return nil
-	}
-
-	res <- *p.VirtualMachineProperties.NetworkProfile.NetworkInterfaces
-	return nil
-}
 func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p, ok := parent.Item.(compute.VaultSecretGroup)
 	if !ok {
@@ -592,17 +669,54 @@ func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta
 	res <- *p.VaultCertificates
 	return nil
 }
-
 func fetchComputeVirtualMachineResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	svc := meta.(*client.Client).Services().Compute.VirtualMachineExtensions
+	p, ok := parent.Item.(compute.VirtualMachine)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
+	}
+	details, err := client.ParseResourceID(*p.ID)
+	if err != nil {
+		return err
+	}
+	response, err := svc.List(ctx, details.ResourceGroup, *p.Name, "")
+	if err != nil {
+		return err
+	}
+	if response.Value == nil {
+		return nil
+	}
+	res <- *response.Value
+	return nil
+}
+func resolveComputeVirtualMachineResourceVirtualMachineExtensionProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(compute.VirtualMachineExtension)
+	if !ok {
+		return fmt.Errorf("expected to have compute.VirtualMachineExtension but got %T", resource.Item)
+	}
+
+	if p.VirtualMachineExtensionProperties == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.VirtualMachineExtensionProperties)
+
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
+func fetchComputeVirtualMachineNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p, ok := parent.Item.(compute.VirtualMachine)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
 	}
 
-	if p.Resources == nil {
+	if p.VirtualMachineProperties == nil ||
+		p.VirtualMachineProperties.NetworkProfile == nil ||
+		p.VirtualMachineProperties.NetworkProfile.NetworkInterfaces == nil {
 		return nil
 	}
 
-	res <- *p.Resources
+	res <- *p.VirtualMachineProperties.NetworkProfile.NetworkInterfaces
 	return nil
 }
