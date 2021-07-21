@@ -8,12 +8,13 @@ import (
 )
 
 type SQLClient struct {
-	Databases                    SqlDatabaseClient
 	DatabaseBlobAuditingPolicies SQLDatabaseBlobAuditingPoliciesClient
+	Databases                    SQLDatabaseClient
 	Firewall                     SQLFirewallClient
 	ServerAdmins                 SQLServerAdminClient
 	ServerBlobAuditingPolicies   SQLServerBlobAuditingPolicies
-	Servers                      SqlServerClient
+	ServerDevOpsAuditSettings    SQLServerDevOpsAuditSettingsClient
+	Servers                      SQLServerClient
 }
 
 func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
@@ -25,21 +26,24 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	firewall.Authorizer = auth
 	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
 	sbap.Authorizer = auth
+	sdas := sql.NewServerDevOpsAuditSettingsClient(subscriptionId)
+	sdas.Authorizer = auth
 	serverAdmins := sql.NewServerAzureADAdministratorsClient(subscriptionId)
 	serverAdmins.Authorizer = auth
 	servers := sql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
 	return SQLClient{
-		Databases:                    databases,
 		DatabaseBlobAuditingPolicies: dbap,
+		Databases:                    databases,
 		Firewall:                     firewall,
 		ServerAdmins:                 serverAdmins,
 		ServerBlobAuditingPolicies:   sbap,
+		ServerDevOpsAuditSettings:    sdas,
 		Servers:                      servers,
 	}
 }
 
-type SqlServerClient interface {
+type SQLServerClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
 }
 
@@ -55,7 +59,11 @@ type SQLServerBlobAuditingPolicies interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
 }
 
-type SqlDatabaseClient interface {
+type SQLServerDevOpsAuditSettingsClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerDevOpsAuditSettingsListResultPage, err error)
+}
+
+type SQLDatabaseClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
 }
 

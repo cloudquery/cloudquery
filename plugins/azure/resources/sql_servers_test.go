@@ -13,12 +13,13 @@ import (
 )
 
 func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	serverSvc := mocks.NewMockSqlServerClient(ctrl)
-	databaseSvc := mocks.NewMockSqlDatabaseClient(ctrl)
+	serverSvc := mocks.NewMockSQLServerClient(ctrl)
+	databaseSvc := mocks.NewMockSQLDatabaseClient(ctrl)
 	firewallSvc := mocks.NewMockSQLFirewallClient(ctrl)
 	adminsSvc := mocks.NewMockSQLServerAdminClient(ctrl)
 	databaseBlobSvc := mocks.NewMockSQLDatabaseBlobAuditingPoliciesClient(ctrl)
 	serverBlobSvc := mocks.NewMockSQLServerBlobAuditingPolicies(ctrl)
+	devopsAuditSvc := mocks.NewMockSQLServerDevOpsAuditSettingsClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
 			Databases:                    databaseSvc,
@@ -26,6 +27,7 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			Firewall:                     firewallSvc,
 			ServerAdmins:                 adminsSvc,
 			ServerBlobAuditingPolicies:   serverBlobSvc,
+			ServerDevOpsAuditSettings:    devopsAuditSvc,
 			Servers:                      serverSvc,
 		},
 	}
@@ -102,6 +104,19 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			sql.ServerBlobAuditingPolicyListResult{Value: &[]sql.ServerBlobAuditingPolicy{serverBlobPolicy}},
 			func(context.Context, sql.ServerBlobAuditingPolicyListResult) (sql.ServerBlobAuditingPolicyListResult, error) {
 				return sql.ServerBlobAuditingPolicyListResult{}, nil
+			},
+		), nil,
+	)
+
+	var devopsAuditSettings sql.ServerDevOpsAuditingSettings
+	if err := faker.FakeData(&devopsAuditSettings); err != nil {
+		t.Fatal(err)
+	}
+	devopsAuditSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(
+		sql.NewServerDevOpsAuditSettingsListResultPage(
+			sql.ServerDevOpsAuditSettingsListResult{Value: &[]sql.ServerDevOpsAuditingSettings{devopsAuditSettings}},
+			func(context.Context, sql.ServerDevOpsAuditSettingsListResult) (sql.ServerDevOpsAuditSettingsListResult, error) {
+				return sql.ServerDevOpsAuditSettingsListResult{}, nil
 			},
 		), nil,
 	)
