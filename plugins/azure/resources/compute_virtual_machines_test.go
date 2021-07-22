@@ -50,6 +50,15 @@ func buildComputeVirtualMachineMock(t *testing.T, ctrl *gomock.Controller) servi
 		List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(compute.VirtualMachineExtensionsListResult{Value: &[]compute.VirtualMachineExtension{extension}}, nil)
 
+	instanceView := compute.VirtualMachineInstanceView{}
+	err = faker.FakeData(&instanceView)
+	if err != nil {
+		t.Errorf("failed building mock %s", err)
+	}
+	v.EXPECT().
+		InstanceView(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(instanceView, nil)
+
 	return s
 }
 

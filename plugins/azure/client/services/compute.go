@@ -35,6 +35,7 @@ type DisksClient interface {
 
 type VirtualMachinesClient interface {
 	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
+	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 }
 
 type VirtualMachineExtensionsClient interface {

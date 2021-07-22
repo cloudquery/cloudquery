@@ -613,16 +613,21 @@ func resolveComputeVirtualMachineNetworkProfileNetworkInterfaces(ctx context.Con
 	return resource.Set(c.Name, data)
 }
 func resolveComputeVirtualMachineInstanceView(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().Compute.VirtualMachines
 	p, ok := resource.Item.(compute.VirtualMachine)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
 	}
-
-	if p.InstanceView == nil {
-		return nil
+	details, err := client.ParseResourceID(*p.ID)
+	if err != nil {
+		return err
 	}
-	data, err := json.Marshal(p.InstanceView)
+	response, err := svc.InstanceView(ctx, details.ResourceGroup, *p.Name)
+	if err != nil {
+		return err
+	}
 
+	data, err := json.Marshal(response)
 	if err != nil {
 		return err
 	}
