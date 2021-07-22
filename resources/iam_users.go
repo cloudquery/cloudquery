@@ -257,6 +257,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 			User: types.User{
 				Arn:        aws.String(root.ARN),
 				CreateDate: aws.Time(root.UserCreationTime),
+				UserId:     aws.String("root"),
 				UserName:   aws.String(root.User),
 			},
 			reportUser: root,

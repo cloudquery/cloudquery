@@ -23,7 +23,7 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveDescribeManagedRuleGroup,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "vendor_name", "name"}},
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "vendor_name", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
