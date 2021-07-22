@@ -32,6 +32,7 @@ func Provider() *provider.Provider {
 			"s3.buckets":                            S3Buckets(),
 			"directconnect.connections":             DirectconnectConnections(),
 			"directconnect.gateways":                DirectconnectGateways(),
+			"directconnect.lags":                    DirectconnectLags(),
 			"directconnect.virtual_gateways":        DirectconnectVirtualGateways(),
 			"directconnect.virtual_interfaces":      DirectconnectVirtualInterfaces(),
 			"cognito.identity_pools":                CognitoIdentityPools(),

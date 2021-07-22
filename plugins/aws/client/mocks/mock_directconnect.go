@@ -115,6 +115,26 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGateways(arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDirectConnectGateways", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeDirectConnectGateways), varargs...)
 }
 
+// DescribeLags mocks base method.
+func (m *MockDirectconnectClient) DescribeLags(arg0 context.Context, arg1 *directconnect.DescribeLagsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeLagsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeLags", varargs...)
+	ret0, _ := ret[0].(*directconnect.DescribeLagsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeLags indicates an expected call of DescribeLags.
+func (mr *MockDirectconnectClientMockRecorder) DescribeLags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLags", reflect.TypeOf((*MockDirectconnectClient)(nil).DescribeLags), varargs...)
+}
+
 // DescribeVirtualGateways mocks base method.
 func (m *MockDirectconnectClient) DescribeVirtualGateways(arg0 context.Context, arg1 *directconnect.DescribeVirtualGatewaysInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeVirtualGatewaysOutput, error) {
 	m.ctrl.T.Helper()
