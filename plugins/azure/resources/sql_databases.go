@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -406,6 +407,94 @@ func SQLDatabases() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_sql_database_db_threat_detection_policies",
+				Description: "Contains information about a database Threat Detection policy.",
+				Resolver:    fetchSqlDatabaseDbThreatDetectionPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "database_cq_id",
+						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "location",
+						Description: "The geo-location where the resource lives",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "kind",
+						Description: "Resource kind",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "state",
+						Description: "Specifies the state of the policy.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.State"),
+					},
+					{
+						Name:        "disabled_alerts",
+						Description: "Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.DisabledAlerts"),
+					},
+					{
+						Name:        "email_addresses",
+						Description: "Specifies the semicolon-separated list of e-mail addresses to which the alert is sent",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.EmailAddresses"),
+					},
+					{
+						Name:        "email_account_admins",
+						Description: "Specifies that the alert is sent to the account administrators.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.EmailAccountAdmins"),
+					},
+					{
+						Name:        "storage_endpoint",
+						Description: "Specifies the blob storage endpoint.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.StorageEndpoint"),
+					},
+					{
+						Name:        "storage_account_access_key",
+						Description: "Specifies the identifier key of the Threat Detection audit storage account.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.StorageAccountAccessKey"),
+					},
+					{
+						Name:        "retention_days",
+						Description: "Specifies the number of days to keep in the Threat Detection audit logs",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.RetentionDays"),
+					},
+					{
+						Name:        "use_server_default",
+						Description: "Specifies whether to use the default server policy.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseSecurityAlertPolicyProperties.UseServerDefault"),
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "type",
+						Description: "Resource type",
+						Type:        schema.TypeString,
+					},
+				},
+			},
 		},
 	}
 }
@@ -451,5 +540,24 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 			return err
 		}
 	}
+	return nil
+}
+
+func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.DatabaseThreatDetectionPolicies
+	database := parent.Item.(sql.Database)
+	details, err := client.ParseResourceID(*database.ID)
+	if err != nil {
+		return err
+	}
+	db, ok := parent.Parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not a sql.Database instance: %T", parent.Parent.Item)
+	}
+	result, err := svc.Get(ctx, details.ResourceGroup, *db.Name, *database.Name)
+	if err != nil {
+		return err
+	}
+	res <- result
 	return nil
 }

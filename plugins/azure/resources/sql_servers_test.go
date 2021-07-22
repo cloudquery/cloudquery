@@ -20,15 +20,17 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	databaseBlobSvc := mocks.NewMockSQLDatabaseBlobAuditingPoliciesClient(ctrl)
 	serverBlobSvc := mocks.NewMockSQLServerBlobAuditingPolicies(ctrl)
 	devopsAuditSvc := mocks.NewMockSQLServerDevOpsAuditSettingsClient(ctrl)
+	databaseThreatsSvc := mocks.NewMockSQLDatabaseThreatDetectionPoliciesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			Databases:                    databaseSvc,
-			DatabaseBlobAuditingPolicies: databaseBlobSvc,
-			Firewall:                     firewallSvc,
-			ServerAdmins:                 adminsSvc,
-			ServerBlobAuditingPolicies:   serverBlobSvc,
-			ServerDevOpsAuditSettings:    devopsAuditSvc,
-			Servers:                      serverSvc,
+			DatabaseBlobAuditingPolicies:    databaseBlobSvc,
+			Databases:                       databaseSvc,
+			DatabaseThreatDetectionPolicies: databaseThreatsSvc,
+			Firewall:                        firewallSvc,
+			ServerAdmins:                    adminsSvc,
+			ServerBlobAuditingPolicies:      serverBlobSvc,
+			ServerDevOpsAuditSettings:       devopsAuditSvc,
+			Servers:                         serverSvc,
 		},
 	}
 	server := sql.Server{}
@@ -120,6 +122,12 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			},
 		), nil,
 	)
+
+	var databaseAlert sql.DatabaseSecurityAlertPolicy
+	if err := faker.FakeData(&databaseAlert); err != nil {
+		t.Fatal(err)
+	}
+	databaseThreatsSvc.EXPECT().Get(gomock.Any(), "test", *server.Name, *database.Name).Return(databaseAlert, nil)
 	return s
 }
 

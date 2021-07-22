@@ -8,13 +8,14 @@ import (
 )
 
 type SQLClient struct {
-	DatabaseBlobAuditingPolicies SQLDatabaseBlobAuditingPoliciesClient
-	Databases                    SQLDatabaseClient
-	Firewall                     SQLFirewallClient
-	ServerAdmins                 SQLServerAdminClient
-	ServerBlobAuditingPolicies   SQLServerBlobAuditingPolicies
-	ServerDevOpsAuditSettings    SQLServerDevOpsAuditSettingsClient
-	Servers                      SQLServerClient
+	DatabaseBlobAuditingPolicies    SQLDatabaseBlobAuditingPoliciesClient
+	Databases                       SQLDatabaseClient
+	DatabaseThreatDetectionPolicies SQLDatabaseThreatDetectionPoliciesClient
+	Firewall                        SQLFirewallClient
+	ServerAdmins                    SQLServerAdminClient
+	ServerBlobAuditingPolicies      SQLServerBlobAuditingPolicies
+	ServerDevOpsAuditSettings       SQLServerDevOpsAuditSettingsClient
+	Servers                         SQLServerClient
 }
 
 func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
@@ -22,6 +23,8 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	databases.Authorizer = auth
 	dbap := sql.NewDatabaseBlobAuditingPoliciesClient(subscriptionId)
 	dbap.Authorizer = auth
+	dtdp := sql.NewDatabaseThreatDetectionPoliciesClient(subscriptionId)
+	dtdp.Authorizer = auth
 	firewall := sql.NewFirewallRulesClient(subscriptionId)
 	firewall.Authorizer = auth
 	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
@@ -33,13 +36,14 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	servers := sql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
 	return SQLClient{
-		DatabaseBlobAuditingPolicies: dbap,
-		Databases:                    databases,
-		Firewall:                     firewall,
-		ServerAdmins:                 serverAdmins,
-		ServerBlobAuditingPolicies:   sbap,
-		ServerDevOpsAuditSettings:    sdas,
-		Servers:                      servers,
+		DatabaseBlobAuditingPolicies:    dbap,
+		Databases:                       databases,
+		DatabaseThreatDetectionPolicies: dtdp,
+		Firewall:                        firewall,
+		ServerAdmins:                    serverAdmins,
+		ServerBlobAuditingPolicies:      sbap,
+		ServerDevOpsAuditSettings:       sdas,
+		Servers:                         servers,
 	}
 }
 
@@ -69,4 +73,8 @@ type SQLDatabaseClient interface {
 
 type SQLDatabaseBlobAuditingPoliciesClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultPage, err error)
+}
+
+type SQLDatabaseThreatDetectionPoliciesClient interface {
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseSecurityAlertPolicy, err error)
 }
