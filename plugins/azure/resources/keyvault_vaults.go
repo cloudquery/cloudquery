@@ -3,13 +3,15 @@ package resources
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
+	keyvault71 "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func KeyVaultVaults() *schema.Table {
+func KeyvaultVaults() *schema.Table {
 	return &schema.Table{
 		Name:         "azure_keyvault_vaults",
 		Description:  "Azure ketvault vault",
@@ -150,13 +152,13 @@ func KeyVaultVaults() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "azure_keyvault_vault_access_policies",
-				Description: "AccessPolicyEntry an identity that have access to the key vault",
+				Description: "AccessPolicyEntry an identity that have access to the key vault All identities in the array must use the same tenant ID as the key vault's tenant ID",
 				Resolver:    fetchKeyvaultVaultAccessPolicies,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "object_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
-						Description: "Unique ID of azure_keyvault_vaults table (FK)",
+						Description: "Unique CloudQuery ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -206,13 +208,13 @@ func KeyVaultVaults() *schema.Table {
 			},
 			{
 				Name:        "azure_keyvault_vault_private_endpoint_connections",
-				Description: "Azure keyvault vault endpoint connection",
+				Description: "Azure ketvault vault endpoint connection",
 				Resolver:    fetchKeyvaultVaultPrivateEndpointConnections,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
-						Description: "Unique ID of azure_keyvault_vaults table (FK)",
+						Description: "Unique CloudQuery ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -250,125 +252,83 @@ func KeyVaultVaults() *schema.Table {
 			},
 			{
 				Name:        "azure_keyvault_vault_keys",
-				Description: "Azure ketvault vault key",
+				Description: "KeyItem the key item containing key metadata",
 				Resolver:    fetchKeyvaultVaultKeys,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
-						Description: "Unique ID of azure_keyvault_vaults table (FK)",
+						Description: "Unique CloudQuery ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "attributes_enabled",
-						Description: "Determines whether or not the object is enabled",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.Enabled"),
-					},
-					{
-						Name:        "attributes_not_before",
-						Description: "Not before date in seconds since 1970-01-01T00:00:00Z",
-						Type:        schema.TypeBigInt,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.NotBefore"),
-					},
-					{
-						Name:        "attributes_expires",
-						Description: "Expiry date in seconds since 1970-01-01T00:00:00Z",
-						Type:        schema.TypeBigInt,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.Expires"),
-					},
-					{
-						Name:        "attributes_created",
-						Description: "Creation time in seconds since 1970-01-01T00:00:00Z",
-						Type:        schema.TypeBigInt,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.Created"),
-					},
-					{
-						Name:        "attributes_updated",
-						Description: "Last updated time in seconds since 1970-01-01T00:00:00Z",
-						Type:        schema.TypeBigInt,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.Updated"),
-					},
-					{
-						Name:        "attributes_recovery_level",
-						Description: "The deletion recovery level currently in effect for the object If it contains 'Purgeable', then the object can be permanently deleted by a privileged user; otherwise, only the system can purge the object at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription'",
+						Name:        "kid",
+						Description: "Key identifier",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KeyProperties.Attributes.RecoveryLevel"),
 					},
 					{
-						Name:        "kty",
-						Description: "The type of the key For valid values, see JsonWebKeyType Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM'",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KeyProperties.Kty"),
-					},
-					{
-						Name:        "key_ops",
-						Description: "Enumerates the values for json web key operation",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("KeyProperties.KeyOps"),
-					},
-					{
-						Name:        "key_size",
-						Description: "The key size in bits For example: 2048, 3072, or 4096 for RSA",
+						Name:        "recoverable_days",
+						Description: "softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0",
 						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("KeyProperties.KeySize"),
+						Resolver:    schema.PathResolver("Attributes.RecoverableDays"),
 					},
 					{
-						Name:        "curve_name",
-						Description: "The elliptic curve name For valid values, see JsonWebKeyCurveName Possible values include: 'P256', 'P384', 'P521', 'P256K'",
+						Name:        "recovery_level",
+						Description: "Reflects the deletion recovery level currently in effect for keys in the current vault If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription', 'CustomizedRecoverablePurgeable', 'CustomizedRecoverable', 'CustomizedRecoverableProtectedSubscription'",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KeyProperties.CurveName"),
+						Resolver:    schema.PathResolver("Attributes.RecoveryLevel"),
 					},
 					{
-						Name:        "key_uri",
-						Description: "The URI to retrieve the current version of the key",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KeyProperties.KeyURI"),
+						Name:        "enabled",
+						Description: "Determines whether the object is enabled",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("Attributes.Enabled"),
 					},
 					{
-						Name:        "key_uri_with_version",
-						Description: "The URI to retrieve the specific version of the key",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KeyProperties.KeyURIWithVersion"),
+						Name:        "not_before",
+						Description: "Not before date in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultKeyNotBefore,
 					},
 					{
-						Name:        "id",
-						Description: "Fully qualified identifier of the key vault resource",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
+						Name:        "expires",
+						Description: "Expiry date in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultKeyExpires,
 					},
 					{
-						Name:        "name",
-						Description: "Name of the key vault resource",
-						Type:        schema.TypeString,
+						Name:        "created",
+						Description: "Creation time in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultKeyCreated,
 					},
 					{
-						Name:        "type",
-						Description: "Resource type of the key vault resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "location",
-						Description: "Azure location of the key vault resource",
-						Type:        schema.TypeString,
+						Name:        "updated",
+						Description: "Last updated time in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultKeyUpdated,
 					},
 					{
 						Name:        "tags",
-						Description: "Tags assigned to the key vault resource",
+						Description: "Application specific metadata in the form of key-value pairs",
 						Type:        schema.TypeJSON,
+					},
+					{
+						Name:        "managed",
+						Description: "True if the key's lifetime is managed by key vault If this is a key backing a certificate, then managed will be true",
+						Type:        schema.TypeBool,
 					},
 				},
 			},
 			{
 				Name:        "azure_keyvault_vault_secrets",
-				Description: "Azure keyvault secrets",
+				Description: "SecretItem the secret item containing secret metadata",
 				Resolver:    fetchKeyvaultVaultSecrets,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
-						Description: "Unique ID of azure_keyvault_vaults table (FK)",
+						Description: "Unique CloudQuery ID of azure_keyvault_vaults table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -397,6 +357,30 @@ func KeyVaultVaults() *schema.Table {
 						Resolver:    schema.PathResolver("Attributes.Enabled"),
 					},
 					{
+						Name:        "not_before",
+						Description: "Not before date in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultSecretNotBefore,
+					},
+					{
+						Name:        "expires",
+						Description: "Expiry date in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultSecretExpires,
+					},
+					{
+						Name:        "created",
+						Description: "Creation time in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultSecretCreated,
+					},
+					{
+						Name:        "updated",
+						Description: "Last updated time in UTC",
+						Type:        schema.TypeTimestamp,
+						Resolver:    resolveKeyvaultVaultSecretUpdated,
+					},
+					{
 						Name:        "tags",
 						Description: "Application specific metadata in the form of key-value pairs",
 						Type:        schema.TypeJSON,
@@ -420,7 +404,7 @@ func KeyVaultVaults() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().KeyVault.Vaults
 	maxResults := int32(1000)
 	response, err := svc.ListBySubscription(ctx, &maxResults)
@@ -435,7 +419,7 @@ func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, _ *schema.
 	}
 	return nil
 }
-func resolveKeyvaultVaultNetworkAclsIPRules(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveKeyvaultVaultNetworkAclsIPRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	vault := resource.Item.(keyvault.Vault)
 	if vault.Properties.NetworkAcls == nil || vault.Properties.NetworkAcls.IPRules == nil {
 		return nil
@@ -446,7 +430,7 @@ func resolveKeyvaultVaultNetworkAclsIPRules(_ context.Context, _ schema.ClientMe
 	}
 	return resource.Set("network_acls_ip_rules", ips)
 }
-func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	vault := resource.Item.(keyvault.Vault)
 	if vault.Properties.NetworkAcls == nil || vault.Properties.NetworkAcls.IPRules == nil {
 		return nil
@@ -457,7 +441,7 @@ func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(_ context.Context, _ sch
 	}
 	return resource.Set("network_acls_virtual_network_rules", ipRules)
 }
-func fetchKeyvaultVaultAccessPolicies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultAccessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
 	if vault.Properties.AccessPolicies == nil {
 		return nil
@@ -465,7 +449,7 @@ func fetchKeyvaultVaultAccessPolicies(_ context.Context, _ schema.ClientMeta, pa
 	res <- *vault.Properties.AccessPolicies
 	return nil
 }
-func fetchKeyvaultVaultPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
 	if vault.Properties.PrivateEndpointConnections == nil {
 		return nil
@@ -475,13 +459,9 @@ func fetchKeyvaultVaultPrivateEndpointConnections(_ context.Context, _ schema.Cl
 }
 func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
-	svc := meta.(*client.Client).Services().KeyVault.Keys
-
-	resourceDetails, err := client.ParseResourceID(*vault.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.List(ctx, resourceDetails.ResourceGroup, *vault.Name)
+	svc := meta.(*client.Client).Services().KeyVault.KeyVault71
+	maxResults := int32(25)
+	response, err := svc.GetKeys(ctx, *vault.Properties.VaultURI, &maxResults)
 	if err != nil {
 		return err
 	}
@@ -493,13 +473,62 @@ func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
+func resolveKeyvaultVaultKeyNotBefore(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.KeyItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.NotBefore == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.NotBefore))
+}
+func resolveKeyvaultVaultKeyExpires(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.KeyItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Expires == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Expires))
+}
+func resolveKeyvaultVaultKeyCreated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.KeyItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Created == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Created))
+}
+func resolveKeyvaultVaultKeyUpdated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.KeyItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Updated == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Updated))
+}
 func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vault, ok := parent.Item.(keyvault.Vault)
 	if !ok {
 		return fmt.Errorf("not a keyvault.Vault instance: %#v", parent.Item)
 	}
-	svc := meta.(*client.Client).Services().KeyVault.Secrets
-	result, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, nil)
+	svc := meta.(*client.Client).Services().KeyVault.KeyVault71
+	maxResults := int32(25)
+	result, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, &maxResults)
 	if err != nil {
 		return err
 	}
@@ -510,4 +539,52 @@ func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, pare
 		}
 	}
 	return nil
+}
+func resolveKeyvaultVaultSecretNotBefore(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.SecretItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.NotBefore == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.NotBefore))
+}
+func resolveKeyvaultVaultSecretExpires(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.SecretItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Expires == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Expires))
+}
+func resolveKeyvaultVaultSecretCreated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.SecretItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Created == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Created))
+}
+func resolveKeyvaultVaultSecretUpdated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	key, ok := resource.Item.(keyvault71.SecretItem)
+	if !ok {
+		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
+	}
+
+	if key.Attributes == nil || key.Attributes.Updated == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, time.Time(*key.Attributes.Updated))
 }

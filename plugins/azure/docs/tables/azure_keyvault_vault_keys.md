@@ -1,24 +1,17 @@
 
 # Table: azure_keyvault_vault_keys
-Azure ketvault vault key
+KeyItem the key item containing key metadata
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|vault_cq_id|uuid|Unique ID of azure_keyvault_vaults table (FK)|
-|attributes_enabled|boolean|Determines whether or not the object is enabled|
-|attributes_not_before|bigint|Not before date in seconds since 1970-01-01T00:00:00Z|
-|attributes_expires|bigint|Expiry date in seconds since 1970-01-01T00:00:00Z|
-|attributes_created|bigint|Creation time in seconds since 1970-01-01T00:00:00Z|
-|attributes_updated|bigint|Last updated time in seconds since 1970-01-01T00:00:00Z|
-|attributes_recovery_level|text|The deletion recovery level currently in effect for the object If it contains 'Purgeable', then the object can be permanently deleted by a privileged user; otherwise, only the system can purge the object at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription'|
-|kty|text|The type of the key For valid values, see JsonWebKeyType Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM'|
-|key_ops|text[]|Enumerates the values for json web key operation|
-|key_size|integer|The key size in bits For example: 2048, 3072, or 4096 for RSA|
-|curve_name|text|The elliptic curve name For valid values, see JsonWebKeyCurveName Possible values include: 'P256', 'P384', 'P521', 'P256K'|
-|key_uri|text|The URI to retrieve the current version of the key|
-|key_uri_with_version|text|The URI to retrieve the specific version of the key|
-|id|text|Fully qualified identifier of the key vault resource|
-|name|text|Name of the key vault resource|
-|type|text|Resource type of the key vault resource|
-|location|text|Azure location of the key vault resource|
-|tags|jsonb|Tags assigned to the key vault resource|
+|vault_cq_id|uuid|Unique CloudQuery ID of azure_keyvault_vaults table (FK)|
+|kid|text|Key identifier|
+|recoverable_days|integer|softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0|
+|recovery_level|text|Reflects the deletion recovery level currently in effect for keys in the current vault If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription', 'CustomizedRecoverablePurgeable', 'CustomizedRecoverable', 'CustomizedRecoverableProtectedSubscription'|
+|enabled|boolean|Determines whether the object is enabled|
+|not_before|timestamp without time zone|Not before date in UTC|
+|expires|timestamp without time zone|Expiry date in UTC|
+|created|timestamp without time zone|Creation time in UTC|
+|updated|timestamp without time zone|Last updated time in UTC|
+|tags|jsonb|Application specific metadata in the form of key-value pairs|
+|managed|boolean|True if the key's lifetime is managed by key vault If this is a key backing a certificate, then managed will be true|

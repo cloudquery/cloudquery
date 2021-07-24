@@ -20,7 +20,7 @@ func Provider() *provider.Provider {
 			"compute.disks":                       ComputeDisks(),
 			"compute.virtual_machines":            ComputeVirtualMachines(),
 			"container.managed_clusters":          ContainerManagedClusters(),
-			"keyvault.vaults":                     KeyVaultVaults(),
+			"keyvault.vaults":                     KeyvaultVaults(),
 			"monitor.log_profiles":                MonitorLogProfiles(),
 			"monitor.diagnostic_settings":         MonitorDiagnosticSettings(),
 			"monitor.activity_logs":               MonitorActivityLogs(),

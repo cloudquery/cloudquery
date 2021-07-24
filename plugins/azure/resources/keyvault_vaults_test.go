@@ -16,14 +16,12 @@ import (
 var fakeResourceGroup = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/cqprovidertest"
 
 func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	k := mocks.NewMockKeyClient(ctrl)
 	v := mocks.NewMockVaultClient(ctrl)
-	secrets := mocks.NewMockSecretsClient(ctrl)
+	k71 := mocks.NewMockKeyVault71Client(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{
-			Keys:    k,
-			Secrets: secrets,
-			Vaults:  v,
+			KeyVault71: k71,
+			Vaults:     v,
 		},
 	}
 	vault := keyvault.Vault{}
@@ -38,20 +36,20 @@ func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	})
 	v.EXPECT().ListBySubscription(gomock.Any(), gomock.Any()).Return(vaultPage, nil)
 
-	key := keyvault.Key{}
+	key := keyvault71.KeyItem{}
 	if err := faker.FakeData(&key); err != nil {
 		t.Errorf("failed building mock %s", err)
 	}
-	keyPage := keyvault.NewKeyListResultPage(keyvault.KeyListResult{Value: &[]keyvault.Key{key}}, func(ctx context.Context, result keyvault.KeyListResult) (keyvault.KeyListResult, error) {
-		return keyvault.KeyListResult{}, nil
+	keyPage := keyvault71.NewKeyListResultPage(keyvault71.KeyListResult{Value: &[]keyvault71.KeyItem{key}}, func(ctx context.Context, result keyvault71.KeyListResult) (keyvault71.KeyListResult, error) {
+		return keyvault71.KeyListResult{}, nil
 	})
-	k.EXPECT().List(gomock.Any(), "test", *vault.Name).Return(keyPage, nil)
+	k71.EXPECT().GetKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(keyPage, nil)
 
 	var secret keyvault71.SecretItem
 	if err := faker.FakeData(&secret); err != nil {
 		t.Fatal(err)
 	}
-	secrets.EXPECT().GetSecrets(gomock.Any(), *vault.Properties.VaultURI, nil).Return(
+	k71.EXPECT().GetSecrets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		keyvault71.NewSecretListResultPage(
 			keyvault71.SecretListResult{Value: &[]keyvault71.SecretItem{secret}},
 			func(context.Context, keyvault71.SecretListResult) (keyvault71.SecretListResult, error) {
@@ -64,5 +62,5 @@ func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 }
 
 func TestKeyVaultVaults(t *testing.T) {
-	azureTestHelper(t, resources.KeyVaultVaults(), buildKeyVaultMock)
+	azureTestHelper(t, resources.KeyvaultVaults(), buildKeyVaultMock)
 }

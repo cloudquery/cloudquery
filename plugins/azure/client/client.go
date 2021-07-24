@@ -55,6 +55,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	providerConfig := config.(*Config)
 
 	azureAuth, err := auth.NewAuthorizerFromEnvironment()
+
 	if err != nil {
 		return nil, err
 	}
