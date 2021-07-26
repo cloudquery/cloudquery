@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -470,7 +471,53 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 	if !ok {
 		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
 	}
-	res <- *p.FlowLogs
+	///subscriptions/ce681e53-1bc4-4218-b777-ddbfeec1986f/resourceGroups/example-resources/providers/Microsoft.Network/networkWatchers/acctestnw/flowLogs/Microsoft.Networkexample-resourcesacceptanceTestSecurityGroup1test
+	if p.FlowLogs == nil {
+		return nil
+	}
+
+	svc := meta.(*client.Client).Services().Network.Watchers
+	for _, fl := range *p.FlowLogs {
+		//parse flow log id and get required fields from it
+		v := strings.Split(*fl.ID, "/")
+		if len(v) != 11 {
+			return fmt.Errorf("wrong format of flow logs id")
+		}
+		networkWatcherName := v[8]
+		resourceGroup := v[4]
+		name := v[10]
+
+		//there is no API to get network.FlowLog directly so we fetch network.FlowLogInformation and fill network.FlowLog structure
+		result, err := svc.GetFlowLogStatus(ctx, resourceGroup, networkWatcherName, network.FlowLogStatusParameters{TargetResourceID: p.ID})
+		if err != nil {
+			return err
+		}
+		client, ok := svc.(network.WatchersClient)
+		if !ok {
+			client = network.WatchersClient{} //use a dummy network.WatchersClient with unit tests
+		}
+		properties, err := result.Result(client)
+		if err != nil {
+			return err
+		}
+
+		fl.Name = &name
+		if fl.FlowLogPropertiesFormat == nil {
+			fl.FlowLogPropertiesFormat = &network.FlowLogPropertiesFormat{}
+		}
+
+		fl.Enabled = properties.Enabled
+		fl.TargetResourceID = properties.TargetResourceID
+		fl.StorageID = properties.StorageID
+		fl.RetentionPolicy = properties.RetentionPolicy
+		fl.Format = properties.Format
+		fl.FlowAnalyticsConfiguration = properties.FlowAnalyticsConfiguration
+
+		if properties.FlowAnalyticsConfiguration != nil && properties.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration != nil {
+			fl.Location = properties.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceRegion
+		}
+		res <- fl
+	}
 	return nil
 }
 func fetchNetworkSecurityGroupDefaultSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {

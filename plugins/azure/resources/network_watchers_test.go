@@ -28,15 +28,6 @@ func buildNetworkWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Se
 	page := network.WatcherListResult{Value: &[]network.Watcher{watcher}}
 	watcherSvc.EXPECT().ListAll(gomock.Any()).Return(page, nil)
 
-	flowLogInfo := network.FlowLogInformation{}
-	err = faker.FakeData(&flowLogInfo)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	status := network.WatchersGetFlowLogStatusFuture{Result: func(client network.WatchersClient) (network.FlowLogInformation, error) {
-		return flowLogInfo, nil
-	}}
-	watcherSvc.EXPECT().GetFlowLogStatus(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(status, nil)
 	return s
 }
 

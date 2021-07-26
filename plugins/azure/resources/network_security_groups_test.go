@@ -15,9 +15,11 @@ import (
 
 func buildNetworkSecurityGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	n := mocks.NewMockSecurityGroupsClient(ctrl)
+	w := mocks.NewMockWatchersClient(ctrl)
 	s := services.Services{
 		Network: services.NetworksClient{
 			SecurityGroups: n,
+			Watchers:       w,
 		},
 	}
 
@@ -65,10 +67,24 @@ func buildNetworkSecurityGroupsMock(t *testing.T, ctrl *gomock.Controller) servi
 	fakeId := fakeResourceGroup + "/" + *sg.ID
 	sg.ID = &fakeId
 
+	testId := "/test/test/test/test/test/test/test/test/test/test"
+	(*sg.FlowLogs)[0].ID = &testId
+
 	page := network.NewSecurityGroupListResultPage(network.SecurityGroupListResult{Value: &[]network.SecurityGroup{sg}}, func(ctx context.Context, result network.SecurityGroupListResult) (network.SecurityGroupListResult, error) {
 		return network.SecurityGroupListResult{}, nil
 	})
 	n.EXPECT().ListAll(gomock.Any()).Return(page, nil)
+
+	flowLogInfo := network.FlowLogInformation{}
+	err := faker.FakeData(&flowLogInfo)
+	if err != nil {
+		t.Errorf("failed building mock %s", err)
+	}
+	status := network.WatchersGetFlowLogStatusFuture{Result: func(client network.WatchersClient) (network.FlowLogInformation, error) {
+		return flowLogInfo, nil
+	}}
+	w.EXPECT().GetFlowLogStatus(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(status, nil)
+
 	return s
 }
 

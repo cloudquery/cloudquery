@@ -3,7 +3,6 @@ package resources
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -13,7 +12,6 @@ func NetworkWatchers() *schema.Table {
 		Name:        "azure_network_watchers",
 		Description: "Azure network watcher",
 		Resolver:    fetchNetworkWatchers,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
@@ -59,42 +57,6 @@ func NetworkWatchers() *schema.Table {
 				Description: "Resource tags",
 				Type:        schema.TypeJSON,
 			},
-			{
-				Name:        "flow_log_storage_id",
-				Description: "ID of the storage account which is used to store the flow log",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StorageID"),
-			},
-			{
-				Name:        "flow_log_enabled",
-				Description: "Flag to enable/disable flow logging",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Enabled"),
-			},
-			{
-				Name:        "flow_log_retention_policy_days",
-				Description: "Number of days to retain flow log records",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("RetentionPolicy.Days"),
-			},
-			{
-				Name:        "flow_log_retention_policy_enabled",
-				Description: "Flag to enable/disable retention",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("RetentionPolicy.Enabled"),
-			},
-			{
-				Name:        "flow_log_format_type",
-				Description: "The file type of flow log Possible values include: 'JSON'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Format.Type"),
-			},
-			{
-				Name:        "flow_log_format_version",
-				Description: "The version (revision) of the flow log",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Format.Version"),
-			},
 		},
 	}
 }
@@ -111,36 +73,6 @@ func fetchNetworkWatchers(ctx context.Context, meta schema.ClientMeta, parent *s
 	if result.Value == nil {
 		return nil
 	}
-	for _, w := range *result.Value {
-		resourceDetails, err := client.ParseResourceID(*w.ID)
-		if err != nil {
-			return err
-		}
-		result, err := svc.GetFlowLogStatus(ctx, resourceDetails.ResourceGroup, *w.Name, network.FlowLogStatusParameters{})
-		if err != nil {
-			return err
-		}
-		client, ok := svc.(network.WatchersClient)
-		if !ok {
-			client = network.WatchersClient{} //use a dummy network.WatchersClient with unit tests
-		}
-		properties, err := result.Result(client)
-		if err != nil {
-			return err
-		}
-		res <- NetworkWatcherType{
-			w,
-			*properties.FlowLogProperties,
-		}
-	}
+	res <- *result.Value
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type NetworkWatcherType struct {
-	network.Watcher
-	network.FlowLogProperties
 }
