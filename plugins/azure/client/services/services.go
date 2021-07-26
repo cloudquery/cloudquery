@@ -12,6 +12,7 @@
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
 //go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
+//go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient
 //go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient
 //go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountClient,StorageContainerClient
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
@@ -34,6 +35,7 @@ type Services struct {
 	SQL           SQLClient
 	Storage       StorageClient
 	Subscriptions SubscriptionsClient
+	Web           WebClient
 }
 
 func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
@@ -52,5 +54,6 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		SQL:           NewSQLClient(subscriptionId, auth),
 		Storage:       NewStorageClient(subscriptionId, auth),
 		Subscriptions: NewSubscriptionsClient(subscriptionId, auth),
+		Web:           NewWebClient(subscriptionId, auth),
 	}
 }
