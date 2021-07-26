@@ -21,16 +21,20 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	serverBlobSvc := mocks.NewMockSQLServerBlobAuditingPolicies(ctrl)
 	devopsAuditSvc := mocks.NewMockSQLServerDevOpsAuditSettingsClient(ctrl)
 	databaseThreatsSvc := mocks.NewMockSQLDatabaseThreatDetectionPoliciesClient(ctrl)
+	serverVulnsSvc := mocks.NewMockSQLServerVulnerabilityAssessmentsClient(ctrl)
+	dbVulnsSvc := mocks.NewMockSQLDatabaseVulnerabilityAssessmentsClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			DatabaseBlobAuditingPolicies:    databaseBlobSvc,
-			Databases:                       databaseSvc,
-			DatabaseThreatDetectionPolicies: databaseThreatsSvc,
-			Firewall:                        firewallSvc,
-			ServerAdmins:                    adminsSvc,
-			ServerBlobAuditingPolicies:      serverBlobSvc,
-			ServerDevOpsAuditSettings:       devopsAuditSvc,
-			Servers:                         serverSvc,
+			DatabaseBlobAuditingPolicies:     databaseBlobSvc,
+			Databases:                        databaseSvc,
+			DatabaseThreatDetectionPolicies:  databaseThreatsSvc,
+			DatabaseVulnerabilityAssessments: dbVulnsSvc,
+			Firewall:                         firewallSvc,
+			ServerAdmins:                     adminsSvc,
+			ServerBlobAuditingPolicies:       serverBlobSvc,
+			ServerDevOpsAuditSettings:        devopsAuditSvc,
+			Servers:                          serverSvc,
+			ServerVulnerabilityAssessments:   serverVulnsSvc,
 		},
 	}
 	server := sql.Server{}
@@ -128,6 +132,33 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 		t.Fatal(err)
 	}
 	databaseThreatsSvc.EXPECT().Get(gomock.Any(), "test", *server.Name, *database.Name).Return(databaseAlert, nil)
+
+	var serverVuln sql.ServerVulnerabilityAssessment
+	if err := faker.FakeData(&serverVuln); err != nil {
+		t.Fatal(err)
+	}
+	serverVulnsSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(
+		sql.NewServerVulnerabilityAssessmentListResultPage(
+			sql.ServerVulnerabilityAssessmentListResult{Value: &[]sql.ServerVulnerabilityAssessment{serverVuln}},
+			func(context.Context, sql.ServerVulnerabilityAssessmentListResult) (sql.ServerVulnerabilityAssessmentListResult, error) {
+				return sql.ServerVulnerabilityAssessmentListResult{}, nil
+			},
+		), nil,
+	)
+
+	var dbVuln sql.DatabaseVulnerabilityAssessment
+	if err := faker.FakeData(&dbVuln); err != nil {
+		t.Fatal(err)
+	}
+	dbVulnsSvc.EXPECT().ListByDatabase(gomock.Any(), "test", *server.Name, *database.Name).Return(
+		sql.NewDatabaseVulnerabilityAssessmentListResultPage(
+			sql.DatabaseVulnerabilityAssessmentListResult{Value: &[]sql.DatabaseVulnerabilityAssessment{dbVuln}},
+			func(context.Context, sql.DatabaseVulnerabilityAssessmentListResult) (sql.DatabaseVulnerabilityAssessmentListResult, error) {
+				return sql.DatabaseVulnerabilityAssessmentListResult{}, nil
+			},
+		), nil,
+	)
+
 	return s
 }
 

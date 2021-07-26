@@ -495,6 +495,72 @@ func SQLDatabases() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_sql_database_db_vulnerability_assessments",
+				Description: "DatabaseVulnerabilityAssessment a database vulnerability assessment",
+				Resolver:    fetchSqlDatabaseDbVulnerabilityAssessments,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "database_cq_id",
+						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "storage_container_path",
+						Description: "A blob storage container path to hold the scan results (eg https://myStorageblobcorewindowsnet/VaScans/).",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageContainerPath"),
+					},
+					{
+						Name:        "storage_container_sas_key",
+						Description: "A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath' parameter.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageContainerSasKey"),
+					},
+					{
+						Name:        "storage_account_access_key",
+						Description: "Specifies the identifier key of the storage account for vulnerability assessment scan results.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageAccountAccessKey"),
+					},
+					{
+						Name:        "recurring_scans_is_enabled",
+						Description: "Recurring scans state",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.IsEnabled"),
+					},
+					{
+						Name:        "recurring_scans_email_subscription_admins",
+						Description: "Specifies that the schedule scan notification will be is sent to the subscription administrators",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.EmailSubscriptionAdmins"),
+					},
+					{
+						Name:        "recurring_scans_emails",
+						Description: "Specifies an array of e-mail addresses to which the scan notification is sent",
+						Type:        schema.TypeStringArray,
+						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.Emails"),
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "type",
+						Description: "Resource type",
+						Type:        schema.TypeString,
+					},
+				},
+			},
 		},
 	}
 }
@@ -529,8 +595,11 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return err
 	}
-	serverName := parent.Parent.Get("name").(*string)
-	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *serverName, *database.Name)
+	server, ok := parent.Parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
+	}
+	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return err
 	}
@@ -550,14 +619,38 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	if err != nil {
 		return err
 	}
-	db, ok := parent.Parent.Item.(sql.Server)
+	server, ok := parent.Parent.Item.(sql.Server)
 	if !ok {
-		return fmt.Errorf("not a sql.Database instance: %T", parent.Parent.Item)
+		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
 	}
-	result, err := svc.Get(ctx, details.ResourceGroup, *db.Name, *database.Name)
+	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return err
 	}
 	res <- result
+	return nil
+}
+
+func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.DatabaseVulnerabilityAssessments
+	database := parent.Item.(sql.Database)
+	details, err := client.ParseResourceID(*database.ID)
+	if err != nil {
+		return err
+	}
+	server, ok := parent.Parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
+	}
+	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err := result.NextWithContext(ctx); err != nil {
+			return err
+		}
+	}
 	return nil
 }

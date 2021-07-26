@@ -460,6 +460,72 @@ func SQLServers() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_sql_server_vulnerability_assessments",
+				Description: "Server vulnerability assessment",
+				Resolver:    fetchSqlServerVulnerabilityAssessments,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "server_cq_id",
+						Description: "Unique CloudQuery ID of azure_sql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "storage_container_path",
+						Description: "A blob storage container path to hold the scan results.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.StorageContainerPath"),
+					},
+					{
+						Name:        "storage_container_sas_key",
+						Description: "A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath' parameter.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.StorageContainerSasKey"),
+					},
+					{
+						Name:        "storage_account_access_key",
+						Description: "Specifies the identifier key of the storage account for vulnerability assessment scan results.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.StorageAccountAccessKey"),
+					},
+					{
+						Name:        "recurring_scans_is_enabled",
+						Description: "Recurring scans state",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.RecurringScans.IsEnabled"),
+					},
+					{
+						Name:        "recurring_scans_email_subscription_admins",
+						Description: "Specifies that the schedule scan notification will be is sent to the subscription administrators",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.RecurringScans.EmailSubscriptionAdmins"),
+					},
+					{
+						Name:        "recurring_scans_emails",
+						Description: "Specifies an array of e-mail addresses to which the scan notification is sent",
+						Type:        schema.TypeStringArray,
+						Resolver:    schema.PathResolver("ServerVulnerabilityAssessmentProperties.RecurringScans.Emails"),
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "type",
+						Description: "Resource type",
+						Type:        schema.TypeString,
+					},
+				},
+			},
 		},
 	}
 }
@@ -558,6 +624,26 @@ func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.Clien
 
 func fetchSqlServerDevopsAuditSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerDevOpsAuditSettings
+	s := parent.Item.(sql.Server)
+	details, err := client.ParseResourceID(*s.ID)
+	if err != nil {
+		return err
+	}
+	result, err := svc.ListByServer(ctx, details.ResourceGroup, *s.Name)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err := result.NextWithContext(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.ServerVulnerabilityAssessments
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
