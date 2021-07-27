@@ -143,6 +143,9 @@ func (e *Executor) ExecuteQuery(ctx context.Context, q *config.Query) (*QueryRes
 		}
 		result.Data = append(result.Data, values)
 	}
+	if data.Err() != nil {
+		return nil, data.Err()
+	}
 	if (len(result.Data) == 0 && !q.ExpectOutput) || (q.ExpectOutput && len(result.Data) > 0) {
 		result.Passed = true
 	}
