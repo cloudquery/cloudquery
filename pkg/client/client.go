@@ -238,6 +238,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 					return nil
 				}
 				if err != nil {
+					c.Logger.Error("received provider fetch error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", err)
 					return err
 				}
 				update := FetchUpdate{
@@ -248,7 +249,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 					Error:             resp.Error,
 				}
 				if resp.Error != "" {
-					c.Logger.Error("received error fetching", "provider", providerPlugin.Name(), "error", resp.Error)
+					c.Logger.Error("received provider fetch update error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", resp.Error)
+					continue
 				}
 				c.Logger.Debug("fetch update", "provider", providerPlugin.Name(), "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {

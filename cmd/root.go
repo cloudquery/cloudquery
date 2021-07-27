@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/thoas/go-funk"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 
 	zerolog "github.com/rs/zerolog/log"
@@ -82,5 +84,8 @@ func initConfig() {
 }
 
 func initLogging() {
+	if funk.ContainsString(os.Args, "completion") {
+		return
+	}
 	zerolog.Logger = logging.Configure(loggerConfig)
 }
