@@ -51,6 +51,10 @@ func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string,
 func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
 	m.logger.Debug("Downloading required providers", "providers", providers)
 	for _, rp := range providers {
+		if _, ok := m.clients[rp.Name]; ok {
+			m.logger.Debug("Skipping provider download, using reattach instead", "name", rp.Name, "version", rp.Version)
+			continue
+		}
 		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
 		details, err := m.hub.DownloadProvider(ctx, rp, noVerify)
 		if err != nil {
