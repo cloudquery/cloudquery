@@ -2,6 +2,8 @@ package resources
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -232,8 +234,13 @@ func MonitorActivityLogs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchMonitorActivityLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	// we fetch activity logs records from now to some point in the past. fetchWindow defines how far that point in the past is.
+	const fetchWindow = 90 * 24 * time.Hour
 	svc := meta.(*client.Client).Services().Monitor.ActivityLogs
-	response, err := svc.List(ctx, "", "")
+	now := time.Now().UTC()
+	past := now.Add(-fetchWindow)
+	filter := fmt.Sprintf("eventTimestamp ge '%s' and eventTimestamp le '%s'", past.Format(time.RFC3339Nano), now.Format(time.RFC3339Nano))
+	response, err := svc.List(ctx, filter, "")
 	if err != nil {
 		return err
 	}
