@@ -15,8 +15,11 @@ type ResourcesClient struct {
 func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) ResourcesClient {
 	groups := resources.NewGroupsClient(subscriptionId)
 	groups.Authorizer = auth
+	resources := resources.NewClient(subscriptionId)
+	resources.Authorizer = auth
 	return ResourcesClient{
-		Groups: groups,
+		Groups:    groups,
+		Resources: resources,
 	}
 }
 

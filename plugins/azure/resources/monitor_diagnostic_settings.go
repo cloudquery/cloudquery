@@ -2,9 +2,11 @@ package resources
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -183,6 +185,9 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 	for _, r := range resources.Values() {
 		response, err := svc.List(ctx, *r.ID)
 		if err != nil {
+			if isResourceTypeNotSupported(err) {
+				continue
+			}
 			return err
 		}
 		if response.Value == nil {
@@ -218,4 +223,12 @@ func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMe
 
 	res <- *p.DiagnosticSettings.Logs
 	return nil
+}
+
+func isResourceTypeNotSupported(err error) bool {
+	var azureErr *azure.RequestError
+	if errors.As(err, &azureErr) {
+		return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
+	}
+	return false
 }
