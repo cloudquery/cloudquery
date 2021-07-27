@@ -508,7 +508,6 @@ func ComputeInstances() *schema.Table {
 				Name:        "gcp_compute_instance_network_interfaces",
 				Description: "A network interface resource attached to an instance",
 				Resolver:    fetchComputeInstanceNetworkInterfaces,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -568,7 +567,6 @@ func ComputeInstances() *schema.Table {
 						Name:        "gcp_compute_instance_network_interface_access_configs",
 						Description: "An access configuration attached to an instance's network interface Only one access config per instance is supported",
 						Resolver:    fetchComputeInstanceNetworkInterfaceAccessConfigs,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_network_interface_cq_id", "name"}},
 						Columns: []schema.Column{
 							{
 								Name:        "instance_network_interface_cq_id",
@@ -623,7 +621,6 @@ func ComputeInstances() *schema.Table {
 						Name:        "gcp_compute_instance_network_interface_alias_ip_ranges",
 						Description: "An alias IP range attached to an instance's network interface",
 						Resolver:    fetchComputeInstanceNetworkInterfaceAliasIpRanges,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_network_interface_cq_id", "subnetwork_range_name"}},
 						Columns: []schema.Column{
 							{
 								Name:        "instance_network_interface_cq_id",
@@ -654,7 +651,6 @@ func ComputeInstances() *schema.Table {
 				Name:        "gcp_compute_instance_scheduling_node_affinities",
 				Description: "Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled",
 				Resolver:    fetchComputeInstanceSchedulingNodeAffinities,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "key"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",

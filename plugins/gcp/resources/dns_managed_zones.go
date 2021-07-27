@@ -192,7 +192,6 @@ func DNSManagedZones() *schema.Table {
 			{
 				Name:     "gcp_dns_managed_zone_forwarding_config_target_name_servers",
 				Resolver: fetchDnsManagedZoneForwardingConfigTargetNameServers,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"managed_zone_cq_id", "forwarding_path", "ipv4_address"}},
 				Columns: []schema.Column{
 					{
 						Name:        "managed_zone_cq_id",

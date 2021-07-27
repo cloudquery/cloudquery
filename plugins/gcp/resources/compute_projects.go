@@ -113,7 +113,6 @@ func ComputeProjects() *schema.Table {
 				Name:        "gcp_compute_project_quotas",
 				Description: "A quotas entry",
 				Resolver:    fetchComputeProjectQuotas,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_cq_id", "metric"}},
 				Columns: []schema.Column{
 					{
 						Name:        "project_cq_id",

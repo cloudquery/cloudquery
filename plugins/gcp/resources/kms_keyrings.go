@@ -19,7 +19,7 @@ func KmsKeyrings() *schema.Table {
 		IgnoreError:          client.IgnoreErrorHandler,
 		DeleteFilter:         client.DeleteProjectFilter,
 		PostResourceResolver: client.AddGcpMetadata,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "location", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -69,6 +69,7 @@ func KmsKeyrings() *schema.Table {
 						Name:        "location",
 						Description: "Location of the resource",
 						Type:        schema.TypeString,
+						Resolver:    resolveKmsKeyringCryptKeyLocation,
 					},
 					{
 						Name:        "policy",
@@ -246,7 +247,14 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 			if err != nil {
 				return err
 			}
-			res <- resp.KeyRings
+			rings := make([]*KeyRing, len(resp.KeyRings))
+			for i, k := range resp.KeyRings {
+				rings[i] = &KeyRing{
+					KeyRing:  k,
+					Location: l.LocationId,
+				}
+			}
+			res <- rings
 
 			if resp.NextPageToken == "" {
 				break
@@ -258,9 +266,9 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
-	keyRing, ok := parent.Item.(*cloudkms.KeyRing)
+	keyRing, ok := parent.Item.(*KeyRing)
 	if !ok {
-		return fmt.Errorf("expected *cloudkms.KeyRing but got %T", keyRing)
+		return fmt.Errorf("expected *resources.KeyRing but got %T", keyRing)
 	}
 	nextPageToken := ""
 	call := c.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.List(keyRing.Name).Context(ctx)
@@ -303,6 +311,15 @@ func resolveKmsKeyringCryptoKeyPolicy(ctx context.Context, meta schema.ClientMet
 	return resource.Set(c.Name, policy)
 }
 
+func resolveKmsKeyringCryptKeyLocation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	keyRing, ok := resource.Parent.Item.(*KeyRing)
+	if !ok {
+		return fmt.Errorf("expected *resources.KeyRing but got %T", keyRing)
+	}
+	// CryptoKey location is the same as it's keyring location
+	return resource.Set(c.Name, keyRing.Location)
+}
+
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
@@ -325,4 +342,9 @@ func getAllKmsLocations(ctx context.Context, projectId string, kms *cloudkms.Ser
 		nextPageToken = resp.NextPageToken
 	}
 	return locations, nil
+}
+
+type KeyRing struct {
+	*cloudkms.KeyRing
+	Location string
 }

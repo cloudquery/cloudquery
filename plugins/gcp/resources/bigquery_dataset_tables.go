@@ -373,7 +373,6 @@ func BigqueryDatasetTables() *schema.Table {
 				Name:        "gcp_bigquery_dataset_table_user_defined_functions",
 				Description: "This is used for defining User Defined Function (UDF) resources only when using legacy SQL",
 				Resolver:    fetchBigqueryDatasetTableUserDefinedFunctions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "resource_uri"}},
 				Columns: []schema.Column{
 					{
 						Name:        "dataset_table_cq_id",

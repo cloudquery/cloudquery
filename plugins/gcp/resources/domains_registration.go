@@ -435,10 +435,13 @@ func resolveDomainsRegistrationCustomDNSDsRecords(ctx context.Context, meta sche
 	if err != nil {
 		return fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err)
 	}
-	return resource.Set("custom_dns_ds_records", data)
+	return resource.Set(c.Name, data)
 }
 func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	reg := resource.Item.(*domains.Registration)
+	if reg.DnsSettings == nil || reg.DnsSettings.GoogleDomainsDns == nil {
+		return nil
+	}
 	data, err := json.Marshal(reg.DnsSettings.GoogleDomainsDns.DsRecords)
 	if err != nil {
 		return fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err)

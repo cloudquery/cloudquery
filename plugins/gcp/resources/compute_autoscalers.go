@@ -168,7 +168,6 @@ func ComputeAutoscalers() *schema.Table {
 				Name:        "gcp_compute_autoscaler_custom_metric_utilizations",
 				Description: "Custom utilization metric policy",
 				Resolver:    fetchComputeAutoscalerCustomMetricUtilizations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"autoscaler_id", "metric"}},
 				Columns: []schema.Column{
 					{
 						Name:        "autoscaler_cq_id",
