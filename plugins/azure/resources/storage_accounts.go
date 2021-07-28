@@ -725,6 +725,7 @@ func StorageAccounts() *schema.Table {
 				},
 			},
 			StorageContainers(),
+			StorageBlobServices(),
 		},
 	}
 }

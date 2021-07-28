@@ -15,10 +15,12 @@ import (
 func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	acc := mocks.NewMockStorageAccountClient(ctrl)
 	cont := mocks.NewMockStorageContainerClient(ctrl)
+	blob := mocks.NewMockStorageBlobServicesClient(ctrl)
 	s := services.Services{
 		Storage: services.StorageClient{
-			Accounts:   acc,
-			Containers: cont,
+			Accounts:     acc,
+			BlobServices: blob,
+			Containers:   cont,
 		},
 	}
 	account := storage.Account{}
@@ -43,6 +45,15 @@ func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return storage.ListContainerItems{}, nil
 	})
 	cont.EXPECT().List(gomock.Any(), "test", *account.Name, "", "", gomock.Any()).Return(containerPage, nil)
+
+	var props storage.BlobServiceProperties
+	if err := faker.FakeData(&props); err != nil {
+		t.Fatal(err)
+	}
+	blob.EXPECT().List(gomock.Any(), "test", *account.Name).Return(
+		storage.BlobServiceItems{Value: &[]storage.BlobServiceProperties{props}}, nil,
+	)
+
 	return s
 }
 

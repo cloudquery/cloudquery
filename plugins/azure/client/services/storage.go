@@ -8,25 +8,33 @@ import (
 )
 
 type StorageClient struct {
-	Containers StorageContainerClient
-	Accounts   StorageAccountClient
+	Accounts     StorageAccountClient
+	BlobServices StorageBlobServicesClient
+	Containers   StorageContainerClient
 }
 
 func NewStorageClient(subscriptionId string, auth autorest.Authorizer) StorageClient {
-	containers := storage.NewBlobContainersClient(subscriptionId)
-	containers.Authorizer = auth
 	accounts := storage.NewAccountsClient(subscriptionId)
 	accounts.Authorizer = auth
+	blobServices := storage.NewBlobServicesClient(subscriptionId)
+	blobServices.Authorizer = auth
+	containers := storage.NewBlobContainersClient(subscriptionId)
+	containers.Authorizer = auth
 	return StorageClient{
-		Containers: containers,
-		Accounts:   accounts,
+		Accounts:     accounts,
+		BlobServices: blobServices,
+		Containers:   containers,
 	}
-}
-
-type StorageContainerClient interface {
-	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
 }
 
 type StorageAccountClient interface {
 	List(ctx context.Context) (result storage.AccountListResultPage, err error)
+}
+
+type StorageBlobServicesClient interface {
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceItems, err error)
+}
+
+type StorageContainerClient interface {
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
 }
