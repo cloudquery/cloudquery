@@ -23,6 +23,8 @@ provider "gcp" {
     // project_filter = ""
     // Optional. If not specified either using all projects accessible.
     // project_ids = [<CHANGE_THIS_TO_YOUR_PROJECT_ID>]
+    // Optional. ServiceAccountKeyJSON passed as value instead of a file path, can be passed also via env: CQ_SERVICE_ACCOUNT_KEY_JSON
+    // service_account_key_json = <YOUR_JSON_SERVICE_ACCOUNT_KEY_DATA>
   }
 }
 ```
