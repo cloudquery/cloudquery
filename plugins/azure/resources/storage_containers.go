@@ -187,7 +187,9 @@ func resolveStorageContainerImmutabilityPolicy(_ context.Context, _ schema.Clien
 
 func resolveStorageContainerLegalHold(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	container := resource.Item.(storage.ListContainerItem)
-
+	if container.LegalHold == nil {
+		return nil
+	}
 	data, err := container.LegalHold.MarshalJSON()
 	if err != nil {
 		return err
