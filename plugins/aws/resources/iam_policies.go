@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -162,7 +163,11 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		return resource.Set("document", decodedDocument)
+		data := make(map[string]interface{})
+		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {
+			return err
+		}
+		return resource.Set("document", data)
 	}
 	return nil
 }
