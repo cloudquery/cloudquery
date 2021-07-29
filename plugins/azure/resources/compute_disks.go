@@ -262,7 +262,6 @@ func ComputeDisks() *schema.Table {
 				Name:        "azure_compute_disk_encryption_settings",
 				Description: "Azure compute disk encryption setting",
 				Resolver:    fetchComputeDiskEncryptionSettings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"disk_cq_id", "disk_encryption_key_source_vault_id", "key_encryption_key_source_vault_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "disk_cq_id",
