@@ -5,7 +5,8 @@ Azure storage container
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |subscription_id|text|Azure subscription id|
-|account_id|uuid|Azure storage account id|
+|account_id|text|Azure storage account id|
+|account_cq_id|uuid|Unique CloudQuery ID of azure_storage_accounts table (FK)|
 |version|text|The version of the deleted blob container|
 |deleted|boolean|Indicates whether the blob container was deleted|
 |deleted_time|timestamp without time zone|Blob container deletion time|
