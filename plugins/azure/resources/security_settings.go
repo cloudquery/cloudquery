@@ -66,7 +66,6 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 				res <- d
 			}
 		}
-		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
 			return err
 		}
