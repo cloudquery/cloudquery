@@ -1,5 +1,5 @@
 
-# Table: aws_web_app_publishing_profiles
+# Table: azure_web_app_publishing_profiles
 
 ## Columns
 | Name        | Type           | Description  |

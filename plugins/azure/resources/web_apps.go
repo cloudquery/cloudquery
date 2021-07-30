@@ -444,7 +444,7 @@ func WebApps() *schema.Table {
 				},
 			},
 			{
-				Name:     "aws_web_app_publishing_profiles",
+				Name:     "azure_web_app_publishing_profiles",
 				Resolver: fetchWebAppPublishingProfiles,
 				Columns: []schema.Column{
 					{

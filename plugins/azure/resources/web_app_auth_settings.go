@@ -11,7 +11,7 @@ import (
 
 func WebAppAuthSettings() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_web_app_auth_settings",
+		Name:        "azure_web_app_auth_settings",
 		Description: "SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature",
 		Resolver:    fetchWebAppAuthSettings,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"app_cq_id", "id"}},

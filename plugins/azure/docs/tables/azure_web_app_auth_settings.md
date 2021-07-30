@@ -1,5 +1,5 @@
 
-# Table: aws_web_app_auth_settings
+# Table: azure_web_app_auth_settings
 SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature
 ## Columns
 | Name        | Type           | Description  |
