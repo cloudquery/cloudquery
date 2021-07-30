@@ -14,3 +14,4 @@ DiagnosticSettingsResource the diagnostic setting resource
 |id|text|Azure resource Id|
 |name|text|Azure resource name|
 |type|text|Azure resource type|
+|resource_uri|text|Resource URI this setting belongs to|

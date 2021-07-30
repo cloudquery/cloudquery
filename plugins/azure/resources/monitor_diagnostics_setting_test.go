@@ -23,18 +23,28 @@ func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) serv
 	if err := faker.FakeData(&resource); err != nil {
 		t.Fatal(err)
 	}
-	resourcesPage := resources2.NewListResultPage(resources2.ListResult{Value: &[]resources2.GenericResourceExpanded{resource}}, func(ctx context.Context, result resources2.ListResult) (resources2.ListResult, error) {
-		return resources2.ListResult{}, nil
-	})
-	res.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(resourcesPage,
-		nil,
+	resourcesPage := resources2.NewListResultPage(
+		resources2.ListResult{Value: &[]resources2.GenericResourceExpanded{resource}},
+		func(ctx context.Context, result resources2.ListResult) (resources2.ListResult, error) {
+			return resources2.ListResult{}, nil
+		},
 	)
-	d := insights.DiagnosticSettingsResource{}
-	if err := faker.FakeData(&d); err != nil {
+	res.EXPECT().List(gomock.Any(), "", "", nil).Return(resourcesPage, nil)
+
+	d1 := insights.DiagnosticSettingsResource{}
+	if err := faker.FakeData(&d1); err != nil {
 		t.Fatal(err)
 	}
-	ds.EXPECT().List(gomock.Any(), gomock.Any()).Return(insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d}},
-		nil,
+	ds.EXPECT().List(gomock.Any(), "/subscriptions/"+testSubscriptionID).Return(
+		insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d1}}, nil,
+	)
+
+	d2 := insights.DiagnosticSettingsResource{}
+	if err := faker.FakeData(&d2); err != nil {
+		t.Fatal(err)
+	}
+	ds.EXPECT().List(gomock.Any(), *resource.ID).Return(
+		insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d2}}, nil,
 	)
 
 	return services.Services{
