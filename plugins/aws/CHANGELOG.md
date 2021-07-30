@@ -5,7 +5,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.5.0-beta2] - 2020-07-15
+## [v0.5.1] - 2020-07-30
+###### SDK Version: 0.3.1
+
+### :rocket: Added
+* Added new resource directconnect lags by [@James-Quigley](https://github.com/James-Quigley) [#122](https://github.com/cloudquery/cq-provider-aws/pull/122)
+
+### :gear: Changed
+* Updated SDK to version [0.3.1](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v031---2020-07-30)
+
+### :spider: Fixed
+* Fixed iam policies encoded policies parsing [#125](https://github.com/cloudquery/cq-provider-aws/pull/125)
+* Fixed cognito_user_pools input [#126](https://github.com/cloudquery/cq-provider-aws/pull/126)
+
+
+## [v0.5.0] - 2020-07-28
 ###### SDK Version: 0.3.0
 
 ### :rocket: Added
