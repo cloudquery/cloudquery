@@ -20,7 +20,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 	}
 	m.EXPECT().ListUserPools(
 		gomock.Any(),
-		&cognitoidentityprovider.ListUserPoolsInput{},
+		&cognitoidentityprovider.ListUserPoolsInput{MaxResults: 60},
 		gomock.Any(),
 	).Return(
 		&cognitoidentityprovider.ListUserPoolsOutput{UserPools: []types.UserPoolDescriptionType{desc}},
