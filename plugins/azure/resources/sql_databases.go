@@ -11,18 +11,15 @@ import (
 
 func SQLDatabases() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_sql_databases",
-		Description:  "Azure sql database",
-		Resolver:     fetchSqlDatabases,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:        "azure_sql_databases",
+		Description: "Azure sql database",
+		Resolver:    fetchSqlDatabases,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:        "server_cq_id",
+				Description: "Unique ID of azure_sql_servers table (FK)",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
 			},
 			{
 				Name:        "sku_name",

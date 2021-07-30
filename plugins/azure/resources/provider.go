@@ -32,6 +32,7 @@ func Provider() *provider.Provider {
 			"network.watchers":                    NetworkWatchers(),
 			"postgresql.servers":                  PostgresqlServers(),
 			"resources.groups":                    ResourcesGroups(),
+			"resources.policy_assignments":        ResourcesPolicyAssignments(),
 			"security.auto_provisioning_settings": SecurityAutoProvisioningSettings(),
 			"security.contacts":                   SecurityContacts(),
 			"security.pricings":                   SecurityPricings(),

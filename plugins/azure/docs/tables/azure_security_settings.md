@@ -9,3 +9,4 @@ Setting the kind of the security setting
 |id|text|Resource Id|
 |name|text|Resource name|
 |resource_type|text|Resource type|
+|enabled|boolean|Export setting enabled flag|

@@ -30,14 +30,6 @@ func buildSecuritySettings(s security.BasicSetting) func(*testing.T, *gomock.Con
 }
 
 func TestSecuritySettings(t *testing.T) {
-	t.Run("settings", func(t *testing.T) {
-		var setting security.Setting
-		if err := faker.FakeData(&setting); err != nil {
-			t.Fatal(err)
-		}
-		azureTestHelper(t, resources.SecuritySettings(), buildSecuritySettings(setting))
-	})
-	// TODO: clear the database
 	t.Run("data_export_settings", func(t *testing.T) {
 		var setting security.DataExportSettings
 		if err := faker.FakeData(&setting); err != nil {
