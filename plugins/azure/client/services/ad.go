@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 	"github.com/Azure/go-autorest/autorest"
+	auth2 "github.com/Azure/go-autorest/autorest/azure/auth"
 )
 
 type ADApplicationsClient interface {
@@ -30,14 +31,21 @@ type AD struct {
 	Users             ADUsersClient
 }
 
-func NewADClient(subscriptionId string, auth autorest.Authorizer) AD {
-	apps := graphrbac.NewApplicationsClient(subscriptionId)
+func NewADClient(_ string, _ autorest.Authorizer) AD {
+	//ad services need custom authorization
+	auth, _ := auth2.NewAuthorizerFromEnvironmentWithResource(graphrbac.DefaultBaseURI) //https://graph.windows.net
+
+	//we ignore errors since operations below usually are already executed during creation of a default authorizer
+	settings, _ := auth2.GetSettingsFromEnvironment()
+	c, _ := settings.GetClientCredentials()
+
+	apps := graphrbac.NewApplicationsClient(c.TenantID)
 	apps.Authorizer = auth
-	groups := graphrbac.NewGroupsClient(subscriptionId)
+	groups := graphrbac.NewGroupsClient(c.TenantID)
 	groups.Authorizer = auth
-	users := graphrbac.NewUsersClient(subscriptionId)
+	users := graphrbac.NewUsersClient(c.TenantID)
 	users.Authorizer = auth
-	sp := graphrbac.NewServicePrincipalsClient(subscriptionId)
+	sp := graphrbac.NewServicePrincipalsClient(c.TenantID)
 	sp.Authorizer = auth
 	return AD{
 		Applications:      apps,
