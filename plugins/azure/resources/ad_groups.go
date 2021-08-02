@@ -79,6 +79,7 @@ func AdGroups() *schema.Table {
 func fetchAdGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().AD.Groups
 	response, err := svc.List(ctx, "")
+
 	if err != nil {
 		return err
 	}

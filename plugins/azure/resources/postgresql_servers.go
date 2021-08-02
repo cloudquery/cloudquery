@@ -10,11 +10,12 @@ import (
 
 func PostgresqlServers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_postgresql_servers",
-		Description: "Azure postgresql server",
-		Resolver:    fetchPostgresqlServers,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:         "azure_postgresql_servers",
+		Description:  "Azure postgresql server",
+		Resolver:     fetchPostgresqlServers,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

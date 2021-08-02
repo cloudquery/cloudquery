@@ -10,11 +10,12 @@ import (
 
 func MySQLServers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_mysql_servers",
-		Description: "Azure mysql server",
-		Resolver:    fetchMySQLServers,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:         "azure_mysql_servers",
+		Description:  "Azure mysql server",
+		Resolver:     fetchMySQLServers,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

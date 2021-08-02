@@ -15,8 +15,11 @@ type MySQL struct {
 func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQL {
 	servers := mysql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
+	conf := mysql.NewConfigurationsClient(subscriptionId)
+	conf.Authorizer = auth
 	return MySQL{
-		Servers: servers,
+		Servers:       servers,
+		Configuration: conf,
 	}
 }
 

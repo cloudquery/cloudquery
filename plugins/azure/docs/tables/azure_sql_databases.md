@@ -55,3 +55,4 @@ Azure sql database
 |id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|
+|transparent_data_encryption|jsonb|TransparentDataEncryption represents a database transparent data encryption configuration|

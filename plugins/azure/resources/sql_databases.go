@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
@@ -14,6 +15,7 @@ func SQLDatabases() *schema.Table {
 		Name:        "azure_sql_databases",
 		Description: "Azure sql database",
 		Resolver:    fetchSqlDatabases,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "server_cq_id",
@@ -312,6 +314,12 @@ func SQLDatabases() *schema.Table {
 				Name:        "type",
 				Description: "Resource type",
 				Type:        schema.TypeString,
+			},
+			{
+				Name:        "transparent_data_encryption",
+				Description: "TransparentDataEncryption represents a database transparent data encryption configuration",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveTransparentDataEncryption,
 			},
 		},
 		Relations: []*schema.Table{
@@ -650,4 +658,31 @@ func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema
 		}
 	}
 	return nil
+}
+
+func resolveTransparentDataEncryption(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().SQL.TransparentDataEncryptions
+	database, ok := resource.Item.(sql.Database)
+	if !ok {
+		return fmt.Errorf("expected sql.Database but got %T", resource.Item)
+	}
+	details, err := client.ParseResourceID(*database.ID)
+	if err != nil {
+		return err
+	}
+	server, ok := resource.Parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not a sql.Server instance: %T", resource.Parent.Item)
+	}
+	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(result)
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, data)
 }
