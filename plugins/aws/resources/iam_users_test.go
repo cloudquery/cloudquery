@@ -42,6 +42,12 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	var tags []iamTypes.Tag
+	err = faker.FakeData(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	ru := reportUser{}
 	err = faker.FakeData(&ru)
 	if err != nil {
@@ -82,6 +88,11 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: content,
+		}, nil)
+
+	m.EXPECT().ListUserTags(gomock.Any(), gomock.Any()).Return(
+		&iam.ListUserTagsOutput{
+			Tags: tags,
 		}, nil)
 
 	//list user inline policies
