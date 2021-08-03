@@ -261,6 +261,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 				UserName:   aws.String(root.User),
 			},
 			reportUser: root,
+			isRoot:     true,
 		}
 	}
 
@@ -280,6 +281,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 			wUsers[i] = wrappedUser{
 				User:       u,
 				reportUser: ru,
+				isRoot:     false,
 			}
 		}
 
@@ -499,11 +501,19 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 
-func resolveUserTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	svc := meta.(*client.Client).Services().IAM
 	r := resource.Item.(wrappedUser)
 	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
+
+	if !r.isRoot {
+		tagsOutput, err := svc.ListUserTags(ctx, &iam.ListUserTagsInput{UserName: r.UserName})
+		if err != nil {
+			return err
+		}
+		for _, t := range tagsOutput.Tags {
+			tags[*t.Key] = t.Value
+		}
 	}
 	return resource.Set("tags", tags)
 }
@@ -516,6 +526,7 @@ type wrappedKey struct {
 type wrappedUser struct {
 	types.User
 	*reportUser
+	isRoot bool
 }
 
 type reportUser struct {
