@@ -82,6 +82,7 @@ func (e *Executor) executePolicy(ctx context.Context, policy *config.Policy, exe
 	results, err := e.executePolicyQueries(ctx, policy, execReq)
 	if err != nil {
 		e.log.Error("failed to execute policy queries", "policy", policy.Name, "err", err)
+		return nil, err
 	}
 	collectExecutionResults(execResults, policy.Name, results...)
 	// Execute callback method
@@ -90,8 +91,8 @@ func (e *Executor) executePolicy(ctx context.Context, policy *config.Policy, exe
 			execReq.UpdateCallback(r.Description, r.Passed)
 		}
 	}
-	// Skip further execution if exit on error is defined
-	if err != nil && execReq.StopOnFailure && !execResults.Passed {
+	// Skip further execution if exit on failure is defined
+	if execReq.StopOnFailure && !execResults.Passed {
 		return nil, err
 	}
 
