@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 
 	"github.com/hashicorp/go-hclog"
 
@@ -62,17 +61,37 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger) *Executor {
 	}
 }
 
-// ExecutePolicies executes multiple given policies and the related sub queries/views.
-// Note: It does not execute sub policies that are attached to the policies.
-// Is is the callers responsibility to do that.
-func (e *Executor) ExecutePolicies(ctx context.Context, execReq *ExecuteRequest, policy *config.Policy) (*ExecutionResult, error) {
+// ExecutePolicy executes given policy and the related sub queries/views.
+// The policy execution first creates all views that are defined in the top-level policy and any sub-policy it includes.
+func (e *Executor) ExecutePolicy(ctx context.Context, execReq *ExecuteRequest, policy *config.Policy) (*ExecutionResult, error) {
+	// Create temporary all Views recursively before executing any query
+	if err := e.CreateViews(ctx, policy); err != nil {
+		return nil, err
+	}
+	return e.executePolicy(ctx, policy, execReq)
+}
+
+// executePolicy executes a policy and collects all execution results for it's queries and sub-policies
+// use the exported ExecutePolicy so views are created.
+func (e *Executor) executePolicy(ctx context.Context, policy *config.Policy, execReq *ExecuteRequest) (*ExecutionResult, error) {
 	execResults := &ExecutionResult{
 		Passed:  true,
 		Results: make(map[string]*QueryResult),
 	}
-
-	// Create temporary Views
-	if err := e.CreateViews(ctx, policy); err != nil {
+	// Execute policies queries
+	results, err := e.executePolicyQueries(ctx, policy, execReq)
+	if err != nil {
+		e.log.Error("failed to execute policy queries", "policy", policy.Name, "err", err)
+	}
+	collectExecutionResults(execResults, policy.Name, results...)
+	// Execute callback method
+	if execReq.UpdateCallback != nil {
+		for _, r := range results {
+			execReq.UpdateCallback(r.Description, r.Passed)
+		}
+	}
+	// Skip further execution if exit on error is defined
+	if err != nil && execReq.StopOnFailure && !execResults.Passed {
 		return nil, err
 	}
 
@@ -80,33 +99,25 @@ func (e *Executor) ExecutePolicies(ctx context.Context, execReq *ExecuteRequest,
 	for _, subPolicy := range policy.Policies {
 		e.log.Debug("executing policy", "policy", subPolicy.Name)
 		// Execute policy
-		results, err := e.executePolicy(ctx, subPolicy, execReq)
+		execResult, err := e.executePolicy(ctx, subPolicy, execReq)
 		if err != nil {
 			e.log.Error("failed to execute policy", "policy", subPolicy.Name, "err", err)
 			return nil, err
 		}
-
-		// Collect results
-		collectExecutionResults(execResults, subPolicy.Name, results...)
-
-		// Execute callback method
-		if execReq.UpdateCallback != nil {
-			for _, r := range results {
-				execReq.UpdateCallback(r.Description, r.Passed)
-			}
+		// If sub-policy didn't pass and we previous execution was okay so far, update passed to false
+		if execResults.Passed && !execResult.Passed {
+			execResults.Passed = execResult.Passed
 		}
-
-		// Skip further execution if exit on error is defined
-		if execReq.StopOnFailure && !execResults.Passed {
-			break
+		for k, r := range execResult.Results {
+			execResults.Results[policyPathJoin(policy.Name, k)] = r
 		}
 	}
 	return execResults, nil
 }
 
-// executePolicy executes the given policy and its sub views/queries.
-// Please use ExecutePolicies if possible.
-func (e *Executor) executePolicy(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) ([]*QueryResult, error) {
+// executePolicyQueries executes the given policy's queries.
+// Please use ExecutePolicy if possible.
+func (e *Executor) executePolicyQueries(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) ([]*QueryResult, error) {
 	results := make([]*QueryResult, 0)
 	// Execute queries
 	for _, q := range p.Queries {
@@ -158,6 +169,7 @@ func (e *Executor) ExecuteQuery(ctx context.Context, q *config.Query) (*QueryRes
 	return result, nil
 }
 
+// CreateViews creates temporary views for given config.Policy, and any views defined by sub-policies
 func (e *Executor) CreateViews(ctx context.Context, policy *config.Policy) error {
 	for _, v := range policy.Views {
 		e.log.Debug("creating policy view", "policy", policy.Name, "view", v.Name)
@@ -190,6 +202,6 @@ func collectExecutionResults(execResult *ExecutionResult, path string, results .
 		if !res.Passed {
 			execResult.Passed = false
 		}
-		execResult.Results[filepath.Join(path, res.Name)] = res
+		execResult.Results[policyPathJoin(path, res.Name)] = res
 	}
 }

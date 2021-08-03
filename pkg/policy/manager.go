@@ -252,7 +252,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	case "":
 		m.logger.Debug("no policy sub path defined; executing all policies")
 		for _, p := range policies.Policies {
-			results, err = executor.ExecutePolicies(ctx, execReq, p)
+			results, err = executor.ExecutePolicy(ctx, execReq, p)
 			if err != nil {
 				return nil, fmt.Errorf("failed to run policies: %s", err.Error())
 			}
@@ -286,7 +286,7 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 				subPolicyMap[k] = v
 			}
 		}
-		return exec.ExecutePolicies(ctx, execReq, subPolicyMap[subPath])
+		return exec.ExecutePolicy(ctx, execReq, subPolicyMap[subPath])
 	}
 
 	// Must be a query so get the policy path and the last element
@@ -334,7 +334,7 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 func (m *ManagerImpl) traversePolicies(p []*config.Policy, levelPath string, policyMap map[string]*config.Policy) map[string]*config.Policy {
 	for id, policy := range p {
 		// Add current level to level path
-		subLevelPath := filepath.Join(levelPath, policy.Name)
+		subLevelPath := policyPathJoin(levelPath, policy.Name)
 
 		// Add policy to map
 		policyMap[subLevelPath] = p[id]
@@ -474,4 +474,9 @@ func (p *Policy) getGitHubURL() (string, error) {
 		return "", err
 	}
 	return base.ResolveReference(org).ResolveReference(repo).String(), nil
+}
+
+// policyPathJoin joins policy path names with "/"
+func policyPathJoin(paths ...string) string {
+	return strings.Join(paths, "/")
 }
