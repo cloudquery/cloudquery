@@ -229,7 +229,9 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
 	}
 	m.logger.Debug("parsed policy file", "policies", policies)
-
+	if policies == nil {
+		return nil, nil
+	}
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
@@ -244,14 +246,16 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	m.logger.Debug("finished traversing policies", "policyMap", policyMap)
 
 	// Execute policies dependent on policy sub path
-	executor := NewExecutor(conn)
+	executor := NewExecutor(conn, m.logger)
 	var results *ExecutionResult
 	switch p.SubPath {
 	case "":
 		m.logger.Debug("no policy sub path defined; executing all policies")
-		results, err = executor.ExecutePolicies(ctx, execReq, policyMap)
-		if err != nil {
-			return nil, fmt.Errorf("failed to run policies: %s", err.Error())
+		for _, p := range policies.Policies {
+			results, err = executor.ExecutePolicies(ctx, execReq, p)
+			if err != nil {
+				return nil, fmt.Errorf("failed to run policies: %s", err.Error())
+			}
 		}
 	default:
 		m.logger.Debug("policy sub path defined; only executing sub policy/query", "subpath", p.SubPath)
@@ -282,7 +286,7 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 				subPolicyMap[k] = v
 			}
 		}
-		return exec.ExecutePolicies(ctx, execReq, subPolicyMap)
+		return exec.ExecutePolicies(ctx, execReq, subPolicyMap[subPath])
 	}
 
 	// Must be a query so get the policy path and the last element
