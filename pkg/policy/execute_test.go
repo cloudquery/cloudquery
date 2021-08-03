@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/hashicorp/go-hclog"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
@@ -59,7 +61,7 @@ func TestExecutor_ExecuteQuery(t *testing.T) {
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
-	executor := NewExecutor(conn)
+	executor := NewExecutor(conn, hclog.Default())
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -157,7 +159,7 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
-	executor := NewExecutor(conn)
+	executor := NewExecutor(conn, hclog.Default())
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -170,10 +172,8 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 				UpdateCallback: nil,
 				StopOnFailure:  false,
 			}
-			policyMap := make(map[string]*config.Policy)
-			policyMap[tc.Name] = p
 
-			res, err := executor.ExecutePolicies(context.Background(), execReq, policyMap)
+			res, err := executor.ExecutePolicy(context.Background(), execReq, p)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {

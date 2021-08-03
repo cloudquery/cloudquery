@@ -229,7 +229,9 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
 	}
 	m.logger.Debug("parsed policy file", "policies", policies)
-
+	if policies == nil {
+		return nil, nil
+	}
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
@@ -244,14 +246,16 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	m.logger.Debug("finished traversing policies", "policyMap", policyMap)
 
 	// Execute policies dependent on policy sub path
-	executor := NewExecutor(conn)
+	executor := NewExecutor(conn, m.logger)
 	var results *ExecutionResult
 	switch p.SubPath {
 	case "":
 		m.logger.Debug("no policy sub path defined; executing all policies")
-		results, err = executor.ExecutePolicies(ctx, execReq, policyMap)
-		if err != nil {
-			return nil, fmt.Errorf("failed to run policies: %s", err.Error())
+		for _, p := range policies.Policies {
+			results, err = executor.ExecutePolicy(ctx, execReq, p)
+			if err != nil {
+				return nil, fmt.Errorf("failed to run policies: %s", err.Error())
+			}
 		}
 	default:
 		m.logger.Debug("policy sub path defined; only executing sub policy/query", "subpath", p.SubPath)
@@ -282,7 +286,10 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 				subPolicyMap[k] = v
 			}
 		}
-		return exec.ExecutePolicies(ctx, execReq, subPolicyMap)
+		if policy, ok := policyMap[subPath]; ok {
+			m.logger.Debug("running sub policy only", "policy", policy)
+			return exec.ExecutePolicy(ctx, execReq, policy)
+		}
 	}
 
 	// Must be a query so get the policy path and the last element
@@ -330,7 +337,7 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 func (m *ManagerImpl) traversePolicies(p []*config.Policy, levelPath string, policyMap map[string]*config.Policy) map[string]*config.Policy {
 	for id, policy := range p {
 		// Add current level to level path
-		subLevelPath := filepath.Join(levelPath, policy.Name)
+		subLevelPath := policyPathJoin(levelPath, policy.Name)
 
 		// Add policy to map
 		policyMap[subLevelPath] = p[id]
@@ -470,4 +477,9 @@ func (p *Policy) getGitHubURL() (string, error) {
 		return "", err
 	}
 	return base.ResolveReference(org).ResolveReference(repo).String(), nil
+}
+
+// policyPathJoin joins policy path names with "/"
+func policyPathJoin(paths ...string) string {
+	return strings.Join(paths, "/")
 }
