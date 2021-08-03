@@ -93,8 +93,8 @@ github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XL
 github.com/cheggaaa/pb v1.0.27/go.mod h1:pQciLPpbU0oxA0h+VJYYLxO+XeDQb5pZijXscXHm81s=
 github.com/clbanning/x2j v0.0.0-20191024224557-825249438eec/go.mod h1:jMjuTZXRI4dUb/I5gc9Hdhagfvm9+RyrPryS/auMzxE=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/cq-provider-sdk v0.3.0 h1:wxYz6x1oss+nn7gX5Ri9JnYKTzboTHi4yu4n5a3bWzw=
-github.com/cloudquery/cq-provider-sdk v0.3.0/go.mod h1:N+hB03nTEaZYeGmnSMR+Q1waGlKreG0Ii83/lkdY/9I=
+github.com/cloudquery/cq-provider-sdk v0.3.1 h1:Pa7k9ACExCWIY2ASNnpjAsCgCFdFHHEJdZFds3XRVUs=
+github.com/cloudquery/cq-provider-sdk v0.3.1/go.mod h1:xKxCr9bTBlID9zte2hwdAfPYU3b8g2IjB+MbSR9gVDc=
 github.com/cloudquery/faker/v3 v3.7.4 h1:cCcU3r0yHpS0gqKj9rRKAGS0/hY33fBxbqCNFtDD4ec=
 github.com/cloudquery/faker/v3 v3.7.4/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
