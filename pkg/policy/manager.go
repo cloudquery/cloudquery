@@ -286,7 +286,10 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 				subPolicyMap[k] = v
 			}
 		}
-		return exec.ExecutePolicy(ctx, execReq, subPolicyMap[subPath])
+		if policy, ok := policyMap[subPath]; ok {
+			m.logger.Debug("running sub policy only", "policy", policy)
+			return exec.ExecutePolicy(ctx, execReq, policy)
+		}
 	}
 
 	// Must be a query so get the policy path and the last element
