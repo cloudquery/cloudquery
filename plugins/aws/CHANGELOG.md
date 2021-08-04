@@ -5,12 +5,18 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.3] - 2020-08-04
+###### SDK Version: 0.3.1
+
+### :spider: Fixed
+* Fixed [#130](https://github.com/cloudquery/cq-provider-aws/issues/130) IAM User Tags not persisting [#125](https://github.com/cloudquery/cq-provider-aws/pull/132)
+* Fixed s3 bucket resource resolving errors [#131](https://github.com/cloudquery/cq-provider-aws/pull/131)
+
 ## [v0.5.2] - 2020-08-01
 ###### SDK Version: 0.3.1
 
 ### :rocket: Added
 * Added support for arm64 [#128](https://github.com/cloudquery/cq-provider-aws/pull/128)
-
 
 ## [v0.5.1] - 2020-07-30
 ###### SDK Version: 0.3.1
