@@ -154,7 +154,6 @@ func KeyvaultVaults() *schema.Table {
 				Name:        "azure_keyvault_vault_access_policies",
 				Description: "AccessPolicyEntry an identity that have access to the key vault All identities in the array must use the same tenant ID as the key vault's tenant ID",
 				Resolver:    fetchKeyvaultVaultAccessPolicies,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "object_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
