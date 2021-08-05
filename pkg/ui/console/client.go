@@ -177,7 +177,7 @@ func loadConfig(path string) (*config.Config, error) {
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
-			ui.ColorizedOutput(ui.ColorError, "❌ %s\n", d.Error())
+			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
 		}
 		return nil, fmt.Errorf("bad configuration")
 	}
