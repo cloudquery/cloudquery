@@ -60,7 +60,11 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 		if err != nil {
 			return err
 		}
-		m.providers[rp.Name] = details
+		_, providerName, err := registry.ParseProviderName(rp.Name)
+		if err != nil {
+			return err
+		}
+		m.providers[providerName] = details
 	}
 	return nil
 }
