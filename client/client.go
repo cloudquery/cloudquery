@@ -310,14 +310,16 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			client.Region = client.regions[0]
 		}
 		for _, region := range client.regions {
-			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(awsCfg))
+			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))
 		}
 	}
 
 	return &client, nil
 }
 
-func initServices(awsCfg aws.Config) Services {
+func initServices(region string, c aws.Config) Services {
+	awsCfg := c.Copy()
+	awsCfg.Region = region
 	return Services{
 		Autoscaling:          autoscaling.NewFromConfig(awsCfg),
 		Cloudfront:           cloudfront.NewFromConfig(awsCfg),

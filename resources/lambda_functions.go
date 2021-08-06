@@ -1079,6 +1079,12 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 		if err != nil {
 			return err
 		}
+		var ae smithy.APIError
+		if err != nil {
+			if !errors.As(err, &ae) || ae.ErrorCode() != "ResourceNotFoundException" {
+				return err
+			}
+		}
 		res <- output.Aliases
 		if output.NextMarker == nil {
 			break

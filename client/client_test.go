@@ -95,7 +95,7 @@ func Test_emptyInterfaceFieldNames(t *testing.T) {
 func Test_initServices_NoNilValues(t *testing.T) {
 	// the purpose of this test is to call initServices and check that returned Services struct
 	// has no nil values in its fields.
-	empty := emptyInterfaceFieldNames(initServices(aws.Config{}))
+	empty := emptyInterfaceFieldNames(initServices("us-east-1", aws.Config{}))
 	for _, name := range empty {
 		t.Errorf("initServices().%s == nil", name)
 	}

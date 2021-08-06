@@ -120,7 +120,6 @@ func Route53HostedZones() *schema.Table {
 				Name:        "aws_route53_hosted_zone_resource_record_sets",
 				Description: "Information about the resource record set to create or delete.",
 				Resolver:    fetchRoute53HostedZoneResourceRecordSets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "set_identifier"}},
 				Columns: []schema.Column{
 					{
 						Name:        "hosted_zone_cq_id",
