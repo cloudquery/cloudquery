@@ -20,7 +20,7 @@ func buildCognitoIdentityPools(t *testing.T, ctrl *gomock.Controller) client.Ser
 	}
 	m.EXPECT().ListIdentityPools(
 		gomock.Any(),
-		&cognitoidentity.ListIdentityPoolsInput{},
+		&cognitoidentity.ListIdentityPoolsInput{MaxResults: 60},
 		gomock.Any(),
 	).Return(
 		&cognitoidentity.ListIdentityPoolsOutput{IdentityPools: []types.IdentityPoolShortDescription{desc}},

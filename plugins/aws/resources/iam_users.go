@@ -249,7 +249,6 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	if err != nil {
 		return err
 	}
-	meta.(*client.Client).ReportUsers = nil
 
 	root := report.GetUser(fmt.Sprintf("arn:aws:iam::%s:root", meta.(*client.Client).AccountID))
 	if root != nil {
