@@ -15,6 +15,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+// This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
+// and modified to not print global flags (as they will be printed via a new options command)
 const usageTemplate = `Usage:{{if .Runnable}}
 {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
 {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
@@ -35,6 +37,8 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.
 Use "{{.CommandPath}} options" for a list of global CLI options.{{end}}
 `
 
+// This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
+// and used in the new options command as everywhere else it's disabled via usageTemplate
 const usageTemplateWithFlags = `Usage:{{if .Runnable}}
 {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
 {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
