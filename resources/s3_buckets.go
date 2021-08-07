@@ -101,6 +101,7 @@ func S3Buckets() *schema.Table {
 			{
 				Name:        "aws_s3_bucket_grants",
 				Description: "Container for grant information.",
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Resolver:    fetchS3BucketGrants,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "grantee_id"}},
 				Columns: []schema.Column{
@@ -151,6 +152,7 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_cors_rules",
 				Description: "Specifies a cross-origin access rule for an Amazon S3 bucket.",
 				Resolver:    fetchS3BucketCorsRules,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
@@ -196,6 +198,7 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_encryption_rules",
 				Description: "Specifies the default server-side encryption configuration.",
 				Resolver:    fetchS3BucketEncryptionRules,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id"}},
 				Columns: []schema.Column{
 					{
@@ -227,6 +230,7 @@ func S3Buckets() *schema.Table {
 				Name:        "aws_s3_bucket_replication_rules",
 				Description: "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
 				Resolver:    fetchS3BucketReplicationRules,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
@@ -344,6 +348,7 @@ func S3Buckets() *schema.Table {
 			{
 				Name:        "aws_s3_bucket_lifecycles",
 				Description: "A lifecycle rule for individual objects in an Amazon S3 bucket.",
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Resolver:    fetchS3BucketLifecycles,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
