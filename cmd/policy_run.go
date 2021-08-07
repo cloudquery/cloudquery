@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const policyRunHelpMsg = "Runs a policy"
+const policyRunHelpMsg = "Executes a policy on CloudQuery database"
 
 var (
 	policyRunCmd = &cobra.Command{
