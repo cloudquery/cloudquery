@@ -15,7 +15,7 @@ type Config struct {
 
 func (c Config) GetProvider(name string) (*Provider, error) {
 	for _, p := range c.Providers {
-		if name == p.Name {
+		if name == p.Alias {
 			return p, nil
 		}
 	}
