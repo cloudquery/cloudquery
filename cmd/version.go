@@ -6,9 +6,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const versionHelpMsg = "Print full version info of cloudquery"
+
 var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Print full version info of cloudquery",
+	Use:                   "version",
+	Short:                 versionHelpMsg,
+	Long:                  versionHelpMsg,
+	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Version: %s\n", Version)
 		fmt.Printf("Commit: %s\n", Commit)
@@ -17,5 +21,6 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
+	versionCmd.SetHelpTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(versionCmd)
 }

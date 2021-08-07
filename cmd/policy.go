@@ -4,22 +4,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const policyHelpMsg = `Download and run CloudQuery policy`
+
 var (
 	policyCmd = &cobra.Command{
-		Use:   "policy [subcommand]",
-		Short: "Policy command that unifies policy subcommands.",
-		Long: `Examples:
-# Download policy from Policy Hub
-./cloudquery policy download cq-aws 
-
-# Run cis-v1.3.0 policy
-./cloudquery policy run cq-aws cis-v1.3.0
-
-`,
-		Version: Version,
+		Use:   "policy SUBCOMMAND",
+		Short: policyHelpMsg,
+		Long:  policyHelpMsg,
 	}
 )
 
 func init() {
+	policyCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(policyCmd)
 }

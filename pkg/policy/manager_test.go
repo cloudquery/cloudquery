@@ -28,7 +28,7 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 	}{
 		{
 			Name:           "policy_hub_policy",
-			PolicyPath:     "cq-policy-core",
+			PolicyPath:     "cloudquery/cq-policy-core",
 			RepositoryPath: "test",
 		},
 		{
@@ -84,7 +84,7 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 	}{
 		{
 			Name:           "policy_hub_policy",
-			PolicyPath:     "cq-policy-core",
+			PolicyPath:     "cloudquery/cq-policy-core",
 			RepositoryPath: "test",
 		},
 		{
