@@ -37,15 +37,17 @@ func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*
 		existingProviders[provider.Alias] = true
 	} else {
 		if _, ok := existingProviders[name]; ok {
-			errMsg := fmt.Sprintf("Provider with name %s already exists, use alias configuration.", name)
+			errMsg := fmt.Sprintf("Provider with name %s already exists, use alias in provider configuration block.", name)
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
-				Summary:  "Missing Provider Alias",
+				Summary:  "Provider Alias Required",
 				Detail:   errMsg,
 				Subject:  block.DefRange.Ptr(),
 			})
 		}
+		existingProviders[name] = true
 	}
+
 	if attr, exists := content.Attributes["resources"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Resources)
 		diags = append(diags, valDiags...)
