@@ -24,7 +24,7 @@ const (
 	pathDelimiter    = "/"
 	versionDelimiter = "@"
 
-	cloudQueryOrg = "cloudquery"
+	cloudQueryOrg = "cloudquery-policies"
 	gitHubUrl     = "https://github.com/"
 
 	defaultPolicyFileName = "policy"

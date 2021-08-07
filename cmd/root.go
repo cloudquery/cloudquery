@@ -15,6 +15,49 @@ import (
 	"github.com/spf13/viper"
 )
 
+const usageTemplate = `Usage:{{if .Runnable}}
+{{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+{{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+Aliases:
+{{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+Examples:
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+{{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+{{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] --help" for more information about a command.
+Use "{{.CommandPath}} options" for a list of global CLI options.{{end}}
+`
+
+const usageTemplateWithFlags = `Usage:{{if .Runnable}}
+{{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+{{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+Aliases:
+{{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+Examples:
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+{{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+Flags:
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+{{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
+Use "{{.CommandPath}} options" for a list of global CLI options.
+`
+
 // Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
 var (
@@ -27,11 +70,10 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "cloudquery",
 		Short: "CloudQuery CLI",
-		Long: `
-CloudQuery CLI
+		Long: `CloudQuery CLI
 
-Query your cloud assets & configuration with SQL. 
-Solve compliance, security and cost challenges with standard SQL queries and relational tables.
+Query your cloud assets & configuration with SQL for monitoring security, compliance & cost purposes.
+
 Find more information at:
 	https://docs.cloudquery.io`,
 		Version: Version,
@@ -73,7 +115,8 @@ func init() {
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
 
-	rootCmd.AddCommand(initCmd, fetchCmd)
+	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
+	rootCmd.SetUsageTemplate(usageTemplate)
 	cobra.OnInitialize(initConfig, initLogging)
 }
 
