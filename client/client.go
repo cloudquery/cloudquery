@@ -151,13 +151,9 @@ type Client struct {
 	maxBackoff      int
 	ServicesManager ServicesManager
 	logger          hclog.Logger
-
 	// this is set by table clientList
 	AccountID string
 	Region    string
-
-	// this is for iam.user specific use-case
-	ReportUsers interface{}
 }
 
 // S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
