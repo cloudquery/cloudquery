@@ -29,6 +29,103 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
+const testAliasProviderConfig = `cloudquery {
+  connection {
+    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+  }
+  provider "test" {
+    source = "cloudquery"
+    version = "v0.0.0"
+  }
+}
+
+provider "aws" {
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}
+
+provider "aws" {
+  alias = "another-aws"
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}`
+
+const testMultipleProviderConfig = `cloudquery {
+  connection {
+    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+  }
+  provider "test" {
+    source = "cloudquery"
+    version = "v0.0.0"
+  }
+}
+
+provider "aws" {
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}
+
+provider "aws" {
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}
+`
+const expectedDuplicateProviderError = "test.hcl:21,1-15: Provider Alias Required; Provider with name aws already exists, use alias in provider configuration block."
+
+const testDuplicateAliasProviderConfig = `cloudquery {
+  connection {
+    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+  }
+  provider "test" {
+    source = "cloudquery"
+    version = "v0.0.0"
+  }
+}
+
+provider "aws" {
+  alias = "same-aws"
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}
+
+provider "aws" {
+  alias = "same-aws"
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}
+`
+const expectedDuplicateAliasProviderError = "test.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
+
 type Account struct {
 	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`
@@ -61,11 +158,36 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 		Providers: []*Provider{
 			{
 				Name:          "aws",
+				Alias:         "aws",
 				Resources:     []string{"slow_resource"},
 				Configuration: nil,
 			},
 		},
 	}, cfg)
+}
+
+func TestParser_DuplicateProviderNaming(t *testing.T) {
+	p := NewParser(nil)
+	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testMultipleProviderConfig))
+	assert.NotNil(t, diags)
+	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
+}
+
+func TestParser_AliasedProvider(t *testing.T) {
+	p := NewParser(nil)
+	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testAliasProviderConfig))
+	assert.Nil(t, diags)
+	_, err := cfg.GetProvider("another-aws")
+	assert.Nil(t, err)
+	_, err = cfg.GetProvider("aws")
+	assert.Nil(t, err)
+}
+
+func TestParser_DuplicateAliasedProvider(t *testing.T) {
+	p := NewParser(nil)
+	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testDuplicateAliasProviderConfig))
+	assert.NotNil(t, diags)
+	assert.Equal(t, expectedDuplicateAliasProviderError, diags[0].Error())
 }
 
 func TestProviderLoadConfiguration(t *testing.T) {

@@ -15,21 +15,48 @@ type Provider struct {
 	Configuration hcl.Body `hcl:"configuration,body"`
 }
 
-func decodeProviderBlock(block *hcl.Block) (*Provider, hcl.Diagnostics) {
+func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 
 	content, _, moreDiags := block.Body.PartialContent(providerBlockSchema)
 	diags = append(diags, moreDiags...)
-
-	// Provider names must be localized. Produce an error with a message
-	// indicating the action the user can take to fix this message if the local
-	// name is not localized.
 	name := block.Labels[0]
-	provider := &Provider{Name: name}
+	provider := &Provider{Name: name, Alias: name}
+	if attr, exists := content.Attributes["alias"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Alias)
+		diags = append(diags, valDiags...)
+		if _, ok := existingProviders[provider.Alias]; ok {
+			errMsg := fmt.Sprintf("Provider with alias %s for provider %s already exists, give it a different alias.", provider.Alias, name)
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  "Duplicate Alias",
+				Detail:   errMsg,
+				Subject:  attr.Range.Ptr(),
+			})
+		}
+		existingProviders[provider.Alias] = true
+	} else {
+		if _, ok := existingProviders[name]; ok {
+			errMsg := fmt.Sprintf("Provider with name %s already exists, use alias in provider configuration block.", name)
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  "Provider Alias Required",
+				Detail:   errMsg,
+				Subject:  block.DefRange.Ptr(),
+			})
+		}
+		existingProviders[name] = true
+	}
+
 	if attr, exists := content.Attributes["resources"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Resources)
 		diags = append(diags, valDiags...)
 	}
+	if attr, exists := content.Attributes["env"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Env)
+		diags = append(diags, valDiags...)
+	}
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
@@ -50,6 +77,12 @@ var providerBlockSchema = &hcl.BodySchema{
 	Attributes: []hcl.AttributeSchema{
 		{
 			Name: "resources",
+		},
+		{
+			Name: "alias",
+		},
+		{
+			Name: "env",
 		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{
