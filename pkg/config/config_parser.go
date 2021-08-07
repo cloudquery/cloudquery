@@ -35,6 +35,7 @@ func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
 
 func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hcl.Diagnostics) {
 
+	existingProviders := make(map[string]bool)
 	config := &Config{}
 
 	content, contentDiags := body.Content(configFileSchema)
@@ -75,7 +76,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				}
 			}
 		case "provider":
-			cfg, cfgDiags := decodeProviderBlock(block)
+			cfg, cfgDiags := decodeProviderBlock(block, existingProviders)
 			diags = append(diags, cfgDiags...)
 			if cfg != nil {
 				config.Providers = append(config.Providers, cfg)
