@@ -27,9 +27,9 @@ func TestManagerImpl_DownloadPolicy(t *testing.T) {
 		RepositoryPath string
 	}{
 		{
-			Name:       "policy_hub_policy",
-			PolicyPath: "aws-cis-1.2.0",
-			// RepositoryPath: "test",
+			Name:           "policy_hub_policy",
+			PolicyPath:     "cloudquery/cq-policy-core",
+			RepositoryPath: "test",
 		},
 		{
 			Name:       "private_policy_main_branch",
@@ -84,7 +84,7 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 	}{
 		{
 			Name:           "policy_hub_policy",
-			PolicyPath:     "cq-policy-core",
+			PolicyPath:     "cloudquery/cq-policy-core",
 			RepositoryPath: "test",
 		},
 		{
