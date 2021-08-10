@@ -18,3 +18,4 @@ cloud_sql_proxy
 .cq_reattach
 config.hcl
 /.cq/
+config_old.hcl
