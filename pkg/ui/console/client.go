@@ -159,8 +159,8 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			fetchProgress.Update(update.Provider, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
 			return
 		}
-		fetchProgress.Increment(update.Provider, 1)
 		bar := fetchProgress.GetBar(update.Provider)
+		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
 		if bar.Status == ui.StatusError {
 			if update.AllDone() {
