@@ -5,10 +5,10 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.4.1] - 2020-08-02
-###### SDK Version: 0.3.1
+## [v0.4.1] - 2020-08-11
+###### SDK Version: 0.3.2
 ### :gear: Changed
-* Upgraded to SDK Version [0.3.1](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v031---2020-07-30)
+* Upgraded to SDK Version [0.3.2](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v032---2020-08-11)
 
 ## [v0.4.0] - 2020-07-27
 ###### SDK Version: 0.3.0
