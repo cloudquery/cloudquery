@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var providerHelpMsg = "Top level command to interact with providers."
+var providerHelpMsg = "Top-level command to interact with providers."
 
 var providerCmd = &cobra.Command{
 	Use:   "provider [subcommand]",
