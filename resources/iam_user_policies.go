@@ -16,13 +16,12 @@ import (
 
 func IamUserPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_user_policies",
-		Description:  "Inline policies that are embedded in the specified IAM user",
-		Resolver:     fetchIamUserPolicies,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "policy_name"}},
+		Name:        "aws_iam_user_policies",
+		Description: "Inline policies that are embedded in the specified IAM user",
+		Resolver:    fetchIamUserPolicies,
+		Multiplex:   client.AccountMultiplex,
+		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "policy_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "user_cq_id",
