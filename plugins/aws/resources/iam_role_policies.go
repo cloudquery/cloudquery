@@ -17,13 +17,12 @@ import (
 
 func IamRolePolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_role_policies",
-		Description:  "Inline policies that are embedded in the specified IAM role",
-		Resolver:     fetchIamRolePolicies,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"role_cq_id", "policy_name"}},
+		Name:        "aws_iam_role_policies",
+		Description: "Inline policies that are embedded in the specified IAM role",
+		Resolver:    fetchIamRolePolicies,
+		Multiplex:   client.AccountMultiplex,
+		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"role_cq_id", "policy_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "role_cq_id",

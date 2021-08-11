@@ -178,12 +178,11 @@ func MqBrokers() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:         "aws_mq_broker_configurations",
-				Resolver:     fetchMqBrokerConfigurations,
-				Multiplex:    client.AccountRegionMultiplex,
-				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-				DeleteFilter: client.DeleteAccountRegionFilter,
-				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
+				Name:        "aws_mq_broker_configurations",
+				Resolver:    fetchMqBrokerConfigurations,
+				Multiplex:   client.AccountRegionMultiplex,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "broker_cq_id",
@@ -270,12 +269,11 @@ func MqBrokers() *schema.Table {
 				},
 			},
 			{
-				Name:         "aws_mq_broker_users",
-				Resolver:     fetchMqBrokerUsers,
-				Multiplex:    client.AccountRegionMultiplex,
-				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-				DeleteFilter: client.DeleteAccountRegionFilter,
-				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "username"}},
+				Name:        "aws_mq_broker_users",
+				Resolver:    fetchMqBrokerUsers,
+				Multiplex:   client.AccountRegionMultiplex,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "username"}},
 				Columns: []schema.Column{
 					{
 						Name:        "broker_cq_id",
