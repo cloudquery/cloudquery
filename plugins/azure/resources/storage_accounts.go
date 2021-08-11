@@ -3,10 +3,13 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
 )
 
 func StorageAccounts() *schema.Table {
@@ -607,6 +610,18 @@ func StorageAccounts() *schema.Table {
 				Description: "The type of the resource Eg \"MicrosoftCompute/virtualMachines\" or \"MicrosoftStorage/storageAccounts\"",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "blob_logging_settings",
+				Type:        schema.TypeJSON,
+				Description: "BLOB service loggging settings",
+				Resolver:    fetchStorageAccountBlobLoggingSettings,
+			},
+			{
+				Name:        "queue_logging_settings",
+				Type:        schema.TypeJSON,
+				Description: "Queue service loggging settings",
+				Resolver:    fetchStorageAccountQueueLoggingSettings,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -781,4 +796,78 @@ func fetchStorageAccountPrivateEndpointConnections(_ context.Context, _ schema.C
 	}
 	res <- *account.PrivateEndpointConnections
 	return nil
+}
+func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	acc, ok := resource.Item.(storage.Account)
+	if !ok {
+		return fmt.Errorf("not a storage.Account: %T", resource.Item)
+	}
+	// fetch storage account keys for Shared Key authentication
+	storage := meta.(*client.Client).Services().Storage
+	details, err := client.ParseResourceID(*acc.ID)
+	if err != nil {
+		return err
+	}
+	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	if err != nil {
+		return err
+	}
+	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
+		return nil
+	}
+
+	// use account key to create a new authorizer and then fetch service properties
+	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
+	if err != nil {
+		return err
+	}
+	blobProps := storage.NewBlobServiceProperties(auth)
+	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
+	if err != nil {
+		return err
+	}
+	var logging *accounts.Logging
+	if result.StorageServiceProperties != nil {
+		logging = result.StorageServiceProperties.Logging
+	}
+	data, err := json.Marshal(logging)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
+func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	acc, ok := resource.Item.(storage.Account)
+	if !ok {
+		return fmt.Errorf("not a storage.Account: %T", resource.Item)
+	}
+	// fetch storage account keys for Shared Key authentication
+	storage := meta.(*client.Client).Services().Storage
+	details, err := client.ParseResourceID(*acc.ID)
+	if err != nil {
+		return err
+	}
+	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	if err != nil {
+		return err
+	}
+	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
+		return nil
+	}
+
+	// use account key to create a new authorizer and then fetch service properties
+	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
+	if err != nil {
+		return err
+	}
+	blobProps := storage.NewQueueServiceProperties(auth)
+	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
+	if err != nil {
+		return err
+	}
+	data, err := json.Marshal(result.Logging)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
 }

@@ -5,24 +5,36 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cq-provider-azure/client/services"
 	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
 	"github.com/cloudquery/cq-provider-azure/resources"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
+	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
+	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/queue/queues"
 )
 
 func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	acc := mocks.NewMockStorageAccountClient(ctrl)
 	cont := mocks.NewMockStorageContainerClient(ctrl)
 	blob := mocks.NewMockStorageBlobServicesClient(ctrl)
+	blobProps := mocks.NewMockStorageBlobServicePropertiesClient(ctrl)
+	queueProps := mocks.NewMockStorageQueueServicePropertiesClient(ctrl)
 	s := services.Services{
 		Storage: services.StorageClient{
 			Accounts:     acc,
 			BlobServices: blob,
 			Containers:   cont,
+			NewBlobServiceProperties: func(autorest.Authorizer) services.StorageBlobServicePropertiesClient {
+				return blobProps
+			},
+			NewQueueServiceProperties: func(autorest.Authorizer) services.StorageQueueServicePropertiesClient {
+				return queueProps
+			},
 		},
 	}
+
 	account := storage.Account{}
 	err := faker.FakeData(&account)
 	if err != nil {
@@ -35,6 +47,30 @@ func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return storage.AccountListResult{}, nil
 	})
 	acc.EXPECT().List(gomock.Any()).Return(page, nil)
+
+	// expect accounts ListKeys to be called several times
+	keyValue := "dGVzdGtleQ=="
+	accountKey := storage.AccountKey{
+		KeyName: new(string),
+		Value:   &keyValue,
+	}
+	acc.EXPECT().ListKeys(gomock.Any(), "test", *account.Name, storage.ListKeyExpand("")).Return(
+		storage.AccountListKeysResult{Keys: &[]storage.AccountKey{accountKey}}, nil,
+	).Times(2)
+
+	// expect a call to blob GetServiceProperties
+	var propsLogging accounts.GetServicePropertiesResult
+	if err := faker.FakeData(&propsLogging); err != nil {
+		t.Fatal(err)
+	}
+	blobProps.EXPECT().GetServiceProperties(gomock.Any(), *account.Name).Return(propsLogging, nil)
+
+	// expect a call to queue GetServiceProperties
+	var queueServiceProps queues.StorageServicePropertiesResponse
+	if err := faker.FakeData(&queueServiceProps); err != nil {
+		t.Fatal(err)
+	}
+	queueProps.EXPECT().GetServiceProperties(gomock.Any(), *account.Name).Return(queueServiceProps, nil)
 
 	container := storage.ListContainerItem{}
 	if err := faker.FakeData(&container); err != nil {
