@@ -4,12 +4,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var providerHelpMsg = "Provider command that unifies provider subcommands."
+
 var providerCmd = &cobra.Command{
 	Use:   "provider [subcommand]",
-	Short: "Provider command that unifies provider subcommands.",
-	Long: `Examples:
-# Download all providers
-./cloudquery provider download
+	Short: providerHelpMsg,
+	Long:  providerHelpMsg,
+	Example: `
+  # Downloads all providers mentioned in the configuration file:
+  ./cloudquery provider download
 `,
 	Version: Version,
 }
