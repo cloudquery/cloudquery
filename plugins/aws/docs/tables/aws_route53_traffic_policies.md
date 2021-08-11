@@ -10,3 +10,4 @@ A complex type that contains information about the latest version of one traffic
 |name|text|The name that you specified for the traffic policy when you created it.|
 |traffic_policy_count|integer|The number of traffic policies that are associated with the current AWS account.|
 |type|text|The DNS type of the resource record sets that Amazon Route 53 creates when you use a traffic policy to create a traffic policy instance.|
+|arn|text|The Amazon Resource Name (ARN) for the route 53 traffic policy|

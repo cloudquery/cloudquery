@@ -34,12 +34,22 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 // See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for
 // more information.
 func GenerateResourceARN(service, resourceType, resourceID, region, accountID string) string {
+
+	// if resource type is empty
+	// for example s3 bucket
+	resource := ""
+	if resourceType == "" {
+		resource = resourceID
+	} else {
+		resource = fmt.Sprintf("%s/%s", resourceType, resourceID)
+	}
+
 	return arn.ARN{
 		// TODO: Make this configurable in the future
 		Partition: "aws",
 		Service:   service,
 		Region:    region,
 		AccountID: accountID,
-		Resource:  fmt.Sprintf("%s/%s", resourceType, resourceID),
+		Resource:  resource,
 	}.String()
 }

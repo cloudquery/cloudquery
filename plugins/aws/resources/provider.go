@@ -66,7 +66,7 @@ func Provider() *provider.Provider {
 			"elbv2.load_balancers":                  Elbv2LoadBalancers(),
 			"emr.clusters":                          EmrClusters(),
 			"fsx.backups":                           FsxBackups(),
-			"iam.accounts":                          Accounts(),
+			"iam.accounts":                          IamAccounts(),
 			"iam.groups":                            IamGroups(),
 			"iam.policies":                          IamPolicies(),
 			"iam.password_policies":                 IamPasswordPolicies(),

@@ -13,3 +13,4 @@ A complex type that contains settings for the new traffic policy instance.
 |traffic_policy_id|text|The ID of the traffic policy that Amazon Route 53 used to create resource record sets in the specified hosted zone.|
 |traffic_policy_type|text|The DNS type that Amazon Route 53 assigned to all of the resource record sets that it created for this traffic policy instance.|
 |traffic_policy_version|integer|The version of the traffic policy that Amazon Route 53 used to create resource record sets in the specified hosted zone.|
+|arn|text|Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.|

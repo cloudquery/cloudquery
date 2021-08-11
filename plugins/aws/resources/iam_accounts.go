@@ -10,7 +10,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func Accounts() *schema.Table {
+func IamAccounts() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_accounts",
 		Description:  "Information about IAM entity usage and IAM quotas in the AWS account.",
