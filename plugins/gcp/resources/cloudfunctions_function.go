@@ -13,6 +13,7 @@ func CloudfunctionsFunction() *schema.Table {
 		Description:  "Describes a Cloud Function that contains user computation executed in response to an event It encapsulate function and triggers configurations",
 		Resolver:     fetchCloudfunctionsFunctions,
 		Multiplex:    client.ProjectMultiplex,
+		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{

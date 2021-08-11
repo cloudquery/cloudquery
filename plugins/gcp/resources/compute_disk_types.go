@@ -2,6 +2,10 @@ package resources
 
 import (
 	"context"
+	"fmt"
+	"strings"
+
+	"github.com/spf13/cast"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -71,7 +75,7 @@ func ComputeDiskTypes() *schema.Table {
 				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveResourceId,
+				Resolver:    ResolveDiskTypeId,
 			},
 			{
 				Name:        "kind",
@@ -85,7 +89,7 @@ func ComputeDiskTypes() *schema.Table {
 			},
 			{
 				Name:        "region",
-				Description: "URL of the region where the disk type resides Only applicable for regional resources You must specify this field as part of the HTTP request URL It is not settable as a field in the request body",
+				Description: "URL of the region where the disk type resides",
 				Type:        schema.TypeString,
 			},
 			{
@@ -132,4 +136,13 @@ func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *
 		nextPageToken = output.NextPageToken
 	}
 	return nil
+}
+
+func ResolveDiskTypeId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	disk := resource.Item.(*compute.DiskType)
+	if disk.Id != 0 {
+		return resource.Set(c.Name, cast.ToString(disk.Id))
+	}
+	linkParts := strings.Split(disk.SelfLink, "/")
+	return resource.Set(c.Name, fmt.Sprintf("%s/%s", linkParts[len(linkParts)-3], disk.Name))
 }

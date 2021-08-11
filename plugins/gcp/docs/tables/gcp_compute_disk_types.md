@@ -16,7 +16,7 @@ Represents a Disk Type resource.
 |id|text|The unique identifier for the resource This identifier is defined by the server|
 |kind|text|Type of the resource Always compute#diskType for disk types|
 |name|text|Name of the resource|
-|region|text|URL of the region where the disk type resides Only applicable for regional resources You must specify this field as part of the HTTP request URL It is not settable as a field in the request body|
+|region|text|URL of the region where the disk type resides|
 |self_link|text|Server-defined URL for the resource|
 |valid_disk_size|text|An optional textual description of the valid disk size, such as "10GB-10TB"|
 |zone|text|URL of the zone where the disk type resides You must specify this field as part of the HTTP request URL It is not settable as a field in the request body|

@@ -1,6 +1,8 @@
 package client
 
 import (
+	"errors"
+
 	"google.golang.org/api/googleapi"
 )
 
@@ -8,10 +10,11 @@ const QuotaExceeded = 429
 const Forbidden = 403
 
 func IgnoreErrorHandler(err error) bool {
-	if e, ok := err.(*googleapi.Error); ok {
-		if e.Code == Forbidden && len(e.Errors) > 0 && e.Errors[0].Reason == "accessNotConfigured" {
+	var gerr *googleapi.Error
+	if ok := errors.As(err, &gerr); ok {
+		if gerr.Code == Forbidden && len(gerr.Errors) > 0 && gerr.Errors[0].Reason == "accessNotConfigured" {
 			return true
-		} else if e.Code == Forbidden && len(e.Errors) > 0 && e.Errors[0].Reason == "forbidden" {
+		} else if gerr.Code == Forbidden && len(gerr.Errors) > 0 && gerr.Errors[0].Reason == "forbidden" {
 			return true
 		}
 	}
