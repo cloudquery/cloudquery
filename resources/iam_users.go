@@ -191,8 +191,9 @@ func IamUsers() *schema.Table {
 						Resolver: schema.ParentResourceFieldResolver("user_id"),
 					},
 					{
-						Name: "arn",
-						Type: schema.TypeString,
+						Name:     "group_arn",
+						Type:     schema.TypeString,
+						Resolver: schema.PathResolver("Arn"),
 					},
 					{
 						Name: "create_date",

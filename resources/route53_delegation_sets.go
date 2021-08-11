@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
+	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -36,6 +37,12 @@ func Route53ReusableDelegationSets() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
 			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the route 53 delegation set",
+				Type:        schema.TypeString,
+				Resolver:    resolveRoute53DelegationSetsArn,
+			},
 		},
 	}
 }
@@ -60,4 +67,8 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 		config.Marker = response.Marker
 	}
 	return nil
+}
+func resolveRoute53DelegationSetsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	dl := resource.Item.(types.DelegationSet)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "delegationset", *dl.Id, "", ""))
 }

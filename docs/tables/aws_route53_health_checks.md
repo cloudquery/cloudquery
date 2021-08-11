@@ -37,3 +37,4 @@ A complex type that contains information about one health check that is associat
 |cloud_watch_alarm_config_threshold|float|For the metric that the CloudWatch alarm is associated with, the value the metric is compared with.|
 |linked_service_description|text|If the health check or hosted zone was created by another service, an optional description that can be provided by the other service.|
 |linked_service_service_principal|text|If the health check or hosted zone was created by another service, the service that created the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the route 53 health check|

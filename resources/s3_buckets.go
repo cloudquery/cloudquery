@@ -6,7 +6,6 @@ import (
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	smithy "github.com/aws/smithy-go"
@@ -95,6 +94,12 @@ func S3Buckets() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that Amazon S3 assumes when replicating objects",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Role"),
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the s3 bucket",
+				Type:        schema.TypeString,
+				Resolver:    resolveS3BucketsArn,
 			},
 		},
 		Relations: []*schema.Table{
@@ -603,6 +608,11 @@ func resolveS3BucketLifecycleTransitions(ctx context.Context, meta schema.Client
 		return err
 	}
 	return resource.Set("transitions", data)
+}
+
+func resolveS3BucketsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	buc := resource.Item.(*WrappedBucket)
+	return resource.Set(c.Name, client.GenerateResourceARN("s3", "", *buc.Name, "", ""))
 }
 
 // ====================================================================================================================

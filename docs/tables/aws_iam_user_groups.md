@@ -6,7 +6,7 @@
 | ------------- | ------------- | -----  |
 |user_cq_id|uuid||
 |user_id|text||
-|arn|text||
+|group_arn|text||
 |create_date|timestamp without time zone||
 |group_id|text||
 |group_name|text||

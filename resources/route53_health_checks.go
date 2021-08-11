@@ -216,6 +216,12 @@ func Route53HealthChecks() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LinkedService.ServicePrincipal"),
 			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the route 53 health check",
+				Type:        schema.TypeString,
+				Resolver:    resolveRoute53HealthChecksArn,
+			},
 		},
 	}
 }
@@ -300,4 +306,9 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 type Route53HealthCheckWrapper struct {
 	types.HealthCheck
 	Tags map[string]interface{}
+}
+
+func resolveRoute53HealthChecksArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	hc := resource.Item.(Route53HealthCheckWrapper)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "healthcheck", *hc.Id, "", ""))
 }

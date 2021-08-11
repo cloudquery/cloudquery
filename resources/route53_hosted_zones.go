@@ -37,7 +37,7 @@ func Route53HostedZones() *schema.Table {
 				Name:        "arn",
 				Description: "Amazon Resource Name (ARN) of the route53 hosted zone.",
 				Type:        schema.TypeString,
-				Resolver:    generateRoute53HostedZoneArn,
+				Resolver:    resolveRoute53HostedZoneArn,
 			},
 			{
 				Name:        "delegation_set_id",
@@ -113,6 +113,12 @@ func Route53HostedZones() *schema.Table {
 						Description: "The ID for a configuration for DNS query logging.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("Id"),
+					},
+					{
+						Name:        "arn",
+						Description: "Amazon Resource Name (ARN) of the route53 hosted zone query logging config.",
+						Type:        schema.TypeString,
+						Resolver:    resolveRoute53HostedZoneQueryLoggingConfigsArn,
 					},
 				},
 			},
@@ -269,6 +275,12 @@ func Route53HostedZones() *schema.Table {
 						Description: "The version of the traffic policy that Amazon Route 53 used to create resource record sets in the specified hosted zone.",
 						Type:        schema.TypeInt,
 					},
+					{
+						Name:        "arn",
+						Description: "Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.",
+						Type:        schema.TypeString,
+						Resolver:    resolveRoute53HostedZoneTrafficPolicyInstancesArn,
+					},
 				},
 			},
 			{
@@ -294,6 +306,12 @@ func Route53HostedZones() *schema.Table {
 						Description: "(Private hosted zones only) The region that an Amazon VPC was created in.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("VPCRegion"),
+					},
+					{
+						Name:        "vpc_arn",
+						Description: "Amazon Resource Name (ARN) of the ec2 vpc.",
+						Type:        schema.TypeString,
+						Resolver:    resolveRoute53HostedZoneVpcArn,
 					},
 				},
 			},
@@ -463,9 +481,20 @@ func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.T
 	}
 	return nil
 }
-
-func generateRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
+func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	hz := resource.Item.(Route53HostedZoneWrapper)
-	return resource.Set(c.Name, client.GenerateResourceARN("route53", "hostedzone", *hz.Id, cl.Region, cl.AccountID))
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "hostedzone", *hz.Id, "", ""))
+}
+func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ql := resource.Item.(types.QueryLoggingConfig)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "queryloggingconfig", *ql.Id, "", ""))
+}
+func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	tp := resource.Item.(types.TrafficPolicyInstance)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "trafficpolicyinstance", *tp.Id, "", ""))
+}
+func resolveRoute53HostedZoneVpcArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	vpc := resource.Item.(types.VPC)
+	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "vpc", *vpc.VPCId, cl.Region, cl.AccountID))
 }

@@ -54,6 +54,12 @@ func Route53TrafficPolicies() *schema.Table {
 				Description: "The DNS type of the resource record sets that Amazon Route 53 creates when you use a traffic policy to create a traffic policy instance.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the route 53 traffic policy",
+				Type:        schema.TypeString,
+				Resolver:    resolveRoute53TrafficPoliciesArn,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -159,4 +165,8 @@ func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema
 		return err
 	}
 	return resource.Set(c.Name, value)
+}
+func resolveRoute53TrafficPoliciesArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	tr := resource.Item.(types.TrafficPolicySummary)
+	return resource.Set(c.Name, client.GenerateResourceARN("route53", "trafficpolicy", *tr.Id, "", ""))
 }
