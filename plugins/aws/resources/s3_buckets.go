@@ -108,7 +108,6 @@ func S3Buckets() *schema.Table {
 				Description: "Container for grant information.",
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Resolver:    fetchS3BucketGrants,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "grantee_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -204,7 +203,6 @@ func S3Buckets() *schema.Table {
 				Description: "Specifies the default server-side encryption configuration.",
 				Resolver:    fetchS3BucketEncryptionRules,
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
