@@ -4,7 +4,7 @@ Contains information about an AWS account that is a member of an organization.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
+|account_id|text|The root/organizational unit AWS account|
 |arn|text|The Amazon Resource Name (ARN) of the account.|
 |email|text|The email address associated with the AWS account.|
 |id|text|The unique identifier (ID) of the account.|

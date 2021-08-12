@@ -17,11 +17,11 @@ func OrganizationsAccounts() *schema.Table {
 		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The root/organizational unit AWS account",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
@@ -75,6 +75,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListAccounts(ctx, &input)
 		if err != nil {
+			meta.Logger().Warn("missing permissions or account might not be root/organizational unit", "account", c.AccountID)
 			return err
 		}
 		res <- response.Accounts
