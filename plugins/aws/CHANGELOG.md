@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.5] - 2020-08-11
+###### SDK Version: 0.3.2
+### :gear: Changed
+* Upgraded to SDK Version [0.3.2](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v032---2020-08-11)
+
+### :spider: Fixed
+* Fixed relation tables inserts - Delete filter issue [#141](https://github.com/cloudquery/cq-provider-aws/pull/141)
+
+### :rocket: Added
+* Added some resources missing Arn's [#142](https://github.com/cloudquery/cq-provider-aws/issues/142)
+
 ## [v0.5.4] - 2020-08-07
 ###### SDK Version: 0.3.1
 
