@@ -4,14 +4,17 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cq-provider-gcp/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	bigquery "google.golang.org/api/bigquery/v2"
 )
 
 func BigqueryDatasetAccesses() *schema.Table {
 	return &schema.Table{
-		Name:     "gcp_bigquery_dataset_accesses",
-		Resolver: fetchBigqueryDatasetAccesses,
+		Name:        "gcp_bigquery_dataset_accesses",
+		IgnoreError: client.IgnoreErrorHandler,
+		Resolver:    fetchBigqueryDatasetAccesses,
 		Columns: []schema.Column{
 			{
 				Name:     "dataset_cq_id",

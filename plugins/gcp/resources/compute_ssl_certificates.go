@@ -14,8 +14,9 @@ func ComputeSslCertificates() *schema.Table {
 		Description:  "Represents an SSL Certificate resource.",
 		Resolver:     fetchComputeSslCertificates,
 		Multiplex:    client.ProjectMultiplex,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

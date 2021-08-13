@@ -13,9 +13,10 @@ func ComputeInterconnects() *schema.Table {
 		Name:         "gcp_compute_interconnects",
 		Description:  "Represents an Interconnect resource  An Interconnect resource is a dedicated connection between the GCP network and your on-premises network",
 		Resolver:     fetchComputeInterconnects,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Multiplex:    client.ProjectMultiplex,
+		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

@@ -13,6 +13,7 @@ func BigqueryDatasetTables() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_bigquery_dataset_tables",
 		Description: "Model options used for the first training run These options are immutable for subsequent training runs Default values are used for any options not specified in the input query",
+		IgnoreError: client.IgnoreErrorHandler,
 		Resolver:    fetchBigqueryDatasetTables,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_cq_id", "id"}},
 		Columns: []schema.Column{

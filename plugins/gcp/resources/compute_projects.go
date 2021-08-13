@@ -16,8 +16,8 @@ func ComputeProjects() *schema.Table {
 		Resolver:     fetchComputeProjects,
 		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
 		DeleteFilter: client.DeleteProjectFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

@@ -15,6 +15,7 @@ func ComputeVpnGateways() *schema.Table {
 		Resolver:     fetchComputeVpnGateways,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Multiplex:    client.ProjectMultiplex,
+		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{
