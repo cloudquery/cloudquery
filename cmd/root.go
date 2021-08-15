@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/cloudquery/cloudquery/pkg/client"
 	stdlog "log"
 	"os"
 	"strings"
@@ -65,9 +66,8 @@ Use "{{.CommandPath}} options" for a list of global CLI options.
 // Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
 var (
-	Version = "development"
-	Commit  = "development"
-	Date    = time.Now().String()
+	Commit = "development"
+	Date   = time.Now().String()
 
 	loggerConfig logging.Config
 
@@ -80,7 +80,7 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 
 Find more information at:
 	https://docs.cloudquery.io`,
-		Version: Version,
+		Version: client.Version,
 	}
 )
 

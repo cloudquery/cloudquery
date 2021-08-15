@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"embed"
 	"fmt"
 	"time"
 
@@ -11,6 +12,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
+
+//go:embed migrations
+var migrations embed.FS
 
 type Configuration struct {
 	Accounts []Account `hcl:"account,block"`
@@ -45,8 +49,9 @@ func (t TestClient) Logger() hclog.Logger {
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:    "test",
-		Version: "v0.0.0",
+		Name:       "test",
+		Version:    "v0.0.0",
+		Migrations: migrations,
 		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 			return &TestClient{l: logger}, nil
 		},
@@ -70,7 +75,7 @@ func Provider() *provider.Provider {
 				},
 			},
 			"very_slow_resource": {
-				Name: "slow_resource",
+				Name: "very_slow_resource",
 				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 					meta.Logger().Info("fetching very slow")
 					select {

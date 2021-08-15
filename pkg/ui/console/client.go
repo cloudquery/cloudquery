@@ -138,8 +138,75 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 	return nil
 }
 
+func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s...\n\n", args)
+	providers, err := c.getRequiredProviders(args)
+	if err != nil {
+		return err
+	}
+	for _, p := range providers {
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil {
+			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+			return err
+		} else {
+			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
+			color.GreenString("✓")
+		}
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s...\n\n", args)
+	providers, err := c.getRequiredProviders(args)
+	if err != nil {
+		return err
+	}
+	for _, p := range providers {
+		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
+			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+			return err
+		} else {
+			ui.ColorizedOutput(ui.ColorSuccess, "✓ Downgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
+			color.GreenString("✓")
+		}
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) DropProvider(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.c.DropProvider(ctx, providerName); err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		return err
+	} else {
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
+		color.GreenString("✓")
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	return nil
+}
+
 func (c Client) Client() *client.Client {
 	return c.c
+}
+
+func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {
+	if len(providerNames) == 0 {
+		// if no providers are given we will return all providers
+		return c.cfg.CloudQuery.Providers, nil
+	}
+	providers := make([]*config.RequiredProvider, len(providerNames))
+	for i, p := range providerNames {
+		pCfg, err := c.cfg.CloudQuery.GetRequiredProvider(p)
+		if err != nil {
+			return nil, err
+		}
+		providers[i] = pCfg
+	}
+	return providers, nil
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {

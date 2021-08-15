@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"github.com/jackc/pgx/v4"
 	"net"
 	"os"
 	"path/filepath"
@@ -139,6 +140,56 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	_, diags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
 }
+
+func TestClient_ProviderMigrations(t *testing.T) {
+	cancelServe := setupTestPlugin(t)
+	defer cancelServe()
+
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = []*config.RequiredProvider{
+			{
+				Name:    "test",
+				Source:  "cloudquery",
+				Version: "latest",
+			},
+		}
+	})
+	assert.Nil(t, err)
+	if c == nil {
+		assert.FailNow(t, "failed to create client")
+	}
+	ctx := context.Background()
+	err = c.DropProvider(ctx, "test")
+	assert.Nil(t, err)
+	err = c.BuildProviderTables(ctx, "test")
+	assert.Nil(t, err)
+	err = c.UpgradeProvider(ctx, "test")
+	assert.Nil(t, err)
+
+	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable")
+	if err != nil {
+		assert.FailNow(t, "failed to create connection")
+		return
+	}
+	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
+	assert.Nil(t, err)
+
+	c.Providers[0].Version = "v0.0.1"
+	err = c.DowngradeProvider(ctx, "test")
+	assert.Nil(t, err)
+	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
+	assert.Nil(t, err)
+	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
+	assert.Error(t, err)
+
+	c.Providers[0].Version = "v0.0.2"
+	err = c.UpgradeProvider(ctx, "test")
+	assert.Nil(t, err)
+	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
+	assert.Nil(t, err)
+}
+
 
 const testConfig = `cloudquery {
   connection {

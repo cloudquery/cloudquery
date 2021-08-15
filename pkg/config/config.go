@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -19,7 +18,7 @@ func (c Config) GetProvider(name string) (*Provider, error) {
 			return p, nil
 		}
 	}
-	return nil, errors.New("provider does not exist")
+	return nil, fmt.Errorf("provider %s does not exist", name)
 }
 
 type CloudQuery struct {
@@ -28,6 +27,15 @@ type CloudQuery struct {
 	Logger          *logging.Config     `hcl:"logging,block"`
 	Providers       []*RequiredProvider `hcl:"provider,block"`
 	Connection      *Connection         `hcl:"connection,block"`
+}
+
+func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
+	for _, p := range c.Providers {
+		if name == p.Name {
+			return p, nil
+		}
+	}
+	return nil, fmt.Errorf("provider %s does not exist", name)
 }
 
 type Connection struct {

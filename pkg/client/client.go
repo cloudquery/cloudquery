@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -160,7 +161,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		return nil, err
 	}
 	if c.TableCreator == nil {
-		c.TableCreator = provider.NewMigrator(c.Logger)
+		c.TableCreator = provider.NewTableCreator(c.Logger)
 	}
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
@@ -212,7 +213,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			}
 			c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
-				CloudQueryVersion: "", // TODO pass cloudquery version
+				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
 				},
@@ -266,7 +267,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 	return nil
 }
 
-func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
+func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -284,7 +285,7 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 	return providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 }
 
-func (c Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
+func (c *Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -321,7 +322,46 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 	return nil
 }
 
-func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
+	return m.UpgradeProvider(cfg.Version)
+}
+
+func (c *Client) DowngradeProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
+	return m.DowngradeProvider(cfg.Version)
+}
+
+func (c *Client) DropProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("dropping provider tables", "version", cfg.Version, "provider", cfg.Name)
+	return m.DropProvider(ctx, s.ResourceTables)
+}
+
+func (c *Client) DownloadPolicy(ctx context.Context, args []string) error {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
@@ -334,7 +374,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return m.DownloadPolicy(ctx, p)
 }
 
-func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
+func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
@@ -371,7 +411,37 @@ func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	return nil
 }
 
-func (c Client) Close() {
+func (c *Client) Close() {
 	c.Manager.Shutdown()
 	c.pool.Close()
+}
+
+func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {
+	providerConfig, err := c.getProviderConfig(providerName)
+	if err != nil {
+		return nil, nil, err
+	}
+	org, name, err := registry.ParseProviderName(providerConfig.Name)
+	if err != nil {
+		return nil, nil, err
+	}
+	m, err := provider.NewMigrator(c.Logger, migrations, c.DSN, fmt.Sprintf("%s_%s", org, name))
+	if err != nil {
+		return nil, nil, err
+	}
+	return m, providerConfig, err
+}
+
+func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
+	var providerConfig *config.RequiredProvider
+	for _, p := range c.Providers {
+		if p.Name == providerName {
+			providerConfig = p
+			break
+		}
+	}
+	if providerConfig == nil {
+		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
+	}
+	return providerConfig, nil
 }

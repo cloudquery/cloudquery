@@ -19,7 +19,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/rs/zerolog v1.20.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/spf13/afero v1.1.2
+	github.com/spf13/afero v1.6.0
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.0
@@ -31,3 +31,5 @@ require (
 	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
+
+replace github.com/cloudquery/cq-provider-sdk v0.3.1 => ../forks/cq-provider-sdk
