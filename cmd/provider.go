@@ -4,12 +4,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var providerHelpMsg = "Top-level command to interact with providers."
+
 var providerCmd = &cobra.Command{
 	Use:   "provider [subcommand]",
-	Short: "Provider command that unifies provider subcommands.",
-	Long: `Examples:
-# Download all providers
-./cloudquery provider download
+	Short: providerHelpMsg,
+	Long:  providerHelpMsg,
+	Example: `
+  # Downloads all providers specified in config.hcl:
+  ./cloudquery provider download
 `,
 	Version: Version,
 }

@@ -11,13 +11,15 @@ import (
 	"github.com/spf13/viper"
 )
 
+var providerDownloadHelpMsg = "Downloads all providers specified in config.hcl."
+
 var providerDownloadCmd = &cobra.Command{
 	Use:   "download",
-	Short: "Downloads all providers",
-	Long: `Downloads all required providers.
-	
-Examples:
-./cloudquery provider download
+	Short: providerDownloadHelpMsg,
+	Long:  providerDownloadHelpMsg,
+	Example: `
+  # Downloads all providers specified in config.hcl:
+  ./cloudquery provider download
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
