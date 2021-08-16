@@ -24,6 +24,7 @@ const testPolicy = `policy "aws-cis-v1.3.0" {
   query "top-level-query" {
     description = "Top Level Query"
     query = "SELECT * FROM test"
+    type = "manual"
   }
 
   policy "sub-policy-1" {
@@ -37,6 +38,7 @@ const testPolicy = `policy "aws-cis-v1.3.0" {
     description = "Sub Policy 2"
     query "sub-level-query" {
       query = "SELECT * from test.subquery"
+      type = "manual"
     }
   }
 }`
@@ -84,6 +86,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 					{
 						Name:         "sub-level-query",
 						ExpectOutput: false,
+						Type:         ManualQuery,
 						Query:        "SELECT * from test.subquery",
 					},
 				},
@@ -94,6 +97,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 				Name:         "top-level-query",
 				Description:  "Top Level Query",
 				ExpectOutput: false,
+				Type:         ManualQuery,
 				Query:        "SELECT * FROM test",
 			},
 		},
