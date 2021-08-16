@@ -321,6 +321,11 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 			return err
 		}
 	}
+
+	if s.Migrations == nil {
+		c.Logger.Debug("provider doesn't support migrations", "provider",  providerName)
+		return nil
+	}
 	// create migration table and set it to version based on latest create table
 	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
 	if err != nil {
