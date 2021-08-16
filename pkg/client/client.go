@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/golang-migrate/migrate/v4"
+
 	"github.com/cloudquery/cq-provider-sdk/provider"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -318,6 +320,19 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 		if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
 			return err
 		}
+	}
+	// create migration table and set it to version based on latest create table
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
+		mv, err := m.FindLatestMigration(cfg.Version)
+		if err != nil {
+			return err
+		}
+		c.Logger.Debug("setting provider schema migration version", "version", cfg.Version, "migration_version", mv)
+		return m.SetVersion(cfg.Version)
 	}
 	return nil
 }

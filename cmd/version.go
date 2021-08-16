@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/cloudquery/cloudquery/pkg/client"
 
 	"github.com/spf13/cobra"

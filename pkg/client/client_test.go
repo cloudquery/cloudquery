@@ -2,13 +2,15 @@ package client
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4"
 	"net"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/jackc/pgx/v4"
 
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -165,7 +167,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	err = c.BuildProviderTables(ctx, "test")
 	assert.Nil(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.Nil(t, err)
+	assert.ErrorIs(t, err, migrate.ErrNoChange)
 
 	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
@@ -189,7 +191,6 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Nil(t, err)
 }
-
 
 const testConfig = `cloudquery {
   connection {

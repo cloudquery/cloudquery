@@ -86,6 +86,14 @@ func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin
 	return p, nil
 }
 
+func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderDetails, error) {
+	details, ok := m.providers[providerName]
+	if !ok {
+		return registry.ProviderDetails{}, fmt.Errorf("provider %s doesn't exist", providerName)
+	}
+	return details, nil
+}
+
 // Shutdown closes all clients and cleans the managed clients
 func (m *Manager) Shutdown() {
 	for _, c := range m.clients {

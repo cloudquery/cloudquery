@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/cloudquery/cloudquery/pkg/client"
 	stdlog "log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/pkg/client"
 
 	"github.com/thoas/go-funk"
 
