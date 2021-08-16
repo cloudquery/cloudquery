@@ -21,11 +21,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	requiredTestProviders = []*config.RequiredProvider{
+		{
+			Name:    "test",
+			Source:  "cloudquery",
+			Version: "latest",
+		},
+	}
+)
+
 func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -57,6 +68,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 	cfg.Providers[0].Configuration = nil
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -80,6 +92,7 @@ func TestClient_Fetch(t *testing.T) {
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -104,6 +117,7 @@ func TestClient_GetProviderSchema(t *testing.T) {
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -126,6 +140,7 @@ func TestClient_GetProviderConfig(t *testing.T) {
 
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -149,13 +164,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = []*config.RequiredProvider{
-			{
-				Name:    "test",
-				Source:  "cloudquery",
-				Version: "latest",
-			},
-		}
+		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
 	if c == nil {
