@@ -11,7 +11,7 @@ import (
 
 const testConfig = `cloudquery {
   connection {
-    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
   }
   provider "test" {
     source = "cloudquery"
@@ -31,7 +31,7 @@ provider "aws" {
 
 const testAliasProviderConfig = `cloudquery {
   connection {
-    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
   }
   provider "test" {
     source = "cloudquery"
@@ -62,7 +62,7 @@ provider "aws" {
 
 const testMultipleProviderConfig = `cloudquery {
   connection {
-    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
   }
   provider "test" {
     source = "cloudquery"
@@ -94,7 +94,7 @@ const expectedDuplicateProviderError = "test.hcl:21,1-15: Provider Alias Require
 
 const testDuplicateAliasProviderConfig = `cloudquery {
   connection {
-    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
   }
   provider "test" {
     source = "cloudquery"
@@ -148,7 +148,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	cfg.Providers[0].Configuration = nil
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
-			Connection: &Connection{DSN: "host=localhost user=postgres password=pass DB.name=postgres port=5432"},
+			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
 			Providers: []*RequiredProvider{{
 				Name:    "test",
 				Source:  "cloudquery",

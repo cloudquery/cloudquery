@@ -1,7 +1,7 @@
 cloudquery {
 
   connection {
-    dsn = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn = "postgres://postgres:pass@localhost:5432/postgres"
   }
   provider "test" {
     source = "cloudquery"

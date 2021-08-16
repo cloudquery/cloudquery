@@ -25,7 +25,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -56,7 +56,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 	// Set configuration to nil
 	cfg.Providers[0].Configuration = nil
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -79,7 +79,7 @@ func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -103,7 +103,7 @@ func TestClient_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -125,7 +125,7 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	defer cancelServe()
 
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	})
 	assert.Nil(t, err)
 	if c == nil {
@@ -194,7 +194,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 
 const testConfig = `cloudquery {
   connection {
-    dsn =  "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
   }
   provider "test" {
     source = "cloudquery"
