@@ -98,8 +98,10 @@ func (q *Query) Normalize() {
 
 // Validate validates the query by checking that all fields have expected values.
 func (q *Query) Validate() error {
-	if q.Type == AutomaticQuery || q.Type == ManualQuery {
+	switch q.Type {
+	case AutomaticQuery, ManualQuery:
 		return nil
+	default:
+		return fmt.Errorf("invalid query type: %v", q.Type)
 	}
-	return fmt.Errorf("invalid query type: %v", q.Type)
 }
