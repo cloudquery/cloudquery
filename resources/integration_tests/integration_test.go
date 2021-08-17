@@ -7,8 +7,8 @@ import (
 
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-aws/resources"
-	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
 // IntegrationTestsEnabledVar is the name of the environment variable that enables integration tests from this package.

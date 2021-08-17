@@ -6,8 +6,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-aws/resources"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
-	//"github.com/hashicorp/terraform-exec/tfinstall"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
 func TestIntegrationS3Buckets(t *testing.T) {
