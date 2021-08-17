@@ -91,7 +91,7 @@ func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.DSN = "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable"
 		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
@@ -116,7 +116,7 @@ func TestClient_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.DSN = "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable"
 		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
@@ -203,7 +203,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 
 const testConfig = `cloudquery {
   connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+    dsn = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
   }
   provider "test" {
     source = "cloudquery"
