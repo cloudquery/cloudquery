@@ -347,6 +347,9 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 	if err != nil {
 		return err
 	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
+	}
 	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
 	if err != nil {
 		return err
@@ -359,6 +362,9 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) err
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
+	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
 	}
 	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
 	if err != nil {

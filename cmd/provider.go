@@ -26,9 +26,9 @@ var (
   ./cloudquery provider upgrade 
   # Upgrade one or more providers
   ./cloudquery provider upgrade aws
-  # Upgrades all providers specified in config.hcl
+  # Downgrades all providers specified in config.hcl
   ./cloudquery provider downgrade 
-  # Upgrade one or more providers
+  # Downgrades one or more providers
   ./cloudquery provider downgrade aws, gcp
   # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
   ./cloudquery provider drop aws

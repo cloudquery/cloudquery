@@ -139,12 +139,16 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s...\n\n", args)
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
 	}
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
 	for _, p := range providers {
+
 		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
@@ -158,9 +162,12 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 }
 
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s...\n\n", args)
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
+		return err
+	}
+	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
 	for _, p := range providers {
@@ -178,6 +185,9 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 
 func (c Client) DropProvider(ctx context.Context, providerName string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
 	if err := c.c.DropProvider(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
