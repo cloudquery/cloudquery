@@ -26,13 +26,19 @@ var (
   ./cloudquery provider upgrade 
   # Upgrade one or more providers
   ./cloudquery provider upgrade aws
+  # Upgrades all providers specified in config.hcl
+  ./cloudquery provider downgrade 
+  # Upgrade one or more providers
+  ./cloudquery provider downgrade aws, gcp
+  # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
+  ./cloudquery provider drop aws
 `,
 		Version: client.Version,
 	}
 
 	providerUpgradeHelpMsg = "Upgrades one or more providers schema version based on config.hcl"
 	providerUpgradeCmd     = &cobra.Command{
-		Use:   "upgrade [provider]",
+		Use:   "upgrade [providers,...]",
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -50,7 +56,7 @@ var (
 
 	providerDowngradeHelpMsg = "Downgrades one or more providers schema version based on config.hcl"
 	providerDowngradeCmd     = &cobra.Command{
-		Use:   "downgrade [provider]",
+		Use:   "downgrade [providers,...]",
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -68,7 +74,7 @@ var (
 
 	providerDropHelpMsg = "Drops provider schema from database"
 	providerDropCmd     = &cobra.Command{
-		Use:   "drop provider",
+		Use:   "drop [provider]",
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
