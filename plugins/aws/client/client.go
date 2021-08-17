@@ -257,7 +257,8 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 					opts.ExternalID = &account.ExternalID
 				})
 			}
-			awsCfg.Credentials = stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN, opts...)
+			provider := stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN, opts...)
+			awsCfg.Credentials = aws.NewCredentialsCache(provider)
 		case account.ID != "default":
 			awsCfg, err = config.LoadDefaultConfig(
 				ctx,
