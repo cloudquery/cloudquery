@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client"
+
 	"github.com/thoas/go-funk"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -65,9 +67,8 @@ Use "{{.CommandPath}} options" for a list of global CLI options.
 // Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
 var (
-	Version = "development"
-	Commit  = "development"
-	Date    = time.Now().String()
+	Commit = "development"
+	Date   = time.Now().String()
 
 	loggerConfig logging.Config
 
@@ -80,7 +81,7 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 
 Find more information at:
 	https://docs.cloudquery.io`,
-		Version: Version,
+		Version: client.Version,
 	}
 )
 
@@ -95,7 +96,7 @@ func init() {
 	// add inner commands
 	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'gen config' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
-	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'host=localhost user=postgres password=pass DB.name=postgres port=5432')")
+	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 	// Logging Flags
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enable-console-log", false, "Enable console logging")

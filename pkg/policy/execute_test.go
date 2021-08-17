@@ -13,7 +13,7 @@ import (
 )
 
 func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
-	poolCfg, err := pgxpool.ParseConfig("host=localhost user=postgres password=pass DB.name=postgres port=5432")
+	poolCfg, err := pgxpool.ParseConfig("postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 	poolCfg.LazyConnect = true
 	pool, err := pgxpool.ConnectConfig(context.Background(), poolCfg)
