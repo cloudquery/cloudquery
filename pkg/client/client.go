@@ -39,6 +39,8 @@ type FetchRequest struct {
 	DisableDataDelete bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
+	// Optional: PartialFetchPrintResultsCallback allows printing out the results from partial fetch.
+	PartialFetchPrintResultsCallback func(providerName string, results []*cqproto.PartialFetchFailedResource)
 }
 
 type FetchUpdate struct {
@@ -237,6 +239,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		}
 		errGroup.Go(func() error {
 			var cfg []byte
+			var partialFetchResults []*cqproto.PartialFetchFailedResource
 			if providerConfig.Configuration != nil {
 				cfg, err = convert.Body(providerConfig.Configuration, convert.Options{Simplify: true})
 				if err != nil {
@@ -259,7 +262,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			}
 			c.Logger.Info("provider configured successfully", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
 			c.Logger.Debug("requesting provider fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources})
+			c.Logger.Info("partial fetch", "enabled", providerConfig.PartialFetchEnabled)
+			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.PartialFetchEnabled})
 			if err != nil {
 				return err
 			}
@@ -268,6 +272,15 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				resp, err := stream.Recv()
 				if err == io.EOF {
 					c.Logger.Info("provider finished fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+					// Print out partial fetch results if given
+					if len(partialFetchResults) != 0 {
+						for _, res := range partialFetchResults {
+							c.Logger.Warn("partial fetch error", "provider", providerConfig, "result", res)
+						}
+						if request.PartialFetchPrintResultsCallback != nil {
+							request.PartialFetchPrintResultsCallback(providerPlugin.Name(), partialFetchResults)
+						}
+					}
 					return nil
 				}
 				if err != nil {
@@ -280,6 +293,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
 					Error:             resp.Error,
+				}
+				if len(resp.PartialFetchFailedResources) != 0 {
+					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 				if resp.Error != "" {
 					c.Logger.Error("received provider fetch update error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", resp.Error)

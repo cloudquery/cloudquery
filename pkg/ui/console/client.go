@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/fatih/color"
 
 	"github.com/spf13/viper"
@@ -77,13 +79,16 @@ func (c Client) Fetch(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var fetchProgress *Progress
 	var fetchCallback client.FetchUpdateCallback
+	var partialFetchCallback func(providerName string, results []*cqproto.PartialFetchFailedResource)
 
 	if ui.IsTerminal() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
+		partialFetchCallback = buildPrintPartialFetchResult()
 	}
 	request := client.FetchRequest{
-		Providers:      c.cfg.Providers,
-		UpdateCallback: fetchCallback,
+		Providers:                        c.cfg.Providers,
+		UpdateCallback:                   fetchCallback,
+		PartialFetchPrintResultsCallback: partialFetchCallback,
 	}
 	if err := c.c.Fetch(ctx, request); err != nil {
 		return err
@@ -256,6 +261,28 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 		}
 	}
 	return fetchProgress, fetchCallback
+}
+
+func buildPrintPartialFetchResult() func(providerName string, results []*cqproto.PartialFetchFailedResource) {
+	return func(providerName string, results []*cqproto.PartialFetchFailedResource) {
+		ui.ColorizedOutput(ui.ColorWarning, "\n\nPartial Fetch Errors for Provider %s:\n\n", providerName)
+		for _, r := range results {
+			if r.RootTableName != "" {
+				ui.ColorizedOutput(ui.ColorError,
+					"Parent-Resource: %s, Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
+					r.RootTableName,
+					r.RootPrimaryKeyValues,
+					r.TableName,
+					r.Error)
+			} else {
+				ui.ColorizedOutput(ui.ColorWarning,
+					"Table: %s, Error: %s\n",
+					r.TableName,
+					r.Error)
+			}
+		}
+		ui.ColorizedOutput(ui.ColorWarning, "\n\n")
+	}
 }
 
 func loadConfig(path string) (*config.Config, error) {

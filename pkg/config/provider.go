@@ -8,11 +8,12 @@ import (
 )
 
 type Provider struct {
-	Name          string   `hcl:"name,label"`
-	Alias         string   `hcl:"alias,optional"`
-	Resources     []string `hcl:"resources,optional"`
-	Env           []string `hcl:"env,optional"`
-	Configuration hcl.Body `hcl:"configuration,body"`
+	Name                string   `hcl:"name,label"`
+	Alias               string   `hcl:"alias,optional"`
+	PartialFetchEnabled bool     `hcl:"partial_fetch_enabled,optional"`
+	Resources           []string `hcl:"resources,optional"`
+	Env                 []string `hcl:"env,optional"`
+	Configuration       hcl.Body `hcl:"configuration,body"`
 }
 
 func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
@@ -48,6 +49,10 @@ func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*
 		existingProviders[name] = true
 	}
 
+	if attr, exists := content.Attributes["partial_fetch_enabled"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.PartialFetchEnabled)
+		diags = append(diags, valDiags...)
+	}
 	if attr, exists := content.Attributes["resources"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Resources)
 		diags = append(diags, valDiags...)
@@ -80,6 +85,9 @@ var providerBlockSchema = &hcl.BodySchema{
 		},
 		{
 			Name: "alias",
+		},
+		{
+			Name: "partial_fetch_enabled",
 		},
 		{
 			Name: "env",
