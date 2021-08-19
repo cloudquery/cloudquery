@@ -35,7 +35,7 @@ func (b *Bar) SetTotal(total int64, triggerComplete bool) {
 type Progress struct {
 	p       *mpb.Progress
 	bars    map[string]*Bar
-	lock    sync.RWMutex
+	lock    sync.Mutex
 	options *ProgressOptions
 }
 
@@ -76,8 +76,8 @@ func (u *Progress) Add(name, displayName, message string, total int64) {
 					if u.options.StatusFunc == nil {
 						return ""
 					}
-					u.lock.RLock()
-					defer u.lock.RUnlock()
+					u.lock.Lock()
+					defer u.lock.Unlock()
 					uiBar := u.bars[name]
 					return u.options.StatusFunc(uiBar, statistics)
 				}, decor.WC{W: 2, C: 1}),
@@ -87,8 +87,8 @@ func (u *Progress) Add(name, displayName, message string, total int64) {
 				if u.options.MessageHook == nil {
 					return ""
 				}
-				u.lock.RLock()
-				defer u.lock.RUnlock()
+				u.lock.Lock()
+				defer u.lock.Unlock()
 				uiBar := u.bars[name]
 				return u.options.MessageHook(uiBar, statistics)
 			}, decor.WC{W: len(name) + 1, C: decor.DidentRight}),
@@ -107,8 +107,8 @@ func (u *Progress) Add(name, displayName, message string, total int64) {
 }
 
 func (u *Progress) Increment(name string, n int) {
-	u.lock.RLock()
-	defer u.lock.RUnlock()
+	u.lock.Lock()
+	defer u.lock.Lock()
 	bar, ok := u.bars[name]
 	if !ok {
 		return
@@ -117,8 +117,8 @@ func (u *Progress) Increment(name string, n int) {
 }
 
 func (u *Progress) Update(name, status, msg string, n int) {
-	u.lock.RLock()
-	defer u.lock.RUnlock()
+	u.lock.Lock()
+	defer u.lock.Unlock()
 	bar, ok := u.bars[name]
 	if !ok {
 		return
@@ -131,8 +131,8 @@ func (u *Progress) Update(name, status, msg string, n int) {
 }
 
 func (u *Progress) AttachReader(name string, data io.Reader) io.Reader {
-	u.lock.RLock()
-	defer u.lock.RUnlock()
+	u.lock.Lock()
+	defer u.lock.Unlock()
 	bar, ok := u.bars[name]
 	if !ok {
 		return data
@@ -147,8 +147,8 @@ func (u *Progress) Wait() {
 }
 
 func (u *Progress) GetBar(name string) *Bar {
-	u.lock.RLock()
-	defer u.lock.RUnlock()
+	u.lock.Lock()
+	defer u.lock.Unlock()
 	bar, ok := u.bars[name]
 	if !ok {
 		return nil
@@ -157,8 +157,8 @@ func (u *Progress) GetBar(name string) *Bar {
 }
 
 func (u *Progress) AbortAll() {
-	u.lock.RLock()
-	defer u.lock.RUnlock()
+	u.lock.Lock()
+	defer u.lock.Unlock()
 	for _, b := range u.bars {
 		b.b.Abort(true)
 	}
