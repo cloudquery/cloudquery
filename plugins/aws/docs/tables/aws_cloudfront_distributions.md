@@ -5,7 +5,6 @@
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text||
-|region|text||
 |arn|text||
 |aliases_items|text[]||
 |comment|text||

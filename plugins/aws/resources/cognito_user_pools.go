@@ -474,7 +474,6 @@ func CognitoUserPools() *schema.Table {
 				Name:        "aws_cognito_user_pool_identity_providers",
 				Description: "A container for information about an identity provider.",
 				Resolver:    fetchCognitoUserPoolIdentityProviders,
-				Multiplex:   client.AccountRegionMultiplex,
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"user_pool_cq_id", "provider_name"}},
 				Columns: []schema.Column{

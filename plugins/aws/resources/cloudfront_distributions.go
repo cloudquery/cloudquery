@@ -15,20 +15,15 @@ func CloudfrontDistributions() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_cloudfront_distributions",
 		Resolver:     fetchCloudfrontDistributions,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.AccountMultiplex,
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "arn",
