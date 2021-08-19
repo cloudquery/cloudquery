@@ -1,5 +1,7 @@
 .DS_store
 crash.log
+.idea
+.vscode
 cloudquery
 cloudquery.db
 cloudquery.zip
@@ -8,5 +10,13 @@ dist/
 vendor/
 bin/
 .release-env
-cq-provider-okta*
+cq-provider-gcp
+*.exe
 *.log
+.cq_reattach
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*

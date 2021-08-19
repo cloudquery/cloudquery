@@ -1,136 +1,185 @@
 package resources
 
 import (
-	"github.com/mitchellh/mapstructure"
+	"context"
+
+	"github.com/cloudquery/cq-provider-okta/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/okta/okta-sdk-golang/v2/okta"
-	"time"
+	"github.com/okta/okta-sdk-golang/v2/okta/query"
 )
 
-type User struct {
-	Activated             *time.Time   `json:"activated,omitempty"`
-	Created               *time.Time   `json:"created,omitempty"`
-	Id                    string       `json:"id,omitempty"`
-	LastLogin             *time.Time   `json:"lastLogin,omitempty"`
-	LastUpdated           *time.Time   `json:"lastUpdated,omitempty"`
-	PasswordChanged       *time.Time   `json:"passwordChanged,omitempty"`
-	Profile               *UserProfile `json:"profile,omitempty" gorm:"embedded;embeddedPrefix:profile_"`
-	Status                string       `json:"status,omitempty"`
-	StatusChanged         *time.Time   `json:"statusChanged,omitempty"`
-	TransitioningToStatus string       `json:"transitioningToStatus,omitempty"`
-	UserTypeId            string       `json:"userTypeId,omitempty"`
-}
-
-func (u User) TableName() string {
-	return "okta_users"
-}
-
-func TransformUser(u *okta.User) *User {
-	return &User{
-		Activated:             u.Activated,
-		Created:               u.Created,
-		Id:                    u.Id,
-		LastLogin:             u.LastLogin,
-		LastUpdated:           u.LastUpdated,
-		PasswordChanged:       u.PasswordChanged,
-		Profile:               TransformUserProfile(u.Profile),
-		Status:                u.Status,
-		StatusChanged:         u.StatusChanged,
-		TransitioningToStatus: u.TransitioningToStatus,
-		UserTypeId:            u.Type.Id,
+func Users() *schema.Table {
+	return &schema.Table{
+		Name:         "okta_users",
+		Resolver:     fetchUsers,
+		DeleteFilter: client.DeleteFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Columns: []schema.Column{
+			{
+				Name: "activated",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "created",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name:     "credentials_password_hash_algorithm",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Hash.Algorithm"),
+			},
+			{
+				Name:     "credentials_password_hash_salt",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Hash.Salt"),
+			},
+			{
+				Name:     "credentials_password_hash_salt_order",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Hash.SaltOrder"),
+			},
+			{
+				Name:     "credentials_password_hash_value",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Hash.Value"),
+			},
+			{
+				Name:     "credentials_password_hash_work_factor",
+				Type:     schema.TypeBigInt,
+				Resolver: schema.PathResolver("Credentials.Password.Hash.WorkFactor"),
+			},
+			{
+				Name:     "credentials_password_hook_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Hook.Type"),
+			},
+			{
+				Name:     "credentials_password_value",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Password.Value"),
+			},
+			{
+				Name:     "credentials_provider_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Provider.Name"),
+			},
+			{
+				Name:     "credentials_provider_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.Provider.Type"),
+			},
+			{
+				Name:     "credentials_recovery_question_answer",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.RecoveryQuestion.Answer"),
+			},
+			{
+				Name:     "credentials_recovery_question",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Credentials.RecoveryQuestion.Question"),
+			},
+			{
+				Name: "id",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "last_login",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "last_updated",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "password_changed",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "profile",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "status",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "status_changed",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "transitioning_to_status",
+				Type: schema.TypeString,
+			},
+			{
+				Name:     "type_created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Type.Created"),
+			},
+			{
+				Name:     "type_created_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.CreatedBy"),
+			},
+			{
+				Name:     "type_default",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Type.Default"),
+			},
+			{
+				Name:     "type_description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.Description"),
+			},
+			{
+				Name:     "type_display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.DisplayName"),
+			},
+			{
+				Name:     "type_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.Id"),
+			},
+			{
+				Name:     "type_last_updated",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Type.LastUpdated"),
+			},
+			{
+				Name:     "type_last_updated_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.LastUpdatedBy"),
+			},
+			{
+				Name:     "type_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type.Name"),
+			},
+		},
 	}
 }
 
-func TransformUsers(uu []*okta.User) []*User {
-	tuu := make([]*User, len(uu))
-	for i, u := range uu {
-		tuu[i] = TransformUser(u)
-	}
-	return tuu
-}
-
-type UserProfile struct {
-	Login             string
-	FirstName         string
-	LastName          string
-	MiddleName        string
-	HonorificPrefix   string
-	HonorificSuffix   string
-	Email             string
-	Title             string
-	DisplayName       string
-	NickName          string
-	ProfileUrl        string
-	SecondEmail       string
-	MobilePhone       string
-	PrimaryPhone      string
-	StreetAddress     string
-	City              string
-	State             string
-	ZipCode           string
-	CountryCode       string
-	PostalAddress     string
-	PreferredLanguage string
-	Locale            string
-	Timezone          string
-	UserType          string
-	EmployeeNumber    string
-	CostCenter        string
-	Organization      string
-	Division          string
-	Department        string
-	ManagerId         string
-	Manager           string
-}
-
-func TransformUserProfile(profile *okta.UserProfile) *UserProfile {
-	if profile == nil {
-		return nil
-	}
-	var up UserProfile
-	err := mapstructure.Decode(profile, &up)
+// ====================================================================================================================
+//                                               Table Resolver Functions
+// ====================================================================================================================
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	api := meta.(*client.Client)
+	users, resp, err := api.Okta.User.ListUsers(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
+		return err
+	}
+	if len(users) == 0 {
 		return nil
 	}
-	return &up
-}
-
-type UserType struct {
-	Id            string     `json:"id,omitempty" gorm:"primaryKey"`
-	Created       *time.Time `json:"created,omitempty"`
-	CreatedBy     string     `json:"createdBy,omitempty"`
-	Default       *bool      `json:"default,omitempty"`
-	Description   string     `json:"description,omitempty"`
-	DisplayName   string     `json:"displayName,omitempty"`
-	LastUpdated   *time.Time `json:"lastUpdated,omitempty"`
-	LastUpdatedBy string     `json:"lastUpdatedBy,omitempty"`
-	Name          string     `json:"name,omitempty"`
-}
-
-func (UserType) TableName() string {
-	return "okta_user_types"
-}
-
-func TransformUserType(userType *okta.UserType) *UserType {
-	if userType == nil {
-		return nil
+	res <- users
+	for resp != nil && resp.HasNextPage() {
+		var nextUserSet []*okta.User
+		resp, err = resp.Next(ctx, &nextUserSet)
+		if err != nil {
+			return err
+		}
+		res <- nextUserSet
 	}
-	return &UserType{
-		Id:            userType.Id,
-		Created:       userType.Created,
-		CreatedBy:     userType.CreatedBy,
-		Default:       userType.Default,
-		Description:   userType.Description,
-		DisplayName:   userType.DisplayName,
-		LastUpdated:   userType.LastUpdated,
-		LastUpdatedBy: userType.LastUpdatedBy,
-		Name:          userType.Name,
-	}
-}
-
-func TransformUserTypes(uu []*okta.UserType) []*UserType {
-	tut := make([]*UserType, len(uu))
-	for i, u := range uu {
-		tut[i] = TransformUserType(u)
-	}
-	return tut
+	return nil
 }
