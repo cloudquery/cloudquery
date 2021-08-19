@@ -14,9 +14,9 @@ func CloudtrailTrails() *schema.Table {
 		Name:                 "aws_cloudtrail_trails",
 		Description:          "The settings for a trail.",
 		Resolver:             fetchCloudtrailTrails,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.AccountMultiplex,
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:         client.DeleteAccountRegionFilter,
+		DeleteFilter:         client.DeleteAccountFilter,
 		PostResourceResolver: postCloudtrailTrailResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		Columns: []schema.Column{
@@ -30,7 +30,7 @@ func CloudtrailTrails() *schema.Table {
 				Name:        "region",
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Resolver:    schema.PathResolver("HomeRegion"),
 			},
 			{
 				Name:     "cloudwatch_logs_log_group_name",
@@ -235,7 +235,7 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	r := resource.Item.(types.Trail)
 	response, err := svc.GetTrailStatus(ctx,
 		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {
-			o.Region = c.Region
+			o.Region = *r.HomeRegion
 		})
 	if err != nil {
 		return err
@@ -297,7 +297,7 @@ func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientM
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: r.TrailARN}, func(options *cloudtrail.Options) {
-		options.Region = c.Region
+		options.Region = *r.HomeRegion
 	})
 	if err != nil {
 		return err

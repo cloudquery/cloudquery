@@ -1,15 +1,23 @@
 package resources
 
 import (
+	"embed"
+
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+var (
+	//go:embed migrations/*.sql
+	awsMigrations embed.FS
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:      "aws",
-		Configure: client.Configure,
+		Name:       "aws",
+		Configure:  client.Configure,
+		Migrations: awsMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"accessanalyzer.analyzers":              AccessAnalyzerAnalyzer(),
 			"autoscaling.launch_configurations":     AutoscalingLaunchConfigurations(),
