@@ -237,6 +237,11 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			return
 		}
 		bar := fetchProgress.GetBar(update.Provider)
+		if bar == nil {
+			fetchProgress.AbortAll()
+			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
+			return
+		}
 		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
 		if bar.Status == ui.StatusError {
