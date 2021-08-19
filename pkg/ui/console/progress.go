@@ -156,6 +156,15 @@ func (u *Progress) GetBar(name string) *Bar {
 	return bar
 }
 
+func (u *Progress) AbortAll() {
+	u.lock.RLock()
+	defer u.lock.RUnlock()
+	for _, b := range u.bars {
+		b.b.Abort(true)
+	}
+	u.Wait()
+}
+
 func defaultStatusUpdater(u *Bar, _ decor.Statistics) string {
 	return emojiStatus[u.Status]
 }
