@@ -154,7 +154,7 @@ By contributing to cloudquery you agree that your contributions will be licensed
 
 ## Hiring
 
-If you are into Go, Backend, Cloud, GCP, AWS - ping us at job [at] our domain
+If you are into Go, Backend, Cloud, GCP, AWS - ping us at jobs [at] our domain
 
 ## Contribution
 
