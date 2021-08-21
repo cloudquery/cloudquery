@@ -152,6 +152,10 @@ Checkout [cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/ter
 
 By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.
 
+## Hiring
+
+If you are into Go, Backend, Cloud, GCP, AWS - ping us at job [at] our domain
+
 ## Contribution
 
 Feel free to open Pull-Request for small fixes and changes. For bigger changes and new providers please open an issue first to prevent double work and discuss relevant stuff.
