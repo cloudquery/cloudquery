@@ -187,6 +187,34 @@ func (c *Client) DownloadProviders(ctx context.Context) error {
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
+func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
+	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
+	if err != nil {
+		c.Logger.Error("failed to create provider plugin", "provider", providerCfg.Name, "error", err)
+		return err
+	}
+	defer providerPlugin.Close()
+	c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+	var cfg []byte
+	if providerCfg.Configuration != nil {
+		cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
+		if err != nil {
+			return err
+		}
+	}
+	_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
+		CloudQueryVersion: Version,
+		Connection: cqproto.ConnectionDetails{
+			DSN: c.DSN,
+		},
+		Config: cfg,
+	})
+	if err != nil {
+		return fmt.Errorf("provider test connection failed. Reason: %w", err)
+	}
+	return nil
+}
+
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 	if !c.SkipBuildTables {
 		for _, p := range request.Providers {
