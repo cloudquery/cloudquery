@@ -50,7 +50,7 @@ jobs:
         run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log
 
       - name: Sanity Init
-        run: go run ./main.go init test --configPath=test_init_config.hcl
+        run: go run ./main.go init test --config=test_init_config.hcl
 
       - name: Test
         run: go test -v ./...
