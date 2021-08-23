@@ -47,7 +47,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client.\n\n")
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
 	return &Client{c, cfg, progressUpdater}, err
