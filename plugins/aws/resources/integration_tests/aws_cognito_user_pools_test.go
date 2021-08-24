@@ -10,18 +10,18 @@ import (
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
-func TestIntegrationIamOpenidConnectIdentityProviders(t *testing.T) {
-	awsTestIntegrationHelper(t, resources.IamOpenidConnectIdentityProviders(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+func TestIntegrationCognitoUserPools(t *testing.T) {
+	awsTestIntegrationHelper(t, resources.CognitoUserPools(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
-			Name: "aws_iam_openid_connect_identity_providers",
+			Name: "aws_cognito_user_pools",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Eq{"url": fmt.Sprintf("openidprovider%s.com", res.Suffix)})
+				return sq.Where("name = ?", fmt.Sprintf("cognito_user_pool%s-%s", res.Prefix, res.Suffix))
 			},
 			ExpectedValues: []providertest.ExpectedValue{
 				{
 					Count: 1,
 					Data: map[string]interface{}{
-						"url": fmt.Sprintf("openidprovider%s.com", res.Suffix),
+						"name": fmt.Sprintf("cognito_user_pool%s-%s", res.Prefix, res.Suffix),
 					},
 				},
 			},

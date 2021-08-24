@@ -1,5 +1,5 @@
-resource "aws_cloudwatch_metric_alarm" "test" {
-  alarm_name = "${var.test_prefix}-${var.test_suffix}"
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_alarm" {
+  alarm_name = "cl-alarm${var.test_prefix}-${var.test_suffix}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods = "2"
   threshold = "10"
@@ -46,10 +46,10 @@ resource "aws_cloudwatch_metric_alarm" "test" {
   }
 }
 
-resource "aws_cloudwatch_log_metric_filter" "yada" {
-  name = "${var.test_prefix}-${var.test_suffix}"
+resource "aws_cloudwatch_log_metric_filter" "cloudwatch_log_filter" {
+  name = "cw-log-filter${var.test_prefix}-${var.test_suffix}"
   pattern = ""
-  log_group_name = aws_cloudwatch_log_group.dada.name
+  log_group_name = aws_cloudwatch_log_group.cloudwatch_log_group.name
 
   metric_transformation {
     name = "EventCount"
@@ -58,6 +58,6 @@ resource "aws_cloudwatch_log_metric_filter" "yada" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "dada" {
-  name = "${var.test_prefix}-${var.test_suffix}"
+resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
+  name = "cl-log-g${var.test_prefix}-${var.test_suffix}"
 }

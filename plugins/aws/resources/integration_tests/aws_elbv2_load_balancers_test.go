@@ -10,29 +10,31 @@ import (
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
-func TestIntegrationIamRoles(t *testing.T) {
-	awsTestIntegrationHelper(t, resources.IamRoles(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+func TestIntegrationElbv2LoadBalancers(t *testing.T) {
+	awsTestIntegrationHelper(t, resources.Elbv2LoadBalancers(), []string{"aws_elbv2_load_balancers.tf", "aws_vpc.tf"}, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
-			Name: "aws_iam_roles",
+			Name: "aws_elbv2_load_balancers",
 			ExpectedValues: []providertest.ExpectedValue{
 				{
 					Count: 1,
 					Data: map[string]interface{}{
-						"name": fmt.Sprintf("%s%s", res.Prefix, res.Suffix),
+						"name": fmt.Sprintf("elbv2-%s", res.Suffix),
 					},
 				},
 			},
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("%s%s", res.Prefix, res.Suffix)})
+				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("elbv2-%s", res.Suffix)})
 			},
 			Relations: []*providertest.ResourceIntegrationVerification{
 				{
-					Name:           "aws_iam_role_policies",
-					ForeignKeyName: "role_cq_id",
+					Name:           "aws_elbv2_load_balancer_availability_zones",
+					ForeignKeyName: "load_balancer_cq_id",
 					ExpectedValues: []providertest.ExpectedValue{
 						{
-							Count: 1,
-							//Data:  map[string]interface{}{},
+							Count: 2,
+							Data: map[string]interface{}{
+								"load_balance_name": fmt.Sprintf("elbv2-%s", res.Suffix),
+							},
 						},
 					},
 				},
