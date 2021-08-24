@@ -242,11 +242,12 @@ func resolveNetworkPublicIPAddressSubnet(ctx context.Context, meta schema.Client
 
 	if p.PublicIPAddressPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.IPConfiguration == nil ||
-		p.PublicIPAddressPropertiesFormat.IPConfiguration.Subnet == nil {
+		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat == nil ||
+		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.Subnet == nil {
 		return nil
 	}
 
-	out, err := json.Marshal(p.PublicIPAddressPropertiesFormat.IPConfiguration.Subnet)
+	out, err := json.Marshal(p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.Subnet)
 	if err != nil {
 		return err
 	}
@@ -259,12 +260,12 @@ func resolveNetworkPublicIPAddressPublicIPAddress(ctx context.Context, meta sche
 	}
 
 	if p.PublicIPAddressPropertiesFormat == nil ||
-		p.PublicIPAddressPropertiesFormat.IPConfiguration == nil ||
-		p.PublicIPAddressPropertiesFormat.IPConfiguration.PublicIPAddress == nil {
+		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat == nil ||
+		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PublicIPAddress == nil {
 		return nil
 	}
 
-	out, err := json.Marshal(p.PublicIPAddressPropertiesFormat.IPConfiguration.PublicIPAddress)
+	out, err := json.Marshal(p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PublicIPAddress)
 	if err != nil {
 		return err
 	}
