@@ -1,4 +1,4 @@
-resource "aws_route53_health_check" "hch" {
+resource "aws_route53_health_check" "route53_health_check" {
   fqdn = "${var.test_prefix}${var.test_suffix}.com"
   port = 80
   type = "HTTP"
@@ -7,6 +7,6 @@ resource "aws_route53_health_check" "hch" {
   request_interval = "10"
 
   tags = {
-    Name = "tf-test-health-check1"
+    Name = "health-check${var.test_prefix}${var.test_suffix}"
   }
 }

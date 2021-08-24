@@ -10,18 +10,15 @@ import (
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
-func TestIntegrationDirectConnectGateways(t *testing.T) {
-	awsTestIntegrationHelper(t, resources.DirectconnectGateways(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+func TestIntegrationRoute53DelegationSet(t *testing.T) {
+	awsTestIntegrationHelper(t, resources.Route53ReusableDelegationSets(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
-			Name: "aws_directconnect_gateways",
+			Name: "aws_route53_reusable_delegation_sets",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where("direct_connect_gateway_name = ?", fmt.Sprintf("dx-gateway%s-%s", res.Prefix, res.Suffix))
+				return sq.Where("caller_reference LIKE ?", fmt.Sprintf("route53_delegation_set%s%s%%", res.Prefix, res.Suffix))
 			},
 			ExpectedValues: []providertest.ExpectedValue{{
 				Count: 1,
-				Data: map[string]interface{}{
-					"amazon_side_asn": float64(64512),
-				},
 			}},
 		}
 	})

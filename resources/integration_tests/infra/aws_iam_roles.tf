@@ -1,4 +1,4 @@
-resource "aws_iam_role" "test_role" {
+resource "aws_iam_role" "role_test" {
   name = "${var.test_prefix}${var.test_suffix}"
 
   # Terraform's "jsonencode" function converts a
@@ -19,10 +19,9 @@ resource "aws_iam_role" "test_role" {
 
 }
 
-
-resource "aws_iam_role_policy" "gr_po" {
+resource "aws_iam_role_policy" "role_policy" {
   name = "aws_iam_role_policy${var.test_prefix}${var.test_suffix}"
-  role = aws_iam_role.test_role.name
+  role = aws_iam_role.role_test.name
 
   policy = <<EOF
 {

@@ -1,14 +1,11 @@
-
-//dont know how to add layer version policy
 resource "aws_lambda_layer_version" "lambda_layer" {
-  filename = data.archive_file.lambda_zip_inline.output_path
+  filename = data.archive_file.lambda_layer_zip_inline.output_path
   layer_name = "lambda_layer${var.test_prefix}${var.test_suffix}"
 
-  compatible_runtimes = [
-    "nodejs12.x"]
+  compatible_runtimes = ["nodejs12.x"]
 }
 
-data "archive_file" "lambda_zip_inline" {
+data "archive_file" "lambda_layer_zip_inline" {
   type = "zip"
   output_path = "./tmp/lambda_zip_inline.zip"
   source {
