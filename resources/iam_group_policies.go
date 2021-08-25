@@ -20,7 +20,6 @@ func IamGroupPolicies() *schema.Table {
 		Name:        "aws_iam_group_policies",
 		Description: "Inline policies that are embedded in the specified IAM group",
 		Resolver:    fetchIamGroupPolicies,
-		Multiplex:   client.AccountMultiplex,
 		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"group_cq_id", "policy_name"}},
 		Columns: []schema.Column{

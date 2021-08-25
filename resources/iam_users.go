@@ -490,6 +490,9 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 
 func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(wrappedKey)
+	if r.AccessKeyId == nil {
+		return nil
+	}
 	svc := meta.(*client.Client).Services().IAM
 	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
 	if err != nil {
