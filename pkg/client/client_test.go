@@ -244,6 +244,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Nil(t, err)
 
+	// insert dummy migration files like test provider just for version number return
 	m, _, err := c.buildProviderMigrator(map[string][]byte{
 		"1_v0.0.1.up.sql":   []byte(""),
 		"1_v0.0.1.down.sql": []byte(""),
@@ -253,6 +254,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// migrations should be in 2 i.e v0.0.2
 	v, dirty, err := m.Version()
 	assert.Equal(t, []interface{}{"v0.0.2", false, nil}, []interface{}{v, dirty, err})
 
