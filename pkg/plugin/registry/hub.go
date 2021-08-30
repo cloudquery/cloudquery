@@ -64,6 +64,33 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 	return h
 }
 
+// GetProvider returns a loaded provider from the hub without downloading it again, returns an error if not found.
+func (h Hub) GetProvider(providerName, providerVersion string) (ProviderDetails, error) {
+	if providerVersion == "latest" {
+		latestVersion, _ := version.NewVersion("v0.0.0")
+		for _, p := range h.providers {
+			if p.Name != providerName {
+				continue
+			}
+			currentVersion, err := version.NewVersion(p.Version)
+			if err != nil {
+				h.Logger.Warn("bad version provider exists in directory", "provider", p.Name, "version", p.Version)
+				continue
+			}
+			if currentVersion.GreaterThan(latestVersion) {
+				latestVersion = currentVersion
+			}
+		}
+		providerVersion = latestVersion.Original()
+	}
+	// TODO: support organization naming level for providers
+	pd, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
+	if !ok {
+		return ProviderDetails{}, fmt.Errorf("provider %s@%s is missing, download it first", providerName, providerVersion)
+	}
+	return pd, nil
+}
+
 func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, version string) bool {
 
 	if organization != defaultOrganization {
@@ -157,35 +184,6 @@ func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.Req
 		return ProviderDetails{}, fmt.Errorf("provider %s@%s verification failed", providerName, providerVersion)
 	}
 	return p, nil
-}
-
-// Cleanup removes all unused plugins from the plugin directory
-// TODO: Seems to be obsolete since it is never used?
-func (h Hub) Cleanup() error {
-	return file.NewOsFs().WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			h.Logger.Error("failed to read plugin directory", "directory", h.PluginDirectory, "error", err)
-		}
-		if info.IsDir() {
-			return nil
-		}
-		// skip checksum files, they will be downloaded again
-		if strings.Contains(info.Name(), "checksums") {
-			return nil
-		}
-		provider := filepath.Base(filepath.Dir(path))
-		organization := filepath.Base(filepath.Dir(filepath.Dir(path)))
-		pVersion := strings.Split(filepath.Base(path), "-")[0]
-
-		h.providers[fmt.Sprintf("%s-%s", provider, pVersion)] = ProviderDetails{
-			Name:         provider,
-			Version:      pVersion,
-			Organization: organization,
-			FilePath:     path,
-		}
-		h.Logger.Debug("found existing provider", "provider", provider, "version", pVersion)
-		return nil
-	})
 }
 
 func (h Hub) downloadProvider(ctx context.Context, organization, providerName, providerVersion string, noVerify bool) (ProviderDetails, error) {

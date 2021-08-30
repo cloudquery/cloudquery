@@ -31,6 +31,43 @@ var (
 	}
 )
 
+func TestClient_TestNoDownload(t *testing.T) {
+
+	_ = os.RemoveAll(".cq/downloadTest")
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
+		options.PluginDirectory = ".cq/downloadTest"
+	})
+	assert.Nil(t, err)
+	_, err = c.Manager.GetPluginDetails("test")
+	assert.Error(t, err)
+
+	_, err = c.GetProviderSchema(context.Background(), "test")
+	assert.Error(t, err)
+	err = c.DownloadProviders(context.Background())
+	assert.Nil(t, err)
+	// Should work after provider was downloaded
+	_, err = c.GetProviderSchema(context.Background(), "test")
+	assert.Nil(t, err)
+	pd, err := c.Manager.GetPluginDetails("test")
+	assert.Nil(t, err)
+	assert.Equal(t, "test", pd.Name)
+	c, err = New(context.Background(), func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
+		options.PluginDirectory = ".cq/downloadTest"
+	})
+	assert.Nil(t, err)
+	pd2, err := c.Manager.GetPluginDetails("test")
+	assert.Nil(t, err)
+	assert.Equal(t, pd2.FilePath, pd.FilePath)
+	// Should work without download
+	_, err = c.GetProviderSchema(context.Background(), "test")
+	assert.Nil(t, err)
+
+}
+
 func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
