@@ -162,6 +162,8 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	c.Manager.LoadExisting(c.Providers)
+
 	if c.TableCreator == nil {
 		c.TableCreator = provider.NewTableCreator(c.Logger)
 	}
