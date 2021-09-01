@@ -4,7 +4,7 @@ resource "aws_iam_group" "group_developers" {
 }
 
 resource "aws_iam_group_policy" "group_policy" {
-  name = "aws_iam_group_policy${var.test_prefix}${var.test_suffix}"
+  name  = "aws_iam_group_policy${var.test_prefix}${var.test_suffix}"
   group = aws_iam_group.group_developers.name
 
   policy = <<EOF
@@ -22,5 +22,3 @@ resource "aws_iam_group_policy" "group_policy" {
 }
 EOF
 }
-
-// TODO add group policy attachment

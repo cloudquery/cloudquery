@@ -629,7 +629,7 @@ func Ec2Instances() *schema.Table {
 						Resolver:    fetchEc2InstanceNetworkInterfaceIpv6Addresses,
 						Columns: []schema.Column{
 							{
-								Name:        "instance_network_interface_id",
+								Name:        "instance_network_interface_cq_id",
 								Description: "Unique CloudQuery ID of aws_ec2_instance_network_interfaces table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,
@@ -647,7 +647,7 @@ func Ec2Instances() *schema.Table {
 						Resolver:    fetchEc2InstanceNetworkInterfacePrivateIpAddresses,
 						Columns: []schema.Column{
 							{
-								Name:        "instance_network_interface_id",
+								Name:        "instance_network_interface_cq_id",
 								Description: "Unique CloudQuery ID of aws_ec2_instance_network_interfaces table (FK)",
 								Type:        schema.TypeUUID,
 								Resolver:    schema.ParentIdResolver,

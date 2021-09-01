@@ -15,12 +15,12 @@ func TestIntegrationCloudfrontDistributions(t *testing.T) {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_cloudfront_distributions",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where("cache_behaviour_target_origin_id = ?", fmt.Sprintf("s3origin%s-%s", res.Prefix, res.Suffix))
+				return sq.Where("cache_behaviour_target_origin_id = ?", fmt.Sprintf("cf-s3origin%s-%s", res.Prefix, res.Suffix))
 			},
 			ExpectedValues: []providertest.ExpectedValue{{
 				Count: 1,
 				Data: map[string]interface{}{
-					"cache_behaviour_target_origin_id": fmt.Sprintf("s3origin%s-%s", res.Prefix, res.Suffix),
+					"cache_behaviour_target_origin_id": fmt.Sprintf("cf-s3origin%s-%s", res.Prefix, res.Suffix),
 				},
 			}},
 			Relations: []*providertest.ResourceIntegrationVerification{
@@ -30,7 +30,7 @@ func TestIntegrationCloudfrontDistributions(t *testing.T) {
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
 						Data: map[string]interface{}{
-							"id":                  fmt.Sprintf("s3origin%s-%s", res.Prefix, res.Suffix),
+							"id":                  fmt.Sprintf("cf-s3origin%s-%s", res.Prefix, res.Suffix),
 							"connection_attempts": float64(3),
 							"connection_timeout":  float64(10),
 						},
@@ -42,7 +42,7 @@ func TestIntegrationCloudfrontDistributions(t *testing.T) {
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
 						Data: map[string]interface{}{
-							"target_origin_id":       fmt.Sprintf("s3origin%s-%s", res.Prefix, res.Suffix),
+							"target_origin_id":       fmt.Sprintf("cf-s3origin%s-%s", res.Prefix, res.Suffix),
 							"path_pattern":           "/content/immutable/*",
 							"viewer_protocol_policy": "redirect-to-https",
 							"allowed_methods":        []interface{}{"HEAD", "GET", "OPTIONS"},

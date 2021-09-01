@@ -39,6 +39,6 @@ resource "aws_mq_broker" "mq_test_broker" {
 }
 
 resource "aws_security_group" "mq_test_sg" {
-  name = "mq_test_sg_${var.test_prefix}_${var.test_suffix}"
+  name        = "mq_test_sg_${var.test_prefix}_${var.test_suffix}"
   description = "Managed By Terraform, AWS e2e Testing Resource"
 }

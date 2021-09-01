@@ -10,12 +10,12 @@ import (
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
-func TestIntegrationDirectCloudwatchAlarms(t *testing.T) {
+func TestIntegrationCloudwatchAlarms(t *testing.T) {
 	awsTestIntegrationHelper(t, resources.CloudwatchAlarms(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_cloudwatch_alarms",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where("name = ?", fmt.Sprintf("cl-alarm%s-%s", res.Prefix, res.Suffix))
+				return sq.Where("name = ?", fmt.Sprintf("cw-alarm%s-%s", res.Prefix, res.Suffix))
 			},
 			ExpectedValues: []providertest.ExpectedValue{{
 				Count: 1,

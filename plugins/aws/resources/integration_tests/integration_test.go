@@ -15,6 +15,13 @@ import (
 // Set it to one of "1", "y", "yes", "true" to enable the tests.
 const IntegrationTestsEnabledVar = "INTEGRATION_TESTS"
 
+func firstN(s string, n int) string {
+	if len(s) > n {
+		return s[:n]
+	}
+	return s
+}
+
 func awsTestIntegrationHelper(t *testing.T, table *schema.Table, resourceFiles []string, verificationBuilder func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification) {
 	cfg := client.Config{
 		Regions:  []string{"us-east-1"},

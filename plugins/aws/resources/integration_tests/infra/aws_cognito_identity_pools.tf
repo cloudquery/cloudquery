@@ -1,5 +1,5 @@
 resource "aws_iam_saml_provider" "cognito_identity_pool_saml" {
-  name = "saml_id_pool${var.test_prefix}${var.test_suffix}"
+  name                   = "saml_id_pool${var.test_prefix}${var.test_suffix}"
   saml_metadata_document = <<EOF
 <md:EntityDescriptor entityID="http://www.example.com" ID="_58eb6efc-1f19-431b-8146-3fef71f908d0"
                      xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -68,5 +68,5 @@ resource "aws_cognito_identity_pool" "main" {
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 
-  saml_provider_arns           = [aws_iam_saml_provider.cognito_identity_pool_saml.arn]
+  saml_provider_arns = [aws_iam_saml_provider.cognito_identity_pool_saml.arn]
 }

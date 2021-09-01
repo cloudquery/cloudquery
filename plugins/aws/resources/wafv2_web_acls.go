@@ -312,7 +312,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 			return err
 		}
 		for _, webAcl := range output.WebACLs {
-			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Scope: scope}
+			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: scope}
 			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
 				options.Region = region
 			})

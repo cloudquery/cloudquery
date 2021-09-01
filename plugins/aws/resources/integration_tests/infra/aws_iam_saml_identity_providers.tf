@@ -1,5 +1,5 @@
 resource "aws_iam_saml_provider" "default_saml" {
-  name = "saml${var.test_prefix}${var.test_suffix}"
+  name                   = "saml${var.test_prefix}${var.test_suffix}"
   saml_metadata_document = <<EOF
 <md:EntityDescriptor entityID="http://www.example.com" ID="_58eb6efc-1f19-431b-8146-3fef71f908d0"
                      xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">

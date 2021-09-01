@@ -11,11 +11,17 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"]
 }
 
-resource "aws_launch_configuration" "as_conf" {
-  name          = "${var.test_prefix}-${var.test_suffix}"
+resource "aws_launch_configuration" "aws_lc" {
+  name          = "lc-${var.test_prefix}-${var.test_suffix}"
   image_id      = data.aws_ami.ubuntu.id
   instance_type = "t2.nano"
+
+  ebs_block_device {
+    device_name = "ebs_block-${var.test_prefix}${var.test_suffix}"
+    volume_type = "standard"
+    volume_size = 5
+  }
 }

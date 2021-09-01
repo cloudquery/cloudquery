@@ -18,13 +18,13 @@ func TestIntegrationEcrRepositories(t *testing.T) {
 				{
 					Count: 1,
 					Data: map[string]interface{}{
-						"name":                 fmt.Sprintf("aws_ecr_repositories_%s%s", res.Prefix, res.Suffix),
+						"name":                 fmt.Sprintf("ecr_repositories_%s%s", res.Prefix, res.Suffix),
 						"image_tag_mutability": "MUTABLE",
 					},
 				},
 			},
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("aws_ecr_repositories_%s%s", res.Prefix, res.Suffix)})
+				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("ecr_repositories_%s%s", res.Prefix, res.Suffix)})
 			},
 		}
 	})
