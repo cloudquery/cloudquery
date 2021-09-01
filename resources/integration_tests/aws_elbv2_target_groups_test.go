@@ -18,14 +18,14 @@ func TestIntegrationElbv2TargetGroups(t *testing.T) {
 				{
 					Count: 1,
 					Data: map[string]interface{}{
-						"name":     fmt.Sprintf("lbtarget%s", res.Prefix),
+						"name":     fmt.Sprintf("lbv2target%s", res.Prefix),
 						"protocol": "HTTP",
 						"port":     float64(80),
 					},
 				},
 			},
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("lbtarget%s", res.Prefix)})
+				return sq.Where(squirrel.Eq{"name": fmt.Sprintf("lbv2target%s", res.Prefix)})
 			},
 		}
 	})

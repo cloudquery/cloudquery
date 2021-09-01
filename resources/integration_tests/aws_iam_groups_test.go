@@ -32,7 +32,6 @@ func TestIntegrationIamGroups(t *testing.T) {
 					ExpectedValues: []providertest.ExpectedValue{
 						{
 							Count: 1,
-							//Data:  map[string]interface{}{},
 						},
 					},
 				},

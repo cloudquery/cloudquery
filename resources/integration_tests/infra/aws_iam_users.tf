@@ -32,9 +32,9 @@ EOF
 }
 
 resource "aws_iam_policy" "user_policy" {
-  name = "policy${var.test_prefix}${var.test_suffix}"
+  name        = "policy${var.test_prefix}${var.test_suffix}"
   description = "A test policy"
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -51,7 +51,7 @@ EOF
 }
 
 resource "aws_iam_user_policy_attachment" "user_policy_attach" {
-  user = aws_iam_user.iam_user.name
+  user       = aws_iam_user.iam_user.name
   policy_arn = aws_iam_policy.user_policy.arn
 }
 

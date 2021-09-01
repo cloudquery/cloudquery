@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "aws_ecr_repositories_repo" {
-  name = "aws_ecr_repositories_${var.test_prefix}${var.test_suffix}"
+  name                 = "ecr_repositories_${var.test_prefix}${var.test_suffix}"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

@@ -1,13 +1,14 @@
 resource "aws_vpc" "aws_vpc" {
   cidr_block = "10.0.0.0/16"
-  tags ={
+  tags = {
     Name = "vpc${var.test_prefix}-${var.test_suffix}"
   }
+  enable_dns_hostnames = true
 }
 
 resource "aws_subnet" "aws_vpc_subnet" {
-  vpc_id = aws_vpc.aws_vpc.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.aws_vpc.id
+  cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1e"
   tags = {
     Name = "vpc-subnet${var.test_prefix}-${var.test_suffix}"
@@ -15,8 +16,8 @@ resource "aws_subnet" "aws_vpc_subnet" {
 }
 
 resource "aws_subnet" "aws_vpc_subnet2" {
-  vpc_id = aws_vpc.aws_vpc.id
-  cidr_block = "10.0.2.0/24"
+  vpc_id            = aws_vpc.aws_vpc.id
+  cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1f"
   tags = {
     Name = "vpc-subnet2${var.test_prefix}-${var.test_suffix}"
@@ -24,8 +25,8 @@ resource "aws_subnet" "aws_vpc_subnet2" {
 }
 
 resource "aws_subnet" "aws_vpc_subnet3" {
-  vpc_id = aws_vpc.aws_vpc.id
-  cidr_block = "10.0.3.0/24"
+  vpc_id            = aws_vpc.aws_vpc.id
+  cidr_block        = "10.0.3.0/24"
   availability_zone = "us-east-1a"
   tags = {
     Name = "vpc-subnet3${var.test_prefix}-${var.test_suffix}"
@@ -51,12 +52,12 @@ resource "aws_route" "aws_vpc_public_internet_gateway" {
 }
 
 resource "aws_route_table_association" "aws_vpc_rt_assoc_s2" {
-  subnet_id = aws_subnet.aws_vpc_subnet2.id
+  subnet_id      = aws_subnet.aws_vpc_subnet2.id
   route_table_id = aws_route_table.aws_vpc_rt.id
 }
 
 resource "aws_route_table_association" "aws_vpc_rt_assoc_s3" {
-  subnet_id = aws_subnet.aws_vpc_subnet3.id
+  subnet_id      = aws_subnet.aws_vpc_subnet3.id
   route_table_id = aws_route_table.aws_vpc_rt.id
 }
 
@@ -65,7 +66,7 @@ resource "aws_internet_gateway" "aws_vpc_igw" {
 }
 
 resource "aws_network_interface" "aws_vpc_eni_s2" {
-  subnet_id = aws_subnet.aws_vpc_subnet2.id
+  subnet_id   = aws_subnet.aws_vpc_subnet2.id
   private_ips = ["10.0.2.100"]
 
   tags = {
@@ -74,7 +75,7 @@ resource "aws_network_interface" "aws_vpc_eni_s2" {
 }
 
 resource "aws_network_interface" "aws_vpc_eni_s3" {
-  subnet_id = aws_subnet.aws_vpc_subnet3.id
+  subnet_id   = aws_subnet.aws_vpc_subnet3.id
   private_ips = ["10.0.3.100"]
 
   tags = {

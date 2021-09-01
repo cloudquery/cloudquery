@@ -1,8 +1,8 @@
 resource "aws_emr_cluster" "aws_emr_clusters_cluster" {
-  name = "emr-cluster-${var.test_prefix}${var.test_suffix}"
+  name          = "emr-cluster-${var.test_prefix}${var.test_suffix}"
   release_label = "emr-5.12.0"
   applications = [
-    "Spark"]
+  "Spark"]
 
   log_uri = "s3://${aws_s3_bucket.aws_emr_cluster_logs.id}/"
 
@@ -16,14 +16,14 @@ resource "aws_emr_cluster" "aws_emr_clusters_cluster" {
 }
 EOF
 
-  termination_protection = false
+  termination_protection            = false
   keep_job_flow_alive_when_no_steps = true
 
   ec2_attributes {
-    subnet_id = aws_subnet.aws_vpc_subnet3.id
+    subnet_id                         = aws_subnet.aws_vpc_subnet3.id
     emr_managed_master_security_group = aws_security_group.aws_emr_clusters_security_group.id
-    emr_managed_slave_security_group = aws_security_group.aws_emr_clusters_security_group.id
-    instance_profile = aws_iam_instance_profile.aws_emr_clusters_instance_profile.arn
+    emr_managed_slave_security_group  = aws_security_group.aws_emr_clusters_security_group.id
+    instance_profile                  = aws_iam_instance_profile.aws_emr_clusters_instance_profile.arn
   }
 
   master_instance_group {
@@ -31,15 +31,15 @@ EOF
   }
 
   core_instance_group {
-    instance_type = "m1.small"
+    instance_type  = "m1.small"
     instance_count = 1
 
     ebs_config {
-      size = "40"
-      type = "gp2"
+      size                 = "40"
+      type                 = "gp2"
       volumes_per_instance = 1
     }
-    bid_price = "0.30"
+    bid_price          = "0.60"
     autoscaling_policy = <<EOF
 {
 "Constraints": {
@@ -79,7 +79,7 @@ EOF
 
   tags = {
     role = "rolename"
-    env = "env"
+    env  = "env"
   }
 
   bootstrap_action {
@@ -87,7 +87,7 @@ EOF
     name = "runif"
     args = [
       "instance.isMaster=true",
-      "echo running on master node"]
+    "echo running on master node"]
   }
 
   configurations_json = <<EOF
@@ -118,8 +118,7 @@ EOF
     }
   ]
 EOF
-  autoscaling_role = aws_iam_role.emr_clusters_autoscaling_role.arn
-  //  autoscaling_role = "EMR_AutoScaling_DefaultRole"
+  autoscaling_role    = aws_iam_role.emr_clusters_autoscaling_role.arn
   service_role = aws_iam_role.emr_clusters_service_role.arn
 
 }
@@ -133,18 +132,16 @@ resource "aws_iam_instance_profile" "aws_emr_clusters_instance_profile" {
 resource "aws_iam_role" "emr_clusters_instance_profile_role" {
   name = "emr-cluster-instance-profile-role_${var.test_prefix}"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid = ""
+        Sid    = ""
         Principal = {
           Service = [
-            "ec2.amazonaws.com"]
+          "ec2.amazonaws.com"]
         }
       }
     ]
@@ -155,9 +152,9 @@ resource "aws_iam_role" "emr_clusters_instance_profile_role" {
 
     policy = jsonencode({
       Version = "2012-10-17"
-      Statement: [
+      Statement : [
         {
-          Action: [
+          Action : [
             "cloudwatch:*",
             "dynamodb:*",
             "ec2:Describe*",
@@ -206,8 +203,8 @@ resource "aws_iam_role" "emr_clusters_instance_profile_role" {
             "glue:GetUserDefinedFunction",
             "glue:GetUserDefinedFunctions"
           ],
-          Effect: "Allow",
-          Resource: "*"
+          Effect : "Allow",
+          Resource : "*"
         }
       ]
     })
@@ -218,19 +215,17 @@ resource "aws_iam_role" "emr_clusters_instance_profile_role" {
 resource "aws_iam_role" "emr_clusters_autoscaling_role" {
   name = "emr-cluster-autoscaling-role_${var.test_prefix}"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid = ""
+        Sid    = ""
         Principal = {
           Service = [
             "ec2.amazonaws.com",
-            "elasticmapreduce.amazonaws.com"]
+          "elasticmapreduce.amazonaws.com"]
         }
       }
     ]
@@ -241,16 +236,16 @@ resource "aws_iam_role" "emr_clusters_autoscaling_role" {
 
     policy = jsonencode({
       Version = "2012-10-17"
-      Statement: [
+      Statement : [
         {
-          Action: [
+          Action : [
             "cloudwatch:DescribeAlarms",
             "elasticmapreduce:ListInstanceGroups",
             "elasticmapreduce:ModifyInstanceGroups",
             "iam:CreateServiceLinkedRole",
           ],
-          Effect: "Allow",
-          Resource: "*"
+          Effect : "Allow",
+          Resource : "*"
         }
       ]
     })
@@ -260,18 +255,16 @@ resource "aws_iam_role" "emr_clusters_autoscaling_role" {
 resource "aws_iam_role" "emr_clusters_service_role" {
   name = "emr_clusters_service_role_${var.test_prefix}${var.test_suffix}"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
     Version = "2008-10-17"
     Statement = [
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid = ""
+        Sid    = ""
         Principal = {
           Service = [
-            "elasticmapreduce.amazonaws.com"]
+          "elasticmapreduce.amazonaws.com"]
         }
       }
     ]
@@ -282,9 +275,9 @@ resource "aws_iam_role" "emr_clusters_service_role" {
 
     policy = jsonencode({
       Version = "2012-10-17"
-      Statement: [
+      Statement : [
         {
-          Action: [
+          Action : [
             "ec2:AuthorizeSecurityGroupEgress",
             "ec2:AuthorizeSecurityGroupIngress",
             "ec2:CancelSpotInstanceRequests",
@@ -355,8 +348,8 @@ resource "aws_iam_role" "emr_clusters_service_role" {
             "application-autoscaling:DeleteScalingPolicy",
             "application-autoscaling:Describe*"
           ],
-          Effect: "Allow",
-          Resource: "*"
+          Effect : "Allow",
+          Resource : "*"
         }
       ]
     })
@@ -365,21 +358,22 @@ resource "aws_iam_role" "emr_clusters_service_role" {
 }
 
 resource "aws_s3_bucket" "aws_emr_cluster_logs" {
-  bucket = "emr-cluster-logs${var.test_prefix}${var.test_suffix}"
-  acl = "private"
+  bucket        = "emr-cluster-logs${var.test_prefix}${var.test_suffix}"
+  acl           = "private"
+  force_destroy = true
 
   tags = {
-    Name = "${var.test_prefix}${var.test_suffix}"
+    Name        = "${var.test_prefix}${var.test_suffix}"
     Environment = "Dev"
   }
 }
 
 resource "aws_security_group_rule" "aws_emr_cluster_allow_tcp_from_master_to_service" {
-  type = "ingress"
-  from_port = 9443
-  to_port = 9443
-  protocol = "tcp"
-  security_group_id = aws_security_group.aws_emr_clusters_security_group.id
+  type                     = "ingress"
+  from_port                = 9443
+  to_port                  = 9443
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.aws_emr_clusters_security_group.id
   source_security_group_id = aws_security_group.aws_emr_clusters_security_group.id
 }
 
@@ -389,18 +383,18 @@ resource "aws_security_group" "aws_emr_clusters_security_group" {
   vpc_id = aws_vpc.aws_vpc.id
 
   ingress {
-    protocol = "tcp"
+    protocol  = "tcp"
     from_port = "80"
-    to_port = "80"
+    to_port   = "80"
   }
 
   egress {
     from_port = 0
-    to_port = 0
-    protocol = "-1"
+    to_port   = 0
+    protocol  = "-1"
     cidr_blocks = [
-      "0.0.0.0/0"]
+    "0.0.0.0/0"]
     ipv6_cidr_blocks = [
-      "::/0"]
+    "::/0"]
   }
 }

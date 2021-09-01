@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -208,6 +209,11 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		options.Region = cl.Region
 	})
 	if err != nil {
+		// we may get WAFNonexistentItemException error until SetPermissionPolicy is called on a rule group
+		var e *types.WAFNonexistentItemException
+		if errors.As(err, &e) {
+			return resource.Set(c.Name, "null")
+		}
 		return err
 	}
 
