@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-
 	"github.com/fatih/color"
-
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -79,16 +76,16 @@ func (c Client) Fetch(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var fetchProgress *Progress
 	var fetchCallback client.FetchUpdateCallback
-	var partialFetchCallback func(providerName string, results []*cqproto.PartialFetchFailedResource)
+	var partialFetchCallback func(req client.FetchFinishCallbackRequest)
 
 	if ui.IsTerminal() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
-		partialFetchCallback = buildPrintPartialFetchResult()
+		partialFetchCallback = fetchFinishCallback()
 	}
 	request := client.FetchRequest{
-		Providers:                        c.cfg.Providers,
-		UpdateCallback:                   fetchCallback,
-		PartialFetchPrintResultsCallback: partialFetchCallback,
+		Providers:           c.cfg.Providers,
+		UpdateCallback:      fetchCallback,
+		FetchFinishCallback: partialFetchCallback,
 	}
 	if err := c.c.Fetch(ctx, request); err != nil {
 		return err
@@ -241,6 +238,9 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			fetchProgress.Update(update.Provider, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
 			return
 		}
+		if len(update.PartialFetchResults) > 0 {
+			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("errors: %d", len(update.PartialFetchResults)), 0)
+		}
 		bar := fetchProgress.GetBar(update.Provider)
 		if bar == nil {
 			fetchProgress.AbortAll()
@@ -263,25 +263,27 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	return fetchProgress, fetchCallback
 }
 
-func buildPrintPartialFetchResult() func(providerName string, results []*cqproto.PartialFetchFailedResource) {
-	return func(providerName string, results []*cqproto.PartialFetchFailedResource) {
-		ui.ColorizedOutput(ui.ColorWarning, "\n\nPartial Fetch Errors for Provider %s:\n\n", providerName)
-		for _, r := range results {
-			if r.RootTableName != "" {
-				ui.ColorizedOutput(ui.ColorError,
-					"Parent-Resource: %s, Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
-					r.RootTableName,
-					r.RootPrimaryKeyValues,
-					r.TableName,
-					r.Error)
-			} else {
-				ui.ColorizedOutput(ui.ColorWarning,
-					"Table: %s, Error: %s\n",
-					r.TableName,
-					r.Error)
+func fetchFinishCallback() func(req client.FetchFinishCallbackRequest) {
+	return func(req client.FetchFinishCallbackRequest) {
+		if req.EnablePartialFetch && len(req.Results) > 0 {
+			ui.ColorizedOutput(ui.ColorWarning, "\n\nPartial Fetch Errors for Provider %s:\n\n", req.ProviderName)
+			for _, r := range req.Results {
+				if r.RootTableName != "" {
+					ui.ColorizedOutput(ui.ColorError,
+						"Parent-Resource: %s, Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
+						r.RootTableName,
+						r.RootPrimaryKeyValues,
+						r.TableName,
+						r.Error)
+				} else {
+					ui.ColorizedOutput(ui.ColorWarning,
+						"Table: %s, Error: %s\n",
+						r.TableName,
+						r.Error)
+				}
 			}
+			ui.ColorizedOutput(ui.ColorWarning, "\n\n")
 		}
-		ui.ColorizedOutput(ui.ColorWarning, "\n\n")
 	}
 }
 
