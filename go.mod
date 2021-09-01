@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery
 
-go 1.16
+go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
