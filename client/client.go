@@ -80,7 +80,10 @@ var allRegions = []string{
 	"sa-east-1",
 }
 
-const defaultRegion = "us-east-1"
+const (
+	defaultRegion              = "us-east-1"
+	awsFailedToConfigureErrMsg = "failed to configure provider for account %s. AWS Error: %w"
+)
 
 type Services struct {
 	Analyzer             AnalyzerClient
@@ -249,7 +252,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 			)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
 			}
 			opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
 			if account.ExternalID != "" {
@@ -275,19 +278,19 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
 		}
 
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
-			awsCfg.Logger = AwsLogger{logger}
+			awsCfg.Logger = AwsLogger{logger.With("account", account)}
 		}
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
 			o.Region = "aws-global"
 		})
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
 		}
 		// This is a work-around to skip disabled regions
 		// https://github.com/aws/aws-sdk-go-v2/issues/1068
@@ -297,7 +300,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				o.Region = "us-east-1"
 			})
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.ID, err)
 		}
 		client.regions = filterDisabledRegions(client.regions, res.Regions)
 
