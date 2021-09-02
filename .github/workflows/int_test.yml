@@ -29,7 +29,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          --entrypoint postgres -N 500
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
