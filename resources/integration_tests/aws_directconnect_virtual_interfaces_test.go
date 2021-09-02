@@ -11,6 +11,7 @@ import (
 )
 
 func TestIntegrationDirectconnectVirtualInterfaces(t *testing.T) {
+	t.Skipf("resource missing")
 	awsTestIntegrationHelper(t, resources.DirectconnectVirtualInterfaces(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_directconnect_virtual_interfaces",
