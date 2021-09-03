@@ -72,7 +72,7 @@ func Fetch(ctx context.Context, cfg *config.Config) {
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
-	err = c.Fetch(ctx, client.FetchRequest{
+	_, err = c.Fetch(ctx, client.FetchRequest{
 		Providers: cfg.Providers,
 	})
 	if err != nil {

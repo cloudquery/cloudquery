@@ -39,8 +39,11 @@ type FetchRequest struct {
 	DisableDataDelete bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
-	// Optional: FetchFinishCallback is a callback that is called after the fetch finished.
-	FetchFinishCallback func(req FetchFinishCallbackRequest)
+}
+
+// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
+type FetchResponse struct {
+	ProviderFetchSummary map[string]ProviderFetchSummary
 }
 
 type FetchUpdate struct {
@@ -56,11 +59,10 @@ type FetchUpdate struct {
 	PartialFetchResults []*cqproto.PartialFetchFailedResource
 }
 
-// FetchFinishCallbackRequest represents a request for the FetchFinishCallback
-type FetchFinishCallbackRequest struct {
+// ProviderFetchSummary represents a request for the FetchFinishCallback
+type ProviderFetchSummary struct {
 	ProviderName       string
-	EnablePartialFetch bool
-	Results            []*cqproto.PartialFetchFailedResource
+	PartialFetchErrors []*cqproto.PartialFetchFailedResource
 }
 
 // PolicyRunRequest is the request used to run a policy.
@@ -228,15 +230,17 @@ func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider)
 	return nil
 }
 
-func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
+func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchResponse, error) {
 	if !c.SkipBuildTables {
 		for _, p := range request.Providers {
 			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
-				return err
+				return nil, err
 			}
 		}
 	}
 	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
+
+	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
@@ -244,7 +248,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
-			return err
+			return nil, err
 		}
 		errGroup.Go(func() error {
 			var cfg []byte
@@ -280,18 +284,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				resp, err := stream.Recv()
 				if err == io.EOF {
 					c.Logger.Info("provider finished fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-					// Print out partial fetch results if given
-					if len(partialFetchResults) != 0 {
-						for _, res := range partialFetchResults {
-							c.Logger.Warn("partial fetch error", "provider", providerConfig, "result", res)
-						}
-					}
-					if request.FetchFinishCallback != nil {
-						request.FetchFinishCallback(FetchFinishCallbackRequest{
-							ProviderName:       providerPlugin.Name(),
-							EnablePartialFetch: providerConfig.EnablePartialFetch,
-							Results:            partialFetchResults,
-						})
+					fetchSummaries <- ProviderFetchSummary{
+						ProviderName:       providerConfig.Name,
+						PartialFetchErrors: partialFetchResults,
 					}
 					return nil
 				}
@@ -321,11 +316,18 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 			}
 		})
 	}
+
+	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(request.Providers))}
 	// TODO: kill all providers on end, add defer on top loop
 	if err := errGroup.Wait(); err != nil {
-		return err
+		close(fetchSummaries)
+		return nil, err
 	}
-	return nil
+	close(fetchSummaries)
+	for ps := range fetchSummaries {
+		response.ProviderFetchSummary[ps.ProviderName] = ps
+	}
+	return response, nil
 }
 
 func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
@@ -498,7 +500,9 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 
 func (c *Client) Close() {
 	c.Manager.Shutdown()
-	c.pool.Close()
+	if c.pool != nil {
+		c.pool.Close()
+	}
 }
 
 func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {
