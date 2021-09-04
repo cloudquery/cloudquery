@@ -32,7 +32,6 @@ var (
 )
 
 func TestClient_TestNoDownload(t *testing.T) {
-
 	_ = os.RemoveAll(".cq/downloadTest")
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -65,7 +64,6 @@ func TestClient_TestNoDownload(t *testing.T) {
 	// Should work without download
 	_, err = c.GetProviderSchema(context.Background(), "test")
 	assert.Nil(t, err)
-
 }
 
 func TestClient_FetchTimeout(t *testing.T) {
@@ -82,7 +80,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 	assert.Nil(t, err)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
@@ -112,7 +110,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 		assert.FailNow(t, "failed to create client")
 	}
 	ctx := context.Background()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
@@ -138,7 +136,7 @@ func TestClient_Fetch(t *testing.T) {
 	assert.Nil(t, err)
 
 	ctx := context.Background()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
