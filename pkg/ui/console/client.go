@@ -77,13 +77,12 @@ func (c Client) Fetch(ctx context.Context) error {
 	var fetchProgress *Progress
 	var fetchCallback client.FetchUpdateCallback
 
-
 	if ui.IsTerminal() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:           c.cfg.Providers,
-		UpdateCallback:      fetchCallback,
+		Providers:      c.cfg.Providers,
+		UpdateCallback: fetchCallback,
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
@@ -94,7 +93,6 @@ func (c Client) Fetch(ctx context.Context) error {
 		fetchProgress.Wait()
 		printFetchResponse(response)
 	}
-
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	return nil
@@ -275,14 +273,14 @@ func printFetchResponse(summary *client.FetchResponse) {
 		for _, r := range pfs.PartialFetchErrors {
 			if r.RootTableName != "" {
 				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Parent-Resource: %s, Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
+					"Parent-Resource: %-64s Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
 					r.RootTableName,
 					r.RootPrimaryKeyValues,
 					r.TableName,
 					r.Error)
 			} else {
 				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Table: %s, Error: %s\n",
+					"Table: %-64s Error: %s\n",
 					r.TableName,
 					r.Error)
 			}

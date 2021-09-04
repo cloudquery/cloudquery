@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/golang-migrate/migrate/v4"
 
@@ -250,6 +251,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
 		}
+		// TODO: move this into an outer function
 		errGroup.Go(func() error {
 			var cfg []byte
 			var partialFetchResults []*cqproto.PartialFetchFailedResource
@@ -259,7 +261,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					return err
 				}
 			}
-			c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
+			pLog.Info("requesting provider to configure")
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
@@ -270,20 +273,24 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
-				c.Logger.Error("failed to configure provider", "error", err, "provider", providerPlugin.Name())
+				pLog.Error("failed to configure provider", "error", err)
 				return err
 			}
-			c.Logger.Info("provider configured successfully", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-			c.Logger.Info("requesting provider fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "partial_fetch", providerConfig.EnablePartialFetch)
+			pLog.Info("provider configured successfully")
+			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
+			fetchStart := time.Now()
 			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
 			if err != nil {
 				return err
 			}
-			c.Logger.Info("provider started fetching resources", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			pLog.Info("provider started fetching resources")
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
-					c.Logger.Info("provider finished fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
+					for _, fetchError := range partialFetchResults {
+						pLog.Error("received partial fetch error", parsePartialFetchKV(fetchError)...)
+					}
 					fetchSummaries <- ProviderFetchSummary{
 						ProviderName:       providerConfig.Name,
 						PartialFetchErrors: partialFetchResults,
@@ -291,7 +298,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					return nil
 				}
 				if err != nil {
-					c.Logger.Error("received provider fetch error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", err)
+					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
 				update := FetchUpdate{
@@ -306,10 +313,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 				if resp.Error != "" {
-					c.Logger.Error("received provider fetch update error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", resp.Error)
+					pLog.Error("received provider fetch update error", "error", resp.Error)
 					continue
 				}
-				c.Logger.Debug("fetch update", "provider", providerPlugin.Name(), "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
+				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
@@ -533,4 +540,12 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
 	}
 	return providerConfig, nil
+}
+
+func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
+	kv := []interface{}{"table", r.TableName, "err", r.Error}
+	if r.RootTableName != "" {
+		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)
+	}
+	return kv
 }
