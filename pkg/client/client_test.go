@@ -31,8 +31,36 @@ var (
 	}
 )
 
-func TestClient_TestNoDownload(t *testing.T) {
+func TestClient_PartialFetch(t *testing.T) {
+	ctx := context.Background()
+	c, err := New(ctx, func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
+	})
+	assert.Nil(t, err)
+	// download test provider if it doesn't already exist
+	err = c.DownloadProviders(ctx)
+	assert.Nil(t, err)
 
+	result, err := c.Fetch(ctx, FetchRequest{
+		UpdateCallback: nil,
+		Providers: []*config.Provider{{
+			Name:               "test",
+			Alias:              "test_alias",
+			EnablePartialFetch: true,
+			Resources:          []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
+			Env:                nil,
+			Configuration:      nil,
+		},
+		},
+	})
+	assert.Nil(t, err)
+	testSummary, ok := result.ProviderFetchSummary["test"]
+	assert.True(t, ok)
+	assert.Len(t, testSummary.PartialFetchErrors, 2)
+}
+
+func TestClient_TestNoDownload(t *testing.T) {
 	_ = os.RemoveAll(".cq/downloadTest")
 	c, err := New(context.Background(), func(options *Client) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -65,7 +93,6 @@ func TestClient_TestNoDownload(t *testing.T) {
 	// Should work without download
 	_, err = c.GetProviderSchema(context.Background(), "test")
 	assert.Nil(t, err)
-
 }
 
 func TestClient_FetchTimeout(t *testing.T) {
@@ -82,7 +109,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 	assert.Nil(t, err)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
@@ -112,7 +139,7 @@ func TestClient_FetchNilConfig(t *testing.T) {
 		assert.FailNow(t, "failed to create client")
 	}
 	ctx := context.Background()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
@@ -138,7 +165,7 @@ func TestClient_Fetch(t *testing.T) {
 	assert.Nil(t, err)
 
 	ctx := context.Background()
-	err = c.Fetch(ctx, FetchRequest{
+	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
 			{
 				Name:      "test",
@@ -329,11 +356,14 @@ provider "test" {
 
     regions = ["adsa"]
   }
+  // list of resources to fetch
   resources = [
     "error_resource",
     "slow_resource",
     "very_slow_resource"
   ]
+  // enables partial fetching, allowing for any failures to not stop full resource pull
+  enable_partial_fetch = true
 }`
 
 func setupTestPlugin(t *testing.T) context.CancelFunc {

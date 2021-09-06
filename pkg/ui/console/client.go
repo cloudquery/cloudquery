@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/fatih/color"
-
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -85,12 +84,16 @@ func (c Client) Fetch(ctx context.Context) error {
 		Providers:      c.cfg.Providers,
 		UpdateCallback: fetchCallback,
 	}
-	if err := c.c.Fetch(ctx, request); err != nil {
+	response, err := c.c.Fetch(ctx, request)
+	if err != nil {
 		return err
 	}
 	if ui.IsTerminal() && fetchProgress != nil {
+		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
+		printFetchResponse(response)
 	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	return nil
 }
@@ -236,6 +239,9 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			fetchProgress.Update(update.Provider, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
 			return
 		}
+		if len(update.PartialFetchResults) > 0 {
+			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("errors: %d", len(update.PartialFetchResults)), 0)
+		}
 		bar := fetchProgress.GetBar(update.Provider)
 		if bar == nil {
 			fetchProgress.AbortAll()
@@ -250,12 +256,37 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			}
 			return
 		}
-		if update.AllDone() {
+		if update.AllDone() && bar.Status != ui.StatusWarn {
 			fetchProgress.Update(update.Provider, ui.StatusOK, "fetch complete", 0)
 			return
 		}
 	}
 	return fetchProgress, fetchCallback
+}
+
+func printFetchResponse(summary *client.FetchResponse) {
+	if summary == nil {
+		return
+	}
+	for _, pfs := range summary.ProviderFetchSummary {
+		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
+		for _, r := range pfs.PartialFetchErrors {
+			if r.RootTableName != "" {
+				ui.ColorizedOutput(ui.ColorErrorBold,
+					"Parent-Resource: %-64s Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
+					r.RootTableName,
+					r.RootPrimaryKeyValues,
+					r.TableName,
+					r.Error)
+			} else {
+				ui.ColorizedOutput(ui.ColorErrorBold,
+					"Table: %-64s Error: %s\n",
+					r.TableName,
+					r.Error)
+			}
+		}
+		ui.ColorizedOutput(ui.ColorWarning, "\n")
+	}
 }
 
 func loadConfig(path string) (*config.Config, error) {
