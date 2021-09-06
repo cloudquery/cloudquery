@@ -30,6 +30,7 @@ func Provider() *provider.Provider {
 			"compute.target_ssl_proxies":   ComputeTargetSslProxies(),
 			"compute.target_https_proxies": ComputeTargetHTTPSProxies(),
 			"compute.ssl_policies":         ComputeSslPolicies(),
+			"compute.url_maps":             ComputeURLMaps(),
 			"cloudfunctions.functions":     CloudfunctionsFunction(),
 			"dns.managed_zones":            DNSManagedZones(),
 			"dns.policies":                 DNSPolicies(),
