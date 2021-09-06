@@ -356,11 +356,14 @@ provider "test" {
 
     regions = ["adsa"]
   }
+  // list of resources to fetch
   resources = [
     "error_resource",
     "slow_resource",
     "very_slow_resource"
   ]
+  // enables partial fetching, allowing for any failures to not stop full resource pull
+  enable_partial_fetch = true
 }`
 
 func setupTestPlugin(t *testing.T) context.CancelFunc {
