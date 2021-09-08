@@ -217,7 +217,7 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 		}
 	}
 
-	if string(output.KeyMetadata.Origin) != "EXTERNAL" {
+	if string(output.KeyMetadata.Origin) != "EXTERNAL" && string(output.KeyMetadata.KeyManager) != "AWS" {
 		output, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: r.KeyId}, func(options *kms.Options) {
 			options.Region = c.Region
 		})

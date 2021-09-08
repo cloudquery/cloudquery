@@ -4,6 +4,11 @@ All notable changes to this provider will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [unreleased] - 2020-08-19
+###### SDK Version: v0.4.3
+
+### :spider: Fixed
+* Fixed kms key fetching when provider tried to fetch aws managed keys rotation properties [#168](https://github.com/cloudquery/cq-provider-aws/pull/168)
 
 ## [v0.5.10] - 2020-08-19
 ###### SDK Version: 0.3.4
