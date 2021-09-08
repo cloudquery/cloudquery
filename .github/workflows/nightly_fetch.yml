@@ -1,0 +1,63 @@
+name: integration_test
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # Run every night on 01:00am UTC
+  workflow_dispatch:
+
+jobs:
+  integration_test:
+    strategy:
+      matrix:
+        dbversion: [ "postgres:latest" ]
+        go: [ "1.17" ]
+        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+
+      - name: Build
+        run: go build -v .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Fetch
+        run: |
+          rm -rf .cq_reattach
+          curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
+          chmod a+x cloudquery
+          CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config .github/workflows/cq_configs/nightly.hcl --enable-console-log
+        env:
+          OS: Linux
+          CQ_REATTACH_PROVIDERS: .cq_reattach
