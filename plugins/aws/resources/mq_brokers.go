@@ -180,7 +180,6 @@ func MqBrokers() *schema.Table {
 			{
 				Name:        "aws_mq_broker_configurations",
 				Resolver:    fetchMqBrokerConfigurations,
-				Multiplex:   client.AccountRegionMultiplex,
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
 				Columns: []schema.Column{
@@ -271,7 +270,6 @@ func MqBrokers() *schema.Table {
 			{
 				Name:        "aws_mq_broker_users",
 				Resolver:    fetchMqBrokerUsers,
-				Multiplex:   client.AccountRegionMultiplex,
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "username"}},
 				Columns: []schema.Column{

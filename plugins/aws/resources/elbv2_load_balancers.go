@@ -2,12 +2,14 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/mitchellh/mapstructure"
 )
 
 func Elbv2LoadBalancers() *schema.Table {
@@ -183,6 +185,85 @@ func Elbv2LoadBalancers() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "aws_elbv2_load_balancer_attributes",
+				Description: "Load balancer attributes",
+				Resolver:    fetchElbv2LoadBalancerAttributes,
+				Columns: []schema.Column{
+					{
+						Name:        "load_balancer_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv2_load_balancers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "access_logs_s3_enabled",
+						Description: "Indicates whether access logs stored in Amazon S3 are enabled.",
+						Type:        schema.TypeBool,
+					},
+					{
+						Name:        "access_logs_s3_bucket",
+						Description: "The name of the Amazon S3 bucket for the access logs.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "access_logs_s3_prefix",
+						Description: "The prefix for the location in the Amazon S3 bucket.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "deletion_protection",
+						Description: "Indicates whether deletion protection is enabled.",
+						Type:        schema.TypeBool,
+					},
+					{
+						Name:        "idle_timeout",
+						Description: "The idle timeout value, in seconds.",
+						Type:        schema.TypeInt,
+					},
+					{
+						Name:        "routing_http_desync_mitigation_mode",
+						Description: "Determines how the load balancer handles requests that might pose a security risk to your application.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("RoutingHTTPDesyncMitigationMode"),
+					},
+					{
+						Name:        "routing_http_drop_invalid_header_fields",
+						Description: "Indicates whether HTTP headers with header fields that are not valid are removed by the load balancer.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("RoutingHTTPDropInvalidHeaderFields"),
+					},
+					{
+						Name:        "routing_http_xamzntls_enabled",
+						Description: "Indicates whether the two headers (x-amzn-tls-{version,cipher-suite}) are added to the client request before sending it to the target.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("RoutingHTTPXAmznTLSVersionCipherSuite"),
+					},
+					{
+						Name:        "routing_http_xff_client_port",
+						Description: "Indicates whether the X-Forwarded-For header should preserve the source port that the client used to connect to the load balancer.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("RoutingHTTPXFFClientPort"),
+					},
+					{
+						Name:        "routing_http2",
+						Description: "Indicates whether HTTP/2 is enabled.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("RoutingHTTP2"),
+					},
+					{
+						Name:        "waf_fail_open",
+						Description: "Indicates whether to allow a AWS WAF-enabled load balancer to route requests to targets if it is unable to forward the request to AWS WAF.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("WAFFailOpen"),
+					},
+					{
+						Name:        "load_balancing_cross_zone",
+						Description: "Indicates whether cross-zone load balancing is enabled.",
+						Type:        schema.TypeBool,
+					},
+				},
+			},
 		},
 	}
 }
@@ -217,5 +298,49 @@ func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.Cl
 func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.AvailabilityZone)
 	res <- p.LoadBalancerAddresses
+	return nil
+}
+
+type lbAttributes struct {
+	AccessLogsS3Enabled                   bool   `mapstructure:"access_logs.s3.enabled"`
+	AccessLogsS3Bucket                    string `mapstructure:"access_logs.s3.bucket"`
+	AccessLogsS3Prefix                    string `mapstructure:"access_logs.s3.prefix"`
+	DeletionProtection                    bool   `mapstructure:"deletion_protection.enabled"`
+	IdleTimeout                           int32  `mapstructure:"idle_timeout.timeout_seconds"`
+	RoutingHTTPDesyncMitigationMode       string `mapstructure:"routing.http.desync_mitigation_mode"`
+	RoutingHTTPDropInvalidHeaderFields    bool   `mapstructure:"routing.http.drop_invalid_header_fields.enabled"`
+	RoutingHTTPXAmznTLSVersionCipherSuite bool   `mapstructure:"routing.http.x_amzn_tls_version_and_cipher_suite.enabled"`
+	RoutingHTTPXFFClientPort              bool   `mapstructure:"routing.http.xff_client_port.enabled"`
+	RoutingHTTP2                          bool   `mapstructure:"routing.http2.enabled"`
+	WAFFailOpen                           bool   `mapstructure:"waf.fail_open.enabled"`
+	LoadBalancingCrossZone                bool   `mapstructure:"load_balancing.cross_zone.enabled"`
+}
+
+func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	lb, ok := parent.Item.(types.LoadBalancer)
+	if !ok {
+		return fmt.Errorf("not a LoadBalancer instance: %T", parent.Item)
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().ELBv2
+	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn}, func(options *elbv2.Options) {
+		options.Region = c.Region
+	})
+	if err != nil {
+		return err
+	}
+	m := make(map[string]interface{})
+	for _, a := range result.Attributes {
+		m[*a.Key] = *a.Value
+	}
+	var attrs lbAttributes
+	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &attrs})
+	if err != nil {
+		return err
+	}
+	if err := dec.Decode(m); err != nil {
+		return err
+	}
+	res <- attrs
 	return nil
 }
