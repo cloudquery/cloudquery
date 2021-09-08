@@ -11,4 +11,4 @@ An IAM service account A service account is an account for an application or a v
 |name|text|The resource name of the service account In one of the following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` OR `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}` OR `projects/-/serviceAccounts/{UNIQUE_ID}|
 |oauth2_client_id|text|The OAuth 20 client ID for the service account|
 |project_id|text|The ID of the project that owns the service account|
-|unique_id|text|The unique, stable numeric ID for the service account Each service account retains its unique ID even if you delete the service account For example, if you delete a service account, then create a new service account with the same name, the new service account has a different unique ID than the deleted service account|
+|id|text|The unique, stable numeric ID for the service account Each service account retains its unique ID even if you delete the service account For example, if you delete a service account, then create a new service account with the same name, the new service account has a different unique ID than the deleted service account|
