@@ -8,7 +8,7 @@ cloudquery {
   }
 
   connection {
-    dsn = "host=localhost user=postgres password=pass database=postgres port=5432 ssl=disable"
+    dsn = "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable"
   }
 }
 
