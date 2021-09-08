@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-gcp/resources"
