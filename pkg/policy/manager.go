@@ -272,8 +272,7 @@ func (m *ManagerImpl) readPolicy(policyPath, policyFolder string) (*config.Polic
 	if diagsDecode != nil && diagsDecode.HasErrors() {
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
 	}
-	policies.Normalize()
-	return policies, policies.Validate()
+	return policies, nil
 }
 
 // runSubPolicyOrQuery
