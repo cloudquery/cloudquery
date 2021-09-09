@@ -512,6 +512,22 @@ func (c *Client) Close() {
 	}
 }
 
+func (c *Client) SetProviderVersion(ctx context.Context, providerName, version string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("set provider version", "version", version, "provider", cfg.Name)
+	return m.SetVersion(version)
+}
+
 func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
