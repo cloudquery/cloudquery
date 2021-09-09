@@ -74,7 +74,7 @@ Once your `config.hcl` is generated run the following command to fetch the resou
 ```shell script
 # you can spawn a local postgresql with docker
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres"
 # cloudquery fetch --help # Show all possible fetch flags
 ```
 
@@ -113,7 +113,7 @@ policy pack (it is under active development, so it doesn't cover the whole spec 
 To run AWS CIS pack enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
 
 ```shell script
-./cloudquery policy --path=<PATH_TO_POLICY_FILE> --output=<PATH_TO_OUTPUT_POLICY_RESULT> --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+./cloudquery policy --path=<PATH_TO_POLICY_FILE> --output=<PATH_TO_OUTPUT_POLICY_RESULT> --dsn "postgres://postgres:pass@localhost:5432/postgres"
 ```
 
 You can also create your own policy file. E.g.:
@@ -151,6 +151,10 @@ Checkout [cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/ter
 ## License
 
 By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.
+
+## Hiring
+
+If you are into Go, Backend, Cloud, GCP, AWS - ping us at jobs [at] our domain
 
 ## Contribution
 

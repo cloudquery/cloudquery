@@ -125,7 +125,7 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 		return nil, fmt.Errorf("failed to cast plugin")
 	}
 	return &unmanagedPlugin{
-		name:     providerName,
+		name:     fmt.Sprintf("%s_%s", providerName, providerName),
 		config:   config,
 		client:   client,
 		provider: provider,

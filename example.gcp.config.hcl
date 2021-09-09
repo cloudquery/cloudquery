@@ -6,7 +6,7 @@ cloudquery {
   }
   // Can be configured via CLI variables
   connection {
-    dsn = "host=localhost user=postgres password=pass DB.name=postgres port=5432"
+    dsn = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
   }
 }
 

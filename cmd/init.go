@@ -63,7 +63,7 @@ func Initialize(providers []string) {
 		PolicyDirectory: "./cq/policies",
 		Providers:       requiredProviders,
 		Connection: &config.Connection{
-			DSN: "host=localhost user=postgres password=pass database=postgres port=5432",
+			DSN: "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable",
 		},
 	}, "cloudquery")
 

@@ -3,9 +3,13 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/golang-migrate/migrate/v4"
 
 	"github.com/cloudquery/cq-provider-sdk/provider"
 
@@ -38,6 +42,11 @@ type FetchRequest struct {
 	ExtraFields map[string]interface{}
 }
 
+// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
+type FetchResponse struct {
+	ProviderFetchSummary map[string]ProviderFetchSummary
+}
+
 type FetchUpdate struct {
 	Provider string
 	Version  string
@@ -47,6 +56,14 @@ type FetchUpdate struct {
 	ResourceCount uint64
 	// Error if any returned by the provider
 	Error string
+	// PartialFetchResults contains the partial fetch results for this update
+	PartialFetchResults []*cqproto.PartialFetchFailedResource
+}
+
+// ProviderFetchSummary represents a request for the FetchFinishCallback
+type ProviderFetchSummary struct {
+	ProviderName       string
+	PartialFetchErrors []*cqproto.PartialFetchFailedResource
 }
 
 // PolicyRunRequest is the request used to run a policy.
@@ -159,8 +176,10 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	c.Manager.LoadExisting(c.Providers)
+
 	if c.TableCreator == nil {
-		c.TableCreator = provider.NewMigrator(c.Logger)
+		c.TableCreator = provider.NewTableCreator(c.Logger)
 	}
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
@@ -184,15 +203,45 @@ func (c *Client) DownloadProviders(ctx context.Context) error {
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
-func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
+func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
+	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
+	if err != nil {
+		c.Logger.Error("failed to create provider plugin", "provider", providerCfg.Name, "error", err)
+		return err
+	}
+	defer providerPlugin.Close()
+	c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+	var cfg []byte
+	if providerCfg.Configuration != nil {
+		cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
+		if err != nil {
+			return err
+		}
+	}
+	_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
+		CloudQueryVersion: Version,
+		Connection: cqproto.ConnectionDetails{
+			DSN: c.DSN,
+		},
+		Config: cfg,
+	})
+	if err != nil {
+		return fmt.Errorf("provider test connection failed. Reason: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchResponse, error) {
 	if !c.SkipBuildTables {
 		for _, p := range request.Providers {
 			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
-				return err
+				return nil, err
 			}
 		}
 	}
 	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
+
+	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
@@ -200,19 +249,22 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
-			return err
+			return nil, err
 		}
+		// TODO: move this into an outer function
 		errGroup.Go(func() error {
 			var cfg []byte
+			var partialFetchResults []*cqproto.PartialFetchFailedResource
 			if providerConfig.Configuration != nil {
 				cfg, err = convert.Body(providerConfig.Configuration, convert.Options{Simplify: true})
 				if err != nil {
 					return err
 				}
 			}
-			c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
+			pLog.Info("requesting provider to configure")
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
-				CloudQueryVersion: "", // TODO pass cloudquery version
+				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
 				},
@@ -221,52 +273,71 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) error {
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
-				c.Logger.Error("failed to configure provider", "error", err, "provider", providerPlugin.Name())
+				pLog.Error("failed to configure provider", "error", err)
 				return err
 			}
-			c.Logger.Info("provider configured successfully", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-			c.Logger.Debug("requesting provider fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources})
+			pLog.Info("provider configured successfully")
+			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
+			fetchStart := time.Now()
+			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
 			if err != nil {
 				return err
 			}
-			c.Logger.Info("provider started fetching resources", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+			pLog.Info("provider started fetching resources")
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
-					c.Logger.Info("provider finished fetch", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
+					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
+					for _, fetchError := range partialFetchResults {
+						pLog.Error("received partial fetch error", parsePartialFetchKV(fetchError)...)
+					}
+					fetchSummaries <- ProviderFetchSummary{
+						ProviderName:       providerConfig.Name,
+						PartialFetchErrors: partialFetchResults,
+					}
 					return nil
 				}
 				if err != nil {
-					c.Logger.Error("received provider fetch error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", err)
+					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
 				update := FetchUpdate{
-					Provider:          providerPlugin.Name(),
-					Version:           providerPlugin.Version(),
-					FinishedResources: resp.FinishedResources,
-					ResourceCount:     resp.ResourceCount,
-					Error:             resp.Error,
+					Provider:            providerPlugin.Name(),
+					Version:             providerPlugin.Version(),
+					FinishedResources:   resp.FinishedResources,
+					ResourceCount:       resp.ResourceCount,
+					Error:               resp.Error,
+					PartialFetchResults: partialFetchResults,
+				}
+				if len(resp.PartialFetchFailedResources) != 0 {
+					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 				if resp.Error != "" {
-					c.Logger.Error("received provider fetch update error", "provider", providerPlugin.Name(), "version", providerPlugin.Version(), "error", resp.Error)
+					pLog.Error("received provider fetch update error", "error", resp.Error)
 					continue
 				}
-				c.Logger.Debug("fetch update", "provider", providerPlugin.Name(), "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
+				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
 			}
 		})
 	}
+
+	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(request.Providers))}
 	// TODO: kill all providers on end, add defer on top loop
 	if err := errGroup.Wait(); err != nil {
-		return err
+		close(fetchSummaries)
+		return nil, err
 	}
-	return nil
+	close(fetchSummaries)
+	for ps := range fetchSummaries {
+		response.ProviderFetchSummary[ps.ProviderName] = ps
+	}
+	return response, nil
 }
 
-func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
+func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -284,7 +355,7 @@ func (c Client) GetProviderSchema(ctx context.Context, providerName string) (*cq
 	return providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 }
 
-func (c Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
+func (c *Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -318,10 +389,73 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 			return err
 		}
 	}
+
+	if s.Migrations == nil {
+		c.Logger.Debug("provider doesn't support migrations", "provider", providerName)
+		return nil
+	}
+	// create migration table and set it to version based on latest create table
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
+		mv, err := m.FindLatestMigration(cfg.Version)
+		if err != nil {
+			return err
+		}
+		c.Logger.Debug("setting provider schema migration version", "version", cfg.Version, "migration_version", mv)
+		return m.SetVersion(cfg.Version)
+	}
 	return nil
 }
 
-func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
+	return m.UpgradeProvider(cfg.Version)
+}
+
+func (c *Client) DowngradeProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
+	return m.DowngradeProvider(cfg.Version)
+}
+
+func (c *Client) DropProvider(ctx context.Context, providerName string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("dropping provider tables", "version", cfg.Version, "provider", cfg.Name)
+	return m.DropProvider(ctx, s.ResourceTables)
+}
+
+func (c *Client) DownloadPolicy(ctx context.Context, args []string) error {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
@@ -334,7 +468,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return m.DownloadPolicy(ctx, p)
 }
 
-func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
+func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
@@ -371,7 +505,47 @@ func (c Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	return nil
 }
 
-func (c Client) Close() {
+func (c *Client) Close() {
 	c.Manager.Shutdown()
-	c.pool.Close()
+	if c.pool != nil {
+		c.pool.Close()
+	}
+}
+
+func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {
+	providerConfig, err := c.getProviderConfig(providerName)
+	if err != nil {
+		return nil, nil, err
+	}
+	org, name, err := registry.ParseProviderName(providerConfig.Name)
+	if err != nil {
+		return nil, nil, err
+	}
+	m, err := provider.NewMigrator(c.Logger, migrations, c.DSN, fmt.Sprintf("%s_%s", org, name))
+	if err != nil {
+		return nil, nil, err
+	}
+	return m, providerConfig, err
+}
+
+func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
+	var providerConfig *config.RequiredProvider
+	for _, p := range c.Providers {
+		if p.Name == providerName {
+			providerConfig = p
+			break
+		}
+	}
+	if providerConfig == nil {
+		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
+	}
+	return providerConfig, nil
+}
+
+func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
+	kv := []interface{}{"table", r.TableName, "err", r.Error}
+	if r.RootTableName != "" {
+		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)
+	}
+	return kv
 }
