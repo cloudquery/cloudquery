@@ -12,7 +12,7 @@ provider transforms DigitalOcean resource to relational and graph databases.
 
 ## What is CloudQuery
 
-CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL or Graph(Neo4j) database.
+CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL.
 This abstracts various scattered APIs enabling you to define security,governance,cost and compliance policies with SQL.
 
 cloudquery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)).
@@ -24,5 +24,5 @@ and [terraform](https://github.com/hashicorp/terraform).
 * Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.io
-* Schema explorer (schemaspy): https://schema.cloudquery.io/
+* CloudQuery Hub: https://hub.cloudquery.io/
 * Database Configuration: https://docs.cloudquery.io/database-configuration
