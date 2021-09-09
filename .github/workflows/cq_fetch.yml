@@ -1,4 +1,4 @@
-name: integration_test
+name: cq_fecth
 
 on:
   schedule:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   nightly_fetch:
+    if: github.event_name != 'schedule' || (github.event_name == 'schedule' && github.repository == 'cloudquery/cq-provider-aws')
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]

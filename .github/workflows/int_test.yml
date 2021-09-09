@@ -8,6 +8,7 @@ on:
 
 jobs:
   integration_test:
+    if: github.repository == 'cloudquery/cq-provider-aws'
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]
