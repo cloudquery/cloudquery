@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         dbversion: ['postgres:latest', 'postgres:12', 'postgres:11']
-        go: ['1.15']
+        go: ['1.17']
         platform: [ubuntu-latest] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
     services:
