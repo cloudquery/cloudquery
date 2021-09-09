@@ -30,9 +30,17 @@ type PolicyProvider struct {
 	Version string `hcl:"version,optional"`
 }
 
+type QueryType string
+
+const (
+	ManualQuery    QueryType = "manual"
+	AutomaticQuery QueryType = "automatic"
+)
+
 type Query struct {
-	Name         string `hcl:"name,label"`
-	Description  string `hcl:"description,optional"`
-	ExpectOutput bool   `hcl:"expect_output,optional"`
-	Query        string `hcl:"query"`
+	Name         string    `hcl:"name,label"`
+	Description  string    `hcl:"description,optional"`
+	ExpectOutput bool      `hcl:"expect_output,optional"`
+	Type         QueryType `hcl:"type,optional"`
+	Query        string    `hcl:"query"`
 }

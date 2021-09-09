@@ -123,10 +123,13 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 		OutputPath:     outputPath,
 		StopOnFailure:  stopOnFailure,
 		SkipVersioning: skipVersioning,
-		RunCallBack: func(name string, passed bool) {
-			if passed {
+		RunCallBack: func(name string, qtype config.QueryType, passed bool) {
+			switch {
+			case passed:
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-			} else {
+			case qtype == config.ManualQuery:
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusWarn], name, color.YellowString("manual"))
+			default:
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
 			}
 		},
