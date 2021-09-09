@@ -4,11 +4,18 @@ All notable changes to this provider will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [Unreleased]
-###### SDK Version: 0.3.2
+
+## [v0.4.4] - 2020-09-09
+###### SDK Version: 0.4.3
+
+### :rocket: Added
+* added support for urlmaps resources [#47](https://github.com/cloudquery/cq-provider-gcp/issues/47)
 
 ### :spider: Fixed
 * iam.service_accounts duplicate primary key fixed. [#53](https://github.com/cloudquery/cq-provider-gcp/pull/53)
+
+### :gear: Changed
+* Upgraded to SDK Version [0.4.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md)
 
 ## [v0.4.3] - 2020-08-13
 ###### SDK Version: 0.3.2
@@ -61,6 +68,7 @@ Base version at which changelog was introduced.
 - compute.images
 - compute.instances
 - compute.interconnects
+- compute.urlmaps
 - compute.networks
 - compute.projects
 - compute.ssl_certificates
