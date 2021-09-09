@@ -30,6 +30,9 @@ type Progress interface {
 
 	// Wait for all progress bars to finish
 	Wait()
+
+	// MarkAllDone marks all progress bars as done
+	MarkAllDone()
 }
 
 type ProgressUpdateFunc func(io.Reader, int64) io.Reader

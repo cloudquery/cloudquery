@@ -165,6 +165,16 @@ func (u *Progress) AbortAll() {
 	u.Wait()
 }
 
+func (u *Progress) MarkAllDone() {
+	u.lock.Lock()
+	defer u.lock.Unlock()
+	for _, b := range u.bars {
+		if b.Status == ui.StatusInProgress {
+			b.Status = ui.StatusOK
+		}
+		b.SetTotal(b.Total, true)
+	}
+}
 func defaultStatusUpdater(u *Bar, _ decor.Statistics) string {
 	return emojiStatus[u.Status]
 }
