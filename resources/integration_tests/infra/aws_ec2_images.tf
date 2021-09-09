@@ -128,7 +128,7 @@ resource "aws_imagebuilder_component" "aws_ec2_images_hello_world" {
       }]
     schemaVersion = 1.0
   })
-  name = "hello_world_{var.test_prefix}${var.test_suffix}"
+  name = "hello_world_${var.test_prefix}${var.test_suffix}"
   platform = "Linux"
   version = "1.0.0"
 }
