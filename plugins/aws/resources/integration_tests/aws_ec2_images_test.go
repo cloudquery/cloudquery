@@ -31,11 +31,6 @@ func TestIntegrationEc2Images(t *testing.T) {
 						"sriov_net_support":   "simple",
 						"usage_operation":     "RunInstances",
 						"virtualization_type": "hvm",
-						"tags": map[string]interface{}{
-							"CreatedBy":          "EC2 Image Builder",
-							"CostCenter":         "IT",
-							"Ec2ImageBuilderArn": "arn:aws:imagebuilder:us-east-1:704956590351:image/ec2-images-recipe-awsec2imageswindowsfifl5fe/0.1.1/1",
-						},
 					},
 				},
 			},
