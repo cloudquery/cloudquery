@@ -69,6 +69,10 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	if providerConfig.Token == "" {
 		providerConfig.Token = getTokenFromEnv()
 	}
+	if providerConfig.Token == "" {
+		return nil, fmt.Errorf("missing API token")
+	}
+
 	if providerConfig.SpacesAccessKey == "" || providerConfig.SpacesAccessKeyId == "" {
 		providerConfig.SpacesAccessKeyId, providerConfig.SpacesAccessKey = getSpacesTokenFromEnv()
 	}

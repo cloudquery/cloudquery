@@ -3,7 +3,7 @@ package client
 // Provider Configuration
 
 type Config struct {
-	Token string `hcl:"token"`
+	Token string `hcl:"token,optional"`
 	// SpacesRegions is a list of DO regions to fetch spaces from, if not given we execute on all regions
 	SpacesRegions []string `hcl:"spaces_regions,optional"`
 	// SpacesAccessKey is the secret access token generated in DO control panel
