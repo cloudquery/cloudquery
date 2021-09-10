@@ -1,15 +1,23 @@
 package resources
 
 import (
+	"embed"
+
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+var (
+	//go:embed migrations/*.sql
+	gcpMigrations embed.FS
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:      "gcp",
-		Configure: client.Configure,
+		Name:       "gcp",
+		Configure:  client.Configure,
+		Migrations: gcpMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"kms.keys":                     KmsKeyrings(),
 			"compute.addresses":            ComputeAddresses(),
