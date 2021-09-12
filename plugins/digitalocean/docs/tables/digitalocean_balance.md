@@ -1,5 +1,5 @@
 
-# Table: digitalocean_balances
+# Table: digitalocean_balance
 Balance represents a DigitalOcean Balance
 ## Columns
 | Name        | Type           | Description  |

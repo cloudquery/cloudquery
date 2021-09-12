@@ -9,7 +9,7 @@ import (
 
 func Balance() *schema.Table {
 	return &schema.Table{
-		Name:         "digitalocean_balances",
+		Name:         "digitalocean_balance",
 		Description:  "Balance represents a DigitalOcean Balance",
 		Resolver:     fetchBalances,
 		DeleteFilter: client.DeleteFilter,

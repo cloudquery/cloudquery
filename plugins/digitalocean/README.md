@@ -24,5 +24,4 @@ and [terraform](https://github.com/hashicorp/terraform).
 * Homepage: https://cloudquery.io
 * Releases: https://github.com/cloudquery/cloudquery/releases
 * Documentation: https://docs.cloudquery.io
-* CloudQuery Hub: https://hub.cloudquery.io/
-* Database Configuration: https://docs.cloudquery.io/database-configuration
+* Provider Hub: https://hub.cloudquery.io/
