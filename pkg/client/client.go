@@ -285,7 +285,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider started fetching resources")
-			var fetchErrors = make([]error, 1)
+			var fetchErrors = make([]error, 0)
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
