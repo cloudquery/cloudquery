@@ -25,6 +25,19 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 	return false
 }
 
+func IgnoreWithInvalidAction(err error) bool {
+	if IgnoreAccessDeniedServiceDisabled(err) {
+		return true
+	}
+	var ae smithy.APIError
+	if errors.As(err, &ae) {
+		if ae.ErrorCode() == "InvalidAction" {
+			return true
+		}
+	}
+	return false
+}
+
 // GenerateResourceARN generates the arn for a resource.
 // Service: The service name e.g. waf or elb or s3
 // ResourceType: The sub resource type e.g. rule or instance (for an ec2 instance)

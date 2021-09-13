@@ -295,7 +295,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		// This is a work-around to skip disabled regions
 		// https://github.com/aws/aws-sdk-go-v2/issues/1068
 		res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx,
-			&ec2.DescribeRegionsInput{AllRegions: false},
+			&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
 			func(o *ec2.Options) {
 				o.Region = "us-east-1"
 			})

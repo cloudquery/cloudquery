@@ -15,7 +15,7 @@ func Ec2ByoipCidrs() *schema.Table {
 		Description:  "Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).",
 		Resolver:     fetchEc2ByoipCidrs,
 		Multiplex:    client.AccountRegionMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreWithInvalidAction,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
 		Columns: []schema.Column{
@@ -60,8 +60,9 @@ func Ec2ByoipCidrs() *schema.Table {
 // ====================================================================================================================
 func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	config := ec2.DescribeByoipCidrsInput{
-		MaxResults: 100,
+		MaxResults: aws.Int32(100),
 	}
+
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
