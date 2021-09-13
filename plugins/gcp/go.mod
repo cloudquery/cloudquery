@@ -3,8 +3,8 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.17
 
 require (
+	github.com/cloudquery/cq-provider-sdk v0.4.4
 	github.com/Masterminds/squirrel v1.5.0
-	github.com/cloudquery/cq-provider-sdk v0.4.3
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/googleapis/gax-go/v2 v2.0.5
 	github.com/hashicorp/go-hclog v0.16.2
@@ -45,6 +45,7 @@ require (
 	github.com/iancoleman/strcase v0.1.3 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.8.1 // indirect
+	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect

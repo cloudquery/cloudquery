@@ -221,6 +221,7 @@ func StorageBuckets() *schema.Table {
 				Name:        "gcp_storage_bucket_acls",
 				Description: "Access controls on the bucket.",
 				Resolver:    fetchStorageBucketAcls,
+				IgnoreError: client.IgnoreErrorHandler,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
@@ -569,8 +570,8 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	if !ok {
 		return fmt.Errorf("expected *storage.Bucket but got %T", p)
 	}
-	client := meta.(*client.Client)
-	call := client.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
+	svc := meta.(*client.Client)
+	call := svc.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
 	output, err := call.Do()
 	if err != nil {
 		return err
@@ -578,6 +579,10 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
+		if client.IgnoreErrorHandler(err) {
+			meta.Logger().Warn("permission denied", "error", err)
+			return nil
+		}
 		return err
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {

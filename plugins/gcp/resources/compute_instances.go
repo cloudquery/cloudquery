@@ -685,6 +685,7 @@ func ComputeInstances() *schema.Table {
 			{
 				Name:        "gcp_compute_instance_service_accounts",
 				Description: "A service account",
+				IgnoreError: client.IgnoreErrorHandler,
 				Resolver:    fetchComputeInstanceServiceAccounts,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "email"}},
 				Columns: []schema.Column{
