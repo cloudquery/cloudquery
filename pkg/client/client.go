@@ -575,4 +575,3 @@ func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
 	}
 	return kv
 }
-
