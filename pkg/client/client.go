@@ -64,7 +64,7 @@ type FetchUpdate struct {
 type ProviderFetchSummary struct {
 	ProviderName       string
 	PartialFetchErrors []*cqproto.PartialFetchFailedResource
-	FetchErrors        []string
+	FetchErrors        []error
 }
 
 // PolicyRunRequest is the request used to run a policy.
@@ -285,7 +285,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider started fetching resources")
-			var fetchErrors = make([]string, 1)
+			var fetchErrors = make([]error, 1)
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
@@ -316,7 +316,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 				if resp.Error != "" {
-					fetchErrors = append(fetchErrors, resp.Error)
+					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
 					pLog.Error("received provider fetch update error", "error", resp.Error)
 					continue
 				}
