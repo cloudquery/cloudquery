@@ -1,6 +1,7 @@
 package mocks_test
 
 import (
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -392,7 +393,7 @@ func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services 
 	if err != nil {
 		t.Fatal(err)
 	}
-	l.IsDefault = false
+	l.IsDefault = aws.Bool(false)
 	m.EXPECT().DescribeNetworkAcls(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeNetworkAclsOutput{
 			NetworkAcls: []ec2Types.NetworkAcl{l},

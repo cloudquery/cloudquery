@@ -61,7 +61,10 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 	if err != nil {
 		return err
 	}
-	regionalConfig.EbsEncryptionEnabledByDefault = ebsResp.EbsEncryptionByDefault
+
+	if ebsResp.EbsEncryptionByDefault != nil {
+		regionalConfig.EbsEncryptionEnabledByDefault = *ebsResp.EbsEncryptionByDefault
+	}
 	res <- regionalConfig
 	return nil
 }
