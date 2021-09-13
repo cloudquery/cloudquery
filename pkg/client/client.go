@@ -67,6 +67,13 @@ type ProviderFetchSummary struct {
 	FetchErrors        []error
 }
 
+func (s *ProviderFetchSummary) HasErrors() bool {
+	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
+		return true
+	}
+	return false
+}
+
 // PolicyRunRequest is the request used to run a policy.
 type PolicyRunRequest struct {
 	// Args are the given arguments from the policy run command.
@@ -569,9 +576,3 @@ func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
 	return kv
 }
 
-func (s *ProviderFetchSummary) HasErrors() bool {
-	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
-		return true
-	}
-	return false
-}
