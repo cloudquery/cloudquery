@@ -19,7 +19,6 @@ func TestIntegrationEc2EbsVolumes(t *testing.T) {
 						"volume_type":          "gp2",
 						"multi_attach_enabled": false,
 						"encrypted":            false,
-						"fast_restored":        false,
 						"size":                 float64(5),
 						"tags": map[string]interface{}{
 							"Type":   "integration_test",
