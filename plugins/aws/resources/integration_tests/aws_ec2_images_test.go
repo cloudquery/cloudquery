@@ -38,14 +38,15 @@ func TestIntegrationEc2Images(t *testing.T) {
 				{
 					Name:           "aws_ec2_image_block_device_mappings",
 					ForeignKeyName: "image_cq_id",
+					Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
+						return sq.Where(squirrel.Eq{"device_name": "/dev/xvda"})
+					},
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
 						Data: map[string]interface{}{
 							"device_name":               "/dev/xvda",
 							"ebs_delete_on_termination": true,
 							"ebs_encrypted":             false,
-							"ebs_iops":                  float64(0),
-							"ebs_throughput":            float64(0),
 							"ebs_volume_size":           float64(8),
 							"ebs_volume_type":           "gp2",
 						},
@@ -54,14 +55,15 @@ func TestIntegrationEc2Images(t *testing.T) {
 				{
 					Name:           "aws_ec2_image_block_device_mappings",
 					ForeignKeyName: "image_cq_id",
+					Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
+						return sq.Where(squirrel.Eq{"device_name": "/dev/xvdb"})
+					},
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
 						Data: map[string]interface{}{
 							"device_name":               "/dev/xvdb",
 							"ebs_delete_on_termination": true,
 							"ebs_encrypted":             false,
-							"ebs_iops":                  float64(0),
-							"ebs_throughput":            float64(0),
 							"ebs_volume_size":           float64(20),
 							"ebs_volume_type":           "gp2",
 						},
