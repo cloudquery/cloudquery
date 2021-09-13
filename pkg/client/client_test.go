@@ -31,6 +31,35 @@ var (
 	}
 )
 
+func TestClient_FailOnFetch(t *testing.T) {
+	ctx := context.Background()
+	c, err := New(ctx, func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
+	})
+	assert.Nil(t, err)
+	// download test provider if it doesn't already exist
+	err = c.DownloadProviders(ctx)
+	assert.Nil(t, err)
+
+	result, err := c.Fetch(ctx, FetchRequest{
+		UpdateCallback: nil,
+		Providers: []*config.Provider{{
+			Name:               "test",
+			Alias:              "test_alias",
+			EnablePartialFetch: true,
+			Resources:          []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
+			Env:                nil,
+			Configuration:      nil,
+		},
+		},
+	})
+	assert.Nil(t, err)
+	testSummary, ok := result.ProviderFetchSummary["test"]
+	assert.True(t, ok)
+	assert.Greater(t, len(testSummary.FetchErrors), 0)
+}
+
 func TestClient_PartialFetch(t *testing.T) {
 	ctx := context.Background()
 	c, err := New(ctx, func(options *Client) {
