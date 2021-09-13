@@ -46,11 +46,16 @@ jobs:
       - name: Build
         run: go build -v .
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
+
       - name: Integration Test
         run: go test -v -p 20 ./resources/integration_tests
         env:
           INTEGRATION_TESTS: 1
           TF_VAR_SUFFIX: integration
           TF_VAR_PREFIX: cq-testing
-          GCLOUD_PROJECT: ${{ secrets.GCLOUD_PROJECT_ID }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}

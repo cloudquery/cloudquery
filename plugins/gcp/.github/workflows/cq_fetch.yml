@@ -59,6 +59,13 @@ jobs:
           curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
           chmod a+x cloudquery
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
+
       - name: Fetch
         run: |
           rm -rf .cq_reattach
@@ -66,5 +73,3 @@ jobs:
         env:
           OS: Linux
           CQ_REATTACH_PROVIDERS: .cq_reattach
-          GCLOUD_PROJECT: ${{ secrets.GCLOUD_PROJECT_ID }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
