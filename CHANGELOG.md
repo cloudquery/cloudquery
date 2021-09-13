@@ -5,7 +5,31 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.5.11] - 2020-09-09
+## [v0.5.14] - 2021-09-13
+###### SDK Version: v0.4.4
+
+### :spider: Fixed
+* Fixed kms key fetching when provider tried to fetch aws managed keys rotation properties [#168](https://github.com/cloudquery/cq-provider-aws/pull/168)
+
+### :gear: Changed
+* Upgraded to SDK Version [v0.4.4](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v044---2021-09-13)
+
+## [v0.5.13] - 2021-09-09
+###### SDK Version: v0.4.3
+
+### :spider: Fixed
+remove region multiplex on web acl resource[#188](https://github.com/cloudquery/cq-provider-aws/pull/188)
+
+
+
+## [v0.5.12] - 2021-09-09
+###### SDK Version: v0.4.3
+
+### :spider: Fixed
+* Fixed bad migrations [#187](https://github.com/cloudquery/cq-provider-aws/pull/187)
+
+
+## [v0.5.11] - 2021-09-09
 ###### SDK Version: v0.4.3
 
 ### :spider: Fixed
@@ -18,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :gear: Changed
 * Upgraded to SDK Version [v0.4.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md)
 
-## [v0.5.10] - 2020-08-19
+## [v0.5.10] - 2021-08-19
 ###### SDK Version: 0.3.4
 
 ### :spider: Fixed
@@ -28,14 +52,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added multiple e2e integration tests for resources for increased stability [#158](https://github.com/cloudquery/cq-provider-aws/pull/158)
 
 
-## [v0.5.9] - 2020-08-19
+## [v0.5.9] - 2021-08-19
 ###### SDK Version: 0.3.3-rc2
 
 ### :spider: Fixed
 * Fixed bad migration SQL [#160](https://github.com/cloudquery/cq-provider-aws/pull/160)
 
 
-## [v0.5.8] - 2020-08-19
+## [v0.5.8] - 2021-08-19
 ###### SDK Version: 0.3.3-rc2
 
 ### :spider: Fixed
@@ -46,21 +70,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for provider e2e testing to improve stability, upcoming release should include more tests.
 
 
-## [v0.5.7] - 2020-08-12
+## [v0.5.7] - 2021-08-12
 ###### SDK Version: 0.3.2
 
 ### :spider: Fixed
 * Updated organizational accounts call [#146](https://github.com/cloudquery/cq-provider-aws/pull/146)
 
 
-## [v0.5.6] - 2020-08-12
+## [v0.5.6] - 2021-08-12
 ###### SDK Version: 0.3.2
 
 ### :spider: Fixed
 * Removed problematic s3 bucket primary keys [#144](https://github.com/cloudquery/cq-provider-aws/pull/144)
 
 
-## [v0.5.5] - 2020-08-11
+## [v0.5.5] - 2021-08-11
 ###### SDK Version: 0.3.2
 ### :gear: Changed
 * Upgraded to SDK Version [0.3.2](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v032---2020-08-11)
@@ -71,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :rocket: Added
 * Added some resources missing Arn's [#142](https://github.com/cloudquery/cq-provider-aws/issues/142)
 
-## [v0.5.4] - 2020-08-07
+## [v0.5.4] - 2021-08-07
 ###### SDK Version: 0.3.1
 
 ### :spider: Fixed
@@ -80,20 +104,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Ignore access denied in s3 relations[#138](https://github.com/cloudquery/cq-provider-aws/pull/138)
 
 
-## [v0.5.3] - 2020-08-04
+## [v0.5.3] - 2021-08-04
 ###### SDK Version: 0.3.1
 
 ### :spider: Fixed
 * Fixed [#130](https://github.com/cloudquery/cq-provider-aws/issues/130) IAM User Tags not persisting [#125](https://github.com/cloudquery/cq-provider-aws/pull/132)
 * Fixed s3 bucket resource resolving errors [#131](https://github.com/cloudquery/cq-provider-aws/pull/131)
 
-## [v0.5.2] - 2020-08-01
+## [v0.5.2] - 2021-08-01
 ###### SDK Version: 0.3.1
 
 ### :rocket: Added
 * Added support for arm64 [#128](https://github.com/cloudquery/cq-provider-aws/pull/128)
 
-## [v0.5.1] - 2020-07-30
+## [v0.5.1] - 2021-07-30
 ###### SDK Version: 0.3.1
 
 ### :rocket: Added
@@ -107,7 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed cognito_user_pools input [#126](https://github.com/cloudquery/cq-provider-aws/pull/126)
 
 
-## [v0.5.0] - 2020-07-28
+## [v0.5.0] - 2021-07-28
 ###### SDK Version: 0.3.0
 
 ### :rocket: Added
@@ -128,7 +152,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :spider: Fixed
 * Fixed AWS Debug flag will now write into log instead of stdout. [#119](https://github.com/cloudquery/cq-provider-aws/pull/119)
 
-## [0.4.11] - 2020-07-15
+## [0.4.11] - 2021-07-15
 
 Base version at which changelog was introduced.
 
