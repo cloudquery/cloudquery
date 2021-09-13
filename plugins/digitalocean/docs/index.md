@@ -13,7 +13,7 @@ cloudquery init digitalocean
 #### DigitalOcean API
 To authenticate CloudQuery follow the authentication [instructions](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) in digitaloceans API reference
 
-####Spaces API
+#### Spaces API
 
 To create an access key for CloudQuery to read spaces api visit this [Apps & API](https://cloud.digitalocean.com/settings/api/tokens?i=d6d4a6) section of the DigitalOcean control panel for your account.
 
@@ -36,12 +36,12 @@ configuration {
 }
 ```
 
-#### Environment variables
+### Environment variables
 
 The following environment variables can be used instead of passing in them in the  configuration:
 
-* `DIGITAL_OCEAN_ACCESS_TOKEN` & `DIGITALOCEAN_TOKEN` 
-* `SPACES_ACCESS_KEY_ID` & `SPACES_SECRET_ACCESS_KEY`
+1. `DIGITALOCEAN_ACCESS_TOKEN` & `DIGITALOCEAN_TOKEN` 
+2. `SPACES_ACCESS_KEY_ID` & `SPACES_SECRET_ACCESS_KEY`
 
 ## Query Examples
 
