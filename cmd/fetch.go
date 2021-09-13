@@ -22,17 +22,21 @@ var fetchCmd = &cobra.Command{
   cloudquery fetch`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
+		failOnError := viper.GetBool("fail-on-error")
+
 		ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
 		c, err := console.CreateClient(ctx, configPath)
 		if err != nil {
 			return err
 		}
 		defer c.Client().Close()
-		return c.Fetch(ctx)
+		return c.Fetch(ctx, failOnError)
 	},
 }
 
 func init() {
 	fetchCmd.SetUsageTemplate(usageTemplateWithFlags)
+	fetchCmd.PersistentFlags().Bool("fail-on-error", false, "Cloudquery should fail if provider has an internal error")
+	_ = viper.BindPFlag("fail-on-error", fetchCmd.PersistentFlags().Lookup("fail-on-error"))
 	rootCmd.AddCommand(fetchCmd)
 }

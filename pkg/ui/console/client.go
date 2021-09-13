@@ -69,7 +69,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) Fetch(ctx context.Context) error {
+func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -88,6 +88,7 @@ func (c Client) Fetch(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
 	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
@@ -95,6 +96,14 @@ func (c Client) Fetch(ctx context.Context) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
+
+	if failOnError {
+		for _, summary := range response.ProviderFetchSummary {
+			if summary.HasErrors() {
+				return fmt.Errorf("provider fetch has one or more errors")
+			}
+		}
+	}
 	return nil
 }
 
