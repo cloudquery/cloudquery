@@ -318,7 +318,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				if resp.Error != "" {
 					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
 					pLog.Error("received provider fetch update error", "error", resp.Error)
-					continue
 				}
 				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
@@ -568,4 +567,11 @@ func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
 		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)
 	}
 	return kv
+}
+
+func (s *ProviderFetchSummary) HasErrors() bool {
+	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
+		return true
+	}
+	return false
 }

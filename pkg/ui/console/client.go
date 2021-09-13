@@ -99,7 +99,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 	if failOnError {
 		for _, summary := range response.ProviderFetchSummary {
-			if len(summary.FetchErrors) > 0 {
+			if summary.HasErrors() {
 				return fmt.Errorf("provider fetch has one or more errors")
 			}
 		}
