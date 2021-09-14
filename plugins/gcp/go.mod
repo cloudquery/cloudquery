@@ -3,8 +3,8 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.4.4
 	github.com/Masterminds/squirrel v1.5.0
+	github.com/cloudquery/cq-provider-sdk v0.4.6
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/googleapis/gax-go/v2 v2.0.5
 	github.com/hashicorp/go-hclog v0.16.2

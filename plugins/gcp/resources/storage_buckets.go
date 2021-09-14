@@ -574,15 +574,15 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	call := svc.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
 	output, err := call.Do()
 	if err != nil {
+		if client.IgnoreErrorHandler(err) {
+			meta.Logger().Warn("bucket get IAM policy permission denied", "error", err)
+			return nil
+		}
 		return err
 	}
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		if client.IgnoreErrorHandler(err) {
-			meta.Logger().Warn("permission denied", "error", err)
-			return nil
-		}
 		return err
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
