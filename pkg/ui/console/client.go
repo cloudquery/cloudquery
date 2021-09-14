@@ -214,6 +214,22 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 	return nil
 }
 
+func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		return err
+	} else {
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
+		color.GreenString("✓")
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished building provider schema...\n\n")
+	return nil
+}
+
 func (c Client) Client() *client.Client {
 	return c.c
 }
