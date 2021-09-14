@@ -220,10 +220,10 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 		return err
 	}
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
-		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema built successfully.\n\n", providerName)
 		color.GreenString("✓")
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished building provider schema...\n\n")
