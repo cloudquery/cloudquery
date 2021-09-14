@@ -5,7 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.4.4] - 2020-09-09
+## [v0.4.5] - 2021-09-14
+###### SDK Version: v0.4.4
+
+### :spider: Fixed
+* Fixed forbidden error in gcp buckets iam policy fetch [#59](https://github.com/cloudquery/cq-provider-gcp/pull/59)
+
+### :gear: Changed
+* Upgraded to SDK Version [v0.4.4](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v044---2021-09-13)
+
+### :rocket: Added
+* added e2e intergration tests for improved stability [#51](https://github.com/cloudquery/cq-provider-gcp/pull/51)
+
+## [v0.4.4] - 2021-09-09
 ###### SDK Version: 0.4.3
 
 ### :rocket: Added
@@ -17,24 +29,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :gear: Changed
 * Upgraded to SDK Version [0.4.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md)
 
-## [v0.4.3] - 2020-08-13
+## [v0.4.3] - 2021-08-13
 ###### SDK Version: 0.3.2
 
 ### :spider: Fixed
 * Add Ignore error to all resources. [#45](https://github.com/cloudquery/cq-provider-gcp/pull/45)
 
-## [v0.4.2] - 2020-08-12
+## [v0.4.2] - 2021-08-12
 ###### SDK Version: 0.3.2
 
 ### :spider: Fixed
 * Fixed common errors in gcp provider. [#43](https://github.com/cloudquery/cq-provider-gcp/pull/43)
 
-## [v0.4.1] - 2020-08-11
+## [v0.4.1] - 2021-08-11
 ###### SDK Version: 0.3.2
 ### :gear: Changed
 * Upgraded to SDK Version [0.3.2](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v032---2020-08-11)
 
-## [v0.4.0] - 2020-07-27
+## [v0.4.0] - 2021-07-27
 ###### SDK Version: 0.3.0
 
 ### :rocket: Added
@@ -50,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :spider: Fixed
 * Fixed Domain registrations bad path. [#38](https://github.com/cloudquery/cq-provider-gcp/pull/38)
 
-## [v0.3.6] - 2020-07-15
+## [v0.3.6] - 2021-07-15
 ###### SDK Version: 0.2.8
 
 Base version at which changelog was introduced.
