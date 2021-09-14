@@ -1,4 +1,4 @@
-name: cq_fecth
+name: cq_fetch
 
 on:
   schedule:
@@ -46,6 +46,21 @@ jobs:
       - name: Build
         run: go build -v .
 
+      - name: Cache CQ
+        id: cache-cq-binary
+        uses: actions/cache@v2
+        with:
+          path: cloudquery
+          key: ${{ runner.os }}-${{ hashFiles('cloudquery') }}
+
+      - name: Download Cloudquery
+        if: steps.cache-cq-binary.cache-hit != 'true'
+        run: |
+          curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
+          chmod a+x cloudquery
+        env:
+          OS: Linux
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -56,9 +71,6 @@ jobs:
       - name: Fetch
         run: |
           rm -rf .cq_reattach
-          curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
-          chmod a+x cloudquery
-          CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config ./client/testdata/nightly.hcl --enable-console-log
+          CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config ./client/testdata/nightly.hcl --enable-console-log --fail-on-error
         env:
-          OS: Linux
           CQ_REATTACH_PROVIDERS: .cq_reattach
