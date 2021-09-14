@@ -111,8 +111,7 @@ var (
 				return err
 			}
 			defer c.Client().Close()
-			_ = c.Client().BuildProviderTables(ctx, args[0])
-			return nil
+			return c.Client().BuildProviderTables(ctx, args[0])
 		},
 	}
 
