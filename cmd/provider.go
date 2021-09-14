@@ -32,6 +32,8 @@ var (
   ./cloudquery provider downgrade aws, gcp
   # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
   ./cloudquery provider drop aws
+  # build provider schema
+  ./cloudquery provider build-schema aws
 `,
 		Version: client.Version,
 	}
@@ -93,6 +95,27 @@ var (
 		},
 	}
 
+	providerBuildSchemaHelpMsg = "Builds provider schema on database"
+	providerBuildSchemaCmd     = &cobra.Command{
+		Use:   "build-schema [provider]",
+		Short: providerBuildSchemaHelpMsg,
+		Long:  providerBuildSchemaHelpMsg,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) != 1 {
+				return fmt.Errorf("missing provider name")
+			}
+			configPath := viper.GetString("configPath")
+			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			c, err := console.CreateClient(ctx, configPath)
+			if err != nil {
+				return err
+			}
+			defer c.Client().Close()
+			_ = c.Client().BuildProviderTables(ctx, args[0])
+			return nil
+		},
+	}
+
 	providerDownloadHelpMsg = "Downloads all providers specified in config.hcl."
 	providerDownloadCmd     = &cobra.Command{
 		Use:   "download",
@@ -116,6 +139,6 @@ var (
 )
 
 func init() {
-	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd)
+	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd)
 	rootCmd.AddCommand(providerCmd)
 }
