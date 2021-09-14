@@ -5,7 +5,7 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.4.5] - 2021-09-14
+## [v0.4.6] - 2021-09-14
 ###### SDK Version: v0.4.4
 
 ### :spider: Fixed
@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :rocket: Added
 * added e2e intergration tests for improved stability [#51](https://github.com/cloudquery/cq-provider-gcp/pull/51)
+
+## [v0.4.5] - 2021-09-09
+###### SDK Version: 0.4.3
+
+### :spider: Fixed
+Embed migrations [#58](https://github.com/cloudquery/cq-provider-gcp/pull/58)
 
 ## [v0.4.4] - 2021-09-09
 ###### SDK Version: 0.4.3
