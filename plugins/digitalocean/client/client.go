@@ -140,6 +140,3 @@ func (a AwsLogger) Logf(classification logging.Classification, format string, v 
 		a.l.Debug(fmt.Sprintf(format, v...))
 	}
 }
-
-// 6DF7UBMGFLP47S5CEYEN
-// xkCKWZpXtWRP0nh9ladSHKccDbrMnpY+Nm8F+xbH99M
