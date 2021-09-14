@@ -409,6 +409,11 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
 		mv, err := m.FindLatestMigration(cfg.Version)
 		if err != nil {
@@ -432,6 +437,11 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	return m.UpgradeProvider(cfg.Version)
 }
@@ -448,6 +458,11 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) err
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	return m.DowngradeProvider(cfg.Version)
 }
@@ -461,6 +476,11 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("dropping provider tables", "version", cfg.Version, "provider", cfg.Name)
 	return m.DropProvider(ctx, s.ResourceTables)
 }
