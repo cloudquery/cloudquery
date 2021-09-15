@@ -14,7 +14,6 @@ cloudquery {
 
 provider "aws" {
   configuration {
-    aws_debug = true
     max_retries = 7
     max_backoff = 60
   }
