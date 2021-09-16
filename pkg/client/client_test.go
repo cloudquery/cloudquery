@@ -105,6 +105,7 @@ func TestClient_GetProviderSchema(t *testing.T) {
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
+		return
 	}
 	ctx := context.Background()
 	schema, err := c.GetProviderSchema(ctx, "test")
@@ -127,11 +128,12 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
+		return
 	}
 
 	ctx := context.Background()
 	pConfig, err := c.GetProviderConfiguration(ctx, "test")
-	if pConfig == nil {
+	if err != nil || pConfig == nil {
 		t.FailNow()
 	}
 	assert.NotNil(t, pConfig)
@@ -196,7 +198,7 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-	_ = <-watcher.Events
+	<-watcher.Events
 
 	unmanaged, err := serve.ParseReattachProviders(os.Getenv("CQ_REATTACH_PROVIDERS"))
 	if err != nil {

@@ -174,6 +174,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		if err != nil {
 			return nil, err
 		}
+		if err := validatePostgresVersion(ctx, c.pool, minPostgresVersion); err != nil {
+			c.Logger.Warn(err.Error())
+		}
 	}
 	return c, nil
 }
