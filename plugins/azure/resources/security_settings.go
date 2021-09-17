@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -65,11 +66,14 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	for response.NotDone() {
 		for _, item := range response.Values() {
-			if s, ok := item.AsSetting(); ok {
-				res <- s
+			if v, ok := item.AsSetting(); ok {
+				res <- v
+			} else if v, ok := item.AsDataExportSettings(); ok {
+				res <- v
+			} else if v, ok := item.AsAlertSyncSettings(); ok {
+				res <- v
 			} else {
-				d, _ := item.AsDataExportSettings()
-				res <- d
+				return fmt.Errorf("unexpected BasicSetting: %#v", item)
 			}
 		}
 		if err := response.NextWithContext(ctx); err != nil {

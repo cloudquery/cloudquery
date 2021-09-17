@@ -13,11 +13,12 @@ import (
 
 func MonitorDiagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_monitor_diagnostic_settings",
-		Description: "DiagnosticSettingsResource the diagnostic setting resource",
-		Resolver:    fetchMonitorDiagnosticSettings,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:         "azure_monitor_diagnostic_settings",
+		Description:  "DiagnosticSettingsResource the diagnostic setting resource",
+		Resolver:     fetchMonitorDiagnosticSettings,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -86,10 +87,9 @@ func MonitorDiagnosticSettings() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:         "azure_monitor_diagnostic_setting_metrics",
-				Description:  "MetricSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular metric",
-				Resolver:     fetchMonitorDiagnosticSettingMetrics,
-				AlwaysDelete: true,
+				Name:        "azure_monitor_diagnostic_setting_metrics",
+				Description: "MetricSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular metric",
+				Resolver:    fetchMonitorDiagnosticSettingMetrics,
 				Columns: []schema.Column{
 					{
 						Name:        "diagnostic_setting_cq_id",
@@ -133,10 +133,9 @@ func MonitorDiagnosticSettings() *schema.Table {
 				},
 			},
 			{
-				Name:         "azure_monitor_diagnostic_setting_logs",
-				Description:  "LogSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular log",
-				Resolver:     fetchMonitorDiagnosticSettingLogs,
-				AlwaysDelete: true,
+				Name:        "azure_monitor_diagnostic_setting_logs",
+				Description: "LogSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular log",
+				Resolver:    fetchMonitorDiagnosticSettingLogs,
 				Columns: []schema.Column{
 					{
 						Name:        "diagnostic_setting_cq_id",

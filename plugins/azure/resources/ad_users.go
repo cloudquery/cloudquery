@@ -11,11 +11,12 @@ import (
 
 func AdUsers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_ad_users",
-		Description: "User active Directory user information",
-		Resolver:    fetchAdUsers,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "object_id"}},
+		Name:         "azure_ad_users",
+		Description:  "User active Directory user information",
+		Resolver:     fetchAdUsers,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "object_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

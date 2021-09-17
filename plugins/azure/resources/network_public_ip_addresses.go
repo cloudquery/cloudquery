@@ -260,6 +260,7 @@ func resolveNetworkPublicIPAddressPublicIPAddress(ctx context.Context, meta sche
 	}
 
 	if p.PublicIPAddressPropertiesFormat == nil ||
+		p.PublicIPAddressPropertiesFormat.IPConfiguration == nil ||
 		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PublicIPAddress == nil {
 		return nil

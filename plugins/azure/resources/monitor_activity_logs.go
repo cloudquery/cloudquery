@@ -244,8 +244,16 @@ func fetchMonitorActivityLogs(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
+	// azure returns same events sometimes so we have to filter out the duplicates
+	seen := make(map[string]struct{})
 	for response.NotDone() {
-		res <- response.Values()
+		for _, v := range response.Values() {
+			if _, ok := seen[*v.ID]; ok {
+				continue
+			}
+			seen[*v.ID] = struct{}{}
+			res <- v
+		}
 		if err := response.NextWithContext(ctx); err != nil {
 			return err
 		}
