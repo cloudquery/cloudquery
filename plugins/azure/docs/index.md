@@ -12,9 +12,9 @@ The CloudQuery Azure provider pulls configuration out of Azure resources, normal
 
 To authenticate cloudquery with your Azure account you can use any of the following options (see full documentation at [AZURE SDK V2](https://github.com/Azure/azure-sdk-for-go#authentication)):
 
-- Client Credentials: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
-- Client Certificate: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CERTIFICATE_PATH`, `AZURE_CERTIFICATE_PASSWORD`
-- Resource Owner Password: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_USERNAME`, `AZURE_PASSWORD`
+- Client Credentials: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_SUBSCRIPTION_ID`
+- Client Certificate: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CERTIFICATE_PATH`, `AZURE_CERTIFICATE_PASSWORD`, `AZURE_SUBSCRIPTION_ID`
+- Resource Owner Password: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_USERNAME`, `AZURE_PASSWORD`, `AZURE_SUBSCRIPTION_ID`
 
 To have access to ad(Active Directory) resources the `app registration/user` should be [added](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal) as Assignment to `Application administrator` role in Active Directory `Roles and administrators` section
 
