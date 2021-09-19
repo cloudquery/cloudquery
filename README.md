@@ -31,7 +31,7 @@ Checkout https://hub.cloudquery.io
 
 If you want us to add a new provider or resource please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
-See [docs](https://docs.cloudquery.io/developers/developing-new-provider) for developing new provider.
+See [docs](https://docs.cloudquery.io/docs/developers/developing-new-provider) for developing new provider.
 
 ## Download & install
 
