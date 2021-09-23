@@ -81,8 +81,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:      c.cfg.Providers,
-		UpdateCallback: fetchCallback,
+		Providers:         c.cfg.Providers,
+		UpdateCallback:    fetchCallback,
+		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {

@@ -36,7 +36,9 @@ var fetchCmd = &cobra.Command{
 
 func init() {
 	fetchCmd.SetUsageTemplate(usageTemplateWithFlags)
-	fetchCmd.PersistentFlags().Bool("fail-on-error", false, "Cloudquery should fail if provider has an internal error")
+	fetchCmd.PersistentFlags().Bool("fail-on-error", false, "CloudQuery should return a failure error code if provider has any error")
 	_ = viper.BindPFlag("fail-on-error", fetchCmd.PersistentFlags().Lookup("fail-on-error"))
+	fetchCmd.Flags().BoolP("disable-delete", "d", false, "disable pre-fetch fetch delete")
+	_ = viper.BindPFlag("disable-delete", fetchCmd.Flags().Lookup("disable-delete"))
 	rootCmd.AddCommand(fetchCmd)
 }
