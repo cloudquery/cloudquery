@@ -31,6 +31,7 @@ func IamRoles() *schema.Table {
 				Name:        "policies",
 				Description: "List of policies attached to group.",
 				Type:        schema.TypeJSON,
+				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Resolver:    resolveIamRolePolicies,
 			},
 			{
@@ -154,6 +155,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	return resource.Set("policies", policies)
 }
+
 func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Role)
 	if r.AssumeRolePolicyDocument != nil {
