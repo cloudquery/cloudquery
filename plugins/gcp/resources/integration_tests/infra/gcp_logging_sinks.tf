@@ -22,3 +22,11 @@ resource "google_logging_project_sink" "gcp_logging_sinks_sink" {
     filter      = "resource.type = k8s_container resource.labels.namespace_name=\"namespace-1\""
   }
 }
+
+resource "google_project_iam_binding" "log-writer" {
+  role = "roles/storage.objectCreator"
+
+  members = [
+    google_logging_project_sink.gcp_logging_sinks_sink.writer_identity,
+  ]
+}

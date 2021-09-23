@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "sql_db_instance" {
-  name                = "sql-database-instance-${var.test_prefix}${var.test_suffix}"
+  name                = "sql-database-instance-${var.test_prefix}${var.test_suffix}-v2"
   database_version    = "POSTGRES_11"
   deletion_protection = false
 

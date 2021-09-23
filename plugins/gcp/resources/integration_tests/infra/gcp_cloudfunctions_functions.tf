@@ -5,7 +5,7 @@ resource "google_storage_bucket" "bucket_func" {
 resource "google_storage_bucket_object" "bucket_object_function" {
   name     = "helloworld-${var.test_prefix}${var.test_suffix}"
   bucket   = google_storage_bucket.bucket_func.name
-  filename = data.archive_file.function_zip_inline.output_path
+  source = data.archive_file.function_zip_inline.output_path
 }
 
 resource "google_cloudfunctions_function" "helloworld_function" {

@@ -1,11 +1,11 @@
 resource "google_kms_key_ring" "gcp_kms_keyrings_keyring" {
-  name     = "kms-keyring-${var.test_prefix}${var.test_suffix}"
+  name     = "kms-keyring-${var.test_prefix}${var.test_suffix}-v2"
   location = "global"
 
 }
 
 resource "google_kms_crypto_key" "gcp_kms_keyrings_key" {
-  name            = "key-${var.test_prefix}${var.test_suffix}"
+  name            = "key-${var.test_prefix}${var.test_suffix}-v2"
   key_ring        = google_kms_key_ring.gcp_kms_keyrings_keyring.id
   rotation_period = "100000s"
 

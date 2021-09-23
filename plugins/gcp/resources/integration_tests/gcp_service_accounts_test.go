@@ -32,7 +32,7 @@ func TestIntegrationIamServiceAccounts(t *testing.T) {
 					ForeignKeyName: "service_account_cq_id",
 					ExpectedValues: []providertest.ExpectedValue{
 						{
-							Count: 2,
+							Count: 1,
 							Data: map[string]interface{}{
 								"key_origin":    "GOOGLE_PROVIDED",
 								"key_algorithm": "KEY_ALG_RSA_2048",
