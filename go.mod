@@ -46,7 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
 	github.com/aws/smithy-go v1.8.0
-	github.com/cloudquery/cq-provider-sdk v0.4.4
+	github.com/cloudquery/cq-provider-sdk v0.4.7
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
 	github.com/golang/mock v1.5.0
@@ -54,6 +54,7 @@ require (
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/spf13/cast v1.4.0
+	github.com/stretchr/testify v1.7.0
 )
 
 require (
@@ -111,7 +112,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/thoas/go-funk v0.8.1-0.20210502090430-efae847b30ab // indirect
 	github.com/tmccombs/hcl2json v0.3.3 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect

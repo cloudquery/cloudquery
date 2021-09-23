@@ -202,20 +202,21 @@ func (c *Client) withAccountID(accountID string) *Client {
 		maxRetries:      c.maxRetries,
 		maxBackoff:      c.maxBackoff,
 		ServicesManager: c.ServicesManager,
-		logger:          c.logger.With("account_id", accountID),
+		logger:          c.logger.With("account_id", obfuscateAccountId(accountID)),
 		AccountID:       accountID,
 		Region:          c.Region,
 	}
 }
 
 func (c *Client) withAccountIDAndRegion(accountID string, region string) *Client {
+
 	return &Client{
 		regions:         c.regions,
 		logLevel:        c.logLevel,
 		maxRetries:      c.maxRetries,
 		maxBackoff:      c.maxBackoff,
 		ServicesManager: c.ServicesManager,
-		logger:          c.logger.With("account_id", accountID, "Region", region),
+		logger:          c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region),
 		AccountID:       accountID,
 		Region:          region,
 	}
@@ -283,7 +284,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
-			awsCfg.Logger = AwsLogger{logger.With("account", account)}
+			awsCfg.Logger = AwsLogger{logger.With("account", obfuscateAccountId(account.ID))}
 		}
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
@@ -394,4 +395,11 @@ func (a AwsLogger) Logf(classification logging.Classification, format string, v 
 	} else {
 		a.l.Debug(fmt.Sprintf(format, v...))
 	}
+}
+
+func obfuscateAccountId(accountId string) string {
+	if len(accountId) <= 4 {
+		return accountId
+	}
+	return accountId[:4] + "xxxxxxxx"
 }
