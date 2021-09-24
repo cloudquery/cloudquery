@@ -64,6 +64,14 @@ type FetchUpdate struct {
 type ProviderFetchSummary struct {
 	ProviderName       string
 	PartialFetchErrors []*cqproto.PartialFetchFailedResource
+	FetchErrors        []error
+}
+
+func (s *ProviderFetchSummary) HasErrors() bool {
+	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
+		return true
+	}
+	return false
 }
 
 // PolicyRunRequest is the request used to run a policy.
@@ -284,6 +292,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider started fetching resources")
+			var fetchErrors = make([]error, 0)
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
@@ -294,6 +303,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					fetchSummaries <- ProviderFetchSummary{
 						ProviderName:       providerConfig.Name,
 						PartialFetchErrors: partialFetchResults,
+						FetchErrors:        fetchErrors,
 					}
 					return nil
 				}
@@ -313,8 +323,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 				if resp.Error != "" {
+					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
 					pLog.Error("received provider fetch update error", "error", resp.Error)
-					continue
 				}
 				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
@@ -399,6 +409,11 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
 		mv, err := m.FindLatestMigration(cfg.Version)
 		if err != nil {
@@ -422,6 +437,11 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	return m.UpgradeProvider(cfg.Version)
 }
@@ -438,6 +458,11 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) err
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	return m.DowngradeProvider(cfg.Version)
 }
@@ -451,6 +476,11 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
 	c.Logger.Info("dropping provider tables", "version", cfg.Version, "provider", cfg.Name)
 	return m.DropProvider(ctx, s.ResourceTables)
 }
@@ -510,6 +540,22 @@ func (c *Client) Close() {
 	if c.pool != nil {
 		c.pool.Close()
 	}
+}
+
+func (c *Client) SetProviderVersion(ctx context.Context, providerName, version string) error {
+	s, err := c.GetProviderSchema(ctx, providerName)
+	if err != nil {
+		return err
+	}
+	if s.Migrations == nil {
+		return fmt.Errorf("provider doesn't support migrations")
+	}
+	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	if err != nil {
+		return err
+	}
+	c.Logger.Info("set provider version", "version", version, "provider", cfg.Name)
+	return m.SetVersion(version)
 }
 
 func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {

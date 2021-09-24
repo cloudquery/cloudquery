@@ -69,7 +69,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) Fetch(ctx context.Context) error {
+func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -81,13 +81,15 @@ func (c Client) Fetch(ctx context.Context) error {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:      c.cfg.Providers,
-		UpdateCallback: fetchCallback,
+		Providers:         c.cfg.Providers,
+		UpdateCallback:    fetchCallback,
+		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
 		return err
 	}
+
 	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
@@ -95,6 +97,14 @@ func (c Client) Fetch(ctx context.Context) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
+
+	if failOnError {
+		for _, summary := range response.ProviderFetchSummary {
+			if summary.HasErrors() {
+				return fmt.Errorf("provider fetch has one or more errors")
+			}
+		}
+	}
 	return nil
 }
 
@@ -202,6 +212,22 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 		color.GreenString("✓")
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		return err
+	} else {
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema built successfully.\n\n", providerName)
+		color.GreenString("✓")
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished building provider schema...\n\n")
 	return nil
 }
 
