@@ -40,12 +40,12 @@ var (
 				return err
 			}
 			defer c.Client().Close()
-			err = c.DownloadPolicy(ctx, args)
-			if err != nil {
-				return err
+			if !skipDownload {
+				if err = c.DownloadPolicy(ctx, args); err != nil {
+					return err
+				}
 			}
-			_ = c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure, skipVersioning)
-			return nil
+			return c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure, skipVersioning)
 		},
 	}
 	skipDownload   bool
