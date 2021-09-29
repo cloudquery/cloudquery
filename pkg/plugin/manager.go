@@ -48,6 +48,17 @@ func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string,
 	}, nil
 }
 
+// LoadExisting loads existing providers that are found by the hub in ProviderDirectory
+func (m *Manager) LoadExisting(providers []*config.RequiredProvider) {
+	for _, p := range providers {
+		pd, err := m.hub.GetProvider(p.Name, p.Version)
+		if err != nil {
+			continue
+		}
+		m.providers[pd.Name] = pd
+	}
+}
+
 func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
 	m.logger.Debug("Downloading required providers", "providers", providers)
 	for _, rp := range providers {
@@ -84,6 +95,14 @@ func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin
 		return nil, err
 	}
 	return p, nil
+}
+
+func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderDetails, error) {
+	details, ok := m.providers[providerName]
+	if !ok {
+		return registry.ProviderDetails{}, fmt.Errorf("provider %s doesn't exist", providerName)
+	}
+	return details, nil
 }
 
 // Shutdown closes all clients and cleans the managed clients

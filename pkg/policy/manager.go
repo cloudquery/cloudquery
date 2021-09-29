@@ -218,15 +218,9 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	}
 	m.logger.Debug("policy file found", "path", policyFilePath)
 
-	// Read policy file
-	parser := config.NewParser(nil)
-	policiesRaw, diags := parser.LoadHCLFile(policyFilePath)
-	if diags != nil && diags.HasErrors() {
-		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Error())
-	}
-	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags, policyFolder)
-	if diagsDecode != nil && diagsDecode.HasErrors() {
-		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
+	policies, err := m.readPolicy(policyFilePath, policyFolder)
+	if err != nil {
+		return nil, err
 	}
 	m.logger.Debug("parsed policy file", "policies", policies)
 	if policies == nil {
@@ -265,6 +259,20 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 		}
 	}
 	return results, nil
+}
+
+// readPolicy reads, normalizes and validates the policy file at policyPath, using policyFolder as base path.
+func (m *ManagerImpl) readPolicy(policyPath, policyFolder string) (*config.PolicyWrapper, error) {
+	parser := config.NewParser(nil)
+	policiesRaw, diags := parser.LoadHCLFile(policyPath)
+	if diags != nil && diags.HasErrors() {
+		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Error())
+	}
+	policies, diagsDecode := parser.DecodePolicies(policiesRaw, diags, policyFolder)
+	if diagsDecode != nil && diagsDecode.HasErrors() {
+		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
+	}
+	return policies, nil
 }
 
 // runSubPolicyOrQuery
@@ -324,7 +332,7 @@ func (m *ManagerImpl) runSubPolicyOrQuery(
 			}
 			collectExecutionResults(execResults, policyPath, res)
 			if execReq.UpdateCallback != nil {
-				execReq.UpdateCallback(query.Name, execResults.Passed)
+				execReq.UpdateCallback(query.Name, res.Type, execResults.Passed)
 			}
 			return execResults, nil
 		}

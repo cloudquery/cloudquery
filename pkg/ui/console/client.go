@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/fatih/color"
-
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -47,7 +46,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client.\n\n")
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
 	return &Client{c, cfg, progressUpdater}, err
@@ -70,7 +69,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) Fetch(ctx context.Context) error {
+func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -82,16 +81,30 @@ func (c Client) Fetch(ctx context.Context) error {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:      c.cfg.Providers,
-		UpdateCallback: fetchCallback,
+		Providers:         c.cfg.Providers,
+		UpdateCallback:    fetchCallback,
+		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
-	if err := c.c.Fetch(ctx, request); err != nil {
+	response, err := c.c.Fetch(ctx, request)
+	if err != nil {
 		return err
 	}
+
 	if ui.IsTerminal() && fetchProgress != nil {
+		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
+		printFetchResponse(response)
 	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
+
+	if failOnError {
+		for _, summary := range response.ProviderFetchSummary {
+			if summary.HasErrors() {
+				return fmt.Errorf("provider fetch has one or more errors")
+			}
+		}
+	}
 	return nil
 }
 
@@ -120,10 +133,13 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 		OutputPath:     outputPath,
 		StopOnFailure:  stopOnFailure,
 		SkipVersioning: skipVersioning,
-		RunCallBack: func(name string, passed bool) {
-			if passed {
+		RunCallBack: func(name string, qtype config.QueryType, passed bool) {
+			switch {
+			case passed:
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-			} else {
+			case qtype == config.ManualQuery:
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusWarn], name, color.YellowString("manual"))
+			default:
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
 			}
 		},
@@ -138,8 +154,101 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 	return nil
 }
 
+func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
+	providers, err := c.getRequiredProviders(args)
+	if err != nil {
+		return err
+	}
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	for _, p := range providers {
+
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil {
+			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+			return err
+		} else {
+			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
+			color.GreenString("✓")
+		}
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", args)
+	providers, err := c.getRequiredProviders(args)
+	if err != nil {
+		return err
+	}
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	for _, p := range providers {
+		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
+			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+			return err
+		} else {
+			ui.ColorizedOutput(ui.ColorSuccess, "✓ Downgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
+			color.GreenString("✓")
+		}
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) DropProvider(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	if err := c.c.DropProvider(ctx, providerName); err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		return err
+	} else {
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
+		color.GreenString("✓")
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	return nil
+}
+
+func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		return err
+	} else {
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema built successfully.\n\n", providerName)
+		color.GreenString("✓")
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished building provider schema...\n\n")
+	return nil
+}
+
 func (c Client) Client() *client.Client {
 	return c.c
+}
+
+func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {
+	if len(providerNames) == 0 {
+		// if no providers are given we will return all providers
+		return c.cfg.CloudQuery.Providers, nil
+	}
+	providers := make([]*config.RequiredProvider, len(providerNames))
+	for i, p := range providerNames {
+		pCfg, err := c.cfg.CloudQuery.GetRequiredProvider(p)
+		if err != nil {
+			return nil, err
+		}
+		providers[i] = pCfg
+	}
+	return providers, nil
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
@@ -159,7 +268,15 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			fetchProgress.Update(update.Provider, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
 			return
 		}
+		if len(update.PartialFetchResults) > 0 {
+			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("errors: %d", len(update.PartialFetchResults)), 0)
+		}
 		bar := fetchProgress.GetBar(update.Provider)
+		if bar == nil {
+			fetchProgress.AbortAll()
+			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
+			return
+		}
 		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
 		if bar.Status == ui.StatusError {
@@ -168,12 +285,37 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			}
 			return
 		}
-		if update.AllDone() {
+		if update.AllDone() && bar.Status != ui.StatusWarn {
 			fetchProgress.Update(update.Provider, ui.StatusOK, "fetch complete", 0)
 			return
 		}
 	}
 	return fetchProgress, fetchCallback
+}
+
+func printFetchResponse(summary *client.FetchResponse) {
+	if summary == nil {
+		return
+	}
+	for _, pfs := range summary.ProviderFetchSummary {
+		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
+		for _, r := range pfs.PartialFetchErrors {
+			if r.RootTableName != "" {
+				ui.ColorizedOutput(ui.ColorErrorBold,
+					"Parent-Resource: %-64s Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
+					r.RootTableName,
+					r.RootPrimaryKeyValues,
+					r.TableName,
+					r.Error)
+			} else {
+				ui.ColorizedOutput(ui.ColorErrorBold,
+					"Table: %-64s Error: %s\n",
+					r.TableName,
+					r.Error)
+			}
+		}
+		ui.ColorizedOutput(ui.ColorWarning, "\n")
+	}
 }
 
 func loadConfig(path string) (*config.Config, error) {
