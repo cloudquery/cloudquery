@@ -17,6 +17,7 @@ func Provider() *provider.Provider {
 		},
 		ResourceMap: map[string]*schema.Table{
 			"core.nodes": CoreNodes(),
+			"core.pods":  CorePods(),
 		},
 	}
 }

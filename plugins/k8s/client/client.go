@@ -32,6 +32,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		Log: logger,
 		Services: Services{
 			Nodes: client.CoreV1().Nodes(),
+			Pods:  client.CoreV1().Pods(""),
 		},
 	}, nil
 }
