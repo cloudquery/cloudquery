@@ -1,10 +1,13 @@
 package logging
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path"
+	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -33,6 +36,9 @@ type Config struct {
 	MaxAge int `hcl:"max_age,optional"`
 	// Console logging will be without color, console logging must be enabled first.
 	ConsoleNoColor bool `hcl:"console_no_color,optional"`
+
+	// console is a writer that will be used for console output. If it is not set os.Stderr will be used.
+	console io.Writer
 }
 
 // Configure sets up the logging framework
@@ -50,7 +56,11 @@ func Configure(config Config) zerolog.Logger {
 		if config.EncodeLogsAsJson {
 			writers = append(writers, os.Stdout)
 		} else {
-			writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr})
+			console := config.console
+			if console == nil {
+				console = os.Stderr
+			}
+			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel, Out: console})
 		}
 	}
 
@@ -94,4 +104,32 @@ func newRollingFile(config Config) io.Writer {
 		MaxSize:    config.MaxSize,    // megabytes
 		MaxAge:     config.MaxAge,     // days
 	}
+}
+
+// formatLevel is zerolog.Formatter that turns a level value into a string.
+func formatLevel(i interface{}) string {
+	if level, ok := i.(string); ok {
+		switch level {
+		case "trace":
+			return ui.ColorDebug.Sprint("TRC")
+		case "debug":
+			return ui.ColorDebug.Sprint("DBG")
+		case "info":
+			return ui.ColorInfo.Sprint("INF")
+		case "warn":
+			return ui.ColorWarning.Sprint("WRN")
+		case "error":
+			return ui.ColorError.Sprint("ERR")
+		case "fatal":
+			return ui.ColorError.Sprint("FTL")
+		case "panic":
+			return ui.ColorError.Sprint("PNC")
+		default:
+			return ui.ColorInfo.Sprint("???")
+		}
+	}
+	if i == nil {
+		return ui.ColorInfo.Sprint("???")
+	}
+	return strings.ToUpper(fmt.Sprintf("%s", i))[0:3]
 }

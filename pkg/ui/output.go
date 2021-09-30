@@ -30,6 +30,7 @@ func IsTerminal() bool {
 }
 
 var (
+	ColorDebug        = color.New(color.FgWhite, color.Faint)
 	ColorHeader       = color.New(color.Bold)
 	ColorInfo         = color.New()
 	ColorProgress     = color.New(color.FgCyan)
