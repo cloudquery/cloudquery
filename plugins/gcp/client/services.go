@@ -19,19 +19,18 @@ import (
 )
 
 type Services struct {
-	Kms             *kms.Service
-	Storage         *storage.Service
-	Sql             *sql.Service
-	Iam             *iam.Service
-	Crm             *cloudresourcemanager.Service
-	CloudFunctions  *cloudfunctions.Service
-	Domain          *domains.Service
-	Compute         *compute.Service
 	BigQuery        *bigquery.Service
+	CloudFunctions  *cloudfunctions.Service
+	Compute         *compute.Service
 	Dns             *dns.Service
+	Domain          *domains.Service
+	Iam             *iam.Service
+	Kms             *kms.Service
 	Logging         *logging.Service
 	Monitoring      *monitoring.Service
 	ResourceManager *cloudresourcemanager.Service
+	Sql             *sql.Service
+	Storage         *storage.Service
 }
 
 func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services, error) {
@@ -55,10 +54,6 @@ func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services,
 		return nil, err
 	}
 	iamSvc, err := iam.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-	crmSvc, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,18 +91,17 @@ func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services,
 	}
 
 	return &Services{
-		Kms:             kmsSvc,
-		Storage:         storageSvc,
-		Sql:             sqlSvc,
-		Iam:             iamSvc,
-		Crm:             crmSvc,
-		CloudFunctions:  cfSvc,
-		Domain:          domainSvc,
-		Compute:         computeSvc,
 		BigQuery:        bigquerySvc,
+		CloudFunctions:  cfSvc,
+		Compute:         computeSvc,
 		Dns:             dnsSvc,
+		Domain:          domainSvc,
+		Iam:             iamSvc,
+		Kms:             kmsSvc,
 		Logging:         loggingSvc,
 		Monitoring:      monitoringSvc,
 		ResourceManager: resourceManagerSvc,
+		Sql:             sqlSvc,
+		Storage:         storageSvc,
 	}, nil
 }
