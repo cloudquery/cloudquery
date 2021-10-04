@@ -13,11 +13,14 @@ import (
 
 func CoreNodes() *schema.Table {
 	return &schema.Table{
-		Name:        "k8s_core_nodes",
-		Description: "Node is a worker node in Kubernetes.",
-		Resolver:    fetchCoreNodes,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
+		Name:         "k8s_core_nodes",
+		Description:  "Node is a worker node in Kubernetes.",
+		Resolver:     fetchCoreNodes,
+		Multiplex:    client.ContextMultiplex,
+		DeleteFilter: client.DeleteContextFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
+			client.CommonContextField,
 			{
 				Name:        "kind",
 				Description: "Kind is a string value representing the REST resource this object represents.",
@@ -273,8 +276,8 @@ func CoreNodes() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchCoreNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	client := meta.(*client.Client).Services.Nodes
-	result, err := client.List(ctx, metav1.ListOptions{})
+	nodes := meta.(*client.Client).Services.Nodes
+	result, err := nodes.List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return err
 	}

@@ -13,11 +13,14 @@ import (
 
 func CorePods() *schema.Table {
 	return &schema.Table{
-		Name:        "k8s_core_pods",
-		Description: "Pod is a collection of containers that can run on a host",
-		Resolver:    fetchCorePods,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
+		Name:         "k8s_core_pods",
+		Description:  "Pod is a collection of containers that can run on a host",
+		Resolver:     fetchCorePods,
+		Multiplex:    client.ContextMultiplex,
+		DeleteFilter: client.DeleteContextFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
+			client.CommonContextField,
 			{
 				Name:        "kind",
 				Description: "Kind is a string value representing the REST resource this object represents.",
@@ -445,6 +448,7 @@ func CorePods() *schema.Table {
 						Name:        "tty",
 						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional",
 						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("TTY"),
 					},
 				},
 				Relations: []*schema.Table{
@@ -756,6 +760,7 @@ func CorePods() *schema.Table {
 						Name:        "tty",
 						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional",
 						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("TTY"),
 					},
 				},
 				Relations: []*schema.Table{
@@ -1661,8 +1666,8 @@ func CorePods() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchCorePods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	client := meta.(*client.Client).Services.Pods
-	result, err := client.List(ctx, metav1.ListOptions{})
+	pods := meta.(*client.Client).Services.Pods
+	result, err := pods.List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return err
 	}

@@ -8,8 +8,9 @@ import (
 )
 
 type Services struct {
-	Nodes NodesClient
-	Pods  PodsClient
+	Nodes    NodesClient
+	Pods     PodsClient
+	Services ServicesClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/nodes.go . NodesClient
@@ -20,4 +21,9 @@ type NodesClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/pods.go . PodsClient
 type PodsClient interface {
 	List(ctx context.Context, opts metav1.ListOptions) (*corev1.PodList, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/services.go . ServicesClient
+type ServicesClient interface {
+	List(ctx context.Context, opts metav1.ListOptions) (*corev1.ServiceList, error)
 }
