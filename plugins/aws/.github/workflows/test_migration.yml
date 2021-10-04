@@ -72,29 +72,9 @@ jobs:
         env:
           OS: Linux
 
-      - name: Check out code into the initial migration tag
-        run: |
-          git fetch origin -p
-          git checkout "refs/tags/v0.5.7"
-          git checkout origin/main client/testdata/default.hcl
-
-      - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
-
-      - name: Build
-        run: go build -v .
-
       - name: Build initial schema
         run: |
-          rm -rf .cq_reattach
-          CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && \
-          ./cloudquery provider build-schema aws --config ./client/testdata/default.hcl --enable-console-log
-        env:
-          CQ_REATTACH_PROVIDERS: .cq_reattach
-
-      - name: Check out code into the initial migration tag
-        run: git checkout main
+          ./cloudquery provider build-schema aws --config ./client/testdata/initial_migration.hcl --enable-console-log
 
       - name: Get dependencies
         run: |
