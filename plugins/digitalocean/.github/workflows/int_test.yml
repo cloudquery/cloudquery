@@ -56,3 +56,13 @@ jobs:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
           SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'DigitalOcean - E2E tests failed'
+          SLACK_TITLE: DigitalOcean - E2E test failed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
