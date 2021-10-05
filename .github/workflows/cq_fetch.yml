@@ -74,3 +74,13 @@ jobs:
           CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config ./client/testdata/nightly.hcl --enable-console-log --fail-on-error
         env:
           CQ_REATTACH_PROVIDERS: .cq_reattach
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'AWS - nightly fetch failed'
+          SLACK_TITLE: AWS - nightly fetch failed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

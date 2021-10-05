@@ -90,3 +90,13 @@ jobs:
           ./cloudquery provider upgrade aws --config ./client/testdata/default.hcl --enable-console-log
         env:
           CQ_REATTACH_PROVIDERS: .cq_reattach
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'AWS - migration test failed'
+          SLACK_TITLE: AWS - migration test failed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
