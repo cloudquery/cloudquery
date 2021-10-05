@@ -46,6 +46,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -116,6 +117,7 @@ type Services struct {
 	RDS                  RdsClient
 	S3                   S3Client
 	S3Manager            S3ManagerClient
+	SQS                  SQSClient
 	Apigateway           ApigatewayClient
 	Apigatewayv2         Apigatewayv2Client
 	Lambda               LambdaClient
@@ -322,13 +324,17 @@ func initServices(region string, c aws.Config) Services {
 	awsCfg := c.Copy()
 	awsCfg.Region = region
 	return Services{
+		Analyzer:             accessanalyzer.NewFromConfig(awsCfg),
+		Apigateway:           apigateway.NewFromConfig(awsCfg),
+		Apigatewayv2:         apigatewayv2.NewFromConfig(awsCfg),
 		Autoscaling:          autoscaling.NewFromConfig(awsCfg),
 		Cloudfront:           cloudfront.NewFromConfig(awsCfg),
 		Cloudtrail:           cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:           cloudwatch.NewFromConfig(awsCfg),
 		CloudwatchLogs:       cloudwatchlogs.NewFromConfig(awsCfg),
-		CognitoUserPools:     cognitoidentityprovider.NewFromConfig(awsCfg),
 		CognitoIdentityPools: cognitoidentity.NewFromConfig(awsCfg),
+		CognitoUserPools:     cognitoidentityprovider.NewFromConfig(awsCfg),
+		ConfigService:        configservice.NewFromConfig(awsCfg),
 		Directconnect:        directconnect.NewFromConfig(awsCfg),
 		EC2:                  ec2.NewFromConfig(awsCfg),
 		ECR:                  ecr.NewFromConfig(awsCfg),
@@ -337,25 +343,22 @@ func initServices(region string, c aws.Config) Services {
 		Eks:                  eks.NewFromConfig(awsCfg),
 		ElasticBeanstalk:     elasticbeanstalk.NewFromConfig(awsCfg),
 		ElasticSearch:        elasticsearchservice.NewFromConfig(awsCfg),
-		EMR:                  emr.NewFromConfig(awsCfg),
-		FSX:                  fsx.NewFromConfig(awsCfg),
-		S3:                   s3.NewFromConfig(awsCfg),
-		SNS:                  sns.NewFromConfig(awsCfg),
 		ELBv1:                elbv1.NewFromConfig(awsCfg),
 		ELBv2:                elbv2.NewFromConfig(awsCfg),
+		EMR:                  emr.NewFromConfig(awsCfg),
+		FSX:                  fsx.NewFromConfig(awsCfg),
 		IAM:                  iam.NewFromConfig(awsCfg),
 		KMS:                  kms.NewFromConfig(awsCfg),
+		Lambda:               lambda.NewFromConfig(awsCfg),
 		MQ:                   mq.NewFromConfig(awsCfg),
 		Organizations:        organizations.NewFromConfig(awsCfg),
 		RDS:                  rds.NewFromConfig(awsCfg),
 		Redshift:             redshift.NewFromConfig(awsCfg),
 		Route53:              route53.NewFromConfig(awsCfg),
+		S3:                   s3.NewFromConfig(awsCfg),
 		S3Manager:            newS3ManagerFromConfig(awsCfg),
-		Apigateway:           apigateway.NewFromConfig(awsCfg),
-		Lambda:               lambda.NewFromConfig(awsCfg),
-		Apigatewayv2:         apigatewayv2.NewFromConfig(awsCfg),
-		Analyzer:             accessanalyzer.NewFromConfig(awsCfg),
-		ConfigService:        configservice.NewFromConfig(awsCfg),
+		SNS:                  sns.NewFromConfig(awsCfg),
+		SQS:                  sqs.NewFromConfig(awsCfg),
 		Waf:                  waf.NewFromConfig(awsCfg),
 		WafV2:                wafv2.NewFromConfig(awsCfg),
 	}
