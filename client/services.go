@@ -36,6 +36,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 )
@@ -386,4 +387,11 @@ type WafV2Client interface {
 	ListResourcesForWebACL(ctx context.Context, params *wafv2.ListResourcesForWebACLInput, optFns ...func(*wafv2.Options)) (*wafv2.ListResourcesForWebACLOutput, error)
 	ListTagsForResource(ctx context.Context, params *wafv2.ListTagsForResourceInput, optFns ...func(*wafv2.Options)) (*wafv2.ListTagsForResourceOutput, error)
 	GetPermissionPolicy(ctx context.Context, params *wafv2.GetPermissionPolicyInput, optFns ...func(*wafv2.Options)) (*wafv2.GetPermissionPolicyOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_sqs.go . SQSClient
+type SQSClient interface {
+	GetQueueAttributes(ctx context.Context, params *sqs.GetQueueAttributesInput, optFns ...func(*sqs.Options)) (*sqs.GetQueueAttributesOutput, error)
+	ListQueues(ctx context.Context, params *sqs.ListQueuesInput, optFns ...func(*sqs.Options)) (*sqs.ListQueuesOutput, error)
+	ListQueueTags(ctx context.Context, params *sqs.ListQueueTagsInput, optFns ...func(*sqs.Options)) (*sqs.ListQueueTagsOutput, error)
 }

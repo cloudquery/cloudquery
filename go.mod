@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Masterminds/squirrel v1.5.0
-	github.com/aws/aws-sdk-go-v2 v1.9.0
+	github.com/aws/aws-sdk-go-v2 v1.9.1
 	github.com/aws/aws-sdk-go-v2/config v1.1.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.1.6
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.1.3
@@ -42,6 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.4.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.5.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.2
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.9.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
@@ -52,7 +53,7 @@ require (
 	github.com/golang/mock v1.5.0
 	github.com/hashicorp/go-hclog v0.16.1
 	github.com/jackc/pgx/v4 v4.11.0
-	github.com/mitchellh/mapstructure v1.1.2
+	github.com/mitchellh/mapstructure v1.4.2
 	github.com/spf13/cast v1.4.0
 	github.com/stretchr/testify v1.7.0
 )
