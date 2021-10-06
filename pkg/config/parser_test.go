@@ -3,7 +3,6 @@ package config
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 
 	"github.com/stretchr/testify/assert"
@@ -140,7 +139,7 @@ type AwsConfig struct {
 }
 
 func TestParser_LoadConfigFromSource(t *testing.T) {
-	p := NewParser(nil)
+	p := NewParser()
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
@@ -167,14 +166,14 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 }
 
 func TestParser_DuplicateProviderNaming(t *testing.T) {
-	p := NewParser(nil)
+	p := NewParser()
 	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testMultipleProviderConfig))
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
 }
 
 func TestParser_AliasedProvider(t *testing.T) {
-	p := NewParser(nil)
+	p := NewParser()
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testAliasProviderConfig))
 	assert.Nil(t, diags)
 	_, err := cfg.GetProvider("another-aws")
@@ -184,23 +183,63 @@ func TestParser_AliasedProvider(t *testing.T) {
 }
 
 func TestParser_DuplicateAliasedProvider(t *testing.T) {
-	p := NewParser(nil)
+	p := NewParser()
 	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testDuplicateAliasProviderConfig))
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateAliasProviderError, diags[0].Error())
 }
 
 func TestProviderLoadConfiguration(t *testing.T) {
-	p := NewParser(nil)
+	p := NewParser()
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
 	assert.Nil(t, diags)
-	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 
-	res, d := convert.Body(cfg.Providers[0].Configuration, convert.Options{Simplify: false})
-	assert.Nil(t, d)
 	c := AwsConfig{}
-	errs := hclsimple.Decode("res.json", res, nil, &c)
+	errs := hclsimple.Decode("res.json", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
 
+}
+
+func TestWithEnvironmentVariables(t *testing.T) {
+	const prefix = "PREFIX_"
+	p := NewParser(WithEnvironmentVariables(prefix, []string{prefix + "VAR1=value1", prefix + "Var2=value 2"}))
+	assert.Equal(t, "value1", p.HCLContext.Variables["var1"].AsString())
+	assert.Equal(t, "value 2", p.HCLContext.Variables["var2"].AsString())
+}
+
+const testEnvVarConfig = `cloudquery {
+  connection {
+    dsn =  "${dsn}"
+  }
+  provider "test" {
+    source = "cloudquery"
+    version = "v0.0.0"
+  }
+}
+
+provider "aws" {
+  configuration {
+	account "dev" {
+		role_arn ="${role_arn}"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}`
+
+func TestConfigEnvVariableSubstitution(t *testing.T) {
+	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
+		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
+		"CQ_VAR_ROLE_ARN=12312312",
+	}))
+	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testEnvVarConfig))
+	assert.Nil(t, diags)
+	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
+
+	c := AwsConfig{}
+	errs := hclsimple.Decode("res.json", cfg.Providers[0].Configuration, nil, &c)
+	assert.Nil(t, errs)
+
+	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
 }

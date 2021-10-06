@@ -3,10 +3,13 @@ package config
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
+	"github.com/zclconf/go-cty/cty"
+	"github.com/zclconf/go-cty/cty/function"
 )
 
 type SourceType string
@@ -16,28 +19,58 @@ const (
 	SourceHCL  = "hcl"
 )
 
+// EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
+const EnvVarPrefix = "CQ_VAR_"
+
 // Parser is the main interface to read configuration files and other related
 // files from disk.
 //
 // It retains a cache of all files that are loaded so that they can be used
 // to create source code snippets in diagnostics, etc.
 type Parser struct {
-	fs afero.Afero
-	p  *hclparse.Parser
+	fs         afero.Afero
+	p          *hclparse.Parser
+	HCLContext hcl.EvalContext
 }
 
-// NewParser creates and returns a new Parser that reads files from the given
-// filesystem. If a nil filesystem is passed then the system's "real" filesystem
-// will be used, via afero.OsFs.
-func NewParser(fs afero.Fs) *Parser {
-	if fs == nil {
-		fs = afero.OsFs{}
+type Option func(*Parser)
+
+func WithFS(fs afero.Fs) Option {
+	return func(p *Parser) {
+		p.fs = afero.Afero{Fs: fs}
+	}
+}
+
+// WithEnvironmentVariables fills hcl.Context with values of environment variables given in vars.
+// Only variables that start with given prefix are considered. Prefix is removed from the name and
+// the name is lower cased then.
+func WithEnvironmentVariables(prefix string, vars []string) Option {
+	return func(p *Parser) {
+		for _, e := range vars {
+			pair := strings.SplitN(e, "=", 2)
+			if strings.HasPrefix(pair[0], prefix) {
+				name := strings.ToLower(pair[0][len(prefix):])
+				p.HCLContext.Variables[name] = cty.StringVal(pair[1])
+			}
+		}
+	}
+}
+
+// NewParser creates and returns a new Parser.
+func NewParser(options ...Option) *Parser {
+	p := Parser{
+		fs: afero.Afero{Fs: afero.OsFs{}},
+		p:  hclparse.NewParser(),
+		HCLContext: hcl.EvalContext{
+			Variables: make(map[string]cty.Value),
+			Functions: make(map[string]function.Function),
+		},
 	}
 
-	return &Parser{
-		fs: afero.Afero{Fs: fs},
-		p:  hclparse.NewParser(),
+	for _, opt := range options {
+		opt(&p)
 	}
+	return &p
 }
 
 // LoadHCLFile is a low-level method that reads the file at the given path,

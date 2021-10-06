@@ -185,7 +185,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := NewParser(nil)
+			p := NewParser()
 			policiesRaw, diags := p.loadFromSource("policy.hcl", []byte(tt.policyText), SourceHCL)
 			if diags != nil && diags.HasErrors() {
 				t.Fatal(diags.Errs())

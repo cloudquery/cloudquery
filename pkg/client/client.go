@@ -15,7 +15,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
@@ -222,19 +221,12 @@ func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider)
 	}
 	defer providerPlugin.Close()
 	c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-	var cfg []byte
-	if providerCfg.Configuration != nil {
-		cfg, err = convert.Body(providerCfg.Configuration, convert.Options{Simplify: true})
-		if err != nil {
-			return err
-		}
-	}
 	_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
 			DSN: c.DSN,
 		},
-		Config: cfg,
+		Config: providerCfg.Configuration,
 	})
 	if err != nil {
 		return fmt.Errorf("provider test connection failed. Reason: %w", err)
@@ -264,14 +256,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 		}
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			var cfg []byte
 			var partialFetchResults []*cqproto.PartialFetchFailedResource
-			if providerConfig.Configuration != nil {
-				cfg, err = convert.Body(providerConfig.Configuration, convert.Options{Simplify: true})
-				if err != nil {
-					return err
-				}
-			}
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
@@ -279,7 +264,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
 				},
-				Config:        cfg,
+				Config:        providerConfig.Configuration,
 				DisableDelete: request.DisableDataDelete,
 				ExtraFields:   request.ExtraFields,
 			})

@@ -39,7 +39,9 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	cfg, diags := config.NewParser(nil).LoadConfigFromJson("config.json", b)
+	cfg, diags := config.NewParser(
+		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+	).LoadConfigFromJson("config.json", b)
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
 	}

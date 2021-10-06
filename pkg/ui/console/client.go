@@ -3,6 +3,7 @@ package console
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/fatih/color"
@@ -319,7 +320,9 @@ func printFetchResponse(summary *client.FetchResponse) {
 }
 
 func loadConfig(path string) (*config.Config, error) {
-	parser := config.NewParser(nil)
+	parser := config.NewParser(
+		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+	)
 	cfg, diags := parser.LoadConfigFile(path)
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")

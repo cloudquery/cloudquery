@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
@@ -68,7 +69,9 @@ func Initialize(providers []string) {
 	}, "cloudquery")
 
 	rootBody.AppendBlock(cqBlock)
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("init.hcl", f.Bytes())
+	cfg, diags := config.NewParser(
+		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+	).LoadConfigFromSource("init.hcl", f.Bytes())
 	if diags != nil {
 		fmt.Println(diags)
 		return
