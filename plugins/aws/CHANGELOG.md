@@ -5,7 +5,7 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.5.16] - 2021-09-13
+## [v0.5.16] - 2021-10-07
 ###### SDK Version: v0.4.9
 
 ### :rocket: Added
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :spider: Fixed
 * Fixed migration tests [#203](https://github.com/cloudquery/cq-provider-aws/pull/203)
 
-## [v0.5.15] - 2021-09-13
+## [v0.5.15] - 2021-10-03
 ###### SDK Version: v0.4.7
 
 ### :gear: Changed
