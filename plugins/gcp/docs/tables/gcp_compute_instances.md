@@ -29,7 +29,6 @@ Represents an Instance resource  An instance is a virtual machine that is hosted
 |metadata_kind|text|Type of the resource Always compute#metadata for metadata|
 |min_cpu_platform|text|Specifies a minimum CPU platform for the VM instance Applicable values are the friendly names of CPU platforms, such as minCpuPlatform: "Intel Haswell" or minCpuPlatform: "Intel Sandy Bridge"|
 |name|text|Name of the resource Provided by the client when the resource is created|
-|post_key_revocation_action_type|text|PostKeyRevocationActionType of the instance|
 |private_ipv6_google_access|text|The private IPv6 google access type for the VM If not specified, use  INHERIT_FROM_SUBNETWORK as default|
 |reservation_affinity_consume_reservation_type|text|Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION|
 |reservation_affinity_key|text|Corresponds to the label key of a reservation resource To target a SPECIFIC_RESERVATION by name, specify googleapiscom/reservation-name as the key and specify the name of your reservation as its value|

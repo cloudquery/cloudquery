@@ -153,11 +153,6 @@ func ComputeInstances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "post_key_revocation_action_type",
-				Description: "PostKeyRevocationActionType of the instance",
-				Type:        schema.TypeString,
-			},
-			{
 				Name:        "private_ipv6_google_access",
 				Description: "The private IPv6 google access type for the VM If not specified, use  INHERIT_FROM_SUBNETWORK as default",
 				Type:        schema.TypeString,
