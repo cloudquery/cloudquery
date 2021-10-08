@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 )
@@ -13,10 +14,10 @@ type Provider struct {
 	EnablePartialFetch bool     `hcl:"enable_partial_fetch,optional"`
 	Resources          []string `hcl:"resources,optional"`
 	Env                []string `hcl:"env,optional"`
-	Configuration      hcl.Body `hcl:"configuration,body"`
+	Configuration      []byte
 }
 
-func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
+func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 
 	content, _, moreDiags := block.Body.PartialContent(providerBlockSchema)
@@ -24,7 +25,7 @@ func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*
 	name := block.Labels[0]
 	provider := &Provider{Name: name, Alias: name}
 	if attr, exists := content.Attributes["alias"]; exists {
-		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Alias)
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Alias)
 		diags = append(diags, valDiags...)
 		if _, ok := existingProviders[provider.Alias]; ok {
 			errMsg := fmt.Sprintf("Provider with alias %s for provider %s already exists, give it a different alias.", provider.Alias, name)
@@ -50,22 +51,31 @@ func decodeProviderBlock(block *hcl.Block, existingProviders map[string]bool) (*
 	}
 
 	if attr, exists := content.Attributes["enable_partial_fetch"]; exists {
-		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.EnablePartialFetch)
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.EnablePartialFetch)
 		diags = append(diags, valDiags...)
 	}
 	if attr, exists := content.Attributes["resources"]; exists {
-		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Resources)
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Resources)
 		diags = append(diags, valDiags...)
 	}
 	if attr, exists := content.Attributes["env"]; exists {
-		valDiags := gohcl.DecodeExpression(attr.Expr, nil, &provider.Env)
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Env)
 		diags = append(diags, valDiags...)
 	}
 
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
-			provider.Configuration = block.Body
+			if b, err := convert.Body(block.Body, convert.Options{Variables: ctx.Variables, Simplify: true}); err == nil {
+				provider.Configuration = b
+			} else {
+				diags = append(diags, &hcl.Diagnostic{
+					Severity: hcl.DiagError,
+					Summary:  "Failed to encode provider configuration",
+					Detail:   err.Error(),
+					Subject:  block.DefRange.Ptr(),
+				})
+			}
 		default:
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,

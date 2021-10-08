@@ -11,11 +11,8 @@ import (
 	"github.com/zclconf/go-cty/cty/function/stdlib"
 )
 
-// a subset of functions used in terraform
-// that can be used when simplifying during conversion
-var evalContext = GetEvalContext("")
-
-// GetEvalContext returns the hcl eval context.
+// GetEvalContext returns the hcl eval context with a subset of functions used in terraform
+// that can be used when simplifying during conversion.
 func GetEvalContext(basePath string) *hcl.EvalContext {
 	return &hcl.EvalContext{
 		Functions: map[string]function.Function{

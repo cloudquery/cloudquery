@@ -14,7 +14,8 @@ import (
 )
 
 type Options struct {
-	Simplify bool
+	Simplify  bool
+	Variables map[string]cty.Value
 }
 
 // Bytes takes the contents of an HCL file, as bytes, and converts
@@ -57,6 +58,7 @@ func Body(hclBody hcl.Body, options Options) ([]byte, error) {
 	c := converter{
 		bytes:   nil,
 		options: options,
+		context: addVariables(GetEvalContext(""), options.Variables),
 	}
 
 	body, ok := hclBody.(*hclsyntax.Body)
@@ -88,6 +90,21 @@ type jsonObj map[string]interface{}
 type converter struct {
 	bytes   []byte
 	options Options
+	context *hcl.EvalContext
+}
+
+// addVariables modifes given context in place adding supplied variables to it.
+func addVariables(ctx *hcl.EvalContext, vars map[string]cty.Value) *hcl.EvalContext {
+	if len(vars) == 0 {
+		return ctx
+	}
+	if ctx.Variables == nil {
+		ctx.Variables = make(map[string]cty.Value, len(vars))
+	}
+	for k, v := range vars {
+		ctx.Variables[k] = v
+	}
+	return ctx
 }
 
 func ConvertFile(file *hcl.File, options Options) (jsonObj, error) {
@@ -99,6 +116,7 @@ func ConvertFile(file *hcl.File, options Options) (jsonObj, error) {
 	c := converter{
 		bytes:   file.Bytes,
 		options: options,
+		context: addVariables(GetEvalContext(""), options.Variables),
 	}
 
 	out, err := c.convertBody(body)
@@ -160,7 +178,7 @@ func (c *converter) convertBlock(block *hclsyntax.Block, out jsonObj) error {
 			var ok bool
 			out, ok = out[key].(jsonObj)
 			if !ok {
-				return fmt.Errorf("Unable to convert Block to JSON: %v.%v", block.Type, strings.Join(block.Labels, "."))
+				return fmt.Errorf("unable to convert Block to JSON: %v.%v", block.Type, strings.Join(block.Labels, "."))
 			}
 		} else {
 			out[key] = make(jsonObj)
@@ -193,7 +211,7 @@ func (c *converter) convertAttributes(attributes hcl.Attributes) (jsonObj, error
 	var out = make(jsonObj)
 
 	for _, attr := range attributes {
-		val, err := attr.Expr.Value(evalContext)
+		val, err := attr.Expr.Value(c.context)
 		if err != nil {
 			return nil, fmt.Errorf("convert expression: %w", err)
 		}
@@ -204,7 +222,7 @@ func (c *converter) convertAttributes(attributes hcl.Attributes) (jsonObj, error
 
 func (c *converter) convertExpression(expr hclsyntax.Expression) (interface{}, error) {
 	if c.options.Simplify {
-		value, err := expr.Value(evalContext)
+		value, err := expr.Value(c.context)
 		if err == nil {
 			return ctyjson.SimpleJSONValue{Value: value}, nil
 		}

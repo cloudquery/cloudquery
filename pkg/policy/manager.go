@@ -263,7 +263,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 
 // readPolicy reads, normalizes and validates the policy file at policyPath, using policyFolder as base path.
 func (m *ManagerImpl) readPolicy(policyPath, policyFolder string) (*config.PolicyWrapper, error) {
-	parser := config.NewParser(nil)
+	parser := config.NewParser()
 	policiesRaw, diags := parser.LoadHCLFile(policyPath)
 	if diags != nil && diags.HasErrors() {
 		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Error())

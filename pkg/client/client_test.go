@@ -187,7 +187,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 func TestClient_FetchNilConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	cfg, diags := config.NewParser(nil).LoadConfigFromSource("config.hcl", []byte(testConfig))
+	cfg, diags := config.NewParser().LoadConfigFromSource("config.hcl", []byte(testConfig))
 	assert.Nil(t, diags)
 	// Set configuration to nil
 	cfg.Providers[0].Configuration = nil

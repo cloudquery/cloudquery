@@ -44,7 +44,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "cloudquery":
-			contentDiags = gohcl.DecodeBody(block.Body, nil, &config.CloudQuery)
+			contentDiags = gohcl.DecodeBody(block.Body, &p.HCLContext, &config.CloudQuery)
 			diags = append(diags, contentDiags...)
 			// TODO: decode in a more generic way
 
@@ -76,7 +76,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				}
 			}
 		case "provider":
-			cfg, cfgDiags := decodeProviderBlock(block, existingProviders)
+			cfg, cfgDiags := decodeProviderBlock(block, &p.HCLContext, existingProviders)
 			diags = append(diags, cfgDiags...)
 			if cfg != nil {
 				config.Providers = append(config.Providers, cfg)
