@@ -51,8 +51,7 @@ var (
 				return err
 			}
 			defer c.Client().Close()
-			_ = c.UpgradeProviders(ctx, args)
-			return nil
+			return c.UpgradeProviders(ctx, args)
 		},
 	}
 
@@ -69,8 +68,7 @@ var (
 				return err
 			}
 			defer c.Client().Close()
-			_ = c.DowngradeProviders(ctx, args)
-			return nil
+			return c.DowngradeProviders(ctx, args)
 		},
 	}
 
