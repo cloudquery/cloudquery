@@ -19,10 +19,10 @@ Service is a named abstraction of software service (for example, mysql) consisti
 |finalizers|text[]|List of finalizers|
 |cluster_name|text|The name of the cluster which the object belongs to.|
 |selector|jsonb|Route service traffic to pods with label keys and values matching this selector|
-|cluster_ip|text|clusterIP is the IP address of the service and is usually assigned randomly|
-|cluster_ips|text[]|ClusterIPs is a list of IP addresses assigned to this service, and are usually assigned randomly|
+|cluster_ip|inet|clusterIP is the IP address of the service and is usually assigned randomly|
+|cluster_ips|inet[]|ClusterIPs is a list of IP addresses assigned to this service, and are usually assigned randomly|
 |type|text|type determines how the Service is exposed|
-|external_ips|text[]|externalIPs is a list of IP addresses for which nodes in the cluster will also accept traffic for this service|
+|external_ips|inet[]|externalIPs is a list of IP addresses for which nodes in the cluster will also accept traffic for this service|
 |session_affinity|text|Used to maintain session affinity.|
 |load_balancer_ip|text|Load balancer will get created with the IP specified in this field.|
 |load_balancer_source_ranges|text[]|If specified and supported by the platform, this will restrict traffic through the cloud-provider load-balancer to the specified client IPs|

@@ -188,6 +188,10 @@ func fakePod(t *testing.T) corev1.Pod {
 	pod.Spec.InitContainers = []corev1.Container{fakeContainer(t)}
 	pod.Spec.Containers = []corev1.Container{fakeContainer(t)}
 	pod.Spec.EphemeralContainers = []corev1.EphemeralContainer{fakeEphemeralContainer(t)}
+
+	pod.Status.HostIP = "192.168.1.2"
+	pod.Status.PodIP = "192.168.1.1"
+	pod.Status.PodIPs = []corev1.PodIP{{IP: "192.168.1.1"}}
 	return pod
 }
 

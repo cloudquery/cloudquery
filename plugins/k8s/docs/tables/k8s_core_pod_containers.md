@@ -23,4 +23,4 @@ A single application container that you want to run within a pod.
 |security_context|jsonb|security options the container should be run with.|
 |stdin|boolean|Whether this container should allocate a buffer for stdin in the container runtime|
 |stdin_once|boolean|Whether the container runtime should close the stdin channel after it has been opened by a single attach|
-|tty|boolean|Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional|
+|tty|boolean|Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.|

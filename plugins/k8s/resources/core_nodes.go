@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -102,14 +103,14 @@ func CoreNodes() *schema.Table {
 			{
 				Name:        "pod_cidr",
 				Description: "Represents the pod IP range assigned to the node.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Spec.PodCIDR"),
+				Type:        schema.TypeCIDR,
+				Resolver:    resolveCoreNodePodCIDR,
 			},
 			{
 				Name:        "pod_cidrs",
 				Description: "Represents the IP ranges assigned to the node for usage by Pods on that node",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Spec.PodCIDRs"),
+				Type:        schema.TypeCIDRArray,
+				Resolver:    resolveCoreNodePodCIDRs,
 			},
 			{
 				Name:        "provider_id",
@@ -220,22 +221,10 @@ func CoreNodes() *schema.Table {
 				Resolver:    schema.PathResolver("Status.NodeInfo.Architecture"),
 			},
 			{
-				Name:        "images",
-				Description: "List of container images on this node.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveCoreNodeImages,
-			},
-			{
 				Name:        "volumes_in_use",
 				Description: "List of attachable volumes in use (mounted) by the node.",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("Status.VolumesInUse"),
-			},
-			{
-				Name:        "volumes_attached",
-				Description: "List of volumes that are attached to the node.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveCoreNodeVolumesAttached,
 			},
 			{
 				Name:        "config",
@@ -243,12 +232,30 @@ func CoreNodes() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCoreNodeConfig,
 			},
+			{
+				Name:        "hostname",
+				Description: "Hostname of the node.",
+				Type:        schema.TypeString,
+				Resolver:    resolveCoreNodeHostname,
+			},
+			{
+				Name:        "internal_ip",
+				Description: "Internal IP address of the node.",
+				Type:        schema.TypeInet,
+				Resolver:    resolveCoreNodeIP(corev1.NodeInternalIP),
+			},
+			{
+				Name:        "external_ip",
+				Description: "External IP address of the node.",
+				Type:        schema.TypeInet,
+				Resolver:    resolveCoreNodeIP(corev1.NodeExternalIP),
+			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "k8s_core_node_addresses",
-				Description: "NodeAddress contains information for the node's address.",
-				Resolver:    fetchCoreNodeAddresses,
+				Name:        "k8s_core_node_images",
+				Description: "List of container images on this node.",
+				Resolver:    fetchCoreNodeImages,
 				Columns: []schema.Column{
 					{
 						Name:        "node_cq_id",
@@ -257,13 +264,36 @@ func CoreNodes() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "type",
-						Description: "Node address type, one of Hostname, ExternalIP or InternalIP.",
+						Name:        "names",
+						Description: "Names by which this image is known.",
+						Type:        schema.TypeStringArray,
+					},
+					{
+						Name:        "size_bytes",
+						Description: "The size of the image in bytes.",
+						Type:        schema.TypeBigInt,
+					},
+				},
+			},
+			{
+				Name:        "k8s_core_node_volumes_attached",
+				Description: "List of volumes that are attached to the node.",
+				Resolver:    fetchCoreNodeVolumesAttached,
+				Columns: []schema.Column{
+					{
+						Name:        "node_cq_id",
+						Description: "Unique CloudQuery ID of k8s_core_nodes table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "name",
+						Description: "Name of the attached volume.",
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "address",
-						Description: "The node address.",
+						Name:        "device_path",
+						Description: "Device path where the volume should be available.",
 						Type:        schema.TypeString,
 					},
 				},
@@ -297,6 +327,37 @@ func resolveCoreNodeOwnerReferences(ctx context.Context, meta schema.ClientMeta,
 	return resource.Set(c.Name, b)
 }
 
+func resolveCoreNodePodCIDR(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	node, ok := resource.Item.(corev1.Node)
+	if !ok {
+		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
+	}
+	if node.Spec.PodCIDR == "" {
+		return nil
+	}
+	_, n, err := net.ParseCIDR(node.Spec.PodCIDR)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, n)
+}
+
+func resolveCoreNodePodCIDRs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	node, ok := resource.Item.(corev1.Node)
+	if !ok {
+		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
+	}
+	cidrs := make([]*net.IPNet, 0, len(node.Spec.PodCIDRs))
+	for _, v := range node.Spec.PodCIDRs {
+		_, n, err := net.ParseCIDR(v)
+		if err != nil {
+			return err
+		}
+		cidrs = append(cidrs, n)
+	}
+	return resource.Set(c.Name, cidrs)
+}
+
 func resolveCoreNodeTaints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	node, ok := resource.Item.(corev1.Node)
 	if !ok {
@@ -321,36 +382,21 @@ func resolveCoreNodeConditions(ctx context.Context, meta schema.ClientMeta, reso
 	return resource.Set(c.Name, b)
 }
 
-func resolveCoreNodeImages(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
-	b, err := json.Marshal(node.Status.Images)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, b)
-}
-
-func resolveCoreNodeVolumesAttached(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
-	b, err := json.Marshal(node.Status.VolumesAttached)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, b)
-}
-
-func fetchCoreNodeAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCoreNodeImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	node, ok := parent.Item.(corev1.Node)
 	if !ok {
 		return fmt.Errorf("not a corev1.Node instance: %T", parent.Item)
 	}
-	res <- node.Status.Addresses
+	res <- node.Status.Images
+	return nil
+}
+
+func fetchCoreNodeVolumesAttached(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	node, ok := parent.Item.(corev1.Node)
+	if !ok {
+		return fmt.Errorf("not a corev1.Node instance: %T", parent.Item)
+	}
+	res <- node.Status.VolumesAttached
 	return nil
 }
 
@@ -364,4 +410,48 @@ func resolveCoreNodeConfig(ctx context.Context, meta schema.ClientMeta, resource
 		return err
 	}
 	return resource.Set(c.Name, b)
+}
+
+func fetchAddressValue(addrs []corev1.NodeAddress, key corev1.NodeAddressType) (string, bool) {
+	for _, a := range addrs {
+		if a.Type == key {
+			return a.Address, true
+		}
+	}
+	return "", false
+}
+
+func resolveCoreNodeHostname(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	node, ok := resource.Item.(corev1.Node)
+	if !ok {
+		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
+	}
+
+	v, ok := fetchAddressValue(node.Status.Addresses, corev1.NodeHostName)
+	if !ok {
+		return nil
+	}
+	return resource.Set(c.Name, v)
+}
+
+func resolveCoreNodeIP(key corev1.NodeAddressType) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		node, ok := resource.Item.(corev1.Node)
+		if !ok {
+			return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
+		}
+
+		v, ok := fetchAddressValue(node.Status.Addresses, key)
+		if !ok {
+			return nil
+		}
+		ip := net.ParseIP(v)
+		if ip == nil {
+			return fmt.Errorf("failed to convert %v to IP address", v)
+		}
+		if v4 := ip.To4(); v4 != nil {
+			ip = v4
+		}
+		return resource.Set(c.Name, ip)
+	}
 }

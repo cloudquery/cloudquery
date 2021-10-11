@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -108,14 +109,14 @@ func CoreServices() *schema.Table {
 			{
 				Name:        "cluster_ip",
 				Description: "clusterIP is the IP address of the service and is usually assigned randomly",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Spec.ClusterIP"),
+				Type:        schema.TypeInet,
+				Resolver:    resolveCoreServicesClusterIP,
 			},
 			{
 				Name:        "cluster_ips",
 				Description: "ClusterIPs is a list of IP addresses assigned to this service, and are usually assigned randomly",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Spec.ClusterIPs"),
+				Type:        schema.TypeInetArray,
+				Resolver:    resolveCoreServicesClusterIPs,
 			},
 			{
 				Name:        "type",
@@ -126,8 +127,8 @@ func CoreServices() *schema.Table {
 			{
 				Name:        "external_ips",
 				Description: "externalIPs is a list of IP addresses for which nodes in the cluster will also accept traffic for this service",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Spec.ExternalIPs"),
+				Type:        schema.TypeInetArray,
+				Resolver:    resolveCoreServicesExternalIPs,
 			},
 			{
 				Name:        "session_affinity",
@@ -371,6 +372,56 @@ func fetchCoreServices(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	res <- result.Items
 	return nil
+}
+
+func resolveCoreServicesClusterIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(corev1.Service)
+	if !ok {
+		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
+	}
+	ip := net.ParseIP(service.Spec.ClusterIP)
+	if ip != nil {
+		if v4 := ip.To4(); v4 != nil {
+			ip = v4
+		}
+	}
+	return resource.Set(c.Name, ip)
+}
+
+func resolveCoreServicesClusterIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(corev1.Service)
+	if !ok {
+		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
+	}
+	ips := make([]net.IP, 0, len(service.Spec.ClusterIPs))
+	for _, v := range service.Spec.ClusterIPs {
+		ip := net.ParseIP(v)
+		if ip != nil {
+			if v4 := ip.To4(); v4 != nil {
+				ip = v4
+			}
+		}
+		ips = append(ips, ip)
+	}
+	return resource.Set(c.Name, ips)
+}
+
+func resolveCoreServicesExternalIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(corev1.Service)
+	if !ok {
+		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
+	}
+	ips := make([]net.IP, 0, len(service.Spec.ExternalIPs))
+	for _, v := range service.Spec.ExternalIPs {
+		ip := net.ParseIP(v)
+		if ip != nil {
+			if v4 := ip.To4(); v4 != nil {
+				ip = v4
+			}
+		}
+		ips = append(ips, ip)
+	}
+	return resource.Set(c.Name, ips)
 }
 
 func resolveCoreServiceOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

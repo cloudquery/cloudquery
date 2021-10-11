@@ -48,6 +48,22 @@ func fakeNode(t *testing.T) corev1.Node {
 	rl["name"] = *apiresource.NewQuantity(1024*1024, apiresource.BinarySI)
 	node.Status.Capacity = rl
 	node.Status.Allocatable = rl
+	node.Spec.PodCIDR = "192.168.1.0/24"
+	node.Spec.PodCIDRs = []string{"192.168.1.0/24"}
+	node.Status.Addresses = []corev1.NodeAddress{
+		{
+			Type:    corev1.NodeHostName,
+			Address: "testname",
+		},
+		{
+			Type:    corev1.NodeInternalIP,
+			Address: "fd00::1",
+		},
+		{
+			Type:    corev1.NodeExternalIP,
+			Address: "192.168.2.1",
+		},
+	}
 	return node
 }
 

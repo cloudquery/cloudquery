@@ -4,7 +4,7 @@ An EphemeralContainer is a container that may be added temporarily to an existin
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|target_container_name|text|If set, the name of the container from PodSpec that this ephemeral container targets. The ephemeral container will be run in the namespaces (IPC, PID, etc) of this container. If not set then the ephemeral container is run in whatever namespaces are shared for the pod|
+|target_container_name|text|If set, the name of the container from PodSpec that this ephemeral container targets.|
 |pod_cq_id|uuid|Unique CloudQuery ID of k8s_core_pods table (FK)|
 |name|text|Name of the container specified as a DNS_LABEL.|
 |image|text|Docker image name.|
@@ -24,4 +24,4 @@ An EphemeralContainer is a container that may be added temporarily to an existin
 |security_context|jsonb|security options the container should be run with.|
 |stdin|boolean|Whether this container should allocate a buffer for stdin in the container runtime|
 |stdin_once|boolean|Whether the container runtime should close the stdin channel after it has been opened by a single attach|
-|tty|boolean|Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional|
+|tty|boolean|Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.|

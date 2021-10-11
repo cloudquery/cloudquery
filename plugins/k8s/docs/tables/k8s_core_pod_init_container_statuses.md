@@ -12,5 +12,5 @@ ContainerStatus contains details for the current status of this container.
 |restart_count|integer|The number of times the container has been restarted.|
 |image|text|The image the container is running.|
 |image_id|text|ImageID of the container's image.|
-|container_id|text|Container's ID in the format 'docker://<container_id>'. +optional|
+|container_id|text|Container's ID in the format 'docker://<container_id>'.|
 |started|boolean|Specifies whether the container has passed its startup probe.|

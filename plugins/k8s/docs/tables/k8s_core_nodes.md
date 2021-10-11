@@ -18,8 +18,8 @@ Node is a worker node in Kubernetes.
 |owner_references|jsonb|List of objects depended by this object.|
 |finalizers|text[]|List of finalizers|
 |cluster_name|text|The name of the cluster which the object belongs to.|
-|pod_cidr|text|Represents the pod IP range assigned to the node.|
-|pod_cidrs|text[]|Represents the IP ranges assigned to the node for usage by Pods on that node|
+|pod_cidr|cidr|Represents the pod IP range assigned to the node.|
+|pod_cidrs|cidr[]|Represents the IP ranges assigned to the node for usage by Pods on that node|
 |provider_id|text|ID of the node assigned by the cloud provider.|
 |unschedulable|boolean|Unschedulable controls node schedulability of new pods|
 |taints|jsonb|If specified, the node's taints.|
@@ -38,7 +38,8 @@ Node is a worker node in Kubernetes.
 |kube_proxy_version|text|KubeProxy Version reported by the node.|
 |operating_system|text|The Operating System reported by the node.|
 |architecture|text|The Architecture reported by the node.|
-|images|jsonb|List of container images on this node.|
 |volumes_in_use|text[]|List of attachable volumes in use (mounted) by the node.|
-|volumes_attached|jsonb|List of volumes that are attached to the node.|
 |config|jsonb|Status of the config assigned to the node via the dynamic Kubelet config feature.|
+|hostname|text|Hostname of the node.|
+|internal_ip|inet|Internal IP address of the node.|
+|external_ip|inet|External IP address of the node.|

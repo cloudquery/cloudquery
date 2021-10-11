@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -101,7 +102,7 @@ func CorePods() *schema.Table {
 			},
 			{
 				Name:        "restart_policy",
-				Description: "Restart policy for all containers within the pod. One of Always, OnFailure, Never. Default to Always. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy +optional",
+				Description: "Restart policy for all containers within the pod.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.RestartPolicy"),
 			},
@@ -113,109 +114,109 @@ func CorePods() *schema.Table {
 			},
 			{
 				Name:        "active_deadline_seconds",
-				Description: "Optional duration in seconds the pod may be active on the node relative to StartTime before the system will actively try to mark it failed and kill associated containers. Value must be a positive integer. +optional",
+				Description: "Optional duration in seconds the pod may be active on the node relative to StartTime before the system will actively try to mark it failed and kill associated containers.",
 				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Spec.ActiveDeadlineSeconds"),
 			},
 			{
 				Name:        "dns_policy",
-				Description: "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirstWithHostNet', 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy. To have DNS options set along with hostNetwork, you have to specify DNS policy explicitly to 'ClusterFirstWithHostNet'. +optional",
+				Description: "Sets DNS policy for the pod.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.DNSPolicy"),
 			},
 			{
 				Name:        "node_selector",
-				Description: "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/ +optional +mapType=atomic",
+				Description: "Selector which must be true for the pod to fit on a node.",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Spec.NodeSelector"),
 			},
 			{
 				Name:        "service_account_name",
-				Description: "ServiceAccountName is the name of the ServiceAccount to use to run this pod. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ +optional",
+				Description: "Name of the ServiceAccount to use to run this pod.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.ServiceAccountName"),
 			},
 			{
 				Name:        "automount_service_account_token",
-				Description: "AutomountServiceAccountToken indicates whether a service account token should be automatically mounted. +optional",
+				Description: "Indicates whether a service account token should be automatically mounted.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.AutomountServiceAccountToken"),
 			},
 			{
 				Name:        "node_name",
-				Description: "NodeName is a request to schedule this pod onto a specific node",
+				Description: "Requests to schedule this pod onto a specific node.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.NodeName"),
 			},
 			{
 				Name:        "host_network",
-				Description: "Host networking requested for this pod",
+				Description: "Host networking requested for this pod.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.HostNetwork"),
 			},
 			{
-				Name:        "host_p_id",
-				Description: "Use the host's pid namespace. Optional: Default to false. +k8s:conversion-gen=false +optional",
+				Name:        "host_pid",
+				Description: "Use the host's pid namespace.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.HostPID"),
 			},
 			{
-				Name:        "host_ip_c",
-				Description: "Use the host's ipc namespace. Optional: Default to false. +k8s:conversion-gen=false +optional",
+				Name:        "host_ipc",
+				Description: "Use the host's ipc namespace.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.HostIPC"),
 			},
 			{
 				Name:        "share_process_namespace",
-				Description: "Share a single process namespace between all of the containers in a pod. When this is set containers will be able to view and signal processes from other containers in the same pod, and the first process in each container will not be assigned PID 1. HostPID and ShareProcessNamespace cannot both be set. Optional: Default to false. +k8s:conversion-gen=false +optional",
+				Description: "Share a single process namespace between all of the containers in a pod.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.ShareProcessNamespace"),
 			},
 			{
 				Name:        "security_context",
-				Description: "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty",
+				Description: "Holds pod-level security attributes and common container settings.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodSecurityContext,
 			},
 			{
 				Name:        "image_pull_secrets",
-				Description: "ImagePullSecrets is an optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec. If specified, these secrets will be passed to individual puller implementations for them to use",
+				Description: "Optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodImagePullSecrets,
 			},
 			{
 				Name:        "hostname",
-				Description: "Specifies the hostname of the Pod If not specified, the pod's hostname will be set to a system-defined value. +optional",
+				Description: "Specifies the hostname of the Pod.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.Hostname"),
 			},
 			{
 				Name:        "subdomain",
-				Description: "If specified, the fully qualified Pod hostname will be \"<hostname>.<subdomain>.<pod namespace>.svc.<cluster domain>\". If not specified, the pod will not have a domainname at all. +optional",
+				Description: "Specifies the subdomain of the Pod.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.Subdomain"),
 			},
 			{
 				Name:        "affinity",
-				Description: "If specified, the pod's scheduling constraints +optional",
+				Description: "If specified, the pod's scheduling constraints.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodAffinity,
 			},
 			{
 				Name:        "scheduler_name",
-				Description: "If specified, the pod will be dispatched by specified scheduler. If not specified, the pod will be dispatched by default scheduler. +optional",
+				Description: "If specified, the pod will be dispatched by specified scheduler.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.SchedulerName"),
 			},
 			{
 				Name:        "tolerations",
-				Description: "If specified, the pod's tolerations. +optional",
+				Description: "If specified, the pod's tolerations.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodTolerations,
 			},
 			{
 				Name:        "host_aliases",
-				Description: "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified",
+				Description: "Optional list of hosts and IPs that will be injected into the pod's hosts file if specified.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodHostAliases,
 			},
@@ -233,103 +234,103 @@ func CorePods() *schema.Table {
 			},
 			{
 				Name:        "dns_config",
-				Description: "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy. +optional",
+				Description: "Specifies the DNS parameters of a pod.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodDNSConfig,
 			},
 			{
 				Name:        "readiness_gates",
-				Description: "If specified, all readiness gates will be evaluated for pod readiness. A pod is ready when all its containers are ready AND all conditions specified in the readiness gates have status equal to \"True\" More info: https://git.k8s.io/enhancements/keps/sig-network/580-pod-readiness-gates +optional",
+				Description: "If specified, all readiness gates will be evaluated for pod readiness.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodReadinessGates,
 			},
 			{
 				Name:        "runtime_class_name",
-				Description: "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod",
+				Description: "Refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.RuntimeClassName"),
 			},
 			{
 				Name:        "enable_service_links",
-				Description: "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true. +optional",
+				Description: "Indicates whether information about services should be injected into pod's environment variables.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.EnableServiceLinks"),
 			},
 			{
 				Name:        "preemption_policy",
-				Description: "PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset. This field is beta-level, gated by the NonPreemptingPriority feature-gate. +optional",
+				Description: "Policy for preempting pods with lower priority.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Spec.PreemptionPolicy"),
 			},
 			{
 				Name:        "overhead",
-				Description: "Overhead represents the resource overhead associated with running a pod for a given RuntimeClass. This field will be autopopulated at admission time by the RuntimeClass admission controller",
+				Description: "Represents the resource overhead associated with running a pod for a given RuntimeClass.",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Spec.Overhead"),
 			},
 			{
 				Name:        "topology_spread_constraints",
-				Description: "TopologySpreadConstraints describes how a group of pods ought to spread across topology domains",
+				Description: "Describes how a group of pods ought to spread across topology domains",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodTopologySpreadConstraints,
 			},
 			{
 				Name:        "set_hostname_as_fqdn",
-				Description: "If true the pod's hostname will be configured as the pod's FQDN, rather than the leaf name (the default). In Linux containers, this means setting the FQDN in the hostname field of the kernel (the nodename field of struct utsname). In Windows containers, this means setting the registry value of hostname for the registry key HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip\\\\Parameters to FQDN. If a pod does not have FQDN, this has no effect. Default to false. +optional",
+				Description: "If true the pod's hostname will be configured as the pod's FQDN, rather than the leaf name.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Spec.SetHostnameAsFQDN"),
 			},
 			{
 				Name:        "phase",
-				Description: "The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod's status. There are five possible phase values:  Pending: The pod has been accepted by the Kubernetes system, but one or more of the container images has not been created",
+				Description: "The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Status.Phase"),
 			},
 			{
 				Name:        "conditions",
-				Description: "Current service state of pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions +optional +patchMergeKey=type +patchStrategy=merge",
+				Description: "Current service state of pod.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveCorePodConditions,
 			},
 			{
 				Name:        "message",
-				Description: "A human readable message indicating details about why the pod is in this condition. +optional",
+				Description: "A human readable message indicating details about why the pod is in this condition.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Status.Message"),
 			},
 			{
 				Name:        "reason",
-				Description: "A brief CamelCase message indicating details about why the pod is in this state. e.g",
+				Description: "A brief CamelCase message indicating details about why the pod is in this state.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Status.Reason"),
 			},
 			{
 				Name:        "nominated_node_name",
-				Description: "nominatedNodeName is set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods. This field does not guarantee that the pod will be scheduled on this node",
+				Description: "Set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Status.NominatedNodeName"),
 			},
 			{
 				Name:        "host_ip",
-				Description: "IP address of the host to which the pod is assigned",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Status.HostIP"),
+				Description: "IP address of the host to which the pod is assigned.",
+				Type:        schema.TypeInet,
+				Resolver:    resolveCorePodsHostIP,
 			},
 			{
 				Name:        "pod_ip",
-				Description: "IP address allocated to the pod",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Status.PodIP"),
+				Description: "IP address allocated to the pod.",
+				Type:        schema.TypeInet,
+				Resolver:    resolveCorePodsPodIP,
 			},
 			{
 				Name:        "pod_ips",
 				Description: "podIPs holds the IP addresses allocated to the pod",
-				Type:        schema.TypeStringArray,
+				Type:        schema.TypeInetArray,
 				Resolver:    resolveCorePodPodIPs,
 			},
 			{
 				Name:        "qos_class",
-				Description: "The Quality of Service (QOS) classification assigned to the pod based on resource requirements See PodQOSClass type for available QOS classes More info: https://git.k8s.io/community/contributors/design-proposals/node/resource-qos.md +optional",
+				Description: "The Quality of Service (QOS) classification assigned to the pod based on resource requirements.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Status.QOSClass"),
 			},
@@ -446,7 +447,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "tty",
-						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional",
+						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("TTY"),
 					},
@@ -470,12 +471,12 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_port",
-								Description: "Number of port to expose on the host. If specified, this must be a valid port number, 0 < x < 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. +optional",
+								Description: "Number of port to expose on the host.",
 								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "container_port",
-								Description: "Number of port to expose on the pod's IP address. This must be a valid port number, 0 < x < 65536.",
+								Description: "Number of port to expose on the pod's IP address.",
 								Type:        schema.TypeInt,
 							},
 							{
@@ -485,7 +486,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_ip",
-								Description: "What host IP to bind the external port to. +optional",
+								Description: "What host IP to bind the external port to.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("HostIP"),
 							},
@@ -514,7 +515,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_field_ref_api_version",
-								Description: "Version of the schema the FieldPath is written in terms of, defaults to \"v1\". +optional",
+								Description: "Version of the schema the FieldPath is written in terms of.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.FieldRef.APIVersion"),
 							},
@@ -526,7 +527,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_resource_field_ref_container_name",
-								Description: "Container name: required for volumes, optional for env vars +optional",
+								Description: "Container name: required for volumes, optional for env vars.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ResourceFieldRef.ContainerName"),
 							},
@@ -543,7 +544,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.LocalObjectReference.Name"),
 							},
@@ -555,13 +556,13 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_optional",
-								Description: "Specify whether the ConfigMap or its key must be defined +optional",
+								Description: "Specify whether the ConfigMap or its key must be defined.",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.Optional"),
 							},
 							{
 								Name:        "value_from_secret_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.LocalObjectReference.Name"),
 							},
@@ -573,7 +574,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_secret_key_ref_optional",
-								Description: "Specify whether the Secret or its key must be defined +optional",
+								Description: "Specify whether the Secret or its key must be defined",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.Optional"),
 							},
@@ -597,7 +598,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "read_only",
-								Description: "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false. +optional",
+								Description: "Mounted read-only if true, read-write otherwise (false or unspecified).",
 								Type:        schema.TypeBool,
 							},
 							{
@@ -607,17 +608,17 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "sub_path",
-								Description: "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root). +optional",
+								Description: "Path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "mount_propagation",
-								Description: "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. +optional",
+								Description: "Determines how mounts are propagated from the host to container and the other way around.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "sub_path_expr",
-								Description: "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive. +optional",
+								Description: "Expanded path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 						},
@@ -758,7 +759,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "tty",
-						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional",
+						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("TTY"),
 					},
@@ -782,12 +783,12 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_port",
-								Description: "Number of port to expose on the host. If specified, this must be a valid port number, 0 < x < 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. +optional",
+								Description: "Number of port to expose on the host.",
 								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "container_port",
-								Description: "Number of port to expose on the pod's IP address. This must be a valid port number, 0 < x < 65536.",
+								Description: "Number of port to expose on the pod's IP address.",
 								Type:        schema.TypeInt,
 							},
 							{
@@ -797,7 +798,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_ip",
-								Description: "What host IP to bind the external port to. +optional",
+								Description: "What host IP to bind the external port to.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("HostIP"),
 							},
@@ -826,7 +827,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_field_ref_api_version",
-								Description: "Version of the schema the FieldPath is written in terms of, defaults to \"v1\". +optional",
+								Description: "Version of the schema the FieldPath is written in terms of, defaults to \"v1\".",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.FieldRef.APIVersion"),
 							},
@@ -838,7 +839,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_resource_field_ref_container_name",
-								Description: "Container name: required for volumes, optional for env vars +optional",
+								Description: "Container name: required for volumes, optional for env vars",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ResourceFieldRef.ContainerName"),
 							},
@@ -855,7 +856,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.LocalObjectReference.Name"),
 							},
@@ -867,13 +868,13 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_optional",
-								Description: "Specify whether the ConfigMap or its key must be defined +optional",
+								Description: "Specify whether the ConfigMap or its key must be defined",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.Optional"),
 							},
 							{
 								Name:        "value_from_secret_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.LocalObjectReference.Name"),
 							},
@@ -885,7 +886,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_secret_key_ref_optional",
-								Description: "Specify whether the Secret or its key must be defined +optional",
+								Description: "Specify whether the Secret or its key must be defined.",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.Optional"),
 							},
@@ -909,7 +910,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "read_only",
-								Description: "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false. +optional",
+								Description: "Mounted read-only if true, read-write otherwise (false or unspecified).",
 								Type:        schema.TypeBool,
 							},
 							{
@@ -919,17 +920,17 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "sub_path",
-								Description: "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root). +optional",
+								Description: "Path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "mount_propagation",
-								Description: "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. +optional",
+								Description: "Determines how mounts are propagated from the host to container and the other way around.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "sub_path_expr",
-								Description: "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive. +optional",
+								Description: "Expanded path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 						},
@@ -966,7 +967,7 @@ func CorePods() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "target_container_name",
-						Description: "If set, the name of the container from PodSpec that this ephemeral container targets. The ephemeral container will be run in the namespaces (IPC, PID, etc) of this container. If not set then the ephemeral container is run in whatever namespaces are shared for the pod",
+						Description: "If set, the name of the container from PodSpec that this ephemeral container targets.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -1085,7 +1086,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "tty",
-						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. +optional",
+						Description: "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("EphemeralContainerCommon.TTY"),
 					},
@@ -1109,12 +1110,12 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_port",
-								Description: "Number of port to expose on the host. If specified, this must be a valid port number, 0 < x < 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. +optional",
+								Description: "Number of port to expose on the host.",
 								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "container_port",
-								Description: "Number of port to expose on the pod's IP address. This must be a valid port number, 0 < x < 65536.",
+								Description: "Number of port to expose on the pod's IP address.",
 								Type:        schema.TypeInt,
 							},
 							{
@@ -1124,7 +1125,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "host_ip",
-								Description: "What host IP to bind the external port to. +optional",
+								Description: "What host IP to bind the external port to.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("HostIP"),
 							},
@@ -1153,7 +1154,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_field_ref_api_version",
-								Description: "Version of the schema the FieldPath is written in terms of, defaults to \"v1\". +optional",
+								Description: "Version of the schema the FieldPath is written in terms of, defaults to \"v1\".",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.FieldRef.APIVersion"),
 							},
@@ -1165,7 +1166,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_resource_field_ref_container_name",
-								Description: "Container name: required for volumes, optional for env vars +optional",
+								Description: "Container name: required for volumes, optional for env vars.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ResourceFieldRef.ContainerName"),
 							},
@@ -1182,7 +1183,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.LocalObjectReference.Name"),
 							},
@@ -1194,13 +1195,13 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_config_map_key_ref_optional",
-								Description: "Specify whether the ConfigMap or its key must be defined +optional",
+								Description: "Specify whether the ConfigMap or its key must be defined",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.ConfigMapKeyRef.Optional"),
 							},
 							{
 								Name:        "value_from_secret_key_ref_local_object_reference_name",
-								Description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields",
+								Description: "Name of the referent.",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.LocalObjectReference.Name"),
 							},
@@ -1212,7 +1213,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "value_from_secret_key_ref_optional",
-								Description: "Specify whether the Secret or its key must be defined +optional",
+								Description: "Specify whether the Secret or its key must be defined.",
 								Type:        schema.TypeBool,
 								Resolver:    schema.PathResolver("ValueFrom.SecretKeyRef.Optional"),
 							},
@@ -1236,7 +1237,7 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "read_only",
-								Description: "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false. +optional",
+								Description: "Mounted read-only if true, read-write otherwise (false or unspecified).",
 								Type:        schema.TypeBool,
 							},
 							{
@@ -1246,17 +1247,17 @@ func CorePods() *schema.Table {
 							},
 							{
 								Name:        "sub_path",
-								Description: "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root). +optional",
+								Description: "Path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "mount_propagation",
-								Description: "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. +optional",
+								Description: "mountPropagation determines how mounts are propagated from the host to container and the other way around.",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "sub_path_expr",
-								Description: "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive. +optional",
+								Description: "Expanded path within the volume from which the container's volume should be mounted.",
 								Type:        schema.TypeString,
 							},
 						},
@@ -1299,7 +1300,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "name",
-						Description: "Volume's name. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+						Description: "Volume's name. Must be a DNS_LABEL and unique within the pod.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -1454,19 +1455,19 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "storage_os",
-						Description: "StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes. +optional",
+						Description: "StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.",
 						Type:        schema.TypeJSON,
 						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.StorageOS }),
 					},
 					{
 						Name:        "csi",
-						Description: "CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature). +optional",
+						Description: "CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature).",
 						Type:        schema.TypeJSON,
 						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.CSI }),
 					},
 					{
 						Name:        "ephemeral",
-						Description: "Ephemeral represents a volume that is handled by a cluster storage driver. The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed.  Use this if: a) the volume is only needed while the pod runs, b) features of normal volumes like restoring from snapshot or capacity    tracking are needed, c) the storage driver is specified through a storage class, and d) the storage driver supports dynamic volume provisioning through    a PersistentVolumeClaim (see EphemeralVolumeSource for more    information on the connection between this volume type    and PersistentVolumeClaim).  Use PersistentVolumeClaim or one of the vendor-specific APIs for volumes that persist for longer than the lifecycle of an individual pod.  Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to be used that way - see the documentation of the driver for more information.  A pod can use both types of ephemeral volumes and persistent volumes at the same time.  This is a beta feature and only available when the GenericEphemeralVolume feature gate is enabled.  +optional",
+						Description: "Ephemeral represents a volume that is handled by a cluster storage driver.",
 						Type:        schema.TypeJSON,
 						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Ephemeral }),
 					},
@@ -1523,7 +1524,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'. +optional",
+						Description: "Container's ID in the format 'docker://<container_id>'.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},
@@ -1585,7 +1586,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'. +optional",
+						Description: "Container's ID in the format 'docker://<container_id>'.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},
@@ -1647,7 +1648,7 @@ func CorePods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'. +optional",
+						Description: "Container's ID in the format 'docker://<container_id>'.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},
@@ -1675,14 +1676,48 @@ func fetchCorePods(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	return nil
 }
 
+func resolveCorePodsHostIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	pod, ok := resource.Item.(corev1.Pod)
+	if !ok {
+		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
+	}
+	ip := net.ParseIP(pod.Status.HostIP)
+	if ip != nil {
+		if v4 := ip.To4(); v4 != nil {
+			ip = v4
+		}
+	}
+	return resource.Set(c.Name, ip)
+}
+
+func resolveCorePodsPodIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	pod, ok := resource.Item.(corev1.Pod)
+	if !ok {
+		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
+	}
+	ip := net.ParseIP(pod.Status.PodIP)
+	if ip != nil {
+		if v4 := ip.To4(); v4 != nil {
+			ip = v4
+		}
+	}
+	return resource.Set(c.Name, ip)
+}
+
 func resolveCorePodPodIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	pod, ok := resource.Item.(corev1.Pod)
 	if !ok {
 		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
 	}
-	ips := make([]string, 0, len(pod.Status.PodIPs))
+	ips := make([]net.IP, 0, len(pod.Status.PodIPs))
 	for _, v := range pod.Status.PodIPs {
-		ips = append(ips, v.IP)
+		ip := net.ParseIP(v.IP)
+		if ip != nil {
+			if v4 := ip.To4(); v4 != nil {
+				ip = v4
+			}
+		}
+		ips = append(ips, ip)
 	}
 	return resource.Set(c.Name, ips)
 }
