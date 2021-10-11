@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -232,6 +233,29 @@ func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider)
 		return fmt.Errorf("provider test connection failed. Reason: %w", err)
 	}
 	return nil
+}
+
+// NormalizeResources walks over all given providers and in place normalizes their resources list:
+//
+// * wildcard expansion
+// * no unknown resources
+// * no duplicate resources
+func (c *Client) NormalizeResources(ctx context.Context, providers []*config.Provider) error {
+	for _, p := range providers {
+		if err := c.normalizeProvider(ctx, p); err != nil {
+			return fmt.Errorf("provider %s: %w", p.Name, err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) error {
+	s, err := c.GetProviderSchema(ctx, p.Name)
+	if err != nil {
+		return err
+	}
+	p.Resources, err = normalizeResources(p.Resources, s.ResourceTables)
+	return err
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchResponse, error) {
@@ -582,4 +606,36 @@ func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
 		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)
 	}
 	return kv
+}
+
+// normalizeResources returns a canonical list of resources given a list of requested and all known resources.
+// It replaces wildcard resource with all resources. Error is returned if:
+//
+// * wildcard is present and other explicit resource is requested;
+// * one of explicitly requested resources is not present in all known;
+// * some resource is specified more than once (duplicate).
+func normalizeResources(requested []string, all map[string]*schema.Table) ([]string, error) {
+	if len(requested) == 1 && requested[0] == "*" {
+		requested = make([]string, 0, len(all))
+		for k := range all {
+			requested = append(requested, k)
+		}
+	}
+	result := make([]string, 0, len(requested))
+	seen := make(map[string]struct{})
+	for _, r := range requested {
+		if _, ok := seen[r]; ok {
+			return nil, fmt.Errorf("resource %s is duplicate", r)
+		}
+		seen[r] = struct{}{}
+		if _, ok := all[r]; !ok {
+			if r == "*" {
+				return nil, fmt.Errorf("wildcard resource must be the only one in the list")
+			}
+			return nil, fmt.Errorf("resource %s does not exist", r)
+		}
+		result = append(result, r)
+	}
+	sort.Strings(result)
+	return result, nil
 }

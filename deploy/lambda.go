@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -50,40 +49,44 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 		cfg.CloudQuery.Connection.DSN = dsn
 	}
 
+	completedMsg := fmt.Sprintf("Completed task %s", req.TaskName)
 	switch req.TaskName {
 	case "fetch":
-		Fetch(ctx, cfg)
+		return completedMsg, Fetch(ctx, cfg)
 	case "policy":
-		Policy(ctx, cfg)
+		return completedMsg, Policy(ctx, cfg)
 	default:
 		return fmt.Sprintf("Unknown task: %s", req.TaskName), fmt.Errorf("unknown task: %s", req.TaskName)
 	}
-	return fmt.Sprintf("Completed task %s", req.TaskName), nil
 }
 
 // Fetch fetches resources from a cloud provider and saves them in the configured database
-func Fetch(ctx context.Context, cfg *config.Config) {
+func Fetch(ctx context.Context, cfg *config.Config) error {
 	c, err := client.New(ctx, func(c *client.Client) {
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
 	if err != nil {
-		log.Fatalf("Unable to create client: %s", err)
+		return fmt.Errorf("unable to create client: %w", err)
 	}
 	err = c.DownloadProviders(ctx)
 	if err != nil {
-		log.Fatalf("Unable to initialize client: %s", err)
+		return fmt.Errorf("unable to initialize client: %w", err)
+	}
+	if err := c.NormalizeResources(ctx, cfg.Providers); err != nil {
+		return err
 	}
 	_, err = c.Fetch(ctx, client.FetchRequest{
 		Providers: cfg.Providers,
 	})
 	if err != nil {
-		log.Fatalf("Error fetching resources: %s", err)
+		return fmt.Errorf("error fetching resources: %w", err)
 	}
+	return nil
 }
 
 // Policy Runs a policy SQL statement and returns results
-func Policy(ctx context.Context, cfg *config.Config) {
+func Policy(ctx context.Context, cfg *config.Config) error {
 	outputPath := "/tmp/result.json"
 	queryPath := os.Getenv("CQ_QUERY_HUB_PATH") // TODO: if path is an S3 URI, pull file down
 	c, err := client.New(ctx, func(c *client.Client) {
@@ -92,7 +95,7 @@ func Policy(ctx context.Context, cfg *config.Config) {
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 	})
 	if err != nil {
-		log.Fatalf("Unable to create client: %s", err)
+		return fmt.Errorf("unable to create client: %w", err)
 	}
 	err = c.RunPolicy(ctx, client.PolicyRunRequest{
 		Args:          []string{queryPath},
@@ -100,6 +103,7 @@ func Policy(ctx context.Context, cfg *config.Config) {
 		OutputPath:    outputPath,
 	})
 	if err != nil {
-		log.Fatalf("Error running query: %s", err)
+		return fmt.Errorf("error running query: %s", err)
 	}
+	return nil
 }

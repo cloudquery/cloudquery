@@ -74,6 +74,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+	if err := c.c.NormalizeResources(ctx, c.cfg.Providers); err != nil {
+		return err
+	}
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var fetchProgress *Progress
 	var fetchCallback client.FetchUpdateCallback
