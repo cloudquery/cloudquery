@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -14,6 +15,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
 	"github.com/hashicorp/hcl/v2/hclparse"
@@ -460,4 +462,63 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 	}
 
 	return cancelServe
+}
+
+func Test_normalizeResources(t *testing.T) {
+
+	tests := []struct {
+		name      string
+		requested []string
+		all       map[string]*schema.Table
+		want      []string
+		wantErr   bool
+	}{
+		{
+			"wilcard",
+			[]string{"*"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"1", "2", "3"},
+			false,
+		},
+		{
+			"wilcard with explicit",
+			[]string{"*", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"unknown resource",
+			[]string{"1", "2", "x"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"duplicate resource",
+			[]string{"1", "2", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"ok, all explicit",
+			[]string{"2", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"1", "2"},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := normalizeResources(tt.requested, tt.all)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("doInterpolate() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("doInterpolate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
