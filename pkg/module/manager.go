@@ -68,6 +68,7 @@ func (m *ManagerImpl) ParseModuleReference(args []string, modConfigPath string) 
 	if err != nil {
 		return nil, fmt.Errorf("could not read config: %w", err)
 	}
+
 	if err := mod.Prepare(rawConfig); err != nil {
 		return nil, fmt.Errorf("invalid config: %w", err)
 	}
@@ -98,12 +99,18 @@ func (m *ManagerImpl) readConfig(modName string, configPath string) (hcl.Body, e
 		if info, err := osFs.Stat(configPath); err != nil || info.IsDir() {
 			return nil, fmt.Errorf("could not find the given config %q", configPath)
 		}
-		parser := config.NewParser(nil)
+		parser := config.NewParser()
 		configRaw, diags := parser.LoadHCLFile(configPath)
 		if diags != nil && diags.HasErrors() {
 			return nil, fmt.Errorf("failed to load config file: %#v", diags.Error())
 		}
-		return configRaw,  nil
+		inner, diags := parser.DecodeModuleConfig(configRaw, modName)
+		if diags.HasErrors() {
+			return nil, fmt.Errorf("DecodeModuleConfig: %w", diags)
+		} else if inner == nil {
+			return nil, fmt.Errorf("could not find valid module block in config")
+		}
+		return inner, nil
 	}
 
 	// Try to find $modName.hcl
@@ -134,5 +141,12 @@ func (m *ManagerImpl) readConfig(modName string, configPath string) (hcl.Body, e
 	if diags != nil && diags.HasErrors() {
 		return nil, fmt.Errorf("failed to load embedded config: %#v", diags.Error())
 	}
-	return configRaw,  nil
+
+	inner, diags := parser.DecodeModuleConfig(configRaw, modName)
+	if diags.HasErrors() {
+		return nil, fmt.Errorf("DecodeModuleConfig: %w", diags)
+	} else if inner == nil {
+		return nil, fmt.Errorf("could not find valid module block in embedded config")
+	}
+	return inner, nil
 }
