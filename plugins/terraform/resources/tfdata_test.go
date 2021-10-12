@@ -3,7 +3,7 @@ package resources
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/providertest"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 	"github.com/cloudquery/cq-provider-terraform/client"
 )
 
