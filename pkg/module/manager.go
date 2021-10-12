@@ -25,7 +25,7 @@ type ManagerImpl struct {
 	logger hclog.Logger
 }
 
-// Manager is the interface that describes the interaction with the policy hub.
+// Manager is the interface that describes the interaction with the module manager.
 // Implemented by ManagerImpl.
 type Manager interface {
 	// RegisterModule is used to register a module into the manager.

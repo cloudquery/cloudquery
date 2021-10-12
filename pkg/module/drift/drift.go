@@ -1,6 +1,7 @@
 package drift
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/module/model"
@@ -11,7 +12,7 @@ import (
 type DriftImpl struct {
 	logger hclog.Logger
 
-	config hcl.Body
+	config *BaseConfig
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -25,15 +26,21 @@ func (d *DriftImpl) ID() string {
 }
 
 func (d *DriftImpl) Prepare(config hcl.Body) error {
-	// TODO parse config, if it isn't valid return error
-	// TODO put config into d
-	d.config = config
+	p := NewParser("")
+
+	theCfg, diags := p.Decode(config, nil)
+	if diags.HasErrors() {
+		return diags
+	}
+
+	d.config = theCfg
 	return nil
 }
 
 func (d *DriftImpl) Execute(req *model.ExecuteRequest) *model.ExecutionResult {
 	// TODO run
-	fmt.Printf("config is %+v\n", d.config)
+	cb, _ := json.Marshal(d.config)
+	fmt.Printf("config is %s\n", string(cb))
 	fmt.Printf("execute is %+v\n", req)
 	return nil
 }
