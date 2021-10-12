@@ -1,7 +1,6 @@
 before:
   hooks:
     - go mod download
-    - go generate ./...
 builds:
   - flags:
       - -buildmode=exe
@@ -16,18 +15,21 @@ builds:
       - darwin
     goarch:
       - amd64
+      - arm64
+    ignore:
+       - goos: windows
+         goarch: arm64
 archives:
-  -
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: binary
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+      - "^docs:"
+      - "^test:"
 signs:
   - artifacts: checksum
     args:
