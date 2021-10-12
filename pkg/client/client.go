@@ -22,6 +22,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -110,6 +112,18 @@ type PolicyRunRequest struct {
 	SkipVersioning bool
 }
 
+// ModuleRunRequest is the request used to run a module.
+type ModuleRunRequest struct {
+	// Args are the given arguments from the module run command.
+	Args []string
+
+	// OutputPath is the output path for module execution output.
+	OutputPath string
+
+	// ModConfigPath is the path to the module config file to use.
+	ModConfigPath string
+}
+
 func (f FetchUpdate) AllDone() bool {
 	for _, v := range f.FinishedResources {
 		if !v {
@@ -173,6 +187,8 @@ type Client struct {
 	Hub registry.Hub
 	// manager manages all plugins lifecycle
 	Manager *plugin.Manager
+	// ModuleManager manages all modules lifecycle
+	ModuleManager module.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
@@ -577,6 +593,48 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		}()
 
 		data, err := json.Marshal(&output)
+		if err != nil {
+			return err
+		}
+		if _, err := f.Write(data); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
+	c.Logger.Info("Running module", "args", req.Args)
+
+	if c.ModuleManager == nil {
+		// lazy init modules here
+		c.ModuleManager = module.NewManager(c.pool, c.Logger)
+		c.ModuleManager.RegisterModule(drift.New(c.Logger))
+	}
+
+	modReq, err := c.ModuleManager.ParseModuleReference(req.Args, req.ModConfigPath)
+	if err != nil {
+		return err
+	}
+	c.Logger.Debug("Parsed module run input arguments", "req", modReq)
+
+	output, err := c.ModuleManager.RunModule(ctx, modReq)
+	if err != nil {
+		return err
+	}
+
+	// Store output in file if requested
+	if req.OutputPath != "" {
+		fs := afero.NewOsFs()
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		data, err := json.Marshal(output)
 		if err != nil {
 			return err
 		}

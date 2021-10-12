@@ -162,6 +162,23 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 	return nil
 }
 
+func (c Client) RunModule(ctx context.Context, args []string, outputPath, modConfigPath string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Starting module run...\n")
+	req := client.ModuleRunRequest{
+		Args:           args,
+		OutputPath:     outputPath,
+		ModConfigPath: modConfigPath,
+	}
+	err := c.c.RunModule(ctx, req)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run module: %s.\n\n", err.Error())
+		return err
+	}
+	ui.ColorizedOutput(ui.ColorProgress, "Finished module run...\n\n")
+	return nil
+}
+
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
