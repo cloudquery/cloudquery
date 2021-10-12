@@ -30,7 +30,7 @@ var (
 		Example: `
   # Downloads aws provider and generates config.hcl for aws provider
   cloudquery init aws
-	
+
   # Downloads aws,gcp providers and generates one config.hcl with both providers
   cloudquery init aws gcp`,
 		Args: cobra.MinimumNArgs(1),
