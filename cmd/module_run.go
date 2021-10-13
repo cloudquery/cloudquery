@@ -31,8 +31,7 @@ var (
 			return c.RunModule(ctx, args, moduleOutputPath, moduleConfigPath)
 		},
 	}
-	moduleOutputPath     string
-	moduleConfigPath     string
+	moduleOutputPath, moduleConfigPath string
 )
 
 func init() {

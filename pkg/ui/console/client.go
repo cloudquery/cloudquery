@@ -165,9 +165,10 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 func (c Client) RunModule(ctx context.Context, args []string, outputPath, modConfigPath string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module run...\n")
 	req := client.ModuleRunRequest{
-		Args:           args,
-		OutputPath:     outputPath,
+		Args:          args,
+		OutputPath:    outputPath,
 		ModConfigPath: modConfigPath,
+		Providers:     c.cfg.Providers,
 	}
 	err := c.c.RunModule(ctx, req)
 	if err != nil {

@@ -37,12 +37,31 @@ func (d *DriftImpl) Prepare(config hcl.Body) error {
 	return nil
 }
 
-func (d *DriftImpl) Execute(req *model.ExecuteRequest) *model.ExecutionResult {
+func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResult) {
+	ret = &model.ExecutionResult{}
+
 	// TODO run
 	cb, _ := json.Marshal(d.config)
 	fmt.Printf("config is %s\n", string(cb))
 	fmt.Printf("execute is %+v\n", req)
-	return nil
+
+	/*
+		for _, cfg := range d.config.Providers {
+			for _, prov := range req.Providers {
+				ok, diags := applyProvider(cfg, prov)
+				if diags.HasErrors() {
+					ret.Error = diags
+					return
+				}
+				if !ok {
+					continue
+				}
+				// cfg is valid, process for prov
+			}
+		}
+	*/
+
+	return ret
 }
 
 // Make sure we satisfy the interface

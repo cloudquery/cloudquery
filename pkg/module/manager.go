@@ -32,7 +32,7 @@ type Manager interface {
 	RegisterModule(mod model.Module)
 
 	// ParseModuleReference parses and validates the given arguments into an execution request.
-	ParseModuleReference(args []string, modConfigPath string) (*model.ExecuteRequest, error)
+	ParseModuleReference(baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error)
 
 	// RunModule runs the given module.
 	RunModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
@@ -42,8 +42,8 @@ type Manager interface {
 func NewManager(pool *pgxpool.Pool, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]model.Module),
-		pool:            pool,
-		logger:          logger,
+		pool:    pool,
+		logger:  logger,
 	}
 }
 
@@ -53,7 +53,7 @@ func (m *ManagerImpl) RegisterModule(mod model.Module) {
 }
 
 // ParseModuleReference parses and validates the given arguments into an execution request.
-func (m *ManagerImpl) ParseModuleReference(args []string, modConfigPath string) (*model.ExecuteRequest, error) {
+func (m *ManagerImpl) ParseModuleReference(baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error) {
 	// Make sure the mandatory args are given
 	if len(args) < 1 {
 		return nil, fmt.Errorf("invalid module name. Module name is required but got %#v", args)
@@ -73,10 +73,10 @@ func (m *ManagerImpl) ParseModuleReference(args []string, modConfigPath string) 
 		return nil, fmt.Errorf("invalid config: %w", err)
 	}
 
-	return &model.ExecuteRequest{
-		Module: mod,
-		Args:   args,
-	}, nil
+	baseReq.Module = mod
+	baseReq.Args = args
+
+	return &baseReq, nil
 }
 
 // RunModule runs the given module.

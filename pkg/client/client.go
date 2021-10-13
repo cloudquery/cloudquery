@@ -18,12 +18,13 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
+	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -122,6 +123,9 @@ type ModuleRunRequest struct {
 
 	// ModConfigPath is the path to the module config file to use.
 	ModConfigPath string
+
+	// Providers is the list of providers to process
+	Providers []*config.Provider
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -612,7 +616,10 @@ func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
 		c.ModuleManager.RegisterModule(drift.New(c.Logger))
 	}
 
-	modReq, err := c.ModuleManager.ParseModuleReference(req.Args, req.ModConfigPath)
+	baseReq := model.ExecuteRequest{
+		Providers: req.Providers,
+	}
+	modReq, err := c.ModuleManager.ParseModuleReference(baseReq, req.Args, req.ModConfigPath)
 	if err != nil {
 		return err
 	}

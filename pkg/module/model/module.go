@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/hcl/v2"
 )
 
@@ -17,6 +18,9 @@ type ExecuteRequest struct {
 	Module Module
 
 	Args []string
+
+	// Providers is the list of providers to process
+	Providers []*config.Provider
 }
 
 type ExecutionResult struct {

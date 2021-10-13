@@ -1,7 +1,11 @@
 package drift
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
+	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclparse"
@@ -32,6 +36,36 @@ var baseSchema = &hcl.BodySchema{
 	},
 }
 
+type placeholder string
+
+const (
+	placeholderResourceKey             placeholder = "resourceKey"
+	placeholderResourceName            placeholder = "resourceName"
+	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
+)
+
+func makePlaceholder(varName placeholder) cty.Value {
+	return cty.StringVal("${" + string(varName) + "}")
+}
+
+func replacePlaceholder(varName placeholder, value, subject string) string {
+	plc := "${" + string(varName) + "}"
+	return strings.ReplaceAll(subject, plc, value)
+}
+
+func replacePlaceholderInSlice(varName placeholder, value, subject []string) []string {
+	plc := "${" + string(varName) + "}"
+	newSubj := make([]string, 0, len(subject))
+	for i := range subject {
+		if subject[i] == plc {
+			newSubj = append(newSubj, value...)
+		} else {
+			newSubj = append(newSubj, subject[i])
+		}
+	}
+	return newSubj
+}
+
 func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
 	baseConfig := &BaseConfig{}
 	content, contentDiags := body.Content(baseSchema)
@@ -39,15 +73,16 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 
 	ctx := *p.HCLContext
 	ctx.Variables["resource"] = cty.ObjectVal(map[string]cty.Value{
-		// TODO expose the resource struct here, with late binding
+		// FIXME expose the resource struct here, with late binding?
+		"Key": makePlaceholder(placeholderResourceKey),
 		"Value": cty.ObjectVal(map[string]cty.Value{
+			"Name": makePlaceholder(placeholderResourceName),
 			"Options": cty.ObjectVal(map[string]cty.Value{
-				"PrimaryKeys": cty.ListValEmpty(cty.String),
+				"PrimaryKeys": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceOptsPrimaryKeys)}),
 			}),
 		}),
 	})
 
-	hasWildcard := false
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "provider":
@@ -55,7 +90,7 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 			diags = append(diags, provDiags...)
 			if prov != nil {
 				if prov.Name == wildcard {
-					if hasWildcard {
+					if baseConfig.WildProvider != nil {
 						diags = append(diags, &hcl.Diagnostic{
 							Severity: hcl.DiagError,
 							Summary:  `Duplicate block`,
@@ -64,8 +99,46 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 						})
 						continue
 					}
-					hasWildcard = true
+					if prov.Version != "" {
+						diags = append(diags, &hcl.Diagnostic{
+							Severity: hcl.DiagError,
+							Summary:  `Invalid attribute`,
+							Detail:   `version attribute is only valid for non-"*" providers`,
+							Subject:  &block.DefRange,
+						})
+						continue
+					}
+
+					// TODO handle source?
+
+					baseConfig.WildProvider = prov
+					continue
 				}
+
+				if prov.Version != "" {
+					var err error
+					prov.versionConstraints, err = version.NewConstraint(prov.Version)
+					if err != nil {
+						diags = append(diags, &hcl.Diagnostic{
+							Severity: hcl.DiagError,
+							Summary:  `Invalid attribute`,
+							Detail:   fmt.Sprintf(`version attribute is invalid: %v`, err),
+							Subject:  &block.DefRange,
+						})
+						continue
+					}
+				}
+
+				if prov.Source != "" {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid attribute`,
+						Detail:   `source attribute is only valid for "*" providers`,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+
 				baseConfig.Providers = append(baseConfig.Providers, prov)
 			}
 		default:
@@ -75,7 +148,25 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 	if diags.HasErrors() {
 		return nil, diags
 	}
+
+	diags = p.interpret(baseConfig)
+
 	return baseConfig, diags
+}
+
+// interpret iterates over every provider/resource and replaces missing values with the ones in wildprovider/wildresource
+func (p *Parser) interpret(cfg *BaseConfig) hcl.Diagnostics {
+	for _, prov := range cfg.Providers {
+		prov.applyWildProvider(cfg.WildProvider)
+
+		for _, res := range prov.Resources {
+			if cfg.WildProvider != nil {
+				res.applyWildResource(cfg.WildProvider.WildResource)
+			}
+			res.applyWildResource(prov.WildResource)
+		}
+	}
+	return nil
 }
 
 var (
@@ -135,23 +226,24 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 		Name:      b.Labels[0],
 		Resources: make(map[string]*ResourceConfig),
 	}
-	// TODO
-	//if sourceAttr, ok := content.Attributes["source"]; ok {
-	//	diags = append(diags, gohcl.DecodeExpression(sourceAttr.Expr, nil, &prov.Description)...)
-	//}
 	if versionAttr, ok := content.Attributes["version"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(versionAttr.Expr, nil, &prov.Version)...)
+		diags = append(diags, gohcl.DecodeExpression(versionAttr.Expr, ctx, &prov.Version)...)
 	}
 	if skipAttr, ok := content.Attributes["skip_resources"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(skipAttr.Expr, nil, &prov.SkipResources)...)
+		diags = append(diags, gohcl.DecodeExpression(skipAttr.Expr, ctx, &prov.SkipResources)...)
 	}
 
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "resource":
 			var res ResourceConfig
-			if diag := gohcl.DecodeBody(block.Body, ctx, &res); diag.HasErrors() {
+			if diag := gohcl.DecodeBody(block.Body, ctx.NewChild(), &res); diag.HasErrors() {
 				diags = append(diags, diag...)
+				continue
+			}
+			res.defRange = &block.DefRange
+			if block.Labels[0] == wildcard {
+				prov.WildResource = &res
 			} else {
 				prov.Resources[block.Labels[0]] = &res
 			}
