@@ -62,16 +62,16 @@ func (m *Manager) LoadExisting(providers []*config.RequiredProvider) {
 func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
 	m.logger.Debug("Downloading required providers", "providers", providers)
 	for _, rp := range providers {
-		if _, ok := m.clients[rp.Name]; ok {
+		_, providerName, err := registry.ParseProviderName(rp.Name)
+		if err != nil {
+			return err
+		}
+		if _, ok := m.clients[providerName]; ok {
 			m.logger.Debug("Skipping provider download, using reattach instead", "name", rp.Name, "version", rp.Version)
 			continue
 		}
 		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
 		details, err := m.hub.DownloadProvider(ctx, rp, noVerify)
-		if err != nil {
-			return err
-		}
-		_, providerName, err := registry.ParseProviderName(rp.Name)
 		if err != nil {
 			return err
 		}
@@ -81,6 +81,10 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 }
 
 func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin, error) {
+	_, providerName, err := registry.ParseProviderName(providerName)
+	if err != nil {
+		return nil, err
+	}
 	p, ok := m.clients[providerName]
 	if ok {
 		return p, nil
@@ -90,7 +94,7 @@ func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin
 	if !ok {
 		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)
 	}
-	p, err := m.createProvider(&details, alias, env)
+	p, err = m.createProvider(&details, alias, env)
 	if err != nil {
 		return nil, err
 	}
@@ -115,6 +119,10 @@ func (m *Manager) Shutdown() {
 }
 
 func (m *Manager) KillProvider(providerName string) error {
+	_, providerName, err := registry.ParseProviderName(providerName)
+	if err != nil {
+		return err
+	}
 
 	client, ok := m.clients[providerName]
 	if !ok {
