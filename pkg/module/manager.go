@@ -3,6 +3,7 @@ package module
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/modules"
@@ -81,12 +82,28 @@ func (m *ManagerImpl) ParseModuleReference(baseReq model.ExecuteRequest, args []
 
 // RunModule runs the given module.
 func (m *ManagerImpl) RunModule(ctx context.Context, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
-	// Acquire connection from the connection pool
-	//conn, err := m.pool.Acquire(ctx)
-	//if err != nil {
-	//	return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
-	//}
-	//defer conn.Release()
+
+	var (
+		oneDb   = &sync.Once{}
+		theConn *pgxpool.Conn
+	)
+
+	execReq.Conn = func() (*pgxpool.Conn, error) {
+		var err error
+		oneDb.Do(func() {
+			// Acquire connection from the connection pool
+			theConn, err = m.pool.Acquire(ctx)
+		})
+		if err != nil {
+			return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
+		}
+		return theConn, nil
+	}
+	defer func() {
+		if theConn != nil {
+			theConn.Release()
+		}
+	}()
 
 	res := execReq.Module.Execute(execReq)
 	return res, nil
@@ -114,8 +131,6 @@ func (m *ManagerImpl) readConfig(modName string, configPath string) (hcl.Body, e
 	}
 
 	// Try to find $modName.hcl
-	//return nil, fmt.Errorf("not implemented %s.hcl", modName)
-
 	filename := fmt.Sprintf("%s.hcl", modName)
 
 	contents, err := modules.FS.ReadFile("configs/" + filename)

@@ -25,19 +25,19 @@ module "drift" {
     provider "aws" {
         version = ">=0.5.10"
 
-         resource "ec2_instances" {
+         resource "ec2.instances" {
         #   identifiers       = ["id"]
         #   ignore_attributes = ["launch_time"]
          }
 
-        resource "iam_users" {
+        resource "iam.users" {
             ignore_attributes = [ "password_last_used" ]
             tf_type = "aws_iam_user"
             tf_name = "users"
         }
 
         skip_resources = [
-            "ec2_instances"
+            "ec2.instances"
         ]
 
     }

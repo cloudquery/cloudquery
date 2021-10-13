@@ -40,26 +40,49 @@ func (d *DriftImpl) Prepare(config hcl.Body) error {
 func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResult) {
 	ret = &model.ExecutionResult{}
 
-	// TODO run
 	cb, _ := json.Marshal(d.config)
-	fmt.Printf("config is %s\n", string(cb))
-	fmt.Printf("execute is %+v\n", req)
+	d.logger.Debug("executing with config", "config", string(cb), "request", req)
 
-	/*
-		for _, cfg := range d.config.Providers {
-			for _, prov := range req.Providers {
-				ok, diags := applyProvider(cfg, prov)
-				if diags.HasErrors() {
-					ret.Error = diags
-					return
-				}
-				if !ok {
-					continue
-				}
-				// cfg is valid, process for prov
+	provs, err := req.Providers()
+	if err != nil {
+		ret.Error = err
+		return
+	}
+
+	for _, cfg := range d.config.Providers {
+		var found bool
+		for _, prov := range provs {
+			ok, diags := d.applyProvider(cfg, prov)
+			if diags.HasErrors() {
+				ret.Error = diags
+				return
 			}
+			if !ok {
+				continue
+			}
+
+			found = true
+
+			d.logger.Info("processing for provider", "provider", prov.Name, "config", cfg)
+
+			for resName, res := range cfg.Resources {
+				if res == nil {
+					continue // skipped
+				}
+
+				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName)
+
+				// TODO do drift, per resource
+			}
+
+			break
 		}
-	*/
+
+		if !found {
+			ret.Error = fmt.Errorf("no suitable provider found for %q", cfg.Name)
+			return
+		}
+	}
 
 	return ret
 }

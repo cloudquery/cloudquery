@@ -3,7 +3,8 @@ package drift
 import (
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -67,7 +68,7 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
 // Returns true if the given config is valid for the given provider and cfg is changed to resolve macros.
-func applyProvider(cfg *ProviderConfig, p *provider.Provider) (bool, hcl.Diagnostics) {
+func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
 	}
@@ -82,18 +83,29 @@ func applyProvider(cfg *ProviderConfig, p *provider.Provider) (bool, hcl.Diagnos
 					Detail:   fmt.Sprintf("could not parse provider version %q: %v", p.Version, err),
 				},
 			}
-			//return false, fmt.Errorf("could not parse provider version %q: %w", p.Version, err)
 		}
 		if !cfg.versionConstraints.Check(pver) {
+			d.logger.Warn("provider is blocked by constraint", "provider", p.Name+"@"+p.Version, "constraint", cfg.Version)
 			return false, nil // not the correct provider: versions don't match
 		}
 	}
 
 	var diags hcl.Diagnostics
 
+	skips := make(map[string]struct{}, len(cfg.SkipResources))
+	for i := range cfg.SkipResources {
+		skips[cfg.SkipResources[i]] = struct{}{}
+	}
+
 	for resName, res := range cfg.Resources {
-		tbl, ok := p.ResourceMap[resName]
+		if _, ok := skips[resName]; ok {
+			cfg.Resources[resName] = nil
+			continue
+		}
+
+		tbl, ok := p.ResourceTables[resName]
 		if !ok {
+			d.logger.Warn("resource is not defined by the provider", "resource", resName)
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  `Specified resource not in provider`,

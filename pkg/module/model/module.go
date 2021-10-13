@@ -3,8 +3,10 @@ package model
 import (
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type Module interface {
@@ -19,8 +21,11 @@ type ExecuteRequest struct {
 
 	Args []string
 
-	// Providers is the list of providers to process
-	Providers []*config.Provider
+	// Providers is the callback to use to access to a list of providers to process
+	Providers func() ([]*cqproto.GetProviderSchemaResponse, error)
+
+	// Conn() is the callback to use to access a pg conn
+	Conn func() (*pgxpool.Conn, error)
 }
 
 type ExecutionResult struct {

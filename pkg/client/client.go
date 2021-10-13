@@ -124,8 +124,8 @@ type ModuleRunRequest struct {
 	// ModConfigPath is the path to the module config file to use.
 	ModConfigPath string
 
-	// Providers is the list of providers to process
-	Providers []*config.Provider
+	// Providers is the callback to use to access to a list of providers to process
+	Providers func() ([]*cqproto.GetProviderSchemaResponse, error)
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -628,6 +628,12 @@ func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
 	output, err := c.ModuleManager.RunModule(ctx, modReq)
 	if err != nil {
 		return err
+	}
+
+	if output.Error != nil {
+		c.Logger.Error("Module execution failed with error", "error", output.Error)
+	} else {
+		c.Logger.Info("Module execution finished", "data", output)
 	}
 
 	// Store output in file if requested

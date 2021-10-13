@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -168,7 +169,28 @@ func (c Client) RunModule(ctx context.Context, args []string, outputPath, modCon
 		Args:          args,
 		OutputPath:    outputPath,
 		ModConfigPath: modConfigPath,
-		Providers:     c.cfg.Providers,
+		Providers: func() ([]*cqproto.GetProviderSchemaResponse, error) {
+			if err := c.DownloadProviders(ctx); err != nil {
+				return nil, err
+			}
+			var list []*cqproto.GetProviderSchemaResponse
+			for _, p := range c.cfg.Providers {
+				s, err := c.c.GetProviderSchema(ctx, p.Name)
+				if err != nil {
+					return nil, err
+				}
+				if s.Version == "" { // FIXME why?
+					deets, err := c.c.Manager.GetPluginDetails(p.Name)
+					if err != nil {
+						return nil, err
+					}
+					s.Version = deets.Version
+				}
+				list = append(list, s)
+			}
+
+			return list, nil
+		},
 	}
 	err := c.c.RunModule(ctx, req)
 	if err != nil {
