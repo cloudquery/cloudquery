@@ -20,3 +20,13 @@ cq-provider-*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+.swp
+
+__debug_bin
+#test directories
+**/.test/*
+
+resources/integration_tests/infra/.terraform
+resources/integration_tests/infra/.terraform.lock.hcl
+resources/integration_tests/infra/terraform-override.tf
+resources/integration_tests/infra/tmp/
