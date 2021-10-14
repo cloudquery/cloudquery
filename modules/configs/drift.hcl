@@ -25,10 +25,29 @@ module "drift" {
     provider "aws" {
         version = ">=0.5.10"
 
-         resource "ec2.instances" {
-        #   identifiers       = ["id"]
-        #   ignore_attributes = ["launch_time"]
-         }
+        resource "ec2.instances" {
+            #   identifiers       = ["id"]
+            #   ignore_attributes = ["launch_time"]
+
+            iac {
+                terraform {
+                    type = "aws_instance"
+                    name = "aws_ec2_instances_ec2_instance"
+                }
+            }
+        }
+
+        resource "s3.buckets" {
+            identifiers       = ["name"]
+            #   ignore_attributes = ["launch_time"]
+
+            iac {
+                terraform {
+                    type = "aws_s3_bucket"
+                    name = "s3_bucket"
+                }
+            }
+        }
 
         resource "iam.users" {
             ignore_attributes = [ "password_last_used" ]
@@ -42,7 +61,7 @@ module "drift" {
         }
 
         skip_resources = [
-            "ec2.instances"
+#            "ec2.instances"
         ]
 
     }

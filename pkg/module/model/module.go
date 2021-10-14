@@ -1,6 +1,7 @@
 package model
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -11,8 +12,8 @@ import (
 
 type Module interface {
 	ID() string
-	Prepare(config hcl.Body) error
-	Execute(*ExecuteRequest) *ExecutionResult
+	Prepare(context.Context, hcl.Body) error
+	Execute(context.Context, *ExecuteRequest) *ExecutionResult
 }
 
 type ExecuteRequest struct {
@@ -29,7 +30,8 @@ type ExecuteRequest struct {
 }
 
 type ExecutionResult struct {
-	Error error
+	Result interface{}
+	Error  error
 }
 
 func (e *ExecuteRequest) String() string {

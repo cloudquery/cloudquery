@@ -33,7 +33,7 @@ type Manager interface {
 	RegisterModule(mod model.Module)
 
 	// ParseModuleReference parses and validates the given arguments into an execution request.
-	ParseModuleReference(baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error)
+	ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error)
 
 	// RunModule runs the given module.
 	RunModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
@@ -54,7 +54,7 @@ func (m *ManagerImpl) RegisterModule(mod model.Module) {
 }
 
 // ParseModuleReference parses and validates the given arguments into an execution request.
-func (m *ManagerImpl) ParseModuleReference(baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error) {
+func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error) {
 	// Make sure the mandatory args are given
 	if len(args) < 1 {
 		return nil, fmt.Errorf("invalid module name. Module name is required but got %#v", args)
@@ -70,7 +70,7 @@ func (m *ManagerImpl) ParseModuleReference(baseReq model.ExecuteRequest, args []
 		return nil, fmt.Errorf("could not read config: %w", err)
 	}
 
-	if err := mod.Prepare(rawConfig); err != nil {
+	if err := mod.Prepare(ctx, rawConfig); err != nil {
 		return nil, fmt.Errorf("invalid config: %w", err)
 	}
 
@@ -105,7 +105,7 @@ func (m *ManagerImpl) RunModule(ctx context.Context, execReq *model.ExecuteReque
 		}
 	}()
 
-	res := execReq.Module.Execute(execReq)
+	res := execReq.Module.Execute(ctx, execReq)
 	return res, nil
 }
 

@@ -619,7 +619,7 @@ func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
 	baseReq := model.ExecuteRequest{
 		Providers: req.Providers,
 	}
-	modReq, err := c.ModuleManager.ParseModuleReference(baseReq, req.Args, req.ModConfigPath)
+	modReq, err := c.ModuleManager.ParseModuleReference(ctx, baseReq, req.Args, req.ModConfigPath)
 	if err != nil {
 		return err
 	}

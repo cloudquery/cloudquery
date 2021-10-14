@@ -2,7 +2,6 @@ package drift
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/go-version"
@@ -46,11 +45,6 @@ const (
 
 func makePlaceholder(varName placeholder) cty.Value {
 	return cty.StringVal("${" + string(varName) + "}")
-}
-
-func replacePlaceholder(varName placeholder, value, subject string) string {
-	plc := "${" + string(varName) + "}"
-	return strings.ReplaceAll(subject, plc, value)
 }
 
 func replacePlaceholderInSlice(varName placeholder, value, subject []string) []string {

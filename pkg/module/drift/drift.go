@@ -1,13 +1,16 @@
 package drift
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type DriftImpl struct {
@@ -26,7 +29,7 @@ func (d *DriftImpl) ID() string {
 	return "drift"
 }
 
-func (d *DriftImpl) Prepare(config hcl.Body) error {
+func (d *DriftImpl) Prepare(ctx context.Context, config hcl.Body) error {
 	p := NewParser("")
 
 	theCfg, diags := p.Decode(config, nil)
@@ -38,7 +41,7 @@ func (d *DriftImpl) Prepare(config hcl.Body) error {
 	return nil
 }
 
-func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResult) {
+func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret *model.ExecutionResult) {
 	ret = &model.ExecutionResult{}
 
 	cb, _ := json.Marshal(d.config)
@@ -64,6 +67,14 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 		ret.Error = fmt.Errorf("no IAC provider detected, can't continue")
 		return
 	}
+
+	conn, err := req.Conn()
+	if err != nil {
+		ret.Error = fmt.Errorf("no connection: %w", err)
+		return
+	}
+
+	var resList Results
 
 	for _, cfg := range d.config.Providers {
 		if cfg.Name == iacProv.Name {
@@ -106,8 +117,23 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 				d.logger.Info("do the table", "table", pr.Name, "ids", res.Identifiers, "ignore", res.IgnoreAttributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
 				// do the table iac_name=users iac_type=aws_iam_user ids=["account_id","id"] ignore=["password_last_used"] table=aws_iam_users
 
-				// TODO do drift, per resource
-
+				// Drift per resource
+				var dres *Result
+				switch iacProv.Name {
+				case "terraform":
+					dres, err = d.driftTerraform(ctx, conn, pr, res, iacData)
+				default:
+					ret.Error = fmt.Errorf("no suitable handler found for %q", iacProv.Name)
+					return
+				}
+				if err != nil {
+					ret.Error = fmt.Errorf("drift failed for (%s,%s): %w", prov.Name, resName, err)
+					return
+				} else if dres != nil {
+					dres.Provider = pr.Name
+					dres.ResourceType = resName
+					resList = append(resList, dres)
+				}
 			}
 
 			break
@@ -119,7 +145,29 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 		}
 	}
 
+	ret.Result = resList.String()
 	return ret
+}
+
+func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudProv *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
+	res := &Result{
+		Different: nil,
+		Equal:     nil,
+		Missing:   nil,
+		Extra:     nil,
+	}
+
+	// TODO compare in SQL
+
+	// Get from IAC
+	// SELECT i.instance_id, i.attributes from tf_resource_instances i JOIN tf_resources r ON r.cq_id=i.resource_id JOIN tf_data d ON d.cq_id=r.running_id WHERE d.backend_name='mylocal' AND r.provider='aws' AND r.mode='managed' AND r.type='aws_s3_bucket' AND r.name='s3_bucket';
+
+	// Get from provider
+	// SELECT account_id, region, name, arn FROM aws_s3_buckets;
+
+	// TODO
+
+	return res, nil
 }
 
 // Make sure we satisfy the interface
