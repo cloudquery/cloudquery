@@ -2,6 +2,7 @@ package drift
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/go-version"
@@ -156,10 +157,10 @@ func (p *Parser) interpret(cfg *BaseConfig) hcl.Diagnostics {
 		prov.applyWildProvider(cfg.WildProvider)
 
 		for _, res := range prov.Resources {
+			res.applyWildResource(prov.WildResource)
 			if cfg.WildProvider != nil {
 				res.applyWildResource(cfg.WildProvider.WildResource)
 			}
-			res.applyWildResource(prov.WildResource)
 		}
 	}
 	return nil
@@ -305,7 +306,25 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 					continue
 				}
 				ia.defRange = &block.DefRange
+				ia.attributeMap = make(map[string]string, len(ia.AttributeMap))
+
+				for _, v := range ia.AttributeMap {
+					parts := strings.Split(v, "=")
+					if len(parts) != 2 {
+						diags = append(diags, &hcl.Diagnostic{
+							Severity: hcl.DiagError,
+							Summary:  `Invalid attribute_map entry`,
+							Detail:   `attribute_map entry should have a "cloud_attribute=iac_attribute" format`,
+							Subject:  &block.DefRange,
+						})
+						continue
+					}
+					ia.attributeMap[parts[0]] = parts[1]
+				}
 				res.IAC[iacBlock.Type] = &ia
+			}
+			if diags.HasErrors() {
+				return nil, diags
 			}
 		default:
 			panic("unexpected block")

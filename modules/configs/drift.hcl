@@ -29,6 +29,15 @@ module "drift" {
 
         resource "*" {
             ignore_identifiers = ["account_id"]
+
+            iac {
+                terraform {
+                    # map of attributes from cloud provider to iac provider
+                    attribute_map = [
+                        "tags=tags_all"
+                    ]
+                }
+            }
         }
 
         resource "ec2.instances" {
@@ -50,6 +59,10 @@ module "drift" {
                 terraform {
                     type = "aws_s3_bucket"
                     name = "s3_bucket"
+
+                    attribute_map = [
+                        "tags=tags_all"
+                    ]
                 }
             }
         }

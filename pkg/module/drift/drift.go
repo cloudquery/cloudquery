@@ -173,6 +173,8 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		tfMode        = "managed"
 	)
 
+	fmt.Println("attribute map", iacData.attributeMap)
+
 	// TODO check if cloud provider names always match with tf_resources.provider
 	tfProvider := cloudName
 

@@ -38,10 +38,13 @@ type ResourceConfig struct {
 }
 
 type IACConfig struct {
-	Name string `hcl:"name"`
-	Type string `hcl:"type"`
+	Name string `hcl:"name,optional"`
+	Type string `hcl:"type,optional"`
 
-	defRange *hcl.Range
+	AttributeMap []string `hcl:"attribute_map,optional"`
+
+	attributeMap map[string]string // cloud vs. iac
+	defRange     *hcl.Range
 }
 
 const wildcard = "*"
@@ -56,6 +59,8 @@ func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 	}
 }
 
+// applyWildResource sets the missing values from res if they are provided in the wild resource
+// for IAC.attributeMap it adds on to the list of attributes
 func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	if wild == nil {
 		return
@@ -75,7 +80,19 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
+	} else {
+		// add on attributeMap values from wild
+		for k, v := range res.IAC {
+			if wild.IAC[k] != nil {
+				for kk, vv := range wild.IAC[k].attributeMap {
+					if _, ok := v.attributeMap[kk]; !ok {
+						res.IAC[k].attributeMap[kk] = vv
+					}
+				}
+			}
+		}
 	}
+
 }
 
 // finalInterpret removes each element in IgnoredIdentifiers from Identifiers
