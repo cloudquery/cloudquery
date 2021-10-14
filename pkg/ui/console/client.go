@@ -182,9 +182,10 @@ func (c Client) RunModule(ctx context.Context, args []string, outputPath, modCon
 				if s.Version == "" { // FIXME why?
 					deets, err := c.c.Manager.GetPluginDetails(p.Name)
 					if err != nil {
-						return nil, err
+						c.c.Logger.Warn("GetPluginDetails failed", "error", err.Error())
+					} else {
+						s.Version = deets.Version
 					}
-					s.Version = deets.Version
 				}
 				list = append(list, s)
 			}

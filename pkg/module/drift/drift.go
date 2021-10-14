@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/module/model"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -41,7 +42,7 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 	ret = &model.ExecutionResult{}
 
 	cb, _ := json.Marshal(d.config)
-	d.logger.Debug("executing with config", "config", string(cb), "request", req)
+	d.logger.Debug("executing with config", "config", string(cb), "request", req.String())
 
 	provs, err := req.Providers()
 	if err != nil {
@@ -49,7 +50,26 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 		return
 	}
 
+	var iacProv *cqproto.GetProviderSchemaResponse
+	for _, p := range provs {
+		if p.Name == "terraform" { // TODO add more iac provider names
+			if iacProv != nil {
+				ret.Error = fmt.Errorf("only single IAC provider is supported at a time")
+				return
+			}
+			iacProv = p
+		}
+	}
+	if iacProv == nil {
+		ret.Error = fmt.Errorf("no IAC provider detected, can't continue")
+		return
+	}
+
 	for _, cfg := range d.config.Providers {
+		if cfg.Name == iacProv.Name {
+			continue
+		}
+
 		var found bool
 		for _, prov := range provs {
 			ok, diags := d.applyProvider(cfg, prov)
@@ -69,8 +89,13 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 				if res == nil {
 					continue // skipped
 				}
+				iacData := res.IAC[iacProv.Name]
+				if iacData == nil {
+					d.logger.Debug("skipping resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
+					continue
+				}
 
-				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName)
+				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
 
 				// TODO do drift, per resource
 			}
