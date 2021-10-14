@@ -2,6 +2,7 @@ package policy
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
@@ -9,6 +10,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
+
+var errPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
 
 // Executor implements the execution framework.
 type Executor struct {
@@ -62,86 +65,62 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger) *Executor {
 	}
 }
 
-// ExecutePolicy executes given policy and the related sub queries/views.
-// The policy execution first creates all views that are defined in the top-level policy and any sub-policy it includes.
-func (e *Executor) ExecutePolicy(ctx context.Context, execReq *ExecuteRequest, policy *config.Policy) (*ExecutionResult, error) {
-	// Create temporary all Views recursively before executing any query
-	if err := e.CreateViews(ctx, policy); err != nil {
+// executePolicy executes given policy and the related sub queries/views.
+func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, policy *config.Policy, selector []string) (*ExecutionResult, error) {
+	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
-	return e.executePolicy(ctx, policy, execReq)
+	var rest []string
+	if len(selector) > 0 {
+		rest = selector[1:]
+	}
+	var found bool
+	total := ExecutionResult{Passed: true, Results: make(map[string]*QueryResult)}
+	for _, p := range policy.Policies {
+		if len(selector) == 0 || p.Name == selector[0] {
+			found = true
+			r, err := e.executePolicy(ctx, req, p, rest)
+			if err != nil {
+				return nil, fmt.Errorf("%s/%w", policy.Name, err)
+			}
+			total.Passed = total.Passed && r.Passed
+			for k, v := range r.Results {
+				total.Results[policyPathJoin(policy.Name, k)] = v
+			}
+			if !total.Passed && req.StopOnFailure {
+				return &total, nil
+			}
+
+		}
+	}
+	for _, q := range policy.Queries {
+		if len(selector) == 0 || q.Name == selector[0] {
+			found = true
+			qr, err := e.executeQuery(ctx, q)
+			if err != nil {
+				return nil, fmt.Errorf("%s/%w", policy.Name, err)
+			}
+			total.Passed = total.Passed && qr.Passed
+			total.Results[policyPathJoin(policy.Name, q.Name)] = qr
+			if req.UpdateCallback != nil {
+				req.UpdateCallback(q.Name, qr.Type, qr.Passed)
+			}
+			if !total.Passed && req.StopOnFailure {
+				return &total, nil
+			}
+		}
+	}
+	if !found && len(selector) > 0 {
+		return nil, fmt.Errorf("%s: %w", policy.Name, errPolicyOrQueryNotFound)
+	}
+	return &total, nil
 }
 
-// executePolicy executes a policy and collects all execution results for it's queries and sub-policies
-// use the exported ExecutePolicy so views are created.
-func (e *Executor) executePolicy(ctx context.Context, policy *config.Policy, execReq *ExecuteRequest) (*ExecutionResult, error) {
-	execResults := &ExecutionResult{
-		Passed:  true,
-		Results: make(map[string]*QueryResult),
-	}
-	// Execute policies queries
-	results, err := e.executePolicyQueries(ctx, policy, execReq)
-	if err != nil {
-		e.log.Error("failed to execute policy queries", "policy", policy.Name, "err", err)
-		return nil, err
-	}
-	collectExecutionResults(execResults, policy.Name, results...)
-	// Execute callback method
-	if execReq.UpdateCallback != nil {
-		for _, r := range results {
-			execReq.UpdateCallback(r.Description, r.Type, r.Passed)
-		}
-	}
-	// Skip further execution if exit on failure is defined
-	if execReq.StopOnFailure && !execResults.Passed {
-		return nil, err
-	}
-
-	// Iterate over all given sub policies
-	for _, subPolicy := range policy.Policies {
-		e.log.Debug("executing policy", "policy", subPolicy.Name)
-		// Execute policy
-		execResult, err := e.executePolicy(ctx, subPolicy, execReq)
-		if err != nil {
-			e.log.Error("failed to execute policy", "policy", subPolicy.Name, "err", err)
-			return nil, err
-		}
-		// If sub-policy didn't pass and we previous execution was okay so far, update passed to false
-		if execResults.Passed && !execResult.Passed {
-			execResults.Passed = execResult.Passed
-		}
-		for k, r := range execResult.Results {
-			execResults.Results[policyPathJoin(policy.Name, k)] = r
-		}
-	}
-	return execResults, nil
-}
-
-// executePolicyQueries executes the given policy's queries.
-// Please use ExecutePolicy if possible.
-func (e *Executor) executePolicyQueries(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) ([]*QueryResult, error) {
-	results := make([]*QueryResult, 0)
-	// Execute queries
-	for _, q := range p.Queries {
-		res, err := e.ExecuteQuery(ctx, q)
-		if err != nil {
-			return nil, fmt.Errorf("%s - %s: %w", p.Name, q.Name, err)
-		}
-		results = append(results, res)
-
-		// Stop execution if defined on error
-		if execReq.StopOnFailure && !res.Passed {
-			return results, nil
-		}
-	}
-	return results, nil
-}
-
-// ExecuteQuery executes the given query and returns the result.
-func (e *Executor) ExecuteQuery(ctx context.Context, q *config.Query) (*QueryResult, error) {
+// executeQuery executes the given query and returns the result.
+func (e *Executor) executeQuery(ctx context.Context, q *config.Query) (*QueryResult, error) {
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: %w", q.Name, err)
 	}
 
 	result := &QueryResult{
@@ -158,50 +137,63 @@ func (e *Executor) ExecuteQuery(ctx context.Context, q *config.Query) (*QueryRes
 	for data.Next() {
 		values, err := data.Values()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%s: %w", q.Name, err)
 		}
 		result.Data = append(result.Data, values)
 	}
 	if data.Err() != nil {
-		return nil, data.Err()
+		return nil, fmt.Errorf("%s: %w", q.Name, data.Err())
 	}
 	result.Passed = (len(result.Data) == 0) == !q.ExpectOutput
 	return result, nil
 }
 
-// CreateViews creates temporary views for given config.Policy, and any views defined by sub-policies
-func (e *Executor) CreateViews(ctx context.Context, policy *config.Policy) error {
+// createViews creates temporary views for given config.Policy, and any views defined by sub-policies
+func (e *Executor) createViews(ctx context.Context, policy *config.Policy) error {
 	for _, v := range policy.Views {
 		e.log.Debug("creating policy view", "policy", policy.Name, "view", v.Name)
-		if err := e.CreateView(ctx, v); err != nil {
-			return fmt.Errorf("%s - %s: %w", policy.Name, v.Name, err)
-		}
-	}
-	for _, p := range policy.Policies {
-		if err := e.CreateViews(ctx, p); err != nil {
-			return err
+		if err := e.createView(ctx, v); err != nil {
+			return fmt.Errorf("%s/%s/%w", policy.Name, v.Name, err)
 		}
 	}
 	return nil
 }
 
-// CreateView creates the given view temporary.
-func (e *Executor) CreateView(ctx context.Context, v *config.View) error {
+// createView creates the given view temporary.
+func (e *Executor) createView(ctx context.Context, v *config.View) error {
 	// Add create view command
 	v.Query.Query = fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query.Query)
 
 	// Create view and ignore the output
-	_, err := e.ExecuteQuery(ctx, v.Query)
+	_, err := e.executeQuery(ctx, v.Query)
 	return err
 }
 
-// collectExecutionResults collects all query results and adds them to the
-// execution results struct.
-func collectExecutionResults(execResult *ExecutionResult, path string, results ...*QueryResult) {
-	for _, res := range results {
-		if !res.Passed {
-			execResult.Passed = false
-		}
-		execResult.Results[policyPathJoin(path, res.Name)] = res
+func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies []*config.Policy, selector []string) (*ExecutionResult, error) {
+	var rest []string
+	if len(selector) > 0 {
+		rest = selector[1:]
 	}
+	var found bool
+	total := ExecutionResult{Passed: true, Results: make(map[string]*QueryResult)}
+	for _, p := range policies {
+		if len(selector) == 0 || selector[0] == p.Name {
+			found = true
+			r, err := e.executePolicy(ctx, req, p, rest)
+			if err != nil {
+				return nil, err
+			}
+			total.Passed = total.Passed && r.Passed
+			for k, v := range r.Results {
+				total.Results[k] = v
+			}
+			if !total.Passed && req.StopOnFailure {
+				return &total, nil
+			}
+		}
+	}
+	if !found && len(selector) > 0 {
+		return nil, errPolicyOrQueryNotFound
+	}
+	return &total, nil
 }

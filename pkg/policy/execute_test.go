@@ -36,7 +36,7 @@ func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testi
 	}
 }
 
-func TestExecutor_ExecuteQuery(t *testing.T) {
+func TestExecutor_executeQuery(t *testing.T) {
 	cases := []struct {
 		Name          string
 		Query         string
@@ -65,7 +65,7 @@ func TestExecutor_ExecuteQuery(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			res, err := executor.ExecuteQuery(context.Background(), &config.Query{
+			res, err := executor.executeQuery(context.Background(), &config.Query{
 				Query:        tc.Query,
 				ExpectOutput: tc.ExpectOutput,
 			})
@@ -79,7 +79,7 @@ func TestExecutor_ExecuteQuery(t *testing.T) {
 	}
 }
 
-func TestExecutor_ExecutePolicies(t *testing.T) {
+func TestExecutor_executePolicy(t *testing.T) {
 	cases := []struct {
 		Name          string
 		Queries       []*config.Query
@@ -134,7 +134,7 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "broken_policy_query - broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+			ErrorOutput:   "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -149,7 +149,7 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 					},
 				},
 			},
-			ErrorOutput:   "broken_policy_view - brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			ErrorOutput:   "broken_policy_view/brokenview/broken-query-view: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -173,7 +173,7 @@ func TestExecutor_ExecutePolicies(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.ExecutePolicy(context.Background(), execReq, p)
+			res, err := executor.executePolicy(context.Background(), execReq, p, nil)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {

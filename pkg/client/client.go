@@ -132,7 +132,7 @@ type Option func(options *Client)
 
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
-	// Required: List of providers that are required, these providers will be download if DownloadProviders is called.
+	// Required: List of providers that are required, these providers will be downloaded if DownloadProviders is called.
 	Providers []*config.RequiredProvider
 	// Optional: Registry url to verify plugins from, defaults to CloudQuery hub
 	RegistryURL string
@@ -520,7 +520,12 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		return err
 	}
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, SkipVersioning: req.SkipVersioning, UpdateCallback: req.RunCallBack})
+	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{
+		Policy:         p,
+		StopOnFailure:  req.StopOnFailure,
+		SkipVersioning: req.SkipVersioning,
+		UpdateCallback: req.RunCallBack,
+	})
 	if err != nil {
 		return err
 	}
