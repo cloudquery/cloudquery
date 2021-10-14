@@ -23,6 +23,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
@@ -520,11 +521,19 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		return err
 	}
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
+	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
+		d, err := c.Manager.GetPluginDetails(name)
+		return d.Version, err
+	})
+	if err != nil {
+		return err
+	}
 	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{
-		Policy:         p,
-		StopOnFailure:  req.StopOnFailure,
-		SkipVersioning: req.SkipVersioning,
-		UpdateCallback: req.RunCallBack,
+		Policy:           p,
+		StopOnFailure:    req.StopOnFailure,
+		SkipVersioning:   req.SkipVersioning,
+		UpdateCallback:   req.RunCallBack,
+		ProviderVersions: versions,
 	})
 	if err != nil {
 		return err
@@ -643,4 +652,22 @@ func normalizeResources(requested []string, all map[string]*schema.Table) ([]str
 	}
 	sort.Strings(result)
 	return result, nil
+}
+
+// collectProviderVersions walks over the list of required providers, determines currently loaded version of each provider
+// through getVersion function and returns a map from provider name to its version.
+func collectProviderVersions(providers []*config.RequiredProvider, getVersion func(providerName string) (string, error)) (map[string]*version.Version, error) {
+	ver := make(map[string]*version.Version, len(providers))
+	for _, p := range providers {
+		s, err := getVersion(p.Name)
+		if err != nil {
+			return nil, err
+		}
+		v, err := version.NewVersion(s)
+		if err != nil {
+			return nil, err
+		}
+		ver[p.Name] = v
+	}
+	return ver, nil
 }

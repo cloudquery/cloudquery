@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -55,6 +56,9 @@ type ExecuteRequest struct {
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
+
+	// ProviderVersions describes current versions of providers in use.
+	ProviderVersions map[string]*version.Version
 }
 
 // NewExecutor creates a new executor.
@@ -67,6 +71,9 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger) *Executor {
 
 // executePolicy executes given policy and the related sub queries/views.
 func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, policy *config.Policy, selector []string) (*ExecutionResult, error) {
+	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
+		return nil, fmt.Errorf("%s: %w", policy.Name, err)
+	}
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
@@ -114,6 +121,26 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 		return nil, fmt.Errorf("%s: %w", policy.Name, errPolicyOrQueryNotFound)
 	}
 	return &total, nil
+}
+
+func (*Executor) checkVersions(policyConfig *config.Configuration, actual map[string]*version.Version) error {
+	if policyConfig == nil {
+		return nil
+	}
+	for _, p := range policyConfig.Providers {
+		c, err := version.NewConstraint(p.Version)
+		if err != nil {
+			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
+		}
+		v, ok := actual[p.Type]
+		if !ok {
+			return fmt.Errorf("provider %s version is unknown", p.Type)
+		}
+		if !c.Check(v) {
+			return fmt.Errorf("provider %s does not satisfy version requirement %s", p.Type, c)
+		}
+	}
+	return nil
 }
 
 // executeQuery executes the given query and returns the result.
