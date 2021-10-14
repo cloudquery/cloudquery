@@ -89,6 +89,12 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 				if res == nil {
 					continue // skipped
 				}
+				pr := prov.ResourceTables[resName]
+				if pr == nil {
+					d.logger.Warn("skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
+					continue
+				}
+
 				iacData := res.IAC[iacProv.Name]
 				if iacData == nil {
 					d.logger.Debug("skipping resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
@@ -97,7 +103,11 @@ func (d *DriftImpl) Execute(req *model.ExecuteRequest) (ret *model.ExecutionResu
 
 				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
 
+				d.logger.Info("do the table", "table", pr.Name, "ids", res.Identifiers, "ignore", res.IgnoreAttributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
+				// do the table iac_name=users iac_type=aws_iam_user ids=["account_id","id"] ignore=["password_last_used"] table=aws_iam_users
+
 				// TODO do drift, per resource
+
 			}
 
 			break
