@@ -60,7 +60,7 @@ func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 }
 
 // applyWildResource sets the missing values from res if they are provided in the wild resource
-// for IAC.attributeMap it adds on to the list of attributes
+// for ignoreIdentifiers, ignoreAttributes and IAC.attributeMap it adds on to the list of values, always growing the list
 func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	if wild == nil {
 		return
@@ -69,15 +69,14 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	if len(res.Identifiers) == 0 {
 		res.Identifiers = wild.Identifiers
 	}
-	if len(res.IgnoreIdentifiers) == 0 {
-		res.IgnoreIdentifiers = wild.IgnoreIdentifiers
-	}
 	if len(res.Attributes) == 0 {
 		res.Attributes = wild.Attributes
 	}
-	if len(res.IgnoreAttributes) == 0 {
-		res.IgnoreAttributes = wild.IgnoreAttributes
-	}
+
+	// add on ignoreIdentifiers and ignoreAttributes values from wild
+	res.IgnoreIdentifiers = mergeDedupSlices(res.IgnoreIdentifiers, wild.IgnoreIdentifiers)
+	res.IgnoreAttributes = mergeDedupSlices(res.IgnoreAttributes, wild.IgnoreAttributes)
+
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
 	} else {
@@ -95,25 +94,45 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 
 }
 
+func mergeDedupSlices(a ...[]string) []string {
+	dupes := make(map[string]struct{})
+	for i := range a {
+		for v := range a[i] {
+			dupes[a[i][v]] = struct{}{}
+		}
+	}
+	ret := make([]string, 0, len(dupes))
+	for k := range dupes {
+		ret = append(ret, k)
+	}
+	return ret
+}
+
 // finalInterpret removes each element in IgnoredIdentifiers from Identifiers
 // this has to be done after all apply/macro work has finished
 func (res *ResourceConfig) finalInterpret() {
 	// apply res.IgnoreIdentifiers: remove matching identifiers from res.Identifiers
-	ignoreIdMap := make(map[string]struct{}, len(res.IgnoreIdentifiers))
-	for i := range res.IgnoreIdentifiers {
-		ignoreIdMap[res.IgnoreIdentifiers[i]] = struct{}{}
+	res.Identifiers = removeIgnored(res.Identifiers, res.IgnoreIdentifiers)
+	// apply res.IgnoreAttributes: remove matching identifiers from res.Attributes
+	res.Attributes = removeIgnored(res.Attributes, res.IgnoreAttributes)
+}
+
+func removeIgnored(list []string, ignored []string) []string {
+	ignoredMap := make(map[string]struct{}, len(ignored))
+	for i := range ignored {
+		ignoredMap[ignored[i]] = struct{}{}
 	}
 
 	// remove item from slice
 	idx := 0
-	for i := range res.Identifiers {
-		if _, ok := ignoreIdMap[res.Identifiers[i]]; ok {
+	for i := range list {
+		if _, ok := ignoredMap[list[i]]; ok {
 			continue
 		}
-		res.Identifiers[idx] = res.Identifiers[i]
+		list[idx] = list[i]
 		idx++
 	}
-	res.Identifiers = res.Identifiers[:idx]
+	return list[:idx]
 }
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.

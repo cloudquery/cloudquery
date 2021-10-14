@@ -21,22 +21,25 @@ type Result struct {
 }
 
 func (r *Result) String() string {
+	stringDump := func(input []*Resource, name string, dst *[]string) {
+		switch l := len(input); l {
+		case 0:
+			return
+		case 1:
+			*dst = append(*dst, fmt.Sprintf("%d %s (%s)", l, name, input[0].ID))
+		case 2:
+			*dst = append(*dst, fmt.Sprintf("%d %s (%s, %s)", l, name, input[0].ID, input[1].ID))
+		default:
+			*dst = append(*dst, fmt.Sprintf("%d %s (%s, %s, ...)", l, name, input[0].ID, input[1].ID))
+		}
+	}
+
 	var parts []string
-	if l := len(r.Different); l > 0 {
-		parts = append(parts, fmt.Sprintf("%d different", l))
-	}
-	if l := len(r.Equal); l > 0 {
-		parts = append(parts, fmt.Sprintf("%d equal", l))
-	}
-	if l := len(r.DeepEqual); l > 0 {
-		parts = append(parts, fmt.Sprintf("%d deepequal", l))
-	}
-	if l := len(r.Missing); l > 0 {
-		parts = append(parts, fmt.Sprintf("%d missing", l))
-	}
-	if l := len(r.Extra); l > 0 {
-		parts = append(parts, fmt.Sprintf("%d extra", l))
-	}
+	stringDump(r.Different, "different", &parts)
+	stringDump(r.Equal, "equal", &parts)
+	stringDump(r.DeepEqual, "deepequal", &parts)
+	stringDump(r.Missing, "missing", &parts)
+	stringDump(r.Extra, "extra", &parts)
 	if len(parts) == 0 {
 		parts = append(parts, "no")
 	}

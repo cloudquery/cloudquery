@@ -191,11 +191,26 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		} else {
 			iacAttributes[i] = a
 		}
-		iacQueryItems[i] = fmt.Sprintf("i.attributes->>'%s'", iacAttributes[i])
+		if cloudTable.Column(a).Type == schema.TypeString {
+			iacQueryItems[i] = fmt.Sprintf(`COALESCE(i.attributes->>'%s','')`, iacAttributes[i])
+		} else if cloudTable.Column(a).Type == schema.TypeJSON {
+			iacQueryItems[i] = fmt.Sprintf(`(i.attributes->>'%s')::json`, iacAttributes[i])
+		} else {
+			iacQueryItems[i] = fmt.Sprintf(`i.attributes->>'%s'`, iacAttributes[i])
+		}
+	}
+
+	attrItems := make([]string, len(resData.Attributes))
+	for i := range resData.Attributes {
+		if cloudTable.Column(resData.Attributes[i]).Type == schema.TypeString {
+			attrItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
+		} else {
+			attrItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
+		}
 	}
 
 	iacAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(iacQueryItems, ",") + ")")
-	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(resData.Attributes, ",") + ")")
+	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(attrItems, ",") + ")")
 
 	if len(resData.Attributes) == 0 {
 		iacAttrQuery = goqu.L("''")
@@ -227,8 +242,8 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	// Get missing resources
 	{
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).RightJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
-			Select("tf.instance_id")
+			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+			Select("tf.instance_id").Where(goqu.Ex{"c.cq_id": nil})
 		res.Missing, err = d.queryIntoResourceList(ctx, conn, q, "missing", nil)
 		if err != nil {
 			return nil, err

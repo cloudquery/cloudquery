@@ -53,7 +53,8 @@ module "drift" {
         }
 
         resource "s3.buckets" {
-            # identifiers       = ["name"]
+#            identifiers       = ["name"]
+            ignore_attributes = ["account_id", "name"]
 
             iac {
                 terraform {
@@ -73,7 +74,7 @@ module "drift" {
             iac {
                 terraform {
                     type = "aws_iam_user"
-                    name = "users"
+                    name = "iam_user"
                 }
             }
         }
