@@ -204,13 +204,13 @@ func TestProviderLoadConfiguration(t *testing.T) {
 func TestWithEnvironmentVariables(t *testing.T) {
 	const prefix = "PREFIX_"
 	p := NewParser(WithEnvironmentVariables(prefix, []string{prefix + "VAR1=value1", prefix + "Var2=value 2"}))
-	assert.Equal(t, "value1", p.HCLContext.Variables["var1"].AsString())
-	assert.Equal(t, "value 2", p.HCLContext.Variables["var2"].AsString())
+	assert.Equal(t, "value1", p.HCLContext.Variables["VAR1"].AsString())
+	assert.Equal(t, "value 2", p.HCLContext.Variables["Var2"].AsString())
 }
 
 const testEnvVarConfig = `cloudquery {
   connection {
-    dsn =  "${dsn}"
+    dsn =  "${DSN}"
   }
   provider "test" {
     source = "cloudquery"
@@ -221,7 +221,7 @@ const testEnvVarConfig = `cloudquery {
 provider "aws" {
   configuration {
 	account "dev" {
-		role_arn ="${role_arn}"
+		role_arn ="${ROLE_ARN}"
 	}
 	account "ron" {}
   }

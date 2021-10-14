@@ -49,8 +49,7 @@ func WithEnvironmentVariables(prefix string, vars []string) Option {
 		for _, e := range vars {
 			pair := strings.SplitN(e, "=", 2)
 			if strings.HasPrefix(pair[0], prefix) {
-				name := strings.ToLower(pair[0][len(prefix):])
-				p.HCLContext.Variables[name] = cty.StringVal(pair[1])
+				p.HCLContext.Variables[strings.TrimPrefix(pair[0], prefix)] = cty.StringVal(pair[1])
 			}
 		}
 	}
