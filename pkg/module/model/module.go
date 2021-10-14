@@ -30,8 +30,8 @@ type ExecuteRequest struct {
 }
 
 type ExecutionResult struct {
-	Result interface{}
-	Error  error
+	Results []string
+	Error   error
 }
 
 func (e *ExecuteRequest) String() string {

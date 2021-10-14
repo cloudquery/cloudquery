@@ -14,6 +14,7 @@ type Result struct {
 	ResourceType string
 
 	Different []*Resource
+	DeepEqual []*Resource
 	Equal     []*Resource
 	Missing   []*Resource
 	Extra     []*Resource
@@ -27,6 +28,9 @@ func (r *Result) String() string {
 	if l := len(r.Equal); l > 0 {
 		parts = append(parts, fmt.Sprintf("%d equal", l))
 	}
+	if l := len(r.DeepEqual); l > 0 {
+		parts = append(parts, fmt.Sprintf("%d deepequal", l))
+	}
 	if l := len(r.Missing); l > 0 {
 		parts = append(parts, fmt.Sprintf("%d missing", l))
 	}
@@ -37,16 +41,16 @@ func (r *Result) String() string {
 		parts = append(parts, "no")
 	}
 
-	return fmt.Sprintf("for %s:%s we have %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
+	return fmt.Sprintf("%s:%s has %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
 }
 
 func (r *Result) HasResources() bool {
-	return len(r.Different)+len(r.Equal)+len(r.Missing)+len(r.Extra) > 0
+	return len(r.Different)+len(r.Equal)+len(r.DeepEqual)+len(r.Missing)+len(r.Extra) > 0
 }
 
 type Results []*Result
 
-func (rs Results) String() string {
+func (rs Results) StringSlice() []string {
 	parts := make([]string, 0, len(rs))
 	for _, r := range rs {
 		if !r.HasResources() {
@@ -56,8 +60,8 @@ func (rs Results) String() string {
 	}
 
 	if len(parts) == 0 {
-		return "no results"
+		return []string{"no results"}
 	}
 
-	return strings.Join(parts, "\n")
+	return parts
 }

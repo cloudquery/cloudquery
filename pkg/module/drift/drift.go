@@ -4,11 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
+	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
@@ -96,30 +99,35 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 
 			found = true
 
-			d.logger.Info("processing for provider", "provider", prov.Name, "config", cfg)
+			d.logger.Debug("Processing for provider", "provider", prov.Name, "config", cfg)
 
-			for resName, res := range cfg.Resources {
+			// Always process in the same order
+			resourceKeys := make([]string, 0, len(cfg.Resources))
+			for i := range cfg.Resources {
+				resourceKeys = append(resourceKeys, i)
+			}
+			sort.Strings(resourceKeys)
+
+			for _, resName := range resourceKeys {
+				res := cfg.Resources[resName]
 				if res == nil {
 					continue // skipped
 				}
 				pr := prov.ResourceTables[resName]
 				if pr == nil {
-					d.logger.Warn("skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
+					d.logger.Warn("Skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
 					continue
 				}
 
 				iacData := res.IAC[iacProv.Name]
 				if iacData == nil {
-					d.logger.Debug("skipping resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
+					d.logger.Debug("Skipping resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
 					continue
 				}
 
-				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
-
 				res.finalInterpret()
 
-				d.logger.Info("do the table", "table", pr.Name, "ids", res.Identifiers, "ignore", res.IgnoreAttributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
-				// do the table iac_name=users iac_type=aws_iam_user ids=["account_id","id"] ignore=["password_last_used"] table=aws_iam_users
+				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
 
 				// Drift per resource
 				var dres *Result
@@ -149,7 +157,7 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 		}
 	}
 
-	ret.Result = resList.String()
+	ret.Results = resList.StringSlice()
 	return ret
 }
 
@@ -172,14 +180,30 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		tfBackendName = "mylocal"
 		tfMode        = "managed"
 	)
-
-	fmt.Println("attribute map", iacData.attributeMap)
-
 	// TODO check if cloud provider names always match with tf_resources.provider
 	tfProvider := cloudName
 
+	iacAttributes := make([]string, len(resData.Attributes))
+	iacQueryItems := make([]string, len(resData.Attributes))
+	for i, a := range resData.Attributes {
+		if mapped := iacData.attributeMap[a]; mapped != "" {
+			iacAttributes[i] = mapped
+		} else {
+			iacAttributes[i] = a
+		}
+		iacQueryItems[i] = fmt.Sprintf("i.attributes->>'%s'", iacAttributes[i])
+	}
+
+	iacAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(iacQueryItems, ",") + ")")
+	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(resData.Attributes, ",") + ")")
+
+	if len(resData.Attributes) == 0 {
+		iacAttrQuery = goqu.L("''")
+		cloudAttrQuery = goqu.L("''")
+	}
+
 	tfSelect := goqu.Dialect("postgres").From(goqu.T("tf_resource_instances").As("i")).
-		Select("i.instance_id", "i.attributes").
+		Select("i.instance_id", iacAttrQuery.As("attlist")).
 		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
 		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
 		Where(goqu.Ex{"d.backend_name": goqu.V(tfBackendName)}).
@@ -188,75 +212,114 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
 		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
 
+	var err error
 	// Get equal resources
 	{
-		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
-			Select("tf.instance_id").
-			ToSQL()
+			Select("tf.instance_id")
+		res.Equal, err = d.queryIntoResourceList(ctx, conn, q, "equals", nil)
 		if err != nil {
-			return nil, fmt.Errorf("build failed: %w", err)
-		}
-		d.logger.Info("generated equals query", "query", q, "args", args)
-
-		res.Equal, err = d.queryIntoResourceList(ctx, conn, q, args)
-		if err != nil {
-			return nil, fmt.Errorf("query failed: %w", err)
+			return nil, err
 		}
 	}
 
 	// Get missing resources
 	{
-		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).RightJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
-			Select("tf.instance_id").
-			ToSQL()
+			Select("tf.instance_id")
+		res.Missing, err = d.queryIntoResourceList(ctx, conn, q, "missing", nil)
 		if err != nil {
-			return nil, fmt.Errorf("build failed: %w", err)
-		}
-		d.logger.Info("generated missing query", "query", q, "args", args)
-
-		res.Missing, err = d.queryIntoResourceList(ctx, conn, q, args)
-		if err != nil {
-			return nil, fmt.Errorf("query failed: %w", err)
+			return nil, err
 		}
 	}
 
 	// Get extra resources
 	{
-		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
-			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil}).
-			ToSQL()
+			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
+		res.Extra, err = d.queryIntoResourceList(ctx, conn, q, "extras", nil)
 		if err != nil {
-			return nil, fmt.Errorf("build failed: %w", err)
-		}
-		d.logger.Info("generated extras query", "query", q, "args", args)
-
-		res.Extra, err = d.queryIntoResourceList(ctx, conn, q, args)
-		if err != nil {
-			return nil, fmt.Errorf("query failed: %w", err)
+			return nil, err
 		}
 	}
 
-	// TODO get different resources
+	{
+		opts := goqu.DefaultDialectOptions()
+		opts.BooleanOperatorLookup[exp.GtOp] = []byte("@>")
+		opts.BooleanOperatorLookup[exp.LtOp] = []byte("<@")
+		goqu.RegisterDialect("postgres-jsonb", opts) // not really "postgres" as we started from the Default Dialect and not the postgres one
+	}
 
-	// TODO
+	// Get different resources
+	{
+		q := goqu.Dialect("postgres-jsonb").From(goqu.T(cloudTable.Name).As("c")).
+			With("tf", tfSelect).LeftJoin(goqu.T("tf"),
+			goqu.On(
+				goqu.Ex{
+					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
+				},
+				exp.NewBooleanExpression(exp.GtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"@>": cloudAttrQuery},
+				exp.NewBooleanExpression(exp.LtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"<@": cloudAttrQuery},
+			),
+		).
+			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
+
+		res.Different, err = d.queryIntoResourceList(ctx, conn, q, "differs", res.Extra)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Get deepequal resources
+	{
+		q := goqu.Dialect("postgres-jsonb").From(goqu.T(cloudTable.Name).As("c")).
+			With("tf", tfSelect).Join(goqu.T("tf"),
+			goqu.On(
+				goqu.Ex{
+					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
+				},
+				exp.NewBooleanExpression(exp.GtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"@>": cloudAttrQuery},
+				exp.NewBooleanExpression(exp.LtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"<@": cloudAttrQuery},
+			),
+		).
+			Select("tf.instance_id")
+		res.DeepEqual, err = d.queryIntoResourceList(ctx, conn, q, "deepequal", nil)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	return res, nil
 }
 
-func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, query string, args []interface{}) ([]*Resource, error) {
+func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude []*Resource) ([]*Resource, error) {
+	query, args, err := sel.ToSQL()
+	if err != nil {
+		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
+	}
+	d.logger.Debug("generated query", "type", what, "query", query, "args", args)
+
 	var list []string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
 	}
 
-	ret := make([]*Resource, len(list))
+	exList := make(map[string]struct{}, len(exclude))
+	for _, e := range exclude {
+		exList[e.ID] = struct{}{}
+	}
+
+	ret := make([]*Resource, 0, len(list))
 	for i := range list {
-		ret[i] = &Resource{
-			ID: list[i],
+		if _, ok := exList[list[i]]; ok {
+			continue // exclude
 		}
+		ret = append(ret, &Resource{
+			ID: list[i],
+		})
 	}
 
 	return ret, nil
