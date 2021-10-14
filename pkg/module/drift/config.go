@@ -29,6 +29,7 @@ type ProviderConfig struct {
 type ResourceConfig struct {
 	Identifiers       []string `hcl:"identifiers,optional"`
 	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
+	Attributes        []string `hcl:"attributes,optional"`
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 
 	IAC map[string]*IACConfig
@@ -65,6 +66,9 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 	if len(res.IgnoreIdentifiers) == 0 {
 		res.IgnoreIdentifiers = wild.IgnoreIdentifiers
+	}
+	if len(res.Attributes) == 0 {
+		res.Attributes = wild.Attributes
 	}
 	if len(res.IgnoreAttributes) == 0 {
 		res.IgnoreAttributes = wild.IgnoreAttributes
@@ -147,10 +151,12 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 		for k, v := range map[placeholder][]string{
 			placeholderResourceKey:             {resName},
 			placeholderResourceName:            {tbl.Name},
+			placeholderResourceColumnNames:     tbl.ColumnNames(),
 			placeholderResourceOptsPrimaryKeys: tbl.PrimaryKeys(),
 		} {
 			res.Identifiers = replacePlaceholderInSlice(k, v, res.Identifiers)
 			res.IgnoreIdentifiers = replacePlaceholderInSlice(k, v, res.IgnoreIdentifiers)
+			res.Attributes = replacePlaceholderInSlice(k, v, res.Attributes)
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
 		}
 	}

@@ -10,10 +10,12 @@ module "drift" {
         # resource: an entry in provider.ResourceMap
         # examples:
         #  resource.Key is the CQ name ("apigateway.api_keys")
+        #  resource.Value.ColumnNames is table column names
         #  resource.Value.Name is the table name ("aws_apigateway_api_keys")
 
         resource "*" {
             identifiers       = resource.Value.Options.PrimaryKeys
+            attributes        = resource.Value.ColumnNames
             ignore_attributes = ["creation_date", "launch_time"]
         }
 
@@ -42,8 +44,7 @@ module "drift" {
         }
 
         resource "s3.buckets" {
-            identifiers       = ["name"]
-            #   ignore_attributes = ["launch_time"]
+            # identifiers       = ["name"]
 
             iac {
                 terraform {

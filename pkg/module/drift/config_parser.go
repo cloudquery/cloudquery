@@ -40,6 +40,7 @@ type placeholder string
 const (
 	placeholderResourceKey             placeholder = "resourceKey"
 	placeholderResourceName            placeholder = "resourceName"
+	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
 	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
 )
 
@@ -70,7 +71,8 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 		// FIXME expose the resource struct here, with late binding?
 		"Key": makePlaceholder(placeholderResourceKey),
 		"Value": cty.ObjectVal(map[string]cty.Value{
-			"Name": makePlaceholder(placeholderResourceName),
+			"Name":        makePlaceholder(placeholderResourceName),
+			"ColumnNames": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceColumnNames)}),
 			"Options": cty.ObjectVal(map[string]cty.Value{
 				"PrimaryKeys": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceOptsPrimaryKeys)}),
 			}),
@@ -198,6 +200,10 @@ var (
 				Required: false,
 			},
 			{
+				Name:     "attributes",
+				Required: false,
+			},
+			{
 				Name:     "ignore_attributes",
 				Required: false,
 			},
@@ -277,6 +283,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if ignoreIdAttr, ok := content.Attributes["ignore_identifiers"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(ignoreIdAttr.Expr, ctx, &res.IgnoreIdentifiers)...)
+	}
+	if attr, ok := content.Attributes["attributes"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(attr.Expr, ctx, &res.Attributes)...)
 	}
 	if ignoreAttr, ok := content.Attributes["ignore_attributes"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(ignoreAttr.Expr, ctx, &res.IgnoreAttributes)...)
