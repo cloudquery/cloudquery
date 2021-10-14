@@ -29,8 +29,15 @@ type ProviderConfig struct {
 type ResourceConfig struct {
 	Identifiers      []string `hcl:"identifiers,optional"`
 	IgnoreAttributes []string `hcl:"ignore_attributes,optional"`
-	TfType           string   `hcl:"tf_type,optional"`
-	TfName           string   `hcl:"tf_name,optional"`
+
+	IAC map[string]*IACConfig
+
+	defRange *hcl.Range
+}
+
+type IACConfig struct {
+	Name string `hcl:"name"`
+	Type string `hcl:"type"`
 
 	defRange *hcl.Range
 }
@@ -58,11 +65,8 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	if len(res.IgnoreAttributes) == 0 {
 		res.IgnoreAttributes = wild.IgnoreAttributes
 	}
-	if res.TfType == "" {
-		res.TfType = wild.TfType
-	}
-	if res.TfName == "" {
-		res.TfName = wild.TfName
+	if len(res.IAC) == 0 {
+		res.IAC = wild.IAC
 	}
 }
 

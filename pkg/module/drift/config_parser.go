@@ -193,7 +193,6 @@ var (
 		},
 	}
 
-/*
 	resourceSchema = &hcl.BodySchema{
 		Attributes: []hcl.AttributeSchema{
 			{
@@ -204,17 +203,27 @@ var (
 				Name:     "ignore_attributes",
 				Required: false,
 			},
+		},
+		Blocks: []hcl.BlockHeaderSchema{
 			{
-				Name:     "tf_type",
-				Required: false,
-			},
-			{
-				Name:     "tf_name",
-				Required: false,
+				Type:       "iac",
+				LabelNames: nil,
 			},
 		},
 	}
-*/
+
+	iacSchema = &hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       "terraform",
+				LabelNames: nil,
+			},
+			{
+				Type:       "cloudformation",
+				LabelNames: nil,
+			},
+		},
+	}
 )
 
 func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ProviderConfig, hcl.Diagnostics) {
@@ -236,16 +245,16 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "resource":
-			var res ResourceConfig
-			if diag := gohcl.DecodeBody(block.Body, ctx.NewChild(), &res); diag.HasErrors() {
-				diags = append(diags, diag...)
+			res, resDiags := p.decodeResourceBlock(block, ctx.NewChild())
+			if resDiags.HasErrors() {
+				diags = append(diags, resDiags...)
 				continue
 			}
 			res.defRange = &block.DefRange
 			if block.Labels[0] == wildcard {
-				prov.WildResource = &res
+				prov.WildResource = res
 			} else {
-				prov.Resources[block.Labels[0]] = &res
+				prov.Resources[block.Labels[0]] = res
 			}
 		default:
 			panic("unexpected block")
@@ -255,4 +264,45 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 		return nil, diags
 	}
 	return prov, diags
+}
+
+func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ResourceConfig, hcl.Diagnostics) {
+	content, diags := b.Body.Content(resourceSchema)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	res := &ResourceConfig{
+		IAC: make(map[string]*IACConfig),
+	}
+	if idAttr, ok := content.Attributes["identifiers"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(idAttr.Expr, ctx, &res.Identifiers)...)
+	}
+	if ignoreAttr, ok := content.Attributes["ignore_attributes"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(ignoreAttr.Expr, ctx, &res.IgnoreAttributes)...)
+	}
+
+	for _, block := range content.Blocks {
+		switch block.Type {
+		case "iac":
+			iacContent, diags := block.Body.Content(iacSchema)
+			if diags.HasErrors() {
+				return nil, diags
+			}
+			for _, iacBlock := range iacContent.Blocks {
+				var ia IACConfig
+				if diag := gohcl.DecodeBody(iacBlock.Body, ctx.NewChild(), &ia); diag.HasErrors() {
+					diags = append(diags, diag...)
+					continue
+				}
+				ia.defRange = &block.DefRange
+				res.IAC[iacBlock.Type] = &ia
+			}
+		default:
+			panic("unexpected block")
+		}
+	}
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	return res, diags
 }

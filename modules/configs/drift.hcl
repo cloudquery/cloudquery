@@ -32,8 +32,13 @@ module "drift" {
 
         resource "iam.users" {
             ignore_attributes = [ "password_last_used" ]
-            tf_type = "aws_iam_user"
-            tf_name = "users"
+
+            iac {
+                terraform {
+                    type = "aws_iam_user"
+                    name = "users"
+                }
+            }
         }
 
         skip_resources = [

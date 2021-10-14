@@ -623,7 +623,7 @@ func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
 	if err != nil {
 		return err
 	}
-	c.Logger.Debug("Parsed module run input arguments", "req", modReq)
+	c.Logger.Debug("Parsed module run input arguments", "req", modReq.String())
 
 	output, err := c.ModuleManager.RunModule(ctx, modReq)
 	if err != nil {
