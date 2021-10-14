@@ -37,7 +37,7 @@ func (r *Result) String() string {
 		parts = append(parts, "no")
 	}
 
-	return fmt.Sprintf("for %s,%s we have %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
+	return fmt.Sprintf("for %s:%s we have %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
 }
 
 func (r *Result) HasResources() bool {

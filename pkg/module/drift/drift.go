@@ -134,7 +134,7 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 					ret.Error = fmt.Errorf("drift failed for (%s,%s): %w", prov.Name, resName, err)
 					return
 				} else if dres != nil {
-					dres.Provider = pr.Name
+					dres.Provider = prov.Name
 					dres.ResourceType = resName
 					resList = append(resList, dres)
 				}
