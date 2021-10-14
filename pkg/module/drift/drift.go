@@ -8,6 +8,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/doug-martin/goqu/v9"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -114,6 +116,8 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 
 				d.logger.Info("will process for provider and resource", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
 
+				res.finalInterpret()
+
 				d.logger.Info("do the table", "table", pr.Name, "ids", res.Identifiers, "ignore", res.IgnoreAttributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
 				// do the table iac_name=users iac_type=aws_iam_user ids=["account_id","id"] ignore=["password_last_used"] table=aws_iam_users
 
@@ -121,7 +125,7 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 				var dres *Result
 				switch iacProv.Name {
 				case "terraform":
-					dres, err = d.driftTerraform(ctx, conn, pr, res, iacData)
+					dres, err = d.driftTerraform(ctx, conn, prov.Name, pr, res, iacData)
 				default:
 					ret.Error = fmt.Errorf("no suitable handler found for %q", iacProv.Name)
 					return
@@ -149,7 +153,7 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 	return ret
 }
 
-func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudProv *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
+func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
 		Different: nil,
 		Equal:     nil,
@@ -157,17 +161,103 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Extra:     nil,
 	}
 
-	// TODO compare in SQL
-
 	// Get from IAC
 	// SELECT i.instance_id, i.attributes from tf_resource_instances i JOIN tf_resources r ON r.cq_id=i.resource_id JOIN tf_data d ON d.cq_id=r.running_id WHERE d.backend_name='mylocal' AND r.provider='aws' AND r.mode='managed' AND r.type='aws_s3_bucket' AND r.name='s3_bucket';
 
 	// Get from provider
 	// SELECT account_id, region, name, arn FROM aws_s3_buckets;
 
+	const (
+		// TODO move into module params, with defaults
+		tfBackendName = "mylocal"
+		tfMode        = "managed"
+	)
+
+	// TODO check if cloud provider names always match with tf_resources.provider
+	tfProvider := cloudName
+
+	tfSelect := goqu.Dialect("postgres").From(goqu.T("tf_resource_instances").As("i")).
+		Select("i.instance_id", "i.attributes").
+		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
+		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
+		Where(goqu.Ex{"d.backend_name": goqu.V(tfBackendName)}).
+		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
+		Where(goqu.Ex{"r.mode": goqu.V(tfMode)}).
+		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
+		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
+
+	// Get equal resources
+	{
+		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+			With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+			Select("tf.instance_id").
+			ToSQL()
+		if err != nil {
+			return nil, fmt.Errorf("build failed: %w", err)
+		}
+		d.logger.Info("generated equals query", "query", q, "args", args)
+
+		res.Equal, err = d.queryIntoResourceList(ctx, conn, q, args)
+		if err != nil {
+			return nil, fmt.Errorf("query failed: %w", err)
+		}
+	}
+
+	// Get missing resources
+	{
+		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+			With("tf", tfSelect).RightJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+			Select("tf.instance_id").
+			ToSQL()
+		if err != nil {
+			return nil, fmt.Errorf("build failed: %w", err)
+		}
+		d.logger.Info("generated missing query", "query", q, "args", args)
+
+		res.Missing, err = d.queryIntoResourceList(ctx, conn, q, args)
+		if err != nil {
+			return nil, fmt.Errorf("query failed: %w", err)
+		}
+	}
+
+	// Get extra resources
+	{
+		q, args, err := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
+			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil}).
+			ToSQL()
+		if err != nil {
+			return nil, fmt.Errorf("build failed: %w", err)
+		}
+		d.logger.Info("generated extras query", "query", q, "args", args)
+
+		res.Extra, err = d.queryIntoResourceList(ctx, conn, q, args)
+		if err != nil {
+			return nil, fmt.Errorf("query failed: %w", err)
+		}
+	}
+
+	// TODO get different resources
+
 	// TODO
 
 	return res, nil
+}
+
+func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, query string, args []interface{}) ([]*Resource, error) {
+	var list []string
+	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
+		return nil, err
+	}
+
+	ret := make([]*Resource, len(list))
+	for i := range list {
+		ret[i] = &Resource{
+			ID: list[i],
+		}
+	}
+
+	return ret, nil
 }
 
 // Make sure we satisfy the interface

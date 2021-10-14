@@ -25,6 +25,10 @@ module "drift" {
     provider "aws" {
         version = ">=0.5.10"
 
+        resource "*" {
+            ignore_identifiers = ["account_id"]
+        }
+
         resource "ec2.instances" {
             #   identifiers       = ["id"]
             #   ignore_attributes = ["launch_time"]

@@ -27,8 +27,9 @@ type ProviderConfig struct {
 }
 
 type ResourceConfig struct {
-	Identifiers      []string `hcl:"identifiers,optional"`
-	IgnoreAttributes []string `hcl:"ignore_attributes,optional"`
+	Identifiers       []string `hcl:"identifiers,optional"`
+	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
+	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 
 	IAC map[string]*IACConfig
 
@@ -62,12 +63,36 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	if len(res.Identifiers) == 0 {
 		res.Identifiers = wild.Identifiers
 	}
+	if len(res.IgnoreIdentifiers) == 0 {
+		res.IgnoreIdentifiers = wild.IgnoreIdentifiers
+	}
 	if len(res.IgnoreAttributes) == 0 {
 		res.IgnoreAttributes = wild.IgnoreAttributes
 	}
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
 	}
+}
+
+// finalInterpret removes each element in IgnoredIdentifiers from Identifiers
+// this has to be done after all apply/macro work has finished
+func (res *ResourceConfig) finalInterpret() {
+	// apply res.IgnoreIdentifiers: remove matching identifiers from res.Identifiers
+	ignoreIdMap := make(map[string]struct{}, len(res.IgnoreIdentifiers))
+	for i := range res.IgnoreIdentifiers {
+		ignoreIdMap[res.IgnoreIdentifiers[i]] = struct{}{}
+	}
+
+	// remove item from slice
+	idx := 0
+	for i := range res.Identifiers {
+		if _, ok := ignoreIdMap[res.Identifiers[i]]; ok {
+			continue
+		}
+		res.Identifiers[idx] = res.Identifiers[i]
+		idx++
+	}
+	res.Identifiers = res.Identifiers[:idx]
 }
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
@@ -125,6 +150,7 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 			placeholderResourceOptsPrimaryKeys: tbl.PrimaryKeys(),
 		} {
 			res.Identifiers = replacePlaceholderInSlice(k, v, res.Identifiers)
+			res.IgnoreIdentifiers = replacePlaceholderInSlice(k, v, res.IgnoreIdentifiers)
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
 		}
 	}

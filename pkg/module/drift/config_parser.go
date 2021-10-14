@@ -194,6 +194,10 @@ var (
 				Required: false,
 			},
 			{
+				Name:     "ignore_identifiers",
+				Required: false,
+			},
+			{
 				Name:     "ignore_attributes",
 				Required: false,
 			},
@@ -270,6 +274,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if idAttr, ok := content.Attributes["identifiers"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(idAttr.Expr, ctx, &res.Identifiers)...)
+	}
+	if ignoreIdAttr, ok := content.Attributes["ignore_identifiers"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(ignoreIdAttr.Expr, ctx, &res.IgnoreIdentifiers)...)
 	}
 	if ignoreAttr, ok := content.Attributes["ignore_attributes"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(ignoreAttr.Expr, ctx, &res.IgnoreAttributes)...)
