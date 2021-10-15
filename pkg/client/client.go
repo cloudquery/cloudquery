@@ -607,8 +607,8 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	return nil
 }
 
-func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
-	c.Logger.Info("Running module", "args", req.Args)
+func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) error {
+	c.Logger.Info("Executing module", "args", req.Args)
 
 	if c.ModuleManager == nil {
 		// lazy init modules here
@@ -625,7 +625,7 @@ func (c *Client) RunModule(ctx context.Context, req ModuleRunRequest) error {
 	}
 	c.Logger.Debug("Parsed module run input arguments", "req", modReq.String())
 
-	output, err := c.ModuleManager.RunModule(ctx, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
 	if err != nil {
 		return err
 	}

@@ -163,8 +163,8 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 	return nil
 }
 
-func (c Client) RunModule(ctx context.Context, args []string, outputPath, modConfigPath string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Starting module run...\n")
+func (c Client) CallModule(ctx context.Context, args []string, outputPath, modConfigPath string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 	req := client.ModuleRunRequest{
 		Args:          args,
 		OutputPath:    outputPath,
@@ -193,13 +193,13 @@ func (c Client) RunModule(ctx context.Context, args []string, outputPath, modCon
 			return list, nil
 		},
 	}
-	err := c.c.RunModule(ctx, req)
+	err := c.c.ExecuteModule(ctx, req)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run module: %s.\n\n", err.Error())
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished module run...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Finished module...\n\n")
 	return nil
 }
 

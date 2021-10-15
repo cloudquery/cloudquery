@@ -35,8 +35,8 @@ type Manager interface {
 	// ParseModuleReference parses and validates the given arguments into an execution request.
 	ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error)
 
-	// RunModule runs the given module.
-	RunModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
+	// ExecuteModule executes the given module.
+	ExecuteModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
 }
 
 // NewManager returns a new manager instance.
@@ -70,19 +70,18 @@ func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.Ex
 		return nil, fmt.Errorf("could not read config: %w", err)
 	}
 
-	if err := mod.Prepare(ctx, rawConfig); err != nil {
-		return nil, fmt.Errorf("invalid config: %w", err)
+	if err := mod.Configure(ctx, rawConfig); err != nil {
+		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
 
 	baseReq.Module = mod
-	baseReq.Args = args
+	baseReq.Args = args[1:]
 
 	return &baseReq, nil
 }
 
-// RunModule runs the given module.
-func (m *ManagerImpl) RunModule(ctx context.Context, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
-
+// ExecuteModule executes the given module.
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
 	var (
 		oneDb   = &sync.Once{}
 		theConn *pgxpool.Conn

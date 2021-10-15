@@ -78,7 +78,7 @@ type Results []*Result
 func (rs Results) StringSlice() []string {
 	parts := make([]string, 0, len(rs))
 	for _, r := range rs {
-		if !r.HasResources() {
+		if r == nil || !r.HasResources() {
 			continue
 		}
 		parts = append(parts, r.String())

@@ -19,12 +19,17 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cobra"
 )
 
 type DriftImpl struct {
 	logger hclog.Logger
-
 	config *BaseConfig
+
+	// flags
+	debug bool
+
+	tfBackendName, tfMode, tfProvider string
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -37,7 +42,7 @@ func (d *DriftImpl) ID() string {
 	return "drift"
 }
 
-func (d *DriftImpl) Prepare(ctx context.Context, config hcl.Body) error {
+func (d *DriftImpl) Configure(ctx context.Context, config hcl.Body) error {
 	p := NewParser("")
 
 	theCfg, diags := p.Decode(config, nil)
@@ -49,11 +54,67 @@ func (d *DriftImpl) Prepare(ctx context.Context, config hcl.Body) error {
 	return nil
 }
 
-func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret *model.ExecutionResult) {
-	ret = &model.ExecutionResult{}
+func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) *model.ExecutionResult {
+	ret := &model.ExecutionResult{}
 
-	cb, _ := json.Marshal(d.config)
-	d.logger.Debug("executing with config", "config", string(cb), "request", req.String())
+	rootCmd := &cobra.Command{
+		Use:   "drift",
+		Short: "Drift Module",
+		Long:  "Drift Module",
+		Args:  cobra.MinimumNArgs(1),
+	}
+	rootCmd.SetUsageTemplate(`Usage:
+  cloudquery [CQ-PARAMS] module drift [COMMAND] -- [FLAGS]{{if gt (len .Aliases) 0}}
+
+Aliases:
+  {{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+Examples:
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+Flags:
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+Global Flags:
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
+
+Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] -- --help" for more information about a command.{{end}}
+`)
+	rootCmd.PersistentFlags().BoolVar(&d.debug, "debug", false, "Show debug output")
+	rootCmd.SetArgs(req.Args)
+
+	runCmd := &cobra.Command{
+		Use:   "run",
+		Short: "Detect drifts",
+		Long:  "Detect drifts between cloud provider and IaC",
+		Run: func(cmd *cobra.Command, args []string) {
+			cb, _ := json.Marshal(d.config)
+			d.logger.Debug("executing with config", "config", string(cb), "request", req.String())
+			ret = d.run(ctx, req)
+		},
+	}
+	runCmd.Flags().StringVar(&d.tfBackendName, "tf-backend-name", "mylocal", "Set Terraform backend name")
+	runCmd.Flags().StringVar(&d.tfMode, "tf-mode", "managed", "Set Terraform mode")
+	runCmd.Flags().StringVar(&d.tfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
+	rootCmd.AddCommand(runCmd)
+
+	if err := rootCmd.Execute(); err != nil {
+		if ret.Error == nil {
+			ret.Error = err
+		}
+	}
+
+	return ret
+}
+
+func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (ret *model.ExecutionResult) {
+	ret = &model.ExecutionResult{}
 
 	provs, err := req.Providers()
 	if err != nil {
@@ -178,13 +239,10 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	// Get from provider
 	// SELECT account_id, region, name, arn FROM aws_s3_buckets;
 
-	const (
-		// TODO move into module params, with defaults
-		tfBackendName = "mylocal"
-		tfMode        = "managed"
-	)
-	// TODO check if cloud provider names always match with tf_resources.provider
-	tfProvider := cloudName
+	tfProvider := d.tfProvider
+	if tfProvider == "" {
+		tfProvider = cloudName
+	}
 
 	tfAttributes := make([]string, len(resData.Attributes))
 	tfQueryItems := make([]string, len(resData.Attributes))
@@ -194,11 +252,12 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		} else {
 			tfAttributes[i] = a
 		}
-		if cloudTable.Column(a).Type == schema.TypeString {
+		switch cloudTable.Column(a).Type {
+		case schema.TypeString:
 			tfQueryItems[i] = fmt.Sprintf(`COALESCE(i.attributes->>'%s','')`, tfAttributes[i])
-		} else if cloudTable.Column(a).Type == schema.TypeJSON {
+		case schema.TypeJSON:
 			tfQueryItems[i] = fmt.Sprintf(`(i.attributes->>'%s')::json`, tfAttributes[i])
-		} else {
+		default:
 			tfQueryItems[i] = fmt.Sprintf(`i.attributes->>'%s'`, tfAttributes[i])
 		}
 	}
@@ -224,9 +283,9 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Select("i.instance_id", tfAttrQuery.As("attlist")).
 		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
 		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
-		Where(goqu.Ex{"d.backend_name": goqu.V(tfBackendName)}).
+		Where(goqu.Ex{"d.backend_name": goqu.V(d.tfBackendName)}).
 		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
-		Where(goqu.Ex{"r.mode": goqu.V(tfMode)}).
+		Where(goqu.Ex{"r.mode": goqu.V(d.tfMode)}).
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
 		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
 
@@ -286,7 +345,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 			return nil, err
 		}
 
-		if len(res.Different) > 0 {
+		if d.debug && len(res.Different) > 0 {
 			// get tf side
 			sel := goqu.Dialect("postgres").From("tf").With("tf", tfSelect).Select(goqu.I("tf.instance_id").As("id"), goqu.I("tf.attlist").As("attlist")).Where(
 				goqu.Ex{
