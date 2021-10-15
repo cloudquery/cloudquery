@@ -16,7 +16,7 @@ module "drift" {
         resource "*" {
             identifiers       = resource.Value.Options.PrimaryKeys
             attributes        = resource.Value.ColumnNames
-            ignore_attributes = ["creation_date", "launch_time"]
+            ignore_attributes = ["cq_id", "meta", "creation_date"]
         }
 
         # "source" directive evaluates the given config or statement
@@ -42,7 +42,7 @@ module "drift" {
 
         resource "ec2.instances" {
             #   identifiers       = ["id"]
-            #   ignore_attributes = ["launch_time"]
+           ignore_attributes = ["launch_time"]
 
             iac {
                 terraform {
@@ -80,7 +80,9 @@ module "drift" {
         }
 
         skip_resources = [
-#            "ec2.instances"
+#            "ec2.instances",
+#            "iam.users",
+#            "s3.buckets"
         ]
 
     }
