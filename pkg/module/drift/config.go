@@ -31,6 +31,7 @@ type ResourceConfig struct {
 	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
 	Attributes        []string `hcl:"attributes,optional"`
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
+	Deep              *bool    `hcl:"deep,optional"` // Check attributes if true, otherwise just match identifiers
 
 	IAC map[string]*IACConfig
 
@@ -71,6 +72,9 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 	if len(res.Attributes) == 0 {
 		res.Attributes = wild.Attributes
+	}
+	if res.Deep == nil {
+		res.Deep = wild.Deep
 	}
 
 	// add on ignoreIdentifiers and ignoreAttributes values from wild

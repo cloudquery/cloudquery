@@ -30,11 +30,16 @@ type Result struct {
 	Provider     string
 	ResourceType string
 
-	Different ResourceList
-	DeepEqual ResourceList
-	Equal     ResourceList
-	Missing   ResourceList
-	Extra     ResourceList
+	// Deep mode
+	Different ResourceList // Resources don't match fully (id + attributes don't match)
+	DeepEqual ResourceList // Resource exists in both places (attributes match)
+
+	// Shallow mode
+	Equal ResourceList // Resource exists in both places (attributes not checked)
+
+	// Both modes
+	Missing ResourceList // Missing in cloud provider, defined in iac
+	Extra   ResourceList // Exists in cloud provider, not defined in iac
 }
 
 func (r *Result) String() string {

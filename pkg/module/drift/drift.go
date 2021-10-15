@@ -229,9 +229,12 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
 		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
 
+	deepMode := resData.Deep != nil && *resData.Deep
+
 	var err error
-	// Get equal resources
-	{
+
+	if !deepMode {
+		// Get equal resources
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
 			Select("tf.instance_id")
@@ -241,8 +244,8 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		}
 	}
 
-	// Get missing resources
 	{
+		// Get missing resources
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
 			Select("tf.instance_id").Where(goqu.Ex{"c.cq_id": nil})
@@ -252,8 +255,8 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		}
 	}
 
-	// Get extra resources
 	{
+		// Get extra resources
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
 			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
@@ -263,8 +266,8 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		}
 	}
 
-	// Get different resources
-	{
+	if deepMode {
+		// Get different resources
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).LeftJoin(goqu.T("tf"),
 			goqu.On(
@@ -277,7 +280,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		).
 			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
 
-		res.Different, err = d.queryIntoResourceList(ctx, conn, q, "differs", res.Extra)
+		res.Different, err = d.queryIntoResourceList(ctx, conn, q, "differs", append(res.Missing, res.Extra...))
 		if err != nil {
 			return nil, err
 		}
@@ -313,55 +316,29 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 			for k, tfAttrs := range tfAttList {
 				cloudAttrs, ok := cloudAttList[k]
 				if !ok {
-					// only in TF
-					table := makeTable(fmt.Sprintf("ONLY IN TERRAFORM: %s", k))
-					for i := range tfAttrs {
-						table.Append([]string{
-							cloudQueryItems[i],
-							"<none>",
-							fmt.Sprintf("%v", tfAttrs[i]),
-							tfQueryItems[i],
-						})
-						table.Render()
-					}
-				} else {
-					table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
-					for i := range tfAttrs {
-						ca := fmt.Sprintf("%v", cloudAttrs[i])
-						ta := fmt.Sprintf("%v", tfAttrs[i])
-						if ca != ta {
-							table.Append([]string{
-								cloudQueryItems[i],
-								ca,
-								ta,
-								tfQueryItems[i],
-							})
-						}
-					}
-					table.Render()
+					continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
 				}
-			}
-			for k, cloudAttrs := range cloudAttList {
-				if _, ok := tfAttList[k]; !ok {
-					// only in CL
-					table := makeTable(fmt.Sprintf("ONLY IN %s: %s", strings.ToUpper(cloudName)))
-					for i := range cloudAttrs {
+				table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
+				for i := range tfAttrs {
+					ca := fmt.Sprintf("%v", cloudAttrs[i])
+					ta := fmt.Sprintf("%v", tfAttrs[i])
+					if ca != ta {
 						table.Append([]string{
 							cloudQueryItems[i],
-							fmt.Sprintf("%v", cloudAttrs[i]),
-							"<none>",
+							ca,
+							ta,
 							tfQueryItems[i],
 						})
 					}
-					table.Render()
 				}
+				table.Render()
 			}
 		}
 
 	}
 
-	// Get deepequal resources
-	{
+	if deepMode {
+		// Get deepequal resources
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).Join(goqu.T("tf"),
 			goqu.On(

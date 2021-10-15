@@ -208,6 +208,10 @@ var (
 				Name:     "ignore_attributes",
 				Required: false,
 			},
+			{
+				Name:     "deep",
+				Required: false,
+			},
 		},
 		Blocks: []hcl.BlockHeaderSchema{
 			{
@@ -290,6 +294,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if ignoreAttr, ok := content.Attributes["ignore_attributes"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(ignoreAttr.Expr, ctx, &res.IgnoreAttributes)...)
+	}
+	if deepAttr, ok := content.Attributes["deep"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(deepAttr.Expr, ctx, &res.Deep)...)
 	}
 
 	for _, block := range content.Blocks {

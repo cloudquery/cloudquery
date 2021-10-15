@@ -17,6 +17,7 @@ module "drift" {
             identifiers       = resource.Value.Options.PrimaryKeys
             attributes        = resource.Value.ColumnNames
             ignore_attributes = ["cq_id", "meta", "creation_date"]
+            deep = true
         }
 
         # "source" directive evaluates the given config or statement
