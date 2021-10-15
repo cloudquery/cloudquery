@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -319,17 +320,30 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 					continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
 				}
 				table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
+				var (
+					matchingAttr []string
+					matchingVal  []string
+				)
 				for i := range tfAttrs {
-					ca := fmt.Sprintf("%v", cloudAttrs[i])
-					ta := fmt.Sprintf("%v", tfAttrs[i])
-					if ca != ta {
+					if reflect.DeepEqual(cloudAttrs[i], tfAttrs[i]) {
 						table.Append([]string{
 							cloudQueryItems[i],
-							ca,
-							ta,
+							fmt.Sprintf("%v", cloudAttrs[i]),
+							fmt.Sprintf("%v", tfAttrs[i]),
 							tfQueryItems[i],
 						})
+					} else {
+						matchingAttr = append(matchingAttr, `"`+resData.Attributes[i]+`"`)
+						matchingVal = append(matchingVal, fmt.Sprintf("%v", cloudAttrs[i]))
 					}
+				}
+				table.Render()
+				fmt.Println("Matching attributes " + strings.Join(matchingAttr, ", "))
+				table = tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"ATTRIBUTE", "MATCHING VALUE"})
+				table.SetBorder(true)
+				for i := range matchingAttr {
+					table.Append([]string{strings.Trim(matchingAttr[i], `"`), matchingVal[i]})
 				}
 				table.Render()
 			}

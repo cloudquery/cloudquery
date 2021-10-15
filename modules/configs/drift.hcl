@@ -70,7 +70,9 @@ module "drift" {
         }
 
         resource "iam.users" {
-            ignore_attributes = [ "password_last_used" ]
+            identifiers       = ["user_name"]
+#            ignore_attributes = ["id", "user_id", "password_last_used"]
+            attributes = [ "arn", "path", "permissions_boundary_arn", "permissions_boundary_type", "tags" ]
 
             iac {
                 terraform {
