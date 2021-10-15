@@ -203,6 +203,16 @@ func (c Client) CallModule(ctx context.Context, args []string, outputPath, modCo
 	return nil
 }
 
+func (c Client) GenModuleConfig(ctx context.Context, args []string) {
+	configPath, err := c.c.GenModuleConfig(ctx, args)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
+		return
+	}
+	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", *configPath)
+}
+
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)

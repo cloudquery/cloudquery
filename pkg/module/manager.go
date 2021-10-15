@@ -37,6 +37,9 @@ type Manager interface {
 
 	// ExecuteModule executes the given module.
 	ExecuteModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
+
+	// ReadConfig reads the given module's default/builtin config
+	ReadConfig(modName string) ([]byte, error)
 }
 
 // NewManager returns a new manager instance.
@@ -65,7 +68,7 @@ func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.Ex
 		return nil, fmt.Errorf("module not found %q", args[0])
 	}
 
-	rawConfig, err := m.readConfig(mod.ID(), modConfigPath)
+	rawConfig, err := m.readDecodeConfig(mod.ID(), modConfigPath)
 	if err != nil {
 		return nil, fmt.Errorf("could not read config: %w", err)
 	}
@@ -108,8 +111,21 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *model.ExecuteR
 	return res, nil
 }
 
-// readConfig reads the module config. Uses configPath if set, if not, it will try to get the default module config
-func (m *ManagerImpl) readConfig(modName string, configPath string) (hcl.Body, error) {
+// ReadConfig reads the given module's default/builtin config
+func (m *ManagerImpl) ReadConfig(modName string) ([]byte, error) {
+	// Try to find $modName.hcl
+	filename := fmt.Sprintf("%s.hcl", modName)
+
+	contents, err := modules.FS.ReadFile("configs/" + filename)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load embedded config for module %s: %w", modName, err)
+	}
+
+	return contents, nil
+}
+
+// readDecodeConfig reads the module config. Uses configPath if set, if not, it will try to get the default module config
+func (m *ManagerImpl) readDecodeConfig(modName string, configPath string) (hcl.Body, error) {
 	if configPath != "" {
 		osFs := file.NewOsFs()
 		if info, err := osFs.Stat(configPath); err != nil || info.IsDir() {
