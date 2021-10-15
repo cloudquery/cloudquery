@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/olekukonko/tablewriter"
 )
 
 type DriftImpl struct {
@@ -139,7 +141,7 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) (ret
 					return
 				}
 				if err != nil {
-					ret.Error = fmt.Errorf("drift failed for (%s,%s): %w", prov.Name, resName, err)
+					ret.Error = fmt.Errorf("drift failed for (%s:%s): %w", prov.Name, resName, err)
 					return
 				} else if dres != nil {
 					dres.Provider = prov.Name
@@ -183,42 +185,42 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	// TODO check if cloud provider names always match with tf_resources.provider
 	tfProvider := cloudName
 
-	iacAttributes := make([]string, len(resData.Attributes))
-	iacQueryItems := make([]string, len(resData.Attributes))
+	tfAttributes := make([]string, len(resData.Attributes))
+	tfQueryItems := make([]string, len(resData.Attributes))
 	for i, a := range resData.Attributes {
 		if mapped := iacData.attributeMap[a]; mapped != "" {
-			iacAttributes[i] = mapped
+			tfAttributes[i] = mapped
 		} else {
-			iacAttributes[i] = a
+			tfAttributes[i] = a
 		}
 		if cloudTable.Column(a).Type == schema.TypeString {
-			iacQueryItems[i] = fmt.Sprintf(`COALESCE(i.attributes->>'%s','')`, iacAttributes[i])
+			tfQueryItems[i] = fmt.Sprintf(`COALESCE(i.attributes->>'%s','')`, tfAttributes[i])
 		} else if cloudTable.Column(a).Type == schema.TypeJSON {
-			iacQueryItems[i] = fmt.Sprintf(`(i.attributes->>'%s')::json`, iacAttributes[i])
+			tfQueryItems[i] = fmt.Sprintf(`(i.attributes->>'%s')::json`, tfAttributes[i])
 		} else {
-			iacQueryItems[i] = fmt.Sprintf(`i.attributes->>'%s'`, iacAttributes[i])
+			tfQueryItems[i] = fmt.Sprintf(`i.attributes->>'%s'`, tfAttributes[i])
 		}
 	}
 
-	attrItems := make([]string, len(resData.Attributes))
+	cloudQueryItems := make([]string, len(resData.Attributes))
 	for i := range resData.Attributes {
 		if cloudTable.Column(resData.Attributes[i]).Type == schema.TypeString {
-			attrItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
+			cloudQueryItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
 		} else {
-			attrItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
+			cloudQueryItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
 		}
 	}
 
-	iacAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(iacQueryItems, ",") + ")")
-	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(attrItems, ",") + ")")
+	tfAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(tfQueryItems, ",") + ")")
+	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
 
 	if len(resData.Attributes) == 0 {
-		iacAttrQuery = goqu.L("''")
+		tfAttrQuery = goqu.L("''")
 		cloudAttrQuery = goqu.L("''")
 	}
 
 	tfSelect := goqu.Dialect("postgres").From(goqu.T("tf_resource_instances").As("i")).
-		Select("i.instance_id", iacAttrQuery.As("attlist")).
+		Select("i.instance_id", tfAttrQuery.As("attlist")).
 		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
 		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
 		Where(goqu.Ex{"d.backend_name": goqu.V(tfBackendName)}).
@@ -261,23 +263,16 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		}
 	}
 
-	{
-		opts := goqu.DefaultDialectOptions()
-		opts.BooleanOperatorLookup[exp.GtOp] = []byte("@>")
-		opts.BooleanOperatorLookup[exp.LtOp] = []byte("<@")
-		goqu.RegisterDialect("postgres-jsonb", opts) // not really "postgres" as we started from the Default Dialect and not the postgres one
-	}
-
 	// Get different resources
 	{
-		q := goqu.Dialect("postgres-jsonb").From(goqu.T(cloudTable.Name).As("c")).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).LeftJoin(goqu.T("tf"),
 			goqu.On(
 				goqu.Ex{
 					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
 				},
-				exp.NewBooleanExpression(exp.GtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"@>": cloudAttrQuery},
-				exp.NewBooleanExpression(exp.LtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"<@": cloudAttrQuery},
+				goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
+				goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
 			),
 		).
 			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
@@ -286,18 +281,95 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		if err != nil {
 			return nil, err
 		}
+
+		if len(res.Different) > 0 {
+			// get tf side
+			sel := goqu.Dialect("postgres").From("tf").With("tf", tfSelect).Select(goqu.I("tf.instance_id").As("id"), goqu.I("tf.attlist").As("attlist")).Where(
+				goqu.Ex{
+					"tf.instance_id": res.Different.IDs(),
+				})
+			tfAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-tf")
+			if err != nil {
+				return nil, err
+			}
+
+			// get cloud side
+			sel = goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(goqu.I("c."+resData.Identifiers[0]).As("id"), cloudAttrQuery.As("attlist")).Where(
+				exp.NewBooleanExpression(exp.InOp, goqu.I("c."+resData.Identifiers[0]), res.Different.IDs()),
+			)
+			cloudAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-cloud")
+			if err != nil {
+				return nil, err
+			}
+
+			makeTable := func(title string) *tablewriter.Table {
+				fmt.Println(title)
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{strings.ToUpper(cloudName) + " EXPR", strings.ToUpper(cloudName) + " VAL", "TERRAFORM VAL", "TERRAFORM EXPR"})
+				table.SetBorder(true)
+				return table
+			}
+
+			for k, tfAttrs := range tfAttList {
+				cloudAttrs, ok := cloudAttList[k]
+				if !ok {
+					// only in TF
+					table := makeTable(fmt.Sprintf("ONLY IN TERRAFORM: %s", k))
+					for i := range tfAttrs {
+						table.Append([]string{
+							cloudQueryItems[i],
+							"<none>",
+							fmt.Sprintf("%v", tfAttrs[i]),
+							tfQueryItems[i],
+						})
+						table.Render()
+					}
+				} else {
+					table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
+					for i := range tfAttrs {
+						ca := fmt.Sprintf("%v", cloudAttrs[i])
+						ta := fmt.Sprintf("%v", tfAttrs[i])
+						if ca != ta {
+							table.Append([]string{
+								cloudQueryItems[i],
+								ca,
+								ta,
+								tfQueryItems[i],
+							})
+						}
+					}
+					table.Render()
+				}
+			}
+			for k, cloudAttrs := range cloudAttList {
+				if _, ok := tfAttList[k]; !ok {
+					// only in CL
+					table := makeTable(fmt.Sprintf("ONLY IN %s: %s", strings.ToUpper(cloudName)))
+					for i := range cloudAttrs {
+						table.Append([]string{
+							cloudQueryItems[i],
+							fmt.Sprintf("%v", cloudAttrs[i]),
+							"<none>",
+							tfQueryItems[i],
+						})
+					}
+					table.Render()
+				}
+			}
+		}
+
 	}
 
 	// Get deepequal resources
 	{
-		q := goqu.Dialect("postgres-jsonb").From(goqu.T(cloudTable.Name).As("c")).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
 			With("tf", tfSelect).Join(goqu.T("tf"),
 			goqu.On(
 				goqu.Ex{
 					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
 				},
-				exp.NewBooleanExpression(exp.GtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"@>": cloudAttrQuery},
-				exp.NewBooleanExpression(exp.LtOp, goqu.I("tf.attlist"), cloudAttrQuery), // "tf.attlist": exp.Op{"<@": cloudAttrQuery},
+				goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
+				goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
 			),
 		).
 			Select("tf.instance_id")
@@ -310,7 +382,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	return res, nil
 }
 
-func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude []*Resource) ([]*Resource, error) {
+func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude ResourceList) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
@@ -337,6 +409,28 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 		})
 	}
 
+	return ret, nil
+}
+
+func (d *DriftImpl) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string) (map[string][]interface{}, error) {
+	query, args, err := sel.ToSQL()
+	if err != nil {
+		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
+	}
+	d.logger.Debug("generated query", "type", what, "query", query, "args", args)
+
+	var list []struct {
+		ID      string        `db:"id"`
+		AttList []interface{} `db:"attlist"`
+	}
+	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
+		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
+	}
+
+	ret := make(map[string][]interface{}, len(list))
+	for i := range list {
+		ret[list[i].ID] = list[i].AttList
+	}
 	return ret, nil
 }
 

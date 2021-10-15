@@ -9,15 +9,32 @@ type Resource struct {
 	ID string
 }
 
+type ResourceList []*Resource
+
+func (r ResourceList) IDs(exclude ...*Resource) []string {
+	exMap := make(map[string]struct{}, len(exclude))
+	for i := range exclude {
+		exMap[exclude[i].ID] = struct{}{}
+	}
+
+	ret := make([]string, 0, len(r))
+	for i := range r {
+		if _, ok := exMap[r[i].ID]; !ok {
+			ret = append(ret, r[i].ID)
+		}
+	}
+	return ret
+}
+
 type Result struct {
 	Provider     string
 	ResourceType string
 
-	Different []*Resource
-	DeepEqual []*Resource
-	Equal     []*Resource
-	Missing   []*Resource
-	Extra     []*Resource
+	Different ResourceList
+	DeepEqual ResourceList
+	Equal     ResourceList
+	Missing   ResourceList
+	Extra     ResourceList
 }
 
 func (r *Result) String() string {
