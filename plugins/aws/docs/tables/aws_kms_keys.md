@@ -5,6 +5,7 @@ Contains information about each entry in the key list.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
+|tags|jsonb||
 |region|text|The AWS Region of the resource.|
 |rotation_enabled|boolean|specifies whether key rotation is enabled.|
 |cloud_hsm_cluster_id|text|The cluster ID of the AWS CloudHSM cluster that contains the key material for the CMK|
@@ -22,5 +23,5 @@ Contains information about each entry in the key list.
 |origin|text|The source of the CMK's key material.|
 |signing_algorithms|text[]|The signing algorithms that the CMK supports.|
 |valid_to|timestamp without time zone|The time at which the imported key material expires.|
-|arn|text|ARN of the key|
-|key_id|text|Unique identifier of the key|
+|arn|text|ARN of the key.|
+|id|text|Unique identifier of the key.|

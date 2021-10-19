@@ -25,6 +25,10 @@ func TestIntegrationCloudtrailTrails(t *testing.T) {
 					"is_multi_region_trail":         true,
 					"is_organization_trail":         false,
 					"log_file_validation_enabled":   true,
+					"tags": map[string]interface{}{
+						"Type":   "integration_test",
+						"TestId": res.Suffix,
+					},
 				},
 			}},
 			Relations: []*providertest.ResourceIntegrationVerification{

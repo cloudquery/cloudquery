@@ -6,11 +6,10 @@ Represents a VPC link.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|id|text|The ID of the VPC link.|
 |name|text|The name of the VPC link.|
 |security_group_ids|text[]|A list of security group IDs for the VPC link.|
 |subnet_ids|text[]|A list of subnet IDs to include in the VPC link.|
-|vpc_link_id|text|The ID of the VPC link. (original field name)|
+|id|text|The ID of the VPC link.|
 |created_date|timestamp without time zone|The timestamp when the VPC link was created.|
 |tags|jsonb|Tags for the VPC link.|
 |vpc_link_status|text|The status of the VPC link.|

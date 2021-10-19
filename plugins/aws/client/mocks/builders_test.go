@@ -785,6 +785,13 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	tags := kms.ListResourceTagsOutput{}
+	err = faker.FakeData(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tags.NextMarker = nil
+
 	m.EXPECT().ListKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&kms.ListKeysOutput{
 			Keys: []kmsTypes.KeyListEntry{k},
@@ -793,6 +800,8 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&km, nil)
 	m.EXPECT().GetKeyRotationStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&krs, nil)
+	m.EXPECT().ListResourceTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&tags, nil)
 	return client.Services{
 		KMS: m,
 	}

@@ -21,6 +21,11 @@ func TestIntegrationElbv2TargetGroups(t *testing.T) {
 						"name":     fmt.Sprintf("lbv2target%s", res.Prefix),
 						"protocol": "HTTP",
 						"port":     float64(80),
+						"tags": map[string]interface{}{
+							"Type":   "integration_test",
+							"test":   "test",
+							"TestId": res.Suffix,
+						},
 					},
 				},
 			},

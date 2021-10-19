@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
@@ -33,8 +34,14 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "tags",
+				Type:        schema.TypeJSON,
+				Description: "Any tags assigned to the resource",
+				Resolver:    resolveElasticbeanstalkEnvironmentTags,
+			},
+			{
 				Name:        "abortable_operation_in_progress",
-				Description: "Indicates if there is an in-progress environment configuration update or application version deployment that you can cancel.",
+				Description: "Indicates if there is an in-progress environment configuration update or application version deployment that you can cancel",
 				Type:        schema.TypeBool,
 			},
 			{
@@ -65,7 +72,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 			},
 			{
 				Name:        "endpoint_url",
-				Description: "For load-balanced, autoscaling environments, the URL to the LoadBalancer.",
+				Description: "For load-balanced, autoscaling environments, the URL to the LoadBalancer",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EndpointURL"),
 			},
@@ -82,24 +89,24 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Resolver:    schema.PathResolver("EnvironmentId"),
 			},
 			{
-				Name:        "environment_name",
+				Name:        "name",
 				Description: "The name of this environment.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EnvironmentName"),
 			},
 			{
 				Name:        "health",
-				Description: "Describes the health status of the environment.",
+				Description: "Describes the health status of the environment",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "health_status",
-				Description: "Returns the health status of the application running in your environment.",
+				Description: "Returns the health status of the application running in your environment",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "operations_role",
-				Description: "The Amazon Resource Name (ARN) of the environment's operations role.",
+				Description: "The Amazon Resource Name (ARN) of the environment's operations role",
 				Type:        schema.TypeString,
 			},
 			{
@@ -132,7 +139,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 			},
 			{
 				Name:        "status",
-				Description: "The current operational status of the environment:  * Launching: Environment is in the process of initial deployment.",
+				Description: "The current operational status of the environment:  * Launching: Environment is in the process of initial deployment.  * Updating: Environment is in the process of updating its configuration settings or application version.  * Ready: Environment is available to have an action performed on it, such as update or terminate.  * Terminating: Environment is in the shut-down process.  * Terminated: Environment is not running.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -142,19 +149,19 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 			},
 			{
 				Name:        "tier_name",
-				Description: "The name of this environment tier.",
+				Description: "The name of this environment tier",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Tier.Name"),
 			},
 			{
 				Name:        "tier_type",
-				Description: "The type of this environment tier.",
+				Description: "The type of this environment tier",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Tier.Type"),
 			},
 			{
 				Name:        "tier_version",
-				Description: "The version of this environment tier.",
+				Description: "The version of this environment tier",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Tier.Version"),
 			},
@@ -167,7 +174,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_elasticbeanstalk_environment_links",
-				Description: "A link to another environment, defined in the environment's manifest.",
+				Description: "A link to another environment, defined in the environment's manifest",
 				Resolver:    fetchElasticbeanstalkEnvironmentLinks,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "link_name"}},
 				Columns: []schema.Column{
@@ -215,8 +222,11 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.EnvironmentDescription)
+func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.EnvironmentDescription)
+	if !ok {
+		return fmt.Errorf("expected types.EnvironmentDescription but got %T", resource.Item)
+	}
 	if p.Resources == nil || p.Resources.LoadBalancer == nil {
 		return nil
 	}
@@ -226,9 +236,32 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	}
 	return resource.Set(c.Name, listeners)
 }
-
+func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.EnvironmentDescription)
+	if !ok {
+		return fmt.Errorf("expected types.EnvironmentDescription but got %T", resource.Item)
+	}
+	svc := meta.(*client.Client).Services().ElasticBeanstalk
+	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
+		ResourceArn: p.EnvironmentArn,
+	}, func(o *elasticbeanstalk.Options) {})
+	if err != nil {
+		return err
+	}
+	if len(tagsOutput.ResourceTags) == 0 {
+		return nil
+	}
+	tags := make(map[string]*string)
+	for _, s := range tagsOutput.ResourceTags {
+		tags[*s.Key] = s.Value
+	}
+	return resource.Set(c.Name, tags)
+}
 func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	p := parent.Item.(types.EnvironmentDescription)
+	p, ok := parent.Item.(types.EnvironmentDescription)
+	if !ok {
+		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
+	}
 	res <- p.EnvironmentLinks
 	return nil
 }

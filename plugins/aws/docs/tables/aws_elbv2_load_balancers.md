@@ -6,6 +6,7 @@ Information about a load balancer.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|tags|jsonb||
 |canonical_hosted_zone_id|text|The ID of the Amazon Route 53 hosted zone associated with the load balancer.|
 |created_time|timestamp without time zone|The date and time the load balancer was created.|
 |customer_owned_ipv4_pool|text|[Application Load Balancers on Outposts] The ID of the customer-owned address pool.|

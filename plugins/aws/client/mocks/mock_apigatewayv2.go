@@ -275,6 +275,26 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetStages(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStages", reflect.TypeOf((*MockApigatewayv2Client)(nil).GetStages), varargs...)
 }
 
+// GetTags mocks base method.
+func (m *MockApigatewayv2Client) GetTags(arg0 context.Context, arg1 *apigatewayv2.GetTagsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetTagsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTags", varargs...)
+	ret0, _ := ret[0].(*apigatewayv2.GetTagsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockApigatewayv2ClientMockRecorder) GetTags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockApigatewayv2Client)(nil).GetTags), varargs...)
+}
+
 // GetVpcLinks mocks base method.
 func (m *MockApigatewayv2Client) GetVpcLinks(arg0 context.Context, arg1 *apigatewayv2.GetVpcLinksInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinksOutput, error) {
 	m.ctrl.T.Helper()

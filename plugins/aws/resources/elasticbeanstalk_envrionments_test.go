@@ -23,6 +23,15 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 		&elasticbeanstalk.DescribeEnvironmentsOutput{
 			Environments: []elasticbeanstalkTypes.EnvironmentDescription{l},
 		}, nil)
+
+	tags := elasticbeanstalk.ListTagsForResourceOutput{}
+	err = faker.FakeData(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&tags, nil)
 	return client.Services{
 		ElasticBeanstalk: m,
 	}

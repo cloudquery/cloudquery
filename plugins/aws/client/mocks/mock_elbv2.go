@@ -75,6 +75,26 @@ func (mr *MockElbV2ClientMockRecorder) DescribeLoadBalancers(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLoadBalancers", reflect.TypeOf((*MockElbV2Client)(nil).DescribeLoadBalancers), varargs...)
 }
 
+// DescribeTags mocks base method.
+func (m *MockElbV2Client) DescribeTags(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeTagsInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTagsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTags", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeTagsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTags indicates an expected call of DescribeTags.
+func (mr *MockElbV2ClientMockRecorder) DescribeTags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTags", reflect.TypeOf((*MockElbV2Client)(nil).DescribeTags), varargs...)
+}
+
 // DescribeTargetGroups mocks base method.
 func (m *MockElbV2Client) DescribeTargetGroups(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeTargetGroupsInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTargetGroupsOutput, error) {
 	m.ctrl.T.Helper()

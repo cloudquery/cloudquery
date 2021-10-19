@@ -21,6 +21,10 @@ func TestIntegrationApigatewayv2VpcLinks(t *testing.T) {
 				Count: 1,
 				Data: map[string]interface{}{
 					"vpc_link_version": "V2",
+					"tags": map[string]interface{}{
+						"Type":   "integration_test",
+						"TestId": res.Suffix,
+					},
 				},
 			}},
 		}

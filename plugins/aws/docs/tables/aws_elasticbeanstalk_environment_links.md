@@ -1,6 +1,6 @@
 
 # Table: aws_elasticbeanstalk_environment_links
-A link to another environment, defined in the environment's manifest.
+A link to another environment, defined in the environment's manifest
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

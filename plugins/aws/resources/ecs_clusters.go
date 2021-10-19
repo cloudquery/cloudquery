@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
@@ -203,13 +204,26 @@ func resolveEcsClusterStatistics(_ context.Context, _ schema.ClientMeta, resourc
 	}
 	return resource.Set(col.Name, stats)
 }
-func resolveEcsClusterTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
-	cluster := resource.Item.(types.Cluster)
-	stats := make(map[string]*string)
-	for _, s := range cluster.Tags {
-		stats[*s.Key] = s.Value
+func resolveEcsClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().ECS
+	cluster, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
 	}
-	return resource.Set(col.Name, stats)
+	listTagsForResourceOutput, err := svc.ListTagsForResource(ctx, &ecs.ListTagsForResourceInput{
+		ResourceArn: cluster.ClusterArn,
+	}, func(o *ecs.Options) {
+		o.Region = region
+	})
+	if err != nil {
+		return err
+	}
+	tags := make(map[string]*string)
+	for _, s := range listTagsForResourceOutput.Tags {
+		tags[*s.Key] = s.Value
+	}
+	return resource.Set(col.Name, tags)
 }
 func fetchEcsClusterAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster := parent.Item.(types.Cluster)
