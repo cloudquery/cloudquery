@@ -16,6 +16,8 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
+		case "AWSOrganizationsNotInUseException":
+			return true
 		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
 			return true
 		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
