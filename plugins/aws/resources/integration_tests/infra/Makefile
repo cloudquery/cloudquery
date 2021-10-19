@@ -10,6 +10,10 @@ apply:
 destroy:
 	@terraform destroy --var test_suffix="integration" --var test_prefix="cq-testing"
 
+.PHONY: plan
+plan:
+	@terraform plan --var test_suffix="integration" --var test_prefix="cq-testing"
+
 .PHONY: clean
 clean:
 	@./scripts/clean.sh
