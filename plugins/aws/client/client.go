@@ -307,6 +307,10 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 		client.regions = filterDisabledRegions(client.regions, res.Regions)
 
+		if len(client.regions) == 0 {
+			return nil, fmt.Errorf("no enabled regions provided in config for account %s", account.ID)
+		}
+
 		if client.AccountID == "" {
 			// set default
 			client.AccountID = *output.Account
