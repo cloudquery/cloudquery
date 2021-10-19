@@ -39,7 +39,7 @@ EOF
       type                 = "gp2"
       volumes_per_instance = 1
     }
-    bid_price          = "0.60"
+    bid_price          = "0.90"
     autoscaling_policy = <<EOF
 {
 "Constraints": {
