@@ -15,7 +15,7 @@ func TestIntegrationElasticbeanstalkEnvironments(t *testing.T) {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_elasticbeanstalk_environments",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Eq{"environment_name": firstN(fmt.Sprintf("beanstalk-ee-%s", res.Suffix), 40)})
+				return sq.Where(squirrel.Eq{"name": firstN(fmt.Sprintf("beanstalk-ee-%s", res.Suffix), 40)})
 			},
 			ExpectedValues: []providertest.ExpectedValue{
 				{

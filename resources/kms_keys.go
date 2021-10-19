@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -26,6 +27,10 @@ func KmsKeys() *schema.Table {
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name: "tags",
+				Type: schema.TypeJSON,
 			},
 			{
 				Name:        "region",
@@ -115,14 +120,15 @@ func KmsKeys() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "ARN of the key",
+				Description: "ARN of the key.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("KeyArn"),
 			},
 			{
-				Name:        "key_id",
-				Description: "Unique identifier of the key",
+				Name:        "id",
+				Description: "Unique identifier of the key.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("KeyId"),
 			},
 		},
 	}
@@ -151,7 +157,10 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	r := resource.Item.(types.KeyListEntry)
+	r, ok := resource.Item.(types.KeyListEntry)
+	if !ok {
+		return fmt.Errorf("expected types.KeyListEntry but got %T", resource.Item)
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().KMS
 	output, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: r.KeyId}, func(options *kms.Options) {
@@ -227,6 +236,21 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 		if err := resource.Set("rotation_enabled", output.KeyRotationEnabled); err != nil {
 			return err
 		}
+
+		tagsResponse, err := svc.ListResourceTags(ctx, &kms.ListResourceTagsInput{
+			KeyId: r.KeyId,
+		}, func(options *kms.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return err
+		}
+
+		tags := make(map[string]interface{})
+		for _, t := range tagsResponse.Tags {
+			tags[*t.TagKey] = *t.TagValue
+		}
+		return resource.Set("tags", tags)
 	}
 	return nil
 }

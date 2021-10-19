@@ -35,6 +35,11 @@ func Elbv2LoadBalancers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElbv2loadBalancerTags,
+			},
+			{
 				Name:        "canonical_hosted_zone_id",
 				Description: "The ID of the Amazon Route 53 hosted zone associated with the load balancer.",
 				Type:        schema.TypeString,
@@ -289,6 +294,35 @@ func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		config.Marker = response.NextMarker
 	}
 	return nil
+}
+func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().ELBv2
+	loadBalancer, ok := resource.Item.(types.LoadBalancer)
+	if !ok {
+		return fmt.Errorf("expected to have types.LoadBalancer but got %T", resource.Item)
+	}
+	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
+		ResourceArns: []string{
+			*loadBalancer.LoadBalancerArn,
+		},
+	}, func(o *elbv2.Options) {
+		o.Region = region
+	})
+	if err != nil {
+		return err
+	}
+	if len(tagsOutput.TagDescriptions) == 0 {
+		return nil
+	}
+	tags := make(map[string]*string)
+	for _, td := range tagsOutput.TagDescriptions {
+		for _, s := range td.Tags {
+			tags[*s.Key] = s.Value
+		}
+	}
+
+	return resource.Set(c.Name, tags)
 }
 func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	p := parent.Item.(types.LoadBalancer)

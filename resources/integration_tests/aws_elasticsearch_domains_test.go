@@ -27,6 +27,11 @@ func TestIntegrationElasticsearchDomains(t *testing.T) {
 						"ebs_enabled":           true,
 						"name":                  fmt.Sprintf("elastic-domain-%.13s", res.Suffix),
 						"snapshot_options_automated_snapshot_start_hour": float64(23),
+						"tags": map[string]interface{}{
+							"Type":   "integration_test",
+							"Domain": "TestDomain",
+							"TestId": res.Suffix,
+						},
 					},
 				},
 			},

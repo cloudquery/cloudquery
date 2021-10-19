@@ -19,6 +19,12 @@ func TestIntegrationEcsClusters(t *testing.T) {
 					Count: 1,
 					Data: map[string]interface{}{
 						"name": fmt.Sprintf("ecs_cluster_%s%s", res.Prefix, res.Suffix),
+						"tags": map[string]interface{}{
+							"Type":   "integration_test",
+							"name":   fmt.Sprintf("ecs_cluster_%s%s", res.Prefix, res.Suffix),
+							"stage":  "test",
+							"TestId": res.Suffix,
+						},
 					},
 				},
 			},

@@ -29,6 +29,12 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		ClusterArns: []string{"randomClusteArn"},
 	}
 	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsListOutput, nil)
+	var tags ecs.ListTagsForResourceOutput
+	err = faker.FakeData(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 	return services
 }
 

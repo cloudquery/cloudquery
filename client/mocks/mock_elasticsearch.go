@@ -74,3 +74,23 @@ func (mr *MockElasticSearchMockRecorder) ListDomainNames(arg0, arg1 interface{},
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDomainNames", reflect.TypeOf((*MockElasticSearch)(nil).ListDomainNames), varargs...)
 }
+
+// ListTags mocks base method.
+func (m *MockElasticSearch) ListTags(arg0 context.Context, arg1 *elasticsearchservice.ListTagsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListTagsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTags", varargs...)
+	ret0, _ := ret[0].(*elasticsearchservice.ListTagsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTags indicates an expected call of ListTags.
+func (mr *MockElasticSearchMockRecorder) ListTags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTags", reflect.TypeOf((*MockElasticSearch)(nil).ListTags), varargs...)
+}

@@ -2,9 +2,11 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -32,6 +34,11 @@ func Elbv2TargetGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElbv2targetGroupTags,
+			},
+			{
 				Name:        "health_check_enabled",
 				Description: "Indicates whether health checks are enabled.",
 				Type:        schema.TypeBool,
@@ -53,7 +60,7 @@ func Elbv2TargetGroups() *schema.Table {
 			},
 			{
 				Name:        "health_check_protocol",
-				Description: "The protocol to use to connect with the target.",
+				Description: "The protocol to use to connect with the target",
 				Type:        schema.TypeString,
 			},
 			{
@@ -73,19 +80,19 @@ func Elbv2TargetGroups() *schema.Table {
 			},
 			{
 				Name:        "matcher_grpc_code",
-				Description: "You can specify values between 0 and 99.",
+				Description: "You can specify values between 0 and 99",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Matcher.GrpcCode"),
 			},
 			{
 				Name:        "matcher_http_code",
-				Description: "For Application Load Balancers, you can specify values between 200 and 499, and the default value is 200.",
+				Description: "For Application Load Balancers, you can specify values between 200 and 499, and the default value is 200",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Matcher.HttpCode"),
 			},
 			{
 				Name:        "port",
-				Description: "The port on which the targets are listening.",
+				Description: "The port on which the targets are listening",
 				Type:        schema.TypeInt,
 			},
 			{
@@ -95,7 +102,7 @@ func Elbv2TargetGroups() *schema.Table {
 			},
 			{
 				Name:        "protocol_version",
-				Description: "[HTTP/HTTPS protocol] The protocol version.",
+				Description: "[HTTP/HTTPS protocol] The protocol version",
 				Type:        schema.TypeString,
 			},
 			{
@@ -112,9 +119,8 @@ func Elbv2TargetGroups() *schema.Table {
 			},
 			{
 				Name:        "target_type",
-				Description: "The type of target that you must specify when registering targets with this target group.",
+				Description: "The type of target that you must specify when registering targets with this target group",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TargetType"),
 			},
 			{
 				Name:        "unhealthy_threshold_count",
@@ -151,4 +157,30 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		config.Marker = response.NextMarker
 	}
 	return nil
+}
+func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().ELBv2
+	targetGroup, ok := resource.Item.(types.TargetGroup)
+	if !ok {
+		return fmt.Errorf("expected to have types.TargetGroup but got %T", resource.Item)
+	}
+	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
+		ResourceArns: []string{
+			*targetGroup.TargetGroupArn,
+		},
+	}, func(o *elbv2.Options) {
+		o.Region = region
+	})
+	if err != nil {
+		return err
+	}
+	if len(tagsOutput.TagDescriptions) == 0 {
+		return nil
+	}
+	tags := make(map[string]*string)
+	for _, s := range tagsOutput.TagDescriptions[0].Tags {
+		tags[*s.Key] = s.Value
+	}
+	return resource.Set(c.Name, tags)
 }

@@ -54,3 +54,23 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironments(arg0, arg
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEnvironments", reflect.TypeOf((*MockElasticbeanstalkClient)(nil).DescribeEnvironments), varargs...)
 }
+
+// ListTagsForResource mocks base method.
+func (m *MockElasticbeanstalkClient) ListTagsForResource(arg0 context.Context, arg1 *elasticbeanstalk.ListTagsForResourceInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.ListTagsForResourceOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsForResource", varargs...)
+	ret0, _ := ret[0].(*elasticbeanstalk.ListTagsForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsForResource indicates an expected call of ListTagsForResource.
+func (mr *MockElasticbeanstalkClientMockRecorder) ListTagsForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockElasticbeanstalkClient)(nil).ListTagsForResource), varargs...)
+}

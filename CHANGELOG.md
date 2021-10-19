@@ -5,6 +5,18 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - 2021-09-21
+###### SDK Version: 0.4.9
+
+### :rocket: Added
+* Added ignore `AWSOrganizationsNotInUseException` error to ignore error filter.
+
+### :spider: Fixed
+* Fixed [empty or missing](https://github.com/cloudquery/cq-provider-aws/issues/157) tags on some resources [#191](https://github.com/cloudquery/cq-provider-aws/pull/191)
+* Fixed duplicate of `id` field for `aws_apigatewayv2_vpc_links` - removed `vpc_link_id` field
+* Fixed duplicate of `region` field for `aws_cloudtrail_trails` - removed `home_region` field
+* Fixed naming according to convention `aws_elasticbeanstalk_environments`:`environment_name` -> `name`, `aws_kms_keys`: `key_id` -> `id`
+
 ## [v0.5.16] - 2021-10-07
 ###### SDK Version: v0.4.9
 
@@ -37,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :spider: Fixed
 remove region multiplex on web acl resource[#188](https://github.com/cloudquery/cq-provider-aws/pull/188)
+
+
 
 ## [v0.5.12] - 2021-09-09
 ###### SDK Version: v0.4.3
