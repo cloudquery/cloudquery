@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]
-        go: [ "1.17" ]
+        go: [ "1.16" ]
         platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
     services:
@@ -61,18 +61,15 @@ jobs:
         env:
           OS: Linux
 
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-          enable-AzPSSession: true
-
       - name: Fetch
         run: |
           rm -rf .cq_reattach
           CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config ./client/testdata/nightly.hcl --enable-console-log --fail-on-error
         env:
           CQ_REATTACH_PROVIDERS: .cq_reattach
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2

@@ -8,7 +8,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	insights "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	insightso "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	insights "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +37,10 @@ func (m *MockActivityLogAlertsClient) EXPECT() *MockActivityLogAlertsClientMockR
 }
 
 // ListBySubscriptionID mocks base method.
-func (m *MockActivityLogAlertsClient) ListBySubscriptionID(arg0 context.Context) (insights.ActivityLogAlertList, error) {
+func (m *MockActivityLogAlertsClient) ListBySubscriptionID(arg0 context.Context) (insightso.ActivityLogAlertList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListBySubscriptionID", arg0)
-	ret0, _ := ret[0].(insights.ActivityLogAlertList)
+	ret0, _ := ret[0].(insightso.ActivityLogAlertList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

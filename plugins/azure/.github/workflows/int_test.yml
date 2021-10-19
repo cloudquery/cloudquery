@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]
-        go: [ "1.17" ]
+        go: [ "1.16" ]
         platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
     services:
@@ -46,18 +46,15 @@ jobs:
       - name: Build
         run: go build -v .
 
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-          enable-AzPSSession: true
-
       - name: Integration Test
         run: go test -v -p 20 ./resources/integration_tests
         env:
           INTEGRATION_TESTS: 1
           TF_VAR_SUFFIX: integration
           TF_VAR_PREFIX: cq-testing
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
