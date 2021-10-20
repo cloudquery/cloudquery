@@ -33,8 +33,8 @@ type ExecuteRequest struct {
 }
 
 type ExecutionResult struct {
-	Results []string
-	Error   error
+	Result interface{} `json:"result"`
+	Error  string      `json:"error,omitempty"`
 }
 
 func (e *ExecuteRequest) String() string {

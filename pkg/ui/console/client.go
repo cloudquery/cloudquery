@@ -2,6 +2,7 @@ package console
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
@@ -193,13 +194,33 @@ func (c Client) CallModule(ctx context.Context, args []string, outputPath, modCo
 			return list, nil
 		},
 	}
-	err := c.c.ExecuteModule(ctx, req)
+	out, err := c.c.ExecuteModule(ctx, req)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
 		return err
+	} else if out == nil {
+		ui.ColorizedOutput(ui.ColorSuccess, "Finished module, no results\n\n")
+		return nil
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished module...\n\n")
+
+	if out.Error != "" {
+		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.Error)
+		return nil
+	}
+
+	type stringer interface {
+		String() string
+	}
+
+	if outString, ok := out.Result.(stringer); ok {
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", outString.String())
+	} else {
+		b, _ := json.MarshalIndent(out.Result, "", "  ")
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", string(b))
+	}
+
+	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
 	return nil
 }
 

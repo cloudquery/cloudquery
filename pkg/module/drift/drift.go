@@ -96,7 +96,11 @@ Use "{{.CommandPath}} [command] -- --help" for more information about a command.
 		Run: func(cmd *cobra.Command, args []string) {
 			cb, _ := json.Marshal(d.config)
 			d.logger.Debug("executing with config", "config", string(cb), "request", req.String())
-			ret = d.run(ctx, req)
+			res, err := d.run(ctx, req)
+			ret.Result = res
+			if err != nil {
+				ret.Error = err.Error()
+			}
 		},
 	}
 	runCmd.Flags().StringVar(&d.tfBackendName, "tf-backend-name", "mylocal", "Set Terraform backend name")
@@ -105,42 +109,36 @@ Use "{{.CommandPath}} [command] -- --help" for more information about a command.
 	rootCmd.AddCommand(runCmd)
 
 	if err := rootCmd.Execute(); err != nil {
-		if ret.Error == nil {
-			ret.Error = err
+		if ret.Error == "" {
+			ret.Error = err.Error()
 		}
 	}
 
 	return ret
 }
 
-func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (ret *model.ExecutionResult) {
-	ret = &model.ExecutionResult{}
-
+func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results, error) {
 	provs, err := req.Providers()
 	if err != nil {
-		ret.Error = err
-		return
+		return nil, err
 	}
 
 	var iacProv *cqproto.GetProviderSchemaResponse
 	for _, p := range provs {
 		if p.Name == "terraform" { // TODO add more iac provider names
 			if iacProv != nil {
-				ret.Error = fmt.Errorf("only single IAC provider is supported at a time")
-				return
+				return nil, fmt.Errorf("only single IAC provider is supported at a time")
 			}
 			iacProv = p
 		}
 	}
 	if iacProv == nil {
-		ret.Error = fmt.Errorf("no IAC provider detected, can't continue")
-		return
+		return nil, fmt.Errorf("no IAC provider detected, can't continue")
 	}
 
 	conn, err := req.Conn()
 	if err != nil {
-		ret.Error = fmt.Errorf("no connection: %w", err)
-		return
+		return nil, fmt.Errorf("no connection: %w", err)
 	}
 
 	var resList Results
@@ -154,8 +152,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (ret *mo
 		for _, prov := range provs {
 			ok, diags := d.applyProvider(cfg, prov)
 			if diags.HasErrors() {
-				ret.Error = diags
-				return
+				return nil, diags
 			}
 			if !ok {
 				continue
@@ -199,12 +196,10 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (ret *mo
 				case "terraform":
 					dres, err = d.driftTerraform(ctx, conn, prov.Name, pr, res, iacData)
 				default:
-					ret.Error = fmt.Errorf("no suitable handler found for %q", iacProv.Name)
-					return
+					return nil, fmt.Errorf("no suitable handler found for %q", iacProv.Name)
 				}
 				if err != nil {
-					ret.Error = fmt.Errorf("drift failed for (%s:%s): %w", prov.Name, resName, err)
-					return
+					return nil, fmt.Errorf("drift failed for (%s:%s): %w", prov.Name, resName, err)
 				} else if dres != nil {
 					dres.Provider = prov.Name
 					dres.ResourceType = resName
@@ -216,17 +211,16 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (ret *mo
 		}
 
 		if !found {
-			ret.Error = fmt.Errorf("no suitable provider found for %q", cfg.Name)
-			return
+			return nil, fmt.Errorf("no suitable provider found for %q", cfg.Name)
 		}
 	}
 
-	ret.Results = resList.StringSlice()
-	return ret
+	return resList, nil
 }
 
 func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
+		IAC:       "Terraform",
 		Different: nil,
 		Equal:     nil,
 		Missing:   nil,

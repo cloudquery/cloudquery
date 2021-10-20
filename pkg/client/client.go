@@ -588,7 +588,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	// Store output in file if requested
 	if req.OutputPath != "" {
 		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			return err
 		}
@@ -607,7 +607,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	return nil
 }
 
-func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) error {
+func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*model.ExecutionResult, error) {
 	c.Logger.Info("Executing module", "args", req.Args)
 
 	if c.ModuleManager == nil {
@@ -621,16 +621,16 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) error 
 	}
 	modReq, err := c.ModuleManager.ParseModuleReference(ctx, baseReq, req.Args, req.ModConfigPath)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	c.Logger.Debug("Parsed module run input arguments", "req", modReq.String())
 
 	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	if output.Error != nil {
+	if output.Error != "" {
 		c.Logger.Error("Module execution failed with error", "error", output.Error)
 	} else {
 		c.Logger.Info("Module execution finished", "data", output)
@@ -639,23 +639,25 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) error 
 	// Store output in file if requested
 	if req.OutputPath != "" {
 		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		defer func() {
 			_ = f.Close()
 		}()
 
-		data, err := json.Marshal(output)
+		data, err := json.MarshalIndent(output, "", "  ")
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if _, err := f.Write(data); err != nil {
-			return err
+			return nil, err
 		}
+
+		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
 	}
-	return nil
+	return output, nil
 }
 
 func (c *Client) GenModuleConfig(ctx context.Context, args []string) (*string, error) {
