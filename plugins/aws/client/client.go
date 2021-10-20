@@ -84,6 +84,7 @@ var allRegions = []string{
 const (
 	defaultRegion              = "us-east-1"
 	awsFailedToConfigureErrMsg = "failed to configure provider for account %s. AWS Error: %w"
+	defaultVar                 = "default"
 )
 
 type Services struct {
@@ -236,18 +237,27 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 
 	if len(awsConfig.Accounts) == 0 {
 		awsConfig.Accounts = append(awsConfig.Accounts, Account{
-			ID:      "default",
-			RoleARN: "default",
+			ID:        defaultVar,
+			AccountID: defaultVar,
+			RoleARN:   defaultVar,
 		})
 	}
 
 	for _, account := range awsConfig.Accounts {
 		var err error
 		var awsCfg aws.Config
+
+		// account id can be defined in account block label or in block attr
+		// we take the block att as default and use the block label if the attr is not defined
+		var accountID = account.AccountID
+		if accountID == "" {
+			accountID = account.ID
+		}
+
 		// This is a try to solve https://aws.amazon.com/premiumsupport/knowledge-center/iam-validate-access-credentials/
 		// with this https://github.com/aws/aws-sdk-go-v2/issues/515#issuecomment-607387352
 		switch {
-		case account.ID != "default" && account.RoleARN != "":
+		case accountID != "default" && account.RoleARN != "":
 			// assume role if specified (SDK takes it from default or env var: AWS_PROFILE)
 			awsCfg, err = config.LoadDefaultConfig(
 				ctx,
@@ -255,7 +265,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 			)
 			if err != nil {
-				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
+				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
 			}
 			opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
 			if account.ExternalID != "" {
@@ -265,11 +275,11 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			}
 			provider := stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), account.RoleARN, opts...)
 			awsCfg.Credentials = aws.NewCredentialsCache(provider)
-		case account.ID != "default":
+		case accountID != "default":
 			awsCfg, err = config.LoadDefaultConfig(
 				ctx,
 				config.WithDefaultRegion(defaultRegion),
-				config.WithSharedConfigProfile(account.ID),
+				config.WithSharedConfigProfile(accountID),
 				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 			)
 		default:
@@ -281,19 +291,19 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err != nil {
-			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
+			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
 		}
 
 		if awsConfig.AWSDebug {
 			awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
-			awsCfg.Logger = AwsLogger{logger.With("account", obfuscateAccountId(account.ID))}
+			awsCfg.Logger = AwsLogger{logger.With("account", obfuscateAccountId(accountID))}
 		}
 		svc := sts.NewFromConfig(awsCfg)
 		output, err := svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
 			o.Region = "aws-global"
 		})
 		if err != nil {
-			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, account.ID, err)
+			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
 		}
 		// This is a work-around to skip disabled regions
 		// https://github.com/aws/aws-sdk-go-v2/issues/1068
@@ -303,12 +313,12 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				o.Region = "us-east-1"
 			})
 		if err != nil {
-			return nil, fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.ID, err)
+			return nil, fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", accountID, err)
 		}
 		client.regions = filterDisabledRegions(client.regions, res.Regions)
 
 		if len(client.regions) == 0 {
-			return nil, fmt.Errorf("no enabled regions provided in config for account %s", account.ID)
+			return nil, fmt.Errorf("no enabled regions provided in config for account %s", accountID)
 		}
 
 		if client.AccountID == "" {
