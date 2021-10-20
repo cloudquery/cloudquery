@@ -30,6 +30,7 @@ type DriftImpl struct {
 	debug bool
 
 	tfBackendName, tfMode, tfProvider string
+	forceDeep                         bool
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -106,6 +107,7 @@ Use "{{.CommandPath}} [command] -- --help" for more information about a command.
 	runCmd.Flags().StringVar(&d.tfBackendName, "tf-backend-name", "mylocal", "Set Terraform backend name")
 	runCmd.Flags().StringVar(&d.tfMode, "tf-mode", "managed", "Set Terraform mode")
 	runCmd.Flags().StringVar(&d.tfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
+	runCmd.Flags().BoolVar(&d.forceDeep, "deep", false, "Force deep mode")
 	rootCmd.AddCommand(runCmd)
 
 	if err := rootCmd.Execute(); err != nil {
@@ -283,7 +285,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
 		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
 
-	deepMode := resData.Deep != nil && *resData.Deep
+	deepMode := d.forceDeep || (resData.Deep != nil && *resData.Deep)
 
 	var err error
 
