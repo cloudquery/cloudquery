@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"io"
 	"os"
 	"path/filepath"
 	"sort"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/golang-migrate/migrate/v4"
 

@@ -3,10 +3,11 @@ package console
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"os"
 	"sort"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
