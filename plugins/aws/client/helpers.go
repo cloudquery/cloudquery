@@ -1,9 +1,14 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
 	"regexp"
+	"strings"
+	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
@@ -12,7 +17,91 @@ import (
 //log-group:([a-zA-Z0-9/]+):
 var GroupNameRegex = regexp.MustCompile("arn:aws:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
+type SupportedServicesData struct {
+	Prices []struct {
+		Attributes struct {
+			Region  string `json:"aws:region"`
+			Service string `json:"aws:serviceName"`
+		} `json:"attributes"`
+		Id string `json:"id"`
+	} `json:"prices"`
+}
+
+// supportedServices map of the supported service-regions
+var supportedServices map[string]map[string]struct{}
+var getSupportedServices sync.Once
+
+// apiErrorServiceNames stores api subdomains and service names for error decoding
+var apiErrorServiceNames = map[string]string{
+	"mq":               "Amazon MQ",
+	"cognito-identity": "Amazon Cognito",
+	"cognito-idp":      "Amazon Cognito",
+	"ec2":              "Amazon Elastic Compute Cloud (EC2)",
+}
+
+const supportedServicesLink = "https://api.regional-table.region-services.aws.a2z.com/index.json"
+
+// downloadSupportedResourcesForRegions gets the data about AWS services and regions they are available in
+func downloadSupportedResourcesForRegions() (map[string]map[string]struct{}, error) {
+	req, err := http.NewRequest(http.MethodGet, supportedServicesLink, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to get aws supported resources for region, status code: %d", resp.StatusCode)
+	}
+
+	var data SupportedServicesData
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		return nil, err
+	}
+
+	m := make(map[string]map[string]struct{})
+	for _, p := range data.Prices {
+		if _, ok := m[p.Attributes.Service]; !ok {
+			m[p.Attributes.Service] = make(map[string]struct{})
+		}
+		m[p.Attributes.Service][p.Attributes.Region] = struct{}{}
+	}
+
+	return m, nil
+}
+
+// ignoreUnsupportedResourceForRegionError returns true request was sent to a service that does not exist in specified region
+func ignoreUnsupportedResourceForRegionError(err error) bool {
+	getSupportedServices.Do(func() {
+		supportedServices, _ = downloadSupportedResourcesForRegions()
+	})
+	var dnsErr *net.DNSError
+	if supportedServices != nil && errors.As(err, &dnsErr) && dnsErr.IsNotFound {
+		parts := strings.Split(dnsErr.Name, ".")
+		if len(parts) < 2 {
+			// usual aws domain has more than 2 parts
+			return false
+		}
+		apiService, ok := apiErrorServiceNames[parts[0]]
+		if !ok {
+			return false
+		}
+		region := parts[1]
+
+		_, ok = supportedServices[apiService][region]
+		// if service-region combination is in the map than service is supported and error should not be ignored
+		return ok
+	}
+	return true
+}
+
 func IgnoreAccessDeniedServiceDisabled(err error) bool {
+	if ignoreUnsupportedResourceForRegionError(err) {
+		return true
+	}
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
