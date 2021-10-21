@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"io"
 	"os"
 	"path/filepath"
@@ -57,18 +58,28 @@ type FetchUpdate struct {
 	// Error if any returned by the provider
 	Error string
 	// PartialFetchResults contains the partial fetch results for this update
-	PartialFetchResults []*cqproto.PartialFetchFailedResource
+	PartialFetchResults []*cqproto.FailedResourceFetch
 }
 
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
-	ProviderName       string
-	PartialFetchErrors []*cqproto.PartialFetchFailedResource
-	FetchErrors        []error
+	ProviderName          string
+	PartialFetchErrors    []*cqproto.FailedResourceFetch
+	FetchErrors           []error
+	TotalResourcesFetched uint64
+	FetchResources        map[string]cqproto.ResourceFetchSummary
 }
 
-func (s *ProviderFetchSummary) HasErrors() bool {
-	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
+func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
+	var allDiags diag.Diagnostics
+	for _, s := range p.FetchResources {
+		allDiags = append(allDiags, s.Diagnostics...)
+	}
+	return allDiags
+}
+
+func (p ProviderFetchSummary) HasErrors() bool {
+	if len(p.FetchErrors) > 0 || len(p.PartialFetchErrors) > 0 {
 		return true
 	}
 	return false
@@ -280,7 +291,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 		}
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			var partialFetchResults []*cqproto.PartialFetchFailedResource
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
@@ -297,6 +307,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider configured successfully")
+
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
 			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
@@ -304,18 +315,25 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider started fetching resources")
-			var fetchErrors = make([]error, 0)
+			var (
+				fetchErrors         = make([]error, 0)
+				partialFetchResults []*cqproto.FailedResourceFetch
+				fetchedResources           = make(map[string]cqproto.ResourceFetchSummary, len(providerConfig.Resources))
+				totalResources      uint64 = 0
+			)
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
 					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
 					for _, fetchError := range partialFetchResults {
-						pLog.Error("received partial fetch error", parsePartialFetchKV(fetchError)...)
+						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
 					}
 					fetchSummaries <- ProviderFetchSummary{
-						ProviderName:       providerConfig.Name,
-						PartialFetchErrors: partialFetchResults,
-						FetchErrors:        fetchErrors,
+						ProviderName:          providerConfig.Name,
+						TotalResourcesFetched: totalResources,
+						PartialFetchErrors:    partialFetchResults,
+						FetchErrors:           fetchErrors,
+						FetchResources:        fetchedResources,
 					}
 					return nil
 				}
@@ -331,14 +349,20 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					Error:               resp.Error,
 					PartialFetchResults: partialFetchResults,
 				}
+
 				if len(resp.PartialFetchFailedResources) != 0 {
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
+
+				totalResources = resp.ResourceCount
+				fetchedResources[resp.ResourceName] = resp.Summary
+
 				if resp.Error != "" {
 					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
 					pLog.Error("received provider fetch update error", "error", resp.Error)
 				}
-				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
+				pLog.Debug("received fetch update",
+					"resource", resp.ResourceName, "finishedCount", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
@@ -600,7 +624,7 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
+func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
 	kv := []interface{}{"table", r.TableName, "err", r.Error}
 	if r.RootTableName != "" {
 		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)

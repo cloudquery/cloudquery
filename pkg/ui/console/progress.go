@@ -93,7 +93,7 @@ func (u *Progress) Add(name, displayName, message string, total int64) {
 				return u.options.MessageHook(uiBar, statistics)
 			}, decor.WC{W: len(name) + 1, C: decor.DidentRight}),
 			// replace ETA decorator with nothing, OnComplete event
-			decor.Elapsed(decor.ET_STYLE_GO, decor.WC{W: 4}),
+			decor.Elapsed(decor.ET_STYLE_GO, decor.WC{W: 6}),
 		),
 		mpb.AppendDecorators(u.options.AppendDecorators...),
 	)
