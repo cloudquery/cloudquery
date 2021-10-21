@@ -4,7 +4,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sort"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
@@ -101,15 +104,15 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
-
-	if failOnError {
-		for _, summary := range response.ProviderFetchSummary {
-			if summary.HasErrors() {
-				return fmt.Errorf("provider fetch has one or more errors")
-			}
+	for _, summary := range response.ProviderFetchSummary {
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: Total Resources fetched: %d ⚠️ Warnings: %d ❌ Errors: %d",
+			summary.ProviderName, summary.TotalResourcesFetched,
+			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
+		if failOnError && summary.HasErrors() {
+			err = fmt.Errorf("provider fetch has one or more errors")
 		}
 	}
-	return nil
+	return err
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
@@ -273,7 +276,7 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			return
 		}
 		if len(update.PartialFetchResults) > 0 {
-			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("errors: %d", len(update.PartialFetchResults)), 0)
+			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("diagnostics: %d", len(update.PartialFetchResults)), 0)
 		}
 		bar := fetchProgress.GetBar(update.Provider)
 		if bar == nil {
@@ -302,6 +305,13 @@ func printFetchResponse(summary *client.FetchResponse) {
 		return
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
+		if len(pfs.Diagnostics()) > 0 {
+			printDiagnostics(pfs.ProviderName, pfs.Diagnostics())
+			continue
+		}
+		if len(pfs.PartialFetchErrors) == 0 {
+			continue
+		}
 		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
 		for _, r := range pfs.PartialFetchErrors {
 			if r.RootTableName != "" {
@@ -320,6 +330,39 @@ func printFetchResponse(summary *client.FetchResponse) {
 		}
 		ui.ColorizedOutput(ui.ColorWarning, "\n")
 	}
+}
+
+func printDiagnostics(providerName string, diags diag.Diagnostics) {
+	// sort diagnostics by severity/type
+	sort.Sort(diags)
+	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
+	for _, d := range diags {
+		desc := d.Description()
+		switch d.Severity() {
+		case diag.IGNORE:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorProgress.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorDebug.Sprintf("Ignore"),
+				ui.ColorDebug.Sprintf("%s", desc.Summary))
+		case diag.WARNING:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorInfo.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorWarning.Sprintf("Warning"),
+				ui.ColorWarning.Sprintf("%s", desc.Summary))
+		case diag.ERROR:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorProgress.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorErrorBold.Sprintf("Error"),
+				ui.ColorErrorBold.Sprintf("%s", desc.Summary))
+		}
+		if desc.Detail != "" {
+			ui.ColorizedOutput(ui.ColorInfo, "\tRemediation: %s\n", desc.Detail)
+		}
+	}
+	ui.ColorizedOutput(ui.ColorInfo, "\n")
 }
 
 func loadConfig(path string) (*config.Config, error) {
