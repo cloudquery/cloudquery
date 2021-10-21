@@ -34,5 +34,9 @@ ALTER TABLE IF EXISTS "aws_kms_keys"
     ADD COLUMN "tags" json;
 ALTER TABLE IF EXISTS "aws_kms_keys" RENAME COLUMN "key_id" TO "id";
 
+--aws_elbv2_load_balancer_availability_zone_addresses
+ALTER TABLE IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses" DROP CONSTRAINT IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses_pk";
+ALTER TABLE IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses" ADD CONSTRAINT "aws_elbv2_load_balancer_availability_zone_addresses_pk" UNIQUE ("load_balancer_availability_zone_cq_id", "cq_id");
+
 
 
