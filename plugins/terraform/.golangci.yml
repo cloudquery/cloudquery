@@ -28,6 +28,7 @@ linters:
     - gosimple
     - govet
     - ineffassign
+    - interfacer
     - misspell
     - nakedret
     - prealloc
@@ -43,7 +44,7 @@ issues:
       linters:
         - dupl
         - gocritic
-     # Exclude some linters from running on resource files.
+    # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
       linters:
         - dupl
