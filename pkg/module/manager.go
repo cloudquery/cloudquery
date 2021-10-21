@@ -3,7 +3,6 @@ package module
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/modules"
@@ -32,8 +31,8 @@ type Manager interface {
 	// RegisterModule is used to register a module into the manager.
 	RegisterModule(mod model.Module)
 
-	// ParseModuleReference parses and validates the given arguments into an execution request.
-	ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error)
+	// ParseModuleReference parses and validates the given module name and config into an execution request.
+	ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, modName string, modConfigPath string) (*model.ExecuteRequest, error)
 
 	// ExecuteModule executes the given module.
 	ExecuteModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
@@ -56,16 +55,11 @@ func (m *ManagerImpl) RegisterModule(mod model.Module) {
 	m.modules[mod.ID()] = mod
 }
 
-// ParseModuleReference parses and validates the given arguments into an execution request.
-func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, args []string, modConfigPath string) (*model.ExecuteRequest, error) {
-	// Make sure the mandatory args are given
-	if len(args) < 1 {
-		return nil, fmt.Errorf("invalid module name. Module name is required but got %#v", args)
-	}
-
-	mod, ok := m.modules[args[0]]
+// ParseModuleReference parses and validates the given module name and config into an execution request.
+func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, modName string, modConfigPath string) (*model.ExecuteRequest, error) {
+	mod, ok := m.modules[modName]
 	if !ok {
-		return nil, fmt.Errorf("module not found %q", args[0])
+		return nil, fmt.Errorf("module not found %q", modName)
 	}
 
 	rawConfig, err := m.readDecodeConfig(mod.ID(), modConfigPath)
@@ -78,34 +72,20 @@ func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.Ex
 	}
 
 	baseReq.Module = mod
-	baseReq.Args = args[1:]
 
 	return &baseReq, nil
 }
 
 // ExecuteModule executes the given module.
 func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
-	var (
-		oneDb   = &sync.Once{}
-		theConn *pgxpool.Conn
-	)
-
-	execReq.Conn = func() (*pgxpool.Conn, error) {
-		var err error
-		oneDb.Do(func() {
-			// Acquire connection from the connection pool
-			theConn, err = m.pool.Acquire(ctx)
-		})
-		if err != nil {
-			return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
-		}
-		return theConn, nil
+	// Acquire connection from the connection pool
+	theConn, err := m.pool.Acquire(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
 	}
-	defer func() {
-		if theConn != nil {
-			theConn.Release()
-		}
-	}()
+	defer theConn.Release()
+
+	execReq.Conn = theConn
 
 	res := execReq.Module.Execute(ctx, execReq)
 	return res, nil

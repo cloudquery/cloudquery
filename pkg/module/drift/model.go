@@ -5,6 +5,13 @@ import (
 	"strings"
 )
 
+type RunParams struct {
+	Debug bool
+
+	TfBackendName, TfMode, TfProvider string
+	ForceDeep                         bool
+}
+
 type Resource struct {
 	ID string `json:"id"`
 }

@@ -2,7 +2,6 @@ package drift
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
@@ -19,18 +18,13 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
-	"github.com/spf13/cobra"
 )
 
 type DriftImpl struct {
 	logger hclog.Logger
 	config *BaseConfig
 
-	// flags
-	debug bool
-
-	tfBackendName, tfMode, tfProvider string
-	forceDeep                         bool
+	params RunParams
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -56,77 +50,21 @@ func (d *DriftImpl) Configure(ctx context.Context, config hcl.Body) error {
 }
 
 func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) *model.ExecutionResult {
+	d.params = req.Params.(RunParams)
+
 	ret := &model.ExecutionResult{}
-
-	rootCmd := &cobra.Command{
-		Use:   "drift",
-		Short: "Drift Module",
-		Long:  "Drift Module",
-		Args:  cobra.MinimumNArgs(1),
-	}
-	rootCmd.SetUsageTemplate(`Usage:
-  cloudquery [CQ-PARAMS] module drift [COMMAND] -- [FLAGS]{{if gt (len .Aliases) 0}}
-
-Aliases:
-  {{.NameAndAliases}}{{end}}{{if .HasExample}}
-
-Examples:
-{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
-
-Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
-
-Flags:
-{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
-
-Global Flags:
-{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
-
-Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
-  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
-
-Use "{{.CommandPath}} [command] -- --help" for more information about a command.{{end}}
-`)
-	rootCmd.PersistentFlags().BoolVar(&d.debug, "debug", false, "Show debug output")
-	rootCmd.SetArgs(req.Args)
-
-	runCmd := &cobra.Command{
-		Use:   "run",
-		Short: "Detect drifts",
-		Long:  "Detect drifts between cloud provider and IaC",
-		Run: func(cmd *cobra.Command, args []string) {
-			cb, _ := json.Marshal(d.config)
-			d.logger.Debug("executing with config", "config", string(cb), "request", req.String())
-			res, err := d.run(ctx, req)
-			ret.Result = res
-			if err != nil {
-				ret.Error = err.Error()
-			}
-		},
-	}
-	runCmd.Flags().StringVar(&d.tfBackendName, "tf-backend-name", "mylocal", "Set Terraform backend name")
-	runCmd.Flags().StringVar(&d.tfMode, "tf-mode", "managed", "Set Terraform mode")
-	runCmd.Flags().StringVar(&d.tfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
-	runCmd.Flags().BoolVar(&d.forceDeep, "deep", false, "Force deep mode")
-	rootCmd.AddCommand(runCmd)
-
-	if err := rootCmd.Execute(); err != nil {
-		if ret.Error == "" {
-			ret.Error = err.Error()
-		}
+	var err error
+	ret.Result, err = d.run(ctx, req)
+	if err != nil {
+		ret.Error = err.Error()
 	}
 
 	return ret
 }
 
 func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results, error) {
-	provs, err := req.Providers()
-	if err != nil {
-		return nil, err
-	}
-
 	var iacProv *cqproto.GetProviderSchemaResponse
-	for _, p := range provs {
+	for _, p := range req.Providers {
 		if p.Name == "terraform" { // TODO add more iac provider names
 			if iacProv != nil {
 				return nil, fmt.Errorf("only single IAC provider is supported at a time")
@@ -138,11 +76,6 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 		return nil, fmt.Errorf("no IAC provider detected, can't continue")
 	}
 
-	conn, err := req.Conn()
-	if err != nil {
-		return nil, fmt.Errorf("no connection: %w", err)
-	}
-
 	var resList Results
 
 	for _, cfg := range d.config.Providers {
@@ -151,7 +84,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 		}
 
 		var found bool
-		for _, prov := range provs {
+		for _, prov := range req.Providers {
 			ok, diags := d.applyProvider(cfg, prov)
 			if diags.HasErrors() {
 				return nil, diags
@@ -193,10 +126,13 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
 
 				// Drift per resource
-				var dres *Result
+				var (
+					dres *Result
+					err  error
+				)
 				switch iacProv.Name {
 				case "terraform":
-					dres, err = d.driftTerraform(ctx, conn, prov.Name, pr, res, iacData)
+					dres, err = d.driftTerraform(ctx, req.Conn, prov.Name, pr, res, iacData)
 				default:
 					return nil, fmt.Errorf("no suitable handler found for %q", iacProv.Name)
 				}
@@ -235,7 +171,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	// Get from provider
 	// SELECT account_id, region, name, arn FROM aws_s3_buckets;
 
-	tfProvider := d.tfProvider
+	tfProvider := d.params.TfProvider
 	if tfProvider == "" {
 		tfProvider = cloudName
 	}
@@ -279,13 +215,13 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Select("i.instance_id", tfAttrQuery.As("attlist")).
 		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
 		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
-		Where(goqu.Ex{"d.backend_name": goqu.V(d.tfBackendName)}).
+		Where(goqu.Ex{"d.backend_name": goqu.V(d.params.TfBackendName)}).
 		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
-		Where(goqu.Ex{"r.mode": goqu.V(d.tfMode)}).
+		Where(goqu.Ex{"r.mode": goqu.V(d.params.TfMode)}).
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
 		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
 
-	deepMode := d.forceDeep || (resData.Deep != nil && *resData.Deep)
+	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
 	var err error
 
@@ -341,7 +277,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 			return nil, err
 		}
 
-		if d.debug && len(res.Different) > 0 {
+		if d.params.Debug && len(res.Different) > 0 {
 			// get tf side
 			sel := goqu.Dialect("postgres").From("tf").With("tf", tfSelect).Select(goqu.I("tf.instance_id").As("id"), goqu.I("tf.attlist").As("attlist")).Where(
 				goqu.Ex{

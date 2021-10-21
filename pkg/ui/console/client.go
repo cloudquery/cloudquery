@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/fatih/color"
+	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -164,35 +165,18 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 	return nil
 }
 
-func (c Client) CallModule(ctx context.Context, args []string, outputPath, modConfigPath string) error {
+func (c Client) CallModule(ctx context.Context, modName, outputPath, modConfigPath string, modParams interface{}) error {
+	provs, err := c.getModuleProviders(ctx)
+	if err != nil {
+		return err
+	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 	req := client.ModuleRunRequest{
-		Args:          args,
-		OutputPath:    outputPath,
+		Name:          modName,
+		Params:        modParams,
 		ModConfigPath: modConfigPath,
-		Providers: func() ([]*cqproto.GetProviderSchemaResponse, error) {
-			if err := c.DownloadProviders(ctx); err != nil {
-				return nil, err
-			}
-			var list []*cqproto.GetProviderSchemaResponse
-			for _, p := range c.cfg.Providers {
-				s, err := c.c.GetProviderSchema(ctx, p.Name)
-				if err != nil {
-					return nil, err
-				}
-				if s.Version == "" { // FIXME why?
-					deets, err := c.c.Manager.GetPluginDetails(p.Name)
-					if err != nil {
-						c.c.Logger.Warn("GetPluginDetails failed", "error", err.Error())
-					} else {
-						s.Version = deets.Version
-					}
-				}
-				list = append(list, s)
-			}
-
-			return list, nil
-		},
+		Providers:     provs,
 	}
 	out, err := c.c.ExecuteModule(ctx, req)
 	if err != nil {
@@ -207,6 +191,28 @@ func (c Client) CallModule(ctx context.Context, args []string, outputPath, modCo
 	if out.Error != "" {
 		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.Error)
 		return nil
+	}
+
+	if outputPath != "" {
+		// Store output in file if requested
+		fs := afero.NewOsFs()
+		f, err := fs.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		data, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			return err
+		}
+		if _, err := f.Write(data); err != nil {
+			return err
+		}
+
+		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", outputPath)
 	}
 
 	type stringer interface {
@@ -329,6 +335,30 @@ func (c Client) getRequiredProviders(providerNames []string) ([]*config.Required
 		providers[i] = pCfg
 	}
 	return providers, nil
+}
+
+func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderSchemaResponse, error) {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return nil, err
+	}
+	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
+	for i, p := range c.cfg.Providers {
+		s, err := c.c.GetProviderSchema(ctx, p.Name)
+		if err != nil {
+			return nil, err
+		}
+		if s.Version == "" { // FIXME why?
+			deets, err := c.c.Manager.GetPluginDetails(p.Name)
+			if err != nil {
+				c.c.Logger.Warn("GetPluginDetails failed", "error", err.Error())
+			} else {
+				s.Version = deets.Version
+			}
+		}
+		list[i] = s
+	}
+
+	return list, nil
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {

@@ -20,16 +20,15 @@ type Module interface {
 }
 
 type ExecuteRequest struct {
-	// Module is the module that should be executed.
+	// Module is the module that should be executed
 	Module Module
-	// Additional args for the module
-	Args []string
+	// Params are the invocation parameters specific to the module
+	Params interface{}
 
-	// Providers is the callback to use to access to a list of providers to process
-	Providers func() ([]*cqproto.GetProviderSchemaResponse, error)
-
-	// Conn() is the callback to use to access a pg conn
-	Conn func() (*pgxpool.Conn, error)
+	// Providers is the list of providers to process
+	Providers []*cqproto.GetProviderSchemaResponse
+	// Conn is the db connection to use
+	Conn *pgxpool.Conn
 }
 
 type ExecutionResult struct {
@@ -39,8 +38,8 @@ type ExecutionResult struct {
 
 func (e *ExecuteRequest) String() string {
 	if e.Module == nil {
-		return fmt.Sprintf("[execute module <nil> with args %+v]", e.Args)
+		return fmt.Sprintf("[execute module <nil> with params %+v]", e.Params)
 	}
 
-	return fmt.Sprintf("[execute module %s with args %+v]", e.Module.ID(), e.Args)
+	return fmt.Sprintf("[execute module %s with params %+v]", e.Module.ID(), e.Params)
 }

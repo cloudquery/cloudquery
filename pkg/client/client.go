@@ -115,17 +115,16 @@ type PolicyRunRequest struct {
 
 // ModuleRunRequest is the request used to run a module.
 type ModuleRunRequest struct {
-	// Args are the given arguments from the module run command.
-	Args []string
-
-	// OutputPath is the output path for module execution output.
-	OutputPath string
+	// Name of the module
+	Name string
+	// Params are the invocation parameters specific to the module
+	Params interface{}
 
 	// ModConfigPath is the path to the module config file to use.
 	ModConfigPath string
 
-	// Providers is the callback to use to access to a list of providers to process
-	Providers func() ([]*cqproto.GetProviderSchemaResponse, error)
+	// Providers is the list of providers to process
+	Providers []*cqproto.GetProviderSchemaResponse
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -608,7 +607,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*model.ExecutionResult, error) {
-	c.Logger.Info("Executing module", "args", req.Args)
+	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
 
 	if c.ModuleManager == nil {
 		// lazy init modules here
@@ -618,8 +617,9 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*mode
 
 	baseReq := model.ExecuteRequest{
 		Providers: req.Providers,
+		Params:    req.Params,
 	}
-	modReq, err := c.ModuleManager.ParseModuleReference(ctx, baseReq, req.Args, req.ModConfigPath)
+	modReq, err := c.ModuleManager.ParseModuleReference(ctx, baseReq, req.Name, req.ModConfigPath)
 	if err != nil {
 		return nil, err
 	}
@@ -636,27 +636,6 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*mode
 		c.Logger.Info("Module execution finished", "data", output)
 	}
 
-	// Store output in file if requested
-	if req.OutputPath != "" {
-		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			return nil, err
-		}
-		defer func() {
-			_ = f.Close()
-		}()
-
-		data, err := json.MarshalIndent(output, "", "  ")
-		if err != nil {
-			return nil, err
-		}
-		if _, err := f.Write(data); err != nil {
-			return nil, err
-		}
-
-		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
-	}
 	return output, nil
 }
 

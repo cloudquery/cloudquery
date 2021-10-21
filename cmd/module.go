@@ -19,16 +19,6 @@ var (
 		Short: moduleHelpMsg,
 		Long:  moduleHelpMsg,
 		Args:  cobra.MinimumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
-			return c.CallModule(ctx, args, moduleOutputPath, moduleConfigPath)
-		},
 	}
 	moduleOutputPath, moduleConfigPath string
 
@@ -53,7 +43,7 @@ var (
 
 func init() {
 	moduleCmd.SetUsageTemplate(usageTemplateWithFlags)
-	flags := moduleCmd.Flags()
+	flags := moduleCmd.PersistentFlags()
 	flags.StringVar(&moduleOutputPath, "output", "", "Generates a new file at the given path with the output")
 	flags.StringVar(&moduleConfigPath, "modconfig", "", "Use the given module config file")
 	rootCmd.AddCommand(moduleCmd)
