@@ -31,7 +31,7 @@ func awsTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *
 		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 			c := client.NewAwsClient(logging.New(&hclog.LoggerOptions{
 				Level: hclog.Warn,
-			}), []string{"us-east-1"})
+			}), cfg.Accounts, []string{"us-east-1"})
 			c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", builder(t, ctrl))
 			return &c, nil
 		},

@@ -15,9 +15,10 @@ var (
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:       "aws",
-		Configure:  client.Configure,
-		Migrations: awsMigrations,
+		Name:            "aws",
+		Configure:       client.Configure,
+		ErrorClassifier: client.ErrorClassifier,
+		Migrations:      awsMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"accessanalyzer.analyzers":              AccessAnalyzerAnalyzer(),
 			"apigateway.api_keys":                   ApigatewayAPIKeys(),

@@ -107,7 +107,7 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 		switch ae.ErrorCode() {
 		case "AWSOrganizationsNotInUseException":
 			return true
-		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
+		case "AuthorizationError", "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
 			return true
 		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return true
@@ -156,4 +156,11 @@ func GenerateResourceARN(service, resourceType, resourceID, region, accountID st
 		AccountID: accountID,
 		Resource:  resource,
 	}.String()
+}
+
+func accountObfusactor(aa []Account, msg string) string {
+	for _, a := range aa {
+		msg = strings.ReplaceAll(msg, a.ID, obfuscateAccountId(a.ID))
+	}
+	return msg
 }
