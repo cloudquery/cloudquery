@@ -17,7 +17,7 @@ module "drift" {
             identifiers       = resource.Value.Options.PrimaryKeys
             attributes        = resource.Value.ColumnNames
             ignore_attributes = ["cq_id", "meta", "creation_date"]
-            deep = true
+            deep = false
         }
 
         # "source" directive evaluates the given config or statement
@@ -29,7 +29,8 @@ module "drift" {
         version = ">=0.5.10"
 
         resource "*" {
-            ignore_identifiers = ["account_id"]
+            ignore_identifiers = [ "account_id", "region" ]
+            ignore_attributes = [ "unknown_fields" ]
 
             iac {
                 terraform {
@@ -42,6 +43,8 @@ module "drift" {
         }
 
         resource "accessanalyzer.analyzers" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_accessanalyzer_analyzer"
@@ -110,6 +113,8 @@ module "drift" {
         }
 
         resource "autoscaling.launch_configurations" {
+            identifiers = [ "launch_configuration_name" ]
+
             iac {
                 terraform {
                     type = "aws_launch_configuration"
@@ -134,6 +139,8 @@ module "drift" {
         }
 
         resource "cloudtrail.trails" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_cloudtrail"
@@ -150,6 +157,8 @@ module "drift" {
         }
 
         resource "cloudwatchlogs.filters" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_cloudwatch_log_metric_filter"
@@ -174,6 +183,8 @@ module "drift" {
         }
 
         resource "config.configuration_recorders" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_config_configuration_recorder"
@@ -182,6 +193,8 @@ module "drift" {
         }
 
         resource "config.conformance_packs" {
+            identifiers = [ "conformance_pack_name" ]
+
             iac {
                 terraform {
                     type = "aws_config_conformance_pack"
@@ -340,6 +353,8 @@ module "drift" {
         }
 
         resource "ecr.repositories" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_ecr_repository"
@@ -348,6 +363,8 @@ module "drift" {
         }
 
         resource "ecs.clusters" {
+            identifiers = [ "arn" ]
+
             iac {
                 terraform {
                     type = "aws_ecs_cluster"
@@ -380,6 +397,8 @@ module "drift" {
         }
 
         resource "elasticsearch.domains" {
+            identifiers = [ "arn" ]
+
             iac {
                 terraform {
                     type = "aws_elasticsearch_domain"
@@ -424,6 +443,7 @@ module "drift" {
         # Unmatched: iam.accounts
 
         resource "iam.groups" {
+            identifiers = [ "name" ]
             iac {
                 terraform {
                     type = "aws_iam_group"
@@ -442,6 +462,7 @@ module "drift" {
         # Unmatched: iam.password_policies
 
         resource "iam.policies" {
+            # TODO
             iac {
                 terraform {
                     type = "aws_iam_policy"
@@ -450,6 +471,8 @@ module "drift" {
         }
 
         resource "iam.roles" {
+            # TODO
+            identifiers = [ "name" ]
             iac {
                 terraform {
                     type = "aws_iam_role"
@@ -488,6 +511,8 @@ module "drift" {
         # Unmatched: iam.virtual_mfa_devices
 
         resource "kms.keys" {
+            # TODO
+            identifiers = [ "key_id" ]
             iac {
                 terraform {
                     type = "aws_kms_key"
@@ -496,6 +521,7 @@ module "drift" {
         }
 
         resource "lambda.functions" {
+            identifiers = [ "name" ]
             iac {
                 terraform {
                     type = "aws_lambda_function"
@@ -518,6 +544,9 @@ module "drift" {
         # Unmatched: rds.certificates
 
         resource "rds.clusters" {
+            # TODO
+            identifiers = [ "id" ]
+
             iac {
                 terraform {
                     type = "aws_rds_cluster"
@@ -528,6 +557,7 @@ module "drift" {
         # Unmatched: rds.db_subnet_groups
 
         resource "rds.instances" {
+            # TODO
             iac {
                 terraform {
                     type = "aws_rds_cluster_instance"
@@ -598,6 +628,8 @@ module "drift" {
         }
 
         resource "sqs.queues" {
+            identifiers = [ "url" ]
+            ignore_attributes = [ "policy", "redrive_policy" ] # string type in TF, json type in CQ
             iac {
                 terraform {
                     type = "aws_sqs_queue"
@@ -606,6 +638,7 @@ module "drift" {
         }
 
         resource "waf.rule_groups" {
+            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_waf_rule_group"
@@ -614,6 +647,7 @@ module "drift" {
         }
 
         resource "waf.rules" {
+            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_waf_rule"

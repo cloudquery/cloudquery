@@ -10,6 +10,7 @@ type RunParams struct {
 
 	TfBackendName, TfMode, TfProvider string
 	ForceDeep                         bool
+	ListManaged                       bool
 }
 
 type Resource struct {
@@ -48,6 +49,9 @@ type Result struct {
 	// Both modes
 	Missing ResourceList `json:"missing"` // Missing in cloud provider, defined in iac
 	Extra   ResourceList `json:"extra"`   // Exists in cloud provider, not defined in iac
+
+	// Options
+	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
 }
 
 func (r *Result) String() string {
@@ -106,10 +110,13 @@ func (rs Results) String() string {
 		})
 	}
 
+	var listManagedOption bool
 	for _, r := range rs {
 		if r == nil {
 			continue
 		}
+		listManagedOption = r.ListManaged
+
 		transform(r, r.Different, &combo.Different)
 		transform(r, r.Extra, &combo.Extra)
 		transform(r, r.Equal, &combo.Equal)
@@ -124,28 +131,34 @@ func (rs Results) String() string {
 	)
 
 	for _, data := range []struct {
-		title string
-		list  []combined
+		title       string
+		list        []combined
+		hideListing bool
 	}{
 		{
 			"not managed by $iac",
 			combo.Extra,
+			false,
 		},
 		{
 			"found in $iac state but missing on the cloud provider",
 			combo.Missing,
+			false,
 		},
 		{
 			"managed by $iac but drifted",
 			combo.Different,
+			false,
 		},
 		{
 			"managed by $iac (equal IDs)",
 			combo.Equal,
+			!listManagedOption,
 		},
 		{
 			"managed by $iac (equal IDs & attributes)",
 			combo.DeepEqual,
+			!listManagedOption,
 		},
 	} {
 		l := len(data.list)
@@ -157,11 +170,19 @@ func (rs Results) String() string {
 		resTotal := 0
 		for _, res := range data.list {
 			resTotal += len(res.ResourceIDs)
+			if data.hideListing {
+				continue
+			}
+
 			lines = append(lines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
 			for _, id := range res.ResourceIDs {
 				lines = append(lines, fmt.Sprintf("    - %s", id))
 			}
 		}
+		if data.hideListing {
+			lines[len(lines)-1] += fmt.Sprintf(" (%d)", resTotal) // append count to previous line
+		}
+
 		total += resTotal
 		summary = append(summary, fmt.Sprintf(" - %d %s", resTotal, ttl))
 	}

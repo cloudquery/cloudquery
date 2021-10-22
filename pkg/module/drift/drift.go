@@ -158,11 +158,12 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 
 func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
-		IAC:       "Terraform",
-		Different: nil,
-		Equal:     nil,
-		Missing:   nil,
-		Extra:     nil,
+		IAC:         "Terraform",
+		Different:   nil,
+		Equal:       nil,
+		Missing:     nil,
+		Extra:       nil,
+		ListManaged: d.params.ListManaged,
 	}
 
 	// Get from IAC
