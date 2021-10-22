@@ -60,6 +60,12 @@ func TFData() *schema.Table {
 				Resolver:    resolveTerraformResources,
 				Columns: []schema.Column{
 					{
+						Name:        "tf_data_cq_id",
+						Description: "Unique CloudQuery ID of tf_data table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
 						Name:        "running_id",
 						Description: "Unique fetch operation id",
 						Type:        schema.TypeUUID,
@@ -104,6 +110,12 @@ func TFData() *schema.Table {
 						Description: "Terraform resource instances",
 						Resolver:    resolveTerraformResourceInstances,
 						Columns: []schema.Column{
+							{
+								Name:        "tf_resource_cq_id",
+								Description: "Unique CloudQuery ID of tf_resource_instance table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
 							{
 								Name:        "resource_id",
 								Description: "Parent resource id",
