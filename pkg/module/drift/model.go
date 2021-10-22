@@ -172,8 +172,15 @@ func (rs Results) String() string {
 
 	lines = append(lines, fmt.Sprintf("Found %d resource(s)", total))
 
-	covered := float64(len(combo.Equal) + len(combo.DeepEqual) + len(combo.Different)) // one of Equal and DeepEqual is supposed to be 0 depending on deep flag
-	lines = append(lines, fmt.Sprintf(" - %.0f%% coverage", covered/float64(total)*100))
+	var covered int
+	// one of Equal and DeepEqual is supposed to be 0 depending on deep flag
+	for _, l := range [][]combined{combo.Equal, combo.DeepEqual, combo.Different} {
+		for _, z := range l {
+			covered += len(z.ResourceIDs)
+		}
+	}
+
+	lines = append(lines, fmt.Sprintf(" - %.0f%% coverage", float64(covered)/float64(total)*100))
 	lines = append(lines, summary...)
 
 	return strings.Join(lines, "\n")
