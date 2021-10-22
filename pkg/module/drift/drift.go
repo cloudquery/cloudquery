@@ -123,7 +123,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 
 				res.finalInterpret()
 
-				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_name", iacData.Name, "iac_type", iacData.Type)
+				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", iacData.Type)
 
 				// Drift per resource
 				var (
@@ -218,8 +218,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Where(goqu.Ex{"d.backend_name": goqu.V(d.params.TfBackendName)}).
 		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
 		Where(goqu.Ex{"r.mode": goqu.V(d.params.TfMode)}).
-		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)}).
-		Where(goqu.Ex{"r.name": goqu.V(iacData.Name)})
+		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)})
 
 	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
 

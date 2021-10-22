@@ -48,7 +48,6 @@ module "drift" {
             iac {
                 terraform {
                     type = "aws_instance"
-                    name = "aws_ec2_instances_ec2_instance"
                 }
             }
         }
@@ -60,7 +59,6 @@ module "drift" {
             iac {
                 terraform {
                     type = "aws_s3_bucket"
-                    name = "s3_bucket"
 
                     attribute_map = [
                         "tags=tags_all"
@@ -77,7 +75,6 @@ module "drift" {
             iac {
                 terraform {
                     type = "aws_iam_user"
-                    name = "iam_user"
                 }
             }
         }
