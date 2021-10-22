@@ -152,16 +152,18 @@ func (rs Results) String() string {
 		if l == 0 {
 			continue
 		}
-		total += l
 		ttl := strings.ReplaceAll(data.title, "$iac", data.list[0].IAC)
-		summary = append(summary, fmt.Sprintf(" - %d %s", l, ttl))
 		lines = append(lines, fmt.Sprintf("Found resources %s", ttl))
+		resTotal := 0
 		for _, res := range data.list {
+			resTotal += len(res.ResourceIDs)
 			lines = append(lines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
 			for _, id := range res.ResourceIDs {
 				lines = append(lines, fmt.Sprintf("    - %s", id))
 			}
 		}
+		total += resTotal
+		summary = append(summary, fmt.Sprintf(" - %d %s", resTotal, ttl))
 	}
 
 	if len(lines) == 0 {
