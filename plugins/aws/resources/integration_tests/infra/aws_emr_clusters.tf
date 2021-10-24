@@ -16,7 +16,7 @@ resource "aws_emr_cluster" "aws_emr_clusters_cluster" {
 }
 EOF
 
-  termination_protection            = false
+  termination_protection            = true
   keep_job_flow_alive_when_no_steps = true
 
   ec2_attributes {
@@ -39,12 +39,12 @@ EOF
       type                 = "gp2"
       volumes_per_instance = 1
     }
-    bid_price          = "0.90"
+
     autoscaling_policy = <<EOF
 {
 "Constraints": {
   "MinCapacity": 1,
-  "MaxCapacity": 2
+  "MaxCapacity": 4
 },
 "Rules": [
   {
