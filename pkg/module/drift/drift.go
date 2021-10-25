@@ -373,6 +373,10 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 
 	var list []string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
+		if strings.Contains(err.Error(), "SQLSTATE 42P01") { // ERROR: relation %q does not exist
+			return nil, fmt.Errorf("terraform provider tables don't exist: Did you run `cloudquery fetch`?")
+		}
+
 		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
 	}
 
