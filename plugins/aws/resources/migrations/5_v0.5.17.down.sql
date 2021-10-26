@@ -51,5 +51,4 @@ ALTER TABLE IF EXISTS "aws_apigateway_domain_name_base_path_mappings" ADD CONSTR
 
 --aws_emr_clusters_vpc_id
 ALTER TABLE IF EXISTS "aws_emr_clusters"
-DROP
-COLUMN "vpc_id";
+DROP COLUMN "vpc_id";
