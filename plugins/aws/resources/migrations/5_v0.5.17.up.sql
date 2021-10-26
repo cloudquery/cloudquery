@@ -46,4 +46,8 @@ ALTER TABLE IF EXISTS "aws_apigateway_domain_name_base_path_mappings" ADD CONSTR
 ALTER TABLE IF EXISTS "aws_emr_clusters"
 ADD COLUMN "vpc_id" text;
 
+--aws_elbv2_load_balancers
+ALTER TABLE IF EXISTS "aws_elbv2_load_balancers"
+    ADD COLUMN "web_acl_arn" text;
+
 
