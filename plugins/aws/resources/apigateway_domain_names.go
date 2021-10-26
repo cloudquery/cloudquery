@@ -139,7 +139,6 @@ func ApigatewayDomainNames() *schema.Table {
 				Name:        "aws_apigateway_domain_name_base_path_mappings",
 				Description: "Represents the base path that callers of the API must provide as part of the URL after the domain name.",
 				Resolver:    fetchApigatewayDomainNameBasePathMappings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"domain_name_cq_id", "rest_api_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "domain_name_cq_id",
