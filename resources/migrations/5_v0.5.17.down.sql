@@ -44,3 +44,7 @@ ALTER TABLE IF EXISTS "aws_kms_keys" RENAME COLUMN "id" TO "key_id";
 --aws_elbv2_load_balancer_availability_zone_addresses
 ALTER TABLE IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses" DROP CONSTRAINT IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses_pk";
 ALTER TABLE IF EXISTS "aws_elbv2_load_balancer_availability_zone_addresses" ADD CONSTRAINT "aws_elbv2_load_balancer_availability_zone_addresses_pk" UNIQUE ("load_balancer_availability_zone_cq_id", "ip_address");
+
+--aws_apigateway_domain_name_base_path_mappings
+ALTER TABLE IF EXISTS "aws_apigateway_domain_name_base_path_mappings" DROP CONSTRAINT IF EXISTS "aws_apigateway_domain_name_base_path_mappings_pk";
+ALTER TABLE IF EXISTS "aws_apigateway_domain_name_base_path_mappings" ADD CONSTRAINT "aws_apigateway_domain_name_base_path_mappings_pk" UNIQUE ("domain_name_cq_id", "rest_api_id");
