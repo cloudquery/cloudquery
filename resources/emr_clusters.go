@@ -2,9 +2,12 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
+	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -94,6 +97,12 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("Status.Timeline.ReadyDateTime"),
 			},
+			{
+				Name:        "vpc_id",
+				Description: "The cluster vpc id.",
+				Type:        schema.TypeString,
+				Resolver:    resolveEmrClustersVpcId,
+			},
 		},
 	}
 }
@@ -119,4 +128,38 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		config.Marker = response.Marker
 	}
 	return nil
+}
+
+func resolveEmrClustersVpcId(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	c := meta.(*client.Client)
+	svc := c.Services().EMR
+	ec2Svc := c.Services().EC2
+
+	cluster := resource.Item.(types.ClusterSummary)
+
+	output, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: cluster.Id})
+	if err != nil {
+		return err
+	}
+
+	if output.Cluster == nil || output.Cluster.Ec2InstanceAttributes == nil && output.Cluster.Ec2InstanceAttributes.Ec2SubnetId == nil {
+		return nil
+	}
+
+	subnetId := *output.Cluster.Ec2InstanceAttributes.Ec2SubnetId
+	subnetsOutput, err := ec2Svc.DescribeSubnets(ctx, &ec2.DescribeSubnetsInput{
+		SubnetIds: []string{subnetId},
+	})
+
+	// We can fetch cluster even if it's already terminated and not connects to vpc.
+	// If we can't fetch the subnet then we return nil
+	if err != nil {
+		return nil
+	}
+
+	subnets := subnetsOutput.Subnets
+	if len(subnets) != 1 {
+		return fmt.Errorf("expected only one subnet but got %d", len(subnets))
+	}
+	return resource.Set("vpc_id", subnets[0].VpcId)
 }
