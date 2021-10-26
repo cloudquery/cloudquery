@@ -5,18 +5,25 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2021-09-21
-###### SDK Version: 0.4.9
+## [v0.6.0] - 2021-10-26
+###### SDK Version: 0.5.0
 
 ### :rocket: Added
-* Added ignore `AWSOrganizationsNotInUseException` error to ignore error filter.
+* Added ignore `AWSOrganizationsNotInUseException` error to ignore error filter. [#213](https://github.com/cloudquery/cq-provider-aws/pull/213)
+* Added ignore error when regions are disabled for a specific service [#210](https://github.com/cloudquery/cq-provider-aws/issues/210)
+* Increased testing coverage with assume role fetch workflow [#218](https://github.com/cloudquery/cq-provider-aws/pull/218)
+* Added `vpc_id` to `emr_clusters` resource [#221](https://github.com/cloudquery/cq-provider-aws/issues/221)
 
 ### :spider: Fixed
-* Fixed [empty or missing](https://github.com/cloudquery/cq-provider-aws/issues/157) tags on some resources [#191](https://github.com/cloudquery/cq-provider-aws/pull/191)
+* Fixed [#157](https://github.com/cloudquery/cq-provider-aws/issues/157) tags on multiple resources kms, gateways_v2_vpc_links, elbv2 groups/balancers, ecs clusters, directconnect gateways, cloudtrail trails, elasticsearch_domains, elasticbeanstalk_environments  [#191](https://github.com/cloudquery/cq-provider-aws/pull/191)
 * Fixed duplicate of `id` field for `aws_apigatewayv2_vpc_links` - removed `vpc_link_id` field
 * Fixed duplicate of `region` field for `aws_cloudtrail_trails` - removed `home_region` field
 * Fixed naming according to convention `aws_elasticbeanstalk_environments`:`environment_name` -> `name`, `aws_kms_keys`: `key_id` -> `id`
 * Fixed [Web ACL (WAF) attachment](https://github.com/cloudquery/cq-provider-aws/issues/209)
+* Fixed violation in `aws_apigateway_domain_name_base_path_mappings_pk` [#222](https://github.com/cloudquery/cq-provider-aws/issues/222)
+
+### :gear: Changed
+* Upgraded to SDK Version [v0.5.0](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v050---2021-10-21)
 
 ## [v0.5.16] - 2021-10-07
 ###### SDK Version: v0.4.9
