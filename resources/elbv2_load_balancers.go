@@ -307,6 +307,10 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	if !ok {
 		return fmt.Errorf("expected to have types.LoadBalancer but got %T", resource.Item)
 	}
+	// only application load balancer can have web acl arn
+	if p.Type != types.LoadBalancerTypeEnumApplication {
+		return nil
+	}
 	client := meta.(*client.Client).Services().WafV2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
 	response, err := client.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})

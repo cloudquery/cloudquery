@@ -22,6 +22,7 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	if err != nil {
 		t.Fatal(err)
 	}
+	l.Type = elbv2Types.LoadBalancerTypeEnumApplication
 
 	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancingv2.DescribeLoadBalancersOutput{
@@ -45,7 +46,7 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 
 	w.EXPECT().GetWebACLForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&wafv2.GetWebACLForResourceOutput{WebACL: &webAcl}, nil)
+		&wafv2.GetWebACLForResourceOutput{WebACL: &webAcl}, nil).AnyTimes()
 
 	tags := elasticloadbalancingv2.DescribeTagsOutput{}
 	err = faker.FakeData(&tags)
