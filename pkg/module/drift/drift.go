@@ -25,6 +25,8 @@ type DriftImpl struct {
 	config *BaseConfig
 
 	params RunParams
+
+	tableMap map[string]*schema.Table // provider table names vs. table defs, initiated on first use
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -109,7 +111,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 				if res == nil {
 					continue // skipped
 				}
-				pr, _ := d.lookupResource(resName, prov)
+				pr := d.lookupResource(resName, prov)
 				if pr == nil {
 					continue
 				}

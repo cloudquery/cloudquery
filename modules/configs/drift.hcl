@@ -508,7 +508,7 @@ module "drift" {
             }
         }
 
-        subresource "iam.users" "aws_iam_user_groups" {
+        resource "aws_iam_user_groups" {
             identifiers = [ "group_name" ]
 
             iac {

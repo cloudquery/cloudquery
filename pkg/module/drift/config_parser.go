@@ -269,23 +269,6 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 			} else {
 				prov.Resources[block.Labels[0]] = res
 			}
-		case "subresource":
-			res, resDiags := p.decodeResourceBlock(block, ctx.NewChild())
-			if resDiags.HasErrors() {
-				diags = append(diags, resDiags...)
-				continue
-			}
-			res.defRange = &block.DefRange
-			if block.Labels[0] == wildcard || block.Labels[1] == wildcard {
-				diags = append(diags, &hcl.Diagnostic{
-					Severity: hcl.DiagError,
-					Summary:  `Invalid attribute`,
-					Detail:   `"*" not allowed in subresource definitions`,
-					Subject:  &block.DefRange,
-				})
-			} else {
-				prov.Resources[block.Labels[0]+":"+block.Labels[1]] = res
-			}
 		default:
 			panic("unexpected block")
 		}

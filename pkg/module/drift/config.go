@@ -2,7 +2,6 @@ package drift
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -177,20 +176,12 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 			continue
 		}
 
-		tbl, _ := d.lookupResource(resName, p)
-		if tbl == nil && !strings.Contains(resName, ":") {
+		tbl := d.lookupResource(resName, p)
+		if tbl == nil {
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  `Specified resource not in provider`,
 				Detail:   fmt.Sprintf("resource %q is not defined by the provider", resName),
-				Subject:  res.defRange,
-			})
-			continue
-		} else if tbl == nil {
-			diags = append(diags, &hcl.Diagnostic{
-				Severity: hcl.DiagError,
-				Summary:  `Specified subresource not in provider`,
-				Detail:   fmt.Sprintf(`subresource %q is not defined by the provider`, resName),
 				Subject:  res.defRange,
 			})
 			continue
@@ -212,40 +203,23 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 	return true, diags
 }
 
-func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) (table *schema.Table, parent *schema.Table) {
-	var mainResName, parentResName string
-	resNameParts := strings.SplitN(resName, ":", 2)
-	if len(resNameParts) == 2 {
-		parentResName, resName = resNameParts[0], resNameParts[1]
-		mainResName = parentResName
-	} else {
-		mainResName = resName
-	}
-
-	tbl, ok := prov.ResourceTables[mainResName]
-	if !ok {
-		d.logger.Warn("Skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
-		return
-	}
-
-	var parentTable *schema.Table
-
-	if parentResName != "" {
-		var subTable *schema.Table
-
-		for _, r := range tbl.Relations {
-			if r.Name == resName {
-				subTable = r
-				break
+func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *schema.Table {
+	if d.tableMap == nil {
+		d.tableMap = make(map[string]*schema.Table)
+		for resId, res := range prov.ResourceTables {
+			d.tableMap[resId] = res
+			d.tableMap[res.Name] = res
+			for _, rel := range res.Relations {
+				d.tableMap[rel.Name] = rel
 			}
 		}
-		if subTable == nil {
-			d.logger.Warn("Skipping subresource, not defined by the provider", "provider", prov.Name, "resource", parentResName, "subresource", resName)
-			return
-		}
-
-		parentTable, tbl = tbl, subTable
 	}
 
-	return tbl, parentTable
+	tbl, ok := d.tableMap[resName]
+	if !ok {
+		d.logger.Warn("Skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
+		return nil
+	}
+
+	return tbl
 }
