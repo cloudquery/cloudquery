@@ -109,9 +109,8 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 				if res == nil {
 					continue // skipped
 				}
-				pr := prov.ResourceTables[resName]
+				pr, _ := d.lookupResource(resName, prov)
 				if pr == nil {
-					d.logger.Warn("Skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
 					continue
 				}
 

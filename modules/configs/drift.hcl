@@ -508,6 +508,16 @@ module "drift" {
             }
         }
 
+        subresource "iam.users" "aws_iam_user_groups" {
+            identifiers = [ "group_name" ]
+
+            iac {
+                terraform {
+                    type = "aws_iam_group"
+                }
+            }
+        }
+
         # Unmatched: iam.virtual_mfa_devices
 
         resource "kms.keys" {

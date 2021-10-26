@@ -141,7 +141,7 @@ func (rs Results) String() string {
 			false,
 		},
 		{
-			"found in $iac state but missing on the cloud provider",
+			"in $iac state but missing on the cloud provider",
 			combo.Missing,
 			false,
 		},
