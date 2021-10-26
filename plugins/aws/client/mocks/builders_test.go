@@ -529,8 +529,21 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 func buildEmrClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEmrClient(ctrl)
+	ec2m := mocks.NewMockEc2Client(ctrl)
 	l := emrTypes.ClusterSummary{}
 	err := faker.FakeData(&l)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	c := emrTypes.Cluster{}
+	err = faker.FakeDataSkipFields(&c, []string{"Configurations", "InstanceCollectionType", "RepoUpgradeOnBoot", "ScaleDownBehavior"})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	s := ec2.DescribeSubnetsOutput{}
+	err = faker.FakeData(&s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -539,8 +552,16 @@ func buildEmrClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&emr.ListClustersOutput{
 			Clusters: []emrTypes.ClusterSummary{l},
 		}, nil)
+
+	m.EXPECT().DescribeCluster(gomock.Any(), gomock.Any(), gomock.Any()).Return(&emr.DescribeClusterOutput{
+		Cluster: &c,
+	}, nil)
+
+	ec2m.EXPECT().DescribeSubnets(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s, nil)
+
 	return client.Services{
 		EMR: m,
+		EC2: ec2m,
 	}
 }
 

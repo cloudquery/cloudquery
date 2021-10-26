@@ -17,3 +17,4 @@ The summary description of the cluster.
 |status_timeline_creation_date_time|timestamp without time zone|The creation date and time of the cluster.|
 |status_timeline_end_date_time|timestamp without time zone|The date and time when the cluster was terminated.|
 |status_timeline_ready_date_time|timestamp without time zone|The date and time when the cluster was ready to run steps.|
+|vpc_id|text|The cluster vpc id.|
