@@ -115,6 +115,26 @@ func (mr *MockWafV2ClientMockRecorder) GetWebACL(arg0, arg1 interface{}, arg2 ..
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWebACL", reflect.TypeOf((*MockWafV2Client)(nil).GetWebACL), varargs...)
 }
 
+// GetWebACLForResource mocks base method.
+func (m *MockWafV2Client) GetWebACLForResource(arg0 context.Context, arg1 *wafv2.GetWebACLForResourceInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetWebACLForResourceOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetWebACLForResource", varargs...)
+	ret0, _ := ret[0].(*wafv2.GetWebACLForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWebACLForResource indicates an expected call of GetWebACLForResource.
+func (mr *MockWafV2ClientMockRecorder) GetWebACLForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWebACLForResource", reflect.TypeOf((*MockWafV2Client)(nil).GetWebACLForResource), varargs...)
+}
+
 // ListAvailableManagedRuleGroups mocks base method.
 func (m *MockWafV2Client) ListAvailableManagedRuleGroups(arg0 context.Context, arg1 *wafv2.ListAvailableManagedRuleGroupsInput, arg2 ...func(*wafv2.Options)) (*wafv2.ListAvailableManagedRuleGroupsOutput, error) {
 	m.ctrl.T.Helper()
