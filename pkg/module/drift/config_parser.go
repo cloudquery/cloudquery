@@ -60,7 +60,6 @@ const (
 	placeholderResourceName            placeholder = "resourceName"
 	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
 	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
-	placeholderResourceParent          placeholder = "resourceParent"
 )
 
 func makePlaceholder(varName placeholder) cty.Value {

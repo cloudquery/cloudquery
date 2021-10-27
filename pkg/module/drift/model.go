@@ -124,7 +124,7 @@ func (rs Results) String() string {
 		transform(r, r.Missing, &combo.Missing)
 	}
 
-	var (
+	var ( // nolint: prealloc
 		lines   []string
 		summary []string
 		total   int
