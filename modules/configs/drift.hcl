@@ -26,7 +26,7 @@ module "drift" {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.5.10"
+        version = ">=0.6.0"
 
         resource "*" {
             ignore_identifiers = [ "account_id", "region", "user_cq_id" ]
@@ -545,7 +545,7 @@ EOF
             }
         }
 
-        resource "aws_iam_user_policies" {
+            resource "aws_iam_user_policies" {
             identifiers = [ sql(<<EOF
 CONCAT(parent.user_name, ':', c.policy_name)
 EOF
@@ -563,7 +563,7 @@ EOF
 
         resource "kms.keys" {
             # TODO
-            identifiers = [ "key_id" ]
+            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_kms_key"
