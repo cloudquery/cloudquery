@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/zclconf/go-cty/cty"
+	"github.com/zclconf/go-cty/cty/function"
 )
 
 type Parser struct {
@@ -20,6 +21,22 @@ type Parser struct {
 func NewParser(basePath string) *Parser {
 	ctx := convert.GetEvalContext(basePath)
 	ctx.Variables = make(map[string]cty.Value)
+	ctx.Functions["sql"] = function.New(&function.Spec{
+		Params: []function.Parameter{
+			{
+				Name: "sql-expr",
+				Type: cty.String,
+			},
+		},
+		Type: function.StaticReturnType(cty.String),
+		Impl: func(args []cty.Value, retType cty.Type) (cty.Value, error) {
+			if len(args) != 1 {
+				return cty.UnknownVal(cty.String), fmt.Errorf("invalid arguments: single expression required")
+			}
+
+			return cty.StringVal("${sql:" + args[0].AsString() + "}"), nil
+		},
+	})
 
 	return &Parser{
 		p:          hclparse.NewParser(),
@@ -43,6 +60,7 @@ const (
 	placeholderResourceName            placeholder = "resourceName"
 	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
 	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
+	placeholderResourceParent          placeholder = "resourceParent"
 )
 
 func makePlaceholder(varName placeholder) cty.Value {
@@ -216,6 +234,10 @@ var (
 				Name:     "deep",
 				Required: false,
 			},
+			{
+				Name:     "parent_match",
+				Required: false,
+			},
 		},
 		Blocks: []hcl.BlockHeaderSchema{
 			{
@@ -301,6 +323,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if deepAttr, ok := content.Attributes["deep"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(deepAttr.Expr, ctx, &res.Deep)...)
+	}
+	if parentMatchAttr, ok := content.Attributes["parent_match"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(parentMatchAttr.Expr, ctx, &res.ParentMatch)...)
 	}
 
 	for _, block := range content.Blocks {

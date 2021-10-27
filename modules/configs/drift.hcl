@@ -7,7 +7,7 @@ module "drift" {
         # special case:
         #  provider.ModuleHcl is the config provider supplies
 
-        # resource: an entry in provider.ResourceMap
+        # resource: an entry in either provider.ResourceMap or provider.ResourceMap[].Relation
         # examples:
         #  resource.Key is the CQ name ("apigateway.api_keys")
         #  resource.Value.ColumnNames is table column names
@@ -29,7 +29,7 @@ module "drift" {
         version = ">=0.5.10"
 
         resource "*" {
-            ignore_identifiers = [ "account_id", "region" ]
+            ignore_identifiers = [ "account_id", "region", "user_cq_id" ]
             ignore_attributes = [ "unknown_fields" ]
 
             iac {
@@ -462,7 +462,8 @@ module "drift" {
         # Unmatched: iam.password_policies
 
         resource "iam.policies" {
-            # TODO
+            identifiers = [ "arn" ]
+
             iac {
                 terraform {
                     type = "aws_iam_policy"
@@ -510,10 +511,50 @@ module "drift" {
 
         resource "aws_iam_user_groups" {
             identifiers = [ "group_name" ]
+            parent_match = "user_cq_id" # This is required until we can read resolver names from cqproto
 
             iac {
                 terraform {
                     type = "aws_iam_group"
+                }
+            }
+        }
+
+        resource "aws_iam_user_access_keys" {
+#            ignore_identifiers = [ "user_cq_id" ] # Ignored in provider level
+            parent_match = "user_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_iam_access_key"
+                }
+            }
+        }
+
+        resource "aws_iam_user_attached_policies" {
+            identifiers = [ sql(<<EOF
+CONCAT(parent.user_name, ':user_', c.policy_name)
+EOF
+            ) ]
+            parent_match = "user_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_iam_user_policy"
+                }
+            }
+        }
+
+        resource "aws_iam_user_policies" {
+            identifiers = [ sql(<<EOF
+CONCAT(parent.user_name, ':', c.policy_name)
+EOF
+            ) ]
+            parent_match = "user_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_iam_user_policy"
                 }
             }
         }

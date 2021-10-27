@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -26,7 +27,12 @@ type DriftImpl struct {
 
 	params RunParams
 
-	tableMap map[string]*schema.Table // provider table names vs. table defs, initiated on first use
+	tableMap map[string]*provResource // provider table names vs. table defs, initiated on first use
+}
+
+type provResource struct {
+	*schema.Table
+	Parent *schema.Table
 }
 
 func New(logger hclog.Logger) *DriftImpl {
@@ -157,7 +163,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 	return resList, nil
 }
 
-func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *schema.Table, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
+func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
 		IAC:         "Terraform",
 		Different:   nil,
@@ -224,12 +230,17 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 
 	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
-	var err error
+	rawIdExp, idExp, err := d.handleIdentifier(resData.Identifiers)
+	if err != nil {
+		return nil, err
+	}
+	matchExp := goqu.Ex{"tf.instance_id": rawIdExp}
 
 	if !deepMode {
 		// Get equal resources
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
+		q = d.handleSubresource(q, cloudTable, resData)
+		q = q.With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(matchExp)).
 			Select("tf.instance_id")
 		res.Equal, err = d.queryIntoResourceList(ctx, conn, q, "equals", nil)
 		if err != nil {
@@ -239,8 +250,9 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 
 	{
 		// Get missing resources
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
+		q = d.handleSubresource(q, cloudTable, resData)
+		q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
 			Select("tf.instance_id").Where(goqu.Ex{"c.cq_id": nil})
 		res.Missing, err = d.queryIntoResourceList(ctx, conn, q, "missing", nil)
 		if err != nil {
@@ -250,9 +262,10 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 
 	{
 		// Get extra resources
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(goqu.Ex{"tf.instance_id": goqu.I("c." + resData.Identifiers[0])})).
-			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
+		q = d.handleSubresource(q, cloudTable, resData)
+		q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
+			Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
 		res.Extra, err = d.queryIntoResourceList(ctx, conn, q, "extras", nil)
 		if err != nil {
 			return nil, err
@@ -261,17 +274,16 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 
 	if deepMode {
 		// Get different resources
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).LeftJoin(goqu.T("tf"),
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
+		q = d.handleSubresource(q, cloudTable, resData)
+		q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"),
 			goqu.On(
-				goqu.Ex{
-					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
-				},
+				matchExp,
 				goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
 				goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
 			),
 		).
-			Select(goqu.I("c." + resData.Identifiers[0])).Where(goqu.Ex{"tf.instance_id": nil})
+			Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
 
 		res.Different, err = d.queryIntoResourceList(ctx, conn, q, "differs", append(res.Missing, res.Extra...))
 		if err != nil {
@@ -290,9 +302,10 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 			}
 
 			// get cloud side
-			sel = goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(goqu.I("c."+resData.Identifiers[0]).As("id"), cloudAttrQuery.As("attlist")).Where(
+			sel = goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist")).Where(
 				exp.NewBooleanExpression(exp.InOp, goqu.I("c."+resData.Identifiers[0]), res.Different.IDs()),
 			)
+			sel = d.handleSubresource(sel, cloudTable, resData)
 			cloudAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-cloud")
 			if err != nil {
 				return nil, err
@@ -345,12 +358,11 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 
 	if deepMode {
 		// Get deepequal resources
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).
-			With("tf", tfSelect).Join(goqu.T("tf"),
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
+		q = d.handleSubresource(q, cloudTable, resData)
+		q = q.With("tf", tfSelect).Join(goqu.T("tf"),
 			goqu.On(
-				goqu.Ex{
-					"tf.instance_id": goqu.I("c." + resData.Identifiers[0]),
-				},
+				matchExp,
 				goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
 				goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
 			),
@@ -374,10 +386,12 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 
 	var list []string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
-		if strings.Contains(err.Error(), "SQLSTATE 42P01") { // ERROR: relation %q does not exist
+		// ERROR: relation %q does not exist
+		if strings.Contains(err.Error(), "SQLSTATE 42P01") && strings.Contains(err.Error(), "does not exist") {
 			return nil, fmt.Errorf("terraform provider tables don't exist: Did you run `cloudquery fetch`?")
 		}
 
+		d.logger.Warn("query failed with error", "query", query, "args", args, "type", what, "error", err)
 		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
 	}
 
@@ -419,6 +433,55 @@ func (d *DriftImpl) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Co
 		ret[list[i].ID] = list[i].AttList
 	}
 	return ret, nil
+}
+
+func (d *DriftImpl) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res *ResourceConfig) *goqu.SelectDataset {
+	if res.ParentMatch == "" {
+		return sel
+	}
+	if pr.Parent == nil {
+		d.logger.Warn("parent_match set but no parent for table", "table", pr.Table.Name)
+		return sel
+	}
+
+	sel = sel.Join(
+		goqu.T(pr.Parent.Name).As("parent"),
+		goqu.On(
+			goqu.L("? = ?",
+				goqu.I("parent.cq_id"),
+				goqu.I("c."+res.ParentMatch),
+			),
+		),
+	)
+	return sel
+}
+
+var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
+
+func (d *DriftImpl) handleIdentifier(identifiers []string) (exp.Expression, exp.Expression, error) {
+	switch l := len(identifiers); {
+	case l == 0:
+		return nil, nil, fmt.Errorf("no identifiers to match")
+	case l > 1:
+		return nil, nil, fmt.Errorf("multiple identifiers not supported yet")
+	}
+
+	usingVariable := false
+
+	if ma := idRegEx.FindStringSubmatch(identifiers[0]); len(ma) == 2 {
+		identifiers[0] = ma[1]
+		usingVariable = true
+	}
+
+	if strings.Contains(identifiers[0], "${") {
+		return nil, nil, fmt.Errorf("identifier still contains variable")
+	}
+
+	if usingVariable {
+		return goqu.L(identifiers[0]), goqu.L("(" + identifiers[0] + ") AS id"), nil
+	}
+
+	return goqu.I("c." + identifiers[0]), goqu.I("c." + identifiers[0]).As("id"), nil
 }
 
 // Make sure we satisfy the interface

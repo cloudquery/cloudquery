@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -32,7 +30,8 @@ type ResourceConfig struct {
 	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
 	Attributes        []string `hcl:"attributes,optional"`
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
-	Deep              *bool    `hcl:"deep,optional"` // Check attributes if true, otherwise just match identifiers
+	Deep              *bool    `hcl:"deep,optional"`         // Check attributes if true, otherwise just match identifiers
+	ParentMatch       string   `hcl:"parent_match,optional"` // Only valid for relational resources, name of column to match to parent's cq_id
 
 	IAC map[string]*IACConfig
 
@@ -75,6 +74,9 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 	if res.Deep == nil {
 		res.Deep = wild.Deep
+	}
+	if res.ParentMatch == "" {
+		res.ParentMatch = wild.ParentMatch
 	}
 
 	// add on ignoreIdentifiers and ignoreAttributes values from wild
@@ -198,19 +200,24 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 			res.Attributes = replacePlaceholderInSlice(k, v, res.Attributes)
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
 		}
+
+		// {$sql:*} identifiers are still not replaced
 	}
 
 	return true, diags
 }
 
-func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *schema.Table {
+func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
 	if d.tableMap == nil {
-		d.tableMap = make(map[string]*schema.Table)
+		d.tableMap = make(map[string]*provResource)
 		for resId, res := range prov.ResourceTables {
-			d.tableMap[resId] = res
-			d.tableMap[res.Name] = res
+			d.tableMap[resId] = &provResource{Table: res}
+			d.tableMap[res.Name] = d.tableMap[resId]
 			for _, rel := range res.Relations {
-				d.tableMap[rel.Name] = rel
+				d.tableMap[rel.Name] = &provResource{
+					Table:  rel,
+					Parent: res,
+				}
 			}
 		}
 	}
