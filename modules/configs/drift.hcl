@@ -68,7 +68,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: apigateway.domain_names
+        # Unmatched: apigateway.domain_names (no data in tests)
 
         resource "apigateway.rest_apis" {
             iac {
@@ -102,7 +102,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: apigatewayv2.domain_names
+        # Unmatched: apigatewayv2.domain_names (no data in tests)
 
         resource "apigatewayv2.vpc_links" {
             iac {
@@ -226,7 +226,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: directconnect.virtual_gateways
+        # Unmatched: directconnect.virtual_gateways (aws_dx_gateway but IDs don't match)
 
         resource "directconnect.virtual_interfaces" {
             iac {
@@ -236,9 +236,15 @@ module "drift" {
             }
         }
 
-        # Unmatched: ec2.byoip_cidrs
+        # Unmatched: ec2.byoip_cidrs (no data in tests)
 
-        # Unmatched: ec2.customer_gateways
+        resource "ec2.customer_gateways" {
+            iac {
+                terraform {
+                    type = "aws_customer_gateway"
+                }
+            }
+        }
 
         resource "ec2.ebs_volumes" {
             iac {
@@ -256,7 +262,14 @@ module "drift" {
             }
         }
 
-        # Unmatched: ec2.images
+        resource "ec2.images" {
+            identifiers = [ sql("tags->>'Ec2ImageBuilderArn'") ]
+            iac {
+                terraform {
+                    type = "aws_imagebuilder_image"
+                }
+            }
+        }
 
         resource "ec2.instances" {
             ignore_attributes = ["launch_time"]
@@ -302,7 +315,13 @@ module "drift" {
             }
         }
 
-        # Unmatched: ec2.security_groups
+        resource "ec2.security_groups" {
+            iac {
+                terraform {
+                    type = "aws_security_group"
+                }
+            }
+        }
 
         resource "ec2.subnets" {
             iac {
@@ -406,7 +425,13 @@ module "drift" {
             }
         }
 
-        # Unmatched: elbv1.load_balancers
+        resource "elbv1.load_balancers" {
+            iac {
+                terraform {
+                    type = "aws_elb"
+                }
+            }
+        }
 
         resource "elbv2.load_balancers" {
             iac {
@@ -459,7 +484,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: iam.password_policies
+        # Unmatched: iam.password_policies (no data in tests)
 
         resource "iam.policies" {
             identifiers = [ "arn" ]
@@ -472,7 +497,6 @@ module "drift" {
         }
 
         resource "iam.roles" {
-            # TODO
             identifiers = [ "name" ]
             iac {
                 terraform {
@@ -499,7 +523,6 @@ module "drift" {
 
         resource "iam.users" {
             identifiers       = ["user_name"]
-#            ignore_attributes = ["id", "user_id", "password_last_used"]
             attributes = [ "arn", "path", "permissions_boundary_arn", "permissions_boundary_type", "tags" ]
 
             iac {
@@ -532,10 +555,7 @@ module "drift" {
         }
 
         resource "aws_iam_user_attached_policies" {
-            identifiers = [ sql(<<EOF
-CONCAT(parent.user_name, ':user_', c.policy_name)
-EOF
-            ) ]
+            identifiers = [ sql("CONCAT(parent.user_name, ':user_', c.policy_name)") ]
             parent_match = "user_cq_id"
 
             iac {
@@ -545,11 +565,8 @@ EOF
             }
         }
 
-            resource "aws_iam_user_policies" {
-            identifiers = [ sql(<<EOF
-CONCAT(parent.user_name, ':', c.policy_name)
-EOF
-            ) ]
+        resource "aws_iam_user_policies" {
+            identifiers = [ sql("CONCAT(parent.user_name, ':', c.policy_name)") ]
             parent_match = "user_cq_id"
 
             iac {
@@ -559,10 +576,9 @@ EOF
             }
         }
 
-        # Unmatched: iam.virtual_mfa_devices
+        # Unmatched: iam.virtual_mfa_devices (no data in tests)
 
         resource "kms.keys" {
-            # TODO
             identifiers = [ "id" ]
             iac {
                 terraform {
@@ -580,7 +596,16 @@ EOF
             }
         }
 
-        # Unmatched: lambda.layers
+        resource "aws_lambda_layer_versions" {
+            identifiers = [ sql("CONCAT(parent.arn, ':', c.version)") ]
+            parent_match = "layer_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_lambda_layer_version"
+                }
+            }
+        }
 
         resource "mq.brokers" {
             iac {
@@ -592,12 +617,10 @@ EOF
 
         # Unmatched: organizations.accounts
 
-        # Unmatched: rds.certificates
+        # Unmatched: rds.certificates (mode: data)
 
         resource "rds.clusters" {
-            # TODO
-            identifiers = [ "id" ]
-
+            identifiers = [ "db_cluster_identifier" ]
             iac {
                 terraform {
                     type = "aws_rds_cluster"
@@ -605,10 +628,18 @@ EOF
             }
         }
 
-        # Unmatched: rds.db_subnet_groups
+        resource "rds.db_subnet_groups" {
+            identifiers = [ "name" ]
+            iac {
+                terraform {
+                    type = "aws_db_subnet_group"
+                }
+            }
+        }
 
         resource "rds.instances" {
-            # TODO
+            identifiers = [ "db_name" ]
+
             iac {
                 terraform {
                     type = "aws_rds_cluster_instance"
@@ -648,9 +679,16 @@ EOF
             }
         }
 
-        # Unmatched: route53.reusable_delegation_sets
+        resource "route53.reusable_delegation_sets" {
+            identifiers = [ sql("SPLIT_PART(c.id, '/', 3)") ]
+            iac {
+                terraform {
+                    type = "aws_route53_delegation_set"
+                }
+            }
+        }
 
-        # Unmatched: route53.traffic_policies
+        # Unmatched: route53.traffic_policies (no data in tests)
 
         resource "s3.buckets" {
             ignore_attributes = ["account_id", "name"]
@@ -706,7 +744,7 @@ EOF
             }
         }
 
-        # Unmatched: waf.subscribed_rule_groups
+        # Unmatched: waf.subscribed_rule_groups (no data in tests)
 
         resource "waf.web_acls" {
             iac {
@@ -716,7 +754,7 @@ EOF
             }
         }
 
-        # Unmatched: wafv2.managed_rule_groups
+        # Unmatched: wafv2.managed_rule_groups (aws_wafv2_web_acl but IDs don't match)
 
         resource "wafv2.rule_groups" {
             iac {
