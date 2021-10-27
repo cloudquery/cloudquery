@@ -44,7 +44,7 @@ func init() {
 	driftCmd.PersistentFlags().BoolVar(&driftParams.Debug, "debug", false, "Show debug output")
 
 	flags := driftRunCmd.Flags()
-	flags.StringVar(&driftParams.TfBackendName, "tf-backend-name", "mylocal", "Set Terraform backend name")
+	flags.StringVar(&driftParams.TfBackendName, "tf-backend-name", "", "Filter by Terraform backend name")
 	flags.StringVar(&driftParams.TfMode, "tf-mode", "managed", "Set Terraform mode")
 	flags.StringVar(&driftParams.TfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")

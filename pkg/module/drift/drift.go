@@ -223,10 +223,13 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		Select("i.instance_id", tfAttrQuery.As("attlist")).
 		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
 		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
-		Where(goqu.Ex{"d.backend_name": goqu.V(d.params.TfBackendName)}).
 		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
 		Where(goqu.Ex{"r.mode": goqu.V(d.params.TfMode)}).
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)})
+
+	if d.params.TfBackendName != "" {
+		tfSelect = tfSelect.Where(goqu.Ex{"d.backend_name": goqu.V(d.params.TfBackendName)})
+	}
 
 	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
