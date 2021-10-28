@@ -29,7 +29,7 @@ module "drift" {
         version = ">=0.6.0"
 
         resource "*" {
-            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id" ]
+            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id", "distribution_cq_id", "trail_cq_id", "alarm_cq_id", "filter_cq_id" ]
             ignore_attributes = [ "unknown_fields" ]
 
             iac {
@@ -226,63 +226,63 @@ module "drift" {
             }
         }
 
-      resource "aws_apigatewayv2_api_integration_responses" {
-        parent_match = "api_integration_cq_id"
+        resource "aws_apigatewayv2_api_integration_responses" {
+            parent_match = "api_integration_cq_id"
 
-        iac {
-          terraform {
-            type = "aws_apigatewayv2_integration_response"
+            iac {
+                terraform {
+                    type = "aws_apigatewayv2_integration_response"
+                }
+            }
+        }
+
+        resource "aws_apigatewayv2_api_models" {
+          parent_match = "api_cq_id"
+
+          iac {
+            terraform {
+              type = "aws_apigatewayv2_model"
+            }
           }
         }
-      }
 
-      resource "aws_apigatewayv2_api_models" {
-        parent_match = "api_cq_id"
+        resource "aws_apigatewayv2_api_routes" {
+          parent_match = "api_cq_id"
 
-        iac {
-          terraform {
-            type = "aws_apigatewayv2_model"
+          iac {
+            terraform {
+              type = "aws_apigatewayv2_route"
+            }
           }
         }
-      }
 
-      resource "aws_apigatewayv2_api_routes" {
-        parent_match = "api_cq_id"
+        resource "aws_apigatewayv2_api_route_responses" {
+          parent_match = "api_route_cq_id"
 
-        iac {
-          terraform {
-            type = "aws_apigatewayv2_route"
+          iac {
+            terraform {
+              type = "aws_apigatewayv2_route_response"
+            }
           }
         }
-      }
 
-      resource "aws_apigatewayv2_api_route_responses" {
-        parent_match = "api_route_cq_id"
+        resource "aws_apigatewayv2_api_stages" {
+          parent_match = "api_cq_id"
 
-        iac {
-          terraform {
-            type = "aws_apigatewayv2_route_response"
+          iac {
+            terraform {
+              type = "aws_apigatewayv2_stage"
+            }
           }
         }
-      }
 
-      resource "aws_apigatewayv2_api_stages" {
-        parent_match = "api_cq_id"
+        # TODO: apigatewayv2.domain_names (no data in tests)
 
-        iac {
-          terraform {
-            type = "aws_apigatewayv2_stage"
-          }
-        }
-      }
+        # TODO: aws_apigatewayv2_domain_name_configurations (no data in tests)
 
-      # Unmatched: apigatewayv2.domain_names (no data in tests)
+        # TODO: aws_apigatewayv2_domain_name_rest_api_mappings (no data in tests)
 
-      # Unmatched: aws_apigatewayv2_domain_name_configurations (no data in tests)
-
-      # Unmatched: aws_apigatewayv2_domain_name_rest_api_mappings (no data in tests)
-
-      resource "apigatewayv2.vpc_links" {
+        resource "apigatewayv2.vpc_links" {
             iac {
                 terraform {
                     type = "aws_apigatewayv2_vpc_link"
@@ -300,6 +300,8 @@ module "drift" {
             }
         }
 
+       # Unmatched: aws_autoscaling_launch_configuration_block_device_mappings
+
         resource "cloudfront.cache_policies" {
             iac {
                 terraform {
@@ -316,6 +318,27 @@ module "drift" {
             }
         }
 
+        # TODO: aws_cloudfront_distribution_cache_behaviours (no data in tests)
+
+        # TODO: aws_cache_behaviour_lambda_function_associations (no data in tests)
+
+        # TODO: aws_cloudfront_distribution_custom_error_responses (no data in tests)
+
+        resource "aws_cloudfront_distribution_origins" {
+            identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
+            parent_match = "distribution_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_cloudfront_origin_access_identity"
+                }
+            }
+        }
+
+        # TODO: aws_cloudfront_distribution_alias_icp_recordals (no data in tests)
+
+        # TODO: aws_cloudfront_distribution_origin_groups (no data in tests)
+
         resource "cloudtrail.trails" {
             identifiers = [ "name" ]
 
@@ -326,7 +349,20 @@ module "drift" {
             }
         }
 
+        # TODO: aws_cloudtrail_trail_event_selectors
+
         resource "cloudwatch.alarms" {
+            iac {
+                terraform {
+                    type = "aws_cloudwatch_metric_alarm"
+                }
+            }
+        }
+
+        resource "aws_cloudwatch_alarm_metrics" {
+            identifiers = [ "alarm_name" ]
+            parent_match = "alarm_cq_id"
+
             iac {
                 terraform {
                     type = "aws_cloudwatch_metric_alarm"
@@ -344,6 +380,8 @@ module "drift" {
             }
         }
 
+        # Unmatched: aws_cloudwatchlogs_filter_metric_transformations
+
         resource "cognito.identity_pools" {
             iac {
                 terraform {
@@ -351,6 +389,8 @@ module "drift" {
                 }
             }
         }
+
+        # TODO: aws_cognito_identity_pool_cognito_identity_providers (no data in tests)
 
         resource "cognito.user_pools" {
             iac {
