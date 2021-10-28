@@ -387,7 +387,7 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 	}
 	d.logger.Debug("generated query", "type", what, "query", query, "args", args)
 
-	var list []string
+	var list []*string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
 		// ERROR: relation %q does not exist
 		if strings.Contains(err.Error(), "SQLSTATE 42P01") && strings.Contains(err.Error(), "does not exist") {
@@ -405,11 +405,18 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 
 	ret := make([]*Resource, 0, len(list))
 	for i := range list {
-		if _, ok := exList[list[i]]; ok {
+		if list[i] == nil {
+			ret = append(ret, &Resource{
+				ID: "<null id>",
+			})
+			continue
+		}
+
+		if _, ok := exList[*list[i]]; ok {
 			continue // exclude
 		}
 		ret = append(ret, &Resource{
-			ID: list[i],
+			ID: *list[i],
 		})
 	}
 
