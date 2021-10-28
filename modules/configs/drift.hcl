@@ -29,7 +29,7 @@ module "drift" {
         version = ">=0.6.0"
 
         resource "*" {
-            ignore_identifiers = [ "account_id", "region", "user_cq_id" ]
+            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id" ]
             ignore_attributes = [ "unknown_fields" ]
 
             iac {
@@ -78,10 +78,104 @@ module "drift" {
             }
         }
 
+        resource "aws_apigateway_rest_api_authorizers" {
+            identifiers = [ "id" ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_authorizer"
+                }
+            }
+        }
+
+        resource "aws_apigateway_rest_api_deployments" {
+            identifiers = [ "id" ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_deployment"
+                }
+            }
+        }
+
+        resource "aws_apigateway_rest_api_documentation_parts" {
+            identifiers = [ sql("CONCAT(c.rest_api_id, '/', c.id)") ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_documentation_part"
+                }
+            }
+        }
+
+        resource "aws_apigateway_rest_api_documentation_versions" {
+            identifiers = [ sql("CONCAT(c.rest_api_id, '/', c.version)") ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_documentation_version"
+                }
+            }
+        }
+
+        # TODO aws_apigateway_rest_api_gateway_responses (no PKs)
+
+        resource "aws_apigateway_rest_api_models" {
+            identifiers = [ "id" ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_model"
+                }
+            }
+        }
+
+        resource "aws_apigateway_rest_api_request_validators" {
+            identifiers = [ "id" ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_request_validator"
+                }
+            }
+        }
+
+        # TODO aws_apigateway_rest_api_resources
+
+        resource "aws_apigateway_rest_api_stages" {
+            identifiers = [ sql("CONCAT('ags-',parent.id,'-',c.stage_name)") ]
+            parent_match = "rest_api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_stage"
+                }
+            }
+        }
+
         resource "apigateway.usage_plans" {
             iac {
                 terraform {
                     type = "aws_api_gateway_usage_plan"
+                }
+            }
+        }
+
+        # TODO aws_apigateway_usage_plan_api_stages
+
+        resource "aws_apigateway_usage_plan_keys" {
+            identifiers = [ "id" ]
+            parent_match = "usage_plan_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_api_gateway_usage_plan_key"
                 }
             }
         }
@@ -102,9 +196,93 @@ module "drift" {
             }
         }
 
-        # Unmatched: apigatewayv2.domain_names (no data in tests)
+        resource "aws_apigatewayv2_api_authorizers" {
+            parent_match = "api_cq_id"
 
-        resource "apigatewayv2.vpc_links" {
+            iac {
+                terraform {
+                    type = "aws_apigatewayv2_authorizer"
+                }
+            }
+        }
+
+        resource "aws_apigatewayv2_api_deployments" {
+            parent_match = "api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_apigatewayv2_deployment"
+                }
+            }
+        }
+
+        resource "aws_apigatewayv2_api_integrations" {
+            parent_match = "api_cq_id"
+
+            iac {
+                terraform {
+                    type = "aws_apigatewayv2_integration"
+                }
+            }
+        }
+
+      resource "aws_apigatewayv2_api_integration_responses" {
+        parent_match = "api_integration_cq_id"
+
+        iac {
+          terraform {
+            type = "aws_apigatewayv2_integration_response"
+          }
+        }
+      }
+
+      resource "aws_apigatewayv2_api_models" {
+        parent_match = "api_cq_id"
+
+        iac {
+          terraform {
+            type = "aws_apigatewayv2_model"
+          }
+        }
+      }
+
+      resource "aws_apigatewayv2_api_routes" {
+        parent_match = "api_cq_id"
+
+        iac {
+          terraform {
+            type = "aws_apigatewayv2_route"
+          }
+        }
+      }
+
+      resource "aws_apigatewayv2_api_route_responses" {
+        parent_match = "api_route_cq_id"
+
+        iac {
+          terraform {
+            type = "aws_apigatewayv2_route_response"
+          }
+        }
+      }
+
+      resource "aws_apigatewayv2_api_stages" {
+        parent_match = "api_cq_id"
+
+        iac {
+          terraform {
+            type = "aws_apigatewayv2_stage"
+          }
+        }
+      }
+
+      # Unmatched: apigatewayv2.domain_names (no data in tests)
+
+      # Unmatched: aws_apigatewayv2_domain_name_configurations (no data in tests)
+
+      # Unmatched: aws_apigatewayv2_domain_name_rest_api_mappings (no data in tests)
+
+      resource "apigatewayv2.vpc_links" {
             iac {
                 terraform {
                     type = "aws_apigatewayv2_vpc_link"

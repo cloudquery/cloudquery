@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -209,16 +210,21 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 
 func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
 	if d.tableMap == nil {
+		var setTableMap func(res, parent *schema.Table)
+		setTableMap = func(res, parent *schema.Table) {
+			d.tableMap[res.Name] = &provResource{
+				Table:  res,
+				Parent: parent,
+			}
+			for _, rel := range res.Relations {
+				setTableMap(rel, res)
+			}
+		}
+
 		d.tableMap = make(map[string]*provResource)
 		for resId, res := range prov.ResourceTables {
 			d.tableMap[resId] = &provResource{Table: res}
-			d.tableMap[res.Name] = d.tableMap[resId]
-			for _, rel := range res.Relations {
-				d.tableMap[rel.Name] = &provResource{
-					Table:  rel,
-					Parent: res,
-				}
-			}
+			setTableMap(res, nil)
 		}
 	}
 
