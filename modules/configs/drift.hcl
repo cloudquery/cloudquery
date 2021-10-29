@@ -29,7 +29,7 @@ module "drift" {
         version = ">=0.6.0"
 
         resource "*" {
-            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id", "distribution_cq_id", "trail_cq_id", "alarm_cq_id", "filter_cq_id" ]
+            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id", "distribution_cq_id", "trail_cq_id", "alarm_cq_id", "filter_cq_id", "connection_cq_id", "directconnect_gateway_cq_id", "lag_cq_id" ]
             ignore_attributes = [ "unknown_fields" ]
 
             iac {
@@ -400,6 +400,8 @@ module "drift" {
             }
         }
 
+        # Unmatched: aws_cognito_user_pool_schema_attributess
+
         resource "config.configuration_recorders" {
             identifiers = [ "name" ]
 
@@ -428,6 +430,8 @@ module "drift" {
             }
         }
 
+        # TODO aws_directconnect_connection_mac_sec_keys (no data in tests)
+
         resource "directconnect.gateways" {
             iac {
                 terraform {
@@ -436,6 +440,18 @@ module "drift" {
             }
         }
 
+        resource "aws_directconnect_gateway_associations" {
+            identifiers = [ sql("CONCAT('ga-', c.directconnect_gateway_id, c.associated_gateway_id)") ]
+            parent_match = "directconnect_gateway_cq_id"
+            iac {
+                terraform {
+                    type = "aws_dx_gateway_association"
+                }
+            }
+        }
+
+        # TODO: aws_directconnect_gateway_attachments (no data in tests)
+
         resource "directconnect.lags" {
             iac {
                 terraform {
@@ -443,6 +459,8 @@ module "drift" {
                 }
             }
         }
+
+        # TODO: aws_directconnect_lag_mac_sec_keys (no data in tests)
 
         # Unmatched: directconnect.virtual_gateways (aws_dx_gateway but IDs don't match)
 
@@ -453,6 +471,8 @@ module "drift" {
                 }
             }
         }
+
+        # TODO: aws_directconnect_virtual_interface_bgp_peers (no data in tests)
 
         # Unmatched: ec2.byoip_cidrs (no data in tests)
 
@@ -471,6 +491,8 @@ module "drift" {
                 }
             }
         }
+
+        # TODO aws_ec2_ebs_volume_attachments
 
         resource "ec2.flow_logs" {
             iac {
@@ -534,6 +556,8 @@ module "drift" {
         }
 
         resource "ec2.security_groups" {
+            filters = [ "c.group_name!='default'" ]
+
             iac {
                 terraform {
                     type = "aws_security_group"
@@ -542,6 +566,8 @@ module "drift" {
         }
 
         resource "ec2.subnets" {
+            filters = [ "c.default_for_az!=true" ]
+
             iac {
                 terraform {
                     type = "aws_subnet"
@@ -574,6 +600,8 @@ module "drift" {
         }
 
         resource "ec2.vpcs" {
+            filters = [ "c.is_default!=true" ]
+
             iac {
                 terraform {
                     type = "aws_vpc"

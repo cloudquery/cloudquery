@@ -33,6 +33,7 @@ type ResourceConfig struct {
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 	Deep              *bool    `hcl:"deep,optional"`         // Check attributes if true, otherwise just match identifiers
 	ParentMatch       string   `hcl:"parent_match,optional"` // Only valid for relational resources, name of column to match to parent's cq_id
+	Filters           []string `hcl:"filters,optional"`      // SQL filters to exclude cloud providers default resources
 
 	IAC map[string]*IACConfig
 
@@ -80,9 +81,10 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 		res.ParentMatch = wild.ParentMatch
 	}
 
-	// add on ignoreIdentifiers and ignoreAttributes values from wild
+	// add on ignoreIdentifiers, ignoreAttributes and filters values from wild
 	res.IgnoreIdentifiers = mergeDedupSlices(res.IgnoreIdentifiers, wild.IgnoreIdentifiers)
 	res.IgnoreAttributes = mergeDedupSlices(res.IgnoreAttributes, wild.IgnoreAttributes)
+	res.Filters = mergeDedupSlices(res.Filters, wild.Filters)
 
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
@@ -230,7 +232,7 @@ func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSche
 
 	tbl, ok := d.tableMap[resName]
 	if !ok {
-		d.logger.Warn("Skipping resource, not found in ResourceTables", "provider", prov.Name, "resource", resName)
+		d.logger.Warn("Skipping resource, not found in ResourceTables", "resource", resName)
 		return nil
 	}
 

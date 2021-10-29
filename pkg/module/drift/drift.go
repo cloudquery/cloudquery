@@ -269,6 +269,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 		q = d.handleSubresource(q, cloudTable, resData)
 		q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
 			Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
+		q = d.handleFilters(q, resData)
 		res.Extra, err = d.queryIntoResourceList(ctx, conn, q, "extras", nil)
 		if err != nil {
 			return nil, err
@@ -463,6 +464,14 @@ func (d *DriftImpl) handleSubresource(sel *goqu.SelectDataset, pr *provResource,
 			),
 		),
 	)
+	return sel
+}
+
+func (d *DriftImpl) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
+	for _, f := range res.Filters {
+		sel = sel.Where(goqu.L(f))
+	}
+
 	return sel
 }
 

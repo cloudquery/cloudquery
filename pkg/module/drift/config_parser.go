@@ -237,6 +237,10 @@ var (
 				Name:     "parent_match",
 				Required: false,
 			},
+			{
+				Name:     "filters",
+				Required: false,
+			},
 		},
 		Blocks: []hcl.BlockHeaderSchema{
 			{
@@ -325,6 +329,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if parentMatchAttr, ok := content.Attributes["parent_match"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(parentMatchAttr.Expr, ctx, &res.ParentMatch)...)
+	}
+	if filtersAttr, ok := content.Attributes["filters"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(filtersAttr.Expr, ctx, &res.Filters)...)
 	}
 
 	for _, block := range content.Blocks {
