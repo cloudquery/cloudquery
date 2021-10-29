@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/modules"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -16,7 +15,7 @@ import (
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
-	modules map[string]model.Module
+	modules map[string]Module
 
 	// Instance of a database connection pool
 	pool *pgxpool.Pool
@@ -29,10 +28,10 @@ type ManagerImpl struct {
 // Implemented by ManagerImpl.
 type Manager interface {
 	// RegisterModule is used to register a module into the manager.
-	RegisterModule(mod model.Module)
+	RegisterModule(mod Module)
 
 	// ExecuteModule executes the given module, validating the given module name and config first.
-	ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *model.ExecuteRequest) (*model.ExecutionResult, error)
+	ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *ExecuteRequest) (*ExecutionResult, error)
 
 	// ReadConfig reads the given module's default/builtin config
 	ReadConfig(modName string) ([]byte, error)
@@ -41,19 +40,19 @@ type Manager interface {
 // NewManager returns a new manager instance.
 func NewManager(pool *pgxpool.Pool, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
-		modules: make(map[string]model.Module),
+		modules: make(map[string]Module),
 		pool:    pool,
 		logger:  logger,
 	}
 }
 
 // RegisterModule is used to register a module into the manager.
-func (m *ManagerImpl) RegisterModule(mod model.Module) {
+func (m *ManagerImpl) RegisterModule(mod Module) {
 	m.modules[mod.ID()] = mod
 }
 
 // ExecuteModule executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *ExecuteRequest) (*ExecutionResult, error) {
 	mod, ok := m.modules[modName]
 	if !ok {
 		return nil, fmt.Errorf("module not found %q", modName)

@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/module/model"
+	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
@@ -64,10 +64,10 @@ func (d *Drift) Configure(ctx context.Context, config hcl.Body) error {
 	return nil
 }
 
-func (d *Drift) Execute(ctx context.Context, req *model.ExecuteRequest) *model.ExecutionResult {
+func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module.ExecutionResult {
 	d.params = req.Params.(RunParams)
 
-	ret := &model.ExecutionResult{}
+	ret := &module.ExecutionResult{}
 	var err error
 	ret.Result, err = d.run(ctx, req)
 	if err != nil {
@@ -77,7 +77,7 @@ func (d *Drift) Execute(ctx context.Context, req *model.ExecuteRequest) *model.E
 	return ret
 }
 
-func (d *Drift) run(ctx context.Context, req *model.ExecuteRequest) (Results, error) {
+func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, error) {
 	var iacProv *cqproto.GetProviderSchemaResponse
 	for _, p := range req.Providers {
 		if p.Name == string(iacTerraform) {
@@ -511,4 +511,4 @@ func (d *Drift) handleIdentifier(identifiers []string) (exp.Expression, exp.Expr
 }
 
 // Make sure we satisfy the interface
-var _ model.Module = (*Drift)(nil)
+var _ module.Module = (*Drift)(nil)

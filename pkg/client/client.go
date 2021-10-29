@@ -20,7 +20,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
-	"github.com/cloudquery/cloudquery/pkg/module/model"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
@@ -607,7 +606,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	return nil
 }
 
-func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*model.ExecutionResult, error) {
+func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
 
 	if c.ModuleManager == nil {
@@ -616,7 +615,7 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*mode
 		c.ModuleManager.RegisterModule(drift.New(c.Logger))
 	}
 
-	modReq := &model.ExecuteRequest{
+	modReq := &module.ExecuteRequest{
 		Providers: req.Providers,
 		Params:    req.Params,
 	}
