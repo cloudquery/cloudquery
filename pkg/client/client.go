@@ -117,6 +117,7 @@ type PolicyRunRequest struct {
 type ModuleRunRequest struct {
 	// Name of the module
 	Name string
+
 	// Params are the invocation parameters specific to the module
 	Params interface{}
 
@@ -615,17 +616,12 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*mode
 		c.ModuleManager.RegisterModule(drift.New(c.Logger))
 	}
 
-	baseReq := model.ExecuteRequest{
+	modReq := &model.ExecuteRequest{
 		Providers: req.Providers,
 		Params:    req.Params,
 	}
-	modReq, err := c.ModuleManager.ParseModuleReference(ctx, baseReq, req.Name, req.ModConfigPath)
-	if err != nil {
-		return nil, err
-	}
-	c.Logger.Debug("Parsed module run input arguments", "req", modReq.String())
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.ModConfigPath, modReq)
 	if err != nil {
 		return nil, err
 	}

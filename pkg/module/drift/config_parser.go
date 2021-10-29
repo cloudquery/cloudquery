@@ -253,11 +253,11 @@ var (
 	iacSchema = &hcl.BodySchema{
 		Blocks: []hcl.BlockHeaderSchema{
 			{
-				Type:       "terraform",
+				Type:       string(iacTerraform),
 				LabelNames: nil,
 			},
 			{
-				Type:       "cloudformation",
+				Type:       string(iacCloudformation),
 				LabelNames: nil,
 			},
 		},

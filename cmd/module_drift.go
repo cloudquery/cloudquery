@@ -33,7 +33,12 @@ var (
 			}
 			defer c.Client().Close()
 
-			return c.CallModule(ctx, "drift", moduleOutputPath, moduleConfigPath, driftParams)
+			return c.CallModule(ctx, console.ModuleCallRequest{
+				Name:          "drift",
+				Params:        driftParams,
+				ModConfigPath: moduleConfigPath,
+				OutputPath:    moduleOutputPath,
+			})
 		},
 	}
 

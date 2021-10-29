@@ -165,20 +165,20 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 	return nil
 }
 
-func (c Client) CallModule(ctx context.Context, modName, outputPath, modConfigPath string, modParams interface{}) error {
+func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	provs, err := c.getModuleProviders(ctx)
 	if err != nil {
 		return err
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
-	req := client.ModuleRunRequest{
-		Name:          modName,
-		Params:        modParams,
-		ModConfigPath: modConfigPath,
+	runReq := client.ModuleRunRequest{
+		Name:          req.Name,
+		Params:        req.Params,
+		ModConfigPath: req.ModConfigPath,
 		Providers:     provs,
 	}
-	out, err := c.c.ExecuteModule(ctx, req)
+	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
@@ -193,10 +193,10 @@ func (c Client) CallModule(ctx context.Context, modName, outputPath, modConfigPa
 		return nil
 	}
 
-	if outputPath != "" {
+	if req.OutputPath != "" {
 		// Store output in file if requested
 		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			return err
 		}
@@ -212,7 +212,7 @@ func (c Client) CallModule(ctx context.Context, modName, outputPath, modConfigPa
 			return err
 		}
 
-		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", outputPath)
+		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
 	}
 
 	type stringer interface {

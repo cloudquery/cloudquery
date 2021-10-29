@@ -31,11 +31,8 @@ type Manager interface {
 	// RegisterModule is used to register a module into the manager.
 	RegisterModule(mod model.Module)
 
-	// ParseModuleReference parses and validates the given module name and config into an execution request.
-	ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, modName string, modConfigPath string) (*model.ExecuteRequest, error)
-
-	// ExecuteModule executes the given module.
-	ExecuteModule(ctx context.Context, execRequest *model.ExecuteRequest) (*model.ExecutionResult, error)
+	// ExecuteModule executes the given module, validating the given module name and config first.
+	ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *model.ExecuteRequest) (*model.ExecutionResult, error)
 
 	// ReadConfig reads the given module's default/builtin config
 	ReadConfig(modName string) ([]byte, error)
@@ -55,8 +52,8 @@ func (m *ManagerImpl) RegisterModule(mod model.Module) {
 	m.modules[mod.ID()] = mod
 }
 
-// ParseModuleReference parses and validates the given module name and config into an execution request.
-func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.ExecuteRequest, modName string, modConfigPath string) (*model.ExecuteRequest, error) {
+// ExecuteModule executes the given module, validating the given module name and config first.
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
 	mod, ok := m.modules[modName]
 	if !ok {
 		return nil, fmt.Errorf("module not found %q", modName)
@@ -71,21 +68,15 @@ func (m *ManagerImpl) ParseModuleReference(ctx context.Context, baseReq model.Ex
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
 
-	baseReq.Module = mod
-
-	return &baseReq, nil
-}
-
-// ExecuteModule executes the given module.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *model.ExecuteRequest) (*model.ExecutionResult, error) {
 	// Acquire connection from the connection pool
-	theConn, err := m.pool.Acquire(ctx)
+	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
 	}
-	defer theConn.Release()
+	defer conn.Release()
 
-	execReq.Conn = theConn
+	execReq.Conn = conn
+	execReq.Module = mod
 
 	res := execReq.Module.Execute(ctx, execReq)
 	return res, nil

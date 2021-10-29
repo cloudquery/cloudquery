@@ -88,19 +88,20 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
-	} else {
-		// add on attributeMap values from wild
-		for k, v := range res.IAC {
-			if wild.IAC[k] != nil {
-				for kk, vv := range wild.IAC[k].attributeMap {
-					if _, ok := v.attributeMap[kk]; !ok {
-						res.IAC[k].attributeMap[kk] = vv
-					}
-				}
+		return
+	}
+
+	// add on attributeMap values from wild
+	for k, v := range res.IAC {
+		if wild.IAC[k] == nil {
+			continue
+		}
+		for kk, vv := range wild.IAC[k].attributeMap {
+			if _, ok := v.attributeMap[kk]; !ok {
+				res.IAC[k].attributeMap[kk] = vv
 			}
 		}
 	}
-
 }
 
 func mergeDedupSlices(a ...[]string) []string {
@@ -146,7 +147,7 @@ func removeIgnored(list []string, ignored []string) []string {
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
 // Returns true if the given config is valid for the given provider and cfg is changed to resolve macros.
-func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
+func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
 	}
@@ -210,7 +211,7 @@ func (d *DriftImpl) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSch
 	return true, diags
 }
 
-func (d *DriftImpl) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
+func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
 	if d.tableMap == nil {
 		var setTableMap func(res, parent *schema.Table)
 		setTableMap = func(res, parent *schema.Table) {

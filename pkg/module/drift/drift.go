@@ -21,7 +21,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-type DriftImpl struct {
+type Drift struct {
 	logger hclog.Logger
 	config *BaseConfig
 
@@ -35,29 +35,36 @@ type provResource struct {
 	Parent *schema.Table
 }
 
-func New(logger hclog.Logger) *DriftImpl {
-	return &DriftImpl{
+type iacProvider string
+
+const (
+	iacTerraform      iacProvider = "terraform"
+	iacCloudformation iacProvider = "cloudformation"
+)
+
+func New(logger hclog.Logger) *Drift {
+	return &Drift{
 		logger: logger,
 	}
 }
 
-func (d *DriftImpl) ID() string {
+func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *DriftImpl) Configure(ctx context.Context, config hcl.Body) error {
+func (d *Drift) Configure(ctx context.Context, config hcl.Body) error {
 	p := NewParser("")
 
-	theCfg, diags := p.Decode(config, nil)
+	cfg, diags := p.Decode(config, nil)
 	if diags.HasErrors() {
 		return diags
 	}
 
-	d.config = theCfg
+	d.config = cfg
 	return nil
 }
 
-func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) *model.ExecutionResult {
+func (d *Drift) Execute(ctx context.Context, req *model.ExecuteRequest) *model.ExecutionResult {
 	d.params = req.Params.(RunParams)
 
 	ret := &model.ExecutionResult{}
@@ -70,10 +77,10 @@ func (d *DriftImpl) Execute(ctx context.Context, req *model.ExecuteRequest) *mod
 	return ret
 }
 
-func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results, error) {
+func (d *Drift) run(ctx context.Context, req *model.ExecuteRequest) (Results, error) {
 	var iacProv *cqproto.GetProviderSchemaResponse
 	for _, p := range req.Providers {
-		if p.Name == "terraform" { // TODO add more iac provider names
+		if p.Name == string(iacTerraform) {
 			if iacProv != nil {
 				return nil, fmt.Errorf("only single IAC provider is supported at a time")
 			}
@@ -137,8 +144,8 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 					dres *Result
 					err  error
 				)
-				switch iacProv.Name {
-				case "terraform":
+				switch iacProvider(iacProv.Name) {
+				case iacTerraform:
 					dres, err = d.driftTerraform(ctx, req.Conn, prov.Name, pr, res, iacData)
 				default:
 					return nil, fmt.Errorf("no suitable handler found for %q", iacProv.Name)
@@ -163,7 +170,7 @@ func (d *DriftImpl) run(ctx context.Context, req *model.ExecuteRequest) (Results
 	return resList, nil
 }
 
-func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
+func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
 		IAC:         "Terraform",
 		Different:   nil,
@@ -381,7 +388,7 @@ func (d *DriftImpl) driftTerraform(ctx context.Context, conn *pgxpool.Conn, clou
 	return res, nil
 }
 
-func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude ResourceList) (ResourceList, error) {
+func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude ResourceList) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
@@ -424,7 +431,7 @@ func (d *DriftImpl) queryIntoResourceList(ctx context.Context, conn *pgxpool.Con
 	return ret, nil
 }
 
-func (d *DriftImpl) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string) (map[string][]interface{}, error) {
+func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string) (map[string][]interface{}, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
@@ -446,7 +453,7 @@ func (d *DriftImpl) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Co
 	return ret, nil
 }
 
-func (d *DriftImpl) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res *ResourceConfig) *goqu.SelectDataset {
+func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res *ResourceConfig) *goqu.SelectDataset {
 	if res.ParentMatch == "" {
 		return sel
 	}
@@ -467,7 +474,7 @@ func (d *DriftImpl) handleSubresource(sel *goqu.SelectDataset, pr *provResource,
 	return sel
 }
 
-func (d *DriftImpl) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
+func (d *Drift) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
 	for _, f := range res.Filters {
 		sel = sel.Where(goqu.L(f))
 	}
@@ -477,7 +484,7 @@ func (d *DriftImpl) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) 
 
 var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
 
-func (d *DriftImpl) handleIdentifier(identifiers []string) (exp.Expression, exp.Expression, error) {
+func (d *Drift) handleIdentifier(identifiers []string) (exp.Expression, exp.Expression, error) {
 	switch l := len(identifiers); {
 	case l == 0:
 		return nil, nil, fmt.Errorf("no identifiers to match")
@@ -504,4 +511,4 @@ func (d *DriftImpl) handleIdentifier(identifiers []string) (exp.Expression, exp.
 }
 
 // Make sure we satisfy the interface
-var _ model.Module = (*DriftImpl)(nil)
+var _ model.Module = (*Drift)(nil)
