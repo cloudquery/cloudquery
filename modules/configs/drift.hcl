@@ -522,6 +522,8 @@ module "drift" {
         }
 
         resource "ec2.internet_gateways" {
+            filters = [ "NOT EXISTS (SELECT 1 FROM aws_ec2_internet_gateway_attachments a JOIN aws_ec2_vpcs v ON v.id=a.vpc_id WHERE a.internet_gateway_cq_id=c.cq_id AND v.is_default)" ]
+
             iac {
                 terraform {
                     type = "aws_internet_gateway"
@@ -538,6 +540,8 @@ module "drift" {
         }
 
         resource "ec2.network_acls" {
+            filters = [ "c.is_default!=true" ]
+
             iac {
                 terraform {
                     type = "aws_network_acl"
@@ -545,9 +549,27 @@ module "drift" {
             }
         }
 
+#        resource "aws_ec2_network_acl_entries" {
+#            # TODO no CRC32 function, no data in tests to verify
+#            identifiers = [ sql("CONCAT('nacl-',(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
+#            filters = [ "((c.cidr_block='0.0.0.0/0' AND c.rule_number=32767) OR (c.ipv6_cidr_block=':/0' AND c.rule_number=32768)) AND c.rule_action='deny' AND c.protocol='-1'" ]
+#            parent_match = "network_acl_cq_id"
+#
+#            iac {
+#                terraform {
+#                    type = "aws_network_acl_rule"
+#                }
+#            }
+#        }
+
         # Unmatched: ec2.regional_config
 
         resource "ec2.route_tables" {
+            filters = [
+                "NOT EXISTS (SELECT 1 FROM aws_ec2_route_table_associations WHERE route_table_cq_id=c.cq_id AND main)",
+                "NOT EXISTS (SELECT 1 FROM aws_ec2_route_table_routes WHERE route_table_cq_id=c.cq_id AND origin='CreateRouteTable')"
+            ]
+
             iac {
                 terraform {
                     type = "aws_route_table"
