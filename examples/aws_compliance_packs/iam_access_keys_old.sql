@@ -1,1 +1,0 @@
-SELECT * from aws_iam_access_keys WHERE DATE(create_date) < date('now', '-90 day')
