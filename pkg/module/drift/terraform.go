@@ -215,7 +215,7 @@ func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxp
 	for k, tfAttrs := range tfAttList {
 		cloudAttrs, ok := cloudAttList[k]
 		if !ok {
-			//continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
+			continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
 		}
 		table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
 		var (
