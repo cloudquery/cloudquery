@@ -68,17 +68,13 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath 
 	}
 
 	// Acquire connection from the connection pool
-	conn, err := m.pool.Acquire(ctx)
+	execReq.Conn, err = m.pool.Acquire(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
 	}
-	defer conn.Release()
+	defer execReq.Conn.Release()
 
-	execReq.Conn = conn
-	execReq.Module = mod
-
-	res := execReq.Module.Execute(ctx, execReq)
-	return res, nil
+	return mod.Execute(ctx, execReq), nil
 }
 
 // ReadConfig reads the given module's default/builtin config

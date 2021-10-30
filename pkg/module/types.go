@@ -2,7 +2,6 @@ package module
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -20,8 +19,6 @@ type Module interface {
 }
 
 type ExecuteRequest struct {
-	// Module is the module that should be executed
-	Module Module
 	// Params are the invocation parameters specific to the module
 	Params interface{}
 
@@ -34,12 +31,4 @@ type ExecuteRequest struct {
 type ExecutionResult struct {
 	Result interface{} `json:"result"`
 	Error  string      `json:"error,omitempty"`
-}
-
-func (e *ExecuteRequest) String() string {
-	if e.Module == nil {
-		return fmt.Sprintf("[execute module <nil> with params %+v]", e.Params)
-	}
-
-	return fmt.Sprintf("[execute module %s with params %+v]", e.Module.ID(), e.Params)
 }
