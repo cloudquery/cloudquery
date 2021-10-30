@@ -1,2 +1,0 @@
-SELECT aws_s3_buckets.account_id, aws_s3_buckets.region, aws_s3_buckets.name  from aws_s3_buckets
-                  JOIN aws_s3_bucket_encryption_rules ON aws_s3_buckets.id != aws_s3_bucket_encryption_rules.bucket_id;
