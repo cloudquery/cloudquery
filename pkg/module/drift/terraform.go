@@ -14,7 +14,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resData *ResourceConfig, iacData *IACConfig) (*Result, error) {
+func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resName string, iacData *IACConfig) (*Result, error) {
 	res := &Result{
 		IAC:         "Terraform",
 		Different:   nil,
@@ -23,6 +23,8 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		Extra:       nil,
 		ListManaged: d.params.ListManaged,
 	}
+
+	resData := d.resMap[resName]
 
 	tfProvider := d.params.TfProvider
 	if tfProvider == "" {

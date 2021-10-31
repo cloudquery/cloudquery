@@ -213,14 +213,14 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 
 func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
 	if d.tableMap == nil {
-		var setTableMap func(res, parent *schema.Table)
-		setTableMap = func(res, parent *schema.Table) {
+		var setTableMap func(res *schema.Table, parent *provResource)
+		setTableMap = func(res *schema.Table, parent *provResource) {
 			d.tableMap[res.Name] = &provResource{
 				Table:  res,
 				Parent: parent,
 			}
 			for _, rel := range res.Relations {
-				setTableMap(rel, res)
+				setTableMap(rel, d.tableMap[res.Name])
 			}
 		}
 

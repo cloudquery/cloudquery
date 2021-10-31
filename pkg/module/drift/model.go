@@ -11,6 +11,7 @@ type RunParams struct {
 	TfBackendName, TfMode, TfProvider string
 	ForceDeep                         bool
 	ListManaged                       bool
+	AccountIDs                        []string
 }
 
 type Resource struct {

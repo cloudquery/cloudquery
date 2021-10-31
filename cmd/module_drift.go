@@ -54,6 +54,7 @@ func init() {
 	flags.StringVar(&driftParams.TfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")
 	flags.BoolVar(&driftParams.ListManaged, "list-managed", false, "List managed resources in output")
+	flags.StringSliceVar(&driftParams.AccountIDs, "account-ids", nil, "Use only specified cloud account IDs")
 	driftRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	driftCmd.AddCommand(driftRunCmd)
 	moduleCmd.AddCommand(driftCmd)

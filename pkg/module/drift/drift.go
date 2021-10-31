@@ -24,12 +24,13 @@ type Drift struct {
 
 	params RunParams
 
-	tableMap map[string]*provResource // provider table names vs. table defs, initiated on first use
+	tableMap map[string]*provResource   // provider table names vs. table defs, initiated on first use
+	resMap   map[string]*ResourceConfig // resource name vs. interpreted/finalized config
 }
 
 type provResource struct {
 	*schema.Table
-	Parent *schema.Table
+	Parent *provResource
 }
 
 type iacProvider string
@@ -116,8 +117,24 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 			}
 			sort.Strings(resourceKeys)
 
+			d.resMap = make(map[string]*ResourceConfig, len(resourceKeys))
 			for _, resName := range resourceKeys {
 				res := cfg.Resources[resName]
+				if res == nil {
+					continue // skipped
+				}
+				iacData := res.IAC[iacProv.Name]
+				if iacData == nil {
+					d.logger.Debug("Will skip resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
+					continue
+				}
+
+				res.finalInterpret()
+				d.resMap[resName] = res
+			}
+
+			for _, resName := range resourceKeys {
+				res := d.resMap[resName]
 				if res == nil {
 					continue // skipped
 				}
@@ -127,12 +144,6 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 				}
 
 				iacData := res.IAC[iacProv.Name]
-				if iacData == nil {
-					d.logger.Debug("Skipping resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
-					continue
-				}
-
-				res.finalInterpret()
 
 				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", iacData.Type)
 
@@ -143,7 +154,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 				)
 				switch iacProvider(iacProv.Name) {
 				case iacTerraform:
-					dres, err = d.driftTerraform(ctx, req.Conn, prov.Name, pr, res, iacData)
+					dres, err = d.driftTerraform(ctx, req.Conn, prov.Name, pr, resName, iacData)
 				default:
 					return nil, fmt.Errorf("no suitable handler found for %q", iacProv.Name)
 				}
@@ -234,6 +245,10 @@ func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, 
 
 func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res *ResourceConfig) *goqu.SelectDataset {
 	if res.ParentMatch == "" {
+		if len(d.params.AccountIDs) > 0 {
+			sel = sel.Where(goqu.Ex{"c.account_id": d.params.AccountIDs})
+		}
+
 		return sel
 	}
 	if pr.Parent == nil {
@@ -241,15 +256,41 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res
 		return sel
 	}
 
-	sel = sel.Join(
-		goqu.T(pr.Parent.Name).As("parent"),
-		goqu.On(
-			goqu.L("? = ?",
-				goqu.I("parent.cq_id"),
-				goqu.I("c."+res.ParentMatch),
+	// Join all parents up the chain, topmost parent has account_id
+
+	parentCounter := 0
+	parentTableName := "parent"
+	childTableName := "c"
+	for pr.Parent != nil {
+		res = d.resMap[pr.Name]
+		if res == nil {
+			d.logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
+			return sel // FIXME we're skipping the account_id filter here by returning
+		}
+
+		if parentCounter > 0 {
+			parentTableName = fmt.Sprintf("parent%d", parentCounter)
+		}
+
+		sel = sel.Join(
+			goqu.T(pr.Parent.Name).As(parentTableName),
+			goqu.On(
+				goqu.L("? = ?",
+					goqu.I(parentTableName+".cq_id"),
+					goqu.I(childTableName+"."+res.ParentMatch),
+				),
 			),
-		),
-	)
+		)
+
+		parentCounter++
+		childTableName = parentTableName
+		pr = pr.Parent
+	}
+
+	if len(d.params.AccountIDs) > 0 {
+		sel = sel.Where(goqu.Ex{parentTableName + ".account_id": d.params.AccountIDs})
+	}
+
 	return sel
 }
 
