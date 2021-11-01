@@ -66,9 +66,14 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	c := meta.(*client.Client)
 	// DescribeByoipCidrs does not work in next regions, so we ignore them.
 	if _, ok := map[string]struct{}{
-		"eu-west-3":      {},
-		"eu-north-1":     {},
 		"ap-northeast-2": {},
+		"af-south-1":     {},
+		"cn-north-1":     {},
+		"cn-northwest-1": {},
+		"eu-west-3":      {},
+		"eu-south-1":     {},
+		"eu-north-1":     {},
+		"me-south-1":     {},
 	}[c.Region]; ok {
 		return nil
 	}
