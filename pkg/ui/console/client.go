@@ -340,6 +340,9 @@ func printDiagnostics(providerName string, diags diag.Diagnostics) {
 		desc := d.Description()
 		switch d.Severity() {
 		case diag.IGNORE:
+			if !viper.GetBool("verbose") {
+				continue
+			}
 			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
 				ui.ColorProgress.Sprintf("%s", desc.Resource),
 				ui.ColorProgressBold.Sprintf("%s", d.Type()),
