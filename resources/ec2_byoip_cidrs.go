@@ -64,6 +64,14 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 
 	c := meta.(*client.Client)
+	// DescribeByoipCidrs does not work in next regions, so we ignore them.
+	if _, ok := map[string]struct{}{
+		"eu-west-3":      {},
+		"eu-north-1":     {},
+		"ap-northeast-2": {},
+	}[c.Region]; ok {
+		return nil
+	}
 	svc := c.Services().EC2
 	for {
 		response, err := svc.DescribeByoipCidrs(ctx, &config, func(options *ec2.Options) {
