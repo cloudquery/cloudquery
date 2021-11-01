@@ -272,7 +272,10 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 
 	// since api returns all the cloudtrails despite region we aggregate trails by region to get tags.
-	aggregatedTrails := aggregateCloudTrails(response.TrailList)
+	aggregatedTrails, err := aggregateCloudTrails(response.TrailList)
+	if err != nil {
+		return err
+	}
 	for region, trails := range aggregatedTrails {
 		for i := 0; i < len(trails); i += 20 {
 			end := i + 20
@@ -386,12 +389,15 @@ func getCloudTrailTagsByResourceID(id string, set []types.ResourceTag) []types.T
 	return nil
 }
 
-func aggregateCloudTrails(trails []types.Trail) map[string][]types.Trail {
+func aggregateCloudTrails(trails []types.Trail) (map[string][]types.Trail, error) {
 	resp := make(map[string][]types.Trail)
 	for _, t := range trails {
+		if t.HomeRegion == nil {
+			return nil, fmt.Errorf("got cloudtrail with HomeRegion == nil")
+		}
 		resp[*t.HomeRegion] = append(resp[*t.HomeRegion], t)
 	}
-	return resp
+	return resp, nil
 }
 
 type CloudTrailWrapper struct {
