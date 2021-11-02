@@ -60,6 +60,9 @@ type Policy struct {
 
 	// SubPath is the policy sub-path.
 	SubPath string
+
+	// LocalPath is the policy local path.
+	LocalPath string
 }
 
 // Manager is the interface that describes the interaction with the policy hub.
@@ -177,46 +180,62 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *Policy) error {
 // RunPolicy runs the given policy.
 func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error) {
 	p := execReq.Policy
-
-	// Check if given policy exists in our policy folder
+	var policyFilePath, policyFolder string
 	osFs := file.NewOsFs()
-	orgPolicyStr := filepath.Join(p.Organization, p.Repository)
-	repoFolder := filepath.Join(m.policyDirectory, orgPolicyStr)
-	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
-		return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
-	}
-	m.logger.Debug("found repo folder", "path", repoFolder)
 
-	if !execReq.SkipVersioning {
-		// Checkout policy repository tag
-		if err := p.checkoutPolicyVersion(repoFolder); err != nil {
-			return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+	if p.LocalPath != "" {
+		// Run local path policy
+		// Make sure policy file exists
+		for _, extensionName := range defaultSupportedPolicyExtensions {
+			currPolicyFile := filepath.Join(p.LocalPath, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
+			if _, err := osFs.Stat(currPolicyFile); err == nil {
+				policyFilePath = currPolicyFile
+				policyFolder = p.LocalPath
+				break
+			}
 		}
-	}
+		if policyFilePath == "" {
+			return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, p.LocalPath)
+		}
+	} else {
+		// Check if given policy exists in our policy folder
+		orgPolicyStr := filepath.Join(p.Organization, p.Repository)
+		repoFolder := filepath.Join(m.policyDirectory, orgPolicyStr)
+		if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
+			return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
+		}
+		m.logger.Debug("found repo folder", "path", repoFolder)
 
-	// If repository path was specified, also check if that exists
-	policyFolder := repoFolder
-	if p.RepositoryPath != "" {
-		policyFolder = filepath.Join(repoFolder, p.RepositoryPath)
-		if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
-			return nil, fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
+		if !execReq.SkipVersioning {
+			// Checkout policy repository tag
+			if err := p.checkoutPolicyVersion(repoFolder); err != nil {
+				return nil, fmt.Errorf("failed to checkout repository tag: %s", err.Error())
+			}
 		}
-		m.logger.Debug("internal repo folder set", "path", policyFolder)
-	}
 
-	// Make sure policy file exists
-	var policyFilePath string
-	for _, extensionName := range defaultSupportedPolicyExtensions {
-		currPolicyFile := filepath.Join(policyFolder, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
-		if _, err := osFs.Stat(currPolicyFile); err == nil {
-			policyFilePath = currPolicyFile
-			break
+		// If repository path was specified, also check if that exists
+		policyFolder := repoFolder
+		if p.RepositoryPath != "" {
+			policyFolder = filepath.Join(repoFolder, p.RepositoryPath)
+			if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
+				return nil, fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
+			}
+			m.logger.Debug("internal repo folder set", "path", policyFolder)
 		}
+
+		// Make sure policy file exists
+		for _, extensionName := range defaultSupportedPolicyExtensions {
+			currPolicyFile := filepath.Join(policyFolder, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
+			if _, err := osFs.Stat(currPolicyFile); err == nil {
+				policyFilePath = currPolicyFile
+				break
+			}
+		}
+		if policyFilePath == "" {
+			return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, policyFolder)
+		}
+		m.logger.Debug("policy file found", "path", policyFilePath)
 	}
-	if policyFilePath == "" {
-		return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, policyFolder)
-	}
-	m.logger.Debug("policy file found", "path", policyFilePath)
 
 	policies, err := m.readPolicy(policyFilePath, policyFolder)
 	if err != nil {
