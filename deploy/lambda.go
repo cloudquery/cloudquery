@@ -99,7 +99,7 @@ func Policy(ctx context.Context, cfg *config.Config) error {
 		return fmt.Errorf("unable to create client: %w", err)
 	}
 	err = c.RunPolicy(ctx, client.PolicyRunRequest{
-		Args:          []string{queryPath},
+		Remote:        queryPath,
 		StopOnFailure: false,
 		OutputPath:    outputPath,
 	})
