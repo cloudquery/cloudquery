@@ -188,14 +188,21 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 		// Make sure policy file exists
 		for _, extensionName := range defaultSupportedPolicyExtensions {
 			currPolicyFile := filepath.Join(p.LocalPath, fmt.Sprintf("%s.%s", defaultPolicyFileName, extensionName))
+			policyFolder = p.LocalPath
+
+			if strings.HasSuffix(p.LocalPath, ".hcl") || strings.HasSuffix(p.LocalPath, ".json") {
+				currPolicyFile = p.LocalPath
+				pathParts := strings.Split(p.LocalPath, "/")
+				policyFolder = strings.Join(pathParts[:len(pathParts) - 1], "/")
+			}
+
 			if _, err := osFs.Stat(currPolicyFile); err == nil {
 				policyFilePath = currPolicyFile
-				policyFolder = p.LocalPath
 				break
 			}
 		}
 		if policyFilePath == "" {
-			return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, p.LocalPath)
+			return nil, fmt.Errorf("failed to find policy file; not found in %s", p.LocalPath)
 		}
 	} else {
 		// Check if given policy exists in our policy folder
