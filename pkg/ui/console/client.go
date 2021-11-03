@@ -172,6 +172,11 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
+
+	if req.ModConfigPath == "" {
+		ui.ColorizedOutput(ui.ColorDebug, "Using built-in drift config\n")
+	}
+
 	runReq := client.ModuleRunRequest{
 		Name:          req.Name,
 		Params:        req.Params,
@@ -230,14 +235,14 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	return nil
 }
 
-func (c Client) GenModuleConfig(ctx context.Context, args []string) {
-	configPath, err := c.c.GenModuleConfig(ctx, args)
+func (c Client) GenModuleConfig(ctx context.Context, modName string) {
+	configPath, err := c.c.GenModuleConfig(ctx, modName)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
 		return
 	}
-	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", *configPath)
+	ui.ColorizedOutput(ui.ColorSuccess, "Configuration generated successfully to %s\n", *configPath)
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {

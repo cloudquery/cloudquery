@@ -634,8 +634,8 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*modu
 	return output, nil
 }
 
-func (c *Client) GenModuleConfig(ctx context.Context, args []string) (*string, error) {
-	configPath := args[0] + ".hcl"
+func (c *Client) GenModuleConfig(ctx context.Context, modName string) (*string, error) {
+	configPath := modName + ".hcl"
 
 	fs := afero.NewOsFs()
 	if info, _ := fs.Stat(configPath); info != nil {
@@ -643,7 +643,7 @@ func (c *Client) GenModuleConfig(ctx context.Context, args []string) (*string, e
 	}
 
 	mgr := module.NewManager(c.pool, c.Logger)
-	contents, err := mgr.ReadConfig(args[0])
+	contents, err := mgr.ReadConfig(modName)
 	if err != nil {
 		return nil, err
 	}
