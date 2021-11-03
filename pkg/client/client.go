@@ -94,6 +94,9 @@ type PolicyRunRequest struct {
 	// SubPath is the optional sub path for sub policy/query execution only.
 	SubPath string
 
+	// Local apth is the given local policy from the run command.
+	LocalPath string
+
 	// OutputPath is the output path for policy execution output.
 	OutputPath string
 
@@ -539,11 +542,23 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	// Parse input args
-	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
-	if err != nil {
-		return err
+	p := &policy.Policy{}
+
+	switch {
+	case req.LocalPath != "":
+		c.Logger.Info("Running local policy", "args", req.LocalPath)
+		p.LocalPath = req.LocalPath
+		p.SubPath = req.SubPath
+	default:
+		c.Logger.Info("Running remote policy", "args", req.Args)
+		// Parse input args
+		parsedPolicy, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
+		p = parsedPolicy
+		if err != nil {
+			return err
+		}
 	}
+
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
 	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, SkipVersioning: req.SkipVersioning, UpdateCallback: req.RunCallBack})
 	if err != nil {

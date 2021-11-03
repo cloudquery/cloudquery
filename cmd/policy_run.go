@@ -30,6 +30,9 @@ var (
   cloudquery policy download aws-cis-1.2.0
   cloudquery policy run --skip-download aws-cis-1.2.0
 
+  # Run from local path
+  cloudquery policy run awesome-policy --local-path ~/path/to/my-awesome-policy
+
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -40,15 +43,16 @@ var (
 				return err
 			}
 			defer c.Client().Close()
-			if !skipDownload {
+			if localPath == "" && !skipDownload {
 				if err = c.DownloadPolicy(ctx, args); err != nil {
 					return err
 				}
 			}
-			return c.RunPolicy(ctx, args, subPath, outputPath, stopOnFailure, skipVersioning)
+			return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
 		},
 	}
 	skipDownload   bool
+	localPath      string
 	subPath        string
 	outputPath     string
 	stopOnFailure  bool
@@ -58,6 +62,7 @@ var (
 func init() {
 	flags := policyRunCmd.Flags()
 	flags.BoolVar(&skipDownload, "skip-download", false, "Skip downloading the policy repository")
+	flags.StringVar(&localPath, "local-path", "", "Use local path")
 	flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
 	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
 	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
