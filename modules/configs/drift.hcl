@@ -19,9 +19,6 @@ module "drift" {
             ignore_attributes = ["cq_id", "meta", "creation_date"]
             deep = false
         }
-
-        # "source" directive evaluates the given config or statement
-        source = provider.ModuleHcl
     }
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified

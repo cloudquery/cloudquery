@@ -188,8 +188,8 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		return nil
 	}
 
-	if out.Error != "" {
-		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.Error)
+	if out.ErrorMsg != "" {
+		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
 		return nil
 	}
 

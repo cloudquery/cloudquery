@@ -29,6 +29,7 @@ type ExecuteRequest struct {
 }
 
 type ExecutionResult struct {
-	Result interface{} `json:"result"`
-	Error  string      `json:"error,omitempty"`
+	Result   interface{} `json:"result"`
+	Error    error       `json:"-"`
+	ErrorMsg string      `json:"error,omitempty"`
 }

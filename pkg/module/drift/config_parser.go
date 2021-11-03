@@ -123,8 +123,6 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 						continue
 					}
 
-					// TODO handle source?
-
 					baseConfig.WildProvider = prov
 					continue
 				}
@@ -141,16 +139,6 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 						})
 						continue
 					}
-				}
-
-				if prov.Source != "" {
-					diags = append(diags, &hcl.Diagnostic{
-						Severity: hcl.DiagError,
-						Summary:  `Invalid attribute`,
-						Detail:   `source attribute is only valid for "*" providers`,
-						Subject:  &block.DefRange,
-					})
-					continue
 				}
 
 				baseConfig.Providers = append(baseConfig.Providers, prov)
@@ -196,10 +184,6 @@ var (
 			},
 		},
 		Attributes: []hcl.AttributeSchema{
-			{
-				Name:     "source", // only valid for the "*" provider
-				Required: false,
-			},
 			{
 				Name:     "version", // only valid for non-"*" providers
 				Required: false,

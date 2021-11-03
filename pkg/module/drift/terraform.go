@@ -14,7 +14,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *provResource, resName string, iacData *IACConfig) (*Result, error) {
+func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
 		IAC:         "Terraform",
 		Different:   nil,
@@ -24,12 +24,12 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		ListManaged: d.params.ListManaged,
 	}
 
-	resData := d.resMap[resName]
-
 	tfProvider := d.params.TfProvider
 	if tfProvider == "" {
 		tfProvider = cloudName
 	}
+
+	resData := resources[resName]
 
 	tfAttributes := make([]string, len(resData.Attributes))
 	tfQueryItems := make([]string, len(resData.Attributes))
@@ -74,8 +74,8 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		Where(goqu.Ex{"r.mode": goqu.V(d.params.TfMode)}).
 		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)})
 
-	if d.params.TfBackendName != "" {
-		tfSelect = tfSelect.Where(goqu.Ex{"d.backend_name": goqu.V(d.params.TfBackendName)})
+	if len(d.params.TfBackendNames) > 0 {
+		tfSelect = tfSelect.Where(goqu.Ex{"d.backend_name": d.params.TfBackendNames})
 	}
 
 	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
@@ -88,33 +88,33 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 
 	if !deepMode {
 		// Get equal resources
-		res.Equal, err = d.terraformEqualResources(ctx, conn, cloudTable, resData, tfSelect, matchExp)
+		res.Equal, err = d.terraformEqualResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	// Get missing resources
-	res.Missing, err = d.terraformMissingResources(ctx, conn, cloudTable, resData, tfSelect, matchExp)
+	res.Missing, err = d.terraformMissingResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp)
 	if err != nil {
 		return nil, err
 	}
 
 	// Get extra resources
-	res.Extra, err = d.terraformExtraResources(ctx, conn, cloudTable, resData, tfSelect, matchExp, idExp)
+	res.Extra, err = d.terraformExtraResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp, idExp)
 	if err != nil {
 		return nil, err
 	}
 
 	if deepMode {
 		// Get different resources
-		res.Different, err = d.terraformDifferentResources(ctx, conn, cloudTable, resData, tfSelect, matchExp, idExp, cloudAttrQuery, append(res.Missing, res.Extra...))
+		res.Different, err = d.terraformDifferentResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp, idExp, cloudAttrQuery, append(res.Missing, res.Extra...))
 		if err != nil {
 			return nil, err
 		}
 
 		if d.params.Debug && len(res.Different) > 0 {
-			if err := d.terraformDebugDifferentResources(ctx, conn, cloudTable, resData, tfSelect, idExp, cloudAttrQuery, cloudName, cloudQueryItems, tfQueryItems, res.Different); err != nil {
+			if err := d.terraformDebugDifferentResources(ctx, conn, cloudTable, resName, resources, tfSelect, idExp, cloudAttrQuery, cloudName, cloudQueryItems, tfQueryItems, res.Different); err != nil {
 				return nil, err
 			}
 		}
@@ -122,7 +122,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 
 	if deepMode {
 		// Get deepequal resources
-		res.DeepEqual, err = d.terraformDeepEqualResources(ctx, conn, cloudTable, resData, tfSelect, matchExp, cloudAttrQuery)
+		res.DeepEqual, err = d.terraformDeepEqualResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp, cloudAttrQuery)
 		if err != nil {
 			return nil, err
 		}
@@ -131,34 +131,34 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	return res, nil
 }
 
-func (d *Drift) terraformEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
+func (d *Drift) terraformEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resData)
+	q = d.handleSubresource(q, cloudTable, resName, resources)
 	q = q.With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(matchExp)).
 		Select("tf.instance_id")
 	return d.queryIntoResourceList(ctx, conn, q, "equals", nil)
 }
 
-func (d *Drift) terraformMissingResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
+func (d *Drift) terraformMissingResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resData)
+	q = d.handleSubresource(q, cloudTable, resName, resources)
 	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
 		Select("tf.instance_id").Where(goqu.Ex{"c.cq_id": nil})
 	return d.queryIntoResourceList(ctx, conn, q, "missing", nil)
 }
 
-func (d *Drift) terraformExtraResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp exp.Expression) (ResourceList, error) {
+func (d *Drift) terraformExtraResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp exp.Expression) (ResourceList, error) {
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resData)
+	q = d.handleSubresource(q, cloudTable, resName, resources)
 	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
 		Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
-	q = d.handleFilters(q, resData)
+	q = d.handleFilters(q, resources[resName])
 	return d.queryIntoResourceList(ctx, conn, q, "extras", nil)
 }
 
-func (d *Drift) terraformDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp goqu.Expression, cloudAttrQuery exp.LiteralExpression, ignoreRes ResourceList) (ResourceList, error) {
+func (d *Drift) terraformDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp goqu.Expression, cloudAttrQuery exp.LiteralExpression, ignoreRes ResourceList) (ResourceList, error) {
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resData)
+	q = d.handleSubresource(q, cloudTable, resName, resources)
 	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"),
 		goqu.On(
 			matchExp,
@@ -171,9 +171,9 @@ func (d *Drift) terraformDifferentResources(ctx context.Context, conn *pgxpool.C
 	return d.queryIntoResourceList(ctx, conn, q, "differs", ignoreRes)
 }
 
-func (d *Drift) terraformDeepEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, cloudAttrQuery exp.LiteralExpression) (ResourceList, error) {
+func (d *Drift) terraformDeepEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, cloudAttrQuery exp.LiteralExpression) (ResourceList, error) {
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resData)
+	q = d.handleSubresource(q, cloudTable, resName, resources)
 	q = q.With("tf", tfSelect).Join(goqu.T("tf"),
 		goqu.On(
 			matchExp,
@@ -185,7 +185,9 @@ func (d *Drift) terraformDeepEqualResources(ctx context.Context, conn *pgxpool.C
 	return d.queryIntoResourceList(ctx, conn, q, "deepequal", nil)
 }
 
-func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *provResource, resData *ResourceConfig, tfSelect *goqu.SelectDataset, idExp goqu.Expression, cloudAttrQuery exp.LiteralExpression, cloudName string, cloudQueryItems, tfQueryItems []string, differentIDs ResourceList) error {
+func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, idExp goqu.Expression, cloudAttrQuery exp.LiteralExpression, cloudName string, cloudQueryItems, tfQueryItems []string, differentIDs ResourceList) error {
+	resData := resources[resName]
+
 	// get tf side
 	sel := goqu.Dialect("postgres").From("tf").With("tf", tfSelect).Select(goqu.I("tf.instance_id").As("id"), goqu.I("tf.attlist").As("attlist")).Where(
 		goqu.Ex{
@@ -200,7 +202,7 @@ func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxp
 	sel = goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist")).Where(
 		exp.NewBooleanExpression(exp.InOp, goqu.I("c."+resData.Identifiers[0]), differentIDs.IDs()),
 	)
-	sel = d.handleSubresource(sel, cloudTable, resData)
+	sel = d.handleSubresource(sel, cloudTable, resName, resources)
 	cloudAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-cloud")
 	if err != nil {
 		return err

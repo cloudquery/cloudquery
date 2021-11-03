@@ -2,19 +2,19 @@ package drift
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgconn"
+	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -24,14 +24,10 @@ type Drift struct {
 
 	params RunParams
 
-	tableMap map[string]*provResource   // provider table names vs. table defs, initiated on first use
-	resMap   map[string]*ResourceConfig // resource name vs. interpreted/finalized config
+	tableMap map[string]resourceMap // one map per provider, initiated on first use
 }
 
-type provResource struct {
-	*schema.Table
-	Parent *provResource
-}
+type resourceMap map[string]*traversedTable // table names vs. table definitions
 
 type iacProvider string
 
@@ -66,113 +62,68 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	d.params = req.Params.(RunParams)
 
 	ret := &module.ExecutionResult{}
-	var err error
-	ret.Result, err = d.run(ctx, req)
-	if err != nil {
-		ret.Error = err.Error()
+	ret.Result, ret.Error = d.run(ctx, req)
+	if ret.Error != nil {
+		ret.ErrorMsg = ret.Error.Error()
 	}
 
 	return ret
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, error) {
-	var iacProv *cqproto.GetProviderSchemaResponse
-	for _, p := range req.Providers {
-		if p.Name == string(iacTerraform) {
-			if iacProv != nil {
-				return nil, fmt.Errorf("only single IAC provider is supported at a time")
-			}
-			iacProv = p
-		}
-	}
-	if iacProv == nil {
-		return nil, fmt.Errorf("no IAC provider detected, can't continue")
+	iacProv, err := getIACProvider(req.Providers)
+	if err != nil {
+		return nil, err
 	}
 
 	var resList Results
 
 	for _, cfg := range d.config.Providers {
-		if cfg.Name == iacProv.Name {
+		schema, err := d.findProvider(cfg, req.Providers, iacProv.Name)
+		if err != nil {
+			return nil, err
+		} else if schema == nil {
 			continue
 		}
 
-		var found bool
-		for _, prov := range req.Providers {
-			ok, diags := d.applyProvider(cfg, prov)
-			if diags.HasErrors() {
-				return nil, diags
+		d.logger.Debug("Processing for provider", "provider", schema.Name, "config", cfg)
+
+		resources := cfg.interpolatedResourceMap(iacProv.Name, d.logger)
+
+		// Always process in the same order so both results and error messages are consistent
+		for _, resName := range cfg.resourceKeys() {
+			res := resources[resName]
+			if res == nil {
+				continue // skipped
 			}
-			if !ok {
+			pr := d.lookupResource(resName, schema)
+			if pr == nil {
+				d.logger.Warn("Skipping resource, lookup failed", "resource", resName)
 				continue
 			}
 
-			found = true
+			d.logger.Info("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv.Name].Type)
 
-			d.logger.Debug("Processing for provider", "provider", prov.Name, "config", cfg)
-
-			// Always process in the same order
-			resourceKeys := make([]string, 0, len(cfg.Resources))
-			for i := range cfg.Resources {
-				resourceKeys = append(resourceKeys, i)
+			// Drift per resource
+			var (
+				dres *Result
+				err  error
+			)
+			switch iacProvider(iacProv.Name) {
+			case iacTerraform:
+				dres, err = d.driftTerraform(ctx, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv.Name])
+			default:
+				err = fmt.Errorf("no suitable handler found for %q", iacProv.Name)
 			}
-			sort.Strings(resourceKeys)
-
-			d.resMap = make(map[string]*ResourceConfig, len(resourceKeys))
-			for _, resName := range resourceKeys {
-				res := cfg.Resources[resName]
-				if res == nil {
-					continue // skipped
-				}
-				iacData := res.IAC[iacProv.Name]
-				if iacData == nil {
-					d.logger.Debug("Will skip resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProv.Name)
-					continue
-				}
-
-				res.finalInterpret()
-				d.resMap[resName] = res
+			if err != nil {
+				return nil, fmt.Errorf("drift failed for (%s:%s): %w", schema.Name, resName, err)
 			}
 
-			for _, resName := range resourceKeys {
-				res := d.resMap[resName]
-				if res == nil {
-					continue // skipped
-				}
-				pr := d.lookupResource(resName, prov)
-				if pr == nil {
-					continue
-				}
-
-				iacData := res.IAC[iacProv.Name]
-
-				d.logger.Info("Running for provider and resource", "provider", prov.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", iacData.Type)
-
-				// Drift per resource
-				var (
-					dres *Result
-					err  error
-				)
-				switch iacProvider(iacProv.Name) {
-				case iacTerraform:
-					dres, err = d.driftTerraform(ctx, req.Conn, prov.Name, pr, resName, iacData)
-				default:
-					return nil, fmt.Errorf("no suitable handler found for %q", iacProv.Name)
-				}
-				if err != nil {
-					return nil, fmt.Errorf("drift failed for (%s:%s): %w", prov.Name, resName, err)
-				} else if dres != nil {
-					dres.Provider = prov.Name
-					dres.ResourceType = resName
-					resList = append(resList, dres)
-				}
-			}
-
-			break
+			dres.Provider = schema.Name
+			dres.ResourceType = resName
+			resList = append(resList, dres)
 		}
 
-		if !found {
-			return nil, fmt.Errorf("no suitable provider found for %q", cfg.Name)
-		}
 	}
 
 	return resList, nil
@@ -187,9 +138,10 @@ func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, s
 
 	var list []*string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
-		// ERROR: relation %q does not exist
-		if strings.Contains(err.Error(), "SQLSTATE 42P01") && strings.Contains(err.Error(), "does not exist") {
-			return nil, fmt.Errorf("terraform provider tables don't exist: Did you run `cloudquery fetch`?")
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == pgerrcode.UndefinedTable {
+			// ERROR: relation %q does not exist
+			return nil, fmt.Errorf("terraform provider tables don't exist: Did you run `cloudquery fetch`?%q", pgErr.TableName)
 		}
 
 		d.logger.Warn("query failed with error", "query", query, "args", args, "type", what, "error", err)
@@ -243,7 +195,8 @@ func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, 
 	return ret, nil
 }
 
-func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res *ResourceConfig) *goqu.SelectDataset {
+func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resName string, resources map[string]*ResourceConfig) *goqu.SelectDataset {
+	res := resources[resName]
 	if res.ParentMatch == "" {
 		if len(d.params.AccountIDs) > 0 {
 			sel = sel.Where(goqu.Ex{"c.account_id": d.params.AccountIDs})
@@ -262,7 +215,7 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *provResource, res
 	parentTableName := "parent"
 	childTableName := "c"
 	for pr.Parent != nil {
-		res = d.resMap[pr.Name]
+		res = resources[pr.Name]
 		if res == nil {
 			d.logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
 			return sel // FIXME we're skipping the account_id filter here by returning

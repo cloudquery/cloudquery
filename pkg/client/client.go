@@ -625,7 +625,7 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*modu
 		return nil, err
 	}
 
-	if output.Error != "" {
+	if output.Error != nil {
 		c.Logger.Error("Module execution failed with error", "error", output.Error)
 	} else {
 		c.Logger.Info("Module execution finished", "data", output)

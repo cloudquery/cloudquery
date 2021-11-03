@@ -8,10 +8,10 @@ import (
 type RunParams struct {
 	Debug bool
 
-	TfBackendName, TfMode, TfProvider string
-	ForceDeep                         bool
-	ListManaged                       bool
-	AccountIDs                        []string
+	TfMode, TfProvider         string
+	ForceDeep                  bool
+	ListManaged                bool
+	TfBackendNames, AccountIDs []string
 }
 
 type Resource struct {

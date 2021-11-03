@@ -2,9 +2,10 @@ package drift
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -19,7 +20,6 @@ type ProviderConfig struct {
 
 	Name          string                     `hcl:"name,label"`
 	Resources     map[string]*ResourceConfig `hcl:"resource,block"`
-	Source        string                     `hcl:"source,optional"`
 	Version       string                     `hcl:"version,optional"`
 	SkipResources []string                   `hcl:"skip_resources,optional"`
 
@@ -104,6 +104,60 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 }
 
+func (prov *ProviderConfig) resourceKeys() []string {
+	k := make([]string, 0, len(prov.Resources))
+	for i := range prov.Resources {
+		k = append(k, i)
+	}
+	sort.Strings(k)
+	return k
+}
+
+func (prov *ProviderConfig) interpolatedResourceMap(iacProvider string, logger hclog.Logger) map[string]*ResourceConfig {
+	resourceKeys := prov.resourceKeys()
+	ret := make(map[string]*ResourceConfig, len(resourceKeys))
+
+	for _, resName := range resourceKeys {
+		res := prov.Resources[resName]
+		if res == nil {
+			continue // skipped
+		}
+		iacData := res.IAC[iacProvider]
+		if iacData == nil {
+			logger.Debug("Will skip resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProvider)
+			continue
+		}
+
+		// Remove each element in IgnoredIdentifiers from Identifiers
+		// This has to be done after all apply/macro work has finished
+
+		// apply res.IgnoreIdentifiers: remove matching identifiers from res.Identifiers
+		res.Identifiers = removeIgnored(res.Identifiers, res.IgnoreIdentifiers)
+		// apply res.IgnoreAttributes: remove matching identifiers from res.Attributes
+		res.Attributes = removeIgnored(res.Attributes, res.IgnoreAttributes)
+
+		ret[resName] = res
+	}
+
+	return ret
+}
+
+func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse, except string) (*cqproto.GetProviderSchemaResponse, error) {
+	if except != "" && cfg.Name == except {
+		return nil, nil
+	}
+
+	for _, schema := range schemas {
+		if ok, diags := d.applyProvider(cfg, schema); diags.HasErrors() {
+			return nil, diags
+		} else if ok {
+			return schema, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no suitable provider found for %q", cfg.Name)
+}
+
 func mergeDedupSlices(a ...[]string) []string {
 	dupes := make(map[string]struct{})
 	for i := range a {
@@ -116,15 +170,6 @@ func mergeDedupSlices(a ...[]string) []string {
 		ret = append(ret, k)
 	}
 	return ret
-}
-
-// finalInterpret removes each element in IgnoredIdentifiers from Identifiers
-// this has to be done after all apply/macro work has finished
-func (res *ResourceConfig) finalInterpret() {
-	// apply res.IgnoreIdentifiers: remove matching identifiers from res.Identifiers
-	res.Identifiers = removeIgnored(res.Identifiers, res.IgnoreIdentifiers)
-	// apply res.IgnoreAttributes: remove matching identifiers from res.Attributes
-	res.Attributes = removeIgnored(res.Attributes, res.IgnoreAttributes)
 }
 
 func removeIgnored(list []string, ignored []string) []string {
@@ -211,31 +256,14 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	return true, diags
 }
 
-func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *provResource {
+func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *traversedTable {
 	if d.tableMap == nil {
-		var setTableMap func(res *schema.Table, parent *provResource)
-		setTableMap = func(res *schema.Table, parent *provResource) {
-			d.tableMap[res.Name] = &provResource{
-				Table:  res,
-				Parent: parent,
-			}
-			for _, rel := range res.Relations {
-				setTableMap(rel, d.tableMap[res.Name])
-			}
-		}
-
-		d.tableMap = make(map[string]*provResource)
-		for resId, res := range prov.ResourceTables {
-			d.tableMap[resId] = &provResource{Table: res}
-			setTableMap(res, nil)
-		}
+		d.tableMap = make(map[string]resourceMap)
 	}
 
-	tbl, ok := d.tableMap[resName]
-	if !ok {
-		d.logger.Warn("Skipping resource, not found in ResourceTables", "resource", resName)
-		return nil
+	if d.tableMap[prov.Name] == nil {
+		d.tableMap[prov.Name] = traverseResourceTable(prov.ResourceTables)
 	}
 
-	return tbl
+	return d.tableMap[prov.Name][resName]
 }
