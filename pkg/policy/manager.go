@@ -193,7 +193,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 			if strings.HasSuffix(p.LocalPath, ".hcl") || strings.HasSuffix(p.LocalPath, ".json") {
 				currPolicyFile = p.LocalPath
 				pathParts := strings.Split(p.LocalPath, "/")
-				policyFolder = strings.Join(pathParts[:len(pathParts) - 1], "/")
+				policyFolder = strings.Join(pathParts[:len(pathParts)-1], "/")
 			}
 
 			if _, err := osFs.Stat(currPolicyFile); err == nil {
