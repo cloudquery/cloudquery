@@ -105,8 +105,8 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
-		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: Total Resources fetched: %d ⚠️ Warnings: %d ❌ Errors: %d",
-			summary.ProviderName, summary.TotalResourcesFetched,
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d",
+			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
