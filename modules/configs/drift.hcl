@@ -110,7 +110,7 @@ module "drift" {
             }
         }
 
-        # TODO aws_apigateway_rest_api_gateway_responses (no PKs)
+        # TODO: aws_apigateway_rest_api_gateway_responses (no PKs)
 
         resource "aws_apigateway_rest_api_models" {
             iac {
@@ -128,7 +128,7 @@ module "drift" {
             }
         }
 
-        # TODO aws_apigateway_rest_api_resources
+        # TODO: aws_apigateway_rest_api_resources
 
         resource "aws_apigateway_rest_api_stages" {
             identifiers = [ sql("CONCAT('ags-',parent.id,'-',c.stage_name)") ]
@@ -148,7 +148,7 @@ module "drift" {
             }
         }
 
-        # TODO aws_apigateway_usage_plan_api_stages
+        # TODO: aws_apigateway_usage_plan_api_stages
 
         resource "aws_apigateway_usage_plan_keys" {
             iac {
@@ -331,7 +331,7 @@ module "drift" {
         }
 
         resource "cloudwatchlogs.filters" {
-            identifiers = [ "name" ] # TODO ignored "log_group_name" ?
+            identifiers = [ "name" ] # TODO: ignored "log_group_name" ?
             iac {
                 terraform {
                     type = "aws_cloudwatch_log_metric_filter"
@@ -389,7 +389,7 @@ module "drift" {
             }
         }
 
-        # TODO aws_directconnect_connection_mac_sec_keys (no data in tests)
+        # TODO: aws_directconnect_connection_mac_sec_keys (no data in tests)
 
         resource "directconnect.gateways" {
             iac {
@@ -450,7 +450,7 @@ module "drift" {
             }
         }
 
-        # TODO aws_ec2_ebs_volume_attachments
+        # TODO: aws_ec2_ebs_volume_attachments
 
         resource "ec2.flow_logs" {
             iac {
@@ -511,7 +511,7 @@ module "drift" {
         }
 
 #        resource "aws_ec2_network_acl_entries" {
-#            # TODO no CRC32 function, no data in tests to verify
+#            # TODO: no CRC32 function, no data in tests to verify
 #            identifiers = [ sql("CONCAT('nacl-',(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
 #            filters = [ "((c.cidr_block='0.0.0.0/0' AND c.rule_number=32767) OR (c.ipv6_cidr_block=':/0' AND c.rule_number=32768)) AND c.rule_action='deny' AND c.protocol='-1'" ]
 #

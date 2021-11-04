@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -294,6 +295,23 @@ func (d *Drift) handleIdentifier(identifiers []string) (exp.Expression, exp.Expr
 	}
 
 	return goqu.I("c." + identifiers[0]), goqu.I("c." + identifiers[0]).As("id"), nil
+}
+
+func getIACProvider(provs []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
+	var iacProv *cqproto.GetProviderSchemaResponse
+	for _, p := range provs {
+		if p.Name == string(iacTerraform) {
+			if iacProv != nil {
+				return nil, fmt.Errorf("only single IAC provider is supported at a time")
+			}
+			iacProv = p
+		}
+	}
+	if iacProv == nil {
+		return nil, fmt.Errorf("no IAC provider detected, can't continue")
+	}
+
+	return iacProv, nil
 }
 
 // Make sure we satisfy the interface

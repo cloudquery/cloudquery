@@ -1,28 +1,8 @@
 package drift
 
 import (
-	"fmt"
-
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
-
-func getIACProvider(provs []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
-	var iacProv *cqproto.GetProviderSchemaResponse
-	for _, p := range provs {
-		if p.Name == string(iacTerraform) {
-			if iacProv != nil {
-				return nil, fmt.Errorf("only single IAC provider is supported at a time")
-			}
-			iacProv = p
-		}
-	}
-	if iacProv == nil {
-		return nil, fmt.Errorf("no IAC provider detected, can't continue")
-	}
-
-	return iacProv, nil
-}
 
 type traversedTable struct {
 	*schema.Table
