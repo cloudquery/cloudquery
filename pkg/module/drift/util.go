@@ -30,8 +30,7 @@ type traversedTable struct {
 }
 
 func (t *traversedTable) Resolvers(name string, builtin bool) []string {
-	// nolint: prealloc
-	var colNames []string
+	colNames := make([]string, 0, len(t.Table.Columns))
 	for _, c := range t.Table.Columns {
 		m := c.Meta()
 		if m == nil || m.Resolver == nil || m.Resolver.Name != name || m.Resolver.Builtin != builtin {
@@ -84,7 +83,7 @@ func (t *traversedTable) NonCQColumns() []string {
 		igm[ig[i]] = struct{}{}
 	}
 
-	var cols []string
+	cols := make([]string, 0, len(t.Table.Columns))
 	for _, c := range t.Table.Columns {
 		if _, ok := igm[c.Name]; ok {
 			continue
@@ -103,7 +102,7 @@ func (t *traversedTable) NonCQPrimaryKeys() []string {
 		igm[ig[i]] = struct{}{}
 	}
 
-	var pks []string
+	pks := make([]string, 0, len(t.Table.Options.PrimaryKeys))
 	for _, pk := range t.Table.Options.PrimaryKeys {
 		if _, ok := igm[pk]; ok {
 			continue
