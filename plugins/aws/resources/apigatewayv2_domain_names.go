@@ -7,8 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
-	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
+	"github.com/cloudquery/cq-provider-aws/client"
+	apigatewayv2fix "github.com/cloudquery/cq-provider-aws/resources/forks/apigatewayv2"
 )
 
 func Apigatewayv2DomainNames() *schema.Table {
@@ -167,13 +169,16 @@ func Apigatewayv2DomainNames() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+
+func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	var config apigatewayv2.GetDomainNamesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetDomainNames(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
+		response, err := svc.GetDomainNames(ctx, &config, func(options *apigatewayv2.Options) {
+			options.Region = c.Region
+			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282
+			options.APIOptions = append(options.APIOptions, apigatewayv2fix.SwapGetDomainNamesOperationDeserializer)
 		})
 
 		if err != nil {
@@ -187,7 +192,8 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-func fetchApigatewayv2DomainNameConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+
+func fetchApigatewayv2DomainNameConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r, ok := parent.Item.(types.DomainName)
 	if !ok {
 		return fmt.Errorf("expected DomainName but got %T", r)
@@ -195,6 +201,7 @@ func fetchApigatewayv2DomainNameConfigurations(ctx context.Context, meta schema.
 	res <- r.DomainNameConfigurations
 	return nil
 }
+
 func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	r, ok := parent.Item.(types.DomainName)
 	if !ok {

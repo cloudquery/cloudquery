@@ -4,6 +4,7 @@ run:
     - bin
     - docs
     - client/mocks
+    - resources/forks
   timeout: 3m
   build-tags:
     - all
