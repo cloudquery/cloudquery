@@ -237,8 +237,8 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 		for k, v := range map[placeholder][]string{
 			placeholderResourceKey:             {resName},
 			placeholderResourceName:            {tbl.Name},
-			placeholderResourceColumnNames:     tbl.ColumnNames(),
-			placeholderResourceOptsPrimaryKeys: tbl.PrimaryKeys(),
+			placeholderResourceColumnNames:     tbl.NonCQColumns(),
+			placeholderResourceOptsPrimaryKeys: tbl.NonCQPrimaryKeys(),
 		} {
 			res.Identifiers = replacePlaceholderInSlice(k, v, res.Identifiers)
 			res.IgnoreIdentifiers = replacePlaceholderInSlice(k, v, res.IgnoreIdentifiers)

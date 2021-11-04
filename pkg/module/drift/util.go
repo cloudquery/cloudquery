@@ -30,12 +30,10 @@ type traversedTable struct {
 }
 
 func (t *traversedTable) Resolvers(name string, builtin bool) []string {
+	// nolint: prealloc
 	var colNames []string
 	for _, c := range t.Table.Columns {
 		m := c.Meta()
-		//if m != nil && m.Resolver != nil {
-		//	fmt.Println("===", m.Resolver.Name)
-		//}
 		if m == nil || m.Resolver == nil || m.Resolver.Name != name || m.Resolver.Builtin != builtin {
 			continue
 		}
@@ -58,6 +56,62 @@ func (t *traversedTable) ParentIDColumn() string {
 		return ""
 	}
 	return cols[0]
+}
+
+// AutoIgnoreColumns only returns columns that are cq-specific and should be ignored when drifting, such as parent resolvers, regions or account IDs
+func (t *traversedTable) AutoIgnoreColumns() []string {
+	var colNames []string
+	for _, c := range t.Table.Columns {
+		m := c.Meta()
+		if m == nil || m.Resolver == nil {
+			continue
+		}
+		switch m.Resolver.Name {
+		case "schema.ParentIdResolver",
+			"github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount",
+			"github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion":
+			colNames = append(colNames, c.Name)
+		}
+	}
+	return colNames
+}
+
+// NonCQColumns returns a list of columns with autoignore applied
+func (t *traversedTable) NonCQColumns() []string {
+	ig := t.AutoIgnoreColumns()
+	igm := make(map[string]struct{}, len(ig))
+	for i := range ig {
+		igm[ig[i]] = struct{}{}
+	}
+
+	var cols []string
+	for _, c := range t.Table.Columns {
+		if _, ok := igm[c.Name]; ok {
+			continue
+		}
+		cols = append(cols, c.Name)
+	}
+
+	return cols
+}
+
+// NonCQPrimaryKeys returns primary keys with autoignore applied
+func (t *traversedTable) NonCQPrimaryKeys() []string {
+	ig := t.AutoIgnoreColumns()
+	igm := make(map[string]struct{}, len(ig))
+	for i := range ig {
+		igm[ig[i]] = struct{}{}
+	}
+
+	var pks []string
+	for _, pk := range t.Table.Options.PrimaryKeys {
+		if _, ok := igm[pk]; ok {
+			continue
+		}
+		pks = append(pks, pk)
+	}
+
+	return pks
 }
 
 // traverseResourceTable iterates each resource and sets up parent relationships, returning a traversedTable map with parents set.

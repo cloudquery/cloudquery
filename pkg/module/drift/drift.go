@@ -195,9 +195,7 @@ func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, 
 	return ret, nil
 }
 
-func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resName string, resources map[string]*ResourceConfig) *goqu.SelectDataset {
-	res := resources[resName]
-
+func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig) *goqu.SelectDataset {
 	parentColumn := pr.ParentIDColumn()
 
 	if parentColumn == "" {
@@ -225,6 +223,7 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 	parentCounter := 0
 	parentTableName := "parent"
 	childTableName := "c"
+	var res *ResourceConfig
 	for pr.Parent != nil {
 		res = resources[pr.Name]
 		if res == nil {

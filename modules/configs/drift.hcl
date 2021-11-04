@@ -4,19 +4,18 @@ module "drift" {
         # provider: the *provider.Provider
         # example:
         #  provider.Name is "aws"
-        # special case:
-        #  provider.ModuleHcl is the config provider supplies
 
         # resource: an entry in either provider.ResourceMap or provider.ResourceMap[].Relation
         # examples:
         #  resource.Key is the CQ name ("apigateway.api_keys")
-        #  resource.Value.ColumnNames is table column names
+        #  resource.Value.Options.PrimaryKeys is table primary key columns, with CQ relationship columns removed
+        #  resource.Value.ColumnNames is table column names, with CQ relationship columns removed
         #  resource.Value.Name is the table name ("aws_apigateway_api_keys")
 
         resource "*" {
             identifiers       = resource.Value.Options.PrimaryKeys
             attributes        = resource.Value.ColumnNames
-            ignore_attributes = ["cq_id", "meta", "creation_date"]
+            ignore_attributes = ["creation_date"]
             deep = false
         }
     }
@@ -26,7 +25,7 @@ module "drift" {
         version = ">=0.6.2"
 
         resource "*" {
-            ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id", "distribution_cq_id", "trail_cq_id", "alarm_cq_id", "filter_cq_id", "connection_cq_id", "directconnect_gateway_cq_id", "lag_cq_id" ]
+            ignore_identifiers = [ ]
             ignore_attributes = [ "unknown_fields" ]
 
             iac {
@@ -76,8 +75,6 @@ module "drift" {
         }
 
         resource "aws_apigateway_rest_api_authorizers" {
-            identifiers = [ "id" ]
-
             iac {
                 terraform {
                     type = "aws_api_gateway_authorizer"
@@ -86,8 +83,6 @@ module "drift" {
         }
 
         resource "aws_apigateway_rest_api_deployments" {
-            identifiers = [ "id" ]
-
             iac {
                 terraform {
                     type = "aws_api_gateway_deployment"
@@ -118,8 +113,6 @@ module "drift" {
         # TODO aws_apigateway_rest_api_gateway_responses (no PKs)
 
         resource "aws_apigateway_rest_api_models" {
-            identifiers = [ "id" ]
-
             iac {
                 terraform {
                     type = "aws_api_gateway_model"
@@ -128,8 +121,6 @@ module "drift" {
         }
 
         resource "aws_apigateway_rest_api_request_validators" {
-            identifiers = [ "id" ]
-
             iac {
                 terraform {
                     type = "aws_api_gateway_request_validator"
@@ -160,8 +151,6 @@ module "drift" {
         # TODO aws_apigateway_usage_plan_api_stages
 
         resource "aws_apigateway_usage_plan_keys" {
-            identifiers = [ "id" ]
-
             iac {
                 terraform {
                     type = "aws_api_gateway_usage_plan_key"
@@ -342,8 +331,7 @@ module "drift" {
         }
 
         resource "cloudwatchlogs.filters" {
-            identifiers = [ "name" ]
-
+            identifiers = [ "name" ] # TODO ignored "log_group_name" ?
             iac {
                 terraform {
                     type = "aws_cloudwatch_log_metric_filter"
@@ -783,8 +771,6 @@ module "drift" {
         }
 
         resource "aws_iam_user_access_keys" {
-#            ignore_identifiers = [ "user_cq_id" ] # Ignored in provider level
-
             iac {
                 terraform {
                     type = "aws_iam_access_key"
@@ -926,7 +912,7 @@ module "drift" {
         # Unmatched: route53.traffic_policies (no data in tests)
 
         resource "s3.buckets" {
-            ignore_attributes = ["account_id", "name"]
+            ignore_attributes = [ "name" ]
 
             iac {
                 terraform {
@@ -962,7 +948,6 @@ module "drift" {
         }
 
         resource "waf.rule_groups" {
-            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_waf_rule_group"
@@ -971,7 +956,6 @@ module "drift" {
         }
 
         resource "waf.rules" {
-            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_waf_rule"
@@ -1015,25 +999,5 @@ module "drift" {
 
     }
 
-
-}
-
-module "terraformer" {
-
-    provider "aws" {
-        tftemplate "*" {
-#            ...
-        }
-
-        tftemplate "instance" {
-#            ...
-        }
-    }
-
-    provider "gcp" {
-        tftemplate {
-#            ...
-        }
-    }
 
 }
