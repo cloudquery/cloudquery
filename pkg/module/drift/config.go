@@ -31,9 +31,8 @@ type ResourceConfig struct {
 	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
 	Attributes        []string `hcl:"attributes,optional"`
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
-	Deep              *bool    `hcl:"deep,optional"`         // Check attributes if true, otherwise just match identifiers
-	ParentMatch       string   `hcl:"parent_match,optional"` // Only valid for relational resources, name of column to match to parent's cq_id
-	Filters           []string `hcl:"filters,optional"`      // SQL filters to exclude cloud providers default resources
+	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
+	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
 
 	IAC map[string]*IACConfig
 
@@ -76,9 +75,6 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	}
 	if res.Deep == nil {
 		res.Deep = wild.Deep
-	}
-	if res.ParentMatch == "" {
-		res.ParentMatch = wild.ParentMatch
 	}
 
 	// add on ignoreIdentifiers, ignoreAttributes and filters values from wild

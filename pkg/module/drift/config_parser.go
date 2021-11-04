@@ -218,10 +218,6 @@ var (
 				Required: false,
 			},
 			{
-				Name:     "parent_match",
-				Required: false,
-			},
-			{
 				Name:     "filters",
 				Required: false,
 			},
@@ -310,9 +306,6 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if deepAttr, ok := content.Attributes["deep"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(deepAttr.Expr, ctx, &res.Deep)...)
-	}
-	if parentMatchAttr, ok := content.Attributes["parent_match"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(parentMatchAttr.Expr, ctx, &res.ParentMatch)...)
 	}
 	if filtersAttr, ok := content.Attributes["filters"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(filtersAttr.Expr, ctx, &res.Filters)...)

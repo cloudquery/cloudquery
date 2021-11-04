@@ -23,7 +23,7 @@ module "drift" {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.6.0"
+        version = ">=0.6.2"
 
         resource "*" {
             ignore_identifiers = [ "account_id", "region", "user_cq_id", "api_cq_id", "api_integration_cq_id", "api_route_cq_id", "distribution_cq_id", "trail_cq_id", "alarm_cq_id", "filter_cq_id", "connection_cq_id", "directconnect_gateway_cq_id", "lag_cq_id" ]
@@ -77,7 +77,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_authorizers" {
             identifiers = [ "id" ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -88,7 +87,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_deployments" {
             identifiers = [ "id" ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -99,7 +97,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_documentation_parts" {
             identifiers = [ sql("CONCAT(c.rest_api_id, '/', c.id)") ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -110,7 +107,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_documentation_versions" {
             identifiers = [ sql("CONCAT(c.rest_api_id, '/', c.version)") ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -123,7 +119,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_models" {
             identifiers = [ "id" ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -134,7 +129,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_request_validators" {
             identifiers = [ "id" ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -147,7 +141,6 @@ module "drift" {
 
         resource "aws_apigateway_rest_api_stages" {
             identifiers = [ sql("CONCAT('ags-',parent.id,'-',c.stage_name)") ]
-            parent_match = "rest_api_cq_id"
 
             iac {
                 terraform {
@@ -168,7 +161,6 @@ module "drift" {
 
         resource "aws_apigateway_usage_plan_keys" {
             identifiers = [ "id" ]
-            parent_match = "usage_plan_cq_id"
 
             iac {
                 terraform {
@@ -194,8 +186,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_authorizers" {
-            parent_match = "api_cq_id"
-
             iac {
                 terraform {
                     type = "aws_apigatewayv2_authorizer"
@@ -204,8 +194,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_deployments" {
-            parent_match = "api_cq_id"
-
             iac {
                 terraform {
                     type = "aws_apigatewayv2_deployment"
@@ -214,8 +202,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_integrations" {
-            parent_match = "api_cq_id"
-
             iac {
                 terraform {
                     type = "aws_apigatewayv2_integration"
@@ -224,8 +210,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_integration_responses" {
-            parent_match = "api_integration_cq_id"
-
             iac {
                 terraform {
                     type = "aws_apigatewayv2_integration_response"
@@ -234,8 +218,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_models" {
-          parent_match = "api_cq_id"
-
           iac {
             terraform {
               type = "aws_apigatewayv2_model"
@@ -244,8 +226,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_routes" {
-          parent_match = "api_cq_id"
-
           iac {
             terraform {
               type = "aws_apigatewayv2_route"
@@ -254,8 +234,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_route_responses" {
-          parent_match = "api_route_cq_id"
-
           iac {
             terraform {
               type = "aws_apigatewayv2_route_response"
@@ -264,8 +242,6 @@ module "drift" {
         }
 
         resource "aws_apigatewayv2_api_stages" {
-          parent_match = "api_cq_id"
-
           iac {
             terraform {
               type = "aws_apigatewayv2_stage"
@@ -323,7 +299,6 @@ module "drift" {
 
         resource "aws_cloudfront_distribution_origins" {
             identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
-            parent_match = "distribution_cq_id"
 
             iac {
                 terraform {
@@ -358,7 +333,6 @@ module "drift" {
 
         resource "aws_cloudwatch_alarm_metrics" {
             identifiers = [ "alarm_name" ]
-            parent_match = "alarm_cq_id"
 
             iac {
                 terraform {
@@ -439,7 +413,6 @@ module "drift" {
 
         resource "aws_directconnect_gateway_associations" {
             identifiers = [ sql("CONCAT('ga-', c.directconnect_gateway_id, c.associated_gateway_id)") ]
-            parent_match = "directconnect_gateway_cq_id"
             iac {
                 terraform {
                     type = "aws_dx_gateway_association"
@@ -553,7 +526,6 @@ module "drift" {
 #            # TODO no CRC32 function, no data in tests to verify
 #            identifiers = [ sql("CONCAT('nacl-',(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
 #            filters = [ "((c.cidr_block='0.0.0.0/0' AND c.rule_number=32767) OR (c.ipv6_cidr_block=':/0' AND c.rule_number=32768)) AND c.rule_action='deny' AND c.protocol='-1'" ]
-#            parent_match = "network_acl_cq_id"
 #
 #            iac {
 #                terraform {
@@ -802,7 +774,6 @@ module "drift" {
 
         resource "aws_iam_user_groups" {
             identifiers = [ "group_name" ]
-            parent_match = "user_cq_id" # This is required until we can read resolver names from cqproto
 
             iac {
                 terraform {
@@ -813,7 +784,6 @@ module "drift" {
 
         resource "aws_iam_user_access_keys" {
 #            ignore_identifiers = [ "user_cq_id" ] # Ignored in provider level
-            parent_match = "user_cq_id"
 
             iac {
                 terraform {
@@ -824,7 +794,6 @@ module "drift" {
 
         resource "aws_iam_user_attached_policies" {
             identifiers = [ sql("CONCAT(parent.user_name, ':user_', c.policy_name)") ]
-            parent_match = "user_cq_id"
 
             iac {
                 terraform {
@@ -835,7 +804,6 @@ module "drift" {
 
         resource "aws_iam_user_policies" {
             identifiers = [ sql("CONCAT(parent.user_name, ':', c.policy_name)") ]
-            parent_match = "user_cq_id"
 
             iac {
                 terraform {
@@ -866,7 +834,6 @@ module "drift" {
 
         resource "aws_lambda_layer_versions" {
             identifiers = [ sql("CONCAT(parent.arn, ':', c.version)") ]
-            parent_match = "layer_cq_id"
 
             iac {
                 terraform {

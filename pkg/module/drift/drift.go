@@ -197,15 +197,26 @@ func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, 
 
 func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resName string, resources map[string]*ResourceConfig) *goqu.SelectDataset {
 	res := resources[resName]
-	if res.ParentMatch == "" {
+
+	parentColumn := pr.ParentIDColumn()
+
+	if parentColumn == "" {
+		if pr.Parent != nil {
+			d.logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
+		}
+
 		if len(d.params.AccountIDs) > 0 {
-			sel = sel.Where(goqu.Ex{"c.account_id": d.params.AccountIDs})
+			accountIDColumn := pr.AccountIDColumn()
+
+			if accountIDColumn != "" {
+				sel = sel.Where(goqu.Ex{"c." + accountIDColumn: d.params.AccountIDs})
+			}
 		}
 
 		return sel
 	}
 	if pr.Parent == nil {
-		d.logger.Warn("parent_match set but no parent for table", "table", pr.Table.Name)
+		d.logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
 		return sel
 	}
 
@@ -230,7 +241,7 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 			goqu.On(
 				goqu.L("? = ?",
 					goqu.I(parentTableName+".cq_id"),
-					goqu.I(childTableName+"."+res.ParentMatch),
+					goqu.I(childTableName+"."+parentColumn),
 				),
 			),
 		)
@@ -238,10 +249,13 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 		parentCounter++
 		childTableName = parentTableName
 		pr = pr.Parent
+		parentColumn = pr.ParentIDColumn()
 	}
 
 	if len(d.params.AccountIDs) > 0 {
-		sel = sel.Where(goqu.Ex{parentTableName + ".account_id": d.params.AccountIDs})
+		accountIDColumn := pr.AccountIDColumn()
+
+		sel = sel.Where(goqu.Ex{parentTableName + "." + accountIDColumn: d.params.AccountIDs})
 	}
 
 	return sel
