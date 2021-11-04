@@ -2,6 +2,7 @@ package drift
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -53,6 +54,7 @@ type Result struct {
 
 	// Options
 	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
+	Debug       bool `json:"-"` // Print debug output regarding results
 }
 
 func (r *Result) String() string {
@@ -111,12 +113,13 @@ func (rs Results) String() string {
 		})
 	}
 
-	var listManagedOption bool
+	var listManagedOption, debugOption bool
 	for _, r := range rs {
 		if r == nil {
 			continue
 		}
 		listManagedOption = r.ListManaged
+		debugOption = r.Debug
 
 		transform(r, r.Different, &combo.Different)
 		transform(r, r.Extra, &combo.Extra)
@@ -204,6 +207,25 @@ func (rs Results) String() string {
 
 	lines = append(lines, fmt.Sprintf(" - %.0f%% coverage", float64(covered)/float64(total)*100))
 	lines = append(lines, summary...)
+
+	if debugOption {
+		matchedResourceTypes := make(map[string]struct{})
+		for _, t := range append(append(combo.Equal, combo.DeepEqual...), combo.Different...) {
+			matchedResourceTypes[t.Provider+":"+t.ResourceType] = struct{}{}
+		}
+		var unmatchedTypes []string
+		for _, t := range append(combo.Extra, combo.Missing...) {
+			k := t.Provider + ":" + t.ResourceType
+			if _, ok := matchedResourceTypes[k]; ok {
+				continue
+			}
+			unmatchedTypes = append(unmatchedTypes, k)
+		}
+		if len(unmatchedTypes) > 0 {
+			sort.Strings(unmatchedTypes)
+			lines = append(lines, "These types weren't matched: "+strings.Join(unmatchedTypes, ", "))
+		}
+	}
 
 	return strings.Join(lines, "\n")
 }

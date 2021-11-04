@@ -273,6 +273,8 @@ module "drift" {
         }
 
         resource "cloudfront.distributions" {
+            identifiers = [ "id" ]
+
             iac {
                 terraform {
                     type = "aws_cloudfront_distribution"
@@ -312,13 +314,7 @@ module "drift" {
 
         # TODO: aws_cloudtrail_trail_event_selectors
 
-        resource "cloudwatch.alarms" {
-            iac {
-                terraform {
-                    type = "aws_cloudwatch_metric_alarm"
-                }
-            }
-        }
+        # Unmatched: cloudwatch.alarms
 
         resource "aws_cloudwatch_alarm_metrics" {
             identifiers = [ "alarm_name" ]
@@ -628,6 +624,8 @@ module "drift" {
         }
 
         resource "eks.clusters" {
+            identifiers = [ "name" ]
+
             iac {
                 terraform {
                     type = "aws_eks_cluster"
@@ -851,6 +849,9 @@ module "drift" {
 
         resource "rds.db_subnet_groups" {
             identifiers = [ "name" ]
+            filters = [
+                "NOT EXISTS (SELECT 1 FROM aws_ec2_vpcs WHERE id=c.vpc_id AND is_default)",
+            ]
             iac {
                 terraform {
                     type = "aws_db_subnet_group"
@@ -877,6 +878,9 @@ module "drift" {
         }
 
         resource "redshift.subnet_groups" {
+            filters = [
+                "NOT EXISTS (SELECT 1 FROM aws_ec2_vpcs WHERE id=c.vpc_id AND is_default)",
+            ]
             iac {
                 terraform {
                     type = "aws_redshift_subnet_group"
