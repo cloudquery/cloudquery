@@ -5,10 +5,11 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2021-11-01
-###### SDK Version: 0.5.0
+## [v0.6.2] - 2021-11-03
+###### SDK Version: 0.5.1
 
 ### :spider: Fixed
+* Fixed [#241](https://github.com/cloudquery/cq-provider-aws/issues/241) Failed to fetch ApiGatewayV2: GetDomainNames
 * Fixed [#236](https://github.com/cloudquery/cq-provider-aws/issues/236) error in `aws_cloud_trails` get tags request because ARNs in request were from different regions
 
 ## [v0.6.1] - 2021-10-29
