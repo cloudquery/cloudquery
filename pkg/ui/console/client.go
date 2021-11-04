@@ -2,6 +2,7 @@ package console
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
@@ -10,11 +11,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/fatih/color"
+	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -162,6 +165,86 @@ func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, 
 	return nil
 }
 
+func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
+	provs, err := c.getModuleProviders(ctx)
+	if err != nil {
+		return err
+	}
+
+	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
+
+	if req.ModConfigPath == "" {
+		ui.ColorizedOutput(ui.ColorDebug, "Using built-in drift config\n")
+	}
+
+	runReq := client.ModuleRunRequest{
+		Name:          req.Name,
+		Params:        req.Params,
+		ModConfigPath: req.ModConfigPath,
+		Providers:     provs,
+	}
+	out, err := c.c.ExecuteModule(ctx, runReq)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
+		return err
+	} else if out == nil {
+		ui.ColorizedOutput(ui.ColorSuccess, "Finished module, no results\n\n")
+		return nil
+	}
+
+	if out.ErrorMsg != "" {
+		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
+		return nil
+	}
+
+	if req.OutputPath != "" {
+		// Store output in file if requested
+		fs := afero.NewOsFs()
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		data, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			return err
+		}
+		if _, err := f.Write(data); err != nil {
+			return err
+		}
+
+		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
+	}
+
+	type stringer interface {
+		String() string
+	}
+
+	if outString, ok := out.Result.(stringer); ok {
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", outString.String())
+	} else {
+		b, _ := json.MarshalIndent(out.Result, "", "  ")
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", string(b))
+	}
+
+	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
+	return nil
+}
+
+func (c Client) GenModuleConfig(ctx context.Context, modName string) {
+	configPath, err := c.c.GenModuleConfig(ctx, modName)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
+		return
+	}
+	ui.ColorizedOutput(ui.ColorSuccess, "Configuration generated successfully to %s\n", *configPath)
+}
+
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
@@ -257,6 +340,30 @@ func (c Client) getRequiredProviders(providerNames []string) ([]*config.Required
 		providers[i] = pCfg
 	}
 	return providers, nil
+}
+
+func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderSchemaResponse, error) {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return nil, err
+	}
+	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
+	for i, p := range c.cfg.Providers {
+		s, err := c.c.GetProviderSchema(ctx, p.Name)
+		if err != nil {
+			return nil, err
+		}
+		if s.Version == "" { // FIXME why?
+			deets, err := c.c.Manager.GetPluginDetails(p.Name)
+			if err != nil {
+				c.c.Logger.Warn("GetPluginDetails failed", "error", err.Error())
+			} else {
+				s.Version = deets.Version
+			}
+		}
+		list[i] = s
+	}
+
+	return list, nil
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
