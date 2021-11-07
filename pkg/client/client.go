@@ -10,12 +10,16 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+
 	"github.com/golang-migrate/migrate/v4"
 
 	"github.com/cloudquery/cq-provider-sdk/provider"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
@@ -58,18 +62,28 @@ type FetchUpdate struct {
 	// Error if any returned by the provider
 	Error string
 	// PartialFetchResults contains the partial fetch results for this update
-	PartialFetchResults []*cqproto.PartialFetchFailedResource
+	PartialFetchResults []*cqproto.FailedResourceFetch
 }
 
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
-	ProviderName       string
-	PartialFetchErrors []*cqproto.PartialFetchFailedResource
-	FetchErrors        []error
+	ProviderName          string
+	PartialFetchErrors    []*cqproto.FailedResourceFetch
+	FetchErrors           []error
+	TotalResourcesFetched uint64
+	FetchResources        map[string]cqproto.ResourceFetchSummary
 }
 
-func (s *ProviderFetchSummary) HasErrors() bool {
-	if len(s.FetchErrors) > 0 || len(s.PartialFetchErrors) > 0 {
+func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
+	var allDiags diag.Diagnostics
+	for _, s := range p.FetchResources {
+		allDiags = append(allDiags, s.Diagnostics...)
+	}
+	return allDiags
+}
+
+func (p ProviderFetchSummary) HasErrors() bool {
+	if len(p.FetchErrors) > 0 || len(p.PartialFetchErrors) > 0 {
 		return true
 	}
 	return false
@@ -83,6 +97,9 @@ type PolicyRunRequest struct {
 	// SubPath is the optional sub path for sub policy/query execution only.
 	SubPath string
 
+	// Local apth is the given local policy from the run command.
+	LocalPath string
+
 	// OutputPath is the output path for policy execution output.
 	OutputPath string
 
@@ -94,6 +111,21 @@ type PolicyRunRequest struct {
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
+}
+
+// ModuleRunRequest is the request used to run a module.
+type ModuleRunRequest struct {
+	// Name of the module
+	Name string
+
+	// Params are the invocation parameters specific to the module
+	Params interface{}
+
+	// ModConfigPath is the path to the module config file to use.
+	ModConfigPath string
+
+	// Providers is the list of providers to process
+	Providers []*cqproto.GetProviderSchemaResponse
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -159,6 +191,8 @@ type Client struct {
 	Hub registry.Hub
 	// manager manages all plugins lifecycle
 	Manager *plugin.Manager
+	// ModuleManager manages all modules lifecycle
+	ModuleManager module.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
@@ -281,7 +315,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 		}
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			var partialFetchResults []*cqproto.PartialFetchFailedResource
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
@@ -298,6 +331,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider configured successfully")
+
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
 			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
@@ -305,18 +339,25 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 				return err
 			}
 			pLog.Info("provider started fetching resources")
-			var fetchErrors = make([]error, 0)
+			var (
+				fetchErrors         = make([]error, 0)
+				partialFetchResults []*cqproto.FailedResourceFetch
+				fetchedResources           = make(map[string]cqproto.ResourceFetchSummary, len(providerConfig.Resources))
+				totalResources      uint64 = 0
+			)
 			for {
 				resp, err := stream.Recv()
 				if err == io.EOF {
 					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
 					for _, fetchError := range partialFetchResults {
-						pLog.Error("received partial fetch error", parsePartialFetchKV(fetchError)...)
+						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
 					}
 					fetchSummaries <- ProviderFetchSummary{
-						ProviderName:       providerConfig.Name,
-						PartialFetchErrors: partialFetchResults,
-						FetchErrors:        fetchErrors,
+						ProviderName:          providerConfig.Name,
+						TotalResourcesFetched: totalResources,
+						PartialFetchErrors:    partialFetchResults,
+						FetchErrors:           fetchErrors,
+						FetchResources:        fetchedResources,
 					}
 					return nil
 				}
@@ -332,14 +373,20 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					Error:               resp.Error,
 					PartialFetchResults: partialFetchResults,
 				}
+
 				if len(resp.PartialFetchFailedResources) != 0 {
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
+
+				totalResources = resp.ResourceCount
+				fetchedResources[resp.ResourceName] = resp.Summary
+
 				if resp.Error != "" {
 					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
 					pLog.Error("received provider fetch update error", "error", resp.Error)
 				}
-				pLog.Debug("fetch update", "resource_count", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
+				pLog.Debug("received fetch update",
+					"resource", resp.ResourceName, "finishedCount", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
@@ -515,11 +562,23 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	c.Logger.Info("Running policy", "args", req.Args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	// Parse input args
-	p, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
-	if err != nil {
-		return err
+	p := &policy.Policy{}
+
+	switch {
+	case req.LocalPath != "":
+		c.Logger.Info("Running local policy", "args", req.LocalPath)
+		p.LocalPath = req.LocalPath
+		p.SubPath = req.SubPath
+	default:
+		c.Logger.Info("Running remote policy", "args", req.Args)
+		// Parse input args
+		parsedPolicy, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
+		p = parsedPolicy
+		if err != nil {
+			return err
+		}
 	}
+
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
@@ -542,7 +601,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	// Store output in file if requested
 	if req.OutputPath != "" {
 		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE, 0644)
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			return err
 		}
@@ -559,6 +618,62 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		}
 	}
 	return nil
+}
+
+func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
+	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
+
+	if c.ModuleManager == nil {
+		// lazy init modules here
+		c.ModuleManager = module.NewManager(c.pool, c.Logger)
+		c.ModuleManager.RegisterModule(drift.New(c.Logger))
+	}
+
+	modReq := &module.ExecuteRequest{
+		Providers: req.Providers,
+		Params:    req.Params,
+	}
+
+	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.ModConfigPath, modReq)
+	if err != nil {
+		return nil, err
+	}
+
+	if output.Error != nil {
+		c.Logger.Error("Module execution failed with error", "error", output.Error)
+	} else {
+		c.Logger.Info("Module execution finished", "data", output)
+	}
+
+	return output, nil
+}
+
+func (c *Client) GenModuleConfig(ctx context.Context, modName string) (*string, error) {
+	configPath := modName + ".hcl"
+
+	fs := afero.NewOsFs()
+	if info, _ := fs.Stat(configPath); info != nil {
+		return nil, fmt.Errorf("Config file %s already exists", configPath)
+	}
+
+	mgr := module.NewManager(c.pool, c.Logger)
+	contents, err := mgr.ReadConfig(modName)
+	if err != nil {
+		return nil, err
+	}
+
+	fp, err := fs.Create(configPath)
+	if err != nil {
+		return nil, err
+	}
+	_, _ = fp.WriteString("// Configuration AutoGenerated by CloudQuery CLI\n")
+
+	if _, err := fp.Write(contents); err != nil {
+		_ = fp.Close()
+		_ = fs.Remove(configPath)
+		return nil, err
+	}
+	return &configPath, fp.Close()
 }
 
 func (c *Client) Close() {
@@ -614,7 +729,7 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-func parsePartialFetchKV(r *cqproto.PartialFetchFailedResource) []interface{} {
+func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
 	kv := []interface{}{"table", r.TableName, "err", r.Error}
 	if r.RootTableName != "" {
 		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)

@@ -8,7 +8,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
-
 	"github.com/spf13/viper"
 )
 
@@ -63,15 +62,17 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 // Fetch fetches resources from a cloud provider and saves them in the configured database
 func Fetch(ctx context.Context, cfg *config.Config) error {
 	c, err := client.New(ctx, func(c *client.Client) {
+		c.Providers = cfg.CloudQuery.Providers
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
+		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 	})
 	if err != nil {
 		return fmt.Errorf("unable to create client: %w", err)
 	}
-	err = c.DownloadProviders(ctx)
-	if err != nil {
-		return fmt.Errorf("unable to initialize client: %w", err)
+	defer c.Close()
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
 	}
 	if err := c.NormalizeResources(ctx, cfg.Providers); err != nil {
 		return err

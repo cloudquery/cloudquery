@@ -1,1 +1,0 @@
-SELECT * from aws_iam_access_keys WHERE DATE(last_used) < date('now', '-90 day')

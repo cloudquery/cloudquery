@@ -2,16 +2,22 @@ package console
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+
 	"github.com/fatih/color"
+	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -101,15 +107,15 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
-
-	if failOnError {
-		for _, summary := range response.ProviderFetchSummary {
-			if summary.HasErrors() {
-				return fmt.Errorf("provider fetch has one or more errors")
-			}
+	for _, summary := range response.ProviderFetchSummary {
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d",
+			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
+			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
+		if failOnError && summary.HasErrors() {
+			err = fmt.Errorf("provider fetch has one or more errors")
 		}
 	}
-	return nil
+	return err
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
@@ -129,11 +135,12 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
+func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
 	req := client.PolicyRunRequest{
 		Args:           args,
 		SubPath:        subPath,
+		LocalPath:      localPath,
 		OutputPath:     outputPath,
 		StopOnFailure:  stopOnFailure,
 		SkipVersioning: skipVersioning,
@@ -156,6 +163,86 @@ func (c Client) RunPolicy(ctx context.Context, args []string, subPath, outputPat
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policy run...\n\n")
 	return nil
+}
+
+func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
+	provs, err := c.getModuleProviders(ctx)
+	if err != nil {
+		return err
+	}
+
+	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
+
+	if req.ModConfigPath == "" {
+		ui.ColorizedOutput(ui.ColorDebug, "Using built-in drift config\n")
+	}
+
+	runReq := client.ModuleRunRequest{
+		Name:          req.Name,
+		Params:        req.Params,
+		ModConfigPath: req.ModConfigPath,
+		Providers:     provs,
+	}
+	out, err := c.c.ExecuteModule(ctx, runReq)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
+		return err
+	} else if out == nil {
+		ui.ColorizedOutput(ui.ColorSuccess, "Finished module, no results\n\n")
+		return nil
+	}
+
+	if out.ErrorMsg != "" {
+		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
+		return nil
+	}
+
+	if req.OutputPath != "" {
+		// Store output in file if requested
+		fs := afero.NewOsFs()
+		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		data, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			return err
+		}
+		if _, err := f.Write(data); err != nil {
+			return err
+		}
+
+		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
+	}
+
+	type stringer interface {
+		String() string
+	}
+
+	if outString, ok := out.Result.(stringer); ok {
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", outString.String())
+	} else {
+		b, _ := json.MarshalIndent(out.Result, "", "  ")
+		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", string(b))
+	}
+
+	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
+	return nil
+}
+
+func (c Client) GenModuleConfig(ctx context.Context, modName string) {
+	configPath, err := c.c.GenModuleConfig(ctx, modName)
+	if err != nil {
+		time.Sleep(100 * time.Millisecond)
+		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
+		return
+	}
+	ui.ColorizedOutput(ui.ColorSuccess, "Configuration generated successfully to %s\n", *configPath)
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
@@ -255,6 +342,30 @@ func (c Client) getRequiredProviders(providerNames []string) ([]*config.Required
 	return providers, nil
 }
 
+func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderSchemaResponse, error) {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return nil, err
+	}
+	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
+	for i, p := range c.cfg.Providers {
+		s, err := c.c.GetProviderSchema(ctx, p.Name)
+		if err != nil {
+			return nil, err
+		}
+		if s.Version == "" { // FIXME why?
+			deets, err := c.c.Manager.GetPluginDetails(p.Name)
+			if err != nil {
+				c.c.Logger.Warn("GetPluginDetails failed", "error", err.Error())
+			} else {
+				s.Version = deets.Version
+			}
+		}
+		list[i] = s
+	}
+
+	return list, nil
+}
+
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
@@ -273,7 +384,7 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			return
 		}
 		if len(update.PartialFetchResults) > 0 {
-			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("errors: %d", len(update.PartialFetchResults)), 0)
+			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("diagnostics: %d", len(update.PartialFetchResults)), 0)
 		}
 		bar := fetchProgress.GetBar(update.Provider)
 		if bar == nil {
@@ -302,6 +413,13 @@ func printFetchResponse(summary *client.FetchResponse) {
 		return
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
+		if len(pfs.Diagnostics()) > 0 {
+			printDiagnostics(pfs.ProviderName, pfs.Diagnostics())
+			continue
+		}
+		if len(pfs.PartialFetchErrors) == 0 {
+			continue
+		}
 		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
 		for _, r := range pfs.PartialFetchErrors {
 			if r.RootTableName != "" {
@@ -320,6 +438,39 @@ func printFetchResponse(summary *client.FetchResponse) {
 		}
 		ui.ColorizedOutput(ui.ColorWarning, "\n")
 	}
+}
+
+func printDiagnostics(providerName string, diags diag.Diagnostics) {
+	// sort diagnostics by severity/type
+	sort.Sort(diags)
+	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
+	for _, d := range diags {
+		desc := d.Description()
+		switch d.Severity() {
+		case diag.IGNORE:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorProgress.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorDebug.Sprintf("Ignore"),
+				ui.ColorDebug.Sprintf("%s", desc.Summary))
+		case diag.WARNING:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorInfo.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorWarning.Sprintf("Warning"),
+				ui.ColorWarning.Sprintf("%s", desc.Summary))
+		case diag.ERROR:
+			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
+				ui.ColorProgress.Sprintf("%s", desc.Resource),
+				ui.ColorProgressBold.Sprintf("%s", d.Type()),
+				ui.ColorErrorBold.Sprintf("Error"),
+				ui.ColorErrorBold.Sprintf("%s", desc.Summary))
+		}
+		if desc.Detail != "" {
+			ui.ColorizedOutput(ui.ColorInfo, "\tRemediation: %s\n", desc.Detail)
+		}
+	}
+	ui.ColorizedOutput(ui.ColorInfo, "\n")
 }
 
 func loadConfig(path string) (*config.Config, error) {

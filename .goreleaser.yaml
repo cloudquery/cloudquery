@@ -63,6 +63,8 @@ changelog:
       - '^test:'
 brews:
   -
+    ids:
+      - homebrew
     name: cloudquery
     tap:
       owner: cloudquery
