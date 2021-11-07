@@ -13,9 +13,9 @@ CloudQuery extracts, transforms, and loads your cloud assets into [normalized](h
 
 CloudQuery key use-cases and features:
 
-  * **Search**: Use standard SQL to find any asset based on any configuration or relation to other assets.
-  * **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc...
-  * [**Policy-as-Code**](https://docs.cloudquery.io/docs/cli/getting-started#policy-command): Codify your security & compliance rules with SQL as the query engine.
+- **Search**: Use standard SQL to find any asset based on any configuration or relation to other assets.
+- **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc...
+- [**Policy-as-Code**](https://docs.cloudquery.io/docs/cli/getting-started#policy-command): Codify your security & compliance rules with SQL as the query engine.
 
 ### Links
 
