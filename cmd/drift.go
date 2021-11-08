@@ -3,14 +3,15 @@ package cmd
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 const driftModuleID = "drift"
@@ -27,7 +28,7 @@ var (
 		Use:   "init",
 		Short: "Generate config for drift",
 		Long:  "Generate config for drift",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
 			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
@@ -37,14 +38,14 @@ var (
 			defer c.Client().Close()
 			c.GenModuleConfig(ctx, driftModuleID)
 			return nil
-		},
+		}),
 	}
 
 	driftScanCmd = &cobra.Command{
 		Use:   "scan",
 		Short: "Scan for drifts",
 		Long:  "Scan for drifts between cloud provider and IaC",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
 			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
@@ -59,7 +60,7 @@ var (
 				ModConfigPath: driftConfigPath,
 				OutputPath:    driftOutputPath,
 			})
-		},
+		}),
 	}
 
 	driftParams drift.RunParams
