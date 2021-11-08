@@ -8,6 +8,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 
 	"github.com/fatih/color"
@@ -232,6 +233,11 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
+
+	if exitCoder, ok := out.Result.(module.ExitCoder); ok {
+		return &ExitCodeError{ExitCode: exitCoder.ExitCode()}
+	}
+
 	return nil
 }
 
