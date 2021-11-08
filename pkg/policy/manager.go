@@ -258,32 +258,11 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 	}
 	defer conn.Release()
 
-	// Traverse all policies recursively
-	m.logger.Debug("starting to traverse policies")
-	policyMap := make(map[string]*config.Policy)
-	policyMap = m.traversePolicies(policies.Policies, "", policyMap)
-	m.logger.Debug("finished traversing policies", "policyMap", policyMap)
-
-	// Execute policies dependent on policy sub path
-	executor := NewExecutor(conn, m.logger)
-	var results *ExecutionResult
-	switch p.SubPath {
-	case "":
-		m.logger.Debug("no policy sub path defined; executing all policies")
-		for _, p := range policies.Policies {
-			results, err = executor.ExecutePolicy(ctx, execReq, p)
-			if err != nil {
-				return nil, fmt.Errorf("failed to run policies: %s", err.Error())
-			}
-		}
-	default:
-		m.logger.Debug("policy sub path defined; only executing sub policy/query", "subpath", p.SubPath)
-		results, err = m.runSubPolicyOrQuery(ctx, executor, policyMap, p.SubPath, execReq)
-		if err != nil {
-			return nil, fmt.Errorf("failed to run sub policy/query: %s", err.Error())
-		}
+	var selector []string
+	if execReq.Policy.SubPath != "" {
+		selector = strings.Split(execReq.Policy.SubPath, "/")
 	}
-	return results, nil
+	return NewExecutor(conn, m.logger).ExecutePolicies(ctx, execReq, policies.Policies, selector)
 }
 
 // readPolicy reads, normalizes and validates the policy file at policyPath, using policyFolder as base path.
@@ -298,95 +277,6 @@ func (m *ManagerImpl) readPolicy(policyPath, policyFolder string) (*config.Polic
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
 	}
 	return policies, nil
-}
-
-// runSubPolicyOrQuery
-func (m *ManagerImpl) runSubPolicyOrQuery(
-	ctx context.Context, exec *Executor,
-	policyMap map[string]*config.Policy,
-	subPath string,
-	execReq *ExecuteRequest) (*ExecutionResult, error) {
-	// If the given path points directly to a sub policy
-	if policy, ok := policyMap[subPath]; ok {
-		m.logger.Debug("running sub policy only", "policy", policy)
-
-		// Collect all sub policies from this policy
-		subPolicyMap := make(map[string]*config.Policy)
-		for k, v := range policyMap {
-			// Add policy if prefix is the same.
-			// This will also add the actual policy since k == p.SubPath.
-			if strings.HasPrefix(k, subPath) {
-				subPolicyMap[k] = v
-			}
-		}
-		if policy, ok := policyMap[subPath]; ok {
-			m.logger.Debug("running sub policy only", "policy", policy)
-			return exec.ExecutePolicy(ctx, execReq, policy)
-		}
-	}
-
-	// Must be a query so get the policy path and the last element
-	pathSplit := strings.Split(subPath, pathDelimiter)
-	if len(pathSplit) <= 1 {
-		// Sub path is malformed
-		return nil, fmt.Errorf("malformed sub path: %s", subPath)
-	}
-
-	// Get the policy path and last element
-	policyPath := pathSplit[len(pathSplit)-2]
-	elementName := pathSplit[len(pathSplit)-1]
-
-	// Get query parent policy
-	parentPolicy, ok := policyMap[policyPath]
-	if !ok {
-		return nil, fmt.Errorf("cannot find sub query parent policy %s in %s", policyPath, subPath)
-	}
-
-	for _, query := range parentPolicy.Queries {
-		if query.Name == elementName {
-			// Execute query
-			res, err := exec.ExecuteQuery(ctx, query)
-			if err != nil {
-				return nil, err
-			}
-
-			// Collect results
-			execResults := &ExecutionResult{
-				Passed:  true,
-				Results: make(map[string]*QueryResult),
-			}
-			collectExecutionResults(execResults, policyPath, res)
-			if execReq.UpdateCallback != nil {
-				execReq.UpdateCallback(query.Name, res.Type, execResults.Passed)
-			}
-			return execResults, nil
-		}
-	}
-	return nil, fmt.Errorf("failed to find sub policy/query: %s", subPath)
-}
-
-// traversePolicies is a recursive function that traverses p until all policies are resolved.
-// All traversed policies gets stored into m where the policy level is used as a key.
-func (m *ManagerImpl) traversePolicies(p []*config.Policy, levelPath string, policyMap map[string]*config.Policy) map[string]*config.Policy {
-	for id, policy := range p {
-		// Add current level to level path
-		subLevelPath := policyPathJoin(levelPath, policy.Name)
-
-		// Add policy to map
-		policyMap[subLevelPath] = p[id]
-		m.logger.Debug("added policy to policy map", "key", subLevelPath, "policy", p[id])
-
-		// Check if this policy has sub policies
-		if len(policy.Policies) > 0 {
-			newM := m.traversePolicies(policy.Policies, subLevelPath, policyMap)
-
-			// Merge maps
-			for k, v := range newM {
-				policyMap[k] = v
-			}
-		}
-	}
-	return policyMap
 }
 
 func (p *Policy) checkoutPolicyVersion(repoFolder string) error {

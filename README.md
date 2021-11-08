@@ -4,19 +4,18 @@
 </a>
 </p>
 
-CloudQuery transforms your cloud infrastructure into queryable SQL for easy monitoring, governance and security.
+The open-source cloud asset inventory backed by PostgreSQL.
 
-### What is CloudQuery and why use it?
+![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cloudquery/test?style=flat-square)
+![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
 
-CloudQuery pulls, normalize, expose and monitor your cloud infrastructure and SaaS apps as SQL database.
-This abstracts various scattered APIs enabling you to define security, governance, cost and compliance policies with SQL.
+CloudQuery extracts, transforms, and loads your cloud assets into [normalized](https://hub.cloudquery.io) PostgreSQL tables. CloudQuery enables you to assess, audit, and evaluate the configurations of your cloud assets.
 
-CloudQuery can be easily extended to more resources and SaaS providers (open an [Issue](https://github.com/cloudquery/cloudquery/issues)).
+CloudQuery key use-cases and features:
 
-CloudQuery comes with built-in policy packs such as: [AWS CIS](#running-policy-packs) (more is coming!).
-
-Think about CloudQuery as a compliance-as-code tool inspired by tools like [osquery](https://github.com/osquery/osquery)
-and [terraform](https://github.com/hashicorp/terraform), cool right?
+- **Search**: Use standard SQL to find any asset based on any configuration or relation to other assets.
+- **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc...
+- [**Policy-as-Code**](https://docs.cloudquery.io/docs/cli/getting-started#policy-command): Codify your security & compliance rules with SQL as the query engine.
 
 ### Links
 

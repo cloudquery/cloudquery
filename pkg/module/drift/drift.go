@@ -103,7 +103,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 				continue
 			}
 
-			d.logger.Info("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv.Name].Type)
+			d.logger.Debug("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv.Name].Type)
 
 			// Drift per resource
 			var (
@@ -135,7 +135,7 @@ func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, s
 	if err != nil {
 		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
 	}
-	d.logger.Debug("generated query", "type", what, "query", query, "args", args)
+	d.logger.Trace("generated query", "type", what, "query", query, "args", args)
 
 	var list []*string
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
@@ -179,7 +179,7 @@ func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, 
 	if err != nil {
 		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
 	}
-	d.logger.Debug("generated query", "type", what, "query", query, "args", args)
+	d.logger.Trace("generated query", "type", what, "query", query, "args", args)
 
 	var list []struct {
 		ID      string        `db:"id"`
