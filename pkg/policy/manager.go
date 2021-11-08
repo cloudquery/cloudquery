@@ -220,7 +220,7 @@ func (m *ManagerImpl) RunPolicy(ctx context.Context, execReq *ExecuteRequest) (*
 		}
 
 		// If repository path was specified, also check if that exists
-		policyFolder := repoFolder
+		policyFolder = repoFolder
 		if p.RepositoryPath != "" {
 			policyFolder = filepath.Join(repoFolder, p.RepositoryPath)
 			if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
