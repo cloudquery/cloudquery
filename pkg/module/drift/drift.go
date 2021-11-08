@@ -71,13 +71,16 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
-func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, error) {
+func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
 	iacProv, err := getIACProvider(req.Providers)
 	if err != nil {
 		return nil, err
 	}
 
-	var resList Results
+	resList := &Results{
+		ListManaged: d.params.ListManaged,
+		Debug:       d.params.Debug,
+	}
 
 	for _, cfg := range d.config.Providers {
 		schema, err := d.findProvider(cfg, req.Providers, iacProv.Name)
@@ -122,10 +125,11 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 
 			dres.Provider = schema.Name
 			dres.ResourceType = resName
-			resList = append(resList, dres)
+			resList.Data = append(resList.Data, dres)
 		}
-
 	}
+
+	resList.process()
 
 	return resList, nil
 }

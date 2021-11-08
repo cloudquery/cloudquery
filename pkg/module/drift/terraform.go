@@ -16,13 +16,11 @@ import (
 
 func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig) (*Result, error) {
 	res := &Result{
-		IAC:         "Terraform",
-		Different:   nil,
-		Equal:       nil,
-		Missing:     nil,
-		Extra:       nil,
-		ListManaged: d.params.ListManaged,
-		Debug:       d.params.Debug,
+		IAC:       "Terraform",
+		Different: nil,
+		Equal:     nil,
+		Missing:   nil,
+		Extra:     nil,
 	}
 
 	tfProvider := d.params.TfProvider

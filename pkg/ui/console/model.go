@@ -1,5 +1,7 @@
 package console
 
+import "strconv"
+
 // ModuleCallRequest is the request used to call a module.
 type ModuleCallRequest struct {
 	// Name of the module
@@ -13,4 +15,12 @@ type ModuleCallRequest struct {
 
 	// OutputPath is the filename to save output to
 	OutputPath string
+}
+
+type ExitCodeError struct {
+	ExitCode int
+}
+
+func (e *ExitCodeError) Error() string {
+	return "exit code " + strconv.Itoa(e.ExitCode)
 }

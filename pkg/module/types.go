@@ -33,3 +33,7 @@ type ExecutionResult struct {
 	Error    error       `json:"-"`
 	ErrorMsg string      `json:"error,omitempty"`
 }
+
+type ExitCoder interface {
+	ExitCode() int
+}
