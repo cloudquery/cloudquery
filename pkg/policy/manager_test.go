@@ -91,6 +91,10 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 			Name:       "private_policy_main_branch",
 			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
 		},
+		{
+			Name:       "private_policy_query_in_file",
+			PolicyPath: "fdistorted/my-cq-policy@v0.0.4",
+		},
 	}
 
 	for _, tc := range cases {
