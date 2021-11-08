@@ -18,9 +18,9 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 var optionsCmd = &cobra.Command{
 	Use:   "options",
 	Short: "Prints list of global CLI options (applies to all commands)",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: handleError(func(cmd *cobra.Command, args []string) error {
 		return cmd.UsageFunc()(cmd)
-	},
+	}),
 }
 
 func init() {

@@ -67,7 +67,7 @@ PS> cloudquery completion powershell > cloudquery.ps1
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 	Args:                  cobra.ExactValidArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: handleError(func(cmd *cobra.Command, args []string) error {
 		var err error
 		switch args[0] {
 		case "bash":
@@ -80,7 +80,7 @@ PS> cloudquery completion powershell > cloudquery.ps1
 			err = cmd.Root().GenPowerShellCompletion(os.Stdout)
 		}
 		return err
-	},
+	}),
 }
 
 func init() {

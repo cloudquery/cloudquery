@@ -3,12 +3,13 @@ package cmd
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 const policyRunHelpMsg = "Executes a policy on CloudQuery database"
@@ -35,7 +36,7 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.MinimumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
 			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
@@ -49,7 +50,7 @@ var (
 				}
 			}
 			return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
-		},
+		}),
 	}
 	skipDownload   bool
 	localPath      string
