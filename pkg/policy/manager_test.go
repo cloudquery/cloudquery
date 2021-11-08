@@ -101,6 +101,14 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 				"aws": version.Must(version.NewVersion("1.0.0")),
 			},
 		},
+
+		{
+			Name:       "private_policy_query_in_file",
+			PolicyPath: "fdistorted/my-cq-policy@v0.0.4",
+			ProviderVersions: map[string]*version.Version{
+				"aws": version.Must(version.NewVersion("1.0.0")),
+			},
+		},
 		{
 			Name:       "too old provider",
 			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
@@ -113,10 +121,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 			Name:        "provider version unknown",
 			PolicyPath:  "michelvocks/my-cq-policy@v0.0.2",
 			ErrorString: "test-policy: provider aws version is unknown",
-		},
-		{
-			Name:       "private_policy_query_in_file",
-			PolicyPath: "fdistorted/my-cq-policy@v0.0.4",
 		},
 	}
 
