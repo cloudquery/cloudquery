@@ -225,10 +225,10 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	if outString, ok := out.Result.(stringer); ok {
-		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", outString.String())
+		ui.ColorizedOutput(ui.ColorInfo, "Module output: \n%s\n", outString.String())
 	} else {
 		b, _ := json.MarshalIndent(out.Result, "", "  ")
-		ui.ColorizedOutput(ui.ColorInfo, "Module output\n%s\n", string(b))
+		ui.ColorizedOutput(ui.ColorInfo, "Module output: \n%s\n", string(b))
 	}
 
 	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
