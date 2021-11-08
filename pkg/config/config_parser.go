@@ -81,6 +81,13 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if cfg != nil {
 				config.Providers = append(config.Providers, cfg)
 			}
+		case "policy":
+
+			cfg, cfgDiags := decodePolicyConfigBlock(block, &p.HCLContext)
+			diags = append(diags, cfgDiags...)
+			if cfg != nil {
+				config.Policies = append(config.Policies, cfg)
+			}
 		default:
 			// Should never happen because the above cases should be exhaustive
 			// for all block type names in our schema.

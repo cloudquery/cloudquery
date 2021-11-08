@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
@@ -15,7 +16,7 @@ const policyRunHelpMsg = "Executes a policy on CloudQuery database"
 
 var (
 	policyRunCmd = &cobra.Command{
-		Use:   "run GITHUB_REPO [PATH_IN_REPO]",
+		Use:   "run",
 		Short: policyRunHelpMsg,
 		Long:  policyRunHelpMsg,
 		Example: `
@@ -34,7 +35,6 @@ var (
   cloudquery policy run awesome-policy --local-path ~/path/to/my-awesome-policy
 
   # See https://hub.cloudquery.io for additional policies.`,
-		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
 			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
@@ -42,31 +42,26 @@ var (
 			if err != nil {
 				return err
 			}
-			defer c.Client().Close()
-			if localPath == "" && !skipDownload {
-				if err = c.DownloadPolicy(ctx, args); err != nil {
-					return err
-				}
-			}
-			return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
+			//return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
+			return nil
 		},
 	}
-	skipDownload   bool
-	localPath      string
-	subPath        string
+	//skipDownload   bool
+	//localPath      string
+	//subPath        string
 	outputPath     string
 	stopOnFailure  bool
-	skipVersioning bool
+	//skipVersioning bool
 )
 
 func init() {
 	flags := policyRunCmd.Flags()
-	flags.BoolVar(&skipDownload, "skip-download", false, "Skip downloading the policy repository")
-	flags.StringVar(&localPath, "local-path", "", "Use local path")
-	flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
+	//flags.BoolVar(&skipDownload, "skip-download", false, "Skip downloading the policy repository")
+	//flags.StringVar(&localPath, "local-path", "", "Use local path")
+	//flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
 	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
 	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
-	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
+	//flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }
