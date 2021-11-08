@@ -64,7 +64,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: apigateway.domain_names (no data in tests)
+        # TODO: apigateway.domain_names (no data in tests)
 
         resource "apigateway.rest_apis" {
             iac {
@@ -128,7 +128,13 @@ module "drift" {
             }
         }
 
-        # TODO: aws_apigateway_rest_api_resources
+        resource "aws_apigateway_rest_api_resources" {
+            iac {
+                terraform {
+                    type = "aws_api_gateway_resource"
+                }
+            }
+        }
 
         resource "aws_apigateway_rest_api_stages" {
             identifiers = [ sql("CONCAT('ags-',parent.id,'-',c.stage_name)") ]
@@ -148,7 +154,7 @@ module "drift" {
             }
         }
 
-        # TODO: aws_apigateway_usage_plan_api_stages
+        # TODO: aws_apigateway_usage_plan_api_stages (tf row with type="aws_api_gateway_usage_plan".attributes->"api_stages")
 
         resource "aws_apigateway_usage_plan_keys" {
             iac {
@@ -262,7 +268,7 @@ module "drift" {
             }
         }
 
-       # Unmatched: aws_autoscaling_launch_configuration_block_device_mappings
+       # TODO: aws_autoscaling_launch_configuration_block_device_mappings (tf row with type="aws_launch_configuration".attributes->"ebs_block_device")
 
         resource "cloudfront.cache_policies" {
             iac {
@@ -282,11 +288,11 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudfront_distribution_cache_behaviours (no data in tests)
+        # TODO: aws_cloudfront_distribution_cache_behaviours (tf row with type="aws_cloudfront_distribution".attributes->"ordered_cache_behavior")
 
         # TODO: aws_cache_behaviour_lambda_function_associations (no data in tests)
 
-        # TODO: aws_cloudfront_distribution_custom_error_responses (no data in tests)
+        # TODO: aws_cloudfront_distribution_custom_error_responses (tf row with type="aws_cloudfront_distribution".attributes->"custom_error_responses")
 
         resource "aws_cloudfront_distribution_origins" {
             identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
@@ -298,9 +304,9 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudfront_distribution_alias_icp_recordals (no data in tests)
+        # Unmatched: aws_cloudfront_distribution_alias_icp_recordals (no data in tests)
 
-        # TODO: aws_cloudfront_distribution_origin_groups (no data in tests)
+        # TODO: aws_cloudfront_distribution_origin_groups (tf row with type="aws_cloudfront_distribution".attributes->"origin_group"), no data in tests
 
         resource "cloudtrail.trails" {
             identifiers = [ "name" ]
@@ -312,12 +318,10 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudtrail_trail_event_selectors
+        # TODO: aws_cloudtrail_trail_event_selectors (tf row with type="aws_cloudtrail".attributes->"event_selector")
 
-        # Unmatched: cloudwatch.alarms
-
-        resource "aws_cloudwatch_alarm_metrics" {
-            identifiers = [ "alarm_name" ]
+        resource "cloudwatch.alarms" {
+            identifiers = [ "name" ]
 
             iac {
                 terraform {
@@ -325,6 +329,8 @@ module "drift" {
                 }
             }
         }
+
+        # TODO: aws_cloudwatch_alarm_metrics (tf row with type="aws_cloudwatch_metric_alarm".attributes->"metric_query")
 
         resource "cloudwatchlogs.filters" {
             identifiers = [ "name" ] # TODO: ignored "log_group_name" ?
@@ -335,7 +341,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: aws_cloudwatchlogs_filter_metric_transformations
+        # TODO: aws_cloudwatchlogs_filter_metric_transformations (tf row with type="aws_cloudwatch_log_metric_filter".attributes->"metric_transformation")
 
         resource "cognito.identity_pools" {
             iac {
@@ -345,7 +351,7 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cognito_identity_pool_cognito_identity_providers (no data in tests)
+        # TODO: aws_cognito_identity_pool_cognito_identity_providers (aws_cognito_identity_provider but no data in tests)
 
         resource "cognito.user_pools" {
             iac {
@@ -428,7 +434,7 @@ module "drift" {
 
         # TODO: aws_directconnect_virtual_interface_bgp_peers (no data in tests)
 
-        # Unmatched: ec2.byoip_cidrs (no data in tests)
+        # TODO: ec2.byoip_cidrs (no data in tests)
 
         resource "ec2.customer_gateways" {
             iac {
@@ -508,7 +514,7 @@ module "drift" {
 
 #        resource "aws_ec2_network_acl_entries" {
 #            # TODO: no CRC32 function, no data in tests to verify
-#            identifiers = [ sql("CONCAT('nacl-',(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
+#            identifiers = [ sql("CONCAT('nacl-',CRC32(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
 #            filters = [ "((c.cidr_block='0.0.0.0/0' AND c.rule_number=32767) OR (c.ipv6_cidr_block=':/0' AND c.rule_number=32768)) AND c.rule_action='deny' AND c.protocol='-1'" ]
 #
 #            iac {
@@ -518,7 +524,7 @@ module "drift" {
 #            }
 #        }
 
-        # Unmatched: ec2.regional_config
+        # Unmatched: ec2.regional_config (needed?)
 
         resource "ec2.route_tables" {
             filters = [
@@ -691,8 +697,6 @@ module "drift" {
             }
         }
 
-        # Unmatched: iam.accounts
-
         resource "iam.groups" {
             identifiers = [ "name" ]
             iac {
@@ -710,7 +714,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: iam.password_policies (no data in tests)
+        # TODO: iam.password_policies (no data in tests)
 
         resource "iam.policies" {
             identifiers = [ "arn" ]
@@ -796,7 +800,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: iam.virtual_mfa_devices (no data in tests)
+        # TODO: iam.virtual_mfa_devices (no data in tests)
 
         resource "kms.keys" {
             identifiers = [ "id" ]
@@ -913,7 +917,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: route53.traffic_policies (no data in tests)
+        # TODO: route53.traffic_policies (no data in tests)
 
         resource "s3.buckets" {
             ignore_attributes = [ "name" ]
@@ -967,7 +971,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: waf.subscribed_rule_groups (no data in tests)
+        # TODO: waf.subscribed_rule_groups (no data in tests)
 
         resource "waf.web_acls" {
             iac {
@@ -977,7 +981,7 @@ module "drift" {
             }
         }
 
-        # Unmatched: wafv2.managed_rule_groups (aws_wafv2_web_acl but IDs don't match)
+        # Unmatched: wafv2.managed_rule_groups
 
         resource "wafv2.rule_groups" {
             iac {

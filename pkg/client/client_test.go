@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"net"
 	"os"
 	"path/filepath"
@@ -10,17 +11,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/jackc/pgx/v4"
-
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/jackc/pgx/v4"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -519,6 +521,68 @@ func Test_normalizeResources(t *testing.T) {
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("doInterpolate() = %v, want %v", got, tt.want)
 			}
+		})
+	}
+}
+
+func Test_collectProviderVersions(t *testing.T) {
+	tests := []struct {
+		name       string
+		providers  []*config.RequiredProvider
+		getVersion func(providerName string) (string, error)
+		want       map[string]*version.Version
+		wantErr    bool
+	}{
+		{
+			"no required providers",
+			nil,
+			func(providerName string) (string, error) { panic("test") },
+			map[string]*version.Version{},
+			false,
+		},
+		{
+			"failed to get a version",
+			[]*config.RequiredProvider{{Name: "aws"}, {Name: "gcp"}},
+			func(providerName string) (string, error) { return "1.0", errors.New("test") },
+			nil,
+			true,
+		},
+		{
+			"failed to parse version",
+			[]*config.RequiredProvider{{Name: "aws"}, {Name: "gcp"}},
+			func(providerName string) (string, error) { return "xyz", nil },
+			nil,
+			true,
+		},
+		{
+			"failed to parse version",
+			[]*config.RequiredProvider{{Name: "aws"}, {Name: "gcp"}},
+			func(providerName string) (string, error) { return "xyz", nil },
+			nil,
+			true,
+		},
+		{
+			"ok",
+			[]*config.RequiredProvider{{Name: "aws"}, {Name: "gcp"}},
+			func(providerName string) (string, error) {
+				if providerName == "aws" {
+					return "1.2.3", nil
+				} else {
+					return "v4.5.6", nil
+				}
+			},
+			map[string]*version.Version{
+				"aws": version.Must(version.NewVersion("1.2.3")),
+				"gcp": version.Must(version.NewVersion("v4.5.6")),
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := collectProviderVersions(tt.providers, tt.getVersion)
+			require.Equal(t, tt.wantErr, err != nil, "collectProviderVersions() error = %v, wantErr %v", err, tt.wantErr)
+			assert.Equal(t, tt.want, got, "collectProviderVersions() = %v, want %v", got, tt.want)
 		})
 	}
 }
