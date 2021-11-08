@@ -4,7 +4,7 @@
 </a>
 </p>
 
-The open-source cloud asset inventory backed by PostgreSQL.
+The open-source cloud asset inventory backed by SQL.
 
 ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cloudquery/test?style=flat-square)
 ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
