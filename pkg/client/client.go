@@ -27,6 +27,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
@@ -164,7 +165,7 @@ type Option func(options *Client)
 
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
-	// Required: List of providers that are required, these providers will be download if DownloadProviders is called.
+	// Required: List of providers that are required, these providers will be downloaded if DownloadProviders is called.
 	Providers []*config.RequiredProvider
 	// Optional: Registry url to verify plugins from, defaults to CloudQuery hub
 	RegistryURL string
@@ -579,7 +580,20 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 	}
 
 	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{Policy: p, StopOnFailure: req.StopOnFailure, SkipVersioning: req.SkipVersioning, UpdateCallback: req.RunCallBack})
+	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
+		d, err := c.Manager.GetPluginDetails(name)
+		return d.Version, err
+	})
+	if err != nil {
+		return err
+	}
+	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{
+		Policy:           p,
+		StopOnFailure:    req.StopOnFailure,
+		SkipVersioning:   req.SkipVersioning,
+		UpdateCallback:   req.RunCallBack,
+		ProviderVersions: versions,
+	})
 	if err != nil {
 		return err
 	}
@@ -628,7 +642,8 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*modu
 	if output.Error != nil {
 		c.Logger.Error("Module execution failed with error", "error", output.Error)
 	} else {
-		c.Logger.Info("Module execution finished", "data", output)
+		c.Logger.Info("Module execution finished")
+		c.Logger.Debug("Module execution results", "data", output)
 	}
 
 	return output, nil
@@ -753,4 +768,22 @@ func normalizeResources(requested []string, all map[string]*schema.Table) ([]str
 	}
 	sort.Strings(result)
 	return result, nil
+}
+
+// collectProviderVersions walks over the list of required providers, determines currently loaded version of each provider
+// through getVersion function and returns a map from provider name to its version.
+func collectProviderVersions(providers []*config.RequiredProvider, getVersion func(providerName string) (string, error)) (map[string]*version.Version, error) {
+	ver := make(map[string]*version.Version, len(providers))
+	for _, p := range providers {
+		s, err := getVersion(p.Name)
+		if err != nil {
+			return nil, err
+		}
+		v, err := version.NewVersion(s)
+		if err != nil {
+			return nil, err
+		}
+		ver[p.Name] = v
+	}
+	return ver, nil
 }

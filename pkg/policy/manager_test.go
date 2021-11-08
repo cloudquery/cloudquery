@@ -9,7 +9,9 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestManagerImpl_DownloadPolicy(t *testing.T) {
@@ -78,18 +80,39 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
 
 	cases := []struct {
-		Name           string
-		PolicyPath     string
-		RepositoryPath string
+		Name             string
+		PolicyPath       string
+		RepositoryPath   string
+		ProviderVersions map[string]*version.Version
+		ErrorString      string
 	}{
 		{
 			Name:           "policy_hub_policy",
 			PolicyPath:     "cloudquery/cq-policy-core",
 			RepositoryPath: "test",
+			ProviderVersions: map[string]*version.Version{
+				"aws": version.Must(version.NewVersion("v1.0")),
+			},
 		},
 		{
 			Name:       "private_policy_main_branch",
 			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
+			ProviderVersions: map[string]*version.Version{
+				"aws": version.Must(version.NewVersion("1.0.0")),
+			},
+		},
+		{
+			Name:       "too old provider",
+			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
+			ProviderVersions: map[string]*version.Version{
+				"aws": version.Must(version.NewVersion("0.5")),
+			},
+			ErrorString: "test-policy: provider aws does not satisfy version requirement >= 1.0",
+		},
+		{
+			Name:        "provider version unknown",
+			PolicyPath:  "michelvocks/my-cq-policy@v0.0.2",
+			ErrorString: "test-policy: provider aws version is unknown",
 		},
 	}
 
@@ -104,21 +127,27 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 			}
 
 			results, err := m.RunPolicy(context.Background(), &ExecuteRequest{
-				Policy:         p,
-				UpdateCallback: nil,
-				StopOnFailure:  true,
+				Policy:           p,
+				UpdateCallback:   nil,
+				StopOnFailure:    true,
+				ProviderVersions: tc.ProviderVersions,
 			})
-			assert.NoError(t, err)
-			assert.True(t, results.Passed)
+			if tc.ErrorString == "" {
+				require.NoError(t, err)
+				assert.True(t, results.Passed)
 
-			// Make sure all expected keys are contained
-			expectedKeys := []string{
-				"test-policy/top-level-query",
-				"test-policy/sub-policy-1/sub-level-query",
-				"test-policy/sub-policy-2/sub-level-query",
-			}
-			for k := range results.Results {
-				assert.Contains(t, expectedKeys, k)
+				// Make sure all expected keys are contained
+				expectedKeys := []string{
+					"test-policy/top-level-query",
+					"test-policy/sub-policy-1/sub-level-query",
+					"test-policy/sub-policy-2/sub-level-query",
+				}
+				for k := range results.Results {
+					assert.Contains(t, expectedKeys, k)
+				}
+			} else {
+				require.Error(t, err)
+				assert.Equal(t, tc.ErrorString, err.Error())
 			}
 		})
 	}

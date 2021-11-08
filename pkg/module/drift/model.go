@@ -205,7 +205,10 @@ func (rs Results) String() string {
 		}
 	}
 
-	lines = append(lines, fmt.Sprintf(" - %.0f%% coverage", float64(covered)/float64(total)*100))
+	cvg := fmt.Sprintf("%.2f", float64(covered)/float64(total)*100)
+	cvg = strings.ReplaceAll(cvg, ".00", "")
+
+	lines = append(lines, fmt.Sprintf(" - %s%% coverage", cvg))
 	lines = append(lines, summary...)
 
 	if debugOption {
