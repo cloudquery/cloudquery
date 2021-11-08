@@ -7,6 +7,7 @@ import (
 	"os"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -37,8 +38,10 @@ func (t TFStates) FindType(tfType, tfMode string) TFInstances {
 
 type TFInstances []terraform.Instance
 
+const tfIDAttribute = "id"
+
 // Attributes returns a map of resource ID vs. attributes
-func (r TFInstances) AsResourceList(attributeNames []string) ResourceList {
+func (r TFInstances) AsResourceList(attributeNames []string, attributeTypes []schema.ValueType) ResourceList {
 	ret := make([]*Resource, len(r))
 	for i := range r {
 		var attributes map[string]interface{}
@@ -47,18 +50,34 @@ func (r TFInstances) AsResourceList(attributeNames []string) ResourceList {
 		}
 
 		res := &Resource{
-			ID: attributes["id"].(string),
+			ID: attributes[tfIDAttribute].(string),
 		}
 		res.Attributes = make([]interface{}, len(attributeNames))
 		for i := range attributeNames {
 			if val, ok := attributes[attributeNames[i]]; ok {
-				res.Attributes[i] = val
+				res.Attributes[i] = parseTerraformAttribute(val, attributeTypes[i])
 			}
 		}
 
 		ret[i] = res
 	}
 	return ret
+}
+
+func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
+	switch t {
+	case schema.TypeTimestamp:
+		ts, err := time.Parse(time.RFC3339, val.(string))
+		if err != nil {
+			ts, err = time.Parse("2006-01-02 15:04:05 -0700 MST", val.(string))
+		}
+		if err != nil {
+			return val // will probably error/detect deep drift
+		}
+		return fmt.Sprintf("%d", ts.Unix())
+	default:
+		return val
+	}
 }
 
 func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates) (*Result, error) {
@@ -74,7 +93,9 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
 	tfAttributes := make([]string, len(resData.Attributes))
+	colTypes := make([]schema.ValueType, len(resData.Attributes))
 	for i, a := range resData.Attributes {
+		colTypes[i] = cloudTable.Column(resData.Attributes[i]).Type
 		if mapped := iacData.attributeMap[a]; mapped != "" {
 			tfAttributes[i] = mapped
 		} else {
@@ -82,13 +103,16 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		}
 	}
 
-	tfResources := states.FindType(iacData.Type, d.params.TfMode).AsResourceList(tfAttributes)
+	tfResources := states.FindType(iacData.Type, d.params.TfMode).AsResourceList(tfAttributes, colTypes)
 
 	cloudQueryItems := make([]string, len(resData.Attributes))
 	for i := range resData.Attributes {
-		if cloudTable.Column(resData.Attributes[i]).Type == schema.TypeString {
+		switch colTypes[i] {
+		case schema.TypeString:
 			cloudQueryItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
-		} else {
+		case schema.TypeTimestamp:
+			cloudQueryItems[i] = fmt.Sprintf(`EXTRACT(EPOCH FROM DATE_TRUNC('second', "c"."%s"))::VARCHAR`, resData.Attributes[i])
+		default:
 			cloudQueryItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
 		}
 	}
@@ -98,7 +122,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	if !deepMode || len(resData.Attributes) == 0 {
 		cloudAttrQuery = goqu.L("NULL")
 	} else {
-		cloudAttrQuery = goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
+		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
 	}
 
 	idExp, err := d.handleIdentifier(resData.Identifiers)
@@ -189,12 +213,16 @@ func (d *Drift) terraformDebugDifferentResources(resName string, resources map[s
 		}
 
 		tfAttrs := tfMap[k]
-		table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
+		table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s:%s", resName, k))
 		var (
 			matchingAttr []string
 			matchingVal  []string
 		)
 		for i := range tfAttrs {
+			if tfAttributes[i] == tfIDAttribute {
+				continue // don't print ID attributes (cloud side might not match due to use of composite IDs)
+			}
+
 			if !reflect.DeepEqual(cloudAttrs[i], tfAttrs[i]) {
 				table.Append([]string{
 					cloudQueryItems[i],
