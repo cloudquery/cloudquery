@@ -185,7 +185,7 @@ func (d *Drift) terraformDebugDifferentResources(resName string, resources map[s
 	for _, k := range tfRes.IDs() {
 		cloudAttrs, ok := cloudMap[k]
 		if !ok {
-			continue // Resource exists only in cloud. This is already handled by the "Extra" resource/check
+			continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
 		}
 
 		tfAttrs := tfMap[k]

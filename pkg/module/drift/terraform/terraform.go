@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// parseAndValidate received reader turn in into Data state and validate the state version
+// ParseAndValidate received reader turn in into Data state and validate the state version
 func ParseAndValidate(reader io.Reader) (*Data, error) {
 	var s Data
 	if err := json.NewDecoder(reader).Decode(&s.State); err != nil {
