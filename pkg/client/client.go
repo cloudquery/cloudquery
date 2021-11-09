@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -595,7 +596,6 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		StopOnFailure:    req.StopOnFailure,
 		SkipVersioning:   req.SkipVersioning,
 		UpdateCallback:   req.RunCallBack,
-		FailOnViolation:  req.FailOnViolation,
 		ProviderVersions: versions,
 	})
 	if err != nil {
@@ -620,6 +620,10 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		if _, err := f.Write(data); err != nil {
 			return err
 		}
+	}
+
+	if req.FailOnViolation && !output.Passed {
+		return errors.New("policy violations were detected")
 	}
 	return nil
 }
@@ -658,7 +662,7 @@ func (c *Client) GenModuleConfig(ctx context.Context, modName string) (*string, 
 
 	fs := afero.NewOsFs()
 	if info, _ := fs.Stat(configPath); info != nil {
-		return nil, fmt.Errorf("Config file %s already exists", configPath)
+		return nil, fmt.Errorf("config file %s already exists", configPath)
 	}
 
 	mgr := module.NewManager(c.pool, c.Logger)
