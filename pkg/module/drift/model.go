@@ -113,17 +113,13 @@ type Results struct {
 	Coverage float64 `json:"coverage_pct"`
 
 	Text string `json:"-"`
-
-	processed bool `json:"-"`
 }
 
 func (rs *Results) String() string {
-	rs.process()
 	return rs.Text
 }
 
 func (rs *Results) ExitCode() int {
-	rs.process()
 	if rs.Drifted > 0 {
 		return 1
 	}
@@ -131,13 +127,6 @@ func (rs *Results) ExitCode() int {
 }
 
 func (rs *Results) process() {
-	if rs.processed {
-		return
-	}
-	defer func() {
-		rs.processed = true
-	}()
-
 	type combined struct {
 		IAC          string
 		Provider     string
