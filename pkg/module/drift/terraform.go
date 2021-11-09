@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
+	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
 )
@@ -80,7 +81,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams) (*Result, error) {
 	res := &Result{
 		IAC:       "Terraform",
 		Different: nil,
@@ -90,7 +91,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	}
 
 	resData := resources[resName]
-	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
+	deepMode := runParams.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
 	tfAttributes := make([]string, len(resData.Attributes))
 	colTypes := make([]schema.ValueType, len(resData.Attributes))
@@ -103,9 +104,9 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		}
 	}
 
-	tfMode := terraform.Mode(d.params.TfMode)
+	tfMode := terraform.Mode(runParams.TfMode)
 	if !tfMode.Valid() {
-		return nil, fmt.Errorf("invalid tf mode %q", d.params.TfMode)
+		return nil, fmt.Errorf("invalid tf mode %q", runParams.TfMode)
 	}
 
 	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(tfAttributes, colTypes)
@@ -130,14 +131,14 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
 	}
 
-	idExp, err := d.handleIdentifier(resData.Identifiers)
+	idExp, err := handleIdentifier(resData.Identifiers)
 	if err != nil {
 		return nil, err
 	}
 
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	existing, err := d.queryIntoResourceList(ctx, conn, q)
+	q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+	existing, err := queryIntoResourceList(ctx, logger, conn, q)
 	if err != nil {
 		return nil, err
 	}
@@ -155,9 +156,9 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	// Get extra resources
 	{
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-		q = d.handleSubresource(q, cloudTable, resources)
-		q = d.handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
-		existingFiltered, err := d.queryIntoResourceList(ctx, conn, q)
+		q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
+		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
 		if err != nil {
 			return nil, err
 		}
@@ -190,7 +191,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 			}
 		})
 	}
-	if deepMode && d.params.Debug && len(res.Different) > 0 {
+	if deepMode && runParams.Debug && len(res.Different) > 0 {
 		if err := RenderDriftTable(resName, resources, cloudName, cloudQueryItems, tfAttributes, res.Different, tfResources); err != nil {
 			return nil, err
 		}

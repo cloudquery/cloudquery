@@ -116,7 +116,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 			)
 			switch iacProv {
 			case iacTerraform:
-				dres, err = d.driftTerraform(ctx, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data))
+				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params)
 			default:
 				err = fmt.Errorf("no suitable handler found for %q", iacProv)
 			}
@@ -135,12 +135,12 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	return resList, nil
 }
 
-func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset) (ResourceList, error) {
+func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, sel *goqu.SelectDataset) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build failed: %w", err)
 	}
-	d.logger.Trace("generated query", "query", query, "args", args)
+	logger.Trace("generated query", "query", query, "args", args)
 
 	var list []struct {
 		ID      *string       `db:"id"`
@@ -153,7 +153,7 @@ func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, s
 			return nil, fmt.Errorf("cloud provider tables don't exist: Did you run `cloudquery fetch`?%q", pgErr.TableName)
 		}
 
-		d.logger.Warn("query failed with error", "query", query, "args", args, "error", err)
+		logger.Warn("query failed with error", "query", query, "args", args, "error", err)
 		return nil, fmt.Errorf("goqu select failed: %w", err)
 	}
 
@@ -173,26 +173,26 @@ func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, s
 	return ret, nil
 }
 
-func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig) *goqu.SelectDataset {
+func handleSubresource(logger hclog.Logger, sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig, accountIDs []string) *goqu.SelectDataset {
 	parentColumn := pr.ParentIDColumn()
 
 	if parentColumn == "" {
 		if pr.Parent != nil {
-			d.logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
+			logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
 		}
 
-		if len(d.params.AccountIDs) > 0 {
+		if len(accountIDs) > 0 {
 			accountIDColumn := pr.AccountIDColumn()
 
 			if accountIDColumn != "" {
-				sel = sel.Where(goqu.Ex{"c." + accountIDColumn: d.params.AccountIDs})
+				sel = sel.Where(goqu.Ex{"c." + accountIDColumn: accountIDs})
 			}
 		}
 
 		return sel
 	}
 	if pr.Parent == nil {
-		d.logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
+		logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
 		return sel
 	}
 
@@ -205,7 +205,7 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 	for pr.Parent != nil {
 		res = resources[pr.Name]
 		if res == nil {
-			d.logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
+			logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
 			return sel // FIXME we're skipping the account_id filter here by returning
 		}
 
@@ -229,16 +229,16 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 		parentColumn = pr.ParentIDColumn()
 	}
 
-	if len(d.params.AccountIDs) > 0 {
+	if len(accountIDs) > 0 {
 		accountIDColumn := pr.AccountIDColumn()
 
-		sel = sel.Where(goqu.Ex{parentTableName + "." + accountIDColumn: d.params.AccountIDs})
+		sel = sel.Where(goqu.Ex{parentTableName + "." + accountIDColumn: accountIDs})
 	}
 
 	return sel
 }
 
-func (d *Drift) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
+func handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
 	for _, f := range res.Filters {
 		sel = sel.Where(goqu.L(f))
 	}
@@ -248,7 +248,7 @@ func (d *Drift) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goq
 
 var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
 
-func (d *Drift) handleIdentifier(identifiers []string) (exp.Expression, error) {
+func handleIdentifier(identifiers []string) (exp.Expression, error) {
 	switch l := len(identifiers); {
 	case l == 0:
 		return nil, fmt.Errorf("no identifiers to match")
