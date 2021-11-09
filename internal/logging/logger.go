@@ -52,7 +52,7 @@ type Config struct {
 func Configure(config Config) zerolog.Logger {
 	var writers []io.Writer
 
-	if config.ConsoleLoggingEnabled {
+	if config.ConsoleLoggingEnabled || !ui.IsTerminal() {
 		if config.EncodeLogsAsJson {
 			writers = append(writers, os.Stdout)
 		} else {
