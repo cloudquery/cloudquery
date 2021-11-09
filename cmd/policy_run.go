@@ -49,15 +49,16 @@ var (
 					return err
 				}
 			}
-			return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
+			return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning, failOnViolation)
 		}),
 	}
-	skipDownload   bool
-	localPath      string
-	subPath        string
-	outputPath     string
-	stopOnFailure  bool
-	skipVersioning bool
+	skipDownload    bool
+	localPath       string
+	subPath         string
+	outputPath      string
+	stopOnFailure   bool
+	skipVersioning  bool
+	failOnViolation bool
 )
 
 func init() {
@@ -68,6 +69,7 @@ func init() {
 	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
 	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
 	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
+	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if policy is violated")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }

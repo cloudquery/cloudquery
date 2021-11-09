@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -56,6 +56,9 @@ type ExecuteRequest struct {
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
+
+	// FailOnViolation if true policy run will return error if there are violations
+	FailOnViolation bool
 
 	// ProviderVersions describes current versions of providers in use.
 	ProviderVersions map[string]*version.Version
@@ -215,12 +218,24 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 				total.Results[k] = v
 			}
 			if !total.Passed && req.StopOnFailure {
-				return &total, nil
+				break
 			}
 		}
 	}
 	if !found && len(selector) > 0 {
 		return nil, errPolicyOrQueryNotFound
+	}
+
+	if req.FailOnViolation {
+		var violatedPolicies []string
+		for _, res := range total.Results {
+			if !res.Passed && res.Type != config.ManualQuery {
+				violatedPolicies = append(violatedPolicies, res.Name)
+			}
+		}
+		if len(violatedPolicies) > 0 {
+			return nil, fmt.Errorf("violations detected in next policies: %v", strings.Join(violatedPolicies, ", "))
+		}
 	}
 	return &total, nil
 }
