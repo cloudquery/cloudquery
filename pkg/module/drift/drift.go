@@ -73,7 +73,7 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
-	iacProv, iacStates, err := readIACStates(d.params.IACName, d.params.StateFiles)
+	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +289,7 @@ func readIACStates(iacID string, stateFiles []string) (iacProvider, interface{},
 			if err != nil {
 				return "", nil, err
 			}
-			data, err := terraform.ParseAndValidate(fh)
+			data, err := terraform.LoadState(fh)
 			_ = fh.Close()
 			if err != nil {
 				return "", nil, fmt.Errorf("parse %s: %w", fn, err)

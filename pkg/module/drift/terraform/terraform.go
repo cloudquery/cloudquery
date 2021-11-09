@@ -6,8 +6,8 @@ import (
 	"io"
 )
 
-// ParseAndValidate received reader turn in into Data state and validate the state version
-func ParseAndValidate(reader io.Reader) (*Data, error) {
+// LoadState loads the given reader into tfstate and validates the state version
+func LoadState(reader io.Reader) (*Data, error) {
 	var s Data
 	if err := json.NewDecoder(reader).Decode(&s.State); err != nil {
 		return nil, fmt.Errorf("invalid tf state file")

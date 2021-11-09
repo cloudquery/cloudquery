@@ -32,7 +32,7 @@ type OutputState struct {
 
 type Resource struct {
 	Module         string     `json:"module,omitempty"`
-	Mode           string     `json:"mode"`
+	Mode           Mode       `json:"mode"`
 	Type           string     `json:"type"`
 	Name           string     `json:"name"`
 	EachMode       string     `json:"each,omitempty"`
@@ -55,4 +55,15 @@ type Instance struct {
 	Dependencies []string `json:"dependencies,omitempty"`
 
 	CreateBeforeDestroy bool `json:"create_before_destroy,omitempty"`
+}
+
+type Mode string
+
+const (
+	ModeManaged Mode = "managed"
+	ModeData    Mode = "data"
+)
+
+func (m Mode) Valid() bool {
+	return m == ModeManaged || m == ModeData
 }

@@ -79,9 +79,7 @@ func init() {
 
 	// flags handled by the drift package
 	flags.BoolVar(&driftParams.Debug, "debug", false, "Show debug output")
-	flags.StringVar(&driftParams.IACName, "iac", "terraform", "IAC name")
 	flags.StringSliceVar(&driftParams.AccountIDs, "account-ids", nil, "Use only specified cloud account IDs")
-	// flags.StringSliceVar(&driftParams.TfBackendNames, "tf-backend-names", nil, "Filter by Terraform backend names")
 	flags.StringVar(&driftParams.TfMode, "tf-mode", "managed", "Set Terraform mode")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")
 	flags.BoolVar(&driftParams.ListManaged, "list-managed", false, "List managed resources in output")

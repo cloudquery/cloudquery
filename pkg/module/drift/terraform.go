@@ -20,7 +20,7 @@ import (
 type TFStates []*terraform.Data
 
 // FindType returns all instances of the given type under a given mode
-func (t TFStates) FindType(tfType, tfMode string) TFInstances {
+func (t TFStates) FindType(tfType string, tfMode terraform.Mode) TFInstances {
 	var ret []terraform.Instance
 	for _, d := range t {
 		for idx, r := range d.State.Resources {
@@ -103,7 +103,12 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		}
 	}
 
-	tfResources := states.FindType(iacData.Type, d.params.TfMode).AsResourceList(tfAttributes, colTypes)
+	tfMode := terraform.Mode(d.params.TfMode)
+	if !tfMode.Valid() {
+		return nil, fmt.Errorf("invalid tf mode %q", d.params.TfMode)
+	}
+
+	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(tfAttributes, colTypes)
 
 	cloudQueryItems := make([]string, len(resData.Attributes))
 	for i := range resData.Attributes {
@@ -186,7 +191,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 		})
 	}
 	if deepMode && d.params.Debug && len(res.Different) > 0 {
-		if err := d.terraformDebugDifferentResources(resName, resources, cloudName, cloudQueryItems, tfAttributes, res.Different, tfResources); err != nil {
+		if err := RenderDriftTable(resName, resources, cloudName, cloudQueryItems, tfAttributes, res.Different, tfResources); err != nil {
 			return nil, err
 		}
 	}
@@ -194,7 +199,7 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	return res, nil
 }
 
-func (d *Drift) terraformDebugDifferentResources(resName string, resources map[string]*ResourceConfig, cloudName string, cloudQueryItems, tfAttributes []string, differentIDs, tfRes ResourceList) error {
+func RenderDriftTable(resName string, resources map[string]*ResourceConfig, cloudName string, cloudQueryItems, tfAttributes []string, differentIDs, tfRes ResourceList) error {
 	resData := resources[resName]
 
 	makeTable := func(title string) *tablewriter.Table {
