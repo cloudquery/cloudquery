@@ -136,15 +136,16 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
+func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure, skipVersioning, failOnViolation bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
 	req := client.PolicyRunRequest{
-		Args:           args,
-		SubPath:        subPath,
-		LocalPath:      localPath,
-		OutputPath:     outputPath,
-		StopOnFailure:  stopOnFailure,
-		SkipVersioning: skipVersioning,
+		Args:            args,
+		SubPath:         subPath,
+		LocalPath:       localPath,
+		OutputPath:      outputPath,
+		StopOnFailure:   stopOnFailure,
+		SkipVersioning:  skipVersioning,
+		FailOnViolation: failOnViolation,
 		RunCallBack: func(name string, qtype config.QueryType, passed bool) {
 			switch {
 			case passed:

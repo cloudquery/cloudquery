@@ -111,6 +111,9 @@ type PolicyRunRequest struct {
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
+
+	// FailOnViolation if true policy run will return error if there are violations
+	FailOnViolation bool
 }
 
 // ModuleRunRequest is the request used to run a module.
@@ -592,6 +595,7 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 		StopOnFailure:    req.StopOnFailure,
 		SkipVersioning:   req.SkipVersioning,
 		UpdateCallback:   req.RunCallBack,
+		FailOnViolation:  req.FailOnViolation,
 		ProviderVersions: versions,
 	})
 	if err != nil {
