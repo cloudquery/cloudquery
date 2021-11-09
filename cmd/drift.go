@@ -42,7 +42,7 @@ var (
 	}
 
 	driftScanCmd = &cobra.Command{
-		Use:   "scan",
+		Use:   "scan [state files...]",
 		Short: "Scan for drifts",
 		Long:  "Scan for drifts between cloud provider and IaC",
 		Run: handleError(func(cmd *cobra.Command, args []string) error {
@@ -53,6 +53,8 @@ var (
 				return err
 			}
 			defer c.Client().Close()
+
+			driftParams.StateFiles = args
 
 			return c.CallModule(ctx, console.ModuleCallRequest{
 				Name:          driftModuleID,
@@ -78,9 +80,7 @@ func init() {
 	// flags handled by the drift package
 	flags.BoolVar(&driftParams.Debug, "debug", false, "Show debug output")
 	flags.StringSliceVar(&driftParams.AccountIDs, "account-ids", nil, "Use only specified cloud account IDs")
-	flags.StringSliceVar(&driftParams.TfBackendNames, "tf-backend-names", nil, "Filter by Terraform backend names")
 	flags.StringVar(&driftParams.TfMode, "tf-mode", "managed", "Set Terraform mode")
-	flags.StringVar(&driftParams.TfProvider, "tf-provider", "", "Set Terraform provider (defaults to cloud provider name)")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")
 	flags.BoolVar(&driftParams.ListManaged, "list-managed", false, "List managed resources in output")
 

@@ -34,7 +34,7 @@ type ResourceConfig struct {
 	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
 	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
 
-	IAC map[string]*IACConfig
+	IAC map[iacProvider]*IACConfig
 
 	defRange *hcl.Range
 }
@@ -109,7 +109,7 @@ func (prov *ProviderConfig) resourceKeys() []string {
 	return k
 }
 
-func (prov *ProviderConfig) interpolatedResourceMap(iacProvider string, logger hclog.Logger) map[string]*ResourceConfig {
+func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider, logger hclog.Logger) map[string]*ResourceConfig {
 	resourceKeys := prov.resourceKeys()
 	ret := make(map[string]*ResourceConfig, len(resourceKeys))
 
@@ -138,11 +138,7 @@ func (prov *ProviderConfig) interpolatedResourceMap(iacProvider string, logger h
 	return ret
 }
 
-func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse, except string) (*cqproto.GetProviderSchemaResponse, error) {
-	if except != "" && cfg.Name == except {
-		return nil, nil
-	}
-
+func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
 	for _, schema := range schemas {
 		if ok, diags := d.applyProvider(cfg, schema); diags.HasErrors() {
 			return nil, diags

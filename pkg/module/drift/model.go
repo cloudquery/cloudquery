@@ -9,14 +9,18 @@ import (
 type RunParams struct {
 	Debug bool
 
-	TfMode, TfProvider         string
-	ForceDeep                  bool
-	ListManaged                bool
-	TfBackendNames, AccountIDs []string
+	TfMode      string
+	ForceDeep   bool
+	ListManaged bool
+	AccountIDs  []string
+
+	IACName    string
+	StateFiles []string
 }
 
 type Resource struct {
-	ID string `json:"id"`
+	ID         string        `json:"id"`
+	Attributes []interface{} `json:"-"`
 }
 
 type ResourceList []*Resource
@@ -32,6 +36,21 @@ func (r ResourceList) IDs(exclude ...*Resource) []string {
 		if _, ok := exMap[r[i].ID]; !ok {
 			ret = append(ret, r[i].ID)
 		}
+	}
+	return ret
+}
+
+func (r ResourceList) Walk(fn func(*Resource)) {
+	for i := range r {
+		fn(r[i])
+	}
+}
+
+// Map returns a map of ID vs. attributes
+func (r ResourceList) Map() map[string][]interface{} {
+	ret := make(map[string][]interface{}, len(r))
+	for i := range r {
+		ret[r[i].ID] = r[i].Attributes
 	}
 	return ret
 }
