@@ -290,7 +290,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 		return nil, diags
 	}
 	res := &ResourceConfig{
-		IAC: make(map[string]*IACConfig),
+		IAC: make(map[iacProvider]*IACConfig),
 	}
 	if idAttr, ok := content.Attributes["identifiers"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(idAttr.Expr, ctx, &res.Identifiers)...)
@@ -340,7 +340,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 					}
 					ia.attributeMap[parts[0]] = parts[1]
 				}
-				res.IAC[iacBlock.Type] = &ia
+				res.IAC[iacProvider(iacBlock.Type)] = &ia
 			}
 			if diags.HasErrors() {
 				return nil, diags
