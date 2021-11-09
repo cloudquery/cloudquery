@@ -39,8 +39,10 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 
 func initServices(client *kubernetes.Clientset) Services {
 	return Services{
-		Nodes:    client.CoreV1().Nodes(),
-		Pods:     client.CoreV1().Pods(""),
-		Services: client.CoreV1().Services(""),
+		Nodes:        client.CoreV1().Nodes(),
+		Pods:         client.CoreV1().Pods(""),
+		Services:     client.CoreV1().Services(""),
+		Roles:        client.RbacV1().Roles(""),
+		RoleBindings: client.RbacV1().RoleBindings(""),
 	}
 }
