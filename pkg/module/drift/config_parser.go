@@ -217,6 +217,10 @@ var (
 				Name:     "filters",
 				Required: false,
 			},
+			{
+				Name:     "sets",
+				Required: false,
+			},
 		},
 		Blocks: []hcl.BlockHeaderSchema{
 			{
@@ -305,6 +309,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	}
 	if filtersAttr, ok := content.Attributes["filters"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(filtersAttr.Expr, ctx, &res.Filters)...)
+	}
+	if setsAttr, ok := content.Attributes["sets"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(setsAttr.Expr, ctx, &res.Sets)...)
 	}
 
 	for _, block := range content.Blocks {

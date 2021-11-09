@@ -312,6 +312,7 @@ module "drift" {
 
         resource "aws_cloudfront_distribution_cache_behaviours" {
             identifiers = [ "parent.id", "path_pattern", "target_origin_id", "viewer_protocol_policy" ]
+            sets = [ "allowed_methods", "cached_methods" ]
 
             iac {
                 terraform {
@@ -361,7 +362,7 @@ module "drift" {
         }
 
         resource "aws_cloudtrail_trail_event_selectors" {
-            identifiers = [ "parent.name", sql("CASE WHEN include_management_events THEN 'true' ELSE 'false' END"), "read_write_type" ]
+            identifiers = [ "parent.name", sql("include_management_events::varchar"), "read_write_type" ]
 
             iac {
                 terraform {

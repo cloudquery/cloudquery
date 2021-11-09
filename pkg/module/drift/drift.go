@@ -270,7 +270,7 @@ func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 		}
 
 		if !usingVariable && !strings.Contains(id, ".") {
-			id = "c." + id
+			id = "c." + `"` + id + `"`
 		}
 
 		concatArgs = append(concatArgs, id, "'"+idSeparator+"'")

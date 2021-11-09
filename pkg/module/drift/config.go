@@ -33,6 +33,7 @@ type ResourceConfig struct {
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
 	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
+	Sets              []string `hcl:"sets,optional"`    // Unordered list-attributes where item order doesn't matter
 
 	IAC map[iacProvider]*IACConfig
 
@@ -83,6 +84,7 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	res.IgnoreIdentifiers = mergeDedupSlices(res.IgnoreIdentifiers, wild.IgnoreIdentifiers)
 	res.IgnoreAttributes = mergeDedupSlices(res.IgnoreAttributes, wild.IgnoreAttributes)
 	res.Filters = mergeDedupSlices(res.Filters, wild.Filters)
+	res.Sets = mergeDedupSlices(res.Sets, wild.Sets)
 
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
@@ -242,6 +244,7 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 			res.IgnoreIdentifiers = replacePlaceholderInSlice(k, v, res.IgnoreIdentifiers)
 			res.Attributes = replacePlaceholderInSlice(k, v, res.Attributes)
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
+			res.Sets = replacePlaceholderInSlice(k, v, res.Sets)
 		}
 
 		// {$sql:*} identifiers are still not replaced
