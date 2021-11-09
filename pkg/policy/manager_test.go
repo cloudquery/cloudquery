@@ -85,7 +85,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 		RepositoryPath   string
 		ProviderVersions map[string]*version.Version
 		ErrorString      string
-		FailOnViolation  bool
 	}{
 		{
 			Name:           "policy_hub_policy",
@@ -94,15 +93,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 			ProviderVersions: map[string]*version.Version{
 				"aws": version.Must(version.NewVersion("v1.0")),
 			},
-		},
-		{
-			Name:       "policy_hub_policy_fail",
-			PolicyPath: "fdistorted/my-cq-policy@v0.0.5",
-			ProviderVersions: map[string]*version.Version{
-				"aws": version.Must(version.NewVersion("1.0.0")),
-			},
-			FailOnViolation: true,
-			ErrorString:     "violations detected in next policies: sub-level-query",
 		},
 		{
 			Name:       "private_policy_main_branch",
@@ -118,7 +108,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 				"aws": version.Must(version.NewVersion("1.0.0")),
 			},
 		},
-
 		{
 			Name:       "too old provider",
 			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
@@ -148,7 +137,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 				Policy:           p,
 				UpdateCallback:   nil,
 				StopOnFailure:    true,
-				FailOnViolation:  tc.FailOnViolation,
 				ProviderVersions: tc.ProviderVersions,
 			})
 			if tc.ErrorString == "" {
