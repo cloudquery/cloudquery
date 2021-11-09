@@ -2,10 +2,10 @@ package drift
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"sort"
 	"strings"
 	"time"
 
@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
+	"github.com/tidwall/gjson"
 )
 
 type TFStates []*terraform.Data
@@ -41,31 +42,83 @@ type TFInstances []terraform.Instance
 
 const tfIDAttribute = "id"
 
-// Attributes returns a map of resource ID vs. attributes
-func (r TFInstances) AsResourceList(attributeNames []string, attributeTypes []schema.ValueType) ResourceList {
-	ret := make([]*Resource, len(r))
+// AsResourceList returns a map of resource ID vs. attributes
+func (r TFInstances) AsResourceList(identifiers, attributeNames []string, attributeTypes map[string]schema.ValueType, path string) ResourceList {
+	if len(identifiers) == 0 {
+		identifiers = []string{tfIDAttribute}
+	}
+
+	ret := make([]*Resource, 0, len(r))
 	for i := range r {
-		var attributes map[string]interface{}
-		if err := json.Unmarshal(r[i].AttributesRaw, &attributes); err != nil {
-			panic(err)
-		}
-
-		res := &Resource{
-			ID: attributes[tfIDAttribute].(string),
-		}
-		res.Attributes = make([]interface{}, len(attributeNames))
-		for i := range attributeNames {
-			if val, ok := attributes[attributeNames[i]]; ok {
-				res.Attributes[i] = parseTerraformAttribute(val, attributeTypes[i])
-			}
-		}
-
-		ret[i] = res
+		ret = append(ret, parseTerraformInstance(r[i], identifiers, attributeNames, attributeTypes, path)...)
 	}
 	return ret
 }
 
+func parseTerraformInstance(ins terraform.Instance, identifiers, attributeNames []string, attributeTypes map[string]schema.ValueType, path string) ResourceList {
+	var elems []gjson.Result
+
+	root := gjson.ParseBytes(ins.AttributesRaw)
+	rootAttributes := root.Value().(map[string]interface{})
+
+	if path != "" {
+		arr := gjson.GetBytes(ins.AttributesRaw, path)
+		if !arr.IsArray() {
+			panic("invalid path " + path + ": not an array")
+		}
+		elems = arr.Array()
+	} else {
+		elems = append(elems, root)
+	}
+
+	ret := make([]*Resource, len(elems))
+
+	for elIdx, el := range elems {
+		if !el.IsObject() {
+			panic("invalid array element: not an object: " + el.Type.String())
+		}
+		attributes := el.Value().(map[string]interface{})
+
+		getAttributes := func(id string) (interface{}, bool) {
+			const rootPathPrefix = "root."
+
+			if strings.HasPrefix(id, rootPathPrefix) {
+				val, ok := rootAttributes[strings.TrimPrefix(id, rootPathPrefix)]
+				return val, ok
+			}
+
+			val, ok := attributes[id]
+			return val, ok
+		}
+
+		idVals := make([]string, len(identifiers))
+		for i, idName := range identifiers {
+			v, _ := getAttributes(idName)
+			v = parseTerraformAttribute(v, attributeTypes[idName])
+			idVals[i] = fmt.Sprintf("%v", v)
+		}
+
+		res := &Resource{
+			ID: strings.Join(idVals, idSeparator),
+		}
+		res.Attributes = make([]interface{}, len(attributeNames))
+		for i := range attributeNames {
+			if val, ok := getAttributes(attributeNames[i]); ok {
+				res.Attributes[i] = parseTerraformAttribute(val, attributeTypes[attributeNames[i]])
+			}
+		}
+
+		ret[elIdx] = res
+	}
+
+	return ret
+}
+
 func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
+	if val == nil {
+		return nil
+	}
+
 	switch t {
 	case schema.TypeTimestamp:
 		ts, err := time.Parse(time.RFC3339, val.(string))
@@ -76,6 +129,18 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 			return val // will probably error/detect deep drift
 		}
 		return fmt.Sprintf("%d", ts.Unix())
+	case schema.TypeStringArray:
+		if str, ok := val.(string); ok {
+			return str
+		}
+
+		items := val.([]interface{})
+		s := make([]string, len(items))
+		for i := range items {
+			s[i] = items[i].(string)
+		}
+		sort.Strings(s) // TODO don't sort if not an unordered set
+		return s
 	default:
 		return val
 	}
@@ -95,13 +160,15 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 
 	tfAttributes := make([]string, len(resData.Attributes))
 	colTypes := make([]schema.ValueType, len(resData.Attributes))
+	tfColTypes := make(map[string]schema.ValueType, len(resData.Attributes))
 	for i, a := range resData.Attributes {
-		colTypes[i] = cloudTable.Column(resData.Attributes[i]).Type
+		colTypes[i] = cloudTable.Column(a).Type
 		if mapped := iacData.attributeMap[a]; mapped != "" {
 			tfAttributes[i] = mapped
 		} else {
 			tfAttributes[i] = a
 		}
+		tfColTypes[tfAttributes[i]] = colTypes[i]
 	}
 
 	tfMode := terraform.Mode(runParams.TfMode)
@@ -109,7 +176,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		return nil, fmt.Errorf("invalid tf mode %q", runParams.TfMode)
 	}
 
-	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(tfAttributes, colTypes)
+	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(iacData.Identifiers, tfAttributes, tfColTypes, iacData.Path)
 
 	cloudQueryItems := make([]string, len(resData.Attributes))
 	for i := range resData.Attributes {
@@ -131,7 +198,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
 	}
 
-	idExp, err := handleIdentifier(resData.Identifiers)
+	idExp, err := handleIdentifiers(resData.Identifiers)
 	if err != nil {
 		return nil, err
 	}

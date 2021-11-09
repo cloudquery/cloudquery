@@ -154,7 +154,19 @@ module "drift" {
             }
         }
 
-        # TODO: aws_apigateway_usage_plan_api_stages (tf row with type="aws_api_gateway_usage_plan".attributes->"api_stages")
+        resource "aws_apigateway_usage_plan_api_stages" {
+            identifiers = [ "usage_plan_id", "api_id", "stage" ]
+            iac {
+                terraform {
+                    type = "aws_api_gateway_usage_plan"
+                    path = "api_stages"
+                    identifiers = [ "root.id", "api_id", "stage" ]
+                    attribute_map = [
+                        "usage_plan_id=root.id"
+                    ]
+                }
+            }
+        }
 
         resource "aws_apigateway_usage_plan_keys" {
             iac {
@@ -268,7 +280,17 @@ module "drift" {
             }
         }
 
-       # TODO: aws_autoscaling_launch_configuration_block_device_mappings (tf row with type="aws_launch_configuration".attributes->"ebs_block_device")
+        resource "aws_autoscaling_launch_configuration_block_device_mappings" {
+            identifiers = [ "parent.launch_configuration_name", "device_name" ]
+
+            iac {
+                terraform {
+                    type = "aws_launch_configuration"
+                    path = "ebs_block_device"
+                    identifiers = [ "root.id", "device_name" ]
+                }
+            }
+        }
 
         resource "cloudfront.cache_policies" {
             iac {
@@ -288,11 +310,31 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudfront_distribution_cache_behaviours (tf row with type="aws_cloudfront_distribution".attributes->"ordered_cache_behavior")
+        resource "aws_cloudfront_distribution_cache_behaviours" {
+            identifiers = [ "parent.id", "path_pattern", "target_origin_id", "viewer_protocol_policy" ]
+
+            iac {
+                terraform {
+                    type = "aws_cloudfront_distribution"
+                    path = "ordered_cache_behavior"
+                    identifiers = [ "root.id", "path_pattern", "target_origin_id", "viewer_protocol_policy" ]
+                }
+            }
+        }
 
         # TODO: aws_cache_behaviour_lambda_function_associations (no data in tests)
 
-        # TODO: aws_cloudfront_distribution_custom_error_responses (tf row with type="aws_cloudfront_distribution".attributes->"custom_error_responses")
+        resource "aws_cloudfront_distribution_custom_error_responses" {
+            identifiers = [ "parent.id", "error_code", "response_code", "response_page_path" ]
+
+            iac {
+                terraform {
+                    type = "aws_cloudfront_distribution"
+                    path = "custom_error_response"
+                    identifiers = [ "root.id", "error_code", "response_code", "response_page_path" ]
+                }
+            }
+        }
 
         resource "aws_cloudfront_distribution_origins" {
             identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
@@ -318,7 +360,17 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudtrail_trail_event_selectors (tf row with type="aws_cloudtrail".attributes->"event_selector")
+        resource "aws_cloudtrail_trail_event_selectors" {
+            identifiers = [ "parent.name", sql("CASE WHEN include_management_events THEN 'true' ELSE 'false' END"), "read_write_type" ]
+
+            iac {
+                terraform {
+                    type = "aws_cloudtrail"
+                    path = "event_selector"
+                    identifiers = [ "root.id", "include_management_events", "read_write_type" ]
+                }
+            }
+        }
 
         resource "cloudwatch.alarms" {
             identifiers = [ "name" ]
@@ -330,7 +382,17 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudwatch_alarm_metrics (tf row with type="aws_cloudwatch_metric_alarm".attributes->"metric_query")
+        resource "aws_cloudwatch_alarm_metrics" {
+            identifiers = [ "parent.name", "id" ]
+
+            iac {
+                terraform {
+                    type = "aws_cloudwatch_metric_alarm"
+                    path = "metric_query"
+                    identifiers = [ "root.id", "id" ]
+                }
+            }
+        }
 
         resource "cloudwatchlogs.filters" {
             identifiers = [ "name" ] # TODO: ignored "log_group_name" ?
@@ -341,7 +403,22 @@ module "drift" {
             }
         }
 
-        # TODO: aws_cloudwatchlogs_filter_metric_transformations (tf row with type="aws_cloudwatch_log_metric_filter".attributes->"metric_transformation")
+        resource "aws_cloudwatchlogs_filter_metric_transformations" {
+            identifiers = [ "parent.name", "metric_namespace", "metric_name" ]
+
+            iac {
+                terraform {
+                    type = "aws_cloudwatch_log_metric_filter"
+                    path = "metric_transformation"
+                    identifiers = [ "root.id", "namespace", "name" ]
+                    attribute_map = [
+                        "metric_namespace=namespace",
+                        "metric_name=name",
+                        "metric_value=value",
+                    ]
+                }
+            }
+        }
 
         resource "cognito.identity_pools" {
             iac {

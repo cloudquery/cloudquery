@@ -178,10 +178,6 @@ var (
 				Type:       "resource",
 				LabelNames: []string{"name"},
 			},
-			{
-				Type:       "subresource",
-				LabelNames: []string{"name", "sub_name"},
-			},
 		},
 		Attributes: []hcl.AttributeSchema{
 			{

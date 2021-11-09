@@ -40,7 +40,9 @@ type ResourceConfig struct {
 }
 
 type IACConfig struct {
-	Type string `hcl:"type,optional"`
+	Type        string   `hcl:"type,optional"`
+	Path        string   `hcl:"path,optional"`
+	Identifiers []string `hcl:"identifiers,optional"`
 
 	AttributeMap []string `hcl:"attribute_map,optional"`
 
