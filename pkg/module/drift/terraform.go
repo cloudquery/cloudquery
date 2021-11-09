@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
@@ -356,7 +357,7 @@ func EqualAttributes(a []interface{}, b []interface{}, alist AttrList) bool {
 			continue
 		}
 
-		if efaceToString(a[i]) != efaceToString(b[i]) {
+		if !equals(a[i], b[i]) {
 			return false
 		}
 	}
@@ -371,4 +372,33 @@ func EqualSets(a []interface{}, b []interface{}) bool {
 
 func efaceToString(a interface{}) string {
 	return fmt.Sprintf("%v", a)
+}
+
+func equals(a, b interface{}) bool {
+	as := efaceToString(a)
+	bs := efaceToString(b)
+	if as == bs {
+		return true
+	}
+
+	if strings.HasPrefix(as, "arn:aws:") && strings.HasPrefix(bs, "arn:aws:") {
+		// compare ARNs, ignoring empty account IDs or regions
+		aa, err := arn.Parse(as)
+		if err != nil {
+			return false
+		}
+		ba, err := arn.Parse(bs)
+		if err != nil {
+			return false
+		}
+		if aa.Region == "" || ba.Region == "" {
+			aa.Region, ba.Region = "", ""
+		}
+		if aa.AccountID == "" || ba.AccountID == "" {
+			aa.AccountID, ba.AccountID = "", ""
+		}
+		return aa.String() == ba.String()
+	}
+
+	return false
 }
