@@ -4,7 +4,7 @@ RoleBinding references a role, but does not contain it
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|k8s_config_context|text|Name of the context from k8s configuration.|
+|context|text|Name of the context from k8s configuration.|
 |kind|text||
 |api_version|text||
 |name|text||

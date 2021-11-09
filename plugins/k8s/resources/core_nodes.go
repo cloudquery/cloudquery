@@ -306,7 +306,7 @@ func CoreNodes() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchCoreNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	nodes := meta.(*client.Client).Services.Nodes
+	nodes := meta.(*client.Client).Services().Nodes
 	result, err := nodes.List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return err

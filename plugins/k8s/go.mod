@@ -3,16 +3,24 @@ module github.com/cloudquery/cq-provider-k8s
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.4.9
+	github.com/cloudquery/cq-provider-sdk v0.5.1
 	github.com/cloudquery/faker/v3 v3.7.4
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.0.0
+	github.com/thoas/go-funk v0.9.1
 	k8s.io/api v0.22.1
 	k8s.io/apimachinery v0.22.1
 	k8s.io/client-go v0.22.1
 )
 
 require (
+	cloud.google.com/go v0.88.0 // indirect
+	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
+	github.com/Azure/go-autorest/autorest v0.11.18 // indirect
+	github.com/Azure/go-autorest/autorest/adal v0.9.14 // indirect
+	github.com/Azure/go-autorest/autorest/date v0.3.0 // indirect
+	github.com/Azure/go-autorest/logger v0.2.1 // indirect
+	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/Masterminds/squirrel v1.5.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
@@ -20,6 +28,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.17.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
+	github.com/form3tech-oss/jwt-go v3.2.3+incompatible // indirect
 	github.com/georgysavva/scany v0.2.9 // indirect
 	github.com/go-logr/logr v0.4.0 // indirect
 	github.com/go-test/deep v1.0.7 // indirect
@@ -72,7 +81,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
-	github.com/thoas/go-funk v0.9.1 // indirect
 	github.com/tmccombs/hcl2json v0.3.3 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect

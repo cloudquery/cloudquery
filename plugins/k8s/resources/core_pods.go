@@ -1667,7 +1667,7 @@ func CorePods() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchCorePods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	pods := meta.(*client.Client).Services.Pods
+	pods := meta.(*client.Client).Services().Pods
 	result, err := pods.List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return err

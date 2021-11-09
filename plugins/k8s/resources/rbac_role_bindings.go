@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -160,7 +161,7 @@ func RbacRoleBindings() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchRbacRoleBindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	client := meta.(*client.Client).Services.RoleBindings
+	client := meta.(*client.Client).Services().RoleBindings
 	opts := metav1.ListOptions{}
 	for {
 		result, err := client.List(ctx, opts)

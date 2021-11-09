@@ -26,7 +26,7 @@ func fakeRole(t *testing.T) *v1.Role {
 	if err := faker.FakeData(&r); err != nil {
 		t.Fatal(err)
 	}
-	r.ManagedFields = []metav1.ManagedFieldsEntry{*fakeManagedFields(t)}
+	r.ManagedFields = []metav1.ManagedFieldsEntry{fakeManagedFields(t)}
 	return &r
 }
 

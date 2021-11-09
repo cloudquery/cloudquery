@@ -365,7 +365,7 @@ func CoreServices() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchCoreServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	services := meta.(*client.Client).Services.Services
+	services := meta.(*client.Client).Services().Services
 	result, err := services.List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return err

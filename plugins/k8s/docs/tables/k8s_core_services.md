@@ -4,7 +4,7 @@ Service is a named abstraction of software service (for example, mysql) consisti
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|k8s_config_context|text|Name of the context from k8s configuration.|
+|context|text|Name of the context from k8s configuration.|
 |kind|text|Kind is a string value representing the REST resource this object represents.|
 |api_version|text|Defines the versioned schema of this representation of an object.|
 |name|text|Unique name within a namespace.|

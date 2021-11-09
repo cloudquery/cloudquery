@@ -5,7 +5,7 @@ The CloudQuery K8S provider pulls configuration out of Kubernetes, normalizes th
 ### Install
 
 ```shell
-cloudquery init gcp
+cloudquery init k8s
 ```
 
 ### Authentication
