@@ -21,6 +21,7 @@ func Provider() *provider.Provider {
 			"core.nodes":         CoreNodes(),
 			"core.pods":          CorePods(),
 			"core.services":      CoreServices(),
+			"batch.jobs":         BatchJobs(),
 			"apps.stateful_sets": AppsStatefulSets(),
 			"apps.replica_sets":  AppsReplicaSets(),
 			"rbac.roles":         RbacRoles(),

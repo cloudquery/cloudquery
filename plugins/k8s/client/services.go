@@ -4,6 +4,7 @@ import (
 	"context"
 
 	appsv1 "k8s.io/api/apps/v1"
+	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -19,6 +20,7 @@ type Services struct {
 	StatefulSets StatefulSetsClient
 	Namespaces   NamespacesClient
 	ReplicaSets  ReplicaSetsClient
+	Jobs         JobsClient
 	Roles        RolesClient
 	RoleBindings RoleBindingsClient
 }
@@ -51,6 +53,11 @@ type StatefulSetsClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/replica_sets.go . ReplicaSetsClient
 type ReplicaSetsClient interface {
 	List(ctx context.Context, opts metav1.ListOptions) (*appsv1.ReplicaSetList, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/batch.go . JobsClient
+type JobsClient interface {
+	List(ctx context.Context, opts metav1.ListOptions) (*batchv1.JobList, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/daemon_sets.go . DaemonSetsClient

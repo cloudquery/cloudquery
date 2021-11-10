@@ -128,6 +128,7 @@ func initServices(client *kubernetes.Clientset) Services {
 		Nodes:        client.CoreV1().Nodes(),
 		Pods:         client.CoreV1().Pods(""),
 		Services:     client.CoreV1().Services(""),
+		Jobs:         client.BatchV1().Jobs(""),
 		DaemonSets:   client.AppsV1().DaemonSets(""),
 		StatefulSets: client.AppsV1().StatefulSets(""),
 		ReplicaSets:  client.AppsV1().ReplicaSets(""),
