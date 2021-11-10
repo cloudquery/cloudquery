@@ -28,7 +28,7 @@ func TestIntegrationNetworkVirtualNetworks(t *testing.T) {
 			}},
 			Relations: []*providertest.ResourceIntegrationVerification{
 				{
-					Name:           "azure_networks_virtual_network_peerings",
+					Name:           "azure_network_virtual_network_peerings",
 					ForeignKeyName: "virtual_network_cq_id",
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
@@ -45,7 +45,7 @@ func TestIntegrationNetworkVirtualNetworks(t *testing.T) {
 					}},
 				},
 				{
-					Name:           "azure_networks_virtual_network_subnets",
+					Name:           "azure_network_virtual_network_subnets",
 					ForeignKeyName: "virtual_network_cq_id",
 					ExpectedValues: []providertest.ExpectedValue{{
 						Count: 1,
