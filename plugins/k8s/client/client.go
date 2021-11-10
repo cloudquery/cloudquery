@@ -128,6 +128,7 @@ func initServices(client *kubernetes.Clientset) Services {
 		Nodes:        client.CoreV1().Nodes(),
 		Pods:         client.CoreV1().Pods(""),
 		Services:     client.CoreV1().Services(""),
+		ReplicaSets:  client.AppsV1().ReplicaSets(""),
 		Roles:        client.RbacV1().Roles(""),
 		RoleBindings: client.RbacV1().RoleBindings(""),
 	}

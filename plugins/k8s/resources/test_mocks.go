@@ -7,7 +7,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apiresource "k8s.io/apimachinery/pkg/api/resource"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func fakeThroughPointers(t *testing.T, ptrs ...interface{}) {
@@ -39,19 +39,17 @@ func fakeDaemonSet(t *testing.T) appsv1.DaemonSet {
 	return ds
 }
 
-// nolint
-func fakeManagedFields(t *testing.T) v1.ManagedFieldsEntry {
-	m := v1.ManagedFieldsEntry{}
+func fakeManagedFields(t *testing.T) metav1.ManagedFieldsEntry {
+	m := metav1.ManagedFieldsEntry{}
 	if err := faker.FakeData(&m); err != nil {
 		t.Fatal(err)
 	}
-	m.FieldsV1 = &v1.FieldsV1{
+	m.FieldsV1 = &metav1.FieldsV1{
 		Raw: []byte("{\"test\":1}"),
 	}
 	return m
 }
 
-//nolint
 func fakePodTemplateSpec(t *testing.T) corev1.PodTemplateSpec {
 	var templateSpec corev1.PodTemplateSpec
 	fakeThroughPointers(t,
@@ -69,8 +67,10 @@ func fakePodTemplateSpec(t *testing.T) corev1.PodTemplateSpec {
 		&templateSpec.ClusterName,
 		&templateSpec.OwnerReferences,
 		&templateSpec.ManagedFields,
+		&templateSpec.ObjectMeta,
 	)
 	templateSpec.Spec = fakePodSpec(t)
+	templateSpec.ManagedFields = []metav1.ManagedFieldsEntry{fakeManagedFields(t)}
 	return templateSpec
 }
 
