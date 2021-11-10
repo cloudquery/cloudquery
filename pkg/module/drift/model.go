@@ -41,8 +41,11 @@ func (r ResourceList) IDs(exclude ...*Resource) []string {
 	return ret
 }
 
-func (r ResourceList) Walk(fn func(*Resource)) {
+func (r ResourceList) Walk(fn func(*Resource), skipper func(*Resource) bool) {
 	for i := range r {
+		if skipper != nil && skipper(r[i]) {
+			continue
+		}
 		fn(r[i])
 	}
 }

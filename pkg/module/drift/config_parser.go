@@ -201,11 +201,11 @@ var (
 				Required: false,
 			},
 			{
-				Name:     "skip_resources", // either this or check_resources
+				Name:     "ignore_resources",
 				Required: false,
 			},
 			{
-				Name:     "check_resources", // either this or skip_resources
+				Name:     "check_resources",
 				Required: false,
 			},
 			{
@@ -309,11 +309,37 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	if versionAttr, ok := content.Attributes["version"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(versionAttr.Expr, ctx, &prov.Version)...)
 	}
-	if skipAttr, ok := content.Attributes["skip_resources"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(skipAttr.Expr, ctx, &prov.SkipResources)...)
+	if attr, ok := content.Attributes["ignore_resources"]; ok {
+		var (
+			list []string
+			err  error
+		)
+		diags = append(diags, gohcl.DecodeExpression(attr.Expr, ctx, &list)...)
+		prov.IgnoreResources, err = parseResourceSelectors(list)
+		if err != nil {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  `Invalid ignore_resources entry`,
+				Detail:   err.Error(),
+				Subject:  &attr.Range,
+			})
+		}
 	}
-	if checkAttr, ok := content.Attributes["check_resources"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(checkAttr.Expr, ctx, &prov.CheckResources)...)
+	if attr, ok := content.Attributes["check_resources"]; ok {
+		var (
+			list []string
+			err  error
+		)
+		diags = append(diags, gohcl.DecodeExpression(attr.Expr, ctx, &list)...)
+		prov.CheckResources, err = parseResourceSelectors(list)
+		if err != nil {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  `Invalid check_resources entry`,
+				Detail:   err.Error(),
+				Subject:  &attr.Range,
+			})
+		}
 	}
 	if accountsAttr, ok := content.Attributes["account_ids"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(accountsAttr.Expr, ctx, &prov.AccountIDs)...)

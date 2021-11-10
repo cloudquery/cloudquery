@@ -1093,12 +1093,13 @@ config {
             }
         }
 
-        skip_resources = [
-#            "ec2.instances",
-#            "iam.users",
-#            "s3.buckets"
+/*
+        ignore_resources = [
+            "ec2.instances:*",
+            "iam.users",
+            "s3.buckets:*"
         ]
-
+*/
     }
 
 

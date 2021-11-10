@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/hashicorp/go-hclog"
@@ -23,12 +24,12 @@ type BaseConfig struct {
 type ProviderConfig struct {
 	WildResource *ResourceConfig
 
-	Name           string                     `hcl:"name,label"`
-	Resources      map[string]*ResourceConfig `hcl:"resource,block"`
-	Version        string                     `hcl:"version,optional"`
-	SkipResources  []string                   `hcl:"skip_resources,optional"`
-	CheckResources []string                   `hcl:"check_resources,optional"`
-	AccountIDs     []string                   `hcl:"account_ids,optional"`
+	Name            string                     `hcl:"name,label"`
+	Resources       map[string]*ResourceConfig `hcl:"resource,block"`
+	Version         string                     `hcl:"version,optional"`
+	IgnoreResources ResourceSelectors          `hcl:"ignore_resources,optional"`
+	CheckResources  ResourceSelectors          `hcl:"check_resources,optional"`
+	AccountIDs      []string                   `hcl:"account_ids,optional"`
 
 	versionConstraints version.Constraints
 }
@@ -45,6 +46,25 @@ type ResourceConfig struct {
 	IAC map[iacProvider]*IACConfig
 
 	defRange *hcl.Range
+
+	// check/ignore selectors
+	acl ResourceACL
+}
+
+type ResourceACL struct {
+	CheckEnabled bool
+	Check        ResourceSelectors
+	Ignore       ResourceSelectors
+}
+
+func (r ResourceACL) ShouldSkip(resource *Resource) bool {
+	if r.CheckEnabled && !r.Check.HasInstance(resource.ID) && !r.Check.HasInstance("*") {
+		return true
+	}
+	if r.Ignore.HasInstance(resource.ID) || r.Ignore.HasInstance("*") {
+		return true
+	}
+	return false
 }
 
 type IACConfig struct {
@@ -102,6 +122,72 @@ func (c TerraformSourceConfig) Validate() error {
 	}
 }
 
+type ResourceSelectors []*ResourceSelector
+
+type ResourceSelector struct {
+	Type string
+	ID   *string
+	Tags *[]string
+}
+
+func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
+	ret := make([]*ResourceSelector, 0, len(t))
+	for _, s := range t {
+		if s.Type == resourceType {
+			ret = append(ret, s)
+		}
+	}
+	return ret
+}
+
+func (t ResourceSelectors) AllInstances() bool {
+	return t.HasInstance("*")
+}
+
+func (t ResourceSelectors) HasInstance(id string) bool {
+	for _, s := range t {
+		if s.ID != nil && *s.ID == id {
+			return true
+		}
+	}
+	return false
+}
+
+func parseResourceSelectors(input []string) (ResourceSelectors, error) {
+	ret := make([]*ResourceSelector, 0, len(input))
+	for _, s := range input {
+		parts := strings.SplitN(s, ":", 2)
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid resource selector, should be in type:id or type:[tags] format")
+		}
+		if parts[0] == "" {
+			return nil, fmt.Errorf("type can't be empty, use * for wildcard")
+		}
+		r := &ResourceSelector{
+			Type: parts[0],
+		}
+		if len(parts[1]) > 2 && strings.HasPrefix(parts[1], "[") && strings.HasSuffix(parts[1], "]") {
+			var slc []string
+			// Parse tags in key=value format separated by comma
+			for _, tag := range strings.Split(strings.Trim(parts[1], "[]"), ",") {
+				if tag == "" {
+					return nil, fmt.Errorf("invalid empty tag in resource selector")
+				}
+				if !strings.Contains(tag, "=") {
+					return nil, fmt.Errorf("invalid tag in resource selector: %q", tag)
+				}
+				slc = append(slc, tag)
+			}
+			r.Tags = &slc
+		} else {
+			r.ID = &parts[1]
+		}
+
+		ret = append(ret, r)
+	}
+	return ret, nil
+}
+
 const wildcard = "*"
 
 func (b *BaseConfig) FindProvider(name string) *ProviderConfig {
@@ -118,8 +204,8 @@ func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 		return
 	}
 
-	if len(prov.SkipResources) == 0 {
-		prov.SkipResources = wild.SkipResources
+	if len(prov.IgnoreResources) == 0 {
+		prov.IgnoreResources = wild.IgnoreResources
 	}
 	if len(prov.CheckResources) == 0 {
 		prov.CheckResources = wild.CheckResources
@@ -253,7 +339,7 @@ func removeIgnored(list []string, ignored []string) []string {
 }
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
-// Returns true if the given config is valid for the given provider and cfg is changed to resolve macros.
+// Returns true if the given config is valid for the given provider and cfg is changed to resolve macros and checkResources/ignoreResources
 func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
@@ -278,32 +364,27 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 
 	var diags hcl.Diagnostics
 
-	skips := make(map[string]struct{}, len(cfg.SkipResources))
-	for i := range cfg.SkipResources {
-		skips[cfg.SkipResources[i]] = struct{}{}
-	}
-	checks := make(map[string]struct{}, len(cfg.CheckResources))
-	for i := range cfg.CheckResources {
-		checks[cfg.CheckResources[i]] = struct{}{}
-	}
-	if len(cfg.SkipResources) > 0 && len(cfg.CheckResources) > 0 {
-		diags = append(diags, &hcl.Diagnostic{
-			Severity: hcl.DiagError,
-			Summary:  `Invalid resource flags`,
-			Detail:   "Only set one of check_resources or skip_resources, not both",
-		})
-	}
+	allIgs := cfg.IgnoreResources.ByType("*")
+	allChecks := cfg.CheckResources.ByType("*")
+	checkEnabled := len(cfg.CheckResources) > 0
 
 	for resName, res := range cfg.Resources {
-		if _, ok := skips[resName]; ok {
-			cfg.Resources[resName] = nil
-			continue
-		}
-		if len(checks) > 0 {
-			if _, ok := checks[resName]; !ok {
+		// CheckResources / IgnoreResources broad strokes...
+		if checkEnabled {
+			res.acl.CheckEnabled = true
+			checks := cfg.CheckResources.ByType(resName)
+			if !checks.AllInstances() {
 				cfg.Resources[resName] = nil
 				continue
 			}
+
+			res.acl.Check = append(checks, allChecks...)
+		}
+
+		res.acl.Ignore = append(cfg.IgnoreResources.ByType(resName), allIgs...)
+		if res.acl.Ignore.AllInstances() {
+			cfg.Resources[resName] = nil
+			continue
 		}
 
 		tbl := d.lookupResource(resName, p)

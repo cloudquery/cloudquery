@@ -238,7 +238,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		if _, ok := existingMap[r.ID]; !ok {
 			res.Missing = append(res.Missing, r)
 		}
-	})
+	}, resData.acl.ShouldSkip)
 
 	// Get extra resources
 	{
@@ -254,7 +254,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			if _, ok := tfMap[r.ID]; !ok {
 				res.Extra = append(res.Extra, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	}
 
 	if !deepMode {
@@ -263,7 +263,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			if _, ok := tfMap[r.ID]; ok {
 				res.Equal = append(res.Equal, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	} else {
 		// Get deepequal and different resources
 		existing.Walk(func(r *Resource) {
@@ -276,7 +276,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			} else {
 				res.Different = append(res.Different, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	}
 	if deepMode && runParams.Debug && len(res.Different) > 0 {
 		if err := RenderDriftTable(resName, resources, cloudName, alist, res.Different, tfResources); err != nil {

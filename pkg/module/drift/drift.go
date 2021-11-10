@@ -118,9 +118,8 @@ drift "drift-example" {
 /*
   provider "aws" {
     account_ids      = ["123456789"]
-    check_resources   = ["ec2.instances"] # Set only this one or skip_resources, or none
-    skip_resources   = ["ec2.instances"]  #  Set only this one or check_resources, or none
-    ignore_resources = ["ec2.instances:i-123456789"]
+    check_resources   = ["ec2.instances:*"]
+    ignore_resources = ["ec2.instances:i-123456789", "aws_cloudwatchlogs_filters:*"]
   }
 */
 }`
