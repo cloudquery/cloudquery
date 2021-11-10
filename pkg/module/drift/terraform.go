@@ -180,6 +180,8 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		setMap[resData.Sets[i]] = struct{}{}
 	}
 
+	var tagExp exp.LiteralExpression
+
 	for i, a := range resData.Attributes {
 		alist[i] = Attribute{
 			ID:     resData.Attributes[i],
@@ -201,6 +203,18 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		}
 
 		_, alist[i].Unordered = setMap[alist[i].ID]
+
+		if alist[i].ID == "tags" && alist[i].Type == schema.TypeJSON {
+			tagExp = goqu.L(alist[i].SQL)
+		}
+	}
+
+	if tagExp == nil {
+		tagExp = goqu.L("NULL")
+
+		if resData.acl.HasTagFilters() {
+			logger.Warn("tag based filtering not possible on this resource type", "resource", resName)
+		}
 	}
 
 	tfMode := terraform.Mode(runParams.TfMode)
@@ -223,7 +237,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		return nil, err
 	}
 
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
+	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
 	q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 	existing, err := queryIntoResourceList(ctx, logger, conn, q)
 	if err != nil {
@@ -242,7 +256,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 
 	// Get extra resources
 	{
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
 		q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
 		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)

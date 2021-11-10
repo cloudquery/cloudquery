@@ -271,8 +271,9 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpo
 	logger.Trace("generated query", "query", query, "args", args)
 
 	var list []struct {
-		ID      *string       `db:"id"`
-		AttList []interface{} `db:"attlist"`
+		ID      *string           `db:"id"`
+		AttList []interface{}     `db:"attlist"`
+		Tags    map[string]string `db:"tags"`
 	}
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
 		var pgErr *pgconn.PgError
@@ -295,6 +296,7 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpo
 				return *s
 			}(list[i].ID),
 			Attributes: list[i].AttList,
+			Tags:       list[i].Tags,
 		})
 	}
 

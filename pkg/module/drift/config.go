@@ -58,12 +58,30 @@ type ResourceACL struct {
 }
 
 func (r ResourceACL) ShouldSkip(resource *Resource) bool {
-	if r.CheckEnabled && !r.Check.HasInstance(resource.ID) && !r.Check.HasInstance("*") {
+	if r.CheckEnabled && !r.Check.ContainsInstance(resource.ID) && !r.Check.ContainsInstance("*") && !r.Check.ContainsTags(resource.Tags) {
 		return true
 	}
-	if r.Ignore.HasInstance(resource.ID) || r.Ignore.HasInstance("*") {
+	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
 		return true
 	}
+	return false
+}
+
+func (r ResourceACL) HasTagFilters() bool {
+	if r.CheckEnabled {
+		for _, f := range r.Check {
+			if f.Tags != nil {
+				return true
+			}
+		}
+	}
+
+	for _, f := range r.Ignore {
+		if f.Tags != nil {
+			return true
+		}
+	}
+
 	return false
 }
 
@@ -127,7 +145,7 @@ type ResourceSelectors []*ResourceSelector
 type ResourceSelector struct {
 	Type string
 	ID   *string
-	Tags *[]string
+	Tags *map[string]string
 }
 
 func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
@@ -141,15 +159,48 @@ func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
 }
 
 func (t ResourceSelectors) AllInstances() bool {
-	return t.HasInstance("*")
+	return t.ContainsInstance("*")
 }
 
-func (t ResourceSelectors) HasInstance(id string) bool {
+func (t ResourceSelectors) ContainsInstance(id string) bool {
 	for _, s := range t {
 		if s.ID != nil && *s.ID == id {
 			return true
 		}
 	}
+	return false
+}
+
+func (t ResourceSelectors) HasTags() bool {
+	for _, s := range t {
+		if s.Tags != nil {
+			return true
+		}
+	}
+	return false
+}
+
+func (t ResourceSelectors) ContainsTags(tags map[string]string) bool {
+	if tags == nil {
+		return false
+	}
+	for _, s := range t {
+		if s.Tags == nil {
+			continue
+		}
+
+		matches := 0
+		for k, v := range *s.Tags {
+			if v2, ok := tags[k]; ok && v2 == v {
+				matches++
+			}
+		}
+
+		if matches == len(*s.Tags) {
+			return true
+		}
+	}
+
 	return false
 }
 
@@ -178,7 +229,8 @@ func parseResourceSelectors(input []string) (ResourceSelectors, error) {
 				}
 				slc = append(slc, tag)
 			}
-			r.Tags = &slc
+			slcTags := parseTags(slc)
+			r.Tags = &slcTags
 		} else {
 			r.ID = &parts[1]
 		}
@@ -186,6 +238,22 @@ func parseResourceSelectors(input []string) (ResourceSelectors, error) {
 		ret = append(ret, r)
 	}
 	return ret, nil
+}
+
+func parseTags(tags []string) map[string]string {
+	ret := make(map[string]string, len(tags))
+	for _, tag := range tags {
+		if tag == "" {
+			continue
+		}
+		tagParts := strings.SplitN(tag, "=", 2)
+		if len(tagParts) == 1 {
+			ret[tagParts[0]] = ""
+		} else {
+			ret[tagParts[0]] = tagParts[1]
+		}
+	}
+	return ret
 }
 
 const wildcard = "*"
@@ -339,7 +407,7 @@ func removeIgnored(list []string, ignored []string) []string {
 }
 
 // applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
-// Returns true if the given config is valid for the given provider and cfg is changed to resolve macros and checkResources/ignoreResources
+// Returns true if the given config is valid for the given provider and cfg is changed to resolve macros and acl processing
 func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
@@ -372,18 +440,16 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 		// CheckResources / IgnoreResources broad strokes...
 		if checkEnabled {
 			res.acl.CheckEnabled = true
-			checks := cfg.CheckResources.ByType(resName)
-			if !checks.AllInstances() {
-				cfg.Resources[resName] = nil
+			res.acl.Check = append(cfg.CheckResources.ByType(resName), allChecks...)
+			if !res.acl.Check.AllInstances() && !res.acl.Check.HasTags() {
+				delete(cfg.Resources, resName)
 				continue
 			}
-
-			res.acl.Check = append(checks, allChecks...)
 		}
 
 		res.acl.Ignore = append(cfg.IgnoreResources.ByType(resName), allIgs...)
 		if res.acl.Ignore.AllInstances() {
-			cfg.Resources[resName] = nil
+			delete(cfg.Resources, resName)
 			continue
 		}
 

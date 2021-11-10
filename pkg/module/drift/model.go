@@ -20,8 +20,9 @@ type RunParams struct {
 }
 
 type Resource struct {
-	ID         string        `json:"id"`
-	Attributes []interface{} `json:"-"`
+	ID         string            `json:"id"`
+	Attributes []interface{}     `json:"-"`
+	Tags       map[string]string `json:"-"`
 }
 
 type ResourceList []*Resource
