@@ -12,7 +12,6 @@ type RunParams struct {
 	TfMode      string
 	ForceDeep   bool
 	ListManaged bool
-	AccountIDs  []string
 
 	IACName    string
 	StateFiles []string

@@ -245,7 +245,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 			)
 			switch iacProv {
 			case iacTerraform:
-				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params)
+				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params, cfg.AccountIDs)
 			default:
 				err = fmt.Errorf("no suitable handler found for %q", iacProv)
 			}

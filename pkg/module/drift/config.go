@@ -28,6 +28,7 @@ type ProviderConfig struct {
 	Version        string                     `hcl:"version,optional"`
 	SkipResources  []string                   `hcl:"skip_resources,optional"`
 	CheckResources []string                   `hcl:"check_resources,optional"`
+	AccountIDs     []string                   `hcl:"account_ids,optional"`
 
 	versionConstraints version.Constraints
 }
@@ -122,6 +123,9 @@ func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 	}
 	if len(prov.CheckResources) == 0 {
 		prov.CheckResources = wild.CheckResources
+	}
+	if len(prov.AccountIDs) == 0 {
+		prov.AccountIDs = wild.AccountIDs
 	}
 }
 

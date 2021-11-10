@@ -161,7 +161,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
 		IAC:       "Terraform",
 		Different: nil,
@@ -224,7 +224,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 	}
 
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-	q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+	q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 	existing, err := queryIntoResourceList(ctx, logger, conn, q)
 	if err != nil {
 		return nil, err
@@ -243,7 +243,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 	// Get extra resources
 	{
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-		q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+		q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
 		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
 		if err != nil {

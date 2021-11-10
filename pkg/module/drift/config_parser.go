@@ -125,6 +125,15 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 						})
 						continue
 					}
+					if len(prov.AccountIDs) > 0 {
+						diags = append(diags, &hcl.Diagnostic{
+							Severity: hcl.DiagError,
+							Summary:  `Invalid attribute`,
+							Detail:   `account_ids attribute is only valid for non-"*" providers`,
+							Subject:  &block.DefRange,
+						})
+						continue
+					}
 
 					baseConfig.WildProvider = prov
 					continue
@@ -197,6 +206,10 @@ var (
 			},
 			{
 				Name:     "check_resources", // either this or skip_resources
+				Required: false,
+			},
+			{
+				Name:     "account_ids", // only valid for non-"*" providers
 				Required: false,
 			},
 		},
@@ -301,6 +314,9 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	}
 	if checkAttr, ok := content.Attributes["check_resources"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(checkAttr.Expr, ctx, &prov.CheckResources)...)
+	}
+	if accountsAttr, ok := content.Attributes["account_ids"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(accountsAttr.Expr, ctx, &prov.AccountIDs)...)
 	}
 
 	for _, block := range content.Blocks {
