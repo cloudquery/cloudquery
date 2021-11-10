@@ -50,6 +50,9 @@ var baseSchema = &hcl.BodySchema{
 			Type:       "provider",
 			LabelNames: []string{"name"},
 		},
+		{
+			Type: "terraform",
+		},
 	},
 }
 
@@ -143,6 +146,12 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 
 				baseConfig.Providers = append(baseConfig.Providers, prov)
 			}
+		case "terraform":
+			ts, tsDiags := p.decodeTerraformBlock(block, &ctx)
+			diags = append(diags, tsDiags...)
+			if ts != nil {
+				baseConfig.Terraform = ts
+			}
 		default:
 			panic("unexpected block")
 		}
@@ -150,8 +159,6 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 	if diags.HasErrors() {
 		return nil, diags
 	}
-
-	diags = p.interpret(baseConfig)
 
 	return baseConfig, diags
 }
@@ -185,7 +192,11 @@ var (
 				Required: false,
 			},
 			{
-				Name:     "skip_resources",
+				Name:     "skip_resources", // either this or check_resources
+				Required: false,
+			},
+			{
+				Name:     "check_resources", // either this or skip_resources
 				Required: false,
 			},
 		},
@@ -242,6 +253,35 @@ var (
 			},
 		},
 	}
+
+	terraformSourceSchema = &hcl.BodySchema{
+		Attributes: []hcl.AttributeSchema{
+			{
+				Name:     "backend",
+				Required: false,
+			},
+			{
+				Name:     "files",
+				Required: false,
+			},
+			{
+				Name:     "bucket",
+				Required: false,
+			},
+			{
+				Name:     "keys",
+				Required: false,
+			},
+			{
+				Name:     "region",
+				Required: false,
+			},
+			{
+				Name:     "role_arn",
+				Required: false,
+			},
+		},
+	}
 )
 
 func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ProviderConfig, hcl.Diagnostics) {
@@ -258,6 +298,9 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	}
 	if skipAttr, ok := content.Attributes["skip_resources"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(skipAttr.Expr, ctx, &prov.SkipResources)...)
+	}
+	if checkAttr, ok := content.Attributes["check_resources"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(checkAttr.Expr, ctx, &prov.CheckResources)...)
 	}
 
 	for _, block := range content.Blocks {
@@ -356,4 +399,45 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 		return nil, diags
 	}
 	return res, diags
+}
+
+func (p *Parser) decodeTerraformBlock(b *hcl.Block, ctx *hcl.EvalContext) (*TerraformSourceConfig, hcl.Diagnostics) {
+	content, diags := b.Body.Content(terraformSourceSchema)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	ts := &TerraformSourceConfig{}
+	if backendAttr, ok := content.Attributes["backend"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(backendAttr.Expr, ctx, &ts.Backend)...)
+	}
+	if filesAttr, ok := content.Attributes["files"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(filesAttr.Expr, ctx, &ts.Files)...)
+	}
+	if bucketAttr, ok := content.Attributes["bucket"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(bucketAttr.Expr, ctx, &ts.Bucket)...)
+	}
+	if keysAttr, ok := content.Attributes["keys"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(keysAttr.Expr, ctx, &ts.Keys)...)
+	}
+	if regionAttr, ok := content.Attributes["region"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(regionAttr.Expr, ctx, &ts.Region)...)
+	}
+	if roleArnAttr, ok := content.Attributes["role_arn"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(roleArnAttr.Expr, ctx, &ts.RoleARN)...)
+	}
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	if err := ts.Validate(); err != nil {
+		return nil, hcl.Diagnostics{
+			{
+				Severity: hcl.DiagError,
+				Summary:  `Invalid terraform config`,
+				Detail:   err.Error(),
+			},
+		}
+	}
+
+	return ts, nil
 }

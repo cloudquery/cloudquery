@@ -70,15 +70,17 @@ func (d *Drift) Configure(ctx context.Context, profileConfig map[string]hcl.Body
 		}
 	}
 
-	// chosenProfile can still be nil
-	_ = chosenProfile
-
 	builtin, err := d.readBuiltinConfig()
 	if err != nil {
 		return fmt.Errorf("builtin config failed: %w", err)
 	}
 
-	d.config = builtin
+	// chosenProfile can still be nil
+	d.config, err = d.readProfileConfig(builtin, chosenProfile)
+	if err != nil {
+		return fmt.Errorf("read config failed: %w", err)
+	}
+
 	return nil
 }
 
@@ -107,7 +109,8 @@ drift "drift-example" {
 /*
   provider "aws" {
     account_ids      = ["123456789"]
-    skip_resources   = ["ec2.instances"]
+    check_resources   = ["ec2.instances"] # Set only this one or skip_resources, or none
+    skip_resources   = ["ec2.instances"]  #  Set only this one or check_resources, or none
     ignore_resources = ["ec2.instances:i-123456789"]
   }
 */
@@ -140,6 +143,53 @@ func (d *Drift) readBuiltinConfig() (*BaseConfig, error) {
 		return nil, diags
 	}
 	return cfg, nil
+}
+
+func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
+	p := NewParser("")
+
+	if body == nil {
+		if diags := p.interpret(base); diags.HasErrors() {
+			return nil, diags
+		}
+		return base, nil
+	}
+
+	cfg, diags := p.Decode(body, nil)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	// keep base config and apply profile config into it, as we don't know which provider version from the builtin config is going to be selected
+	base.Terraform = cfg.Terraform // always override this one
+
+	if cfg.WildProvider != nil {
+		base.WildProvider.applyWildProvider(cfg.WildProvider)
+	}
+
+	for _, prov := range base.Providers {
+		cp := cfg.FindProvider(prov.Name)
+		if cp == nil {
+			continue
+		}
+		prov.applyWildProvider(cp)
+
+		if cp.WildResource != nil {
+			prov.WildResource.applyWildResource(cp.WildResource)
+		}
+
+		for resName, res := range prov.Resources {
+			if cres, ok := cp.Resources[resName]; ok {
+				res.applyWildResource(cres)
+			}
+		}
+	}
+
+	if diags := p.interpret(base); diags.HasErrors() {
+		return nil, diags
+	}
+
+	return base, nil
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {

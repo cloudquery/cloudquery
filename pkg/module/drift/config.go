@@ -16,16 +16,18 @@ var builtinConfig []byte
 
 type BaseConfig struct {
 	WildProvider *ProviderConfig
-	Providers    []*ProviderConfig `hcl:"provider,block"`
+	Providers    []*ProviderConfig      `hcl:"provider,block"`
+	Terraform    *TerraformSourceConfig `hcl:"terraform,block"`
 }
 
 type ProviderConfig struct {
 	WildResource *ResourceConfig
 
-	Name          string                     `hcl:"name,label"`
-	Resources     map[string]*ResourceConfig `hcl:"resource,block"`
-	Version       string                     `hcl:"version,optional"`
-	SkipResources []string                   `hcl:"skip_resources,optional"`
+	Name           string                     `hcl:"name,label"`
+	Resources      map[string]*ResourceConfig `hcl:"resource,block"`
+	Version        string                     `hcl:"version,optional"`
+	SkipResources  []string                   `hcl:"skip_resources,optional"`
+	CheckResources []string                   `hcl:"check_resources,optional"`
 
 	versionConstraints version.Constraints
 }
@@ -55,7 +57,60 @@ type IACConfig struct {
 	defRange     *hcl.Range
 }
 
+type TerraformSourceConfig struct {
+	Backend TerraformBackend `hcl:"backend"`
+
+	// S3 backend
+	Bucket  string   `hcl:"bucket,optional"`
+	Keys    []string `hcl:"keys,optional"`
+	Region  string   `hcl:"region,optional"`
+	RoleARN string   `hcl:"role_arn,optional"`
+
+	// Local backend
+	Files []string `hcl:"files,optional"`
+}
+
+type TerraformBackend string
+
+const (
+	TFLocal TerraformBackend = "local"
+	TFS3    TerraformBackend = "s3"
+)
+
+func (t TerraformBackend) Valid() bool {
+	return t == TFLocal || t == TFS3
+}
+
+func (c TerraformSourceConfig) Validate() error {
+	switch c.Backend {
+	case TFLocal:
+		if len(c.Files) == 0 {
+			return fmt.Errorf("files not specified")
+		}
+		return nil
+	case TFS3:
+		if c.Bucket == "" {
+			return fmt.Errorf("bucket not specified")
+		}
+		if len(c.Keys) == 0 {
+			return fmt.Errorf("keys not specified")
+		}
+		return nil
+	default:
+		return fmt.Errorf("invalid backend type")
+	}
+}
+
 const wildcard = "*"
+
+func (b *BaseConfig) FindProvider(name string) *ProviderConfig {
+	for i := range b.Providers {
+		if b.Providers[i].Name == name {
+			return b.Providers[i]
+		}
+	}
+	return nil
+}
 
 func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 	if wild == nil {
@@ -64,6 +119,9 @@ func (prov *ProviderConfig) applyWildProvider(wild *ProviderConfig) {
 
 	if len(prov.SkipResources) == 0 {
 		prov.SkipResources = wild.SkipResources
+	}
+	if len(prov.CheckResources) == 0 {
+		prov.CheckResources = wild.CheckResources
 	}
 }
 
@@ -220,11 +278,28 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	for i := range cfg.SkipResources {
 		skips[cfg.SkipResources[i]] = struct{}{}
 	}
+	checks := make(map[string]struct{}, len(cfg.CheckResources))
+	for i := range cfg.CheckResources {
+		checks[cfg.CheckResources[i]] = struct{}{}
+	}
+	if len(cfg.SkipResources) > 0 && len(cfg.CheckResources) > 0 {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  `Invalid resource flags`,
+			Detail:   "Only set one of check_resources or skip_resources, not both",
+		})
+	}
 
 	for resName, res := range cfg.Resources {
 		if _, ok := skips[resName]; ok {
 			cfg.Resources[resName] = nil
 			continue
+		}
+		if len(checks) > 0 {
+			if _, ok := checks[resName]; !ok {
+				cfg.Resources[resName] = nil
+				continue
+			}
 		}
 
 		tbl := d.lookupResource(resName, p)
