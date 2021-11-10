@@ -1,10 +1,10 @@
 
-# Table: azure_networks_virtual_network_subnets
+# Table: azure_network_virtual_network_subnets
 Azure virtual network subnet
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_network_cq_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
+|virtual_network_cq_id|uuid|Unique CloudQuery ID of azure_network_virtual_networks table (FK)|
 |address_prefix|text|The address prefix for the subnet|
 |address_prefixes|text[]|List of address prefixes for the subnet|
 |security_group_properties_format_resource_guid|text|The resource GUID property of the network security group resource|

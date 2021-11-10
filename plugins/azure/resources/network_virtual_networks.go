@@ -123,14 +123,14 @@ func NetworkVirtualNetworks() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_networks_virtual_network_subnets",
+				Name:        "azure_network_virtual_network_subnets",
 				Description: "Azure virtual network subnet",
-				Resolver:    fetchNetworksVirtualNetworkSubnets,
+				Resolver:    fetchNetworkVirtualNetworkSubnets,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_network_cq_id",
-						Description: "Unique ID of azure_network_virtual_networks table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -297,14 +297,14 @@ func NetworkVirtualNetworks() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_networks_virtual_network_peerings",
+				Name:        "azure_network_virtual_network_peerings",
 				Description: "Azure virtual network peering",
-				Resolver:    fetchNetworksVirtualNetworkPeerings,
+				Resolver:    fetchNetworkVirtualNetworkPeerings,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_network_cq_id",
-						Description: "Unique ID of azure_network_virtual_networks table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -387,14 +387,14 @@ func NetworkVirtualNetworks() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_networks_virtual_network_ip_allocations",
+				Name:        "azure_network_virtual_network_ip_allocations",
 				Description: "Azure virtual network ip allocation",
-				Resolver:    fetchNetworksVirtualNetworkIpAllocations,
+				Resolver:    fetchNetworkVirtualNetworkIpAllocations,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_network_cq_id",
-						Description: "Unique ID of azure_network_virtual_networks table (FK)",
+						Description: "Unique CloudQuery ID of azure_network_virtual_networks table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -413,7 +413,7 @@ func NetworkVirtualNetworks() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	svc := meta.(*client.Client).Services().Network.VirtualNetworks
 	response, err := svc.ListAll(ctx)
 	if err != nil {
@@ -427,7 +427,7 @@ func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, _ 
 	}
 	return nil
 }
-func fetchNetworksVirtualNetworkSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.Subnets == nil {
 		return nil
@@ -435,7 +435,7 @@ func fetchNetworksVirtualNetworkSubnets(_ context.Context, _ schema.ClientMeta, 
 	res <- *vn.Subnets
 	return nil
 }
-func fetchNetworksVirtualNetworkPeerings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.VirtualNetworkPeerings == nil {
 		return nil
@@ -443,7 +443,7 @@ func fetchNetworksVirtualNetworkPeerings(_ context.Context, _ schema.ClientMeta,
 	res <- *vn.VirtualNetworkPeerings
 	return nil
 }
-func fetchNetworksVirtualNetworkIpAllocations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkIpAllocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.IPAllocations == nil {
 		return nil

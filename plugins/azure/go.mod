@@ -8,7 +8,7 @@ require (
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.7
 	github.com/Masterminds/squirrel v1.5.0
 	github.com/cloudquery/cq-provider-sdk v0.4.9
-	github.com/cloudquery/faker/v3 v3.7.4
+	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.0.0
 	github.com/stretchr/testify v1.7.0

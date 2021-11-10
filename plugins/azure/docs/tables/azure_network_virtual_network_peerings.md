@@ -1,10 +1,10 @@
 
-# Table: azure_networks_virtual_network_peerings
+# Table: azure_network_virtual_network_peerings
 Azure virtual network peering
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|virtual_network_cq_id|uuid|Unique ID of azure_network_virtual_networks table (FK)|
+|virtual_network_cq_id|uuid|Unique CloudQuery ID of azure_network_virtual_networks table (FK)|
 |allow_virtual_network_access|boolean|Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space|
 |allow_forwarded_traffic|boolean|Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network|
 |allow_gateway_transit|boolean|If gateway links can be used in remote virtual networking to link to this virtual network|
