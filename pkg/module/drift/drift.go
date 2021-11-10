@@ -14,6 +14,7 @@ import (
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -48,7 +49,7 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, config hcl.Body, profileConfig map[string]hcl.Body, runParams interface{}) error {
+func (d *Drift) Configure(ctx context.Context, profileConfig map[string]hcl.Body, runParams interface{}) error {
 	d.params = runParams.(RunParams)
 
 	if d.params.Profile == "" && len(profileConfig) > 1 {
@@ -72,13 +73,12 @@ func (d *Drift) Configure(ctx context.Context, config hcl.Body, profileConfig ma
 	// chosenProfile can still be nil
 	_ = chosenProfile
 
-	p := NewParser("")
-	cfg, diags := p.Decode(config, nil)
-	if diags.HasErrors() {
-		return diags
+	builtin, err := d.readBuiltinConfig()
+	if err != nil {
+		return fmt.Errorf("builtin config failed: %w", err)
 	}
 
-	d.config = cfg
+	d.config = builtin
 	return nil
 }
 
@@ -112,6 +112,34 @@ drift "drift-example" {
   }
 */
 }`
+}
+
+func (d *Drift) readBuiltinConfig() (*BaseConfig, error) {
+	configRaw, diags := hclparse.NewParser().ParseHCL(builtinConfig, "")
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	content, diags := configRaw.Body.Content(&hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type: "config",
+			},
+		},
+	})
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	if len(content.Blocks) != 1 {
+		return nil, fmt.Errorf("unexpected number of blocks")
+	}
+
+	p := NewParser("")
+	cfg, diags := p.Decode(content.Blocks[0].Body, nil)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	return cfg, nil
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {

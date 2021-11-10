@@ -1,6 +1,7 @@
 package drift
 
 import (
+	_ "embed"
 	"fmt"
 	"sort"
 
@@ -9,6 +10,9 @@ import (
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
+
+//go:embed drift.hcl
+var builtinConfig []byte
 
 type BaseConfig struct {
 	WildProvider *ProviderConfig

@@ -1,4 +1,4 @@
-module "drift" {
+config {
 
     provider "*" {
         # provider: the *provider.Provider
