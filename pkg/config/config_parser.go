@@ -81,6 +81,9 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if cfg != nil {
 				config.Providers = append(config.Providers, cfg)
 			}
+		case "modules":
+			// Module manager will process this for us
+			config.Modules = block.Body
 		default:
 			// Should never happen because the above cases should be exhaustive
 			// for all block type names in our schema.

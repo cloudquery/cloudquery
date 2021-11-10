@@ -48,9 +48,31 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, config hcl.Body) error {
-	p := NewParser("")
+func (d *Drift) Configure(ctx context.Context, config hcl.Body, profileConfig map[string]hcl.Body, runParams interface{}) error {
+	d.params = runParams.(RunParams)
 
+	if d.params.Profile == "" && len(profileConfig) > 1 {
+		return fmt.Errorf("multiple drift profiles detected, choose one with --profile")
+	}
+	var chosenProfile hcl.Body
+	if d.params.Profile != "" {
+		var ok bool
+		chosenProfile, ok = profileConfig[d.params.Profile]
+		if !ok {
+			return fmt.Errorf("specified profile doesn't exist in config")
+		}
+	} else {
+		for k, v := range profileConfig {
+			d.logger.Info("Using drift profile", "profile_name", k)
+			chosenProfile = v
+			break
+		}
+	}
+
+	// chosenProfile can still be nil
+	_ = chosenProfile
+
+	p := NewParser("")
 	cfg, diags := p.Decode(config, nil)
 	if diags.HasErrors() {
 		return diags
@@ -61,8 +83,6 @@ func (d *Drift) Configure(ctx context.Context, config hcl.Body) error {
 }
 
 func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module.ExecutionResult {
-	d.params = req.Params.(RunParams)
-
 	ret := &module.ExecutionResult{}
 	ret.Result, ret.Error = d.run(ctx, req)
 	if ret.Error != nil {
@@ -70,6 +90,28 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	}
 
 	return ret
+}
+
+func (d *Drift) ExampleConfig() string {
+	return `// drift configuration block
+drift "drift-example" {
+  // state block defines from where to access the state
+  terraform {
+    backend  = "s3"
+    bucket   = "<terraform state bucket>"
+    keys     = ["<terraform state key>"]
+    region   = "us-east-1"
+    role_arn = ""
+  }
+
+/*
+  provider "aws" {
+    account_ids      = ["123456789"]
+    skip_resources   = ["ec2.instances"]
+    ignore_resources = ["ec2.instances:i-123456789"]
+  }
+*/
+}`
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {

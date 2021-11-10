@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/hashicorp/hcl/v2"
 
 	"github.com/golang-migrate/migrate/v4"
 
@@ -130,6 +131,9 @@ type ModuleRunRequest struct {
 
 	// Providers is the list of providers to process
 	Providers []*cqproto.GetProviderSchemaResponse
+
+	// ConfigBlock is the complete module config block provided by the user
+	ConfigBlock hcl.Body
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -244,6 +248,8 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			c.Logger.Warn(err.Error())
 		}
 	}
+
+	c.initModules()
 	return c, nil
 }
 
@@ -631,18 +637,12 @@ func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
 
-	if c.ModuleManager == nil {
-		// lazy init modules here
-		c.ModuleManager = module.NewManager(c.pool, c.Logger)
-		c.ModuleManager.RegisterModule(drift.New(c.Logger))
-	}
-
 	modReq := &module.ExecuteRequest{
 		Providers: req.Providers,
 		Params:    req.Params,
 	}
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.ModConfigPath, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.ModConfigPath, req.ConfigBlock, modReq)
 	if err != nil {
 		return nil, err
 	}
@@ -706,6 +706,11 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 	}
 	c.Logger.Info("set provider version", "version", version, "provider", cfg.Name)
 	return m.SetVersion(version)
+}
+
+func (c *Client) initModules() {
+	c.ModuleManager = module.NewManager(c.pool, c.Logger)
+	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
 func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {

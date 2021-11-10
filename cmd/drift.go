@@ -83,6 +83,7 @@ func init() {
 	flags.StringVar(&driftParams.TfMode, "tf-mode", "managed", "Set Terraform mode")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")
 	flags.BoolVar(&driftParams.ListManaged, "list-managed", false, "List managed resources in output")
+	flags.StringVar(&driftParams.Profile, "profile", "", "Specify drift profile")
 
 	driftCmd.SetUsageTemplate(usageTemplateWithFlags)
 	driftCmd.AddCommand(driftScanCmd)

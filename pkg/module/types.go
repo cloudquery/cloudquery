@@ -13,9 +13,11 @@ type Module interface {
 	// ID returns the name of the module
 	ID() string
 	// Configure configures the module to run
-	Configure(context.Context, hcl.Body) error
+	Configure(context.Context, hcl.Body, map[string]hcl.Body, interface{}) error
 	// Execute executes the module, using given args in ExecuteRequest
 	Execute(context.Context, *ExecuteRequest) *ExecutionResult
+	// ExampleConfig returns an example configuration to be put in config.hcl
+	ExampleConfig() string
 }
 
 type ExecuteRequest struct {

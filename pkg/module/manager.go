@@ -15,7 +15,8 @@ import (
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
-	modules map[string]Module
+	modules  map[string]Module
+	modOrder []string
 
 	// Instance of a database connection pool
 	pool *pgxpool.Pool
@@ -31,10 +32,13 @@ type Manager interface {
 	RegisterModule(mod Module)
 
 	// ExecuteModule executes the given module, validating the given module name and config first.
-	ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *ExecuteRequest) (*ExecutionResult, error)
+	ExecuteModule(ctx context.Context, modName, modConfigPath string, configBlock hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error)
 
 	// ReadConfig reads the given module's default/builtin config
 	ReadConfig(modName string) ([]byte, error)
+
+	// ExampleConfigs returns a list of example module configs from loaded modules
+	ExampleConfigs() []string
 }
 
 // NewManager returns a new manager instance.
@@ -48,11 +52,16 @@ func NewManager(pool *pgxpool.Pool, logger hclog.Logger) *ManagerImpl {
 
 // RegisterModule is used to register a module into the manager.
 func (m *ManagerImpl) RegisterModule(mod Module) {
-	m.modules[mod.ID()] = mod
+	id := mod.ID()
+	if _, ok := m.modules[id]; ok {
+		panic("module " + id + " already registered")
+	}
+	m.modules[id] = mod
+	m.modOrder = append(m.modOrder, id)
 }
 
 // ExecuteModule executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath string, execReq *ExecuteRequest) (*ExecutionResult, error) {
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath string, cfgBlock hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error) {
 	mod, ok := m.modules[modName]
 	if !ok {
 		return nil, fmt.Errorf("module not found %q", modName)
@@ -63,7 +72,12 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName, modConfigPath 
 		return nil, fmt.Errorf("could not read config: %w", err)
 	}
 
-	if err := mod.Configure(ctx, rawConfig); err != nil {
+	profileConfig, err := m.readModuleConfigProfiles(mod.ID(), cfgBlock)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := mod.Configure(ctx, rawConfig, profileConfig, execReq.Params); err != nil {
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
 
@@ -88,6 +102,19 @@ func (m *ManagerImpl) ReadConfig(modName string) ([]byte, error) {
 	}
 
 	return contents, nil
+}
+
+// ExampleConfigs returns a list of example module configs from loaded modules
+func (m *ManagerImpl) ExampleConfigs() []string {
+	ret := make([]string, 0, len(m.modules))
+	for _, i := range m.modOrder {
+		cfg := m.modules[i].ExampleConfig()
+		if cfg == "" {
+			continue
+		}
+		ret = append(ret, cfg)
+	}
+	return ret
 }
 
 // readDecodeConfig reads the module config. Uses configPath if set, if not, it will try to get the default module config
@@ -145,4 +172,17 @@ func (m *ManagerImpl) readDecodeConfig(modName string, configPath string) (hcl.B
 		return nil, fmt.Errorf("could not find valid module block in embedded config")
 	}
 	return inner, nil
+}
+
+// readModuleConfigProfiles separates the module config from the modules block
+func (m *ManagerImpl) readModuleConfigProfiles(modName string, block hcl.Body) (map[string]hcl.Body, error) {
+	if block == nil {
+		return nil, nil
+	}
+
+	cfgs, diags := config.DecodeModuleProfile(block, modName)
+	if diags.HasErrors() {
+		return nil, fmt.Errorf("DecodeModuleProfile: %w", diags)
+	}
+	return cfgs, nil
 }

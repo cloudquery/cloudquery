@@ -16,6 +16,8 @@ type RunParams struct {
 
 	IACName    string
 	StateFiles []string
+
+	Profile string
 }
 
 type Resource struct {

@@ -184,6 +184,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		Params:        req.Params,
 		ModConfigPath: req.ModConfigPath,
 		Providers:     provs,
+		ConfigBlock:   c.cfg.Modules,
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
