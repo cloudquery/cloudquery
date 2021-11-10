@@ -2,20 +2,22 @@ package drift
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
+	"github.com/tidwall/gjson"
 )
 
 type TFStates []*terraform.Data
@@ -39,33 +41,111 @@ func (t TFStates) FindType(tfType string, tfMode terraform.Mode) TFInstances {
 
 type TFInstances []terraform.Instance
 
-const tfIDAttribute = "id"
+type Attribute struct {
+	ID        string           // Identifier from config
+	SQL       string           // SQL expression
+	Type      schema.ValueType // Type in DB as reported by provider
+	TFName    string           // TF attribute name
+	Unordered bool             // True if unordered slice
+}
 
-// Attributes returns a map of resource ID vs. attributes
-func (r TFInstances) AsResourceList(attributeNames []string, attributeTypes []schema.ValueType) ResourceList {
-	ret := make([]*Resource, len(r))
-	for i := range r {
-		var attributes map[string]interface{}
-		if err := json.Unmarshal(r[i].AttributesRaw, &attributes); err != nil {
-			panic(err)
-		}
+type AttrList []Attribute
 
-		res := &Resource{
-			ID: attributes[tfIDAttribute].(string),
-		}
-		res.Attributes = make([]interface{}, len(attributeNames))
-		for i := range attributeNames {
-			if val, ok := attributes[attributeNames[i]]; ok {
-				res.Attributes[i] = parseTerraformAttribute(val, attributeTypes[i])
-			}
-		}
-
-		ret[i] = res
+func (a AttrList) SQLs() []string {
+	ret := make([]string, len(a))
+	for i := range a {
+		ret[i] = a[i].SQL
 	}
 	return ret
 }
 
+func (a AttrList) TypeOf(id string) schema.ValueType {
+	for i := range a {
+		if a[i].ID == id {
+			return a[i].Type
+		}
+	}
+	return schema.TypeInvalid
+}
+
+const tfIDAttribute = "id"
+
+// AsResourceList returns a map of resource ID vs. attributes
+func (r TFInstances) AsResourceList(identifiers []string, alist AttrList, path string) ResourceList {
+	if len(identifiers) == 0 {
+		identifiers = []string{tfIDAttribute}
+	}
+
+	ret := make([]*Resource, 0, len(r))
+	for i := range r {
+		ret = append(ret, parseTerraformInstance(r[i], identifiers, alist, path)...)
+	}
+	return ret
+}
+
+func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist AttrList, path string) ResourceList {
+	var elems []gjson.Result
+
+	root := gjson.ParseBytes(ins.AttributesRaw)
+
+	if path != "" {
+		arr := gjson.GetBytes(ins.AttributesRaw, path)
+		if !arr.IsArray() {
+			panic("invalid path " + path + ": not an array")
+		}
+		elems = arr.Array()
+	} else {
+		elems = append(elems, root)
+	}
+
+	ret := make([]*Resource, len(elems))
+
+	for elIdx, el := range elems {
+		if !el.IsObject() {
+			panic("invalid array element: not an object: " + el.Type.String())
+		}
+
+		getAttributes := func(id string) (interface{}, bool) {
+			const rootPathPrefix = "root."
+
+			var v gjson.Result
+			if strings.HasPrefix(id, rootPathPrefix) {
+				v = root.Get(strings.TrimPrefix(id, rootPathPrefix))
+			} else {
+				v = el.Get(id)
+			}
+
+			return v.Value(), v.Exists()
+		}
+
+		idVals := make([]string, len(identifiers))
+		for i, idName := range identifiers {
+			v, _ := getAttributes(idName)
+			v = parseTerraformAttribute(v, alist.TypeOf(idName))
+			idVals[i] = efaceToString(v)
+		}
+
+		res := &Resource{
+			ID: strings.Join(idVals, idSeparator),
+		}
+		res.Attributes = make([]interface{}, len(alist))
+		for i := range alist {
+			if val, ok := getAttributes(alist[i].TFName); ok {
+				res.Attributes[i] = parseTerraformAttribute(val, alist[i].Type)
+			}
+		}
+
+		ret[elIdx] = res
+	}
+
+	return ret
+}
+
 func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
+	if val == nil {
+		return nil
+	}
+
 	switch t {
 	case schema.TypeTimestamp:
 		ts, err := time.Parse(time.RFC3339, val.(string))
@@ -93,15 +173,34 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 	resData := resources[resName]
 	deepMode := runParams.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
-	tfAttributes := make([]string, len(resData.Attributes))
-	colTypes := make([]schema.ValueType, len(resData.Attributes))
+	alist := make(AttrList, len(resData.Attributes))
+
+	setMap := make(map[string]struct{}, len(resData.Sets))
+	for i := range resData.Sets {
+		setMap[resData.Sets[i]] = struct{}{}
+	}
+
 	for i, a := range resData.Attributes {
-		colTypes[i] = cloudTable.Column(resData.Attributes[i]).Type
-		if mapped := iacData.attributeMap[a]; mapped != "" {
-			tfAttributes[i] = mapped
-		} else {
-			tfAttributes[i] = a
+		alist[i] = Attribute{
+			ID:     resData.Attributes[i],
+			Type:   cloudTable.Column(a).Type,
+			TFName: a,
 		}
+
+		if mapped := iacData.attributeMap[a]; mapped != "" {
+			alist[i].TFName = mapped
+		}
+
+		switch alist[i].Type {
+		case schema.TypeString:
+			alist[i].SQL = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
+		case schema.TypeTimestamp:
+			alist[i].SQL = fmt.Sprintf(`EXTRACT(EPOCH FROM DATE_TRUNC('second', "c"."%s"))::VARCHAR`, resData.Attributes[i])
+		default:
+			alist[i].SQL = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
+		}
+
+		_, alist[i].Unordered = setMap[alist[i].ID]
 	}
 
 	tfMode := terraform.Mode(runParams.TfMode)
@@ -109,29 +208,17 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		return nil, fmt.Errorf("invalid tf mode %q", runParams.TfMode)
 	}
 
-	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(tfAttributes, colTypes)
-
-	cloudQueryItems := make([]string, len(resData.Attributes))
-	for i := range resData.Attributes {
-		switch colTypes[i] {
-		case schema.TypeString:
-			cloudQueryItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
-		case schema.TypeTimestamp:
-			cloudQueryItems[i] = fmt.Sprintf(`EXTRACT(EPOCH FROM DATE_TRUNC('second', "c"."%s"))::VARCHAR`, resData.Attributes[i])
-		default:
-			cloudQueryItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
-		}
-	}
+	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(iacData.Identifiers, alist, iacData.Path)
 
 	var cloudAttrQuery exp.LiteralExpression
 
-	if !deepMode || len(resData.Attributes) == 0 {
+	if !deepMode || len(alist) == 0 {
 		cloudAttrQuery = goqu.L("NULL")
 	} else {
-		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
+		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(alist.SQLs(), ",") + ")")
 	}
 
-	idExp, err := handleIdentifier(resData.Identifiers)
+	idExp, err := handleIdentifiers(resData.Identifiers)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +271,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			if !ok {
 				return
 			}
-			if reflect.DeepEqual(tfAttr, r.Attributes) {
+			if EqualAttributes(tfAttr, r.Attributes, alist) {
 				res.DeepEqual = append(res.DeepEqual, r)
 			} else {
 				res.Different = append(res.Different, r)
@@ -192,7 +279,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		})
 	}
 	if deepMode && runParams.Debug && len(res.Different) > 0 {
-		if err := RenderDriftTable(resName, resources, cloudName, cloudQueryItems, tfAttributes, res.Different, tfResources); err != nil {
+		if err := RenderDriftTable(resName, resources, cloudName, alist, res.Different, tfResources); err != nil {
 			return nil, err
 		}
 	}
@@ -200,7 +287,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 	return res, nil
 }
 
-func RenderDriftTable(resName string, resources map[string]*ResourceConfig, cloudName string, cloudQueryItems, tfAttributes []string, differentIDs, tfRes ResourceList) error {
+func RenderDriftTable(resName string, resources map[string]*ResourceConfig, cloudName string, alist AttrList, differentIDs, tfRes ResourceList) error {
 	resData := resources[resName]
 
 	makeTable := func(title string) *tablewriter.Table {
@@ -225,16 +312,18 @@ func RenderDriftTable(resName string, resources map[string]*ResourceConfig, clou
 			matchingVal  []string
 		)
 		for i := range tfAttrs {
-			if tfAttributes[i] == tfIDAttribute {
-				continue // don't print ID attributes (cloud side might not match due to use of composite IDs)
-			}
-
-			if !reflect.DeepEqual(cloudAttrs[i], tfAttrs[i]) {
+			if !EqualAttributes([]interface{}{cloudAttrs[i]}, []interface{}{tfAttrs[i]}, []Attribute{alist[i]}) {
+				cStr := efaceToString(cloudAttrs[i])
+				tStr := efaceToString(tfAttrs[i])
+				if cStr == tStr {
+					cStr += fmt.Sprintf(" %T", cloudAttrs[i])
+					tStr += fmt.Sprintf(" %T", tfAttrs[i])
+				}
 				table.Append([]string{
-					cloudQueryItems[i],
-					fmt.Sprintf("%v", cloudAttrs[i]),
-					fmt.Sprintf("%v", tfAttrs[i]),
-					tfAttributes[i],
+					alist[i].SQL,
+					cStr,
+					tStr,
+					alist[i].TFName,
 				})
 			} else {
 				matchingAttr = append(matchingAttr, `"`+resData.Attributes[i]+`"`)
@@ -253,4 +342,63 @@ func RenderDriftTable(resName string, resources map[string]*ResourceConfig, clou
 	}
 
 	return nil
+}
+
+func EqualAttributes(a []interface{}, b []interface{}, alist AttrList) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if alist[i].Unordered {
+			if !EqualSets(a[i].([]interface{}), b[i].([]interface{})) {
+				return false
+			}
+			continue
+		}
+
+		if !equals(a[i], b[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func EqualSets(a []interface{}, b []interface{}) bool {
+	less := func(a, b interface{}) bool { return efaceToString(a) < efaceToString(b) }
+	return cmp.Equal(a, b, cmpopts.SortSlices(less))
+}
+
+func efaceToString(a interface{}) string {
+	return fmt.Sprintf("%v", a)
+}
+
+func equals(a, b interface{}) bool {
+	as := efaceToString(a)
+	bs := efaceToString(b)
+	if as == bs {
+		return true
+	}
+
+	if strings.HasPrefix(as, "arn:aws:") && strings.HasPrefix(bs, "arn:aws:") {
+		// compare ARNs, ignoring empty account IDs or regions
+		aa, err := arn.Parse(as)
+		if err != nil {
+			return false
+		}
+		ba, err := arn.Parse(bs)
+		if err != nil {
+			return false
+		}
+		if aa.Region == "" || ba.Region == "" {
+			aa.Region, ba.Region = "", ""
+		}
+		if aa.AccountID == "" || ba.AccountID == "" {
+			aa.AccountID, ba.AccountID = "", ""
+		}
+		return aa.String() == ba.String()
+	}
+
+	return false
 }

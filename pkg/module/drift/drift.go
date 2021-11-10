@@ -150,7 +150,7 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpo
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == pgerrcode.UndefinedTable {
 			// ERROR: relation %q does not exist
-			return nil, fmt.Errorf("cloud provider tables don't exist: Did you run `cloudquery fetch`?%q", pgErr.TableName)
+			return nil, fmt.Errorf("cloud provider tables don't exist: Did you run `cloudquery fetch`? %w", pgErr)
 		}
 
 		logger.Warn("query failed with error", "query", query, "args", args, "error", err)
@@ -248,30 +248,41 @@ func handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDat
 
 var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
 
-func handleIdentifier(identifiers []string) (exp.Expression, error) {
-	switch l := len(identifiers); {
-	case l == 0:
+const idSeparator = "|"
+
+// handleIdentifiers returns an SQL expression given one or multiple identifiers. the `sql(<query>)` is also handled here.
+// Given multiple identifiers, each of them are concatenated using the idSeparator
+func handleIdentifiers(identifiers []string) (exp.Expression, error) {
+	idLen := len(identifiers)
+	if idLen == 0 {
 		return nil, fmt.Errorf("no identifiers to match")
-	case l > 1:
-		return nil, fmt.Errorf("multiple identifiers not supported yet")
 	}
 
-	usingVariable := false
+	concatArgs := make([]string, 0, len(identifiers)*2)
+	for i, id := range identifiers {
+		usingVariable := false
 
-	if ma := idRegEx.FindStringSubmatch(identifiers[0]); len(ma) == 2 {
-		identifiers[0] = ma[1]
-		usingVariable = true
+		if ma := idRegEx.FindStringSubmatch(id); len(ma) == 2 {
+			id = ma[1]
+			usingVariable = true
+		}
+
+		if strings.Contains(id, "${") {
+			return nil, fmt.Errorf("identifier %d still contains variable", i)
+		}
+
+		if !usingVariable && !strings.Contains(id, ".") {
+			id = "c." + `"` + id + `"`
+		}
+
+		concatArgs = append(concatArgs, id, "'"+idSeparator+"'")
 	}
 
-	if strings.Contains(identifiers[0], "${") {
-		return nil, fmt.Errorf("identifier still contains variable")
+	if idLen == 1 {
+		return goqu.L(concatArgs[0] + " AS id"), nil
 	}
 
-	if usingVariable {
-		return goqu.L("(" + identifiers[0] + ") AS id"), nil
-	}
-
-	return goqu.I("c." + identifiers[0]).As("id"), nil
+	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
 func readIACStates(iacID string, stateFiles []string) (iacProvider, interface{}, error) {
