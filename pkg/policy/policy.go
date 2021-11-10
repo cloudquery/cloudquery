@@ -1,4 +1,4 @@
-package config
+package policy
 
 type PolicyWrapper struct {
 	Policies []*Policy `hcl:"policy,block"`

@@ -117,3 +117,7 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 
 	return file.Body, diags
 }
+
+func (p *Parser) LoadFromSource(name string, data []byte, ext SourceType) (hcl.Body, hcl.Diagnostics) {
+	return p.loadFromSource(name, data, ext)
+}

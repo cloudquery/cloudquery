@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
 )
@@ -65,7 +64,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			res, err := executor.executeQuery(context.Background(), &config.Query{
+			res, err := executor.executeQuery(context.Background(), &Query{
 				Query:        tc.Query,
 				ExpectOutput: tc.ExpectOutput,
 			})
@@ -82,15 +81,15 @@ func TestExecutor_executeQuery(t *testing.T) {
 func TestExecutor_executePolicy(t *testing.T) {
 	cases := []struct {
 		Name          string
-		Queries       []*config.Query
-		Views         []*config.View
+		Queries       []*Query
+		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
 		ErrorOutput   string
 	}{
 		{
 			Name: "multiple_queries",
-			Queries: []*config.Query{
+			Queries: []*Query{
 				{
 					Name:         "query-1",
 					ExpectOutput: false,
@@ -107,16 +106,16 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 		{
 			Name: "query_with_dependent_view",
-			Views: []*config.View{
+			Views: []*View{
 				{
 					Name: "testview",
-					Query: &config.Query{
+					Query: &Query{
 						Name:  "get-john",
 						Query: fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'john'", t.Name()),
 					},
 				},
 			},
-			Queries: []*config.Query{
+			Queries: []*Query{
 				{
 					Name:         "query-with-view",
 					ExpectOutput: true,
@@ -128,7 +127,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 		{
 			Name: "broken_policy_query",
-			Queries: []*config.Query{
+			Queries: []*Query{
 				{
 					Name:  "broken-query",
 					Query: "SECT * OM testview",
@@ -140,10 +139,10 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 		{
 			Name: "broken_policy_view",
-			Views: []*config.View{
+			Views: []*View{
 				{
 					Name: "brokenview",
-					Query: &config.Query{
+					Query: &Query{
 						Name:  "broken-query-view",
 						Query: "TCELES * MOFR *",
 					},
@@ -163,7 +162,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			p := &config.Policy{
+			p := &Policy{
 				Name:    tc.Name,
 				Queries: tc.Queries,
 				Views:   tc.Views,
@@ -173,7 +172,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.executePolicy(context.Background(), execReq, p, nil)
+			res, err := executor.executePolicy(context.Background(), nil, execReq, p, nil)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {

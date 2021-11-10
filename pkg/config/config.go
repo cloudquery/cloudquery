@@ -8,9 +8,9 @@ import (
 )
 
 type Config struct {
-	CloudQuery CloudQuery      `hcl:"cloudquery,block"`
-	Providers  []*Provider     `hcl:"provider,block"`
-	Policies   []*PolicyConfig `hcl:"policy,block"`
+	CloudQuery CloudQuery  `hcl:"cloudquery,block"`
+	Providers  []*Provider `hcl:"provider,block"`
+	Policies   []*Policy   `hcl:"policy,block"`
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {

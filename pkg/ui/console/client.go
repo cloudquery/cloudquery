@@ -8,16 +8,16 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
-
 	"github.com/fatih/color"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
@@ -120,7 +120,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
-	err := c.c.DownloadPolicy(ctx, args)
+	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -132,30 +132,59 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n\n")
+	// Show policy instructions
+	printPolicyDownloadInstructions(remotePolicy)
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
-	req := client.PolicyRunRequest{
-		Args:           args,
-		SubPath:        subPath,
-		LocalPath:      localPath,
-		OutputPath:     outputPath,
-		StopOnFailure:  stopOnFailure,
-		SkipVersioning: skipVersioning,
-		RunCallBack: func(name string, qtype config.QueryType, passed bool) {
-			switch {
-			case passed:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusOK], name, color.GreenString("passed"))
-			case qtype == config.ManualQuery:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-140s %5s\n", emojiStatus[ui.StatusWarn], name, color.YellowString("manual"))
-			default:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-140s %5s\n", emojiStatus[ui.StatusError], name, color.RedString("failed"))
-			}
-		},
+func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	var policies = c.cfg.Policies
+
+	if len(policies) == 0 {
+		return fmt.Errorf("could not find policies to run")
 	}
-	err := c.c.RunPolicy(ctx, req)
+
+	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n\n")
+
+	var policyRunProgress *Progress
+	var policyRunCallback policy.UpdateCallback
+	var policiesToRun = make([]*config.Policy, 0)
+
+	// select policies to run
+	for _, p := range policies {
+		if policyName != "" {
+			// request to run only specific policy
+			if policyName == p.Name {
+				policiesToRun = append(policiesToRun, p)
+			}
+		} else {
+			policiesToRun = append(policiesToRun, p)
+		}
+	}
+
+	if ui.IsTerminal() {
+		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
+	}
+
+	req := &client.PoliciesRunRequest{
+		Policies:        policiesToRun,
+		PolicyName:      policyName,
+		OutputDir:       outputDir,
+		StopOnFailure:   stopOnFailure,
+		SkipVersioning:  skipVersioning,
+		FailOnViolation: failOnViolation,
+		RunCallback:     policyRunCallback,
+	}
+	results, err := c.c.RunPolicies(ctx, req)
+
+	if ui.IsTerminal() && policyRunProgress != nil {
+		policyRunProgress.MarkAllDone()
+		policyRunProgress.Wait()
+		if !noResults {
+			printPolicyResponse(results)
+		}
+	}
+
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
@@ -486,4 +515,78 @@ func loadConfig(path string) (*config.Config, error) {
 		return nil, fmt.Errorf("bad configuration")
 	}
 	return cfg, nil
+}
+
+func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy) (*Progress, policy.UpdateCallback) {
+	policyRunProgress := NewProgress(ctx, func(o *ProgressOptions) {
+		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Queries: %d/%d")}
+	})
+
+	for _, p := range policies {
+		policyRunProgress.Add(p.Name, fmt.Sprintf("policy \"%s\" - ", p.Name), "evaluating - ", 1)
+	}
+
+	policyRunCallback := func(update policy.Update) {
+		if update.Error != "" {
+			policyRunProgress.Update(update.PolicyName, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
+			return
+		}
+
+		bar := policyRunProgress.GetBar(update.PolicyName)
+
+		if update.QueriesCount > 0 {
+			bar.SetTotal(int64(update.QueriesCount), false)
+		}
+
+		if bar == nil {
+			policyRunProgress.AbortAll()
+			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
+			return
+		}
+		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
+
+		if bar.Status == ui.StatusError {
+			if update.AllDone() {
+				bar.SetTotal(0, true)
+			}
+			return
+		}
+		if update.AllDone() && bar.Status != ui.StatusWarn {
+			policyRunProgress.Update(update.PolicyName, ui.StatusOK, "policy run complete - ", 0)
+			return
+		}
+	}
+
+	return policyRunProgress, policyRunCallback
+}
+
+func printPolicyResponse(results []*policy.ExecutionResult) {
+	if results == nil {
+		return
+	}
+	for _, execResult := range results {
+		ui.ColorizedOutput(ui.ColorUnderline, "%s %s Results:\n\n", emojiStatus[ui.StatusInfo], execResult.PolicyName)
+		for _, res := range execResult.Results {
+			switch {
+			case res.Passed:
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
+			case res.Type == policy.ManualQuery:
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+			default:
+				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-10s %-120s %10s\n", emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
+			}
+			ui.ColorizedOutput(ui.ColorWarning, "\n")
+		}
+	}
+}
+
+func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
+	policySource, _ := policy.GetURL()
+	ui.ColorizedOutput(ui.ColorInfo, "Add this block into your CloudQuery config file:\n\n")
+	ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("policy \"%s-%s\" {\n", policy.Organization, policy.Repository))
+	ui.ColorizedOutput(ui.ColorInfo, "	type = \"remote\"\n")
+	ui.ColorizedOutput(ui.ColorInfo, "	source = \"%s\"\n", policySource)
+	ui.ColorizedOutput(ui.ColorInfo, "	sub_path = \"\"\n")
+	ui.ColorizedOutput(ui.ColorInfo, "	version = \"%s\"\n", policy.Version)
+	ui.ColorizedOutput(ui.ColorInfo, "}\n")
 }

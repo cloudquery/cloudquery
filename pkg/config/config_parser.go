@@ -82,7 +82,6 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				config.Providers = append(config.Providers, cfg)
 			}
 		case "policy":
-
 			cfg, cfgDiags := decodePolicyConfigBlock(block, &p.HCLContext)
 			diags = append(diags, cfgDiags...)
 			if cfg != nil {

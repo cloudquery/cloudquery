@@ -2,14 +2,14 @@ package cmd
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const policyRunHelpMsg = "Executes a policy on CloudQuery database"
@@ -21,18 +21,7 @@ var (
 		Long:  policyRunHelpMsg,
 		Example: `
   # Download & Run official policy from Policy Hub
-  cloudquery policy run aws-cis-1.2.0
-
-  # Download & Run official policy from Policy Hub (equivalent to the above)
-  # Official policies hosted at https://github.com/cloudquery-policies
-  cloudquery policy run cloudquery-policies/aws-cis-1.2.0
-
-  # Run without downloading
-  cloudquery policy download aws-cis-1.2.0
-  cloudquery policy run --skip-download aws-cis-1.2.0
-
-  # Run from local path
-  cloudquery policy run awesome-policy --local-path ~/path/to/my-awesome-policy
+  cloudquery policy run
 
   # See https://hub.cloudquery.io for additional policies.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -42,26 +31,25 @@ var (
 			if err != nil {
 				return err
 			}
-			//return c.RunPolicy(ctx, args, localPath, subPath, outputPath, stopOnFailure, skipVersioning)
-			return nil
+			return c.RunPolicies(ctx, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 		},
 	}
-	//skipDownload   bool
-	//localPath      string
-	//subPath        string
-	outputPath     string
-	stopOnFailure  bool
-	//skipVersioning bool
+	outputDir       string
+	stopOnFailure   bool
+	policyName      string
+	skipVersioning  bool
+	failOnViolation bool
+	noResults       bool
 )
 
 func init() {
 	flags := policyRunCmd.Flags()
-	//flags.BoolVar(&skipDownload, "skip-download", false, "Skip downloading the policy repository")
-	//flags.StringVar(&localPath, "local-path", "", "Use local path")
-	//flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
-	flags.StringVar(&outputPath, "output", "", "Generates a new file at the given path with the output")
+	flags.StringVar(&policyName, "policy", "", "Select specific policy to run")
+	flags.StringVar(&outputDir, "output", "", "Generates a new file for each policy at the given dir with the output")
 	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
-	//flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
+	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
+	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if policy is violated")
+	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }

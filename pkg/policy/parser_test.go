@@ -1,80 +1,82 @@
-package config
+package policy
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 const testPolicyUnexpectedBlock = `policy "test_policy" {
-  unknown {
-    attr = "value"
-  }
+ unknown {
+   attr = "value"
+ }
 }`
 
 const testPolicyMultipleConfigurationBlocks = `policy "test_policy" {
-  configuration {
-  }
-  configuration {
-  }
+ configuration {
+ }
+ configuration {
+ }
 }`
 
 const testPolicyQueries = `policy "test_policy" {
-  query "first" {
-    query = "query1"
-  }
-  query "second" {
-    query = "query2"
-    type = "automatic"
-  }
-  query "third" {
-    query = "query3"
-    type = "manual"
-  }
+ query "first" {
+   query = "query1"
+ }
+ query "second" {
+   query = "query2"
+   type = "automatic"
+ }
+ query "third" {
+   query = "query3"
+   type = "manual"
+ }
 }`
 
 const testPolicyInvalidQueryType = `policy "test_policy" {
-  query "first" {
-    query = "query1"
-    type = "invalid"
-  }
+ query "first" {
+   query = "query1"
+   type = "invalid"
+ }
 }`
 
 const testPolicy = `policy "aws-cis-v1.3.0" {
-  description = "AWS CIS V1.3.0"
-  configuration {
-    provider "aws" {
-      version = ">= 1.0"
-    }
-  }
+ description = "AWS CIS V1.3.0"
+ configuration {
+   provider "aws" {
+     version = ">= 1.0"
+   }
+ }
 
-  view "aws-cis-view" {
-    description = "AWS CIS View"
-    query "test-query-view" {
-      query = "SELECT * FROM my.view"
-    }
-  }
+ view "aws-cis-view" {
+   description = "AWS CIS View"
+   query "test-query-view" {
+     query = "SELECT * FROM my.view"
+   }
+ }
 
-  query "top-level-query" {
-    description = "Top Level Query"
-    query = "SELECT * FROM test"
-    type = "manual"
-  }
+ query "top-level-query" {
+   description = "Top Level Query"
+   query = "SELECT * FROM test"
+   type = "manual"
+ }
 
-  policy "sub-policy-1" {
-    description = "Sub Policy 1"
-    query "sub-level-query" {
-      query = "SELECT * from test.subquery"
-    }
-  }
+ policy "sub-policy-1" {
+   description = "Sub Policy 1"
+   query "sub-level-query" {
+     query = "SELECT * from test.subquery"
+   }
+ }
 
-  policy "sub-policy-2" {
-    description = "Sub Policy 2"
-    query "sub-level-query" {
-      query = "SELECT * from test.subquery"
-      type = "manual"
-    }
-  }
+ policy "sub-policy-2" {
+   description = "Sub Policy 2"
+   query "sub-level-query" {
+     query = "SELECT * from test.subquery"
+     type = "manual"
+   }
+ }
 }`
 
 func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
@@ -185,12 +187,12 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := NewParser()
-			policiesRaw, diags := p.loadFromSource("policy.hcl", []byte(tt.policyText), SourceHCL)
+			p := config.NewParser()
+			policiesRaw, diags := p.LoadFromSource("policy.hcl", []byte(tt.policyText), config.SourceHCL)
 			if diags != nil && diags.HasErrors() {
 				t.Fatal(diags.Errs())
 			}
-			policiesWrapper, diags := p.DecodePolicies(policiesRaw, diags, "")
+			policiesWrapper, diags := DecodePolicies(policiesRaw, diags, "")
 			if tt.wantErr != diags.HasErrors() {
 				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, diags.HasErrors(), diags.Error())
 			}

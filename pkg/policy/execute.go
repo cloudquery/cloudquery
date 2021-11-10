@@ -2,17 +2,41 @@ package policy
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/spf13/afero"
+	"os"
+	"path/filepath"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 var errPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+
+type UpdateCallback func(update Update)
+
+type Update struct {
+	PolicyName string
+	Version    string
+	// FinishedQueries is the number queries that have finished evaluating
+	FinishedQueries int
+	// FinishedQueries is the amount of queries collected so far
+	QueriesCount int
+	// Error if any returned by the provider
+	Error string
+}
+
+func (f Update) AllDone() bool {
+	return f.FinishedQueries == f.QueriesCount
+}
+
+func (f Update) DoneCount() int {
+	return f.FinishedQueries
+}
 
 // Executor implements the execution framework.
 type Executor struct {
@@ -23,33 +47,30 @@ type Executor struct {
 
 // QueryResult contains the result information from an executed query.
 type QueryResult struct {
-	Name        string           `json:"name"`
-	Description string           `json:"description"`
-	Columns     []string         `json:"result_headers"`
-	Data        [][]interface{}  `json:"result_rows"`
-	Type        config.QueryType `json:"type"`
-	Passed      bool             `json:"check_passed"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Columns     []string        `json:"result_headers"`
+	Data        [][]interface{} `json:"result_rows"`
+	Type        QueryType       `json:"type"`
+	Passed      bool            `json:"check_passed"`
 }
 
 // ExecutionResult contains all policy execution results.
 type ExecutionResult struct {
+	// PolicyName is the running policy name
+	PolicyName string
+
 	// True if all policies have passed
 	Passed bool
 
-	// Map of all query result sets
-	Results map[string]*QueryResult
+	// List of all query result sets
+	Results []*QueryResult
 }
-
-// ExecutionCallback represents the format of the policy callback function.
-type ExecutionCallback func(name string, queryType config.QueryType, passed bool)
 
 // ExecuteRequest is a request that triggers policy execution.
 type ExecuteRequest struct {
 	// Policy is the policy that should be executed.
-	Policy *Policy
-
-	// UpdateCallback gets called when the client receives updates on policy execution (optional).
-	UpdateCallback ExecutionCallback
+	Policy *config.Policy
 
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
@@ -59,6 +80,9 @@ type ExecuteRequest struct {
 
 	// ProviderVersions describes current versions of providers in use.
 	ProviderVersions map[string]*version.Version
+
+	// UpdateCallback is the console ui update callback
+	UpdateCallback UpdateCallback
 }
 
 // NewExecutor creates a new executor.
@@ -70,7 +94,7 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger) *Executor {
 }
 
 // executePolicy executes given policy and the related sub queries/views.
-func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, policy *config.Policy, selector []string) (*ExecutionResult, error) {
+func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallback, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
@@ -82,17 +106,17 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 		rest = selector[1:]
 	}
 	var found bool
-	total := ExecutionResult{Passed: true, Results: make(map[string]*QueryResult)}
+	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
 	for _, p := range policy.Policies {
 		if len(selector) == 0 || p.Name == selector[0] {
 			found = true
-			r, err := e.executePolicy(ctx, req, p, rest)
+			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
 			if err != nil {
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && r.Passed
-			for k, v := range r.Results {
-				total.Results[policyPathJoin(policy.Name, k)] = v
+			for _, v := range r.Results {
+				total.Results = append(total.Results, v)
 			}
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
@@ -108,10 +132,15 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && qr.Passed
-			total.Results[policyPathJoin(policy.Name, q.Name)] = qr
-			if req.UpdateCallback != nil {
-				req.UpdateCallback(q.Name, qr.Type, qr.Passed)
+
+			total.Results = append(total.Results, qr)
+
+			if progressUpdate != nil {
+				progressUpdate(Update{
+					FinishedQueries: 1,
+				})
 			}
+
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
 			}
@@ -123,7 +152,7 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 	return &total, nil
 }
 
-func (*Executor) checkVersions(policyConfig *config.Configuration, actual map[string]*version.Version) error {
+func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*version.Version) error {
 	if policyConfig == nil {
 		return nil
 	}
@@ -144,7 +173,7 @@ func (*Executor) checkVersions(policyConfig *config.Configuration, actual map[st
 }
 
 // executeQuery executes the given query and returns the result.
-func (e *Executor) executeQuery(ctx context.Context, q *config.Query) (*QueryResult, error) {
+func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", q.Name, err)
@@ -176,7 +205,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *config.Query) (*QueryRes
 }
 
 // createViews creates temporary views for given config.Policy, and any views defined by sub-policies
-func (e *Executor) createViews(ctx context.Context, policy *config.Policy) error {
+func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
 		e.log.Debug("creating policy view", "policy", policy.Name, "view", v.Name)
 		if err := e.createView(ctx, v); err != nil {
@@ -187,7 +216,7 @@ func (e *Executor) createViews(ctx context.Context, policy *config.Policy) error
 }
 
 // createView creates the given view temporary.
-func (e *Executor) createView(ctx context.Context, v *config.View) error {
+func (e *Executor) createView(ctx context.Context, v *View) error {
 	// Add create view command
 	v.Query.Query = fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query.Query)
 
@@ -196,23 +225,23 @@ func (e *Executor) createView(ctx context.Context, v *config.View) error {
 	return err
 }
 
-func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies []*config.Policy, selector []string) (*ExecutionResult, error) {
+func (e *Executor) ExecutePolicies(ctx context.Context, progressUpdate UpdateCallback, req *ExecuteRequest, policies []*Policy, selector []string) (*ExecutionResult, error) {
 	var rest []string
 	if len(selector) > 0 {
 		rest = selector[1:]
 	}
 	var found bool
-	total := ExecutionResult{Passed: true, Results: make(map[string]*QueryResult)}
+	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
 	for _, p := range policies {
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
-			r, err := e.executePolicy(ctx, req, p, rest)
+			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
 			if err != nil {
 				return nil, err
 			}
 			total.Passed = total.Passed && r.Passed
-			for k, v := range r.Results {
-				total.Results[k] = v
+			for _, v := range r.Results {
+				total.Results = append(total.Results, v)
 			}
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
@@ -223,4 +252,24 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 		return nil, errPolicyOrQueryNotFound
 	}
 	return &total, nil
+}
+
+func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
+	fs := afero.NewOsFs()
+	f, err := fs.Create(filepath.Join(outputDir, string(os.PathSeparator), result.PolicyName, "json"))
+	if err != nil {
+		return err
+	}
+	defer func() {
+		_ = f.Close()
+	}()
+
+	data, err := json.Marshal(&result)
+	if err != nil {
+		return err
+	}
+	if _, err := f.Write(data); err != nil {
+		return err
+	}
+	return nil
 }

@@ -2,19 +2,19 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
-	"os"
 	"path/filepath"
 	"sort"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
-
 	"github.com/golang-migrate/migrate/v4"
-
-	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/afero"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -25,13 +25,9 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"github.com/spf13/afero"
-	"golang.org/x/sync/errgroup"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -89,28 +85,28 @@ func (p ProviderFetchSummary) HasErrors() bool {
 	return false
 }
 
-// PolicyRunRequest is the request used to run a policy.
-type PolicyRunRequest struct {
-	// Args are the given arguments from the policy run command.
-	Args []string
+// PoliciesRunRequest is the request used to run a policy.
+type PoliciesRunRequest struct {
+	// Policies to run
+	Policies []*config.Policy
 
-	// SubPath is the optional sub path for sub policy/query execution only.
-	SubPath string
+	// PolicyName is optional attr to run specific policy
+	PolicyName string
 
-	// Local apth is the given local policy from the run command.
-	LocalPath string
-
-	// OutputPath is the output path for policy execution output.
-	OutputPath string
+	// OutputDir is the output dir for policy execution output.
+	OutputDir string
 
 	// StopOnFailure signals policy execution to stop after first failure.
 	StopOnFailure bool
 
 	// RunCallBack is the callback method that is called after every policy execution.
-	RunCallBack policy.ExecutionCallback
+	RunCallback policy.UpdateCallback
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
+
+	// FailOnViolation if true policy run will return error if there are violations
+	FailOnViolation bool
 }
 
 // ModuleRunRequest is the request used to run a module.
@@ -545,79 +541,70 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 	return m.DropProvider(ctx, s.ResourceTables)
 }
 
-func (c *Client) DownloadPolicy(ctx context.Context, args []string) error {
+func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.RemotePolicy, error) {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
-
-	// Parse input args
-	p, err := m.ParsePolicyHubPath(args, "")
+	// TODO - support full repository path also - currently we support only github
+	remotePolicy, err := m.ParsePolicyFromArgs(args)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	c.Logger.Debug("Parsed policy download input arguments", "policy", p)
-	return m.DownloadPolicy(ctx, p)
+	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
+	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
+		return nil, err
+	}
+	return remotePolicy, nil
 }
 
-func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
-	c.Logger.Info("Running policy", "args", req.Args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
+	manager := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	p := &policy.Policy{}
+	var results []*policy.ExecutionResult
 
-	switch {
-	case req.LocalPath != "":
-		c.Logger.Info("Running local policy", "args", req.LocalPath)
-		p.LocalPath = req.LocalPath
-		p.SubPath = req.SubPath
-	default:
-		c.Logger.Info("Running remote policy", "args", req.Args)
-		// Parse input args
-		parsedPolicy, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
-		p = parsedPolicy
+	for _, policyConfig := range req.Policies {
+
+		policyConfig := policyConfig
+		c.Logger.Info("Loading policy", "args", policyConfig)
+
+		versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
+			d, err := c.Manager.GetPluginDetails(name)
+			return d.Version, err
+		})
+
 		if err != nil {
-			return err
+			// TODO stop on
+			return nil, err
 		}
-	}
 
-	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
-	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
-		d, err := c.Manager.GetPluginDetails(name)
-		return d.Version, err
-	})
-	if err != nil {
-		return err
-	}
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{
-		Policy:           p,
-		StopOnFailure:    req.StopOnFailure,
-		SkipVersioning:   req.SkipVersioning,
-		UpdateCallback:   req.RunCallBack,
-		ProviderVersions: versions,
-	})
-	if err != nil {
-		return err
-	}
+		execReq := &policy.ExecuteRequest{
+			Policy:           policyConfig,
+			StopOnFailure:    req.StopOnFailure,
+			SkipVersioning:   req.SkipVersioning,
+			ProviderVersions: versions,
+			UpdateCallback:   req.RunCallback,
+		}
 
-	// Store output in file if requested
-	if req.OutputPath != "" {
-		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		policyWrapper, err := manager.Load(ctx, policyConfig, execReq)
+
 		if err != nil {
-			return err
+			// TODO stop on
+			return nil, err
 		}
-		defer func() {
-			_ = f.Close()
-		}()
 
-		data, err := json.Marshal(&output)
-		if err != nil {
-			return err
-		}
-		if _, err := f.Write(data); err != nil {
-			return err
+		c.Logger.Info("Running policy", "args", policyConfig)
+
+		result, err := manager.Run(ctx, execReq, policyWrapper)
+		results = append(results, result)
+
+		// Store output in file if requested
+		if req.OutputDir != "" {
+			// TODO handle errors
+			c.Logger.Info("Writing policy to output directory", "args", policyConfig)
+			_ = policy.GenerateExecutionResultFile(result, req.OutputDir)
 		}
 	}
-	return nil
+
+	return results, nil
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
