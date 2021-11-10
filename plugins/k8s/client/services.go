@@ -24,6 +24,7 @@ type Services struct {
 	Jobs         JobsClient
 	Roles        RolesClient
 	RoleBindings RoleBindingsClient
+	CronJobs CronJobsClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/namespaces.go . NamespacesClient
@@ -79,4 +80,9 @@ type RolesClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/role_bindings.go . RoleBindingsClient
 type RoleBindingsClient interface {
 	List(ctx context.Context, opts metav1.ListOptions) (*rbacv1.RoleBindingList, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/cronjobs.go . CronJobsClient
+type CronJobsClient interface {
+	List(ctx context.Context, opts metav1.ListOptions) (*batchv1.CronJobList, error)
 }
