@@ -142,10 +142,11 @@ func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, s
 	var policies = c.cfg.Policies
 
 	if len(policies) == 0 {
+		ui.ColorizedOutput(ui.ColorError, "Could not find policies to run\n\n")
 		return fmt.Errorf("could not find policies to run")
 	}
 
-	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
 	var policyRunProgress *Progress
 	var policyRunCallback policy.UpdateCallback
@@ -164,7 +165,7 @@ func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, s
 	}
 
 	if ui.IsTerminal() {
-		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
+		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun, failOnViolation)
 	}
 
 	req := &client.PoliciesRunRequest{
@@ -188,10 +189,10 @@ func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, s
 
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policy: %s.\n\n", err.Error())
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished policy run...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")
 	return nil
 }
 
@@ -523,7 +524,7 @@ func loadConfig(path string) (*config.Config, error) {
 	return cfg, nil
 }
 
-func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy) (*Progress, policy.UpdateCallback) {
+func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, failOnViolation bool) (*Progress, policy.UpdateCallback) {
 	policyRunProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Queries: %d/%d")}
 	})
@@ -533,13 +534,23 @@ func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy) (*Pr
 	}
 
 	policyRunCallback := func(update policy.Update) {
+		bar := policyRunProgress.GetBar(update.PolicyName)
+
 		if update.Error != "" {
 			policyRunProgress.Update(update.PolicyName, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
+
+			if failOnViolation {
+				// update running progress as the process has terminated
+				for _, bar := range policyRunProgress.bars {
+					if bar.Status == ui.StatusInProgress {
+						policyRunProgress.Update(bar.Name, ui.StatusError, "execution stops", 0)
+					}
+				}
+			}
 			return
 		}
 
-		bar := policyRunProgress.GetBar(update.PolicyName)
-
+		// set the total queries to track
 		if update.QueriesCount > 0 {
 			bar.SetTotal(int64(update.QueriesCount), false)
 		}
@@ -549,16 +560,12 @@ func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy) (*Pr
 			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
 			return
 		}
+
 		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
-		if bar.Status == ui.StatusError {
-			if update.AllDone() {
-				bar.SetTotal(0, true)
-			}
-			return
-		}
 		if update.AllDone() && bar.Status != ui.StatusWarn {
 			policyRunProgress.Update(update.PolicyName, ui.StatusOK, "policy run complete - ", 0)
+			bar.Done()
 			return
 		}
 	}
@@ -572,6 +579,12 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 	}
 	for _, execResult := range results {
 		ui.ColorizedOutput(ui.ColorUnderline, "%s %s Results:\n\n", emojiStatus[ui.StatusInfo], execResult.PolicyName)
+
+		if !execResult.Passed {
+			ui.ColorizedOutput(ui.ColorHeader, "Policy failed to run\nError: %s\n\n",
+				ui.ColorErrorBold.Sprintf("%s", execResult.Error))
+		}
+
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:

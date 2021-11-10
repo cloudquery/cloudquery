@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -25,7 +26,7 @@ type Update struct {
 	Version    string
 	// FinishedQueries is the number queries that have finished evaluating
 	FinishedQueries int
-	// FinishedQueries is the amount of queries collected so far
+	// QueriesCount is the amount of queries collected so far
 	QueriesCount int
 	// Error if any returned by the provider
 	Error string
@@ -66,6 +67,9 @@ type ExecutionResult struct {
 
 	// List of all query result sets
 	Results []*QueryResult
+
+	// Error is the reason the execution failed
+	Error string
 }
 
 // ExecuteRequest is a request that triggers policy execution.
@@ -131,15 +135,13 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && qr.Passed
-
 			total.Results = append(total.Results, qr)
-
 			if progressUpdate != nil {
 				progressUpdate(Update{
 					FinishedQueries: 1,
 				})
 			}
-
+			time.Sleep(time.Millisecond * 50) // TODO remove
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
 			}

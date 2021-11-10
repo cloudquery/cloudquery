@@ -34,6 +34,10 @@ func (b *Bar) SetTotal(total int64, triggerComplete bool) {
 	b.b.SetTotal(total, triggerComplete)
 }
 
+func (b *Bar) Done() {
+	b.b.Abort(false)
+}
+
 type Progress struct {
 	p       *mpb.Progress
 	bars    map[string]*Bar

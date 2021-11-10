@@ -20,8 +20,11 @@ var (
 		Short: policyRunHelpMsg,
 		Long:  policyRunHelpMsg,
 		Example: `
-  # Download & Run official policy from Policy Hub
+  # Download & Run the policies that defined in the config.hcl
   cloudquery policy run
+
+  # Run a specific policy by it's name
+  cloudquery policy run --policy my_aws_policy
 
   # See https://hub.cloudquery.io for additional policies.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -46,9 +49,9 @@ func init() {
 	flags := policyRunCmd.Flags()
 	flags.StringVar(&policyName, "policy", "", "Select specific policy to run")
 	flags.StringVar(&outputDir, "output", "", "Generates a new file for each policy at the given dir with the output")
-	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the execution on the first failure")
+	flags.BoolVar(&stopOnFailure, "stop-on-failure", false, "Stops the policy execution on the first failure")
+	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if one of the policy is violated")
 	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
-	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if policy is violated")
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)

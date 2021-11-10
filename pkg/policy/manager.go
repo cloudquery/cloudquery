@@ -100,24 +100,28 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policyWr
 	var finishedQueries = 0
 
 	// set the progress total queries to run
-	execReq.UpdateCallback(Update{
-		PolicyName:      execReq.Policy.Name,
-		Version:         execReq.Policy.Version,
-		FinishedQueries: 0,
-		QueriesCount:    totalQueriesToRun,
-		Error:           "",
-	})
+	if execReq.UpdateCallback != nil {
+		execReq.UpdateCallback(Update{
+			PolicyName:      execReq.Policy.Name,
+			Version:         execReq.Policy.Version,
+			FinishedQueries: 0,
+			QueriesCount:    totalQueriesToRun,
+			Error:           "",
+		})
+	}
 
 	// replace console update function to keep track the current status
 	var progressUpdate = func(update Update) {
 		finishedQueries += update.FinishedQueries
-		execReq.UpdateCallback(Update{
-			PolicyName:      execReq.Policy.Name,
-			Version:         execReq.Policy.Version,
-			FinishedQueries: finishedQueries,
-			QueriesCount:    totalQueriesToRun,
-			Error:           "",
-		})
+		if execReq.UpdateCallback != nil {
+			execReq.UpdateCallback(Update{
+				PolicyName:      execReq.Policy.Name,
+				Version:         execReq.Policy.Version,
+				FinishedQueries: finishedQueries,
+				QueriesCount:    totalQueriesToRun,
+				Error:           "",
+			})
+		}
 	}
 
 	executor := NewExecutor(conn, m.logger)

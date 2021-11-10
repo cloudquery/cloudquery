@@ -562,8 +562,6 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	results := make([]*policy.ExecutionResult, 0)
 
 	for _, policyConfig := range req.Policies {
-
-		policyConfig := policyConfig
 		c.Logger.Info("Loading policy", "args", policyConfig)
 
 		versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
@@ -571,9 +569,34 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 			return d.Version, err
 		})
 
+		handleError := func(err error) bool {
+			if req.RunCallback != nil {
+				req.RunCallback(policy.Update{
+					PolicyName:      policyConfig.Name,
+					Version:         policyConfig.Version,
+					FinishedQueries: 0,
+					QueriesCount:    0,
+					Error:           err.Error(),
+				})
+			}
+			if req.FailOnViolation {
+				return true
+			} else {
+				results = append(results, &policy.ExecutionResult{
+					PolicyName: policyConfig.Name,
+					Passed:     false,
+					Error:      err.Error(),
+				})
+				return false
+			}
+		}
+
 		if err != nil {
-			// TODO stop on
-			return nil, err
+			if handleError(err) {
+				return results, nil
+			} else {
+				continue
+			}
 		}
 
 		execReq := &policy.ExecuteRequest{
@@ -587,24 +610,50 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		policyWrapper, err := manager.Load(ctx, policyConfig, execReq)
 
 		if err != nil {
-			// TODO stop on
-			return nil, err
+			if handleError(err) {
+				return results, nil
+			} else {
+				continue
+			}
 		}
 
 		c.Logger.Info("Running policy", "args", policyConfig)
 
 		result, err := manager.Run(ctx, execReq, policyWrapper)
-		if err != nil {
-			// TODO - handle errors
-			return nil, err
+
+		// execution was not finished
+		if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
+			req.RunCallback(policy.Update{
+				PolicyName:      policyConfig.Name,
+				Version:         policyConfig.Version,
+				FinishedQueries: 0,
+				QueriesCount:    0,
+				Error:           "Execution stops",
+			})
 		}
+
+		if err != nil {
+			if handleError(err) {
+				return results, nil
+			} else {
+				continue
+			}
+		}
+
 		results = append(results, result)
 
 		// Store output in file if requested
 		if req.OutputDir != "" {
-			// TODO handle errors
 			c.Logger.Info("Writing policy to output directory", "args", policyConfig)
-			_ = policy.GenerateExecutionResultFile(result, req.OutputDir)
+			err = policy.GenerateExecutionResultFile(result, req.OutputDir)
+
+			if err != nil {
+				if handleError(err) {
+					return results, nil
+				} else {
+					continue
+				}
+			}
 		}
 	}
 
