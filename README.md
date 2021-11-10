@@ -4,7 +4,7 @@
 </a>
 </p>
 
-The open-source cloud asset inventory backed by PostgreSQL.
+The open-source cloud asset inventory powered by SQL.
 
 ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cloudquery/test?style=flat-square)
 ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
@@ -102,33 +102,15 @@ Find all public facing AWS load balancers
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
 
-#### Running policy packs
+#### Running CloudQuery Policies
 
-cloudquery comes with some ready compliance policy pack which you can use as is or modify to fit your use-case.
+CloudQuery comes with out-of-the-box [policies](https://hub.cloudquery.io/policies) which you can use as is or modify to fit your use-case.
 
-Currently, cloudquery support [AWS CIS](https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf)
-policy pack (it is under active development, so it doesn't cover the whole spec yet).
-
-To run AWS CIS pack enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
+For example, to run [AWS CIS](https://hub.cloudquery.io/policies/cloudquery/aws-cis-1.20/latest) policies enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
 
 ```shell script
-./cloudquery policy --path=<PATH_TO_POLICY_FILE> --output=<PATH_TO_OUTPUT_POLICY_RESULT> --dsn "postgres://postgres:pass@localhost:5432/postgres"
+./cloudquery policy run aws-cis-1.2.0
 ```
-
-You can also create your own policy file. E.g.:
-
-```yaml
-views:
-  - name: "my_custom_view"
-    query: >
-      CREATE VIEW my_custom_view AS ...
-queries:
-  - name: "Find thing that violates policy"
-    query: >
-      SELECT account_id, arn FROM ...
-```
-
-The `policy` command uses the policy file path `./policy.yml` by default, but this can be overridden via the `--path` flag, or the `CQ_POLICY_PATH` environment variable.
 
 Full Documentation, resources and SQL schema definitions are available [here](https://hub.cloudquery.io).
 

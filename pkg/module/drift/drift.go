@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -17,6 +17,7 @@ import (
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/spf13/afero"
 )
 
 type Drift struct {
@@ -71,16 +72,19 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
-func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, error) {
-	iacProv, err := getIACProvider(req.Providers)
+func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
+	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
 
-	var resList Results
+	resList := &Results{
+		ListManaged: d.params.ListManaged,
+		Debug:       d.params.Debug,
+	}
 
 	for _, cfg := range d.config.Providers {
-		schema, err := d.findProvider(cfg, req.Providers, iacProv.Name)
+		schema, err := d.findProvider(cfg, req.Providers)
 		if err != nil {
 			return nil, err
 		} else if schema == nil {
@@ -89,7 +93,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 
 		d.logger.Debug("Processing for provider", "provider", schema.Name, "config", cfg)
 
-		resources := cfg.interpolatedResourceMap(iacProv.Name, d.logger)
+		resources := cfg.interpolatedResourceMap(iacProv, d.logger)
 
 		// Always process in the same order so both results and error messages are consistent
 		for _, resName := range cfg.resourceKeys() {
@@ -103,18 +107,18 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 				continue
 			}
 
-			d.logger.Debug("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv.Name].Type)
+			d.logger.Debug("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv].Type)
 
 			// Drift per resource
 			var (
 				dres *Result
 				err  error
 			)
-			switch iacProvider(iacProv.Name) {
+			switch iacProv {
 			case iacTerraform:
-				dres, err = d.driftTerraform(ctx, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv.Name])
+				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params)
 			default:
-				err = fmt.Errorf("no suitable handler found for %q", iacProv.Name)
+				err = fmt.Errorf("no suitable handler found for %q", iacProv)
 			}
 			if err != nil {
 				return nil, fmt.Errorf("drift failed for (%s:%s): %w", schema.Name, resName, err)
@@ -122,100 +126,73 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (Results, e
 
 			dres.Provider = schema.Name
 			dres.ResourceType = resName
-			resList = append(resList, dres)
+			resList.Data = append(resList.Data, dres)
 		}
-
 	}
+
+	resList.process()
 
 	return resList, nil
 }
 
-func (d *Drift) queryIntoResourceList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string, exclude ResourceList) (ResourceList, error) {
+func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, sel *goqu.SelectDataset) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
-		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
+		return nil, fmt.Errorf("goqu build failed: %w", err)
 	}
-	d.logger.Trace("generated query", "type", what, "query", query, "args", args)
+	logger.Trace("generated query", "query", query, "args", args)
 
-	var list []*string
+	var list []struct {
+		ID      *string       `db:"id"`
+		AttList []interface{} `db:"attlist"`
+	}
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == pgerrcode.UndefinedTable {
 			// ERROR: relation %q does not exist
-			return nil, fmt.Errorf("terraform provider tables don't exist: Did you run `cloudquery fetch`?%q", pgErr.TableName)
+			return nil, fmt.Errorf("cloud provider tables don't exist: Did you run `cloudquery fetch`? %w", pgErr)
 		}
 
-		d.logger.Warn("query failed with error", "query", query, "args", args, "type", what, "error", err)
-		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
-	}
-
-	exList := make(map[string]struct{}, len(exclude))
-	for _, e := range exclude {
-		exList[e.ID] = struct{}{}
+		logger.Warn("query failed with error", "query", query, "args", args, "error", err)
+		return nil, fmt.Errorf("goqu select failed: %w", err)
 	}
 
 	ret := make([]*Resource, 0, len(list))
 	for i := range list {
-		if list[i] == nil {
-			ret = append(ret, &Resource{
-				ID: "<null id>",
-			})
-			continue
-		}
-
-		if _, ok := exList[*list[i]]; ok {
-			continue // exclude
-		}
 		ret = append(ret, &Resource{
-			ID: *list[i],
+			ID: func(s *string) string {
+				if s == nil {
+					return "<null id>"
+				}
+				return *s
+			}(list[i].ID),
+			Attributes: list[i].AttList,
 		})
 	}
 
 	return ret, nil
 }
 
-func (d *Drift) queryIntoAttributeList(ctx context.Context, conn *pgxpool.Conn, sel *goqu.SelectDataset, what string) (map[string][]interface{}, error) {
-	query, args, err := sel.ToSQL()
-	if err != nil {
-		return nil, fmt.Errorf("goqu build(%s) failed: %w", what, err)
-	}
-	d.logger.Trace("generated query", "type", what, "query", query, "args", args)
-
-	var list []struct {
-		ID      string        `db:"id"`
-		AttList []interface{} `db:"attlist"`
-	}
-	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
-		return nil, fmt.Errorf("goqu select(%s) failed: %w", what, err)
-	}
-
-	ret := make(map[string][]interface{}, len(list))
-	for i := range list {
-		ret[list[i].ID] = list[i].AttList
-	}
-	return ret, nil
-}
-
-func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig) *goqu.SelectDataset {
+func handleSubresource(logger hclog.Logger, sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig, accountIDs []string) *goqu.SelectDataset {
 	parentColumn := pr.ParentIDColumn()
 
 	if parentColumn == "" {
 		if pr.Parent != nil {
-			d.logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
+			logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
 		}
 
-		if len(d.params.AccountIDs) > 0 {
+		if len(accountIDs) > 0 {
 			accountIDColumn := pr.AccountIDColumn()
 
 			if accountIDColumn != "" {
-				sel = sel.Where(goqu.Ex{"c." + accountIDColumn: d.params.AccountIDs})
+				sel = sel.Where(goqu.Ex{"c." + accountIDColumn: accountIDs})
 			}
 		}
 
 		return sel
 	}
 	if pr.Parent == nil {
-		d.logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
+		logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
 		return sel
 	}
 
@@ -228,7 +205,7 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 	for pr.Parent != nil {
 		res = resources[pr.Name]
 		if res == nil {
-			d.logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
+			logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
 			return sel // FIXME we're skipping the account_id filter here by returning
 		}
 
@@ -252,16 +229,16 @@ func (d *Drift) handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, r
 		parentColumn = pr.ParentIDColumn()
 	}
 
-	if len(d.params.AccountIDs) > 0 {
+	if len(accountIDs) > 0 {
 		accountIDColumn := pr.AccountIDColumn()
 
-		sel = sel.Where(goqu.Ex{parentTableName + "." + accountIDColumn: d.params.AccountIDs})
+		sel = sel.Where(goqu.Ex{parentTableName + "." + accountIDColumn: accountIDs})
 	}
 
 	return sel
 }
 
-func (d *Drift) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
+func handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDataset {
 	for _, f := range res.Filters {
 		sel = sel.Where(goqu.L(f))
 	}
@@ -271,47 +248,69 @@ func (d *Drift) handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goq
 
 var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
 
-func (d *Drift) handleIdentifier(identifiers []string) (exp.Expression, exp.Expression, error) {
-	switch l := len(identifiers); {
-	case l == 0:
-		return nil, nil, fmt.Errorf("no identifiers to match")
-	case l > 1:
-		return nil, nil, fmt.Errorf("multiple identifiers not supported yet")
+const idSeparator = "|"
+
+// handleIdentifiers returns an SQL expression given one or multiple identifiers. the `sql(<query>)` is also handled here.
+// Given multiple identifiers, each of them are concatenated using the idSeparator
+func handleIdentifiers(identifiers []string) (exp.Expression, error) {
+	idLen := len(identifiers)
+	if idLen == 0 {
+		return nil, fmt.Errorf("no identifiers to match")
 	}
 
-	usingVariable := false
+	concatArgs := make([]string, 0, len(identifiers)*2)
+	for i, id := range identifiers {
+		usingVariable := false
 
-	if ma := idRegEx.FindStringSubmatch(identifiers[0]); len(ma) == 2 {
-		identifiers[0] = ma[1]
-		usingVariable = true
+		if ma := idRegEx.FindStringSubmatch(id); len(ma) == 2 {
+			id = ma[1]
+			usingVariable = true
+		}
+
+		if strings.Contains(id, "${") {
+			return nil, fmt.Errorf("identifier %d still contains variable", i)
+		}
+
+		if !usingVariable && !strings.Contains(id, ".") {
+			id = "c." + `"` + id + `"`
+		}
+
+		concatArgs = append(concatArgs, id, "'"+idSeparator+"'")
 	}
 
-	if strings.Contains(identifiers[0], "${") {
-		return nil, nil, fmt.Errorf("identifier still contains variable")
+	if idLen == 1 {
+		return goqu.L(concatArgs[0] + " AS id"), nil
 	}
 
-	if usingVariable {
-		return goqu.L(identifiers[0]), goqu.L("(" + identifiers[0] + ") AS id"), nil
-	}
-
-	return goqu.I("c." + identifiers[0]), goqu.I("c." + identifiers[0]).As("id"), nil
+	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
-func getIACProvider(provs []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
-	var iacProv *cqproto.GetProviderSchemaResponse
-	for _, p := range provs {
-		if p.Name == string(iacTerraform) {
-			if iacProv != nil {
-				return nil, fmt.Errorf("only single IAC provider is supported at a time")
-			}
-			iacProv = p
-		}
-	}
-	if iacProv == nil {
-		return nil, fmt.Errorf("no IAC provider detected, can't continue")
+func readIACStates(iacID string, stateFiles []string) (iacProvider, interface{}, error) {
+	if len(stateFiles) == 0 {
+		return "", nil, fmt.Errorf("state files for %s not specified", iacID)
 	}
 
-	return iacProv, nil
+	switch iacProvider(iacID) {
+	case iacTerraform:
+		ret := make([]*terraform.Data, len(stateFiles))
+
+		fs := afero.NewOsFs()
+		for idx, fn := range stateFiles {
+			fh, err := fs.Open(fn)
+			if err != nil {
+				return "", nil, err
+			}
+			data, err := terraform.LoadState(fh)
+			_ = fh.Close()
+			if err != nil {
+				return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+			}
+			ret[idx] = data
+		}
+		return iacTerraform, ret, nil
+	default:
+		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
+	}
 }
 
 // Make sure we satisfy the interface

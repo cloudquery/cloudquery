@@ -33,14 +33,17 @@ type ResourceConfig struct {
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
 	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
+	Sets              []string `hcl:"sets,optional"`    // Unordered list-attributes where item order doesn't matter
 
-	IAC map[string]*IACConfig
+	IAC map[iacProvider]*IACConfig
 
 	defRange *hcl.Range
 }
 
 type IACConfig struct {
-	Type string `hcl:"type,optional"`
+	Type        string   `hcl:"type,optional"`
+	Path        string   `hcl:"path,optional"`
+	Identifiers []string `hcl:"identifiers,optional"`
 
 	AttributeMap []string `hcl:"attribute_map,optional"`
 
@@ -81,6 +84,7 @@ func (res *ResourceConfig) applyWildResource(wild *ResourceConfig) {
 	res.IgnoreIdentifiers = mergeDedupSlices(res.IgnoreIdentifiers, wild.IgnoreIdentifiers)
 	res.IgnoreAttributes = mergeDedupSlices(res.IgnoreAttributes, wild.IgnoreAttributes)
 	res.Filters = mergeDedupSlices(res.Filters, wild.Filters)
+	res.Sets = mergeDedupSlices(res.Sets, wild.Sets)
 
 	if len(res.IAC) == 0 {
 		res.IAC = wild.IAC
@@ -109,7 +113,7 @@ func (prov *ProviderConfig) resourceKeys() []string {
 	return k
 }
 
-func (prov *ProviderConfig) interpolatedResourceMap(iacProvider string, logger hclog.Logger) map[string]*ResourceConfig {
+func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider, logger hclog.Logger) map[string]*ResourceConfig {
 	resourceKeys := prov.resourceKeys()
 	ret := make(map[string]*ResourceConfig, len(resourceKeys))
 
@@ -138,11 +142,7 @@ func (prov *ProviderConfig) interpolatedResourceMap(iacProvider string, logger h
 	return ret
 }
 
-func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse, except string) (*cqproto.GetProviderSchemaResponse, error) {
-	if except != "" && cfg.Name == except {
-		return nil, nil
-	}
-
+func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
 	for _, schema := range schemas {
 		if ok, diags := d.applyProvider(cfg, schema); diags.HasErrors() {
 			return nil, diags
@@ -244,6 +244,7 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 			res.IgnoreIdentifiers = replacePlaceholderInSlice(k, v, res.IgnoreIdentifiers)
 			res.Attributes = replacePlaceholderInSlice(k, v, res.Attributes)
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
+			res.Sets = replacePlaceholderInSlice(k, v, res.Sets)
 		}
 
 		// {$sql:*} identifiers are still not replaced

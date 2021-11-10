@@ -3,12 +3,13 @@ package cmd
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 var fetchCmd = &cobra.Command{
@@ -20,7 +21,7 @@ var fetchCmd = &cobra.Command{
 	`,
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: handleError(func(cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
 		failOnError := viper.GetBool("fail-on-error")
 
@@ -31,7 +32,7 @@ var fetchCmd = &cobra.Command{
 		}
 		defer c.Client().Close()
 		return c.Fetch(ctx, failOnError)
-	},
+	}),
 }
 
 func init() {

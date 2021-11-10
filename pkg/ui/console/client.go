@@ -14,6 +14,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -224,7 +225,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 
 	if out.ErrorMsg != "" {
 		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
-		return nil
+		return out.Error
 	}
 
 	if req.OutputPath != "" {
@@ -261,6 +262,11 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
+
+	if exitCoder, ok := out.Result.(module.ExitCoder); ok {
+		return &ExitCodeError{ExitCode: exitCoder.ExitCode()}
+	}
+
 	return nil
 }
 

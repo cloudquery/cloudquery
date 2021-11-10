@@ -9,14 +9,18 @@ import (
 type RunParams struct {
 	Debug bool
 
-	TfMode, TfProvider         string
-	ForceDeep                  bool
-	ListManaged                bool
-	TfBackendNames, AccountIDs []string
+	TfMode      string
+	ForceDeep   bool
+	ListManaged bool
+	AccountIDs  []string
+
+	IACName    string
+	StateFiles []string
 }
 
 type Resource struct {
-	ID string `json:"id"`
+	ID         string        `json:"id"`
+	Attributes []interface{} `json:"-"`
 }
 
 type ResourceList []*Resource
@@ -36,6 +40,21 @@ func (r ResourceList) IDs(exclude ...*Resource) []string {
 	return ret
 }
 
+func (r ResourceList) Walk(fn func(*Resource)) {
+	for i := range r {
+		fn(r[i])
+	}
+}
+
+// Map returns a map of ID vs. attributes
+func (r ResourceList) Map() map[string][]interface{} {
+	ret := make(map[string][]interface{}, len(r))
+	for i := range r {
+		ret[r[i].ID] = r[i].Attributes
+	}
+	return ret
+}
+
 type Result struct {
 	IAC          string `json:"iac"`
 	Provider     string `json:"provider"`
@@ -51,10 +70,6 @@ type Result struct {
 	// Both modes
 	Missing ResourceList `json:"missing"` // Missing in cloud provider, defined in iac
 	Extra   ResourceList `json:"extra"`   // Exists in cloud provider, not defined in iac
-
-	// Options
-	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
-	Debug       bool `json:"-"` // Print debug output regarding results
 }
 
 func (r *Result) String() string {
@@ -84,9 +99,34 @@ func (r *Result) String() string {
 	return fmt.Sprintf("%s:%s has %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
 }
 
-type Results []*Result
+type Results struct {
+	Data []*Result `json:"data"`
 
-func (rs Results) String() string {
+	// Options
+	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
+	Debug       bool `json:"-"` // Print debug output regarding results
+
+	// These fields are calculated
+	Drifted  int     `json:"drifted_res"`
+	Covered  int     `json:"covered_res"`
+	Total    int     `json:"total_res"`
+	Coverage float64 `json:"coverage_pct"`
+
+	Text string `json:"-"`
+}
+
+func (rs *Results) String() string {
+	return rs.Text
+}
+
+func (rs *Results) ExitCode() int {
+	if rs.Drifted > 0 {
+		return 1
+	}
+	return 0
+}
+
+func (rs *Results) process() {
 	type combined struct {
 		IAC          string
 		Provider     string
@@ -113,14 +153,10 @@ func (rs Results) String() string {
 		})
 	}
 
-	var listManagedOption, debugOption bool
-	for _, r := range rs {
+	for _, r := range rs.Data {
 		if r == nil {
 			continue
 		}
-		listManagedOption = r.ListManaged
-		debugOption = r.Debug
-
 		transform(r, r.Different, &combo.Different)
 		transform(r, r.Extra, &combo.Extra)
 		transform(r, r.Equal, &combo.Equal)
@@ -131,38 +167,43 @@ func (rs Results) String() string {
 	var ( // nolint: prealloc
 		lines   []string
 		summary []string
-		total   int
 	)
 
 	for _, data := range []struct {
 		title       string
 		list        []combined
 		hideListing bool
+		drift       bool
 	}{
 		{
 			"not managed by $iac",
 			combo.Extra,
 			false,
+			true,
 		},
 		{
 			"in $iac state but missing on the cloud provider",
 			combo.Missing,
 			false,
+			true,
 		},
 		{
 			"managed by $iac but drifted",
 			combo.Different,
 			false,
+			true,
 		},
 		{
 			"managed by $iac (equal IDs)",
 			combo.Equal,
-			!listManagedOption,
+			!rs.ListManaged,
+			false,
 		},
 		{
 			"managed by $iac (equal IDs & attributes)",
 			combo.DeepEqual,
-			!listManagedOption,
+			!rs.ListManaged,
+			false,
 		},
 	} {
 		l := len(data.list)
@@ -186,32 +227,36 @@ func (rs Results) String() string {
 		if data.hideListing {
 			lines[len(lines)-1] += fmt.Sprintf(" (%d)", resTotal) // append count to previous line
 		}
+		if data.drift {
+			rs.Drifted += resTotal
+		}
 
-		total += resTotal
+		rs.Total += resTotal
 		summary = append(summary, fmt.Sprintf(" - %d %s", resTotal, ttl))
 	}
 
 	if len(lines) == 0 {
-		return "No results"
+		rs.Text = "No results"
+		return
 	}
 
-	lines = append(lines, fmt.Sprintf("Found %d resource(s)", total))
+	lines = append(lines, fmt.Sprintf("Found %d resource(s)", rs.Total))
 
-	var covered int
 	// one of Equal and DeepEqual is supposed to be 0 depending on deep flag
 	for _, l := range [][]combined{combo.Equal, combo.DeepEqual, combo.Different} {
 		for _, z := range l {
-			covered += len(z.ResourceIDs)
+			rs.Covered += len(z.ResourceIDs)
 		}
 	}
 
-	cvg := fmt.Sprintf("%.2f", float64(covered)/float64(total)*100)
+	rs.Coverage = float64(rs.Covered) / float64(rs.Total)
+	cvg := fmt.Sprintf("%.2f", rs.Coverage*100)
 	cvg = strings.ReplaceAll(cvg, ".00", "")
 
 	lines = append(lines, fmt.Sprintf(" - %s%% coverage", cvg))
 	lines = append(lines, summary...)
 
-	if debugOption {
+	if rs.Debug {
 		matchedResourceTypes := make(map[string]struct{})
 		for _, t := range append(append(combo.Equal, combo.DeepEqual...), combo.Different...) {
 			matchedResourceTypes[t.Provider+":"+t.ResourceType] = struct{}{}
@@ -230,5 +275,5 @@ func (rs Results) String() string {
 		}
 	}
 
-	return strings.Join(lines, "\n")
+	rs.Text = strings.Join(lines, "\n")
 }

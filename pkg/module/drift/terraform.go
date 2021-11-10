@@ -4,127 +4,282 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
+	"time"
 
+	"github.com/aws/aws-sdk-go/aws/arn"
+	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
+	"github.com/tidwall/gjson"
 )
 
-func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig) (*Result, error) {
-	res := &Result{
-		IAC:         "Terraform",
-		Different:   nil,
-		Equal:       nil,
-		Missing:     nil,
-		Extra:       nil,
-		ListManaged: d.params.ListManaged,
-		Debug:       d.params.Debug,
+type TFStates []*terraform.Data
+
+// FindType returns all instances of the given type under a given mode
+func (t TFStates) FindType(tfType string, tfMode terraform.Mode) TFInstances {
+	var ret []terraform.Instance
+	for _, d := range t {
+		for idx, r := range d.State.Resources {
+			if tfMode != "" && r.Mode != tfMode {
+				continue
+			}
+			if r.Type != tfType {
+				continue
+			}
+			ret = append(ret, d.State.Resources[idx].Instances...)
+		}
+	}
+	return ret
+}
+
+type TFInstances []terraform.Instance
+
+type Attribute struct {
+	ID        string           // Identifier from config
+	SQL       string           // SQL expression
+	Type      schema.ValueType // Type in DB as reported by provider
+	TFName    string           // TF attribute name
+	Unordered bool             // True if unordered slice
+}
+
+type AttrList []Attribute
+
+func (a AttrList) SQLs() []string {
+	ret := make([]string, len(a))
+	for i := range a {
+		ret[i] = a[i].SQL
+	}
+	return ret
+}
+
+func (a AttrList) TypeOf(id string) schema.ValueType {
+	for i := range a {
+		if a[i].ID == id {
+			return a[i].Type
+		}
+	}
+	return schema.TypeInvalid
+}
+
+const tfIDAttribute = "id"
+
+// AsResourceList returns a map of resource ID vs. attributes
+func (r TFInstances) AsResourceList(identifiers []string, alist AttrList, path string) ResourceList {
+	if len(identifiers) == 0 {
+		identifiers = []string{tfIDAttribute}
 	}
 
-	tfProvider := d.params.TfProvider
-	if tfProvider == "" {
-		tfProvider = cloudName
+	ret := make([]*Resource, 0, len(r))
+	for i := range r {
+		ret = append(ret, parseTerraformInstance(r[i], identifiers, alist, path)...)
+	}
+	return ret
+}
+
+func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist AttrList, path string) ResourceList {
+	var elems []gjson.Result
+
+	root := gjson.ParseBytes(ins.AttributesRaw)
+
+	if path != "" {
+		arr := gjson.GetBytes(ins.AttributesRaw, path)
+		if !arr.IsArray() {
+			panic("invalid path " + path + ": not an array")
+		}
+		elems = arr.Array()
+	} else {
+		elems = append(elems, root)
+	}
+
+	ret := make([]*Resource, len(elems))
+
+	for elIdx, el := range elems {
+		if !el.IsObject() {
+			panic("invalid array element: not an object: " + el.Type.String())
+		}
+
+		getAttributes := func(id string) (interface{}, bool) {
+			const rootPathPrefix = "root."
+
+			var v gjson.Result
+			if strings.HasPrefix(id, rootPathPrefix) {
+				v = root.Get(strings.TrimPrefix(id, rootPathPrefix))
+			} else {
+				v = el.Get(id)
+			}
+
+			return v.Value(), v.Exists()
+		}
+
+		idVals := make([]string, len(identifiers))
+		for i, idName := range identifiers {
+			v, _ := getAttributes(idName)
+			v = parseTerraformAttribute(v, alist.TypeOf(idName))
+			idVals[i] = efaceToString(v)
+		}
+
+		res := &Resource{
+			ID: strings.Join(idVals, idSeparator),
+		}
+		res.Attributes = make([]interface{}, len(alist))
+		for i := range alist {
+			if val, ok := getAttributes(alist[i].TFName); ok {
+				res.Attributes[i] = parseTerraformAttribute(val, alist[i].Type)
+			}
+		}
+
+		ret[elIdx] = res
+	}
+
+	return ret
+}
+
+func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
+	if val == nil {
+		return nil
+	}
+
+	switch t {
+	case schema.TypeTimestamp:
+		ts, err := time.Parse(time.RFC3339, val.(string))
+		if err != nil {
+			ts, err = time.Parse("2006-01-02 15:04:05 -0700 MST", val.(string))
+		}
+		if err != nil {
+			return val // will probably error/detect deep drift
+		}
+		return fmt.Sprintf("%d", ts.Unix())
+	default:
+		return val
+	}
+}
+
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams) (*Result, error) {
+	res := &Result{
+		IAC:       "Terraform",
+		Different: nil,
+		Equal:     nil,
+		Missing:   nil,
+		Extra:     nil,
 	}
 
 	resData := resources[resName]
+	deepMode := runParams.ForceDeep || (resData.Deep != nil && *resData.Deep)
 
-	tfAttributes := make([]string, len(resData.Attributes))
-	tfQueryItems := make([]string, len(resData.Attributes))
+	alist := make(AttrList, len(resData.Attributes))
+
+	setMap := make(map[string]struct{}, len(resData.Sets))
+	for i := range resData.Sets {
+		setMap[resData.Sets[i]] = struct{}{}
+	}
+
 	for i, a := range resData.Attributes {
+		alist[i] = Attribute{
+			ID:     resData.Attributes[i],
+			Type:   cloudTable.Column(a).Type,
+			TFName: a,
+		}
+
 		if mapped := iacData.attributeMap[a]; mapped != "" {
-			tfAttributes[i] = mapped
-		} else {
-			tfAttributes[i] = a
+			alist[i].TFName = mapped
 		}
-		switch cloudTable.Column(a).Type {
+
+		switch alist[i].Type {
 		case schema.TypeString:
-			tfQueryItems[i] = fmt.Sprintf(`COALESCE(i.attributes->>'%s','')`, tfAttributes[i])
-		case schema.TypeJSON:
-			tfQueryItems[i] = fmt.Sprintf(`(i.attributes->>'%s')::json`, tfAttributes[i])
+			alist[i].SQL = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
+		case schema.TypeTimestamp:
+			alist[i].SQL = fmt.Sprintf(`EXTRACT(EPOCH FROM DATE_TRUNC('second', "c"."%s"))::VARCHAR`, resData.Attributes[i])
 		default:
-			tfQueryItems[i] = fmt.Sprintf(`i.attributes->>'%s'`, tfAttributes[i])
+			alist[i].SQL = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
 		}
+
+		_, alist[i].Unordered = setMap[alist[i].ID]
 	}
 
-	cloudQueryItems := make([]string, len(resData.Attributes))
-	for i := range resData.Attributes {
-		if cloudTable.Column(resData.Attributes[i]).Type == schema.TypeString {
-			cloudQueryItems[i] = fmt.Sprintf(`COALESCE("c"."%s",'')`, resData.Attributes[i])
-		} else {
-			cloudQueryItems[i] = fmt.Sprintf(`"c"."%s"`, resData.Attributes[i])
-		}
+	tfMode := terraform.Mode(runParams.TfMode)
+	if !tfMode.Valid() {
+		return nil, fmt.Errorf("invalid tf mode %q", runParams.TfMode)
 	}
 
-	tfAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(tfQueryItems, ",") + ")")
-	cloudAttrQuery := goqu.L("JSONB_BUILD_ARRAY(" + strings.Join(cloudQueryItems, ",") + ")")
+	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(iacData.Identifiers, alist, iacData.Path)
 
-	if len(resData.Attributes) == 0 {
-		tfAttrQuery = goqu.L("''")
-		cloudAttrQuery = goqu.L("''")
+	var cloudAttrQuery exp.LiteralExpression
+
+	if !deepMode || len(alist) == 0 {
+		cloudAttrQuery = goqu.L("NULL")
+	} else {
+		cloudAttrQuery = goqu.L("JSON_BUILD_ARRAY(" + strings.Join(alist.SQLs(), ",") + ")")
 	}
 
-	tfSelect := goqu.Dialect("postgres").From(goqu.T("tf_resource_instances").As("i")).
-		Select("i.instance_id", tfAttrQuery.As("attlist")).
-		Join(goqu.T("tf_resources").As("r"), goqu.On(goqu.Ex{"r.cq_id": goqu.I("i.resource_id")})).
-		Join(goqu.T("tf_data").As("d"), goqu.On(goqu.Ex{"d.cq_id": goqu.I("r.running_id")})).
-		Where(goqu.Ex{"r.provider": goqu.V(tfProvider)}).
-		Where(goqu.Ex{"r.mode": goqu.V(d.params.TfMode)}).
-		Where(goqu.Ex{"r.type": goqu.V(iacData.Type)})
-
-	if len(d.params.TfBackendNames) > 0 {
-		tfSelect = tfSelect.Where(goqu.Ex{"d.backend_name": d.params.TfBackendNames})
-	}
-
-	deepMode := d.params.ForceDeep || (resData.Deep != nil && *resData.Deep)
-
-	rawIdExp, idExp, err := d.handleIdentifier(resData.Identifiers)
+	idExp, err := handleIdentifiers(resData.Identifiers)
 	if err != nil {
 		return nil, err
 	}
-	matchExp := goqu.Ex{"tf.instance_id": rawIdExp}
+
+	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
+	q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+	existing, err := queryIntoResourceList(ctx, logger, conn, q)
+	if err != nil {
+		return nil, err
+	}
+
+	existingMap := existing.Map()
+	tfMap := tfResources.Map()
+
+	// Get missing resources
+	tfResources.Walk(func(r *Resource) {
+		if _, ok := existingMap[r.ID]; !ok {
+			res.Missing = append(res.Missing, r)
+		}
+	})
+
+	// Get extra resources
+	{
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
+		q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
+		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
+		if err != nil {
+			return nil, err
+		}
+
+		existingFiltered.Walk(func(r *Resource) {
+			if _, ok := tfMap[r.ID]; !ok {
+				res.Extra = append(res.Extra, r)
+			}
+		})
+	}
 
 	if !deepMode {
 		// Get equal resources
-		res.Equal, err = d.terraformEqualResources(ctx, conn, cloudTable, resources, tfSelect, matchExp)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// Get missing resources
-	res.Missing, err = d.terraformMissingResources(ctx, conn, cloudTable, resources, tfSelect, matchExp)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get extra resources
-	res.Extra, err = d.terraformExtraResources(ctx, conn, cloudTable, resName, resources, tfSelect, matchExp, idExp)
-	if err != nil {
-		return nil, err
-	}
-
-	if deepMode {
-		// Get different resources
-		res.Different, err = d.terraformDifferentResources(ctx, conn, cloudTable, resources, tfSelect, matchExp, idExp, cloudAttrQuery, append(res.Missing, res.Extra...))
-		if err != nil {
-			return nil, err
-		}
-
-		if d.params.Debug && len(res.Different) > 0 {
-			if err := d.terraformDebugDifferentResources(ctx, conn, cloudTable, resName, resources, tfSelect, rawIdExp, idExp, cloudAttrQuery, cloudName, cloudQueryItems, tfQueryItems, res.Different); err != nil {
-				return nil, err
+		existing.Walk(func(r *Resource) {
+			if _, ok := tfMap[r.ID]; ok {
+				res.Equal = append(res.Equal, r)
 			}
-		}
+		})
+	} else {
+		// Get deepequal and different resources
+		existing.Walk(func(r *Resource) {
+			tfAttr, ok := tfMap[r.ID]
+			if !ok {
+				return
+			}
+			if EqualAttributes(tfAttr, r.Attributes, alist) {
+				res.DeepEqual = append(res.DeepEqual, r)
+			} else {
+				res.Different = append(res.Different, r)
+			}
+		})
 	}
-
-	if deepMode {
-		// Get deepequal resources
-		res.DeepEqual, err = d.terraformDeepEqualResources(ctx, conn, cloudTable, resources, tfSelect, matchExp, cloudAttrQuery)
-		if err != nil {
+	if deepMode && runParams.Debug && len(res.Different) > 0 {
+		if err := RenderDriftTable(resName, resources, cloudName, alist, res.Different, tfResources); err != nil {
 			return nil, err
 		}
 	}
@@ -132,82 +287,8 @@ func (d *Drift) driftTerraform(ctx context.Context, conn *pgxpool.Conn, cloudNam
 	return res, nil
 }
 
-func (d *Drift) terraformEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	q = q.With("tf", tfSelect).Join(goqu.T("tf"), goqu.On(matchExp)).
-		Select("tf.instance_id")
-	return d.queryIntoResourceList(ctx, conn, q, "equals", nil)
-}
-
-func (d *Drift) terraformMissingResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex) (ResourceList, error) {
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
-		Select("tf.instance_id").Where(goqu.Ex{"c.cq_id": nil})
-	return d.queryIntoResourceList(ctx, conn, q, "missing", nil)
-}
-
-func (d *Drift) terraformExtraResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp exp.Expression) (ResourceList, error) {
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"), goqu.On(matchExp)).
-		Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
-	q = d.handleFilters(q, resources[resName])
-	return d.queryIntoResourceList(ctx, conn, q, "extras", nil)
-}
-
-func (d *Drift) terraformDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, idExp exp.Expression, cloudAttrQuery exp.LiteralExpression, ignoreRes ResourceList) (ResourceList, error) {
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	q = q.With("tf", tfSelect).LeftJoin(goqu.T("tf"),
-		goqu.On(
-			matchExp,
-			goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
-			goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
-		),
-	).
-		Select(idExp).Where(goqu.Ex{"tf.instance_id": nil})
-
-	return d.queryIntoResourceList(ctx, conn, q, "differs", ignoreRes)
-}
-
-func (d *Drift) terraformDeepEqualResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, matchExp goqu.Ex, cloudAttrQuery exp.LiteralExpression) (ResourceList, error) {
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c"))
-	q = d.handleSubresource(q, cloudTable, resources)
-	q = q.With("tf", tfSelect).Join(goqu.T("tf"),
-		goqu.On(
-			matchExp,
-			goqu.L("? @> ?", goqu.I("tf.attlist"), cloudAttrQuery),
-			goqu.L("? <@ ?", goqu.I("tf.attlist"), cloudAttrQuery),
-		),
-	).
-		Select("tf.instance_id")
-	return d.queryIntoResourceList(ctx, conn, q, "deepequal", nil)
-}
-
-func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxpool.Conn, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, tfSelect *goqu.SelectDataset, rawIdExp exp.Expression, idExp exp.Expression, cloudAttrQuery exp.LiteralExpression, cloudName string, cloudQueryItems, tfQueryItems []string, differentIDs ResourceList) error {
+func RenderDriftTable(resName string, resources map[string]*ResourceConfig, cloudName string, alist AttrList, differentIDs, tfRes ResourceList) error {
 	resData := resources[resName]
-
-	// get tf side
-	sel := goqu.Dialect("postgres").From("tf").With("tf", tfSelect).Select(goqu.I("tf.instance_id").As("id"), goqu.I("tf.attlist").As("attlist")).Where(
-		goqu.Ex{
-			"tf.instance_id": differentIDs.IDs(),
-		})
-	tfAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-tf")
-	if err != nil {
-		return err
-	}
-
-	// get cloud side
-	sel = goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist")).Where(
-		exp.NewBooleanExpression(exp.InOp, rawIdExp, differentIDs.IDs()),
-	)
-	sel = d.handleSubresource(sel, cloudTable, resources)
-	cloudAttList, err := d.queryIntoAttributeList(ctx, conn, sel, "attlist-cloud")
-	if err != nil {
-		return err
-	}
 
 	makeTable := func(title string) *tablewriter.Table {
 		fmt.Println(title)
@@ -217,23 +298,32 @@ func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxp
 		return table
 	}
 
-	for k, tfAttrs := range tfAttList {
-		cloudAttrs, ok := cloudAttList[k]
+	tfMap, cloudMap := tfRes.Map(), differentIDs.Map()
+	for _, k := range tfRes.IDs() {
+		cloudAttrs, ok := cloudMap[k]
 		if !ok {
 			continue // Resource exists only in TF. This is already handled by the "Missing" resource/check
 		}
-		table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s", k))
+
+		tfAttrs := tfMap[k]
+		table := makeTable(fmt.Sprintf("DIFF RESOURCE: %s:%s", resName, k))
 		var (
 			matchingAttr []string
 			matchingVal  []string
 		)
 		for i := range tfAttrs {
-			if !reflect.DeepEqual(cloudAttrs[i], tfAttrs[i]) {
+			if !EqualAttributes([]interface{}{cloudAttrs[i]}, []interface{}{tfAttrs[i]}, []Attribute{alist[i]}) {
+				cStr := efaceToString(cloudAttrs[i])
+				tStr := efaceToString(tfAttrs[i])
+				if cStr == tStr {
+					cStr += fmt.Sprintf(" %T", cloudAttrs[i])
+					tStr += fmt.Sprintf(" %T", tfAttrs[i])
+				}
 				table.Append([]string{
-					cloudQueryItems[i],
-					fmt.Sprintf("%v", cloudAttrs[i]),
-					fmt.Sprintf("%v", tfAttrs[i]),
-					tfQueryItems[i],
+					alist[i].SQL,
+					cStr,
+					tStr,
+					alist[i].TFName,
 				})
 			} else {
 				matchingAttr = append(matchingAttr, `"`+resData.Attributes[i]+`"`)
@@ -252,4 +342,63 @@ func (d *Drift) terraformDebugDifferentResources(ctx context.Context, conn *pgxp
 	}
 
 	return nil
+}
+
+func EqualAttributes(a []interface{}, b []interface{}, alist AttrList) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if alist[i].Unordered {
+			if !EqualSets(a[i].([]interface{}), b[i].([]interface{})) {
+				return false
+			}
+			continue
+		}
+
+		if !equals(a[i], b[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func EqualSets(a []interface{}, b []interface{}) bool {
+	less := func(a, b interface{}) bool { return efaceToString(a) < efaceToString(b) }
+	return cmp.Equal(a, b, cmpopts.SortSlices(less))
+}
+
+func efaceToString(a interface{}) string {
+	return fmt.Sprintf("%v", a)
+}
+
+func equals(a, b interface{}) bool {
+	as := efaceToString(a)
+	bs := efaceToString(b)
+	if as == bs {
+		return true
+	}
+
+	if strings.HasPrefix(as, "arn:aws:") && strings.HasPrefix(bs, "arn:aws:") {
+		// compare ARNs, ignoring empty account IDs or regions
+		aa, err := arn.Parse(as)
+		if err != nil {
+			return false
+		}
+		ba, err := arn.Parse(bs)
+		if err != nil {
+			return false
+		}
+		if aa.Region == "" || ba.Region == "" {
+			aa.Region, ba.Region = "", ""
+		}
+		if aa.AccountID == "" || ba.AccountID == "" {
+			aa.AccountID, ba.AccountID = "", ""
+		}
+		return aa.String() == ba.String()
+	}
+
+	return false
 }

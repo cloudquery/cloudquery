@@ -178,10 +178,6 @@ var (
 				Type:       "resource",
 				LabelNames: []string{"name"},
 			},
-			{
-				Type:       "subresource",
-				LabelNames: []string{"name", "sub_name"},
-			},
 		},
 		Attributes: []hcl.AttributeSchema{
 			{
@@ -219,6 +215,10 @@ var (
 			},
 			{
 				Name:     "filters",
+				Required: false,
+			},
+			{
+				Name:     "sets",
 				Required: false,
 			},
 		},
@@ -290,7 +290,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 		return nil, diags
 	}
 	res := &ResourceConfig{
-		IAC: make(map[string]*IACConfig),
+		IAC: make(map[iacProvider]*IACConfig),
 	}
 	if idAttr, ok := content.Attributes["identifiers"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(idAttr.Expr, ctx, &res.Identifiers)...)
@@ -310,6 +310,9 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	if filtersAttr, ok := content.Attributes["filters"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(filtersAttr.Expr, ctx, &res.Filters)...)
 	}
+	if setsAttr, ok := content.Attributes["sets"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(setsAttr.Expr, ctx, &res.Sets)...)
+	}
 
 	for _, block := range content.Blocks {
 		switch block.Type {
@@ -328,7 +331,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 				ia.attributeMap = make(map[string]string, len(ia.AttributeMap))
 
 				for _, v := range ia.AttributeMap {
-					parts := strings.Split(v, "=")
+					parts := strings.SplitN(v, "=", 2)
 					if len(parts) != 2 {
 						diags = append(diags, &hcl.Diagnostic{
 							Severity: hcl.DiagError,
@@ -340,7 +343,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 					}
 					ia.attributeMap[parts[0]] = parts[1]
 				}
-				res.IAC[iacBlock.Type] = &ia
+				res.IAC[iacProvider(iacBlock.Type)] = &ia
 			}
 			if diags.HasErrors() {
 				return nil, diags
