@@ -250,6 +250,8 @@ var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
 
 const idSeparator = "|"
 
+// handleIdentifiers returns an SQL expression given one or multiple identifiers. the `sql(<query>)` is also handled here.
+// Given multiple identifiers, each of them are concatenated using the idSeparator
 func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 	idLen := len(identifiers)
 	if idLen == 0 {
