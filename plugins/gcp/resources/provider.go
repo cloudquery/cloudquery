@@ -15,9 +15,10 @@ var (
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:       "gcp",
-		Configure:  client.Configure,
-		Migrations: gcpMigrations,
+		Name:            "gcp",
+		Configure:       client.Configure,
+		ErrorClassifier: client.ErrorClassifier,
+		Migrations:      gcpMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"kms.keys":                     KmsKeyrings(),
 			"compute.addresses":            ComputeAddresses(),
