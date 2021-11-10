@@ -331,7 +331,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 				ia.attributeMap = make(map[string]string, len(ia.AttributeMap))
 
 				for _, v := range ia.AttributeMap {
-					parts := strings.Split(v, "=")
+					parts := strings.SplitN(v, "=", 2)
 					if len(parts) != 2 {
 						diags = append(diags, &hcl.Diagnostic{
 							Severity: hcl.DiagError,

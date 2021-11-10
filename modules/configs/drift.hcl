@@ -15,7 +15,7 @@ module "drift" {
         resource "*" {
             identifiers       = resource.Value.Options.PrimaryKeys
             attributes        = resource.Value.ColumnNames
-            ignore_attributes = ["creation_date"]
+            ignore_attributes = ["creation_date", "creation_time"]
             deep = false
         }
     }
@@ -110,7 +110,7 @@ module "drift" {
             }
         }
 
-        # TODO: aws_apigateway_rest_api_gateway_responses (no PKs)
+        # Unmatched: aws_apigateway_rest_api_gateway_responses
 
         resource "aws_apigateway_rest_api_models" {
             iac {
@@ -396,9 +396,11 @@ module "drift" {
         }
 
         resource "cloudwatchlogs.filters" {
-            identifiers = [ "name" ] # TODO: ignored "log_group_name" ?
+            identifiers = [ "name", "log_group_name" ]
+
             iac {
                 terraform {
+                    identifiers = [ "id", "log_group_name" ]
                     type = "aws_cloudwatch_log_metric_filter"
                 }
             }
@@ -406,6 +408,7 @@ module "drift" {
 
         resource "aws_cloudwatchlogs_filter_metric_transformations" {
             identifiers = [ "parent.name", "metric_namespace", "metric_name" ]
+            ignore_attributes = [ "default_value" ]
 
             iac {
                 terraform {
@@ -530,7 +533,16 @@ module "drift" {
             }
         }
 
-        # TODO: aws_ec2_ebs_volume_attachments
+        resource "aws_ec2_ebs_volume_attachments" {
+            identifiers = [ "instance_id", "volume_id", "device" ]
+            iac {
+                terraform {
+                    type = "aws_instance"
+                    path = "root_block_device"
+                    identifiers =  [ "root.id", "volume_id", "device_name" ]
+                }
+            }
+        }
 
         resource "ec2.flow_logs" {
             iac {
@@ -1034,9 +1046,13 @@ module "drift" {
         }
 
         resource "waf.rule_groups" {
+            sets = [ "rule_ids" ]
             iac {
                 terraform {
                     type = "aws_waf_rule_group"
+                    attribute_map = [
+                        "rule_ids=activated_rule.#.rule_id"
+                    ]
                 }
             }
         }
