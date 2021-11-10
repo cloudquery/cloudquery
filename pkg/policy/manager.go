@@ -481,11 +481,6 @@ func decodePolicy(policiesRaw hcl.Body, diags hcl.Diagnostics, policyFolder stri
 	return policies, nil
 }
 
-// policyPathJoin joins policy path names with "/"
-func policyPathJoin(paths ...string) string {
-	return strings.Join(paths, "/")
-}
-
 func (r *RemotePolicy) GetURL() (string, error) {
 	base, err := url.Parse(r.SourceControl)
 	if err != nil {

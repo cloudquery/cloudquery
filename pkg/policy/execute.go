@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
-	"os"
-	"path/filepath"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 )
@@ -115,9 +116,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && r.Passed
-			for _, v := range r.Results {
-				total.Results = append(total.Results, v)
-			}
+			total.Results = append(total.Results, r.Results...)
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
 			}
@@ -240,9 +239,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, progressUpdate UpdateCal
 				return nil, err
 			}
 			total.Passed = total.Passed && r.Passed
-			for _, v := range r.Results {
-				total.Results = append(total.Results, v)
-			}
+			total.Results = append(total.Results, r.Results...)
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
 			}

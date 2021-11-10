@@ -559,7 +559,7 @@ func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.Rem
 func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
 	manager := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	var results []*policy.ExecutionResult
+	results := make([]*policy.ExecutionResult, 0)
 
 	for _, policyConfig := range req.Policies {
 
@@ -594,6 +594,10 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		c.Logger.Info("Running policy", "args", policyConfig)
 
 		result, err := manager.Run(ctx, execReq, policyWrapper)
+		if err != nil {
+			// TODO - handle errors
+			return nil, err
+		}
 		results = append(results, result)
 
 		// Store output in file if requested

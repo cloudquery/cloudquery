@@ -6,9 +6,10 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-hclog"
-
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
@@ -168,6 +169,9 @@ func TestExecutor_executePolicy(t *testing.T) {
 				Views:   tc.Views,
 			}
 			execReq := &ExecuteRequest{
+				Policy: &config.Policy{
+					Name: tc.Name,
+				},
 				UpdateCallback: nil,
 				StopOnFailure:  false,
 			}
