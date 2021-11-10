@@ -34,8 +34,10 @@ func fakeDaemonSet(t *testing.T) appsv1.DaemonSet {
 		&ds.Spec.Selector,
 		&ds.Spec.RevisionHistoryLimit,
 	)
-
+	ds.ManagedFields = []metav1.ManagedFieldsEntry{fakeManagedFields(t)}
 	ds.Spec.Template = fakePodTemplateSpec(t)
+	ds.Spec.Template.ManagedFields = []metav1.ManagedFieldsEntry{fakeManagedFields(t)}
+
 	return ds
 }
 

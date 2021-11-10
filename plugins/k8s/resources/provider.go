@@ -25,6 +25,7 @@ func Provider() *provider.Provider {
 			"apps.replica_sets":  AppsReplicaSets(),
 			"rbac.roles":         RbacRoles(),
 			"rbac.role_bindings": RbacRoleBindings(),
+			"apps.daemon_sets":   AppsDaemonSets(),
 		},
 	}
 }
