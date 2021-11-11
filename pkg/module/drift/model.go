@@ -214,7 +214,8 @@ func (rs *Results) process() {
 			continue
 		}
 		ttl := strings.ReplaceAll(data.title, "$iac", rs.IACName)
-		lines = append(lines, fmt.Sprintf("Resources %s", ttl))
+
+		resLines := make([]string, 0, l)
 		resTotal := 0
 		for _, res := range data.list {
 			resTotal += len(res.ResourceIDs)
@@ -222,14 +223,17 @@ func (rs *Results) process() {
 				continue
 			}
 
-			lines = append(lines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
+			sort.Strings(res.ResourceIDs)
+
+			resLines = append(resLines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
 			for _, id := range res.ResourceIDs {
-				lines = append(lines, fmt.Sprintf("    - %s", id))
+				resLines = append(resLines, fmt.Sprintf("    - %s", id))
 			}
 		}
-		if data.hideListing {
-			lines[len(lines)-1] += fmt.Sprintf(" (%d)", resTotal) // append count to previous line
-		}
+
+		lines = append(lines, fmt.Sprintf("%d Resources %s", resTotal, ttl))
+		lines = append(lines, resLines...)
+
 		if data.drift {
 			rs.Drifted += resTotal
 		}
@@ -257,6 +261,8 @@ func (rs *Results) process() {
 	cvg = strings.ReplaceAll(cvg, ".00", "")
 
 	summary = append(summary, fmt.Sprintf(" - %s%% covered by %s", cvg, rs.IACName))
+
+	lines = append([]string{"=== DRIFT RESULTS  ==="}, lines...)
 	lines = append(lines, "=== SUMMARY ===")
 	lines = append(lines, summary...)
 
