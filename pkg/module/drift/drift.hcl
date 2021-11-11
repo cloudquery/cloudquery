@@ -982,6 +982,8 @@ config {
             }
         }
 
+        # TODO: route53.domains ("aws_route53_record" but no data in tests)
+
         resource "route53.health_checks" {
             iac {
                 terraform {

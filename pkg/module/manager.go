@@ -28,7 +28,7 @@ type Manager interface {
 	RegisterModule(mod Module)
 
 	// ExecuteModule executes the given module, validating the given module name and config first.
-	ExecuteModule(ctx context.Context, modName string, configBlock hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error)
+	ExecuteModule(ctx context.Context, modName string, profileConfig hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error)
 
 	// ExampleConfigs returns a list of example module configs from loaded modules
 	ExampleConfigs() []string
@@ -54,20 +54,17 @@ func (m *ManagerImpl) RegisterModule(mod Module) {
 }
 
 // ExecuteModule executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfgBlock hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error) {
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error) {
 	mod, ok := m.modules[modName]
 	if !ok {
 		return nil, fmt.Errorf("module not found %q", modName)
 	}
 
-	profileConfig, err := m.readModuleConfigProfiles(mod.ID(), cfgBlock)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := mod.Configure(ctx, profileConfig, execReq.Params); err != nil {
+	if err := mod.Configure(ctx, cfg, execReq.Params); err != nil {
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
+
+	var err error
 
 	// Acquire connection from the connection pool
 	execReq.Conn, err = m.pool.Acquire(ctx)
@@ -90,40 +87,4 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 		ret = append(ret, cfg)
 	}
 	return ret
-}
-
-// readModuleConfigProfiles separates the module config from the modules block, where block identifier is the module name.
-func (m *ManagerImpl) readModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Body, error) {
-	if block == nil {
-		return nil, nil
-	}
-
-	content, _, diags := block.PartialContent(&hcl.BodySchema{
-		Blocks: []hcl.BlockHeaderSchema{
-			{
-				Type:       module,
-				LabelNames: []string{"name"},
-			},
-		},
-	})
-	if diags.HasErrors() {
-		return nil, diags
-	}
-
-	ret := make(map[string]hcl.Body, len(content.Blocks))
-	for i := range content.Blocks {
-		if _, ok := ret[content.Blocks[i].Labels[0]]; ok {
-			return nil, hcl.Diagnostics{
-				{
-					Severity: hcl.DiagError,
-					Summary:  "Duplicate profile name",
-					Detail:   fmt.Sprintf("Profile name %q already defined", content.Blocks[i].Labels[0]),
-					Subject:  content.Blocks[i].DefRange.Ptr(),
-				},
-			}
-		}
-
-		ret[content.Blocks[i].Labels[0]] = content.Blocks[i].Body
-	}
-	return ret, nil
 }

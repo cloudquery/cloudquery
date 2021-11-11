@@ -13,14 +13,11 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
-const driftModuleID = "drift"
-
 var (
 	driftCmd = &cobra.Command{
 		Use:   "drift",
 		Short: "Drift Module",
 		Long:  "Drift Module",
-		Args:  cobra.MinimumNArgs(1),
 	}
 
 	driftScanCmd = &cobra.Command{
@@ -39,8 +36,9 @@ var (
 			driftParams.StateFiles = args
 
 			return c.CallModule(ctx, console.ModuleCallRequest{
-				Name:       driftModuleID,
+				Name:       "drift",
 				Params:     driftParams,
+				Profile:    driftProfile,
 				OutputPath: driftOutputPath,
 			})
 		}),
@@ -48,7 +46,7 @@ var (
 
 	driftParams drift.RunParams
 
-	driftOutputPath string
+	driftProfile, driftOutputPath string
 )
 
 func init() {
@@ -56,13 +54,13 @@ func init() {
 
 	// generic flags
 	flags.StringVar(&driftOutputPath, "output", "", "Generate a new file at the given path with the output")
+	flags.StringVar(&driftProfile, "profile", "", "Specify drift profile")
 
 	// flags handled by the drift package
 	flags.BoolVar(&driftParams.Debug, "debug", false, "Show debug output")
 	flags.StringVar(&driftParams.TfMode, "tf-mode", "managed", "Set Terraform mode")
 	flags.BoolVar(&driftParams.ForceDeep, "deep", false, "Force deep mode")
 	flags.BoolVar(&driftParams.ListManaged, "list-managed", false, "List managed resources in output")
-	flags.StringVar(&driftParams.Profile, "profile", "", "Specify drift profile")
 
 	driftCmd.SetUsageTemplate(usageTemplateWithFlags)
 	driftCmd.AddCommand(driftScanCmd)
