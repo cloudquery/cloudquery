@@ -163,7 +163,6 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 
 func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
-		IAC:       "Terraform",
 		Different: nil,
 		Equal:     nil,
 		Missing:   nil,

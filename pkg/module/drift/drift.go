@@ -45,6 +45,17 @@ const (
 	iacCloudformation iacProvider = "cloudformation"
 )
 
+func (i iacProvider) String() string {
+	switch i {
+	case iacTerraform:
+		return "Terraform"
+	case iacCloudformation:
+		return "Cloudformation"
+	default:
+		return "unknown"
+	}
+}
+
 func New(logger hclog.Logger) *Drift {
 	return &Drift{
 		logger: logger,
@@ -207,6 +218,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	}
 
 	resList := &Results{
+		IACName:     iacProv.String(),
 		ListManaged: d.params.ListManaged,
 		Debug:       d.params.Debug,
 	}
