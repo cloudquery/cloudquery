@@ -194,12 +194,14 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 		prov.applyWildProvider(cp)
 
 		if cp.WildResource != nil {
-			prov.WildResource.applyWildResource(cp.WildResource)
+			cp.WildResource.applyWildResource(prov.WildResource)
+			prov.WildResource = cp.WildResource
 		}
 
 		for resName, res := range prov.Resources {
 			if cres, ok := cp.Resources[resName]; ok {
-				res.applyWildResource(cres)
+				cres.applyWildResource(res)
+				prov.Resources[resName] = cres
 			}
 		}
 	}
