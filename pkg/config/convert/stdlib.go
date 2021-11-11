@@ -78,7 +78,7 @@ func MakeFileFunc(basePath string) function.Function {
 			path := args[0].AsString()
 			osFs := file.NewOsFs()
 
-			// Check if the given path is complete or is it relative?
+			// Allow if the given path is complete or is it relative?
 			if _, err := osFs.Stat(path); err != nil {
 				path = filepath.Join(basePath, path)
 				if _, err = osFs.Stat(path); err != nil {

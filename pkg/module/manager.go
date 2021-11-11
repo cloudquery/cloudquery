@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -93,15 +92,38 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 	return ret
 }
 
-// readModuleConfigProfiles separates the module config from the modules block
-func (m *ManagerImpl) readModuleConfigProfiles(modName string, block hcl.Body) (map[string]hcl.Body, error) {
+// readModuleConfigProfiles separates the module config from the modules block, where block identifier is the module name.
+func (m *ManagerImpl) readModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Body, error) {
 	if block == nil {
 		return nil, nil
 	}
 
-	cfgs, diags := config.DecodeModuleProfile(block, modName)
+	content, _, diags := block.PartialContent(&hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       module,
+				LabelNames: []string{"name"},
+			},
+		},
+	})
 	if diags.HasErrors() {
-		return nil, fmt.Errorf("DecodeModuleProfile: %w", diags)
+		return nil, diags
 	}
-	return cfgs, nil
+
+	ret := make(map[string]hcl.Body, len(content.Blocks))
+	for i := range content.Blocks {
+		if _, ok := ret[content.Blocks[i].Labels[0]]; ok {
+			return nil, hcl.Diagnostics{
+				{
+					Severity: hcl.DiagError,
+					Summary:  "Duplicate profile name",
+					Detail:   fmt.Sprintf("Profile name %q already defined", content.Blocks[i].Labels[0]),
+					Subject:  content.Blocks[i].DefRange.Ptr(),
+				},
+			}
+		}
+
+		ret[content.Blocks[i].Labels[0]] = content.Blocks[i].Body
+	}
+	return ret, nil
 }

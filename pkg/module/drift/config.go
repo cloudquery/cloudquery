@@ -51,14 +51,19 @@ type ResourceConfig struct {
 	acl ResourceACL
 }
 
+// ResourceACL manages resource allow and ignore lists
 type ResourceACL struct {
-	CheckEnabled bool
-	Check        ResourceSelectors
-	Ignore       ResourceSelectors
+	// AllowEnabled determines whether allow list is enabled (Allow contains entries) or not
+	AllowEnabled bool
+	// Allow contains the allow list for resources
+	Allow ResourceSelectors
+	// Ignore contains the ignore list for resources
+	Ignore ResourceSelectors
 }
 
+// ShouldSkip gets a resource and compares it to the ACL, returning whether the given resource should be skipped or not
 func (r ResourceACL) ShouldSkip(resource *Resource) bool {
-	if r.CheckEnabled && !r.Check.ContainsInstance(resource.ID) && !r.Check.ContainsInstance("*") && !r.Check.ContainsTags(resource.Tags) {
+	if r.AllowEnabled && !r.Allow.ContainsInstance(resource.ID) && !r.Allow.ContainsInstance("*") && !r.Allow.ContainsTags(resource.Tags) {
 		return true
 	}
 	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
@@ -67,9 +72,10 @@ func (r ResourceACL) ShouldSkip(resource *Resource) bool {
 	return false
 }
 
+// HasTagFilters returns true if the ACL contains tag filters
 func (r ResourceACL) HasTagFilters() bool {
-	if r.CheckEnabled {
-		for _, f := range r.Check {
+	if r.AllowEnabled {
+		for _, f := range r.Allow {
 			if f.Tags != nil {
 				return true
 			}
@@ -439,9 +445,9 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	for resName, res := range cfg.Resources {
 		// CheckResources / IgnoreResources broad strokes...
 		if checkEnabled {
-			res.acl.CheckEnabled = true
-			res.acl.Check = append(cfg.CheckResources.ByType(resName), allChecks...)
-			if !res.acl.Check.AllInstances() && !res.acl.Check.HasTags() {
+			res.acl.AllowEnabled = true
+			res.acl.Allow = append(cfg.CheckResources.ByType(resName), allChecks...)
+			if !res.acl.Allow.AllInstances() && !res.acl.Allow.HasTags() {
 				delete(cfg.Resources, resName)
 				continue
 			}

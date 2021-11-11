@@ -66,7 +66,7 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, profileConfig map[string]hcl.Body, runParams interface{}) error {
+func (d *Drift) Configure(ctx context.Context, profileConfig map[string]hcl.Body, runParams module.ModuleRunParams) error {
 	d.params = runParams.(RunParams)
 
 	if d.params.Profile == "" && len(profileConfig) > 1 {

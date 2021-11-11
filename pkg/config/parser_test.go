@@ -142,7 +142,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
 	assert.Nil(t, diags)
-	// Check configuration was added, we will nil it after it to check the whole structure
+	// Allow configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 	cfg.Providers[0].Configuration = nil
 	assert.Equal(t, &Config{
