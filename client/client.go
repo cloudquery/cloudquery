@@ -44,6 +44,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
+	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
@@ -115,6 +116,7 @@ type Services struct {
 	Organizations        OrganizationsClient
 	Redshift             RedshiftClient
 	Route53              Route53Client
+	Route53Domains       Route53DomainsClient
 	RDS                  RdsClient
 	S3                   S3Client
 	S3Manager            S3ManagerClient
@@ -373,6 +375,7 @@ func initServices(region string, c aws.Config) Services {
 		RDS:                  rds.NewFromConfig(awsCfg),
 		Redshift:             redshift.NewFromConfig(awsCfg),
 		Route53:              route53.NewFromConfig(awsCfg),
+		Route53Domains:       route53domains.NewFromConfig(awsCfg),
 		S3:                   s3.NewFromConfig(awsCfg),
 		S3Manager:            newS3ManagerFromConfig(awsCfg),
 		SNS:                  sns.NewFromConfig(awsCfg),

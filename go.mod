@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Masterminds/squirrel v1.5.0
-	github.com/aws/aws-sdk-go-v2 v1.9.1
+	github.com/aws/aws-sdk-go-v2 v1.11.0
 	github.com/aws/aws-sdk-go-v2/config v1.3.0
 	github.com/aws/aws-sdk-go-v2/credentials v1.2.1
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.2.1
@@ -46,7 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.4.1
 	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
-	github.com/aws/smithy-go v1.8.0
+	github.com/aws/smithy-go v1.9.0
 	github.com/cloudquery/cq-provider-sdk v0.5.1
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
@@ -65,6 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.1.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.3.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.3.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/route53domains v1.6.0
 	github.com/aws/aws-sdk-go-v2/service/sso v1.2.1 // indirect
 	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -128,4 +129,9 @@ require (
 	google.golang.org/grpc v1.41.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+)
+
+require (
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.0 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.0 // indirect
 )
