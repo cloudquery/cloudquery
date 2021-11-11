@@ -391,6 +391,7 @@ func mergeDedupSlices(a ...[]string) []string {
 	for k := range dupes {
 		ret = append(ret, k)
 	}
+	sort.Strings(ret)
 	return ret
 }
 
