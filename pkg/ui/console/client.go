@@ -8,18 +8,17 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
-
 	"github.com/fatih/color"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
+	"github.com/vbauerster/mpb/v6/decor"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/vbauerster/mpb/v6/decor"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -136,15 +135,16 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure bool, skipVersioning bool) error {
+func (c Client) RunPolicy(ctx context.Context, args []string, localPath string, subPath, outputPath string, stopOnFailure, skipVersioning, failOnViolation bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policy run...\n")
 	req := client.PolicyRunRequest{
-		Args:           args,
-		SubPath:        subPath,
-		LocalPath:      localPath,
-		OutputPath:     outputPath,
-		StopOnFailure:  stopOnFailure,
-		SkipVersioning: skipVersioning,
+		Args:            args,
+		SubPath:         subPath,
+		LocalPath:       localPath,
+		OutputPath:      outputPath,
+		StopOnFailure:   stopOnFailure,
+		SkipVersioning:  skipVersioning,
+		FailOnViolation: failOnViolation,
 		RunCallBack: func(name string, qtype config.QueryType, passed bool) {
 			switch {
 			case passed:
@@ -174,15 +174,11 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 
-	if req.ModConfigPath == "" {
-		ui.ColorizedOutput(ui.ColorDebug, "Using built-in drift config\n")
-	}
-
 	runReq := client.ModuleRunRequest{
-		Name:          req.Name,
-		Params:        req.Params,
-		ModConfigPath: req.ModConfigPath,
-		Providers:     provs,
+		Name:        req.Name,
+		Params:      req.Params,
+		Providers:   provs,
+		ConfigBlock: c.cfg.Modules,
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
@@ -196,7 +192,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 
 	if out.ErrorMsg != "" {
 		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
-		return nil
+		return out.Error
 	}
 
 	if req.OutputPath != "" {
@@ -239,16 +235,6 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	return nil
-}
-
-func (c Client) GenModuleConfig(ctx context.Context, modName string) {
-	configPath, err := c.c.GenModuleConfig(ctx, modName)
-	if err != nil {
-		time.Sleep(100 * time.Millisecond)
-		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
-		return
-	}
-	ui.ColorizedOutput(ui.ColorSuccess, "Configuration generated successfully to %s\n", *configPath)
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {

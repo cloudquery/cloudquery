@@ -101,7 +101,6 @@ func TestManagerImpl_RunPolicy(t *testing.T) {
 				"aws": version.Must(version.NewVersion("1.0.0")),
 			},
 		},
-
 		{
 			Name:       "private_policy_query_in_file",
 			PolicyPath: "fdistorted/my-cq-policy@v0.0.4",

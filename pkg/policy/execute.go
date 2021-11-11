@@ -5,10 +5,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 

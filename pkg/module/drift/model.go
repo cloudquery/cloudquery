@@ -9,14 +9,20 @@ import (
 type RunParams struct {
 	Debug bool
 
-	TfMode, TfProvider         string
-	ForceDeep                  bool
-	ListManaged                bool
-	TfBackendNames, AccountIDs []string
+	TfMode      string
+	ForceDeep   bool
+	ListManaged bool
+
+	IACName    string
+	StateFiles []string
+
+	Profile string
 }
 
 type Resource struct {
-	ID string `json:"id"`
+	ID         string            `json:"id"`
+	Attributes []interface{}     `json:"-"`
+	Tags       map[string]string `json:"-"`
 }
 
 type ResourceList []*Resource
@@ -36,8 +42,25 @@ func (r ResourceList) IDs(exclude ...*Resource) []string {
 	return ret
 }
 
+func (r ResourceList) Walk(fn func(*Resource), skipper func(*Resource) bool) {
+	for i := range r {
+		if skipper != nil && skipper(r[i]) {
+			continue
+		}
+		fn(r[i])
+	}
+}
+
+// Map returns a map of ID vs. attributes
+func (r ResourceList) Map() map[string][]interface{} {
+	ret := make(map[string][]interface{}, len(r))
+	for i := range r {
+		ret[r[i].ID] = r[i].Attributes
+	}
+	return ret
+}
+
 type Result struct {
-	IAC          string `json:"iac"`
 	Provider     string `json:"provider"`
 	ResourceType string `json:"resource_type"`
 
@@ -81,7 +104,8 @@ func (r *Result) String() string {
 }
 
 type Results struct {
-	Data []*Result `json:"data"`
+	IACName string    `json:"iac"`
+	Data    []*Result `json:"data"`
 
 	// Options
 	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
@@ -94,17 +118,13 @@ type Results struct {
 	Coverage float64 `json:"coverage_pct"`
 
 	Text string `json:"-"`
-
-	processed bool `json:"-"`
 }
 
 func (rs *Results) String() string {
-	rs.process()
 	return rs.Text
 }
 
 func (rs *Results) ExitCode() int {
-	rs.process()
 	if rs.Drifted > 0 {
 		return 1
 	}
@@ -112,15 +132,7 @@ func (rs *Results) ExitCode() int {
 }
 
 func (rs *Results) process() {
-	if rs.processed {
-		return
-	}
-	defer func() {
-		rs.processed = true
-	}()
-
 	type combined struct {
-		IAC          string
 		Provider     string
 		ResourceType string
 		ResourceIDs  []string
@@ -138,7 +150,6 @@ func (rs *Results) process() {
 			return
 		}
 		*dst = append(*dst, combined{
-			IAC:          r.IAC,
 			ResourceType: r.ResourceType,
 			Provider:     r.Provider,
 			ResourceIDs:  ids,
@@ -202,8 +213,9 @@ func (rs *Results) process() {
 		if l == 0 {
 			continue
 		}
-		ttl := strings.ReplaceAll(data.title, "$iac", data.list[0].IAC)
-		lines = append(lines, fmt.Sprintf("Found resources %s", ttl))
+		ttl := strings.ReplaceAll(data.title, "$iac", rs.IACName)
+
+		resLines := make([]string, 0, l)
 		resTotal := 0
 		for _, res := range data.list {
 			resTotal += len(res.ResourceIDs)
@@ -211,14 +223,17 @@ func (rs *Results) process() {
 				continue
 			}
 
-			lines = append(lines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
+			sort.Strings(res.ResourceIDs)
+
+			resLines = append(resLines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
 			for _, id := range res.ResourceIDs {
-				lines = append(lines, fmt.Sprintf("    - %s", id))
+				resLines = append(resLines, fmt.Sprintf("    - %s", id))
 			}
 		}
-		if data.hideListing {
-			lines[len(lines)-1] += fmt.Sprintf(" (%d)", resTotal) // append count to previous line
-		}
+
+		lines = append(lines, fmt.Sprintf("%d Resources %s", resTotal, ttl))
+		lines = append(lines, resLines...)
+
 		if data.drift {
 			rs.Drifted += resTotal
 		}
@@ -232,7 +247,7 @@ func (rs *Results) process() {
 		return
 	}
 
-	lines = append(lines, fmt.Sprintf("Found %d resource(s)", rs.Total))
+	summary = append([]string{fmt.Sprintf("Total number of resources: %d", rs.Total)}, summary...)
 
 	// one of Equal and DeepEqual is supposed to be 0 depending on deep flag
 	for _, l := range [][]combined{combo.Equal, combo.DeepEqual, combo.Different} {
@@ -245,7 +260,10 @@ func (rs *Results) process() {
 	cvg := fmt.Sprintf("%.2f", rs.Coverage*100)
 	cvg = strings.ReplaceAll(cvg, ".00", "")
 
-	lines = append(lines, fmt.Sprintf(" - %s%% coverage", cvg))
+	summary = append(summary, fmt.Sprintf(" - %s%% covered by %s", cvg, rs.IACName))
+
+	lines = append([]string{"=== DRIFT RESULTS  ==="}, lines...)
+	lines = append(lines, "=== SUMMARY ===")
 	lines = append(lines, summary...)
 
 	if rs.Debug {
