@@ -307,12 +307,18 @@ func CoreNodes() *schema.Table {
 // ====================================================================================================================
 func fetchCoreNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	nodes := meta.(*client.Client).Services().Nodes
-	result, err := nodes.List(ctx, metav1.ListOptions{})
-	if err != nil {
-		return err
+	opts := metav1.ListOptions{}
+	for {
+		result, err := nodes.List(ctx, opts)
+		if err != nil {
+			return err
+		}
+		res <- result.Items
+		if result.GetContinue() == "" {
+			return nil
+		}
+		opts.Continue = result.GetContinue()
 	}
-	res <- result.Items
-	return nil
 }
 
 func resolveCoreNodeOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
