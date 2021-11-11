@@ -4,14 +4,11 @@ All notable changes to this provider will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [Unreleased] - 2021-11-09
+## [v0.6.3] - 2021-11-11
 ###### SDK Version: 0.5.1
 
 ### :spider: Fixed
 * Fixed [#164](https://github.com/cloudquery/cq-provider-aws/issues/164) apigateway_api_keys does not return key value
-
-
-## [Unreleased]
 
 ### :rocket: Added
 * Added Route53 Domains resource
