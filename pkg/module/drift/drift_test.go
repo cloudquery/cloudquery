@@ -53,10 +53,15 @@ func TestProfileConfig(t *testing.T) {
 	assert.NotNil(t, base)
 
 	configRaw, diags := hclparse.NewParser().ParseHCL([]byte(`
+provider "*" {
+	resource "*" {
+		deep = true
+	}
+}
 provider "aws" {
 	resource "ec2.instances" {
 		identifiers = [ "test" ]
-		deep = true
+		deep = false
 	}
 }
 `), "")
@@ -69,11 +74,18 @@ provider "aws" {
 	a := cfg.FindProvider("aws")
 	assert.NotNil(t, a)
 
-	r := a.Resources["ec2.instances"]
-	assert.NotNil(t, r)
+	{
+		r := a.Resources["kms.keys"]
+		assert.NotNil(t, r)
+		assert.EqualValues(t, aws.Bool(true), r.Deep)
+	}
 
-	assert.Equal(t, []string{"test"}, r.Identifiers)
-	assert.EqualValues(t, aws.Bool(true), r.Deep)
+	{
+		r := a.Resources["ec2.instances"]
+		assert.NotNil(t, r)
+		assert.Equal(t, []string{"test"}, r.Identifiers)
+		assert.EqualValues(t, aws.Bool(false), r.Deep)
+	}
 }
 
 func TestHandleIdentifiers(t *testing.T) {
