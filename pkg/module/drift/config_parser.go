@@ -2,8 +2,10 @@ package drift
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
@@ -37,6 +39,8 @@ func NewParser(basePath string) *Parser {
 			return cty.StringVal("${sql:" + args[0].AsString() + "}"), nil
 		},
 	})
+
+	config.EnvToHCLContext(ctx, config.EnvVarPrefix, os.Environ())
 
 	return &Parser{
 		p:          hclparse.NewParser(),
