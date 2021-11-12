@@ -166,6 +166,11 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 
 	if cfg.WildProvider != nil {
 		base.WildProvider.applyWildProvider(cfg.WildProvider)
+
+		if cfg.WildProvider.WildResource != nil {
+			cfg.WildProvider.WildResource.applyWildResource(base.WildProvider.WildResource)
+			base.WildProvider.WildResource = cfg.WildProvider.WildResource
+		}
 	}
 
 	for _, prov := range base.Providers {
