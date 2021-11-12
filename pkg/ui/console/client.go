@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
@@ -172,13 +173,23 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		return err
 	}
 
+	profiles, err := config.ReadModuleConfigProfiles(req.Name, c.cfg.Modules)
+	if err != nil {
+		return err
+	}
+
+	cfg, err := c.selectProfile(req.Profile, profiles)
+	if err != nil {
+		return err
+	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 
 	runReq := client.ModuleRunRequest{
-		Name:        req.Name,
-		Params:      req.Params,
-		Providers:   provs,
-		ConfigBlock: c.cfg.Modules,
+		Name:      req.Name,
+		Params:    req.Params,
+		Providers: provs,
+		Config:    cfg,
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
@@ -316,6 +327,27 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 
 func (c Client) Client() *client.Client {
 	return c.c
+}
+
+func (c Client) selectProfile(profileName string, profiles map[string]hcl.Body) (hcl.Body, error) {
+	if profileName == "" && len(profiles) > 1 {
+		return nil, fmt.Errorf("multiple profiles detected, choose one with --profile")
+	}
+
+	if profileName != "" {
+		chosenProfile, ok := profiles[profileName]
+		if !ok {
+			return nil, fmt.Errorf("specified profile doesn't exist in config")
+		}
+		return chosenProfile, nil
+	}
+
+	for k, v := range profiles {
+		ui.ColorizedOutput(ui.ColorDebug, "Using profile %s\n", k)
+		return v, nil
+	}
+
+	return nil, nil
 }
 
 func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {

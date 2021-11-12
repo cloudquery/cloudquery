@@ -11,12 +11,14 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
-	"github.com/hashicorp/hcl/v2"
-
 	"github.com/golang-migrate/migrate/v4"
-
-	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/afero"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -27,13 +29,9 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"github.com/spf13/afero"
-	"golang.org/x/sync/errgroup"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -129,8 +127,8 @@ type ModuleRunRequest struct {
 	// Providers is the list of providers to process
 	Providers []*cqproto.GetProviderSchemaResponse
 
-	// ConfigBlock is the complete module config block provided by the user
-	ConfigBlock hcl.Body
+	// Config is the config profile provided by the user
+	Config hcl.Body
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -639,7 +637,7 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*modu
 		Params:    req.Params,
 	}
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.ConfigBlock, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.Config, modReq)
 	if err != nil {
 		return nil, err
 	}

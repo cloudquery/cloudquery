@@ -13,8 +13,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -25,6 +23,9 @@ import (
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
+
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 )
 
 type Drift struct {
@@ -66,34 +67,15 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, profileConfig map[string]hcl.Body, runParams module.ModuleRunParams) error {
+func (d *Drift) Configure(ctx context.Context, profileConfig hcl.Body, runParams module.ModuleRunParams) error {
 	d.params = runParams.(RunParams)
-
-	if d.params.Profile == "" && len(profileConfig) > 1 {
-		return fmt.Errorf("multiple drift profiles detected, choose one with --profile")
-	}
-	var chosenProfile hcl.Body
-	if d.params.Profile != "" {
-		var ok bool
-		chosenProfile, ok = profileConfig[d.params.Profile]
-		if !ok {
-			return fmt.Errorf("specified profile doesn't exist in config")
-		}
-	} else {
-		for k, v := range profileConfig {
-			d.logger.Info("Using drift profile", "profile_name", k)
-			chosenProfile = v
-			break
-		}
-	}
 
 	builtin, err := d.readBuiltinConfig()
 	if err != nil {
 		return fmt.Errorf("builtin config failed: %w", err)
 	}
 
-	// chosenProfile can still be nil
-	d.config, err = d.readProfileConfig(builtin, chosenProfile)
+	d.config, err = d.readProfileConfig(builtin, profileConfig)
 	if err != nil {
 		return fmt.Errorf("read config failed: %w", err)
 	}
