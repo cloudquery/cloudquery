@@ -73,7 +73,7 @@ Once your `config.hcl` is generated run the following command to fetch the resou
 ```shell script
 # you can spawn a local postgresql with docker
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres"
+cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 # cloudquery fetch --help # Show all possible fetch flags
 ```
 
