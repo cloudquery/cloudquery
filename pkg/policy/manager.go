@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 
@@ -26,7 +25,7 @@ const (
 	pathDelimiter    = "/"
 	versionDelimiter = "@"
 
-	cloudQueryOrg = "cloudquery-policies"
+	CloudQueryOrg = "cloudquery-policies"
 	gitHubUrl     = "https://github.com/"
 
 	defaultPolicyFileName = "policy"
@@ -64,19 +63,13 @@ type ManagerImpl struct {
 // Implemented by ManagerImpl.
 type Manager interface {
 	// Run the given policy.
-	Run(ctx context.Context, req *ExecuteRequest, policyWrapper *PolicyWrapper) (*ExecutionResult, error)
+	Run(ctx context.Context, req *ExecuteRequest, policies *Policies) (*ExecutionResult, error)
 
 	// Load the policy from local / remote location
-	Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*PolicyWrapper, error)
+	Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*Policies, error)
 
 	// DownloadPolicy downloads the policy into the manager path.
 	DownloadPolicy(ctx context.Context, p *RemotePolicy) error
-
-	// ParsePolicySource transform config.Policy into RemotePolicy
-	ParsePolicySource(policy *config.Policy) (*RemotePolicy, error)
-
-	// ParsePolicyFromArgs transform cmd args into RemotePolicy
-	ParsePolicyFromArgs(args []string) (*RemotePolicy, error)
 }
 
 // NewManager returns a new manager instance.
@@ -88,7 +81,7 @@ func NewManager(policyDir string, pool *pgxpool.Pool, logger hclog.Logger) Manag
 	}
 }
 
-func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policyWrapper *PolicyWrapper) (*ExecutionResult, error) {
+func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies *Policies) (*ExecutionResult, error) {
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
@@ -96,8 +89,10 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policyWr
 	}
 	defer conn.Release()
 
-	var totalQueriesToRun = policyWrapper.getQueriesCount()
-	var finishedQueries = 0
+	var (
+		totalQueriesToRun = getQueriesCount(*policies)
+		finishedQueries   = 0
+	)
 
 	// set the progress total queries to run
 	if execReq.UpdateCallback != nil {
@@ -124,14 +119,13 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policyWr
 		}
 	}
 
-	executor := NewExecutor(conn, m.logger)
-
 	var selector []string
 	if execReq.Policy.SubPath != "" {
 		selector = strings.Split(execReq.Policy.SubPath, "/")
 	}
 
-	return executor.ExecutePolicies(ctx, progressUpdate, execReq, policyWrapper.Policies, selector)
+	// execute the queries
+	return NewExecutor(conn, m.logger, progressUpdate).ExecutePolicies(ctx, execReq, *policies, selector)
 }
 
 // DownloadPolicy downloads the given policy from GitHub and stores it in the local policy directory.
@@ -163,9 +157,6 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 		ui.ColorizedOutput(ui.ColorProgress, "Cloning Policy %s/%s\n", p.Organization, p.Repository)
 	}
 
-	// Set output to stdout
-	cloneOptions.Progress = os.Stdout
-
 	// Clone the repository
 	repoPath := filepath.Join(policyOrgFolder, p.Repository)
 	_, err = git.PlainCloneContext(ctx, repoPath, false, cloneOptions)
@@ -183,16 +174,16 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 	return nil
 }
 
-func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*PolicyWrapper, error) {
+func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*Policies, error) {
 	switch p.Type {
 	case config.Hub:
-		remotePolicy, err := m.ParsePolicySource(p)
+		remotePolicy, err := ParsePolicyFromSource(p)
 		if err != nil {
 			return nil, err
 		}
 		return m.loadRemotePolicy(ctx, remotePolicy, execReq)
 	case config.Remote:
-		remotePolicy, err := m.ParsePolicySource(p)
+		remotePolicy, err := ParsePolicyFromSource(p)
 		if err != nil {
 			return nil, err
 		}
@@ -206,7 +197,7 @@ func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *Execu
 	}
 }
 
-func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (*PolicyWrapper, error) {
+func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (*Policies, error) {
 
 	osFs := file.NewOsFs()
 	var policyFolder = filepath.Dir(cfg.Source)
@@ -233,7 +224,7 @@ func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (*PolicyWrapper, error
 	return readPolicy(policyFilePath, policyFolder)
 }
 
-func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (*PolicyWrapper, error) {
+func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (*Policies, error) {
 	parser := config.NewParser()
 
 	policiesRaw, diags := parser.LoadFromSource("policy.hcl", []byte(cfg.Source), config.SourceHCL)
@@ -243,7 +234,7 @@ func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (*PolicyWrapper, erro
 	return decodePolicy(policiesRaw, diags, "")
 }
 
-func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *RemotePolicy, execReq *ExecuteRequest) (*PolicyWrapper, error) {
+func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *RemotePolicy, execReq *ExecuteRequest) (*Policies, error) {
 	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
 		return nil, err
 	}
@@ -266,15 +257,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 		}
 	}
 
-	// If repository path was specified, also check if that exists
 	policyFolder = repoFolder
-	// if remotePolicy.Repository != "" {
-	//	policyFolder = filepath.Join(repoFolder, remotePolicy.Repository)
-	//	if info, err := osFs.Stat(policyFolder); err != nil || !info.IsDir() {
-	//		return nil, fmt.Errorf("could not find policy '%s' in the folder '%s'. Try to download the policy first", orgPolicyStr, p.RepositoryPath)
-	//	}
-	//	m.logger.Debug("internal repo folder set", "path", policyFolder)
-	//}
 
 	// Make sure policy file exists
 	for _, extensionName := range defaultSupportedPolicyExtensions {
@@ -369,20 +352,29 @@ func (m *ManagerImpl) checkoutPolicyVersion(repoFolder string, checkoutVersion s
 
 	// Get the tag reference
 	var tagHash string
-	ref, err := r.Tag(checkoutVersion)
-	if err != nil {
-		// It could be an annotated tag
-		objRef, err := r.TagObject(plumbing.NewHash(checkoutVersion))
+
+	if checkoutVersion == "" {
+		head, err := r.Head()
 		if err != nil {
-			return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
+			return fmt.Errorf("failed to get HEAD hash: %s", err.Error())
 		}
-		commit, err := objRef.Commit()
-		if err != nil {
-			return fmt.Errorf("failed to find annotated tag associated commit: %s", err.Error())
-		}
-		tagHash = commit.Hash.String()
+		tagHash = head.Hash().String()
 	} else {
-		tagHash = ref.Hash().String()
+		ref, err := r.Tag(checkoutVersion)
+		if err != nil {
+			// It could be an annotated tag
+			objRef, err := r.TagObject(plumbing.NewHash(checkoutVersion))
+			if err != nil {
+				return fmt.Errorf("failed to find provided tag (%s): %s", checkoutVersion, err.Error())
+			}
+			commit, err := objRef.Commit()
+			if err != nil {
+				return fmt.Errorf("failed to find annotated tag associated commit: %s", err.Error())
+			}
+			tagHash = commit.Hash.String()
+		} else {
+			tagHash = ref.Hash().String()
+		}
 	}
 
 	// Checkout given tag
@@ -398,13 +390,13 @@ func (m *ManagerImpl) checkoutPolicyVersion(repoFolder string, checkoutVersion s
 	return nil
 }
 
-func (m *ManagerImpl) ParsePolicySource(policy *config.Policy) (*RemotePolicy, error) {
+func ParsePolicyFromSource(policy *config.Policy) (*RemotePolicy, error) {
 	switch policy.Type {
 	case config.Hub:
 		// transform hub policy config into RemotePolicy
 		return &RemotePolicy{
 			SourceControl: gitHubUrl,
-			Organization:  cloudQueryOrg,
+			Organization:  CloudQueryOrg,
 			Repository:    policy.Source,
 			Version:       policy.Version,
 		}, nil
@@ -435,39 +427,50 @@ func (m *ManagerImpl) ParsePolicySource(policy *config.Policy) (*RemotePolicy, e
 	}
 }
 
-func (m *ManagerImpl) ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
+func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 	// Make sure the mandatory args are given
 	if len(args) < 1 {
 		return nil, fmt.Errorf("invalid policy path. Repository name is required but got %#v", args)
 	}
-	policy := &RemotePolicy{SourceControl: gitHubUrl}
 
-	// Parse and validate org/repository
-	orgRepoSplit := strings.Split(args[0], pathDelimiter)
+	policy := &RemotePolicy{}
 
-	// Parse org/repo
-	switch len(orgRepoSplit) {
-	case 2:
-		policy.Organization = orgRepoSplit[0]
-		policy.Repository = orgRepoSplit[1]
-	case 1:
-		policy.Repository = orgRepoSplit[0]
-		policy.Organization = cloudQueryOrg
-	default:
-		return nil, fmt.Errorf("invalid policy path. Repository name malformed: %s", args[0])
-	}
+	if strings.HasPrefix(args[0], "http") {
+		// Parse the policy from a URL
+		return ParsePolicyFromSource(&config.Policy{
+			Type:   config.Remote,
+			Source: args[0],
+		})
+	} else {
+		// not absolute path, assume it's a hub policy
+		policy.SourceControl = gitHubUrl
+		// Parse and validate org/repository
+		orgRepoSplit := strings.Split(args[0], pathDelimiter)
 
-	// Parse version
-	versionSplit := strings.Split(policy.Repository, versionDelimiter)
-	if len(versionSplit) == 2 {
-		policy.Version = versionSplit[1]
-		policy.Repository = versionSplit[0]
+		// Parse org/repo
+		switch len(orgRepoSplit) {
+		case 2:
+			policy.Organization = orgRepoSplit[0]
+			policy.Repository = orgRepoSplit[1]
+		case 1:
+			policy.Repository = orgRepoSplit[0]
+			policy.Organization = CloudQueryOrg
+		default:
+			return nil, fmt.Errorf("invalid policy path. Repository name malformed: %s", args[0])
+		}
+
+		// Parse version
+		versionSplit := strings.Split(policy.Repository, versionDelimiter)
+		if len(versionSplit) == 2 {
+			policy.Version = versionSplit[1]
+			policy.Repository = versionSplit[0]
+		}
 	}
 
 	return policy, nil
 }
 
-func readPolicy(policyPath, policyFolder string) (*PolicyWrapper, error) {
+func readPolicy(policyPath, policyFolder string) (*Policies, error) {
 	parser := config.NewParser()
 	policiesRaw, diags := parser.LoadHCLFile(policyPath)
 	if diags != nil && diags.HasErrors() {
@@ -477,7 +480,7 @@ func readPolicy(policyPath, policyFolder string) (*PolicyWrapper, error) {
 }
 
 // readPolicy reads, normalizes and validates the policy file at policyPath, using policyFolder as base path.
-func decodePolicy(policiesRaw hcl.Body, diags hcl.Diagnostics, policyFolder string) (*PolicyWrapper, error) {
+func decodePolicy(policiesRaw hcl.Body, diags hcl.Diagnostics, policyFolder string) (*Policies, error) {
 	policies, diagsDecode := DecodePolicies(policiesRaw, diags, policyFolder)
 	if diagsDecode != nil && diagsDecode.HasErrors() {
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
@@ -501,6 +504,18 @@ func (r *RemotePolicy) GetURL() (string, error) {
 	return base.ResolveReference(org).ResolveReference(repo).String(), nil
 }
 
+func (r *RemotePolicy) ToPolicyConfig() (*config.Policy, error) {
+	sourceUrl, err := r.GetURL()
+	if err != nil {
+		return nil, err
+	}
+	return &config.Policy{
+		Name:   fmt.Sprintf("%s-%s", r.Organization, r.Repository),
+		Type:   config.Remote,
+		Source: sourceUrl,
+	}, nil
+}
+
 func (p *Policy) getQueriesCount() int {
 	count := 0
 	if len(p.Policies) > 0 {
@@ -512,9 +527,9 @@ func (p *Policy) getQueriesCount() int {
 	return count
 }
 
-func (p *PolicyWrapper) getQueriesCount() int {
+func getQueriesCount(policies Policies) int {
 	count := 0
-	for _, p := range p.Policies {
+	for _, p := range policies {
 		count += p.getQueriesCount()
 	}
 	return count

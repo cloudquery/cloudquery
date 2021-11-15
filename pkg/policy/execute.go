@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -22,8 +21,10 @@ var errPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
 type UpdateCallback func(update Update)
 
 type Update struct {
+	// PolicyID is the name of the policy that is being updated.
 	PolicyName string
-	Version    string
+	// Version is the policy version.
+	Version string
 	// FinishedQueries is the number queries that have finished evaluating
 	FinishedQueries int
 	// QueriesCount is the amount of queries collected so far
@@ -45,6 +46,9 @@ type Executor struct {
 	// Connection to the database
 	conn *pgxpool.Conn
 	log  hclog.Logger
+
+	// progressUpdate
+	progressUpdate UpdateCallback
 }
 
 // QueryResult contains the result information from an executed query.
@@ -91,10 +95,11 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn *pgxpool.Conn, log hclog.Logger) *Executor {
+func NewExecutor(conn *pgxpool.Conn, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
-		conn: conn,
-		log:  log,
+		conn:           conn,
+		log:            log,
+		progressUpdate: progressUpdate,
 	}
 }
 
@@ -141,7 +146,6 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 					FinishedQueries: 1,
 				})
 			}
-			time.Sleep(time.Millisecond * 50) // TODO remove
 			if !total.Passed && req.StopOnFailure {
 				return &total, nil
 			}
@@ -226,7 +230,7 @@ func (e *Executor) createView(ctx context.Context, v *View) error {
 	return err
 }
 
-func (e *Executor) ExecutePolicies(ctx context.Context, progressUpdate UpdateCallback, req *ExecuteRequest, policies []*Policy, selector []string) (*ExecutionResult, error) {
+func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {
 	var rest []string
 	if len(selector) > 0 {
 		rest = selector[1:]
@@ -236,7 +240,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, progressUpdate UpdateCal
 	for _, p := range policies {
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
-			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
+			r, err := e.executePolicy(ctx, e.progressUpdate, req, p, rest)
 			if err != nil {
 				return nil, err
 			}

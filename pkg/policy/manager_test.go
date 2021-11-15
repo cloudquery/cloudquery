@@ -135,9 +135,7 @@ func TestParseRemotePolicySource(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			m := NewManager("", nil, nil)
-
-			remotePolicy, err := m.ParsePolicySource(tt.policy)
+			remotePolicy, err := ParsePolicyFromSource(tt.policy)
 
 			if tt.wantErr != (err != nil) {
 				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, err != nil, err)

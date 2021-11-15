@@ -30,6 +30,9 @@ var (
   # Download community policy
   cloudquery policy download COMMUNITY_GITHUB_ORG/aws-cis-1.2.0
 
+  # Download community from any source control
+  cloudquery policy download https://github.com/COMMUNITY_GITHUB_ORG/aws-cis-1.2.0
+
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
 		Run: handleError(func(cmd *cobra.Command, args []string) error {

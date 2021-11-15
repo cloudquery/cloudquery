@@ -546,8 +546,8 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.RemotePolicy, error) {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
 	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
-	// TODO - support full repository path also - currently we support only github
-	remotePolicy, err := m.ParsePolicyFromArgs(args)
+
+	remotePolicy, err := policy.ParsePolicyFromArgs(args)
 	if err != nil {
 		return nil, err
 	}
@@ -581,9 +581,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 					Error:           err.Error(),
 				})
 			}
-			if req.FailOnViolation {
-				return true
-			} else {
+			if !req.FailOnViolation {
 				results = append(results, &policy.ExecutionResult{
 					PolicyName: policyConfig.Name,
 					Passed:     false,
@@ -591,6 +589,8 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 				})
 				return false
 			}
+
+			return true
 		}
 
 		if err != nil {
@@ -609,7 +609,18 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 			UpdateCallback:   req.RunCallback,
 		}
 
-		policyWrapper, err := manager.Load(ctx, policyConfig, execReq)
+		policies, err := manager.Load(ctx, policyConfig, execReq)
+
+		if err != nil {
+			if handleError(err) {
+				return results, nil
+			}
+			continue
+		}
+
+		c.Logger.Info("Running policy", "args", policyConfig)
+
+		result, err := manager.Run(ctx, execReq, policies)
 
 		if err != nil {
 			if handleError(err) {
@@ -618,10 +629,6 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 				continue
 			}
 		}
-
-		c.Logger.Info("Running policy", "args", policyConfig)
-
-		result, err := manager.Run(ctx, execReq, policyWrapper)
 
 		// execution was not finished
 		if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
@@ -632,14 +639,6 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 				QueriesCount:    0,
 				Error:           "Execution stops",
 			})
-		}
-
-		if err != nil {
-			if handleError(err) {
-				return results, nil
-			} else {
-				continue
-			}
 		}
 
 		results = append(results, result)
@@ -741,6 +740,46 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
 	}
 	return providerConfig, nil
+}
+
+func GetPoliciesToRun(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
+	var policies []*config.Policy
+
+	if len(args) > 0 {
+		remotePolicy, err := policy.ParsePolicyFromArgs(args)
+		if err != nil {
+			return nil, err
+		}
+		policyConfig, err := remotePolicy.ToPolicyConfig()
+		if err != nil {
+			return nil, err
+		}
+		policies = append(policies, policyConfig)
+	} else {
+		policies = configPolicies
+	}
+
+	if len(policies) == 0 {
+		return nil, fmt.Errorf(`
+Could not find policies to run.
+Please add policy to block to your config file.
+`)
+	}
+	policiesToRun := make([]*config.Policy, 0)
+
+	// select policies to run
+	for _, p := range policies {
+		if policyName != "" {
+			// request to run only specific policy
+			if policyName == p.Name {
+				policiesToRun = append(policiesToRun, p)
+				break
+			}
+		}
+		policiesToRun = append(policiesToRun, p)
+	}
+
+	return policiesToRun, nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {

@@ -61,7 +61,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
-	executor := NewExecutor(conn, hclog.Default())
+	executor := NewExecutor(conn, hclog.Default(), nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -159,7 +159,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
-	executor := NewExecutor(conn, hclog.Default())
+	executor := NewExecutor(conn, hclog.Default(), nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {

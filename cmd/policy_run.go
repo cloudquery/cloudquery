@@ -20,7 +20,7 @@ var (
 		Short: policyRunHelpMsg,
 		Long:  policyRunHelpMsg,
 		Example: `
-  # Download & Run the policies that defined in the config.hcl
+  # Download & Run the policies defined in your config
   cloudquery policy run
 
   # Run a specific policy by it's name
@@ -34,7 +34,7 @@ var (
 			if err != nil {
 				return err
 			}
-			return c.RunPolicies(ctx, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
+			return c.RunPolicies(ctx, args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 		},
 	}
 	outputDir       string

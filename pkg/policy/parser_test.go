@@ -83,7 +83,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	tests := []struct {
 		name         string
 		policyText   string
-		expected     *PolicyWrapper
+		expected     *Policies
 		wantErr      bool
 		errHaystring string
 	}{
@@ -104,26 +104,28 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			"queries with or without explicit type",
 			testPolicyQueries,
-			&PolicyWrapper{Policies: []*Policy{{
-				Name: "test_policy",
-				Queries: []*Query{
-					{
-						Name:  "first",
-						Query: "query1",
-						Type:  AutomaticQuery,
-					},
-					{
-						Name:  "second",
-						Query: "query2",
-						Type:  AutomaticQuery,
-					},
-					{
-						Name:  "third",
-						Query: "query3",
-						Type:  ManualQuery,
+			&Policies{
+				{
+					Name: "test_policy",
+					Queries: []*Query{
+						{
+							Name:  "first",
+							Query: "query1",
+							Type:  AutomaticQuery,
+						},
+						{
+							Name:  "second",
+							Query: "query2",
+							Type:  AutomaticQuery,
+						},
+						{
+							Name:  "third",
+							Query: "query3",
+							Type:  ManualQuery,
+						},
 					},
 				},
-			}}},
+			},
 			false,
 			"",
 		},
@@ -137,50 +139,52 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			"complex policy",
 			testPolicy,
-			&PolicyWrapper{Policies: []*Policy{{
-				Name:        "aws-cis-v1.3.0",
-				Description: "AWS CIS V1.3.0",
-				Config: &Configuration{
-					Providers: []*PolicyProvider{{
-						Type:    "aws",
-						Version: ">= 1.0",
+			&Policies{
+				{
+					Name:        "aws-cis-v1.3.0",
+					Description: "AWS CIS V1.3.0",
+					Config: &Configuration{
+						Providers: []*Provider{{
+							Type:    "aws",
+							Version: ">= 1.0",
+						}},
+					},
+					Views: []*View{{
+						Name:        "aws-cis-view",
+						Description: "AWS CIS View",
+						Query: &Query{
+							Name:  "test-query-view",
+							Query: "SELECT * FROM my.view",
+						},
 					}},
-				},
-				Views: []*View{{
-					Name:        "aws-cis-view",
-					Description: "AWS CIS View",
-					Query: &Query{
-						Name:  "test-query-view",
-						Query: "SELECT * FROM my.view",
-					},
-				}},
-				Queries: []*Query{{
-					Name:        "top-level-query",
-					Description: "Top Level Query",
-					Type:        ManualQuery,
-					Query:       "SELECT * FROM test",
-				}},
-				Policies: []*Policy{
-					{
-						Name:        "sub-policy-1",
-						Description: "Sub Policy 1",
-						Queries: []*Query{{
-							Name:  "sub-level-query",
-							Query: "SELECT * from test.subquery",
-							Type:  AutomaticQuery,
-						}},
-					},
-					{
-						Name:        "sub-policy-2",
-						Description: "Sub Policy 2",
-						Queries: []*Query{{
-							Name:  "sub-level-query",
-							Query: "SELECT * from test.subquery",
-							Type:  ManualQuery,
-						}},
+					Queries: []*Query{{
+						Name:        "top-level-query",
+						Description: "Top Level Query",
+						Type:        ManualQuery,
+						Query:       "SELECT * FROM test",
+					}},
+					Policies: []*Policy{
+						{
+							Name:        "sub-policy-1",
+							Description: "Sub Policy 1",
+							Queries: []*Query{{
+								Name:  "sub-level-query",
+								Query: "SELECT * from test.subquery",
+								Type:  AutomaticQuery,
+							}},
+						},
+						{
+							Name:        "sub-policy-2",
+							Description: "Sub Policy 2",
+							Queries: []*Query{{
+								Name:  "sub-level-query",
+								Query: "SELECT * from test.subquery",
+								Type:  ManualQuery,
+							}},
+						},
 					},
 				},
-			}}},
+			},
 			false,
 			"",
 		},

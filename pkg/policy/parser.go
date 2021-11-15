@@ -18,8 +18,8 @@ var policyWrapperSchema = &hcl.BodySchema{
 	},
 }
 
-func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*PolicyWrapper, hcl.Diagnostics) {
-	policyWrapper := &PolicyWrapper{}
+func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policies, hcl.Diagnostics) {
+	policies := Policies{}
 	content, contentDiags := body.Content(policyWrapperSchema)
 	diags = append(diags, contentDiags...)
 	for _, block := range content.Blocks {
@@ -28,7 +28,7 @@ func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Pol
 			policy, policyDiags := decodePolicyBlock(block, convert.GetEvalContext(basePath))
 			diags = append(diags, policyDiags...)
 			if policy != nil {
-				policyWrapper.Policies = append(policyWrapper.Policies, policy)
+				policies = append(policies, policy)
 			}
 		default:
 			panic("unexpected block")
@@ -37,7 +37,7 @@ func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Pol
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return policyWrapper, diags
+	return &policies, diags
 }
 
 var policySchema = &hcl.BodySchema{

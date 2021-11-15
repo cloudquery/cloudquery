@@ -139,31 +139,20 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	var policies = c.cfg.Policies
+func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
 
-	if len(policies) == 0 {
-		ui.ColorizedOutput(ui.ColorError, "Could not find policies to run\n\n")
-		return fmt.Errorf("could not find policies to run")
+	policiesToRun, err := client.GetPoliciesToRun(args, c.cfg.Policies, policyName)
+
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return err
 	}
+	c.c.Logger.Info("Policies to run: %v", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
 	var policyRunProgress *Progress
 	var policyRunCallback policy.UpdateCallback
-	var policiesToRun = make([]*config.Policy, 0)
-
-	// select policies to run
-	for _, p := range policies {
-		if policyName != "" {
-			// request to run only specific policy
-			if policyName == p.Name {
-				policiesToRun = append(policiesToRun, p)
-			}
-		} else {
-			policiesToRun = append(policiesToRun, p)
-		}
-	}
 
 	if ui.IsTerminal() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun, failOnViolation)
@@ -182,6 +171,8 @@ func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, s
 
 	if ui.IsTerminal() && policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
+		// sleep some extra 500 milliseconds for progress refresh
+		time.Sleep(500 * time.Millisecond)
 		policyRunProgress.Wait()
 		if !noResults {
 			printPolicyResponse(results)
@@ -193,6 +184,7 @@ func (c Client) RunPolicies(ctx context.Context, policyName, outputDir string, s
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
 		return err
 	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")
 	return nil
 }
@@ -599,8 +591,11 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 		ui.ColorizedOutput(ui.ColorUnderline, "%s %s Results:\n\n", emojiStatus[ui.StatusInfo], execResult.PolicyName)
 
 		if !execResult.Passed {
-			ui.ColorizedOutput(ui.ColorHeader, "Policy failed to run\nError: %s\n\n",
-				ui.ColorErrorBold.Sprintf("%s", execResult.Error))
+			if execResult.Error != "" {
+				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy failed to run\nError: %s\n\n", emojiStatus[ui.StatusError], execResult.Error))
+			} else {
+				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
+			}
 		}
 
 		for _, res := range execResult.Results {
