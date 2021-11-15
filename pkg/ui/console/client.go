@@ -56,6 +56,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 		c.SkipBuildTables = viper.GetBool("skip-build-tables")
+		c.HistoryCfg = cfg.CloudQuery.History
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -105,7 +106,8 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	request := client.FetchRequest{
 		Providers:         c.cfg.Providers,
 		UpdateCallback:    fetchCallback,
-		DisableDataDelete: viper.GetBool("disable-delete"),
+		DisableDataDelete: true, // TODO: use bool + also if history block is enable always turn into true
+		ExtraFields:       map[string]interface{}{"fetch_date": time.Now().Truncate(30 * time.Minute).UTC()},
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
@@ -152,7 +154,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir, subPath string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
 	c.c.Logger.Debug("Received params: args: %v, policyName: %s, outputDir: %s, stopOnFailure: %v, skipVersioning: %v, failOnViolation: %v, noResults: %v", args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 
-	policiesToRun, err := client.FilterPolicies(args, c.cfg.Policies, policyName, subPath)
+	policiesToRun, err := policy.FilterPolicies(args, c.cfg.Policies, policyName, subPath)
 
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())

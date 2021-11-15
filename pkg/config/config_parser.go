@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/creasty/defaults"
+
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
@@ -50,6 +52,11 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if config.CloudQuery.Connection == nil {
 				config.CloudQuery.Connection = &Connection{
 					DSN: "",
+				}
+			}
+			if config.CloudQuery.History != nil {
+				if err := defaults.Set(config.CloudQuery.History); err != nil {
+					diags = append(diags, &hcl.Diagnostic{Severity: hcl.DiagError, Summary: "failed to set defaults in history"})
 				}
 			}
 

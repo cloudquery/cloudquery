@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/client/history"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -39,6 +41,7 @@ type CloudQuery struct {
 	Logger          *logging.Config     `hcl:"logging,block"`
 	Providers       []*RequiredProvider `hcl:"provider,block"`
 	Connection      *Connection         `hcl:"connection,block"`
+	History         *history.Config     `hcl:"history,block"`
 }
 
 func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
