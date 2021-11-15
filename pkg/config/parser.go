@@ -46,12 +46,7 @@ func WithFS(fs afero.Fs) Option {
 // the name is lower cased then.
 func WithEnvironmentVariables(prefix string, vars []string) Option {
 	return func(p *Parser) {
-		for _, e := range vars {
-			pair := strings.SplitN(e, "=", 2)
-			if strings.HasPrefix(pair[0], prefix) {
-				p.HCLContext.Variables[strings.TrimPrefix(pair[0], prefix)] = cty.StringVal(pair[1])
-			}
-		}
+		EnvToHCLContext(&p.HCLContext, prefix, vars)
 	}
 }
 
@@ -120,4 +115,13 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 
 func (p *Parser) LoadFromSource(name string, data []byte, ext SourceType) (hcl.Body, hcl.Diagnostics) {
 	return p.loadFromSource(name, data, ext)
+}
+
+func EnvToHCLContext(evalContext *hcl.EvalContext, prefix string, vars []string) {
+	for _, e := range vars {
+		pair := strings.SplitN(e, "=", 2)
+		if strings.HasPrefix(pair[0], prefix) {
+			evalContext.Variables[strings.TrimPrefix(pair[0], prefix)] = cty.StringVal(pair[1])
+		}
+	}
 }

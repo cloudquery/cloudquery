@@ -46,7 +46,7 @@ func Initialize(providers []string) {
 	configPath := viper.GetString("configPath")
 
 	if info, _ := fs.Stat(configPath); info != nil {
-		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists", configPath)
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
 		return
 	}
 	f := hclwrite.NewEmptyFile()
@@ -109,6 +109,16 @@ func Initialize(providers []string) {
 		buffer.Write(pCfg.Config)
 		buffer.WriteString("\n")
 	}
+
+	if mex := c.Client().ModuleManager.ExampleConfigs(); len(mex) > 0 {
+		buffer.WriteString("\n// Module Configurations\nmodules {\n")
+		for _, c := range mex {
+			buffer.WriteString(c)
+			buffer.WriteString("\n")
+		}
+		buffer.WriteString("}\n")
+	}
+
 	formattedData := hclwrite.Format(buffer.Bytes())
 	_ = afero.WriteFile(fs, configPath, formattedData, 0644)
 	ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configPath)

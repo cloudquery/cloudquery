@@ -161,9 +161,8 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
-		IAC:       "Terraform",
 		Different: nil,
 		Equal:     nil,
 		Missing:   nil,
@@ -179,6 +178,8 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 	for i := range resData.Sets {
 		setMap[resData.Sets[i]] = struct{}{}
 	}
+
+	var tagExp exp.LiteralExpression
 
 	for i, a := range resData.Attributes {
 		alist[i] = Attribute{
@@ -201,6 +202,18 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		}
 
 		_, alist[i].Unordered = setMap[alist[i].ID]
+
+		if alist[i].ID == "tags" && alist[i].Type == schema.TypeJSON {
+			tagExp = goqu.L(alist[i].SQL)
+		}
+	}
+
+	if tagExp == nil {
+		tagExp = goqu.L("NULL")
+
+		if resData.acl.HasTagFilters() {
+			logger.Warn("tag based filtering not possible on this resource type", "resource", resName)
+		}
 	}
 
 	tfMode := terraform.Mode(runParams.TfMode)
@@ -223,8 +236,8 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		return nil, err
 	}
 
-	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-	q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
+	q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 	existing, err := queryIntoResourceList(ctx, logger, conn, q)
 	if err != nil {
 		return nil, err
@@ -238,12 +251,12 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 		if _, ok := existingMap[r.ID]; !ok {
 			res.Missing = append(res.Missing, r)
 		}
-	})
+	}, resData.acl.ShouldSkip)
 
 	// Get extra resources
 	{
-		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"))
-		q = handleSubresource(logger, q, cloudTable, resources, runParams.AccountIDs)
+		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
+		q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
 		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
 		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
 		if err != nil {
@@ -254,7 +267,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			if _, ok := tfMap[r.ID]; !ok {
 				res.Extra = append(res.Extra, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	}
 
 	if !deepMode {
@@ -263,7 +276,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			if _, ok := tfMap[r.ID]; ok {
 				res.Equal = append(res.Equal, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	} else {
 		// Get deepequal and different resources
 		existing.Walk(func(r *Resource) {
@@ -276,7 +289,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn
 			} else {
 				res.Different = append(res.Different, r)
 			}
-		})
+		}, resData.acl.ShouldSkip)
 	}
 	if deepMode && runParams.Debug && len(res.Different) > 0 {
 		if err := RenderDriftTable(resName, resources, cloudName, alist, res.Different, tfResources); err != nil {

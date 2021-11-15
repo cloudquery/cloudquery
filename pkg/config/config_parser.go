@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/hashicorp/hcl/v2"
@@ -87,6 +88,9 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			if cfg != nil {
 				config.Policies = append(config.Policies, cfg)
 			}
+		case "modules":
+			// Module manager will process this for us
+			config.Modules = block.Body
 		default:
 			// Should never happen because the above cases should be exhaustive
 			// for all block type names in our schema.
@@ -94,4 +98,40 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 		}
 	}
 	return config, diags
+}
+
+// ReadModuleConfigProfiles separates the module config from the modules block, where block identifier is the module name.
+func ReadModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Body, error) {
+	if block == nil {
+		return nil, nil
+	}
+
+	content, _, diags := block.PartialContent(&hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       module,
+				LabelNames: []string{"name"},
+			},
+		},
+	})
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	ret := make(map[string]hcl.Body, len(content.Blocks))
+	for i := range content.Blocks {
+		if _, ok := ret[content.Blocks[i].Labels[0]]; ok {
+			return nil, hcl.Diagnostics{
+				{
+					Severity: hcl.DiagError,
+					Summary:  "Duplicate profile name",
+					Detail:   fmt.Sprintf("Profile name %q already defined", content.Blocks[i].Labels[0]),
+					Subject:  content.Blocks[i].DefRange.Ptr(),
+				},
+			}
+		}
+
+		ret[content.Blocks[i].Labels[0]] = content.Blocks[i].Body
+	}
+	return ret, nil
 }

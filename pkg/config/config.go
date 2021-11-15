@@ -11,6 +11,7 @@ type Config struct {
 	CloudQuery CloudQuery  `hcl:"cloudquery,block"`
 	Providers  []*Provider `hcl:"provider,block"`
 	Policies   []*Policy   `hcl:"policy,block"`
+	Modules    hcl.Body    `hcl:"modules,block"`
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {
@@ -68,6 +69,9 @@ var configFileSchema = &hcl.BodySchema{
 		{
 			Type:       "policy",
 			LabelNames: []string{"name"},
+		},
+		{
+			Type: "modules",
 		},
 	},
 }

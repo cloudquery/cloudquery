@@ -7,17 +7,25 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/arn"
+	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
+
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 )
 
 type Drift struct {
@@ -38,6 +46,17 @@ const (
 	iacCloudformation iacProvider = "cloudformation"
 )
 
+func (i iacProvider) String() string {
+	switch i {
+	case iacTerraform:
+		return "Terraform"
+	case iacCloudformation:
+		return "Cloudformation"
+	default:
+		return "unknown"
+	}
+}
+
 func New(logger hclog.Logger) *Drift {
 	return &Drift{
 		logger: logger,
@@ -48,21 +67,23 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, config hcl.Body) error {
-	p := NewParser("")
+func (d *Drift) Configure(ctx context.Context, profileConfig hcl.Body, runParams module.ModuleRunParams) error {
+	d.params = runParams.(RunParams)
 
-	cfg, diags := p.Decode(config, nil)
-	if diags.HasErrors() {
-		return diags
+	builtin, err := d.readBuiltinConfig()
+	if err != nil {
+		return fmt.Errorf("builtin config failed: %w", err)
 	}
 
-	d.config = cfg
+	d.config, err = d.readProfileConfig(builtin, profileConfig)
+	if err != nil {
+		return fmt.Errorf("read config failed: %w", err)
+	}
+
 	return nil
 }
 
 func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module.ExecutionResult {
-	d.params = req.Params.(RunParams)
-
 	ret := &module.ExecutionResult{}
 	ret.Result, ret.Error = d.run(ctx, req)
 	if ret.Error != nil {
@@ -72,13 +93,121 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
+func (d *Drift) ExampleConfig() string {
+	return `// drift configuration block
+drift "drift-example" {
+  // state block defines from where to access the state
+  terraform {
+    backend  = "local" # "local" or "s3"
+    files = [ "/path/to.tfstate" ]
+/*
+    bucket   = "<terraform state bucket>"
+    keys     = ["<terraform state key>"]
+    region   = "us-east-1"
+    role_arn = ""
+*/
+  }
+
+/*
+  provider "aws" {
+    account_ids      = ["123456789"]
+    check_resources   = ["ec2.instances:*"]
+    ignore_resources = ["ec2.instances:i-123456789", "aws_cloudwatchlogs_filters:*"]
+  }
+*/
+}`
+}
+
+func (d *Drift) readBuiltinConfig() (*BaseConfig, error) {
+	configRaw, diags := hclparse.NewParser().ParseHCL(builtinConfig, "")
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	content, diags := configRaw.Body.Content(&hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type: "config",
+			},
+		},
+	})
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	if len(content.Blocks) != 1 {
+		return nil, fmt.Errorf("unexpected number of blocks")
+	}
+
+	p := NewParser("")
+	cfg, diags := p.Decode(content.Blocks[0].Body, nil)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	return cfg, nil
+}
+
+func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
+	p := NewParser("")
+
+	if body == nil {
+		if diags := p.interpret(base); diags.HasErrors() {
+			return nil, diags
+		}
+		return base, nil
+	}
+
+	cfg, diags := p.Decode(body, nil)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	// keep base config and apply profile config into it, as we don't know which provider version from the builtin config is going to be selected
+	base.Terraform = cfg.Terraform // always override this one
+
+	if cfg.WildProvider != nil {
+		base.WildProvider.applyWildProvider(cfg.WildProvider)
+
+		if cfg.WildProvider.WildResource != nil {
+			cfg.WildProvider.WildResource.applyWildResource(base.WildProvider.WildResource)
+			base.WildProvider.WildResource = cfg.WildProvider.WildResource
+		}
+	}
+
+	for _, prov := range base.Providers {
+		cp := cfg.FindProvider(prov.Name)
+		if cp == nil {
+			continue
+		}
+		prov.applyWildProvider(cp)
+
+		if cp.WildResource != nil {
+			cp.WildResource.applyWildResource(prov.WildResource)
+			prov.WildResource = cp.WildResource
+		}
+
+		for resName, res := range prov.Resources {
+			if cres, ok := cp.Resources[resName]; ok {
+				cres.applyWildResource(res)
+				prov.Resources[resName] = cres
+			}
+		}
+	}
+
+	if diags := p.interpret(base); diags.HasErrors() {
+		return nil, diags
+	}
+
+	return base, nil
+}
+
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
-	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.params.StateFiles)
+	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.config.Terraform, d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
 
 	resList := &Results{
+		IACName:     iacProv.String(),
 		ListManaged: d.params.ListManaged,
 		Debug:       d.params.Debug,
 	}
@@ -116,7 +245,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 			)
 			switch iacProv {
 			case iacTerraform:
-				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params)
+				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params, cfg.AccountIDs)
 			default:
 				err = fmt.Errorf("no suitable handler found for %q", iacProv)
 			}
@@ -143,8 +272,9 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpo
 	logger.Trace("generated query", "query", query, "args", args)
 
 	var list []struct {
-		ID      *string       `db:"id"`
-		AttList []interface{} `db:"attlist"`
+		ID      *string           `db:"id"`
+		AttList []interface{}     `db:"attlist"`
+		Tags    map[string]string `db:"tags"`
 	}
 	if err := pgxscan.Select(ctx, conn, &list, query, args...); err != nil {
 		var pgErr *pgconn.PgError
@@ -167,6 +297,7 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn *pgxpo
 				return *s
 			}(list[i].ID),
 			Attributes: list[i].AttList,
+			Tags:       list[i].Tags,
 		})
 	}
 
@@ -285,32 +416,105 @@ func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
-func readIACStates(iacID string, stateFiles []string) (iacProvider, interface{}, error) {
+func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
+	if iacProvider(iacID) != iacTerraform {
+		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
+	}
+
+	if len(stateFiles) == 0 {
+		// no override: read TF config here
+		if tf == nil {
+			return "", nil, fmt.Errorf("terraform configuration not found: either specify state files or edit config.hcl")
+		}
+		switch tf.Backend {
+		case TFLocal:
+			stateFiles = tf.Files
+		case TFS3:
+			states, err := loadIACStatesFromS3(iacID, tf.Bucket, tf.Keys, tf.Region, tf.RoleARN)
+			if err != nil {
+				return "", nil, err
+			}
+			return iacTerraform, states, nil
+		default:
+			return "", nil, fmt.Errorf("unsupported backend")
+		}
+	}
+
 	if len(stateFiles) == 0 {
 		return "", nil, fmt.Errorf("state files for %s not specified", iacID)
 	}
 
-	switch iacProvider(iacID) {
-	case iacTerraform:
-		ret := make([]*terraform.Data, len(stateFiles))
+	ret := make([]*terraform.Data, len(stateFiles))
 
-		fs := afero.NewOsFs()
-		for idx, fn := range stateFiles {
-			fh, err := fs.Open(fn)
-			if err != nil {
-				return "", nil, err
-			}
-			data, err := terraform.LoadState(fh)
-			_ = fh.Close()
-			if err != nil {
-				return "", nil, fmt.Errorf("parse %s: %w", fn, err)
-			}
-			ret[idx] = data
+	fs := afero.NewOsFs()
+	for idx, fn := range stateFiles {
+		fh, err := fs.Open(fn)
+		if err != nil {
+			return "", nil, err
 		}
-		return iacTerraform, ret, nil
-	default:
-		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
+		data, err := terraform.LoadState(fh)
+		_ = fh.Close()
+		if err != nil {
+			return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+		}
+		ret[idx] = data
 	}
+	return iacTerraform, ret, nil
+}
+
+func loadIACStatesFromS3(_, bucket string, keys []string, region, roleARN string) (interface{}, error) {
+	if region == "" {
+		if reg, err := s3manager.GetBucketRegion(
+			context.Background(),
+			session.Must(session.NewSession()),
+			bucket,
+			"us-east-1",
+		); err != nil {
+			return nil, err
+		} else {
+			region = reg
+		}
+	}
+
+	sess, err := session.NewSessionWithOptions(session.Options{
+		Config: aws.Config{
+			Region: aws.String(region),
+		},
+		SharedConfigState: session.SharedConfigEnable,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	awsCfg := &aws.Config{}
+	if roleARN != "" {
+		parsedArn, err := arn.Parse(roleARN)
+		if err != nil {
+			return nil, err
+		}
+		creds := stscreds.NewCredentials(sess, parsedArn.String())
+		awsCfg.Credentials = creds
+	}
+	svc := s3.New(sess, awsCfg)
+
+	ret := make([]*terraform.Data, len(keys))
+	for idx, key := range keys {
+		obj, err := svc.GetObject(&s3.GetObjectInput{
+			Bucket: aws.String(bucket),
+			Key:    aws.String(key),
+		})
+		if err != nil {
+			return nil, err
+		}
+		data, err := terraform.LoadState(obj.Body)
+		_ = obj.Body.Close()
+		if err != nil {
+			return nil, fmt.Errorf("parse %s: %w", key, err)
+		}
+		ret[idx] = data
+	}
+
+	return ret, nil
 }
 
 // Make sure we satisfy the interface

@@ -9,7 +9,7 @@ The open-source cloud asset inventory powered by SQL.
 ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cloudquery/test?style=flat-square)
 ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
 
-CloudQuery extracts, transforms, and loads your cloud assets into [normalized](https://hub.cloudquery.io) PostgreSQL tables. CloudQuery enables you to assess, audit, and evaluate the configurations of your cloud assets.
+CloudQuery extracts, transforms, and loads your cloud assets into [normalized](https://hub.cloudquery.io) PostgreSQL tables. CloudQuery enables you to assess, audit, and monitor the configurations of your cloud assets.
 
 CloudQuery key use-cases and features:
 
@@ -73,7 +73,7 @@ Once your `config.hcl` is generated run the following command to fetch the resou
 ```shell script
 # you can spawn a local postgresql with docker
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres"
+cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 # cloudquery fetch --help # Show all possible fetch flags
 ```
 

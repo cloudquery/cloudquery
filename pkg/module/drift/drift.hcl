@@ -1,4 +1,4 @@
-module "drift" {
+config {
 
     provider "*" {
         # provider: the *provider.Provider
@@ -982,6 +982,8 @@ module "drift" {
             }
         }
 
+        # TODO: route53.domains ("aws_route53_record" but no data in tests)
+
         resource "route53.health_checks" {
             iac {
                 terraform {
@@ -1093,12 +1095,13 @@ module "drift" {
             }
         }
 
-        skip_resources = [
-#            "ec2.instances",
-#            "iam.users",
-#            "s3.buckets"
+/*
+        ignore_resources = [
+            "ec2.instances:*",
+            "iam.users",
+            "s3.buckets:*"
         ]
-
+*/
     }
 
 

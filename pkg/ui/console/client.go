@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
+	"github.com/vbauerster/mpb/v6/decor"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -19,7 +21,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
-	"github.com/vbauerster/mpb/v6/decor"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -202,17 +203,23 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		return err
 	}
 
-	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
-
-	if req.ModConfigPath == "" {
-		ui.ColorizedOutput(ui.ColorDebug, "Using built-in drift config\n")
+	profiles, err := config.ReadModuleConfigProfiles(req.Name, c.cfg.Modules)
+	if err != nil {
+		return err
 	}
 
+	cfg, err := c.selectProfile(req.Profile, profiles)
+	if err != nil {
+		return err
+	}
+
+	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
+
 	runReq := client.ModuleRunRequest{
-		Name:          req.Name,
-		Params:        req.Params,
-		ModConfigPath: req.ModConfigPath,
-		Providers:     provs,
+		Name:      req.Name,
+		Params:    req.Params,
+		Providers: provs,
+		Config:    cfg,
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
@@ -269,16 +276,6 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 
 	return nil
-}
-
-func (c Client) GenModuleConfig(ctx context.Context, modName string) {
-	configPath, err := c.c.GenModuleConfig(ctx, modName)
-	if err != nil {
-		time.Sleep(100 * time.Millisecond)
-		ui.ColorizedOutput(ui.ColorError, err.Error()+"\n")
-		return
-	}
-	ui.ColorizedOutput(ui.ColorSuccess, "Configuration generated successfully to %s\n", *configPath)
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
@@ -360,6 +357,27 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 
 func (c Client) Client() *client.Client {
 	return c.c
+}
+
+func (c Client) selectProfile(profileName string, profiles map[string]hcl.Body) (hcl.Body, error) {
+	if profileName == "" && len(profiles) > 1 {
+		return nil, fmt.Errorf("multiple profiles detected, choose one with --profile")
+	}
+
+	if profileName != "" {
+		chosenProfile, ok := profiles[profileName]
+		if !ok {
+			return nil, fmt.Errorf("specified profile doesn't exist in config")
+		}
+		return chosenProfile, nil
+	}
+
+	for k, v := range profiles {
+		ui.ColorizedOutput(ui.ColorDebug, "Using profile %s\n", k)
+		return v, nil
+	}
+
+	return nil, nil
 }
 
 func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {
