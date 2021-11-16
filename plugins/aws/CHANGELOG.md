@@ -4,6 +4,16 @@ All notable changes to this provider will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [v0.6.4] - 2021-11-16
+###### SDK Version: 0.5.1
+
+### :spider: Fixed
+* Fixed trails not fetched if they have no tags defined [#258](https://github.com/cloudquery/cq-provider-aws/issues/258)
+
+### :rocket: Added
+* Added Elbv2 Listeners resource [#256](https://github.com/cloudquery/cq-provider-aws/issues/256)
+
+
 ## [v0.6.3] - 2021-11-11
 ###### SDK Version: 0.5.1
 
