@@ -248,13 +248,12 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			}
 			for _, tr := range trails {
 				tags := getCloudTrailTagsByResourceID(*tr.TrailARN, response.ResourceTagList)
-				if len(tags) == 0 {
-					continue
-				}
-
 				wrapper := CloudTrailWrapper{
 					Trail: tr,
 					Tags:  make(map[string]interface{}, len(tags)),
+				}
+				if len(tags) == 0 {
+					res <- wrapper
 				}
 
 				for _, t := range tags {
