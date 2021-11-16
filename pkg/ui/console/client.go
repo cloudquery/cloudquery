@@ -140,8 +140,9 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	c.c.Logger.Debug("Received params: args: %v, policyName: %s, outputDir: %s, stopOnFailure: %v, skipVersioning: %v, failOnViolation: %v, noResults: %v", args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 
-	policiesToRun, err := client.GetPoliciesToRun(args, c.cfg.Policies, policyName)
+	policiesToRun, err := client.FilterPolicies(args, c.cfg.Policies, policyName)
 
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -154,10 +155,12 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 	var policyRunProgress *Progress
 	var policyRunCallback policy.UpdateCallback
 
+	// if we are running in a terminal, build the progress bar
 	if ui.IsTerminal() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun, failOnViolation)
 	}
 
+	// Policies run request
 	req := &client.PoliciesRunRequest{
 		Policies:        policiesToRun,
 		PolicyName:      policyName,
@@ -614,11 +617,14 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 
 func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
 	policySource, _ := policy.GetURL()
-	ui.ColorizedOutput(ui.ColorInfo, "Add this block into your CloudQuery config file:\n\n")
-	ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("policy \"%s-%s\" {\n", policy.Organization, policy.Repository))
-	ui.ColorizedOutput(ui.ColorInfo, "	type = \"remote\"\n")
-	ui.ColorizedOutput(ui.ColorInfo, "	source = \"%s\"\n", policySource)
-	ui.ColorizedOutput(ui.ColorInfo, "	sub_path = \"\"\n")
-	ui.ColorizedOutput(ui.ColorInfo, "	version = \"%s\"\n", policy.Version)
-	ui.ColorizedOutput(ui.ColorInfo, "}\n")
+	ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf(`
+Add this block into your CloudQuery config file:
+
+policy "%s-%s" {
+	type = "remote"
+	source = "%s"
+	sub_path = ""
+	version = "%s"
+}
+`, policy.Organization, policy.Repository, policySource, policy.Version))
 }

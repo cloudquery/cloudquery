@@ -189,6 +189,8 @@ type Client struct {
 	Manager *plugin.Manager
 	// ModuleManager manages all modules lifecycle
 	ModuleManager module.Manager
+	// ModuleManager manages all modules lifecycle
+	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
@@ -238,6 +240,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 
 	c.initModules()
+
+	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+
 	return c, nil
 }
 
@@ -545,33 +550,28 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 
 func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.RemotePolicy, error) {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
 	remotePolicy, err := policy.ParsePolicyFromArgs(args)
 	if err != nil {
 		return nil, err
 	}
 	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
-	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
+	if err := c.PolicyManager.DownloadPolicy(ctx, remotePolicy); err != nil {
 		return nil, err
 	}
 	return remotePolicy, nil
 }
 
 func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
-	manager := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
-
 	results := make([]*policy.ExecutionResult, 0)
 
 	for _, policyConfig := range req.Policies {
-		c.Logger.Info("Loading policy", "args", policyConfig)
+		result, err := c.runPolicy(ctx, policyConfig, req)
 
-		versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
-			d, err := c.Manager.GetPluginDetails(name)
-			return d.Version, err
-		})
+		c.Logger.Debug("Policy %s finished with error: %v", policyConfig.Name, err)
 
-		handleError := func(err error) bool {
+		if err != nil {
+			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
 					PolicyName:      policyConfig.Name,
@@ -581,84 +581,85 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 					Error:           err.Error(),
 				})
 			}
-			if !req.FailOnViolation {
-				results = append(results, &policy.ExecutionResult{
-					PolicyName: policyConfig.Name,
-					Passed:     false,
-					Error:      err.Error(),
-				})
-				return false
-			}
 
-			return true
-		}
+			// add the execution error to the results
+			results = append(results, &policy.ExecutionResult{
+				PolicyName: policyConfig.Name,
+				Passed:     false,
+				Error:      err.Error(),
+			})
 
-		if err != nil {
-			if handleError(err) {
-				return results, nil
-			} else {
-				continue
-			}
-		}
-
-		execReq := &policy.ExecuteRequest{
-			Policy:           policyConfig,
-			StopOnFailure:    req.StopOnFailure,
-			SkipVersioning:   req.SkipVersioning,
-			ProviderVersions: versions,
-			UpdateCallback:   req.RunCallback,
-		}
-
-		policies, err := manager.Load(ctx, policyConfig, execReq)
-
-		if err != nil {
-			if handleError(err) {
+			// if failOnViolation is set, we should stop the execution
+			if req.FailOnViolation {
 				return results, nil
 			}
 			continue
 		}
 
-		c.Logger.Info("Running policy", "args", policyConfig)
-
-		result, err := manager.Run(ctx, execReq, policies)
-
-		if err != nil {
-			if handleError(err) {
-				return results, nil
-			} else {
-				continue
-			}
-		}
-
-		// execution was not finished
-		if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
-			req.RunCallback(policy.Update{
-				PolicyName:      policyConfig.Name,
-				Version:         policyConfig.Version,
-				FinishedQueries: 0,
-				QueriesCount:    0,
-				Error:           "Execution stops",
-			})
-		}
-
 		results = append(results, result)
-
-		// Store output in file if requested
-		if req.OutputDir != "" {
-			c.Logger.Info("Writing policy to output directory", "args", policyConfig)
-			err = policy.GenerateExecutionResultFile(result, req.OutputDir)
-
-			if err != nil {
-				if handleError(err) {
-					return results, nil
-				} else {
-					continue
-				}
-			}
-		}
 	}
 
 	return results, nil
+}
+
+func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
+	c.Logger.Info("Loading policy", "args", policyConfig)
+
+	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
+		d, err := c.Manager.GetPluginDetails(name)
+		return d.Version, err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	execReq := &policy.ExecuteRequest{
+		Policy:           policyConfig,
+		StopOnFailure:    req.StopOnFailure,
+		SkipVersioning:   req.SkipVersioning,
+		ProviderVersions: versions,
+		UpdateCallback:   req.RunCallback,
+	}
+
+	// load the policy
+	c.Logger.Info("Loading the policy", "args", policyConfig)
+	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
+
+	if err != nil {
+		return nil, err
+	}
+
+	c.Logger.Info("Running policy", "args", policyConfig)
+
+	result, err := c.PolicyManager.Run(ctx, execReq, policies)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// execution was not finished
+	if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
+		req.RunCallback(policy.Update{
+			PolicyName:      policyConfig.Name,
+			Version:         policyConfig.Version,
+			FinishedQueries: 0,
+			QueriesCount:    0,
+			Error:           "Execution stops",
+		})
+	}
+
+	// Store output in file if requested
+	if req.OutputDir != "" {
+		c.Logger.Info("Writing policy to output directory", "args", policyConfig)
+		err = policy.GenerateExecutionResultFile(result, req.OutputDir)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return result, nil
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
@@ -742,7 +743,7 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-func GetPoliciesToRun(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
+func FilterPolicies(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
 	var policies []*config.Policy
 
 	if len(args) > 0 {
