@@ -14,6 +14,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
 )
 
@@ -97,7 +98,10 @@ func New(options ...Option) *Client {
 		opts = append(opts, trace.WithResource(c.ores))
 	}
 	if c.exporter != nil {
-		opts = append(opts, trace.WithBatcher(c.exporter))
+		opts = append(opts, trace.WithBatcher(c.exporter)) // could consider using trace.WithSyncer instead for sync (and slow) results
+	} else {
+		// TODO add a "real" networked exporter here
+		_ = true
 	}
 
 	c.tp = trace.NewTracerProvider(opts...)
@@ -143,15 +147,23 @@ func (c *Client) defaultResource() (*resource.Resource, error) {
 		c.logger.Debug("cookie failed", "error", err)
 	}
 
+	attr := []attribute.KeyValue{
+		semconv.ServiceNameKey.String("cloudquery"),
+		semconv.ServiceVersionKey.String("0.0.0"), // TODO insert release version/commit hash/dirty flag
+		attribute.Bool("ci", isCI()),
+	}
+	if cookieContents != "" {
+		attr = append(attr, semconv.ServiceInstanceIDKey.String(cookieContents))
+	}
+
 	return resource.New(context.Background(),
-		//resource.WithFromEnv(),
 		resource.WithTelemetrySDK(),
-		resource.WithHost(),
-		resource.WithOS(),
+		resource.WithHost(), // exposes hostname
+		resource.WithOS(),   // includes os description which has hostname + os version
 		resource.WithProcessRuntimeName(),
 		resource.WithProcessRuntimeVersion(),
 		resource.WithProcessRuntimeDescription(),
-		resource.WithAttributes(attribute.String("user_id", cookieContents)),
+		resource.WithAttributes(attr...),
 	)
 }
 
@@ -183,6 +195,18 @@ func (c *Client) cookie() (string, error) {
 		return "", err
 	}
 	return id, nil
+}
+
+func isCI() bool {
+	for _, v := range []string{
+		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
+	} {
+		if os.Getenv(v) != "" {
+			return true
+		}
+	}
+
+	return false
 }
 
 type shutdownable interface {
