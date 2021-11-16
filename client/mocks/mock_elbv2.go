@@ -35,6 +35,46 @@ func (m *MockElbV2Client) EXPECT() *MockElbV2ClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeListenerCertificates mocks base method.
+func (m *MockElbV2Client) DescribeListenerCertificates(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeListenerCertificatesInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeListenerCertificatesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeListenerCertificates", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeListenerCertificatesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeListenerCertificates indicates an expected call of DescribeListenerCertificates.
+func (mr *MockElbV2ClientMockRecorder) DescribeListenerCertificates(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeListenerCertificates", reflect.TypeOf((*MockElbV2Client)(nil).DescribeListenerCertificates), varargs...)
+}
+
+// DescribeListeners mocks base method.
+func (m *MockElbV2Client) DescribeListeners(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeListenersInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeListenersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeListeners", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeListenersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeListeners indicates an expected call of DescribeListeners.
+func (mr *MockElbV2ClientMockRecorder) DescribeListeners(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeListeners", reflect.TypeOf((*MockElbV2Client)(nil).DescribeListeners), varargs...)
+}
+
 // DescribeLoadBalancerAttributes mocks base method.
 func (m *MockElbV2Client) DescribeLoadBalancerAttributes(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeLoadBalancerAttributesInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeLoadBalancerAttributesOutput, error) {
 	m.ctrl.T.Helper()

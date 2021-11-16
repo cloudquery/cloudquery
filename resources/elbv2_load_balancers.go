@@ -119,6 +119,7 @@ func Elbv2LoadBalancers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
+			Elbv2Listeners(),
 			{
 				Name:        "aws_elbv2_load_balancer_availability_zones",
 				Description: "Information about an Availability Zone.",
