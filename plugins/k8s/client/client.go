@@ -90,7 +90,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		kConfig:  kCfg,
 		config:   cfg,
 		contexts: contexts,
-		Context:  "",
+		Context:  contexts[0],
 	}
 
 	for _, ctxName := range contexts {
@@ -123,17 +123,19 @@ func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, 
 
 func initServices(client *kubernetes.Clientset) Services {
 	return Services{
-		CronJobs: client.BatchV1().CronJobs(""),
-		Client:       client,
-		Namespaces:   client.CoreV1().Namespaces(),
-		Nodes:        client.CoreV1().Nodes(),
-		Pods:         client.CoreV1().Pods(""),
-		Services:     client.CoreV1().Services(""),
-		Jobs:         client.BatchV1().Jobs(""),
-		DaemonSets:   client.AppsV1().DaemonSets(""),
-		StatefulSets: client.AppsV1().StatefulSets(""),
-		ReplicaSets:  client.AppsV1().ReplicaSets(""),
-		Roles:        client.RbacV1().Roles(""),
-		RoleBindings: client.RbacV1().RoleBindings(""),
+		Client:          client,
+		Namespaces:      client.CoreV1().Namespaces(),
+		Nodes:           client.CoreV1().Nodes(),
+		Pods:            client.CoreV1().Pods(""),
+		Services:        client.CoreV1().Services(""),
+		Jobs:            client.BatchV1().Jobs(""),
+		DaemonSets:      client.AppsV1().DaemonSets(""),
+		StatefulSets:    client.AppsV1().StatefulSets(""),
+		ReplicaSets:     client.AppsV1().ReplicaSets(""),
+		Roles:           client.RbacV1().Roles(""),
+		RoleBindings:    client.RbacV1().RoleBindings(""),
+		Deployments:     client.AppsV1().Deployments(""),
+		NetworkPolicies: client.NetworkingV1().NetworkPolicies(""),
+		CronJobs:        client.BatchV1().CronJobs(""),
 	}
 }
