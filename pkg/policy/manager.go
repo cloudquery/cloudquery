@@ -441,30 +441,30 @@ func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 			Type:   config.Remote,
 			Source: args[0],
 		})
-	} else {
-		// not absolute path, assume it's a hub policy
-		policy.SourceControl = gitHubUrl
-		// Parse and validate org/repository
-		orgRepoSplit := strings.Split(args[0], pathDelimiter)
+	}
 
-		// Parse org/repo
-		switch len(orgRepoSplit) {
-		case 2:
-			policy.Organization = orgRepoSplit[0]
-			policy.Repository = orgRepoSplit[1]
-		case 1:
-			policy.Repository = orgRepoSplit[0]
-			policy.Organization = CloudQueryOrg
-		default:
-			return nil, fmt.Errorf("invalid policy path. Repository name malformed: %s", args[0])
-		}
+	// not absolute path, assume it's a hub policy
+	policy.SourceControl = gitHubUrl
+	// Parse and validate org/repository
+	orgRepoSplit := strings.Split(args[0], pathDelimiter)
 
-		// Parse version
-		versionSplit := strings.Split(policy.Repository, versionDelimiter)
-		if len(versionSplit) == 2 {
-			policy.Version = versionSplit[1]
-			policy.Repository = versionSplit[0]
-		}
+	// Parse org/repo
+	switch len(orgRepoSplit) {
+	case 2:
+		policy.Organization = orgRepoSplit[0]
+		policy.Repository = orgRepoSplit[1]
+	case 1:
+		policy.Repository = orgRepoSplit[0]
+		policy.Organization = CloudQueryOrg
+	default:
+		return nil, fmt.Errorf("invalid policy path. Repository name malformed: %s", args[0])
+	}
+
+	// Parse version
+	versionSplit := strings.Split(policy.Repository, versionDelimiter)
+	if len(versionSplit) == 2 {
+		policy.Version = versionSplit[1]
+		policy.Repository = versionSplit[0]
 	}
 
 	return policy, nil
