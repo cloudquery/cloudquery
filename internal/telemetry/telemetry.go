@@ -72,7 +72,8 @@ func WithDisabled() Option {
 
 func New(options ...Option) *Client {
 	c := &Client{
-		fs: afero.Afero{Fs: afero.NewOsFs()},
+		fs:     afero.Afero{Fs: afero.NewOsFs()},
+		logger: hclog.NewNullLogger(),
 	}
 	for _, opt := range options {
 		opt(c)
@@ -80,10 +81,6 @@ func New(options ...Option) *Client {
 
 	if c.ores == nil {
 		c.ores, c.err = c.defaultResource()
-	}
-
-	if c.logger == nil {
-		c.logger = hclog.NewNullLogger()
 	}
 
 	opts := []trace.TracerProviderOption{
