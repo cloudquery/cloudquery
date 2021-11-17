@@ -7,9 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/golang-migrate/migrate/v4"
-
 	"github.com/fatih/color"
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -78,16 +77,13 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c Client) Fetch(ctx context.Context, failOnError bool) error {
-	switch viper.GetBool("skip-schema-upgrade") {
-	case true:
+	if viper.GetBool("skip-schema-upgrade") {
 		// only download providers and verify, no upgrade
 		if err := c.DownloadProviders(ctx); err != nil {
 			return err
 		}
-	default:
-		if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
-			return err
-		}
+	} else if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
+		return err
 	}
 
 	if err := c.c.NormalizeResources(ctx, c.cfg.Providers); err != nil {

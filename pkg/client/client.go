@@ -513,7 +513,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 		return fmt.Errorf("failed to get provider version: %w", err)
 	}
 	if dirty {
-		return fmt.Errorf("provider schema is drity, please drop provider and recreate")
+		return fmt.Errorf("provider schema is dirty, please drop provider and recreate")
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
