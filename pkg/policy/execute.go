@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/hashicorp/go-hclog"
@@ -259,7 +258,12 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 
 func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
 	fs := afero.NewOsFs()
-	f, err := fs.Create(filepath.Join(outputDir, string(os.PathSeparator), result.PolicyName, "json"))
+
+	if err := fs.MkdirAll(outputDir, 0755); err != nil {
+		return err
+	}
+
+	f, err := fs.Create(fmt.Sprintf("%s.json", filepath.Join(outputDir, result.PolicyName)))
 	if err != nil {
 		return err
 	}
