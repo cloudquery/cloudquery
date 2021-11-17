@@ -610,8 +610,9 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			default:
 				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-10s %-120s %10s\n", emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
 				ui.ColorizedOutput(ui.ColorWarning, "\n")
+				// specific columns can be decided upon later
 				for index, column := range res.Columns {
-					if column == "arn" || column == "id" {
+					if column == "cq_output" || column == "arn" || column == "id" {
 						for _, row := range res.Data {
 							ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], fmt.Sprintf("%v", row[index]))
 							ui.ColorizedOutput(ui.ColorWarning, "\n")
