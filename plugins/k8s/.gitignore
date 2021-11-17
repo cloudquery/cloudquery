@@ -20,3 +20,4 @@ cq-provider-*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+/resources/integration_tests/infra/.terraform.lock.hcl

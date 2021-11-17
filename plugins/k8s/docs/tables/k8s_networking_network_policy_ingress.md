@@ -5,4 +5,4 @@ NetworkPolicyIngressRule describes a particular set of traffic that is allowed t
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |network_policy_cq_id|uuid|Unique CloudQuery ID of k8s_networking_network_policies table (FK)|
-|network_policy_uid|text|The name of the Availability Zone..|
+|network_policy_uid|text|Unique internal ID of Network Policy resource|

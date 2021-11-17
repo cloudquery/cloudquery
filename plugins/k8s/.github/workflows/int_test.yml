@@ -1,0 +1,86 @@
+name: integration_test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  integration_test:
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFIG_PATH: ~/.kube/config
+      TF_VAR_SUFFIX: integration
+      TF_VAR_PREFIX: cq-testing
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+
+      - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.4.2
+        with:
+          minikube version: 'v1.24.0'
+          kubernetes version: 'v1.22.2'
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Deploy postgres
+        id: depoly_pg
+        working-directory: resources/integration_tests/infra
+        run: |
+          kubectl apply -f  postgres.yml
+          kubectl wait --for=condition=available --timeout=120s deployment/postgresql-db
+          url=$(minikube service postgres --url --format={{.IP}}:{{.Port}})
+          echo "::set-output name=host::${url%:*}"
+          echo "::set-output name=port::${url#*:}"
+          kubepath=$(realpath ${{env.KUBECONFIG_PATH}})
+          echo "::set-output name=kubepath::${kubepath}"
+
+      - name: Apply terraform resources
+        env:
+          KUBE_CONFIG_PATH: ${{env.KUBECONFIG_PATH}}
+        working-directory: resources/integration_tests/infra
+        run: |
+          terraform init
+          terraform apply -auto-approve -var test_prefix=${{env.TF_VAR_PREFIX}} -var test_suffix=${{env.TF_VAR_SUFFIX}}
+
+      - name: Get go dependencies
+        run: |
+          go get -v -t -d ./...
+
+      - name: Build
+        run: go build -v .
+
+      - name: check config
+        run: cat ${{env.KUBECONFIG_PATH}}
+
+      - name: Integration Test
+        run: go test -v -p 20 ./resources/integration_tests
+        env:
+          INTEGRATION_TESTS: 1
+          KUBECONFIG: ${{steps.depoly_pg.outputs.kubepath}} # path should be absolute
+          DATABASE_URL: host=${{steps.depoly_pg.outputs.host}} user=postgres password=pass database=postgres port=${{steps.depoly_pg.outputs.port}} sslmode=disable
+
+      - name: Destroy terraform resources
+        env:
+          KUBE_CONFIG_PATH: ${{env.KUBECONFIG_PATH}}
+        working-directory: resources/integration_tests/infra
+        run: |
+          terraform destroy  -auto-approve -var test_prefix=${{env.TF_VAR_PREFIX}} -var test_suffix=${{env.TF_VAR_SUFFIX}}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'K8S - E2E tests failed'
+          SLACK_TITLE: K8S - E2E tests failed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

@@ -151,7 +151,7 @@ func RbacRoles() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:        "non_resource_url_s",
+						Name:        "non_resource_urls",
 						Description: "NonResourceURLs is a set of partial urls that a user should have access to",
 						Type:        schema.TypeStringArray,
 						Resolver:    schema.PathResolver("NonResourceURLs"),

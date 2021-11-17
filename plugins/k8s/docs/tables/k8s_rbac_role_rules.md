@@ -9,4 +9,4 @@ PolicyRule holds information that describes a policy rule, but does not contain 
 |api_groups|text[]|APIGroups is the name of the APIGroup that contains the resources|
 |resources|text[]|Resources is a list of resources this rule applies to|
 |resource_names|text[]|ResourceNames is an optional white list of names that the rule applies to|
-|non_resource_url_s|text[]|NonResourceURLs is a set of partial urls that a user should have access to|
+|non_resource_urls|text[]|NonResourceURLs is a set of partial urls that a user should have access to|
