@@ -743,7 +743,7 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-func FilterPolicies(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
+func FilterPolicies(args []string, configPolicies []*config.Policy, policyName, subPath string) ([]*config.Policy, error) {
 	var policies []*config.Policy
 
 	if len(args) > 0 {
@@ -752,6 +752,7 @@ func FilterPolicies(args []string, configPolicies []*config.Policy, policyName s
 			return nil, err
 		}
 		policyConfig, err := remotePolicy.ToPolicyConfig()
+		policyConfig.SubPath = subPath
 		if err != nil {
 			return nil, err
 		}
@@ -773,6 +774,10 @@ Please add policy to block to your config file.
 		if policyName != "" {
 			// request to run only specific policy
 			if policyName == p.Name {
+				// override subPath if specified
+				if subPath != "" {
+					p.SubPath = subPath
+				}
 				policiesToRun = append(policiesToRun, p)
 				break
 			}
