@@ -507,6 +507,17 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
+
+	pVersion, dirty, err := m.Version()
+	if err != nil && err != migrate.ErrNilVersion {
+		return fmt.Errorf("failed to get provider version: %w", err)
+	}
+	if dirty {
+		return fmt.Errorf("provider schema is dirty, please drop provider and recreate")
+	}
+	if pVersion == "v0.0.0" {
+		return c.BuildProviderTables(ctx, providerName)
+	}
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	return m.UpgradeProvider(cfg.Version)
 }

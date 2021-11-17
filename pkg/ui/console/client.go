@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"sort"
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -19,7 +19,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -78,9 +77,15 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c Client) Fetch(ctx context.Context, failOnError bool) error {
-	if err := c.DownloadProviders(ctx); err != nil {
+	if viper.GetBool("skip-schema-upgrade") {
+		// only download providers and verify, no upgrade
+		if err := c.DownloadProviders(ctx); err != nil {
+			return err
+		}
+	} else if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
 		return err
 	}
+
 	if err := c.c.NormalizeResources(ctx, c.cfg.Providers); err != nil {
 		return err
 	}
@@ -249,7 +254,6 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
@@ -257,9 +261,9 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	for _, p := range providers {
-
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil {
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
@@ -430,71 +434,6 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 		}
 	}
 	return fetchProgress, fetchCallback
-}
-
-func printFetchResponse(summary *client.FetchResponse) {
-	if summary == nil {
-		return
-	}
-	for _, pfs := range summary.ProviderFetchSummary {
-		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics(pfs.ProviderName, pfs.Diagnostics())
-			continue
-		}
-		if len(pfs.PartialFetchErrors) == 0 {
-			continue
-		}
-		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
-		for _, r := range pfs.PartialFetchErrors {
-			if r.RootTableName != "" {
-				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Parent-Resource: %-64s Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
-					r.RootTableName,
-					r.RootPrimaryKeyValues,
-					r.TableName,
-					r.Error)
-			} else {
-				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Table: %-64s Error: %s\n",
-					r.TableName,
-					r.Error)
-			}
-		}
-		ui.ColorizedOutput(ui.ColorWarning, "\n")
-	}
-}
-
-func printDiagnostics(providerName string, diags diag.Diagnostics) {
-	// sort diagnostics by severity/type
-	sort.Sort(diags)
-	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
-	for _, d := range diags {
-		desc := d.Description()
-		switch d.Severity() {
-		case diag.IGNORE:
-			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
-				ui.ColorProgress.Sprintf("%s", desc.Resource),
-				ui.ColorProgressBold.Sprintf("%s", d.Type()),
-				ui.ColorDebug.Sprintf("Ignore"),
-				ui.ColorDebug.Sprintf("%s", desc.Summary))
-		case diag.WARNING:
-			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
-				ui.ColorInfo.Sprintf("%s", desc.Resource),
-				ui.ColorProgressBold.Sprintf("%s", d.Type()),
-				ui.ColorWarning.Sprintf("Warning"),
-				ui.ColorWarning.Sprintf("%s", desc.Summary))
-		case diag.ERROR:
-			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
-				ui.ColorProgress.Sprintf("%s", desc.Resource),
-				ui.ColorProgressBold.Sprintf("%s", d.Type()),
-				ui.ColorErrorBold.Sprintf("Error"),
-				ui.ColorErrorBold.Sprintf("%s", desc.Summary))
-		}
-		if desc.Detail != "" {
-			ui.ColorizedOutput(ui.ColorInfo, "\tRemediation: %s\n", desc.Detail)
-		}
-	}
-	ui.ColorizedOutput(ui.ColorInfo, "\n")
 }
 
 func loadConfig(path string) (*config.Config, error) {

@@ -254,13 +254,13 @@ func TestClient_GetProviderSchema(t *testing.T) {
 		return
 	}
 	ctx := context.Background()
-	schema, err := c.GetProviderSchema(ctx, "test")
-	if schema == nil {
+	s, err := c.GetProviderSchema(ctx, "test")
+	if s == nil {
 		t.FailNow()
 	}
-	assert.Equal(t, "test", schema.Name)
-	assert.Equal(t, "v0.0.0", schema.Version)
-	assert.Equal(t, 3, len(schema.ResourceTables))
+	assert.Equal(t, "test", s.Name)
+	assert.Equal(t, "v0.0.0", s.Version)
+	assert.Equal(t, 3, len(s.ResourceTables))
 	assert.Nil(t, err)
 }
 
@@ -289,6 +289,26 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Nil(t, diags)
 }
 
+// TestClient_ProviderUpgradeNoBuild tests doing an upgrade but without
+func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
+	cancelServe := setupTestPlugin(t)
+	defer cancelServe()
+
+	c, err := New(context.Background(), func(options *Client) {
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+		options.Providers = requiredTestProviders
+	})
+	assert.NoError(t, err)
+	if c == nil {
+		assert.FailNow(t, "failed to create client")
+	}
+	ctx := context.Background()
+	err = c.DropProvider(ctx, "test")
+	assert.NoError(t, err)
+	err = c.UpgradeProvider(ctx, "test")
+	assert.NoError(t, nil)
+}
+
 func TestClient_ProviderMigrations(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
@@ -297,15 +317,15 @@ func TestClient_ProviderMigrations(t *testing.T) {
 		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 		options.Providers = requiredTestProviders
 	})
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	err = c.BuildProviderTables(ctx, "test")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	err = c.UpgradeProvider(ctx, "test")
 	assert.ErrorIs(t, err, migrate.ErrNoChange)
 
@@ -315,21 +335,22 @@ func TestClient_ProviderMigrations(t *testing.T) {
 		return
 	}
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	c.Providers[0].Version = "v0.0.1"
 	err = c.DowngradeProvider(ctx, "test")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Error(t, err)
 
 	c.Providers[0].Version = "v0.0.2"
 	err = c.UpgradeProvider(ctx, "test")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
+
 }
 
 func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
