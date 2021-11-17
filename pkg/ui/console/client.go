@@ -601,14 +601,27 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			}
 		}
 
+		maxNameLength := 0
+		maxDescrLength := 0
+		for _, res := range execResult.Results {
+			if len(res.Name) > maxNameLength {
+				maxNameLength = len(res.Name) + 1
+			}
+			if len(res.Description) > maxDescrLength {
+				maxDescrLength = len(res.Description) + 1
+			}
+		}
+
+		fmtString := fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds\n", maxNameLength, maxDescrLength, 10)
+
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
 			case res.Type == policy.ManualQuery:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
 			default:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-10s %-120s %10s\n", emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
 				ui.ColorizedOutput(ui.ColorWarning, "\n")
 				// specific columns can be decided upon later
 				for index, column := range res.Columns {
