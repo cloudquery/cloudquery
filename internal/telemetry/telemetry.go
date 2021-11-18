@@ -2,6 +2,7 @@ package telemetry
 
 import (
 	"context"
+	"crypto/sha1"
 	"fmt"
 	"io"
 	"net"
@@ -182,11 +183,13 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	if cookieContents != "" {
 		attr = append(attr, semconv.ServiceInstanceIDKey.String(cookieContents))
 	}
+	if hn, err := os.Hostname(); err == nil && hn != "" {
+		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
+	}
+	attr = append(attr, osInfo()...)
 
 	return resource.New(ctx,
 		resource.WithTelemetrySDK(),
-		resource.WithHost(), // TODO exposes hostname, maybe hash?
-		resource.WithOS(),   // includes os description which has hostname + os version. TODO remove hostname component
 		resource.WithProcessRuntimeName(),
 		resource.WithProcessRuntimeVersion(),
 		resource.WithProcessRuntimeDescription(),
@@ -263,4 +266,10 @@ type errorHandler struct {
 
 func (e *errorHandler) Handle(err error) {
 	e.l.Debug("otel error occurred", "error", err)
+}
+
+func hashAttribute(value string) string {
+	s := sha1.New()
+	_, _ = s.Write([]byte(value))
+	return fmt.Sprintf("%0x", s.Sum(nil))
 }
