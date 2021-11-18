@@ -574,6 +574,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				}
 				table.SetHeader(res.Columns)
 				table.SetRowLine(true)
+				table.SetAutoFormatHeaders(false)
 				table.AppendBulk(data)
 				table.Render()
 
