@@ -541,29 +541,14 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
 			}
 		}
-
-		maxNameLength := 0
-		maxDescrLength := 0
-		// maxColumnWid
-		for _, res := range execResult.Results {
-			if len(res.Name) > maxNameLength {
-				maxNameLength = len(res.Name) + 1
-			}
-			if len(res.Description) > maxDescrLength {
-				maxDescrLength = len(res.Description) + 1
-			}
-		}
-
-		fmtString := fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds\n", maxNameLength, maxDescrLength, 10)
-
+		fmtString := defineResultColumnWidths(*execResult)
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
 			case res.Type == policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
-				tableString := &strings.Builder{}
-				table := tablewriter.NewWriter(tableString)
+
 				data := make([][]string, 0)
 				for rowIndex := range res.Data {
 					rowData := []string{}
@@ -572,6 +557,8 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 					}
 					data = append(data, rowData)
 				}
+				tableString := &strings.Builder{}
+				table := tablewriter.NewWriter(tableString)
 				table.SetHeader(res.Columns)
 				table.SetRowLine(true)
 				table.SetAutoFormatHeaders(false)
@@ -585,32 +572,57 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			default:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
 				ui.ColorizedOutput(ui.ColorWarning, "\n")
-				outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
-				outputKey := ""
-				for _, key := range outputKeys {
-					for _, column := range res.Columns {
-						if key == column {
-							outputKey = key
-						}
-					}
-					if outputKey != "" {
-						break
-					}
+				queryOutput := findOutput(res.Columns, res.Data)
+				if queryOutput != "" {
+					ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], queryOutput)
 				}
-				if outputKey != "" {
-					for index, column := range res.Columns {
-						if column == outputKey {
-							for _, row := range res.Data {
-								ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], fmt.Sprintf("%v", row[index]))
-								ui.ColorizedOutput(ui.ColorWarning, "\n")
-							}
-						}
-					}
-				}
+
 			}
 			ui.ColorizedOutput(ui.ColorWarning, "\n")
 		}
 	}
+}
+
+func defineResultColumnWidths(execResult policy.ExecutionResult) string {
+	maxNameLength := 0
+	maxDescrLength := 0
+	// maxColumnWid
+	for _, res := range execResult.Results {
+		if len(res.Name) > maxNameLength {
+			maxNameLength = len(res.Name) + 1
+		}
+		if len(res.Description) > maxDescrLength {
+			maxDescrLength = len(res.Description) + 1
+		}
+	}
+
+	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds\n", maxNameLength, maxDescrLength, 10)
+
+}
+
+func findOutput(columnNames []string, data [][]interface{}) string {
+	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+	outputKey := ""
+	for _, key := range outputKeys {
+		for _, column := range columnNames {
+			if key == column {
+				outputKey = key
+			}
+		}
+		if outputKey != "" {
+			break
+		}
+	}
+	if outputKey != "" {
+		for index, column := range columnNames {
+			if column == outputKey {
+				for _, row := range data {
+					return fmt.Sprintf("%v", row[index])
+				}
+			}
+		}
+	}
+	return ""
 }
 
 func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
