@@ -541,7 +541,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
 			}
 		}
-		fmtString := defineResultColumnWidths(*execResult)
+		fmtString := defineResultColumnWidths(execResult.Results)
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:
@@ -591,11 +591,11 @@ func createOutputTable(res *policy.QueryResult) string {
 	return tableString.String()
 }
 
-func defineResultColumnWidths(execResult policy.ExecutionResult) string {
+func defineResultColumnWidths(execResult []*policy.QueryResult) string {
 	maxNameLength := 0
 	maxDescrLength := 0
 	// maxColumnWid
-	for _, res := range execResult.Results {
+	for _, res := range execResult {
 		if len(res.Name) > maxNameLength {
 			maxNameLength = len(res.Name) + 1
 		}
