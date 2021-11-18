@@ -6,16 +6,19 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
+	"google.golang.org/grpc"
 )
 
 type Client struct {
@@ -97,8 +100,12 @@ func New(options ...Option) *Client {
 	if c.exporter != nil {
 		opts = append(opts, trace.WithBatcher(c.exporter)) // could consider using trace.WithSyncer instead for sync (and slow) results
 	} else {
-		// TODO add a "real" networked exporter here
-		_ = true
+		exp, err := c.defaultExporter()
+		if err != nil {
+			c.setError(err)
+		} else {
+			opts = append(opts, trace.WithBatcher(exp))
+		}
 	}
 
 	c.tp = trace.NewTracerProvider(opts...)
@@ -111,6 +118,10 @@ func (c *Client) Tracer() otrace.Tracer {
 }
 
 func (c *Client) Shutdown() {
+	if err := c.HasError(); err != nil {
+		c.logger.Debug("telemetry error", "error", err)
+	}
+
 	if c.disabled {
 		return
 	}
@@ -133,6 +144,9 @@ func (c *Client) HasError() error {
 }
 
 func (c *Client) setError(err error) {
+	if err != nil {
+		c.logger.Debug("telemetry error occured", "error", err)
+	}
 	if c.err == nil && err != nil {
 		c.err = err
 	}
@@ -155,8 +169,8 @@ func (c *Client) defaultResource() (*resource.Resource, error) {
 
 	return resource.New(context.Background(),
 		resource.WithTelemetrySDK(),
-		resource.WithHost(), // exposes hostname
-		resource.WithOS(),   // includes os description which has hostname + os version
+		resource.WithHost(), // TODO exposes hostname, maybe hash?
+		resource.WithOS(),   // includes os description which has hostname + os version. TODO remove hostname component
 		resource.WithProcessRuntimeName(),
 		resource.WithProcessRuntimeVersion(),
 		resource.WithProcessRuntimeDescription(),
@@ -192,6 +206,19 @@ func (c *Client) cookie() (string, error) {
 		return "", err
 	}
 	return id, nil
+}
+
+func (c *Client) defaultExporter() (trace.SpanExporter, error) {
+	return otlptracegrpc.New(
+		context.Background(),
+		otlptracegrpc.WithInsecure(),                 // TODO change
+		otlptracegrpc.WithEndpoint("localhost:4317"), // TODO change. env var?
+		otlptracegrpc.WithDialOption(grpc.WithBlock()),
+		otlptracegrpc.WithDialOption(grpc.WithTimeout(500*time.Millisecond)),
+		//otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
+		//otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
+		otlptracegrpc.WithTimeout(500*time.Millisecond),
+	)
 }
 
 func isCI() bool {
