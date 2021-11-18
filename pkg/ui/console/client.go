@@ -548,24 +548,8 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
 			case res.Type == policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
-
-				data := make([][]string, 0)
-				for rowIndex := range res.Data {
-					rowData := []string{}
-					for colIndex := range res.Data[rowIndex] {
-						rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
-					}
-					data = append(data, rowData)
-				}
-				tableString := &strings.Builder{}
-				table := tablewriter.NewWriter(tableString)
-				table.SetHeader(res.Columns)
-				table.SetRowLine(true)
-				table.SetAutoFormatHeaders(false)
-				table.AppendBulk(data)
-				table.Render()
-
-				for _, row := range strings.Split(tableString.String(), "\n") {
+				outputTable := createOutputTable(res)
+				for _, row := range strings.Split(outputTable, "\n") {
 					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
 				}
 
@@ -581,6 +565,25 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			ui.ColorizedOutput(ui.ColorWarning, "\n")
 		}
 	}
+}
+
+func createOutputTable(res *policy.QueryResult) string {
+	data := make([][]string, 0)
+	for rowIndex := range res.Data {
+		rowData := []string{}
+		for colIndex := range res.Data[rowIndex] {
+			rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
+		}
+		data = append(data, rowData)
+	}
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	table.SetHeader(res.Columns)
+	table.SetRowLine(true)
+	table.SetAutoFormatHeaders(false)
+	table.AppendBulk(data)
+	table.Render()
+	return tableString.String()
 }
 
 func defineResultColumnWidths(execResult policy.ExecutionResult) string {
