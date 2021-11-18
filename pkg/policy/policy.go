@@ -1,8 +1,6 @@
-package config
+package policy
 
-type PolicyWrapper struct {
-	Policies []*Policy `hcl:"policy,block"`
-}
+type Policies []*Policy
 
 type Policy struct {
 	Name        string         `hcl:"name,label"`
@@ -22,10 +20,10 @@ type View struct {
 }
 
 type Configuration struct {
-	Providers []*PolicyProvider `hcl:"provider,block"`
+	Providers []*Provider `hcl:"provider,block"`
 }
 
-type PolicyProvider struct {
+type Provider struct {
 	Type    string `hcl:"type,label"`
 	Version string `hcl:"version,optional"`
 }

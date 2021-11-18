@@ -15,6 +15,7 @@ import (
 
 var emojiStatus = map[string]string{
 	ui.StatusOK:         color.GreenString("✓"),
+	ui.StatusInfo:       "📋",
 	ui.StatusError:      color.RedString("❌"),
 	ui.StatusWarn:       "⚠️",
 	ui.StatusInProgress: "⌛",
@@ -29,7 +30,12 @@ type Bar struct {
 }
 
 func (b *Bar) SetTotal(total int64, triggerComplete bool) {
+	b.Total = total
 	b.b.SetTotal(total, triggerComplete)
+}
+
+func (b *Bar) Done() {
+	b.b.Abort(false)
 }
 
 type Progress struct {
@@ -175,6 +181,7 @@ func (u *Progress) MarkAllDone() {
 		b.SetTotal(b.Total, true)
 	}
 }
+
 func defaultStatusUpdater(u *Bar, _ decor.Statistics) string {
 	return emojiStatus[u.Status]
 }

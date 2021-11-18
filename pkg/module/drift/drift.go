@@ -7,12 +7,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/arn"
-	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -444,77 +438,34 @@ func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string)
 		return "", nil, fmt.Errorf("state files for %s not specified", iacID)
 	}
 
-	ret := make([]*terraform.Data, len(stateFiles))
+	ret := make([]*terraform.Data, 0, len(stateFiles))
 
 	fs := afero.NewOsFs()
-	for idx, fn := range stateFiles {
-		fh, err := fs.Open(fn)
+	for _, fnGlob := range stateFiles {
+		matches, err := afero.Glob(fs, fnGlob)
 		if err != nil {
 			return "", nil, err
 		}
-		data, err := terraform.LoadState(fh)
-		_ = fh.Close()
-		if err != nil {
-			return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+		for _, fn := range matches {
+			fh, err := fs.Open(fn)
+			if err != nil {
+				return "", nil, err
+			}
+			data, err := terraform.LoadState(fh)
+			_ = fh.Close()
+			if err != nil {
+				return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+			}
+
+			ret = append(ret, data)
 		}
-		ret[idx] = data
 	}
+
+	if len(ret) == 0 {
+		return "", nil, fmt.Errorf("no matches for specified %s state patterns", iacID)
+	}
+
 	return iacTerraform, ret, nil
-}
-
-func loadIACStatesFromS3(_, bucket string, keys []string, region, roleARN string) (interface{}, error) {
-	if region == "" {
-		if reg, err := s3manager.GetBucketRegion(
-			context.Background(),
-			session.Must(session.NewSession()),
-			bucket,
-			"us-east-1",
-		); err != nil {
-			return nil, err
-		} else {
-			region = reg
-		}
-	}
-
-	sess, err := session.NewSessionWithOptions(session.Options{
-		Config: aws.Config{
-			Region: aws.String(region),
-		},
-		SharedConfigState: session.SharedConfigEnable,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	awsCfg := &aws.Config{}
-	if roleARN != "" {
-		parsedArn, err := arn.Parse(roleARN)
-		if err != nil {
-			return nil, err
-		}
-		creds := stscreds.NewCredentials(sess, parsedArn.String())
-		awsCfg.Credentials = creds
-	}
-	svc := s3.New(sess, awsCfg)
-
-	ret := make([]*terraform.Data, len(keys))
-	for idx, key := range keys {
-		obj, err := svc.GetObject(&s3.GetObjectInput{
-			Bucket: aws.String(bucket),
-			Key:    aws.String(key),
-		})
-		if err != nil {
-			return nil, err
-		}
-		data, err := terraform.LoadState(obj.Body)
-		_ = obj.Body.Close()
-		if err != nil {
-			return nil, fmt.Errorf("parse %s: %w", key, err)
-		}
-		ret[idx] = data
-	}
-
-	return ret, nil
 }
 
 // Make sure we satisfy the interface

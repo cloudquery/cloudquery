@@ -1,161 +1,149 @@
 package policy
 
 import (
-	"context"
-	"io/ioutil"
-	"os"
-	"path/filepath"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/file"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
-func TestManagerImpl_DownloadPolicy(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "TestManagerImpl_DownloadPolicy")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmpDir)
-
-	m := NewManager(tmpDir, nil, hclog.New(&hclog.LoggerOptions{}))
-
-	cases := []struct {
-		Name           string
-		PolicyPath     string
-		RepositoryPath string
+func TestParseRemotePolicySource(t *testing.T) {
+	tests := []struct {
+		name      string
+		policy    *config.Policy
+		expected  *RemotePolicy
+		wantErr   bool
+		errString string
 	}{
 		{
-			Name:           "policy_hub_policy",
-			PolicyPath:     "cloudquery/cq-policy-core",
-			RepositoryPath: "test",
+			"repository with .git suffix and version",
+			&config.Policy{
+				Type:    config.Remote,
+				Source:  "https://github.com/cloudquery/cloudquery.git",
+				Version: "0.0.1",
+			},
+			&RemotePolicy{
+				SourceControl: "https://github.com/",
+				Organization:  "cloudquery",
+				Repository:    "cloudquery",
+				Version:       "0.0.1",
+			},
+			false,
+			"",
 		},
 		{
-			Name:       "private_policy_main_branch",
-			PolicyPath: "michelvocks/my-cq-policy",
+			"repository with .git suffix and no version",
+			&config.Policy{
+				Type:   config.Remote,
+				Source: "https://github.com/cloudquery/cloudquery.git",
+			},
+			&RemotePolicy{
+				SourceControl: "https://github.com/",
+				Organization:  "cloudquery",
+				Repository:    "cloudquery",
+				Version:       "",
+			},
+			false,
+			"",
 		},
 		{
-			Name:       "private_policy_master_branch",
-			PolicyPath: "michelvocks/cq-test-policy",
+			"repository without .git suffix and version",
+			&config.Policy{
+				Type:    config.Remote,
+				Source:  "https://github.com/cloudquery/cloudquery",
+				Version: "0.0.1",
+			},
+			&RemotePolicy{
+				SourceControl: "https://github.com/",
+				Organization:  "cloudquery",
+				Repository:    "cloudquery",
+				Version:       "0.0.1",
+			},
+			false,
+			"",
+		},
+		{
+			"repository without .git suffix and no version",
+			&config.Policy{
+				Type:   config.Remote,
+				Source: "https://github.com/cloudquery/cloudquery",
+			},
+			&RemotePolicy{
+				SourceControl: "https://github.com/",
+				Organization:  "cloudquery",
+				Repository:    "cloudquery",
+			},
+			false,
+			"",
+		},
+		{
+			"repository without .git suffix and username",
+			&config.Policy{
+				Type:    config.Remote,
+				Source:  "https://cq:cq@github.com/cloudquery/cloudquery",
+				Version: "0.0.1",
+			},
+			&RemotePolicy{
+				SourceControl: "https://cq:cq@github.com/",
+				Organization:  "cloudquery",
+				Repository:    "cloudquery",
+				Version:       "0.0.1",
+			},
+			false,
+			"",
+		},
+		{
+			"repository with .git suffix and wrong path 1",
+			&config.Policy{
+				Type:    config.Remote,
+				Source:  "https://cq:cq@github.com/cloudquery/cloudquery/cloud",
+				Version: "0.0.1",
+			},
+			nil,
+			true,
+			"cloud not parse policy source url",
+		},
+		{
+			"repository with .git suffix and wrong path 2",
+			&config.Policy{
+				Type:    config.Remote,
+				Source:  "https://cq:cq@github.com/cloudquer",
+				Version: "0.0.1",
+			},
+			nil,
+			true,
+			"cloud not parse policy source url",
+		},
+		{
+			"repository from hub",
+			&config.Policy{
+				Type:    config.Hub,
+				Source:  "aws-cis-1.2",
+				Version: "0.0.1",
+			},
+			&RemotePolicy{
+				SourceControl: "https://github.com/",
+				Organization:  "cloudquery-policies",
+				Repository:    "aws-cis-1.2",
+				Version:       "0.0.1",
+			},
+			false,
+			"",
 		},
 	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 
-	osFs := file.NewOsFs()
-	for _, tc := range cases {
-		t.Run(tc.Name, func(t *testing.T) {
-			policyPath := []string{tc.PolicyPath, tc.RepositoryPath}
-			p, err := m.ParsePolicyHubPath(policyPath, "")
-			assert.NoError(t, err)
+			remotePolicy, err := ParsePolicyFromSource(tt.policy)
 
-			// Download policy
-			err = m.DownloadPolicy(context.Background(), p)
-			assert.NoError(t, err)
-
-			// Make sure downloaded policy folder exists
-			policyFolder := filepath.Join(tmpDir, p.Organization, p.Repository)
-			_, err = osFs.Stat(policyFolder)
-			assert.NoError(t, err)
-
-			// Download policy again (which should always work)
-			err = m.DownloadPolicy(context.Background(), p)
-			assert.NoError(t, err)
-		})
-	}
-}
-
-func TestManagerImpl_RunPolicy(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "TestManagerImpl_RunPolicy")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmpDir)
-
-	// Setup database
-	pool, tearDownFunc := setupDatabase(t, "test_policy_table")
-	defer tearDownFunc(t)
-
-	m := NewManager(tmpDir, pool, hclog.New(&hclog.LoggerOptions{}))
-
-	cases := []struct {
-		Name             string
-		PolicyPath       string
-		RepositoryPath   string
-		ProviderVersions map[string]*version.Version
-		ErrorString      string
-	}{
-		{
-			Name:           "policy_hub_policy",
-			PolicyPath:     "cloudquery/cq-policy-core",
-			RepositoryPath: "test",
-			ProviderVersions: map[string]*version.Version{
-				"aws": version.Must(version.NewVersion("v1.0")),
-			},
-		},
-		{
-			Name:       "private_policy_main_branch",
-			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
-			ProviderVersions: map[string]*version.Version{
-				"aws": version.Must(version.NewVersion("1.0.0")),
-			},
-		},
-		{
-			Name:       "private_policy_query_in_file",
-			PolicyPath: "fdistorted/my-cq-policy@v0.0.4",
-			ProviderVersions: map[string]*version.Version{
-				"aws": version.Must(version.NewVersion("1.0.0")),
-			},
-		},
-		{
-			Name:       "too old provider",
-			PolicyPath: "michelvocks/my-cq-policy@v0.0.2",
-			ProviderVersions: map[string]*version.Version{
-				"aws": version.Must(version.NewVersion("0.5")),
-			},
-			ErrorString: "test-policy: provider aws does not satisfy version requirement >= 1.0",
-		},
-		{
-			Name:        "provider version unknown",
-			PolicyPath:  "michelvocks/my-cq-policy@v0.0.2",
-			ErrorString: "test-policy: provider aws version is unknown",
-		},
-	}
-
-	for _, tc := range cases {
-		t.Run(tc.Name, func(t *testing.T) {
-			policyHubPath := []string{tc.PolicyPath, tc.RepositoryPath}
-			p, err := m.ParsePolicyHubPath(policyHubPath, "")
-			assert.NoError(t, err)
-
-			if err := m.DownloadPolicy(context.Background(), p); err != nil {
-				t.Fatal(err)
+			if tt.wantErr != (err != nil) {
+				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, err != nil, err)
 			}
-
-			results, err := m.RunPolicy(context.Background(), &ExecuteRequest{
-				Policy:           p,
-				UpdateCallback:   nil,
-				StopOnFailure:    true,
-				ProviderVersions: tc.ProviderVersions,
-			})
-			if tc.ErrorString == "" {
-				require.NoError(t, err)
-				assert.True(t, results.Passed)
-
-				// Make sure all expected keys are contained
-				expectedKeys := []string{
-					"test-policy/top-level-query",
-					"test-policy/sub-policy-1/sub-level-query",
-					"test-policy/sub-policy-2/sub-level-query",
-				}
-				for k := range results.Results {
-					assert.Contains(t, expectedKeys, k)
-				}
-			} else {
-				require.Error(t, err)
-				assert.Equal(t, tc.ErrorString, err.Error())
+			if tt.errString != "" {
+				assert.Equal(t, err.Error(), tt.errString)
 			}
+			assert.Equal(t, tt.expected, remotePolicy)
 		})
 	}
 }

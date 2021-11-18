@@ -11,6 +11,7 @@ const (
 	StatusError      = "error"
 	StatusWarn       = "warn"
 	StatusInProgress = "in_progress"
+	StatusInfo       = "info"
 )
 
 // Progress is used to provide an updating progress to the user. The progress

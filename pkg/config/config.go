@@ -7,10 +7,21 @@ import (
 	"github.com/hashicorp/hcl/v2"
 )
 
+type Providers []*Provider
+
+func (pp Providers) Names() []string {
+	pNames := make([]string, len(pp))
+	for i, p := range pp {
+		pNames[i] = p.Name
+	}
+	return pNames
+}
+
 type Config struct {
-	CloudQuery CloudQuery  `hcl:"cloudquery,block"`
-	Providers  []*Provider `hcl:"provider,block"`
-	Modules    hcl.Body    `hcl:"modules,block"`
+	CloudQuery CloudQuery `hcl:"cloudquery,block"`
+	Providers  Providers  `hcl:"provider,block"`
+	Policies   []*Policy  `hcl:"policy,block"`
+	Modules    hcl.Body   `hcl:"modules,block"`
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {
@@ -63,6 +74,10 @@ var configFileSchema = &hcl.BodySchema{
 		},
 		{
 			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type:       "policy",
 			LabelNames: []string{"name"},
 		},
 		{
