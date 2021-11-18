@@ -548,6 +548,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
 			case res.Type == policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				ui.ColorizedOutput(ui.ColorInfo, "\n")
 				outputTable := createOutputTable(res)
 				for _, row := range strings.Split(outputTable, "\n") {
 					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
@@ -557,8 +558,11 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
 				ui.ColorizedOutput(ui.ColorWarning, "\n")
 				queryOutput := findOutput(res.Columns, res.Data)
-				if queryOutput != "" {
-					ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], queryOutput)
+				if len(queryOutput) > 0 {
+					for _, output := range queryOutput {
+						ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n\n", emojiStatus[ui.StatusError], output)
+					}
+
 				}
 
 			}
@@ -599,13 +603,14 @@ func defineResultColumnWidths(execResult policy.ExecutionResult) string {
 		}
 	}
 
-	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds\n", maxNameLength, maxDescrLength, 10)
+	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds", maxNameLength, maxDescrLength, 10)
 
 }
 
-func findOutput(columnNames []string, data [][]interface{}) string {
+func findOutput(columnNames []string, data [][]interface{}) []string {
 	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
 	outputKey := ""
+	var outputResources []string
 	for _, key := range outputKeys {
 		for _, column := range columnNames {
 			if key == column {
@@ -616,16 +621,19 @@ func findOutput(columnNames []string, data [][]interface{}) string {
 			break
 		}
 	}
-	if outputKey != "" {
-		for index, column := range columnNames {
-			if column == outputKey {
-				for _, row := range data {
-					return fmt.Sprintf("%v", row[index])
-				}
-			}
+	if outputKey == "" {
+		return []string{}
+	}
+	for index, column := range columnNames {
+		if column != outputKey {
+			continue
+		}
+		for _, row := range data {
+			outputResources = append(outputResources, fmt.Sprintf("%v", row[index]))
 		}
 	}
-	return ""
+
+	return outputResources
 }
 
 func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
