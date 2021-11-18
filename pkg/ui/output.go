@@ -41,4 +41,5 @@ var (
 	ColorSuccessBold  = color.New(color.FgGreen, color.Bold)
 	ColorWarning      = color.New(color.FgYellow)
 	ColorWarningBold  = color.New(color.FgYellow, color.Bold)
+	ColorUnderline    = color.New(color.Underline)
 )

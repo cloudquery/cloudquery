@@ -20,6 +20,7 @@ func (pp Providers) Names() []string {
 type Config struct {
 	CloudQuery CloudQuery `hcl:"cloudquery,block"`
 	Providers  Providers  `hcl:"provider,block"`
+	Policies   []*Policy  `hcl:"policy,block"`
 	Modules    hcl.Body   `hcl:"modules,block"`
 }
 
@@ -73,6 +74,10 @@ var configFileSchema = &hcl.BodySchema{
 		},
 		{
 			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type:       "policy",
 			LabelNames: []string{"name"},
 		},
 		{

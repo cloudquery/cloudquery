@@ -2,11 +2,8 @@ package client
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
-	"os"
 	"path/filepath"
 	"sort"
 	"time"
@@ -17,7 +14,6 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
-	"github.com/spf13/afero"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -89,25 +85,22 @@ func (p ProviderFetchSummary) HasErrors() bool {
 	return false
 }
 
-// PolicyRunRequest is the request used to run a policy.
-type PolicyRunRequest struct {
-	// Args are the given arguments from the policy run command.
-	Args []string
+// PoliciesRunRequest is the request used to run a policy.
+type PoliciesRunRequest struct {
+	// Policies to run
+	Policies []*config.Policy
 
-	// SubPath is the optional sub path for sub policy/query execution only.
-	SubPath string
+	// PolicyName is optional attr to run specific policy
+	PolicyName string
 
-	// Local apth is the given local policy from the run command.
-	LocalPath string
-
-	// OutputPath is the output path for policy execution output.
-	OutputPath string
+	// OutputDir is the output dir for policy execution output.
+	OutputDir string
 
 	// StopOnFailure signals policy execution to stop after first failure.
 	StopOnFailure bool
 
 	// RunCallBack is the callback method that is called after every policy execution.
-	RunCallBack policy.ExecutionCallback
+	RunCallback policy.UpdateCallback
 
 	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
 	SkipVersioning bool
@@ -196,6 +189,8 @@ type Client struct {
 	Manager *plugin.Manager
 	// ModuleManager manages all modules lifecycle
 	ModuleManager module.Manager
+	// ModuleManager manages all modules lifecycle
+	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
 	// pool is a list of connection that are used for policy/query execution
@@ -245,6 +240,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 
 	c.initModules()
+
+	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+
 	return c, nil
 }
 
@@ -561,83 +559,118 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 	return m.DropProvider(ctx, s.ResourceTables)
 }
 
-func (c *Client) DownloadPolicy(ctx context.Context, args []string) error {
+func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.RemotePolicy, error) {
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
 
-	// Parse input args
-	p, err := m.ParsePolicyHubPath(args, "")
+	remotePolicy, err := policy.ParsePolicyFromArgs(args)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	c.Logger.Debug("Parsed policy download input arguments", "policy", p)
-	return m.DownloadPolicy(ctx, p)
+	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
+	if err := c.PolicyManager.DownloadPolicy(ctx, remotePolicy); err != nil {
+		return nil, err
+	}
+	return remotePolicy, nil
 }
 
-func (c *Client) RunPolicy(ctx context.Context, req PolicyRunRequest) error {
-	c.Logger.Info("Running policy", "args", req.Args)
-	m := policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
+	results := make([]*policy.ExecutionResult, 0)
 
-	p := &policy.Policy{}
+	for _, policyConfig := range req.Policies {
+		result, err := c.runPolicy(ctx, policyConfig, req)
 
-	switch {
-	case req.LocalPath != "":
-		c.Logger.Info("Running local policy", "args", req.LocalPath)
-		p.LocalPath = req.LocalPath
-		p.SubPath = req.SubPath
-	default:
-		c.Logger.Info("Running remote policy", "args", req.Args)
-		// Parse input args
-		parsedPolicy, err := m.ParsePolicyHubPath(req.Args, req.SubPath)
-		p = parsedPolicy
+		c.Logger.Debug("Policy %s finished with error: %v", policyConfig.Name, err)
+
 		if err != nil {
-			return err
+			// update the ui with the error
+			if req.RunCallback != nil {
+				req.RunCallback(policy.Update{
+					PolicyName:      policyConfig.Name,
+					Version:         policyConfig.Version,
+					FinishedQueries: 0,
+					QueriesCount:    0,
+					Error:           err.Error(),
+				})
+			}
+
+			// add the execution error to the results
+			results = append(results, &policy.ExecutionResult{
+				PolicyName: policyConfig.Name,
+				Passed:     false,
+				Error:      err.Error(),
+			})
+
+			// if failOnViolation is set, we should stop the execution
+			if req.FailOnViolation {
+				return results, nil
+			}
+			continue
 		}
+
+		results = append(results, result)
 	}
 
-	c.Logger.Debug("Parsed policy run input arguments", "policy", p)
+	return results, nil
+}
+
+func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
+	c.Logger.Info("Loading policy", "args", policyConfig)
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
 	})
+
 	if err != nil {
-		return err
+		return nil, err
 	}
-	output, err := m.RunPolicy(ctx, &policy.ExecuteRequest{
-		Policy:           p,
+
+	execReq := &policy.ExecuteRequest{
+		Policy:           policyConfig,
 		StopOnFailure:    req.StopOnFailure,
 		SkipVersioning:   req.SkipVersioning,
-		UpdateCallback:   req.RunCallBack,
 		ProviderVersions: versions,
-	})
+		UpdateCallback:   req.RunCallback,
+	}
+
+	// load the policy
+	c.Logger.Info("Loading the policy", "args", policyConfig)
+	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
+
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	c.Logger.Info("Running policy", "args", policyConfig)
+
+	result, err := c.PolicyManager.Run(ctx, execReq, policies)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// execution was not finished
+	if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
+		req.RunCallback(policy.Update{
+			PolicyName:      policyConfig.Name,
+			Version:         policyConfig.Version,
+			FinishedQueries: 0,
+			QueriesCount:    0,
+			Error:           "Execution stops",
+		})
 	}
 
 	// Store output in file if requested
-	if req.OutputPath != "" {
-		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			return err
-		}
-		defer func() {
-			_ = f.Close()
-		}()
+	if req.OutputDir != "" {
+		c.Logger.Info("Writing policy to output directory", "args", policyConfig)
+		err = policy.GenerateExecutionResultFile(result, req.OutputDir)
 
-		data, err := json.Marshal(&output)
 		if err != nil {
-			return err
-		}
-		if _, err := f.Write(data); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	if req.FailOnViolation && !output.Passed {
-		return errors.New("policy violations were detected")
-	}
-	return nil
+	return result, nil
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
@@ -719,6 +752,51 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
 	}
 	return providerConfig, nil
+}
+
+func FilterPolicies(args []string, configPolicies []*config.Policy, policyName, subPath string) ([]*config.Policy, error) {
+	var policies []*config.Policy
+
+	if len(args) > 0 {
+		remotePolicy, err := policy.ParsePolicyFromArgs(args)
+		if err != nil {
+			return nil, err
+		}
+		policyConfig, err := remotePolicy.ToPolicyConfig()
+		policyConfig.SubPath = subPath
+		if err != nil {
+			return nil, err
+		}
+		policies = append(policies, policyConfig)
+	} else {
+		policies = configPolicies
+	}
+
+	if len(policies) == 0 {
+		return nil, fmt.Errorf(`
+Could not find policies to run.
+Please add policy to block to your config file.
+`)
+	}
+	policiesToRun := make([]*config.Policy, 0)
+
+	// select policies to run
+	for _, p := range policies {
+		if policyName != "" {
+			// request to run only specific policy
+			if policyName == p.Name {
+				// override subPath if specified
+				if subPath != "" {
+					p.SubPath = subPath
+				}
+				policiesToRun = append(policiesToRun, p)
+				break
+			}
+		}
+		policiesToRun = append(policiesToRun, p)
+	}
+
+	return policiesToRun, nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
