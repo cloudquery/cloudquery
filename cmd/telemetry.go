@@ -18,6 +18,10 @@ func telemetryOpts() []telemetry.Option {
 		opts = append(opts, telemetry.WithDisabled())
 	}
 
+	if viper.GetBool("debug-telemetry") {
+		opts = append(opts, telemetry.WithDebug())
+	}
+
 	if viper.GetBool("inspect-telemetry") {
 		fs := afero.NewOsFs()
 		f, err := fs.Create("cq-telemetry.txt")

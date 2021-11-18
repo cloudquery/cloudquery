@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/afero"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -36,7 +37,7 @@ type Client struct {
 
 	version, commit, buildDate string
 
-	disabled bool
+	debug, disabled bool
 }
 
 type Option func(*Client)
@@ -69,6 +70,12 @@ func WithExporter(w io.WriteCloser) Option {
 		c.setError(err)
 		c.exporter = exp
 		c.closer = w
+	}
+}
+
+func WithDebug() Option {
+	return func(c *Client) {
+		c.debug = true
 	}
 }
 
@@ -152,6 +159,22 @@ func (c *Client) Shutdown(ctx context.Context) {
 			c.logger.Debug("close failed", "error", err)
 		}
 	}
+}
+
+// RecordError should be called on a span to mark it as errored. Error values are not included unless debug mode is on.
+func (c *Client) RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
+	if err == nil {
+		return
+	}
+
+	if c.debug {
+		span.RecordError(err, opts...)
+		span.SetStatus(codes.Error, err.Error())
+		return
+	}
+
+	span.RecordError(fmt.Errorf("error"))
+	span.SetStatus(codes.Error, "error")
 }
 
 func (c *Client) HasError() error {

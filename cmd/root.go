@@ -114,6 +114,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("skip-build-tables", false, "Skip building tables on run, this should only be true if tables already exist.")
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
+	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true telemetry collection will be in debug level")
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
@@ -123,6 +124,7 @@ func init() {
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
 	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
+	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)

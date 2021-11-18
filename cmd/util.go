@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -32,13 +31,13 @@ func handleError(f func(cmd *cobra.Command, args []string) error) func(cmd *cobr
 		// TODO add installed providers/versions to span
 
 		if err := f(cmd, args); err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, err.Error())
-			ender()
-
 			if ee, ok := err.(*console.ExitCodeError); ok {
+				ender() // err is not recorded
 				os.Exit(ee.ExitCode)
 			}
+
+			tele.RecordError(span, err)
+			ender()
 
 			cmd.PrintErrln(err)
 			os.Exit(1)
