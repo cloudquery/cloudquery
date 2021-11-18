@@ -16,12 +16,13 @@ import (
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -32,9 +33,9 @@ type Client struct {
 }
 
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
-	cfg, err := loadConfig(configPath)
-	if err != nil {
-		return nil, err
+	cfg, ok := loadConfig(configPath)
+	if !ok {
+		return nil, fmt.Errorf("")
 	}
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
@@ -463,7 +464,7 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	return fetchProgress, fetchCallback
 }
 
-func loadConfig(path string) (*config.Config, error) {
+func loadConfig(path string) (*config.Config, bool) {
 	parser := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
 	)
@@ -473,9 +474,10 @@ func loadConfig(path string) (*config.Config, error) {
 		for _, d := range diags {
 			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
 		}
-		return nil, fmt.Errorf("bad configuration")
+		// No explicit error string needed, user information is in diags
+		return nil, false
 	}
-	return cfg, nil
+	return cfg, true
 }
 
 func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, failOnViolation bool) (*Progress, policy.UpdateCallback) {

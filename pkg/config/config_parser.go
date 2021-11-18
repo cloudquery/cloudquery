@@ -26,7 +26,6 @@ func (p *Parser) LoadConfigFromJson(name string, data []byte) (*Config, hcl.Diag
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
-
 	body, diags := p.LoadHCLFile(path)
 	if body == nil {
 		return nil, diags
@@ -35,7 +34,6 @@ func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
 }
 
 func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hcl.Diagnostics) {
-
 	existingProviders := make(map[string]bool)
 	config := &Config{}
 
