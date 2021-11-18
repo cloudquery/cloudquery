@@ -70,11 +70,13 @@ func TestFindOutput(t *testing.T) {
 		output  []string
 	}{
 		{
-			name: "no data or matching columns",
+			name:   "no data or matching columns",
+			output: []string{},
 		},
 		{
 			name:    "no data",
 			columns: []string{"arn"},
+			output:  []string{},
 		},
 		{
 			name: "matching data and columns",
