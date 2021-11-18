@@ -126,7 +126,7 @@ func init() {
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging, initTelemetry)
+	cobra.OnInitialize(initConfig, initLogging)
 }
 
 func initConfig() {

@@ -2,14 +2,15 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )
 
-var tele *telemetry.Client
-
-func initTelemetry() {
-	var opts []telemetry.Option
+func telemetryOpts() []telemetry.Option {
+	opts := []telemetry.Option{
+		telemetry.WithVersionInfo(client.Version, Commit, Date),
+	}
 
 	if viper.GetBool("no-telemetry") {
 		opts = append(opts, telemetry.WithDisabled())
@@ -24,5 +25,5 @@ func initTelemetry() {
 		opts = append(opts, telemetry.WithExporter(f))
 	}
 
-	tele = telemetry.New(opts...)
+	return opts
 }

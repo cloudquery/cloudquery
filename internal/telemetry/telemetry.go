@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net"
 	"os"
 	"path/filepath"
 	"time"
@@ -30,6 +31,8 @@ type Client struct {
 	logger hclog.Logger
 	fs     afero.Afero
 	err    error
+
+	version, commit, buildDate string
 
 	disabled bool
 }
@@ -73,7 +76,15 @@ func WithDisabled() Option {
 	}
 }
 
-func New(options ...Option) *Client {
+func WithVersionInfo(version, commit, buildDate string) Option {
+	return func(c *Client) {
+		c.version = version
+		c.commit = commit
+		c.buildDate = buildDate
+	}
+}
+
+func New(ctx context.Context, options ...Option) *Client {
 	c := &Client{
 		fs:     afero.Afero{Fs: afero.NewOsFs()},
 		logger: hclog.NewNullLogger(),
@@ -83,7 +94,7 @@ func New(options ...Option) *Client {
 	}
 
 	if c.ores == nil {
-		c.ores, c.err = c.defaultResource()
+		c.ores, c.err = c.defaultResource(ctx)
 	}
 
 	opts := []trace.TracerProviderOption{
@@ -100,7 +111,7 @@ func New(options ...Option) *Client {
 	if c.exporter != nil {
 		opts = append(opts, trace.WithBatcher(c.exporter)) // could consider using trace.WithSyncer instead for sync (and slow) results
 	} else {
-		exp, err := c.defaultExporter()
+		exp, err := c.defaultExporter(ctx)
 		if err != nil {
 			c.setError(err)
 		} else {
@@ -117,7 +128,7 @@ func (c *Client) Tracer() otrace.Tracer {
 	return c.tp.Tracer("cloudquery.io/internal/telemetry")
 }
 
-func (c *Client) Shutdown() {
+func (c *Client) Shutdown(ctx context.Context) {
 	if err := c.HasError(); err != nil {
 		c.logger.Debug("telemetry error", "error", err)
 	}
@@ -127,7 +138,7 @@ func (c *Client) Shutdown() {
 	}
 
 	if sd, ok := c.tp.(shutdownable); ok {
-		if err := sd.Shutdown(context.Background()); err != nil {
+		if err := sd.Shutdown(ctx); err != nil {
 			c.logger.Debug("shutdown failed", "error", err)
 		}
 	}
@@ -145,14 +156,14 @@ func (c *Client) HasError() error {
 
 func (c *Client) setError(err error) {
 	if err != nil {
-		c.logger.Debug("telemetry error occured", "error", err)
+		c.logger.Debug("telemetry error occurred", "error", err)
 	}
 	if c.err == nil && err != nil {
 		c.err = err
 	}
 }
 
-func (c *Client) defaultResource() (*resource.Resource, error) {
+func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error) {
 	cookieContents, err := c.cookie()
 	if err != nil {
 		c.logger.Debug("cookie failed", "error", err)
@@ -160,14 +171,16 @@ func (c *Client) defaultResource() (*resource.Resource, error) {
 
 	attr := []attribute.KeyValue{
 		semconv.ServiceNameKey.String("cloudquery"),
-		semconv.ServiceVersionKey.String("0.0.0"), // TODO insert release version/commit hash/dirty flag
+		semconv.ServiceVersionKey.String(c.version),
+		attribute.String("commit", c.commit),
+		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", isCI()),
 	}
 	if cookieContents != "" {
 		attr = append(attr, semconv.ServiceInstanceIDKey.String(cookieContents))
 	}
 
-	return resource.New(context.Background(),
+	return resource.New(ctx,
 		resource.WithTelemetrySDK(),
 		resource.WithHost(), // TODO exposes hostname, maybe hash?
 		resource.WithOS(),   // includes os description which has hostname + os version. TODO remove hostname component
@@ -208,16 +221,19 @@ func (c *Client) cookie() (string, error) {
 	return id, nil
 }
 
-func (c *Client) defaultExporter() (trace.SpanExporter, error) {
+func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error) {
 	return otlptracegrpc.New(
-		context.Background(),
-		otlptracegrpc.WithInsecure(),                 // TODO change
+		ctx,
+		otlptracegrpc.WithInsecure(), // TODO change
 		otlptracegrpc.WithEndpoint("localhost:4317"), // TODO change. env var?
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
-		otlptracegrpc.WithDialOption(grpc.WithTimeout(500*time.Millisecond)),
-		//otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
-		//otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500*time.Millisecond),
+		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
+			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
+		})),
+
+		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
+		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
+		otlptracegrpc.WithTimeout(500*time.Millisecond), // This causes the "context deadline exceeded" log on connection failure
 	)
 }
 
