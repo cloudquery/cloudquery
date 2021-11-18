@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
@@ -542,6 +544,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 
 		maxNameLength := 0
 		maxDescrLength := 0
+		// maxColumnWid
 		for _, res := range execResult.Results {
 			if len(res.Name) > maxNameLength {
 				maxNameLength = len(res.Name) + 1
@@ -559,15 +562,47 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
 			case res.Type == policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				tableString := &strings.Builder{}
+				table := tablewriter.NewWriter(tableString)
+				data := make([][]string, 0)
+				for rowIndex := range res.Data {
+					rowData := []string{}
+					for colIndex := range res.Data[rowIndex] {
+						rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
+					}
+					data = append(data, rowData)
+				}
+				table.SetHeader(res.Columns)
+				table.SetRowLine(true)
+				table.AppendBulk(data)
+				table.Render()
+
+				for _, row := range strings.Split(tableString.String(), "\n") {
+					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
+				}
+
 			default:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
 				ui.ColorizedOutput(ui.ColorWarning, "\n")
-				// specific columns can be decided upon later
-				for index, column := range res.Columns {
-					if column == "cq_output" || column == "arn" || column == "id" {
-						for _, row := range res.Data {
-							ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], fmt.Sprintf("%v", row[index]))
-							ui.ColorizedOutput(ui.ColorWarning, "\n")
+				outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+				outputKey := ""
+				for _, key := range outputKeys {
+					for _, column := range res.Columns {
+						if key == column {
+							outputKey = key
+						}
+					}
+					if outputKey != "" {
+						break
+					}
+				}
+				if outputKey != "" {
+					for index, column := range res.Columns {
+						if column == outputKey {
+							for _, row := range res.Data {
+								ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n", emojiStatus[ui.StatusError], fmt.Sprintf("%v", row[index]))
+								ui.ColorizedOutput(ui.ColorWarning, "\n")
+							}
 						}
 					}
 				}
