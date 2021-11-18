@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )
@@ -10,6 +11,7 @@ import (
 func telemetryOpts() []telemetry.Option {
 	opts := []telemetry.Option{
 		telemetry.WithVersionInfo(client.Version, Commit, Date),
+		telemetry.WithLogger(hclog.Default()),
 	}
 
 	if viper.GetBool("no-telemetry") {

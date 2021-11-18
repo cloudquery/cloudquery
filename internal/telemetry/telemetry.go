@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"net"
 	"os"
 	"path/filepath"
 	"time"
@@ -12,14 +11,14 @@ import (
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
-	"google.golang.org/grpc"
 )
 
 type Client struct {
@@ -92,6 +91,8 @@ func New(ctx context.Context, options ...Option) *Client {
 	for _, opt := range options {
 		opt(c)
 	}
+
+	otel.SetErrorHandler(&errorHandler{l: c.logger})
 
 	if c.ores == nil {
 		c.ores, c.err = c.defaultResource(ctx)
@@ -222,18 +223,10 @@ func (c *Client) cookie() (string, error) {
 }
 
 func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error) {
-	return otlptracegrpc.New(
+	return otlptracehttp.New(
 		ctx,
-		otlptracegrpc.WithInsecure(), // TODO change
-		otlptracegrpc.WithEndpoint("localhost:4317"), // TODO change. env var?
-		otlptracegrpc.WithDialOption(grpc.WithBlock()),
-		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
-			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
-		})),
-
-		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
-		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500*time.Millisecond), // This causes the "context deadline exceeded" log on connection failure
+		otlptracehttp.WithEndpoint("localhost:55681"), // TODO change. env var?
+		otlptracehttp.WithTimeout(500*time.Millisecond),
 	)
 }
 
@@ -254,3 +247,11 @@ type shutdownable interface {
 }
 
 var _ shutdownable = (*trace.TracerProvider)(nil)
+
+type errorHandler struct {
+	l hclog.Logger
+}
+
+func (e *errorHandler) Handle(err error) {
+	e.l.Debug("otel error occured", "error", err)
+}
