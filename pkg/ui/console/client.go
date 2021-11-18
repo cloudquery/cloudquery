@@ -545,7 +545,8 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK]+" ", res.Name, res.Description, color.GreenString("passed"))
+				ui.ColorizedOutput(ui.ColorInfo, "\n")
 			case res.Type == policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
 				ui.ColorizedOutput(ui.ColorInfo, "\n")
