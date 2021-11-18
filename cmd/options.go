@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +20,7 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 var optionsCmd = &cobra.Command{
 	Use:   "options",
 	Short: "Prints list of global CLI options (applies to all commands)",
-	Run: handleError(func(cmd *cobra.Command, args []string) error {
+	Run: handleError(func(_ context.Context, cmd *cobra.Command, _ []string) error {
 		return cmd.UsageFunc()(cmd)
 	}),
 }

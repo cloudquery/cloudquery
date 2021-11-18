@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"os"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -11,12 +12,12 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func handleError(f func(cmd *cobra.Command, args []string) error) func(cmd *cobra.Command, args []string) {
+func handleError(f func(context.Context, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
 
 		tracer := tele.Tracer()
-		_, span := tracer.Start(cmd.Context(),
+		spanContext, span := tracer.Start(cmd.Context(),
 			"cli:"+cmd.CommandPath(),
 			trace.WithAttributes(
 				attribute.String("command", cmd.CommandPath()),
@@ -28,9 +29,7 @@ func handleError(f func(cmd *cobra.Command, args []string) error) func(cmd *cobr
 		}
 		defer ender()
 
-		// TODO add installed providers/versions to span
-
-		if err := f(cmd, args); err != nil {
+		if err := f(spanContext, cmd, args); err != nil {
 			if ee, ok := err.(*console.ExitCodeError); ok {
 				ender() // err is not recorded
 				os.Exit(ee.ExitCode)

@@ -44,9 +44,9 @@ var (
 		Use:   "upgrade [providers,...]",
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err
@@ -61,9 +61,9 @@ var (
 		Use:   "downgrade [providers,...]",
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err
@@ -78,12 +78,12 @@ var (
 		Use:   "drop [provider]",
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err
@@ -99,12 +99,12 @@ var (
 		Use:   "build-schema [provider]",
 		Short: providerBuildSchemaHelpMsg,
 		Long:  providerBuildSchemaHelpMsg,
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err
@@ -123,9 +123,9 @@ var (
   # Downloads all providers specified in config.hcl:
   ./cloudquery provider download
 `,
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err

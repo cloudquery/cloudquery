@@ -21,11 +21,11 @@ var fetchCmd = &cobra.Command{
 	`,
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
-	Run: handleError(func(cmd *cobra.Command, args []string) error {
+	Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 		configPath := viper.GetString("configPath")
 		failOnError := viper.GetBool("fail-on-error")
 
-		ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+		ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 		c, err := console.CreateClient(ctx, configPath)
 		if err != nil {
 			return err

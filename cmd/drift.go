@@ -24,9 +24,9 @@ var (
 		Use:   "scan [state files...]",
 		Short: "Scan for drifts",
 		Long:  "Scan for drifts between cloud provider and IaC",
-		Run: handleError(func(cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
 			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
+			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 			c, err := console.CreateClient(ctx, configPath)
 			if err != nil {
 				return err
