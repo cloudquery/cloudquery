@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Allow regex patterns for drift configuration (both local files and s3 bucket + keys  [#281](https://github.com/cloudquery/cloudquery/issues/281)
 * Run provider upgrades before fetch [#283](https://github.com/cloudquery/cloudquery/pull/283)
 * Support running policies from configuration [#269](https://github.com/cloudquery/cloudquery/pull/269) 
-* Added a changelog ::rocket::
+* Added a changelog :rocket:
 
 ## [0.15.11] - 2021-11-18
 
