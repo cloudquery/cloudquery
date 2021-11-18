@@ -14,20 +14,37 @@ func TestDefineResultColumnWidths(t *testing.T) {
 		output string
 	}{
 		{
-			name:   "no data or matching columns",
+			name:   "no description or name",
 			output: "\t%s  %-0s %-0s %10s",
+		}, {
+			name: "Only Description",
+			data: []*policy.QueryResult{
+				{Description: "test"},
+			},
+			output: "\t%s  %-0s %-5s %10s",
 		},
 		{
-			name:   "no data",
-			output: "\t%s  %-0s %-0s %10s",
+			name: "Only Name",
+			data: []*policy.QueryResult{
+				{Name: "test"},
+			},
+			output: "\t%s  %-5s %-0s %10s",
 		},
 		{
-			name:   "matching data and columns",
-			output: "\t%s  %-0s %-0s %10s",
+			name: "Multiple Names",
+			data: []*policy.QueryResult{
+				{Name: "test"},
+				{Name: "test-test-test"},
+			},
+			output: "\t%s  %-15s %-0s %10s",
 		},
 		{
-			name:   "matching data and multiple columns",
-			output: "\t%s  %-0s %-0s %10s",
+			name: "Multiple Descriptions",
+			data: []*policy.QueryResult{
+				{Description: "test"},
+				{Description: "test-test-test"},
+			},
+			output: "\t%s  %-0s %-15s %10s",
 		},
 	}
 
