@@ -253,5 +253,5 @@ type errorHandler struct {
 }
 
 func (e *errorHandler) Handle(err error) {
-	e.l.Debug("otel error occured", "error", err)
+	e.l.Debug("otel error occurred", "error", err)
 }
