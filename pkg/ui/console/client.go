@@ -35,7 +35,8 @@ type Client struct {
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
-		return nil, fmt.Errorf("")
+		// No explicit error string needed, user information is in diags
+		return nil, HandledError{}
 	}
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
@@ -474,7 +475,6 @@ func loadConfig(path string) (*config.Config, bool) {
 		for _, d := range diags {
 			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
 		}
-		// No explicit error string needed, user information is in diags
 		return nil, false
 	}
 	return cfg, true

@@ -17,6 +17,12 @@ type ModuleCallRequest struct {
 	OutputPath string
 }
 
+type HandledError struct{}
+
+func (HandledError) Error() string {
+	return ""
+}
+
 type ExitCodeError struct {
 	ExitCode int
 }
