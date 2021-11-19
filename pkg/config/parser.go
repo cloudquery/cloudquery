@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"io/fs"
 	"path/filepath"
 	"strings"
 
@@ -84,11 +85,14 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 	src, err := p.fs.ReadFile(path)
 
 	if err != nil {
+		if e, ok := err.(*fs.PathError); ok {
+			err = fmt.Errorf(e.Err.Error())
+		}
 		return nil, hcl.Diagnostics{
 			{
 				Severity: hcl.DiagError,
 				Summary:  "Failed to read file",
-				Detail:   fmt.Sprintf("The file %q could not be read.", path),
+				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
 			},
 		}
 	}
