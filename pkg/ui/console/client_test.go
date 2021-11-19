@@ -1,11 +1,57 @@
 package console
 
 import (
+	"context"
+	"io/ioutil"
+	"path/filepath"
+	"runtime"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/fergusstrange/embedded-postgres"
 	"github.com/google/go-cmp/cmp"
+
+	"github.com/cloudquery/cloudquery/pkg/policy"
 )
+
+func TestCreateClient(t *testing.T) {
+	database := embeddedpostgres.NewDatabase(embeddedpostgres.DefaultConfig().Logger(ioutil.Discard))
+	if err := database.Start(); err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := database.Stop(); err != nil {
+			t.Fatal(err)
+		}
+	}()
+
+	_, filename, _, _ := runtime.Caller(0)
+	fixtures := filepath.Join(filepath.Dir(filename), "fixtures")
+
+	tests := []struct {
+		name       string
+		configPath string
+		wantErr    bool
+	}{
+		{
+			name:       "valid",
+			configPath: filepath.Join(fixtures, "config.yaml"),
+			wantErr:    false,
+		},
+		{
+			name:       "invalid config",
+			configPath: filepath.Join(fixtures, "boom.yaml"),
+			wantErr:    true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if _, err := CreateClient(context.Background(), tt.configPath); (err != nil) != tt.wantErr {
+				t.Errorf("CreateClient() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+		})
+	}
+}
 
 func TestDefineResultColumnWidths(t *testing.T) {
 	var tests = []struct {
