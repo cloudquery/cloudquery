@@ -2,28 +2,16 @@ package console
 
 import (
 	"context"
-	"io/ioutil"
 	"path/filepath"
 	"runtime"
 	"testing"
 
-	embeddedpostgres "github.com/fergusstrange/embedded-postgres"
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 )
 
 func TestCreateClient(t *testing.T) {
-	database := embeddedpostgres.NewDatabase(embeddedpostgres.DefaultConfig().Version(embeddedpostgres.V13).Port(15432).Logger(ioutil.Discard))
-	if err := database.Start(); err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		if err := database.Stop(); err != nil {
-			t.Fatal(err)
-		}
-	}()
-
 	_, filename, _, _ := runtime.Caller(0)
 	fixtures := filepath.Join(filepath.Dir(filename), "fixtures")
 
