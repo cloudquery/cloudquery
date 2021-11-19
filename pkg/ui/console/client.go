@@ -36,7 +36,7 @@ func CreateClient(ctx context.Context, configPath string, opts ...client.Option)
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		// No explicit error string needed, user information is in diags
-		return nil, HandledError{}
+		return nil, &ExitCodeError{ExitCode: 1}
 	}
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }

@@ -15,9 +15,7 @@ func handleError(f func(cmd *cobra.Command, args []string) error) func(cmd *cobr
 				os.Exit(ee.ExitCode)
 			}
 
-			if _, ok := err.(console.HandledError); !ok {
-				cmd.PrintErrln(err)
-			}
+			cmd.PrintErrln(err)
 			os.Exit(1)
 		}
 	}
