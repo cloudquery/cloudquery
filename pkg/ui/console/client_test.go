@@ -7,14 +7,14 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/fergusstrange/embedded-postgres"
+	embeddedpostgres "github.com/fergusstrange/embedded-postgres"
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 )
 
 func TestCreateClient(t *testing.T) {
-	database := embeddedpostgres.NewDatabase(embeddedpostgres.DefaultConfig().Logger(ioutil.Discard))
+	database := embeddedpostgres.NewDatabase(embeddedpostgres.DefaultConfig().Version(embeddedpostgres.V13).Port(15432).Logger(ioutil.Discard))
 	if err := database.Start(); err != nil {
 		t.Fatal(err)
 	}
