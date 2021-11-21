@@ -5,21 +5,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
+
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -30,9 +33,10 @@ type Client struct {
 }
 
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
-	cfg, err := loadConfig(configPath)
-	if err != nil {
-		return nil, err
+	cfg, ok := loadConfig(configPath)
+	if !ok {
+		// No explicit error string needed, user information is in diags
+		return nil, &ExitCodeError{ExitCode: 1}
 	}
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
@@ -461,7 +465,7 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	return fetchProgress, fetchCallback
 }
 
-func loadConfig(path string) (*config.Config, error) {
+func loadConfig(path string) (*config.Config, bool) {
 	parser := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
 	)
@@ -471,9 +475,9 @@ func loadConfig(path string) (*config.Config, error) {
 		for _, d := range diags {
 			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
 		}
-		return nil, fmt.Errorf("bad configuration")
+		return nil, false
 	}
-	return cfg, nil
+	return cfg, true
 }
 
 func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, failOnViolation bool) (*Progress, policy.UpdateCallback) {
@@ -539,19 +543,100 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
 			}
 		}
-
+		fmtString := defineResultColumnWidths(execResult.Results)
 		for _, res := range execResult.Results {
 			switch {
 			case res.Passed:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusOK], res.Name, res.Description, color.GreenString("passed"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK]+" ", res.Name, res.Description, color.GreenString("passed"))
+				ui.ColorizedOutput(ui.ColorInfo, "\n")
 			case res.Type == policy.ManualQuery:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s  %-10s %-120s %10s\n", emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				ui.ColorizedOutput(ui.ColorInfo, "\n")
+				outputTable := createOutputTable(res)
+				for _, row := range strings.Split(outputTable, "\n") {
+					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
+				}
+
 			default:
-				ui.ColorizedOutput(ui.ColorInfo, "\t%s %-10s %-120s %10s\n", emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
+				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
+				ui.ColorizedOutput(ui.ColorWarning, "\n")
+				queryOutput := findOutput(res.Columns, res.Data)
+				if len(queryOutput) > 0 {
+					for _, output := range queryOutput {
+						ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n\n", emojiStatus[ui.StatusError], output)
+					}
+
+				}
+
 			}
 			ui.ColorizedOutput(ui.ColorWarning, "\n")
 		}
 	}
+}
+
+func createOutputTable(res *policy.QueryResult) string {
+	data := make([][]string, 0)
+	for rowIndex := range res.Data {
+		rowData := []string{}
+		for colIndex := range res.Data[rowIndex] {
+			rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
+		}
+		data = append(data, rowData)
+	}
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	table.SetHeader(res.Columns)
+	table.SetRowLine(true)
+	table.SetAutoFormatHeaders(false)
+	table.AppendBulk(data)
+	table.Render()
+	return tableString.String()
+}
+
+func defineResultColumnWidths(execResult []*policy.QueryResult) string {
+	maxNameLength := 0
+	maxDescrLength := 0
+	// maxColumnWid
+	for _, res := range execResult {
+		if len(res.Name) > maxNameLength {
+			maxNameLength = len(res.Name) + 1
+		}
+		if len(res.Description) > maxDescrLength {
+			maxDescrLength = len(res.Description) + 1
+		}
+	}
+
+	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds", maxNameLength, maxDescrLength, 10)
+
+}
+
+func findOutput(columnNames []string, data [][]interface{}) []string {
+	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+	outputKey := ""
+	outputResources := make([]string, 0)
+	for _, key := range outputKeys {
+		for _, column := range columnNames {
+			if key == column {
+				outputKey = key
+			}
+		}
+		if outputKey != "" {
+			break
+		}
+	}
+	if outputKey == "" {
+		return []string{}
+	}
+	for index, column := range columnNames {
+		if column != outputKey {
+			continue
+		}
+		for _, row := range data {
+			outputResources = append(outputResources, fmt.Sprintf("%v", row[index]))
+		}
+	}
+
+	return outputResources
 }
 
 func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {

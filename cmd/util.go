@@ -3,8 +3,9 @@ package cmd
 import (
 	"os"
 
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
+
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 func handleError(f func(cmd *cobra.Command, args []string) error) func(cmd *cobra.Command, args []string) {
