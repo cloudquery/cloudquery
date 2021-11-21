@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support running policies from configuration [#269](https://github.com/cloudquery/cloudquery/pull/269) 
 * Added a changelog :rocket:
 
+### :spider: Fixed
+* Fixed Confusing Error when config.hcl doesn't exist [#277](https://github.com/cloudquery/cloudquery/issues/277)
+
 ## [0.15.11] - 2021-11-18
 
 Base version at which changelog was introduced.
