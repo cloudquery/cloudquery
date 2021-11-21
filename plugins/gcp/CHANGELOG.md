@@ -5,6 +5,15 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.0] - 2021-11-21
+###### SDK Version: 0.5.0
+
+### :rocket: Added
+* Add support for error classifier in GCP. [#78](https://github.com/cloudquery/cq-provider-gcp/issues/78)
+
+### :gear: Changed
+* Upgraded to SDK Version [v0.5.0](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v050---2021-10-21)
+
 ## [v0.4.8] - 2021-10-07
 ###### SDK Version: v0.4.9
 
