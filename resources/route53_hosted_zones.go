@@ -482,19 +482,31 @@ func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.T
 	return nil
 }
 func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	hz := resource.Item.(Route53HostedZoneWrapper)
+	hz, ok := resource.Item.(Route53HostedZoneWrapper)
+	if !ok {
+		return fmt.Errorf("not route53 hosted zone")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("route53", "hostedzone", *hz.Id, "", ""))
 }
 func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ql := resource.Item.(types.QueryLoggingConfig)
+	ql, ok := resource.Item.(types.QueryLoggingConfig)
+	if !ok {
+		return fmt.Errorf("not route53 query logging config")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("route53", "queryloggingconfig", *ql.Id, "", ""))
 }
 func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	tp := resource.Item.(types.TrafficPolicyInstance)
+	tp, ok := resource.Item.(types.TrafficPolicyInstance)
+	if !ok {
+		return fmt.Errorf("not route53 traffic policy instance")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("route53", "trafficpolicyinstance", *tp.Id, "", ""))
 }
 func resolveRoute53HostedZoneVpcArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	vpc := resource.Item.(types.VPC)
+	vpc, ok := resource.Item.(types.VPC)
+	if !ok {
+		return fmt.Errorf("not ec2 vpc")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "vpc", *vpc.VPCId, cl.Region, cl.AccountID))
 }

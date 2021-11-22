@@ -309,6 +309,9 @@ type Route53HealthCheckWrapper struct {
 }
 
 func resolveRoute53HealthChecksArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	hc := resource.Item.(Route53HealthCheckWrapper)
+	hc, ok := resource.Item.(Route53HealthCheckWrapper)
+	if !ok {
+		return fmt.Errorf("not route53 health check")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("route53", "healthcheck", *hc.Id, "", ""))
 }

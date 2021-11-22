@@ -33,6 +33,12 @@ func Ec2SecurityGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the security group",
+				Type:        schema.TypeString,
+				Resolver:    resolveSGArn,
+			},
+			{
 				Name:        "description",
 				Description: "A description of the security group.",
 				Type:        schema.TypeString,
@@ -474,4 +480,13 @@ func fetchEc2SecurityGroupIpPermissionsEgressUserIdGroupPairs(ctx context.Contex
 	}
 	res <- securityGroupIpPermissionEgress.UserIdGroupPairs
 	return nil
+}
+
+func resolveSGArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	sg, ok := resource.Item.(types.SecurityGroup)
+	if !ok {
+		return fmt.Errorf("not ec2 security group")
+	}
+	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "security-group", *sg.GroupId, cl.Region, cl.AccountID))
 }

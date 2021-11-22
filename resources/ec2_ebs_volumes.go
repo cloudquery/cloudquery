@@ -176,6 +176,9 @@ func fetchEc2EbsVolumeAttachments(_ context.Context, _ schema.ClientMeta, parent
 
 func resolveEbsVolumeArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	ebs := resource.Item.(types.Volume)
+	ebs, ok := resource.Item.(types.Volume)
+	if !ok {
+		return fmt.Errorf("not ec2 ebs volume")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "volume", *ebs.VolumeId, cl.Region, cl.AccountID))
 }
