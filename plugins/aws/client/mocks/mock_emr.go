@@ -55,6 +55,26 @@ func (mr *MockEmrClientMockRecorder) DescribeCluster(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCluster", reflect.TypeOf((*MockEmrClient)(nil).DescribeCluster), varargs...)
 }
 
+// GetBlockPublicAccessConfiguration mocks base method.
+func (m *MockEmrClient) GetBlockPublicAccessConfiguration(arg0 context.Context, arg1 *emr.GetBlockPublicAccessConfigurationInput, arg2 ...func(*emr.Options)) (*emr.GetBlockPublicAccessConfigurationOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBlockPublicAccessConfiguration", varargs...)
+	ret0, _ := ret[0].(*emr.GetBlockPublicAccessConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBlockPublicAccessConfiguration indicates an expected call of GetBlockPublicAccessConfiguration.
+func (mr *MockEmrClientMockRecorder) GetBlockPublicAccessConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockPublicAccessConfiguration", reflect.TypeOf((*MockEmrClient)(nil).GetBlockPublicAccessConfiguration), varargs...)
+}
+
 // ListClusters mocks base method.
 func (m *MockEmrClient) ListClusters(arg0 context.Context, arg1 *emr.ListClustersInput, arg2 ...func(*emr.Options)) (*emr.ListClustersOutput, error) {
 	m.ctrl.T.Helper()

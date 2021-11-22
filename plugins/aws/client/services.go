@@ -208,8 +208,9 @@ type ElbV1Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_emr.go . EmrClient
 type EmrClient interface {
-	ListClusters(ctx context.Context, params *emr.ListClustersInput, optFns ...func(*emr.Options)) (*emr.ListClustersOutput, error)
 	DescribeCluster(ctx context.Context, params *emr.DescribeClusterInput, optFns ...func(*emr.Options)) (*emr.DescribeClusterOutput, error)
+	GetBlockPublicAccessConfiguration(ctx context.Context, params *emr.GetBlockPublicAccessConfigurationInput, optFns ...func(*emr.Options)) (*emr.GetBlockPublicAccessConfigurationOutput, error)
+	ListClusters(ctx context.Context, params *emr.ListClustersInput, optFns ...func(*emr.Options)) (*emr.ListClustersOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_fsx.go . FsxClient

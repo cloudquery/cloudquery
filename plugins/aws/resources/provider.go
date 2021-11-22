@@ -73,6 +73,7 @@ func Provider() *provider.Provider {
 			"elbv2.load_balancers":                  Elbv2LoadBalancers(),
 			"elbv2.target_groups":                   Elbv2TargetGroups(),
 			"emr.clusters":                          EmrClusters(),
+			"emr.block_public_access_configs":       EmrBlockPublicAccessConfigs(),
 			"fsx.backups":                           FsxBackups(),
 			"iam.accounts":                          IamAccounts(),
 			"iam.groups":                            IamGroups(),
