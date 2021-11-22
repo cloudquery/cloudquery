@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -69,6 +70,9 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func resolveRoute53DelegationSetsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	dl := resource.Item.(types.DelegationSet)
+	dl, ok := resource.Item.(types.DelegationSet)
+	if !ok {
+		return fmt.Errorf("not route53 delegation set")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("route53", "delegationset", *dl.Id, "", ""))
 }

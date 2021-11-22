@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 
@@ -88,6 +89,10 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	cfg := resource.Item.(types.ConfigurationRecorder)
+	cfg, ok := resource.Item.(types.ConfigurationRecorder)
+	if !ok {
+		return fmt.Errorf("not config config recorder")
+	}
 	return resource.Set(c.Name, client.GenerateResourceARN("config", "config-recorder", *cfg.Name, cl.Region, cl.AccountID))
+
 }
