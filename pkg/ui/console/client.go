@@ -3,6 +3,7 @@ package console
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -292,7 +293,7 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	for _, p := range providers {
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {

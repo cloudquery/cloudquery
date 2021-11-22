@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"path/filepath"
@@ -28,6 +29,10 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+)
+
+var (
+	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -494,7 +499,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 		return err
 	}
 	if s.Migrations == nil {
-		return fmt.Errorf("provider doesn't support migrations")
+		return ErrMigrationsNotSupported
 	}
 	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
 	if err != nil {
