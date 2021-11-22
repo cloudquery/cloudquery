@@ -2,7 +2,9 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"sort"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/rs/zerolog/log"
@@ -82,7 +84,13 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 		m.providers[providerName] = details
 		traceData[i] = providerName + "@" + details.Version
 	}
-	trace.SpanFromContext(ctx).SetAttributes(attribute.StringSlice("providers", traceData))
+
+	sort.Strings(traceData)
+	b, _ := json.Marshal(traceData)
+	trace.SpanFromContext(ctx).SetAttributes(
+		attribute.StringSlice("providers", traceData),
+		attribute.String("provider_list", string(b)),
+	)
 
 	return nil
 }
