@@ -22,9 +22,12 @@ func handleError(f func(context.Context, *cobra.Command, []string) error) func(c
 			trace.WithAttributes(
 				attribute.String("command", cmd.CommandPath()),
 			),
+			trace.WithSpanKind(trace.SpanKindServer),
 		)
 		ender := func() {
-			span.End()
+			span.End(
+				trace.WithStackTrace(false),
+			)
 			tele.Shutdown(cmd.Context())
 		}
 		defer ender()

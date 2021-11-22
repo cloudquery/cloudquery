@@ -65,7 +65,6 @@ func WithExporter(w io.WriteCloser) Option {
 		exp, err := stdouttrace.New(
 			stdouttrace.WithWriter(w),
 			stdouttrace.WithPrettyPrint(),
-			stdouttrace.WithoutTimestamps(),
 		)
 		c.setError(err)
 		c.exporter = exp
