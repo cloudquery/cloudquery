@@ -3,6 +3,8 @@ package cmd
 import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+
 	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -24,11 +26,13 @@ func telemetryOpts() []telemetry.Option {
 	}
 
 	if viper.GetBool("inspect-telemetry") {
+		const fn = "cq-telemetry.txt"
 		fs := afero.NewOsFs()
-		f, err := fs.Create("cq-telemetry.txt")
+		f, err := fs.Create(fn)
 		if err != nil {
 			panic(err)
 		}
+		ui.ColorizedOutput(ui.ColorInfo, "Created %s file locally\n", fn)
 		opts = append(opts, telemetry.WithExporter(f))
 	}
 
