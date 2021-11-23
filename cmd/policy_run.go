@@ -23,7 +23,7 @@ var (
   cloudquery policy run --policy my_aws_policy
 
   # See https://hub.cloudquery.io for additional policies.`,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.RunPolicies(ctx, args, policyName, outputDir, subPath, stopOnFailure, skipVersioning, failOnViolation, noResults)
 		}),
 	}

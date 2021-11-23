@@ -18,7 +18,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func handleError(f func(context.Context, *console.Client, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
+func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
 
@@ -57,14 +57,23 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 	configPath := viper.GetString("configPath")
 
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-	c, err := console.CreateClient(ctx, configPath)
-	if err != nil {
-		return err
+	var c *console.Client
+
+	switch cmd.Name() {
+	// Don't init console client with these commands
+	case "completion", "options":
+	// No console client initialized
+	default:
+		var err error
+		c, err = console.CreateClient(ctx, configPath)
+		if err != nil {
+			return err
+		}
+		defer c.Client().Close()
 	}
-	defer c.Client().Close()
 
 	if tele.NewCookie() {
-		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/telemetry\n")
+		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/telemetry\n")
 		if ui.IsTerminal() {
 			select {
 			case <-time.After(2 * time.Second):

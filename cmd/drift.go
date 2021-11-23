@@ -20,7 +20,7 @@ var (
 		Use:   "scan [state files...]",
 		Short: "Scan for drifts",
 		Long:  "Scan for drifts between cloud provider and IaC",
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			driftParams.StateFiles = args
 
 			return c.CallModule(ctx, console.ModuleCallRequest{

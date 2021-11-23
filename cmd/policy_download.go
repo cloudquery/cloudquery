@@ -31,7 +31,7 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			_ = c.DownloadPolicy(ctx, args)
 			return nil
 		}),

@@ -40,7 +40,7 @@ var (
 		Use:   "upgrade [providers,...]",
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.UpgradeProviders(ctx, args)
 		}),
 	}
@@ -50,7 +50,7 @@ var (
 		Use:   "downgrade [providers,...]",
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.DowngradeProviders(ctx, args)
 		}),
 	}
@@ -60,7 +60,7 @@ var (
 		Use:   "drop [provider]",
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
@@ -74,7 +74,7 @@ var (
 		Use:   "build-schema [provider]",
 		Short: providerBuildSchemaHelpMsg,
 		Long:  providerBuildSchemaHelpMsg,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
@@ -91,7 +91,7 @@ var (
   # Downloads all providers specified in config.hcl:
   ./cloudquery provider download
 `,
-		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.DownloadProviders(ctx)
 		}),
 	}

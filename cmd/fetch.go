@@ -18,7 +18,7 @@ var fetchCmd = &cobra.Command{
 	`,
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
-	Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+	Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 		failOnError := viper.GetBool("fail-on-error")
 		return c.Fetch(ctx, failOnError)
 	}),

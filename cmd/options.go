@@ -22,7 +22,7 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 var optionsCmd = &cobra.Command{
 	Use:   "options",
 	Short: "Prints list of global CLI options (applies to all commands)",
-	Run: handleError(func(_ context.Context, _ *console.Client, cmd *cobra.Command, _ []string) error {
+	Run: handleCommand(func(_ context.Context, _ *console.Client, cmd *cobra.Command, _ []string) error {
 		return cmd.UsageFunc()(cmd)
 	}),
 }
