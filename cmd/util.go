@@ -59,10 +59,12 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 	var c *console.Client
 
+	delayMessage := ui.IsTerminal()
+
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":
-	// No console client initialized
+		delayMessage = false
 	default:
 		var err error
 		c, err = console.CreateClient(ctx, configPath)
@@ -74,7 +76,7 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 
 	if tele.NewCookie() {
 		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/telemetry\n")
-		if ui.IsTerminal() {
+		if delayMessage {
 			select {
 			case <-time.After(2 * time.Second):
 			case <-ctx.Done():
