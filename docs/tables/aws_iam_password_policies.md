@@ -15,3 +15,4 @@ Contains information about the account password policy.
 |require_numbers|boolean|Specifies whether IAM user passwords must contain at least one numeric character (0 to 9). |
 |require_symbols|boolean|Specifies whether IAM user passwords must contain at least one of the following symbols: ! @ # $ % ^ & * ( ) _ + - = [ ] { } | ' |
 |require_uppercase_characters|boolean|Specifies whether IAM user passwords must contain at least one uppercase character (A to Z). |
+|policy_exists|boolean|Specifies whether IAM user passwords configuration exists|
