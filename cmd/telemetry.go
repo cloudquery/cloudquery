@@ -12,6 +12,7 @@ func telemetryOpts() []telemetry.Option {
 	opts := []telemetry.Option{
 		telemetry.WithVersionInfo(client.Version, Commit, Date),
 		telemetry.WithLogger(hclog.Default()),
+		telemetry.WithEndpoint(viper.GetString("telemetry-endpoint"), viper.GetBool("insecure-telemetry-endpoint")),
 	}
 
 	if viper.GetBool("no-telemetry") {

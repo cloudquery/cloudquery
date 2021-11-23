@@ -56,6 +56,12 @@ type Client struct {
 
 	// true if we created a new user cookie file. This is used to enable the warning message in the console client.
 	newCookie bool
+
+	// endpoint to send data to
+	endpoint string
+
+	// allow insecure connection to endpoint
+	insecureEndpoint bool
 }
 
 type Option func(*Client)
@@ -107,6 +113,13 @@ func WithVersionInfo(version, commit, buildDate string) Option {
 		c.version = version
 		c.commit = commit
 		c.buildDate = buildDate
+	}
+}
+
+func WithEndpoint(endpoint string, insecure bool) Option {
+	return func(c *Client) {
+		c.endpoint = endpoint
+		c.insecureEndpoint = insecure
 	}
 }
 
@@ -281,18 +294,21 @@ func (c *Client) NewCookie() bool {
 
 // defaultExporter creates the default SpanExporter
 func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error) {
-	return otlptracegrpc.New(
-		ctx,
-		otlptracegrpc.WithInsecure(), // TODO change
-		otlptracegrpc.WithEndpoint("localhost:4317"), // TODO change. env var?
+	opts := []otlptracegrpc.Option{
+		otlptracegrpc.WithEndpoint(c.endpoint),
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
 		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
 			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
 		})),
 		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
 		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500*time.Millisecond),
-	)
+		otlptracegrpc.WithTimeout(500 * time.Millisecond),
+	}
+	if c.insecureEndpoint {
+		opts = append(opts, otlptracegrpc.WithInsecure())
+	}
+
+	return otlptracegrpc.New(ctx, opts...)
 }
 
 // isCI determines if we're running under a CI env by checking CI-specific env vars
