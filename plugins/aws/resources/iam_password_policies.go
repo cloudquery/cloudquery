@@ -6,7 +6,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -77,6 +76,11 @@ func IamPasswordPolicies() *schema.Table {
 				Description: "Specifies whether IAM user passwords must contain at least one uppercase character (A to Z). ",
 				Type:        schema.TypeBool,
 			},
+			{
+				Name:        "policy_exists",
+				Description: "Specifies whether IAM user passwords configuration exists",
+				Type:        schema.TypeBool,
+			},
 		},
 	}
 }
@@ -85,18 +89,25 @@ func IamPasswordPolicies() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
-	var passwordPolicies []*types.PasswordPolicy
+	var passwordPolicies []PasswordPolicy
 	var config iam.GetAccountPasswordPolicyInput
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
-			return nil
+		var nse *types.NoSuchEntityException
+		if !errors.As(err, &nse) {
+			return err
 		}
-		return err
+		passwordPolicies = append(passwordPolicies, PasswordPolicy{types.PasswordPolicy{}, false})
+	} else {
+		passwordPolicies = append(passwordPolicies, PasswordPolicy{*response.PasswordPolicy, true})
 	}
-	passwordPolicies = append(passwordPolicies, response.PasswordPolicy)
+
 	res <- passwordPolicies
 	return nil
+}
+
+type PasswordPolicy struct {
+	types.PasswordPolicy
+	PolicyExists bool
 }
