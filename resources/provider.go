@@ -102,6 +102,7 @@ func Provider() *provider.Provider {
 			"route53.reusable_delegation_sets":      Route53ReusableDelegationSets(),
 			"route53.traffic_policies":              Route53TrafficPolicies(),
 			"s3.buckets":                            S3Buckets(),
+			"s3.accounts":                           S3Accounts(),
 			"sns.subscriptions":                     SnsSubscriptions(),
 			"sns.topics":                            SnsTopics(),
 			"sqs.queues":                            SQSQueues(),
