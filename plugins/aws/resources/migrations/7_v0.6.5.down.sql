@@ -1,1 +1,1 @@
-ALTER TABLE "aws_iam_password_policies" DROP COLUMN IF EXISTS policy_exists;
+ALTER TABLE IF EXISTS "aws_iam_password_policies" DROP COLUMN policy_exists;

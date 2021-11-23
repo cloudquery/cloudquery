@@ -1,1 +1,1 @@
-ALTER TABLE "aws_ec2_security_groups" ADD COLUMN IF EXISTS arn text;
+ALTER TABLE IF EXISTS "aws_ec2_security_groups" ADD COLUMN arn text;
