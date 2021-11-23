@@ -25,19 +25,37 @@ import (
 	"google.golang.org/grpc"
 )
 
+// Client is the telemetry client.
 type Client struct {
-	ores     *resource.Resource
-	tp       otrace.TracerProvider
+	// OpenTelemetry resource entry. Used in optional args.
+	ores *resource.Resource
+
+	// The TracerProvider we create
+	tp otrace.TracerProvider
+
+	// Exporter to use. Used in optional args.
 	exporter trace.SpanExporter
-	closer   io.Closer
+
+	// This is closed on shutdown. Used with the file exporter to close the file.
+	closer io.Closer
 
 	logger hclog.Logger
 	fs     afero.Afero
-	err    error
 
+	// If we encountered an error during Telemetry init, it's set here.
+	err error
+
+	// Build info. These are set as resource attributes in the default resource.
 	version, commit, buildDate string
 
-	debug, disabled bool
+	// Whether we're in debug mode or not. In debug mode, error strings are sent as-is.
+	debug bool
+
+	// Whether telemetry collection is disabled. If so, a NoopTracerProvider is set, and we don't initialize the default resource
+	disabled bool
+
+	// true if we created a new user cookie file. This is used to enable the warning message in the console client.
+	newCookie bool
 }
 
 type Option func(*Client)
@@ -104,7 +122,9 @@ func New(ctx context.Context, options ...Option) *Client {
 	otel.SetErrorHandler(&errorHandler{l: c.logger})
 
 	if c.ores == nil {
-		c.ores, c.err = c.defaultResource(ctx)
+		var err error
+		c.ores, err = c.defaultResource(ctx)
+		c.setError(err)
 	}
 
 	opts := []trace.TracerProviderOption{
@@ -172,6 +192,8 @@ func (c *Client) RecordError(span otrace.Span, err error, opts ...otrace.EventOp
 		return
 	}
 
+	//  TODO for fetch get table name / error type
+
 	span.RecordError(fmt.Errorf("error"))
 	span.SetStatus(codes.Error, "error")
 }
@@ -219,6 +241,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	)
 }
 
+// cookie will read or generate a persistent `telemetry-cookie` file under `.cq` and return its value. If a new file is generated, c.newCookie is set.
 func (c *Client) cookie() (string, error) {
 	fn := filepath.Join(".", ".cq", "telemetry-cookie")
 
@@ -246,9 +269,17 @@ func (c *Client) cookie() (string, error) {
 	if err := c.fs.WriteFile(fn, []byte(id), 0644); err != nil {
 		return "", err
 	}
+
+	c.newCookie = true
 	return id, nil
 }
 
+// NewCookie returns true if we created a new cookie in this session
+func (c *Client) NewCookie() bool {
+	return c.newCookie
+}
+
+// defaultExporter creates the default SpanExporter
 func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error) {
 	return otlptracegrpc.New(
 		ctx,
@@ -264,6 +295,7 @@ func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error
 	)
 }
 
+// isCI determines if we're running under a CI env by checking CI-specific env vars
 func isCI() bool {
 	for _, v := range []string{
 		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
@@ -280,8 +312,11 @@ type shutdownable interface {
 	Shutdown(context.Context) error
 }
 
+// Make sure TracerProvider is shutdownable. This would fail if the OpenTelemetry API changes.
+// Client.Shutdown() doesn't require this to be the case, because it has to work with NoopTracerProvider as well, which doesn't have a Shutdown method.
 var _ shutdownable = (*trace.TracerProvider)(nil)
 
+// errorHandler is used to set the global OpenTelemetry error handler and suppress otel errors to debug level.
 type errorHandler struct {
 	l hclog.Logger
 }
