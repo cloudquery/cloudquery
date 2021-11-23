@@ -4,14 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -44,14 +40,7 @@ var (
 		Use:   "upgrade [providers,...]",
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.UpgradeProviders(ctx, args)
 		}),
 	}
@@ -61,14 +50,7 @@ var (
 		Use:   "downgrade [providers,...]",
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.DowngradeProviders(ctx, args)
 		}),
 	}
@@ -78,17 +60,10 @@ var (
 		Use:   "drop [provider]",
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
 			_ = c.DropProvider(ctx, args[0])
 			return nil
 		}),
@@ -99,17 +74,10 @@ var (
 		Use:   "build-schema [provider]",
 		Short: providerBuildSchemaHelpMsg,
 		Long:  providerBuildSchemaHelpMsg,
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return fmt.Errorf("missing provider name")
 			}
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
 			return c.BuildProviderTables(ctx, args[0])
 		}),
 	}
@@ -123,14 +91,7 @@ var (
   # Downloads all providers specified in config.hcl:
   ./cloudquery provider download
 `,
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.DownloadProviders(ctx)
 		}),
 	}

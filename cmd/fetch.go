@@ -3,12 +3,9 @@ package cmd
 import (
 	"context"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
@@ -21,16 +18,8 @@ var fetchCmd = &cobra.Command{
 	`,
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
-	Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
-		configPath := viper.GetString("configPath")
+	Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 		failOnError := viper.GetBool("fail-on-error")
-
-		ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-		c, err := console.CreateClient(ctx, configPath)
-		if err != nil {
-			return err
-		}
-		defer c.Client().Close()
 		return c.Fetch(ctx, failOnError)
 	}),
 }

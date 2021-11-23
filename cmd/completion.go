@@ -19,6 +19,8 @@ import (
 	"context"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
+
 	"github.com/spf13/cobra"
 )
 
@@ -68,7 +70,7 @@ PS> cloudquery completion powershell > cloudquery.ps1
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 	Args:                  cobra.ExactValidArgs(1),
-	Run: handleError(func(_ context.Context, cmd *cobra.Command, args []string) error {
+	Run: handleError(func(_ context.Context, _ *console.Client, cmd *cobra.Command, args []string) error {
 		var err error
 		switch args[0] {
 		case "bash":

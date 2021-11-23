@@ -3,13 +3,9 @@ package cmd
 import (
 	"context"
 
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+
+	"github.com/spf13/cobra"
 )
 
 const policyDownloadHelpMsg = "Download a policy from the CloudQuery Policy Hub"
@@ -35,14 +31,7 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
-		Run: handleError(func(ctx context.Context, cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-			defer c.Client().Close()
+		Run: handleError(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			_ = c.DownloadPolicy(ctx, args)
 			return nil
 		}),
