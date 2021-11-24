@@ -55,6 +55,46 @@ func (mr *MockRdsClientMockRecorder) DescribeCertificates(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCertificates", reflect.TypeOf((*MockRdsClient)(nil).DescribeCertificates), varargs...)
 }
 
+// DescribeDBClusterSnapshotAttributes mocks base method.
+func (m *MockRdsClient) DescribeDBClusterSnapshotAttributes(arg0 context.Context, arg1 *rds.DescribeDBClusterSnapshotAttributesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterSnapshotAttributesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDBClusterSnapshotAttributes", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeDBClusterSnapshotAttributesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDBClusterSnapshotAttributes indicates an expected call of DescribeDBClusterSnapshotAttributes.
+func (mr *MockRdsClientMockRecorder) DescribeDBClusterSnapshotAttributes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusterSnapshotAttributes", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBClusterSnapshotAttributes), varargs...)
+}
+
+// DescribeDBClusterSnapshots mocks base method.
+func (m *MockRdsClient) DescribeDBClusterSnapshots(arg0 context.Context, arg1 *rds.DescribeDBClusterSnapshotsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterSnapshotsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDBClusterSnapshots", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeDBClusterSnapshotsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDBClusterSnapshots indicates an expected call of DescribeDBClusterSnapshots.
+func (mr *MockRdsClientMockRecorder) DescribeDBClusterSnapshots(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusterSnapshots", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBClusterSnapshots), varargs...)
+}
+
 // DescribeDBClusters mocks base method.
 func (m *MockRdsClient) DescribeDBClusters(arg0 context.Context, arg1 *rds.DescribeDBClustersInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClustersOutput, error) {
 	m.ctrl.T.Helper()
@@ -93,6 +133,46 @@ func (mr *MockRdsClientMockRecorder) DescribeDBInstances(arg0, arg1 interface{},
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBInstances", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBInstances), varargs...)
+}
+
+// DescribeDBSnapshotAttributes mocks base method.
+func (m *MockRdsClient) DescribeDBSnapshotAttributes(arg0 context.Context, arg1 *rds.DescribeDBSnapshotAttributesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotAttributesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDBSnapshotAttributes", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeDBSnapshotAttributesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDBSnapshotAttributes indicates an expected call of DescribeDBSnapshotAttributes.
+func (mr *MockRdsClientMockRecorder) DescribeDBSnapshotAttributes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSnapshotAttributes", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBSnapshotAttributes), varargs...)
+}
+
+// DescribeDBSnapshots mocks base method.
+func (m *MockRdsClient) DescribeDBSnapshots(arg0 context.Context, arg1 *rds.DescribeDBSnapshotsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDBSnapshots", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeDBSnapshotsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDBSnapshots indicates an expected call of DescribeDBSnapshots.
+func (mr *MockRdsClientMockRecorder) DescribeDBSnapshots(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSnapshots", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBSnapshots), varargs...)
 }
 
 // DescribeDBSubnetGroups mocks base method.

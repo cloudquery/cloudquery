@@ -14,4 +14,10 @@ resource "aws_rds_cluster" "rds_cluster" {
   master_password         = "bar123foo456"
   backup_retention_period = 5
   preferred_backup_window = "07:00-09:00"
+  skip_final_snapshot     = true
+}
+
+resource "aws_db_cluster_snapshot" "rds_cluster_snapshot" {
+  db_cluster_identifier          = aws_rds_cluster.rds_cluster.id
+  db_cluster_snapshot_identifier = "${var.test_prefix}snap${var.test_suffix}"
 }
