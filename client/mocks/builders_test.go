@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	autoscalingTypes "github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
@@ -13,6 +12,8 @@ import (
 	cloudwatchTypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	cloudwatchlogsTypes "github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
+	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
+	databasemigrationserviceTypes "github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	directconnectTypes "github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -34,10 +35,12 @@ import (
 	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	snsTypes "github.com/aws/aws-sdk-go-v2/service/sns/types"
+	"github.com/golang/mock/gomock"
+
+	"github.com/cloudquery/faker/v3"
+
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
-	"github.com/golang/mock/gomock"
 )
 
 func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -287,6 +290,34 @@ func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controll
 		}, nil)
 	return client.Services{
 		Directconnect: m,
+	}
+}
+
+func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockDatabasemigrationserviceClient(ctrl)
+	l := databasemigrationserviceTypes.ReplicationInstance{}
+	if err := faker.FakeData(&l); err != nil {
+		t.Fatal(err)
+	}
+	l.ReplicationInstancePrivateIpAddress = aws.String("1.2.3.4")
+	l.ReplicationInstancePrivateIpAddresses = []string{"1.2.3.4"}
+	l.ReplicationInstancePublicIpAddress = aws.String("1.2.3.4")
+	l.ReplicationInstancePublicIpAddresses = []string{"1.2.3.4"}
+	m.EXPECT().DescribeReplicationInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&databasemigrationservice.DescribeReplicationInstancesOutput{
+			ReplicationInstances: []databasemigrationserviceTypes.ReplicationInstance{l},
+		}, nil)
+	lt := databasemigrationserviceTypes.Tag{}
+	if err := faker.FakeData(&lt); err != nil {
+		t.Fatal(err)
+	}
+	lt.ResourceArn = l.ReplicationInstanceArn
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&databasemigrationservice.ListTagsForResourceOutput{
+			TagList: []databasemigrationserviceTypes.Tag{lt},
+		}, nil)
+	return client.Services{
+		DMS: m,
 	}
 }
 

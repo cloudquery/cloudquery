@@ -3,9 +3,10 @@ package resources
 import (
 	"embed"
 
-	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
+	"github.com/cloudquery/cq-provider-aws/client"
 )
 
 var (
@@ -46,6 +47,7 @@ func Provider() *provider.Provider {
 			"directconnect.lags":                    DirectconnectLags(),
 			"directconnect.virtual_gateways":        DirectconnectVirtualGateways(),
 			"directconnect.virtual_interfaces":      DirectconnectVirtualInterfaces(),
+			"dms.replication_instances":             DmsReplicationInstances(),
 			"ec2.byoip_cidrs":                       Ec2ByoipCidrs(),
 			"ec2.customer_gateways":                 Ec2CustomerGateways(),
 			"ec2.ebs_volumes":                       Ec2EbsVolumes(),
