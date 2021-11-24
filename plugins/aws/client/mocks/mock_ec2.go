@@ -215,6 +215,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkAcls(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeNetworkAcls", reflect.TypeOf((*MockEc2Client)(nil).DescribeNetworkAcls), varargs...)
 }
 
+// DescribeRegions mocks base method.
+func (m *MockEc2Client) DescribeRegions(arg0 context.Context, arg1 *ec2.DescribeRegionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeRegionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRegions", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeRegionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRegions indicates an expected call of DescribeRegions.
+func (mr *MockEc2ClientMockRecorder) DescribeRegions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRegions", reflect.TypeOf((*MockEc2Client)(nil).DescribeRegions), varargs...)
+}
+
 // DescribeRouteTables mocks base method.
 func (m *MockEc2Client) DescribeRouteTables(arg0 context.Context, arg1 *ec2.DescribeRouteTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeRouteTablesOutput, error) {
 	m.ctrl.T.Helper()
