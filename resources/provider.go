@@ -48,6 +48,7 @@ func Provider() *provider.Provider {
 			"ec2.byoip_cidrs":                       Ec2ByoipCidrs(),
 			"ec2.customer_gateways":                 Ec2CustomerGateways(),
 			"ec2.ebs_volumes":                       Ec2EbsVolumes(),
+			"ec2.ebs_snapshots":                     Ec2EbsSnapshots(),
 			"ec2.flow_logs":                         Ec2FlowLogs(),
 			"ec2.images":                            Ec2Images(),
 			"ec2.instances":                         Ec2Instances(),
