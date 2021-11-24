@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 * Added arn column for security group resource [#278](https://github.com/cloudquery/cq-provider-aws/issues/277)
-
+  
+### :spider: Fixed
+* Fixed `aws_ec2_ebs_volumes` pagination during fetch [#279](https://github.com/cloudquery/cq-provider-aws/issues/279)
 
 ## [v0.6.4] - 2021-11-16
 ###### SDK Version: 0.5.1

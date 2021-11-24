@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -145,15 +147,19 @@ func Ec2EbsVolumes() *schema.Table {
 func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
-
-	response, err := svc.DescribeVolumes(ctx, &ec2.DescribeVolumesInput{}, func(o *ec2.Options) {
-		o.Region = c.Region
-	})
-	if err != nil {
-		return err
-	}
-	for _, volume := range response.Volumes {
-		res <- volume
+	config := ec2.DescribeVolumesInput{}
+	for {
+		response, err := svc.DescribeVolumes(ctx, &config, func(o *ec2.Options) {
+			o.Region = c.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- response.Volumes
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
 	}
 	return nil
 }
