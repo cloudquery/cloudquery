@@ -5,16 +5,16 @@ import (
 	"os"
 	"testing"
 
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
-
-	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-aws/resources"
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4"
+
+	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-aws/resources"
 )
 
 type TestResource struct {
@@ -83,6 +83,11 @@ func TestResources(t *testing.T) {
 			resource:    "directconnect.virtual_interfaces",
 			mockBuilder: buildDirectconnectVirtualInterfacesMock,
 			mainTable:   resources.DirectconnectVirtualInterfaces(),
+		},
+		{
+			resource:    "dms.replication_instances",
+			mockBuilder: buildDmsReplicationInstances,
+			mainTable:   resources.DmsReplicationInstances(),
 		},
 		{
 			resource:    "ec2.customer_gateways",

@@ -20,6 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.3.1
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.3.3
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1
+	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.4.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0
@@ -49,7 +50,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
 	github.com/aws/smithy-go v1.9.0
-	github.com/cloudquery/cq-provider-sdk v0.5.1
+	github.com/cloudquery/cq-provider-sdk v0.5.2
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
 	github.com/golang/mock v1.6.0
