@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/guardduty"
+
 	"github.com/aws/smithy-go/logging"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -129,6 +131,7 @@ type Services struct {
 	ConfigService        ConfigServiceClient
 	Waf                  WafClient
 	WafV2                WafV2Client
+	GuardDuty            GuardDutyClient
 }
 type ServicesAccountRegionMap map[string]map[string]*Services
 
@@ -368,6 +371,7 @@ func initServices(region string, c aws.Config) Services {
 		ELBv2:                elbv2.NewFromConfig(awsCfg),
 		EMR:                  emr.NewFromConfig(awsCfg),
 		FSX:                  fsx.NewFromConfig(awsCfg),
+		GuardDuty:            guardduty.NewFromConfig(awsCfg),
 		IAM:                  iam.NewFromConfig(awsCfg),
 		KMS:                  kms.NewFromConfig(awsCfg),
 		Lambda:               lambda.NewFromConfig(awsCfg),

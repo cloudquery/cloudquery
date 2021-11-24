@@ -207,6 +207,8 @@ github.com/aws/aws-sdk-go-v2/service/emr v1.2.0 h1:JwDNxHv2oazaknN1la3lskZWvOS56
 github.com/aws/aws-sdk-go-v2/service/emr v1.2.0/go.mod h1:EbPeddhwfEWE6ZJh5WM2+OoHhUEko8/zuloAs/4bqrA=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.2.0 h1:/hxERAW8wfc5F+aC8rwsB2tqMkWApAWJoaVM0cuhBg4=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.2.0/go.mod h1:BFqIiyAdn9j1EaiCN418uBCUvXBrPHw7P4+p8wvJ72c=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.7.1 h1:uzPWcFlbXbZRPZXtGIZHMfkiL/nt1KgCoDg0VzlsL6M=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.7.1/go.mod h1:Qi8iJ8THhntgnht2Fx9KZfXQNwG5ApeKheK1+2C1Zgw=
 github.com/aws/aws-sdk-go-v2/service/iam v1.3.0 h1:V95YLxbxLGlTcFR0KMMSZEaudIxYCAhycSGcO7/Favs=
 github.com/aws/aws-sdk-go-v2/service/iam v1.3.0/go.mod h1:gPUYT7MBEb30j9eAsJ17LN9KbXtD1uqKOOKesCC4tjc=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.0.4/go.mod h1:BCfU3Uo2fhKcMZFp9zU5QQGQxqWCOYmZ/27Dju3S/do=
