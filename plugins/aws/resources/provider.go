@@ -96,6 +96,8 @@ func Provider() *provider.Provider {
 			"organizations.accounts":                OrganizationsAccounts(),
 			"rds.certificates":                      RdsCertificates(),
 			"rds.clusters":                          RdsClusters(),
+			"rds.cluster_snapshots":                 RdsClusterSnapshots(),
+			"rds.db_snapshots":                      RdsDbSnapshots(),
 			"rds.db_subnet_groups":                  RdsSubnetGroups(),
 			"rds.instances":                         RdsInstances(),
 			"redshift.clusters":                     RedshiftClusters(),

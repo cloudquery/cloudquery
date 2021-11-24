@@ -18,3 +18,8 @@ resource "aws_db_instance" "rds_db_instance" {
     Name = "rds-${var.test_prefix}${var.test_suffix}"
   }
 }
+
+resource "aws_db_snapshot" "rds_db_snapshot" {
+  db_instance_identifier = aws_db_instance.rds_db_instance.id
+  db_snapshot_identifier = "${var.test_prefix}dbsnap${var.test_suffix}"
+}
