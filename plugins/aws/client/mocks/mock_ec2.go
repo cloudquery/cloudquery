@@ -35,6 +35,26 @@ func (m *MockEc2Client) EXPECT() *MockEc2ClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeAddresses mocks base method.
+func (m *MockEc2Client) DescribeAddresses(arg0 context.Context, arg1 *ec2.DescribeAddressesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAddressesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAddresses", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeAddressesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAddresses indicates an expected call of DescribeAddresses.
+func (mr *MockEc2ClientMockRecorder) DescribeAddresses(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAddresses", reflect.TypeOf((*MockEc2Client)(nil).DescribeAddresses), varargs...)
+}
+
 // DescribeByoipCidrs mocks base method.
 func (m *MockEc2Client) DescribeByoipCidrs(arg0 context.Context, arg1 *ec2.DescribeByoipCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeByoipCidrsOutput, error) {
 	m.ctrl.T.Helper()
