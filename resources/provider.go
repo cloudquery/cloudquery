@@ -77,6 +77,7 @@ func Provider() *provider.Provider {
 			"emr.clusters":                          EmrClusters(),
 			"emr.block_public_access_configs":       EmrBlockPublicAccessConfigs(),
 			"fsx.backups":                           FsxBackups(),
+			"guardduty.detectors":                   GuarddutyDetectors(),
 			"iam.accounts":                          IamAccounts(),
 			"iam.groups":                            IamGroups(),
 			"iam.openid_connect_identity_providers": IamOpenidConnectIdentityProviders(),

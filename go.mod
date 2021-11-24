@@ -32,6 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.4.0
 	github.com/aws/aws-sdk-go-v2/service/emr v1.2.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.2.0
+	github.com/aws/aws-sdk-go-v2/service/guardduty v1.7.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/kms v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0
@@ -41,6 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.4.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.9.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.4.1
@@ -130,8 +132,6 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
-
-require github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.0.0 // indirect
