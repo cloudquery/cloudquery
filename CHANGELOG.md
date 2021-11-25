@@ -4,9 +4,11 @@ All notable changes to this provider will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
 ### :rocket: Added
 * Added arn column for security group resource [#278](https://github.com/cloudquery/cq-provider-aws/issues/277)
+* Added `aws_codebuild_projects` resource [#270](https://github.com/cloudquery/cq-provider-aws/issues/270)
 * Added  `aws_autoscaling_groups` resource [#268](https://github.com/cloudquery/cq-provider-aws/issues/268)
   
 ### :spider: Fixed
