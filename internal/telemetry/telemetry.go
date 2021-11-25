@@ -17,6 +17,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -132,7 +133,7 @@ func New(ctx context.Context, options ...Option) *Client {
 		opt(c)
 	}
 
-	otel.SetErrorHandler(&errorHandler{l: c.logger})
+	otel.SetErrorHandler(&errorHandler{l: c.logger, debug: c.debug})
 
 	if c.ores == nil {
 		var err error
@@ -154,7 +155,7 @@ func New(ctx context.Context, options ...Option) *Client {
 	if c.exporter != nil {
 		opts = append(opts, trace.WithBatcher(c.exporter)) // could consider using trace.WithSyncer instead for sync (and slow) results
 	} else {
-		exp, err := c.defaultExporter(ctx)
+		exp, err := c.httpExporter(ctx)
 		if err != nil {
 			c.setError(err)
 		} else {
@@ -298,8 +299,21 @@ func (c *Client) NewRandomId() bool {
 	return c.newRandomId
 }
 
-// defaultExporter creates the default SpanExporter
-func (c *Client) defaultExporter(ctx context.Context) (trace.SpanExporter, error) {
+// httpExporter creates the default HTTP SpanExporter
+func (c *Client) httpExporter(ctx context.Context) (trace.SpanExporter, error) {
+	opts := []otlptracehttp.Option{
+		otlptracehttp.WithEndpoint(c.endpoint),
+		otlptracehttp.WithTimeout(500 * time.Millisecond),
+	}
+	if c.insecureEndpoint {
+		opts = append(opts, otlptracehttp.WithInsecure())
+	}
+
+	return otlptracehttp.New(ctx, opts...)
+}
+
+// grpcExporter creates the default gRPC SpanExporter
+func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 	opts := []otlptracegrpc.Option{
 		otlptracegrpc.WithEndpoint(c.endpoint),
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
@@ -340,11 +354,17 @@ var _ shutdownable = (*trace.TracerProvider)(nil)
 
 // errorHandler is used to set the global OpenTelemetry error handler and suppress otel errors to debug level.
 type errorHandler struct {
-	l hclog.Logger
+	l     hclog.Logger
+	debug bool
 }
 
 func (e *errorHandler) Handle(err error) {
-	e.l.Debug("otel error occurred", "error", err)
+	if e.debug {
+		// Upgrade error severity
+		e.l.Warn("otel error occurred", "error", err)
+	} else {
+		e.l.Debug("otel error occurred", "error", err)
+	}
 }
 
 func genRandomId() string {
