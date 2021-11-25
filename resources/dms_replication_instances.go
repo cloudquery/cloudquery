@@ -267,6 +267,9 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	if err != nil {
 		return err
 	}
+	if len(describeReplicationInstancesOutput.ReplicationInstances) == 0 {
+		return nil
+	}
 
 	listTagsForResourceInput := databasemigrationservice.ListTagsForResourceInput{}
 	for _, replicationInstance := range describeReplicationInstancesOutput.ReplicationInstances {
