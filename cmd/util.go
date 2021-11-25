@@ -74,7 +74,7 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		defer c.Client().Close()
 	}
 
-	if tele.NewCookie() {
+	if tele.NewRandomId() {
 		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/telemetry\n")
 		if delayMessage {
 			select {

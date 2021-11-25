@@ -54,8 +54,8 @@ type Client struct {
 	// Whether telemetry collection is disabled. If so, a NoopTracerProvider is set, and we don't initialize the default resource
 	disabled bool
 
-	// true if we created a new user cookie file. This is used to enable the warning message in the console client.
-	newCookie bool
+	// true if we created a new telemetry-random-id file. This is used to enable the warning message in the console client.
+	newRandomId bool
 
 	// endpoint to send data to
 	endpoint string
@@ -225,9 +225,9 @@ func (c *Client) setError(err error) {
 }
 
 func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error) {
-	cookieContents, err := c.cookie()
+	randId, err := c.randomId()
 	if err != nil {
-		c.logger.Debug("cookie failed", "error", err)
+		c.logger.Debug("randomId failed", "error", err)
 	}
 
 	attr := []attribute.KeyValue{
@@ -237,9 +237,15 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", isCI()),
 	}
-	if cookieContents != "" {
-		attr = append(attr, semconv.ServiceInstanceIDKey.String(cookieContents))
+	if !c.newRandomId && randId != "" {
+		attr = append(attr, attribute.Bool("random_id_persisted", true))
 	}
+	if randId == "" {
+		randId = genRandomId() // generate ephemeral random ID on error
+	}
+
+	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
+
 	if hn, err := os.Hostname(); err == nil && hn != "" {
 		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
 	}
@@ -254,9 +260,9 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	)
 }
 
-// cookie will read or generate a persistent `telemetry-cookie` file under `.cq` and return its value. If a new file is generated, c.newCookie is set.
-func (c *Client) cookie() (string, error) {
-	fn := filepath.Join(".", ".cq", "telemetry-cookie")
+// randomId will read or generate a persistent `telemetry-random-id` file under `.cq` and return its value. If a new file is generated, c.newRandomId is set.
+func (c *Client) randomId() (string, error) {
+	fn := filepath.Join(".", ".cq", "telemetry-random-id")
 
 	exists := true
 	fi, err := c.fs.Stat(fn)
@@ -267,7 +273,7 @@ func (c *Client) cookie() (string, error) {
 		exists = false
 	}
 	if exists && fi.IsDir() {
-		return "", fmt.Errorf("telemetry-cookie is a directory")
+		return "", fmt.Errorf("telemetry-random-id is a directory")
 	}
 
 	if exists {
@@ -278,18 +284,18 @@ func (c *Client) cookie() (string, error) {
 		return string(b), nil
 	}
 
-	id := uuid.NewV4().String()
+	id := genRandomId()
 	if err := c.fs.WriteFile(fn, []byte(id), 0644); err != nil {
 		return "", err
 	}
 
-	c.newCookie = true
+	c.newRandomId = true
 	return id, nil
 }
 
-// NewCookie returns true if we created a new cookie in this session
-func (c *Client) NewCookie() bool {
-	return c.newCookie
+// NewRandomId returns true if we created a new random id in this session
+func (c *Client) NewRandomId() bool {
+	return c.newRandomId
 }
 
 // defaultExporter creates the default SpanExporter
@@ -339,6 +345,10 @@ type errorHandler struct {
 
 func (e *errorHandler) Handle(err error) {
 	e.l.Debug("otel error occurred", "error", err)
+}
+
+func genRandomId() string {
+	return uuid.NewV4().String()
 }
 
 func hashAttribute(value string) string {
