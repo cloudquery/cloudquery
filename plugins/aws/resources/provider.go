@@ -33,6 +33,7 @@ func Provider() *provider.Provider {
 			"apigatewayv2.domain_names":             Apigatewayv2DomainNames(),
 			"apigatewayv2.vpc_links":                Apigatewayv2VpcLinks(),
 			"autoscaling.launch_configurations":     AutoscalingLaunchConfigurations(),
+			"autoscaling.groups":                    AutoscalingGroups(),
 			"cloudfront.cache_policies":             CloudfrontCachePolicies(),
 			"cloudfront.distributions":              CloudfrontDistributions(),
 			"cloudtrail.trails":                     CloudtrailTrails(),

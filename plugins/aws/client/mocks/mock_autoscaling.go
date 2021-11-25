@@ -35,6 +35,26 @@ func (m *MockAutoscalingClient) EXPECT() *MockAutoscalingClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeAutoScalingGroups mocks base method.
+func (m *MockAutoscalingClient) DescribeAutoScalingGroups(arg0 context.Context, arg1 *autoscaling.DescribeAutoScalingGroupsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeAutoScalingGroupsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAutoScalingGroups", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeAutoScalingGroupsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAutoScalingGroups indicates an expected call of DescribeAutoScalingGroups.
+func (mr *MockAutoscalingClientMockRecorder) DescribeAutoScalingGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAutoScalingGroups", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeAutoScalingGroups), varargs...)
+}
+
 // DescribeLaunchConfigurations mocks base method.
 func (m *MockAutoscalingClient) DescribeLaunchConfigurations(arg0 context.Context, arg1 *autoscaling.DescribeLaunchConfigurationsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeLaunchConfigurationsOutput, error) {
 	m.ctrl.T.Helper()
@@ -53,4 +73,124 @@ func (mr *MockAutoscalingClientMockRecorder) DescribeLaunchConfigurations(arg0, 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLaunchConfigurations", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeLaunchConfigurations), varargs...)
+}
+
+// DescribeLifecycleHooks mocks base method.
+func (m *MockAutoscalingClient) DescribeLifecycleHooks(arg0 context.Context, arg1 *autoscaling.DescribeLifecycleHooksInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeLifecycleHooksOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeLifecycleHooks", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeLifecycleHooksOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeLifecycleHooks indicates an expected call of DescribeLifecycleHooks.
+func (mr *MockAutoscalingClientMockRecorder) DescribeLifecycleHooks(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLifecycleHooks", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeLifecycleHooks), varargs...)
+}
+
+// DescribeLoadBalancerTargetGroups mocks base method.
+func (m *MockAutoscalingClient) DescribeLoadBalancerTargetGroups(arg0 context.Context, arg1 *autoscaling.DescribeLoadBalancerTargetGroupsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeLoadBalancerTargetGroupsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeLoadBalancerTargetGroups", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeLoadBalancerTargetGroupsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeLoadBalancerTargetGroups indicates an expected call of DescribeLoadBalancerTargetGroups.
+func (mr *MockAutoscalingClientMockRecorder) DescribeLoadBalancerTargetGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLoadBalancerTargetGroups", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeLoadBalancerTargetGroups), varargs...)
+}
+
+// DescribeLoadBalancers mocks base method.
+func (m *MockAutoscalingClient) DescribeLoadBalancers(arg0 context.Context, arg1 *autoscaling.DescribeLoadBalancersInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeLoadBalancersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeLoadBalancers", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeLoadBalancersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeLoadBalancers indicates an expected call of DescribeLoadBalancers.
+func (mr *MockAutoscalingClientMockRecorder) DescribeLoadBalancers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLoadBalancers", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeLoadBalancers), varargs...)
+}
+
+// DescribeNotificationConfigurations mocks base method.
+func (m *MockAutoscalingClient) DescribeNotificationConfigurations(arg0 context.Context, arg1 *autoscaling.DescribeNotificationConfigurationsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeNotificationConfigurationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeNotificationConfigurations", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeNotificationConfigurationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeNotificationConfigurations indicates an expected call of DescribeNotificationConfigurations.
+func (mr *MockAutoscalingClientMockRecorder) DescribeNotificationConfigurations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeNotificationConfigurations", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeNotificationConfigurations), varargs...)
+}
+
+// DescribePolicies mocks base method.
+func (m *MockAutoscalingClient) DescribePolicies(arg0 context.Context, arg1 *autoscaling.DescribePoliciesInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribePoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribePolicies", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribePoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribePolicies indicates an expected call of DescribePolicies.
+func (mr *MockAutoscalingClientMockRecorder) DescribePolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePolicies", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribePolicies), varargs...)
+}
+
+// DescribeTags mocks base method.
+func (m *MockAutoscalingClient) DescribeTags(arg0 context.Context, arg1 *autoscaling.DescribeTagsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeTagsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTags", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeTagsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTags indicates an expected call of DescribeTags.
+func (mr *MockAutoscalingClientMockRecorder) DescribeTags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTags", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeTags), varargs...)
 }
