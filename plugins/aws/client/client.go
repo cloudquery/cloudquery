@@ -50,6 +50,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	s3control "github.com/aws/aws-sdk-go-v2/service/s3control"
+	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
@@ -126,6 +127,7 @@ type Services struct {
 	S3                   S3Client
 	S3Control            S3ControlClient
 	S3Manager            S3ManagerClient
+	SageMaker            SageMakerClient
 	SQS                  SQSClient
 	Apigateway           ApigatewayClient
 	Apigatewayv2         Apigatewayv2Client
@@ -136,6 +138,7 @@ type Services struct {
 	Codebuild            CodebuildClient
 	GuardDuty            GuardDutyClient
 }
+
 type ServicesAccountRegionMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
@@ -388,6 +391,7 @@ func initServices(region string, c aws.Config) Services {
 		S3:                   s3.NewFromConfig(awsCfg),
 		S3Control:            s3control.NewFromConfig(awsCfg),
 		S3Manager:            newS3ManagerFromConfig(awsCfg),
+		SageMaker:            sagemaker.NewFromConfig(awsCfg),
 		SNS:                  sns.NewFromConfig(awsCfg),
 		SQS:                  sqs.NewFromConfig(awsCfg),
 		Waf:                  waf.NewFromConfig(awsCfg),
