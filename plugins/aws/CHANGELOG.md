@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added arn column for security group resource [#278](https://github.com/cloudquery/cq-provider-aws/issues/277)
 * Added `aws_codebuild_projects` resource [#270](https://github.com/cloudquery/cq-provider-aws/issues/270)
 * Added  `aws_autoscaling_groups` resource [#268](https://github.com/cloudquery/cq-provider-aws/issues/268)
+* Added `aws_ecs_cluster_services` relation of `aws_ecs_clusters`
+* Added `aws_ecs_cluster_container_instances` relation of `aws_ecs_clusters`
   
 ### :spider: Fixed
 * Fixed `aws_ec2_ebs_volumes` pagination during fetch [#279](https://github.com/cloudquery/cq-provider-aws/issues/279)

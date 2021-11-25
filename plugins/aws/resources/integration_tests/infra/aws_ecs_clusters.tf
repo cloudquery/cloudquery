@@ -215,12 +215,17 @@ resource "aws_ecs_task_definition" "aws_ecs_clusters_task_definition" {
   # TASK running role
 }
 
+data "aws_ecs_task_definition" "aws_ecs_clusters_task_definition" {
+  task_definition = aws_ecs_task_definition.aws_ecs_clusters_task_definition.family
+}
+
 resource "aws_ecs_service" "aws_ecs_clusters_service" {
   cluster = aws_ecs_cluster.aws_ecs_clusters_cluster.id
   desired_count = 1
   launch_type = "EC2"
   name = "ecs_service_${var.test_prefix}${var.test_suffix}"
-  task_definition = aws_ecs_task_definition.aws_ecs_clusters_task_definition.arn
+  task_definition = "${aws_ecs_task_definition.aws_ecs_clusters_task_definition.family}:${max(aws_ecs_task_definition.aws_ecs_clusters_task_definition.revision, data.aws_ecs_task_definition.aws_ecs_clusters_task_definition.revision)}"
+
 
   load_balancer {
     container_name = "web-server"
