@@ -55,6 +55,46 @@ func (mr *MockEcsClientMockRecorder) DescribeClusters(arg0, arg1 interface{}, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusters", reflect.TypeOf((*MockEcsClient)(nil).DescribeClusters), varargs...)
 }
 
+// DescribeContainerInstances mocks base method.
+func (m *MockEcsClient) DescribeContainerInstances(arg0 context.Context, arg1 *ecs.DescribeContainerInstancesInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeContainerInstancesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeContainerInstances", varargs...)
+	ret0, _ := ret[0].(*ecs.DescribeContainerInstancesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeContainerInstances indicates an expected call of DescribeContainerInstances.
+func (mr *MockEcsClientMockRecorder) DescribeContainerInstances(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeContainerInstances", reflect.TypeOf((*MockEcsClient)(nil).DescribeContainerInstances), varargs...)
+}
+
+// DescribeServices mocks base method.
+func (m *MockEcsClient) DescribeServices(arg0 context.Context, arg1 *ecs.DescribeServicesInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeServicesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeServices", varargs...)
+	ret0, _ := ret[0].(*ecs.DescribeServicesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeServices indicates an expected call of DescribeServices.
+func (mr *MockEcsClientMockRecorder) DescribeServices(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeServices", reflect.TypeOf((*MockEcsClient)(nil).DescribeServices), varargs...)
+}
+
 // ListClusters mocks base method.
 func (m *MockEcsClient) ListClusters(arg0 context.Context, arg1 *ecs.ListClustersInput, arg2 ...func(*ecs.Options)) (*ecs.ListClustersOutput, error) {
 	m.ctrl.T.Helper()
@@ -73,6 +113,46 @@ func (mr *MockEcsClientMockRecorder) ListClusters(arg0, arg1 interface{}, arg2 .
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusters", reflect.TypeOf((*MockEcsClient)(nil).ListClusters), varargs...)
+}
+
+// ListContainerInstances mocks base method.
+func (m *MockEcsClient) ListContainerInstances(arg0 context.Context, arg1 *ecs.ListContainerInstancesInput, arg2 ...func(*ecs.Options)) (*ecs.ListContainerInstancesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListContainerInstances", varargs...)
+	ret0, _ := ret[0].(*ecs.ListContainerInstancesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListContainerInstances indicates an expected call of ListContainerInstances.
+func (mr *MockEcsClientMockRecorder) ListContainerInstances(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListContainerInstances", reflect.TypeOf((*MockEcsClient)(nil).ListContainerInstances), varargs...)
+}
+
+// ListServices mocks base method.
+func (m *MockEcsClient) ListServices(arg0 context.Context, arg1 *ecs.ListServicesInput, arg2 ...func(*ecs.Options)) (*ecs.ListServicesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListServices", varargs...)
+	ret0, _ := ret[0].(*ecs.ListServicesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListServices indicates an expected call of ListServices.
+func (mr *MockEcsClientMockRecorder) ListServices(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListServices", reflect.TypeOf((*MockEcsClient)(nil).ListServices), varargs...)
 }
 
 // ListTagsForResource mocks base method.

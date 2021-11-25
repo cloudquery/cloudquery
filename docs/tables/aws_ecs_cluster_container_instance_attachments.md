@@ -1,10 +1,10 @@
 
-# Table: aws_ecs_cluster_attachments
+# Table: aws_ecs_cluster_container_instance_attachments
 An object representing a container instance or task attachment.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|cluster_cq_id|uuid|Unique CloudQuery ID of aws_ecs_clusters table (FK)|
+|cluster_container_instance_cq_id|uuid|Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)|
 |details|jsonb|Details of the attachment|
 |id|text|The unique identifier for the attachment.|
 |status|text|The status of the attachment|
