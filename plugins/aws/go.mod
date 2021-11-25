@@ -65,6 +65,7 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.1.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.5.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.9.1 // indirect

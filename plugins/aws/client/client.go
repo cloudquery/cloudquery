@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/service/guardduty"
-
 	"github.com/aws/smithy-go/logging"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -22,6 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
@@ -39,6 +38,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -133,6 +133,7 @@ type Services struct {
 	ConfigService        ConfigServiceClient
 	Waf                  WafClient
 	WafV2                WafV2Client
+	Codebuild            CodebuildClient
 	GuardDuty            GuardDutyClient
 }
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -391,6 +392,7 @@ func initServices(region string, c aws.Config) Services {
 		SQS:                  sqs.NewFromConfig(awsCfg),
 		Waf:                  waf.NewFromConfig(awsCfg),
 		WafV2:                wafv2.NewFromConfig(awsCfg),
+		Codebuild:            codebuild.NewFromConfig(awsCfg),
 	}
 }
 
