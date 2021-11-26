@@ -119,17 +119,13 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		UpdateCallback:    fetchCallback,
 		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
-	response, err := func() (response *client.FetchResponse, err error) {
-		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "Fetch")
-		defer func() {
-			telemetry.RecordError(span, err)
-			span.End()
-		}()
-		response, err = c.c.Fetch(ctx, request)
-		return
-	}()
 
+	ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "Fetch")
+	defer span.End()
+
+	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
+		telemetry.RecordError(span, err)
 		return err
 	}
 
@@ -140,14 +136,33 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
+	var totalFetched, totalWarnings, totalErrors uint64
 	for _, summary := range response.ProviderFetchSummary {
+		totalFetched += summary.TotalResourcesFetched
+		totalWarnings += summary.Diagnostics().Warnings()
+		totalErrors += summary.Diagnostics().Errors() + uint64(len(summary.PartialFetchErrors))
+
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
 			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
 		}
+
+		span.SetAttributes(
+			attribute.Int64("fetch.resources."+summary.ProviderName, int64(summary.TotalResourcesFetched)),
+			attribute.Int64("fetch.warnings."+summary.ProviderName, int64(summary.Diagnostics().Warnings())),
+			attribute.Int64("fetch.errors."+summary.ProviderName, int64(summary.Diagnostics().Errors())),
+			attribute.Int("fetch.partial_errors."+summary.ProviderName, len(summary.PartialFetchErrors)),
+		)
 	}
+
+	span.SetAttributes(
+		attribute.Int64("fetch.resources.total", int64(totalFetched)),
+		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
+		attribute.Int64("fetch.errors.total", int64(totalErrors)),
+	)
+
 	return err
 }
 
