@@ -73,7 +73,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	err := func() (err error) {
 		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "DownloadProviders")
 		defer func() {
-			telemetry.RecordAnonError(span, err)
+			telemetry.RecordError(span, err)
 			span.End()
 		}()
 		err = c.c.DownloadProviders(ctx)
@@ -122,7 +122,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	response, err := func() (response *client.FetchResponse, err error) {
 		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "Fetch")
 		defer func() {
-			telemetry.RecordAnonError(span, err)
+			telemetry.RecordError(span, err)
 			span.End()
 		}()
 		response, err = c.c.Fetch(ctx, request)
@@ -157,7 +157,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	remotePolicy, err := func() (remotePolicy *policy.RemotePolicy, err error) {
 		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "DownloadPolicy")
 		defer func() {
-			telemetry.RecordAnonError(span, err)
+			telemetry.RecordError(span, err)
 			span.End()
 		}()
 		remotePolicy, err = c.c.DownloadPolicy(ctx, args)
@@ -262,7 +262,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "ExecuteModule")
 		span.SetAttributes(attribute.String("module", runReq.Name))
 		defer func() {
-			telemetry.RecordAnonError(span, err)
+			telemetry.RecordError(span, err)
 			span.End()
 		}()
 		out, err = c.c.ExecuteModule(ctx, runReq)
@@ -339,7 +339,7 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 			ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "UpgradeProvider")
 			span.SetAttributes(attribute.String("provider", p.Name), attribute.String("old_version", p.Version))
 			defer func() {
-				telemetry.RecordAnonError(span, err)
+				telemetry.RecordError(span, err)
 				span.End()
 			}()
 			err = c.c.UpgradeProvider(ctx, p.Name)
@@ -718,7 +718,7 @@ func providerOperation(ctx context.Context, opName, providerName string, op func
 	ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, opName)
 	span.SetAttributes(attribute.String("provider", providerName))
 	defer func() {
-		telemetry.RecordAnonError(span, err)
+		telemetry.RecordError(span, err)
 		span.End()
 	}()
 	err = op(ctx, providerName)

@@ -44,7 +44,7 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 				os.Exit(ee.ExitCode)
 			}
 
-			tele.RecordError(span, err)
+			telemetry.RecordError(span, err)
 			ender()
 
 			cmd.PrintErrln(err)

@@ -167,9 +167,12 @@ func New(ctx context.Context, options ...Option) *Client {
 	return c
 }
 
-func (c *Client) Tracer(ctx context.Context) (context.Context, otrace.Tracer) {
-	t := c.tp.Tracer("cloudquery.io/internal/telemetry")
-	return ContextWithTracer(ctx, t), t
+func (c *Client) Tracer(ctx context.Context) (context.Context, Tracer) {
+	tw := &wrappedTracer{
+		Tracer: c.tp.Tracer("cloudquery.io/internal/telemetry"),
+		debug:  c.debug,
+	}
+	return ContextWithTracer(ctx, tw), tw
 }
 
 func (c *Client) Shutdown(ctx context.Context) {
@@ -192,20 +195,6 @@ func (c *Client) Shutdown(ctx context.Context) {
 			c.logger.Debug("close failed", "error", err)
 		}
 	}
-}
-
-// RecordError should be called on a span to mark it as errored. Error values are not included unless debug mode is on.
-func (c *Client) RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
-	if err == nil {
-		return
-	}
-
-	if c.debug {
-		RecordError(span, err, opts...)
-		return
-	}
-
-	RecordAnonError(span, err, opts...)
 }
 
 func (c *Client) HasError() error {
