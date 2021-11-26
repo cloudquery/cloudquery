@@ -112,6 +112,15 @@ func init() {
 	rootCmd.PersistentFlags().String("policy-dir", "./.cq/policies", "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	rootCmd.PersistentFlags().Bool("skip-build-tables", false, "Skip building tables on run, this should only be true if tables already exist.")
+	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
+	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
+	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true telemetry collection will be in debug level")
+	rootCmd.PersistentFlags().String("telemetry-endpoint", "telemetry.cloudquery.io:443", "Telemetry endpoint")
+	rootCmd.PersistentFlags().Bool("insecure-telemetry-endpoint", false, "Allow insecure connection to telemetry endpoint")
+
+	_ = rootCmd.PersistentFlags().MarkHidden("telemetry-endpoint")
+	_ = rootCmd.PersistentFlags().MarkHidden("insecure-telemetry-endpoint")
+
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
@@ -119,6 +128,11 @@ func init() {
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
+	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-verify"))
+	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
+	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
+	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
+	_ = viper.BindPFlag("insecure-telemetry-endpoint", rootCmd.PersistentFlags().Lookup("insecure-telemetry-endpoint"))
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)

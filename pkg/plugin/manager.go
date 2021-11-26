@@ -2,16 +2,20 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"sort"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
 // Manager handles lifecycle execution of CloudQuery providers
@@ -61,13 +65,15 @@ func (m *Manager) LoadExisting(providers []*config.RequiredProvider) {
 
 func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
 	m.logger.Debug("Downloading required providers", "providers", providers)
-	for _, rp := range providers {
+	traceData := make([]string, len(providers))
+	for i, rp := range providers {
 		_, providerName, err := registry.ParseProviderName(rp.Name)
 		if err != nil {
 			return err
 		}
 		if _, ok := m.clients[providerName]; ok {
 			m.logger.Debug("Skipping provider download, using reattach instead", "name", rp.Name, "version", rp.Version)
+			traceData[i] = providerName + "@debug"
 			continue
 		}
 		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
@@ -76,7 +82,16 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 			return err
 		}
 		m.providers[providerName] = details
+		traceData[i] = providerName + "@" + details.Version
 	}
+
+	sort.Strings(traceData)
+	b, _ := json.Marshal(traceData)
+	trace.SpanFromContext(ctx).SetAttributes(
+		attribute.StringSlice("providers", traceData),
+		attribute.String("provider_list", string(b)),
+	)
+
 	return nil
 }
 
