@@ -776,6 +776,7 @@ func (c *Client) setupTableCreator(ctx context.Context) error {
 	if c.HistoryCfg == nil {
 		c.Logger.Debug("using default table creator without history mode enabled.")
 		c.TableCreator = provider.NewTableCreator(c.Logger)
+		return nil
 	}
 	creator, err := history.NewHistoryTableCreator(c.HistoryCfg, c.Logger)
 	if err != nil {
