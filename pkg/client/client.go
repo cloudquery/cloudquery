@@ -44,6 +44,8 @@ type FetchRequest struct {
 	// Optional: Disable deletion of data from tables.
 	// Use this with caution, as it can create duplicates of data!
 	DisableDataDelete bool
+	// Optional: Skips Building tables on fetch execution
+	SkipBuildTables bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
 }
@@ -302,7 +304,7 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchResponse, error) {
-	if !c.SkipBuildTables {
+	if !request.SkipBuildTables {
 		for _, p := range request.Providers {
 			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
 				return nil, err

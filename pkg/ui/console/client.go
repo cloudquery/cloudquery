@@ -118,6 +118,16 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		Providers:         c.cfg.Providers,
 		UpdateCallback:    fetchCallback,
 		DisableDataDelete: viper.GetBool("disable-delete"),
+		SkipBuildTables:   true,
+	}
+
+	if !c.c.SkipBuildTables {
+		// Build tables here (instead of inside Fetch) so that we can have separate timings
+		for _, p := range request.Providers {
+			if err := providerOperation(ctx, "BuildProviderTables", p.Name, c.c.BuildProviderTables); err != nil {
+				return err
+			}
+		}
 	}
 
 	ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "Fetch")
