@@ -9,6 +9,15 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/fatih/color"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
@@ -16,14 +25,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
-
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-
-	"github.com/cloudquery/cloudquery/pkg/client"
-	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/policy"
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -67,7 +69,17 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-	err := c.c.DownloadProviders(ctx)
+
+	err := func() (err error) {
+		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "DownloadProviders")
+		defer func() {
+			telemetry.RecordAnonError(span, err)
+			span.End()
+		}()
+		err = c.c.DownloadProviders(ctx)
+		return
+	}()
+
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
@@ -107,7 +119,16 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		UpdateCallback:    fetchCallback,
 		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
-	response, err := c.c.Fetch(ctx, request)
+	response, err := func() (response *client.FetchResponse, err error) {
+		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "Fetch")
+		defer func() {
+			telemetry.RecordAnonError(span, err)
+			span.End()
+		}()
+		response, err = c.c.Fetch(ctx, request)
+		return
+	}()
+
 	if err != nil {
 		return err
 	}
@@ -132,7 +153,17 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
-	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
+
+	remotePolicy, err := func() (remotePolicy *policy.RemotePolicy, err error) {
+		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "DownloadPolicy")
+		defer func() {
+			telemetry.RecordAnonError(span, err)
+			span.End()
+		}()
+		remotePolicy, err = c.c.DownloadPolicy(ctx, args)
+		return
+	}()
+
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -226,7 +257,18 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		Providers: provs,
 		Config:    cfg,
 	}
-	out, err := c.c.ExecuteModule(ctx, runReq)
+
+	out, err := func() (out *module.ExecutionResult, err error) {
+		ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "ExecuteModule")
+		span.SetAttributes(attribute.String("module", runReq.Name))
+		defer func() {
+			telemetry.RecordAnonError(span, err)
+			span.End()
+		}()
+		out, err = c.c.ExecuteModule(ctx, runReq)
+		return
+	}()
+
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
@@ -293,7 +335,24 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	for _, p := range providers {
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
+		err := func() (err error) {
+			ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, "UpgradeProvider")
+			span.SetAttributes(attribute.String("provider", p.Name), attribute.String("old_version", p.Version))
+			defer func() {
+				telemetry.RecordAnonError(span, err)
+				span.End()
+			}()
+			err = c.c.UpgradeProvider(ctx, p.Name)
+			if err == nil {
+				span.SetAttributes(attribute.String("new_version", p.Version))
+			}
+			if err != nil && (err == migrate.ErrNoChange || errors.Is(err, client.ErrMigrationsNotSupported)) {
+				err = nil
+			}
+			return
+		}()
+
+		if err != nil {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
@@ -315,7 +374,7 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 	for _, p := range providers {
-		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
+		if err := providerOperation(ctx, "DowngradeProvider", p.Name, c.c.DowngradeProvider); err != nil {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
@@ -332,7 +391,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	if err := c.c.DropProvider(ctx, providerName); err != nil {
+	if err := providerOperation(ctx, "DropProvider", providerName, c.c.DropProvider); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
@@ -348,7 +407,8 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+
+	if err := providerOperation(ctx, "BuildProviderTables", providerName, c.c.BuildProviderTables); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
@@ -652,4 +712,15 @@ policy "%s-%s" {
 	version = "%s"
 }
 `, policy.Organization, policy.Repository, policySource, policy.Version))
+}
+
+func providerOperation(ctx context.Context, opName, providerName string, op func(context.Context, string) error) (err error) {
+	ctx, span := telemetry.TracerFromContext(ctx).Start(ctx, opName)
+	span.SetAttributes(attribute.String("provider", providerName))
+	defer func() {
+		telemetry.RecordAnonError(span, err)
+		span.End()
+	}()
+	err = op(ctx, providerName)
+	return
 }

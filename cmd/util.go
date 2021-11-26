@@ -22,8 +22,8 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 	return func(cmd *cobra.Command, args []string) {
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
 
-		tracer := tele.Tracer()
-		ctx, span := tracer.Start(cmd.Context(),
+		ctx, tracer := tele.Tracer(cmd.Context())
+		ctx, span := tracer.Start(ctx,
 			"cli:"+cmd.CommandPath(),
 			trace.WithAttributes(
 				attribute.String("command", cmd.CommandPath()),
