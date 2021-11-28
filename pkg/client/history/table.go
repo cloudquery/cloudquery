@@ -103,7 +103,7 @@ func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
 			return &c
 		}
 	}
-	// Support old school columns instead of meta, this is backwards compatability for providers using SDK prior v0.5.0
+	// Support old school columns instead of meta, this is backwards compatibility for providers using SDK prior v0.5.0
 	for _, c := range t.Columns {
 		if strings.HasSuffix(c.Name, "cq_id") && c.Name != "cq_id" {
 			return &c
