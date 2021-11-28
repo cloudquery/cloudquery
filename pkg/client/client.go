@@ -200,7 +200,7 @@ type Client struct {
 	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
-	// HistoryConfig defines if CloudQuery history configuration for history mode
+	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool

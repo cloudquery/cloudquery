@@ -106,8 +106,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	request := client.FetchRequest{
 		Providers:         c.cfg.Providers,
 		UpdateCallback:    fetchCallback,
-		DisableDataDelete: true, // TODO: use bool + also if history block is enable always turn into true
-		ExtraFields:       map[string]interface{}{"fetch_date": time.Now().Truncate(30 * time.Minute).UTC()},
+		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {

@@ -42,7 +42,7 @@ func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t *sc
 		return fmt.Errorf("failed to create table: %w", err)
 	}
 
-	if err := h.createHyperTable(ctx, t, conn); err != nil {
+	if err := h.createHyperTable(ctx, t, p, conn); err != nil {
 		return fmt.Errorf("failed to created hypertable for table: %s: %w", t.Name, err)
 	}
 
@@ -67,16 +67,20 @@ func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t *sc
 	return nil
 }
 
-func (h TableCreator) createHyperTable(ctx context.Context, t *schema.Table, conn *pgxpool.Conn) error {
+func (h TableCreator) createHyperTable(ctx context.Context, t *schema.Table, p *schema.Table, conn *pgxpool.Conn) error {
 	var hyperTable CreateHyperTableResult
 	tName := fmt.Sprintf(`"history"."%s"`, t.Name)
 	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
 		return fmt.Errorf("failed to create hypertable: %w", err)
 	}
 	h.log.Debug("created hyper table for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "created", hyperTable.Created)
+	if p != nil {
+		return nil
+	}
 	if _, err := conn.Exec(ctx, fmt.Sprintf(dataRetentionPolicy, h.cfg.Retention), tName); err != nil {
 		return err
 	}
+	h.log.Debug("created data retention policy", "table", hyperTable.TableName, "days", h.cfg.Retention)
 	return nil
 }
 
@@ -95,13 +99,17 @@ func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Con
 
 func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
 	for _, c := range t.Columns {
-		if strings.HasSuffix(c.Name, "cq_id") && c.Name != "cq_id" {
-			return &c
-		}
 		if c.Meta().Resolver != nil && c.Meta().Resolver.Name == "ParentIdResolver" {
 			return &c
 		}
 	}
+	// Support old school columns instead of meta, this is backwards compatability for providers using SDK prior v0.5.0
+	for _, c := range t.Columns {
+		if strings.HasSuffix(c.Name, "cq_id") && c.Name != "cq_id" {
+			return &c
+		}
+	}
+
 	return nil
 }
 
@@ -110,13 +118,10 @@ func (h TableCreator) buildTableSQL(table *schema.Table, parentTable *schema.Tab
 	ctb := sqlbuilder.CreateTable(fmt.Sprintf("history.%s", table.Name)).IfNotExists()
 	var uniques []string
 	for _, c := range schema.GetDefaultSDKColumns() {
+		ctb.Define(c.Name, schema.GetPgTypeFromType(c.Type))
 		if c.CreationOptions.Unique {
-			ctb.Define(c.Name, schema.GetPgTypeFromType(c.Type))
 			uniques = append(uniques, c.Name)
-		} else {
-			ctb.Define(c.Name, schema.GetPgTypeFromType(c.Type))
 		}
-
 	}
 	// TODO check fetch_date not defined
 	ctb.Define("fetch_date", schema.GetPgTypeFromType(schema.TypeTimestamp))
