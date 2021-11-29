@@ -2,6 +2,7 @@ package policy
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
@@ -22,6 +23,8 @@ func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Pol
 	policies := Policies{}
 	content, contentDiags := body.Content(policyWrapperSchema)
 	diags = append(diags, contentDiags...)
+
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "policy":
@@ -45,6 +48,9 @@ var policySchema = &hcl.BodySchema{
 		{
 			Name: "description",
 		},
+		{
+			Name: "source",
+		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{
 		{
@@ -65,20 +71,38 @@ var policySchema = &hcl.BodySchema{
 	},
 }
 
-func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
-	content, diags := b.Body.Content(policySchema)
-	if diags.HasErrors() {
-		return nil, diags
-	}
-	policy := &Policy{Name: b.Labels[0]}
+func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
+	var diags hcl.Diagnostics
+	policy := &Policy{Name: labels[0]}
 	if descriptionAttr, ok := content.Attributes["description"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, nil, &policy.Description)...)
+		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &policy.Description)...)
 	}
+	if sourceAttr, ok := content.Attributes["source"]; ok {
+		var data string
+		diags = append(diags, gohcl.DecodeExpression(sourceAttr.Expr, ctx, &data)...)
+		body, dd := config.NewParser().LoadFromSource("", []byte(data), config.SourceHCL)
+		if dd.HasErrors() {
+			return nil, dd
+		}
+		innerContent, contentDiags := body.Content(policySchema)
+		diags = append(diags, contentDiags...)
+		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx)
+		diags = append(diags, innerDiags...)
+		policy.Policies = append(policy.Policies, inner.Policies[0])
+	}
+	if len(content.Blocks) > 0 {
+		return nil, append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  `source with blocks`,
+			Detail:   `There must be one of the following: Policy source attribute or blocks`,
+		})
+	}
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
-			var config Configuration
-			diags = append(diags, gohcl.DecodeBody(block.Body, ctx, &config)...)
+			var cfg Configuration
+			diags = append(diags, gohcl.DecodeBody(block.Body, ctx, &cfg)...)
 			if policy.Config != nil {
 				diags = append(diags, &hcl.Diagnostic{
 					Severity: hcl.DiagError,
@@ -87,7 +111,7 @@ func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnos
 					Subject:  &block.DefRange,
 				})
 			}
-			policy.Config = &config
+			policy.Config = &cfg
 		case "policy":
 			inner, innerDiags := decodePolicyBlock(block, ctx)
 			diags = append(diags, innerDiags...)
@@ -121,4 +145,13 @@ func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnos
 		return nil, diags
 	}
 	return policy, diags
+
+}
+
+func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
+	content, diags := b.Body.Content(policySchema)
+	if diags.HasErrors() {
+		return nil, diags
+	}
+	return decodePolicyContent(b.Labels, content, ctx)
 }

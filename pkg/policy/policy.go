@@ -7,9 +7,11 @@ type Policy struct {
 	Description string         `hcl:"description,optional"`
 	Config      *Configuration `hcl:"configuration,block"`
 
-	Policies []*Policy `hcl:"policy,block"`
-	Queries  []*Query  `hcl:"query,block"`
-	Views    []*View   `hcl:"view,block"`
+	Source      string         `hcl:"source,optional"`
+
+	Policies    []*Policy      `hcl:"policy,block"`
+	Queries     []*Query       `hcl:"query,block"`
+	Views       []*View        `hcl:"view,block"`
 }
 
 type View struct {

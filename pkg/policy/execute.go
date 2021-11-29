@@ -167,7 +167,7 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 		}
 		v, ok := actual[p.Type]
 		if !ok {
-			return fmt.Errorf("provider %s version is unknown", p.Type)
+			return fmt.Errorf("provider %s version is not defined in configuration", p.Type)
 		}
 		if !c.Check(v) {
 			return fmt.Errorf("provider %s does not satisfy version requirement %s", p.Type, c)
