@@ -136,6 +136,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 			found = true
 			qr, err := e.executeQuery(ctx, q)
 			if err != nil {
+				e.log.Error("failed to execute query", "policy", policy.Name, "err", err)
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && qr.Passed

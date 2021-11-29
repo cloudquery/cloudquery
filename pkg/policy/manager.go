@@ -474,6 +474,9 @@ func readPolicy(policyPath, policyFolder string) (*Policies, error) {
 	parser := config.NewParser()
 	policiesRaw, diags := parser.LoadHCLFile(policyPath)
 	if diags != nil && diags.HasErrors() {
+		for _, d := range diags {
+			hclog.Default().Error(d.Error())
+		}
 		return nil, fmt.Errorf("failed to load policy file: %#v", diags.Error())
 	}
 	return decodePolicy(policiesRaw, diags, policyFolder)
