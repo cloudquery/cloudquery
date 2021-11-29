@@ -9,14 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	otrace "go.opentelemetry.io/otel/trace"
 
 	"github.com/fatih/color"
 	"github.com/golang-migrate/migrate/v4"
@@ -25,7 +23,6 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
-	"go.opentelemetry.io/otel/attribute"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -70,11 +67,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadProviders")
-	err := c.c.DownloadProviders(ctx)
-	spanEnder(err)
-
-	if err != nil {
+	if err := c.c.DownloadProviders(ctx); err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
@@ -112,22 +105,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		Providers:         c.cfg.Providers,
 		UpdateCallback:    fetchCallback,
 		DisableDataDelete: viper.GetBool("disable-delete"),
-		SkipBuildTables:   true,
 	}
 
-	if !c.c.SkipBuildTables {
-		// Build tables here (instead of inside Fetch) so that we can have separate timings
-		for _, p := range request.Providers {
-			if err := providerOperation(ctx, "BuildProviderTables", p.Name, c.c.BuildProviderTables); err != nil {
-				return err
-			}
-		}
-	}
-
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	response, err := c.c.Fetch(ctx, request)
-	spanEnder(err)
-
 	if err != nil {
 		return err
 	}
@@ -138,46 +118,22 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		printFetchResponse(response)
 	}
 
-	span := otrace.SpanFromContext(ctx)
-
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
-	var totalFetched, totalWarnings, totalErrors uint64
 	for _, summary := range response.ProviderFetchSummary {
-		totalFetched += summary.TotalResourcesFetched
-		totalWarnings += summary.Diagnostics().Warnings()
-		totalErrors += summary.Diagnostics().Errors() + uint64(len(summary.PartialFetchErrors))
-
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
 			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
 		}
-
-		span.SetAttributes(
-			attribute.Int64("fetch.resources."+summary.ProviderName, int64(summary.TotalResourcesFetched)),
-			attribute.Int64("fetch.warnings."+summary.ProviderName, int64(summary.Diagnostics().Warnings())),
-			attribute.Int64("fetch.errors."+summary.ProviderName, int64(summary.Diagnostics().Errors())),
-			attribute.Int("fetch.partial_errors."+summary.ProviderName, len(summary.PartialFetchErrors)),
-		)
 	}
-
-	span.SetAttributes(
-		attribute.Int64("fetch.resources.total", int64(totalFetched)),
-		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
-		attribute.Int64("fetch.errors.total", int64(totalErrors)),
-	)
-
 	return err
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
 
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadPolicy")
 	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
-	spanEnder(err)
-
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -272,10 +228,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		Config:    cfg,
 	}
 
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", otrace.WithAttributes(attribute.String("module", runReq.Name)))
 	out, err := c.c.ExecuteModule(ctx, runReq)
-	spanEnder(err)
-
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
@@ -342,19 +295,10 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	for _, p := range providers {
-		ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", otrace.WithAttributes(
-			attribute.String("provider", p.Name),
-			attribute.String("old_version", p.Version),
-		))
 		err = c.c.UpgradeProvider(ctx, p.Name)
-		if err == nil {
-			otrace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", p.Version))
-		}
 		if err != nil && (err == migrate.ErrNoChange || errors.Is(err, client.ErrMigrationsNotSupported)) {
 			err = nil
 		}
-		spanEnder(err)
-
 		if err != nil {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
@@ -377,7 +321,7 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 	for _, p := range providers {
-		if err := providerOperation(ctx, "DowngradeProvider", p.Name, c.c.DowngradeProvider); err != nil {
+		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
@@ -394,7 +338,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	if err := providerOperation(ctx, "DropProvider", providerName, c.c.DropProvider); err != nil {
+	if err := c.c.DropProvider(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
@@ -411,7 +355,7 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 		return err
 	}
 
-	if err := providerOperation(ctx, "BuildProviderTables", providerName, c.c.BuildProviderTables); err != nil {
+	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
@@ -715,13 +659,4 @@ policy "%s-%s" {
 	version = "%s"
 }
 `, policy.Organization, policy.Repository, policySource, policy.Version))
-}
-
-func providerOperation(ctx context.Context, opName, providerName string, op func(context.Context, string) error) error {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, opName, otrace.WithAttributes(
-		attribute.String("provider", providerName),
-	))
-	err := op(ctx, providerName)
-	spanEnder(err)
-	return err
 }

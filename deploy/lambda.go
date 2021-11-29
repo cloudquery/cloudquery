@@ -78,8 +78,7 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 		return err
 	}
 	_, err = c.Fetch(ctx, client.FetchRequest{
-		Providers:       cfg.Providers,
-		SkipBuildTables: c.SkipBuildTables,
+		Providers: cfg.Providers,
 	})
 	if err != nil {
 		return fmt.Errorf("error fetching resources: %w", err)
