@@ -641,15 +641,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	// load the policy
 	c.Logger.Info("Loading the policy", "args", policyConfig)
 	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-
 	if err != nil {
-		return nil, err
+		c.Logger.Error("failed loading the policy", "err", err)
+		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
 
 	c.Logger.Info("Running policy", "args", policyConfig)
-
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
-
 	if err != nil {
 		return nil, err
 	}

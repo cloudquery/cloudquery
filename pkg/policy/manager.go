@@ -268,7 +268,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 		}
 	}
 	if policyFilePath == "" {
-		return nil, fmt.Errorf("failed to find policy file; policy.%#v not found in %s", defaultSupportedPolicyExtensions, policyFolder)
+		return nil, fmt.Errorf("failed to find policy file in root directory; expected policy.hcl not found in %s", policyFolder)
 	}
 	m.logger.Debug("policy file found", "path", policyFilePath)
 
