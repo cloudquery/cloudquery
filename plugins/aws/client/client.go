@@ -53,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -127,6 +128,7 @@ type Services struct {
 	S3                   S3Client
 	S3Control            S3ControlClient
 	S3Manager            S3ManagerClient
+	SSM                  SSMClient
 	SageMaker            SageMakerClient
 	SQS                  SQSClient
 	Apigateway           ApigatewayClient
@@ -393,6 +395,7 @@ func initServices(region string, c aws.Config) Services {
 		S3Manager:            newS3ManagerFromConfig(awsCfg),
 		SageMaker:            sagemaker.NewFromConfig(awsCfg),
 		SNS:                  sns.NewFromConfig(awsCfg),
+		SSM:                  ssm.NewFromConfig(awsCfg),
 		SQS:                  sqs.NewFromConfig(awsCfg),
 		Waf:                  waf.NewFromConfig(awsCfg),
 		WafV2:                wafv2.NewFromConfig(awsCfg),
