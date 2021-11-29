@@ -306,7 +306,7 @@ func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.NoError(t, nil)
+	assert.NoError(t, err)
 }
 
 func TestClient_ProviderMigrations(t *testing.T) {
