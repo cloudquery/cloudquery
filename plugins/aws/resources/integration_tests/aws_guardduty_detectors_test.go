@@ -1,6 +1,7 @@
 package integration_tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Masterminds/squirrel"
@@ -18,6 +19,11 @@ func TestIntegrationGuarddutyDetectors(t *testing.T) {
 					Count: 1,
 					Data: map[string]interface{}{
 						"region": "us-east-1",
+						"tags": map[string]interface{}{
+							"Type":   "integration_test",
+							"Name":   fmt.Sprintf("fguardduty-detector-%s%s", res.Prefix, res.Suffix),
+							"TestId": res.Suffix,
+						},
 					},
 				},
 			},

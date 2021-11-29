@@ -31,7 +31,9 @@ func TestIntegrationCodebuildProjects(t *testing.T) {
 						"source_report_build_status":                    false,
 						"source_version":                                "master",
 						"tags": map[string]interface{}{
-							"Type": "integration_test", "TestId": "windowsfifl5fe", "Environment": "Test",
+							"Type":        "integration_test",
+							"TestId":      res.Suffix,
+							"Environment": "Test",
 						},
 						"timeout_in_minutes": float64(5),
 					},
