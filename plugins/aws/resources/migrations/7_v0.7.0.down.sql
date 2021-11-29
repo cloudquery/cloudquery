@@ -15,3 +15,5 @@ ALTER TABLE IF EXISTS "aws_directconnect_gateway_associations" RENAME COLUMN "ga
 ALTER TABLE IF EXISTS "aws_directconnect_gateway_attachments" DROP COLUMN "gateway_id";
 
 ALTER TABLE IF EXISTS "aws_elbv2_listeners" DROP COLUMN "load_balancer_cq_id";
+
+ALTER TABLE IF EXISTS "aws_sns_topics" DROP COLUMN kms_master_key_id;
