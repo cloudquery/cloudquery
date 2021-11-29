@@ -158,7 +158,7 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Info("Policies to run: %v", policiesToRun)
+	c.c.Logger.Info("Policies to run", "policies", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
