@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.16.2] - 2021-11-29
+
+### :rocket: Added
+* Added support for telemetry, to gain better insight on usage to improve features and tool performance. For additional info see [docs](https://docs.cloudquery.io/docs/cli/telemetry) [#280](https://github.com/cloudquery/cloudquery/pull/280).
+* Added support for executing policy in policy [#302](https://github.com/cloudquery/cloudquery/issues/302)
+
+### :spider: Fixed
+* Fixed Policy Not Found unclear message [#306](https://github.com/cloudquery/cloudquery/issues/306)
+* Fixed Logging Statements Output [#305](https://github.com/cloudquery/cloudquery/issues/305)
+
 ## [v0.16.1] - 2021-11-22
 
 ### :spider: Fixed

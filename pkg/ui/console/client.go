@@ -158,7 +158,7 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Info("Policies to run: %v", policiesToRun)
+	c.c.Logger.Info("Policies to run", "policies", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
@@ -612,7 +612,7 @@ func defineResultColumnWidths(execResult []*policy.QueryResult) string {
 }
 
 func findOutput(columnNames []string, data [][]interface{}) []string {
-	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+	outputKeys := []string{"id", "identifier", "resource_identifier", "uid", "uuid", "arn"}
 	outputKey := ""
 	outputResources := make([]string, 0)
 	for _, key := range outputKeys {

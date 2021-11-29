@@ -584,7 +584,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	for _, policyConfig := range req.Policies {
 		result, err := c.runPolicy(ctx, policyConfig, req)
 
-		c.Logger.Debug("Policy %s finished with error: %v", policyConfig.Name, err)
+		c.Logger.Debug("Policy execution finished", "name", policyConfig.Name, "err", err)
 
 		if err != nil {
 			// update the ui with the error
@@ -641,15 +641,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	// load the policy
 	c.Logger.Info("Loading the policy", "args", policyConfig)
 	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-
 	if err != nil {
-		return nil, err
+		c.Logger.Error("failed loading the policy", "err", err)
+		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
 
 	c.Logger.Info("Running policy", "args", policyConfig)
-
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
-
 	if err != nil {
 		return nil, err
 	}
