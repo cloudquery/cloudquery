@@ -15,7 +15,7 @@ func TestIntegrationDirectConnectGateways(t *testing.T) {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_directconnect_gateways",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where("direct_connect_gateway_name = ?", fmt.Sprintf("dx-gateway%s-%s", res.Prefix, res.Suffix))
+				return sq.Where("name = ?", fmt.Sprintf("dx-gateway%s-%s", res.Prefix, res.Suffix))
 			},
 			ExpectedValues: []providertest.ExpectedValue{{
 				Count: 1,
