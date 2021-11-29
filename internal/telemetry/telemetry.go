@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
@@ -222,6 +223,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", isCI()),
+		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
 		attr = append(attr, attribute.Bool("random_id_persisted", true))
