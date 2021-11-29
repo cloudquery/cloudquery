@@ -24,7 +24,6 @@ func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Pol
 	content, contentDiags := body.Content(policyWrapperSchema)
 	diags = append(diags, contentDiags...)
 
-
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "policy":
@@ -71,7 +70,7 @@ var policySchema = &hcl.BodySchema{
 	},
 }
 
-func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
+func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.EvalContext, r *hcl.Range) (*Policy, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 	policy := &Policy{Name: labels[0]}
 	if descriptionAttr, ok := content.Attributes["description"]; ok {
@@ -86,15 +85,16 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		}
 		innerContent, contentDiags := body.Content(policySchema)
 		diags = append(diags, contentDiags...)
-		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx)
+		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
 		diags = append(diags, innerDiags...)
 		policy.Policies = append(policy.Policies, inner.Policies[0])
 	}
 	if len(content.Blocks) > 0 {
 		return nil, append(diags, &hcl.Diagnostic{
 			Severity: hcl.DiagError,
-			Summary:  `source with blocks`,
+			Summary:  `Found source with blocks`,
 			Detail:   `There must be one of the following: Policy source attribute or blocks`,
+			Subject:  r,
 		})
 	}
 
@@ -153,5 +153,5 @@ func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnos
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return decodePolicyContent(b.Labels, content, ctx)
+	return decodePolicyContent(b.Labels, content, ctx, b.TypeRange.Ptr())
 }
