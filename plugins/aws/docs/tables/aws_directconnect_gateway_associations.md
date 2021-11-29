@@ -4,8 +4,8 @@ Information about the association between an Direct Connect Gateway and either a
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|directconnect_gateway_cq_id|uuid|Unique CloudQuery ID of aws_directconnect_gateways table (FK)|
-|directconnect_gateway_id|text|The ID of the Direct Connect gateway.|
+|gateway_cq_id|uuid|Unique CloudQuery ID of aws_directconnect_gateways table (FK)|
+|gateway_id|text|The ID of the Direct Connect gateway.|
 |allowed_prefixes_to_direct_connect_gateway|text[]|The Amazon VPC prefixes to advertise to the Direct Connect gateway.|
 |associated_gateway_id|text|The ID of the associated gateway.|
 |associated_gateway_owner_account|text|The ID of the AWS account that owns the associated virtual private gateway or transit gateway.|

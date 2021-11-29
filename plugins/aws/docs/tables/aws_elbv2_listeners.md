@@ -6,6 +6,7 @@ Information about a listener.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|load_balancer_cq_id|uuid|Unique CloudQuery ID of aws_elbv2_load_balancers table (FK)|
 |tags|jsonb||
 |alpn_policy|text[]|[TLS listener] The name of the Application-Layer Protocol Negotiation (ALPN) policy.|
 |arn|text|The Amazon Resource Name (ARN) of the listener.|

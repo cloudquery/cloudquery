@@ -34,6 +34,12 @@ func Elbv2Listeners() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "load_balancer_cq_id",
+				Description: "Unique CloudQuery ID of aws_elbv2_load_balancers table (FK)",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveElbv2listenerTags,
