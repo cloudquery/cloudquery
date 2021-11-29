@@ -173,7 +173,7 @@ resource "aws_codebuild_project" "codebuild_project" {
     ]
 
     security_group_ids = [
-      aws_security_group.codebuild_sg.id,
+      aws_security_group.aws_emr_clusters_security_group.id,
     ]
   }
 
@@ -187,30 +187,5 @@ resource "aws_efs_file_system" "codebuild_efs" {
 
   tags = {
     Name = "MyProduct"
-  }
-}
-
-
-resource "aws_security_group" "codebuild_sg" {
-  name = "ecs_clusters_sg${var.test_prefix}${var.test_suffix}"
-
-  vpc_id = aws_vpc.aws_vpc.id
-
-  ingress {
-    protocol  = "tcp"
-    from_port = "80"
-    to_port   = "80"
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = [
-      "0.0.0.0/0"
-    ]
-    ipv6_cidr_blocks = [
-      "::/0"
-    ]
   }
 }

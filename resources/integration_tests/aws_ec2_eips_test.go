@@ -1,6 +1,7 @@
 package integration_tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/cq-provider-aws/resources"
@@ -15,9 +16,8 @@ func TestIntegrationEc2Eips(t *testing.T) {
 				{
 					Count: 1,
 					Data: map[string]interface{}{
-						// "log_destination_type": "s3",
-						// "traffic_type":         "ALL",
 						"tags": map[string]interface{}{
+							"Name":   fmt.Sprintf("elastic-ip-%s%s", res.Prefix, res.Suffix),
 							"Type":   "integration_test",
 							"TestId": res.Suffix,
 						},
