@@ -32,7 +32,7 @@ func NewHistoryTableCreator(cfg *Config, l hclog.Logger) (*TableCreator, error) 
 	}, nil
 }
 
-func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error {
+func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
 	sql, err := h.buildTableSQL(t, p)
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t *sc
 	return nil
 }
 
-func (h TableCreator) createHyperTable(ctx context.Context, t *schema.Table, p *schema.Table, conn *pgxpool.Conn) error {
+func (h TableCreator) createHyperTable(ctx context.Context, t, p *schema.Table, conn *pgxpool.Conn) error {
 	var hyperTable CreateHyperTableResult
 	tName := fmt.Sprintf(`"history"."%s"`, t.Name)
 	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
@@ -85,7 +85,7 @@ func (h TableCreator) createHyperTable(ctx context.Context, t *schema.Table, p *
 }
 
 // TODO: create unique index on fetch_date parent_cq_id
-func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error {
+func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
 	c := h.findParentIdColumn(t)
 	if c == nil {
 		return fmt.Errorf("failed to find parent cq id column for %s", t.Name)
@@ -113,7 +113,7 @@ func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
 	return nil
 }
 
-func (h TableCreator) buildTableSQL(table *schema.Table, parentTable *schema.Table) (string, error) {
+func (h TableCreator) buildTableSQL(table, _ *schema.Table) (string, error) {
 	// Build SQL to create a table.
 	ctb := sqlbuilder.CreateTable(fmt.Sprintf("history.%s", table.Name)).IfNotExists()
 	var uniques []string
