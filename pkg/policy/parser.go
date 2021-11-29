@@ -2,6 +2,7 @@ package policy
 
 import (
 	"fmt"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/hashicorp/hcl/v2"
@@ -77,6 +78,16 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &policy.Description)...)
 	}
 	if sourceAttr, ok := content.Attributes["source"]; ok {
+		// Sanity check
+		if len(content.Blocks) > 0 {
+			return nil, append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  `Found source with blocks`,
+				Detail:   `There must be one of the following: Policy source attribute or blocks`,
+				Subject:  r,
+			})
+		}
+
 		var data string
 		diags = append(diags, gohcl.DecodeExpression(sourceAttr.Expr, ctx, &data)...)
 		body, dd := config.NewParser().LoadFromSource("", []byte(data), config.SourceHCL)
@@ -88,14 +99,6 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
 		diags = append(diags, innerDiags...)
 		policy.Policies = append(policy.Policies, inner.Policies[0])
-	}
-	if len(content.Blocks) > 0 {
-		return nil, append(diags, &hcl.Diagnostic{
-			Severity: hcl.DiagError,
-			Summary:  `Found source with blocks`,
-			Detail:   `There must be one of the following: Policy source attribute or blocks`,
-			Subject:  r,
-		})
 	}
 
 	for _, block := range content.Blocks {
