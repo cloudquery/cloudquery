@@ -22,7 +22,7 @@ config {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.6.2"
+        version = ">=0.6.5"
 
         resource "*" {
             ignore_identifiers = [ ]
@@ -483,7 +483,7 @@ config {
         }
 
         resource "aws_directconnect_gateway_associations" {
-            identifiers = [ sql("CONCAT('ga-', c.directconnect_gateway_id, c.associated_gateway_id)") ]
+            identifiers = [ sql("CONCAT('ga-', c.gateway_id, c.associated_gateway_id)") ]
             iac {
                 terraform {
                     type = "aws_dx_gateway_association"
