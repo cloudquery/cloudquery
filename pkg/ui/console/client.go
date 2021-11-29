@@ -17,12 +17,13 @@ import (
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -347,7 +348,6 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
