@@ -9,13 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
-	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/policy"
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-
 	"github.com/fatih/color"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
@@ -23,6 +16,13 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
+
+	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -66,8 +66,8 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-
-	if err := c.c.DownloadProviders(ctx); err != nil {
+	err := c.c.DownloadProviders(ctx)
+	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
@@ -106,7 +106,6 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		UpdateCallback:    fetchCallback,
 		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
-
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
 		return err
@@ -132,7 +131,6 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
-
 	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
@@ -227,7 +225,6 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		Providers: provs,
 		Config:    cfg,
 	}
-
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
@@ -295,11 +292,7 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
 	for _, p := range providers {
-		err = c.c.UpgradeProvider(ctx, p.Name)
-		if err != nil && (err == migrate.ErrNoChange || errors.Is(err, client.ErrMigrationsNotSupported)) {
-			err = nil
-		}
-		if err != nil {
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
