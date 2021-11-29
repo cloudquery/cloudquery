@@ -636,6 +636,7 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 				"FifoTopic":                 "false",
 				"ContentBasedDeduplication": "true",
 				"DisplayName":               "cloudquery",
+				"KmsMasterKeyId":            "test/key",
 				"Owner":                     "owner",
 				"Policy":                    `{"stuff": 3}`,
 				"DeliveryPolicy":            `{"stuff": 3}`,

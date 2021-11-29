@@ -86,6 +86,11 @@ func SnsTopics() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
+				Name:        "kms_master_key_id",
+				Description: "The ID of an AWS managed customer master key (CMK) for Amazon SNS or a custom CMK",
+				Type:        schema.TypeString,
+			},
+			{
 				Name:        "arn",
 				Description: "The topic's ARN.",
 				Type:        schema.TypeString,
@@ -169,6 +174,11 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	if p, ok := output.Attributes["EffectiveDeliveryPolicy"]; ok && p != "" {
 		if err := resource.Set("effective_delivery_policy", p); err != nil {
+			return err
+		}
+	}
+	if p, ok := output.Attributes["KmsMasterKeyId"]; ok && p != "" {
+		if err := resource.Set("kms_master_key_id", p); err != nil {
 			return err
 		}
 	}
