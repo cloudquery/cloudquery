@@ -420,29 +420,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	}
 	close(fetchSummaries)
 
-	span := otrace.SpanFromContext(ctx)
-	var totalFetched, totalWarnings, totalErrors uint64
-
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.ProviderName] = ps
-
-		totalFetched += ps.TotalResourcesFetched
-		totalWarnings += ps.Diagnostics().Warnings()
-		totalErrors += ps.Diagnostics().Errors() + uint64(len(ps.PartialFetchErrors))
-
-		span.SetAttributes(
-			attribute.Int64("fetch.resources."+ps.ProviderName, int64(ps.TotalResourcesFetched)),
-			attribute.Int64("fetch.warnings."+ps.ProviderName, int64(ps.Diagnostics().Warnings())),
-			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
-			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
-		)
 	}
 
-	span.SetAttributes(
-		attribute.Int64("fetch.resources.total", int64(totalFetched)),
-		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
-		attribute.Int64("fetch.errors.total", int64(totalErrors)),
-	)
+	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -929,4 +911,28 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 		ver[p.Name] = v
 	}
 	return ver, nil
+}
+
+// collectFetchSummaryStats reads provided fetch summaries and persists statistics into the span
+func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+	var totalFetched, totalWarnings, totalErrors uint64
+
+	for _, ps := range fetchSummaries {
+		totalFetched += ps.TotalResourcesFetched
+		totalWarnings += ps.Diagnostics().Warnings()
+		totalErrors += ps.Diagnostics().Errors() + uint64(len(ps.PartialFetchErrors))
+
+		span.SetAttributes(
+			attribute.Int64("fetch.resources."+ps.ProviderName, int64(ps.TotalResourcesFetched)),
+			attribute.Int64("fetch.warnings."+ps.ProviderName, int64(ps.Diagnostics().Warnings())),
+			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
+			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
+		)
+	}
+
+	span.SetAttributes(
+		attribute.Int64("fetch.resources.total", int64(totalFetched)),
+		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
+		attribute.Int64("fetch.errors.total", int64(totalErrors)),
+	)
 }
