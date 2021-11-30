@@ -35,6 +35,26 @@ func (m *MockConfigServiceClient) EXPECT() *MockConfigServiceClientMockRecorder 
 	return m.recorder
 }
 
+// DescribeConfigurationRecorderStatus mocks base method.
+func (m *MockConfigServiceClient) DescribeConfigurationRecorderStatus(arg0 context.Context, arg1 *configservice.DescribeConfigurationRecorderStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecorderStatusOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeConfigurationRecorderStatus", varargs...)
+	ret0, _ := ret[0].(*configservice.DescribeConfigurationRecorderStatusOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeConfigurationRecorderStatus indicates an expected call of DescribeConfigurationRecorderStatus.
+func (mr *MockConfigServiceClientMockRecorder) DescribeConfigurationRecorderStatus(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeConfigurationRecorderStatus", reflect.TypeOf((*MockConfigServiceClient)(nil).DescribeConfigurationRecorderStatus), varargs...)
+}
+
 // DescribeConfigurationRecorders mocks base method.
 func (m *MockConfigServiceClient) DescribeConfigurationRecorders(arg0 context.Context, arg1 *configservice.DescribeConfigurationRecordersInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecordersOutput, error) {
 	m.ctrl.T.Helper()
