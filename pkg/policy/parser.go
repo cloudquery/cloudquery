@@ -98,7 +98,7 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		diags = append(diags, contentDiags...)
 		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
 		diags = append(diags, innerDiags...)
-		policy.Policies = append(policy.Policies, inner.Policies[0])
+		policy.Policies = append(policy.Policies, inner.Policies...)
 	}
 
 	for _, block := range content.Blocks {
@@ -148,7 +148,6 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		return nil, diags
 	}
 	return policy, diags
-
 }
 
 func decodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
