@@ -92,23 +92,25 @@ func (d *Drift) ExampleConfig() string {
 drift "drift-example" {
   // state block defines from where to access the state
   terraform {
-    backend  = "local" # "local" or "s3"
+    // backend: "local" or "s3"
+    backend  = "local"
+
+    // local backend options
+    // files: list of tfstate files
     files = [ "/path/to.tfstate" ]
-/*
-    bucket   = "<terraform state bucket>"
-    keys     = ["<terraform state key>"]
-    region   = "us-east-1"
-    role_arn = ""
-*/
+
+    // s3 backend options
+    // bucket   = "<tfstate bucket>"
+    // keys     = [ "<tfstate key>" ]
+    // region   = "us-east-1"
+    // role_arn = ""
   }
 
-/*
-  provider "aws" {
-    account_ids      = ["123456789"]
-    check_resources   = ["ec2.instances:*"]
-    ignore_resources = ["ec2.instances:i-123456789", "aws_cloudwatchlogs_filters:*"]
-  }
-*/
+    // provider "aws" {
+    //   account_ids      = ["123456789"]
+    //   check_resources   = ["ec2.instances:*"]
+    //   ignore_resources = ["ec2.instances:i-123456789", "aws_cloudwatchlogs_filters:*"]
+    // }
 }`
 }
 
