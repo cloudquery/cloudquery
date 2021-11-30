@@ -20,3 +20,4 @@ A Web ACL defines a collection of rules to use to inspect and control web reques
 |description|text|A description of the Web ACL that helps with identification.|
 |label_namespace|text|The label namespace prefix for this web ACL|
 |managed_by_firewall_manager|boolean|Indicates whether this web ACL is managed by AWS Firewall Manager|
+|logging_configuration|text[]|The LoggingConfiguration for the specified web ACL.|

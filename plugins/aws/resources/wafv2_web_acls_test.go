@@ -60,6 +60,10 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)
 	}
+	var loggingConfiguration types.LoggingConfiguration
+	if err := faker.FakeData(&loggingConfiguration); err != nil {
+		t.Fatal(err)
+	}
 	rule := types.Rule{
 		Name:             aws.String(faker.Name()),
 		Priority:         rand.Int31(),
@@ -95,6 +99,9 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}, nil)
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListTagsForResourceOutput{
 		TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
+	}, nil)
+	m.EXPECT().GetLoggingConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetLoggingConfigurationOutput{
+		LoggingConfiguration: &loggingConfiguration,
 	}, nil)
 
 	return client.Services{WafV2: m}

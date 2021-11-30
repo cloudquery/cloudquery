@@ -5,3 +5,6 @@ ALTER TABLE IF EXISTS "aws_config_configuration_recorders" DROP COLUMN status_la
                                                            DROP COLUMN status_last_status_change_time,
                                                            DROP COLUMN status_last_stop_time,
                                                            DROP COLUMN status_recording;
+
+ALTER TABLE IF EXISTS "aws_wafv2_web_acls" DROP COLUMN logging_configuration;
+ALTER TABLE IF EXISTS "aws_waf_web_acls" DROP COLUMN logging_configuration;

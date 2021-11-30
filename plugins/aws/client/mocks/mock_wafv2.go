@@ -55,6 +55,26 @@ func (mr *MockWafV2ClientMockRecorder) DescribeManagedRuleGroup(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeManagedRuleGroup", reflect.TypeOf((*MockWafV2Client)(nil).DescribeManagedRuleGroup), varargs...)
 }
 
+// GetLoggingConfiguration mocks base method.
+func (m *MockWafV2Client) GetLoggingConfiguration(arg0 context.Context, arg1 *wafv2.GetLoggingConfigurationInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetLoggingConfigurationOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLoggingConfiguration", varargs...)
+	ret0, _ := ret[0].(*wafv2.GetLoggingConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLoggingConfiguration indicates an expected call of GetLoggingConfiguration.
+func (mr *MockWafV2ClientMockRecorder) GetLoggingConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoggingConfiguration", reflect.TypeOf((*MockWafV2Client)(nil).GetLoggingConfiguration), varargs...)
+}
+
 // GetPermissionPolicy mocks base method.
 func (m *MockWafV2Client) GetPermissionPolicy(arg0 context.Context, arg1 *wafv2.GetPermissionPolicyInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetPermissionPolicyOutput, error) {
 	m.ctrl.T.Helper()
