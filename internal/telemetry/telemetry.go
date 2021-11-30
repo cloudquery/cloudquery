@@ -248,32 +248,39 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	)
 }
 
-// randomId will read or generate a persistent `telemetry-random-id` file under `.cq` and return its value. If a new file is generated, c.newRandomId is set.
+// randomId will read or generate a persistent `telemetry-random-id` file and return its value.
+// First it will try reading ~/.cq/telemetry-random-id and use that value if found. If not, it will move on to ./cq/telemetry-random-id, first attempting a read and if not found, will create that file filling it with a newly generated ID.
+// If a directory with the same name is encountered, process is aborted and an empty string is returned.
+// If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	fn := filepath.Join(".", ".cq", "telemetry-random-id")
+	const idFile = "telemetry-random-id"
 
-	exists := true
-	fi, err := c.fs.Stat(fn)
+	if home, err := os.UserHomeDir(); err == nil {
+		// special case for having a persistent ID, read-only access
+		fn := filepath.Join(home, ".cq", idFile)
+		id, err := readRandomId(c.fs, fn)
+		if err == errDirectory {
+			// finish early if directory encountered
+			return "", err
+		}
+		if id != "" {
+			return id, nil
+		}
+	}
+
+	fn := filepath.Join(".", ".cq", idFile)
+	id, err := readRandomId(c.fs, fn)
+	if err == errDirectory {
+		return "", err
+	} else if err != nil {
+		return "", err
+	}
+	if id != "" {
+		return id, nil
+	}
+
+	id, err = writeRandomId(c.fs, fn)
 	if err != nil {
-		if !os.IsNotExist(err) {
-			return "", err
-		}
-		exists = false
-	}
-	if exists && fi.IsDir() {
-		return "", fmt.Errorf("telemetry-random-id is a directory")
-	}
-
-	if exists {
-		b, err := c.fs.ReadFile(fn)
-		if err != nil {
-			return "", err
-		}
-		return string(b), nil
-	}
-
-	id := genRandomId()
-	if err := c.fs.WriteFile(fn, []byte(id), 0644); err != nil {
 		return "", err
 	}
 
@@ -362,4 +369,39 @@ func hashAttribute(value string) string {
 	s := sha1.New()
 	_, _ = s.Write([]byte(value))
 	return fmt.Sprintf("%0x", s.Sum(nil))
+}
+
+var errDirectory = fmt.Errorf("telemetry-random-id is a directory")
+
+// readRandomId reads the contents of given fn in the given fs. Returns errDirectory if the file exists but is a directory.
+func readRandomId(fs afero.Afero, fn string) (string, error) {
+	exists := true
+	fi, err := fs.Stat(fn)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			return "", err
+		}
+		exists = false
+	}
+	if exists && fi.IsDir() {
+		return "", errDirectory
+	}
+	if !exists {
+		return "", nil
+	}
+
+	b, err := fs.ReadFile(fn)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+// writeRandomId will generate a new random ID and write it to the given fn in the given fs.
+func writeRandomId(fs afero.Afero, fn string) (string, error) {
+	id := genRandomId()
+	if err := fs.WriteFile(fn, []byte(id), 0644); err != nil {
+		return "", err
+	}
+	return id, nil
 }
