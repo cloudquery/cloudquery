@@ -126,11 +126,9 @@ func (p ProviderFetchSummary) Attributes() []attribute.KeyValue {
 		total := 0
 		for typ, count := range typeCount {
 			ret = append(ret, attribute.Int(prefix+strings.ToLower(typ.String())+"."+p.ProviderName, count))
-			fmt.Println("ATTR", prefix+strings.ToLower(typ.String())+"."+p.ProviderName, count)
 			total += count
 		}
 		ret = append(ret, attribute.Int(prefix+"total."+p.ProviderName, total))
-		fmt.Println("ATTR", prefix+"total."+p.ProviderName, total)
 	}
 
 	return ret
