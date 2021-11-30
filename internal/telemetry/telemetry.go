@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
@@ -168,8 +168,12 @@ func New(ctx context.Context, options ...Option) *Client {
 	return c
 }
 
-func (c *Client) Tracer() otrace.Tracer {
-	return c.tp.Tracer("cloudquery.io/internal/telemetry")
+func (c *Client) Tracer(ctx context.Context) (context.Context, Tracer) {
+	tw := &wrappedTracer{
+		Tracer: c.tp.Tracer("cloudquery.io/internal/telemetry"),
+		debug:  c.debug,
+	}
+	return ContextWithTracer(ctx, tw), tw
 }
 
 func (c *Client) Shutdown(ctx context.Context) {
@@ -192,24 +196,6 @@ func (c *Client) Shutdown(ctx context.Context) {
 			c.logger.Debug("close failed", "error", err)
 		}
 	}
-}
-
-// RecordError should be called on a span to mark it as errored. Error values are not included unless debug mode is on.
-func (c *Client) RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
-	if err == nil {
-		return
-	}
-
-	if c.debug {
-		span.RecordError(err, opts...)
-		span.SetStatus(codes.Error, err.Error())
-		return
-	}
-
-	//  TODO for fetch get table name / error type
-
-	span.RecordError(fmt.Errorf("error"))
-	span.SetStatus(codes.Error, "error")
 }
 
 func (c *Client) HasError() error {
@@ -237,6 +223,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", isCI()),
+		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
 		attr = append(attr, attribute.Bool("random_id_persisted", true))
