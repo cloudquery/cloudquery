@@ -269,17 +269,13 @@ func (c *Client) randomId() (string, error) {
 	}
 
 	fn := filepath.Join(".", ".cq", idFile)
-	id, err := readRandomId(c.fs, fn)
-	if err == errDirectory {
+	if id, err := readRandomId(c.fs, fn); err != nil {
 		return "", err
-	} else if err != nil {
-		return "", err
-	}
-	if id != "" {
+	} else if id != "" {
 		return id, nil
 	}
 
-	id, err = writeRandomId(c.fs, fn)
+	id, err := writeRandomId(c.fs, fn)
 	if err != nil {
 		return "", err
 	}
