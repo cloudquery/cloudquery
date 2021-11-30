@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -108,6 +109,12 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "managed_by_firewall_manager",
 				Description: "Indicates whether this web ACL is managed by AWS Firewall Manager",
 				Type:        schema.TypeBool,
+			},
+			{
+				Name:        "logging_configuration",
+				Description: "The LoggingConfiguration for the specified web ACL.",
+				Type:        schema.TypeStringArray,
+				Resolver:    resolveWafV2WebACLRuleLoggingConfiguration,
 			},
 		},
 		Relations: []*schema.Table{
@@ -522,4 +529,28 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx cont
 		return err
 	}
 	return resource.Set(c.Name, data)
+}
+func resolveWafV2WebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	rule, ok := resource.Item.(*types.WebACL)
+	if !ok {
+		return fmt.Errorf("not an WebACL instance")
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services().WafV2
+	cfg := wafv2.GetLoggingConfigurationInput{
+		ResourceArn: rule.ARN,
+	}
+	output, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		var exc *types.WAFNonexistentItemException
+		if errors.As(err, &exc) {
+			if exc.ErrorCode() == "WAFNonexistentItemException" {
+				return nil
+			}
+		}
+		return err
+	}
+	return resource.Set(c.Name, output.LoggingConfiguration.LogDestinationConfigs)
 }

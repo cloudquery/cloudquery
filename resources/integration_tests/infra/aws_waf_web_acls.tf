@@ -19,4 +19,8 @@ resource "aws_waf_web_acl" "waf_web_acl_1" {
     rule_id  = aws_waf_rule.waf_rule_1.id
     type     = "REGULAR"
   }
+
+  logging_configuration {
+    log_destination = aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream.arn
+  }
 }

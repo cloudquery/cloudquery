@@ -11,3 +11,4 @@ This is AWS WAF Classic documentation
 |metric_name|text|A friendly name or description for the metrics for this WebACL|
 |name|text|A friendly name or description of the WebACL|
 |arn|text|Tha Amazon Resource Name (ARN) of the web ACL.|
+|logging_configuration|text[]|The LoggingConfiguration for the specified web ACL.|

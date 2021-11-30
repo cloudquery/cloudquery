@@ -25,6 +25,10 @@ func buildWAFWebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)
 	}
+	var loggingConfiguration types.LoggingConfiguration
+	if err := faker.FakeData(&loggingConfiguration); err != nil {
+		t.Fatal(err)
+	}
 	m.EXPECT().ListWebACLs(gomock.Any(), gomock.Any(), gomock.Any()).Return(&waf.ListWebACLsOutput{
 		WebACLs: []types.WebACLSummary{tempWebACLSum},
 	}, nil)
@@ -33,6 +37,9 @@ func buildWAFWebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}, nil)
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&waf.ListTagsForResourceOutput{
 		TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
+	}, nil)
+	m.EXPECT().GetLoggingConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&waf.GetLoggingConfigurationOutput{
+		LoggingConfiguration: &loggingConfiguration,
 	}, nil)
 
 	return client.Services{Waf: m}

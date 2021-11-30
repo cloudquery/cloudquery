@@ -9,7 +9,7 @@ import (
 )
 
 func TestIntegrationWAFv2WebACLs(t *testing.T) {
-	awsTestIntegrationHelper(t, resources.Wafv2WebAcls(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+	awsTestIntegrationHelper(t, resources.Wafv2WebAcls(), []string{"aws_wafv2_web_acls.tf", "aws_kinesis_firehose.tf"}, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
 			Name: "aws_wafv2_web_acls",
 			ExpectedValues: []providertest.ExpectedValue{{

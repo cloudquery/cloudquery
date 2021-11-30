@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -59,6 +60,12 @@ func WafWebAcls() *schema.Table {
 				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("WebACLArn"),
+			},
+			{
+				Name:        "logging_configuration",
+				Description: "The LoggingConfiguration for the specified web ACL.",
+				Type:        schema.TypeStringArray,
+				Resolver:    resolveWafWebACLRuleLoggingConfiguration,
 			},
 		},
 		Relations: []*schema.Table{
@@ -191,4 +198,29 @@ func resolveWafWebACLRuleExcludedRules(ctx context.Context, meta schema.ClientMe
 		excludedRules[i] = aws.ToString(rule.ExcludedRules[i].RuleId)
 	}
 	return resource.Set(c.Name, excludedRules)
+}
+func resolveWafWebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	rule, ok := resource.Item.(*types.WebACL)
+	if !ok {
+		return fmt.Errorf("not an WebACL instance")
+	}
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().Waf
+	cfg := waf.GetLoggingConfigurationInput{
+		ResourceArn: rule.WebACLArn,
+	}
+	output, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *waf.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		var exc *types.WAFNonexistentItemException
+		if errors.As(err, &exc) {
+			if exc.ErrorCode() == "WAFNonexistentItemException" {
+				return nil
+			}
+		}
+		return err
+	}
+	return resource.Set(c.Name, output.LoggingConfiguration.LogDestinationConfigs)
 }
