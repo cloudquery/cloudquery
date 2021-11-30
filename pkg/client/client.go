@@ -7,6 +7,7 @@ import (
 	"io"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -91,6 +92,48 @@ func (p ProviderFetchSummary) HasErrors() bool {
 		return true
 	}
 	return false
+}
+
+func (p ProviderFetchSummary) Attributes() []attribute.KeyValue {
+	type diagCount map[diag.DiagnosticType]int
+	sevCounts := make(map[diag.Severity]diagCount)
+
+	for _, d := range p.Diagnostics() {
+		if _, ok := sevCounts[d.Severity()]; !ok {
+			tc := make(diagCount)
+			tc[d.Type()]++
+			sevCounts[d.Severity()] = tc
+		} else {
+			sevCounts[d.Severity()][d.Type()]++
+		}
+	}
+
+	ret := make([]attribute.KeyValue, 0, len(sevCounts))
+	for severity, typeCount := range sevCounts {
+		var sevName string
+		switch severity {
+		case diag.IGNORE:
+			sevName = "ignore"
+		case diag.WARNING:
+			sevName = "warning"
+		case diag.ERROR:
+			sevName = "error"
+		default:
+			sevName = "unknown"
+		}
+
+		prefix := "fetch.diag." + sevName + "."
+		total := 0
+		for typ, count := range typeCount {
+			ret = append(ret, attribute.Int(prefix+strings.ToLower(typ.String())+"."+p.ProviderName, count))
+			fmt.Println("ATTR", prefix+strings.ToLower(typ.String())+"."+p.ProviderName, count)
+			total += count
+		}
+		ret = append(ret, attribute.Int(prefix+"total."+p.ProviderName, total))
+		fmt.Println("ATTR", prefix+"total."+p.ProviderName, total)
+	}
+
+	return ret
 }
 
 // PoliciesRunRequest is the request used to run a policy.
@@ -928,6 +971,7 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
 		)
+		span.SetAttributes(ps.Attributes()...)
 	}
 
 	span.SetAttributes(
