@@ -142,6 +142,7 @@ type CognitoUserPoolsClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_configservice.go . ConfigServiceClient
 type ConfigServiceClient interface {
 	DescribeConfigurationRecorders(ctx context.Context, params *configservice.DescribeConfigurationRecordersInput, optFns ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecordersOutput, error)
+	DescribeConfigurationRecorderStatus(ctx context.Context, params *configservice.DescribeConfigurationRecorderStatusInput, optFns ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecorderStatusOutput, error)
 	configservice.DescribeConformancePacksAPIClient
 }
 
