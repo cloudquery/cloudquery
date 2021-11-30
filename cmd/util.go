@@ -20,6 +20,13 @@ import (
 
 func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
+		var exitWithCode int
+		defer func() {
+			if exitWithCode > 0 {
+				os.Exit(exitWithCode)
+			}
+		}()
+
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
 
 		ctx, _ := tele.Tracer(cmd.Context())
@@ -29,21 +36,21 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 			),
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
-		ender := func(err error) {
-			spanEnder(err, trace.WithStackTrace(false))
+
+		var exitError error
+		defer func() {
+			spanEnder(exitError, trace.WithStackTrace(false))
 			tele.Shutdown(cmd.Context())
-		}
-		defer ender(nil)
+		}()
 
 		if err := handleConsole(ctx, tele, cmd, args, f); err != nil {
 			if ee, ok := err.(*console.ExitCodeError); ok {
-				ender(nil) // err is not recorded
-				os.Exit(ee.ExitCode)
+				exitWithCode = ee.ExitCode
+				return // exitError is not set
 			}
 
-			ender(err)
+			exitError, exitWithCode = err, 1
 			cmd.PrintErrln(err)
-			os.Exit(1)
 		}
 	}
 }
