@@ -120,6 +120,7 @@ func Provider() *provider.Provider {
 			"sns.subscriptions":                     SnsSubscriptions(),
 			"sns.topics":                            SnsTopics(),
 			"sqs.queues":                            SQSQueues(),
+			"ssm.documents":                         SsmDocuments(),
 			"ssm.instances":                         SsmInstances(),
 			"waf.rule_groups":                       WafRuleGroups(),
 			"waf.rules":                             WafRules(),
