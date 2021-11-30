@@ -79,6 +79,11 @@ type debugModer interface {
 	DebugMode() bool
 }
 
+func isDebugSpan(span otrace.Span) bool {
+	d, ok := span.(debugModer)
+	return ok && d.DebugMode()
+}
+
 var (
 	_ debugModer = (*wrappedSpan)(nil)
 	_ debugModer = (*wrappedTracer)(nil)

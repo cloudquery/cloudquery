@@ -13,19 +13,14 @@ func RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
 		return
 	}
 
-	anon := true
-	if d, ok := span.(debugModer); ok && d.DebugMode() {
-		anon = false
-	}
-
 	//  TODO for fetch get table name / error type
 
-	if anon {
-		span.RecordError(fmt.Errorf("error"), opts...)
-		span.SetStatus(codes.Error, "error")
+	if isDebugSpan(span) {
+		span.RecordError(err, opts...)
+		span.SetStatus(codes.Error, err.Error())
 		return
 	}
 
-	span.RecordError(err, opts...)
-	span.SetStatus(codes.Error, err.Error())
+	span.RecordError(fmt.Errorf("error"), opts...)
+	span.SetStatus(codes.Error, "error")
 }
