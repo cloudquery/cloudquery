@@ -67,6 +67,8 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 	// Don't init console client with these commands
 	case "completion", "options":
 		delayMessage = false
+	case "init":
+		// No console client created here
 	default:
 		var err error
 		c, err = console.CreateClient(ctx, configPath)
