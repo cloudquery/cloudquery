@@ -670,7 +670,6 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
 	c.Logger.Info("Loading policy", "args", policyConfig)
-
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -831,8 +830,7 @@ func FilterPolicies(args []string, configPolicies []*config.Policy, policyName, 
 	if len(policies) == 0 {
 		return nil, fmt.Errorf(`
 Could not find policies to run.
-Please add policy to block to your config file.
-`)
+Please add policy to block to your config file`)
 	}
 	policiesToRun := make([]*config.Policy, 0)
 
