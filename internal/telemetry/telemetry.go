@@ -7,10 +7,8 @@ import (
 	"io"
 	"net"
 	"os"
-	"path/filepath"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
@@ -24,6 +22,9 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
+
+	"github.com/cloudquery/cloudquery/internal/persistentdata"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 // Client is the telemetry client.
@@ -253,35 +254,12 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 // If a directory with the same name is encountered, process is aborted and an empty string is returned.
 // If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	const idFile = "telemetry-random-id"
-
-	if home, err := os.UserHomeDir(); err == nil {
-		// special case for having a persistent ID, read-only access
-		fn := filepath.Join(home, ".cq", idFile)
-		id, err := readRandomId(c.fs, fn)
-		if err == errDirectory {
-			// finish early if directory encountered
-			return "", err
-		}
-		if id != "" {
-			return id, nil
-		}
-	}
-
-	fn := filepath.Join(".", ".cq", idFile)
-	if id, err := readRandomId(c.fs, fn); err != nil {
-		return "", err
-	} else if id != "" {
-		return id, nil
-	}
-
-	id, err := writeRandomId(c.fs, fn)
-	if err != nil {
-		return "", err
-	}
-
-	c.newRandomId = true
-	return id, nil
+	var (
+		id  string
+		err error
+	)
+	id, c.newRandomId, err = persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
+	return id, err
 }
 
 // NewRandomId returns true if we created a new random id in this session
@@ -365,39 +343,4 @@ func hashAttribute(value string) string {
 	s := sha1.New()
 	_, _ = s.Write([]byte(value))
 	return fmt.Sprintf("%0x", s.Sum(nil))
-}
-
-var errDirectory = fmt.Errorf("telemetry-random-id is a directory")
-
-// readRandomId reads the contents of given fn in the given fs. Returns errDirectory if the file exists but is a directory.
-func readRandomId(fs afero.Afero, fn string) (string, error) {
-	exists := true
-	fi, err := fs.Stat(fn)
-	if err != nil {
-		if !os.IsNotExist(err) {
-			return "", err
-		}
-		exists = false
-	}
-	if exists && fi.IsDir() {
-		return "", errDirectory
-	}
-	if !exists {
-		return "", nil
-	}
-
-	b, err := fs.ReadFile(fn)
-	if err != nil {
-		return "", err
-	}
-	return string(b), nil
-}
-
-// writeRandomId will generate a new random ID and write it to the given fn in the given fs.
-func writeRandomId(fs afero.Afero, fn string) (string, error) {
-	id := genRandomId()
-	if err := fs.WriteFile(fn, []byte(id), 0644); err != nil {
-		return "", err
-	}
-	return id, nil
 }
