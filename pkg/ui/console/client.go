@@ -612,7 +612,7 @@ func defineResultColumnWidths(execResult []*policy.QueryResult) string {
 }
 
 func findOutput(columnNames []string, data [][]interface{}) []string {
-	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+	outputKeys := []string{"id", "identifier", "resource_identifier", "uid", "uuid", "arn"}
 	outputKey := ""
 	outputResources := make([]string, 0)
 	for _, key := range outputKeys {

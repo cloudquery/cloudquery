@@ -20,35 +20,37 @@ import (
 
 func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
+		var exitWithCode int
+		defer func() {
+			if exitWithCode > 0 {
+				os.Exit(exitWithCode)
+			}
+		}()
+
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
 
-		tracer := tele.Tracer()
-		ctx, span := tracer.Start(cmd.Context(),
-			"cli:"+cmd.CommandPath(),
+		ctx, _ := tele.Tracer(cmd.Context())
+		ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "cli:"+cmd.CommandPath(),
 			trace.WithAttributes(
 				attribute.String("command", cmd.CommandPath()),
 			),
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
-		ender := func() {
-			span.End(
-				trace.WithStackTrace(false),
-			)
+
+		var exitError error
+		defer func() {
+			spanEnder(exitError, trace.WithStackTrace(false))
 			tele.Shutdown(cmd.Context())
-		}
-		defer ender()
+		}()
 
 		if err := handleConsole(ctx, tele, cmd, args, f); err != nil {
 			if ee, ok := err.(*console.ExitCodeError); ok {
-				ender() // err is not recorded
-				os.Exit(ee.ExitCode)
+				exitWithCode = ee.ExitCode
+				return // exitError is not set
 			}
 
-			tele.RecordError(span, err)
-			ender()
-
+			exitError, exitWithCode = err, 1
 			cmd.PrintErrln(err)
-			os.Exit(1)
 		}
 	}
 }
