@@ -33,7 +33,6 @@ func RedshiftClusters() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
-
 			{
 				Name:        "allow_version_upgrade",
 				Description: "A boolean value that, if true, indicates that major version upgrades will be applied automatically to the cluster during the maintenance window.",
@@ -428,6 +427,12 @@ func RedshiftClusters() *schema.Table {
 				Description: "The identifier of the VPC the cluster is in, if the cluster is in a VPC.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "logging_status",
+				Description: "Describes the status of logging for a cluster.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveRedshiftClusterLoggingStatus,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -484,6 +489,65 @@ func RedshiftClusters() *schema.Table {
 					},
 				},
 				Relations: []*schema.Table{
+					{
+						Name:        "aws_redshift_cluster_parameters",
+						Description: "Describes a parameter in a cluster parameter group.",
+						Resolver:    fetchRedshiftClusterParameter,
+						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_parameter_group_cq_id", "parameter_name"}},
+						Columns: []schema.Column{
+							{
+								Name:        "cluster_parameter_group_cq_id",
+								Description: "Unique CloudQuery ID of aws_redshift_cluster_parameter_groups table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "allowed_values",
+								Description: "The valid range of values for the parameter.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "apply_type",
+								Description: "Specifies how to apply the WLM configuration parameter",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "data_type",
+								Description: "The data type of the parameter.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "description",
+								Description: "A description of the parameter.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "is_modifiable",
+								Description: "If true, the parameter can be modified",
+								Type:        schema.TypeBool,
+							},
+							{
+								Name:        "minimum_engine_version",
+								Description: "The earliest engine version to which the parameter can apply.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "parameter_name",
+								Description: "The name of the parameter.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "parameter_value",
+								Description: "The value of the parameter",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "source",
+								Description: "The source of the parameter value, such as \"engine-default\" or \"user\".",
+								Type:        schema.TypeString,
+							},
+						},
+					},
 					{
 						Name:        "aws_redshift_cluster_parameter_group_status_lists",
 						Description: "Describes the status of a parameter group.",
@@ -703,12 +767,35 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func resolveRedshiftClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Cluster)
+	r, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return fmt.Errorf("expected Cluster but got %T", r)
+	}
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return resource.Set(c.Name, tags)
+}
+func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return fmt.Errorf("expected Cluster but got %T", r)
+	}
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
+	cfg := redshift.DescribeLoggingStatusInput{
+		ClusterIdentifier: r.ClusterIdentifier,
+	}
+	response, err := svc.DescribeLoggingStatus(ctx, &cfg, func(o *redshift.Options) {
+		o.Region = cl.Region
+	})
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, response)
 }
 func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
@@ -724,6 +811,32 @@ func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.Client
 		return fmt.Errorf("not redshift cluster")
 	}
 	res <- cluster.ClusterParameterGroups
+	return nil
+}
+func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+	parameterGroup, ok := parent.Item.(types.ClusterParameterGroupStatus)
+	if !ok {
+		return fmt.Errorf("not redshift cluster parameter group")
+	}
+	config := redshift.DescribeClusterParametersInput{
+		ParameterGroupName: parameterGroup.ParameterGroupName,
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Redshift
+	for {
+		response, err := svc.DescribeClusterParameters(ctx, &config, func(o *redshift.Options) {
+			o.Region = c.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- response.Parameters
+		if aws.ToString(response.Marker) == "" {
+			break
+		}
+		config.Marker = response.Marker
+	}
+
 	return nil
 }
 func fetchRedshiftClusterParameterGroupStatusLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
