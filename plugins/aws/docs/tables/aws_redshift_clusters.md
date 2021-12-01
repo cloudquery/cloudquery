@@ -77,3 +77,4 @@ Describes a cluster.
 |tags|jsonb|The list of tags for the cluster.|
 |total_storage_capacity_in_mega_bytes|bigint|The total storage capacity of the cluster in megabytes.|
 |vpc_id|text|The identifier of the VPC the cluster is in, if the cluster is in a VPC.|
+|logging_status|jsonb|Describes the status of logging for a cluster.|

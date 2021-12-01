@@ -35,6 +35,26 @@ func (m *MockRedshiftClient) EXPECT() *MockRedshiftClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeClusterParameters mocks base method.
+func (m *MockRedshiftClient) DescribeClusterParameters(arg0 context.Context, arg1 *redshift.DescribeClusterParametersInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterParametersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeClusterParameters", varargs...)
+	ret0, _ := ret[0].(*redshift.DescribeClusterParametersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeClusterParameters indicates an expected call of DescribeClusterParameters.
+func (mr *MockRedshiftClientMockRecorder) DescribeClusterParameters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusterParameters", reflect.TypeOf((*MockRedshiftClient)(nil).DescribeClusterParameters), varargs...)
+}
+
 // DescribeClusterSubnetGroups mocks base method.
 func (m *MockRedshiftClient) DescribeClusterSubnetGroups(arg0 context.Context, arg1 *redshift.DescribeClusterSubnetGroupsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterSubnetGroupsOutput, error) {
 	m.ctrl.T.Helper()
@@ -73,4 +93,24 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusters(arg0, arg1 interface{
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusters", reflect.TypeOf((*MockRedshiftClient)(nil).DescribeClusters), varargs...)
+}
+
+// DescribeLoggingStatus mocks base method.
+func (m *MockRedshiftClient) DescribeLoggingStatus(arg0 context.Context, arg1 *redshift.DescribeLoggingStatusInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeLoggingStatus", varargs...)
+	ret0, _ := ret[0].(*redshift.DescribeLoggingStatusOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeLoggingStatus indicates an expected call of DescribeLoggingStatus.
+func (mr *MockRedshiftClientMockRecorder) DescribeLoggingStatus(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeLoggingStatus", reflect.TypeOf((*MockRedshiftClient)(nil).DescribeLoggingStatus), varargs...)
 }
