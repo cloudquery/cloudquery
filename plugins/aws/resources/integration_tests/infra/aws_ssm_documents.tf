@@ -22,11 +22,6 @@ resource "aws_ssm_document" "ssm_document" {
   }
 DOC
 
-  permissions = {
-    type = "Share"
-    account_ids = "All"
-  }
-
   tags = {
     Name = "${var.test_prefix}doc${var.test_suffix}"
   }
