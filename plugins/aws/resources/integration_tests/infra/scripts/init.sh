@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [[ -z "${TF_BACKEND_BUCKET}" ]]; then
   echo "Missing env=TF_BACKEND_BUCKET"

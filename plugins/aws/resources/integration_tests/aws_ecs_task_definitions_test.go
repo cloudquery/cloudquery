@@ -22,7 +22,6 @@ func TestIntegrationEcsTaskDefinitions(t *testing.T) {
 						"memory":                   "2048",
 						"network_mode":             "awsvpc",
 						"requires_compatibilities": []interface{}{"EC2"},
-						"revision":                 float64(33),
 						"status":                   "ACTIVE",
 					},
 				},
@@ -40,16 +39,6 @@ func TestIntegrationEcsTaskDefinitions(t *testing.T) {
 								"essential":     true,
 								"image":         "nginx",
 							},
-						},
-					},
-				},
-				{
-					Name:           "aws_ecs_task_definition_requires_attributes",
-					ForeignKeyName: "task_definition_cq_id",
-					ExpectedValues: []providertest.ExpectedValue{
-						{
-							Count: 4,
-							Data:  map[string]interface{}{},
 						},
 					},
 				},
