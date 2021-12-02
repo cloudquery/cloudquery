@@ -76,6 +76,7 @@ func Provider() *provider.Provider {
 			"ecs.task_definitions":                  EcsTaskDefinitions(),
 			"efs.filesystems":                       EfsFilesystems(),
 			"eks.clusters":                          EksClusters(),
+			"elasticbeanstalk.applications":         ElasticbeanstalkApplications(),
 			"elasticbeanstalk.environments":         ElasticbeanstalkEnvironments(),
 			"elasticsearch.domains":                 ElasticsearchDomains(),
 			"elbv1.load_balancers":                  Elbv1LoadBalancers(),
