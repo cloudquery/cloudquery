@@ -52,6 +52,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	s3control "github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -132,6 +133,7 @@ type Services struct {
 	S3Manager            S3ManagerClient
 	SSM                  SSMClient
 	SageMaker            SageMakerClient
+	SecretsManager       SecretsManagerClient
 	SQS                  SQSClient
 	Apigateway           ApigatewayClient
 	Apigatewayv2         Apigatewayv2Client
@@ -397,6 +399,7 @@ func initServices(region string, c aws.Config) Services {
 		S3Control:            s3control.NewFromConfig(awsCfg),
 		S3Manager:            newS3ManagerFromConfig(awsCfg),
 		SageMaker:            sagemaker.NewFromConfig(awsCfg),
+		SecretsManager:       secretsmanager.NewFromConfig(awsCfg),
 		SNS:                  sns.NewFromConfig(awsCfg),
 		SSM:                  ssm.NewFromConfig(awsCfg),
 		SQS:                  sqs.NewFromConfig(awsCfg),
