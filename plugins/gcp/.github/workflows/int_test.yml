@@ -59,6 +59,7 @@ jobs:
           INTEGRATION_TESTS: 1
           TF_VAR_SUFFIX: integration
           TF_VAR_PREFIX: cq-testing
+          CQ_NO_TELEMETRY: 1
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2

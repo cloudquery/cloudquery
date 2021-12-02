@@ -74,7 +74,7 @@ jobs:
 
       - name: Build initial schema
         run: |
-          ./cloudquery provider build-schema gcp --config ./client/testdata/initial_migration.hcl --enable-console-log
+          CQ_NO_TELEMETRY=1 ./cloudquery provider build-schema gcp --config ./client/testdata/initial_migration.hcl --enable-console-log
 
       - name: Get dependencies
         run: |
@@ -90,6 +90,7 @@ jobs:
           ./cloudquery provider upgrade gcp --config ./client/testdata/default.hcl --enable-console-log
         env:
           CQ_REATTACH_PROVIDERS: .cq_reattach
+          CQ_NO_TELEMETRY: 1
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
