@@ -113,8 +113,8 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			})
 			return nil, diags
 		}
-		policy.Views = append(inner.Views, inner.Policies[0].Views...)
-		policy.Queries = append(inner.Queries, inner.Policies[0].Queries...)
+		policy.Views = append(policy.Views, inner.Policies[0].Views...)
+		policy.Queries = append(policy.Queries, inner.Policies[0].Queries...)
 		policy.Policies = append(policy.Policies, inner.Policies[0].Policies...)
 	}
 
