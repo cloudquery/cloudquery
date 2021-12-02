@@ -73,6 +73,7 @@ func Provider() *provider.Provider {
 			"ec2.vpn_gateways":                      Ec2VpnGateways(),
 			"ecr.repositories":                      EcrRepositories(),
 			"ecs.clusters":                          EcsClusters(),
+			"ecs.task_definitions":                  EcsTaskDefinitions(),
 			"efs.filesystems":                       EfsFilesystems(),
 			"eks.clusters":                          EksClusters(),
 			"elasticbeanstalk.environments":         ElasticbeanstalkEnvironments(),
