@@ -10,3 +10,10 @@ ALTER TABLE IF EXISTS "aws_wafv2_web_acls" DROP COLUMN logging_configuration;
 ALTER TABLE IF EXISTS "aws_waf_web_acls" DROP COLUMN logging_configuration;
 
 ALTER TABLE IF EXISTS "aws_redshift_clusters" DROP COLUMN logging_status;
+
+--ec2-instances
+ALTER TABLE IF EXISTS "aws_ec2_instances" DROP COLUMN state_transition_reason_time;
+ALTER TABLE IF EXISTS "aws_ec2_instances" DROP COLUMN boot_mode;
+ALTER TABLE IF EXISTS "aws_ec2_instances" DROP COLUMN metadata_options_http_protocol_ipv6;
+ALTER TABLE IF EXISTS "aws_ec2_instance_network_interfaces" DROP COLUMN ipv4_prefixes;
+ALTER TABLE IF EXISTS "aws_ec2_instance_network_interfaces" DROP COLUMN ipv6_prefixes;

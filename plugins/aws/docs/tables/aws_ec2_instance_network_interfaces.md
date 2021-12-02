@@ -16,13 +16,15 @@ Describes a network interface.
 |attachment_network_card_index|integer|The index of the network card.|
 |attachment_status|text|The attachment state.|
 |description|text|The description.|
-|interface_type|text|Describes the type of network interface.|
+|interface_type|text|Describes the type of network interface|
+|ipv4_prefixes|text[]|The IPv4 delegated prefixes that are assigned to the network interface.|
+|ipv6_prefixes|text[]|The IPv6 delegated prefixes that are assigned to the network interface.|
 |mac_address|text|The MAC address.|
 |network_interface_id|text|The ID of the network interface.|
-|owner_id|text|The ID of the AWS account that created the network interface.|
+|owner_id|text|The ID of the Amazon Web Services account that created the network interface.|
 |private_dns_name|text|The private DNS name.|
 |private_ip_address|text|The IPv4 address of the network interface within the subnet.|
-|source_dest_check|boolean|Indicates whether to validate network traffic to or from this network interface.|
+|source_dest_check|boolean|Indicates whether source/destination checking is enabled.|
 |status|text|The status of the network interface.|
 |subnet_id|text|The ID of the subnet.|
 |vpc_id|text|The ID of the VPC.|

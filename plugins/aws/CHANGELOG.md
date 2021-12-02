@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### :rocket: Added
 * Added `aws_ssm_documents` resource [#307](https://github.com/cloudquery/cq-provider-aws/pull/307)
+* Added `aws_ec2_instances` columns: `state_transition_reason_time`, `boot_mode`, `metadata_options_http_protocol_ipv6`, `ipv4_prefixes`, `ipv6_prefixes`
 
 ## [v0.7.0] - 2021-11-29
 ###### SDK Version: 0.5.2

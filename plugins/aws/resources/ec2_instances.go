@@ -3,6 +3,8 @@ package resources
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -33,10 +35,9 @@ func Ec2Instances() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the instance.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InstanceId"),
+				Name:     "state_transition_reason_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: resolveEc2InstanceStateTransitionReasonTime,
 			},
 			{
 				Name:        "ami_launch_index",
@@ -49,13 +50,18 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
+				Name:        "boot_mode",
+				Description: "The boot mode of the instance",
+				Type:        schema.TypeString,
+			},
+			{
 				Name:        "capacity_reservation_id",
 				Description: "The ID of the Capacity Reservation.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "cap_reservation_preference",
-				Description: "Describes the instance's Capacity Reservation preferences.",
+				Description: "Describes the instance's Capacity Reservation preferences",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("CapacityReservationSpecification.CapacityReservationPreference"),
 			},
@@ -90,7 +96,7 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "ebs_optimized",
-				Description: "Indicates whether the instance is optimized for Amazon EBS I/O.",
+				Description: "Indicates whether the instance is optimized for Amazon EBS I/O",
 				Type:        schema.TypeBool,
 			},
 			{
@@ -100,7 +106,7 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "enclave_options_enabled",
-				Description: "If this parameter is set to true, the instance is enabled for AWS Nitro Enclaves; otherwise, it is not enabled for AWS Nitro Enclaves.",
+				Description: "If this parameter is set to true, the instance is enabled for Amazon Web Services Nitro Enclaves; otherwise, it is not enabled for Amazon Web Services Nitro Enclaves.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("EnclaveOptions.Enabled"),
 			},
@@ -112,7 +118,7 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "hypervisor",
-				Description: "The hypervisor type of the instance.",
+				Description: "The hypervisor type of the instance",
 				Type:        schema.TypeString,
 			},
 			{
@@ -131,6 +137,12 @@ func Ec2Instances() *schema.Table {
 				Name:        "image_id",
 				Description: "The ID of the AMI used to launch the instance.",
 				Type:        schema.TypeString,
+			},
+			{
+				Name:        "id",
+				Description: "The ID of the instance.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("InstanceId"),
 			},
 			{
 				Name:        "instance_lifecycle",
@@ -158,32 +170,44 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
+				Name:        "licenses",
+				Description: "The license configurations.",
+				Type:        schema.TypeStringArray,
+				Resolver:    resolveEc2InstancesLicenses,
+			},
+			{
 				Name:        "metadata_options_http_endpoint",
-				Description: "This parameter enables or disables the HTTP metadata endpoint on your instances.",
+				Description: "This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is enabled",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("MetadataOptions.HttpEndpoint"),
 			},
 			{
+				Name:        "metadata_options_http_protocol_ipv6",
+				Description: "Whether or not the IPv6 endpoint for the instance metadata service is enabled or disabled.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("MetadataOptions.HttpProtocolIpv6"),
+			},
+			{
 				Name:        "metadata_options_http_put_response_hop_limit",
-				Description: "The desired HTTP PUT response hop limit for instance metadata requests.",
+				Description: "The desired HTTP PUT response hop limit for instance metadata requests",
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("MetadataOptions.HttpPutResponseHopLimit"),
 			},
 			{
 				Name:        "metadata_options_http_tokens",
-				Description: "The state of token usage for your instance metadata requests.",
+				Description: "The state of token usage for your instance metadata requests",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("MetadataOptions.HttpTokens"),
 			},
 			{
 				Name:        "metadata_options_state",
-				Description: "The state of the metadata option changes.",
+				Description: "The state of the metadata option changes",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("MetadataOptions.State"),
 			},
 			{
 				Name:        "monitoring_state",
-				Description: "Indicates whether detailed monitoring is enabled.",
+				Description: "Indicates whether detailed monitoring is enabled",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Monitoring.State"),
 			},
@@ -194,13 +218,13 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "placement_affinity",
-				Description: "The affinity setting for the instance on the Dedicated Host.",
+				Description: "The affinity setting for the instance on the Dedicated Host",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.Affinity"),
 			},
 			{
 				Name:        "placement_availability_zone",
-				Description: "The Availability Zone of the instance.",
+				Description: "The Availability Zone of the instance",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.AvailabilityZone"),
 			},
@@ -212,31 +236,31 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "placement_host_id",
-				Description: "The ID of the Dedicated Host on which the instance resides.",
+				Description: "The ID of the Dedicated Host on which the instance resides",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.HostId"),
 			},
 			{
 				Name:        "placement_host_resource_group_arn",
-				Description: "The ARN of the host resource group in which to launch the instances.",
+				Description: "The ARN of the host resource group in which to launch the instances",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.HostResourceGroupArn"),
 			},
 			{
 				Name:        "placement_partition_number",
-				Description: "The number of the partition the instance is in.",
+				Description: "The number of the partition the instance is in",
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Placement.PartitionNumber"),
 			},
 			{
 				Name:        "placement_spread_domain",
-				Description: "Reserved for future use.",
+				Description: "Reserved for future use",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.SpreadDomain"),
 			},
 			{
 				Name:        "placement_tenancy",
-				Description: "The tenancy of the instance (if the instance is running in a VPC).",
+				Description: "The tenancy of the instance (if the instance is running in a VPC)",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Placement.Tenancy"),
 			},
@@ -247,7 +271,7 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "private_dns_name",
-				Description: "(IPv4 only) The private DNS hostname name assigned to the instance.",
+				Description: "(IPv4 only) The private DNS hostname name assigned to the instance",
 				Type:        schema.TypeString,
 			},
 			{
@@ -257,12 +281,12 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "public_dns_name",
-				Description: "(IPv4 only) The public DNS name assigned to the instance.",
+				Description: "(IPv4 only) The public DNS name assigned to the instance",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "public_ip_address",
-				Description: "The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable.",
+				Description: "The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable",
 				Type:        schema.TypeString,
 			},
 			{
@@ -277,12 +301,12 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "root_device_type",
-				Description: "The root device type used by the AMI.",
+				Description: "The root device type used by the AMI",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "source_dest_check",
-				Description: "Specifies whether to enable an instance launched in a VPC to perform NAT.",
+				Description: "Indicates whether source/destination checking is enabled.",
 				Type:        schema.TypeBool,
 			},
 			{
@@ -297,7 +321,7 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "state_code",
-				Description: "The state of the instance as a 16-bit unsigned integer.",
+				Description: "The state of the instance as a 16-bit unsigned integer",
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("State.Code"),
 			},
@@ -315,25 +339,25 @@ func Ec2Instances() *schema.Table {
 			},
 			{
 				Name:        "state_reason_message",
-				Description: "The message for the state change.",
+				Description: "The message for the state change.  * Server.InsufficientInstanceCapacity: There was insufficient capacity available to satisfy the launch request.  * Server.InternalError: An internal error caused the instance to terminate during launch.  * Server.ScheduledStop: The instance was stopped due to a scheduled retirement.  * Server.SpotInstanceShutdown: The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Server.SpotInstanceTermination: The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Client.InstanceInitiatedShutdown: The instance was shut down using the shutdown -h command from the instance.  * Client.InstanceTerminated: The instance was terminated or rebooted during AMI creation.  * Client.InternalError: A client error caused the instance to terminate during launch.  * Client.InvalidSnapshot.NotFound: The specified snapshot was not found.  * Client.UserInitiatedHibernate: Hibernation was initiated on the instance.  * Client.UserInitiatedShutdown: The instance was shut down using the Amazon EC2 API.  * Client.VolumeLimitExceeded: The limit on the number of EBS volumes or total storage was exceeded",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("StateReason.Message"),
 			},
 			{
 				Name:        "state_transition_reason",
-				Description: "The reason for the most recent state transition.",
+				Description: "The reason for the most recent state transition",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "subnet_id",
-				Description: "The ID of the subnet in which the instance is running.",
+				Description: "[EC2-VPC] The ID of the subnet in which the instance is running.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "tags",
 				Description: "Any tags assigned to the instance.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2instanceTags,
+				Resolver:    resolveEc2InstancesTags,
 			},
 			{
 				Name:        "virtualization_type",
@@ -344,12 +368,6 @@ func Ec2Instances() *schema.Table {
 				Name:        "vpc_id",
 				Description: "The ID of the VPC in which the instance is running.",
 				Type:        schema.TypeString,
-			},
-			{
-				Name:        "licenses",
-				Description: "The license configurations.",
-				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2InstanceLicenses,
 			},
 		},
 		Relations: []*schema.Table{
@@ -543,8 +561,20 @@ func Ec2Instances() *schema.Table {
 					},
 					{
 						Name:        "interface_type",
-						Description: "Describes the type of network interface.",
+						Description: "Describes the type of network interface",
 						Type:        schema.TypeString,
+					},
+					{
+						Name:        "ipv4_prefixes",
+						Description: "The IPv4 delegated prefixes that are assigned to the network interface.",
+						Type:        schema.TypeStringArray,
+						Resolver:    resolveEc2InstanceNetworkInterfacesIpv4Prefixes,
+					},
+					{
+						Name:        "ipv6_prefixes",
+						Description: "The IPv6 delegated prefixes that are assigned to the network interface.",
+						Type:        schema.TypeStringArray,
+						Resolver:    resolveEc2InstanceNetworkInterfacesIpv6Prefixes,
 					},
 					{
 						Name:        "mac_address",
@@ -558,7 +588,7 @@ func Ec2Instances() *schema.Table {
 					},
 					{
 						Name:        "owner_id",
-						Description: "The ID of the AWS account that created the network interface.",
+						Description: "The ID of the Amazon Web Services account that created the network interface.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -573,7 +603,7 @@ func Ec2Instances() *schema.Table {
 					},
 					{
 						Name:        "source_dest_check",
-						Description: "Indicates whether to validate network traffic to or from this network interface.",
+						Description: "Indicates whether source/destination checking is enabled.",
 						Type:        schema.TypeBool,
 					},
 					{
@@ -751,6 +781,7 @@ func Ec2Instances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -768,7 +799,40 @@ func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 	return nil
 }
-func resolveEc2instanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instance, ok := resource.Item.(types.Instance)
+	if !ok {
+		return fmt.Errorf("not ec2 instance")
+	}
+	if instance.StateTransitionReason == nil {
+		return nil
+	}
+	re := regexp.MustCompile(`\((.*)\)`)
+	match := re.FindStringSubmatch(*instance.StateTransitionReason)
+	if len(match) < 2 {
+		//failed to get time from message
+		return nil
+	}
+	const layout = "2006-01-02 15:04:05 MST"
+	tm, err := time.Parse(layout, match[1])
+	if err != nil {
+		//failed to parse last transition time
+		return nil
+	}
+	return resource.Set(c.Name, tm)
+}
+func resolveEc2InstancesLicenses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instance, ok := resource.Item.(types.Instance)
+	if !ok {
+		return fmt.Errorf("not ec2 instance")
+	}
+	licenses := make([]string, len(instance.Licenses))
+	for i, l := range instance.Licenses {
+		licenses[i] = *l.LicenseConfigurationArn
+	}
+	return resource.Set(c.Name, licenses)
+}
+func resolveEc2InstancesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Instance)
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
@@ -800,17 +864,6 @@ func fetchEc2InstanceElasticInferenceAcceleratorAssociations(ctx context.Context
 	res <- instance.ElasticInferenceAcceleratorAssociations
 	return nil
 }
-func resolveEc2InstanceLicenses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
-	licenses := make([]string, len(instance.Licenses))
-	for i, l := range instance.Licenses {
-		licenses[i] = *l.LicenseConfigurationArn
-	}
-	return resource.Set(c.Name, licenses)
-}
 func fetchEc2InstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instance, ok := parent.Item.(types.Instance)
 	if !ok {
@@ -818,6 +871,28 @@ func fetchEc2InstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMe
 	}
 	res <- instance.NetworkInterfaces
 	return nil
+}
+func resolveEc2InstanceNetworkInterfacesIpv4Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instanceNetworkInterface, ok := resource.Item.(types.InstanceNetworkInterface)
+	if !ok {
+		return fmt.Errorf("not ec2 instance network interface")
+	}
+	ips := make([]string, 0, len(instanceNetworkInterface.Ipv4Prefixes))
+	for _, p := range instanceNetworkInterface.Ipv4Prefixes {
+		ips = append(ips, *p.Ipv4Prefix)
+	}
+	return resource.Set(c.Name, ips)
+}
+func resolveEc2InstanceNetworkInterfacesIpv6Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instanceNetworkInterface, ok := resource.Item.(types.InstanceNetworkInterface)
+	if !ok {
+		return fmt.Errorf("not ec2 instance network interface")
+	}
+	ips := make([]string, 0, len(instanceNetworkInterface.Ipv6Prefixes))
+	for _, p := range instanceNetworkInterface.Ipv6Prefixes {
+		ips = append(ips, *p.Ipv6Prefix)
+	}
+	return resource.Set(c.Name, ips)
 }
 func fetchEc2InstanceNetworkInterfaceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
@@ -835,7 +910,7 @@ func fetchEc2InstanceNetworkInterfaceIpv6Addresses(ctx context.Context, meta sch
 	res <- instanceNetworkInterface.Ipv6Addresses
 	return nil
 }
-func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
 	if !ok {
 		return fmt.Errorf("not ec2 instance network interface")
