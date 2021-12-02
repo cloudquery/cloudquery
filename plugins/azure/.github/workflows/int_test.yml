@@ -55,6 +55,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          CQ_NO_TELEMETRY: 1
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
