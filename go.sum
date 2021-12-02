@@ -255,6 +255,8 @@ github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1 h1:Nmcb6pxJtjJof+mmF9TJvy
 github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1/go.mod h1:dTnxIRqR69JUZobQDUh47rlbYe8PzTd0k4o+gDkHeV4=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.19.1 h1:cy6fUlP94vzD/0VUD3SWGUBfYrOr+zP+ChsTxUtZydQ=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.19.1/go.mod h1:G9AcXDbGtZVA8XBdmpbVQv1lvmiuk4I9n2MQlp1FJ9k=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.1 h1:e0gg30cCKsNHV+WD17zbzipx5nYRrnb+4Y5wO5pap80=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.1/go.mod h1:vUIn46AiFjPEm4/ALXV1weLTEWu37mF6OfLMw5vxG2Q=
 github.com/aws/aws-sdk-go-v2/service/sns v1.1.2 h1:1U/FujyBEkNwrvANUcZFuVnAQqy0EAUEGToso5Dcijs=
 github.com/aws/aws-sdk-go-v2/service/sns v1.1.2/go.mod h1:/vvAGyo3/TG5CSrJQarIlwzjE6O/DjBIvJTRkpYkvwA=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.9.1 h1:8m+6iuSldxMrVQbjHRcWPnUxdpD3RCPtacmFFNkR4Vw=

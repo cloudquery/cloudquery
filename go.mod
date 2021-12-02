@@ -137,7 +137,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go v1.17.7
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.16.0
 )
 

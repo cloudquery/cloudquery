@@ -119,6 +119,7 @@ func Provider() *provider.Provider {
 			"sagemaker.models":                      SagemakerModels(),
 			"sagemaker.endpoint_configurations":     SagemakerEndpointConfigurations(),
 			"sagemaker.training_jobs":               SagemakerTrainingJobs(),
+			"secretsmanager.secrets":                SecretsmanagerSecrets(),
 			"sns.subscriptions":                     SnsSubscriptions(),
 			"sns.topics":                            SnsTopics(),
 			"sqs.queues":                            SQSQueues(),
