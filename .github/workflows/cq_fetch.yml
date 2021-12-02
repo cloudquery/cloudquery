@@ -74,6 +74,7 @@ jobs:
           CQ_PROVIDER_DEBUG=1 go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && ./cloudquery fetch --config ./client/testdata/nightly.hcl --enable-console-log --fail-on-error
         env:
           CQ_REATTACH_PROVIDERS: .cq_reattach
+          CQ_NO_TELEMETRY: 1
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -156,6 +157,7 @@ jobs:
           CQ_REATTACH_PROVIDERS: .cq_reattach
           CQ_VAR_ASSUME_ROLE_ACCOUNT_ID: ${{ secrets.CQ_ASSUME_ROLE_ACCOUNT_ID }}
           CQ_VAR_ASSUME_ROLE_ARN: ${{ secrets.CQ_ASSUME_ROLE_ARN }}
+          CQ_NO_TELEMETRY: 1
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
