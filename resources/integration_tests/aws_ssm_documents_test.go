@@ -20,7 +20,6 @@ func TestIntegrationSSMDocuments(t *testing.T) {
 					"document_format": "JSON",
 					"document_type":   "Command",
 					"name":            fmt.Sprintf("%sdoc%s", res.Prefix, res.Suffix),
-					"account_ids":     []interface{}{"all"},
 					"tags": map[string]interface{}{
 						"Name":   fmt.Sprintf("%sdoc%s", res.Prefix, res.Suffix),
 						"TestId": res.Suffix,
