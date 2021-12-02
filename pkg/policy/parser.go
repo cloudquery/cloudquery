@@ -20,7 +20,7 @@ var policyWrapperSchema = &hcl.BodySchema{
 	},
 }
 
-func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policies, hcl.Diagnostics) {
+func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (Policies, hcl.Diagnostics) {
 	policies := Policies{}
 	content, contentDiags := body.Content(policyWrapperSchema)
 	diags = append(diags, contentDiags...)
@@ -40,7 +40,7 @@ func DecodePolicies(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Pol
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return &policies, diags
+	return policies, diags
 }
 
 var policySchema = &hcl.BodySchema{
@@ -96,9 +96,26 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		}
 		innerContent, contentDiags := body.Content(policySchema)
 		diags = append(diags, contentDiags...)
+		if innerContent == nil {
+			return nil, diags
+		}
 		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
 		diags = append(diags, innerDiags...)
-		policy.Policies = append(policy.Policies, inner.Policies...)
+		if inner == nil {
+			return nil, diags
+		}
+		if len(inner.Policies) > 1 {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  `Invalid policy source file`,
+				Detail:   `Policy source file block should only have a single policy block`,
+				Subject:  &sourceAttr.Range,
+			})
+			return nil, diags
+		}
+		policy.Views = append(inner.Views, inner.Policies[0].Views...)
+		policy.Queries = append(inner.Queries, inner.Policies[0].Queries...)
+		policy.Policies = append(policy.Policies, inner.Policies[0].Policies...)
 	}
 
 	for _, block := range content.Blocks {
