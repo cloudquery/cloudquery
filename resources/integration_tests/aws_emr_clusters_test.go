@@ -18,13 +18,19 @@ func TestIntegrationEmrClusters(t *testing.T) {
 					Count: 1,
 					Data: map[string]interface{}{
 						"name": fmt.Sprintf("emr-cluster-%s%s", res.Prefix, res.Suffix),
+						"tags": map[string]interface{}{
+							"env":    "env",
+							"role":   "rolename",
+							"TestId": res.Suffix,
+							"Type":   "integration_test",
+						},
 					},
 				},
 			},
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
 				return sq.Where(squirrel.And{
 					squirrel.Eq{"name": fmt.Sprintf("emr-cluster-%s%s", res.Prefix, res.Suffix)},
-					squirrel.Eq{"status_state": "WAITING"},
+					squirrel.Eq{"state": "WAITING"},
 				})
 			},
 		}
