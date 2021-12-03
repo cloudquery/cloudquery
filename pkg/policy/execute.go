@@ -232,7 +232,7 @@ func (e *Executor) createView(ctx context.Context, v *View) error {
 
 func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {
 	var rest []string
-	var pnames []string
+	pnames := make([]string, len(policies))
 	if len(selector) > 0 {
 		rest = selector[1:]
 	}
