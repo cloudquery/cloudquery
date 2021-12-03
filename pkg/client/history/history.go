@@ -67,8 +67,8 @@ const (
 )
 
 type Config struct {
-	// Retention of data in days, defaults to 1
-	Retention int `default:"1" hcl:"retention,optional"`
+	// Retention of data in days, defaults to 7
+	Retention int `default:"7" hcl:"retention,optional"`
 	// TimeInterval defines how chunks are split by time defaults to one chunk per 24 hours.
 	TimeInterval int `default:"24" hcl:"interval,optional"`
 	// TimeTruncation truncates fetch time by hour, for example if we fetch with TimeTruncation = 1 at 11:25 the fetch date will truncate to 11:00
