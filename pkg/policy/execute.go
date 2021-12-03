@@ -255,7 +255,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 	}
 	if !found && len(selector) > 0 {
 		e.log.Error("policy not found with provided selector", "selector", selector, "policy names", pnames)
-		return nil, fmt.Errorf("policy not found with provided selector: %s", selector)
+		return nil, errPolicyOrQueryNotFound
 	}
 	return &total, nil
 }
