@@ -194,3 +194,43 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 interface
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSubnetGroups", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBSubnetGroups), varargs...)
 }
+
+// DescribeEventSubscriptions mocks base method.
+func (m *MockRdsClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *rds.DescribeEventSubscriptionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeEventSubscriptionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeEventSubscriptions", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeEventSubscriptionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeEventSubscriptions indicates an expected call of DescribeEventSubscriptions.
+func (mr *MockRdsClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEventSubscriptions", reflect.TypeOf((*MockRdsClient)(nil).DescribeEventSubscriptions), varargs...)
+}
+
+// ListTagsForResource mocks base method.
+func (m *MockRdsClient) ListTagsForResource(arg0 context.Context, arg1 *rds.ListTagsForResourceInput, arg2 ...func(*rds.Options)) (*rds.ListTagsForResourceOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsForResource", varargs...)
+	ret0, _ := ret[0].(*rds.ListTagsForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsForResource indicates an expected call of ListTagsForResource.
+func (mr *MockRdsClientMockRecorder) ListTagsForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockRdsClient)(nil).ListTagsForResource), varargs...)
+}

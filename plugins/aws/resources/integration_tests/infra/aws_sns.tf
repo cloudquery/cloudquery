@@ -36,3 +36,8 @@ resource "aws_sns_topic_subscription" "sns_test_subscription" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.sns_test_queue.arn
 }
+
+resource "aws_sns_topic" "sns_test2" {
+  name         = "sns-test2-${var.test_prefix}-${var.test_suffix}"
+  display_name = "sns-test2-${var.test_prefix}-${var.test_suffix}"
+}
