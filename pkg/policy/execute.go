@@ -238,7 +238,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 	}
 	var found bool
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
-	for _, p := range policies {
+	for i, p := range policies {
 		pnames[i] = p.Name
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
