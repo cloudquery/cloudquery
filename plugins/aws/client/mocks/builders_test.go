@@ -23,8 +23,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	efsTypes "github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
-	"github.com/aws/aws-sdk-go-v2/service/emr"
-	emrTypes "github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -554,44 +552,6 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 	return client.Services{
 		ECR: m,
-	}
-}
-
-func buildEmrClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEmrClient(ctrl)
-	ec2m := mocks.NewMockEc2Client(ctrl)
-	l := emrTypes.ClusterSummary{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	c := emrTypes.Cluster{}
-	err = faker.FakeDataSkipFields(&c, []string{"Configurations", "InstanceCollectionType", "RepoUpgradeOnBoot", "ScaleDownBehavior"})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	s := ec2.DescribeSubnetsOutput{}
-	err = faker.FakeData(&s)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&emr.ListClustersOutput{
-			Clusters: []emrTypes.ClusterSummary{l},
-		}, nil)
-
-	m.EXPECT().DescribeCluster(gomock.Any(), gomock.Any(), gomock.Any()).Return(&emr.DescribeClusterOutput{
-		Cluster: &c,
-	}, nil)
-
-	ec2m.EXPECT().DescribeSubnets(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s, nil)
-
-	return client.Services{
-		EMR: m,
-		EC2: ec2m,
 	}
 }
 

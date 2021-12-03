@@ -162,11 +162,6 @@ func TestResources(t *testing.T) {
 			mainTable:   resources.EfsFilesystems(),
 		},
 		{
-			resource:    "emr.clusters",
-			mockBuilder: buildEmrClusters,
-			mainTable:   resources.EmrClusters(),
-		},
-		{
 			resource:    "eks.clusters",
 			mockBuilder: buildEksClusters,
 			mainTable:   resources.EksClusters(),
