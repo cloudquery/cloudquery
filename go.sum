@@ -137,7 +137,6 @@ github.com/aws/aws-sdk-go-v2 v1.6.0/go.mod h1:tI4KhsR5VkzlUa2DZAdwx7wCAYGwkZZ1H3
 github.com/aws/aws-sdk-go-v2 v1.9.0/go.mod h1:cK/D0BBs0b/oWPIcX/Z/obahJK1TT7IPVjy53i/mX/4=
 github.com/aws/aws-sdk-go-v2 v1.9.1/go.mod h1:cK/D0BBs0b/oWPIcX/Z/obahJK1TT7IPVjy53i/mX/4=
 github.com/aws/aws-sdk-go-v2 v1.11.0/go.mod h1:SQfA+m2ltnu1cA0soUkj4dRSsmITiVQUJvBIZjzfPyQ=
-github.com/aws/aws-sdk-go-v2 v1.11.1 h1:GzvOVAdTbWxhEMRK4FfiblkGverOkAT0UodDxC1jHQM=
 github.com/aws/aws-sdk-go-v2 v1.11.1/go.mod h1:SQfA+m2ltnu1cA0soUkj4dRSsmITiVQUJvBIZjzfPyQ=
 github.com/aws/aws-sdk-go-v2 v1.11.2 h1:SDiCYqxdIYi6HgQfAWRhgdZrdnOuGyLDJVRSWLeHWvs=
 github.com/aws/aws-sdk-go-v2 v1.11.2/go.mod h1:SQfA+m2ltnu1cA0soUkj4dRSsmITiVQUJvBIZjzfPyQ=
@@ -156,12 +155,10 @@ github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.1.2/go.mod h1:Azf567f5wBUfUbw
 github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.2.1 h1:ZZs6209e+yocx7jnT+TySOjt6/jk1LKdAPtT1fAPuio=
 github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.2.1/go.mod h1:2JOqaBP3I6TEm27NLb11UiD9j4HZsJ+EW4N7vCf8WGQ=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.0/go.mod h1:NO3Q5ZTTQtO2xIg2+xTXYDiT7knSejfeDm7WGDaOo0U=
-github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.1 h1:LZwqhOyqQ2w64PZk04V0Om9AEExtW8WMkCRoE1h9/94=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.1/go.mod h1:22SEiBSQm5AyKEjoPcG1hzpeTI+m9CXfE6yt1h49wBE=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.2 h1:XJLnluKuUxQG255zPNe+04izXl7GSyUVafIsgfv9aw4=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.2/go.mod h1:SgKKNBIoDC/E1ZCDhhMW3yalWjwuLjMcpLzsM/QQnWo=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.0/go.mod h1:anlUzBoEWglcUxUQwZA7HQOEVEnQALVZsizAapB2hq8=
-github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.1 h1:ObMfGNk0xjOWduPxsrRWVwZZia3e9fOcO6zlKCkt38s=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.1/go.mod h1:1xvCD+I5BcDuQUc+psZr7LI1a9pclAWZs3S3Gce5+lg=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2 h1:EauRoYZVNPlidZSZJDscjJBQ22JhVF2+tdteatax2Ak=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2/go.mod h1:xT4XX6w5Sa3dhg50JrYyy3e4WPYo/+WjY/BXtqXVunU=
@@ -261,8 +258,6 @@ github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1 h1:Nmcb6pxJtjJof+mmF9TJvy
 github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1/go.mod h1:dTnxIRqR69JUZobQDUh47rlbYe8PzTd0k4o+gDkHeV4=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.19.1 h1:cy6fUlP94vzD/0VUD3SWGUBfYrOr+zP+ChsTxUtZydQ=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.19.1/go.mod h1:G9AcXDbGtZVA8XBdmpbVQv1lvmiuk4I9n2MQlp1FJ9k=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.1 h1:e0gg30cCKsNHV+WD17zbzipx5nYRrnb+4Y5wO5pap80=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.1/go.mod h1:vUIn46AiFjPEm4/ALXV1weLTEWu37mF6OfLMw5vxG2Q=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.2 h1:v+mZVbY9IBYPFFFWNwuwfpUwmwD37AoQFW7sa//hNvY=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.2/go.mod h1:Lo6aZ+bIbBYL6LyElc7tWEcotGHrEUOqMK7uhkYQfoA=
 github.com/aws/aws-sdk-go-v2/service/sns v1.1.2 h1:1U/FujyBEkNwrvANUcZFuVnAQqy0EAUEGToso5Dcijs=

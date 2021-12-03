@@ -38,11 +38,22 @@ func TestIntegrationSnsTopics(t *testing.T) {
 					Count: 1,
 					Data: map[string]interface{}{
 						"content_based_deduplication": true,
+						"display_name":                fmt.Sprintf("%s-%s", res.Prefix, res.Suffix),
+					},
+				},
+				{
+					Count: 1,
+					Data: map[string]interface{}{
+						"content_based_deduplication": false,
+						"display_name":                fmt.Sprintf("sns-test2-%s-%s", res.Prefix, res.Suffix),
 					},
 				},
 			},
 			Filter: func(sb squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sb.Where(squirrel.Eq{"display_name": fmt.Sprintf("%s-%s", res.Prefix, res.Suffix)})
+				return sb.Where(squirrel.Or{
+					squirrel.Eq{"display_name": fmt.Sprintf("%s-%s", res.Prefix, res.Suffix)},
+					squirrel.Eq{"display_name": fmt.Sprintf("sns-test2-%s-%s", res.Prefix, res.Suffix)},
+				})
 			},
 		}
 	})
