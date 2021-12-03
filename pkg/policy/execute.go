@@ -232,12 +232,14 @@ func (e *Executor) createView(ctx context.Context, v *View) error {
 
 func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {
 	var rest []string
+	var pnames []string
 	if len(selector) > 0 {
 		rest = selector[1:]
 	}
 	var found bool
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
 	for _, p := range policies {
+		pnames = append(pnames, p.Name)
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
 			r, err := e.executePolicy(ctx, e.progressUpdate, req, p, rest)
@@ -252,6 +254,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 		}
 	}
 	if !found && len(selector) > 0 {
+		e.log.Error("policy not found with provided selector", "selector", selector, "policy names", pnames)
 		return nil, fmt.Errorf("policy not found with provided selector: %s", selector)
 	}
 	return &total, nil
