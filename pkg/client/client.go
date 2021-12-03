@@ -829,6 +829,9 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
+// TODO: move PolicyName to be also as part of args i.e first arg is policy name second arg is subpath, the rest is taken from config,
+// TODO: if first arg isn't found in config, execute remote hub download only policy
+
 func FilterPolicies(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
 	var policies []*config.Policy
 

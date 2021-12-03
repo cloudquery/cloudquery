@@ -427,11 +427,14 @@ func ParsePolicyFromSource(policy *config.Policy) (*RemotePolicy, error) {
 	}
 }
 
+// ParsePolicyFromArgs parses policy execution arguments from given args.
+// The first argument is the repository/policy name we want to run, the second argument is the subpath to execute.
 func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 	// Make sure the mandatory args are given
 	if len(args) < 1 {
 		return nil, fmt.Errorf("invalid policy path. Repository name is required but got %#v", args)
 	}
+
 	subpath := ""
 	if len(args) > 2 {
 		subpath = args[1]

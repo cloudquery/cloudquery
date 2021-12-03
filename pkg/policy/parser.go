@@ -96,15 +96,15 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		}
 		innerContent, contentDiags := body.Content(policySchema)
 		diags = append(diags, contentDiags...)
-		if innerContent == nil {
+		if contentDiags.HasErrors() {
 			return nil, diags
 		}
-		inner, innerDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
-		diags = append(diags, innerDiags...)
-		if inner == nil {
+		iPolicy, decodePolicyDiags := decodePolicyContent([]string{""}, innerContent, ctx, r)
+		diags = append(diags, decodePolicyDiags...)
+		if decodePolicyDiags.HasErrors() {
 			return nil, diags
 		}
-		if len(inner.Policies) > 1 {
+		if len(iPolicy.Policies) > 1 {
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  `Invalid policy source file`,
@@ -113,9 +113,9 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			})
 			return nil, diags
 		}
-		policy.Views = append(policy.Views, inner.Policies[0].Views...)
-		policy.Queries = append(policy.Queries, inner.Policies[0].Queries...)
-		policy.Policies = append(policy.Policies, inner.Policies[0].Policies...)
+		policy.Views = append(policy.Views, iPolicy.Policies[0].Views...)
+		policy.Queries = append(policy.Queries, iPolicy.Policies[0].Queries...)
+		policy.Policies = append(policy.Policies, iPolicy.Policies[0].Policies...)
 	}
 
 	for _, block := range content.Blocks {
