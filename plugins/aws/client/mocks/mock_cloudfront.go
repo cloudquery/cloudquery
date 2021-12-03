@@ -35,6 +35,26 @@ func (m *MockCloudfrontClient) EXPECT() *MockCloudfrontClientMockRecorder {
 	return m.recorder
 }
 
+// GetDistribution mocks base method.
+func (m *MockCloudfrontClient) GetDistribution(arg0 context.Context, arg1 *cloudfront.GetDistributionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetDistributionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDistribution", varargs...)
+	ret0, _ := ret[0].(*cloudfront.GetDistributionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDistribution indicates an expected call of GetDistribution.
+func (mr *MockCloudfrontClientMockRecorder) GetDistribution(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDistribution", reflect.TypeOf((*MockCloudfrontClient)(nil).GetDistribution), varargs...)
+}
+
 // ListCachePolicies mocks base method.
 func (m *MockCloudfrontClient) ListCachePolicies(arg0 context.Context, arg1 *cloudfront.ListCachePoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListCachePoliciesOutput, error) {
 	m.ctrl.T.Helper()
