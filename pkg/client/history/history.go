@@ -41,7 +41,7 @@ const (
 				BEGIN
 					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _child_table_name )  then
 					EXECUTE format(
-						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE cascade_delete(%s, %s)'::text,
+						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE history.cascade_delete(%s, %s)'::text,
 						_child_table_name, _table_name, _child_table_name, _parent_id);
 					return 0;
 					ELSE
