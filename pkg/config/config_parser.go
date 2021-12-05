@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/creasty/defaults"
-
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"

@@ -84,15 +84,16 @@ func (h TableCreator) createHyperTable(ctx context.Context, t, p *schema.Table, 
 	return nil
 }
 
-// TODO: create unique index on fetch_date parent_cq_id
 func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
 	c := h.findParentIdColumn(t)
 	if c == nil {
 		return fmt.Errorf("failed to find parent cq id column for %s", t.Name)
 	}
-	_, err := conn.Exec(ctx, "SELECT history.build_trigger($1, $2, $3);", p.Name, t.Name, c.Name)
-	if err != nil {
+	if _, err := conn.Exec(ctx, "SELECT history.build_trigger($1, $2, $3);", p.Name, t.Name, c.Name); err != nil {
 		return fmt.Errorf("failed to create trigger: %w", err)
+	}
+	if _, err := conn.Exec(ctx, fmt.Sprintf("CREATE INDEX ON \"history\".\"%s\" (fetch_date, %s)", t.Name, c.Name)); err != nil {
+		return fmt.Errorf("failed to create index on %s (fetch_date, %s): %w", t.Name, c.Name, err)
 	}
 	return nil
 }

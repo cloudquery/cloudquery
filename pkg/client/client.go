@@ -558,7 +558,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider and recreate")
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternativly execute `cq provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
