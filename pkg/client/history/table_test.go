@@ -78,6 +78,9 @@ func TestHistoryTableCreator_CreateTables(t *testing.T) {
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
 	defer conn.Release()
+	// Call setup history as previous test can execute before
+	assert.NoError(t, history.SetupHistory(context.Background(), conn))
+
 	assert.NoError(t, m.CreateTable(context.Background(), conn, testTable, nil))
 	// creating tables again shouldn't create any errors
 	assert.NoError(t, m.CreateTable(context.Background(), conn, testTable, nil))
