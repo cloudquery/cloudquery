@@ -635,8 +635,8 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		result, err := c.runPolicy(ctx, policyConfig, req)
 
 		c.Logger.Debug("Policy execution finished", "name", policyConfig.Name, "err", err)
-
 		if err != nil {
+			c.Logger.Error("Policy execution finished with error", "name", policyConfig.Name, "err", err)
 			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
