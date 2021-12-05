@@ -9,6 +9,8 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/helpers"
+
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -163,6 +165,10 @@ type FetchDoneResult struct {
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
 	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
+}
+
+type TableRemover interface {
+	DropTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table) error
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -320,6 +326,15 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
+	searchPath := ""
+	if c.HistoryCfg != nil {
+		searchPath = "history"
+	}
+	dsn, err := parseDSN(c.DSN, searchPath)
+	if err != nil {
+		return nil, err
+	}
+
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
 	errGroup, gctx := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
@@ -334,15 +349,15 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		errGroup.Go(func() error {
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
-			dsn := c.DSN
+
 			if c.HistoryCfg != nil {
 				pLog.Info("history enabled adding fetch date", "fetch_date", c.HistoryCfg.FetchDate().Format(time.RFC3339))
 				if request.ExtraFields == nil {
 					request.ExtraFields = make(map[string]interface{})
 				}
 				request.ExtraFields["fetch_date"] = c.HistoryCfg.FetchDate()
-				dsn += " search_path=history"
 			}
+
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
@@ -797,7 +812,16 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	if err != nil {
 		return nil, nil, err
 	}
-	m, err := provider.NewMigrator(c.Logger, migrations, c.DSN, fmt.Sprintf("%s_%s", org, name))
+
+	dsn := c.DSN
+	if c.HistoryCfg != nil {
+		dsn, err = parseDSN(c.DSN, "history")
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	m, err := provider.NewMigrator(c.Logger, migrations, dsn, fmt.Sprintf("%s_%s", org, name))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -840,6 +864,20 @@ func (c *Client) setupTableCreator(ctx context.Context) error {
 	}
 	defer conn.Release()
 	return history.SetupHistory(ctx, conn)
+}
+
+func parseDSN(dsn, searchPath string) (string, error) {
+	url, err := helpers.ParseConnectionString(dsn)
+	if err != nil {
+		return "", err
+	}
+	if searchPath == "" {
+		return url.String(), nil
+	}
+	if url.RawQuery != "" {
+		return url.String() + "&search_path=history", nil
+	}
+	return url.String() + "search_path=history", nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
