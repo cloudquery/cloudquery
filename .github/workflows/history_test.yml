@@ -11,7 +11,7 @@ jobs:
   unitests:
     strategy:
       matrix:
-        dbversion: ['timescale:latest']
+        dbversion: ['timescale/timescaledb:latest']
         go: ['1.17']
         platform: [ ubuntu-latest]
     runs-on: ${{ matrix.platform }}
