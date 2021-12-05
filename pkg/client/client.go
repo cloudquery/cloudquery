@@ -355,7 +355,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				if request.ExtraFields == nil {
 					request.ExtraFields = make(map[string]interface{})
 				}
-				request.ExtraFields["fetch_date"] = c.HistoryCfg.FetchDate()
+				request.ExtraFields["cq_fetch_date"] = c.HistoryCfg.FetchDate()
 			}
 
 			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{

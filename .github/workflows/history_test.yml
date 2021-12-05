@@ -53,6 +53,9 @@ jobs:
       - name: Sanity Init
         run: go run ./main.go init test --config=test_init_config.hcl
 
-      - name: Test
-        run: go test -v --tags=history ./...
+    - name: Sanity Drop
+      run: go run ./main.go provider drop test --config=internal/test/test_history_config.hcl
+
+    - name: Test
+      run: go test -v --tags=history ./...
 
