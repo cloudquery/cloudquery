@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	testDBConnection   = "postgres://postgres:pass@localhost:5433/postgres?sslmode=disable"
+	testDBConnection   = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	sqlInsertMainTable = `INSERT INTO public.test_table(
 	cq_id, meta, cq_fetch_date, test)
 	VALUES ('0d0bf7c6-c87d-4b3c-a270-60246dcb6ab1', NULL, TO_DATE('%s', 'YYYY/MM/DD'), 'ron');
