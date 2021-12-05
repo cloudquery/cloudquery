@@ -24,7 +24,7 @@ const (
 				BEGIN
 					BEGIN
 						IF (TG_OP = 'DELETE') THEN
-							EXECUTE format('DELETE FROM history.%I where %I = %L AND fetch_date = %L', TG_ARGV[0], TG_ARGV[1], OLD.cq_id, OLD.fetch_date);
+							EXECUTE format('DELETE FROM history.%I where %I = %L AND cq_fetch_date = %L', TG_ARGV[0], TG_ARGV[1], OLD.cq_id, OLD.cq_fetch_date);
 							RETURN OLD;
 						END IF;
 						RETURN NULL; -- result is ignored since this is an AFTER trigger
@@ -50,7 +50,7 @@ const (
 				END;
 				$BODY$;`
 
-	createHyperTable    = `SELECT * FROM create_hypertable($1, 'fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
+	createHyperTable    = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
 	dataRetentionPolicy = `SELECT add_retention_policy($1, INTERVAL '%d day', if_not_exists => true);`
 	findLatestFetchDate = `
 			CREATE OR REPLACE FUNCTION find_latest(schema TEXT, _table_name TEXT) 
@@ -58,12 +58,12 @@ const (
 			DECLARE
 			 fetchDate timestamp without time zone;
 			BEGIN
-				EXECUTE format('SELECT fetch_date FROM %I.%I order by fetch_date desc limit 1', schema, _table_name) into fetchDate;
+				EXECUTE format('SELECT cq_fetch_date FROM %I.%I order by cq_fetch_date desc limit 1', schema, _table_name) into fetchDate;
 				return fetchDate;
 			END;
 			$body$  LANGUAGE plpgsql IMMUTABLE`
 
-	createTableView = `CREATE OR REPLACE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE fetch_date = find_latest('history', '%[1]s')`
+	createTableView = `CREATE OR REPLACE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
 )
 
 type Config struct {

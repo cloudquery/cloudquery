@@ -19,11 +19,11 @@ import (
 const (
 	testDBConnection   = "postgres://postgres:pass@localhost:5433/postgres?sslmode=disable"
 	sqlInsertMainTable = `INSERT INTO public.test_table(
-	cq_id, meta, fetch_date, test)
+	cq_id, meta, cq_fetch_date, test)
 	VALUES ('0d0bf7c6-c87d-4b3c-a270-60246dcb6ab1', NULL, TO_DATE('%s', 'YYYY/MM/DD'), 'ron');
 	`
 	sqlInsertRelTable = `INSERT INTO public.test_rel_table(
-	cq_id, meta, fetch_date, parent_cq_id, test)
+	cq_id, meta, cq_fetch_date, parent_cq_id, test)
 	VALUES (gen_random_uuid(), null, TO_DATE('%s', 'YYYY/MM/DD'), '0d0bf7c6-c87d-4b3c-a270-60246dcb6ab1', 'ron2');
 	`
 )
@@ -82,10 +82,10 @@ func TestHistoryTableCreator_CreateTables(t *testing.T) {
 	// creating tables again shouldn't create any errors
 	assert.NoError(t, m.CreateTable(context.Background(), conn, testTable, nil))
 	// query the view
-	_, err = conn.Exec(context.Background(), "select fetch_date from test_table")
+	_, err = conn.Exec(context.Background(), "select cq_fetch_date from test_table")
 	assert.Nil(t, err)
 	// query the history table itself
-	_, err = conn.Exec(context.Background(), "select fetch_date from history.test_table")
+	_, err = conn.Exec(context.Background(), "select cq_fetch_date from history.test_table")
 	assert.Nil(t, err)
 	partitionDate := time.Now().Format("2006/01/02")
 	_, err = conn.Exec(context.Background(), fmt.Sprintf(sqlInsertMainTable, partitionDate))
@@ -96,7 +96,7 @@ func TestHistoryTableCreator_CreateTables(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, res.RowsAffected(), int64(1))
 	// Test that delete cascade trigger works
-	res, err = conn.Exec(context.Background(), fmt.Sprintf(`DELETE FROM test_table WHERE fetch_date = TO_DATE('%s', 'YYYY/MM/DD')`, partitionDate))
+	res, err = conn.Exec(context.Background(), fmt.Sprintf(`DELETE FROM test_table WHERE cq_fetch_date = TO_DATE('%s', 'YYYY/MM/DD')`, partitionDate))
 	assert.Nil(t, err)
 	assert.Equal(t, res.RowsAffected(), int64(1))
 	res, err = conn.Exec(context.Background(), "select * from test_rel_table")

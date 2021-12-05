@@ -92,8 +92,8 @@ func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Con
 	if _, err := conn.Exec(ctx, "SELECT history.build_trigger($1, $2, $3);", p.Name, t.Name, c.Name); err != nil {
 		return fmt.Errorf("failed to create trigger: %w", err)
 	}
-	if _, err := conn.Exec(ctx, fmt.Sprintf("CREATE INDEX ON \"history\".\"%s\" (fetch_date, %s)", t.Name, c.Name)); err != nil {
-		return fmt.Errorf("failed to create index on %s (fetch_date, %s): %w", t.Name, c.Name, err)
+	if _, err := conn.Exec(ctx, fmt.Sprintf("CREATE INDEX ON \"history\".\"%s\" (cq_fetch_date, %s)", t.Name, c.Name)); err != nil {
+		return fmt.Errorf("failed to create index on %s (cq_fetch_date, %s): %w", t.Name, c.Name, err)
 	}
 	return nil
 }
@@ -124,14 +124,12 @@ func (h TableCreator) buildTableSQL(table, _ *schema.Table) (string, error) {
 			uniques = append(uniques, c.Name)
 		}
 	}
-	// TODO check fetch_date not defined
-	ctb.Define("fetch_date", schema.GetPgTypeFromType(schema.TypeTimestamp))
+	ctb.Define("cq_fetch_date", schema.GetPgTypeFromType(schema.TypeTimestamp))
 	h.buildColumns(ctb, table.Columns)
 	for _, s := range uniques {
-		ctb.Define(fmt.Sprintf("UNIQUE (fetch_date, %s)", s))
+		ctb.Define(fmt.Sprintf("UNIQUE (cq_fetch_date, %s)", s))
 	}
-	// TODO: check fetch_date not in PKs
-	allKeys := append([]string{"fetch_date"}, table.PrimaryKeys()...)
+	allKeys := append([]string{"cq_fetch_date"}, table.PrimaryKeys()...)
 	ctb.Define(fmt.Sprintf("constraint %s_pk primary key(%s)", schema.TruncateTableConstraint(table.Name), strings.Join(allKeys, ",")))
 
 	sql, _ := ctb.BuildWithFlavor(sqlbuilder.PostgreSQL)
