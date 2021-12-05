@@ -67,6 +67,7 @@ jobs:
           INTEGRATION_TESTS: 1
           KUBECONFIG: ${{steps.depoly_pg.outputs.kubepath}} # path should be absolute
           DATABASE_URL: host=${{steps.depoly_pg.outputs.host}} user=postgres password=pass database=postgres port=${{steps.depoly_pg.outputs.port}} sslmode=disable
+          CQ_NO_TELEMETRY: 1
 
       - name: Destroy terraform resources
         env:
