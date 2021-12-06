@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :rocket: Added
 * Added `policy describe <policy_name>` subcommand, allowing to see all policies and sub-policies available and execution paths 
 
+### :spider: Fixed
+* Fix fetch failure on providers that don't support upgrade [#295](https://github.com/cloudquery/cloudquery/pull/295)
+
+
 ## [v0.16.2] - 2021-11-29
 
 ### :rocket: Added

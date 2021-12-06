@@ -322,7 +322,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
-	errGroup, gctx := errgroup.WithContext(ctx)
+	errGroup, _ := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
@@ -335,7 +335,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		errGroup.Go(func() error {
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
-			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
+			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
 					DSN: c.DSN,
@@ -352,7 +352,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
-			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
+			stream, err := providerPlugin.Provider().FetchResources(ctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
 			if err != nil {
 				return err
 			}
@@ -396,7 +396,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 
-				totalResources = resp.ResourceCount
+				totalResources += resp.ResourceCount
 				fetchedResources[resp.ResourceName] = resp.Summary
 
 				if resp.Error != "" {
