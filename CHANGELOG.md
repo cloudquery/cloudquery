@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :gear: Changed
 * Upgraded to SDK Version [v0.5.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md).
-* Read persisted telemerty ID if exists [#313](https://github.com/cloudquery/cloudquery/pull/313)
+* Read persisted telemetry ID if exists [#313](https://github.com/cloudquery/cloudquery/pull/313)
 * Cleanup init command [#320](https://github.com/cloudquery/cloudquery/pull/320)
 * Improve logging for policy execution errors [#323](https://github.com/cloudquery/cloudquery/pull/323)
 * Updated drift aws configuration for new version [#329](https://github.com/cloudquery/cloudquery/pull/329)
