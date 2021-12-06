@@ -322,6 +322,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
+	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
+	// future refactor should probably use a something else rather than error group.
 	errGroup, _ := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
