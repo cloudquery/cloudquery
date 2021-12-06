@@ -22,7 +22,7 @@ config {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.7.1"
+        version = ">=0.8.0"
 
         resource "*" {
             ignore_identifiers = [ ]
