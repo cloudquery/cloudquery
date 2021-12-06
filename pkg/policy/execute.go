@@ -15,7 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
-var errPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
 
 type UpdateCallback func(update Update)
 
@@ -73,6 +73,9 @@ type ExecutionResult struct {
 
 	// Error is the reason the execution failed
 	Error string
+
+	// List of loaded Policies
+	LoadedPolicies Policies
 }
 
 // ExecuteRequest is a request that triggers policy execution.
@@ -152,7 +155,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 		}
 	}
 	if !found && len(selector) > 0 {
-		return nil, fmt.Errorf("%s: %w", policy.Name, errPolicyOrQueryNotFound)
+		return nil, fmt.Errorf("%s: %w", policy.Name, ErrPolicyOrQueryNotFound)
 	}
 	return &total, nil
 }
@@ -232,12 +235,14 @@ func (e *Executor) createView(ctx context.Context, v *View) error {
 
 func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {
 	var rest []string
+	pnames := make([]string, len(policies))
 	if len(selector) > 0 {
 		rest = selector[1:]
 	}
 	var found bool
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
-	for _, p := range policies {
+	for i, p := range policies {
+		pnames[i] = p.Name
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
 			r, err := e.executePolicy(ctx, e.progressUpdate, req, p, rest)
@@ -252,7 +257,8 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 		}
 	}
 	if !found && len(selector) > 0 {
-		return nil, errPolicyOrQueryNotFound
+		e.log.Error("policy not found with provided selector", "selector", selector, "policy names", pnames)
+		return nil, ErrPolicyOrQueryNotFound
 	}
 	return &total, nil
 }

@@ -24,11 +24,10 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.RunPolicies(ctx, args, policyName, outputDir, subPath, stopOnFailure, skipVersioning, failOnViolation, noResults)
+			return c.RunPolicies(ctx, args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 		}),
 	}
 	outputDir       string
-	subPath         string
 	policyName      string
 	stopOnFailure   bool
 	skipVersioning  bool
@@ -44,7 +43,6 @@ func init() {
 	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if one of the policy is violated")
 	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
-	flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }

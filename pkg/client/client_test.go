@@ -187,7 +187,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 	assert.True(t, ok)
 }
 
-// Test Client fetch but with a nil configuration, provider won't crash but use it's default configuration method
+// Test Client fetch but with a nil configuration, provider won't crash but use its default configuration method
 func TestClient_FetchNilConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
@@ -306,7 +306,7 @@ func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.NoError(t, nil)
+	assert.NoError(t, err)
 }
 
 func TestClient_ProviderMigrations(t *testing.T) {

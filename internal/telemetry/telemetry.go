@@ -7,10 +7,8 @@ import (
 	"io"
 	"net"
 	"os"
-	"path/filepath"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-hclog"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
@@ -24,6 +22,9 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
+
+	"github.com/cloudquery/cloudquery/internal/persistentdata"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 // Client is the telemetry client.
@@ -248,37 +249,17 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	)
 }
 
-// randomId will read or generate a persistent `telemetry-random-id` file under `.cq` and return its value. If a new file is generated, c.newRandomId is set.
+// randomId will read or generate a persistent `telemetry-random-id` file and return its value.
+// First it will try reading ~/.cq/telemetry-random-id and use that value if found. If not, it will move on to ./cq/telemetry-random-id, first attempting a read and if not found, will create that file filling it with a newly generated ID.
+// If a directory with the same name is encountered, process is aborted and an empty string is returned.
+// If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	fn := filepath.Join(".", ".cq", "telemetry-random-id")
-
-	exists := true
-	fi, err := c.fs.Stat(fn)
-	if err != nil {
-		if !os.IsNotExist(err) {
-			return "", err
-		}
-		exists = false
-	}
-	if exists && fi.IsDir() {
-		return "", fmt.Errorf("telemetry-random-id is a directory")
-	}
-
-	if exists {
-		b, err := c.fs.ReadFile(fn)
-		if err != nil {
-			return "", err
-		}
-		return string(b), nil
-	}
-
-	id := genRandomId()
-	if err := c.fs.WriteFile(fn, []byte(id), 0644); err != nil {
-		return "", err
-	}
-
-	c.newRandomId = true
-	return id, nil
+	var (
+		id  string
+		err error
+	)
+	id, c.newRandomId, err = persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
+	return id, err
 }
 
 // NewRandomId returns true if we created a new random id in this session
