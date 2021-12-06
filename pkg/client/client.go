@@ -94,8 +94,8 @@ func (p ProviderFetchSummary) HasErrors() bool {
 	return false
 }
 
-func (p ProviderFetchSummary) Attributes() []attribute.KeyValue {
-	type diagCount map[diag.DiagnosticType]int
+func (p ProviderFetchSummary) Metrics() map[string]int64 {
+	type diagCount map[diag.DiagnosticType]int64
 	sevCounts := make(map[diag.Severity]diagCount)
 
 	for _, d := range p.Diagnostics() {
@@ -108,7 +108,7 @@ func (p ProviderFetchSummary) Attributes() []attribute.KeyValue {
 		}
 	}
 
-	ret := make([]attribute.KeyValue, 0, len(sevCounts))
+	ret := make(map[string]int64, len(sevCounts)+1)
 	for severity, typeCount := range sevCounts {
 		var sevName string
 		switch severity {
@@ -123,12 +123,12 @@ func (p ProviderFetchSummary) Attributes() []attribute.KeyValue {
 		}
 
 		prefix := "fetch.diag." + sevName + "."
-		total := 0
+		var total int64
 		for typ, count := range typeCount {
-			ret = append(ret, attribute.Int(prefix+strings.ToLower(typ.String())+"."+p.ProviderName, count))
+			ret[prefix+strings.ToLower(typ.String())+"."+p.ProviderName] = count
 			total += count
 		}
-		ret = append(ret, attribute.Int(prefix+"total."+p.ProviderName, total))
+		ret[prefix+"total."+p.ProviderName] = total
 	}
 
 	return ret
@@ -969,7 +969,7 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
 		)
-		span.SetAttributes(ps.Attributes()...)
+		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 	}
 
 	span.SetAttributes(
