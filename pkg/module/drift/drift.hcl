@@ -323,7 +323,7 @@ config {
             }
         }
 
-        # TODO: aws_cloudfront_distribution_default_behaviour_lambda_functions (no data in tests)
+        # TODO: aws_cloudfront_distribution_default_cache_behavior_lambda_functions (no data in tests)
 
         resource "aws_cloudfront_distribution_custom_error_responses" {
             identifiers = [ "parent.id", "error_code", "response_code", "response_page_path" ]
