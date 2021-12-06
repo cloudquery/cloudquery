@@ -15,7 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
-var errPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
 
 type UpdateCallback func(update Update)
 
@@ -73,6 +73,9 @@ type ExecutionResult struct {
 
 	// Error is the reason the execution failed
 	Error string
+
+	// List of loaded Policies
+	LoadedPolicies Policies
 }
 
 // ExecuteRequest is a request that triggers policy execution.
@@ -152,7 +155,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 		}
 	}
 	if !found && len(selector) > 0 {
-		return nil, fmt.Errorf("%s: %w", policy.Name, errPolicyOrQueryNotFound)
+		return nil, fmt.Errorf("%s: %w", policy.Name, ErrPolicyOrQueryNotFound)
 	}
 	return &total, nil
 }
@@ -255,7 +258,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 	}
 	if !found && len(selector) > 0 {
 		e.log.Error("policy not found with provided selector", "selector", selector, "policy names", pnames)
-		return nil, errPolicyOrQueryNotFound
+		return nil, ErrPolicyOrQueryNotFound
 	}
 	return &total, nil
 }

@@ -83,7 +83,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	tests := []struct {
 		name         string
 		policyText   string
-		expected     *Policies
+		expected     Policies
 		wantErr      bool
 		errHaystring string
 	}{
@@ -104,7 +104,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			"queries with or without explicit type",
 			testPolicyQueries,
-			&Policies{
+			Policies{
 				{
 					Name: "test_policy",
 					Queries: []*Query{
@@ -139,7 +139,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			"complex policy",
 			testPolicy,
-			&Policies{
+			Policies{
 				{
 					Name:        "aws-cis-v1.3.0",
 					Description: "AWS CIS V1.3.0",
