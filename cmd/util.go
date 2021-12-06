@@ -75,6 +75,10 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		if err != nil {
 			return err
 		}
+		if c.Client().HistoryCfg != nil {
+			trace.SpanFromContext(ctx).SetAttributes(attribute.Bool("history_enabled", true))
+		}
+
 		defer c.Client().Close()
 	}
 
