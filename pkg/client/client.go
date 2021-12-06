@@ -7,6 +7,7 @@ import (
 	"io"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
@@ -95,6 +96,46 @@ func (p ProviderFetchSummary) HasErrors() bool {
 		return true
 	}
 	return false
+}
+
+func (p ProviderFetchSummary) Metrics() map[string]int64 {
+	type diagCount map[diag.DiagnosticType]int64
+	sevCounts := make(map[diag.Severity]diagCount)
+
+	for _, d := range p.Diagnostics() {
+		if _, ok := sevCounts[d.Severity()]; !ok {
+			tc := make(diagCount)
+			tc[d.Type()]++
+			sevCounts[d.Severity()] = tc
+		} else {
+			sevCounts[d.Severity()][d.Type()]++
+		}
+	}
+
+	ret := make(map[string]int64, len(sevCounts)+1)
+	for severity, typeCount := range sevCounts {
+		var sevName string
+		switch severity {
+		case diag.IGNORE:
+			sevName = "ignore"
+		case diag.WARNING:
+			sevName = "warning"
+		case diag.ERROR:
+			sevName = "error"
+		default:
+			sevName = "unknown"
+		}
+
+		prefix := "fetch.diag." + sevName + "."
+		var total int64
+		for typ, count := range typeCount {
+			ret[prefix+strings.ToLower(typ.String())+"."+p.ProviderName] = count
+			total += count
+		}
+		ret[prefix+"total."+p.ProviderName] = total
+	}
+
+	return ret
 }
 
 // PoliciesRunRequest is the request used to run a policy.
@@ -973,6 +1014,7 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
 		)
+		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 	}
 
 	span.SetAttributes(
