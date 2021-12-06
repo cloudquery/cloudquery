@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.16.3] - Unreleased
+
+### 💥 Breaking Changes
+* `policy run` flag `--subpath` has been removed to execute sub policy pass it as second argument i.e `policy run <policy_name> <subpath>`
+
+### :rocket: Added
+* Added `policy describe <policy_name>` subcommand, allowing to see all policies and sub-policies available and execution paths 
+* Added support for CloudQuery History (Alpha) for more info see [docs](https://docs.cloudquery.io/cli/history/overview)
+
 ## [v0.16.2] - 2021-11-29
 
 ### :rocket: Added

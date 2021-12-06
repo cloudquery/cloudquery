@@ -692,6 +692,26 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	return results, nil
 }
 
+func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (policy.Policies, error) {
+	loadedPolicies := make(policy.Policies, 0, len(req.Policies))
+	for _, policyConfig := range req.Policies {
+		c.Logger.Info("Loading the policy", "args", policyConfig)
+		execReq := &policy.ExecuteRequest{
+			Policy:         policyConfig,
+			StopOnFailure:  req.StopOnFailure,
+			SkipVersioning: req.SkipVersioning,
+			UpdateCallback: req.RunCallback,
+		}
+		policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
+		if err != nil {
+			c.Logger.Error("failed loading the policy", "err", err)
+			return nil, fmt.Errorf("failed to load policy: %w", err)
+		}
+		loadedPolicies = append(loadedPolicies, policies...)
+	}
+	return loadedPolicies, nil
+}
+
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
 	c.Logger.Info("Loading policy", "args", policyConfig)
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {

@@ -1,3 +1,4 @@
+//go:build history
 // +build history
 
 package history_test

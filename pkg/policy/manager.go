@@ -63,10 +63,10 @@ type ManagerImpl struct {
 // Implemented by ManagerImpl.
 type Manager interface {
 	// Run the given policy.
-	Run(ctx context.Context, req *ExecuteRequest, policies *Policies) (*ExecutionResult, error)
+	Run(ctx context.Context, req *ExecuteRequest, policies Policies) (*ExecutionResult, error)
 
 	// Load the policy from local / remote location
-	Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*Policies, error)
+	Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (Policies, error)
 
 	// DownloadPolicy downloads the policy into the manager path.
 	DownloadPolicy(ctx context.Context, p *RemotePolicy) error
@@ -81,7 +81,7 @@ func NewManager(policyDir string, pool *pgxpool.Pool, logger hclog.Logger) Manag
 	}
 }
 
-func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies *Policies) (*ExecutionResult, error) {
+func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies Policies) (*ExecutionResult, error) {
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
@@ -90,7 +90,7 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 	defer conn.Release()
 
 	var (
-		totalQueriesToRun = getQueriesCount(*policies)
+		totalQueriesToRun = getQueriesCount(policies)
 		finishedQueries   = 0
 	)
 
@@ -125,7 +125,7 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 	}
 
 	// execute the queries
-	return NewExecutor(conn, m.logger, progressUpdate).ExecutePolicies(ctx, execReq, *policies, selector)
+	return NewExecutor(conn, m.logger, progressUpdate).ExecutePolicies(ctx, execReq, policies, selector)
 }
 
 // DownloadPolicy downloads the given policy from GitHub and stores it in the local policy directory.
@@ -152,9 +152,9 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 	// Print initial information
 	switch {
 	case p.Version != "":
-		ui.ColorizedOutput(ui.ColorProgress, "Cloning Policy %s/%s@%s\n", p.Organization, p.Repository, p.Version)
+		ui.ColorizedOutput(ui.ColorProgress, "Downloading Policy %s/%s@%s\n", p.Organization, p.Repository, p.Version)
 	default:
-		ui.ColorizedOutput(ui.ColorProgress, "Cloning Policy %s/%s\n", p.Organization, p.Repository)
+		ui.ColorizedOutput(ui.ColorProgress, "Downloading Policy %s/%s\n", p.Organization, p.Repository)
 	}
 
 	// Clone the repository
@@ -174,7 +174,7 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 	return nil
 }
 
-func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (*Policies, error) {
+func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (Policies, error) {
 	switch p.Type {
 	case config.Hub:
 		remotePolicy, err := ParsePolicyFromSource(p)
@@ -197,7 +197,7 @@ func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *Execu
 	}
 }
 
-func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (*Policies, error) {
+func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (Policies, error) {
 
 	osFs := file.NewOsFs()
 	var policyFolder = filepath.Dir(cfg.Source)
@@ -224,7 +224,7 @@ func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (*Policies, error) {
 	return readPolicy(policyFilePath, policyFolder)
 }
 
-func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (*Policies, error) {
+func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (Policies, error) {
 	parser := config.NewParser()
 
 	policiesRaw, diags := parser.LoadFromSource("policy.hcl", []byte(cfg.Source), config.SourceHCL)
@@ -234,7 +234,7 @@ func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (*Policies, error) {
 	return decodePolicy(policiesRaw, diags, "")
 }
 
-func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *RemotePolicy, execReq *ExecuteRequest) (*Policies, error) {
+func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *RemotePolicy, execReq *ExecuteRequest) (Policies, error) {
 	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 		}
 	}
 	if policyFilePath == "" {
-		return nil, fmt.Errorf("failed to find policy file in root directory; expected policy.hcl not found in %s", policyFolder)
+		return nil, fmt.Errorf("failed to find policy file in root git directory; expected policy.hcl not found in %s", policyFolder)
 	}
 	m.logger.Debug("policy file found", "path", policyFilePath)
 
@@ -427,10 +427,17 @@ func ParsePolicyFromSource(policy *config.Policy) (*RemotePolicy, error) {
 	}
 }
 
+// ParsePolicyFromArgs parses policy execution arguments from given args.
+// The first argument is the repository/policy name we want to run, the second argument is the subpath to execute.
 func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 	// Make sure the mandatory args are given
 	if len(args) < 1 {
 		return nil, fmt.Errorf("invalid policy path. Repository name is required but got %#v", args)
+	}
+
+	subpath := ""
+	if len(args) > 2 {
+		subpath = args[1]
 	}
 
 	policy := &RemotePolicy{}
@@ -438,8 +445,9 @@ func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 	if strings.HasPrefix(args[0], "http") {
 		// Parse the policy from a URL
 		return ParsePolicyFromSource(&config.Policy{
-			Type:   config.Remote,
-			Source: args[0],
+			Type:    config.Remote,
+			Source:  args[0],
+			SubPath: subpath,
 		})
 	}
 
@@ -470,7 +478,7 @@ func ParsePolicyFromArgs(args []string) (*RemotePolicy, error) {
 	return policy, nil
 }
 
-func readPolicy(policyPath, policyFolder string) (*Policies, error) {
+func readPolicy(policyPath, policyFolder string) (Policies, error) {
 	parser := config.NewParser()
 	policiesRaw, diags := parser.LoadHCLFile(policyPath)
 	if diags != nil && diags.HasErrors() {
@@ -483,7 +491,7 @@ func readPolicy(policyPath, policyFolder string) (*Policies, error) {
 }
 
 // readPolicy reads, normalizes and validates the policy file at policyPath, using policyFolder as base path.
-func decodePolicy(policiesRaw hcl.Body, diags hcl.Diagnostics, policyFolder string) (*Policies, error) {
+func decodePolicy(policiesRaw hcl.Body, diags hcl.Diagnostics, policyFolder string) (Policies, error) {
 	policies, diagsDecode := DecodePolicies(policiesRaw, diags, policyFolder)
 	if diagsDecode != nil && diagsDecode.HasErrors() {
 		return nil, fmt.Errorf("failed to parse policy file: %#v", diagsDecode.Error())
