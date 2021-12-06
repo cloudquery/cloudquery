@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.5.1
+	github.com/cloudquery/cq-provider-sdk v0.5.3
 	github.com/fatih/color v1.13.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-git/go-git/v5 v5.4.2
@@ -54,14 +54,13 @@ require (
 
 require (
 	github.com/Masterminds/squirrel v1.5.0 // indirect
-	github.com/Microsoft/go-winio v0.5.0 // indirect
+	github.com/Microsoft/go-winio v0.5.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
-	github.com/containerd/containerd v1.5.7 // indirect
 	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
@@ -122,11 +121,11 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.2.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.10.0 // indirect
 	go.uber.org/atomic v1.6.0 // indirect
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
+	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
+	golang.org/x/sys v0.0.0-20211025201205-69cdffdb9359 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/genproto v0.0.0-20211005153810-c76a74d43a8e // indirect
+	google.golang.org/genproto v0.0.0-20211129164237-f09f9a12af12 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.51.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
