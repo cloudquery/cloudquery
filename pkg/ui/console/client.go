@@ -57,6 +57,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 		c.SkipBuildTables = viper.GetBool("skip-build-tables")
+		c.HistoryCfg = cfg.CloudQuery.History
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -152,7 +153,8 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
 	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
-	policiesToRun, err := client.FilterPolicies(args, c.cfg.Policies, policyName)
+	policiesToRun, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
+
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -202,7 +204,7 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 }
 
 func (c Client) DescribePolicies(ctx context.Context, args []string, policyName string, skipVersioning bool) error {
-	policiesToDescribe, err := client.FilterPolicies(args, c.cfg.Policies, policyName)
+	policiesToDescribe, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err

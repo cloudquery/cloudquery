@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :rocket: Added
 * Added `policy describe <policy_name>` subcommand, allowing to see all policies and sub-policies available and execution paths 
+* Added support for CloudQuery History (Alpha) for more info see [docs](https://docs.cloudquery.io/cli/history/overview)
 
 ### :spider: Fixed
 * Fix resource fetch summary total fetched resources wouldn't sum correctly [#326](https://github.com/cloudquery/cloudquery/pull/326)

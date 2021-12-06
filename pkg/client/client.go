@@ -9,6 +9,10 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/helpers"
+
+	"github.com/cloudquery/cloudquery/pkg/client/history"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -163,6 +167,10 @@ type TableCreator interface {
 	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
 }
 
+type TableRemover interface {
+	DropTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table) error
+}
+
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -201,18 +209,20 @@ type Client struct {
 	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
+	// HistoryConfig defines configuration for CloudQuery history mode
+	HistoryCfg *history.Config
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool
 }
 
 func New(ctx context.Context, options ...Option) (*Client, error) {
-
 	c := &Client{
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
 		PolicyDirectory:    ".",
 		NoVerify:           false,
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
+		HistoryCfg:         nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
 	}
@@ -227,24 +237,19 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 	c.Manager.LoadExisting(c.Providers)
 
-	if c.TableCreator == nil {
-		c.TableCreator = provider.NewTableCreator(c.Logger)
-	}
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
 	} else {
-		poolCfg, err := pgxpool.ParseConfig(c.DSN)
+		c.pool, err = CreateDatabase(ctx, c.DSN)
 		if err != nil {
 			return nil, err
 		}
-		poolCfg.LazyConnect = true
-		c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
-		if err != nil {
-			return nil, err
+		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
+			c.Logger.Warn("postgrest validation warning", "err", err)
 		}
-		if err := validatePostgresVersion(ctx, c.pool, minPostgresVersion); err != nil {
-			c.Logger.Warn(err.Error())
-		}
+	}
+	if err := c.setupTableCreator(ctx); err != nil {
+		return nil, err
 	}
 
 	c.initModules()
@@ -319,7 +324,16 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
-	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
+	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
+
+	searchPath := ""
+	if c.HistoryCfg != nil {
+		searchPath = "history"
+	}
+	dsn, err := parseDSN(c.DSN, searchPath)
+	if err != nil {
+		return nil, err
+	}
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
 	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
@@ -337,13 +351,21 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		errGroup.Go(func() error {
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
+			if c.HistoryCfg != nil {
+				pLog.Info("history enabled adding fetch date", "fetch_date", c.HistoryCfg.FetchDate().Format(time.RFC3339))
+				if request.ExtraFields == nil {
+					request.ExtraFields = make(map[string]interface{})
+				}
+				request.ExtraFields["cq_fetch_date"] = c.HistoryCfg.FetchDate()
+			}
 			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
-					DSN: c.DSN,
+					DSN: dsn,
 				},
-				Config:        providerConfig.Configuration,
-				DisableDelete: request.DisableDataDelete,
+				Config: providerConfig.Configuration,
+				// Disable delete on user request or if history is enabled
+				DisableDelete: request.DisableDataDelete || c.HistoryCfg != nil,
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
@@ -551,7 +573,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider and recreate")
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
@@ -810,7 +832,16 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	if err != nil {
 		return nil, nil, err
 	}
-	m, err := provider.NewMigrator(c.Logger, migrations, c.DSN, fmt.Sprintf("%s_%s", org, name))
+
+	dsn := c.DSN
+	if c.HistoryCfg != nil {
+		dsn, err = parseDSN(c.DSN, "history")
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	m, err := provider.NewMigrator(c.Logger, migrations, dsn, fmt.Sprintf("%s_%s", org, name))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -831,49 +862,42 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-// TODO: move PolicyName to be also as part of args i.e first arg is policy name second arg is subpath, the rest is taken from config,
-// TODO: if first arg isn't found in config, execute remote hub download only policy
-
-func FilterPolicies(args []string, configPolicies []*config.Policy, policyName string) ([]*config.Policy, error) {
-	var policies []*config.Policy
-
-	if len(args) > 0 {
-		remotePolicy, err := policy.ParsePolicyFromArgs(args)
-		if err != nil {
-			return nil, err
-		}
-		policyConfig, err := remotePolicy.ToPolicyConfig()
-		if len(args) == 2 {
-			policyConfig.SubPath = args[1]
-		}
-		if err != nil {
-			return nil, err
-		}
-		policies = append(policies, policyConfig)
-	} else {
-		policies = configPolicies
+func (c *Client) setupTableCreator(ctx context.Context) error {
+	if c.TableCreator != nil {
+		c.Logger.Debug("table creator already set")
+		return nil
 	}
-
-	if len(policies) == 0 {
-		return nil, fmt.Errorf(`
-Could not find policies to run.
-Please add policy to block to your config file`)
+	if c.HistoryCfg == nil {
+		c.Logger.Debug("using default table creator without history mode enabled.")
+		c.TableCreator = provider.NewTableCreator(c.Logger)
+		return nil
 	}
-	policiesToRun := make([]*config.Policy, 0)
-
-	// select policies to run
-	for _, p := range policies {
-		if policyName != "" {
-			// request to run only specific policy
-			if policyName == p.Name {
-				policiesToRun = append(policiesToRun, p)
-				break
-			}
-		}
-		policiesToRun = append(policiesToRun, p)
+	creator, err := history.NewHistoryTableCreator(c.HistoryCfg, c.Logger)
+	if err != nil {
+		return err
 	}
+	// set history table creator
+	c.TableCreator = creator
+	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection for history setup: %w", err)
+	}
+	defer conn.Release()
+	return history.SetupHistory(ctx, conn)
+}
 
-	return policiesToRun, nil
+func parseDSN(dsn, searchPath string) (string, error) {
+	url, err := helpers.ParseConnectionString(dsn)
+	if err != nil {
+		return "", err
+	}
+	if searchPath == "" {
+		return url.String(), nil
+	}
+	if url.RawQuery != "" {
+		return url.String() + "&search_path=history", nil
+	}
+	return url.String() + "search_path=history", nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
