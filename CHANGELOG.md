@@ -16,14 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Exposed diagnostic counts on fetch for telemerty [#319](https://github.com/cloudquery/cloudquery/pull/319)
 
 ### :spider: Fixed
-* Fixd resource fetch summary total fetched resources wouldn't sum correctly [#326](https://github.com/cloudquery/cloudquery/pull/326)
+* Fixed resource fetch summary total fetched resources wouldn't sum correctly [#326](https://github.com/cloudquery/cloudquery/pull/326)
 * Provider fetch failure cancels out other provider fetches [#325](https://github.com/cloudquery/cloudquery/pull/325)
 
 ### :gear: Changed
 * Upgraded to SDK Version [v0.5.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md).
 * Read persisted telemerty ID if exists [#313](https://github.com/cloudquery/cloudquery/pull/313)
 * Cleanup init command [#320](https://github.com/cloudquery/cloudquery/pull/320)
-* Imporve logging for policy execution errors [#323](https://github.com/cloudquery/cloudquery/pull/323)
+* Improve logging for policy execution errors [#323](https://github.com/cloudquery/cloudquery/pull/323)
+* Updated drift aws configuration for new version [#329](https://github.com/cloudquery/cloudquery/pull/329)
 
 ## [v0.16.2] - 2021-11-29
 
