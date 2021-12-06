@@ -11,8 +11,8 @@ type Config struct {
 	Regions    []string  `hcl:"regions,optional"`
 	Accounts   []Account `hcl:"accounts,block"`
 	AWSDebug   bool      `hcl:"aws_debug,optional"`
-	MaxRetries int       `hcl:"max_retries,optional" default:"5"`
-	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
+	MaxRetries int       `hcl:"max_retries,optional" default:"10"`
+	MaxBackoff int       `hcl:"max_backoff,optional" default:"90"`
 }
 
 func (c Config) Example() string {
