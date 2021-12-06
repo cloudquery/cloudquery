@@ -22,7 +22,7 @@ config {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.6.5"
+        version = ">=0.7.1"
 
         resource "*" {
             ignore_identifiers = [ ]
@@ -310,7 +310,7 @@ config {
             }
         }
 
-        resource "aws_cloudfront_distribution_cache_behaviours" {
+        resource "aws_cloudfront_distribution_cache_behaviors" {
             identifiers = [ "parent.id", "path_pattern", "target_origin_id", "viewer_protocol_policy" ]
             sets = [ "allowed_methods", "cached_methods" ]
 
@@ -323,7 +323,7 @@ config {
             }
         }
 
-        # TODO: aws_cache_behaviour_lambda_function_associations (no data in tests)
+        # TODO: aws_cache_behavior_lambda_function_associations (no data in tests)
 
         resource "aws_cloudfront_distribution_custom_error_responses" {
             identifiers = [ "parent.id", "error_code", "response_code", "response_page_path" ]
