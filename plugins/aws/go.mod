@@ -137,9 +137,14 @@ require (
 )
 
 require (
+	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2
+	github.com/aws/aws-sdk-go-v2/service/dax v1.7.2
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.10.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.10.2
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.16.0
 )
+
+require github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.3.3 // indirect
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.0.0 // indirect

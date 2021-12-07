@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
@@ -26,7 +27,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
+	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -50,7 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	s3control "github.com/aws/aws-sdk-go-v2/service/s3control"
+	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -97,52 +100,55 @@ const (
 )
 
 type Services struct {
-	ACM                  ACMClient
-	Analyzer             AnalyzerClient
-	Autoscaling          AutoscalingClient
-	Cloudfront           CloudfrontClient
-	Cloudtrail           CloudtrailClient
-	Cloudwatch           CloudwatchClient
-	CloudwatchLogs       CloudwatchLogsClient
-	CognitoIdentityPools CognitoIdentityPoolsClient
-	CognitoUserPools     CognitoUserPoolsClient
-	Directconnect        DirectconnectClient
-	DMS                  DatabasemigrationserviceClient
-	ECR                  EcrClient
-	ECS                  EcsClient
-	EC2                  Ec2Client
-	EFS                  EfsClient
-	Eks                  EksClient
-	ElasticBeanstalk     ElasticbeanstalkClient
-	ElasticSearch        ElasticSearch
-	EMR                  EmrClient
-	SNS                  SnsClient
-	ELBv1                ElbV1Client
-	ELBv2                ElbV2Client
-	FSX                  FsxClient
-	IAM                  IamClient
-	KMS                  KmsClient
-	MQ                   MQClient
-	Organizations        OrganizationsClient
-	Redshift             RedshiftClient
-	Route53              Route53Client
-	Route53Domains       Route53DomainsClient
-	RDS                  RdsClient
-	S3                   S3Client
-	S3Control            S3ControlClient
-	S3Manager            S3ManagerClient
-	SSM                  SSMClient
-	SageMaker            SageMakerClient
-	SecretsManager       SecretsManagerClient
-	SQS                  SQSClient
-	Apigateway           ApigatewayClient
-	Apigatewayv2         Apigatewayv2Client
-	Lambda               LambdaClient
-	ConfigService        ConfigServiceClient
-	Waf                  WafClient
-	WafV2                WafV2Client
-	Codebuild            CodebuildClient
-	GuardDuty            GuardDutyClient
+	ACM                    ACMClient
+	Analyzer               AnalyzerClient
+	ApplicationAutoscaling ApplicationAutoscalingClient
+	Autoscaling            AutoscalingClient
+	Cloudfront             CloudfrontClient
+	Cloudtrail             CloudtrailClient
+	Cloudwatch             CloudwatchClient
+	CloudwatchLogs         CloudwatchLogsClient
+	CognitoIdentityPools   CognitoIdentityPoolsClient
+	CognitoUserPools       CognitoUserPoolsClient
+	DAX                    DAXClient
+	Directconnect          DirectconnectClient
+	DynamoDB               DynamoDBClient
+	DMS                    DatabasemigrationserviceClient
+	ECR                    EcrClient
+	ECS                    EcsClient
+	EC2                    Ec2Client
+	EFS                    EfsClient
+	Eks                    EksClient
+	ElasticBeanstalk       ElasticbeanstalkClient
+	ElasticSearch          ElasticSearch
+	EMR                    EmrClient
+	SNS                    SnsClient
+	ELBv1                  ElbV1Client
+	ELBv2                  ElbV2Client
+	FSX                    FsxClient
+	IAM                    IamClient
+	KMS                    KmsClient
+	MQ                     MQClient
+	Organizations          OrganizationsClient
+	Redshift               RedshiftClient
+	Route53                Route53Client
+	Route53Domains         Route53DomainsClient
+	RDS                    RdsClient
+	S3                     S3Client
+	S3Control              S3ControlClient
+	S3Manager              S3ManagerClient
+	SSM                    SSMClient
+	SageMaker              SageMakerClient
+	SecretsManager         SecretsManagerClient
+	SQS                    SQSClient
+	Apigateway             ApigatewayClient
+	Apigatewayv2           Apigatewayv2Client
+	Lambda                 LambdaClient
+	ConfigService          ConfigServiceClient
+	Waf                    WafClient
+	WafV2                  WafV2Client
+	Codebuild              CodebuildClient
+	GuardDuty              GuardDutyClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -177,8 +183,9 @@ type Client struct {
 	ServicesManager ServicesManager
 	logger          hclog.Logger
 	// this is set by table clientList
-	AccountID string
-	Region    string
+	AccountID            string
+	Region               string
+	AutoscalingNamespace string
 }
 
 // S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
@@ -219,30 +226,46 @@ func (c *Client) Services() *Services {
 
 func (c *Client) withAccountID(accountID string) *Client {
 	return &Client{
-		accounts:        c.accounts,
-		regions:         c.regions,
-		logLevel:        c.logLevel,
-		maxRetries:      c.maxRetries,
-		maxBackoff:      c.maxBackoff,
-		ServicesManager: c.ServicesManager,
-		logger:          c.logger.With("account_id", obfuscateAccountId(accountID)),
-		AccountID:       accountID,
-		Region:          c.Region,
+		accounts:             c.accounts,
+		regions:              c.regions,
+		logLevel:             c.logLevel,
+		maxRetries:           c.maxRetries,
+		maxBackoff:           c.maxBackoff,
+		ServicesManager:      c.ServicesManager,
+		logger:               c.logger.With("account_id", obfuscateAccountId(accountID)),
+		AccountID:            accountID,
+		Region:               c.Region,
+		AutoscalingNamespace: c.AutoscalingNamespace,
 	}
 }
 
-func (c *Client) withAccountIDAndRegion(accountID string, region string) *Client {
-
+func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
-		accounts:        c.accounts,
-		regions:         c.regions,
-		logLevel:        c.logLevel,
-		maxRetries:      c.maxRetries,
-		maxBackoff:      c.maxBackoff,
-		ServicesManager: c.ServicesManager,
-		logger:          c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region),
-		AccountID:       accountID,
-		Region:          region,
+		accounts:             c.accounts,
+		regions:              c.regions,
+		logLevel:             c.logLevel,
+		maxRetries:           c.maxRetries,
+		maxBackoff:           c.maxBackoff,
+		ServicesManager:      c.ServicesManager,
+		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region),
+		AccountID:            accountID,
+		Region:               region,
+		AutoscalingNamespace: c.AutoscalingNamespace,
+	}
+}
+
+func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace string) *Client {
+	return &Client{
+		accounts:             c.accounts,
+		regions:              c.regions,
+		logLevel:             c.logLevel,
+		maxRetries:           c.maxRetries,
+		maxBackoff:           c.maxBackoff,
+		ServicesManager:      c.ServicesManager,
+		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region, "AutoscalingNamespace", namespace),
+		AccountID:            accountID,
+		Region:               region,
+		AutoscalingNamespace: namespace,
 	}
 }
 
@@ -360,52 +383,55 @@ func initServices(region string, c aws.Config) Services {
 	awsCfg := c.Copy()
 	awsCfg.Region = region
 	return Services{
-		ACM:                  acm.NewFromConfig(awsCfg),
-		Analyzer:             accessanalyzer.NewFromConfig(awsCfg),
-		Apigateway:           apigateway.NewFromConfig(awsCfg),
-		Apigatewayv2:         apigatewayv2.NewFromConfig(awsCfg),
-		Autoscaling:          autoscaling.NewFromConfig(awsCfg),
-		Cloudfront:           cloudfront.NewFromConfig(awsCfg),
-		Cloudtrail:           cloudtrail.NewFromConfig(awsCfg),
-		Cloudwatch:           cloudwatch.NewFromConfig(awsCfg),
-		CloudwatchLogs:       cloudwatchlogs.NewFromConfig(awsCfg),
-		CognitoIdentityPools: cognitoidentity.NewFromConfig(awsCfg),
-		CognitoUserPools:     cognitoidentityprovider.NewFromConfig(awsCfg),
-		ConfigService:        configservice.NewFromConfig(awsCfg),
-		Directconnect:        directconnect.NewFromConfig(awsCfg),
-		DMS:                  databasemigrationservice.NewFromConfig(awsCfg),
-		EC2:                  ec2.NewFromConfig(awsCfg),
-		ECR:                  ecr.NewFromConfig(awsCfg),
-		ECS:                  ecs.NewFromConfig(awsCfg),
-		EFS:                  efs.NewFromConfig(awsCfg),
-		Eks:                  eks.NewFromConfig(awsCfg),
-		ElasticBeanstalk:     elasticbeanstalk.NewFromConfig(awsCfg),
-		ElasticSearch:        elasticsearchservice.NewFromConfig(awsCfg),
-		ELBv1:                elbv1.NewFromConfig(awsCfg),
-		ELBv2:                elbv2.NewFromConfig(awsCfg),
-		EMR:                  emr.NewFromConfig(awsCfg),
-		FSX:                  fsx.NewFromConfig(awsCfg),
-		GuardDuty:            guardduty.NewFromConfig(awsCfg),
-		IAM:                  iam.NewFromConfig(awsCfg),
-		KMS:                  kms.NewFromConfig(awsCfg),
-		Lambda:               lambda.NewFromConfig(awsCfg),
-		MQ:                   mq.NewFromConfig(awsCfg),
-		Organizations:        organizations.NewFromConfig(awsCfg),
-		RDS:                  rds.NewFromConfig(awsCfg),
-		Redshift:             redshift.NewFromConfig(awsCfg),
-		Route53:              route53.NewFromConfig(awsCfg),
-		Route53Domains:       route53domains.NewFromConfig(awsCfg),
-		S3:                   s3.NewFromConfig(awsCfg),
-		S3Control:            s3control.NewFromConfig(awsCfg),
-		S3Manager:            newS3ManagerFromConfig(awsCfg),
-		SageMaker:            sagemaker.NewFromConfig(awsCfg),
-		SecretsManager:       secretsmanager.NewFromConfig(awsCfg),
-		SNS:                  sns.NewFromConfig(awsCfg),
-		SSM:                  ssm.NewFromConfig(awsCfg),
-		SQS:                  sqs.NewFromConfig(awsCfg),
-		Waf:                  waf.NewFromConfig(awsCfg),
-		WafV2:                wafv2.NewFromConfig(awsCfg),
-		Codebuild:            codebuild.NewFromConfig(awsCfg),
+		ACM:                    acm.NewFromConfig(awsCfg),
+		Analyzer:               accessanalyzer.NewFromConfig(awsCfg),
+		Apigateway:             apigateway.NewFromConfig(awsCfg),
+		Apigatewayv2:           apigatewayv2.NewFromConfig(awsCfg),
+		ApplicationAutoscaling: applicationautoscaling.NewFromConfig(awsCfg),
+		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
+		Cloudfront:             cloudfront.NewFromConfig(awsCfg),
+		Cloudtrail:             cloudtrail.NewFromConfig(awsCfg),
+		Cloudwatch:             cloudwatch.NewFromConfig(awsCfg),
+		CloudwatchLogs:         cloudwatchlogs.NewFromConfig(awsCfg),
+		CognitoIdentityPools:   cognitoidentity.NewFromConfig(awsCfg),
+		CognitoUserPools:       cognitoidentityprovider.NewFromConfig(awsCfg),
+		ConfigService:          configservice.NewFromConfig(awsCfg),
+		DAX:                    dax.NewFromConfig(awsCfg),
+		Directconnect:          directconnect.NewFromConfig(awsCfg),
+		DMS:                    databasemigrationservice.NewFromConfig(awsCfg),
+		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
+		EC2:                    ec2.NewFromConfig(awsCfg),
+		ECR:                    ecr.NewFromConfig(awsCfg),
+		ECS:                    ecs.NewFromConfig(awsCfg),
+		EFS:                    efs.NewFromConfig(awsCfg),
+		Eks:                    eks.NewFromConfig(awsCfg),
+		ElasticBeanstalk:       elasticbeanstalk.NewFromConfig(awsCfg),
+		ElasticSearch:          elasticsearchservice.NewFromConfig(awsCfg),
+		ELBv1:                  elbv1.NewFromConfig(awsCfg),
+		ELBv2:                  elbv2.NewFromConfig(awsCfg),
+		EMR:                    emr.NewFromConfig(awsCfg),
+		FSX:                    fsx.NewFromConfig(awsCfg),
+		GuardDuty:              guardduty.NewFromConfig(awsCfg),
+		IAM:                    iam.NewFromConfig(awsCfg),
+		KMS:                    kms.NewFromConfig(awsCfg),
+		Lambda:                 lambda.NewFromConfig(awsCfg),
+		MQ:                     mq.NewFromConfig(awsCfg),
+		Organizations:          organizations.NewFromConfig(awsCfg),
+		RDS:                    rds.NewFromConfig(awsCfg),
+		Redshift:               redshift.NewFromConfig(awsCfg),
+		Route53:                route53.NewFromConfig(awsCfg),
+		Route53Domains:         route53domains.NewFromConfig(awsCfg),
+		S3:                     s3.NewFromConfig(awsCfg),
+		S3Control:              s3control.NewFromConfig(awsCfg),
+		S3Manager:              newS3ManagerFromConfig(awsCfg),
+		SageMaker:              sagemaker.NewFromConfig(awsCfg),
+		SecretsManager:         secretsmanager.NewFromConfig(awsCfg),
+		SNS:                    sns.NewFromConfig(awsCfg),
+		SSM:                    ssm.NewFromConfig(awsCfg),
+		SQS:                    sqs.NewFromConfig(awsCfg),
+		Waf:                    waf.NewFromConfig(awsCfg),
+		WafV2:                  wafv2.NewFromConfig(awsCfg),
+		Codebuild:              codebuild.NewFromConfig(awsCfg),
 	}
 }
 
