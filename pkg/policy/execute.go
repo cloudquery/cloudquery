@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/gofrs/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -180,6 +181,14 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 	return nil
 }
 
+func ByteSlice(bin [16]byte) []byte {
+	b := make([]byte, len(bin))
+	for i := range bin {
+		b[i] = bin[i]
+	}
+	return b
+}
+
 // executeQuery executes the given query and returns the result.
 func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
 	data, err := e.conn.Query(ctx, q.Query)
@@ -202,6 +211,23 @@ func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, er
 		values, err := data.Values()
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", q.Name, err)
+		}
+
+		fmt.Printf("Underlying Type: %+v\n", values)
+		for i, val := range data.FieldDescriptions() {
+			// val.DataTypeOID
+			if values[i] == nil {
+				continue
+			}
+			switch val.DataTypeOID {
+			case 2950:
+				fmt.Printf("val: %v\n", values[i])
+				t := uuid.FromBytesOrNil(ByteSlice(values[i].([16]uint8)))
+				fmt.Printf("Underlying Type: %T, %s\n", t, t.String())
+				values[i] = t
+			}
+			fmt.Printf("Underlying Type: %T\n", values[i])
+
 		}
 		result.Data = append(result.Data, values)
 	}
