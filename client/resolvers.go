@@ -15,3 +15,8 @@ func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resou
 	client := meta.(*Client)
 	return r.Set("region", client.Region)
 }
+
+func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+	client := meta.(*Client)
+	return r.Set("namespace", client.AutoscalingNamespace)
+}

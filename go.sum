@@ -172,6 +172,8 @@ github.com/aws/aws-sdk-go-v2/service/apigateway v1.4.0 h1:B40GhhE15B/fQq6jxFa3CW
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.4.0/go.mod h1:ybNHWxmf5nVxSUnqCCwrYLF2IZYZHusxX/uVAET1SVM=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1 h1:JbtOhT/gRUVyna1ZaPct002pVoBTkkHqYgiuBfV5PMY=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1/go.mod h1:DD6WKNCH+slCJ6n71kqQv8p9slCnwJIfK7zUpVoGszo=
+github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2 h1:GJsq/y3peudaMovMdHJhBiLtfUcwvV37WL7H9SKMDqw=
+github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2/go.mod h1:JRrNjpM1qIFI25ikEvad6g8Q5qw0B1S8G0di/9kU7DY=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0 h1:7dqTi+BP80MdTWZdnYDJwkl7t/4fD51+uuTPXZ0LhE0=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0/go.mod h1:F9sOgLk8RCWpkJ9DgH5LQCDqHnJzW1e28ShymxCM7Cw=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.3.0 h1:8fOeCj6bb2JtkWvxP6McS4RR/CV20IG4JzZWYz4Z12E=
@@ -192,8 +194,12 @@ github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1 h1:igD4rC85NHdUmiuQXan
 github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1/go.mod h1:efUKiPp2CUVafK4KyqmqZYQ6hDGNsTk4KBnXMo88wqQ=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.12.0 h1:gA5e9bNVqvH0mblX9859g2Co0wydd50MEAkq1S/c02k=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.12.0/go.mod h1:+hQLUNCCL6W5nQuc3XXM/FTZtwx8mn3weKXZgcpBfCg=
+github.com/aws/aws-sdk-go-v2/service/dax v1.7.2 h1:18Nxds4KQoQGUrGREWImE+eTK3CGBz8jtXotk7COTKk=
+github.com/aws/aws-sdk-go-v2/service/dax v1.7.2/go.mod h1:nfGaoXs2m4bnNbDF6sfTIaIBSa8o5XVqxbRI8BhFgtU=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.4.1 h1:5rRF1Jf+PPIV9AmcbH54MPUlAFvon2+L+gnPZP0zzvI=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.4.1/go.mod h1:LqxpptZWyNW7ussTuz4Sy9QWt5Y1X7o/f1hskqQ+qU0=
+github.com/aws/aws-sdk-go-v2/service/dynamodb v1.10.0 h1:jzvWaPf99rIjqEBxh9uGKxtnIykU/SOXY/nfvThhJvI=
+github.com/aws/aws-sdk-go-v2/service/dynamodb v1.10.0/go.mod h1:ELltfl9ri0n4sZ/VjPZBgemNMd9mYIpCAuZhc7NP7l4=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.16.0 h1:ldzPZKVNRgz1kuteSua3m90ypksWIOXeIa6xGpqkxxk=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.16.0/go.mod h1:GtqNN5Z8yibnaxMNDGAgfZ3zY6B5yVH3s0W1Cxx0Z+A=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.2.0 h1:6ExOoVgntAVuVARounLgbXnMLWjy0l5iXf/wAu90NgI=
@@ -224,6 +230,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.0.4/go.mod h1:B
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.1.0/go.mod h1:zdjOOy0ojUn3iNELo6ycIHSMCp4xUbycSHfb8PnbbyM=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.5.0 h1:lPLbw4Gn59uoKqvOfSnkJr54XWk5Ak1NK20ZEiSWb3U=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.5.0/go.mod h1:80NaCIH9YU3rzTTs/J/ECATjXuRqzo/wB6ukO6MZ0XY=
+github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.3.3 h1:ru9+IpkVIuDvIkm9Q0DEjtWHnh6ITDoZo8fH2dIjlqQ=
+github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.3.3/go.mod h1:zOyLMYyg60yyZpOCniAUuibWVqTU4TuLmMa/Wh4P+HA=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.0.5/go.mod h1:MW0O/RpmVpS6MWKn6W03XEJmqXlG7+d3iaYLzkd2fAc=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.0.6/go.mod h1:L0KWr0ASo83PRZu9NaZaDsw3koS6PspKv137DMDZjHo=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.1.1/go.mod h1:2+ehJPkdIdl46VCj67Emz/EH2hpebHZtaLdzqg+sWOI=

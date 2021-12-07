@@ -21,3 +21,20 @@ func AccountRegionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 	return l
 }
+
+var AllNamespaces = []string{ // this is only used in applicationautoscaling
+	"comprehend", "rds", "sagemaker", "appstream", "elasticmapreduce", "dynamodb", "lambda", "ecs", "cassandra", "ec2", "neptune", "kafka", "custom-resource", "elasticache",
+}
+
+func AccountRegionNamespaceMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	var l = make([]schema.ClientMeta, 0)
+	client := meta.(*Client)
+	for accountID := range client.ServicesManager.services {
+		for _, region := range client.regions {
+			for _, ns := range AllNamespaces {
+				l = append(l, client.withAccountIDRegionAndNamespace(accountID, region, ns))
+			}
+		}
+	}
+	return l
+}
