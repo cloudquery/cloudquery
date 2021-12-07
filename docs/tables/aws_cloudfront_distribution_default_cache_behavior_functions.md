@@ -1,5 +1,5 @@
 
-# Table: aws_cloudfront_distribution_default_cache_behavior_lambda_functions
+# Table: aws_cloudfront_distribution_default_cache_behavior_functions
 A complex type that contains a Lambda function association.
 ## Columns
 | Name        | Type           | Description  |

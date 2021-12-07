@@ -360,7 +360,7 @@ func CloudfrontDistributions() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudfront_distribution_default_cache_behavior_lambda_functions",
+				Name:        "aws_cloudfront_distribution_default_cache_behavior_functions",
 				Description: "A complex type that contains a Lambda function association.",
 				Resolver:    fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions,
 				Columns: []schema.Column{

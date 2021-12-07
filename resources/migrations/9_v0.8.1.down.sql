@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS "aws_cloudfront_distribution_default_cache_behavior_functions" 
+    RENAME TO "aws_cloudfront_distribution_default_cache_behavior_lambda_functions";
