@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -17,11 +18,23 @@ func CreateDatabase(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 		return nil, fmt.Errorf("missing DSN")
 	}
 	poolCfg, err := pgxpool.ParseConfig(dsn)
+	poolCfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
+		UUIDType := pgtype.DataType{
+			Value: &UUID{},
+			Name:  "uuid",
+			OID:   pgtype.UUIDOID,
+		}
+
+		conn.ConnInfo().RegisterDataType(UUIDType)
+		return nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
 	poolCfg.LazyConnect = true
 	pool, err := pgxpool.ConnectConfig(ctx, poolCfg)
+
 	if err != nil {
 		return nil, err
 	}
