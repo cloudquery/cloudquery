@@ -62,8 +62,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 // Provider Client passed as meta to all table fetchers
@@ -175,7 +176,7 @@ func (s *ServicesManager) InitServicesForAccountAndRegion(accountId string, regi
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	accounts        []Account
+	Accounts        []Account
 	regions         []string
 	logLevel        *string
 	maxRetries      int
@@ -212,12 +213,12 @@ func NewAwsClient(logger hclog.Logger, accounts []Account, regions []string) Cli
 			services: ServicesAccountRegionMap{},
 		},
 		logger:   logger,
-		accounts: accounts,
+		Accounts: accounts,
 		regions:  regions,
 	}
 }
 func (c *Client) Logger() hclog.Logger {
-	return &awsLogger{c.logger, c.accounts}
+	return &awsLogger{c.logger, c.Accounts}
 }
 
 func (c *Client) Services() *Services {
@@ -226,7 +227,7 @@ func (c *Client) Services() *Services {
 
 func (c *Client) withAccountID(accountID string) *Client {
 	return &Client{
-		accounts:             c.accounts,
+		Accounts:             c.Accounts,
 		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -241,7 +242,7 @@ func (c *Client) withAccountID(accountID string) *Client {
 
 func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
-		accounts:             c.accounts,
+		Accounts:             c.Accounts,
 		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -256,7 +257,7 @@ func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 
 func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace string) *Client {
 	return &Client{
-		accounts:             c.accounts,
+		Accounts:             c.Accounts,
 		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -369,7 +370,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			// set default
 			client.AccountID = *output.Account
 			client.Region = client.regions[0]
-			client.accounts = append(client.accounts, Account{ID: *output.Account, RoleARN: *output.Arn})
+			client.Accounts = append(client.Accounts, Account{ID: *output.Account, RoleARN: *output.Arn})
 		}
 		for _, region := range client.regions {
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/smithy-go"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
@@ -16,22 +17,22 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) []d
 		switch ae.ErrorCode() {
 		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError":
 			return []diag.Diagnostic{
-				diag.FromError(err, diag.WARNING, diag.ACCESS, resourceName, parseSummaryMessage(client.accounts, err, ae), errorCodeDescriptions[ae.ErrorCode()]),
+				diag.FromError(err, diag.WARNING, diag.ACCESS, resourceName, ParseSummaryMessage(client.Accounts, err, ae), errorCodeDescriptions[ae.ErrorCode()]),
 			}
 		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return []diag.Diagnostic{
-				diag.FromError(err, diag.WARNING, diag.ACCESS, resourceName, parseSummaryMessage(client.accounts, err, ae), errorCodeDescriptions[ae.ErrorCode()]),
+				diag.FromError(err, diag.WARNING, diag.ACCESS, resourceName, ParseSummaryMessage(client.Accounts, err, ae), errorCodeDescriptions[ae.ErrorCode()]),
 			}
 		case "InvalidAction":
 			return []diag.Diagnostic{
-				diag.FromError(err, diag.IGNORE, diag.RESOLVING, resourceName, parseSummaryMessage(client.accounts, err, ae),
+				diag.FromError(err, diag.IGNORE, diag.RESOLVING, resourceName, ParseSummaryMessage(client.Accounts, err, ae),
 					"The action is invalid for the service."),
 			}
 		}
 	}
 	if IsErrorThrottle(err) {
 		return []diag.Diagnostic{
-			diag.FromError(err, diag.WARNING, diag.THROTTLE, resourceName, parseSummaryMessage(client.accounts, err, ae),
+			diag.FromError(err, diag.WARNING, diag.THROTTLE, resourceName, ParseSummaryMessage(client.Accounts, err, ae),
 				"CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."),
 		}
 	}
@@ -39,7 +40,7 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) []d
 	return nil
 }
 
-func parseSummaryMessage(aa []Account, err error, apiErr smithy.APIError) string {
+func ParseSummaryMessage(aa []Account, err error, apiErr smithy.APIError) string {
 	for {
 		if op, ok := err.(*smithy.OperationError); ok {
 			return fmt.Sprintf("%s: %s - %s", op.Service(), op.Operation(), accountObfusactor(aa, apiErr.ErrorMessage()))
