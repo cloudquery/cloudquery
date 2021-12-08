@@ -6,43 +6,48 @@
 The following is a set of guidelines for contributing to this repository.
 
 
-#### Table Of Contents
+#### Table of Contents
 
 [Code of Conduct](#code-of-conduct)
 
 [I don't want to read this whole thing, I just have a question!!!](#i-dont-want-to-read-this-whole-thing-i-just-have-a-question)
 
 [What should I know before I get started?](#what-should-i-know-before-i-get-started)
-  * [Core](#cloudquery-architecture)
-  * [SDK](#provider-sdk)
-  * [Provider](#specific-providers)
+  * [Core](#cq-core-repo)
+  * [SDK](#cq-provider-sdk-repo)
+  * [Provider](#cq-provider-repos)
 
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
   * [Your First Code Contribution](#your-first-code-contribution)
-  * [Pull Requests](#pull-requests)
 
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Cloudquery Code of Conduct](https://github.com/cloudquery/cloudquery/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [INSERT EMAIL HERE](mailto:INSERT EMAIL HERE).
+This project and everyone participating in it is governed by the [CloudQuery Code of Conduct](https://github.com/cloudquery/cloudquery/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [INSERT EMAIL HERE](mailto:INSERT EMAIL HERE).
 
-## What should I know before I get Started
 
-### Cloudquery Architecture
+## I don't want to read this whole thing I just have a question!!!
 
-CloudQuery has a pluggable architecture and is using the go-plugin to load, run, and communicate between providers via gRPC. To develop a new provider for CloudQuery, you don’t need to understand the inner workings of go-plugin as those are abstracted away via the [provider-sdk](#provider-sdk).
+> **Note:** Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [discord channel](https://cloudquery.io/discord)
+
+
+## What To Know Before Getting Started
+
+### CloudQuery Architecture
+
+CloudQuery has a pluggable architecture and is using the go-plugin to load, run, and communicate between providers via gRPC. To develop a new provider for CloudQuery, you don’t need to understand the inner workings of go-plugin as those are abstracted away via the [provider-sdk](#cq-provider-sdk-repo).
 
 ![architecture overview](https://docs.cloudquery.io/assets/images/cloudquery-architecture-02b1d1162883cd02510db2cb75c29d27.png)
 
-### Break down of responsibilities And Repositories:
+### Breakdown of Responsibilities and Repositories
 
 #### CQ Core [Repo](https://github.com/cloudquery/cloudquery):
-- Main entry point and CLI for the user.
-- Reading CloudQuery configuration.
-- Downloading, verifying, and running providers.
-- Running policy packs.
+- Main entry point and CLI for the user
+- Reading CloudQuery configuration
+- Downloading, verifying, and running providers
+- Running policy packs
 - Repository for CQ Core can be found 
 
 #### CQ Provider SDK [Repo](https://github.com/cloudquery/cq-provider-sdk):
@@ -57,7 +62,7 @@ CloudQuery has a pluggable architecture and is using the go-plugin to load, run,
     - Initialization of clients
     - Authentication
     - Fetching of configuration information
-- Mor information about developing your own provider can be found [here](https://docs.cloudquery.io/docs/developers/developing-new-provider)
+- More information about developing your own provider can be found [here](https://docs.cloudquery.io/docs/developers/developing-new-provider)
 
 
 ## How Can I Contribute?
@@ -68,21 +73,21 @@ This section guides you through submitting a bug report for the AWS Provider for
 
 Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
 
-> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
+> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one
 
-#### Before Submitting A Bug Report
-* **Determine [which repository the problem should be reported in](#break-down-of-responsibilities-and-repositories)**.
-* **Perform a [cursory search](https://github.com/cloudquery/cq-provider-aws/issues)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
+#### Before Submitting a Bug Report
+* **Determine [which repository the problem should be reported in](#break-down-of-responsibilities-and-repositories)**
+* **Perform a [cursory search](https://github.com/cloudquery/cq-provider-aws/issues)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one
 
-#### How Do I Submit A (Good) Bug Report?
+#### How Do I Submit a (Good) Bug Report?
 
 Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which repository](#break-down-of-responsibilities-and-repositories) your bug is related to, create an issue on that repository and provide the following information by filling in [the template](.github/ISSUE_TEMPLATE/bug_report.md).
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
-* **Use a clear and descriptive title** for the issue to identify the problem.
-* **Describe the Bug** in as many details as possible. For example, start by explaining how and where you are running Cloudquery (local machine, cloud service, docker, k8s, CI Pipeline, etc)
-* **Provide specific examples to demonstrate the steps**. Include links to gists and or files, or copy/pasteable snippets to help give context to the issue. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
+* **Use a clear and descriptive title** for the issue to identify the problem
+* **Describe the Bug** in as many details as possible. For example, start by explaining how and where you are running CloudQuery (local machine, cloud service, docker, k8s, CI Pipeline, etc)
+* **Provide specific examples to demonstrate the steps**. Include links to gists and or files, or copy/pasteable snippets to help give context to the issue. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines)
 * **Explain which behavior you expected to see instead and why.**
 * **Inlcude (sanitized) log output** execute cloudquery with the `--enable-console-log` and `-v` flags to get all of the debug information
 
@@ -90,8 +95,8 @@ Provide more context by answering these questions:
 
 Include details about your configuration and environment:
 
-* **Which version of Cloudquery are you using?** You can get the exact version by running `cloudquery version`
-* **Whats in your config.hcl**? Include as much of the config.hcl as possible. This will allow the community to work to reproduce the issue and identify work arounds and or create fixes to your issues
+* **Which version of CloudQuery are you using?** You can get the exact version by running `cloudquery version`
+* **What's in your config.hcl**? Include as much of the `config.hcl` as possible. This will allow the community to work to reproduce the issue and identify workarounds and/or create fixes to your issues
 
 
 ### Suggesting Enhancements
@@ -100,34 +105,34 @@ This section guides you through submitting an enhancement suggestion for CloudQu
 
 Before creating enhancement suggestions, please check [this list](#before-submitting-an-enhancement-suggestion) as you might find out that you don't need to create one. When you are creating an enhancement suggestion, please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). Fill in [the template](.github/ISSUE_TEMPLATE/feature_request.md), including the steps that you imagine you would take if the feature you're requesting existed.
 
-#### Before Submitting An Enhancement Suggestion
+#### Before Submitting an Enhancement Suggestion
 
-* **Determine [which repository the enhancement should be suggested in](#break-down-of-responsibilities-and-repositories).**
-* **Perform a [cursory search](https://github.com/search?q=is%3Aopen+label%3Aenhancement+org%3Acloudquery)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
+* **Determine [which repository the enhancement should be suggested in](#break-down-of-responsibilities-and-repositories)**
+* **Perform a [cursory search](https://github.com/search?q=is%3Aopen+label%3Aenhancement+org%3Acloudquery)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one
 
-#### How Do I Submit A (Good) Enhancement Suggestion?
+#### How Do I Submit a (Good) Enhancement Suggestion?
 
 Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which repository](#break-down-of-responsibilities-and-repositories) your enhancement suggestion is related to, create an issue on that repository and provide the following information:
 
-* **Use a clear and descriptive title** for the issue to identify the suggestion.
+* **Use a clear and descriptive title** for the issue to identify the suggestion
 * **Describe the problem** In detail please try and convey the workflow or functionality you are trying to implement. This will help the community design and implement tooling that is both intuitive to use across many different domains as well as applicable to you and your specific challenge
 * **Describe the use case** for this feature in as much detail as possible. Be sure to include any relevant information inluding links or other implementations
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to Cloudquery? You can start by looking through these `beginner` and `help-wanted` issues:
+Unsure where to begin contributing to CloudQuery? You can start by looking through these `beginner` and `help-wanted` issues:
 
-* [Beginner issues][beginner] - issues which should only require a few lines of code, and a test or two.
-* [Help wanted issues][help-wanted] - issues which should be a bit more involved than `beginner` issues.
+* [Beginner issues][beginner] - issues which should only require a few lines of code, and a test or two
+* [Help wanted issues][help-wanted] - issues which should be a bit more involved than `beginner` issues
 
 
 If you don't see any issues that you think you can help with reach out to the community on Discord and we would be happy to work with you!
 
 
 
-#### Local development
+#### Local Development
 
-Cloudquery has the ability to be run locally with a corresponding local postgres database. To get it up and running follow the following instructions:
+CloudQuery has the ability to be run locally with a corresponding local postgres database. To get it up and running follow the following instructions:
 
 
 * [Connecting to a database](https://docs.cloudquery.io/docs/getting-started#spawn-or-connect-to-a-database)
