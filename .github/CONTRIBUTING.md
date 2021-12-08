@@ -133,8 +133,7 @@ If you don't see any issues that you think you can help with reach out to the co
 #### Local Development
 
 CloudQuery has the ability to be run locally with a corresponding local postgres database. To get it up and running follow the following instructions:
-
-
+* [Building and Running the Provider Locally](../docs/index.md)
 * [Connecting to a database](https://docs.cloudquery.io/docs/getting-started#spawn-or-connect-to-a-database)
 * [Debugging a Provider](https://docs.cloudquery.io/docs/developers/debugging)
 * [Developing a New Provider](https://docs.cloudquery.io/docs/developers/developing-new-provider)
