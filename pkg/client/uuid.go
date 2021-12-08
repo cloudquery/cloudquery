@@ -225,7 +225,7 @@ func (src UUID) MarshalJSON() ([]byte, error) {
 }
 
 func (dst *UUID) UnmarshalJSON(src []byte) error {
-	if bytes.Compare(src, []byte("null")) == 0 {
+	if bytes.Equal(src, []byte("null")) {
 		return dst.Set(nil)
 	}
 	if len(src) != 38 {
@@ -237,8 +237,7 @@ func (dst *UUID) UnmarshalJSON(src []byte) error {
 func underlyingUUIDType(val interface{}) (interface{}, bool) {
 	refVal := reflect.ValueOf(val)
 
-	switch refVal.Kind() {
-	case reflect.Ptr:
+	if refVal.Kind() == reflect.Ptr {
 		if refVal.IsNil() {
 			return time.Time{}, false
 		}
