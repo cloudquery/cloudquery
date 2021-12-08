@@ -2,11 +2,16 @@ package resources
 
 import (
 	"context"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
+	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
+
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 )
 
 func OrganizationsAccounts() *schema.Table {
@@ -74,8 +79,11 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, par
 	var input organizations.ListAccountsInput
 	for {
 		response, err := svc.ListAccounts(ctx, &input)
+		var ade *types.AccessDeniedException
+		if errors.As(err, &ade) {
+			return diag.FromError(err, diag.IGNORE, diag.ACCESS, OrganizationsAccounts().Name, client.ParseSummaryMessage(c.Accounts, err, ade), "Missing permissions or account might not be root/organizational unit.")
+		}
 		if err != nil {
-			meta.Logger().Warn("missing permissions or account might not be root/organizational unit", "account", c.AccountID)
 			return err
 		}
 		res <- response.Accounts
