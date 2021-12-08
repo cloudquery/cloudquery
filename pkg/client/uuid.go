@@ -12,6 +12,8 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+// Code came from: https://github.com/jackc/pgtype/blob/75446032b914bb0be5e07da29c976034c0a666cf/uuid.go#L3-L230
+
 type UUID struct {
 	Bytes  [16]byte
 	Status pgtype.Status
@@ -68,6 +70,7 @@ func (dst *UUID) Set(src interface{}) error {
 func (dst UUID) Get() interface{} {
 	switch dst.Status {
 	case pgtype.Present:
+		// CQ-Change: Return entire object, not just Bytes
 		return dst
 	case pgtype.Null:
 		return nil
@@ -256,7 +259,7 @@ func underlyingUUIDType(val interface{}) (interface{}, bool) {
 var errUndefined = errors.New("cannot encode status undefined")
 var errBadStatus = errors.New("invalid status")
 
-// Overload string to enable printing of struct
+// CQ-Change: Overload string to enable printing of struct
 func (u UUID) String() string {
 	buf := make([]byte, 36)
 
