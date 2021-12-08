@@ -101,6 +101,7 @@ func Provider() *provider.Provider {
 			"iam.virtual_mfa_devices":               IamVirtualMfaDevices(),
 			"kms.keys":                              KmsKeys(),
 			"lambda.functions":                      LambdaFunctions(),
+			"lambda.runtimes":                       LambdaRuntimes(),
 			"lambda.layers":                         LambdaLayers(),
 			"mq.brokers":                            MqBrokers(),
 			"organizations.accounts":                OrganizationsAccounts(),
