@@ -1209,3 +1209,14 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	}
 	return nil
 }
+func resolveLambdaFunctionEventSourceMappingAccessConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.EventSourceMappingConfiguration)
+	if !ok {
+		return fmt.Errorf("wrong type assertion: got %T instead of EventSourceMappingConfiguration", p)
+	}
+	data, err := json.Marshal(p.SourceAccessConfigurations)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, data)
+}
