@@ -180,14 +180,6 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 	return nil
 }
 
-func ByteSlice(bin [16]byte) []byte {
-	b := make([]byte, len(bin))
-	for i := range bin {
-		b[i] = bin[i]
-	}
-	return b
-}
-
 // executeQuery executes the given query and returns the result.
 func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
 	data, err := e.conn.Query(ctx, q.Query)
