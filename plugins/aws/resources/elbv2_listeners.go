@@ -13,13 +13,11 @@ import (
 
 func Elbv2Listeners() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elbv2_listeners",
-		Description:  "Information about a listener.",
-		Resolver:     fetchElbv2Listeners,
-		Multiplex:    client.AccountRegionMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elbv2_listeners",
+		Description: "Information about a listener.",
+		Resolver:    fetchElbv2Listeners,
+		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
