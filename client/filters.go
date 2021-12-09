@@ -11,3 +11,7 @@ func DeleteAccountRegionFilter(meta schema.ClientMeta, _ *schema.Resource) []int
 	client := meta.(*Client)
 	return []interface{}{"account_id", client.AccountID, "region", client.Region}
 }
+
+func DeleteAllFilter(_ schema.ClientMeta, _ *schema.Resource) []interface{} {
+	return []interface{}{}
+}
