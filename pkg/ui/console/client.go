@@ -150,6 +150,9 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir, subPath string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
 	c.c.Logger.Debug("Received params: args: %v, policyName: %s, outputDir: %s, stopOnFailure: %v, skipVersioning: %v, failOnViolation: %v, noResults: %v", args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 
 	policiesToRun, err := client.FilterPolicies(args, c.cfg.Policies, policyName, subPath)
