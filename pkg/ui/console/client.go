@@ -153,8 +153,10 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
 	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
 	policiesToRun, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
-
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
