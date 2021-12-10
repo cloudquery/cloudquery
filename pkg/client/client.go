@@ -309,6 +309,30 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
+type ProviderUpdateSummary struct {
+	Name          string
+	Version       string
+	LatestVersion string
+}
+
+// CheckForProviderUpdates checks for provider updates
+func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
+	summary := []ProviderUpdateSummary{}
+	for _, p := range c.Providers {
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			continue
+		}
+
+		if p.Version != *version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		}
+	}
+	return summary, nil
+}
+
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
 	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
 	if err != nil {
