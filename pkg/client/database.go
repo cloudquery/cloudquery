@@ -6,11 +6,40 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var minPostgresVersion = version.Must(version.NewVersion("11.0"))
+var MinPostgresVersion = version.Must(version.NewVersion("11.0"))
+
+func CreateDatabase(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
+	if dsn == "" {
+		return nil, fmt.Errorf("missing DSN")
+	}
+	poolCfg, err := pgxpool.ParseConfig(dsn)
+	poolCfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
+		UUIDType := pgtype.DataType{
+			Value: &UUID{},
+			Name:  "uuid",
+			OID:   pgtype.UUIDOID,
+		}
+
+		conn.ConnInfo().RegisterDataType(UUIDType)
+		return nil
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	poolCfg.LazyConnect = true
+	pool, err := pgxpool.ConnectConfig(ctx, poolCfg)
+
+	if err != nil {
+		return nil, err
+	}
+	return pool, err
+}
 
 // queryRower helps with unit tests
 type queryRower interface {
@@ -30,17 +59,16 @@ func runningPostgresVersion(ctx context.Context, q queryRower) (*version.Version
 	return version.NewVersion(fields[1])
 }
 
-// validatePostgresVersion checks that PostgreSQL instance version available through pool is not lower than wanted version.
+// ValidatePostgresVersion checks that PostgreSQL instance version available through pool is not lower than wanted version.
 // In this case it returns nil. Otherwise returns error describing current and desired version or any other error encountered
 // during the check.
-func validatePostgresVersion(ctx context.Context, pool *pgxpool.Pool, want *version.Version) error {
+func ValidatePostgresVersion(ctx context.Context, pool *pgxpool.Pool, want *version.Version) error {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		return err
 	}
-	err = doValidatePostgresVersion(ctx, conn, want)
-	conn.Release()
-	return err
+	defer conn.Release()
+	return doValidatePostgresVersion(ctx, conn, want)
 }
 
 func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.Version) error {

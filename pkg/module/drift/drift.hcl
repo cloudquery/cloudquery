@@ -22,7 +22,7 @@ config {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.6.2"
+        version = ">=0.8.0"
 
         resource "*" {
             ignore_identifiers = [ ]
@@ -310,7 +310,7 @@ config {
             }
         }
 
-        resource "aws_cloudfront_distribution_cache_behaviours" {
+        resource "aws_cloudfront_distribution_cache_behaviors" {
             identifiers = [ "parent.id", "path_pattern", "target_origin_id", "viewer_protocol_policy" ]
             sets = [ "allowed_methods", "cached_methods" ]
 
@@ -323,7 +323,7 @@ config {
             }
         }
 
-        # TODO: aws_cache_behaviour_lambda_function_associations (no data in tests)
+        # TODO: aws_cloudfront_distribution_default_cache_behavior_lambda_functions (no data in tests)
 
         resource "aws_cloudfront_distribution_custom_error_responses" {
             identifiers = [ "parent.id", "error_code", "response_code", "response_page_path" ]
@@ -483,7 +483,7 @@ config {
         }
 
         resource "aws_directconnect_gateway_associations" {
-            identifiers = [ sql("CONCAT('ga-', c.directconnect_gateway_id, c.associated_gateway_id)") ]
+            identifiers = [ sql("CONCAT('ga-', c.gateway_id, c.associated_gateway_id)") ]
             iac {
                 terraform {
                     type = "aws_dx_gateway_association"

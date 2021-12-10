@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path"
 	"strings"
 	"time"
 
@@ -56,6 +57,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
 		c.DSN = cfg.CloudQuery.Connection.DSN
 		c.SkipBuildTables = viper.GetBool("skip-build-tables")
+		c.HistoryCfg = cfg.CloudQuery.History
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -149,19 +151,17 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir, subPath string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	c.c.Logger.Debug("Received params: args: %v, policyName: %s, outputDir: %s, stopOnFailure: %v, skipVersioning: %v, failOnViolation: %v, noResults: %v", args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
-
-	policiesToRun, err := client.FilterPolicies(args, c.cfg.Policies, policyName, subPath)
-
+	policiesToRun, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Info("Policies to run: %v", policiesToRun)
+	c.c.Logger.Info("Policies to run", "policies", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
@@ -203,6 +203,48 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")
 	return nil
+}
+
+func (c Client) DescribePolicies(ctx context.Context, args []string, policyName string, skipVersioning bool) error {
+	policiesToDescribe, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return err
+	}
+	req := &client.PoliciesRunRequest{
+		Policies:       policiesToDescribe,
+		PolicyName:     policyName,
+		SkipVersioning: skipVersioning,
+	}
+	return c.describePolicies(ctx, req)
+}
+
+func (c Client) describePolicies(ctx context.Context, req *client.PoliciesRunRequest) error {
+	policies, err := c.c.LoadPolicies(ctx, req)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return fmt.Errorf("failed to load policies: %w", err)
+	}
+	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", req.PolicyName)
+	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
+	t.SetHeaders("Path", "Description")
+	buildDescribePolicyTable(t, policies, "")
+	t.Render()
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`", req.PolicyName, getNestedPolicyExample(policies[0], ""))
+	return nil
+}
+
+func getNestedPolicyExample(p *policy.Policy, policyPath string) string {
+	if len(p.Policies) > 0 {
+		return getNestedPolicyExample(p.Policies[0], path.Join(policyPath, strings.ToLower(p.Name)))
+	}
+	return policyPath
+}
+func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyPath string) {
+	for _, p := range pp {
+		t.Append(path.Join(policyPath, strings.ToLower(p.Name)), p.Description)
+		buildDescribePolicyTable(t, p.Policies, path.Join(policyPath, strings.ToLower(p.Name)))
+	}
 }
 
 func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
@@ -615,7 +657,7 @@ func defineResultColumnWidths(execResult []*policy.QueryResult) string {
 }
 
 func findOutput(columnNames []string, data [][]interface{}) []string {
-	outputKeys := []string{"id", "identifier", "resource_idnetifier", "uid", "uuid", "arn"}
+	outputKeys := []string{"id", "identifier", "resource_identifier", "uid", "uuid", "arn"}
 	outputKey := ""
 	outputResources := make([]string, 0)
 	for _, key := range outputKeys {

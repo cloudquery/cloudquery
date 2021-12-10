@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.5.1
+	github.com/cloudquery/cq-provider-sdk v0.5.3
 	github.com/fatih/color v1.13.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-git/go-git/v5 v5.4.2
@@ -35,15 +35,20 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go v1.42.1
+	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/google/go-cmp v0.5.6
+	github.com/huandu/go-sqlbuilder v1.13.0
 	github.com/jackc/pgconn v1.10.0
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
+	github.com/jackc/pgtype v1.8.1
 	github.com/olekukonko/tablewriter v0.0.5
+	github.com/spf13/cast v1.4.1
 	github.com/tidwall/gjson v1.11.0
 	go.opentelemetry.io/otel v1.2.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.2.0
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.2.0
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.2.0
 	go.opentelemetry.io/otel/sdk v1.2.0
 	go.opentelemetry.io/otel/trace v1.2.0
@@ -52,19 +57,18 @@ require (
 
 require (
 	github.com/Masterminds/squirrel v1.5.0 // indirect
-	github.com/Microsoft/go-winio v0.5.0 // indirect
+	github.com/Microsoft/go-winio v0.5.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
-	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
-	github.com/gofrs/uuid v4.0.0+incompatible // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -73,7 +77,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493 // indirect
-	github.com/huandu/go-sqlbuilder v1.13.0 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
@@ -83,7 +86,6 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.1.1 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/pgtype v1.8.1 // indirect
 	github.com/jackc/puddle v1.1.4 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
@@ -106,7 +108,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
@@ -118,14 +119,13 @@ require (
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
 	github.com/xo/dburl v0.8.4 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.2.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.2.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.10.0 // indirect
 	go.uber.org/atomic v1.6.0 // indirect
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
+	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
+	golang.org/x/sys v0.0.0-20211025201205-69cdffdb9359 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/genproto v0.0.0-20211005153810-c76a74d43a8e // indirect
+	google.golang.org/genproto v0.0.0-20211129164237-f09f9a12af12 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.51.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect

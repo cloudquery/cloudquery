@@ -7,7 +7,6 @@ import (
 	"io"
 	"net"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/hashicorp/go-hclog"
@@ -15,7 +14,6 @@ import (
 	"github.com/spf13/afero"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
@@ -24,6 +22,9 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	otrace "go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
+
+	"github.com/cloudquery/cloudquery/internal/persistentdata"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 // Client is the telemetry client.
@@ -168,8 +169,12 @@ func New(ctx context.Context, options ...Option) *Client {
 	return c
 }
 
-func (c *Client) Tracer() otrace.Tracer {
-	return c.tp.Tracer("cloudquery.io/internal/telemetry")
+func (c *Client) Tracer(ctx context.Context) (context.Context, Tracer) {
+	tw := &wrappedTracer{
+		Tracer: c.tp.Tracer("cloudquery.io/internal/telemetry"),
+		debug:  c.debug,
+	}
+	return ContextWithTracer(ctx, tw), tw
 }
 
 func (c *Client) Shutdown(ctx context.Context) {
@@ -192,24 +197,6 @@ func (c *Client) Shutdown(ctx context.Context) {
 			c.logger.Debug("close failed", "error", err)
 		}
 	}
-}
-
-// RecordError should be called on a span to mark it as errored. Error values are not included unless debug mode is on.
-func (c *Client) RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
-	if err == nil {
-		return
-	}
-
-	if c.debug {
-		span.RecordError(err, opts...)
-		span.SetStatus(codes.Error, err.Error())
-		return
-	}
-
-	//  TODO for fetch get table name / error type
-
-	span.RecordError(fmt.Errorf("error"))
-	span.SetStatus(codes.Error, "error")
 }
 
 func (c *Client) HasError() error {
@@ -237,6 +224,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", isCI()),
+		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
 		attr = append(attr, attribute.Bool("random_id_persisted", true))
@@ -261,37 +249,17 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	)
 }
 
-// randomId will read or generate a persistent `telemetry-random-id` file under `.cq` and return its value. If a new file is generated, c.newRandomId is set.
+// randomId will read or generate a persistent `telemetry-random-id` file and return its value.
+// First it will try reading ~/.cq/telemetry-random-id and use that value if found. If not, it will move on to ./cq/telemetry-random-id, first attempting a read and if not found, will create that file filling it with a newly generated ID.
+// If a directory with the same name is encountered, process is aborted and an empty string is returned.
+// If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	fn := filepath.Join(".", ".cq", "telemetry-random-id")
-
-	exists := true
-	fi, err := c.fs.Stat(fn)
-	if err != nil {
-		if !os.IsNotExist(err) {
-			return "", err
-		}
-		exists = false
-	}
-	if exists && fi.IsDir() {
-		return "", fmt.Errorf("telemetry-random-id is a directory")
-	}
-
-	if exists {
-		b, err := c.fs.ReadFile(fn)
-		if err != nil {
-			return "", err
-		}
-		return string(b), nil
-	}
-
-	id := genRandomId()
-	if err := c.fs.WriteFile(fn, []byte(id), 0644); err != nil {
-		return "", err
-	}
-
-	c.newRandomId = true
-	return id, nil
+	var (
+		id  string
+		err error
+	)
+	id, c.newRandomId, err = persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
+	return id, err
 }
 
 // NewRandomId returns true if we created a new random id in this session
