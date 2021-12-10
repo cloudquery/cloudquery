@@ -19,7 +19,8 @@ To authenticate CloudQuery with your AWS account you can use any of the followin
 - Shared configuration files (via `aws configure`).
   - SDK defaults to `credentials` file under `.aws` folder that is placed in the home folder on your computer.
   - SDK defaults to `config` file under `.aws` folder that is placed in the home folder on your computer.
-- If your application is running on an Amazon EC2 instance, IAM role for Amazon EC2.
+  - SDK is able to use SSO credentials stored in the `~/.aws/` directory
+- The SDK is able to use the IAM role associated with AWS Compute resources including (EC2 instances, Fargate and ECS containers, and Lambda Functions)
 
 ## Configuration
 
@@ -98,3 +99,33 @@ SELECT * from aws_rds_clusters where storage_encrypted = 0;
 ```sql
 SELECT * from aws_rds_clusters where storage_encrypted = 0;
 ```
+
+## Building the Provider:
+
+``` bash
+make build
+```
+
+
+Running Providerlocally:
+1. Clone repository to local machine
+
+2. [Optional] Start a local database:
+    ```bash
+    make pg-start
+    ```
+3. [Optional] Configure the `config.hcl`
+    ```bash
+    make os=Linux arch=arm64 install 
+    ./cloudquery init aws
+    ```
+4. Start the provider in a different tab/session
+    ```bash
+    make run
+    ```
+5. Execute Cloudquery Fetch using the locally built provider
+    ```bash
+    make fetch
+    ```
+
+More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/developers/debugging)
