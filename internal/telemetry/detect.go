@@ -2,7 +2,9 @@ package telemetry
 
 import (
 	"context"
+	"net"
 	"os"
+	"sort"
 	"strings"
 
 	"go.opentelemetry.io/otel/attribute"
@@ -44,4 +46,29 @@ func osInfo() []attribute.KeyValue {
 	}
 
 	return ret
+}
+
+// macHost will extract MAC addresses, add the hostname and return a hash
+func macHost() []attribute.KeyValue {
+	ifas, err := net.Interfaces()
+	if err != nil {
+		return nil
+	}
+
+	as := make([]string, 0, len(ifas)+1)
+	for _, ifa := range ifas {
+		if a := ifa.HardwareAddr.String(); a != "" {
+			as = append(as, a)
+		}
+	}
+
+	sort.Strings(as)
+
+	if hn, err := os.Hostname(); err == nil && hn != "" {
+		as = append(as, hn)
+	}
+
+	return []attribute.KeyValue{
+		attribute.String("cq.machost", hashAttribute(strings.Join(as, ","))),
+	}
 }
