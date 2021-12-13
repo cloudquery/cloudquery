@@ -49,7 +49,7 @@ func Ec2Subnets() *schema.Table {
 			},
 			{
 				Name:        "available_ip_address_count",
-				Description: "The number of unused private IPv4 addresses in the subnet.",
+				Description: "The number of unused private IPv4 addresses in the subnet",
 				Type:        schema.TypeInt,
 			},
 			{
@@ -84,7 +84,7 @@ func Ec2Subnets() *schema.Table {
 			},
 			{
 				Name:        "owner_id",
-				Description: "The ID of the AWS account that owns the subnet.",
+				Description: "The ID of the Amazon Web Services account that owns the subnet.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -93,9 +93,10 @@ func Ec2Subnets() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "subnet_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the subnet.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("SubnetArn"),
 			},
 			{
 				Name:        "id",
@@ -107,7 +108,7 @@ func Ec2Subnets() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the subnet.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2subnetTags,
+				Resolver:    resolveEc2SubnetsTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -119,8 +120,8 @@ func Ec2Subnets() *schema.Table {
 			{
 				Name:        "aws_ec2_subnet_ipv6_cidr_block_association_sets",
 				Description: "Describes an IPv6 CIDR block associated with a subnet.",
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
 				Resolver:    fetchEc2SubnetIpv6CidrBlockAssociationSets,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
 				Columns: []schema.Column{
 					{
 						Name:        "subnet_cq_id",
@@ -159,6 +160,7 @@ func Ec2Subnets() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	var config ec2.DescribeSubnetsInput
 	c := meta.(*client.Client)
@@ -178,7 +180,7 @@ func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 	return nil
 }
-func resolveEc2subnetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEc2SubnetsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Subnet)
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
