@@ -239,6 +239,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
 	}
 	attr = append(attr, osInfo()...)
+	attr = append(attr, macHost()...)
 
 	return resource.New(ctx,
 		resource.WithTelemetrySDK(),
