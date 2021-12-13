@@ -754,11 +754,13 @@ func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (pol
 }
 
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
-	c.Logger.Info("Loading policy", "args", policyConfig)
+	c.Logger.Info("Preparing to run policy", "args", policyConfig)
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
 	})
+	c.Logger.Info("Collecting policy versions", "versions", versions)
 
 	if err != nil {
 		return nil, err
@@ -779,8 +781,9 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 		c.Logger.Error("failed loading the policy", "err", err)
 		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
+	c.Logger.Debug("Policy loaded successfully", "policies", policies)
 
-	c.Logger.Info("Running policy", "args", policyConfig)
+	c.Logger.Info("Running the policy", "args", policyConfig, "policies", policies, "execReq", execReq)
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
 	if err != nil {
 		return nil, err

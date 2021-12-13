@@ -175,6 +175,7 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 }
 
 func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (Policies, error) {
+	m.logger.Debug("Loading policy", "policy", p.Name, "type", p.Type)
 	switch p.Type {
 	case config.Hub:
 		remotePolicy, err := ParsePolicyFromSource(p)
