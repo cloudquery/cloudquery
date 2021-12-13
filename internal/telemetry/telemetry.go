@@ -254,12 +254,9 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 // If a directory with the same name is encountered, process is aborted and an empty string is returned.
 // If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	var (
-		id  string
-		err error
-	)
-	id, c.newRandomId, err = persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
-	return id, err
+	v, err := persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
+	c.newRandomId = v.Created
+	return v.Content, err
 }
 
 // NewRandomId returns true if we created a new random id in this session

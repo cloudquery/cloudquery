@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/fatih/color"
@@ -29,9 +30,10 @@ import (
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
 type Client struct {
-	c       *client.Client
-	cfg     *config.Config
-	updater *Progress
+	updateCheckOnce *sync.Once
+	c               *client.Client
+	cfg             *config.Config
+	updater         *Progress
 }
 
 func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
@@ -64,10 +66,12 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	return &Client{c, cfg, progressUpdater}, err
+	return &Client{&sync.Once{}, c, cfg, progressUpdater}, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
+	c.checkForUpdate(ctx)
+
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.DownloadProviders(ctx)
 	if err != nil {
@@ -85,6 +89,8 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c Client) Fetch(ctx context.Context, failOnError bool) error {
+	c.checkForUpdate(ctx)
+
 	if viper.GetBool("skip-schema-upgrade") {
 		// only download providers and verify, no upgrade
 		if err := c.DownloadProviders(ctx); err != nil {
@@ -133,6 +139,8 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
+	c.checkForUpdate(ctx)
+
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
 	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
 	if err != nil {
@@ -152,6 +160,8 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	c.checkForUpdate(ctx)
+
 	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
@@ -206,6 +216,8 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 }
 
 func (c Client) DescribePolicies(ctx context.Context, args []string, policyName string, skipVersioning bool) error {
+	c.checkForUpdate(ctx)
+
 	policiesToDescribe, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -248,6 +260,8 @@ func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyPath string)
 }
 
 func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
+	c.checkForUpdate(ctx)
+
 	provs, err := c.getModuleProviders(ctx)
 	if err != nil {
 		return err
@@ -329,6 +343,8 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 }
 
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
+	c.checkForUpdate(ctx)
+
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
@@ -343,7 +359,6 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 			return err
 		} else {
 			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-			color.GreenString("✓")
 		}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
@@ -351,6 +366,8 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 }
 
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
+	c.checkForUpdate(ctx)
+
 	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
@@ -373,6 +390,8 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 }
 
 func (c Client) DropProvider(ctx context.Context, providerName string) error {
+	c.checkForUpdate(ctx)
+
 	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
@@ -389,6 +408,8 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 }
 
 func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
+	c.checkForUpdate(ctx)
+
 	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
@@ -467,6 +488,20 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	}
 
 	return list, nil
+}
+
+func (c Client) checkForUpdate(ctx context.Context) {
+	c.updateCheckOnce.Do(func() {
+		v, err := client.MaybeCheckForUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), client.UpdateCheckPeriod)
+		if err != nil {
+			c.c.Logger.Warn("update check failed", "error", err)
+			return
+		}
+		if v != nil {
+			ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
+		}
+		c.c.Logger.Debug("update check succeeded", "new_version", v.String())
+	})
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
