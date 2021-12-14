@@ -317,11 +317,15 @@ type ProviderUpdateSummary struct {
 
 // CheckForProviderUpdates checks for provider updates
 func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
-	summary := []ProviderUpdateSummary{}
+	var summary []ProviderUpdateSummary
 	for _, p := range c.Providers {
 		version, err := c.Hub.CheckProviderUpdate(ctx, p)
 		if err != nil {
 			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			continue
+		}
+
+		if version == nil {
 			continue
 		}
 
