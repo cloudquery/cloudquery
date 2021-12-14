@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/aws/smithy-go/logging"
@@ -94,9 +96,19 @@ var allRegions = []string{
 	"sa-east-1",
 }
 
+var envVarsToCheck = []string{
+	"AWS_PROFILE",
+	"AWS_ACCESS_KEY_ID",
+	"AWS_SECRET_ACCESS_KEY",
+	"AWS_CONFIG_FILE",
+	"AWS_ROLE_ARN",
+	"AWS_SESSION_TOKEN",
+	"AWS_SHARED_CREDENTIALS_FILE",
+}
+
 const (
 	defaultRegion              = "us-east-1"
-	awsFailedToConfigureErrMsg = "failed to configure provider for account %s. AWS Error: %w"
+	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
 	defaultVar                 = "default"
 )
 
@@ -310,7 +322,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				config.WithRetryer(newRetryer(awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 			)
 			if err != nil {
-				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
+				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err, checkEnvVariables())
 			}
 			opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
 			if account.ExternalID != "" {
@@ -336,7 +348,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err != nil {
-			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
+			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err, checkEnvVariables())
 		}
 
 		if awsConfig.AWSDebug {
@@ -348,7 +360,11 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			o.Region = "aws-global"
 		})
 		if err != nil {
-			return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err)
+			creds, e := awsCfg.Credentials.Retrieve(ctx)
+			if e != nil {
+				return nil, fmt.Errorf(awsFailedToConfigureErrMsg, accountID, err, checkEnvVariables())
+			}
+			return nil, fmt.Errorf("failed to create aws client for account %s. AWS Error: %w, authorization source: %s, detected aws env variables: %s", accountID, err, creds.Source, checkEnvVariables())
 		}
 		// This is a work-around to skip disabled regions
 		// https://github.com/aws/aws-sdk-go-v2/issues/1068
@@ -480,4 +496,15 @@ func obfuscateAccountId(accountId string) string {
 		return accountId
 	}
 	return accountId[:4] + "xxxxxxxx"
+}
+
+//checkEnvVariables checks which aws environment variables are set
+func checkEnvVariables() string {
+	var result []string
+	for _, v := range envVarsToCheck {
+		if _, present := os.LookupEnv(v); present {
+			result = append(result, v)
+		}
+	}
+	return strings.Join(result, ",")
 }
