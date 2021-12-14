@@ -144,6 +144,37 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 	return true
 }
 
+// CheckProviderUpdate - checks if there is an update for provider, returns nil if there is no update
+func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.RequiredProvider) (*string, error) {
+	organization, providerName, err := ParseProviderName(requestedProvider.Name)
+	if err != nil {
+		return nil, err
+	}
+	currentVersion, err := version.NewVersion(requestedProvider.Version)
+	if err != nil {
+		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
+	}
+	if err != nil {
+		return nil, err
+	}
+	release, err := h.getRelease(ctx, organization, providerName, "latest")
+	if err != nil {
+		return nil, err
+	}
+	latestVersion := release.GetTagName()
+	v, err := version.NewVersion(latestVersion)
+	if err != nil {
+		return nil, fmt.Errorf("bad version received: provider %s, version %s", providerName, latestVersion)
+	}
+	if currentVersion.LessThan(v) {
+		return &latestVersion, nil
+	}
+	return nil, nil
+}
+
 func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.RequiredProvider, noVerify bool) (ProviderDetails, error) {
 
 	providerVersion := requestedProvider.Version
