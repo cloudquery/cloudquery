@@ -1,8 +1,6 @@
 package telemetry
 
 import (
-	"fmt"
-
 	"go.opentelemetry.io/otel/codes"
 	otrace "go.opentelemetry.io/otel/trace"
 )
@@ -15,12 +13,6 @@ func RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
 
 	//  TODO for fetch get table name / error type
 
-	if isDebugSpan(span) {
-		span.RecordError(err, opts...)
-		span.SetStatus(codes.Error, err.Error())
-		return
-	}
-
-	span.RecordError(fmt.Errorf("error"), opts...)
-	span.SetStatus(codes.Error, "error")
+	span.RecordError(err, opts...)
+	span.SetStatus(codes.Error, err.Error())
 }

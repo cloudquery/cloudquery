@@ -1007,13 +1007,12 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 	for _, ps := range fetchSummaries {
 		totalFetched += ps.TotalResourcesFetched
 		totalWarnings += ps.Diagnostics().Warnings()
-		totalErrors += ps.Diagnostics().Errors() + uint64(len(ps.PartialFetchErrors))
+		totalErrors += ps.Diagnostics().Errors()
 
 		span.SetAttributes(
 			attribute.Int64("fetch.resources."+ps.ProviderName, int64(ps.TotalResourcesFetched)),
 			attribute.Int64("fetch.warnings."+ps.ProviderName, int64(ps.Diagnostics().Warnings())),
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
-			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 	}
