@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/getsentry/sentry-go"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 
@@ -518,6 +519,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	}
 
 	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+	reportFetchSummaryStats(response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -1049,4 +1051,15 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
 		attribute.Int64("fetch.errors.total", int64(totalErrors)),
 	)
+}
+
+// reportFetchSummaryStats reads provided fetch summaries and sends them to sentry
+func reportFetchSummaryStats(fetchSummaries map[string]ProviderFetchSummary) {
+	for _, ps := range fetchSummaries {
+		for _, e := range ps.Diagnostics() {
+			if e.Severity() == diag.ERROR {
+				sentry.CaptureException(fmt.Errorf("%s: %s: %w", ps.ProviderName, e.Type().String(), e.Description()))
+			}
+		}
+	}
 }

@@ -134,9 +134,12 @@ func init() {
 	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
 	_ = viper.BindPFlag("insecure-telemetry-endpoint", rootCmd.PersistentFlags().Lookup("insecure-telemetry-endpoint"))
 
+	registerSentryFlags(rootCmd)
+
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging)
+	cobra.OnInitialize(initConfig, initLogging, initSentry)
+	rootCmd.PersistentPostRun = flushSentry
 }
 
 func initConfig() {
