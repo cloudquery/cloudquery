@@ -10,8 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-	"github.com/getsentry/sentry-go"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -40,9 +38,6 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 
 		var exitError error
 		defer func() {
-			if exitError != nil {
-				sentry.CaptureException(exitError)
-			}
 			spanEnder(exitError, trace.WithStackTrace(false))
 			tele.Shutdown(cmd.Context())
 		}()
