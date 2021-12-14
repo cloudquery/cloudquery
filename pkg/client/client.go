@@ -1058,7 +1058,8 @@ func reportFetchSummaryStats(fetchSummaries map[string]ProviderFetchSummary) {
 	for _, ps := range fetchSummaries {
 		for _, e := range ps.Diagnostics() {
 			if e.Severity() == diag.ERROR {
-				sentry.CaptureException(fmt.Errorf("%s: %s: %w", ps.ProviderName, e.Type().String(), e.Description()))
+				d := e.Description()
+				sentry.CaptureException(fmt.Errorf("%s: %s: %s: %s: %s", ps.ProviderName, e.Type().String(), d.Resource, d.Summary, d.Detail))
 			}
 		}
 	}
