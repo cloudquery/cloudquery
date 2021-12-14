@@ -211,6 +211,7 @@ func (c Client) DescribePolicies(ctx context.Context, args []string, policyName 
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
+	c.c.Logger.Info("Policies to described", "policies", policiesToDescribe)
 	req := &client.PoliciesRunRequest{
 		Policies:       policiesToDescribe,
 		PolicyName:     policyName,

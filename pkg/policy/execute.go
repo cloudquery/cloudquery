@@ -107,6 +107,7 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger, progressUpdate UpdateCall
 
 // executePolicy executes given policy and the related sub queries/views.
 func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallback, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
+	e.log.Debug("Check policy versions", "policy", policy.Name, "selector", selector, "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
@@ -122,6 +123,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 	for _, p := range policy.Policies {
 		if len(selector) == 0 || p.Name == selector[0] {
 			found = true
+			e.log.Info("Execute policy", "policy", p.Name)
 			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
 			if err != nil {
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
@@ -137,6 +139,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 	for _, q := range policy.Queries {
 		if len(selector) == 0 || q.Name == selector[0] {
 			found = true
+			e.log.Info("Execute query", "query", q.Name)
 			qr, err := e.executeQuery(ctx, q)
 			if err != nil {
 				e.log.Error("failed to execute query", "policy", policy.Name, "err", err)
@@ -144,6 +147,7 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 			}
 			total.Passed = total.Passed && qr.Passed
 			total.Results = append(total.Results, qr)
+			e.log.Info("Query finished with result", "query", q.Name, "passed", qr.Passed)
 			if progressUpdate != nil {
 				progressUpdate(Update{
 					FinishedQueries: 1,
@@ -182,6 +186,7 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 
 // executeQuery executes the given query and returns the result.
 func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
+	e.log.Debug("Execute query", "name", q.Name, "query", q.Query)
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", q.Name, err)
@@ -200,6 +205,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, er
 
 	for data.Next() {
 		values, err := data.Values()
+		e.log.Trace("Query values", "name", q.Name, "values", values)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", q.Name, err)
 		}
@@ -241,6 +247,7 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 	}
 	var found bool
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+	e.log.Debug("Execute policies", "policies", policies, "selector", selector)
 	for i, p := range policies {
 		pnames[i] = p.Name
 		if len(selector) == 0 || selector[0] == p.Name {
