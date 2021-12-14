@@ -21,7 +21,7 @@ func telemetryOpts() []telemetry.Option {
 		opts = append(opts, telemetry.WithDisabled())
 	}
 
-	if viper.GetBool("debug-telemetry") {
+	if !viper.GetBool("no-debug-telemetry") {
 		opts = append(opts, telemetry.WithDebug())
 	}
 
