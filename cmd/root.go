@@ -114,14 +114,12 @@ func init() {
 	rootCmd.PersistentFlags().Bool("skip-build-tables", false, "Skip building tables on run, this should only be true if tables already exist.")
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
-	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true telemetry collection will be in debug level") // Backwards compat only
-	rootCmd.PersistentFlags().Bool("no-debug-telemetry", false, "NoDebugTelemetry is true telemetry collection will not be in debug level")
+	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true to debug telemetry logging")
 	rootCmd.PersistentFlags().String("telemetry-endpoint", "telemetry.cloudquery.io:443", "Telemetry endpoint")
 	rootCmd.PersistentFlags().Bool("insecure-telemetry-endpoint", false, "Allow insecure connection to telemetry endpoint")
 
 	_ = rootCmd.PersistentFlags().MarkHidden("telemetry-endpoint")
 	_ = rootCmd.PersistentFlags().MarkHidden("insecure-telemetry-endpoint")
-	_ = rootCmd.PersistentFlags().MarkHidden("debug-telemetry")
 
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))
@@ -133,7 +131,6 @@ func init() {
 	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
 	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
-	_ = viper.BindPFlag("no-debug-telemetry", rootCmd.PersistentFlags().Lookup("no-debug-telemetry"))
 	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
 	_ = viper.BindPFlag("insecure-telemetry-endpoint", rootCmd.PersistentFlags().Lookup("insecure-telemetry-endpoint"))
 

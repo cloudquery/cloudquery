@@ -12,7 +12,6 @@ const currentTracerKey tracerContextKeyType = iota
 
 type Tracer interface {
 	otrace.Tracer
-	DebugMode() bool
 }
 
 // TracerFromContext returns the current Tracer from ctx.
@@ -48,43 +47,19 @@ func StartSpanFromContext(ctx context.Context, spanName string, opts ...otrace.S
 	}
 }
 
-// wrappedTracer is a standard tracer with the debug flag persisted from telemetry.Client
+// wrappedTracer is a standard tracer for CQ
 type wrappedTracer struct {
 	otrace.Tracer
-	debug bool
-}
-
-func (t *wrappedTracer) DebugMode() bool {
-	return t.debug
 }
 
 // Start calls the parent Start method, then wraps the Span with the debug flag
 func (t *wrappedTracer) Start(ctx context.Context, spanName string, opts ...otrace.SpanStartOption) (context.Context, otrace.Span) {
 	ctx, s := t.Tracer.Start(ctx, spanName, opts...)
-	return ctx, &wrappedSpan{Span: s, debug: t.debug}
+	return ctx, &wrappedSpan{Span: s}
 }
 
 var _ Tracer = (*wrappedTracer)(nil)
 
 type wrappedSpan struct {
 	otrace.Span
-	debug bool
 }
-
-func (s *wrappedSpan) DebugMode() bool {
-	return s.debug
-}
-
-type debugModer interface {
-	DebugMode() bool
-}
-
-func isDebugSpan(span otrace.Span) bool {
-	d, ok := span.(debugModer)
-	return ok && d.DebugMode()
-}
-
-var (
-	_ debugModer = (*wrappedSpan)(nil)
-	_ debugModer = (*wrappedTracer)(nil)
-)
