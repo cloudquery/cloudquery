@@ -64,7 +64,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	return &Client{c, cfg, progressUpdater}, err
+	client := &Client{c, cfg, progressUpdater}
+	client.checkForUpdate(ctx)
+	return client, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
@@ -347,7 +349,6 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 			return err
 		} else {
 			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-			color.GreenString("✓")
 		}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
@@ -471,6 +472,18 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	}
 
 	return list, nil
+}
+
+func (c Client) checkForUpdate(ctx context.Context) {
+	v, err := client.MaybeCheckForUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), client.UpdateCheckPeriod)
+	if err != nil {
+		c.c.Logger.Warn("update check failed", "error", err)
+		return
+	}
+	if v != nil {
+		ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
+	}
+	c.c.Logger.Debug("update check succeeded", "new_version", v.String())
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
