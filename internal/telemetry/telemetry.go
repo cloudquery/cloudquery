@@ -50,7 +50,7 @@ type Client struct {
 	// Build info. These are set as resource attributes in the default resource.
 	version, commit, buildDate string
 
-	// Whether we're in debug mode or not. In debug mode, error strings are sent as-is.
+	// Whether we're in debug mode or not. In debug mode, error messages from the OpenTelemetry SDK is bumped to a higher level
 	debug bool
 
 	// Whether telemetry collection is disabled. If so, a NoopTracerProvider is set, and we don't initialize the default resource
@@ -172,7 +172,6 @@ func New(ctx context.Context, options ...Option) *Client {
 func (c *Client) Tracer(ctx context.Context) (context.Context, Tracer) {
 	tw := &wrappedTracer{
 		Tracer: c.tp.Tracer("cloudquery.io/internal/telemetry"),
-		debug:  c.debug,
 	}
 	return ContextWithTracer(ctx, tw), tw
 }
@@ -239,6 +238,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
 	}
 	attr = append(attr, osInfo()...)
+	attr = append(attr, macHost()...)
 
 	return resource.New(ctx,
 		resource.WithTelemetrySDK(),

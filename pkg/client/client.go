@@ -309,6 +309,34 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
+type ProviderUpdateSummary struct {
+	Name          string
+	Version       string
+	LatestVersion string
+}
+
+// CheckForProviderUpdates checks for provider updates
+func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
+	var summary []ProviderUpdateSummary
+	for _, p := range c.Providers {
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			continue
+		}
+
+		if version == nil {
+			continue
+		}
+
+		if p.Version != *version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		}
+	}
+	return summary, nil
+}
+
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
 	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
 	if err != nil {
@@ -1006,13 +1034,12 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 	for _, ps := range fetchSummaries {
 		totalFetched += ps.TotalResourcesFetched
 		totalWarnings += ps.Diagnostics().Warnings()
-		totalErrors += ps.Diagnostics().Errors() + uint64(len(ps.PartialFetchErrors))
+		totalErrors += ps.Diagnostics().Errors()
 
 		span.SetAttributes(
 			attribute.Int64("fetch.resources."+ps.ProviderName, int64(ps.TotalResourcesFetched)),
 			attribute.Int64("fetch.warnings."+ps.ProviderName, int64(ps.Diagnostics().Warnings())),
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
-			attribute.Int("fetch.partial_errors."+ps.ProviderName, len(ps.PartialFetchErrors)),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 	}
