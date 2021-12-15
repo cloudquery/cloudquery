@@ -1047,7 +1047,7 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
 		for _, e := range ps.Diagnostics() {
-			if e.Severity() != diag.IGNORE {
+			if e.Severity() == diag.IGNORE {
 				continue
 			}
 
