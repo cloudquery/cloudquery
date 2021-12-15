@@ -22,6 +22,7 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		var exitWithCode int
 		defer func() {
 			if exitWithCode > 0 {
+				flushSentry(nil, nil)
 				os.Exit(exitWithCode)
 			}
 		}()

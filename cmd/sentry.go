@@ -31,8 +31,14 @@ func initSentry() {
 	}
 
 	if err := sentry.Init(sentry.ClientOptions{
-		Debug:   viper.GetBool("debug-sentry"),
-		Dsn:     dsn,
+		Debug: viper.GetBool("debug-sentry"),
+		Dsn:   dsn,
+		Environment: func() string {
+			if client.Version == client.DefaultVersion {
+				return "development"
+			}
+			return "release"
+		}(),
 		Release: client.Version,
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")

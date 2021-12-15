@@ -78,6 +78,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
 	TotalResourcesFetched uint64
@@ -466,6 +467,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					}
 					fetchSummaries <- ProviderFetchSummary{
 						ProviderName:          providerConfig.Name,
+						Version:               providerPlugin.Version(),
 						TotalResourcesFetched: totalResources,
 						PartialFetchErrors:    partialFetchResults,
 						FetchErrors:           fetchErrors,
@@ -1045,11 +1047,23 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
 		for _, e := range ps.Diagnostics() {
-			if e.Severity() != diag.ERROR {
+			if e.Severity() != diag.IGNORE {
 				continue
 			}
-			d := e.Description()
-			sentry.CaptureException(fmt.Errorf("%s: %s: %s: %s: %s", ps.ProviderName, e.Type().String(), d.Resource, d.Summary, d.Detail))
+
+			sentry.WithScope(func(scope *sentry.Scope) {
+				scope.SetTags(map[string]string{
+					"diag_type":        e.Type().String(),
+					"provider":         ps.ProviderName,
+					"provider_version": ps.Version,
+					"resource":         e.Description().Resource,
+				})
+				scope.SetExtra("detail", e.Description().Detail)
+				if e.Severity() == diag.WARNING {
+					scope.SetLevel(sentry.LevelWarning)
+				}
+				sentry.CaptureException(e)
+			})
 		}
 	}
 
