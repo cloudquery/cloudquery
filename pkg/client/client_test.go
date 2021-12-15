@@ -187,7 +187,7 @@ func TestClient_FetchTimeout(t *testing.T) {
 	assert.True(t, ok)
 }
 
-// Test Client fetch but with a nil configuration, provider won't crash but use it's default configuration method
+// Test Client fetch but with a nil configuration, provider won't crash but use its default configuration method
 func TestClient_FetchNilConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
@@ -306,7 +306,7 @@ func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.NoError(t, nil)
+	assert.NoError(t, err)
 }
 
 func TestClient_ProviderMigrations(t *testing.T) {
@@ -604,6 +604,83 @@ func Test_collectProviderVersions(t *testing.T) {
 			got, err := collectProviderVersions(tt.providers, tt.getVersion)
 			require.Equal(t, tt.wantErr, err != nil, "collectProviderVersions() error = %v, wantErr %v", err, tt.wantErr)
 			assert.Equal(t, tt.want, got, "collectProviderVersions() = %v, want %v", got, tt.want)
+		})
+	}
+}
+
+func Test_CheckForProviderUpdates(t *testing.T) {
+	tests := []struct {
+		name      string
+		providers []*config.RequiredProvider
+		updates   int
+	}{
+		{
+			"use of prior version of provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "0.0.7",
+				},
+			},
+			1,
+		},
+		{
+			"use of non existing provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test1",
+					Source:  "cloudquery",
+					Version: "v0.0.7",
+				},
+			},
+			0,
+		},
+		{
+			"use of prior version of provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "v0.0.7",
+				},
+			},
+			1,
+		},
+		{
+			"direct set of latest version",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "v0.0.8",
+				},
+			},
+			0,
+		},
+		{
+			"latest version using word 'latest'",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "latest",
+				},
+			},
+			0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+			c, err := New(ctx, func(options *Client) {
+				options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+				options.Providers = tt.providers
+			})
+			assert.Nil(t, err)
+			providers, err := c.CheckForProviderUpdates(ctx)
+			assert.Nil(t, err)
+			assert.Len(t, providers, tt.updates)
 		})
 	}
 }

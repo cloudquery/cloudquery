@@ -4,6 +4,41 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+### :spider: Fixed
+* Provider download routine added before to policy run command
+
+
+## [v0.17.0] - 2021-12-06
+
+### 💥 Breaking Changes
+* `policy run` flag `--subpath` has been removed to execute sub policy pass it as second argument i.e `policy run <policy_name> <subpath>`
+
+### :rocket: Added
+* Added `policy describe <policy_name>` subcommand, allowing to see all policies and sub-policies available and execution paths 
+* Added support for CloudQuery History **Alpha** for more info see [docs](https://docs.cloudquery.io/cli/history/overview)
+* Exposed diagnostic counts on fetch for telemetry [#319](https://github.com/cloudquery/cloudquery/pull/319)
+
+### :spider: Fixed
+* Fixed resource fetch summary total fetched resources wouldn't sum correctly [#326](https://github.com/cloudquery/cloudquery/pull/326)
+* Provider fetch failure cancels out other provider fetches [#325](https://github.com/cloudquery/cloudquery/pull/325)
+
+### :gear: Changed
+* Upgraded to SDK Version [v0.5.3](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md).
+* Read persisted telemetry ID if exists [#313](https://github.com/cloudquery/cloudquery/pull/313)
+* Cleanup init command [#320](https://github.com/cloudquery/cloudquery/pull/320)
+* Improve logging for policy execution errors [#323](https://github.com/cloudquery/cloudquery/pull/323)
+* Updated drift aws configuration for new version [#329](https://github.com/cloudquery/cloudquery/pull/329)
+
+## [v0.16.2] - 2021-11-29
+
+### :rocket: Added
+* Added support for telemetry, to gain better insight on usage to improve features and tool performance. For additional info see [docs](https://docs.cloudquery.io/docs/cli/telemetry) [#280](https://github.com/cloudquery/cloudquery/pull/280).
+* Added support for executing policy in policy [#302](https://github.com/cloudquery/cloudquery/issues/302)
+
+### :spider: Fixed
+* Fixed Policy Not Found unclear message [#306](https://github.com/cloudquery/cloudquery/issues/306)
+* Fixed Logging Statements Output [#305](https://github.com/cloudquery/cloudquery/issues/305)
 
 ## [v0.16.1] - 2021-11-22
 

@@ -7,7 +7,12 @@ import (
 	"io"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/helpers"
+
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
@@ -15,9 +20,12 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
+	"go.opentelemetry.io/otel/attribute"
+	otrace "go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -90,6 +98,46 @@ func (p ProviderFetchSummary) HasErrors() bool {
 	return false
 }
 
+func (p ProviderFetchSummary) Metrics() map[string]int64 {
+	type diagCount map[diag.DiagnosticType]int64
+	sevCounts := make(map[diag.Severity]diagCount)
+
+	for _, d := range p.Diagnostics() {
+		if _, ok := sevCounts[d.Severity()]; !ok {
+			tc := make(diagCount)
+			tc[d.Type()]++
+			sevCounts[d.Severity()] = tc
+		} else {
+			sevCounts[d.Severity()][d.Type()]++
+		}
+	}
+
+	ret := make(map[string]int64, len(sevCounts)+1)
+	for severity, typeCount := range sevCounts {
+		var sevName string
+		switch severity {
+		case diag.IGNORE:
+			sevName = "ignore"
+		case diag.WARNING:
+			sevName = "warning"
+		case diag.ERROR:
+			sevName = "error"
+		default:
+			sevName = "unknown"
+		}
+
+		prefix := "fetch.diag." + sevName + "."
+		var total int64
+		for typ, count := range typeCount {
+			ret[prefix+strings.ToLower(typ.String())+"."+p.ProviderName] = count
+			total += count
+		}
+		ret[prefix+"total."+p.ProviderName] = total
+	}
+
+	return ret
+}
+
 // PoliciesRunRequest is the request used to run a policy.
 type PoliciesRunRequest struct {
 	// Policies to run
@@ -160,6 +208,10 @@ type TableCreator interface {
 	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
 }
 
+type TableRemover interface {
+	DropTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table) error
+}
+
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -198,18 +250,20 @@ type Client struct {
 	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database
 	TableCreator TableCreator
+	// HistoryConfig defines configuration for CloudQuery history mode
+	HistoryCfg *history.Config
 	// pool is a list of connection that are used for policy/query execution
 	pool *pgxpool.Pool
 }
 
 func New(ctx context.Context, options ...Option) (*Client, error) {
-
 	c := &Client{
 		PluginDirectory:    filepath.Join(".", ".cq", "providers"),
 		PolicyDirectory:    ".",
 		NoVerify:           false,
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
+		HistoryCfg:         nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
 	}
@@ -224,24 +278,19 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 	c.Manager.LoadExisting(c.Providers)
 
-	if c.TableCreator == nil {
-		c.TableCreator = provider.NewTableCreator(c.Logger)
-	}
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
 	} else {
-		poolCfg, err := pgxpool.ParseConfig(c.DSN)
+		c.pool, err = CreateDatabase(ctx, c.DSN)
 		if err != nil {
 			return nil, err
 		}
-		poolCfg.LazyConnect = true
-		c.pool, err = pgxpool.ConnectConfig(ctx, poolCfg)
-		if err != nil {
-			return nil, err
+		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
+			c.Logger.Warn("postgrest validation warning", "err", err)
 		}
-		if err := validatePostgresVersion(ctx, c.pool, minPostgresVersion); err != nil {
-			c.Logger.Warn(err.Error())
-		}
+	}
+	if err := c.setupTableCreator(ctx); err != nil {
+		return nil, err
 	}
 
 	c.initModules()
@@ -252,9 +301,40 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 }
 
 // DownloadProviders downloads all provider binaries
-func (c *Client) DownloadProviders(ctx context.Context) error {
+func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadProviders")
+	defer spanEnder(retErr)
+
 	c.Logger.Info("Downloading required providers")
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
+}
+
+type ProviderUpdateSummary struct {
+	Name          string
+	Version       string
+	LatestVersion string
+}
+
+// CheckForProviderUpdates checks for provider updates
+func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
+	var summary []ProviderUpdateSummary
+	for _, p := range c.Providers {
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			continue
+		}
+
+		if version == nil {
+			continue
+		}
+
+		if p.Version != *version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		}
+	}
+	return summary, nil
 }
 
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
@@ -301,7 +381,7 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 	return err
 }
 
-func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchResponse, error) {
+func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchResponse, retErr error) {
 	if !c.SkipBuildTables {
 		for _, p := range request.Providers {
 			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
@@ -309,10 +389,25 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 			}
 		}
 	}
-	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields)
+
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
+	defer spanEnder(retErr)
+
+	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
+
+	searchPath := ""
+	if c.HistoryCfg != nil {
+		searchPath = "history"
+	}
+	dsn, err := parseDSN(c.DSN, searchPath)
+	if err != nil {
+		return nil, err
+	}
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
-	errGroup, gctx := errgroup.WithContext(ctx)
+	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
+	// future refactor should probably use a something else rather than error group.
+	errGroup, _ := errgroup.WithContext(ctx)
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
@@ -325,13 +420,21 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 		errGroup.Go(func() error {
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
-			_, err = providerPlugin.Provider().ConfigureProvider(gctx, &cqproto.ConfigureProviderRequest{
+			if c.HistoryCfg != nil {
+				pLog.Info("history enabled adding fetch date", "fetch_date", c.HistoryCfg.FetchDate().Format(time.RFC3339))
+				if request.ExtraFields == nil {
+					request.ExtraFields = make(map[string]interface{})
+				}
+				request.ExtraFields["cq_fetch_date"] = c.HistoryCfg.FetchDate()
+			}
+			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
-					DSN: c.DSN,
+					DSN: dsn,
 				},
-				Config:        providerConfig.Configuration,
-				DisableDelete: request.DisableDataDelete,
+				Config: providerConfig.Configuration,
+				// Disable delete on user request or if history is enabled
+				DisableDelete: request.DisableDataDelete || c.HistoryCfg != nil,
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
@@ -342,7 +445,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
-			stream, err := providerPlugin.Provider().FetchResources(gctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
+			stream, err := providerPlugin.Provider().FetchResources(ctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
 			if err != nil {
 				return err
 			}
@@ -386,7 +489,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
 				}
 
-				totalResources = resp.ResourceCount
+				totalResources += resp.ResourceCount
 				fetchedResources[resp.ResourceName] = resp.Summary
 
 				if resp.Error != "" {
@@ -409,9 +512,13 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (*FetchRespons
 		return nil, err
 	}
 	close(fetchSummaries)
+
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.ProviderName] = ps
 	}
+
+	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+
 	return response, nil
 }
 
@@ -451,7 +558,12 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
-func (c *Client) BuildProviderTables(ctx context.Context, providerName string) error {
+func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", otrace.WithAttributes(
+		attribute.String("provider", providerName),
+	))
+	defer spanEnder(retErr)
+
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
@@ -493,7 +605,19 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) e
 	return nil
 }
 
-func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error {
+func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", otrace.WithAttributes(
+		attribute.String("provider", providerName),
+	))
+
+	defer func() {
+		if retErr != nil && (retErr == migrate.ErrNoChange || errors.Is(retErr, ErrMigrationsNotSupported)) {
+			spanEnder(nil)
+		} else {
+			spanEnder(retErr)
+		}
+	}()
+
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
@@ -515,17 +639,26 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) error
 	if err != nil && err != migrate.ErrNilVersion {
 		return fmt.Errorf("failed to get provider version: %w", err)
 	}
+	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
+
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider and recreate")
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
 	}
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
+	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
+
 	return m.UpgradeProvider(cfg.Version)
 }
 
-func (c *Client) DowngradeProvider(ctx context.Context, providerName string) error {
+func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", otrace.WithAttributes(
+		attribute.String("provider", providerName),
+	))
+	defer spanEnder(retErr)
+
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
@@ -546,7 +679,12 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) err
 	return m.DowngradeProvider(cfg.Version)
 }
 
-func (c *Client) DropProvider(ctx context.Context, providerName string) error {
+func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", otrace.WithAttributes(
+		attribute.String("provider", providerName),
+	))
+	defer spanEnder(retErr)
+
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
 		return err
@@ -564,7 +702,10 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) error {
 	return m.DropProvider(ctx, s.ResourceTables)
 }
 
-func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.RemotePolicy, error) {
+func (c *Client) DownloadPolicy(ctx context.Context, args []string) (pol *policy.RemotePolicy, retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadPolicy")
+	defer spanEnder(retErr)
+
 	c.Logger.Info("Downloading policy from GitHub", "args", args)
 
 	remotePolicy, err := policy.ParsePolicyFromArgs(args)
@@ -572,7 +713,9 @@ func (c *Client) DownloadPolicy(ctx context.Context, args []string) (*policy.Rem
 		return nil, err
 	}
 	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
-	if err := c.PolicyManager.DownloadPolicy(ctx, remotePolicy); err != nil {
+
+	err = c.PolicyManager.DownloadPolicy(ctx, remotePolicy)
+	if err != nil {
 		return nil, err
 	}
 	return remotePolicy, nil
@@ -584,9 +727,9 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	for _, policyConfig := range req.Policies {
 		result, err := c.runPolicy(ctx, policyConfig, req)
 
-		c.Logger.Debug("Policy %s finished with error: %v", policyConfig.Name, err)
-
+		c.Logger.Debug("Policy execution finished", "name", policyConfig.Name, "err", err)
 		if err != nil {
+			c.Logger.Error("Policy execution finished with error", "name", policyConfig.Name, "err", err)
 			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
@@ -618,9 +761,28 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	return results, nil
 }
 
+func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (policy.Policies, error) {
+	loadedPolicies := make(policy.Policies, 0, len(req.Policies))
+	for _, policyConfig := range req.Policies {
+		c.Logger.Info("Loading the policy", "args", policyConfig)
+		execReq := &policy.ExecuteRequest{
+			Policy:         policyConfig,
+			StopOnFailure:  req.StopOnFailure,
+			SkipVersioning: req.SkipVersioning,
+			UpdateCallback: req.RunCallback,
+		}
+		policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
+		if err != nil {
+			c.Logger.Error("failed loading the policy", "err", err)
+			return nil, fmt.Errorf("failed to load policy: %w", err)
+		}
+		loadedPolicies = append(loadedPolicies, policies...)
+	}
+	return loadedPolicies, nil
+}
+
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
 	c.Logger.Info("Loading policy", "args", policyConfig)
-
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -641,15 +803,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	// load the policy
 	c.Logger.Info("Loading the policy", "args", policyConfig)
 	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-
 	if err != nil {
-		return nil, err
+		c.Logger.Error("failed loading the policy", "err", err)
+		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
 
 	c.Logger.Info("Running policy", "args", policyConfig)
-
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
-
 	if err != nil {
 		return nil, err
 	}
@@ -678,7 +838,10 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	return result, nil
 }
 
-func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (*module.ExecutionResult, error) {
+func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *module.ExecutionResult, retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", otrace.WithAttributes(attribute.String("module", req.Name)))
+	defer spanEnder(retErr)
+
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
 
 	modReq := &module.ExecuteRequest{
@@ -738,7 +901,16 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	if err != nil {
 		return nil, nil, err
 	}
-	m, err := provider.NewMigrator(c.Logger, migrations, c.DSN, fmt.Sprintf("%s_%s", org, name))
+
+	dsn := c.DSN
+	if c.HistoryCfg != nil {
+		dsn, err = parseDSN(c.DSN, "history")
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	m, err := provider.NewMigrator(c.Logger, migrations, dsn, fmt.Sprintf("%s_%s", org, name))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -759,49 +931,42 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
-func FilterPolicies(args []string, configPolicies []*config.Policy, policyName, subPath string) ([]*config.Policy, error) {
-	var policies []*config.Policy
-
-	if len(args) > 0 {
-		remotePolicy, err := policy.ParsePolicyFromArgs(args)
-		if err != nil {
-			return nil, err
-		}
-		policyConfig, err := remotePolicy.ToPolicyConfig()
-		policyConfig.SubPath = subPath
-		if err != nil {
-			return nil, err
-		}
-		policies = append(policies, policyConfig)
-	} else {
-		policies = configPolicies
+func (c *Client) setupTableCreator(ctx context.Context) error {
+	if c.TableCreator != nil {
+		c.Logger.Debug("table creator already set")
+		return nil
 	}
-
-	if len(policies) == 0 {
-		return nil, fmt.Errorf(`
-Could not find policies to run.
-Please add policy to block to your config file.
-`)
+	if c.HistoryCfg == nil {
+		c.Logger.Debug("using default table creator without history mode enabled.")
+		c.TableCreator = provider.NewTableCreator(c.Logger)
+		return nil
 	}
-	policiesToRun := make([]*config.Policy, 0)
-
-	// select policies to run
-	for _, p := range policies {
-		if policyName != "" {
-			// request to run only specific policy
-			if policyName == p.Name {
-				// override subPath if specified
-				if subPath != "" {
-					p.SubPath = subPath
-				}
-				policiesToRun = append(policiesToRun, p)
-				break
-			}
-		}
-		policiesToRun = append(policiesToRun, p)
+	creator, err := history.NewHistoryTableCreator(c.HistoryCfg, c.Logger)
+	if err != nil {
+		return err
 	}
+	// set history table creator
+	c.TableCreator = creator
+	conn, err := c.pool.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection for history setup: %w", err)
+	}
+	defer conn.Release()
+	return history.SetupHistory(ctx, conn)
+}
 
-	return policiesToRun, nil
+func parseDSN(dsn, searchPath string) (string, error) {
+	url, err := helpers.ParseConnectionString(dsn)
+	if err != nil {
+		return "", err
+	}
+	if searchPath == "" {
+		return url.String(), nil
+	}
+	if url.RawQuery != "" {
+		return url.String() + "&search_path=history", nil
+	}
+	return url.String() + "search_path=history", nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
@@ -860,4 +1025,28 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 		ver[p.Name] = v
 	}
 	return ver, nil
+}
+
+// collectFetchSummaryStats reads provided fetch summaries and persists statistics into the span
+func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+	var totalFetched, totalWarnings, totalErrors uint64
+
+	for _, ps := range fetchSummaries {
+		totalFetched += ps.TotalResourcesFetched
+		totalWarnings += ps.Diagnostics().Warnings()
+		totalErrors += ps.Diagnostics().Errors()
+
+		span.SetAttributes(
+			attribute.Int64("fetch.resources."+ps.ProviderName, int64(ps.TotalResourcesFetched)),
+			attribute.Int64("fetch.warnings."+ps.ProviderName, int64(ps.Diagnostics().Warnings())),
+			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
+		)
+		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
+	}
+
+	span.SetAttributes(
+		attribute.Int64("fetch.resources.total", int64(totalFetched)),
+		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
+		attribute.Int64("fetch.errors.total", int64(totalErrors)),
+	)
 }

@@ -3,13 +3,9 @@ package cmd
 import (
 	"context"
 
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+
+	"github.com/spf13/cobra"
 )
 
 const policyRunHelpMsg = "Executes a policy on CloudQuery database"
@@ -27,19 +23,11 @@ var (
   cloudquery policy run --policy my_aws_policy
 
   # See https://hub.cloudquery.io for additional policies.`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			configPath := viper.GetString("configPath")
-			ctx, _ := signalcontext.WithInterrupt(context.Background(), logging.NewZHcLog(&log.Logger, ""))
-			c, err := console.CreateClient(ctx, configPath)
-			if err != nil {
-				return err
-			}
-
-			return c.RunPolicies(ctx, args, policyName, outputDir, subPath, stopOnFailure, skipVersioning, failOnViolation, noResults)
-		},
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+			return c.RunPolicies(ctx, args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
+		}),
 	}
 	outputDir       string
-	subPath         string
 	policyName      string
 	stopOnFailure   bool
 	skipVersioning  bool
@@ -55,7 +43,6 @@ func init() {
 	flags.BoolVar(&failOnViolation, "fail-on-violation", false, "Return non zero exit code if one of the policy is violated")
 	flags.BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
-	flags.StringVar(&subPath, "sub-path", "", "Forces the policy run command to only execute this sub policy/query")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }
