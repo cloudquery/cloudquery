@@ -16,7 +16,7 @@ import (
 
 var (
 	// Version variable is injected in build time
-	Version = "0.1.0"
+	Version = "development"
 )
 
 const (
