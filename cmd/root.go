@@ -128,15 +128,18 @@ func init() {
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
-	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-verify"))
+	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-telemetry"))
 	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
 	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
 	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
 	_ = viper.BindPFlag("insecure-telemetry-endpoint", rootCmd.PersistentFlags().Lookup("insecure-telemetry-endpoint"))
 
+	registerSentryFlags(rootCmd)
+
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging)
+	cobra.OnInitialize(initConfig, initLogging, initSentry)
+	rootCmd.PersistentPostRun = flushSentry
 }
 
 func initConfig() {

@@ -1,6 +1,7 @@
 package telemetry
 
 import (
+	"github.com/getsentry/sentry-go"
 	"go.opentelemetry.io/otel/codes"
 	otrace "go.opentelemetry.io/otel/trace"
 )
@@ -11,7 +12,7 @@ func RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
 		return
 	}
 
-	//  TODO for fetch get table name / error type
+	sentry.CaptureException(err)
 
 	span.RecordError(err, opts...)
 	span.SetStatus(codes.Error, err.Error())
