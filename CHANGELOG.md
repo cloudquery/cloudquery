@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :rocket: Added
 * Added [#210](https://github.com/cloudquery/cloudquery/issues/210) contribution [guide](https://github.com/cloudquery/cloudquery/blob/main/.github/CONTRIBUTING.md) [#331](https://github.com/cloudquery/cloudquery/pull/331).
 * Added new provider update available notification [#336](https://github.com/cloudquery/cloudquery/pull/336) fixes [#299](https://github.com/cloudquery/cloudquery/issues/299).
-* Added notify if an update to CQ core is available [#338](https://github.com/cloudquery/cloudquery/pull/338).
+* Added notification if an update to CQ core is available [#338](https://github.com/cloudquery/cloudquery/pull/338).
 * Added sentry for crash error reporting to improve stability [#342](https://github.com/cloudquery/cloudquery/pull/342).
 
 ### :gear: Changed
