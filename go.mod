@@ -38,6 +38,7 @@ require (
 	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
+	github.com/getsentry/sentry-go v0.11.0
 	github.com/google/go-cmp v0.5.6
 	github.com/huandu/go-sqlbuilder v1.13.0
 	github.com/jackc/pgconn v1.10.0
@@ -66,7 +67,6 @@ require (
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
-	github.com/getsentry/sentry-go v0.11.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
