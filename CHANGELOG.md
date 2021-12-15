@@ -4,9 +4,22 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [Unreleased]
+
+## [v0.17.1] - 2021-12-15
+
+### :rocket: Added
+* Added [#210](https://github.com/cloudquery/cloudquery/issues/210) contribution [guide](https://github.com/cloudquery/cloudquery/blob/main/.github/CONTRIBUTING.md) [#331](https://github.com/cloudquery/cloudquery/pull/331).
+* Added new provider update available notification [#336](https://github.com/cloudquery/cloudquery/pull/336) fixes [#299](https://github.com/cloudquery/cloudquery/issues/299).
+* Added notify if an update to CQ core is available [#338](https://github.com/cloudquery/cloudquery/pull/338).
+* Added sentry for crash error reporting to improve stability [#342](https://github.com/cloudquery/cloudquery/pull/342).
+
+### :gear: Changed
+* Telemetry: collect hash of MAC + Hostname [#339](https://github.com/cloudquery/cloudquery/pull/339).
+
 ### :spider: Fixed
-* Provider download routine added before to policy run command
+* Provider download routine added before to policy run command [#335](https://github.com/cloudquery/cloudquery/pull/335) fixes [#316](https://github.com/cloudquery/cloudquery/issues/316).
+* Fixed [#303](https://github.com/cloudquery/cloudquery/issues/303) UUID output in polcies [#332](https://github.com/cloudquery/cloudquery/pull/332).
+* Fixed Telemery error counting and removed debug telemetry flag [#340](https://github.com/cloudquery/cloudquery/pull/340)
 
 
 ## [v0.17.0] - 2021-12-06
