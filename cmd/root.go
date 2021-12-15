@@ -128,7 +128,7 @@ func init() {
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
-	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-verify"))
+	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-telemetry"))
 	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
 	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
 	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
