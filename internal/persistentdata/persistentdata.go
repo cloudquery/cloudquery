@@ -10,11 +10,17 @@ import (
 )
 
 const dirname = ".cq"
+const defaultPermissions = 0644
 
 type Value struct {
+	fs      afero.Afero
 	Content string
 	Created bool
 	Path    string
+}
+
+func (v Value) Update(content string) error {
+	return v.fs.WriteFile(v.Path, []byte(content), defaultPermissions)
 }
 
 type Client struct {
@@ -34,9 +40,8 @@ func New(fs afero.Afero, fn string, gen func() string) *Client {
 }
 
 // Get the data (generate if it doesn't exist) and return it
-func (c *Client) Get() (Value, error) {
-	var err error
-	var v Value
+func (c *Client) Get() (v Value, err error) {
+	v.fs = c.fs
 	for _, prefix := range readOrder() {
 		v.Path = filepath.Join(prefix, dirname, c.fn)
 		v.Content, err = c.read(v.Path)
@@ -94,7 +99,7 @@ func (c *Client) read(path string) (string, error) {
 
 // write the given payload into the file in the given fs and path
 func (c *Client) write(path, payload string) error {
-	return c.fs.WriteFile(path, []byte(payload), 0644)
+	return c.fs.WriteFile(path, []byte(payload), defaultPermissions)
 }
 
 func readOrder() []string {

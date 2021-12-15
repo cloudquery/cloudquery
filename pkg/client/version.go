@@ -93,7 +93,7 @@ func MaybeCheckForUpdate(ctx context.Context, fs afero.Afero, nowUnix, period in
 			// not really expected
 			return nil, err
 		}
-		fs.WriteFile(v.Path, []byte(fmt.Sprintf("%d %s", nowUnix, newVersion)), 0o644)
+		_ = v.Update(fmt.Sprintf("%d %s", nowUnix, newVersion))
 		if currentVersion.LessThan(newVersion) {
 			return newVersion, nil
 		}
