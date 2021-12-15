@@ -1,0 +1,104 @@
+name: test_migration
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  should_run:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.cache-migrations.cache-hit != 'true' }}
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Cache Migrations
+        id: cache-migrations
+        uses: actions/cache@v2
+        with:
+          path: resources/migrations
+          key: ${{ runner.os }}-${{ hashFiles('resources/migrations') }}
+
+  test_migration:
+    needs: should_run
+    if: github.repository == 'cloudquery/cq-provider-azure' && needs.should_run.outputs.should_run == 'true'
+    strategy:
+      matrix:
+        dbversion: [ "postgres:latest" ]
+        go: [ "1.17" ]
+        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Cache CQ
+        id: cache-cq-binary
+        uses: actions/cache@v2
+        with:
+          path: cloudquery
+          key: ${{ runner.os }}-${{ hashFiles('cloudquery') }}
+
+      - name: Download Cloudquery
+        if: steps.cache-cq-binary.cache-hit != 'true'
+        run: |
+          curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
+          chmod a+x cloudquery
+        env:
+          OS: Linux
+
+      - name: Build initial schema
+        run: |
+          CQ_NO_TELEMETRY=1 ./cloudquery provider build-schema azure --config ./client/testdata/initial_migration.hcl --enable-console-log
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+
+      - name: Build
+        run: go build -v .
+
+      - name: Run upgrade
+        run: |
+          rm -rf .cq_reattach
+          go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && \
+          ./cloudquery provider upgrade azure --config ./client/testdata/default.hcl --enable-console-log
+        env:
+          CQ_PROVIDER_DEBUG: 1 
+          CQ_REATTACH_PROVIDERS: .cq_reattach
+          CQ_NO_TELEMETRY: 1
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'Azure - migration test failed'
+          SLACK_TITLE: Azure - migration test failed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
