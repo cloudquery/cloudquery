@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :spider: Fixed
 * Provider download routine added before to policy run command [#335](https://github.com/cloudquery/cloudquery/pull/335) fixes [#316](https://github.com/cloudquery/cloudquery/issues/316).
 * Fixed [#303](https://github.com/cloudquery/cloudquery/issues/303) UUID output in polcies [#332](https://github.com/cloudquery/cloudquery/pull/332).
-* Fixed Telemery error counting and removed debug telemetry flag [#340](https://github.com/cloudquery/cloudquery/pull/340)
+* Fixed Telemetry error counting and removed debug telemetry flag [#340](https://github.com/cloudquery/cloudquery/pull/340)
 
 
 ## [v0.17.0] - 2021-12-06
