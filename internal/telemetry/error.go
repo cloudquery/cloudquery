@@ -14,8 +14,6 @@ func RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
 
 	sentry.CaptureException(err)
 
-	//  TODO for fetch get table name / error type
-
 	span.RecordError(err, opts...)
 	span.SetStatus(codes.Error, err.Error())
 }
