@@ -697,11 +697,12 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	results := make([]*policy.ExecutionResult, 0)
 
 	for _, policyConfig := range req.Policies {
+		c.Logger = c.Logger.With("policy", policyConfig.Name, "version", policyConfig.Version, "type", policyConfig.Type, "subPath", policyConfig.SubPath)
 		result, err := c.runPolicy(ctx, policyConfig, req)
 
-		c.Logger.Debug("Policy execution finished", "name", policyConfig.Name, "err", err)
+		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
-			c.Logger.Error("Policy execution finished with error", "name", policyConfig.Name, "err", err)
+			c.Logger.Error("policy execution finished with error", "err", err)
 			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
@@ -754,13 +755,13 @@ func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (pol
 }
 
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
-	c.Logger.Info("Preparing to run policy", "args", policyConfig)
+	c.Logger.Info("preparing to run policy")
 
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
 	})
-	c.Logger.Debug("Collected policy versions", "policy", policyConfig.Name, "versions", versions)
+	c.Logger.Debug("collected policy versions", "versions", versions)
 
 	if err != nil {
 		return nil, err
@@ -777,11 +778,11 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	// load the policy
 	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
 	if err != nil {
-		c.Logger.Error("failed loading the policy", "policy", policyConfig.Name, "err", err)
+		c.Logger.Error("failed loading the policy", "err", err)
 		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
 
-	c.Logger.Info("Running the policy", "args", policyConfig)
+	c.Logger.Info("running the policy")
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
 	if err != nil {
 		return nil, err
@@ -794,13 +795,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 			Version:         policyConfig.Version,
 			FinishedQueries: 0,
 			QueriesCount:    0,
-			Error:           "Execution stops",
+			Error:           "Execution stopped",
 		})
 	}
 
 	// Store output in file if requested
 	if req.OutputDir != "" {
-		c.Logger.Info("Writing policy to output directory", "args", policyConfig)
+		c.Logger.Info("writing policy to output directory")
 		err = policy.GenerateExecutionResultFile(result, req.OutputDir)
 
 		if err != nil {

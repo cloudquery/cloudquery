@@ -81,10 +81,14 @@ func NewManager(policyDir string, pool *pgxpool.Pool, logger hclog.Logger) Manag
 	}
 }
 
+func (m *ManagerImpl) with(args ...interface{}) {
+	m.logger = m.logger.With(args...)
+}
+
 func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies Policies) (*ExecutionResult, error) {
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
-	m.logger.Trace("Acquired connection from the connection pool", "err", err)
+	m.logger.Trace("acquired connection from the connection pool", "err", err)
 	if err != nil {
 		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
 	}
@@ -95,7 +99,12 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 		finishedQueries   = 0
 	)
 
-	m.logger.Debug("Policy Queries count", "policy", execReq.Policy.Name, "total", totalQueriesToRun)
+	var policiesNames []string
+	for _, policy := range policies {
+		policiesNames = append(policiesNames, policy.Name)
+	}
+
+	m.logger.Info("policy Queries count", "total", totalQueriesToRun)
 	// set the progress total queries to run
 	if execReq.UpdateCallback != nil {
 		execReq.UpdateCallback(Update{
@@ -177,17 +186,15 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 }
 
 func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (Policies, error) {
-	m.logger.Debug("Loading policy", "policy", p.Name, "type", p.Type)
+	m.logger.Info("loading policy", "policy", p.Name, "version", p.Version, "type", p.Type, "subPath", p.SubPath)
 	switch p.Type {
 	case config.Hub:
-		m.logger.Debug("Parse policy From source", "policy", p.Name, "type", p.Type)
 		remotePolicy, err := ParsePolicyFromSource(p)
 		if err != nil {
 			return nil, err
 		}
 		return m.loadRemotePolicy(ctx, remotePolicy, execReq)
 	case config.Remote:
-		m.logger.Debug("Parse policy From source", "policy", p.Name, "type", p.Type)
 		remotePolicy, err := ParsePolicyFromSource(p)
 		if err != nil {
 			return nil, err
@@ -203,7 +210,7 @@ func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *Execu
 }
 
 func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (Policies, error) {
-	m.logger.Debug("Loading local policy", "policy", cfg.Name, "type", cfg.Type, "source", cfg.Source)
+	m.logger.Debug("loading local policy", "source", cfg.Source)
 	osFs := file.NewOsFs()
 	var policyFolder = filepath.Dir(cfg.Source)
 	var policyFilePath = cfg.Source
@@ -230,7 +237,7 @@ func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (Policies, error) {
 }
 
 func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (Policies, error) {
-	m.logger.Debug("Loading inline policy", "policy", cfg.Name, "type", cfg.Type, "source", cfg.Source)
+	m.logger.Debug("loading inline policy", "source", cfg.Source)
 	parser := config.NewParser()
 
 	policiesRaw, diags := parser.LoadFromSource("policy.hcl", []byte(cfg.Source), config.SourceHCL)
@@ -245,7 +252,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 	if err != nil {
 		return nil, err
 	}
-	m.logger.Debug("Downloading remote policy", "policy_url", policyUrl)
+	m.logger.Debug("downloading remote policy", "policy_url", policyUrl)
 	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
 		return nil, err
 	}
@@ -259,7 +266,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 	if info, err := osFs.Stat(repoFolder); err != nil || !info.IsDir() {
 		return nil, fmt.Errorf("could not find policy '%s' locally. Try to download the policy first", orgPolicyStr)
 	}
-	m.logger.Debug("Found repo folder", "path", repoFolder)
+	m.logger.Debug("found repo folder", "path", repoFolder)
 
 	if !execReq.SkipVersioning {
 		// Checkout policy repository tag
@@ -281,7 +288,7 @@ func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *Remote
 	if policyFilePath == "" {
 		return nil, fmt.Errorf("failed to find policy file in root git directory; expected policy.hcl not found in %s", policyFolder)
 	}
-	m.logger.Debug("Policy file found", "path", policyFilePath)
+	m.logger.Debug("policy file found", "path", policyFilePath)
 
 	return readPolicy(policyFilePath, policyFolder)
 }
