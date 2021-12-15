@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/getsentry/sentry-go"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 
@@ -77,6 +78,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
 	TotalResourcesFetched uint64
@@ -309,6 +311,34 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
 }
 
+type ProviderUpdateSummary struct {
+	Name          string
+	Version       string
+	LatestVersion string
+}
+
+// CheckForProviderUpdates checks for provider updates
+func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
+	var summary []ProviderUpdateSummary
+	for _, p := range c.Providers {
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			continue
+		}
+
+		if version == nil {
+			continue
+		}
+
+		if p.Version != *version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		}
+	}
+	return summary, nil
+}
+
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
 	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
 	if err != nil {
@@ -437,6 +467,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					}
 					fetchSummaries <- ProviderFetchSummary{
 						ProviderName:          providerConfig.Name,
+						Version:               providerPlugin.Version(),
 						TotalResourcesFetched: totalResources,
 						PartialFetchErrors:    partialFetchResults,
 						FetchErrors:           fetchErrors,
@@ -489,7 +520,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		response.ProviderFetchSummary[ps.ProviderName] = ps
 	}
 
-	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -1001,8 +1032,8 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 	return ver, nil
 }
 
-// collectFetchSummaryStats reads provided fetch summaries and persists statistics into the span
-func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+// reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
+func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
 	for _, ps := range fetchSummaries {
@@ -1016,6 +1047,26 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
+
+		for _, e := range ps.Diagnostics() {
+			if e.Severity() == diag.IGNORE {
+				continue
+			}
+
+			sentry.WithScope(func(scope *sentry.Scope) {
+				scope.SetTags(map[string]string{
+					"diag_type":        e.Type().String(),
+					"provider":         ps.ProviderName,
+					"provider_version": ps.Version,
+					"resource":         e.Description().Resource,
+				})
+				scope.SetExtra("detail", e.Description().Detail)
+				if e.Severity() == diag.WARNING {
+					scope.SetLevel(sentry.LevelWarning)
+				}
+				sentry.CaptureException(e)
+			})
+		}
 	}
 
 	span.SetAttributes(

@@ -9,13 +9,27 @@ import (
 	"github.com/spf13/afero"
 )
 
+const dirname = ".cq"
+const defaultPermissions = 0644
+
+type Value struct {
+	fs      afero.Afero
+	Content string
+	Created bool
+	Path    string
+}
+
+func (v Value) Update(content string) error {
+	return v.fs.WriteFile(v.Path, []byte(content), defaultPermissions)
+}
+
 type Client struct {
 	fs  afero.Afero
 	fn  string
 	gen func() string
 }
 
-var ErrIsDirectory = fmt.Errorf("file is directory")
+var errIsDirectory = fmt.Errorf("file is directory")
 
 func New(fs afero.Afero, fn string, gen func() string) *Client {
 	return &Client{
@@ -26,44 +40,43 @@ func New(fs afero.Afero, fn string, gen func() string) *Client {
 }
 
 // Get the data (generate if it doesn't exist) and return it
-func (c *Client) Get() (value string, newlyCreated bool, err error) {
-	if home, err := os.UserHomeDir(); err == nil {
-		// special case for having a persistent ID, read-only access
-		id, err := c.read(filepath.Join(home, ".cq"))
-		if err == ErrIsDirectory {
-			// finish early if directory encountered
-			return "", false, err
+func (c *Client) Get() (v Value, err error) {
+	v.fs = c.fs
+	for _, prefix := range readOrder() {
+		v.Path = filepath.Join(prefix, dirname, c.fn)
+		v.Content, err = c.read(v.Path)
+		if err == nil && v.Content != "" {
+			return v, nil
 		}
-		if id != "" {
-			return id, false, nil
+		if err == errIsDirectory {
+			return Value{}, err
 		}
 	}
-
-	path := filepath.Join(".", ".cq")
-	if id, err := c.read(path); err != nil {
-		return "", false, err
-	} else if id != "" {
-		return id, false, nil
+	if err != nil {
+		return Value{}, err
 	}
 
-	id := c.gen()
-	if id == "" {
-		return "", false, nil
+	// value must be empty at this point
+	v.Content = c.gen()
+	if v.Content == "" {
+		return Value{}, nil
 	}
 
-	if err := c.write(path, id); err != nil {
-		return "", false, err
+	for _, prefix := range writeOrder() {
+		v.Path = filepath.Join(prefix, dirname, c.fn)
+		if err = c.write(v.Path, v.Content); err != nil {
+			continue
+		}
+		break
 	}
-
-	return id, true, nil
+	v.Created = err == nil
+	return v, err
 }
 
-// read the contents of given fn in the given fs. Returns ErrIsDirectory if the file exists but is a directory.
+// read the contents of given path in the given fs. Returns errIsDirectory if the file exists but is a directory.
 func (c *Client) read(path string) (string, error) {
-	fn := filepath.Join(path, c.fn)
-
 	exists := true
-	fi, err := c.fs.Stat(fn)
+	fi, err := c.fs.Stat(path)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			return "", err
@@ -71,13 +84,13 @@ func (c *Client) read(path string) (string, error) {
 		exists = false
 	}
 	if exists && fi.IsDir() {
-		return "", ErrIsDirectory
+		return "", errIsDirectory
 	}
 	if !exists {
 		return "", nil
 	}
 
-	b, err := c.fs.ReadFile(fn)
+	b, err := c.fs.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
@@ -86,6 +99,17 @@ func (c *Client) read(path string) (string, error) {
 
 // write the given payload into the file in the given fs and path
 func (c *Client) write(path, payload string) error {
-	fn := filepath.Join(path, c.fn)
-	return c.fs.WriteFile(fn, []byte(payload), 0644)
+	return c.fs.WriteFile(path, []byte(payload), defaultPermissions)
+}
+
+func readOrder() []string {
+	order := make([]string, 0, 2)
+	if home, err := os.UserHomeDir(); err == nil {
+		order = append(order, home)
+	}
+	return append(order, ".")
+}
+
+func writeOrder() []string {
+	return []string{"."}
 }

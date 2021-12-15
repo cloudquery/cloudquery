@@ -3,6 +3,7 @@ package telemetry
 import (
 	"context"
 
+	"github.com/getsentry/sentry-go"
 	otrace "go.opentelemetry.io/otel/trace"
 )
 
@@ -41,7 +42,19 @@ type SpanCloser func(error, ...otrace.SpanEndOption)
 // Returned SpanCloser should be called when done with span. To catch panics, it should be used under a defer.
 func StartSpanFromContext(ctx context.Context, spanName string, opts ...otrace.SpanStartOption) (context.Context, SpanCloser) {
 	ktx, span := TracerFromContext(ctx).Start(ctx, spanName, opts...)
+
+	sentry.AddBreadcrumb(&sentry.Breadcrumb{
+		Type:     "default",
+		Category: "started",
+		Message:  spanName,
+	})
+
 	return ktx, func(err error, opts ...otrace.SpanEndOption) {
+		sentry.AddBreadcrumb(&sentry.Breadcrumb{
+			Type:     "default",
+			Category: "ended",
+			Message:  spanName,
+		})
 		RecordError(span, err)
 		span.End(opts...)
 	}

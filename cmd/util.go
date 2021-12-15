@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,6 +22,7 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		var exitWithCode int
 		defer func() {
 			if exitWithCode > 0 {
+				flushSentry(nil, nil)
 				os.Exit(exitWithCode)
 			}
 		}()
@@ -83,7 +83,7 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 	}
 
 	if tele.NewRandomId() {
-		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
+		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
 		if delayMessage {
 			select {
 			case <-time.After(2 * time.Second):
