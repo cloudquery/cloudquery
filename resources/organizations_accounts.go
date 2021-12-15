@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
-	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
+	"github.com/aws/smithy-go"
 
 	"github.com/cloudquery/cq-provider-aws/client"
 
@@ -79,9 +79,12 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, par
 	var input organizations.ListAccountsInput
 	for {
 		response, err := svc.ListAccounts(ctx, &input)
-		var ade *types.AccessDeniedException
-		if errors.As(err, &ade) {
-			return diag.FromError(err, diag.IGNORE, diag.ACCESS, OrganizationsAccounts().Name, client.ParseSummaryMessage(c.Accounts, err, ade), "Missing permissions or account might not be root/organizational unit.")
+		var ae smithy.APIError
+		if errors.As(err, &ae) {
+			switch ae.ErrorCode() {
+			case "AWSOrganizationsNotInUseException", "AccessDeniedException":
+				return diag.FromError(err, diag.IGNORE, diag.ACCESS, OrganizationsAccounts().Name, client.ParseSummaryMessage(c.Accounts, err, ae), "Missing permissions or account might not be root/organizational unit.")
+			}
 		}
 		if err != nil {
 			return err
