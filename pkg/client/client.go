@@ -518,8 +518,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		response.ProviderFetchSummary[ps.ProviderName] = ps
 	}
 
-	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
-	reportFetchSummaryStats(response.ProviderFetchSummary)
+	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -1029,8 +1028,8 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 	return ver, nil
 }
 
-// collectFetchSummaryStats reads provided fetch summaries and persists statistics into the span
-func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+// reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
+func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
 	for _, ps := range fetchSummaries {
@@ -1044,6 +1043,14 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
+
+		for _, e := range ps.Diagnostics() {
+			if e.Severity() != diag.ERROR {
+				continue
+			}
+			d := e.Description()
+			sentry.CaptureException(fmt.Errorf("%s: %s: %s: %s: %s", ps.ProviderName, e.Type().String(), d.Resource, d.Summary, d.Detail))
+		}
 	}
 
 	span.SetAttributes(
@@ -1051,16 +1058,4 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
 		attribute.Int64("fetch.errors.total", int64(totalErrors)),
 	)
-}
-
-// reportFetchSummaryStats reads provided fetch summaries and sends them to sentry
-func reportFetchSummaryStats(fetchSummaries map[string]ProviderFetchSummary) {
-	for _, ps := range fetchSummaries {
-		for _, e := range ps.Diagnostics() {
-			if e.Severity() == diag.ERROR {
-				d := e.Description()
-				sentry.CaptureException(fmt.Errorf("%s: %s: %s: %s: %s", ps.ProviderName, e.Type().String(), d.Resource, d.Summary, d.Detail))
-			}
-		}
-	}
 }
