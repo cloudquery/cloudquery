@@ -1,9 +1,12 @@
 package cmd
 
 import (
+	"strconv"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -59,4 +62,8 @@ func setSentryVars(traceID string) {
 		return
 	}
 	scope.SetExtra("trace_id", traceID)
+	scope.SetTags(map[string]string{
+		"terminal": strconv.FormatBool(ui.IsTerminal()),
+		"ci":       strconv.FormatBool(telemetry.IsCI()),
+	})
 }
