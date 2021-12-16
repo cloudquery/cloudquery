@@ -27,6 +27,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
+const timeout = 2 * time.Second
+
 // Client is the telemetry client.
 type Client struct {
 	// OpenTelemetry resource entry. Used in optional args.
@@ -268,7 +270,7 @@ func (c *Client) NewRandomId() bool {
 func (c *Client) httpExporter(ctx context.Context) (trace.SpanExporter, error) {
 	opts := []otlptracehttp.Option{
 		otlptracehttp.WithEndpoint(c.endpoint),
-		otlptracehttp.WithTimeout(500 * time.Millisecond),
+		otlptracehttp.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracehttp.WithInsecure())
@@ -283,11 +285,11 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 		otlptracegrpc.WithEndpoint(c.endpoint),
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
 		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
-			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
+			return net.DialTimeout("tcp", addr, timeout)
 		})),
 		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
 		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500 * time.Millisecond),
+		otlptracegrpc.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracegrpc.WithInsecure())
