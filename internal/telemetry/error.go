@@ -12,7 +12,10 @@ func RecordError(span otrace.Span, err error, opts ...otrace.EventOption) {
 		return
 	}
 
-	sentry.CaptureException(err)
+	sentry.WithScope(func(scope *sentry.Scope) {
+		scope.SetFingerprint([]string{span.SpanContext().TraceID().String()})
+		sentry.CaptureException(err)
+	})
 
 	span.RecordError(err, opts...)
 	span.SetStatus(codes.Error, err.Error())

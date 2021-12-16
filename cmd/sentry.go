@@ -10,8 +10,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const defaultSentryFlushTimeout = 2 * time.Second
-
 func registerSentryFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("debug-sentry", false, "Enable Sentry debug mode")
 	cmd.PersistentFlags().String("sentry-dsn", "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
@@ -23,26 +21,27 @@ func registerSentryFlags(cmd *cobra.Command) {
 }
 
 func initSentry() {
+	sentrySyncTransport := sentry.NewHTTPSyncTransport()
+	sentrySyncTransport.Timeout = time.Second * 2
+
 	dsn := viper.GetString("sentry-dsn")
 	if viper.GetBool("no-telemetry") {
 		dsn = "" // "To drop all events, set the DSN to the empty string."
 	}
 
 	if err := sentry.Init(sentry.ClientOptions{
-		Debug: viper.GetBool("debug-sentry"),
-		Dsn:   dsn,
+		Debug:     viper.GetBool("debug-sentry"),
+		Dsn:       dsn,
+		Transport: sentrySyncTransport,
 		Environment: func() string {
 			if client.Version == client.DefaultVersion {
 				return "development"
 			}
 			return "release"
 		}(),
-		Release: client.Version,
+		Release:          client.Version,
+		AttachStacktrace: true,
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
-}
-
-func flushSentry(_ *cobra.Command, _ []string) {
-	sentry.Flush(defaultSentryFlushTimeout)
 }
