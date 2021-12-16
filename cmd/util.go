@@ -44,6 +44,7 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 			),
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
+		setSentryVars(trace.SpanFromContext(ctx).SpanContext().TraceID().String())
 
 		var exitError error
 		defer func() {

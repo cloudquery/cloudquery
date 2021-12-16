@@ -45,3 +45,15 @@ func initSentry() {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
 }
+
+func setSentryVars(traceID string) {
+	hub := sentry.CurrentHub()
+	if hub == nil {
+		return
+	}
+	scope := hub.Scope()
+	if scope == nil {
+		return
+	}
+	scope.SetExtra("trace_id", traceID)
+}

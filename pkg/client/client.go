@@ -1052,7 +1052,6 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 			}
 
 			sentry.WithScope(func(scope *sentry.Scope) {
-				scope.SetFingerprint([]string{span.SpanContext().TraceID().String()})
 				scope.SetTags(map[string]string{
 					"diag_type":        e.Type().String(),
 					"provider":         ps.ProviderName,
