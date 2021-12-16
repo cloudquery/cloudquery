@@ -3,11 +3,10 @@ package policy
 import (
 	"context"
 	"fmt"
-	"sort"
-	"strings"
-
 	"net/url"
 	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -85,7 +84,7 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
+		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
 	}
 	defer conn.Release()
 
