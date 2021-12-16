@@ -482,8 +482,10 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	}
 	if v != nil {
 		ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
+		c.c.Logger.Debug("update check succeeded", "new_version", v.String())
+	} else {
+		c.c.Logger.Debug("update check succeeded, no new version")
 	}
-	c.c.Logger.Debug("update check succeeded", "new_version", v.String())
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
