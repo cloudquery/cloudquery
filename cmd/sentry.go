@@ -45,7 +45,7 @@ func initSentry() {
 			}
 			return "release"
 		}(),
-		Release:          client.Version,
+		Release:          "cloudquery@" + client.Version,
 		AttachStacktrace: true,
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))
