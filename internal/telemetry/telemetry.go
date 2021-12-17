@@ -237,7 +237,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
 
 	if hn, err := os.Hostname(); err == nil && hn != "" {
-		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
+		attr = append(attr, semconv.HostNameKey.String(HashAttribute(hn)))
 	}
 	attr = append(attr, osInfo()...)
 	attr = append(attr, macHost()...)
@@ -311,6 +311,13 @@ func IsCI() bool {
 	return false
 }
 
+// HashAttribute creates a one-way hash from an attribute
+func HashAttribute(value string) string {
+	s := sha1.New()
+	_, _ = s.Write([]byte(value))
+	return fmt.Sprintf("%0x", s.Sum(nil))
+}
+
 type shutdownable interface {
 	Shutdown(context.Context) error
 }
@@ -336,10 +343,4 @@ func (e *errorHandler) Handle(err error) {
 
 func genRandomId() string {
 	return uuid.NewV4().String()
-}
-
-func hashAttribute(value string) string {
-	s := sha1.New()
-	_, _ = s.Write([]byte(value))
-	return fmt.Sprintf("%0x", s.Sum(nil))
 }
