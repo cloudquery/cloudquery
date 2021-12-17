@@ -47,6 +47,15 @@ func initSentry() {
 		}(),
 		Release:          client.Version,
 		AttachStacktrace: true,
+		Integrations: func(it []sentry.Integration) []sentry.Integration {
+			ret := make([]sentry.Integration, 0, len(it))
+			for i := range it {
+				if it[i].Name() != "Modules" {
+					ret = append(ret, it[i])
+				}
+			}
+			return ret
+		},
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
