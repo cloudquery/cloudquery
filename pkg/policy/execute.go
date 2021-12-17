@@ -5,15 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"path/filepath"
 	"strings"
 
+	"path/filepath"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
@@ -47,7 +47,7 @@ type Executor struct {
 	conn *pgxpool.Conn
 	log  hclog.Logger
 
-	PolicyPath *PolicyPath
+	PolicyPath []string
 
 	// progressUpdate
 	progressUpdate UpdateCallback
@@ -105,28 +105,21 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger, progressUpdate UpdateCall
 		conn:           conn,
 		log:            log,
 		progressUpdate: progressUpdate,
-		PolicyPath:     &PolicyPath{policyPath: []string{}},
+		PolicyPath:     []string{},
 	}
 }
 
-type PolicyPath struct {
-	policyPath []string
-}
-
-func (e *PolicyPath) append(policyPath string) {
-	e.policyPath = append(e.policyPath, policyPath)
-}
-
-func (e *PolicyPath) pop() {
-	e.policyPath = e.policyPath[:len(e.policyPath)-1]
-}
-
-func (e *Executor) with(args ...interface{}) {
-	e.log = e.log.With(args...)
-}
-
-func (e *Executor) withPolicyPath() {
-	e.log = e.log.With("policy", strings.Join(e.PolicyPath.policyPath, "/"))
+func (e *Executor) with(policy string, args ...interface{}) *Executor {
+	policyPath := e.PolicyPath
+	policyPath = append(policyPath, policy)
+	log := e.log.With("policy", strings.Join(policyPath, "/"))
+	log = log.With(args...)
+	return &Executor{
+		conn:           e.conn,
+		log:            log,
+		progressUpdate: e.progressUpdate,
+		PolicyPath:     policyPath,
+	}
 }
 
 // executePolicy executes given policy and the related sub queries/views.
@@ -147,12 +140,11 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 	for _, p := range policy.Policies {
 		if len(selector) == 0 || p.Name == selector[0] {
 			found = true
-			e.PolicyPath.append(p.Name)
-			e.withPolicyPath()
-			e.log.Info("executing policy")
-			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
+			executor := e.with(p.Name)
+			executor.log.Info("starting policy execution")
+			r, err := executor.executePolicy(ctx, executor.progressUpdate, req, p, rest)
 			if err != nil {
-				e.log.Error("failed to execute policy", "err", err)
+				executor.log.Error("failed to execute policy", "err", err)
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && r.Passed
@@ -163,10 +155,11 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 
 		}
 	}
-	e.PolicyPath.pop()
+
 	for _, q := range policy.Queries {
 		if len(selector) == 0 || q.Name == selector[0] {
 			found = true
+			e.log = e.log.With("query", q.Name)
 			qr, err := e.executeQuery(ctx, q)
 			if err != nil {
 				e.log.Error("failed to execute query", "err", err)
@@ -232,7 +225,6 @@ func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, er
 
 	for data.Next() {
 		values, err := data.Values()
-		e.log.Trace("Query values", "values", values)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", q.Name, err)
 		}
@@ -278,8 +270,8 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 		pnames[i] = p.Name
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
-			e.PolicyPath.append(p.Name)
-			r, err := e.executePolicy(ctx, e.progressUpdate, req, p, rest)
+			executor := e.with(p.Name)
+			r, err := executor.executePolicy(ctx, executor.progressUpdate, req, p, rest)
 			if err != nil {
 				return nil, err
 			}

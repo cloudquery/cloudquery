@@ -99,11 +99,6 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 		finishedQueries   = 0
 	)
 
-	var policiesNames []string
-	for _, policy := range policies {
-		policiesNames = append(policiesNames, policy.Name)
-	}
-
 	m.logger.Info("policy Queries count", "total", totalQueriesToRun)
 	// set the progress total queries to run
 	if execReq.UpdateCallback != nil {
