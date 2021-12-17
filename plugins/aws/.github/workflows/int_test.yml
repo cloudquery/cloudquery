@@ -85,3 +85,7 @@ jobs:
           SLACK_MESSAGE: "${{steps.integration-test.outputs.output}}\n\n For more details, please check the logs: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
           SLACK_TITLE: AWS - E2E tests finished with warnings
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Cancel if has warnings
+        if: ${{ success() && steps.integration-test.outputs.output != '' }}
+        run: exit 1
