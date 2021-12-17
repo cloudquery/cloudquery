@@ -62,7 +62,12 @@ jobs:
         run: cat ${{env.KUBECONFIG_PATH}}
 
       - name: Integration Test
-        run: go test -v -p 20 ./resources/integration_tests
+        run: |
+          touch output.log
+          go test -v -p 20 ./resources/integration_tests | tee output.log
+          result_code=${PIPESTATUS[0]}
+          echo "::set-output name=output::$(cat output.log | grep -i "WARN")"
+          exit $result_code
         env:
           INTEGRATION_TESTS: 1
           KUBECONFIG: ${{steps.depoly_pg.outputs.kubepath}} # path should be absolute
@@ -85,3 +90,17 @@ jobs:
           SLACK_MESSAGE: 'K8S - E2E tests failed'
           SLACK_TITLE: K8S - E2E tests failed
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Slack Notification Warnings
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ success() && steps.integration-test.outputs.output != '' }}
+        env:
+          SLACK_CHANNEL: oss-tests
+          SLACK_COLOR: "#f29a35"
+          SLACK_MESSAGE: "${{steps.integration-test.outputs.output}}\n\n For more details, please check the logs: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
+          SLACK_TITLE: K8S - E2E tests finished with warnings
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Cancel if has warnings
+        if: ${{ success() && steps.integration-test.outputs.output != '' }}
+        run: exit 1
