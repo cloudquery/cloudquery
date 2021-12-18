@@ -1,0 +1,10 @@
+cq-provider-template
+config.hcl
+.config.hcl.swp
+.cq_reattach
+.DS_store
+crash.log
+.idea
+.vscode
+cloudquery
+cloudquery.log
