@@ -18,13 +18,11 @@ import (
 var GroupNameRegex = regexp.MustCompile("arn:aws:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
 type SupportedServicesData struct {
-	Prices []struct {
-		Attributes struct {
-			Region  string `json:"aws:region"`
-			Service string `json:"aws:serviceName"`
-		} `json:"attributes"`
-		Id string `json:"id"`
-	} `json:"prices"`
+	Services map[string]struct {
+		Regions []string `json:"regions"`
+		Id      string   `json:"id"`
+		Name    string   `json:"name"`
+	} `json:"services"`
 }
 
 // supportedServices map of the supported service-regions
@@ -32,14 +30,19 @@ var supportedServices map[string]map[string]struct{}
 var getSupportedServices sync.Once
 
 // apiErrorServiceNames stores api subdomains and service names for error decoding
+// some services have a few subdomains that differs from service name
+// The list is not full todo take this list using some api
 var apiErrorServiceNames = map[string]string{
-	"mq":               "Amazon MQ",
-	"cognito-identity": "Amazon Cognito",
-	"cognito-idp":      "Amazon Cognito",
-	"ec2":              "Amazon Elastic Compute Cloud (EC2)",
+	"mq":               "amazon-mq",
+	"cognito-identity": "cognito",
+	"cognito-idp":      "cognito",
+	"acm":              "certificate-manager",
+	"acm-pca":          "certificate-manager",
+	"ce":               "aws-cost-management-cost-explorer",
+	"groundstation":    "ground-station",
 }
 
-const supportedServicesLink = "https://api.regional-table.region-services.aws.a2z.com/index.json"
+const supportedServicesLink = "https://raw.githubusercontent.com/burib/aws-region-table-parser/master/data/parseddata.json"
 
 // downloadSupportedResourcesForRegions gets the data about AWS services and regions they are available in
 func downloadSupportedResourcesForRegions() (map[string]map[string]struct{}, error) {
@@ -63,17 +66,19 @@ func downloadSupportedResourcesForRegions() (map[string]map[string]struct{}, err
 	}
 
 	m := make(map[string]map[string]struct{})
-	for _, p := range data.Prices {
-		if _, ok := m[p.Attributes.Service]; !ok {
-			m[p.Attributes.Service] = make(map[string]struct{})
+	for k, s := range data.Services {
+		if _, ok := m[k]; !ok {
+			m[k] = make(map[string]struct{})
 		}
-		m[p.Attributes.Service][p.Attributes.Region] = struct{}{}
+		for _, r := range s.Regions {
+			m[k][r] = struct{}{}
+		}
 	}
 
 	return m, nil
 }
 
-// ignoreUnsupportedResourceForRegionError returns true request was sent to a service that does not exist in specified region
+// ignoreUnsupportedResourceForRegionError returns true if request was sent to a service that exists but fetched with error
 func ignoreUnsupportedResourceForRegionError(err error) bool {
 	getSupportedServices.Do(func() {
 		supportedServices, _ = downloadSupportedResourcesForRegions()
@@ -87,13 +92,13 @@ func ignoreUnsupportedResourceForRegionError(err error) bool {
 		}
 		apiService, ok := apiErrorServiceNames[parts[0]]
 		if !ok {
-			return false
+			apiService = parts[0]
 		}
 		region := parts[1]
 
 		_, ok = supportedServices[apiService][region]
 		// if service-region combination is in the map than service is supported and error should not be ignored
-		return ok
+		return !ok
 	}
 	return true
 }
