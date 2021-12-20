@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/getsentry/sentry-go"
+	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -60,9 +61,18 @@ func classifyError(err error) errClass {
 	}
 
 	{
-		var pge *pq.Error
-		if errors.As(err, &pge) {
-			switch pge.Code.Class() {
+		var (
+			pgCode string
+			pqe    *pq.Error
+			pge    *pgconn.PgError
+		)
+		if errors.As(err, &pqe) {
+			pgCode = string(pqe.Code)
+		} else if errors.As(err, &pge) {
+			pgCode = pge.Code
+		}
+		if len(pgCode) >= 2 {
+			switch pgCode[0:2] {
 			// Class 28 - Invalid Authorization Specification
 			// Class 3D - Invalid Catalog Name
 			case "28", "3D":
