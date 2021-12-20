@@ -61,8 +61,13 @@ func classifyError(err error) errClass {
 
 	{
 		var pge *pq.Error
-		if errors.As(err, &pge) && pge.Code.Class() == "28" { // Class 28 - Invalid Authorization Specification
-			return errDatabase
+		if errors.As(err, &pge) {
+			switch pge.Code.Class() {
+			// Class 28 - Invalid Authorization Specification
+			// Class 3D - Invalid Catalog Name
+			case "28", "3D":
+				return errDatabase
+			}
 		}
 	}
 
