@@ -8,6 +8,7 @@ Export the current s3 bucket for tfstate file
 ```shell
 export TF_BACKEND_BUCKET=cq-integration-tests-tf
 export TF_BACKEND_KEY=terraform.tfstate
+export TF_DYNAMODB_TABLE=cq-integration-tests-tf
 ```
 
 Init terraform
