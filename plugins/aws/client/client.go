@@ -108,7 +108,7 @@ var envVarsToCheck = []string{
 
 const (
 	defaultRegion              = "us-east-1"
-	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
+	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws en	v variables: %s"
 	defaultVar                 = "default"
 )
 
