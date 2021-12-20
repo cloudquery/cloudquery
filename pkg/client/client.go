@@ -786,7 +786,19 @@ func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (pol
 }
 
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(attribute.String("policy", req.PolicyName)))
+	spanAttrs := []attribute.KeyValue{
+		attribute.String("policy", req.PolicyName),
+	}
+
+	if strings.HasPrefix(policyConfig.Name, policy.CloudQueryOrg) {
+		spanAttrs = append(spanAttrs,
+			attribute.String("policy_name", policyConfig.Name),
+			attribute.String("policy_version", policyConfig.Version),
+			attribute.String("policy_subpath", policyConfig.SubPath),
+		)
+	}
+
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(spanAttrs...))
 	defer spanEnder(retErr)
 
 	c.Logger.Info("preparing to run policy")
