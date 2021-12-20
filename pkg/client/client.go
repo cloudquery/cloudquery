@@ -785,9 +785,11 @@ func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (pol
 	return loadedPolicies, nil
 }
 
-func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
-	c.Logger.Info("preparing to run policy")
+func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(attribute.String("policy", req.PolicyName)))
+	defer spanEnder(retErr)
 
+	c.Logger.Info("preparing to run policy")
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
