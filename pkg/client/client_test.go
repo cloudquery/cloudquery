@@ -26,10 +26,11 @@ import (
 )
 
 var (
+	providerSrc           = "cloudquery"
 	requiredTestProviders = []*config.RequiredProvider{
 		{
 			Name:    "test",
-			Source:  "cloudquery",
+			Source:  &providerSrc,
 			Version: "latest",
 		},
 	}
