@@ -139,7 +139,6 @@ func init() {
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
 	cobra.OnInitialize(initConfig, initLogging, initSentry)
-	rootCmd.PersistentPostRun = flushSentry
 }
 
 func initConfig() {

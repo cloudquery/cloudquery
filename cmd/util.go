@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -22,9 +23,16 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		var exitWithCode int
 		defer func() {
 			if exitWithCode > 0 {
-				flushSentry(nil, nil)
 				os.Exit(exitWithCode)
 			}
+		}()
+		defer func() {
+			err := recover()
+			if err == nil {
+				return
+			}
+			sentry.CurrentHub().Recover(err)
+			panic(err)
 		}()
 
 		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
@@ -36,6 +44,7 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 			),
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
+		setSentryVars(trace.SpanFromContext(ctx).SpanContext().TraceID().String())
 
 		var exitError error
 		defer func() {
