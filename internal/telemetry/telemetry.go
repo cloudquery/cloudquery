@@ -27,6 +27,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
+const timeout = 2 * time.Second
+
 // Client is the telemetry client.
 type Client struct {
 	// OpenTelemetry resource entry. Used in optional args.
@@ -222,7 +224,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		semconv.ServiceVersionKey.String(c.version),
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
-		attribute.Bool("ci", isCI()),
+		attribute.Bool("ci", IsCI()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -254,12 +256,9 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 // If a directory with the same name is encountered, process is aborted and an empty string is returned.
 // If a new file is generated, c.newRandomId is set.
 func (c *Client) randomId() (string, error) {
-	var (
-		id  string
-		err error
-	)
-	id, c.newRandomId, err = persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
-	return id, err
+	v, err := persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
+	c.newRandomId = v.Created
+	return v.Content, err
 }
 
 // NewRandomId returns true if we created a new random id in this session
@@ -271,7 +270,7 @@ func (c *Client) NewRandomId() bool {
 func (c *Client) httpExporter(ctx context.Context) (trace.SpanExporter, error) {
 	opts := []otlptracehttp.Option{
 		otlptracehttp.WithEndpoint(c.endpoint),
-		otlptracehttp.WithTimeout(500 * time.Millisecond),
+		otlptracehttp.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracehttp.WithInsecure())
@@ -286,11 +285,11 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 		otlptracegrpc.WithEndpoint(c.endpoint),
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
 		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
-			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
+			return net.DialTimeout("tcp", addr, timeout)
 		})),
 		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
 		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500 * time.Millisecond),
+		otlptracegrpc.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracegrpc.WithInsecure())
@@ -299,8 +298,8 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 	return otlptracegrpc.New(ctx, opts...)
 }
 
-// isCI determines if we're running under a CI env by checking CI-specific env vars
-func isCI() bool {
+// IsCI determines if we're running under a CI env by checking CI-specific env vars
+func IsCI() bool {
 	for _, v := range []string{
 		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
 	} {

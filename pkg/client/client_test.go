@@ -610,3 +610,80 @@ func Test_collectProviderVersions(t *testing.T) {
 		})
 	}
 }
+
+func Test_CheckForProviderUpdates(t *testing.T) {
+	tests := []struct {
+		name      string
+		providers []*config.RequiredProvider
+		updates   int
+	}{
+		{
+			"use of prior version of provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "0.0.7",
+				},
+			},
+			1,
+		},
+		{
+			"use of non existing provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test1",
+					Source:  "cloudquery",
+					Version: "v0.0.7",
+				},
+			},
+			0,
+		},
+		{
+			"use of prior version of provider",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "v0.0.7",
+				},
+			},
+			1,
+		},
+		{
+			"direct set of latest version",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "v0.0.8",
+				},
+			},
+			0,
+		},
+		{
+			"latest version using word 'latest'",
+			[]*config.RequiredProvider{
+				{
+					Name:    "test",
+					Source:  "cloudquery",
+					Version: "latest",
+				},
+			},
+			0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+			c, err := New(ctx, func(options *Client) {
+				options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+				options.Providers = tt.providers
+			})
+			assert.Nil(t, err)
+			providers, err := c.CheckForProviderUpdates(ctx)
+			assert.Nil(t, err)
+			assert.Len(t, providers, tt.updates)
+		})
+	}
+}

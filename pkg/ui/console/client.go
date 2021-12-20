@@ -64,7 +64,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	return &Client{c, cfg, progressUpdater}, err
+	client := &Client{c, cfg, progressUpdater}
+	client.checkForUpdate(ctx)
+	return client, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
@@ -81,6 +83,10 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
+	updates, _ := c.c.CheckForProviderUpdates(ctx)
+	for _, u := range updates {
+		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.Version, u.LatestVersion))
+	}
 	return nil
 }
 
@@ -152,7 +158,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+	c.c.Logger.Debug("received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -161,7 +167,7 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Info("Policies to run", "policies", policiesToRun)
+	c.c.Logger.Debug("policies to run", "policies", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
@@ -211,6 +217,7 @@ func (c Client) DescribePolicies(ctx context.Context, args []string, policyName 
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
+	c.c.Logger.Debug("policies to described", "policies", policiesToDescribe)
 	req := &client.PoliciesRunRequest{
 		Policies:       policiesToDescribe,
 		PolicyName:     policyName,
@@ -343,7 +350,6 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 			return err
 		} else {
 			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-			color.GreenString("✓")
 		}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
@@ -467,6 +473,20 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	}
 
 	return list, nil
+}
+
+func (c Client) checkForUpdate(ctx context.Context) {
+	v, err := client.MaybeCheckForUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), client.UpdateCheckPeriod)
+	if err != nil {
+		c.c.Logger.Warn("update check failed", "error", err)
+		return
+	}
+	if v != nil {
+		ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
+		c.c.Logger.Debug("update check succeeded", "new_version", v.String())
+	} else {
+		c.c.Logger.Debug("update check succeeded, no new version")
+	}
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
