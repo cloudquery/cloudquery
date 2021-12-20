@@ -111,7 +111,7 @@ func SagemakerModels() *schema.Table {
 						Resolver:    schema.PathResolver("ImageConfig.RepositoryAccessMode"),
 					},
 					{
-						Name:        "image_config_repository_auth_config_repository_credentials_provider_arn",
+						Name:        "image_config_repository_auth_config_repo_creds_provider_arn",
 						Description: "The Amazon Resource Name (ARN) of an Amazon Web Services Lambda function that provides credentials to authenticate to the private Docker registry where your model image is hosted",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ImageConfig.RepositoryAuthConfig.RepositoryCredentialsProviderArn"),
