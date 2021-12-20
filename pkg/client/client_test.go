@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"errors"
+
 	"net"
 	"os"
 	"path/filepath"
@@ -612,6 +613,7 @@ func Test_collectProviderVersions(t *testing.T) {
 }
 
 func Test_CheckForProviderUpdates(t *testing.T) {
+	soruce := "cloudquery"
 	tests := []struct {
 		name      string
 		providers []*config.RequiredProvider
@@ -622,7 +624,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &soruce,
 					Version: "0.0.7",
 				},
 			},
@@ -633,7 +635,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test1",
-					Source:  "cloudquery",
+					Source:  &soruce,
 					Version: "v0.0.7",
 				},
 			},
@@ -644,7 +646,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &soruce,
 					Version: "v0.0.7",
 				},
 			},
@@ -655,7 +657,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &soruce,
 					Version: "v0.0.8",
 				},
 			},
@@ -666,7 +668,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &soruce,
 					Version: "latest",
 				},
 			},
