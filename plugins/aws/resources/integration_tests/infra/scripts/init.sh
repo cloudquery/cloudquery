@@ -14,6 +14,13 @@ else
   TF_BACKEND_KEY="${TF_BACKEND_KEY}"
 fi
 
+if [[ -z "${TF_DYNAMODB_TABLE}" ]]; then
+  echo "Missing env=TF_DYNAMODB_TABLE"
+  exit 1;
+else
+  TF_DYNAMODB_TABLE="${TF_DYNAMODB_TABLE}"
+fi
+
 if [[ -z "${TF_BACKEND_REGION}" ]]; then
   TF_BACKEND_REGION="us-east-1"
 else
@@ -30,4 +37,5 @@ terraform {
 
 terraform init -backend-config="bucket=$TF_BACKEND_BUCKET" \
    -backend-config="key=$TF_BACKEND_KEY" \
+   -backend-config="dynamodb_table=$TF_DYNAMODB_TABLE" \
    -backend-config="region=$TF_BACKEND_REGION"
