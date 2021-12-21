@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-
 	"net"
 	"os"
 	"path/filepath"
@@ -469,8 +468,6 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 	defer watcher.Close()
 
 	go provider.ServeTestPlugin(debugCtx)
-	// sleep to prevent ParseReattachProviders from reading empty file
-	time.Sleep(time.Millisecond * 50)
 	_ = os.Setenv("CQ_REATTACH_PROVIDERS", filepath.Join(dir, ".cq_reattach"))
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
