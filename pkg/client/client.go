@@ -417,7 +417,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	if err != nil {
 		return nil, err
 	}
-	fetchSummarizer, err := fetch_summary.NewFetchSummarizer(ctx, c.pool)
+	fetchSummarizer, err := fetch_summary.New(ctx, c.pool)
 	if err != nil {
 		return nil, err
 	}
@@ -433,7 +433,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := fetch_summary.FetchSummary{
+			fs := fetch_summary.Summary{
 				FetchId:         fetchId,
 				ProviderName:    providerConfig.Name,
 				ProviderVersion: providerPlugin.Version(),
@@ -495,7 +495,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					}
 					fs.Finish = time.Now().UTC()
 					fs.TotalResourceCount = totalResources
-					return fetchSummarizer.SaveFetchSummary(ctx, fs)
+					return fetchSummarizer.Save(ctx, fs)
 				}
 				if err != nil {
 					pLog.Error("received provider fetch error", "error", err)
@@ -527,7 +527,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.FetchedResources = append(fs.FetchedResources, fetch_summary.ResourceFetchSummary{
+				fs.FetchedResources = append(fs.FetchedResources, fetch_summary.ResourceSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use string representation of status

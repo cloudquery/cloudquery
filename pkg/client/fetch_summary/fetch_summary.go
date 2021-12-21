@@ -4,12 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/huandu/go-sqlbuilder"
-	"github.com/jackc/pgx/v4/pgxpool"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/google/uuid"
+	"github.com/huandu/go-sqlbuilder"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 const createCqFetchesTable = `
@@ -35,8 +34,8 @@ type FetchSummarizer struct {
 	dbStruct *sqlbuilder.Struct
 }
 
-// NewFetchSummarizer creates cq_fetches table and returns a summarizer that saves fetch summary to cq_fetches table
-func NewFetchSummarizer(ctx context.Context, pool *pgxpool.Pool) (*FetchSummarizer, error) {
+// New creates cq_fetches table and returns a summarizer that saves fetch summary to cq_fetches table
+func New(ctx context.Context, pool *pgxpool.Pool) (*FetchSummarizer, error) {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		return nil, err
@@ -50,27 +49,27 @@ func NewFetchSummarizer(ctx context.Context, pool *pgxpool.Pool) (*FetchSummariz
 
 	return &FetchSummarizer{
 		pool:     pool,
-		dbStruct: sqlbuilder.NewStruct(new(FetchSummary)),
+		dbStruct: sqlbuilder.NewStruct(new(Summary)),
 	}, nil
 }
 
-// FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
+// Summary includes a summarized report of fetch, such as fetch id, fetch start and finish,
 // resources fetch results
-type FetchSummary struct {
+type Summary struct {
 	СqId uuid.UUID `db:"cq_id"`
 	//  Unique Id of fetch session
-	FetchId            uuid.UUID              `db:"fetch_id"`
-	Start              time.Time              `db:"start"`
-	Finish             time.Time              `db:"finish"`
-	TotalResourceCount uint64                 `db:"total_resource_count"`
-	ProviderName       string                 `db:"provider_name"`
-	ProviderVersion    string                 `db:"provider_version"`
-	ProviderMeta       []byte                 `db:"provider_meta"` // reserved field to store providers metadata such as
-	FetchedResources   []ResourceFetchSummary `db:"fetch_results"`
+	FetchId            uuid.UUID         `db:"fetch_id"`
+	Start              time.Time         `db:"start"`
+	Finish             time.Time         `db:"finish"`
+	TotalResourceCount uint64            `db:"total_resource_count"`
+	ProviderName       string            `db:"provider_name"`
+	ProviderVersion    string            `db:"provider_version"`
+	ProviderMeta       []byte            `db:"provider_meta"` // reserved field to store providers metadata such as
+	FetchedResources   []ResourceSummary `db:"fetch_results"`
 }
 
-// ResourceFetchSummary includes a data about fetching specific resource
-type ResourceFetchSummary struct {
+// ResourceSummary includes a data about fetching specific resource
+type ResourceSummary struct {
 	ResourceName string `json:"resource_name"`
 	// map of resources that have finished fetching
 	FinishedResources map[string]bool `json:"finished_resources"`
@@ -88,8 +87,8 @@ type ResourceFetchSummary struct {
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
-// SaveFetchSummary saves fetch summary into cq_fetches database
-func (c *FetchSummarizer) SaveFetchSummary(ctx context.Context, fs FetchSummary) error {
+// Save saves fetch summary into cq_fetches database
+func (c *FetchSummarizer) Save(ctx context.Context, fs Summary) error {
 	conn, err := c.pool.Acquire(ctx)
 	if err != nil {
 		return err

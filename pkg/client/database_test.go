@@ -3,12 +3,15 @@ package client
 import (
 	"context"
 	"errors"
+	"sync"
 	"testing"
 
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4"
 	"github.com/stretchr/testify/assert"
 )
+
+const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable&pool_max_conns=5"
 
 type mockConn struct {
 	row pgx.Row
@@ -92,4 +95,28 @@ func Test_doValidatePostgresVersion(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestConnectionControl(t *testing.T) {
+	pool, err := CreateDatabase(context.Background(), testDBConnection)
+	assert.NoError(t, err)
+	defer pool.Close()
+	var wg sync.WaitGroup
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+		go func() {
+			conn, err := pool.Acquire(context.Background())
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer conn.Release()
+			defer wg.Done()
+			_, err = conn.Exec(context.Background(), "SELECT pg_sleep(1)")
+			if err != nil {
+				assert.NoError(t, err)
+			}
+			assert.NoError(t, err)
+		}()
+	}
+	wg.Wait()
 }
