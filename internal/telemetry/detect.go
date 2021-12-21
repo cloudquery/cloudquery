@@ -69,6 +69,6 @@ func macHost() []attribute.KeyValue {
 	}
 
 	return []attribute.KeyValue{
-		attribute.String("cq.machost", hashAttribute(strings.Join(as, ","))),
+		attribute.String("cq.machost", HashAttribute(strings.Join(as, ","))),
 	}
 }

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"strconv"
 	"time"
 
@@ -45,7 +46,7 @@ func initSentry() {
 			}
 			return "release"
 		}(),
-		Release:          client.Version,
+		Release:          "cloudquery@" + client.Version,
 		AttachStacktrace: true,
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))
@@ -56,6 +57,13 @@ func initSentry() {
 			}
 			return ret
 		},
+		ServerName: func() string {
+			hn, err := os.Hostname()
+			if err != nil || hn == "" {
+				return "unknown" // Not returning empty string, otherwise Sentry auto-fill it
+			}
+			return telemetry.HashAttribute(hn)
+		}(),
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
