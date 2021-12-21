@@ -610,7 +610,7 @@ func Test_collectProviderVersions(t *testing.T) {
 }
 
 func Test_CheckForProviderUpdates(t *testing.T) {
-	soruce := "cloudquery"
+	source := "cloudquery"
 	tests := []struct {
 		name      string
 		providers []*config.RequiredProvider
@@ -621,7 +621,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  &soruce,
+					Source:  &source,
 					Version: "0.0.7",
 				},
 			},
@@ -632,7 +632,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test1",
-					Source:  &soruce,
+					Source:  &source,
 					Version: "v0.0.7",
 				},
 			},
@@ -643,7 +643,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  &soruce,
+					Source:  &source,
 					Version: "v0.0.7",
 				},
 			},
@@ -654,7 +654,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  &soruce,
+					Source:  &source,
 					Version: "v0.0.8",
 				},
 			},
@@ -665,7 +665,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  &soruce,
+					Source:  &source,
 					Version: "latest",
 				},
 			},
