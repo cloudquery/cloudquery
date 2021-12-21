@@ -1,5 +1,5 @@
 
-# Table: azure_container_managed_cluster_pip_user_assigned_identity_exceptions
+# Table: azure_container_managed_cluster_pip_user_assigned_id_exceptions
 ManagedClusterPodIdentityException
 ## Columns
 | Name        | Type           | Description  |

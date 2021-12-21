@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	err := docs.GenerateDocs(resources.Provider(), "./docs")
+	err := docs.GenerateDocs(resources.Provider(), "./docs", true)
 	if err != nil {
 		fmt.Sprintf("Failed to geneerate docs: %s", err)
 	}

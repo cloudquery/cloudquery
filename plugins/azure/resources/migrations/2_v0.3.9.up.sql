@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS "azure_container_managed_cluster_pip_user_assigned_identity_exceptions"
+    RENAME TO "azure_container_managed_cluster_pip_user_assigned_id_exceptions";

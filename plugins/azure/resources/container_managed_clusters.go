@@ -432,7 +432,7 @@ func ContainerManagedClusters() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_container_managed_cluster_pip_user_assigned_identity_exceptions",
+				Name:        "azure_container_managed_cluster_pip_user_assigned_id_exceptions",
 				Description: "ManagedClusterPodIdentityException",
 				Resolver:    fetchContainerManagedClusterPipUserAssignedIdentityExceptions,
 				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"managed_cluster_cq_id", "name"}},
