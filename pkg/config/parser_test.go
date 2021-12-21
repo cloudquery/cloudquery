@@ -28,6 +28,25 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
+const testNoSource = `cloudquery {
+  connection {
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
+  }
+  provider "test" {
+    version = "v0.0.0"
+  }
+}
+
+provider "test" {
+  configuration {
+	account "dev" {
+		role_arn ="12312312"
+	}
+	account "ron" {}
+  }
+  resources = ["slow_resource"]
+}`
+
 const testAliasProviderConfig = `cloudquery {
   connection {
     dsn =  "postgres://postgres:pass@localhost:5432/postgres"
@@ -145,12 +164,13 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 	cfg.Providers[0].Configuration = nil
+	source := "cloudquery"
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
 			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
 			Providers: []*RequiredProvider{{
 				Name:    "test",
-				Source:  "cloudquery",
+				Source:  &source,
 				Version: "v0.0.0",
 			}},
 		},
@@ -242,4 +262,32 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 	assert.Nil(t, errs)
 
 	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
+}
+
+func TestParser_LoadConfigNoSourceField(t *testing.T) {
+	p := NewParser()
+	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testNoSource))
+	assert.Nil(t, diags)
+	// Check configuration was added, we will nil it after it to check the whole structure
+	assert.NotNil(t, cfg.Providers[0].Configuration)
+	cfg.Providers[0].Configuration = nil
+	assert.Equal(t, &Config{
+		CloudQuery: CloudQuery{
+			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
+			Providers: []*RequiredProvider{{
+				Name:    "test",
+				Source:  nil,
+				Version: "v0.0.0",
+			}},
+		},
+		Providers: []*Provider{
+			{
+				Name:          "test",
+				Alias:         "test",
+				Resources:     []string{"slow_resource"},
+				Configuration: nil,
+			},
+		},
+	}, cfg)
+	assert.Equal(t, cfg.CloudQuery.Providers[0].String(), "/cq-provider-test@v0.0.0")
 }
