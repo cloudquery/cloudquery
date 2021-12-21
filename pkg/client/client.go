@@ -7,18 +7,21 @@ import (
 	"io"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	"github.com/getsentry/sentry-go"
-
-	"github.com/cloudquery/cloudquery/pkg/client/history"
-
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
+
+	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
+
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
@@ -410,6 +413,15 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
 	// future refactor should probably use a something else rather than error group.
 	errGroup, _ := errgroup.WithContext(ctx)
+	fetchId, err := uuid.NewUUID()
+	if err != nil {
+		return nil, err
+	}
+	fetchSummarizer, err := fetch_summary.NewFetchSummarizer(ctx, c.pool)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
@@ -418,8 +430,16 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
 		}
+
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
+			fs := fetch_summary.FetchSummary{
+				FetchId:         fetchId,
+				ProviderName:    providerConfig.Name,
+				ProviderVersion: providerPlugin.Version(),
+				Start:           time.Now().UTC(),
+			}
+
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
@@ -473,7 +493,9 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						FetchErrors:           fetchErrors,
 						FetchResources:        fetchedResources,
 					}
-					return nil
+					fs.Finish = time.Now().UTC()
+					fs.TotalResourceCount = totalResources
+					return fetchSummarizer.SaveFetchSummary(ctx, fs)
 				}
 				if err != nil {
 					pLog.Error("received provider fetch error", "error", err)
@@ -504,6 +526,16 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
+
+				fs.FetchedResources = append(fs.FetchedResources, fetch_summary.ResourceFetchSummary{
+					ResourceName:                resp.ResourceName,
+					FinishedResources:           resp.FinishedResources,
+					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use string representation of status
+					Error:                       resp.Error,
+					PartialFetchFailedResources: resp.PartialFetchFailedResources,
+					ResourceCount:               resp.ResourceCount,
+					Diagnostics:                 resp.Summary.Diagnostics,
+				})
 			}
 		})
 	}
