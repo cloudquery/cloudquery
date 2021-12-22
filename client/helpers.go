@@ -85,22 +85,7 @@ func ignoreUnsupportedResourceForRegionError(err error) bool {
 	})
 	var dnsErr *net.DNSError
 	if supportedServices != nil && errors.As(err, &dnsErr) && dnsErr.IsNotFound {
-		var parts = make([]string, 0)
-
-		// if error address in local, try to parse the original error
-		if strings.HasPrefix(dnsErr.Name, "127.0.0.53:53") {
-			var re = regexp.MustCompile(`(?m).*Post "https:\/\/(.*)?\.(.*)?\.amazonaws.com\/": dial tcp:.*`)
-			if re.MatchString(err.Error()) {
-				p := re.FindAllStringSubmatch(err.Error(), -1)
-				if len(p) > 0 && len(p[0]) > 0 {
-					parts = append(parts, p[0][1])
-					parts = append(parts, p[0][2])
-				}
-			}
-		} else {
-			parts = strings.Split(dnsErr.Name, ".")
-		}
-
+		parts := strings.Split(dnsErr.Name, ".")
 		if len(parts) < 2 {
 			// usual aws domain has more than 2 parts
 			return false
