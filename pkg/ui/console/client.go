@@ -158,7 +158,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("Received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+	c.c.Logger.Debug("received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -167,7 +167,7 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Info("Policies to run", "policies", policiesToRun)
+	c.c.Logger.Debug("policies to run", "policies", policiesToRun)
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
@@ -217,6 +217,7 @@ func (c Client) DescribePolicies(ctx context.Context, args []string, policyName 
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
+	c.c.Logger.Debug("policies to described", "policies", policiesToDescribe)
 	req := &client.PoliciesRunRequest{
 		Policies:       policiesToDescribe,
 		PolicyName:     policyName,
@@ -482,8 +483,10 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	}
 	if v != nil {
 		ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
+		c.c.Logger.Debug("update check succeeded", "new_version", v.String())
+	} else {
+		c.c.Logger.Debug("update check succeeded, no new version")
 	}
-	c.c.Logger.Debug("update check succeeded", "new_version", v.String())
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {

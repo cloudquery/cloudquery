@@ -3,11 +3,10 @@ package policy
 import (
 	"context"
 	"fmt"
-	"sort"
-	"strings"
-
 	"net/url"
 	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -81,11 +80,16 @@ func NewManager(policyDir string, pool *pgxpool.Pool, logger hclog.Logger) Manag
 	}
 }
 
+func (m *ManagerImpl) with(args ...interface{}) {
+	m.logger = m.logger.With(args...)
+}
+
 func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies Policies) (*ExecutionResult, error) {
 	// Acquire connection from the connection pool
 	conn, err := m.pool.Acquire(ctx)
+	m.logger.Trace("acquired connection from the connection pool", "err", err)
 	if err != nil {
-		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %s", err.Error())
+		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
 	}
 	defer conn.Release()
 
@@ -94,6 +98,7 @@ func (m *ManagerImpl) Run(ctx context.Context, execReq *ExecuteRequest, policies
 		finishedQueries   = 0
 	)
 
+	m.logger.Info("policy Queries count", "total", totalQueriesToRun)
 	// set the progress total queries to run
 	if execReq.UpdateCallback != nil {
 		execReq.UpdateCallback(Update{
@@ -175,6 +180,7 @@ func (m *ManagerImpl) DownloadPolicy(ctx context.Context, p *RemotePolicy) error
 }
 
 func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *ExecuteRequest) (Policies, error) {
+	m.logger.Info("loading policy", "policy", p.Name, "version", p.Version, "type", p.Type, "subPath", p.SubPath)
 	switch p.Type {
 	case config.Hub:
 		remotePolicy, err := ParsePolicyFromSource(p)
@@ -198,7 +204,7 @@ func (m *ManagerImpl) Load(ctx context.Context, p *config.Policy, execReq *Execu
 }
 
 func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (Policies, error) {
-
+	m.logger.Debug("loading local policy", "source", cfg.Source)
 	osFs := file.NewOsFs()
 	var policyFolder = filepath.Dir(cfg.Source)
 	var policyFilePath = cfg.Source
@@ -225,6 +231,7 @@ func (m *ManagerImpl) loadLocalPolicy(cfg *config.Policy) (Policies, error) {
 }
 
 func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (Policies, error) {
+	m.logger.Debug("loading inline policy", "source", cfg.Source)
 	parser := config.NewParser()
 
 	policiesRaw, diags := parser.LoadFromSource("policy.hcl", []byte(cfg.Source), config.SourceHCL)
@@ -235,6 +242,11 @@ func (m *ManagerImpl) loadInlinePolicy(cfg *config.Policy) (Policies, error) {
 }
 
 func (m *ManagerImpl) loadRemotePolicy(ctx context.Context, remotePolicy *RemotePolicy, execReq *ExecuteRequest) (Policies, error) {
+	policyUrl, err := remotePolicy.GetURL()
+	if err != nil {
+		return nil, err
+	}
+	m.logger.Debug("downloading remote policy", "policy_url", policyUrl)
 	if err := m.DownloadPolicy(ctx, remotePolicy); err != nil {
 		return nil, err
 	}

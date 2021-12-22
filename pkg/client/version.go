@@ -14,9 +14,11 @@ import (
 	"github.com/spf13/afero"
 )
 
+const DefaultVersion = "development"
+
 var (
 	// Version variable is injected in build time
-	Version = "development"
+	Version = DefaultVersion
 )
 
 const (

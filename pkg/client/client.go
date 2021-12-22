@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/getsentry/sentry-go"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 
@@ -77,6 +78,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
 	TotalResourcesFetched uint64
@@ -465,6 +467,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					}
 					fetchSummaries <- ProviderFetchSummary{
 						ProviderName:          providerConfig.Name,
+						Version:               providerPlugin.Version(),
 						TotalResourcesFetched: totalResources,
 						PartialFetchErrors:    partialFetchResults,
 						FetchErrors:           fetchErrors,
@@ -517,7 +520,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		response.ProviderFetchSummary[ps.ProviderName] = ps
 	}
 
-	collectFetchSummaryStats(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -725,11 +728,12 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	results := make([]*policy.ExecutionResult, 0)
 
 	for _, policyConfig := range req.Policies {
+		c.Logger = c.Logger.With("policy", policyConfig.Name, "version", policyConfig.Version, "type", policyConfig.Type, "subPath", policyConfig.SubPath)
 		result, err := c.runPolicy(ctx, policyConfig, req)
 
-		c.Logger.Debug("Policy execution finished", "name", policyConfig.Name, "err", err)
+		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
-			c.Logger.Error("Policy execution finished with error", "name", policyConfig.Name, "err", err)
+			c.Logger.Error("policy execution finished with error", "err", err)
 			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
@@ -782,11 +786,13 @@ func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (pol
 }
 
 func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
-	c.Logger.Info("Loading policy", "args", policyConfig)
+	c.Logger.Info("preparing to run policy")
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
 	})
+	c.Logger.Debug("collected policy versions", "versions", versions)
 
 	if err != nil {
 		return nil, err
@@ -801,14 +807,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	}
 
 	// load the policy
-	c.Logger.Info("Loading the policy", "args", policyConfig)
 	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
 	if err != nil {
 		c.Logger.Error("failed loading the policy", "err", err)
 		return nil, fmt.Errorf("failed to load policy: %w", err)
 	}
 
-	c.Logger.Info("Running policy", "args", policyConfig)
+	c.Logger.Info("running the policy")
 	result, err := c.PolicyManager.Run(ctx, execReq, policies)
 	if err != nil {
 		return nil, err
@@ -821,13 +826,13 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 			Version:         policyConfig.Version,
 			FinishedQueries: 0,
 			QueriesCount:    0,
-			Error:           "Execution stops",
+			Error:           "Execution stopped",
 		})
 	}
 
 	// Store output in file if requested
 	if req.OutputDir != "" {
-		c.Logger.Info("Writing policy to output directory", "args", policyConfig)
+		c.Logger.Info("writing policy to output directory")
 		err = policy.GenerateExecutionResultFile(result, req.OutputDir)
 
 		if err != nil {
@@ -1027,8 +1032,8 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 	return ver, nil
 }
 
-// collectFetchSummaryStats reads provided fetch summaries and persists statistics into the span
-func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+// reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
+func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
 	for _, ps := range fetchSummaries {
@@ -1042,6 +1047,26 @@ func collectFetchSummaryStats(span otrace.Span, fetchSummaries map[string]Provid
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
+
+		for _, e := range ps.Diagnostics() {
+			if e.Severity() == diag.IGNORE {
+				continue
+			}
+
+			sentry.WithScope(func(scope *sentry.Scope) {
+				scope.SetTags(map[string]string{
+					"diag_type":        e.Type().String(),
+					"provider":         ps.ProviderName,
+					"provider_version": ps.Version,
+					"resource":         e.Description().Resource,
+				})
+				scope.SetExtra("detail", e.Description().Detail)
+				if e.Severity() == diag.WARNING {
+					scope.SetLevel(sentry.LevelWarning)
+				}
+				sentry.CaptureException(e)
+			})
+		}
 	}
 
 	span.SetAttributes(

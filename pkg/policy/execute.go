@@ -5,14 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+
 	"path/filepath"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
@@ -45,6 +46,8 @@ type Executor struct {
 	// Connection to the database
 	conn *pgxpool.Conn
 	log  hclog.Logger
+
+	PolicyPath []string
 
 	// progressUpdate
 	progressUpdate UpdateCallback
@@ -102,11 +105,24 @@ func NewExecutor(conn *pgxpool.Conn, log hclog.Logger, progressUpdate UpdateCall
 		conn:           conn,
 		log:            log,
 		progressUpdate: progressUpdate,
+		PolicyPath:     []string{},
+	}
+}
+
+func (e *Executor) with(policy string, args ...interface{}) *Executor {
+	policyPath := e.PolicyPath
+	policyPath = append(policyPath, policy)
+	return &Executor{
+		conn:           e.conn,
+		log:            e.log.With("policy", strings.Join(policyPath, "/")).With(args...),
+		progressUpdate: e.progressUpdate,
+		PolicyPath:     policyPath,
 	}
 }
 
 // executePolicy executes given policy and the related sub queries/views.
-func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallback, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
+func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
+	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
@@ -122,8 +138,11 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 	for _, p := range policy.Policies {
 		if len(selector) == 0 || p.Name == selector[0] {
 			found = true
-			r, err := e.executePolicy(ctx, progressUpdate, req, p, rest)
+			executor := e.with(p.Name)
+			executor.log.Info("starting policy execution")
+			r, err := executor.executePolicy(ctx, req, p, rest)
 			if err != nil {
+				executor.log.Error("failed to execute policy", "err", err)
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && r.Passed
@@ -134,18 +153,21 @@ func (e *Executor) executePolicy(ctx context.Context, progressUpdate UpdateCallb
 
 		}
 	}
+
 	for _, q := range policy.Queries {
 		if len(selector) == 0 || q.Name == selector[0] {
 			found = true
+			e.log = e.log.With("query", q.Name)
 			qr, err := e.executeQuery(ctx, q)
 			if err != nil {
-				e.log.Error("failed to execute query", "policy", policy.Name, "err", err)
+				e.log.Error("failed to execute query", "err", err)
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
 			}
 			total.Passed = total.Passed && qr.Passed
 			total.Results = append(total.Results, qr)
-			if progressUpdate != nil {
-				progressUpdate(Update{
+			e.log.Info("Query finished with result", "passed", qr.Passed)
+			if e.progressUpdate != nil {
+				e.progressUpdate(Update{
 					FinishedQueries: 1,
 				})
 			}
@@ -182,6 +204,7 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 
 // executeQuery executes the given query and returns the result.
 func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
+	e.log.Trace("query", q.Query)
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", q.Name, err)
@@ -215,7 +238,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, er
 // createViews creates temporary views for given config.Policy, and any views defined by sub-policies
 func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
-		e.log.Debug("creating policy view", "policy", policy.Name, "view", v.Name)
+		e.log.Debug("creating policy view", "view", v.Name)
 		if err := e.createView(ctx, v); err != nil {
 			return fmt.Errorf("%s/%s/%w", policy.Name, v.Name, err)
 		}
@@ -245,7 +268,8 @@ func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, pol
 		pnames[i] = p.Name
 		if len(selector) == 0 || selector[0] == p.Name {
 			found = true
-			r, err := e.executePolicy(ctx, e.progressUpdate, req, p, rest)
+			executor := e.with(p.Name)
+			r, err := executor.executePolicy(ctx, req, p, rest)
 			if err != nil {
 				return nil, err
 			}

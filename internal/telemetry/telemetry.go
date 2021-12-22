@@ -27,6 +27,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
+const timeout = 2 * time.Second
+
 // Client is the telemetry client.
 type Client struct {
 	// OpenTelemetry resource entry. Used in optional args.
@@ -222,7 +224,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		semconv.ServiceVersionKey.String(c.version),
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
-		attribute.Bool("ci", isCI()),
+		attribute.Bool("ci", IsCI()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -235,7 +237,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
 
 	if hn, err := os.Hostname(); err == nil && hn != "" {
-		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
+		attr = append(attr, semconv.HostNameKey.String(HashAttribute(hn)))
 	}
 	attr = append(attr, osInfo()...)
 	attr = append(attr, macHost()...)
@@ -268,7 +270,7 @@ func (c *Client) NewRandomId() bool {
 func (c *Client) httpExporter(ctx context.Context) (trace.SpanExporter, error) {
 	opts := []otlptracehttp.Option{
 		otlptracehttp.WithEndpoint(c.endpoint),
-		otlptracehttp.WithTimeout(500 * time.Millisecond),
+		otlptracehttp.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracehttp.WithInsecure())
@@ -283,11 +285,11 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 		otlptracegrpc.WithEndpoint(c.endpoint),
 		otlptracegrpc.WithDialOption(grpc.WithBlock()),
 		otlptracegrpc.WithDialOption(grpc.WithContextDialer(func(_ context.Context, addr string) (net.Conn, error) {
-			return net.DialTimeout("tcp", addr, 500*time.Millisecond)
+			return net.DialTimeout("tcp", addr, timeout)
 		})),
 		// otlptracegrpc.WithDialOption(grpc.WithReturnConnectionError()),
 		// otlptracegrpc.WithDialOption(grpc.FailOnNonTempDialError(true)),
-		otlptracegrpc.WithTimeout(500 * time.Millisecond),
+		otlptracegrpc.WithTimeout(timeout),
 	}
 	if c.insecureEndpoint {
 		opts = append(opts, otlptracegrpc.WithInsecure())
@@ -296,8 +298,8 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 	return otlptracegrpc.New(ctx, opts...)
 }
 
-// isCI determines if we're running under a CI env by checking CI-specific env vars
-func isCI() bool {
+// IsCI determines if we're running under a CI env by checking CI-specific env vars
+func IsCI() bool {
 	for _, v := range []string{
 		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
 	} {
@@ -307,6 +309,13 @@ func isCI() bool {
 	}
 
 	return false
+}
+
+// HashAttribute creates a one-way hash from an attribute
+func HashAttribute(value string) string {
+	s := sha1.New()
+	_, _ = s.Write([]byte(value))
+	return fmt.Sprintf("%0x", s.Sum(nil))
 }
 
 type shutdownable interface {
@@ -334,10 +343,4 @@ func (e *errorHandler) Handle(err error) {
 
 func genRandomId() string {
 	return uuid.NewV4().String()
-}
-
-func hashAttribute(value string) string {
-	s := sha1.New()
-	_, _ = s.Write([]byte(value))
-	return fmt.Sprintf("%0x", s.Sum(nil))
 }
