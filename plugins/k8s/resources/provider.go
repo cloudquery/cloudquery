@@ -2,6 +2,7 @@ package resources
 
 import (
 	"github.com/cloudquery/cq-provider-k8s/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -16,19 +17,23 @@ func Provider() *provider.Provider {
 			return &client.Config{}
 		},
 		ResourceMap: map[string]*schema.Table{
+			"apps.daemon_sets":            AppsDaemonSets(),
+			"apps.deployments":            AppsDeployments(),
+			"apps.replica_sets":           AppsReplicaSets(),
+			"apps.stateful_sets":          AppsStatefulSets(),
+			"batch.cron_jobs":             BatchCronJobs(),
+			"batch.jobs":                  BatchJobs(),
+			"core.endpoints":              CoreEndpoints(),
+			"core.limit_ranges":           CoreLimitRanges(),
 			"core.namespaces":             CoreNamespaces(),
 			"core.nodes":                  CoreNodes(),
 			"core.pods":                   CorePods(),
+			"core.resource_quotas":        CoreResourceQuotas(),
+			"core.service_accounts":       CoreServiceAccounts(),
 			"core.services":               CoreServices(),
-			"batch.jobs":                  BatchJobs(),
-			"apps.stateful_sets":          AppsStatefulSets(),
-			"apps.replica_sets":           AppsReplicaSets(),
-			"apps.deployments":            AppsDeployments(),
-			"rbac.roles":                  RbacRoles(),
-			"rbac.role_bindings":          RbacRoleBindings(),
-			"apps.daemon_sets":            AppsDaemonSets(),
-			"batch.cron_jobs":             BatchCronJobs(),
 			"networking.network_policies": NetworkingNetworkPolicies(),
+			"rbac.role_bindings":          RbacRoleBindings(),
+			"rbac.roles":                  RbacRoles(),
 		},
 	}
 }

@@ -2,13 +2,15 @@ package integration_tests
 
 import (
 	"fmt"
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/resources"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
-	"github.com/hashicorp/go-hclog"
 	"os"
 	"testing"
+
+	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-k8s/resources"
+	"github.com/hashicorp/go-hclog"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
 // IntegrationTestsEnabledVar is the name of the environment variable that enables integration tests from this package.
