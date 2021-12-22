@@ -37,7 +37,7 @@ func (s stringSet) Len() int {
 }
 
 func (s stringSet) ToList() []string {
-	r := make([]string, s.Len())
+	r := make([]string, 0, s.Len())
 	for k := range s {
 		r = append(r, k)
 	}

@@ -40,7 +40,6 @@ func TestDriftWithoutTheCloud(t *testing.T) {
 	logger := hclog.New(&hclog.LoggerOptions{})
 	ctx := context.Background()
 	tmpdir := t.TempDir()
-
 	for _, providerName := range providersToTestForDrift {
 		t.Run(providerName, func(t *testing.T) {
 			c := prepareClient(t, ctx, providerName, tmpdir, logger)
@@ -210,7 +209,7 @@ func TestDriftWithTheCloud(t *testing.T) {
 				require.Nil(t, mr.Error)
 				result, ok := mr.Result.(*drift.Results)
 				require.True(t, ok, "result of module call is not *drift.Results")
-				assertEqual(t, result, func(r *drift.Result) drift.ResourceList { return r.Equal }, knownResources)
+				assertContained(t, result, func(r *drift.Result) drift.ResourceList { return r.Equal }, knownResources)
 			})
 		})
 	}
@@ -252,21 +251,6 @@ func assertContained(t *testing.T, d *drift.Results, extractor func(*drift.Resul
 		t.Run(resourceType, func(t *testing.T) {
 			diff := stringSetFromList(got[resourceType]).Sub(stringSetFromList(items))
 			assert.Zerof(t, diff.Len(), "ids missing: %v", diff.ToList())
-		})
-	}
-}
-
-func assertEqual(t *testing.T, d *drift.Results, extractor func(*drift.Result) drift.ResourceList, known map[string][]string) {
-	got := make(map[string][]string)
-	for _, r := range d.Data {
-		got[r.ResourceType] = append(got[r.ResourceType], extractor(r).IDs()...)
-	}
-
-	for resourceType, items := range known {
-		t.Run(resourceType, func(t *testing.T) {
-			got := stringSetFromList(got[resourceType])
-			want := stringSetFromList(items)
-			assert.Truef(t, got.Eq(want), "sets are different. first: %v, second: %v", got.ToList(), want.ToList())
 		})
 	}
 }
