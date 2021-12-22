@@ -2,11 +2,14 @@ package resources
 
 import (
 	"context"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
+	smithy "github.com/aws/smithy-go"
 )
 
 func ConfigConformancePack() *schema.Table {
@@ -85,10 +88,17 @@ func ConfigConformancePack() *schema.Table {
 func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
+	var ae smithy.APIError
 	for {
 		resp, err := c.Services().ConfigService.DescribeConformancePacks(ctx, &config, func(options *configservice.Options) {
 			options.Region = c.Region
 		})
+
+		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
+		if c.Region == "af-south-1" && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
+			return nil
+		}
+
 		if err != nil {
 			return err
 		}
