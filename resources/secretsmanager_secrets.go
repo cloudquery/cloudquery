@@ -150,9 +150,10 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 			return err
 		}
 
+		var secrets []WrappedSecret
+
 		// get more details about the secret
 		for _, n := range response.SecretList {
-
 			cfg := secretsmanager.DescribeSecretInput{
 				SecretId: n.ARN,
 			}
@@ -163,14 +164,14 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 				return err
 			}
 
-			secret := WrappedSecret{
-				SecretListEntry:   &n,
+			secrets = append(secrets, WrappedSecret{
+				SecretListEntry:   n,
 				ReplicationStatus: response.ReplicationStatus,
 				RotationRules:     response.RotationRules,
-			}
-
-			res <- secret
+			})
 		}
+
+		res <- secrets
 
 		if aws.ToString(response.NextToken) == "" {
 			break
@@ -241,7 +242,7 @@ func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, re
 }
 
 type WrappedSecret struct {
-	*types.SecretListEntry
+	types.SecretListEntry
 	RotationRules     *types.RotationRulesType
 	ReplicationStatus []types.ReplicationStatusType
 }
