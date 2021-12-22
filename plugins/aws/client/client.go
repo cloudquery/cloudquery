@@ -467,7 +467,9 @@ func newRetryer(maxRetries int, maxBackoff int) func() aws.Retryer {
 func filterDisabledRegions(regions []string, enabledRegions []types.Region) []string {
 	regionsMap := map[string]bool{}
 	for _, r := range enabledRegions {
-		regionsMap[*r.RegionName] = true
+		if r.RegionName != nil && r.OptInStatus != nil && *r.OptInStatus != "not-opted-in" {
+			regionsMap[*r.RegionName] = true
+		}
 	}
 
 	var filteredRegions []string
