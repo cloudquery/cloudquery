@@ -762,12 +762,12 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on getBucketReplication", "bucket", bucketName, "err", err)
-			return nil
-		}
 		var ae smithy.APIError
 		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchTagSet" {
+			return nil
+		}
+		if client.IgnoreAccessDeniedServiceDisabled(err) {
+			meta.Logger().Warn("received access denied on GetBucketTagging", "bucket", bucketName, "err", err)
 			return nil
 		}
 		return err
