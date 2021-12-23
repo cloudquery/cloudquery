@@ -82,6 +82,6 @@ func setSentryVars(traceID string) {
 	scope.SetTags(map[string]string{
 		"terminal": strconv.FormatBool(ui.IsTerminal()),
 		"ci":       strconv.FormatBool(telemetry.IsCI()),
-		"faas":   strconv.FormatBool(telemetry.IsFaaS()),
+		"faas":     strconv.FormatBool(telemetry.IsFaaS()),
 	})
 }
