@@ -19,7 +19,7 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 		Name:                 "aws_wafv2_managed_rule_groups",
 		Description:          "High-level information about a managed rule group, returned by ListAvailableManagedRuleGroups",
 		Resolver:             fetchWafv2ManagedRuleGroups,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveDescribeManagedRuleGroup,

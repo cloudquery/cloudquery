@@ -15,7 +15,7 @@ func DirectconnectLags() *schema.Table {
 		Name:         "aws_directconnect_lags",
 		Description:  "Information about Direct Connect Link Aggregation Group (LAG)",
 		Resolver:     fetchDirectconnectLags,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

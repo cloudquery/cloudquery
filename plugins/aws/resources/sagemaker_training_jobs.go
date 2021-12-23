@@ -17,7 +17,7 @@ func SagemakerTrainingJobs() *schema.Table {
 		Name:         "aws_sagemaker_training_jobs",
 		Description:  "Provides summary information about a training job.",
 		Resolver:     fetchSagemakerTrainingJobs,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

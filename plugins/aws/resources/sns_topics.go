@@ -17,7 +17,7 @@ func SnsTopics() *schema.Table {
 		Name:                 "aws_sns_topics",
 		Description:          "AWS SNS topic",
 		Resolver:             fetchSnsTopics,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("sns"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveTopicAttributes,

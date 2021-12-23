@@ -16,7 +16,7 @@ func Apigatewayv2Apis() *schema.Table {
 		Name:         "aws_apigatewayv2_apis",
 		Description:  "Represents an API.",
 		Resolver:     fetchApigatewayv2Apis,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -17,7 +17,7 @@ func RdsInstances() *schema.Table {
 		Name:         "aws_rds_instances",
 		Description:  "Contains the details of an Amazon RDS DB instance",
 		Resolver:     fetchRdsInstances,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

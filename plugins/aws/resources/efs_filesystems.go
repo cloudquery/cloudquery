@@ -15,7 +15,7 @@ func EfsFilesystems() *schema.Table {
 		Name:         "aws_efs_filesystems",
 		Description:  "A description of the file system.",
 		Resolver:     fetchEfsFilesystems,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

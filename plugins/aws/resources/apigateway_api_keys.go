@@ -14,7 +14,7 @@ func ApigatewayAPIKeys() *schema.Table {
 		Name:         "aws_apigateway_api_keys",
 		Description:  "A resource that can be distributed to callers for executing Method resources that require an API key.",
 		Resolver:     fetchApigatewayApiKeys,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

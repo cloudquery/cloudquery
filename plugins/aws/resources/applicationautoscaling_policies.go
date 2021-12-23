@@ -16,7 +16,7 @@ func ApplicationautoscalingPolicies() *schema.Table {
 		Name:         "aws_applicationautoscaling_policies",
 		Description:  "Information about a scaling policy to use with Application Auto Scaling",
 		Resolver:     fetchApplicationautoscalingPolicies,
-		Multiplex:    client.AccountRegionNamespaceMultiplex,
+		Multiplex:    client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

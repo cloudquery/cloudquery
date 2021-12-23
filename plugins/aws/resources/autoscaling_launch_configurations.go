@@ -15,7 +15,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 		Name:         "aws_autoscaling_launch_configurations",
 		Description:  "Describes a launch configuration.",
 		Resolver:     fetchAutoscalingLaunchConfigurations,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

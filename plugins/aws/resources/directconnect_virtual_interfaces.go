@@ -15,7 +15,7 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 		Name:         "aws_directconnect_virtual_interfaces",
 		Description:  "Information about a virtual interface. A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network",
 		Resolver:     fetchDirectconnectVirtualInterfaces,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

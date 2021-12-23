@@ -16,7 +16,7 @@ func RdsEventSubscriptions() *schema.Table {
 		Name:         "aws_rds_event_subscriptions",
 		Description:  "Contains the results of a successful invocation of the DescribeEventSubscriptions action.",
 		Resolver:     fetchRdsEventSubscriptions,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

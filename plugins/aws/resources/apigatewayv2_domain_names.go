@@ -18,7 +18,7 @@ func Apigatewayv2DomainNames() *schema.Table {
 		Name:         "aws_apigatewayv2_domain_names",
 		Description:  "Represents a domain name.",
 		Resolver:     fetchApigatewayv2DomainNames,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "domain_name"}},

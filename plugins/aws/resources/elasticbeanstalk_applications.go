@@ -13,7 +13,7 @@ func ElasticbeanstalkApplications() *schema.Table {
 		Name:         "aws_elasticbeanstalk_applications",
 		Description:  "Describes the properties of an application.",
 		Resolver:     fetchElasticbeanstalkApplications,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn", "date_created"}},

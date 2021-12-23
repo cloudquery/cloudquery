@@ -15,7 +15,7 @@ func Ec2CustomerGateways() *schema.Table {
 		Name:         "aws_ec2_customer_gateways",
 		Description:  "Describes a customer gateway.",
 		Resolver:     fetchEc2CustomerGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -19,7 +19,7 @@ func Wafv2RuleGroups() *schema.Table {
 		Name:         "aws_wafv2_rule_groups",
 		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
 		Resolver:     fetchWafv2RuleGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

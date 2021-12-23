@@ -15,7 +15,7 @@ func RdsClusterParameterGroups() *schema.Table {
 		Name:         "aws_rds_cluster_parameter_groups",
 		Description:  "Contains the details of an Amazon RDS DB cluster parameter group",
 		Resolver:     fetchRdsClusterParameterGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

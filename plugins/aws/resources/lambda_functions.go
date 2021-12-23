@@ -20,7 +20,7 @@ func LambdaFunctions() *schema.Table {
 		Name:                 "aws_lambda_functions",
 		Description:          "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
 		Resolver:             fetchLambdaFunctions,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolvePolicyCodeSigningConfig,

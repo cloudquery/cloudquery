@@ -15,7 +15,7 @@ func EcrRepositories() *schema.Table {
 		Name:         "aws_ecr_repositories",
 		Description:  "An object representing a repository.",
 		Resolver:     fetchEcrRepositories,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("api.ecr"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},

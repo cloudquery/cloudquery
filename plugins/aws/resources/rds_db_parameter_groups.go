@@ -15,7 +15,7 @@ func RdsDbParameterGroups() *schema.Table {
 		Name:         "aws_rds_db_parameter_groups",
 		Description:  "Contains the details of an Amazon RDS DB parameter group",
 		Resolver:     fetchRdsDbParameterGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

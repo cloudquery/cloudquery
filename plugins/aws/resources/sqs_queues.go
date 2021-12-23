@@ -16,7 +16,7 @@ func SQSQueues() *schema.Table {
 		Name:         "aws_sqs_queues",
 		Description:  "Simple Queue Service",
 		Resolver:     fetchSQSQueues,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("sqs"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

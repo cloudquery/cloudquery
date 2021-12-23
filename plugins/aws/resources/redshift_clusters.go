@@ -16,7 +16,7 @@ func RedshiftClusters() *schema.Table {
 		Name:         "aws_redshift_clusters",
 		Description:  "Describes a cluster.",
 		Resolver:     fetchRedshiftClusters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -13,7 +13,7 @@ func Ec2VpnGateways() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_vpn_gateways",
 		Resolver:     fetchEc2VpnGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

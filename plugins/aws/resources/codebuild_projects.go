@@ -17,7 +17,7 @@ func CodebuildProjects() *schema.Table {
 		Name:         "aws_codebuild_projects",
 		Description:  "Information about a build project.",
 		Resolver:     fetchCodebuildProjects,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("codebuild"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

@@ -16,7 +16,7 @@ func SagemakerNotebookInstances() *schema.Table {
 		Name:         "aws_sagemaker_notebook_instances",
 		Description:  "Provides summary information for an Amazon SageMaker notebook instance.",
 		Resolver:     fetchSagemakerNotebookInstances,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

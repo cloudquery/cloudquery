@@ -17,7 +17,7 @@ func RdsDbSnapshots() *schema.Table {
 		Name:         "aws_rds_db_snapshots",
 		Description:  "Contains the details of an Amazon RDS DB snapshot",
 		Resolver:     fetchRdsDbSnapshots,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

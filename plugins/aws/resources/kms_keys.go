@@ -16,7 +16,7 @@ func KmsKeys() *schema.Table {
 		Name:                 "aws_kms_keys",
 		Description:          "Contains information about each entry in the key list.",
 		Resolver:             fetchKmsKeys,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("kms"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveKmsKey,

@@ -11,30 +11,42 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
-func AccountRegionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
-	client := meta.(*Client)
-	for accountID := range client.ServicesManager.services {
-		for _, region := range client.regions {
-			l = append(l, client.withAccountIDAndRegion(accountID, region))
+func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		var l = make([]schema.ClientMeta, 0)
+		client := meta.(*Client)
+		for accountID := range client.ServicesManager.services {
+			for _, region := range client.regions {
+				if !isSupportedServiceForRegion(service, region) {
+					meta.Logger().Trace("region is not supported for service", "service", service, "region", region)
+					continue
+				}
+				l = append(l, client.withAccountIDAndRegion(accountID, region))
+			}
 		}
+		return l
 	}
-	return l
 }
 
 var AllNamespaces = []string{ // this is only used in applicationautoscaling
 	"comprehend", "rds", "sagemaker", "appstream", "elasticmapreduce", "dynamodb", "lambda", "ecs", "cassandra", "ec2", "neptune", "kafka", "custom-resource", "elasticache",
 }
 
-func AccountRegionNamespaceMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
-	client := meta.(*Client)
-	for accountID := range client.ServicesManager.services {
-		for _, region := range client.regions {
-			for _, ns := range AllNamespaces {
-				l = append(l, client.withAccountIDRegionAndNamespace(accountID, region, ns))
+func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		var l = make([]schema.ClientMeta, 0)
+		client := meta.(*Client)
+		for accountID := range client.ServicesManager.services {
+			for _, region := range client.regions {
+				for _, ns := range AllNamespaces {
+					if !isSupportedServiceForRegion(service, region) {
+						meta.Logger().Trace("region is not supported for service", "service", service, "region", region)
+						continue
+					}
+					l = append(l, client.withAccountIDRegionAndNamespace(accountID, region, ns))
+				}
 			}
 		}
+		return l
 	}
-	return l
 }

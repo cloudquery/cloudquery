@@ -13,7 +13,7 @@ func DirectconnectVirtualGateways() *schema.Table {
 		Name:         "aws_directconnect_virtual_gateways",
 		Description:  "Information about a virtual private gateway for a private virtual interface.",
 		Resolver:     fetchDirectconnectVirtualGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -16,7 +16,7 @@ func Ec2EbsSnapshots() *schema.Table {
 		Name:         "aws_ec2_ebs_snapshots",
 		Description:  "Describes a snapshot.",
 		Resolver:     fetchEc2EbsSnapshots,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "snapshot_id"}},

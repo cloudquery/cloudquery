@@ -16,7 +16,7 @@ func RdsDbSecurityGroups() *schema.Table {
 		Name:         "aws_rds_db_security_groups",
 		Description:  "Contains the details for an Amazon RDS DB security group",
 		Resolver:     fetchRdsDbSecurityGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

@@ -17,7 +17,7 @@ func SsmDocuments() *schema.Table {
 		Name:                 "aws_ssm_documents",
 		Description:          "Describes a Amazon Web Services Systems Manager document (SSM document).",
 		Resolver:             fetchSsmDocuments,
-		Multiplex:            client.AccountRegionMultiplex,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("ssm"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: ssmDocumentPostResolver,

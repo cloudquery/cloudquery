@@ -15,7 +15,7 @@ func Ec2RouteTables() *schema.Table {
 		Name:         "aws_ec2_route_tables",
 		Description:  "Describes a route table.",
 		Resolver:     fetchEc2RouteTables,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

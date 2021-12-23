@@ -16,7 +16,7 @@ func Ec2VpcEndpoints() *schema.Table {
 		Name:         "aws_ec2_vpc_endpoints",
 		Description:  "Describes a VPC endpoint.",
 		Resolver:     fetchEc2VpcEndpoints,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -17,7 +17,7 @@ func AutoscalingGroups() *schema.Table {
 		Name:         "aws_autoscaling_groups",
 		Description:  "Describes an Auto Scaling group.",
 		Resolver:     fetchAutoscalingGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

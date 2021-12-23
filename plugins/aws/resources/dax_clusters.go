@@ -16,7 +16,7 @@ func DaxClusters() *schema.Table {
 		Name:         "aws_dax_clusters",
 		Description:  "Information about a DAX cluster.",
 		Resolver:     fetchDaxClusters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("dax"),
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -228,28 +228,6 @@ func DaxClusters() *schema.Table {
 func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().DAX
-
-	// DAX is only available in the following regions.
-	// TODO: Automate with https://github.com/cloudquery/cq-provider-aws/issues/263
-	if _, ok := map[string]struct{}{
-		"ap-northeast-1": {},
-		"ap-southeast-1": {},
-		"ap-southeast-2": {},
-		"ap-south-1":     {},
-		"cn-northwest-1": {},
-		"cn-north-1":     {},
-		"eu-central-1":   {},
-		"eu-west-1":      {},
-		"eu-west-2":      {},
-		"eu-west-3":      {},
-		"sa-east-1":      {},
-		"us-east-1":      {},
-		"us-east-2":      {},
-		"us-west-1":      {},
-		"us-west-2":      {},
-	}[c.Region]; !ok {
-		return nil
-	}
 
 	config := dax.DescribeClustersInput{}
 	for {

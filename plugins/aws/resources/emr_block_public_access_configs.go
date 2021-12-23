@@ -14,7 +14,7 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_emr_block_public_access_configs",
 		Resolver:     fetchEmrBlockPublicAccessConfigs,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},

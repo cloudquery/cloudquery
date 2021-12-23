@@ -16,7 +16,7 @@ func EcsClusters() *schema.Table {
 		Name:         "aws_ecs_clusters",
 		Description:  "A regional grouping of one or more container instances on which you can run task requests",
 		Resolver:     fetchEcsClusters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ecs"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
