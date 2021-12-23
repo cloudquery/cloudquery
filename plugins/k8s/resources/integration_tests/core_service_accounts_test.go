@@ -11,7 +11,7 @@ import (
 )
 
 func TestIntegrationCoreServiceAccounts(t *testing.T) {
-	k8sTestIntegrationHelper(t, resources.CoreServices(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+	k8sTestIntegrationHelper(t, resources.CoreServiceAccounts(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
 			Name: "k8s_core_service_accounts",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {

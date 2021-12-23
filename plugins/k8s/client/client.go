@@ -3,11 +3,12 @@ package client
 import (
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -124,18 +125,22 @@ func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, 
 func initServices(client *kubernetes.Clientset) Services {
 	return Services{
 		Client:          client,
+		CronJobs:        client.BatchV1().CronJobs(""),
+		DaemonSets:      client.AppsV1().DaemonSets(""),
+		Deployments:     client.AppsV1().Deployments(""),
+		Endpoints:       client.CoreV1().Endpoints(""),
+		Jobs:            client.BatchV1().Jobs(""),
+		LimitRanges:     client.CoreV1().LimitRanges(""),
 		Namespaces:      client.CoreV1().Namespaces(),
+		NetworkPolicies: client.NetworkingV1().NetworkPolicies(""),
 		Nodes:           client.CoreV1().Nodes(),
 		Pods:            client.CoreV1().Pods(""),
-		Services:        client.CoreV1().Services(""),
-		Jobs:            client.BatchV1().Jobs(""),
-		DaemonSets:      client.AppsV1().DaemonSets(""),
-		StatefulSets:    client.AppsV1().StatefulSets(""),
 		ReplicaSets:     client.AppsV1().ReplicaSets(""),
-		Roles:           client.RbacV1().Roles(""),
+		ResourceQuotas:  client.CoreV1().ResourceQuotas(""),
 		RoleBindings:    client.RbacV1().RoleBindings(""),
-		Deployments:     client.AppsV1().Deployments(""),
-		NetworkPolicies: client.NetworkingV1().NetworkPolicies(""),
-		CronJobs:        client.BatchV1().CronJobs(""),
+		Roles:           client.RbacV1().Roles(""),
+		ServiceAccounts: client.CoreV1().ServiceAccounts(""),
+		Services:        client.CoreV1().Services(""),
+		StatefulSets:    client.AppsV1().StatefulSets(""),
 	}
 }

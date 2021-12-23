@@ -11,7 +11,7 @@ import (
 )
 
 func TestIntegrationCoreEndpoints(t *testing.T) {
-	k8sTestIntegrationHelper(t, resources.CoreServices(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
+	k8sTestIntegrationHelper(t, resources.CoreEndpoints(), nil, func(res *providertest.ResourceIntegrationTestData) providertest.ResourceIntegrationVerification {
 		return providertest.ResourceIntegrationVerification{
 			Name: "k8s_core_endpoints",
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
