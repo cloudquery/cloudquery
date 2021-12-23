@@ -225,6 +225,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", IsCI()),
+		attribute.Bool("lambda", IsLambda()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -302,6 +303,21 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 func IsCI() bool {
 	for _, v := range []string{
 		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
+	} {
+		if os.Getenv(v) != "" {
+			return true
+		}
+	}
+
+	return false
+}
+
+// IsLambda determines if we're running under a Lambda env by checking Lambda-specific env vars
+func IsLambda() bool {
+	for _, v := range []string{
+		"LAMBDA_TASK_ROOT", "AWS_EXECUTION_ENV", "AWS_LAMBDA_FUNCTION_NAME", // AWS
+		"FUNCTION_TARGET",             // GCP
+		"AZURE_FUNCTIONS_ENVIRONMENT", // Azure
 	} {
 		if os.Getenv(v) != "" {
 			return true
