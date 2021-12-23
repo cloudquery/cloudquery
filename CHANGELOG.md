@@ -5,6 +5,32 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.17.4]- 2021-12-23
+
+### 💥 Breaking Changes
+* Removed old terraform deployment from core package, new deployment located [here](https://github.com/cloudquery/terraform-aws-cloudquery) [#357](https://github.com/cloudquery/cloudquery/pull/357).
+
+### :rocket: Added
+* Drift: Use correct ID for EMR clusters [#360](https://github.com/cloudquery/cloudquery/pull/360).
+* Policy: added more logging to policy execution [#341](https://github.com/cloudquery/cloudquery/pull/341).
+* Added hash of config to telemetry [#358](https://github.com/cloudquery/cloudquery/pull/359).
+
+### :spider: Fixed
+* Fixed Sentry issues [#347](https://github.com/cloudquery/cloudquery/pull/347).
+
+
+### :gear: Changed
+* Changed how we classify errors for sentry reducing errors sent, so only critical errors are report [#350](https://github.com/cloudquery/cloudquery/pull/350).
+* Disable sentry module reporting [#351](https://github.com/cloudquery/cloudquery/pull/351).
+* Made `source` attribute optional in CloudQuery config [#352](https://github.com/cloudquery/cloudquery/pull/352).
+* Improved misleading help messaeg in cloudquery init [#359](https://github.com/cloudquery/cloudquery/pull/359).
+
+
+## [v0.17.3]- 2021-12-16
+
+### :spider: Fixed
+* Report panics to Sentry (#347)
+
 ## [v0.17.2] - 2021-12-16
 
 ### :spider: Fixed
