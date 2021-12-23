@@ -20,7 +20,7 @@ const initHelpMsg = "Generate initial config.hcl for fetch command"
 
 var (
 	initCmd = &cobra.Command{
-		Use:   "init [choose one or more providers (aws,gcp,azure,okta,...)]",
+		Use:   "init [choose one or more providers (aws gcp azure okta ...)]",
 		Short: initHelpMsg,
 		Long:  initHelpMsg,
 		Example: `
