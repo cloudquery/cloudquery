@@ -12,11 +12,13 @@ import (
 var (
 	//go:embed migrations/*.sql
 	awsMigrations embed.FS
+	Version       = "Development"
 )
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
 		Name:            "aws",
+		Version:         Version,
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
 		Migrations:      awsMigrations,

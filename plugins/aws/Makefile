@@ -11,7 +11,7 @@ install-cq:
 
 # build the cq aws provider
 build:
-	go build -o cq-provider-aws
+	go build -o cq-provider-aws -ldflags="-X 'github.com/cloudquery/cq-provider-aws/resources.Version=LocalDevelopmentMakefile'"
 
 # build and run the cq aws provider
 run: build
