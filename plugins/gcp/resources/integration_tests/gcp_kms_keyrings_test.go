@@ -17,7 +17,7 @@ func TestIntegrationKmsKeyrings(t *testing.T) {
 		return providertest.ResourceIntegrationVerification{
 			Name: resources.KmsKeyrings().Name,
 			Filter: func(sq squirrel.SelectBuilder, res *providertest.ResourceIntegrationTestData) squirrel.SelectBuilder {
-				return sq.Where(squirrel.Like{"name": fmt.Sprintf("%%kms-keyring-%s%s-v2", res.Prefix, res.Suffix)})
+				return sq.Where(squirrel.Like{"name": fmt.Sprintf("%%kms-keyrg-%s%s-v2", res.Prefix, res.Suffix)})
 			},
 			ExpectedValues: []providertest.ExpectedValue{
 				{

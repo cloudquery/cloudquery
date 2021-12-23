@@ -29,7 +29,7 @@ func TestIntegrationStorageBuckets(t *testing.T) {
 						"billing_requester_pays":   false,
 						"default_event_based_hold": false,
 						"iam_configuration_bucket_policy_only_enabled":          false,
-						"iam_configuration_public_access_prevention":            "unspecified",
+						"iam_configuration_public_access_prevention":            "inherited",
 						"iam_configuration_uniform_bucket_level_access_enabled": false,
 						"retention_policy_is_locked":                            false,
 						"retention_policy_retention_period":                     float64(0),

@@ -21,7 +21,7 @@ func TestIntegrationSQLInstances(t *testing.T) {
 			ExpectedValues: []providertest.ExpectedValue{{
 				Count: 1,
 				Data: map[string]interface{}{
-					"name":             fmt.Sprintf("sql-database-instance-%s%s-v2", res.Prefix, res.Suffix),
+					"name":             fmt.Sprintf("sql-database-inst-%s%s-v2", res.Prefix, res.Suffix),
 					"database_version": "POSTGRES_11",
 				},
 			}},

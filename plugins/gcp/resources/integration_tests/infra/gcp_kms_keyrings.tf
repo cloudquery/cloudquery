@@ -1,5 +1,5 @@
 resource "google_kms_key_ring" "gcp_kms_keyrings_keyring" {
-  name     = "kms-keyring-${var.test_prefix}${var.test_suffix}-v2"
+  name     = "kms-keyrg-${var.test_prefix}${var.test_suffix}-v2"
   location = "global"
 
 }
