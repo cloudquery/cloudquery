@@ -296,8 +296,8 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			c.Logger.Warn("postgrest validation warning", "err", err)
 		}
 	}
-	// create migration table and set it to version based on latest create table
-	err = c.MigrateCore()
+	// migrate cloudquery core tables to latest version
+	err = c.MigrateCore(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
@@ -425,10 +425,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	if err != nil {
 		return nil, err
 	}
-	fetchSummarizer, err := NewFetchSummarizer(ctx, c.pool)
-	if err != nil {
-		return nil, err
-	}
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
@@ -441,12 +437,18 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := Summary{
+			fs := FetchSummary{
 				FetchId:         fetchId,
 				ProviderName:    providerConfig.Name,
 				ProviderVersion: providerPlugin.Version(),
 				Start:           time.Now().UTC(),
 			}
+
+			defer func() {
+				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+					c.Logger.Error("failed to save fetch summary", "err", err)
+				}
+			}()
 
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
@@ -506,7 +508,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					fs.IsSuccess = true
 					fs.TotalErrorsCount = totalErrors
 					fs.TotalResourceCount = totalResources
-					return fetchSummarizer.Save(ctx, fs)
+					return nil
 				}
 				if err != nil {
 					pLog.Error("received provider fetch error", "error", err)
@@ -539,7 +541,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.FetchedResources = append(fs.FetchedResources, ResourceSummary{
+				fs.FetchedResources = append(fs.FetchedResources, ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use string representation of status
@@ -966,12 +968,30 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	return m, providerConfig, err
 }
 
-func (c *Client) MigrateCore() error {
+func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
+	conn, err := pool.Acquire(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) MigrateCore(ctx context.Context) error {
+	err := createCoreSchema(ctx, c.pool)
+	if err != nil {
+		return err
+	}
 	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
 	if err != nil {
 		return err
 	}
-	dsn := c.DSN
+	dsn := c.DSN + "&search_path=cloudquery"
 	m, err := provider.NewMigrator(c.Logger, migrations, dsn, "cloudquery_core")
 	if err != nil {
 		return err

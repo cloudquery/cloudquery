@@ -14,23 +14,23 @@ import (
 const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
 type fetchSummaryTest struct {
-	summary     Summary
+	summary     FetchSummary
 	err         error
 	skipFetchId bool
 }
 
 var fetchSummaryTests = []fetchSummaryTest{
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test",
 			ProviderVersion: "v0.0.0",
 			ProviderMeta:    []byte("{\"hello\":\"test\"}"),
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName: "test1",
-			FetchedResources: []ResourceSummary{
+			FetchedResources: []ResourceFetchSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -39,20 +39,20 @@ var fetchSummaryTests = []fetchSummaryTest{
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 		err: errors.New("ERROR: duplicate key value violates unique constraint \"cq_fetches_pk\" (SQLSTATE 23505)"),
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test3",
 			ProviderVersion: "v0.0.1",
 		},
@@ -78,8 +78,6 @@ func TestFetchSummary(t *testing.T) {
 	pool, err := setupDatabase(testDBConnection)
 	assert.NoError(t, err)
 	defer pool.Close()
-	var testSummarizer *FetchSummarizer
-	testSummarizer, err = NewFetchSummarizer(context.Background(), pool)
 	assert.NoError(t, err)
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {
@@ -87,7 +85,7 @@ func TestFetchSummary(t *testing.T) {
 			f.summary.FetchId = fetchId
 		}
 		f.summary.Start = time.Now()
-		err := testSummarizer.Save(context.Background(), f.summary)
+		err := SaveFetchSummary(context.Background(), pool, &f.summary)
 		if f.err != nil {
 			assert.Equal(t, f.err.Error(), err.Error())
 		} else {
