@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.17.3]- 2021-12-16
 
 ### :spider: Fixed
-* Report panics to Sentry (#347)
+* Report panics to Sentry [#347](https://github.com/cloudquery/cloudquery/pull/347).
 
 ## [v0.17.2] - 2021-12-16
 
