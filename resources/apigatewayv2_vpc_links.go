@@ -14,7 +14,7 @@ func Apigatewayv2VpcLinks() *schema.Table {
 		Name:         "aws_apigatewayv2_vpc_links",
 		Description:  "Represents a VPC link.",
 		Resolver:     fetchApigatewayv2VpcLinks,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

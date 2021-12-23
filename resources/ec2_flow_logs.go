@@ -15,7 +15,7 @@ func Ec2FlowLogs() *schema.Table {
 		Name:         "aws_ec2_flow_logs",
 		Description:  "Describes a flow log.",
 		Resolver:     fetchEc2FlowLogs,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

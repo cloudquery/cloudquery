@@ -17,7 +17,7 @@ func SecretsmanagerSecrets() *schema.Table {
 		Name:         "aws_secretsmanager_secrets",
 		Description:  "A structure that contains the details about a secret",
 		Resolver:     fetchSecretsmanagerSecrets,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("secretsmanager"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

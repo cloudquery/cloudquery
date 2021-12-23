@@ -15,7 +15,7 @@ func Ec2Images() *schema.Table {
 		Name:         "aws_ec2_images",
 		Description:  "Describes an image.",
 		Resolver:     fetchEc2Images,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

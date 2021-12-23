@@ -18,7 +18,7 @@ func LambdaLayers() *schema.Table {
 		Name:         "aws_lambda_layers",
 		Description:  "Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 		Resolver:     fetchLambdaLayers,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("lambda"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

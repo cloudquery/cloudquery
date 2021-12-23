@@ -14,7 +14,7 @@ func SnsSubscriptions() *schema.Table {
 		Name:         "aws_sns_subscriptions",
 		Description:  "A wrapper type for the attributes of an Amazon SNS subscription.",
 		Resolver:     fetchSnsSubscriptions,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

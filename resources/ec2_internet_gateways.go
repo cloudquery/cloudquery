@@ -15,7 +15,7 @@ func Ec2InternetGateways() *schema.Table {
 		Name:         "aws_ec2_internet_gateways",
 		Description:  "Describes an internet gateway.",
 		Resolver:     fetchEc2InternetGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

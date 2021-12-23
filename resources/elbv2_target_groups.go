@@ -16,7 +16,7 @@ func Elbv2TargetGroups() *schema.Table {
 		Name:         "aws_elbv2_target_groups",
 		Description:  "Information about a target group.",
 		Resolver:     fetchElbv2TargetGroups,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

@@ -15,7 +15,7 @@ func Ec2NetworkAcls() *schema.Table {
 		Name:         "aws_ec2_network_acls",
 		Description:  "Describes a network ACL.",
 		Resolver:     fetchEc2NetworkAcls,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

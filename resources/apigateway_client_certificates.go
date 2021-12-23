@@ -14,7 +14,7 @@ func ApigatewayClientCertificates() *schema.Table {
 		Name:         "aws_apigateway_client_certificates",
 		Description:  "Represents a client certificate used to configure client-side SSL authentication while sending requests to the integration endpoint.",
 		Resolver:     fetchApigatewayClientCertificates,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

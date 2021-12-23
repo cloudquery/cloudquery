@@ -15,7 +15,7 @@ func Ec2NatGateways() *schema.Table {
 		Name:         "aws_ec2_nat_gateways",
 		Description:  "Describes a NAT gateway.",
 		Resolver:     fetchEc2NatGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

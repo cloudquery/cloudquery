@@ -16,7 +16,7 @@ func SagemakerEndpointConfigurations() *schema.Table {
 		Name:         "aws_sagemaker_endpoint_configurations",
 		Description:  "Provides summary information for an endpoint configuration.",
 		Resolver:     fetchSagemakerEndpointConfigurations,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

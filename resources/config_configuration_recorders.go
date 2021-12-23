@@ -18,7 +18,7 @@ func ConfigConfigurationRecorders() *schema.Table {
 		Name:         "aws_config_configuration_recorders",
 		Description:  "An object that represents the recording of configuration changes of an AWS resource.",
 		Resolver:     fetchConfigConfigurationRecorders,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

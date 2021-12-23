@@ -15,7 +15,7 @@ func CloudwatchAlarms() *schema.Table {
 		Name:         "aws_cloudwatch_alarms",
 		Description:  "The details about a metric alarm.",
 		Resolver:     fetchCloudwatchAlarms,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

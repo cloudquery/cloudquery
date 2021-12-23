@@ -16,7 +16,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		Name:         "aws_elasticbeanstalk_environments",
 		Description:  "Describes the properties of an environment.",
 		Resolver:     fetchElasticbeanstalkEnvironments,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

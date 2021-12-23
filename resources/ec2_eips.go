@@ -14,7 +14,7 @@ func Ec2Eips() *schema.Table {
 		Name:         "aws_ec2_eips",
 		Description:  "Describes an Elastic IP address, or a carrier IP address.",
 		Resolver:     fetchEc2Eips,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "public_ip"}},

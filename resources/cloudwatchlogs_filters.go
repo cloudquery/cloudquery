@@ -15,7 +15,7 @@ func CloudwatchlogsFilters() *schema.Table {
 		Name:         "aws_cloudwatchlogs_filters",
 		Description:  "Metric filters express how CloudWatch Logs would extract metric observations from ingested log events and transform them into metric data in a CloudWatch metric.",
 		Resolver:     fetchCloudwatchlogsFilters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name", "log_group_name"}},

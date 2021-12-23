@@ -17,7 +17,7 @@ func ConfigConformancePack() *schema.Table {
 		Name:         "aws_config_conformance_packs",
 		Description:  "Returns details of a conformance pack.",
 		Resolver:     fetchConfigConformancePacks,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options: schema.TableCreationOptions{

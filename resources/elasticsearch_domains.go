@@ -15,7 +15,7 @@ func ElasticsearchDomains() *schema.Table {
 		Name:         "aws_elasticsearch_domains",
 		Description:  "The current status of an Elasticsearch domain.",
 		Resolver:     fetchElasticsearchDomains,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("es"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -14,7 +14,7 @@ func GuarddutyDetectors() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_guardduty_detectors",
 		Resolver:     fetchGuarddutyDetectors,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("guardduty"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},

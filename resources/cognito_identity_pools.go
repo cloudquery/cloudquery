@@ -15,7 +15,7 @@ func CognitoIdentityPools() *schema.Table {
 		Name:         "aws_cognito_identity_pools",
 		Description:  "An object representing an Amazon Cognito identity pool.",
 		Resolver:     fetchCognitoIdentityPools,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("cognito-identity"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
@@ -132,10 +132,6 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
-	}
-	// TODO: remove this after regional availbility feature is merged
-	if c.Region == "af-south-1" {
-		return nil
 	}
 	for {
 		out, err := svc.ListIdentityPools(ctx, &params, optsFunc)

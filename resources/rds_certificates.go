@@ -14,7 +14,7 @@ func RdsCertificates() *schema.Table {
 		Name:         "aws_rds_certificates",
 		Description:  "A CA certificate for an AWS account.",
 		Resolver:     fetchRdsCertificates,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "thumbprint"}},

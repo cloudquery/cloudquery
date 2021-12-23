@@ -16,7 +16,7 @@ func RdsClusters() *schema.Table {
 		Name:         "aws_rds_clusters",
 		Description:  "Contains the details of an Amazon Aurora DB cluster",
 		Resolver:     fetchRdsClusters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

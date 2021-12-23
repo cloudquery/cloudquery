@@ -17,7 +17,7 @@ func AcmCertificates() *schema.Table {
 		Name:         "aws_acm_certificates",
 		Description:  "Contains metadata about an ACM certificate",
 		Resolver:     fetchAcmCertificates,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("acm"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

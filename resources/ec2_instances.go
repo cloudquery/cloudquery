@@ -17,7 +17,7 @@ func Ec2Instances() *schema.Table {
 		Name:         "aws_ec2_instances",
 		Description:  "Describes an instance.",
 		Resolver:     fetchEc2Instances,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

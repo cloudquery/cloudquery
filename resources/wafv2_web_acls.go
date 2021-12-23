@@ -19,7 +19,7 @@ func Wafv2WebAcls() *schema.Table {
 		Name:         "aws_wafv2_web_acls",
 		Description:  "A Web ACL defines a collection of rules to use to inspect and control web requests",
 		Resolver:     fetchWafv2WebAcls,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

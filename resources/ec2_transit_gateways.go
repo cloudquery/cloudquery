@@ -14,7 +14,7 @@ func Ec2TransitGateways() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_transit_gateways",
 		Resolver:     fetchEc2TransitGateways,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

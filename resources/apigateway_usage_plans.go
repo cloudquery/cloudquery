@@ -16,7 +16,7 @@ func ApigatewayUsagePlans() *schema.Table {
 		Name:         "aws_apigateway_usage_plans",
 		Description:  "Represents a usage plan than can specify who can assess associated API stages with specified request limits and quotas.",
 		Resolver:     fetchApigatewayUsagePlans,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

@@ -18,7 +18,7 @@ func Elbv1LoadBalancers() *schema.Table {
 		Name:         "aws_elbv1_load_balancers",
 		Description:  "Information about a load balancer.",
 		Resolver:     fetchElbv1LoadBalancers,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},

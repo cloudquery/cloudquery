@@ -16,7 +16,7 @@ func DmsReplicationInstances() *schema.Table {
 		Name:         "aws_dms_replication_instances",
 		Description:  "Provides information that defines a replication instance.",
 		Resolver:     fetchDmsReplicationInstances,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("dms"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},

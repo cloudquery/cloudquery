@@ -16,7 +16,7 @@ func SagemakerModels() *schema.Table {
 		Name:         "aws_sagemaker_models",
 		Description:  "Provides summary information about a model.",
 		Resolver:     fetchSagemakerModels,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

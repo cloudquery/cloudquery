@@ -17,7 +17,7 @@ func DynamodbTables() *schema.Table {
 		Name:         "aws_dynamodb_tables",
 		Description:  "Information about a DynamoDB table.",
 		Resolver:     fetchDynamodbTables,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("dynamodb"),
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

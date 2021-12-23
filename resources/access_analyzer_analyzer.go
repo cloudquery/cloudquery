@@ -17,7 +17,7 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 		Name:         "aws_access_analyzer_analyzers",
 		Description:  "Contains information about the analyzer.",
 		Resolver:     fetchAccessAnalyzerAnalyzers,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("access-analyzer"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

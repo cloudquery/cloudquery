@@ -17,7 +17,7 @@ func EmrClusters() *schema.Table {
 		Name:         "aws_emr_clusters",
 		Description:  "The detailed description of the cluster.",
 		Resolver:     fetchEmrClusters,
-		Multiplex:    client.AccountRegionMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
