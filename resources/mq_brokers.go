@@ -325,6 +325,10 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	var config mq.ListBrokersInput
 	c := meta.(*client.Client)
 	svc := c.Services().MQ
+	// TODO: remove this after regional availbility feature is merged
+	if c.Region == "af-south-1" {
+		return nil
+	}
 	for {
 		response, err := svc.ListBrokers(ctx, &config, func(options *mq.Options) {
 			options.Region = c.Region
