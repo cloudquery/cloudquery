@@ -553,6 +553,10 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
 	}
+	// TODO: remove this after regional availbility feature is merged
+	if c.Region == "af-south-1" {
+		return nil
+	}
 	for {
 		out, err := svc.ListUserPools(ctx, &params, optsFunc)
 		if err != nil {
