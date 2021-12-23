@@ -225,7 +225,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", IsCI()),
-		attribute.Bool("lambda", IsLambda()),
+		attribute.Bool("faas", IsFaaS()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -312,8 +312,8 @@ func IsCI() bool {
 	return false
 }
 
-// IsLambda determines if we're running under a Lambda env by checking Lambda-specific env vars
-func IsLambda() bool {
+// IsFaaS determines if we're running under a Lambda env by checking Lambda-specific env vars
+func IsFaaS() bool {
 	for _, v := range []string{
 		"LAMBDA_TASK_ROOT", "AWS_EXECUTION_ENV", "AWS_LAMBDA_FUNCTION_NAME", // AWS
 		"FUNCTION_TARGET",             // GCP
