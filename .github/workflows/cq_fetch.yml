@@ -4,7 +4,9 @@ on:
   schedule:
     - cron: '0 1 * * *' # Run every night on 01:00am UTC
   workflow_dispatch:
-
+  push:
+    branches:
+      - master
 jobs:
   nightly_fetch:
     if: github.event_name != 'schedule' || (github.event_name == 'schedule' && github.repository == 'cloudquery/cq-provider-aws')
