@@ -46,7 +46,6 @@ jobs:
       - name: Apply terraform resources
         env:
           KUBE_CONFIG_PATH: ${{env.KUBECONFIG_PATH}}
-        timeout-minutes: 30
         working-directory: resources/integration_tests/infra
         run: |
           terraform init

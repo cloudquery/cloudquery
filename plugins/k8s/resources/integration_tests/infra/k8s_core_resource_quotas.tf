@@ -1,6 +1,7 @@
 resource "kubernetes_resource_quota" "example" {
   metadata {
     name = "resource-quota${var.test_prefix}${var.test_suffix}"
+    namespace = kubernetes_namespace.resourcequota.metadata.name
   }
   spec {
     hard = {
@@ -8,5 +9,11 @@ resource "kubernetes_resource_quota" "example" {
     }
 
     scopes = ["BestEffort"]
+  }
+}
+
+resource "kubernetes_namespace" "resourcequota" {
+  metadata {
+    name = "resourcequotanamespace${var.test_prefix}${var.test_suffix}"
   }
 }
