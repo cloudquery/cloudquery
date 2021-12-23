@@ -50,9 +50,6 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
-	// Optional: Disable deletion of data from tables.
-	// Use this with caution, as it can create duplicates of data!
-	DisableDataDelete bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
 }
@@ -395,7 +392,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
-	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
+	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
 	searchPath := ""
 	if c.HistoryCfg != nil {
@@ -434,9 +431,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				Connection: cqproto.ConnectionDetails{
 					DSN: dsn,
 				},
-				Config: providerConfig.Configuration,
-				// Disable delete on user request or if history is enabled
-				DisableDelete: request.DisableDataDelete || c.HistoryCfg != nil,
+				Config:        providerConfig.Configuration,
+				DisableDelete: true,
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
