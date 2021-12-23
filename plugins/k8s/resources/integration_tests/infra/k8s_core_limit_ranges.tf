@@ -1,7 +1,7 @@
 resource "kubernetes_limit_range" "example" {
   metadata {
     name = "limit-range${var.test_prefix}${var.test_suffix}"
-    namespace = kubernetes_namespace.limitrange.metadata.name
+    namespace = kubernetes_namespace.limitrange.metadata.0.name
   }
 
   spec {
