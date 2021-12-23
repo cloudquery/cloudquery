@@ -1,4 +1,4 @@
-package fetch_summary
+package client
 
 import (
 	"context"
@@ -15,14 +15,15 @@ const createCqFetchesTable = `
 CREATE TABLE IF NOT EXISTS cq_fetches
 (
     cq_id                UUID NOT NULL,
-    fetch_id             UUID NOT NULL,
+    cq_fetch_id          UUID NOT NULL,
     START                TIMESTAMP,
     finish               TIMESTAMP,
     total_resource_count BIGINT,
     provider_name        TEXT,
     provider_version     TEXT,
+	is_success           BOOLEAN,
     provider_meta        jsonb,
-    fetch_results        jsonb,
+    results        		 jsonb,
     CONSTRAINT "cq_fetches_id" PRIMARY KEY (cq_id),
     CONSTRAINT "cq_fetches_pk" UNIQUE (fetch_id, provider_name),
 	CONSTRAINT "non_nil_fetch_id" CHECK (fetch_id != '00000000-0000-0000-0000-000000000000')
@@ -34,8 +35,8 @@ type FetchSummarizer struct {
 	dbStruct *sqlbuilder.Struct
 }
 
-// New creates cq_fetches table and returns a summarizer that saves fetch summary to cq_fetches table
-func New(ctx context.Context, pool *pgxpool.Pool) (*FetchSummarizer, error) {
+// NewFetchSummarizer creates cq_fetches table and returns a summarizer that saves fetch summary to cq_fetches table
+func NewFetchSummarizer(ctx context.Context, pool *pgxpool.Pool) (*FetchSummarizer, error) {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		return nil, err
@@ -58,14 +59,16 @@ func New(ctx context.Context, pool *pgxpool.Pool) (*FetchSummarizer, error) {
 type Summary struct {
 	СqId uuid.UUID `db:"cq_id"`
 	//  Unique Id of fetch session
-	FetchId            uuid.UUID         `db:"fetch_id"`
+	FetchId            uuid.UUID         `db:"cq_fetch_id"`
 	Start              time.Time         `db:"start"`
 	Finish             time.Time         `db:"finish"`
+	IsSuccess          bool              `db:"is_success"`
 	TotalResourceCount uint64            `db:"total_resource_count"`
+	TotalErrorsCount   uint64            `db:"total_errors_count"`
 	ProviderName       string            `db:"provider_name"`
 	ProviderVersion    string            `db:"provider_version"`
-	ProviderMeta       []byte            `db:"provider_meta"` // reserved field to store providers metadata such as
-	FetchedResources   []ResourceSummary `db:"fetch_results"`
+	ProviderMeta       []byte            `db:"provider_meta"` // reserved field to store provider's metadata such as
+	FetchedResources   []ResourceSummary `db:"results"`
 }
 
 // ResourceSummary includes a data about fetching specific resource

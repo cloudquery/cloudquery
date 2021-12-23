@@ -1,4 +1,4 @@
-package fetch_summary
+package client
 
 import (
 	"context"
@@ -79,7 +79,7 @@ func TestFetchSummary(t *testing.T) {
 	assert.NoError(t, err)
 	defer pool.Close()
 	var testSummarizer *FetchSummarizer
-	testSummarizer, err = New(context.Background(), pool)
+	testSummarizer, err = NewFetchSummarizer(context.Background(), pool)
 	assert.NoError(t, err)
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {

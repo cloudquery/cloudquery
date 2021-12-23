@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"io"
@@ -11,16 +12,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/google/uuid"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
@@ -45,6 +45,8 @@ import (
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
+	//go:embed migrations/*.sql
+	coreMigrations embed.FS
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -294,6 +296,12 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			c.Logger.Warn("postgrest validation warning", "err", err)
 		}
 	}
+	// create migration table and set it to version based on latest create table
+	err = c.MigrateCore()
+	if err != nil {
+		return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+	}
+
 	if err := c.setupTableCreator(ctx); err != nil {
 		return nil, err
 	}
@@ -417,7 +425,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	if err != nil {
 		return nil, err
 	}
-	fetchSummarizer, err := fetch_summary.New(ctx, c.pool)
+	fetchSummarizer, err := NewFetchSummarizer(ctx, c.pool)
 	if err != nil {
 		return nil, err
 	}
@@ -433,7 +441,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := fetch_summary.Summary{
+			fs := Summary{
 				FetchId:         fetchId,
 				ProviderName:    providerConfig.Name,
 				ProviderVersion: providerPlugin.Version(),
@@ -477,6 +485,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				partialFetchResults []*cqproto.FailedResourceFetch
 				fetchedResources           = make(map[string]cqproto.ResourceFetchSummary, len(providerConfig.Resources))
 				totalResources      uint64 = 0
+				totalErrors         uint64 = 0
 			)
 			for {
 				resp, err := stream.Recv()
@@ -494,6 +503,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						FetchResources:        fetchedResources,
 					}
 					fs.Finish = time.Now().UTC()
+					fs.IsSuccess = true
+					fs.TotalErrorsCount = totalErrors
 					fs.TotalResourceCount = totalResources
 					return fetchSummarizer.Save(ctx, fs)
 				}
@@ -515,6 +526,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				}
 
 				totalResources += resp.ResourceCount
+				totalErrors += uint64(len(resp.PartialFetchFailedResources))
 				fetchedResources[resp.ResourceName] = resp.Summary
 
 				if resp.Error != "" {
@@ -527,7 +539,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.FetchedResources = append(fs.FetchedResources, fetch_summary.ResourceSummary{
+				fs.FetchedResources = append(fs.FetchedResources, ResourceSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use string representation of status
@@ -952,6 +964,31 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 		return nil, nil, err
 	}
 	return m, providerConfig, err
+}
+
+func (c *Client) MigrateCore() error {
+	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
+	if err != nil {
+		return err
+	}
+	dsn := c.DSN
+	m, err := provider.NewMigrator(c.Logger, migrations, dsn, "cloudquery_core")
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
+
+	version := "latest"
+	err = m.UpgradeProvider(version)
+	if err != migrate.ErrNoChange {
+		return err
+	}
+	return nil
 }
 
 func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
