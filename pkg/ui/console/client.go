@@ -2,6 +2,7 @@ package console
 
 import (
 	"context"
+	"crypto/sha1"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -17,6 +18,8 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -65,6 +68,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		return nil, err
 	}
 	client := &Client{c, cfg, progressUpdater}
+	client.setTelemetryAttributes(trace.SpanFromContext(ctx))
 	client.checkForUpdate(ctx)
 	return client, err
 }
@@ -487,6 +491,19 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	} else {
 		c.c.Logger.Debug("update check succeeded, no new version")
 	}
+}
+
+func (c Client) setTelemetryAttributes(span trace.Span) {
+	cfgJSON, _ := json.Marshal(c.cfg)
+	s := sha1.New()
+	_, _ = s.Write(cfgJSON)
+	attrs := []attribute.KeyValue{
+		attribute.String("cfghash", fmt.Sprintf("%0x", s.Sum(nil))),
+	}
+	if c.c.HistoryCfg != nil {
+		attrs = append(attrs, attribute.Bool("history_enabled", true))
+	}
+	span.SetAttributes(attrs...)
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
