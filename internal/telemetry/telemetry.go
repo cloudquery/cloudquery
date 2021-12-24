@@ -315,7 +315,7 @@ func IsCI() bool {
 // IsFaaS determines if we're running under a Lambda env by checking Lambda-specific env vars
 func IsFaaS() bool {
 	for _, v := range []string{
-		"LAMBDA_TASK_ROOT", "AWS_EXECUTION_ENV", "AWS_LAMBDA_FUNCTION_NAME", // AWS
+		"LAMBDA_TASK_ROOT", "AWS_LAMBDA_FUNCTION_NAME", // AWS
 		"FUNCTION_TARGET",             // GCP
 		"AZURE_FUNCTIONS_ENVIRONMENT", // Azure
 	} {
