@@ -9,8 +9,13 @@ import (
 
 const ProviderName = "k8s"
 
+var (
+	Version = "Development"
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
+		Version:   Version,
 		Name:      ProviderName,
 		Configure: client.Configure,
 		Config: func() provider.Config {
