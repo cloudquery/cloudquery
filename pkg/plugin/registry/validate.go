@@ -1,3 +1,4 @@
+//nolint: staticcheck
 package registry
 
 import (

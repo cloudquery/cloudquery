@@ -1,10 +1,11 @@
 package policy
 
 import (
+	"testing"
+
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 const testPolicyUnexpectedBlock = `policy "test_policy" {
@@ -52,7 +53,6 @@ const testPolicy = `policy "aws-cis-v1.3.0" {
  view "aws-cis-view" {
    description = "AWS CIS View"
    query = "SELECT * FROM my.view"
-   }
  }
 
  check "top-level-query" {

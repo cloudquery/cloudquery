@@ -9,24 +9,6 @@ import (
 // TODO: if first arg isn't found in config, execute remote hub download only policy
 
 func FilterPolicies(args []string, policies Policies, policyName string) (Policies, error) {
-
-	//if len(args) > 0 {
-	//	remotePolicy, err := ParsePolicyFromArgs(args)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	policyConfig, err := remotePolicy.ToPolicyConfig()
-	//	if len(args) == 2 {
-	//		policyConfig.SubPath = args[1]
-	//	}
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	policies = append(policies, policyConfig)
-	//} else {
-	//	policies = configPolicies
-	//}
-
 	if len(policies) == 0 {
 		return nil, errors.New("could not find policies to run. Please add policy to block to your config file")
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"path/filepath"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/spf13/afero"
@@ -17,11 +18,11 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 	if err != nil {
 		return nil, nil, err
 	}
-	dir, name := getter.SplitPackageSubDir(u.Path)
-	if name == "" {
-		name = filepath.Base(dir)
+	pathParts := strings.Split(u.Path, "//")
+	policyDir := filepath.Base(pathParts[0])
+	if len(pathParts) > 1 {
+		policyDir = filepath.Join(installDir, pathParts[1])
 	}
-	policyDir := filepath.Join(installDir, u.Path)
 	if err := getter.Get(ctx, policyDir, source); err != nil {
 		return nil, nil, fmt.Errorf("failed to get source %s: %w", source, err)
 	}

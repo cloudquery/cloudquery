@@ -250,7 +250,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 	t.SetHeaders("Path", "Description")
 	buildDescribePolicyTable(t, policy.Policies{p}, "")
 	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`")
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`", p.Name, getNestedPolicyExample(p.Policies[0], ""))
 	return nil
 }
 
@@ -669,7 +669,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 func createOutputTable(res *policy.QueryResult) string {
 	data := make([][]string, 0)
 	for rowIndex := range res.Data {
-		rowData := []string{}
+		rowData := make([]string, 1)
 		for colIndex := range res.Data[rowIndex] {
 			rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
 		}

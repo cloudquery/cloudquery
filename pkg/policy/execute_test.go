@@ -141,7 +141,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "TCELES * MOFR *",
 				},
 			},
-			ErrorOutput:   "broken_policy_view/brokenview/broken-query-view: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
