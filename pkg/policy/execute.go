@@ -9,7 +9,6 @@ import (
 
 	"path/filepath"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -84,7 +83,7 @@ type ExecutionResult struct {
 // ExecuteRequest is a request that triggers policy execution.
 type ExecuteRequest struct {
 	// Policy is the policy that should be executed.
-	Policy *config.Policy
+	Policy *Policy
 
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
@@ -154,7 +153,7 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 		}
 	}
 
-	for _, q := range policy.Queries {
+	for _, q := range policy.Checks {
 		if len(selector) == 0 || q.Name == selector[0] {
 			found = true
 			e.log = e.log.With("query", q.Name)
@@ -165,7 +164,7 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 			}
 			total.Passed = total.Passed && qr.Passed
 			total.Results = append(total.Results, qr)
-			e.log.Info("Query finished with result", "passed", qr.Passed)
+			e.log.Info("Check finished with result", "passed", qr.Passed)
 			if e.progressUpdate != nil {
 				e.progressUpdate(Update{
 					FinishedQueries: 1,
@@ -203,7 +202,7 @@ func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*v
 }
 
 // executeQuery executes the given query and returns the result.
-func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, error) {
+func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, error) {
 	e.log.Trace("query", q.Query)
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
@@ -238,22 +237,12 @@ func (e *Executor) executeQuery(ctx context.Context, q *Query) (*QueryResult, er
 // createViews creates temporary views for given config.Policy, and any views defined by sub-policies
 func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
-		e.log.Debug("creating policy view", "view", v.Name)
-		if err := e.createView(ctx, v); err != nil {
-			return fmt.Errorf("%s/%s/%w", policy.Name, v.Name, err)
+		e.log.Info("creating policy view", "view", v.Name)
+		if _, err := e.conn.Exec(ctx, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
+			return fmt.Errorf("failed to create view %s/%s: %w", policy.Name, v.Name, err)
 		}
 	}
 	return nil
-}
-
-// createView creates the given view temporary.
-func (e *Executor) createView(ctx context.Context, v *View) error {
-	// Add create view command
-	v.Query.Query = fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query.Query)
-
-	// Create view and ignore the output
-	_, err := e.executeQuery(ctx, v.Query)
-	return err
 }
 
 func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {

@@ -8,8 +8,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
@@ -65,7 +63,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			res, err := executor.executeQuery(context.Background(), &Query{
+			res, err := executor.executeQuery(context.Background(), &Check{
 				Query:        tc.Query,
 				ExpectOutput: tc.ExpectOutput,
 			})
@@ -82,7 +80,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 func TestExecutor_executePolicy(t *testing.T) {
 	cases := []struct {
 		Name          string
-		Queries       []*Query
+		Queries       []*Check
 		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
@@ -90,7 +88,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 	}{
 		{
 			Name: "multiple_queries",
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:         "query-1",
 					ExpectOutput: false,
@@ -109,14 +107,11 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Name: "query_with_dependent_view",
 			Views: []*View{
 				{
-					Name: "testview",
-					Query: &Query{
-						Name:  "get-john",
-						Query: fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'john'", t.Name()),
-					},
+					Name:  "testview",
+					Query: fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'john'", t.Name()),
 				},
 			},
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:         "query-with-view",
 					ExpectOutput: true,
@@ -128,7 +123,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 		{
 			Name: "broken_policy_query",
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:  "broken-query",
 					Query: "SECT * OM testview",
@@ -142,11 +137,8 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Name: "broken_policy_view",
 			Views: []*View{
 				{
-					Name: "brokenview",
-					Query: &Query{
-						Name:  "broken-query-view",
-						Query: "TCELES * MOFR *",
-					},
+					Name:  "brokenview",
+					Query: "TCELES * MOFR *",
 				},
 			},
 			ErrorOutput:   "broken_policy_view/brokenview/broken-query-view: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
@@ -164,12 +156,12 @@ func TestExecutor_executePolicy(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			p := &Policy{
-				Name:    tc.Name,
-				Queries: tc.Queries,
-				Views:   tc.Views,
+				Name:   tc.Name,
+				Checks: tc.Queries,
+				Views:  tc.Views,
 			}
 			execReq := &ExecuteRequest{
-				Policy: &config.Policy{
+				Policy: &Policy{
 					Name: tc.Name,
 				},
 				UpdateCallback: nil,

@@ -67,10 +67,10 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	client := &Client{c, cfg, progressUpdater}
-	client.setTelemetryAttributes(trace.SpanFromContext(ctx))
-	client.checkForUpdate(ctx)
-	return client, err
+	cClient := &Client{c, cfg, progressUpdater}
+	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
+	cClient.checkForUpdate(ctx)
+	return cClient, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
@@ -143,8 +143,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
-	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
+	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
+
+	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -155,14 +156,22 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 		time.Sleep(300 * time.Millisecond)
 		c.updater.Wait()
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
 	// Show policy instructions
-	printPolicyDownloadInstructions(remotePolicy)
+
+	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf(`
+Add this block into your CloudQuery config file:
+
+policy "%s" {
+    source = "%s"
+}
+
+`, p.Name, p.Source))
 	return nil
 }
 
 func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+	c.c.Logger.Debug("run policy received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -221,27 +230,27 @@ func (c Client) DescribePolicies(ctx context.Context, args []string, policyName 
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Debug("policies to described", "policies", policiesToDescribe)
-	req := &client.PoliciesRunRequest{
-		Policies:       policiesToDescribe,
-		PolicyName:     policyName,
-		SkipVersioning: skipVersioning,
+	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
+	for _, p := range policiesToDescribe {
+		if err := c.describePolicy(ctx, p); err != nil {
+			return err
+		}
 	}
-	return c.describePolicies(ctx, req)
+	return nil
 }
 
-func (c Client) describePolicies(ctx context.Context, req *client.PoliciesRunRequest) error {
-	policies, err := c.c.LoadPolicies(ctx, req)
+func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
+	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
-	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", req.PolicyName)
+	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.Name)
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	buildDescribePolicyTable(t, policies, "")
+	buildDescribePolicyTable(t, policy.Policies{p}, "")
 	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`", req.PolicyName, getNestedPolicyExample(policies[0], ""))
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`")
 	return nil
 }
 
@@ -563,9 +572,9 @@ func loadConfig(path string) (*config.Config, bool) {
 	return cfg, true
 }
 
-func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, failOnViolation bool) (*Progress, policy.UpdateCallback) {
+func buildPolicyRunProgress(ctx context.Context, policies policy.Policies, failOnViolation bool) (*Progress, policy.UpdateCallback) {
 	policyRunProgress := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Queries: %d/%d")}
+		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Checks: %d/%d")}
 	})
 
 	for _, p := range policies {
@@ -720,18 +729,4 @@ func findOutput(columnNames []string, data [][]interface{}) []string {
 	}
 
 	return outputResources
-}
-
-func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
-	policySource, _ := policy.GetURL()
-	ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf(`
-Add this block into your CloudQuery config file:
-
-policy "%s-%s" {
-	type = "remote"
-	source = "%s"
-	sub_path = ""
-	version = "%s"
-}
-`, policy.Organization, policy.Repository, policySource, policy.Version))
 }

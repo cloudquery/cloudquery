@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/policy"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/hashicorp/hcl/v2"
@@ -19,10 +21,10 @@ func (pp Providers) Names() []string {
 }
 
 type Config struct {
-	CloudQuery CloudQuery `hcl:"cloudquery,block"`
-	Providers  Providers  `hcl:"provider,block"`
-	Policies   []*Policy  `hcl:"policy,block"`
-	Modules    hcl.Body   `hcl:"modules,block"`
+	CloudQuery CloudQuery       `hcl:"cloudquery,block"`
+	Providers  Providers        `hcl:"provider,block"`
+	Policies   []*policy.Policy `hcl:"policy,block"`
+	Modules    hcl.Body         `hcl:"modules,block"`
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {
