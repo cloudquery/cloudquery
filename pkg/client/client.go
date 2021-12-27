@@ -288,7 +288,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			return nil, err
 		}
 		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
-			c.Logger.Warn("postgrest validation warning", "err", err)
+			c.Logger.Warn("postgres validation warning", "err", err)
 		}
 	}
 	if err := c.setupTableCreator(ctx); err != nil {
@@ -460,7 +460,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			)
 			for {
 				resp, err := stream.Recv()
-				if err == io.EOF {
+				if err == io.EOF || (err != nil && err.Error() == "rpc error: code = Canceled desc = context canceled") {
 					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
 					for _, fetchError := range partialFetchResults {
 						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)

@@ -120,7 +120,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
 	response, err := c.c.Fetch(ctx, request)
-	if err != nil {
+	if err != nil && err.Error() != "rpc error: code = Canceled desc = context canceled" {
 		return err
 	}
 
