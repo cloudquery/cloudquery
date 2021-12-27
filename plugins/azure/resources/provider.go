@@ -6,8 +6,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+var (
+	Version = "Development"
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
+		Version:   Version,
 		Name:      "azure",
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
