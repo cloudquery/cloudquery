@@ -480,7 +480,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						}
 						return nil
 					}
-
 					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
