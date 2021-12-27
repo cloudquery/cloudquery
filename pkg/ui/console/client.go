@@ -20,6 +20,8 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -120,8 +122,13 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		DisableDataDelete: viper.GetBool("disable-delete"),
 	}
 	response, err := c.c.Fetch(ctx, request)
-	if err != nil && err.Error() != "rpc error: code = Canceled desc = context canceled" {
-		return err
+	if err != nil {
+		// Ignore context cancelled error
+		st, ok := status.FromError(err)
+		if !ok || st.Code() != gcodes.Canceled {
+			return err
+		}
+
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
