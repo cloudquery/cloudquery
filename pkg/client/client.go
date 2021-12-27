@@ -461,25 +461,26 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			)
 			for {
 				resp, err := stream.Recv()
-				st, ok := status.FromError(err)
 
-				if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
-
-					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
-					for _, fetchError := range partialFetchResults {
-						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
-					}
-					fetchSummaries <- ProviderFetchSummary{
-						ProviderName:          providerConfig.Name,
-						Version:               providerPlugin.Version(),
-						TotalResourcesFetched: totalResources,
-						PartialFetchErrors:    partialFetchResults,
-						FetchErrors:           fetchErrors,
-						FetchResources:        fetchedResources,
-					}
-					return nil
-				}
 				if err != nil {
+					st, ok := status.FromError(err)
+					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
+
+						pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
+						for _, fetchError := range partialFetchResults {
+							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
+						}
+						fetchSummaries <- ProviderFetchSummary{
+							ProviderName:          providerConfig.Name,
+							Version:               providerPlugin.Version(),
+							TotalResourcesFetched: totalResources,
+							PartialFetchErrors:    partialFetchResults,
+							FetchErrors:           fetchErrors,
+							FetchResources:        fetchedResources,
+						}
+						return nil
+					}
+
 					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
