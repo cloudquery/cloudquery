@@ -12,18 +12,9 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/getsentry/sentry-go"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/attribute"
-	otrace "go.opentelemetry.io/otel/trace"
-	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -38,6 +29,16 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
+	"go.opentelemetry.io/otel/attribute"
+	otrace "go.opentelemetry.io/otel/trace"
+	"golang.org/x/sync/errgroup"
+	gcodes "google.golang.org/grpc/codes"
 )
 
 var (
@@ -460,7 +461,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			)
 			for {
 				resp, err := stream.Recv()
-				if err == io.EOF || (err != nil && err.Error() == "rpc error: code = Canceled desc = context canceled") {
+				st, ok := status.FromError(err)
+
+				if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
+
 					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
 					for _, fetchError := range partialFetchResults {
 						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
