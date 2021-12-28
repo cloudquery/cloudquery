@@ -13,8 +13,13 @@ var (
 	gcpMigrations embed.FS
 )
 
+var (
+	Version = "Development"
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
+		Version:         Version,
 		Name:            "gcp",
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
