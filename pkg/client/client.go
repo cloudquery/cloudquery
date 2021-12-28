@@ -84,6 +84,7 @@ type ProviderFetchSummary struct {
 	FetchErrors           []error
 	TotalResourcesFetched uint64
 	FetchResources        map[string]cqproto.ResourceFetchSummary
+	Status                string
 }
 
 func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
@@ -464,9 +465,16 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 				if err != nil {
 					st, ok := status.FromError(err)
-					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
 
-						pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
+					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
+						message := "provider finished fetch"
+						status := "Finished"
+						if ok && st.Code() == gcodes.Canceled {
+							message = "provider fetch canceled"
+							status = "canceled"
+						}
+
+						pLog.Info(message, "execution", time.Since(fetchStart).String())
 						for _, fetchError := range partialFetchResults {
 							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
 						}
@@ -477,6 +485,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 							PartialFetchErrors:    partialFetchResults,
 							FetchErrors:           fetchErrors,
 							FetchResources:        fetchedResources,
+							Status:                status,
 						}
 						return nil
 					}
