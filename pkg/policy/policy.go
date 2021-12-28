@@ -16,19 +16,18 @@ type Policy struct {
 	// Short human-readable Description about the policy
 	Description string `hcl:"description,optional"`
 	// Full documentation about the policy, this will be shown in the hub
-	Doc string `hcl:"readme,optional"`
-
+	Doc    string         `hcl:"readme,optional"`
 	Config *Configuration `hcl:"configuration,block"`
+
+	Policies []*Policy `hcl:"policy,block"`
+	Checks   []*Check  `hcl:"query,block"`
+	Views    []*View   `hcl:"view,block"`
 
 	// Link to policy in filesystem/hub/git etc' to use, if source flag is set, all other attributes aren't allowed.
 	Source string `hcl:"source,optional"`
 
 	// Meta is information added to the policy after it was loaded
 	meta *Meta
-
-	Policies []*Policy `hcl:"policy,block"`
-	Checks   []*Check  `hcl:"query,block"`
-	Views    []*View   `hcl:"view,block"`
 }
 
 func (p Policy) Version() string {

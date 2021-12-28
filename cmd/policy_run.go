@@ -24,12 +24,14 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.RunPolicies(ctx, args, policyName, outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
+			if len(args) == 1 {
+				return c.RunPolicies(ctx, args[0], "", outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
+			}
+			return c.RunPolicies(ctx, args[0], args[1], outputDir, stopOnFailure, skipVersioning, failOnViolation, noResults)
 		}),
 		Args: cobra.MaximumNArgs(2),
 	}
 	outputDir       string
-	policyName      string
 	stopOnFailure   bool
 	skipVersioning  bool
 	failOnViolation bool

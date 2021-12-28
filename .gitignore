@@ -19,3 +19,4 @@ cloud_sql_proxy
 config.hcl
 /.cq/
 config_old.hcl
+/pkg/policy/tests/output/

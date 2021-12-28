@@ -8,20 +8,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const testPolicyUnexpectedBlock = `policy "test_policy" {
+const (
+	testPolicyUnexpectedBlock = `policy "test_policy" {
  unknown {
    attr = "value"
  }
 }`
-
-const testPolicyMultipleConfigurationBlocks = `policy "test_policy" {
+	testPolicyMultipleConfigurationBlocks = `policy "test_policy" {
  configuration {
  }
  configuration {
  }
 }`
-
-const testPolicyQueries = `policy "test_policy" {
+	testPolicyQueries = `policy "test_policy" {
  check "first" {
    query = "query1"
  }
@@ -34,15 +33,14 @@ const testPolicyQueries = `policy "test_policy" {
    type = "manual"
  }
 }`
-
-const testPolicyInvalidQueryType = `policy "test_policy" {
+	testPolicyInvalidQueryType = `policy "test_policy" {
  check "first" {
    query = "query1"
    type = "invalid"
  }
 }`
 
-const testPolicy = `policy "aws-cis-v1.3.0" {
+	testPolicy = `policy "aws-cis-v1.3.0" {
  description = "AWS CIS V1.3.0"
  configuration {
    provider "aws" {
@@ -76,33 +74,73 @@ const testPolicy = `policy "aws-cis-v1.3.0" {
    }
  }
 }`
+	testSinglePolicyBlock = `
+		policy "source_policy" {
+			source = "./path/to/file"
+		}
+		policy "source_policy" {
+			source = "./path/to/file"
+		}`
+
+	testPolicySource = `
+		policy "source_policy" {
+			source = "./path/to/file"
+		}`
+
+	testInvalidPolicySource = `
+		policy "source_policy" {
+			source = "./path/to/file"
+			check "sub-level-query" {
+				query = "SELECT * from test.subquery"
+				type = "manual"
+			}
+		}`
+)
 
 func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 	tests := []struct {
-		name       string
-		policyText string
-		expected   *Policy
-		wantErr    bool
-		errString  string
+		name      string
+		policyHCL string
+		expected  *Policy
+		wantErr   bool
+		errString string
 	}{
 		{
-			"unexpected block within a policy",
-			testPolicyUnexpectedBlock,
-			nil,
-			true,
-			"Unsupported block type",
+			name:      "test policy with source",
+			policyHCL: testPolicySource,
+			expected: &Policy{
+				Name:   "source_policy",
+				Source: "./path/to/file",
+			},
 		},
 		{
-			"multiple configuration blocks",
-			testPolicyMultipleConfigurationBlocks,
-			nil,
-			true,
-			"Duplicate block",
+			name:      "single root policy block",
+			policyHCL: testSinglePolicyBlock,
+			wantErr:   true,
+			errString: "Only single root policy block allowed; Only a single policy block is allowed in root level policy",
 		},
 		{
-			"queries with or without explicit type",
-			testPolicyQueries,
-			&Policy{
+			name:      "illegal test policy with source",
+			policyHCL: testInvalidPolicySource,
+			wantErr:   true,
+			errString: "Found source with blocks; There must be one of the following: Policy source attribute or blocks",
+		},
+		{
+			name:      "unexpected block within a policy",
+			policyHCL: testPolicyUnexpectedBlock,
+			wantErr:   true,
+			errString: "Unsupported block type",
+		},
+		{
+			name:      "multiple configuration blocks",
+			policyHCL: testPolicyMultipleConfigurationBlocks,
+			wantErr:   true,
+			errString: "Duplicate block",
+		},
+		{
+			name:      "queries with or without explicit type",
+			policyHCL: testPolicyQueries,
+			expected: &Policy{
 				Name: "test_policy",
 				Checks: []*Check{
 					{
@@ -122,20 +160,17 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 					},
 				},
 			},
-			false,
-			"",
 		},
 		{
-			"query with invalid type",
-			testPolicyInvalidQueryType,
-			nil,
-			true,
-			"Invalid query type",
+			name:      "query with invalid type",
+			policyHCL: testPolicyInvalidQueryType,
+			wantErr:   true,
+			errString: "Invalid query type",
 		},
 		{
-			"complex policy",
-			testPolicy,
-			&Policy{
+			name:      "complex policy",
+			policyHCL: testPolicy,
+			expected: &Policy{
 				Name:        "aws-cis-v1.3.0",
 				Description: "AWS CIS V1.3.0",
 				Config: &Configuration{
@@ -176,13 +211,11 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 					},
 				},
 			},
-			false,
-			"",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f, diags := hclsyntax.ParseConfig([]byte(tt.policyText), t.Name(), hcl.Pos{Byte: 0, Line: 1, Column: 1})
+			f, diags := hclsyntax.ParseConfig([]byte(tt.policyHCL), t.Name(), hcl.Pos{Byte: 0, Line: 1, Column: 1})
 			if diags != nil && diags.HasErrors() {
 				t.Fatal(diags.Errs())
 			}

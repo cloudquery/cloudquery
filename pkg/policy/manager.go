@@ -56,6 +56,7 @@ func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error)
 			return nil, err
 		}
 	}
+	// TODO: add recursive stop
 	// load inner policies
 	for i, p := range policy.Policies {
 		policy.Policies[i], err = m.Load(ctx, p)
@@ -116,7 +117,7 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 }
 
 func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, sourceURL string) (*Policy, error) {
-	data, meta, err := LoadSource(ctx, "./.cq/policies", sourceURL)
+	data, meta, err := LoadSource(ctx, m.policyDirectory, sourceURL)
 	if err != nil {
 		return nil, err
 	}

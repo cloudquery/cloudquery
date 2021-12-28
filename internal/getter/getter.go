@@ -3,6 +3,7 @@ package getter
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/hashicorp/go-getter"
 	"github.com/rs/zerolog/log"
@@ -14,8 +15,8 @@ var (
 		new(getter.GitDetector),
 		new(getter.S3Detector),
 		new(getter.GCSDetector),
-		new(getter.FileDetector),
 		new(HubDetector),
+		new(getter.FileDetector),
 	}
 
 	detectorsMap = map[string]getter.Detector{
@@ -23,6 +24,7 @@ var (
 		"git":    new(getter.GitDetector),
 		"s3":     new(getter.S3Detector),
 		"gcs":    new(getter.GCSDetector),
+		"hub":    new(HubDetector),
 		"local":  new(getter.FileDetector),
 	}
 
@@ -53,10 +55,11 @@ var (
 
 func Get(ctx context.Context, installPath, url string, options ...getter.ClientOption) error {
 	log.Debug().Str("url", url).Msg("getting source from url")
+	pwd, _ := os.Getwd()
 	client := getter.Client{
 		Src:           url,
 		Dst:           installPath,
-		Pwd:           "",
+		Pwd:           pwd,
 		Mode:          getter.ClientModeDir,
 		Detectors:     detectors,
 		Decompressors: decompressors,
@@ -75,11 +78,16 @@ func Get(ctx context.Context, installPath, url string, options ...getter.ClientO
 	return nil
 }
 
-func DetectType(url string) (string, error) {
+func DetectType(url string) (string, bool, error) {
+	pwd, _ := os.Getwd()
 	for t, d := range detectorsMap {
-		if _, ok, _ := d.Detect(url, ""); ok {
-			return t, nil
+		_, found, err := d.Detect(url, pwd)
+		if err != nil {
+			return "", false, fmt.Errorf("failed to detect url %s: %w", url, err)
+		}
+		if found {
+			return t, true, nil
 		}
 	}
-	return "", fmt.Errorf("unknown type for url %s", url)
+	return "", false, nil
 }

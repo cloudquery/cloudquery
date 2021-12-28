@@ -13,13 +13,34 @@ import (
 
 const defaultPolicyFileName = "policy.hcl"
 
+func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
+	t, found, err := getter.DetectType(name)
+
+	if err != nil {
+		return nil, false, fmt.Errorf("failed to detect policy in hub: %w", err)
+	}
+	if !found {
+		return nil, false, nil
+	}
+	// TODO: parse version etc' from source
+	return &Policy{
+		Name:   name,
+		Source: name,
+		meta: &Meta{
+			Type:    t,
+			Version: "latest",
+			SubPath: subPolicy,
+		},
+	}, true, nil
+}
+
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
 	u, err := url.Parse(source)
 	if err != nil {
 		return nil, nil, err
 	}
 	pathParts := strings.Split(u.Path, "//")
-	policyDir := filepath.Base(pathParts[0])
+	policyDir := filepath.Join(installDir, filepath.Base(source))
 	if len(pathParts) > 1 {
 		policyDir = filepath.Join(installDir, pathParts[1])
 	}
@@ -32,7 +53,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		// TODO: make more descriptive error
 		return nil, nil, fmt.Errorf("failed to open source: %w", err)
 	}
-	detectorType, err := getter.DetectType(source)
+	detectorType, _, err := getter.DetectType(source)
 	if err != nil {
 		return nil, nil, err
 	}

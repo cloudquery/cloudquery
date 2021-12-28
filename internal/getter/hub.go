@@ -2,6 +2,7 @@ package getter
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -24,9 +25,17 @@ func (h HubDetector) detectHTTP(src string) (string, bool, error) {
 	}
 
 	urlStr := fmt.Sprintf("https://%s", strings.Join(parts[:3], "/"))
-	_url, err := url.Parse(urlStr)
+	_url, err := url.ParseRequestURI(urlStr)
 	if err != nil {
 		return "", true, fmt.Errorf("error parsing GitHub URL: %s", err)
+	}
+	resp, err := http.Get(_url.String())
+	if err != nil {
+		return "", false, fmt.Errorf("failed to check if policy in hub: %w", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == 404 {
+		return "", false, nil
 	}
 
 	if !strings.HasSuffix(_url.Path, ".git") {
