@@ -124,8 +124,8 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
 		// Ignore context cancelled error
-		st, ok := status.FromError(err)
-		if !ok || st.Code() != gcodes.Canceled {
+		
+		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
 			return err
 		}
 
