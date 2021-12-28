@@ -471,7 +471,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						status := "Finished"
 						if ok && st.Code() == gcodes.Canceled {
 							message = "provider fetch canceled"
-							status = "canceled"
+							status = "Canceled"
 						}
 
 						pLog.Info(message, "execution", time.Since(fetchStart).String())
