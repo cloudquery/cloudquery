@@ -140,7 +140,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
 		status := emojiStatus[ui.StatusOK]
-		if summary.Status == "canceled" {
+		if summary.Status == "Canceled" {
 			status = emojiStatus[ui.StatusError] + " (canceled)"
 		}
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
