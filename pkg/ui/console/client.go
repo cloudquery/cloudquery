@@ -20,6 +20,8 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -120,7 +122,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
-		return err
+		// Ignore context cancelled error
+
+		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
+			return err
+		}
+
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
@@ -131,8 +138,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
-		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
+		status := emojiStatus[ui.StatusOK]
+		if summary.Status == "Canceled" {
+			status = emojiStatus[ui.StatusError] + " (canceled)"
+		}
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
+			summary.ProviderName, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
