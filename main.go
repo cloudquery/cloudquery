@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-aws/resources"
+	"github.com/cloudquery/cq-provider-aws/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
 func main() {
 	serve.Serve(&serve.Options{
 		Name:     "aws",
-		Provider: resources.Provider(),
+		Provider: provider.Provider(),
 	})
 }

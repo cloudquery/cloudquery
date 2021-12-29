@@ -56,15 +56,7 @@ jobs:
       - name: Integration Test
         id: integration-test
         run: |
-          touch output.log
-          go test -v -p 20 ./resources/integration_tests | tee output.log
-          result_code=${PIPESTATUS[0]}
-          echo "::set-output name=output::$(cat output.log | grep -i "WARN")"
-          exit $result_code
-        env:
-          INTEGRATION_TESTS: 1
-          TF_VAR_SUFFIX: integration
-          TF_VAR_PREFIX: cq-testing
+          go test -tags=integration ./...
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
