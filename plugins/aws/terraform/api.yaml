@@ -1,0 +1,23 @@
+openapi: "3.0.1"
+info:
+  version: 0.0.1
+  title: My awesome API
+  description: My awesome API
+paths:
+  /debug:
+    get:
+      operationId: getDebug
+      responses:
+        default:
+          description: "Default response for GET /debug"
+      x-amazon-apigateway-integration:
+        $ref: '#/components/x-amazon-apigateway-integrations/debug'
+
+components:
+  x-amazon-apigateway-integrations:
+    debug:
+      type: AWS_PROXY
+      httpMethod: GET
+      uri: "${example_function_arn}"
+      payloadFormatVersion: "2.0"
+      connectionType: INTERNET
