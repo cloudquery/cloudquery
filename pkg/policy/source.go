@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"path/filepath"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/spf13/afero"
@@ -35,14 +34,19 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 }
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
+
+	source, subPolicy := getter.SplitPackageSubDir(source)
 	u, err := url.Parse(source)
 	if err != nil {
 		return nil, nil, err
 	}
-	pathParts := strings.Split(u.Path, "//")
-	policyDir := filepath.Join(installDir, filepath.Base(source))
-	if len(pathParts) > 1 {
-		policyDir = filepath.Join(installDir, pathParts[1])
+	detectorType, _, err := getter.DetectType(source)
+	if err != nil {
+		return nil, nil, err
+	}
+	policyDir := filepath.Join(installDir, source)
+	if detectorType == "local" {
+		policyDir = filepath.Join(installDir, filepath.Base(source))
 	}
 	if err := getter.Get(ctx, policyDir, source); err != nil {
 		return nil, nil, fmt.Errorf("failed to get source %s: %w", source, err)
@@ -53,15 +57,11 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		// TODO: make more descriptive error
 		return nil, nil, fmt.Errorf("failed to open source: %w", err)
 	}
-	detectorType, _, err := getter.DetectType(source)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	return data, &Meta{
 		Type:      detectorType,
 		Version:   u.Query().Get("ref"),
-		SubPath:   u.Query().Get("subpolicy"),
+		SubPath:   subPolicy,
 		Directory: policyDir,
 	}, nil
 }

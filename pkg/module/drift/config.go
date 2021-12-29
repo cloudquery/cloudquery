@@ -40,7 +40,7 @@ type ResourceConfig struct {
 	Attributes        []string `hcl:"attributes,optional"`
 	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
 	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
-	Filters           []string `hcl:"filters,optional"` // Query filters to exclude cloud providers default resources
+	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
 	Sets              []string `hcl:"sets,optional"`    // Unordered list-attributes where item order doesn't matter
 
 	IAC map[iacProvider]*IACConfig

@@ -24,6 +24,8 @@ type Update struct {
 	PolicyName string
 	// Version is the policy version.
 	Version string
+	// Source policy was fetched from
+	Source string
 	// FinishedQueries is the number queries that have finished evaluating
 	FinishedQueries int
 	// QueriesCount is the amount of queries collected so far

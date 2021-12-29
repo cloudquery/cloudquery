@@ -16,7 +16,7 @@ var (
 		new(getter.S3Detector),
 		new(getter.GCSDetector),
 		new(HubDetector),
-		new(getter.FileDetector),
+		new(fileDetector),
 	}
 
 	detectorsMap = map[string]getter.Detector{
@@ -25,7 +25,7 @@ var (
 		"s3":     new(getter.S3Detector),
 		"gcs":    new(getter.GCSDetector),
 		"hub":    new(HubDetector),
-		"local":  new(getter.FileDetector),
+		"local":  new(fileDetector),
 	}
 
 	decompressors = map[string]getter.Decompressor{

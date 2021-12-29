@@ -2,12 +2,24 @@ package policy
 
 import (
 	"context"
+	"os"
+	"path"
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/internal/hash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func init() {
+	_, filename, _, _ := runtime.Caller(0)
+	err := os.Chdir(path.Dir(filename))
+	if err != nil {
+		panic(err)
+	}
+}
 
 type sourceTest struct {
 	Name          string
@@ -35,13 +47,13 @@ func TestLoadSource(t *testing.T) {
 			Name:         "hub",
 			Source:       "aws",
 			Expected:     "94bd44e6f17851a2dd41d1df683724bb932ca3bf6aa6400986294194df4022b6",
-			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPath: "", Directory: "tests\\output\\aws"},
+			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPath: "", Directory: "tests/output/aws"},
 		},
 		{
 			Name:         "github",
 			Source:       "github.com/cloudquery-policies/aws",
 			Expected:     "94bd44e6f17851a2dd41d1df683724bb932ca3bf6aa6400986294194df4022b6",
-			ExpectedMeta: &Meta{Type: "github", Version: "", SubPath: "", Directory: "tests\\output\\aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "", SubPath: "", Directory: "tests\\output\\github.com\\cloudquery-policies\\aws"},
 		},
 		{
 			Name:          "non-existing-github",
@@ -53,11 +65,14 @@ func TestLoadSource(t *testing.T) {
 	for _, s := range sourceTests {
 		t.Run(s.Name, func(t *testing.T) {
 			data, meta, err := LoadSource(context.Background(), "tests/output", s.Source)
-			assert.Equal(t, s.ExpectedMeta, meta)
 			if s.ErrorExpected {
 				require.Error(t, err)
 				return
+			} else {
+				require.Nil(t, err)
 			}
+			assert.Equal(t, s.ExpectedMeta.Type, meta.Type)
+			assert.Equal(t, filepath.ToSlash(s.ExpectedMeta.Directory), filepath.ToSlash(meta.Directory), "unexpected saved policy directory")
 			assert.Equal(t, s.Expected, hash.SHA256(data))
 		})
 	}

@@ -168,12 +168,12 @@ policy "%s" {
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policyName, subPolicy, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("run policy received params:", "subPolicy", subPolicy, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
+	c.c.Logger.Debug("run policy received params:", "policy", policySource, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	policiesToRun, err := FilterPolicies(policyName, subPolicy, c.cfg.Policies)
+	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -189,11 +189,10 @@ func (c Client) RunPolicies(ctx context.Context, policyName, subPolicy, outputDi
 	if ui.IsTerminal() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun, failOnViolation)
 	}
-
 	// Policies run request
 	req := &client.PoliciesRunRequest{
 		Policies:        policiesToRun,
-		PolicyName:      policyName,
+		PolicyName:      policySource,
 		OutputDir:       outputDir,
 		StopOnFailure:   stopOnFailure,
 		SkipVersioning:  skipVersioning,
@@ -222,8 +221,8 @@ func (c Client) RunPolicies(ctx context.Context, policyName, subPolicy, outputDi
 	return nil
 }
 
-func (c Client) DescribePolicies(ctx context.Context, args []string, policyName string, skipVersioning bool) error {
-	policiesToDescribe, err := FilterPolicies(policyName, "", c.cfg.Policies)
+func (c Client) DescribePolicies(ctx context.Context, policySource string, _ bool) error {
+	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -491,7 +490,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
-	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.Name)
+	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
 	buildDescribePolicyTable(t, policy.Policies{p}, "")
@@ -553,7 +552,15 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies, failO
 
 	policyRunCallback := func(update policy.Update) {
 		bar := policyRunProgress.GetBar(update.PolicyName)
-
+		// try to get with policy source
+		if bar == nil {
+			bar = policyRunProgress.GetBar(update.Source)
+		}
+		if bar == nil {
+			policyRunProgress.AbortAll()
+			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, policy run will complete shortly\n")
+			return
+		}
 		if update.Error != "" {
 			policyRunProgress.Update(update.PolicyName, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
 

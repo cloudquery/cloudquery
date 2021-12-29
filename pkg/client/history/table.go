@@ -115,7 +115,7 @@ func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
 }
 
 func (h TableCreator) buildTableSQL(table, _ *schema.Table) (string, error) {
-	// Build Query to create a table.
+	// Build SQL to create a table.
 	ctb := sqlbuilder.CreateTable(fmt.Sprintf("history.%s", table.Name)).IfNotExists()
 	var uniques []string
 	for _, c := range schema.GetDefaultSDKColumns() {

@@ -726,6 +726,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
 					PolicyName:      p.Name,
+					Source:          p.Source,
 					Version:         p.Version(),
 					FinishedQueries: 0,
 					QueriesCount:    0,

@@ -1,5 +1,7 @@
 package policy
 
+import "fmt"
+
 type Policies []*Policy
 
 func (pp Policies) All() []string {
@@ -28,6 +30,13 @@ type Policy struct {
 
 	// Meta is information added to the policy after it was loaded
 	meta *Meta
+}
+
+func (p Policy) String() string {
+	if p.SubPath() != "" {
+		return fmt.Sprintf("%s//%s", p.Name, p.SubPath())
+	}
+	return p.Name
 }
 
 func (p Policy) Version() string {

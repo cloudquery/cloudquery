@@ -6,17 +6,19 @@ import (
 	"path"
 	"strings"
 
+	"github.com/hashicorp/go-getter"
+
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 )
 
-func FilterPolicies(policyName, subPolicy string, policies policy.Policies) (policy.Policies, error) {
-	if policyName == "" && len(policies) == 0 {
+func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policies, error) {
+	if policyPath == "" && len(policies) == 0 {
 		return nil, errors.New("no policies defined in configuration")
 	}
-
+	policyName, subPath := getter.SourceDirSubdir(policyPath)
 	// run them all
 	if policyName == "" {
 		return policies, nil
@@ -29,7 +31,7 @@ func FilterPolicies(policyName, subPolicy string, policies policy.Policies) (pol
 		}
 	}
 	// run hub detector
-	p, found, err := policy.DetectPolicy(policyName, subPolicy)
+	p, found, err := policy.DetectPolicy(policyName, subPath)
 	if err != nil {
 		return nil, err
 	}

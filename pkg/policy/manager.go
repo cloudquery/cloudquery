@@ -86,6 +86,7 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 	if request.UpdateCallback != nil {
 		request.UpdateCallback(Update{
 			PolicyName:      request.Policy.Name,
+			Source:          request.Policy.Source,
 			Version:         request.Policy.meta.Version,
 			FinishedQueries: 0,
 			QueriesCount:    totalQueriesToRun,
@@ -99,6 +100,7 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 		if request.UpdateCallback != nil {
 			request.UpdateCallback(Update{
 				PolicyName:      request.Policy.Name,
+				Source:          request.Policy.Source,
 				Version:         request.Policy.meta.Version,
 				FinishedQueries: finishedQueries,
 				QueriesCount:    totalQueriesToRun,
