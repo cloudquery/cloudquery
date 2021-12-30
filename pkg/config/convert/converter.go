@@ -147,14 +147,18 @@ func (c *converter) convertBody(body *hclsyntax.Body) (jsonObj, error) {
 	return out, nil
 }
 
-func (c *converter) rangeSource(r hcl.Range) string {
+func (c *converter) rangeSource(r hcl.Range) (string, error) {
 	// for some reason the range doesn't include the ending paren, so
 	// check if the next character is an ending paren, and include it if it is.
 	end := r.End.Byte
 	if end < len(c.bytes) && c.bytes[end] == ')' {
 		end++
 	}
-	return string(c.bytes[r.Start.Byte:end])
+	if l := len(c.bytes); r.Start.Byte >= l || end >= l {
+		return "", fmt.Errorf("invalid range position [%d:%d] but data is %d bytes long", r.Start.Byte, r.End.Byte, l)
+	}
+
+	return string(c.bytes[r.Start.Byte:end]), nil
 }
 
 func (c *converter) convertBlock(block *hclsyntax.Block, out jsonObj) error {
@@ -262,7 +266,7 @@ func (c *converter) convertExpression(expr hclsyntax.Expression) (interface{}, e
 		}
 		return m, nil
 	default:
-		return c.wrapExpr(expr), nil
+		return c.wrapExpr(expr)
 	}
 }
 
@@ -271,7 +275,7 @@ func (c *converter) convertUnary(v *hclsyntax.UnaryOpExpr) (interface{}, error) 
 	if !isLiteral {
 		// If the expression after the operator isn't a literal, fall back to
 		// wrapping the expression with ${...}
-		return c.wrapExpr(v), nil
+		return c.wrapExpr(v)
 	}
 	val, err := v.Value(nil)
 	if err != nil {
@@ -318,7 +322,7 @@ func (c *converter) convertStringPart(expr hclsyntax.Expression) (string, error)
 		return c.convertTemplateFor(v.Tuple.(*hclsyntax.ForExpr))
 	default:
 		// treating as an embedded expression
-		return c.wrapExpr(expr), nil
+		return c.wrapExpr(expr)
 	}
 }
 
@@ -327,16 +331,20 @@ func (c *converter) convertKey(keyExpr hclsyntax.Expression) (string, error) {
 	if k, isKeyExpr := keyExpr.(*hclsyntax.ObjectConsKeyExpr); isKeyExpr {
 		keyExpr = k.Wrapped
 		if _, isTraversal := keyExpr.(*hclsyntax.ScopeTraversalExpr); isTraversal {
-			return c.rangeSource(keyExpr.Range()), nil
+			return c.rangeSource(keyExpr.Range())
 		}
 	}
 	return c.convertStringPart(keyExpr)
 }
 
 func (c *converter) convertTemplateConditional(expr *hclsyntax.ConditionalExpr) (string, error) {
+	rs, err := c.rangeSource(expr.Condition.Range())
+	if err != nil {
+		return "", err
+	}
 	var builder strings.Builder
 	builder.WriteString("%{if ")
-	builder.WriteString(c.rangeSource(expr.Condition.Range()))
+	builder.WriteString(rs)
 	builder.WriteString("}")
 	trueResult, err := c.convertStringPart(expr.TrueResult)
 	if err != nil {
@@ -360,9 +368,15 @@ func (c *converter) convertTemplateFor(expr *hclsyntax.ForExpr) (string, error) 
 		builder.WriteString(expr.KeyVar)
 		builder.WriteString(", ")
 	}
+
+	rs, err := c.rangeSource(expr.CollExpr.Range())
+	if err != nil {
+		return "", err
+	}
+
 	builder.WriteString(expr.ValVar)
 	builder.WriteString(" in ")
-	builder.WriteString(c.rangeSource(expr.CollExpr.Range()))
+	builder.WriteString(rs)
 	builder.WriteString("}")
 	templ, err := c.convertStringPart(expr.ValExpr)
 	if err != nil {
@@ -374,6 +388,10 @@ func (c *converter) convertTemplateFor(expr *hclsyntax.ForExpr) (string, error) 
 	return builder.String(), nil
 }
 
-func (c *converter) wrapExpr(expr hclsyntax.Expression) string {
-	return "${" + c.rangeSource(expr.Range()) + "}"
+func (c *converter) wrapExpr(expr hclsyntax.Expression) (string, error) {
+	r, err := c.rangeSource(expr.Range())
+	if err != nil {
+		return "", err
+	}
+	return "${" + r + "}", nil
 }
