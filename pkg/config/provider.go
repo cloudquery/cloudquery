@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
+	"github.com/hashicorp/hcl/v2/hclwrite"
 )
 
 type Provider struct {
@@ -69,11 +70,13 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		case "configuration":
 			// this should always be hclsyntax.Body
 			body := block.Body.(*hclsyntax.Body)
-			hclBytes, valDiags := convert.BodyToHCL(ctx, body)
+			f := hclwrite.NewEmptyFile()
+
+			valDiags := convert.WriteBody(ctx, body, f.Body())
 			if valDiags != nil {
 				diags = append(diags, valDiags...)
 			}
-			provider.Configuration = hclBytes
+			provider.Configuration = f.Bytes()
 		default:
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
