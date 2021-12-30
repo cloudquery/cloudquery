@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
+	"github.com/hashicorp/hcl/v2/hclsyntax"
 )
 
 type Provider struct {
@@ -66,7 +67,9 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
-			hclBytes, valDiags := convert.BodyToHCL(ctx, block.Body)
+			// this should always be hclsyntax.Body
+			body := block.Body.(*hclsyntax.Body)
+			hclBytes, valDiags := convert.BodyToHCL(ctx, body)
 			if valDiags != nil {
 				diags = append(diags, valDiags...)
 			}

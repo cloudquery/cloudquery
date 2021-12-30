@@ -6,15 +6,13 @@ import (
 	"github.com/hashicorp/hcl/v2/hclwrite"
 )
 
-func BodyToHCL(ctx *hcl.EvalContext, body hcl.Body) ([]byte, hcl.Diagnostics) {
+// This is here because of this - https://github.com/hashicorp/hcl/issues/299
+
+func BodyToHCL(ctx *hcl.EvalContext, body *hclsyntax.Body) ([]byte, hcl.Diagnostics) {
 	f := hclwrite.NewEmptyFile()
 	b := f.Body()
-	attrs, diags := body.JustAttributes()
-	if diags != nil {
-		return nil, diags
-	}
 
-	for _, v := range attrs {
+	for _, v := range body.Attributes {
 		val, diags := v.Expr.Value(ctx)
 		if diags != nil {
 			return nil, diags
@@ -22,13 +20,12 @@ func BodyToHCL(ctx *hcl.EvalContext, body hcl.Body) ([]byte, hcl.Diagnostics) {
 		b.SetAttributeValue(v.Name, val)
 	}
 
-	newBody, ok := body.(*hclsyntax.Body)
-	if !ok {
-		return f.Bytes(), nil
-	}
-	for _, block := range newBody.Blocks {
+	for _, block := range body.Blocks {
 		newBlock := b.AppendNewBlock(block.Type, block.Labels)
-		writeBody(ctx, block.Body, newBlock.Body())
+		diags := writeBody(ctx, block.Body, newBlock.Body())
+		if diags != nil {
+			return nil, diags
+		}
 	}
 
 	return f.Bytes(), nil
