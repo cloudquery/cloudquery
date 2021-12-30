@@ -50,7 +50,6 @@ var (
 		"git":   new(getter.GitGetter),
 		"hg":    new(getter.HgGetter),
 		"s3":    new(getter.S3Getter),
-		"https": new(getter.HttpGetter),
 	}
 )
 
