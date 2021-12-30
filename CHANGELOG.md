@@ -5,6 +5,10 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### :spider: Fixed
+* Better error for HCL bounds issues [#374](https://github.com/cloudquery/cloudquery/pull/374).
+
 ## [v0.17.4]- 2021-12-23
 
 ### 💥 Breaking Changes
