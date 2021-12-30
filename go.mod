@@ -45,6 +45,7 @@ require (
 	github.com/jackc/pgconn v1.10.0
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/jackc/pgtype v1.8.1
+	github.com/lib/pq v1.10.3
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/spf13/cast v1.4.1
 	github.com/tidwall/gjson v1.11.0
@@ -94,7 +95,6 @@ require (
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
-	github.com/lib/pq v1.10.3 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-runewidth v0.0.10 // indirect

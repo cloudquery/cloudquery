@@ -57,13 +57,17 @@ type Connection struct {
 }
 
 type RequiredProvider struct {
-	Name    string `hcl:"name,label"`
-	Source  string `hcl:"source,optional"`
-	Version string `hcl:"version"`
+	Name    string  `hcl:"name,label"`
+	Source  *string `hcl:"source,optional"`
+	Version string  `hcl:"version"`
 }
 
 func (r RequiredProvider) String() string {
-	return fmt.Sprintf("%s/cq-provider-%s@%s", r.Source, r.Name, r.Version)
+	var source string
+	if r.Source != nil {
+		source = *r.Source
+	}
+	return fmt.Sprintf("%s/cq-provider-%s@%s", source, r.Name, r.Version)
 }
 
 // configFileSchema is the schema for the top-level of a config file. We use

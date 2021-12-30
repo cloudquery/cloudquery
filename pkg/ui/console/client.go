@@ -2,6 +2,7 @@ package console
 
 import (
 	"context"
+	"crypto/sha1"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -17,6 +18,10 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -65,6 +70,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		return nil, err
 	}
 	client := &Client{c, cfg, progressUpdater}
+	client.setTelemetryAttributes(trace.SpanFromContext(ctx))
 	client.checkForUpdate(ctx)
 	return client, err
 }
@@ -111,13 +117,17 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:         c.cfg.Providers,
-		UpdateCallback:    fetchCallback,
-		DisableDataDelete: viper.GetBool("disable-delete"),
+		Providers:      c.cfg.Providers,
+		UpdateCallback: fetchCallback,
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
-		return err
+		// Ignore context cancelled error
+
+		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
+			return err
+		}
+
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
@@ -128,8 +138,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
-		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
+		status := emojiStatus[ui.StatusOK]
+		if summary.Status == "Canceled" {
+			status = emojiStatus[ui.StatusError] + " (canceled)"
+		}
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
+			summary.ProviderName, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
@@ -487,6 +501,19 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	} else {
 		c.c.Logger.Debug("update check succeeded, no new version")
 	}
+}
+
+func (c Client) setTelemetryAttributes(span trace.Span) {
+	cfgJSON, _ := json.Marshal(c.cfg)
+	s := sha1.New()
+	_, _ = s.Write(cfgJSON)
+	attrs := []attribute.KeyValue{
+		attribute.String("cfghash", fmt.Sprintf("%0x", s.Sum(nil))),
+	}
+	if c.c.HistoryCfg != nil {
+		attrs = append(attrs, attribute.Bool("history_enabled", true))
+	}
+	span.SetAttributes(attrs...)
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {

@@ -26,10 +26,11 @@ import (
 )
 
 var (
+	providerSrc           = "cloudquery"
 	requiredTestProviders = []*config.RequiredProvider{
 		{
 			Name:    "test",
-			Source:  "cloudquery",
+			Source:  &providerSrc,
 			Version: "latest",
 		},
 	}
@@ -609,6 +610,7 @@ func Test_collectProviderVersions(t *testing.T) {
 }
 
 func Test_CheckForProviderUpdates(t *testing.T) {
+	source := "cloudquery"
 	tests := []struct {
 		name      string
 		providers []*config.RequiredProvider
@@ -619,7 +621,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &source,
 					Version: "0.0.7",
 				},
 			},
@@ -630,7 +632,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test1",
-					Source:  "cloudquery",
+					Source:  &source,
 					Version: "v0.0.7",
 				},
 			},
@@ -641,7 +643,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &source,
 					Version: "v0.0.7",
 				},
 			},
@@ -652,7 +654,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &source,
 					Version: "v0.0.8",
 				},
 			},
@@ -663,7 +665,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 			[]*config.RequiredProvider{
 				{
 					Name:    "test",
-					Source:  "cloudquery",
+					Source:  &source,
 					Version: "latest",
 				},
 			},

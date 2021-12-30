@@ -225,6 +225,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", IsCI()),
+		attribute.Bool("faas", IsFaaS()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -237,7 +238,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
 
 	if hn, err := os.Hostname(); err == nil && hn != "" {
-		attr = append(attr, semconv.HostNameKey.String(hashAttribute(hn)))
+		attr = append(attr, semconv.HostNameKey.String(HashAttribute(hn)))
 	}
 	attr = append(attr, osInfo()...)
 	attr = append(attr, macHost()...)
@@ -311,6 +312,28 @@ func IsCI() bool {
 	return false
 }
 
+// IsFaaS determines if we're running under a Lambda env by checking Lambda-specific env vars
+func IsFaaS() bool {
+	for _, v := range []string{
+		"LAMBDA_TASK_ROOT", "AWS_LAMBDA_FUNCTION_NAME", // AWS
+		"FUNCTION_TARGET",             // GCP
+		"AZURE_FUNCTIONS_ENVIRONMENT", // Azure
+	} {
+		if os.Getenv(v) != "" {
+			return true
+		}
+	}
+
+	return false
+}
+
+// HashAttribute creates a one-way hash from an attribute
+func HashAttribute(value string) string {
+	s := sha1.New()
+	_, _ = s.Write([]byte(value))
+	return fmt.Sprintf("%0x", s.Sum(nil))
+}
+
 type shutdownable interface {
 	Shutdown(context.Context) error
 }
@@ -336,10 +359,4 @@ func (e *errorHandler) Handle(err error) {
 
 func genRandomId() string {
 	return uuid.NewV4().String()
-}
-
-func hashAttribute(value string) string {
-	s := sha1.New()
-	_, _ = s.Write([]byte(value))
-	return fmt.Sprintf("%0x", s.Sum(nil))
 }

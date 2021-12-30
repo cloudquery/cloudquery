@@ -772,6 +772,7 @@ config {
         }
 
         resource "emr.clusters" {
+            identifiers = [ "id" ]
             iac {
                 terraform {
                     type = "aws_emr_cluster"
