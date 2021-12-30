@@ -16,7 +16,7 @@ var (
 		Long:  policyDescribeHelpMsg,
 		Args:  cobra.ExactArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_ = c.DescribePolicies(ctx, args[0], skipVersioning)
+			_ = c.DescribePolicies(ctx, args[0])
 			return nil
 		}),
 	}
@@ -24,6 +24,5 @@ var (
 
 func init() {
 	describePolicyCmd.SetUsageTemplate(usageTemplateWithFlags)
-	describePolicyCmd.Flags().BoolVar(&skipVersioning, "skip-versioning", false, "Skip policy versioning and use latest files")
 	policyCmd.AddCommand(describePolicyCmd)
 }

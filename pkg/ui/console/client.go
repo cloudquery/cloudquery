@@ -142,7 +142,6 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-
 	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
@@ -156,7 +155,6 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
 	// Show policy instructions
-
 	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf(`
 Add this block into your CloudQuery config file:
 
@@ -168,8 +166,8 @@ policy "%s" {
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("run policy received params:", "policy", policySource, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, stopOnFailure, failOnViolation, noResults bool) error {
+	c.c.Logger.Debug("run policy received params:", "policy", policySource, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "failOnViolation", failOnViolation, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -195,7 +193,6 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		PolicyName:      policySource,
 		OutputDir:       outputDir,
 		StopOnFailure:   stopOnFailure,
-		SkipVersioning:  skipVersioning,
 		FailOnViolation: failOnViolation,
 		RunCallback:     policyRunCallback,
 	}
@@ -221,7 +218,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	return nil
 }
 
-func (c Client) DescribePolicies(ctx context.Context, policySource string, _ bool) error {
+func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
 	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())

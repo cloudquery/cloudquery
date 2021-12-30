@@ -90,9 +90,6 @@ type ExecuteRequest struct {
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
 
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
-
 	// ProviderVersions describes current versions of providers in use.
 	ProviderVersions map[string]*version.Version
 

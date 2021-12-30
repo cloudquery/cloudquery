@@ -157,9 +157,6 @@ type PoliciesRunRequest struct {
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallback policy.UpdateCallback
 
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
-
 	// FailOnViolation if true policy run will return error if there are violations
 	FailOnViolation bool
 }
@@ -783,7 +780,6 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	execReq := &policy.ExecuteRequest{
 		Policy:           p,
 		StopOnFailure:    req.StopOnFailure,
-		SkipVersioning:   req.SkipVersioning,
 		ProviderVersions: versions,
 		UpdateCallback:   req.RunCallback,
 	}

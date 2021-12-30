@@ -102,7 +102,6 @@ func Policy(ctx context.Context, cfg *config.Config) error {
 		PolicyName:      "",
 		OutputDir:       outputPath,
 		StopOnFailure:   false,
-		SkipVersioning:  false,
 		FailOnViolation: false,
 	})
 	if err != nil {
