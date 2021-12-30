@@ -6,34 +6,16 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/getsentry/sentry-go"
-	"google.golang.org/grpc/status"
-
-	"github.com/cloudquery/cloudquery/pkg/client/history"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/hcl/v2"
-
-	"github.com/cloudquery/cloudquery/pkg/client/history"
-	"github.com/cloudquery/cq-provider-sdk/helpers"
-	"github.com/google/uuid"
-
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/attribute"
-	otrace "go.opentelemetry.io/otel/trace"
-	"golang.org/x/sync/errgroup"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -42,10 +24,13 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
@@ -55,12 +40,17 @@ import (
 	otrace "go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
 	//go:embed migrations/*.sql
 	coreMigrations embed.FS
+)
+
+const (
+	migrationsEmbeddedDirectoryPath = "migrations"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -1007,7 +997,7 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
+	migrations, err := readMigrationFiles(c.Logger, coreMigrations)
 	if err != nil {
 		return err
 	}
@@ -1197,4 +1187,33 @@ func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
 		return err
 	}
 	return nil
+}
+
+func readMigrationFiles(log hclog.Logger, migrationFiles embed.FS) (map[string][]byte, error) {
+	var (
+		err        error
+		migrations = make(map[string][]byte)
+	)
+	files, err := migrationFiles.ReadDir(migrationsEmbeddedDirectoryPath)
+	if err != nil {
+		log.Info("Provider doesn't define any migration files")
+		return migrations, nil
+	}
+	for _, m := range files {
+		f, err := migrationFiles.Open(path.Join(migrationsEmbeddedDirectoryPath, m.Name()))
+		if err != nil {
+			return nil, err
+		}
+		info, _ := m.Info()
+		if info.Size() == 0 {
+			migrations[m.Name()] = []byte("")
+			continue
+		}
+		data := make([]byte, info.Size())
+		if _, err := f.Read(data); err != nil {
+			return nil, err
+		}
+		migrations[m.Name()] = data
+	}
+	return migrations, nil
 }

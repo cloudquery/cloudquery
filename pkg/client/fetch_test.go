@@ -49,7 +49,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
-		err: errors.New("ERROR: duplicate key value violates unique constraint \"cq_fetches_pk\" (SQLSTATE 23505)"),
+		err: errors.New("ERROR: duplicate key value violates unique constraint \"fetches_pk\" (SQLSTATE 23505)"),
 	},
 	{
 		summary: FetchSummary{
@@ -57,7 +57,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 			ProviderVersion: "v0.0.1",
 		},
 		skipFetchId: true,
-		err:         errors.New("ERROR: new row for relation \"cq_fetches\" violates check constraint \"non_nil_fetch_id\" (SQLSTATE 23514)"),
+		err:         errors.New("ERROR: new row for relation \"fetches\" violates check constraint \"non_nil_fetch_id\" (SQLSTATE 23514)"),
 	},
 }
 
@@ -75,6 +75,11 @@ func setupDatabase(dsn string) (*pgxpool.Pool, error) {
 }
 
 func TestFetchSummary(t *testing.T) {
+	option := func(c *Client) {
+		c.DSN = testDBConnection
+	}
+	_, err := New(context.Background(), option)
+	assert.NoError(t, err)
 	pool, err := setupDatabase(testDBConnection)
 	assert.NoError(t, err)
 	defer pool.Close()

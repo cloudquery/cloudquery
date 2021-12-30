@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :rocket: Added
 * Added core migrations implementation
-* Added fetch summary saving to `cq_fetches` table
+* Added fetch summary saving to `fetches` table
 
 ## [v0.17.4]- 2021-12-23
 

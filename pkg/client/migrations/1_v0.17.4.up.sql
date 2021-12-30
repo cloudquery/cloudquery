@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS fetches
     is_success           BOOLEAN,
     provider_meta        jsonb,
     results              jsonb,
-    CONSTRAINT "cq_fetches_id" PRIMARY KEY (cq_id),
-    CONSTRAINT "cq_fetches_pk" UNIQUE (cq_fetch_id, provider_name),
-    CONSTRAINT "non_nil_fetch_id" CHECK (cq_fetch_id != '00000000-0000-0000-0000-000000000000')
+    CONSTRAINT "fetches_id" PRIMARY KEY (id),
+    CONSTRAINT "fetches_pk" UNIQUE (fetch_id, provider_name),
+    CONSTRAINT "non_nil_fetch_id" CHECK (fetch_id != '00000000-0000-0000-0000-000000000000')
 );

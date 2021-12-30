@@ -47,7 +47,7 @@ type ResourceFetchSummary struct {
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
-// SaveFetchSummary saves fetch summary into cq_fetches database
+// SaveFetchSummary saves fetch summary into fetches database
 func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary) error {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
