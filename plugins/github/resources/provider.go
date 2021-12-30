@@ -9,15 +9,19 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+// CHANGEME: Change to your provider name
+const providerName = "github"
+
 var (
 	//go:embed migrations/*.sql
 	providerMigrations embed.FS
+	Version            = "Development"
 )
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		// CHANGEME: Change to yoru provider name
-		Name:      "YourProviderName",
+		Name:      providerName,
+		Version:   Version,
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
 			// CHANGEME: place here all supported resources
