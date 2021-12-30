@@ -66,16 +66,11 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
-			if b, err := convert.Body(block.Body, convert.Options{Variables: ctx.Variables, Simplify: true}); err == nil {
-				provider.Configuration = b
-			} else {
-				diags = append(diags, &hcl.Diagnostic{
-					Severity: hcl.DiagError,
-					Summary:  "Failed to encode provider configuration",
-					Detail:   err.Error(),
-					Subject:  block.DefRange.Ptr(),
-				})
+			hclBytes, valDiags := convert.BodyToHCL(ctx, block.Body)
+			if valDiags != nil {
+				diags = append(diags, valDiags...)
 			}
+			provider.Configuration = hclBytes
 		default:
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
