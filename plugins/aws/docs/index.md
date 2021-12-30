@@ -108,13 +108,13 @@ SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ### Find all unencrypted RDS instances
 
 ```sql
-SELECT * from aws_rds_clusters where storage_encrypted = 0;
+SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
 ```
 
 ### Find all unencrypted buckets
 
 ```sql
-SELECT * from aws_rds_clusters where storage_encrypted = 0;
+SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
 ```
 
 ## Building the Provider:
@@ -124,7 +124,7 @@ make build
 ```
 
 
-Running Providerlocally:
+Running Provider locally:
 1. Clone repository to local machine
 
 2. [Optional] Start a local database:
