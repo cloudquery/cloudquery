@@ -44,9 +44,9 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 	if err != nil {
 		return nil, nil, err
 	}
-	policyDir := filepath.Join(installDir, source)
+	policyDir := filepath.Join(installDir, getter.NormalizePath(source))
 	if detectorType == "local" {
-		policyDir = filepath.Join(installDir, filepath.Base(source))
+		policyDir = filepath.Join(installDir, filepath.Base(getter.NormalizePath(source)))
 	}
 	if err := getter.Get(ctx, policyDir, source); err != nil {
 		return nil, nil, fmt.Errorf("failed to get source %s: %w", source, err)

@@ -59,6 +59,13 @@ func TestLoadSource(t *testing.T) {
 			Source:        "github.com/cloudquery-policies/blabla",
 			ErrorExpected: true,
 		},
+		{
+			Name:     "force github link",
+			Source:   "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
+			Expected: true,
+			// forced paths aren't detected by git detector
+			ExpectedMeta: &Meta{Type: "", Version: "v0.0.1", SubPath: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+		},
 	}
 
 	for _, s := range sourceTests {
