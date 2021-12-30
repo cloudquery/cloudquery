@@ -1,1 +1,1 @@
-CREATE TABLE cq_fetches;
+CREATE TABLE fetches;

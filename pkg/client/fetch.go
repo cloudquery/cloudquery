@@ -14,9 +14,9 @@ import (
 // FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
 // resources fetch results
 type FetchSummary struct {
-	СqId uuid.UUID `db:"cq_id"`
+	СqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
-	FetchId            uuid.UUID              `db:"cq_fetch_id"`
+	FetchId            uuid.UUID              `db:"fetch_id"`
 	Start              time.Time              `db:"start"`
 	Finish             time.Time              `db:"finish"`
 	IsSuccess          bool                   `db:"is_success"`
@@ -61,7 +61,7 @@ func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary)
 	}
 	fs.СqId = id
 	dbStruct := sqlbuilder.NewStruct(new(FetchSummary))
-	sql, args := dbStruct.InsertInto("cloudquery.cq_fetches", fs).BuildWithFlavor(sqlbuilder.PostgreSQL)
+	sql, args := dbStruct.InsertInto("cloudquery.fetches", fs).BuildWithFlavor(sqlbuilder.PostgreSQL)
 
 	_, err = conn.Exec(ctx, sql, args...)
 	return err

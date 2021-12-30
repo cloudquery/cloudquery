@@ -297,8 +297,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		}
 	}
 	// migrate cloudquery core tables to latest version
-	err = c.MigrateCore(ctx)
-	if err != nil {
+	if err := c.MigrateCore(ctx); err != nil {
 		return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
 
@@ -968,20 +967,6 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	return m, providerConfig, err
 }
 
-func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
-	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (c *Client) MigrateCore(ctx context.Context) error {
 	err := createCoreSchema(ctx, c.pool)
 	if err != nil {
@@ -1163,4 +1148,18 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
 		attribute.Int64("fetch.errors.total", int64(totalErrors)),
 	)
+}
+
+func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
+	conn, err := pool.Acquire(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+	if err != nil {
+		return err
+	}
+	return nil
 }

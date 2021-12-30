@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS cq_fetches
+CREATE TABLE IF NOT EXISTS fetches
 (
-    cq_id                UUID NOT NULL,
-    cq_fetch_id          UUID NOT NULL,
+    id                   UUID NOT NULL,
+    fetch_id             UUID NOT NULL,
     START                TIMESTAMP,
     finish               TIMESTAMP,
     total_resource_count BIGINT,
