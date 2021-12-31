@@ -9,11 +9,9 @@ import (
 )
 
 func TestIntegrationConfigConfigurationRecorders(t *testing.T) {
-	client.AWSTestHelper(t, ConfigConfigurationRecorders(),
-		"./snapshots")
+	client.AWSTestHelper(t, ConfigConfigurationRecorders())
 }
 
 func TestIntegrationConfigConformancePack(t *testing.T) {
-	client.AWSTestHelper(t, ConfigConformancePack(),
-		"./snapshots")
+	client.AWSTestHelper(t, ConfigConformancePack())
 }
