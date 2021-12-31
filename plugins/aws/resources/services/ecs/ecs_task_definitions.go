@@ -588,7 +588,7 @@ func EcsTaskDefinitions() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ecs.ListTaskDefinitionsInput
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
@@ -669,7 +669,7 @@ func resolveEcsTaskDefinitionsRequiresAttributes(ctx context.Context, meta schem
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchEcsTaskDefinitionContainerDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsTaskDefinitionContainerDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.TaskDefinition)
 	if !ok {
 		return fmt.Errorf("expected to have types.TaskDefinition but got %T", parent.Item)
@@ -856,7 +856,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsVolumesFrom(ctx context.Context
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchEcsTaskDefinitionVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsTaskDefinitionVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.TaskDefinition)
 	if !ok {
 		return fmt.Errorf("expected to have types.TaskDefinition but got %T", parent.Item)

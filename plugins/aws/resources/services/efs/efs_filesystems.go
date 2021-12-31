@@ -145,7 +145,7 @@ func EfsFilesystems() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config efs.DescribeFileSystemsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EFS

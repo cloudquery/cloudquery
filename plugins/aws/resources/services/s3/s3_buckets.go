@@ -434,7 +434,7 @@ func S3Buckets() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().S3
 	response, err := svc.ListBuckets(ctx, nil)
 	if err != nil {
@@ -496,7 +496,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return nil
 }
-func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
 	aclOutput, err := svc.GetBucketAcl(ctx, &s3.GetBucketAclInput{Bucket: r.Name}, func(options *s3.Options) {
@@ -508,7 +508,7 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 	res <- aclOutput.Grants
 	return nil
 }
-func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
@@ -523,7 +523,7 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
-func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
@@ -539,7 +539,7 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
 	return nil
 }
-func fetchS3BucketReplicationRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3BucketReplicationRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*WrappedBucket)
 	if bucket.ReplicationRules != nil {
 		res <- bucket.ReplicationRules
@@ -557,7 +557,7 @@ func resolveS3BucketReplicationRuleFilter(ctx context.Context, meta schema.Clien
 	}
 	return resource.Set("filter", data)
 }
-func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3

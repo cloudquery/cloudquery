@@ -747,7 +747,7 @@ func RedshiftClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config redshift.DescribeClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
@@ -797,7 +797,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 
 	return resource.Set(c.Name, response)
 }
-func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -805,7 +805,7 @@ func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, pare
 	res <- cluster.ClusterNodes
 	return nil
 }
-func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -813,7 +813,7 @@ func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.Client
 	res <- cluster.ClusterParameterGroups
 	return nil
 }
-func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	parameterGroup, ok := parent.Item.(types.ClusterParameterGroupStatus)
 	if !ok {
 		return fmt.Errorf("not redshift cluster parameter group")
@@ -839,7 +839,7 @@ func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, 
 
 	return nil
 }
-func fetchRedshiftClusterParameterGroupStatusLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterParameterGroupStatusLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	parameterGroup, ok := parent.Item.(types.ClusterParameterGroupStatus)
 	if !ok {
 		return fmt.Errorf("not redshift cluster parameter group")
@@ -847,7 +847,7 @@ func fetchRedshiftClusterParameterGroupStatusLists(ctx context.Context, meta sch
 	res <- parameterGroup.ClusterParameterStatusList
 	return nil
 }
-func fetchRedshiftClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -855,7 +855,7 @@ func fetchRedshiftClusterSecurityGroups(ctx context.Context, meta schema.ClientM
 	res <- cluster.ClusterSecurityGroups
 	return nil
 }
-func fetchRedshiftClusterDeferredMaintenanceWindows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterDeferredMaintenanceWindows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -863,7 +863,7 @@ func fetchRedshiftClusterDeferredMaintenanceWindows(ctx context.Context, meta sc
 	res <- cluster.DeferredMaintenanceWindows
 	return nil
 }
-func fetchRedshiftClusterEndpointVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterEndpointVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -871,7 +871,7 @@ func fetchRedshiftClusterEndpointVpcEndpoints(ctx context.Context, meta schema.C
 	res <- cluster.Endpoint.VpcEndpoints
 	return nil
 }
-func fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vpcEndpoint, ok := parent.Item.(types.VpcEndpoint)
 	if !ok {
 		return fmt.Errorf("not vpc endpoint")
@@ -879,7 +879,7 @@ func fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces(ctx context.Contex
 	res <- vpcEndpoint.NetworkInterfaces
 	return nil
 }
-func fetchRedshiftClusterIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")
@@ -887,7 +887,7 @@ func fetchRedshiftClusterIamRoles(ctx context.Context, meta schema.ClientMeta, p
 	res <- cluster.IamRoles
 	return nil
 }
-func fetchRedshiftClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("not redshift cluster")

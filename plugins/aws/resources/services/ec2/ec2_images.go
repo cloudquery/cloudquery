@@ -258,7 +258,7 @@ func Ec2Images() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
 	svc := c.Services().EC2
@@ -288,7 +288,7 @@ func resolveEc2imageTags(ctx context.Context, meta schema.ClientMeta, resource *
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2ImageBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2ImageBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Image)
 	res <- r.BlockDeviceMappings
 	return nil

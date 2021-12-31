@@ -123,7 +123,7 @@ func WafWebAcls() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().Waf
 	config := waf.ListWebACLsInput{}
@@ -180,7 +180,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return resource.Set("tags", outputTags)
 }
-func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL, ok := parent.Item.(*types.WebACL)
 	if !ok {
 		return fmt.Errorf("not an WebACL instance: %#v", parent.Item)

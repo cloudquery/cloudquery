@@ -379,7 +379,7 @@ func Ec2TransitGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -399,7 +399,7 @@ func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewayAttachmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -419,7 +419,7 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewayRouteTablesInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -439,7 +439,7 @@ func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewayVpcAttachmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -459,7 +459,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewayPeeringAttachmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -479,7 +479,7 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 	return nil
 }
 
-func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeTransitGatewayMulticastDomainsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2

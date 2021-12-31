@@ -224,7 +224,7 @@ func SsmInstances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	client := meta.(*client.Client)
 	svc := client.Services().SSM
 	optsFn := func(o *ssm.Options) {
@@ -245,7 +245,7 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 
-func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.InstanceInformation)
 	if !ok {
 		return fmt.Errorf("not a %T instance: %T", instance, parent.Item)

@@ -517,7 +517,7 @@ func AutoscalingGroups() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Autoscaling
 	processGroupsBundle := func(groups []types.AutoScalingGroup) error {
@@ -671,7 +671,7 @@ func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema
 
 	return resource.Set(c.Name, j)
 }
-func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(autoscalingGroupWrapper)
 	if !ok {
 		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
@@ -679,7 +679,7 @@ func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta,
 	res <- p.Instances
 	return nil
 }
-func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(autoscalingGroupWrapper)
 	if !ok {
 		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
@@ -687,7 +687,7 @@ func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, pare
 	res <- p.Tags
 	return nil
 }
-func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(autoscalingGroupWrapper)
 	if !ok {
 		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
@@ -748,7 +748,7 @@ func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomized
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(autoscalingGroupWrapper)
 	if !ok {
 		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)

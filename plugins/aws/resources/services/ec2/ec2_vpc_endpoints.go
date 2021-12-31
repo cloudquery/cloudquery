@@ -174,7 +174,7 @@ func Ec2VpcEndpoints() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2VpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcEndpointsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -201,7 +201,7 @@ func resolveEc2vpcEndpointTags(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2VpcEndpointDnsEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcEndpointDnsEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	endpoint, ok := parent.Item.(types.VpcEndpoint)
 	if !ok {
 		return fmt.Errorf("not vpc endpoint")
@@ -210,7 +210,7 @@ func fetchEc2VpcEndpointDnsEntries(ctx context.Context, meta schema.ClientMeta, 
 
 	return nil
 }
-func fetchEc2VpcEndpointGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcEndpointGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	endpoint, ok := parent.Item.(types.VpcEndpoint)
 	if !ok {
 		return fmt.Errorf("not vpc endpoint")

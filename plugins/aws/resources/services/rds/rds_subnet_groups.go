@@ -107,7 +107,7 @@ func RdsSubnetGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config rds.DescribeDBSubnetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
@@ -126,7 +126,7 @@ func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func fetchRdsSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	subnetGroup, ok := parent.Item.(types.DBSubnetGroup)
 	if !ok {
 		return fmt.Errorf("not db cluster")

@@ -97,7 +97,7 @@ func CloudwatchlogsFilters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config cloudwatchlogs.DescribeMetricFiltersInput
 	c := meta.(*client.Client)
 	svc := c.Services().CloudwatchLogs
@@ -116,7 +116,7 @@ func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func fetchCloudwatchlogsFilterMetricTransformations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchlogsFilterMetricTransformations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	res <- parent.Item.(types.MetricFilter).MetricTransformations
 	return nil
 }

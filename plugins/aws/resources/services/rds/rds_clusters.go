@@ -492,7 +492,7 @@ func RdsClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config rds.DescribeDBClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
@@ -519,7 +519,7 @@ func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	return resource.Set("tags", tags)
 }
-func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)
 	if !ok {
 		return fmt.Errorf("not db cluster")
@@ -527,7 +527,7 @@ func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta,
 	res <- cluster.AssociatedRoles
 	return nil
 }
-func fetchRdsClusterDbClusterMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterDbClusterMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)
 	if !ok {
 		return fmt.Errorf("not db cluster")
@@ -550,7 +550,7 @@ func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta 
 	return resource.Set(c.Name, memberships)
 }
 
-func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)
 	if !ok {
 		return fmt.Errorf("not db cluster")
@@ -558,7 +558,7 @@ func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMet
 	res <- cluster.DomainMemberships
 	return nil
 }
-func fetchRdsClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.DBCluster)
 	if !ok {
 		return fmt.Errorf("not db cluster")

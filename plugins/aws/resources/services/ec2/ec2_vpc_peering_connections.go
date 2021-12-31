@@ -176,7 +176,7 @@ func Ec2VpcPeeringConnections() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2VpcPeeringConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcPeeringConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcPeeringConnectionsInput
 	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().EC2

@@ -299,7 +299,7 @@ func Wafv2WebAcls() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
@@ -397,7 +397,7 @@ func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchWafv2WebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafv2WebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL, ok := parent.Item.(*types.WebACL)
 	if !ok {
 		return fmt.Errorf("not an WebACL instance: %#v", parent.Item)
@@ -458,7 +458,7 @@ func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return resource.Set(c.Name, labels)
 }
-func fetchWafv2WebAclPostProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafv2WebAclPostProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL, ok := parent.Item.(*types.WebACL)
 	if !ok {
 		return fmt.Errorf("not an WebACL instance: %#v", parent.Item)
@@ -494,7 +494,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx con
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchWafv2WebAclPreProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafv2WebAclPreProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL, ok := parent.Item.(*types.WebACL)
 	if !ok {
 		return fmt.Errorf("not an WebACL instance: %#v", parent.Item)

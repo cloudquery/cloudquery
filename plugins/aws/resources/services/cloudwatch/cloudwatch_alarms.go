@@ -266,7 +266,7 @@ func CloudwatchAlarms() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config cloudwatch.DescribeAlarmsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatch
@@ -294,7 +294,7 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 	}
 	return resource.Set("dimensions", dimensions)
 }
-func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	alarm := parent.Item.(types.MetricAlarm)
 	res <- alarm.Metrics
 	return nil

@@ -82,7 +82,7 @@ func Ec2InternetGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeInternetGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -109,7 +109,7 @@ func resolveEc2internetGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2InternetGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2InternetGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.InternetGateway)
 	res <- r.Attachments
 	return nil

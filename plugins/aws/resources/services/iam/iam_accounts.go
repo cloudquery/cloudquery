@@ -191,7 +191,7 @@ type account struct {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAccountSummary(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchAccountSummary(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().IAM
 
 	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{})

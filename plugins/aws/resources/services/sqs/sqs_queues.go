@@ -182,7 +182,7 @@ type sqsQueue struct {
 	Tags map[string]string
 }
 
-func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	client := meta.(*client.Client)
 	sqsClient := client.Services().SQS
 	optsFn := func(o *sqs.Options) {

@@ -64,7 +64,7 @@ func IamRolePolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	svc := meta.(*client.Client).Services().IAM
 	role := parent.Item.(types.Role)

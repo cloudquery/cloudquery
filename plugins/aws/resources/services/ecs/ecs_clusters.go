@@ -1024,7 +1024,7 @@ func EcsClusters() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ecs.ListClustersInput
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
@@ -1098,7 +1098,7 @@ func resolveEcsClustersTags(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	return resource.Set(c.Name, tags)
 }
-func fetchEcsClusterAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	res <- cluster.Attachments
 	return nil
@@ -1111,7 +1111,7 @@ func resolveEcsClusterAttachmentsDetails(ctx context.Context, meta schema.Client
 	}
 	return resource.Set(c.Name, details)
 }
-func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
@@ -1183,7 +1183,7 @@ func resolveEcsClusterServicesTags(ctx context.Context, meta schema.ClientMeta, 
 
 	return resource.Set(c.Name, j)
 }
-func fetchEcsClusterServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service := parent.Item.(types.Service)
 	res <- service.Deployments
 	return nil
@@ -1196,22 +1196,22 @@ func resolveEcsClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Con
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchEcsClusterServiceEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service := parent.Item.(types.Service)
 	res <- service.Events
 	return nil
 }
-func fetchEcsClusterServiceLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service := parent.Item.(types.Service)
 	res <- service.LoadBalancers
 	return nil
 }
-func fetchEcsClusterServiceServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service := parent.Item.(types.Service)
 	res <- service.ServiceRegistries
 	return nil
 }
-func fetchEcsClusterServiceTaskSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceTaskSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service := parent.Item.(types.Service)
 	res <- service.TaskSets
 	return nil
@@ -1232,17 +1232,17 @@ func resolveEcsClusterServiceTaskSetsTags(ctx context.Context, meta schema.Clien
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchEcsClusterServiceTaskSetLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceTaskSetLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	taskSet := parent.Item.(types.TaskSet)
 	res <- taskSet.LoadBalancers
 	return nil
 }
-func fetchEcsClusterServiceTaskSetServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterServiceTaskSetServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	taskSet := parent.Item.(types.TaskSet)
 	res <- taskSet.ServiceRegistries
 	return nil
 }
-func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
@@ -1287,7 +1287,7 @@ func resolveEcsClusterContainerInstancesTags(ctx context.Context, meta schema.Cl
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchEcsClusterContainerInstanceAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterContainerInstanceAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.ContainerInstance)
 	res <- instance.Attachments
 	return nil
@@ -1300,17 +1300,17 @@ func resolveEcsClusterContainerInstanceAttachmentsDetails(ctx context.Context, m
 	}
 	return resource.Set(c.Name, details)
 }
-func fetchEcsClusterContainerInstanceAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterContainerInstanceAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.ContainerInstance)
 	res <- instance.Attributes
 	return nil
 }
-func fetchEcsClusterContainerInstanceRegisteredResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterContainerInstanceRegisteredResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.ContainerInstance)
 	res <- instance.RegisteredResources
 	return nil
 }
-func fetchEcsClusterContainerInstanceRemainingResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcsClusterContainerInstanceRemainingResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.ContainerInstance)
 	res <- instance.RemainingResources
 	return nil

@@ -174,7 +174,7 @@ func ApigatewayUsagePlans() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config apigateway.GetUsagePlansInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
@@ -193,7 +193,7 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	return nil
 }
-func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.UsagePlan)
 	if !ok {
 		return fmt.Errorf("expected UsagePlan but got %T", r)
@@ -201,7 +201,7 @@ func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMe
 	res <- r.ApiStages
 	return nil
 }
-func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.UsagePlan)
 	if !ok {
 		return fmt.Errorf("expected UsagePlan but got %T", r)

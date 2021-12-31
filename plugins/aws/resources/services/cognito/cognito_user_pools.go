@@ -545,7 +545,7 @@ func CognitoUserPools() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoUserPools
 	optsFunc := func(options *cognitoidentityprovider.Options) { options.Region = c.Region }
@@ -585,7 +585,7 @@ func resolveCognitoUserPoolAccountRecoverySetting(ctx context.Context, meta sche
 	return resource.Set(c.Name, data)
 }
 
-func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	pool, ok := parent.Item.(*types.UserPoolType)
 	if !ok {
 		return fmt.Errorf("not a UserPoolType instance: %#v", parent.Item)
@@ -594,7 +594,7 @@ func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	pool, ok := parent.Item.(*types.UserPoolType)
 	if !ok {
 		return fmt.Errorf("not a UserPoolType instance: %#v", parent.Item)

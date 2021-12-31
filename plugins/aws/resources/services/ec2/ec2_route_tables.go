@@ -217,7 +217,7 @@ func Ec2RouteTables() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2RouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2RouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeRouteTablesInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -244,17 +244,17 @@ func resolveEc2routeTableTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2RouteTableAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2RouteTableAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RouteTable)
 	res <- r.Associations
 	return nil
 }
-func fetchEc2RouteTablePropagatingVgws(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2RouteTablePropagatingVgws(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RouteTable)
 	res <- r.PropagatingVgws
 	return nil
 }
-func fetchEc2RouteTableRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2RouteTableRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RouteTable)
 	res <- r.Routes
 	return nil

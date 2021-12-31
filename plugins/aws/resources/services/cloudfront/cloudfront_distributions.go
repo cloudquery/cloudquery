@@ -731,7 +731,7 @@ func CloudfrontDistributions() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config cloudfront.ListDistributionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudfront
@@ -823,7 +823,7 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.Distribution)
 	if !ok {
 		return fmt.Errorf("types.Distribution")
@@ -831,7 +831,7 @@ func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.
 	res <- r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations.Items
 	return nil
 }
-func fetchCloudfrontDistributionOrigins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionOrigins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	distribution, ok := parent.Item.(types.Distribution)
 	if !ok {
 		return fmt.Errorf("not types.Distribution")
@@ -853,7 +853,7 @@ func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta
 	}
 	return resource.Set(c.Name, tags)
 }
-func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	distribution, ok := parent.Item.(types.Distribution)
 	if !ok {
 		return fmt.Errorf("not types.Distribution")
@@ -863,7 +863,7 @@ func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.
 	}
 	return nil
 }
-func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cacheBehavior, ok := parent.Item.(types.CacheBehavior)
 	if !ok {
 		return fmt.Errorf("not types.CacheBehavior")
@@ -874,7 +874,7 @@ func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context
 	res <- cacheBehavior.LambdaFunctionAssociations.Items
 	return nil
 }
-func fetchCloudfrontDistributionCustomErrorResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionCustomErrorResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	distribution, ok := parent.Item.(types.Distribution)
 	if !ok {
 		return fmt.Errorf("not types.Distribution")
@@ -884,7 +884,7 @@ func fetchCloudfrontDistributionCustomErrorResponses(ctx context.Context, meta s
 	}
 	return nil
 }
-func fetchCloudfrontDistributionOriginGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudfrontDistributionOriginGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	distribution, ok := parent.Item.(types.Distribution)
 	if !ok {
 		return fmt.Errorf("not types.Distribution")

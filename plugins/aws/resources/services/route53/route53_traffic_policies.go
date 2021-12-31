@@ -115,7 +115,7 @@ func Route53TrafficPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config route53.ListTrafficPoliciesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Route53
@@ -134,7 +134,7 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.TrafficPolicySummary)
 	if !ok {
 		return fmt.Errorf("not route53 traffic policy")

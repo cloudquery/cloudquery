@@ -160,7 +160,7 @@ func Ec2NetworkAcls() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2NetworkAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2NetworkAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeNetworkAclsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -187,12 +187,12 @@ func resolveEc2networkACLTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2NetworkAclAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2NetworkAclAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.NetworkAcl)
 	res <- r.Associations
 	return nil
 }
-func fetchEc2NetworkAclEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2NetworkAclEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.NetworkAcl)
 	res <- r.Entries
 	return nil

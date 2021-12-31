@@ -63,7 +63,7 @@ func IamUserPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	svc := meta.(*client.Client).Services().IAM
 	user := parent.Item.(wrappedUser)

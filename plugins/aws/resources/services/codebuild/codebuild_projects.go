@@ -681,7 +681,7 @@ func CodebuildProjects() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Codebuild
 	config := codebuild.ListProjectsInput{}
@@ -746,7 +746,7 @@ func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schem
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchCodebuildProjectEnvironmentVariables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCodebuildProjectEnvironmentVariables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.Project)
 	if !ok {
 		return fmt.Errorf("not a types.Project instance: %T", parent.Item)
@@ -757,7 +757,7 @@ func fetchCodebuildProjectEnvironmentVariables(ctx context.Context, meta schema.
 	res <- p.Environment.EnvironmentVariables
 	return nil
 }
-func fetchCodebuildProjectFileSystemLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCodebuildProjectFileSystemLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.Project)
 	if !ok {
 		return fmt.Errorf("not a types.Project instance: %T", parent.Item)
@@ -765,7 +765,7 @@ func fetchCodebuildProjectFileSystemLocations(ctx context.Context, meta schema.C
 	res <- p.FileSystemLocations
 	return nil
 }
-func fetchCodebuildProjectSecondaryArtifacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCodebuildProjectSecondaryArtifacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.Project)
 	if !ok {
 		return fmt.Errorf("not a types.Project instance: %T", parent.Item)
@@ -773,7 +773,7 @@ func fetchCodebuildProjectSecondaryArtifacts(ctx context.Context, meta schema.Cl
 	res <- p.SecondaryArtifacts
 	return nil
 }
-func fetchCodebuildProjectSecondarySources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCodebuildProjectSecondarySources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.Project)
 	if !ok {
 		return fmt.Errorf("not a types.Project instance: %T", parent.Item)

@@ -170,7 +170,7 @@ func Apigatewayv2DomainNames() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config apigatewayv2.GetDomainNamesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
@@ -193,7 +193,7 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 	return nil
 }
 
-func fetchApigatewayv2DomainNameConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayv2DomainNameConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.DomainName)
 	if !ok {
 		return fmt.Errorf("expected DomainName but got %T", r)
@@ -202,7 +202,7 @@ func fetchApigatewayv2DomainNameConfigurations(_ context.Context, _ schema.Clien
 	return nil
 }
 
-func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.DomainName)
 	if !ok {
 		return fmt.Errorf("expected DomainName but got %T", r)

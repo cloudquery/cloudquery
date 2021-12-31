@@ -404,7 +404,7 @@ func Route53Domains() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Route53Domains
 	var input route53domains.ListDomainsInput
@@ -434,7 +434,7 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 
-func fetchRoute53DomainNameservers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRoute53DomainNameservers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	d, ok := parent.Item.(*route53domains.GetDomainDetailOutput)
 	if !ok {
 		return fmt.Errorf("not a *route53domains.GetDomainDetailOutput instance: %T", parent.Item)

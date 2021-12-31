@@ -218,7 +218,7 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config directconnect.DescribeVirtualInterfacesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
@@ -247,7 +247,7 @@ func resolveDirectconnectVirtualInterfaceTags(ctx context.Context, meta schema.C
 	}
 	return resource.Set("tags", tags)
 }
-func fetchDirectconnectVirtualInterfaceBgpPeers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectVirtualInterfaceBgpPeers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	virtualInterface, ok := parent.Item.(types.VirtualInterface)
 	if !ok {
 		return fmt.Errorf("not a direct connect virtual interface")

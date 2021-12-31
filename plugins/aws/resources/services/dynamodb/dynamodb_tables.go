@@ -497,7 +497,7 @@ func DynamodbTables() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().DynamoDB
 
@@ -609,7 +609,7 @@ func resolveDynamodbTableStreamSpecification(ctx context.Context, meta schema.Cl
 		"view_type": r.StreamSpecification.StreamViewType,
 	})
 }
-func fetchDynamodbTableGlobalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTableGlobalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.TableDescription)
 	for i := range p.GlobalSecondaryIndexes {
 		res <- p.GlobalSecondaryIndexes[i]
@@ -620,7 +620,7 @@ func resolveDynamodbTableGlobalSecondaryIndexKeySchema(ctx context.Context, meta
 	r := resource.Item.(types.GlobalSecondaryIndexDescription)
 	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
 }
-func fetchDynamodbTableLocalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTableLocalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.TableDescription)
 	for i := range p.LocalSecondaryIndexes {
 		res <- p.LocalSecondaryIndexes[i]
@@ -631,7 +631,7 @@ func resolveDynamodbTableLocalSecondaryIndexKeySchema(ctx context.Context, meta 
 	r := resource.Item.(types.LocalSecondaryIndexDescription)
 	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
 }
-func fetchDynamodbTableReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTableReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.TableDescription)
 	for i := range p.Replicas {
 		res <- p.Replicas[i]
@@ -653,7 +653,7 @@ func resolveDynamodbTableReplicaGlobalSecondaryIndexes(ctx context.Context, meta
 	}
 	return resource.Set(c.Name, val)
 }
-func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par, ok := parent.Item.(*types.TableDescription)
 	if !ok {
 		return fmt.Errorf("expected *types.TableDescription but got %T", parent.Item)
@@ -714,7 +714,7 @@ func resolveDynamodbTableReplicaAutoScalingWriteCapacity(ctx context.Context, me
 	}
 	return resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedWriteCapacityAutoScalingSettings))
 }
-func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par, ok := parent.Item.(*types.TableDescription)
 	if !ok {
 		return fmt.Errorf("expected *types.TableDescription but got %T", parent.Item)

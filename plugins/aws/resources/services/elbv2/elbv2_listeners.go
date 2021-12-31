@@ -344,7 +344,7 @@ func Elbv2Listeners() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb, ok := parent.Item.(types.LoadBalancer)
 	if !ok {
 		return fmt.Errorf("expected to have types.LoadBalancer but got %T", parent.Item)
@@ -398,7 +398,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	return resource.Set(c.Name, tags)
 }
-func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ELBv2
 	listener, ok := parent.Item.(types.Listener)
@@ -422,7 +422,7 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 
-func fetchElbv2ListenerDefaultActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2ListenerDefaultActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	listener, ok := parent.Item.(types.Listener)
 	if !ok {
 		return fmt.Errorf("expected to have types.Listener but got %T", parent.Item)
@@ -430,7 +430,7 @@ func fetchElbv2ListenerDefaultActions(ctx context.Context, meta schema.ClientMet
 	res <- listener.DefaultActions
 	return nil
 }
-func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	action, ok := parent.Item.(types.Action)
 	if !ok {
 		return fmt.Errorf("expected to have types.Action but got %T", parent.Item)

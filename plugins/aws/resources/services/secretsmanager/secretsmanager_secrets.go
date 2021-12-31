@@ -138,7 +138,7 @@ func SecretsmanagerSecrets() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SecretsManager
 	cfg := secretsmanager.ListSecretsInput{}

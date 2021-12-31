@@ -90,7 +90,7 @@ func WafRules() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().Waf
 	config := waf.ListRulesInput{}
@@ -173,7 +173,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	return resource.Set("tags", outputTags)
 }
-func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	rule, ok := parent.Item.(*types.Rule)
 	if !ok {
 		return fmt.Errorf("not an Rule instance: %#v", rule)

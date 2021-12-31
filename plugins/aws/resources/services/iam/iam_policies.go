@@ -135,7 +135,7 @@ func IamPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountAuthorizationDetailsInput
 	svc := meta.(*client.Client).Services().IAM
 	for {
@@ -151,7 +151,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchIamPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.ManagedPolicyDetail)
 	res <- r.PolicyVersionList
 	return nil

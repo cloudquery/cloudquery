@@ -42,7 +42,7 @@ func Ec2RegionalConfig() *schema.Table {
 	}
 }
 
-func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
 	svc := c.Services().EC2

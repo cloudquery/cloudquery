@@ -56,7 +56,7 @@ func S3Accounts() *schema.Table {
 	}
 }
 
-func fetchS3AccountConfig(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchS3AccountConfig(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
 	svc := c.Services().S3Control

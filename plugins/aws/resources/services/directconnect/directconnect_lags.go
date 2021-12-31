@@ -172,7 +172,7 @@ func DirectconnectLags() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDirectconnectLags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectLags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config directconnect.DescribeLagsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
@@ -195,7 +195,7 @@ func resolveDirectconnectLagTags(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set("tags", tags)
 }
 
-func fetchDirectconnectLagMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectLagMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	connection, ok := parent.Item.(types.Lag)
 	if !ok {
 		return fmt.Errorf("not a direct connect LAG")

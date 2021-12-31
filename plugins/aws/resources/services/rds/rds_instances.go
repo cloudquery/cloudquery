@@ -755,7 +755,7 @@ func RdsInstances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config rds.DescribeDBInstancesInput
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
@@ -798,7 +798,7 @@ func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	return resource.Set(c.Name, tags)
 }
-func fetchRdsInstanceAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -806,7 +806,7 @@ func fetchRdsInstanceAssociatedRoles(ctx context.Context, meta schema.ClientMeta
 	res <- instance.AssociatedRoles
 	return nil
 }
-func fetchRdsInstanceDbInstanceAutomatedBackupsReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceDbInstanceAutomatedBackupsReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -814,7 +814,7 @@ func fetchRdsInstanceDbInstanceAutomatedBackupsReplications(ctx context.Context,
 	res <- instance.DBInstanceAutomatedBackupsReplications
 	return nil
 }
-func fetchRdsInstanceDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -822,7 +822,7 @@ func fetchRdsInstanceDbParameterGroups(ctx context.Context, meta schema.ClientMe
 	res <- instance.DBParameterGroups
 	return nil
 }
-func fetchRdsInstanceDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -830,7 +830,7 @@ func fetchRdsInstanceDbSecurityGroups(ctx context.Context, meta schema.ClientMet
 	res <- instance.DBSecurityGroups
 	return nil
 }
-func fetchRdsInstanceDbSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceDbSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -838,7 +838,7 @@ func fetchRdsInstanceDbSubnetGroupSubnets(ctx context.Context, meta schema.Clien
 	res <- instance.DBSubnetGroup.Subnets
 	return nil
 }
-func fetchRdsInstanceDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -846,7 +846,7 @@ func fetchRdsInstanceDomainMemberships(ctx context.Context, meta schema.ClientMe
 	res <- instance.DomainMemberships
 	return nil
 }
-func fetchRdsInstanceOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")
@@ -865,7 +865,7 @@ func resolveRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, 
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchRdsInstanceVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsInstanceVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.DBInstance)
 	if !ok {
 		return fmt.Errorf("not instance")

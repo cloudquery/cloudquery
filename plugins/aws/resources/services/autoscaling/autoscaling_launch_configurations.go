@@ -218,7 +218,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Autoscaling
 	config := autoscaling.DescribeLaunchConfigurationsInput{}
@@ -238,7 +238,7 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 	}
 	return nil
 }
-func fetchAutoscalingLaunchConfigurationBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAutoscalingLaunchConfigurationBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	res <- parent.Item.(types.LaunchConfiguration).BlockDeviceMappings
 	return nil
 }

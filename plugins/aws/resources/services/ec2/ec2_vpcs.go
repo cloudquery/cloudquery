@@ -165,7 +165,7 @@ func Ec2Vpcs() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2Vpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2Vpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -192,12 +192,12 @@ func resolveEc2vpcTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2VpcCidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcCidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Vpc)
 	res <- r.CidrBlockAssociationSet
 	return nil
 }
-func fetchEc2VpcIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Vpc)
 	res <- r.Ipv6CidrBlockAssociationSet
 	return nil
