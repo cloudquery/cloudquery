@@ -1,6 +1,7 @@
 package telemetry
 
 import (
+	"context"
 	"errors"
 	"net"
 	"strings"
@@ -53,6 +54,10 @@ func classifyError(err error) errClass {
 		}
 	}
 
+	if errors.Is(err, context.Canceled) {
+		return errCancellation
+	}
+
 	{
 		var ope *net.OpError
 		if errors.As(err, &ope) && ope.Op == "dial" {
@@ -75,10 +80,16 @@ func classifyError(err error) errClass {
 			switch pgCode[0:2] {
 			// Class 28 - Invalid Authorization Specification
 			// Class 3D - Invalid Catalog Name
-			case "28", "3D":
+			// Class 57 - Operator Intervention
+			case "28", "3D", "57":
 				return errDatabase
 			}
 		}
+	}
+
+	if errors.Is(err, pq.ErrSSLNotSupported) ||
+		errors.Is(err, pq.ErrSSLKeyHasWorldPermissions) {
+		return errDatabase
 	}
 
 	return errNoClass
