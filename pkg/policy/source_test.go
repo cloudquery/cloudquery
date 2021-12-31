@@ -60,15 +60,21 @@ func TestLoadSource(t *testing.T) {
 			ErrorExpected: true,
 		},
 		{
-			Name:     "force github link",
-			Source:   "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
-			Expected: true,
+			Name:         "force github link",
+			Source:       "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
+			Expected:     true,
 			ExpectedMeta: &Meta{Type: "git", Version: "v0.0.1", SubPath: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:          "https github link no force",
 			Source:        "https://github.com/cloudquery-policies/aws?ref=v0.0.1",
 			ErrorExpected: true,
+		},
+		{
+			Name:         "github reference specific commit",
+			Source:       "github.com/roneli/aws?ref=96886a4",
+			Expected:     true,
+			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", SubPath: "", Directory: "tests/output/github.com/roneli/aws"},
 		},
 	}
 
