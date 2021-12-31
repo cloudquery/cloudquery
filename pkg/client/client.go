@@ -12,18 +12,9 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/getsentry/sentry-go"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cloudquery/pkg/client/history"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/attribute"
-	otrace "go.opentelemetry.io/otel/trace"
-	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -38,6 +29,16 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
+	"go.opentelemetry.io/otel/attribute"
+	otrace "go.opentelemetry.io/otel/trace"
+	"golang.org/x/sync/errgroup"
+	gcodes "google.golang.org/grpc/codes"
 )
 
 var (
@@ -50,9 +51,6 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
-	// Optional: Disable deletion of data from tables.
-	// Use this with caution, as it can create duplicates of data!
-	DisableDataDelete bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
 }
@@ -83,6 +81,7 @@ type ProviderFetchSummary struct {
 	FetchErrors           []error
 	TotalResourcesFetched uint64
 	FetchResources        map[string]cqproto.ResourceFetchSummary
+	Status                string
 }
 
 func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
@@ -285,7 +284,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			return nil, err
 		}
 		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
-			c.Logger.Warn("postgrest validation warning", "err", err)
+			c.Logger.Warn("postgres validation warning", "err", err)
 		}
 	}
 	if err := c.setupTableCreator(ctx); err != nil {
@@ -392,7 +391,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
-	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
+	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
 	searchPath := ""
 	if c.HistoryCfg != nil {
@@ -431,9 +430,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				Connection: cqproto.ConnectionDetails{
 					DSN: dsn,
 				},
-				Config: providerConfig.Configuration,
-				// Disable delete on user request or if history is enabled
-				DisableDelete: request.DisableDataDelete || c.HistoryCfg != nil,
+				Config:        providerConfig.Configuration,
+				DisableDelete: true,
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
@@ -457,22 +455,33 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			)
 			for {
 				resp, err := stream.Recv()
-				if err == io.EOF {
-					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
-					for _, fetchError := range partialFetchResults {
-						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
-					}
-					fetchSummaries <- ProviderFetchSummary{
-						ProviderName:          providerConfig.Name,
-						Version:               providerPlugin.Version(),
-						TotalResourcesFetched: totalResources,
-						PartialFetchErrors:    partialFetchResults,
-						FetchErrors:           fetchErrors,
-						FetchResources:        fetchedResources,
-					}
-					return nil
-				}
+
 				if err != nil {
+					st, ok := status.FromError(err)
+
+					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
+						message := "provider finished fetch"
+						status := "Finished"
+						if ok && st.Code() == gcodes.Canceled {
+							message = "provider fetch canceled"
+							status = "Canceled"
+						}
+
+						pLog.Info(message, "execution", time.Since(fetchStart).String())
+						for _, fetchError := range partialFetchResults {
+							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
+						}
+						fetchSummaries <- ProviderFetchSummary{
+							ProviderName:          providerConfig.Name,
+							Version:               providerPlugin.Version(),
+							TotalResourcesFetched: totalResources,
+							PartialFetchErrors:    partialFetchResults,
+							FetchErrors:           fetchErrors,
+							FetchResources:        fetchedResources,
+							Status:                status,
+						}
+						return nil
+					}
 					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
