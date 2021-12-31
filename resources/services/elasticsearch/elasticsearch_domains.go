@@ -18,7 +18,7 @@ func ElasticsearchDomains() *schema.Table {
 		Multiplex:    client.ServiceAccountRegionMultiplexer("es"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
