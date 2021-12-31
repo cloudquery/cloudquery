@@ -198,7 +198,7 @@ func EksClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config eks.ListClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eks
@@ -225,12 +225,12 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchEksClusterEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEksClusterEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.Cluster)
 	res <- p.EncryptionConfig
 	return nil
 }
-func fetchEksClusterLoggings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEksClusterLoggings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.Cluster)
 	res <- p.Logging.ClusterLogging
 	return nil

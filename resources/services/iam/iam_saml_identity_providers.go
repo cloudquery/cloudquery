@@ -59,7 +59,7 @@ func IamSamlIdentityProviders() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
 	if err != nil {

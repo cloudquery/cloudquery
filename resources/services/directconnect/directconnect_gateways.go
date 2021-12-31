@@ -210,7 +210,7 @@ func DirectconnectGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
@@ -230,7 +230,7 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 
-func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	gateway, ok := parent.Item.(types.DirectConnectGateway)
 	if !ok {
 		return fmt.Errorf("not direct connect gateway")
@@ -258,7 +258,7 @@ func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.Clie
 	return nil
 }
 
-func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	gateway, ok := parent.Item.(types.DirectConnectGateway)
 	if !ok {
 		return fmt.Errorf("not direct connect gateway")

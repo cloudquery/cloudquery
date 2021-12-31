@@ -56,7 +56,7 @@ func AwsRegions() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	output, err := c.Services().EC2.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)}, func(options *ec2.Options) {
 		options.Region = c.Region

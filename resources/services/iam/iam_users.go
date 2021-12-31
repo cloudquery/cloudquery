@@ -243,7 +243,7 @@ func IamUsers() *schema.Table {
 	}
 }
 
-func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListUsersInput
 	svc := meta.(*client.Client).Services().IAM
 	report, err := getCredentialReport(ctx, meta)
@@ -421,7 +421,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 	return nil
 }
 
-func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(wrappedUser)
 	if aws.ToString(p.UserName) == rootName {
@@ -443,7 +443,7 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	return nil
 }
 
-func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(wrappedUser)
 	svc := meta.(*client.Client).Services().IAM
@@ -509,7 +509,7 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	return nil
 }
 
-func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(wrappedUser)
 	if aws.ToString(p.UserName) == rootName {

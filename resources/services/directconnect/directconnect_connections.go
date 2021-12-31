@@ -175,7 +175,7 @@ func DirectconnectConnections() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDirectconnectConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config directconnect.DescribeConnectionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
@@ -197,7 +197,7 @@ func resolveDirectconnectConnectionTags(ctx context.Context, meta schema.ClientM
 	}
 	return resource.Set("tags", tags)
 }
-func fetchDirectconnectConnectionMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDirectconnectConnectionMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	connection, ok := parent.Item.(types.Connection)
 	if !ok {
 		return fmt.Errorf("not a direct connect connection")

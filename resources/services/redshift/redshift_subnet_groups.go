@@ -104,7 +104,7 @@ func RedshiftSubnetGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
@@ -131,7 +131,7 @@ func resolveRedshiftSubnetGroupTags(ctx context.Context, meta schema.ClientMeta,
 	}
 	return resource.Set("tags", tags)
 }
-func fetchRedshiftSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRedshiftSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	clusterSubnetGroup, ok := parent.Item.(types.ClusterSubnetGroup)
 	if !ok {
 		return fmt.Errorf("not redshift cluster subnet group")

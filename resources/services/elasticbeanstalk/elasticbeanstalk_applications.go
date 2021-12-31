@@ -116,7 +116,7 @@ func ElasticbeanstalkApplications() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elasticbeanstalk.DescribeApplicationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk

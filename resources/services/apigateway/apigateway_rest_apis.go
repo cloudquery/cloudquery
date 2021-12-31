@@ -636,7 +636,7 @@ func ApigatewayRestApis() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config apigateway.GetRestApisInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
@@ -655,7 +655,7 @@ func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -678,7 +678,7 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -701,7 +701,7 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -724,7 +724,7 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 	}
 	return nil
 }
-func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -747,7 +747,7 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 	}
 	return nil
 }
-func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -770,7 +770,7 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 	}
 	return nil
 }
-func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -818,7 +818,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	}
 	return resource.Set(c.Name, response.Value)
 }
-func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -841,7 +841,7 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 	}
 	return nil
 }
-func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
@@ -864,7 +864,7 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
-func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.RestApi)
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)

@@ -152,7 +152,7 @@ func GuarddutyDetectors() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().GuardDuty
 	config := &guardduty.ListDetectorsInput{}
@@ -179,7 +179,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 	}
 }
 
-func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	detector, ok := parent.Item.(Detector)
 	if !ok {
 		return fmt.Errorf("expected type *guardduty.GetDetectorOutput got %T", parent.Item)

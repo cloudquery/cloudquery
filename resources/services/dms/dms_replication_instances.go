@@ -256,7 +256,7 @@ func DmsReplicationInstances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().DMS
 
@@ -300,7 +300,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	return nil
 }
 
-func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	replicationInstance, ok := parent.Item.(DmsReplicationInstanceWrapper)
 	if !ok {
 		return fmt.Errorf("not dms replication instance")
@@ -309,7 +309,7 @@ func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context,
 	return nil
 }
 
-func fetchDmsReplicationInstanceVpcSecurityGroups(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDmsReplicationInstanceVpcSecurityGroups(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	replicationInstance, ok := parent.Item.(DmsReplicationInstanceWrapper)
 	if !ok {
 		return fmt.Errorf("not dms replication instance")

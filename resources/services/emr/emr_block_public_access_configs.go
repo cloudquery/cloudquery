@@ -99,7 +99,7 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
 	out, err := svc.GetBlockPublicAccessConfiguration(ctx, &emr.GetBlockPublicAccessConfigurationInput{}, func(options *emr.Options) {
@@ -127,7 +127,7 @@ func resolveEmrBlockPublicAccessConfigConfigurations(ctx context.Context, meta s
 	return resource.Set(c.Name, b)
 }
 
-func fetchEmrBlockPublicAccessConfigPermittedPublicSecurityGroupRuleRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEmrBlockPublicAccessConfigPermittedPublicSecurityGroupRuleRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	out, ok := parent.Item.(*emr.GetBlockPublicAccessConfigurationOutput)
 	if !ok {
 		return fmt.Errorf("not an *emr.GetBlockPublicAccessConfigurationOutput: %T", parent.Item)

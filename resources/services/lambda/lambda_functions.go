@@ -923,7 +923,7 @@ func LambdaFunctions() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input lambda.ListFunctionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
@@ -1052,7 +1052,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 
 	return nil
 }
-func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", r)
@@ -1061,7 +1061,7 @@ func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.Clien
 	res <- r.Configuration.FileSystemConfigs
 	return nil
 }
-func fetchLambdaFunctionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", r)
@@ -1070,7 +1070,7 @@ func fetchLambdaFunctionLayers(ctx context.Context, meta schema.ClientMeta, pare
 	res <- r.Configuration.Layers
 	return nil
 }
-func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
@@ -1099,7 +1099,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
@@ -1122,7 +1122,7 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
@@ -1145,7 +1145,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-func fetchLambdaFunctionVersionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionVersionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.FunctionConfiguration)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of FunctionConfiguration", r)
@@ -1154,7 +1154,7 @@ func fetchLambdaFunctionVersionFileSystemConfigs(ctx context.Context, meta schem
 	res <- r.FileSystemConfigs
 	return nil
 }
-func fetchLambdaFunctionVersionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionVersionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(types.FunctionConfiguration)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of FunctionConfiguration", r)
@@ -1163,7 +1163,7 @@ func fetchLambdaFunctionVersionLayers(ctx context.Context, meta schema.ClientMet
 	res <- r.Layers
 	return nil
 }
-func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
@@ -1186,7 +1186,7 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)

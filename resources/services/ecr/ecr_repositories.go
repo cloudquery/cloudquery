@@ -187,7 +187,7 @@ func EcrRepositories() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	maxResults := int32(1000)
 	config := ecr.DescribeRepositoriesInput{
 		MaxResults: &maxResults,
@@ -209,7 +209,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	maxResults := int32(1000)
 	p := parent.Item.(types.Repository)
 	config := ecr.DescribeImagesInput{

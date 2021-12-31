@@ -195,7 +195,7 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	config := accessanalyzer.ListAnalyzersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Analyzer
@@ -225,7 +225,7 @@ func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	c := meta.(*client.Client)
 	svc := c.Services().Analyzer
@@ -258,7 +258,7 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	}
 	return nil
 }
-func fetchAccessAnalyzerAnalyzerFindingSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAccessAnalyzerAnalyzerFindingSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	finding := parent.Item.(types.FindingSummary)
 	res <- finding.Sources
 	return nil

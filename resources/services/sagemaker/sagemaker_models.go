@@ -170,7 +170,7 @@ func SagemakerModels() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListModelsInput{}
@@ -239,7 +239,7 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 	return resource.Set("tags", tags)
 }
 
-func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(WrappedSageMakerModel)
 	if !ok {
 		return fmt.Errorf("expected WrappedModel but got %T", r)
@@ -248,7 +248,7 @@ func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, paren
 	return nil
 }
 
-func fetchSagemakerModelVpcConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerModelVpcConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(WrappedSageMakerModel)
 	if !ok {
 		return fmt.Errorf("expected WrappedModel but got %T", r)

@@ -284,7 +284,7 @@ func Elbv2LoadBalancers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elbv2.DescribeLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv2
@@ -353,12 +353,12 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 
 	return resource.Set(c.Name, tags)
 }
-func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.LoadBalancer)
 	res <- p.AvailabilityZones
 	return nil
 }
-func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.AvailabilityZone)
 	res <- p.LoadBalancerAddresses
 	return nil
@@ -383,7 +383,7 @@ type lbAttributes struct {
 	LoadBalancingCrossZone                bool   `mapstructure:"load_balancing.cross_zone.enabled"`
 }
 
-func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb, ok := parent.Item.(types.LoadBalancer)
 	if !ok {
 		return fmt.Errorf("not a LoadBalancer instance: %T", parent.Item)

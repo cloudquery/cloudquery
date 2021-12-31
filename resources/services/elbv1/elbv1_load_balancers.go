@@ -382,7 +382,7 @@ func Elbv1LoadBalancers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv1
 	processLoadBalancers := func(loadBalancers []types.LoadBalancerDescription) error {
@@ -558,7 +558,7 @@ func resolveElbv1loadBalancerInstances(ctx context.Context, meta schema.ClientMe
 	}
 	return resource.Set(c.Name, response)
 }
-func fetchElbv1LoadBalancerBackendServerDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancerBackendServerDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
 	if !ok {
 		return errors.New("not load balancer")
@@ -566,7 +566,7 @@ func fetchElbv1LoadBalancerBackendServerDescriptions(ctx context.Context, meta s
 	res <- r.BackendServerDescriptions
 	return nil
 }
-func fetchElbv1LoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
 	if !ok {
 		return errors.New("not load balancer")
@@ -574,7 +574,7 @@ func fetchElbv1LoadBalancerListeners(ctx context.Context, meta schema.ClientMeta
 	res <- r.ListenerDescriptions
 	return nil
 }
-func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
 	if !ok {
 		return errors.New("not load balancer")
@@ -586,7 +586,7 @@ func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Conte
 	res <- r.Policies.AppCookieStickinessPolicies
 	return nil
 }
-func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
 	if !ok {
 		return errors.New("not load balancer")
@@ -598,7 +598,7 @@ func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Contex
 	res <- r.Policies.LBCookieStickinessPolicies
 	return nil
 }
-func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
 	if !ok {
 		return errors.New("not load balancer")

@@ -152,7 +152,7 @@ func Ec2NatGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2NatGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2NatGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeNatGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -179,7 +179,7 @@ func resolveEc2natGatewayTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2NatGatewayAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2NatGatewayAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.NatGateway)
 	res <- r.NatGatewayAddresses
 	return nil

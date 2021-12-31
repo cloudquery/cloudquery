@@ -561,7 +561,7 @@ func SagemakerTrainingJobs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTrainingJobsInput{}
@@ -597,7 +597,7 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *
 	return nil
 }
 
-func fetchSagemakerTrainingJobAlgorithmSpecifications(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobAlgorithmSpecifications(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -624,7 +624,7 @@ func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ conte
 	}
 	return resource.Set(c.Name, b)
 }
-func fetchSagemakerTrainingJobDebugHookConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobDebugHookConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -651,7 +651,7 @@ func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ conte
 	}
 	return resource.Set(c.Name, b)
 }
-func fetchSagemakerTrainingJobDebugRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobDebugRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -659,7 +659,7 @@ func fetchSagemakerTrainingJobDebugRuleConfigurations(_ context.Context, _ schem
 	res <- r.DebugRuleConfigurations
 	return nil
 }
-func fetchSagemakerTrainingJobDebugRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobDebugRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -667,7 +667,7 @@ func fetchSagemakerTrainingJobDebugRuleEvaluationStatuses(_ context.Context, _ s
 	res <- r.DebugRuleEvaluationStatuses
 	return nil
 }
-func fetchSagemakerTrainingJobInputDataConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobInputDataConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -675,7 +675,7 @@ func fetchSagemakerTrainingJobInputDataConfigs(_ context.Context, _ schema.Clien
 	res <- r.InputDataConfig
 	return nil
 }
-func fetchSagemakerTrainingJobProfilerRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobProfilerRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
@@ -683,7 +683,7 @@ func fetchSagemakerTrainingJobProfilerRuleConfigurations(_ context.Context, _ sc
 	res <- r.ProfilerRuleConfigurations
 	return nil
 }
-func fetchSagemakerTrainingJobProfilerRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerTrainingJobProfilerRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)

@@ -125,7 +125,7 @@ func CognitoIdentityPools() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoIdentityPools
 	optsFunc := func(options *cognitoidentity.Options) { options.Region = c.Region }
@@ -153,7 +153,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	return nil
 }
 
-func fetchCognitoIdentityPoolCognitoIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCognitoIdentityPoolCognitoIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	pool, ok := parent.Item.(*cognitoidentity.DescribeIdentityPoolOutput)
 	if !ok {
 		return fmt.Errorf("not a DescribeIdentityPoolOutput instance: %#v", parent.Item)

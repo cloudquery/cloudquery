@@ -225,7 +225,7 @@ func DaxClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().DAX
 
@@ -282,7 +282,7 @@ func resolveDaxClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta
 	}
 	return resource.Set(c.Name, val)
 }
-func fetchDaxClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDaxClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Cluster)
 	for i := range r.Nodes {
 		res <- r.Nodes[i]

@@ -161,7 +161,7 @@ func Ec2Subnets() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeSubnetsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -188,7 +188,7 @@ func resolveEc2SubnetsTags(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2SubnetIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2SubnetIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Subnet)
 	res <- r.Ipv6CidrBlockAssociationSet
 	return nil

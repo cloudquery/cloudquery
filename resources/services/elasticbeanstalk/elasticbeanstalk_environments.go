@@ -389,7 +389,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
@@ -443,7 +443,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	}
 	return resource.Set(c.Name, tags)
 }
-func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.EnvironmentDescription)
 	if !ok {
 		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
@@ -452,7 +452,7 @@ func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.Clie
 	return nil
 }
 
-func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.EnvironmentDescription)
 	if !ok {
 		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
@@ -484,7 +484,7 @@ type ConfigOptions struct {
 	ApplicationArn string
 }
 
-func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.EnvironmentDescription)
 	if !ok {
 		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
@@ -517,7 +517,7 @@ type ConfigSettings struct {
 	ApplicationArn string
 }
 
-func fetchElasticbeanstalkConfigurationSettingOptionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchElasticbeanstalkConfigurationSettingOptionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	option, ok := parent.Item.(ConfigSettings)
 	if !ok {
 		meta.Logger().Error("parent.Item", "Item", parent.Item)

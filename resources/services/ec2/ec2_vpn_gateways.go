@@ -83,7 +83,7 @@ func Ec2VpnGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2VpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpnGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -96,7 +96,7 @@ func fetchEc2VpnGateways(ctx context.Context, meta schema.ClientMeta, parent *sc
 	res <- output.VpnGateways
 	return nil
 }
-func fetchEc2VpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2VpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.VpnGateway)
 	res <- r.VpcAttachments
 	return nil

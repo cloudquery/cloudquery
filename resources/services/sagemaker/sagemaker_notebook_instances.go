@@ -136,7 +136,7 @@ func SagemakerNotebookInstances() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListNotebookInstancesInput{}

@@ -219,7 +219,7 @@ func CloudtrailTrails() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
@@ -357,7 +357,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
-func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(CloudTrailWrapper)
 	if !ok {
 		return fmt.Errorf("expected CloudTrailWrapper but got %T", parent.Item)

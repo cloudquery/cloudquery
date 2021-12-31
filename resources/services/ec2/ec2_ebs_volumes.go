@@ -144,7 +144,7 @@ func Ec2EbsVolumes() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	config := ec2.DescribeVolumesInput{}
@@ -171,7 +171,7 @@ func resolveEc2EbsVolumeTags(_ context.Context, _ schema.ClientMeta, resource *s
 	}
 	return resource.Set("tags", tags)
 }
-func fetchEc2EbsVolumeAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2EbsVolumeAttachments(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	volume, ok := parent.Item.(types.Volume)
 	if !ok {
 		return fmt.Errorf("not ec2 ebs volume")

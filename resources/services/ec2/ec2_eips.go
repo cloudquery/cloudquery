@@ -113,7 +113,7 @@ func Ec2Eips() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	output, err := svc.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{}, func(options *ec2.Options) {

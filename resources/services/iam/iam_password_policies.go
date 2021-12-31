@@ -89,7 +89,7 @@ func IamPasswordPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)

@@ -167,7 +167,7 @@ func LambdaLayers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input lambda.ListLayersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
@@ -188,7 +188,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	return nil
 }
-func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.LayersListItem)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of LayersListItem", p)
@@ -211,7 +211,7 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	return nil
 }
-func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.LayerVersionsListItem)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of LayerVersionsListItem", p)

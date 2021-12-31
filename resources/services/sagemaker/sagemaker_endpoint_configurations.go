@@ -130,7 +130,7 @@ func SagemakerEndpointConfigurations() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListEndpointConfigsInput{}
@@ -165,7 +165,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 	}
 	return nil
 }
-func fetchSagemakerEndpointConfigurationProductionVariants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSagemakerEndpointConfigurationProductionVariants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)

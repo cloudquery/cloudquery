@@ -139,7 +139,7 @@ func RdsClusterParameterGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
 	var input rds.DescribeDBClusterParameterGroupsInput
@@ -159,7 +159,7 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 
-func fetchRdsClusterParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRdsClusterParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
 	g, ok := parent.Item.(types.DBClusterParameterGroup)
