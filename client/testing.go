@@ -56,7 +56,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	})
 }
 
-func AWSTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
+func AWSTestHelper(t *testing.T, table *schema.Table) {
 	t.Helper()
 	cfg := `
 	aws_debug = false
