@@ -69,19 +69,16 @@ func initSentry() {
 	}
 }
 
-func setSentryVars(traceID string) {
-	hub := sentry.CurrentHub()
-	if hub == nil {
-		return
-	}
-	scope := hub.Scope()
-	if scope == nil {
-		return
-	}
-	scope.SetExtra("trace_id", traceID)
-	scope.SetTags(map[string]string{
-		"terminal": strconv.FormatBool(ui.IsTerminal()),
-		"ci":       strconv.FormatBool(telemetry.IsCI()),
-		"faas":     strconv.FormatBool(telemetry.IsFaaS()),
+func setSentryVars(traceID, randomID string) {
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetExtra("trace_id", traceID)
+		scope.SetUser(sentry.User{
+			ID: randomID,
+		})
+		scope.SetTags(map[string]string{
+			"terminal": strconv.FormatBool(ui.IsTerminal()),
+			"ci":       strconv.FormatBool(telemetry.IsCI()),
+			"faas":     strconv.FormatBool(telemetry.IsFaaS()),
+		})
 	})
 }
