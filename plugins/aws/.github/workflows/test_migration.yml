@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -47,7 +49,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
@@ -75,11 +76,9 @@ jobs:
       - name: Build initial schema
         run: |
           CQ_NO_TELEMETRY=1 ./cloudquery provider build-schema aws --config ./client/testdata/initial_migration.hcl --enable-console-log
-
       - name: Get dependencies
         run: |
           go get -v -t -d ./...
-
       - name: Build
         run: go build -v .
 
@@ -89,7 +88,7 @@ jobs:
           go run main.go & while [ ! -f .cq_reattach ]; do sleep 1; done && \
           ./cloudquery provider upgrade aws --config ./client/testdata/default.hcl --enable-console-log
         env:
-          CQ_PROVIDER_DEBUG: 1 
+          CQ_PROVIDER_DEBUG: 1
           CQ_REATTACH_PROVIDERS: .cq_reattach
           CQ_NO_TELEMETRY: 1
 

@@ -4,7 +4,7 @@ ALTER TABLE IF EXISTS "aws_directconnect_gateways" RENAME COLUMN "direct_connect
 
 ALTER TABLE IF EXISTS "aws_directconnect_gateways" RENAME COLUMN "direct_connect_gateway_name" TO "name";
 
-ALTER TABLE IF EXISTS "aws_directconnect_gateways" DROP COLUMN "directconnect_gateway_id";
+ALTER TABLE IF EXISTS "aws_directconnect_gateways" DROP COLUMN "direct_connect_gateway_id";
 
 ALTER TABLE IF EXISTS "aws_directconnect_gateway_associations" RENAME COLUMN "directconnect_gateway_cq_id" TO "gateway_cq_id";
 
