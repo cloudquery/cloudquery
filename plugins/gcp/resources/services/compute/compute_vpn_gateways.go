@@ -119,7 +119,7 @@ func ComputeVpnGateways() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -143,7 +143,7 @@ func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchComputeVpnGatewayVpnInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVpnGatewayVpnInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.VpnGateway)
 	res <- r.VpnInterfaces
 	return nil

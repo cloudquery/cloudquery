@@ -410,7 +410,7 @@ func DomainsRegistration() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDomainsRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDomainsRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -450,7 +450,7 @@ func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, me
 	}
 	return resource.Set("google_domains_dns_ds_records", data)
 }
-func fetchDomainsRegistrationGlueRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDomainsRegistrationGlueRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	reg := parent.Item.(*domains.Registration)
 	if reg.DnsSettings != nil {
 		res <- reg.DnsSettings.GlueRecords

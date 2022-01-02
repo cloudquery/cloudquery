@@ -182,7 +182,7 @@ func ComputeFirewalls() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -199,12 +199,12 @@ func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func fetchComputeFirewallAllowed(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeFirewallAllowed(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Firewall)
 	res <- r.Allowed
 	return nil
 }
-func fetchComputeFirewallDenied(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeFirewallDenied(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Firewall)
 	res <- r.Denied
 	return nil

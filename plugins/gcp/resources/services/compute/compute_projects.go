@@ -154,7 +154,7 @@ func ComputeProjects() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	call := c.Services.Compute.Projects.
 		Get(c.ProjectId).
@@ -177,7 +177,7 @@ func resolveComputeProjectCommonInstanceMetadataItems(ctx context.Context, meta 
 	}
 	return resource.Set(c.Name, m)
 }
-func fetchComputeProjectQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeProjectQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*compute.Project)
 	if !ok {
 		return fmt.Errorf("expected *compute.Project but got %T", p)

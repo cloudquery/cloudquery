@@ -405,7 +405,7 @@ func BigqueryDatasetTables() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*bigquery.Dataset)
 	if !ok {
 		return fmt.Errorf("expected *bigquery.Dataset but got %T", p)
@@ -468,7 +468,7 @@ func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMe
 	}
 	return resource.Set(c.Name, s)
 }
-func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*bigquery.Table)
 	if !ok {
 		return fmt.Errorf("expected *bigquery.Table but got %T", p)
@@ -481,7 +481,7 @@ func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta
 	res <- p.Model.TrainingRuns
 	return nil
 }
-func fetchBigqueryDatasetTableUserDefinedFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchBigqueryDatasetTableUserDefinedFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*bigquery.Table)
 	if !ok {
 		return fmt.Errorf("expected *bigquery.Table but got %T", p)

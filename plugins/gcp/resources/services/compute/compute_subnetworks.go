@@ -188,7 +188,7 @@ func ComputeSubnetworks() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -212,7 +212,7 @@ func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchComputeSubnetworkSecondaryIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeSubnetworkSecondaryIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Subnetwork)
 	res <- r.SecondaryIpRanges
 	return nil

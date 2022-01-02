@@ -714,7 +714,7 @@ func ComputeInstances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -755,7 +755,7 @@ func resolveComputeInstanceMetadataItems(ctx context.Context, meta schema.Client
 	}
 	return resource.Set("metadata_items", res)
 }
-func fetchComputeInstanceDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
 	res <- r.Disks
 	return nil
@@ -768,29 +768,29 @@ func resolveComputeInstanceDiskGuestOsFeatures(ctx context.Context, meta schema.
 	}
 	return resource.Set("guest_os_features", res)
 }
-func fetchComputeInstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
 	res <- r.NetworkInterfaces
 	return nil
 }
-func fetchComputeInstanceNetworkInterfaceAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceNetworkInterfaceAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.NetworkInterface)
 	res <- r.AccessConfigs
 	return nil
 }
-func fetchComputeInstanceNetworkInterfaceAliasIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceNetworkInterfaceAliasIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.NetworkInterface)
 	res <- r.AliasIpRanges
 	return nil
 }
-func fetchComputeInstanceSchedulingNodeAffinities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceSchedulingNodeAffinities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
 	if r.Scheduling != nil {
 		res <- r.Scheduling.NodeAffinities
 	}
 	return nil
 }
-func fetchComputeInstanceServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInstanceServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
 	if r.Scheduling != nil {
 		res <- r.ServiceAccounts

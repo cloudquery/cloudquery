@@ -548,7 +548,7 @@ func ComputeBackendServices() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
@@ -594,7 +594,7 @@ func resolveComputeBackendServiceCdnPolicyNegativeCachingPolicy(ctx context.Cont
 	return resource.Set(c.Name, data)
 }
 
-func fetchComputeBackendServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeBackendServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.BackendService)
 	res <- r.Backends
 	return nil

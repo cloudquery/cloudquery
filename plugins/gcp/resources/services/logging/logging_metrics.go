@@ -205,7 +205,7 @@ func LoggingMetrics() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -226,7 +226,7 @@ func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-func fetchLoggingMetricDescriptorLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLoggingMetricDescriptorLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*logging.LogMetric)
 	if !ok {
 		return fmt.Errorf("expected *logging.LogMetric but got %T", p)

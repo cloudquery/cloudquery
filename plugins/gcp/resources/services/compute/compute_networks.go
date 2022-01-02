@@ -171,7 +171,7 @@ func ComputeNetworks() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
@@ -189,7 +189,7 @@ func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func fetchComputeNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Network)
 	res <- r.Peerings
 	return nil

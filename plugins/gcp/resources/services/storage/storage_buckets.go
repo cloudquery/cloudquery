@@ -525,7 +525,7 @@ func StorageBuckets() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -543,22 +543,22 @@ func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-func fetchStorageBucketAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBucketAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*storage.Bucket)
 	res <- bucket.Acl
 	return nil
 }
-func fetchStorageBucketCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBucketCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*storage.Bucket)
 	res <- bucket.Cors
 	return nil
 }
-func fetchStorageBucketDefaultObjectAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBucketDefaultObjectAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*storage.Bucket)
 	res <- bucket.DefaultObjectAcl
 	return nil
 }
-func fetchStorageBucketLifecycleRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBucketLifecycleRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*storage.Bucket)
 	if bucket.Lifecycle != nil {
 		res <- bucket.Lifecycle.Rule

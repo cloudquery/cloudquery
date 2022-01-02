@@ -232,7 +232,7 @@ func KmsKeyrings() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	locations, err := getAllKmsLocations(ctx, c.ProjectId, c.Services.Kms)
 	if err != nil {
@@ -264,7 +264,7 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	keyRing, ok := parent.Item.(*KeyRing)
 	if !ok {

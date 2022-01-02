@@ -730,7 +730,7 @@ func SQLInstances() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSqlInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -758,19 +758,19 @@ func resolveSQLInstanceSettingsDatabaseFlags(ctx context.Context, meta schema.Cl
 	}
 	return resource.Set("settings_database_flags", flags)
 }
-func fetchSqlInstanceIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlInstanceIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)
 	res <- db.IpAddresses
 	return nil
 }
-func fetchSqlInstanceSettingsDenyMaintenancePeriods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlInstanceSettingsDenyMaintenancePeriods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)
 	if db.Settings != nil {
 		res <- db.Settings.DenyMaintenancePeriods
 	}
 	return nil
 }
-func fetchSqlInstanceSettingsIpConfigurationAuthorizedNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlInstanceSettingsIpConfigurationAuthorizedNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)
 	if db.Settings != nil && db.Settings.IpConfiguration != nil {
 		res <- db.Settings.IpConfiguration.AuthorizedNetworks

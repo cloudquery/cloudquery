@@ -105,7 +105,7 @@ func BigqueryDatasetAccesses() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchBigqueryDatasetAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchBigqueryDatasetAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*bigquery.Dataset)
 	if !ok {
 		return fmt.Errorf("expected bigquery.Dataset but got %T", p)

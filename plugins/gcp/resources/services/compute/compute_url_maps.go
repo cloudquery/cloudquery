@@ -477,7 +477,7 @@ func ComputeURLMaps() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -539,7 +539,7 @@ func resolveComputeURLMapHeaderActionResponseHeadersToAdd(ctx context.Context, m
 
 	return resource.Set(c.Name, j)
 }
-func fetchComputeUrlMapWeightedBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeUrlMapWeightedBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*compute.UrlMap)
 	if !ok {
 		return fmt.Errorf("expected to have *compute.UrlMap but got %T", parent.Item)
@@ -568,7 +568,7 @@ func resolveComputeURLMapWeightedBackendServiceHeaderAction(ctx context.Context,
 
 	return resource.Set(c.Name, j)
 }
-func fetchComputeUrlMapHostRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeUrlMapHostRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*compute.UrlMap)
 	if !ok {
 		return fmt.Errorf("expected to have *compute.UrlMap but got %T", parent.Item)
@@ -581,7 +581,7 @@ func fetchComputeUrlMapHostRules(ctx context.Context, meta schema.ClientMeta, pa
 	res <- r.HostRules
 	return nil
 }
-func fetchComputeUrlMapPathMatchers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeUrlMapPathMatchers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*compute.UrlMap)
 	if !ok {
 		return fmt.Errorf("expected to have *compute.UrlMap but got %T", parent.Item)
@@ -658,7 +658,7 @@ func resolveComputeURLMapPathMatcherRouteRules(ctx context.Context, meta schema.
 
 	return resource.Set(c.Name, j)
 }
-func fetchComputeUrlMapTests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeUrlMapTests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*compute.UrlMap)
 	if !ok {
 		return fmt.Errorf("expected to have *compute.UrlMap but got %T", parent.Item)

@@ -216,7 +216,7 @@ func ComputeAutoscalers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
@@ -248,7 +248,7 @@ func resolveComputeAutoscalerStatusDetails(ctx context.Context, meta schema.Clie
 	}
 	return resource.Set("status_details", res)
 }
-func fetchComputeAutoscalerCustomMetricUtilizations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeAutoscalerCustomMetricUtilizations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	autoscaler := parent.Item.(*compute.Autoscaler)
 	if autoscaler.AutoscalingPolicy != nil {
 		res <- autoscaler.AutoscalingPolicy.CustomMetricUtilizations

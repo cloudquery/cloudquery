@@ -227,7 +227,7 @@ func ComputeInterconnects() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -245,12 +245,12 @@ func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	return nil
 }
-func fetchComputeInterconnectCircuitInfos(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInterconnectCircuitInfos(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Interconnect)
 	res <- r.CircuitInfos
 	return nil
 }
-func fetchComputeInterconnectExpectedOutages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeInterconnectExpectedOutages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Interconnect)
 	res <- r.ExpectedOutages
 	return nil

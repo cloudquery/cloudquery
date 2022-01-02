@@ -328,7 +328,7 @@ func MonitoringAlertPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -350,7 +350,7 @@ func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-func fetchMonitoringAlertPolicyConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitoringAlertPolicyConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*monitoring.AlertPolicy)
 	if !ok {
 		return fmt.Errorf("expected *monitoring.AlertPolicy but got %T", p)
@@ -359,7 +359,7 @@ func fetchMonitoringAlertPolicyConditions(ctx context.Context, meta schema.Clien
 	res <- p.Conditions
 	return nil
 }
-func fetchMonitoringAlertPolicyConditionAbsentAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitoringAlertPolicyConditionAbsentAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*monitoring.Condition)
 	if !ok {
 		return fmt.Errorf("expected *monitoring.Condition but got %T", p)
@@ -371,7 +371,7 @@ func fetchMonitoringAlertPolicyConditionAbsentAggregations(ctx context.Context, 
 	res <- p.ConditionAbsent.Aggregations
 	return nil
 }
-func fetchMonitoringAlertPolicyConditionThresholdAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitoringAlertPolicyConditionThresholdAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*monitoring.Condition)
 	if !ok {
 		return fmt.Errorf("expected *monitoring.Condition but got %T", p)
@@ -383,7 +383,7 @@ func fetchMonitoringAlertPolicyConditionThresholdAggregations(ctx context.Contex
 	res <- p.ConditionThreshold.Aggregations
 	return nil
 }
-func fetchMonitoringAlertPolicyConditionDenominatorAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitoringAlertPolicyConditionDenominatorAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*monitoring.Condition)
 	if !ok {
 		return fmt.Errorf("expected *monitoring.Condition but got %T", p)

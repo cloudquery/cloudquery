@@ -132,7 +132,7 @@ func DNSPolicies() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -155,7 +155,7 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*dns.Policy)
 	if !ok {
 		return fmt.Errorf("expected *dns.Policy but got %T", p)
@@ -168,7 +168,7 @@ func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.Clien
 	res <- p.AlternativeNameServerConfig.TargetNameServers
 	return nil
 }
-func fetchDnsPolicyNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDnsPolicyNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(*dns.Policy)
 	if !ok {
 		return fmt.Errorf("expected *dns.Policy but got %T", p)
