@@ -21,9 +21,9 @@ type Policy struct {
 	Doc    string         `hcl:"readme,optional"`
 	Config *Configuration `hcl:"configuration,block"`
 
-	Policies []*Policy `hcl:"policy,block"`
-	Checks   []*Check  `hcl:"check,block"`
-	Views    []*View   `hcl:"view,block"`
+	Policies Policies `hcl:"policy,block"`
+	Checks   []*Check `hcl:"check,block"`
+	Views    []*View  `hcl:"view,block"`
 
 	// Link to policy in filesystem/hub/git etc' to use, if source flag is set, all other attributes aren't allowed.
 	Source string `hcl:"source,optional"`
@@ -33,8 +33,8 @@ type Policy struct {
 }
 
 func (p Policy) String() string {
-	if p.SubPath() != "" {
-		return fmt.Sprintf("%s//%s", p.Name, p.SubPath())
+	if p.SubPolicy() != "" {
+		return fmt.Sprintf("%s//%s", p.Name, p.SubPolicy())
 	}
 	return p.Name
 }
@@ -46,11 +46,11 @@ func (p Policy) Version() string {
 	return p.meta.Version
 }
 
-func (p Policy) SubPath() string {
+func (p Policy) SubPolicy() string {
 	if p.meta == nil {
 		return ""
 	}
-	return p.meta.SubPath
+	return p.meta.subPolicy
 }
 
 func (p Policy) TotalQueries() int {
@@ -66,7 +66,7 @@ func (p Policy) TotalQueries() int {
 type Meta struct {
 	Type      string
 	Version   string
-	SubPath   string
+	subPolicy string
 	Directory string
 }
 

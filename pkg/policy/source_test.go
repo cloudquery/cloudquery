@@ -34,7 +34,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "local_directory",
 			Source:       "tests/local",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "local", Version: "", SubPath: "", Directory: "tests/output/local"},
+			ExpectedMeta: &Meta{Type: "local", Version: "", subPolicy: "", Directory: "tests/output/local"},
 		},
 
 		{
@@ -46,13 +46,13 @@ func TestLoadSource(t *testing.T) {
 			Name:         "hub",
 			Source:       "aws",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPath: "", Directory: "tests/output/aws"},
+			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/aws"},
 		},
 		{
 			Name:         "github",
 			Source:       "github.com/cloudquery-policies/aws",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "", SubPath: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:          "non-existing-github",
@@ -63,7 +63,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "force github link",
 			Source:       "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "git", Version: "v0.0.1", SubPath: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "git", Version: "v0.0.1", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:          "https github link no force",
@@ -74,7 +74,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "github reference specific commit",
 			Source:       "github.com/roneli/aws?ref=96886a4",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", SubPath: "", Directory: "tests/output/github.com/roneli/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", subPolicy: "", Directory: "tests/output/github.com/roneli/aws"},
 		},
 	}
 

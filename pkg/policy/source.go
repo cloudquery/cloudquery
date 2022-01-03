@@ -26,15 +26,14 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 		Name:   name,
 		Source: name,
 		meta: &Meta{
-			Type:    t,
-			Version: "latest",
-			SubPath: subPolicy,
+			Type:      t,
+			Version:   "latest",
+			subPolicy: subPolicy,
 		},
 	}, true, nil
 }
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
-
 	source, subPolicy := getter.SplitPackageSubDir(source)
 	u, err := url.Parse(source)
 	if err != nil {
@@ -61,7 +60,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 	return data, &Meta{
 		Type:      detectorType,
 		Version:   u.Query().Get("ref"),
-		SubPath:   subPolicy,
+		subPolicy: subPolicy,
 		Directory: policyDir,
 	}, nil
 }

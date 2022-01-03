@@ -118,8 +118,8 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 	}
 }
 
-// executePolicy executes given policy and the related sub queries/views.
-func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
+// Execute executes given policy and the related sub queries/views.
+func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
 	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
@@ -138,7 +138,7 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 			found = true
 			executor := e.with(p.Name)
 			executor.log.Info("starting policy execution")
-			r, err := executor.executePolicy(ctx, req, p, rest)
+			r, err := executor.Execute(ctx, req, p, rest)
 			if err != nil {
 				executor.log.Error("failed to execute policy", "err", err)
 				return nil, fmt.Errorf("%s/%w", policy.Name, err)
@@ -150,6 +150,10 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 			}
 
 		}
+	}
+	if !found && len(selector) > 0 {
+		e.log.Error("policy not found with provided sub-policy selector", "selector", selector, "available_policies", policy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", policy.Name, selector, ErrPolicyOrQueryNotFound)
 	}
 
 	for _, q := range policy.Checks {
@@ -175,7 +179,7 @@ func (e *Executor) executePolicy(ctx context.Context, req *ExecuteRequest, polic
 		}
 	}
 	if !found && len(selector) > 0 {
-		return nil, fmt.Errorf("%s: %w", policy.Name, ErrPolicyOrQueryNotFound)
+		return nil, fmt.Errorf("%s//%s: %w", policy.Name, selector, ErrPolicyOrQueryNotFound)
 	}
 	return &total, nil
 }
@@ -242,37 +246,6 @@ func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 		}
 	}
 	return nil
-}
-
-func (e *Executor) ExecutePolicies(ctx context.Context, req *ExecuteRequest, policies Policies, selector []string) (*ExecutionResult, error) {
-	var rest []string
-	pnames := make([]string, len(policies))
-	if len(selector) > 0 {
-		rest = selector[1:]
-	}
-	var found bool
-	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
-	for i, p := range policies {
-		pnames[i] = p.Name
-		if len(selector) == 0 || selector[0] == p.Name {
-			found = true
-			executor := e.with(p.Name)
-			r, err := executor.executePolicy(ctx, req, p, rest)
-			if err != nil {
-				return nil, err
-			}
-			total.Passed = total.Passed && r.Passed
-			total.Results = append(total.Results, r.Results...)
-			if !total.Passed && req.StopOnFailure {
-				return &total, nil
-			}
-		}
-	}
-	if !found && len(selector) > 0 {
-		e.log.Error("policy not found with provided selector", "selector", selector, "policy names", pnames)
-		return nil, ErrPolicyOrQueryNotFound
-	}
-	return &total, nil
 }
 
 func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {

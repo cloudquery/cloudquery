@@ -203,7 +203,6 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	// Policies run request
 	req := &client.PoliciesRunRequest{
 		Policies:        policiesToRun,
-		PolicyName:      policySource,
 		OutputDir:       outputDir,
 		StopOnFailure:   stopOnFailure,
 		FailOnViolation: failOnViolation,

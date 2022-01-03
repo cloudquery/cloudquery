@@ -168,7 +168,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.executePolicy(context.Background(), execReq, p, nil)
+			res, err := executor.Execute(context.Background(), execReq, p, nil)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {

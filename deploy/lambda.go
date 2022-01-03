@@ -99,7 +99,6 @@ func Policy(ctx context.Context, cfg *config.Config) error {
 	}
 	_, err = c.RunPolicies(ctx, &client.PoliciesRunRequest{
 		Policies:        cfg.Policies,
-		PolicyName:      "",
 		OutputDir:       outputPath,
 		StopOnFailure:   false,
 		FailOnViolation: false,

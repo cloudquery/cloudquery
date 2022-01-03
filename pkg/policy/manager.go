@@ -51,7 +51,7 @@ func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error)
 	var err error
 	// if policy is configured with source we load it first
 	if policy.Source != "" {
-		policy, err = m.loadPolicyFromSource(ctx, policy.Name, policy.Source)
+		policy, err = m.loadPolicyFromSource(ctx, policy.Name, policy.SubPolicy(), policy.Source)
 		if err != nil {
 			return nil, err
 		}
@@ -110,15 +110,15 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 	}
 
 	var selector []string
-	if request.Policy.meta.SubPath != "" {
-		selector = strings.Split(request.Policy.meta.SubPath, "/")
+	if request.Policy.meta.subPolicy != "" {
+		selector = strings.Split(request.Policy.meta.subPolicy, "/")
 	}
 
 	// execute the queries
-	return NewExecutor(conn, m.logger, progressUpdate).ExecutePolicies(ctx, request, Policies{request.Policy}, selector)
+	return NewExecutor(conn, m.logger, progressUpdate).Execute(ctx, request, request.Policy, selector)
 }
 
-func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, sourceURL string) (*Policy, error) {
+func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, subPolicy, sourceURL string) (*Policy, error) {
 	data, meta, err := LoadSource(ctx, m.policyDirectory, sourceURL)
 	if err != nil {
 		return nil, err
@@ -132,6 +132,9 @@ func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, sourceURL 
 		return nil, dd
 	}
 	policy.meta = meta
+	if subPolicy != "" {
+		policy.meta.subPolicy = subPolicy
+	}
 	policy.Source = sourceURL
 	return policy, nil
 }

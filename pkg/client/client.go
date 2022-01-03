@@ -144,9 +144,6 @@ type PoliciesRunRequest struct {
 	// Policies to run
 	Policies policy.Policies
 
-	// PolicyName is optional attr to run specific policy
-	PolicyName string
-
 	// OutputDir is the output dir for policy execution output.
 	OutputDir string
 
@@ -722,7 +719,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	results := make([]*policy.ExecutionResult, 0)
 
 	for _, p := range req.Policies {
-		c.Logger = c.Logger.With("policy", p.Name, "version", p.Version(), "subPath", p.SubPath())
+		c.Logger = c.Logger.With("policy", p.Name, "version", p.Version(), "subPath", p.SubPolicy())
 		result, err := c.runPolicy(ctx, p, req)
 
 		c.Logger.Info("policy execution finished", "err", err)
@@ -768,7 +765,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	if strings.HasPrefix(p.Name, policy.CloudQueryOrg) {
 		spanAttrs = append(spanAttrs,
 			attribute.String("policy_version", p.Version()),
-			attribute.String("policy_subpath", p.SubPath()),
+			attribute.String("policy_subpath", p.SubPolicy()),
 		)
 	}
 
