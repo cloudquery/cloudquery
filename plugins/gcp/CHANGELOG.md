@@ -5,10 +5,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- 
 ## Unreleased
-###### SDK Version: 0.5.7
+### 🚀 Added
+### :gear: Changed
+### :spider: Fixed
+### 💥 Breaking Changes
+
+-->
+
+## [v0.5.1] - 2022-01-03
 ### :spider: Fixed
 * Fixed issues with disabled services [#84](https://github.com/cloudquery/cq-provider-gcp/pull/84)
+### :gear: Changed
+* Updated to SDK version v0.6.1
+
 
 ## [v0.5.0] - 2021-11-21
 ###### SDK Version: 0.5.0
