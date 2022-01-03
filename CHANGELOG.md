@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -->
 
 
-## [v0.17.5]- 2022-01-03
+## [v0.18.0]- 2022-01-03
 ### 🚀 Added
 * On cancel show error [#371](https://github.com/cloudquery/cloudquery/pull/371)
 ### 💥 Breaking Changes
