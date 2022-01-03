@@ -9,7 +9,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/cloudquery/cq-provider-gcp/resources.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cq-provider-gcp/resources/provider.Version={{.Version}}
     goos:
       - windows
       - linux
