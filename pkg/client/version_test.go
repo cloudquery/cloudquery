@@ -29,13 +29,13 @@ func TestMaybeCheckForUpdate(t *testing.T) {
 	}{
 		{
 			name:           "development version",
-			currentVersion: "development",
+			currentVersion: DefaultVersion,
 			githubVersion:  "1.0.0",
 			githubError:    nil,
 			nowUnix:        100,
 			period:         10,
 			want:           nil,
-			wantErr:        true,
+			wantErr:        false,
 			post: func(t *testing.T, fs afero.Afero) {
 				ok, err := fs.Exists(lastUpdateCheckPath)
 				require.Nil(t, err)
