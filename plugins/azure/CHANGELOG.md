@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ###### SDK Version: 0.6.1
 ### :gear: Changed
 * Update to SDK Version [v0.6.1](https://github.com/cloudquery/cq-provider-sdk/blob/main/CHANGELOG.md#v061---2021-01-03)
+* Remove ad resources (deprecated and will be migrate to msgraph)
 ### 💥 Breaking Changes
 * Renamed table `azure_container_managed_cluster_pip_user_assigned_identity_exceptions` -> `azure_container_managed_cluster_pip_user_assigned_id_exceptions` [#97](https://github.com/cloudquery/cq-provider-azure/pull/97)
 ### :spider: Fixed

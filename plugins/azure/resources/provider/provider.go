@@ -4,11 +4,9 @@ import (
 	"embed"
 
 	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/resources/services/ad"
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/services/container"
-	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/services/monitor"
 	"github.com/cloudquery/cq-provider-azure/resources/services/mysql"
 	"github.com/cloudquery/cq-provider-azure/resources/services/network"
@@ -36,18 +34,17 @@ func Provider() *provider.Provider {
 		Configure:  client.Configure,
 		Migrations: azureMigrations,
 		ResourceMap: map[string]*schema.Table{
-			"ad.applications":                     ad.Applications(),
-			"ad.groups":                           ad.Groups(),
-			"ad.service_principals":               ad.ServicePrincipals(),
-			"ad.users":                            ad.Users(),
-			"authorization.role_assignments":      authorization.AuthorizationRoleAssignments(),
-			"authorization.role_definitions":      authorization.AuthorizationRoleDefinitions(),
-			"compute.disks":                       compute.ComputeDisks(),
-			"compute.virtual_machines":            compute.ComputeVirtualMachines(),
-			"container.managed_clusters":          container.ContainerManagedClusters(),
-			"keyvault.vaults":                     keyvault.KeyvaultVaults(),
-			"monitor.log_profiles":                monitor.MonitorLogProfiles(),
-			"monitor.diagnostic_settings":         monitor.MonitorDiagnosticSettings(),
+			"authorization.role_assignments": authorization.AuthorizationRoleAssignments(),
+			"authorization.role_definitions": authorization.AuthorizationRoleDefinitions(),
+			"compute.disks":                  compute.ComputeDisks(),
+			"compute.virtual_machines":       compute.ComputeVirtualMachines(),
+			"container.managed_clusters":     container.ContainerManagedClusters(),
+			// This resource is currently not working
+			// https://github.com/cloudquery/cq-provider-azure/issues/107
+			// "keyvault.vaults":      keyvault.KeyvaultVaults(),
+			"monitor.log_profiles": monitor.MonitorLogProfiles(),
+			// This resource is currently not working
+			// "monitor.diagnostic_settings":         monitor.MonitorDiagnosticSettings(),
 			"monitor.activity_logs":               monitor.MonitorActivityLogs(),
 			"monitor.activity_log_alerts":         monitor.MonitorActivityLogAlerts(),
 			"mysql.servers":                       mysql.MySQLServers(),

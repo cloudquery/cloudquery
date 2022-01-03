@@ -47,11 +47,8 @@ jobs:
         run: go build -v .
 
       - name: Integration Test
-        run: go test -v -p 20 ./resources/integration_tests
+        run: go test -tags=integration ./...
         env:
-          INTEGRATION_TESTS: 1
-          TF_VAR_SUFFIX: integration
-          TF_VAR_PREFIX: cq-testing
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
