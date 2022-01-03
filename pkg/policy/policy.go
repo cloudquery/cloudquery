@@ -22,7 +22,7 @@ type Policy struct {
 	Config *Configuration `hcl:"configuration,block"`
 
 	Policies []*Policy `hcl:"policy,block"`
-	Checks   []*Check  `hcl:"query,block"`
+	Checks   []*Check  `hcl:"check,block"`
 	Views    []*View   `hcl:"view,block"`
 
 	// Link to policy in filesystem/hub/git etc' to use, if source flag is set, all other attributes aren't allowed.
