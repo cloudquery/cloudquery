@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -45,7 +46,7 @@ func newRemotePlugin(details *registry.ProviderDetails, alias string, env []stri
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
-			2: pluginMap,
+			3: pluginMap,
 		},
 		Managed:          true,
 		Cmd:              cmd,
@@ -55,6 +56,10 @@ func newRemotePlugin(details *registry.ProviderDetails, alias string, env []stri
 	rpcClient, err := client.Client()
 	if err != nil {
 		client.Kill()
+		// give a more clear message to the user
+		if strings.Contains(err.Error(), "Incompatible API version") {
+			return nil, fmt.Errorf("%w. Please upgrade to a latest version of this provider", err)
+		}
 		return nil, err
 	}
 	raw, err := rpcClient.Dispense("provider")

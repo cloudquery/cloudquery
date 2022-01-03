@@ -7,9 +7,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path"
+	"strconv"
+	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/fatih/color"
+	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
@@ -482,13 +487,27 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 	cfgJSON, _ := json.Marshal(c.cfg)
 	s := sha1.New()
 	_, _ = s.Write(cfgJSON)
+	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	attrs := []attribute.KeyValue{
-		attribute.String("cfghash", fmt.Sprintf("%0x", s.Sum(nil))),
+		attribute.String("cfghash", cfgHash),
 	}
 	if c.c.HistoryCfg != nil {
 		attrs = append(attrs, attribute.Bool("history_enabled", true))
 	}
 	span.SetAttributes(attrs...)
+
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		if telemetry.IsCI() {
+			scope.SetUser(sentry.User{
+				ID: cfgHash,
+			})
+		}
+		if c.c.HistoryCfg != nil {
+			scope.SetTags(map[string]string{
+				"history_enabled": strconv.FormatBool(true),
+			})
+		}
+	})
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
