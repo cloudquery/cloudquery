@@ -76,6 +76,13 @@ func TestLoadSource(t *testing.T) {
 			Expected:     true,
 			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", subPolicy: "", Directory: "tests/output/github.com/roneli/aws"},
 		},
+
+		{
+			Name:         "subpolicy path",
+			Source:       "github.com/roneli/aws//subpolicy?ref=96886a4",
+			Expected:     true,
+			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", subPolicy: "subpolicy", Directory: "tests/output/github.com/roneli/aws"},
+		},
 	}
 
 	for _, s := range sourceTests {
