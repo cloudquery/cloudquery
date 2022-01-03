@@ -73,6 +73,8 @@ type Client struct {
 
 type Option func(*Client)
 
+const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+
 func WithFS(fs afero.Fs) Option {
 	return func(c *Client) {
 		c.fs = afero.Afero{Fs: fs}

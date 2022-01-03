@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -70,6 +71,14 @@ func initSentry() {
 }
 
 func setSentryVars(traceID, randomID string) {
+	if strings.HasPrefix(randomID, telemetry.CQTeamID) && !viper.GetBool("debug-sentry") {
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn: "",
+		}); err != nil {
+			zerolog.Info().Err(err).Msg("sentry.Init to disable failed")
+		}
+	}
+
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		scope.SetExtra("trace_id", traceID)
 		scope.SetUser(sentry.User{
