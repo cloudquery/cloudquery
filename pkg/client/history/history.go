@@ -63,6 +63,7 @@ const (
 			END;
 			$body$  LANGUAGE plpgsql IMMUTABLE`
 
+	dropTableView   = `DROP VIEW IF EXISTS "%[1]s"`
 	createTableView = `CREATE OR REPLACE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
 )
 
