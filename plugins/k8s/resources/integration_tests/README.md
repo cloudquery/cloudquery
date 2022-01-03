@@ -8,4 +8,4 @@ Environment variables for running integration tests:
 * `KUBE_CONFIG_PATH=~/.kube/config`
 
 Command to run them:
-`go test ./resources/integration_tests/...`
+`go test -v -tags=integration ./...`

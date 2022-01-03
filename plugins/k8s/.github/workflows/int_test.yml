@@ -5,7 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+  pull_request:
+    branches: [ main ]
 jobs:
   integration_test:
     runs-on: ubuntu-latest
@@ -32,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy postgres
-        id: depoly_pg
+        id: deploy_pg
         working-directory: resources/integration_tests/infra
         run: |
           kubectl apply -f  postgres.yml
@@ -63,15 +64,11 @@ jobs:
 
       - name: Integration Test
         run: |
-          touch output.log
-          go test -v -p 20 ./resources/integration_tests | tee output.log
-          result_code=${PIPESTATUS[0]}
-          echo "::set-output name=output::$(cat output.log | grep -i "WARN")"
-          exit $result_code
+          go test -tags=integration ./...
         env:
           INTEGRATION_TESTS: 1
-          KUBECONFIG: ${{steps.depoly_pg.outputs.kubepath}} # path should be absolute
-          DATABASE_URL: host=${{steps.depoly_pg.outputs.host}} user=postgres password=pass database=postgres port=${{steps.depoly_pg.outputs.port}} sslmode=disable
+          KUBECONFIG: ${{steps.deploy_pg.outputs.kubepath}} # path should be absolute
+          DATABASE_URL: host=${{steps.deploy_pg.outputs.host}} user=postgres password=pass database=postgres port=${{steps.deploy_pg.outputs.port}} sslmode=disable
           CQ_NO_TELEMETRY: 1
 
       - name: Destroy terraform resources
@@ -83,7 +80,7 @@ jobs:
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-        if: ${{ failure() }}
+        if: ${{ failure() && github.event.pull_request.merged == 'true' }}
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: ${{ job.status }}
@@ -93,7 +90,7 @@ jobs:
 
       - name: Slack Notification Warnings
         uses: rtCamp/action-slack-notify@v2
-        if: ${{ success() && steps.integration-test.outputs.output != '' }}
+        if: ${{ success() && steps.integration-test.outputs.output != '' && github.event.pull_request.merged == 'true' }}
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: "#f29a35"

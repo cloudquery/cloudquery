@@ -23,7 +23,7 @@ ReplicaSet ensures that a specified number of pod replicas are running at any gi
 |min_ready_seconds|integer|Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)|
 |selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
 |template|jsonb|Template is the object that describes the pod that will be created if insufficient replicas are detected. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#pod-template|
-|status_replicas|integer|Replicas is the most recently oberved number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller|
+|status_replicas|integer|Replicas is the most recently observed number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller|
 |status_fully_labeled_replicas|integer|The number of pods that have labels matching the labels of the pod template of the replicaset.|
 |status_ready_replicas|integer|The number of ready replicas for this replica set.|
 |status_available_replicas|integer|The number of available replicas (ready for at least minReadySeconds) for this replica set.|

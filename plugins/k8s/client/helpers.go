@@ -43,7 +43,7 @@ func ResolveContext(_ context.Context, meta schema.ClientMeta, r *schema.Resourc
 	return r.Set(c.Name, client.Context)
 }
 
-func OwnerReferenceResolver(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func OwnerReferenceResolver(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	v := funk.Get(parent.Item, "ObjectMeta")
 	if v == nil {
 		return nil

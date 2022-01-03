@@ -13,7 +13,7 @@ jobs:
       matrix:
         dbversion: ['postgres:latest', 'postgres:12', 'postgres:11']
         go: ['1.17']
-        platform: [ubuntu-latest] # can not run in macOS and widnowsOS
+        platform: [ubuntu-latest] # can not run in macOS and windowsOS
     runs-on: ${{ matrix.platform }}
     services:
       postgres:
@@ -47,4 +47,4 @@ jobs:
       run: go build -v .
 
     - name: Test
-      run: go test -v ./...
+      run: go test -tags=mock -v ./...
