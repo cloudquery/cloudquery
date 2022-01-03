@@ -15,10 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -->
 
 ## [v0.5.1] - 2022-01-03
+###### SDK Version: 0.6.1
 ### :spider: Fixed
 * Fixed issues with disabled services [#84](https://github.com/cloudquery/cq-provider-gcp/pull/84)
 ### :gear: Changed
-* Updated to SDK version v0.6.1
+* Updated to SDK version [v0.6.1](https://github.com/cloudquery/cq-provider-sdk/blob/v0.6.1/CHANGELOG.md#v061---2022-01-03)
 
 
 ## [v0.5.0] - 2021-11-21
