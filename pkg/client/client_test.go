@@ -655,7 +655,7 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 				{
 					Name:    "test",
 					Source:  &source,
-					Version: "v0.0.8",
+					Version: "v0.0.9",
 				},
 			},
 			0,
