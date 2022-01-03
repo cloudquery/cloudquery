@@ -3,7 +3,6 @@ module github.com/cloudquery/cq-provider-aws
 go 1.17
 
 require (
-	github.com/Masterminds/squirrel v1.5.0
 	github.com/aws/aws-sdk-go-v2 v1.11.2
 	github.com/aws/aws-sdk-go-v2/config v1.3.0
 	github.com/aws/aws-sdk-go-v2/credentials v1.2.1
@@ -57,18 +56,24 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
 	github.com/aws/smithy-go v1.9.0
 	github.com/bxcodec/faker v2.0.1+incompatible
-	github.com/cloudquery/cq-provider-sdk v0.6.0
+	github.com/cloudquery/cq-provider-sdk v0.6.1
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.0.0
-	github.com/jackc/pgx/v4 v4.13.0
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/spf13/cast v1.4.1
 	github.com/stretchr/testify v1.7.0
 )
 
-require github.com/sergi/go-diff v1.2.0 // indirect
+require (
+	github.com/Masterminds/squirrel v1.5.0 // indirect
+	github.com/jackc/pgx/v4 v4.13.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/kylelemons/godebug v1.1.0 // indirect
+	github.com/sergi/go-diff v1.2.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+)
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
@@ -90,7 +95,6 @@ require (
 	github.com/doug-martin/goqu/v9 v9.17.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/georgysavva/scany v0.2.9 // indirect
-	github.com/go-test/deep v1.0.7 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang-migrate/migrate/v4 v4.15.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -101,8 +105,6 @@ require (
 	github.com/hashicorp/go-plugin v1.4.3 // indirect
 	github.com/hashicorp/go-version v1.3.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.10.1 // indirect
-	github.com/hashicorp/terraform-exec v0.15.0 // indirect
-	github.com/hashicorp/terraform-json v0.13.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493 // indirect
 	github.com/huandu/go-sqlbuilder v1.13.0 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
@@ -132,7 +134,6 @@ require (
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/thoas/go-funk v0.9.1 // indirect
-	github.com/tmccombs/hcl2json v0.3.3 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xo/dburl v0.8.4 // indirect
