@@ -7,9 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
