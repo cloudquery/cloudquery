@@ -29,7 +29,7 @@ func TestMaybeCheckForUpdate(t *testing.T) {
 	}{
 		{
 			name:           "development version",
-			currentVersion: DefaultVersion,
+			currentVersion: DevelopmentVersion,
 			githubVersion:  "1.0.0",
 			githubError:    nil,
 			nowUnix:        100,

@@ -32,7 +32,7 @@ func initSentry() {
 	if viper.GetBool("no-telemetry") {
 		dsn = "" // "To drop all events, set the DSN to the empty string."
 	}
-	if client.Version == client.DefaultVersion && !viper.GetBool("debug-sentry") {
+	if client.Version == client.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
 	}
 
@@ -41,7 +41,7 @@ func initSentry() {
 		Dsn:       dsn,
 		Transport: sentrySyncTransport,
 		Environment: func() string {
-			if client.Version == client.DefaultVersion {
+			if client.Version == client.DevelopmentVersion {
 				return "development"
 			}
 			return "release"
