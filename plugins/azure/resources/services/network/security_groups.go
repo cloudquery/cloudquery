@@ -444,7 +444,7 @@ func NetworkSecurityGroups() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Network.SecurityGroups
 	response, err := svc.ListAll(ctx)
 	if err != nil {
@@ -458,7 +458,7 @@ func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func fetchNetworkSecurityGroupSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkSecurityGroupSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(network.SecurityGroup)
 	if !ok {
 		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
@@ -466,7 +466,7 @@ func fetchNetworkSecurityGroupSecurityRules(ctx context.Context, meta schema.Cli
 	res <- *p.SecurityRules
 	return nil
 }
-func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(network.SecurityGroup)
 	if !ok {
 		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
@@ -520,7 +520,7 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func fetchNetworkSecurityGroupDefaultSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkSecurityGroupDefaultSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(network.SecurityGroup)
 	if !ok {
 		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)

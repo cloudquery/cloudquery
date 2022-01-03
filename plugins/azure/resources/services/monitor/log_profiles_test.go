@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationMonitorLogProfiles(t *testing.T) {
-	client.AzureTestHelper(t, MonitorLogProfiles(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, MonitorLogProfiles())
 }

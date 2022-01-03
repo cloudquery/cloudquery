@@ -413,7 +413,7 @@ func NetworkVirtualNetworks() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Network.VirtualNetworks
 	response, err := svc.ListAll(ctx)
 	if err != nil {
@@ -427,7 +427,7 @@ func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-func fetchNetworkVirtualNetworkSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.Subnets == nil {
 		return nil
@@ -435,7 +435,7 @@ func fetchNetworkVirtualNetworkSubnets(ctx context.Context, meta schema.ClientMe
 	res <- *vn.Subnets
 	return nil
 }
-func fetchNetworkVirtualNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.VirtualNetworkPeerings == nil {
 		return nil
@@ -443,7 +443,7 @@ func fetchNetworkVirtualNetworkPeerings(ctx context.Context, meta schema.ClientM
 	res <- *vn.VirtualNetworkPeerings
 	return nil
 }
-func fetchNetworkVirtualNetworkIpAllocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkVirtualNetworkIpAllocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vn := parent.Item.(network.VirtualNetwork)
 	if vn.IPAllocations == nil {
 		return nil

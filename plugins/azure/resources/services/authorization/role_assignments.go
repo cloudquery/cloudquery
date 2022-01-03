@@ -63,7 +63,7 @@ func AuthorizationRoleAssignments() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAuthorizationRoleAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAuthorizationRoleAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Authorization
 	result, err := svc.RoleAssignments.List(ctx, "")
 	if err != nil {

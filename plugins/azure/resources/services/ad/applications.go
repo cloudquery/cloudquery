@@ -476,7 +476,7 @@ func Applications() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAdApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().AD.Applications
 	response, err := svc.List(ctx, "")
 	if err != nil {
@@ -503,7 +503,7 @@ func resolveAdApplicationOptionalClaims(ctx context.Context, meta schema.ClientM
 	return resource.Set(c.Name, out)
 }
 
-func fetchAdApplicationAppRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationAppRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)
@@ -517,7 +517,7 @@ func fetchAdApplicationAppRoles(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 
-func fetchAdApplicationKeyCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationKeyCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)
@@ -531,7 +531,7 @@ func fetchAdApplicationKeyCredentials(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 
-func fetchAdApplicationOauth2Permissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationOauth2Permissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)
@@ -545,7 +545,7 @@ func fetchAdApplicationOauth2Permissions(ctx context.Context, meta schema.Client
 	return nil
 }
 
-func fetchAdApplicationPasswordCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationPasswordCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)
@@ -559,7 +559,7 @@ func fetchAdApplicationPasswordCredentials(ctx context.Context, meta schema.Clie
 	return nil
 }
 
-func fetchAdApplicationPreAuthorizedApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationPreAuthorizedApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)
@@ -597,7 +597,7 @@ func resolveAdApplicationPreAuthorizedApplicationExtensions(ctx context.Context,
 	return resource.Set(c.Name, out)
 }
 
-func fetchAdApplicationRequiredResourceAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdApplicationRequiredResourceAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	app, ok := parent.Item.(graphrbac.Application)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.Application instance: %#v", parent.Item)

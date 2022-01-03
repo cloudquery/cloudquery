@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationSecuritySettings(t *testing.T) {
-	client.AzureTestHelper(t, SQLServers(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, SQLServers())
 }

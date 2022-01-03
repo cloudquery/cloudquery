@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationNetworkWatchers(t *testing.T) {
-	client.AzureTestHelper(t, NetworkWatchers(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, NetworkWatchers())
 }

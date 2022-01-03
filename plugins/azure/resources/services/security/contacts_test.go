@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationSecurityContacts(t *testing.T) {
-	client.AzureTestHelper(t, SecurityContacts(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, SecurityContacts())
 }

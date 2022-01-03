@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationManagedClusters(t *testing.T) {
-	client.AzureTestHelper(t, ContainerManagedClusters(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ContainerManagedClusters())
 }

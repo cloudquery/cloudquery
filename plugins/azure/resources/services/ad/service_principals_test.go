@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationAdServicePrincipals(t *testing.T) {
-	client.AzureTestHelper(t, ServicePrincipals(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ServicePrincipals())
 }

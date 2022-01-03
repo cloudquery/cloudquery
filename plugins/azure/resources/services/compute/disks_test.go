@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationDisks(t *testing.T) {
-	client.AzureTestHelper(t, ComputeDisks(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ComputeDisks())
 }

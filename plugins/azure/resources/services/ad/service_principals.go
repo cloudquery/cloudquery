@@ -353,7 +353,7 @@ func ServicePrincipals() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAdServicePrincipals(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdServicePrincipals(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().AD.ServicePrincipals
 	response, err := svc.List(ctx, "")
 	if err != nil {
@@ -368,7 +368,7 @@ func fetchAdServicePrincipals(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 
-func fetchAdServicePrincipalAppRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdServicePrincipalAppRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	sp, ok := parent.Item.(graphrbac.ServicePrincipal)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.ServicePrincipal instance: %#v", parent.Item)
@@ -381,7 +381,7 @@ func fetchAdServicePrincipalAppRoles(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 
-func fetchAdServicePrincipalKeyCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdServicePrincipalKeyCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	sp, ok := parent.Item.(graphrbac.ServicePrincipal)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.ServicePrincipal instance: %#v", parent.Item)
@@ -394,7 +394,7 @@ func fetchAdServicePrincipalKeyCredentials(ctx context.Context, meta schema.Clie
 	return nil
 }
 
-func fetchAdServicePrincipalOauth2Permissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdServicePrincipalOauth2Permissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	sp, ok := parent.Item.(graphrbac.ServicePrincipal)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.ServicePrincipal instance: %#v", parent.Item)
@@ -407,7 +407,7 @@ func fetchAdServicePrincipalOauth2Permissions(ctx context.Context, meta schema.C
 	return nil
 }
 
-func fetchAdServicePrincipalPasswordCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdServicePrincipalPasswordCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	sp, ok := parent.Item.(graphrbac.ServicePrincipal)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.ServicePrincipal instance: %#v", parent.Item)

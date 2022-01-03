@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationAdGroups(t *testing.T) {
-	client.AzureTestHelper(t, Groups(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, Groups())
 }

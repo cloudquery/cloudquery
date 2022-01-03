@@ -136,7 +136,7 @@ func Users() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAdUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().AD.Users
 	response, err := svc.List(ctx, "", "")
 	if err != nil {
@@ -151,7 +151,7 @@ func fetchAdUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 
-func fetchAdUserSignInNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAdUserSignInNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	user, ok := parent.Item.(graphrbac.User)
 	if !ok {
 		return fmt.Errorf("not a graphrbac.User instance: %#v", parent.Item)

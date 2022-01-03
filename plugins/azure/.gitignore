@@ -25,6 +25,8 @@ cq-provider-*
 __debug_bin
 #test directories
 **/.test/*
+.cq/
+config.hcl
 
 terraform/infra/.terraform
 terraform/infra/.terraform.lock.hcl

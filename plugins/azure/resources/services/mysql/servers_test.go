@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationMySQLServers(t *testing.T) {
-	client.AzureTestHelper(t, MySQLServers(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, MySQLServers())
 }

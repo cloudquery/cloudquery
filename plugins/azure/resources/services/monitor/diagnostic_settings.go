@@ -195,7 +195,7 @@ type diagnosticSetting struct {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	resSvc := cl.Services().Resources.Resources
 	monSvc := cl.Services().Monitor.DiagnosticSettings
@@ -233,7 +233,7 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 
 	return nil
 }
-func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(diagnosticSetting)
 	if !ok {
 		return fmt.Errorf("expected insights.DiagnosticSettingsResource but got %T", parent.Item)
@@ -246,7 +246,7 @@ func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.Clien
 	res <- *p.DiagnosticSettings.Metrics
 	return nil
 }
-func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(diagnosticSetting)
 	if !ok {
 		return fmt.Errorf("expected insights.DiagnosticSettingsResource but got %T", parent.Item)

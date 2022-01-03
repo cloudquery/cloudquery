@@ -324,7 +324,7 @@ func MySQLServers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchMySQLServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchMySQLServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().MySQL.Servers
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -336,7 +336,7 @@ func fetchMySQLServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 	res <- *response.Value
 	return nil
 }
-func fetchMySQLServerPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMySQLServerPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server := parent.Item.(mysql.Server)
 	if server.PrivateEndpointConnections == nil {
 		return nil
@@ -344,7 +344,7 @@ func fetchMySQLServerPrivateEndpointConnections(_ context.Context, _ schema.Clie
 	res <- *server.PrivateEndpointConnections
 	return nil
 }
-func fetchMySQLServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMySQLServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server := parent.Item.(mysql.Server)
 	svc := meta.(*client.Client).Services().MySQL.Configuration
 

@@ -302,7 +302,7 @@ func ComputeDisks() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeDisks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchComputeDisks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Compute.Disks
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -329,7 +329,7 @@ func resolveComputeDiskShareInfo(_ context.Context, _ schema.ClientMeta, resourc
 	return resource.Set("share_info", shareInfo)
 }
 
-func fetchComputeDiskEncryptionSettings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeDiskEncryptionSettings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	disk := parent.Item.(compute.Disk)
 	if disk.EncryptionSettingsCollection == nil || disk.EncryptionSettingsCollection.EncryptionSettings == nil {
 		return nil

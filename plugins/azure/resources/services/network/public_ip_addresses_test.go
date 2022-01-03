@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationNetworkPublicIPAddresses(t *testing.T) {
-	client.AzureTestHelper(t, NetworkPublicIPAddresses(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, NetworkPublicIPAddresses())
 }

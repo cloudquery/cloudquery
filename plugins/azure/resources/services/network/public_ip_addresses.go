@@ -220,7 +220,7 @@ func NetworkPublicIPAddresses() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchNetworkPublicIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkPublicIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Network.PublicIPAddresses
 	response, err := svc.ListAll(ctx)
 	if err != nil {
@@ -272,7 +272,7 @@ func resolveNetworkPublicIPAddressPublicIPAddress(ctx context.Context, meta sche
 	}
 	return resource.Set(c.Name, out)
 }
-func fetchNetworkPublicIpAddressIpTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchNetworkPublicIpAddressIpTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(network.PublicIPAddress)
 	if !ok {
 		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)

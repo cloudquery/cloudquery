@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationKeyvaultVaults(t *testing.T) {
-	client.AzureTestHelper(t, KeyvaultVaults(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, KeyvaultVaults())
 }

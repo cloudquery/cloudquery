@@ -531,7 +531,7 @@ func ComputeVirtualMachines() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchComputeVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Compute.VirtualMachines
 	response, err := svc.ListAll(ctx, "false")
 	if err != nil {
@@ -633,7 +633,7 @@ func resolveComputeVirtualMachineInstanceView(ctx context.Context, meta schema.C
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(compute.VirtualMachine)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
@@ -648,7 +648,7 @@ func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta sc
 	res <- *p.OsProfile.WindowsConfiguration.WinRM.Listeners
 	return nil
 }
-func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(compute.VirtualMachine)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
@@ -661,7 +661,7 @@ func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMe
 	res <- *p.OsProfile.Secrets
 	return nil
 }
-func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(compute.VaultSecretGroup)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VaultSecretGroup but got %T", parent.Item)
@@ -674,7 +674,7 @@ func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta
 	res <- *p.VaultCertificates
 	return nil
 }
-func fetchComputeVirtualMachineResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachineResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Compute.VirtualMachineExtensions
 	p, ok := parent.Item.(compute.VirtualMachine)
 	if !ok {
@@ -710,7 +710,7 @@ func resolveComputeVirtualMachineResourceVirtualMachineExtensionProperties(ctx c
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchComputeVirtualMachineNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchComputeVirtualMachineNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(compute.VirtualMachine)
 	if !ok {
 		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)

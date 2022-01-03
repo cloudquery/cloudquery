@@ -96,7 +96,7 @@ func AuthorizationRoleDefinitions() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Authorization.RoleDefinitions
 	result, err := svc.List(ctx, client.ScopeSubscription(cl.SubscriptionId), "")
@@ -112,7 +112,7 @@ func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchAuthorizationRoleDefinitionPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchAuthorizationRoleDefinitionPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	def, ok := parent.Item.(authorization.RoleDefinition)
 	if !ok {
 		return fmt.Errorf("not an authorization.RoleDefinition instance: %T", parent.Item)

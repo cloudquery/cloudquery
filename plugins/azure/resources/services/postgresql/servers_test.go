@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationPostgresqlServers(t *testing.T) {
-	client.AzureTestHelper(t, PostgresqlServers(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, PostgresqlServers())
 }

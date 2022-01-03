@@ -131,7 +131,7 @@ func ResourcesPolicyAssignments() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Resources.Assignments
 	response, err := svc.List(ctx, meta.(*client.Client).SubscriptionId, "", nil)
 	if err != nil {

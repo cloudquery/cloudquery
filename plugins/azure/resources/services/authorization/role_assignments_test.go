@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationRoleAssignments(t *testing.T) {
-	client.AzureTestHelper(t, AuthorizationRoleAssignments(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, AuthorizationRoleAssignments())
 }

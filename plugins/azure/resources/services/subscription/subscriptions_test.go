@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationSubscriptionSubscriptions(t *testing.T) {
-	client.AzureTestHelper(t, SubscriptionSubscriptions(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, SubscriptionSubscriptions())
 }

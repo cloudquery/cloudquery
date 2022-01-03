@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationSecurityPricings(t *testing.T) {
-	client.AzureTestHelper(t, SecurityPricings(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, SecurityPricings())
 }

@@ -52,7 +52,7 @@ func SecurityAutoProvisioningSettings() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSecurityAutoProvisioningSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSecurityAutoProvisioningSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Security.AutoProvisioningSettings
 	response, err := svc.List(ctx)
 	if err != nil {

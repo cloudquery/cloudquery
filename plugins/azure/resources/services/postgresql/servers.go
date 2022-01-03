@@ -366,7 +366,7 @@ func PostgresqlServers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().PostgreSQL.Servers
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -378,7 +378,7 @@ func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, parent 
 	res <- *response.Value
 	return nil
 }
-func fetchPostgresqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server := parent.Item.(postgresql.Server)
 	if server.PrivateEndpointConnections == nil {
 		return nil
@@ -386,7 +386,7 @@ func fetchPostgresqlServerPrivateEndpointConnections(ctx context.Context, meta s
 	res <- *server.PrivateEndpointConnections
 	return nil
 }
-func fetchPostgresqlServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server := parent.Item.(postgresql.Server)
 	svc := meta.(*client.Client).Services().PostgreSQL.Configuration
 
@@ -405,7 +405,7 @@ func fetchPostgresqlServerConfigurations(ctx context.Context, meta schema.Client
 	return nil
 }
 
-func fetchPostgresqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchPostgresqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server := parent.Item.(postgresql.Server)
 	svc := meta.(*client.Client).Services().PostgreSQL.FirewallRule
 

@@ -403,7 +403,7 @@ func KeyvaultVaults() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().KeyVault.Vaults
 	maxResults := int32(1000)
 	response, err := svc.ListBySubscription(ctx, &maxResults)
@@ -440,7 +440,7 @@ func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(ctx context.Context, met
 	}
 	return resource.Set("network_acls_virtual_network_rules", ipRules)
 }
-func fetchKeyvaultVaultAccessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultAccessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
 	if vault.Properties.AccessPolicies == nil {
 		return nil
@@ -448,7 +448,7 @@ func fetchKeyvaultVaultAccessPolicies(ctx context.Context, meta schema.ClientMet
 	res <- *vault.Properties.AccessPolicies
 	return nil
 }
-func fetchKeyvaultVaultPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
 	if vault.Properties.PrivateEndpointConnections == nil {
 		return nil
@@ -456,7 +456,7 @@ func fetchKeyvaultVaultPrivateEndpointConnections(ctx context.Context, meta sche
 	res <- *vault.Properties.PrivateEndpointConnections
 	return nil
 }
-func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
 	svc := meta.(*client.Client).Services().KeyVault.KeyVault71
 	maxResults := int32(25)
@@ -520,7 +520,7 @@ func resolveKeyvaultVaultKeyUpdated(ctx context.Context, meta schema.ClientMeta,
 
 	return resource.Set(c.Name, time.Time(*key.Attributes.Updated))
 }
-func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vault, ok := parent.Item.(keyvault.Vault)
 	if !ok {
 		return fmt.Errorf("not a keyvault.Vault instance: %#v", parent.Item)

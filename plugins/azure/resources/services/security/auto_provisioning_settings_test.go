@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationSecurityAutoProvisioningSettings(t *testing.T) {
-	client.AzureTestHelper(t, SecurityAutoProvisioningSettings(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, SecurityAutoProvisioningSettings())
 }

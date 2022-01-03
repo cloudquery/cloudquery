@@ -203,7 +203,7 @@ func StorageBlobServices() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Storage.BlobServices
 	account, ok := parent.Item.(storage.Account)
 	if !ok {
@@ -224,7 +224,7 @@ func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 
-func fetchStorageBlobServiceCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageBlobServiceCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	blob, ok := parent.Item.(storage.BlobServiceProperties)
 	if !ok {
 		return fmt.Errorf("not a storage.BlobServiceProperties: %T", parent.Item)

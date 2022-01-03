@@ -213,6 +213,8 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
 github.com/cloudquery/cq-provider-sdk v0.6.0-beta h1:FkvXCyz9+KsvV4+KEiOFhvuJog7Eadu5d7XKdhcNLT8=
 github.com/cloudquery/cq-provider-sdk v0.6.0-beta/go.mod h1:hrFaQwbUa4iZiXWYx2B38UOT2rLIHi1MiRixxybGjOE=
+github.com/cloudquery/cq-provider-sdk v0.6.1 h1:pyHabGR81AdsnwtZF0oaJhF9VPK5tHiC8DukA5JEW/A=
+github.com/cloudquery/cq-provider-sdk v0.6.1/go.mod h1:lLjzStk8uqMiunTDnAp26QXyQ3XAMexOqzuo8T2riMc=
 github.com/cloudquery/faker/v3 v3.7.4/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cloudquery/faker/v3 v3.7.5 h1:G7ANdEEcm8TvAAjIwNWSLrYK36CFCiSlrCqOTGCccL0=
 github.com/cloudquery/faker/v3 v3.7.5/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=

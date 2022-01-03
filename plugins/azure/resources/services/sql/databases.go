@@ -573,7 +573,7 @@ func SQLDatabases() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.Databases
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
@@ -593,7 +593,7 @@ func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 
-func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.DatabaseBlobAuditingPolicies
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
@@ -617,7 +617,7 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 	return nil
 }
 
-func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.DatabaseThreatDetectionPolicies
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
@@ -636,7 +636,7 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	return nil
 }
 
-func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.DatabaseVulnerabilityAssessments
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)

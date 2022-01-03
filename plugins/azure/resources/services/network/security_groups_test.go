@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationNetworkSecurityGroups(t *testing.T) {
-	client.AzureTestHelper(t, NetworkSecurityGroups(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, NetworkSecurityGroups())
 }

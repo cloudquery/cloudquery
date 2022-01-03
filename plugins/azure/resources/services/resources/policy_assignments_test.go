@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationResourcesPolicyAssignments(t *testing.T) {
-	client.AzureTestHelper(t, ResourcesPolicyAssignments(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ResourcesPolicyAssignments())
 }

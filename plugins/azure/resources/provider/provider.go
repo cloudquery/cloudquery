@@ -1,6 +1,8 @@
 package provider
 
 import (
+	"embed"
+
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/resources/services/ad"
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
@@ -22,14 +24,17 @@ import (
 )
 
 var (
-	Version = "Development"
+	//go:embed migrations/*.sql
+	azureMigrations embed.FS
+	Version         = "Development"
 )
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Version:   Version,
-		Name:      "azure",
-		Configure: client.Configure,
+		Version:    Version,
+		Name:       "azure",
+		Configure:  client.Configure,
+		Migrations: azureMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"ad.applications":                     ad.Applications(),
 			"ad.groups":                           ad.Groups(),

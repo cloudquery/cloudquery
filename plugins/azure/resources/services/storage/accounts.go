@@ -748,7 +748,7 @@ func StorageAccounts() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchStorageAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchStorageAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Storage.Accounts
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -773,7 +773,7 @@ func resolveStorageAccountBlobRestoreStatusParametersBlobRanges(_ context.Contex
 	}
 	return resource.Set("blob_restore_status_parameters_blob_ranges", data)
 }
-func fetchStorageAccountNetworkRuleSetVirtualNetworkRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageAccountNetworkRuleSetVirtualNetworkRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	account := parent.Item.(storage.Account)
 	if account.NetworkRuleSet == nil || account.NetworkRuleSet.VirtualNetworkRules == nil {
 		return nil
@@ -781,7 +781,7 @@ func fetchStorageAccountNetworkRuleSetVirtualNetworkRules(_ context.Context, _ s
 	res <- *account.NetworkRuleSet.VirtualNetworkRules
 	return nil
 }
-func fetchStorageAccountNetworkRuleSetIpRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageAccountNetworkRuleSetIpRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	account := parent.Item.(storage.Account)
 	if account.NetworkRuleSet == nil || account.NetworkRuleSet.IPRules == nil {
 		return nil
@@ -789,7 +789,7 @@ func fetchStorageAccountNetworkRuleSetIpRules(_ context.Context, _ schema.Client
 	res <- *account.NetworkRuleSet.IPRules
 	return nil
 }
-func fetchStorageAccountPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageAccountPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	account := parent.Item.(storage.Account)
 	if account.PrivateEndpointConnections == nil {
 		return nil

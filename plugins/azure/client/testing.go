@@ -54,7 +54,7 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 	})
 }
 
-func AzureTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
+func AzureTestHelper(t *testing.T, table *schema.Table) {
 	t.Helper()
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
@@ -69,9 +69,8 @@ func AzureTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) 
 				"test_resource": table,
 			},
 		},
-		Table:        table,
-		Config:       "",
-		SnapshotsDir: snapshotDirPath,
+		Table:  table,
+		Config: "",
 	})
 
 }

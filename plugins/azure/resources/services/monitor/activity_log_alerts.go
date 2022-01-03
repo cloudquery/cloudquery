@@ -139,7 +139,7 @@ func MonitorActivityLogAlerts() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchMonitorActivityLogAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorActivityLogAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Monitor.ActivityLogAlerts
 	response, err := svc.ListBySubscriptionID(ctx)
 	if err != nil {
@@ -161,7 +161,7 @@ func resolveMonitorActivityLogAlertScopes(ctx context.Context, meta schema.Clien
 	}
 	return resource.Set(c.Name, *r.Scopes)
 }
-func fetchMonitorActivityLogAlertConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorActivityLogAlertConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(insights.ActivityLogAlertResource)
 	if !ok {
 		return fmt.Errorf("expected to have insights.ActivityLogAlertResource but got %T", parent.Item)
@@ -182,7 +182,7 @@ func resolveMonitorActivityLogAlertConditionField(ctx context.Context, meta sche
 	}
 	return resource.Set(c.Name, *r.Field)
 }
-func fetchMonitorActivityLogAlertActionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchMonitorActivityLogAlertActionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(insights.ActivityLogAlertResource)
 	if !ok {
 		return fmt.Errorf("expected to have insights.ActivityLogAlertResource but got %T", parent.Item)

@@ -157,7 +157,7 @@ func StorageContainers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchStorageContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchStorageContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Storage.Containers
 	acc := parent.Item.(storage.Account)
 	resourceDetails, err := client.ParseResourceID(*acc.ID)

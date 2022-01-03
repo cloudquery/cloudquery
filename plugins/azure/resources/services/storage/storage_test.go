@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationStorageAccounts(t *testing.T) {
-	client.AzureTestHelper(t, StorageAccounts(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, StorageAccounts())
 }

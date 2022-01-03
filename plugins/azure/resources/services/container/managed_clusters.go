@@ -833,7 +833,7 @@ func ContainerManagedClusters() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchContainerManagedClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchContainerManagedClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Container.ManagedClusters
 	result, err := svc.List(ctx)
 	if err != nil {
@@ -910,7 +910,7 @@ func resolveContainerManagedClusterNetworkProfileLoadBalancerEffectiveOutboundIp
 	return resource.Set(c.Name, ids)
 }
 
-func fetchContainerManagedClusterPipUserAssignedIdentityExceptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchContainerManagedClusterPipUserAssignedIdentityExceptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	mc, ok := parent.Item.(containerservice.ManagedCluster)
 	if !ok {
 		return fmt.Errorf("not a containerservice.ManagedCluster instance: %T", parent.Item)
@@ -923,7 +923,7 @@ func fetchContainerManagedClusterPipUserAssignedIdentityExceptions(ctx context.C
 	return nil
 }
 
-func fetchContainerManagedClusterPrivateLinkResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchContainerManagedClusterPrivateLinkResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	mc, ok := parent.Item.(containerservice.ManagedCluster)
 	if !ok {
 		return fmt.Errorf("not a containerservice.ManagedCluster instance: %T", parent.Item)
@@ -935,7 +935,7 @@ func fetchContainerManagedClusterPrivateLinkResources(ctx context.Context, meta 
 	return nil
 }
 
-func fetchContainerManagedClusterAgentPoolProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchContainerManagedClusterAgentPoolProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	mc, ok := parent.Item.(containerservice.ManagedCluster)
 	if !ok {
 		return fmt.Errorf("not a containerservice.ManagedCluster instance: %T", parent.Item)
@@ -959,7 +959,7 @@ func resolveContainerManagedClusterAgentPoolProfileLinuxOsConfig(ctx context.Con
 	return resource.Set(c.Name, out)
 }
 
-func fetchContainerManagedClusterPipUserAssignedIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchContainerManagedClusterPipUserAssignedIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	mc, ok := parent.Item.(containerservice.ManagedCluster)
 	if !ok {
 		return fmt.Errorf("not a containerservice.ManagedCluster instance: %T", parent.Item)

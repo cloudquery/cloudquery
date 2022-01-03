@@ -476,7 +476,7 @@ func WebApps() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Web.Apps
 	response, err := svc.List(ctx)
 	if err != nil {
@@ -506,7 +506,7 @@ func resolveWebAppSiteConfig(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, data)
 }
-func fetchWebAppHostNameSslStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWebAppHostNameSslStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(web.Site)
 	if !ok {
 		return fmt.Errorf("expected web.Site but got %T", parent.Item)
@@ -519,7 +519,7 @@ func fetchWebAppHostNameSslStates(ctx context.Context, meta schema.ClientMeta, p
 	res <- *p.HostNameSslStates
 	return nil
 }
-func fetchWebAppPublishingProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchWebAppPublishingProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(web.Site)
 	if !ok {
 		return fmt.Errorf("expected web.Site but got %T", parent.Item)

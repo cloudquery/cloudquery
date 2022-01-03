@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationResourcesGroups(t *testing.T) {
-	client.AzureTestHelper(t, ResourcesGroups(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ResourcesGroups())
 }

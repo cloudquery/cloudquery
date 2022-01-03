@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationNetworkVirtualNetworks(t *testing.T) {
-	client.AzureTestHelper(t, NetworkVirtualNetworks(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, NetworkVirtualNetworks())
 }

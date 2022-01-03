@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationMonitorDiagnosticSettings(t *testing.T) {
-	client.AzureTestHelper(t, MonitorDiagnosticSettings(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, MonitorDiagnosticSettings())
 }

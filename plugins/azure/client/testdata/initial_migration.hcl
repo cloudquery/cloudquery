@@ -4,7 +4,7 @@ cloudquery {
 
   provider "azure" {
     source = "cloudquery/cq-provider-azure"
-    version = "v0.3.7"
+    version = "v0.3.8"
   }
 
   connection {

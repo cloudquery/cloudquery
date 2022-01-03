@@ -9,6 +9,5 @@ import (
 )
 
 func TestIntegrationVirtualMachines(t *testing.T) {
-	client.AzureTestHelper(t, ComputeVirtualMachines(),
-		client.SnapshotsDirPath)
+	client.AzureTestHelper(t, ComputeVirtualMachines())
 }

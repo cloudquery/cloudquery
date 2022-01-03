@@ -534,7 +534,7 @@ func SQLServers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchSqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.Servers
 	servers, err := svc.List(ctx)
 	if err != nil {
@@ -549,7 +549,7 @@ func fetchSqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	return nil
 }
 
-func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	server, ok := parent.Item.(sql.Server)
 	if !ok {
 		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
@@ -560,7 +560,7 @@ func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.C
 	return nil
 }
 
-func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.Firewall
 	server, ok := parent.Item.(sql.Server)
 	if !ok {
@@ -580,7 +580,7 @@ func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerAdmins
 	server, ok := parent.Item.(sql.Server)
 	if !ok {
@@ -603,7 +603,7 @@ func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 
-func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerBlobAuditingPolicies
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
@@ -623,7 +623,7 @@ func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func fetchSqlServerDevopsAuditSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerDevopsAuditSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerDevOpsAuditSettings
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
@@ -643,7 +643,7 @@ func fetchSqlServerDevopsAuditSettings(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerVulnerabilityAssessments
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
