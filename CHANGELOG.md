@@ -5,8 +5,23 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
 
+<!-- 
+## Unreleased
+### 🚀 Added
+### :gear: Changed
+### :spider: Fixed
+-->
+
+
+## [v0.17.5]- 2022-01-03
+### 🚀 Added
+* On cancel show error [#371](https://github.com/cloudquery/cloudquery/pull/371)
+### 💥 Breaking Changes
+* Upgrade to sdk [v0.6.1](https://github.com/cloudquery/cq-provider-sdk/releases/tag/v0.6.1)
+### :gear: Changed
+* remove the need for json hcl2json convertor [#375](https://github.com/cloudquery/cloudquery/pull/375)
+* removed gen config [#370](https://github.com/cloudquery/cloudquery/pull/370)
 ### :spider: Fixed
 * Table upgrades with history mode enabled [#381](https://github.com/cloudquery/cloudquery/pull/381).
 
