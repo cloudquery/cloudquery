@@ -61,23 +61,23 @@ func (z ZerologKVAdapter) Error(msg string, args ...interface{}) {
 }
 
 func (z ZerologKVAdapter) IsTrace() bool {
-	return z.l.GetLevel() >= zerolog.TraceLevel
+	return z.l.GetLevel() <= zerolog.TraceLevel
 }
 
 func (z ZerologKVAdapter) IsDebug() bool {
-	return z.l.GetLevel() >= zerolog.DebugLevel
+	return z.l.GetLevel() <= zerolog.DebugLevel
 }
 
 func (z ZerologKVAdapter) IsInfo() bool {
-	return z.l.GetLevel() >= zerolog.InfoLevel
+	return z.l.GetLevel() <= zerolog.InfoLevel
 }
 
 func (z ZerologKVAdapter) IsWarn() bool {
-	return z.l.GetLevel() >= zerolog.WarnLevel
+	return z.l.GetLevel() <= zerolog.WarnLevel
 }
 
 func (z ZerologKVAdapter) IsError() bool {
-	return z.l.GetLevel() >= zerolog.ErrorLevel
+	return z.l.GetLevel() <= zerolog.ErrorLevel
 }
 
 func (z ZerologKVAdapter) ImpliedArgs() []interface{} {
