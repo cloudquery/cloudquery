@@ -11,13 +11,43 @@ func TestManager_Load(t *testing.T) {
 	cases := []struct {
 		Name        string
 		Policy      *Policy
+		ExpectedPolicy *Policy
 		ErrorOutput string
 	}{
 		{
 			Name: "load github policy",
 			Policy: &Policy{
-				Name:   "aws",
-				Source: "github.com/cloudquery-policies/aws?ref=policy_v3",
+				Name:   "test",
+				Source: "github.com/cloudquery-policies/test_policy",
+			},
+			ExpectedPolicy: &Policy{
+				Name:        "test",
+				Description: "this is a test policy",
+				Doc:         "MAIN README",
+				Policies:    Policies{
+					{
+						Name:        "sub-policy",
+						Description: "sub policy description",
+						Doc:         "README FOR SUBPOLICY",
+						Checks:      []*Check{
+							{
+								Name:         "check",
+								Description:  "test check",
+								Doc:          "some doc md",
+								ExpectOutput: true,
+								Type:         AutomaticQuery,
+								Query:        "SELECT 1;",
+							},
+						},
+					},
+				},
+				Source:      "github.com/cloudquery-policies/test_policy",
+				meta:        &Meta{
+					Type:      "github",
+					Version:   "",
+					subPolicy: "",
+					Directory: "github.com\\cloudquery-policies\\test_policy",
+				},
 			},
 		},
 	}
@@ -28,6 +58,7 @@ func TestManager_Load(t *testing.T) {
 			p, err := m.Load(context.Background(), tc.Policy)
 			assert.Nil(t, err)
 			assert.NotNil(t, p)
+			assert.Equal(t, tc.ExpectedPolicy, p)
 		})
 	}
 

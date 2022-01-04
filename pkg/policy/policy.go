@@ -18,7 +18,7 @@ type Policy struct {
 	// Short human-readable Description about the policy
 	Description string `hcl:"description,optional"`
 	// Full documentation about the policy, this will be shown in the hub
-	Doc    string         `hcl:"readme,optional"`
+	Doc    string         `hcl:"doc,optional"`
 	Config *Configuration `hcl:"configuration,block"`
 
 	Policies Policies `hcl:"policy,block"`
@@ -73,8 +73,7 @@ type Meta struct {
 type View struct {
 	Name        string `hcl:"name,label"`
 	Description string `hcl:"description,optional"`
-
-	Query string `hcl:"query"`
+	Query       string `hcl:"query"`
 }
 
 type Configuration struct {
@@ -96,7 +95,7 @@ const (
 type Check struct {
 	Name         string    `hcl:"name,label"`
 	Description  string    `hcl:"description,optional"`
-	Doc          string    `hcl:"readme,optional"`
+	Doc          string    `hcl:"doc,optional"`
 	ExpectOutput bool      `hcl:"expect_output,optional"`
 	Type         QueryType `hcl:"type,optional"`
 	Query        string    `hcl:"query"`
