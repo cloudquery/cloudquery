@@ -74,24 +74,28 @@ func Firewalls() *schema.Table {
 						Resolver: schema.PathResolver("Sources.Addresses"),
 					},
 					{
-						Name:     "sources_tags",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Sources.Tags"),
+						Name:          "sources_tags",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Sources.Tags"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "sources_droplet_ids",
-						Type:     schema.TypeIntArray,
-						Resolver: schema.PathResolver("Sources.DropletIDs"),
+						Name:          "sources_droplet_ids",
+						Type:          schema.TypeIntArray,
+						Resolver:      schema.PathResolver("Sources.DropletIDs"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "sources_load_balancer_uid_s",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Sources.LoadBalancerUIDs"),
+						Name:          "sources_load_balancer_uid_s",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Sources.LoadBalancerUIDs"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "sources_kubernetes_ids",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Sources.KubernetesIDs"),
+						Name:          "sources_kubernetes_ids",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Sources.KubernetesIDs"),
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -120,31 +124,36 @@ func Firewalls() *schema.Table {
 						Resolver: schema.PathResolver("Destinations.Addresses"),
 					},
 					{
-						Name:     "destinations_tags",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Destinations.Tags"),
+						Name:          "destinations_tags",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Destinations.Tags"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "destinations_droplet_ids",
-						Type:     schema.TypeIntArray,
-						Resolver: schema.PathResolver("Destinations.DropletIDs"),
+						Name:          "destinations_droplet_ids",
+						Type:          schema.TypeIntArray,
+						Resolver:      schema.PathResolver("Destinations.DropletIDs"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "destinations_load_balancer_uid_s",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Destinations.LoadBalancerUIDs"),
+						Name:          "destinations_load_balancer_uid_s",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Destinations.LoadBalancerUIDs"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:     "destinations_kubernetes_ids",
-						Type:     schema.TypeStringArray,
-						Resolver: schema.PathResolver("Destinations.KubernetesIDs"),
+						Name:          "destinations_kubernetes_ids",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("Destinations.KubernetesIDs"),
+						IgnoreInTests: true,
 					},
 				},
 			},
 			{
-				Name:        "digitalocean_firewall_pending_changes",
-				Description: "PendingChange represents a DigitalOcean Firewall status details.",
-				Resolver:    fetchFirewallPendingChanges,
+				Name:          "digitalocean_firewall_pending_changes",
+				Description:   "PendingChange represents a DigitalOcean Firewall status details.",
+				Resolver:      fetchFirewallPendingChanges,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "firewall_cq_id",
@@ -198,7 +207,7 @@ func Firewalls() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{
@@ -224,23 +233,23 @@ func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
-func fetchFirewallInboundRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFirewallInboundRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	fw := parent.Item.(godo.Firewall)
 	res <- fw.InboundRules
 	return nil
 }
 
-func fetchFirewallOutboundRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFirewallOutboundRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	fw := parent.Item.(godo.Firewall)
 	res <- fw.OutboundRules
 	return nil
 }
-func fetchFirewallPendingChanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFirewallPendingChanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	fw := parent.Item.(godo.Firewall)
 	res <- fw.PendingChanges
 	return nil
 }
-func fetchFirewallDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFirewallDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	fw := parent.Item.(godo.Firewall)
 	if fw.DropletIDs == nil {
 		return nil

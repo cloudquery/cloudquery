@@ -95,7 +95,7 @@ func Images() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{}

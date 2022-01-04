@@ -125,7 +125,7 @@ func Volumes() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	opt := &godo.ListVolumeParams{
 		ListOptions: &godo.ListOptions{PerPage: client.MaxItemsPerPage},
@@ -150,7 +150,7 @@ func fetchVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	return nil
 }
-func fetchVolumeDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchVolumeDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	volume := parent.Item.(godo.Volume)
 	if volume.DropletIDs == nil {
 		return nil

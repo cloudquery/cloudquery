@@ -156,8 +156,9 @@ func LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name: "tags",
-				Type: schema.TypeStringArray,
+				Name:          "tags",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "redirect_http_to_https",
@@ -257,7 +258,7 @@ func LoadBalancers() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{
@@ -283,12 +284,12 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-func fetchLoadBalancerForwardingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLoadBalancerForwardingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb := parent.Item.(godo.LoadBalancer)
 	res <- lb.ForwardingRules
 	return nil
 }
-func fetchLoadBalancerDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchLoadBalancerDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb := parent.Item.(godo.LoadBalancer)
 	if lb.DropletIDs == nil {
 		return nil

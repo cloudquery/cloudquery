@@ -116,7 +116,7 @@ func Projects() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{}
@@ -140,7 +140,7 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
-func fetchProjectResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchProjectResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 
 	project := parent.Item.(godo.Project)

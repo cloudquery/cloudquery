@@ -65,7 +65,7 @@ func Account() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func fetchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	account, _, err := svc.DoClient.Account.Get(ctx)
 	if err != nil {

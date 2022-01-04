@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-digitalocean/resources"
+	"github.com/cloudquery/cq-provider-digitalocean/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
 func main() {
 	serve.Serve(&serve.Options{
 		Name:                "digitalocean",
-		Provider:            resources.Provider(),
+		Provider:            provider.Provider(),
 		Logger:              nil,
 		NoLogOutputOverride: false,
 	})

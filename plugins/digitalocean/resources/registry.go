@@ -39,11 +39,12 @@ func Registries() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:         "digitalocean_registry_repositories",
-				Description:  "Repository represents a repository",
-				Resolver:     fetchRegistryRepositories,
-				DeleteFilter: client.DeleteFilter,
-				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"registry_cq_id", "name"}},
+				Name:          "digitalocean_registry_repositories",
+				Description:   "Repository represents a repository",
+				Resolver:      fetchRegistryRepositories,
+				DeleteFilter:  client.DeleteFilter,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"registry_cq_id", "name"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "registry_cq_id",
@@ -118,7 +119,7 @@ func Registries() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	registry, _, err := svc.DoClient.Registry.Get(ctx)
 	if err != nil {
@@ -127,7 +128,7 @@ func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema
 	res <- registry
 	return nil
 }
-func fetchRegistryRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchRegistryRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 
 	registry := parent.Item.(*godo.Registry)

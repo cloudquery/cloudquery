@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/cloudquery/cq-provider-digitalocean/resources"
+	"github.com/cloudquery/cq-provider-digitalocean/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 
 func main() {
-	err := docs.GenerateDocs(resources.Provider(), "./docs")
+	err := docs.GenerateDocs(provider.Provider(), "./docs", true)
 	if err != nil {
-		fmt.Sprintf("Failed to geneerate docs: %s", err)
+		log.Fatalf("Failed to generate docs: %s", err)
 	}
 }

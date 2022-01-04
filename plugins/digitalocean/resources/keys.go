@@ -44,7 +44,7 @@ func Keys() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	opt := &godo.ListOptions{
 		PerPage: client.MaxItemsPerPage,

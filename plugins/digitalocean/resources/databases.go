@@ -166,10 +166,11 @@ func Databases() *schema.Table {
 				Resolver:    schema.PathResolver("MaintenanceWindow.Pending"),
 			},
 			{
-				Name:        "maintenance_window_description",
-				Description: "A list of strings, each containing information about a pending maintenance update.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("MaintenanceWindow.Description"),
+				Name:          "maintenance_window_description",
+				Description:   "A list of strings, each containing information about a pending maintenance update.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("MaintenanceWindow.Description"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "created_at",
@@ -183,9 +184,10 @@ func Databases() *schema.Table {
 				Resolver:    schema.PathResolver("PrivateNetworkUUID"),
 			},
 			{
-				Name:        "tags",
-				Description: "An array of tags that have been applied to the database cluster.",
-				Type:        schema.TypeStringArray,
+				Name:          "tags",
+				Description:   "An array of tags that have been applied to the database cluster.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -363,9 +365,10 @@ func Databases() *schema.Table {
 						Resolver:    schema.PathResolver("PrivateNetworkUUID"),
 					},
 					{
-						Name:        "tags",
-						Description: "A flat array of tag names as strings to apply to the read-only replica after it is created. Tag names can either be existing or new tags.",
-						Type:        schema.TypeStringArray,
+						Name:          "tags",
+						Description:   "A flat array of tag names as strings to apply to the read-only replica after it is created. Tag names can either be existing or new tags.",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -416,7 +419,7 @@ func Databases() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{
@@ -442,12 +445,12 @@ func fetchDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
-func fetchDatabaseUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDatabaseUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(godo.Database)
 	res <- db.Users
 	return nil
 }
-func fetchDatabaseBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDatabaseBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(godo.Database)
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
@@ -474,7 +477,7 @@ func fetchDatabaseBackups(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func fetchDatabaseReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDatabaseReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(godo.Database)
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
@@ -501,7 +504,7 @@ func fetchDatabaseReplicas(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func fetchDatabaseFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDatabaseFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(godo.Database)
 	svc := meta.(*client.Client)
 	rules, _, err := svc.DoClient.Databases.GetFirewallRules(ctx, db.ID)

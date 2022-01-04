@@ -108,7 +108,7 @@ func Domains() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{
@@ -134,7 +134,7 @@ func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	return nil
 }
-func fetchDomainRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDomainRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	domain := parent.Item.(godo.Domain)
 	// create options. initially, these will be blank

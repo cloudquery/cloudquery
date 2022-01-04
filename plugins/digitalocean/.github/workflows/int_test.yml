@@ -13,7 +13,7 @@ jobs:
       matrix:
         dbversion: [ "postgres:latest" ]
         go: [ "1.17" ]
-        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
+        platform: [ ubuntu-latest ] # can not run in macOS and windowsOS
     runs-on: ${{ matrix.platform }}
     services:
       postgres:
@@ -48,7 +48,7 @@ jobs:
         run: go build -v .
 
       - name: Integration Test
-        run: go test -v -p 20 ./resources/integration_tests
+        run: go test -timeout 90s -tags=integration ./...
         env:
           INTEGRATION_TESTS: 1
           TF_VAR_SUFFIX: integration

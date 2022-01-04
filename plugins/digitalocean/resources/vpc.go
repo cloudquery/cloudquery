@@ -111,7 +111,7 @@ func Vpcs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchVpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchVpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	opt := &godo.ListOptions{
 		PerPage: client.MaxItemsPerPage,
@@ -135,7 +135,7 @@ func fetchVpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	}
 	return nil
 }
-func fetchVpcMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchVpcMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 
 	vpc := parent.Item.(*godo.VPC)

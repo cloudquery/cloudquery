@@ -365,9 +365,10 @@ func Droplets() *schema.Table {
 				},
 			},
 			{
-				Name:        "digitalocean_droplet_neighbors",
-				Description: "Droplets that are co-located on the same physical hardware",
-				Resolver:    fetchDropletNeighbors,
+				Name:          "digitalocean_droplet_neighbors",
+				Description:   "Droplets that are co-located on the same physical hardware",
+				Resolver:      fetchDropletNeighbors,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "droplet_cq_id",
@@ -395,7 +396,7 @@ func Droplets() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	opt := &godo.ListOptions{
 		PerPage: client.MaxItemsPerPage,
@@ -420,7 +421,7 @@ func fetchDroplets(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
-func fetchDropletNetworksV4(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDropletNetworksV4(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	droplet := parent.Item.(godo.Droplet)
 	if droplet.Networks == nil {
 		return nil
@@ -428,7 +429,7 @@ func fetchDropletNetworksV4(ctx context.Context, meta schema.ClientMeta, parent 
 	res <- droplet.Networks.V4
 	return nil
 }
-func fetchDropletNetworksV6(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDropletNetworksV6(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	droplet := parent.Item.(godo.Droplet)
 	if droplet.Networks == nil {
 		return nil
@@ -436,7 +437,7 @@ func fetchDropletNetworksV6(ctx context.Context, meta schema.ClientMeta, parent 
 	res <- droplet.Networks.V6
 	return nil
 }
-func fetchDropletNeighbors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchDropletNeighbors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	droplet := parent.Item.(godo.Droplet)
 

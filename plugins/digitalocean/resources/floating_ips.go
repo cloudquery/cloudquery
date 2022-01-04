@@ -10,11 +10,12 @@ import (
 
 func FloatingIps() *schema.Table {
 	return &schema.Table{
-		Name:         "digitalocean_floating_ips",
-		Description:  "FloatingIP represents a Digital Ocean floating IP.",
-		Resolver:     fetchFloatingIps,
-		DeleteFilter: client.DeleteFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"ip"}},
+		Name:          "digitalocean_floating_ips",
+		Description:   "FloatingIP represents a Digital Ocean floating IP.",
+		Resolver:      fetchFloatingIps,
+		DeleteFilter:  client.DeleteFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"ip"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "droplet_id",
@@ -65,7 +66,7 @@ func FloatingIps() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	// create options. initially, these will be blank
 	opt := &godo.ListOptions{

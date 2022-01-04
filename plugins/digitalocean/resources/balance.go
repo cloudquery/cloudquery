@@ -43,7 +43,7 @@ func Balance() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchBalances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func fetchBalances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	balance, _, err := svc.DoClient.Balance.Get(ctx)
 	if err != nil {
