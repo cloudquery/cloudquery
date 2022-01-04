@@ -48,7 +48,9 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 
 		var exitError error
 		defer func() {
-			spanEnder(exitError, trace.WithStackTrace(false))
+			if spanEnder(exitError, trace.WithStackTrace(false)) && exitError != nil {
+				sentry.CaptureException(exitError)
+			}
 			tele.Shutdown(cmd.Context())
 		}()
 
