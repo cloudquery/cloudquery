@@ -4,7 +4,7 @@ cloudquery {
 
   provider "gcp" {
     source = "cloudquery/cq-provider-gcp"
-    version = "v0.4.3"
+    version = "v0.5.1"
   }
 
   connection {
