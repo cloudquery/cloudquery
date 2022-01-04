@@ -54,12 +54,12 @@ func TestManager_Load(t *testing.T) {
 		},
 	}
 
-	_ = os.RemoveAll(".cq/policies/manager")
+	_ = os.RemoveAll("./cq/policies/manager")
 	m := NewManager("./cq/policies/manager", nil, nil)
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			p, err := m.Load(context.Background(), tc.Policy)
-			assert.Nil(t, err)
+			assert.NoError(t, err)
 			assert.NotNil(t, p)
 			p.meta.Directory = filepath.ToSlash(p.meta.Directory)
 			assert.Equal(t, tc.ExpectedPolicy, p)
