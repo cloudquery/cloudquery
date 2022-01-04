@@ -136,10 +136,7 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			})
 			return nil, diags
 		}
-		p.Views = append(p.Views, iPolicy.Policies[0].Views...)
-		p.Checks = append(p.Checks, iPolicy.Policies[0].Checks...)
-		p.Policies = append(p.Policies, iPolicy.Policies[0].Policies...)
-		return p, nil
+		return iPolicy.Policies[0], nil
 	}
 
 	for _, block := range content.Blocks {

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"path"
 	"strings"
 
 	"path/filepath"
@@ -151,10 +152,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 
 		}
 	}
-	if !found && len(selector) > 0 {
-		e.log.Error("policy not found with provided sub-policy selector", "selector", selector, "available_policies", policy.Policies.All())
-		return nil, fmt.Errorf("%s//%s: %w", policy.Name, selector, ErrPolicyOrQueryNotFound)
-	}
 
 	for _, q := range policy.Checks {
 		if len(selector) == 0 || q.Name == selector[0] {
@@ -179,7 +176,8 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		}
 	}
 	if !found && len(selector) > 0 {
-		return nil, fmt.Errorf("%s//%s: %w", policy.Name, selector, ErrPolicyOrQueryNotFound)
+		e.log.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", policy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", policy.Name, path.Join(selector...), ErrPolicyOrQueryNotFound)
 	}
 	return &total, nil
 }

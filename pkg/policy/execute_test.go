@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
+func setupPolicyDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
 	poolCfg, err := pgxpool.ParseConfig("postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 	poolCfg.LazyConnect = true
@@ -55,7 +55,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupDatabase(t, t.Name())
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
@@ -147,7 +147,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupDatabase(t, t.Name())
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
@@ -181,6 +181,163 @@ func TestExecutor_executePolicy(t *testing.T) {
 			}
 			if res != nil {
 				assert.Equal(t, tc.Pass, res.Passed)
+			}
+		})
+	}
+}
+
+var (
+	multiLayerPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:         "other-query",
+						Query:        "SELECT 1 as result;",
+						ExpectOutput: true,
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	failingPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:  "other-query",
+						Query: "SELECT 1 as result;",
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+)
+
+func TestExecutor_Execute(t *testing.T) {
+	cases := []struct {
+		Name                 string
+		Policy               *Policy
+		Selector             []string
+		ShouldBeEmpty        bool
+		Pass                 bool
+		ErrorOutput          string
+		TotalExpectedResults int
+		StopOnFailure        bool
+	}{
+		{
+			Name: "simple policy",
+			Policy: &Policy{
+				Name:     "test",
+				Policies: nil,
+				Checks: []*Check{{
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				}},
+			},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+		},
+		{
+			Name:                 "multilayer policies",
+			Policy:               multiLayerPolicy,
+			Pass:                 true,
+			TotalExpectedResults: 3,
+		},
+		{
+			Name:                 "multilayer policies \\w selector",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"subpolicy"},
+			Pass:                 true,
+			TotalExpectedResults: 2,
+		},
+		{
+			Name:                 "multilayer policies \\w invalid selector",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"invalidselector"},
+			Pass:                 true,
+			ShouldBeEmpty:        true,
+			TotalExpectedResults: 0,
+			ErrorOutput:          "test//invalidselector: selected policy/query is not found",
+		},
+		{
+			Name:                 "multilayer policies \\w selector on query",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"subpolicy", "sub-query"},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+		},
+		{
+			Name:                 "failing policy",
+			Policy:               failingPolicy,
+			Pass:                 false,
+			TotalExpectedResults: 3,
+		},
+		{
+			Name:                 "failing policy - stop on failure",
+			Policy:               failingPolicy,
+			Pass:                 false,
+			TotalExpectedResults: 2,
+			StopOnFailure:        true,
+		},
+		{
+			Name:                 "failing policy \\w selector",
+			Policy:               failingPolicy,
+			Selector:             []string{"subpolicy", "sub-query"},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+			StopOnFailure:        true,
+		},
+	}
+
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	defer tearDownFunc(t)
+	conn, err := pool.Acquire(context.Background())
+	assert.NoError(t, err)
+	executor := NewExecutor(conn, hclog.Default(), nil)
+
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			execReq := &ExecuteRequest{
+				Policy:         tc.Policy,
+				UpdateCallback: nil,
+				StopOnFailure:  tc.StopOnFailure,
+			}
+
+			res, err := executor.Execute(context.Background(), execReq, tc.Policy, tc.Selector)
+			if tc.ErrorOutput != "" {
+				assert.EqualError(t, err, tc.ErrorOutput)
+			} else {
+				assert.NoError(t, err)
+			}
+			if tc.ShouldBeEmpty {
+				assert.Empty(t, res)
+			} else {
+				assert.NotEmpty(t, res)
+			}
+			if res != nil {
+				assert.Equal(t, tc.Pass, res.Passed)
+				assert.Len(t, res.Results, tc.TotalExpectedResults)
 			}
 		})
 	}

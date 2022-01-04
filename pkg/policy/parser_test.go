@@ -42,6 +42,7 @@ const (
 
 	testPolicy = `policy "aws-cis-v1.3.0" {
  description = "AWS CIS V1.3.0"
+ doc = "some doc info"
  configuration {
    provider "aws" {
      version = ">= 1.0"
