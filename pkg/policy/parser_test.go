@@ -174,6 +174,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 			expected: &Policy{
 				Name:        "aws-cis-v1.3.0",
 				Description: "AWS CIS V1.3.0",
+				Doc:         "some doc info",
 				Config: &Configuration{
 					Providers: []*Provider{{
 						Type:    "aws",

@@ -2,6 +2,8 @@ package policy
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,10 +11,10 @@ import (
 
 func TestManager_Load(t *testing.T) {
 	cases := []struct {
-		Name        string
-		Policy      *Policy
+		Name           string
+		Policy         *Policy
 		ExpectedPolicy *Policy
-		ErrorOutput string
+		ErrorOutput    string
 	}{
 		{
 			Name: "load github policy",
@@ -24,12 +26,12 @@ func TestManager_Load(t *testing.T) {
 				Name:        "test",
 				Description: "this is a test policy",
 				Doc:         "MAIN README",
-				Policies:    Policies{
+				Policies: Policies{
 					{
 						Name:        "sub-policy",
 						Description: "sub policy description",
 						Doc:         "README FOR SUBPOLICY",
-						Checks:      []*Check{
+						Checks: []*Check{
 							{
 								Name:         "check",
 								Description:  "test check",
@@ -41,23 +43,25 @@ func TestManager_Load(t *testing.T) {
 						},
 					},
 				},
-				Source:      "github.com/cloudquery-policies/test_policy",
-				meta:        &Meta{
+				Source: "github.com/cloudquery-policies/test_policy",
+				meta: &Meta{
 					Type:      "github",
 					Version:   "",
 					subPolicy: "",
-					Directory: "github.com\\cloudquery-policies\\test_policy",
+					Directory: "cq/policies/manager/github.com/cloudquery-policies/test_policy",
 				},
 			},
 		},
 	}
 
-	m := NewManager(".", nil, nil)
+	_ = os.RemoveAll(".cq/policies/manager")
+	m := NewManager("./cq/policies/manager", nil, nil)
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			p, err := m.Load(context.Background(), tc.Policy)
 			assert.Nil(t, err)
 			assert.NotNil(t, p)
+			p.meta.Directory = filepath.ToSlash(p.meta.Directory)
 			assert.Equal(t, tc.ExpectedPolicy, p)
 		})
 	}
