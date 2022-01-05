@@ -320,7 +320,7 @@ type ProviderUpdateSummary struct {
 func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
 	var summary []ProviderUpdateSummary
 	for _, p := range c.Providers {
-		// if version is latest it means there is no update as DownloadProvider will download the latest verison automatically
+		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
 		if strings.Compare(p.Version, "latest") == 0 {
 			c.Logger.Debug("version is latest already", "provider", p.Name, "version", p.Version)
 			continue
