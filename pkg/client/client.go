@@ -317,19 +317,19 @@ type ProviderUpdateSummary struct {
 }
 
 // CheckForProviderUpdates checks for provider updates
-func CheckForProviderUpdates(ctx context.Context, getLatestRelease registry.LatestReleaseGetter, providers []*config.RequiredProvider, logger hclog.Logger) []ProviderUpdateSummary {
-	summary := make([]ProviderUpdateSummary, 0, len(providers))
-	for _, p := range providers {
+func (c *Client) CheckForProviderUpdates(ctx context.Context, getLatestRelease registry.LatestReleaseGetter) []ProviderUpdateSummary {
+	summary := make([]ProviderUpdateSummary, 0, len(c.Providers))
+	for _, p := range c.Providers {
 		version, err := registry.CheckProviderUpdate(ctx, getLatestRelease, p)
 		if err != nil {
-			logger.Warn("Update check failed", "provider", p.Name, "error", err)
+			c.Logger.Warn("Update check failed", "provider", p.Name, "error", err)
 			continue
 		}
 		if version == "" {
 			continue
 		}
 		summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, version})
-		logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
+		c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
 	}
 	return summary
 }

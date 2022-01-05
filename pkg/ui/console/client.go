@@ -93,7 +93,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
-	updates := client.CheckForProviderUpdates(ctx, registry.GetLatestRelease, c.c.Providers, c.c.Logger)
+	updates := c.c.CheckForProviderUpdates(ctx, registry.GetLatestRelease)
 	for _, u := range updates {
 		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.Version, u.LatestVersion))
 	}

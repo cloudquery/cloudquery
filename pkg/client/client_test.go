@@ -698,7 +698,11 @@ func TestCheckForProviderUpdates(t *testing.T) {
 				getReleaseCall++
 				return r.release, r.err
 			}
-			got := CheckForProviderUpdates(ctx, getRelease, tt.providers, hclog.Default())
+			c := Client{
+				Providers: tt.providers,
+				Logger:    hclog.Default(),
+			}
+			got := c.CheckForProviderUpdates(ctx, getRelease)
 			assert.Equal(t, tt.want, got)
 		})
 	}
