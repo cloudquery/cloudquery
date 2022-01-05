@@ -150,7 +150,6 @@ func createOutputTable(res *policy.QueryResult) string {
 func defineResultColumnWidths(execResult []*policy.QueryResult) string {
 	maxNameLength := 0
 	maxDescrLength := 0
-	// maxColumnWid
 	for _, res := range execResult {
 		if len(res.Name) > maxNameLength {
 			maxNameLength = len(res.Name) + 1

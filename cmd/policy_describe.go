@@ -16,8 +16,7 @@ var (
 		Long:  policyDescribeHelpMsg,
 		Args:  cobra.ExactArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_ = c.DescribePolicies(ctx, args[0])
-			return nil
+			return c.DescribePolicies(ctx, args[0])
 		}),
 	}
 )

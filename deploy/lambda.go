@@ -86,7 +86,7 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 	return nil
 }
 
-// Policy Runs a policy Query statement and returns results
+// Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) error {
 	outputPath := "/tmp/"
 	c, err := client.New(ctx, func(c *client.Client) {
