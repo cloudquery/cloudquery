@@ -48,7 +48,7 @@ func initSentry() {
 			return "release"
 		}(),
 		Release:          "cloudquery@" + client.Version,
-		AttachStacktrace: false,
+		AttachStacktrace: true, // send stack trace with panic recovery
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))
 			for i := range it {
@@ -68,6 +68,18 @@ func initSentry() {
 			}
 			return telemetry.HashAttribute(hn)
 		}(),
+		BeforeSend: func(event *sentry.Event, hint *sentry.EventHint) *sentry.Event {
+			if hint != nil && hint.RecoveredException != nil {
+				// Keep stack trace on recover() events
+				return event
+			}
+
+			// Remove stack trace otherwise
+			for i := range event.Exception {
+				event.Exception[i].Stacktrace = nil
+			}
+			return event
+		},
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
