@@ -3,9 +3,10 @@ package getter
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-github/v35/github"
 	"net/url"
 	"strings"
+
+	"github.com/google/go-github/v35/github"
 )
 
 // GitHubDetector implements Detector to detect GitHub URLs and turn
@@ -38,19 +39,10 @@ func (d *GitHubDetector) detectHTTP(src string) (string, bool, error) {
 	}
 
 	if !_url.Query().Has("ref") {
-		client := github.NewClient(nil)
-		tags, _, err := client.Repositories.ListTags(context.Background(), parts[1], parts[2], &github.ListOptions{
-			Page:    0,
-			PerPage: 1,
-		})
-		if err != nil {
-			return "", false, fmt.Errorf("failed to find release: %w", err)
-		}
-		if len(tags) >= 1 {
-			_url.Query().Add("ref", tags[0].GetName())
+		if err := addLatestTag(_url, parts[1], parts[2]); err != nil {
+			return "", false, err
 		}
 	}
-
 
 	if !strings.HasSuffix(_url.Path, ".git") {
 		_url.Path += ".git"
@@ -61,4 +53,23 @@ func (d *GitHubDetector) detectHTTP(src string) (string, bool, error) {
 	}
 
 	return "git::" + _url.String(), true, nil
+}
+
+func addLatestTag(_url *url.URL, owner, repo string) error {
+
+	client := github.NewClient(nil)
+	tags, _, err := client.Repositories.ListTags(context.Background(), owner, repo, &github.ListOptions{
+		Page:    0,
+		PerPage: 1,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to find tags: %w", err)
+	}
+	if len(tags) == 0 {
+		return nil
+	}
+	q := _url.Query()
+	q.Add("ref", tags[0].GetName())
+	_url.RawQuery = q.Encode()
+	return nil
 }

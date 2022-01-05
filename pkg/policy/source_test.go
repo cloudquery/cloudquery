@@ -49,6 +49,18 @@ func TestLoadSource(t *testing.T) {
 			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/aws"},
 		},
 		{
+			Name:         "hub with ref",
+			Source:       "aws?ref=policy_v3",
+			Expected:     true,
+			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/aws"},
+		},
+		{
+			Name:         "hub with @",
+			Source:       "aws@policy_v3",
+			Expected:     true,
+			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/aws"},
+		},
+		{
 			Name:         "github",
 			Source:       "github.com/cloudquery-policies/aws",
 			Expected:     true,

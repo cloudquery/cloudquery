@@ -3,8 +3,8 @@ package policy
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"path/filepath"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/spf13/afero"
@@ -35,10 +35,14 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
 	source, subPolicy := getter.SplitPackageSubDir(source)
-	u, err := url.Parse(source)
-	if err != nil {
-		return nil, nil, err
+	u := strings.Split(source, "@")
+	source = u[0]
+	version := ""
+	if len(u) > 1 {
+		version = u[1]
+		source = fmt.Sprintf("%s?ref=%s", source, u[1])
 	}
+
 	detectorType, _, err := getter.DetectType(source)
 	if err != nil {
 		return nil, nil, err
@@ -59,7 +63,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 
 	return data, &Meta{
 		Type:      detectorType,
-		Version:   u.Query().Get("ref"),
+		Version:   version,
 		subPolicy: subPolicy,
 		Directory: policyDir,
 	}, nil

@@ -38,6 +38,12 @@ func (h HubDetector) detectHTTP(src string) (string, bool, error) {
 		return "", false, nil
 	}
 
+	if !_url.Query().Has("ref") {
+		if err := addLatestTag(_url, parts[1], parts[2]); err != nil {
+			return "", false, err
+		}
+	}
+
 	if !strings.HasSuffix(_url.Path, ".git") {
 		_url.Path += ".git"
 	}
