@@ -136,7 +136,9 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			})
 			return nil, diags
 		}
-		return iPolicy.Policies[0], nil
+		innerPolicy := iPolicy.Policies[0]
+		innerPolicy.Name = p.Name
+		return innerPolicy, nil
 	}
 
 	for _, block := range content.Blocks {
