@@ -36,7 +36,7 @@ func ContextWithTracer(parent context.Context, tracer Tracer) context.Context {
 }
 
 // SpanCloser gets an error and options and ends the span its attached to
-type SpanCloser func(error, ...otrace.SpanEndOption)
+type SpanCloser func(error, ...otrace.SpanEndOption) bool
 
 // StartSpanFromContext starts the span from a given context with the given options, and returns a new context with span attached, as well as a closer fn.
 // Returned SpanCloser should be called when done with span. To catch panics, it should be used under a defer.
@@ -49,14 +49,15 @@ func StartSpanFromContext(ctx context.Context, spanName string, opts ...otrace.S
 		Message:  spanName,
 	})
 
-	return ktx, func(err error, opts ...otrace.SpanEndOption) {
+	return ktx, func(err error, opts ...otrace.SpanEndOption) bool {
 		sentry.AddBreadcrumb(&sentry.Breadcrumb{
 			Type:     "default",
 			Category: "ended",
 			Message:  spanName,
 		})
-		RecordError(span, err)
+		ret := RecordError(span, err)
 		span.End(opts...)
+		return ret
 	}
 }
 

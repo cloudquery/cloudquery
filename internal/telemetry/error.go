@@ -6,7 +6,6 @@ import (
 	"net"
 	"strings"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	"go.opentelemetry.io/otel/codes"
@@ -15,21 +14,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// RecordError should be called on a span to mark it as errored. By default error values are not recorded, unless the debug flag is set.
-func RecordError(span trace.Span, err error, opts ...trace.EventOption) {
+// RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
+func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 	if err == nil {
-		return
+		return false
 	}
 
 	if cls := classifyError(err); cls != errNoClass {
 		span.SetStatus(codes.Error, string(cls))
-		return
+		return false
 	}
-
-	sentry.CaptureException(err)
 
 	span.RecordError(err, opts...)
 	span.SetStatus(codes.Error, err.Error())
+	return true
 }
 
 type errClass string
