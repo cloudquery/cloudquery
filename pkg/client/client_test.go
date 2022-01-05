@@ -643,6 +643,12 @@ func TestCheckForProviderUpdates(t *testing.T) {
 			[]ProviderUpdateSummary{},
 		},
 		{
+			"latest provider, no update",
+			[]*config.RequiredProvider{{Name: "test", Version: "latest"}},
+			[]githubResult{{&github.RepositoryRelease{TagName: &version1}, nil}},
+			[]ProviderUpdateSummary{},
+		},
+		{
 			"two providers, one update",
 			[]*config.RequiredProvider{
 				{Name: "test", Version: version1},

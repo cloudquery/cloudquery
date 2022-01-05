@@ -151,6 +151,9 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 // CheckProviderUpdate checks if there is an update available for the requested provider. Returns a new versions if there is one, otherwise empty string.
 // Call will be cancelled either if ctx is cancelled or after a timeout set by versionCheckHTTPTimeout.
 func CheckProviderUpdate(ctx context.Context, getLatestRelease LatestReleaseGetter, requestedProvider *config.RequiredProvider) (string, error) {
+	if requestedProvider.Version == "latest" {
+		return "", nil
+	}
 	organization, providerName, err := ParseProviderName(requestedProvider.Name)
 	if err != nil {
 		return "", err

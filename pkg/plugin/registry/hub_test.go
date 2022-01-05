@@ -70,6 +70,13 @@ func TestCheckProviderUpdate(t *testing.T) {
 			"",
 			false,
 		},
+		{
+			"latest version",
+			&config.RequiredProvider{Name: "test", Version: "latest"},
+			githubResult{"1.0.0", nil},
+			"",
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
