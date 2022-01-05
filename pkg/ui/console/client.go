@@ -31,6 +31,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 )
@@ -92,7 +93,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
-	updates, _ := c.c.CheckForProviderUpdates(ctx)
+	updates := client.CheckForProviderUpdates(ctx, registry.GetLatestRelease, c.c.Providers, c.c.Logger)
 	for _, u := range updates {
 		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.Version, u.LatestVersion))
 	}

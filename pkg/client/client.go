@@ -317,25 +317,21 @@ type ProviderUpdateSummary struct {
 }
 
 // CheckForProviderUpdates checks for provider updates
-func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
-	var summary []ProviderUpdateSummary
-	for _, p := range c.Providers {
-		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+func CheckForProviderUpdates(ctx context.Context, getLatestRelease registry.LatestReleaseGetter, providers []*config.RequiredProvider, logger hclog.Logger) []ProviderUpdateSummary {
+	summary := make([]ProviderUpdateSummary, 0, len(providers))
+	for _, p := range providers {
+		version, err := registry.CheckProviderUpdate(ctx, getLatestRelease, p)
 		if err != nil {
-			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+			logger.Warn("Update check failed", "provider", p.Name, "error", err)
 			continue
 		}
-
-		if version == nil {
+		if version == "" {
 			continue
 		}
-
-		if p.Version != *version {
-			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
-			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
-		}
+		summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, version})
+		logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
 	}
-	return summary, nil
+	return summary
 }
 
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {

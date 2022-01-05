@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -21,6 +22,9 @@ import (
 
 const (
 	CloudQueryRegistryURl = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
+
+	// Timeout for http requests related to CloudQuery providers version check.
+	versionCheckHTTPTimeout = time.Second * 10
 )
 
 type ProviderDetails struct {
@@ -144,35 +148,32 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 	return true
 }
 
-// CheckProviderUpdate - checks if there is an update for provider, returns nil if there is no update
-func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.RequiredProvider) (*string, error) {
+// CheckProviderUpdate checks if there is an update available for the requested provider. Returns a new versions if there is one, otherwise empty string.
+// Call will be cancelled either if ctx is cancelled or after a timeout set by versionCheckHTTPTimeout.
+func CheckProviderUpdate(ctx context.Context, getLatestRelease LatestReleaseGetter, requestedProvider *config.RequiredProvider) (string, error) {
 	organization, providerName, err := ParseProviderName(requestedProvider.Name)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	currentVersion, err := version.NewVersion(requestedProvider.Version)
 	if err != nil {
-		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
+		return "", fmt.Errorf("bad local version: provider %s, version %s", providerName, requestedProvider.Version)
 	}
+	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
+	defer cancel()
+	release, err := getLatestRelease(ctx, organization, ProviderRepoName(providerName))
 	if err != nil {
-		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
-	}
-	if err != nil {
-		return nil, err
-	}
-	release, err := h.getRelease(ctx, organization, providerName, "latest")
-	if err != nil {
-		return nil, err
+		return "", err
 	}
 	latestVersion := release.GetTagName()
 	v, err := version.NewVersion(latestVersion)
 	if err != nil {
-		return nil, fmt.Errorf("bad version received: provider %s, version %s", providerName, latestVersion)
+		return "", fmt.Errorf("bad remote version: provider %s, version %s", providerName, latestVersion)
 	}
 	if currentVersion.LessThan(v) {
-		return &latestVersion, nil
+		return latestVersion, nil
 	}
-	return nil, nil
+	return "", nil
 }
 
 func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.RequiredProvider, noVerify bool) (ProviderDetails, error) {
@@ -201,7 +202,7 @@ func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.Req
 
 	if h.ProgressUpdater != nil {
 		// Setup a done download progress
-		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, providerVersion), providerVersion, 2)
+		h.ProgressUpdater.Add(providerName, fmt.Sprintf("%s@%s", ProviderRepoName(providerName), providerVersion), providerVersion, 2)
 	}
 
 	if noVerify {
@@ -263,20 +264,11 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 func (h Hub) getRelease(ctx context.Context, organization, providerName, version string) (*github.RepositoryRelease, error) {
 	client := github.NewClient(nil)
 	if version != "latest" {
-		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName), version)
+		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, ProviderRepoName(providerName), version)
 		return release, err
 	}
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
+	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, ProviderRepoName(providerName))
 	return release, err
-}
-
-func (h Hub) getLatestReleaseVersion(ctx context.Context, organization, providerName string) (*version.Version, error) {
-	client := github.NewClient(nil)
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
-	if err != nil {
-		return nil, err
-	}
-	return version.NewVersion(release.GetTagName())
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
@@ -355,9 +347,17 @@ func (h Hub) loadExisting() {
 	})
 }
 
+type LatestReleaseGetter func(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error)
+
+func GetLatestRelease(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error) {
+	gh := github.NewClient(nil)
+	r, _, err := gh.Repositories.GetLatestRelease(ctx, owner, repo)
+	return r, err
+}
+
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
 func getPluginBinaryName(providerName string) string {
-	return fmt.Sprintf("cq-provider-%s_%s", providerName, GetBinarySuffix())
+	return fmt.Sprintf("%s_%s", ProviderRepoName(providerName), GetBinarySuffix())
 }
 
 func GetBinarySuffix() string {

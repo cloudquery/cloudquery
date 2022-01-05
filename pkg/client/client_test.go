@@ -17,6 +17,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/google/go-github/v35/github"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgx/v4"
@@ -609,80 +611,89 @@ func Test_collectProviderVersions(t *testing.T) {
 	}
 }
 
-func Test_CheckForProviderUpdates(t *testing.T) {
-	source := "cloudquery"
+func TestCheckForProviderUpdates(t *testing.T) {
+	type githubResult struct {
+		release *github.RepositoryRelease
+		err     error
+	}
+	version1 := "1.0.0"
+	version2 := "2.0.0"
 	tests := []struct {
-		name      string
-		providers []*config.RequiredProvider
-		updates   int
+		name          string
+		providers     []*config.RequiredProvider
+		githubResults []githubResult
+		want          []ProviderUpdateSummary
 	}{
 		{
-			"use of prior version of provider",
-			[]*config.RequiredProvider{
-				{
-					Name:    "test",
-					Source:  &source,
-					Version: "0.0.7",
-				},
-			},
-			1,
+			"empty list of providers",
+			nil,
+			nil,
+			[]ProviderUpdateSummary{},
 		},
 		{
-			"use of non existing provider",
-			[]*config.RequiredProvider{
-				{
-					Name:    "test1",
-					Source:  &source,
-					Version: "v0.0.7",
-				},
-			},
-			0,
+			"one provider, github error",
+			[]*config.RequiredProvider{{Name: "test", Version: version1}},
+			[]githubResult{{nil, errors.New("fake")}},
+			[]ProviderUpdateSummary{},
 		},
 		{
-			"use of prior version of provider",
-			[]*config.RequiredProvider{
-				{
-					Name:    "test",
-					Source:  &source,
-					Version: "v0.0.7",
-				},
-			},
-			1,
+			"one provider, no update",
+			[]*config.RequiredProvider{{Name: "test", Version: version1}},
+			[]githubResult{{&github.RepositoryRelease{TagName: &version1}, nil}},
+			[]ProviderUpdateSummary{},
 		},
 		{
-			"direct set of latest version",
+			"two providers, one update",
 			[]*config.RequiredProvider{
-				{
-					Name:    "test",
-					Source:  &source,
-					Version: "v0.0.9",
-				},
+				{Name: "test", Version: version1},
+				{Name: "other", Version: version1},
 			},
-			0,
+			[]githubResult{
+				{&github.RepositoryRelease{TagName: &version1}, nil},
+				{&github.RepositoryRelease{TagName: &version2}, nil},
+			},
+			[]ProviderUpdateSummary{
+				{Name: "other", Version: version1, LatestVersion: version2},
+			},
 		},
 		{
-			"latest version using word 'latest'",
-			[]*config.RequiredProvider{
-				{
-					Name:    "test",
-					Source:  &source,
-					Version: "latest",
-				},
+			"three providers, github error, one update",
+			[]*config.RequiredProvider{{Name: "test", Version: version1}, {Name: "other", Version: version1}, {Name: "third", Version: version1}},
+			[]githubResult{
+				{&github.RepositoryRelease{TagName: &version1}, nil},
+				{nil, errors.New("fake")},
+				{&github.RepositoryRelease{TagName: &version2}, nil},
 			},
-			0,
+			[]ProviderUpdateSummary{
+				{Name: "third", Version: version1, LatestVersion: version2},
+			},
+		},
+		{
+			"three providers, three updates",
+			[]*config.RequiredProvider{{Name: "test", Version: version1}, {Name: "other", Version: version1}, {Name: "third", Version: version1}},
+			[]githubResult{
+				{&github.RepositoryRelease{TagName: &version2}, nil},
+				{&github.RepositoryRelease{TagName: &version2}, nil},
+				{&github.RepositoryRelease{TagName: &version2}, nil},
+			},
+			[]ProviderUpdateSummary{
+				{Name: "test", Version: version1, LatestVersion: version2},
+				{Name: "other", Version: version1, LatestVersion: version2},
+				{Name: "third", Version: version1, LatestVersion: version2},
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
-			c, err := New(ctx, func(options *Client) {
-				options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-				options.Providers = tt.providers
-			})
-			assert.Nil(t, err)
-			providers, err := c.CheckForProviderUpdates(ctx)
-			assert.Nil(t, err)
-			assert.Len(t, providers, tt.updates)
+			getReleaseCall := 0
+			getRelease := func(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error) {
+				r := tt.githubResults[getReleaseCall]
+				getReleaseCall++
+				return r.release, r.err
+			}
+			got := CheckForProviderUpdates(ctx, getRelease, tt.providers, hclog.Default())
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
