@@ -130,10 +130,10 @@ func findOutput(columnNames []string, data [][]interface{}) []string {
 
 func createOutputTable(res *policy.QueryResult) string {
 	data := make([][]string, 0)
-	for rowIndex := range res.Data {
-		rowData := make([]string, 1)
-		for colIndex := range res.Data[rowIndex] {
-			rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
+	for i := range res.Data {
+		rowData := make([]string, len(res.Data[i]))
+		for j, value := range res.Data[i] {
+			rowData[j] = fmt.Sprintf("%v", value)
 		}
 		data = append(data, rowData)
 	}
