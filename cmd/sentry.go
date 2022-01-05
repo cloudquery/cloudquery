@@ -48,11 +48,14 @@ func initSentry() {
 			return "release"
 		}(),
 		Release:          "cloudquery@" + client.Version,
-		AttachStacktrace: true,
+		AttachStacktrace: false,
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))
 			for i := range it {
-				if it[i].Name() != "Modules" {
+				switch it[i].Name() {
+				case "ContextifyFrames", "Modules":
+					// nothing
+				default:
 					ret = append(ret, it[i])
 				}
 			}
