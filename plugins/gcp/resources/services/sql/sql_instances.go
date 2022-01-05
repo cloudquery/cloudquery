@@ -613,9 +613,10 @@ func SQLInstances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "suspension_reason",
-				Description: "If the instance state is SUSPENDED, the reason for the suspension  Possible values:   \"SQL_SUSPENSION_REASON_UNSPECIFIED\" - This is an unknown suspension reason   \"BILLING_ISSUE\" - The instance is suspended due to billing issues (for example:, GCP account issue)   \"LEGAL_ISSUE\" - The instance is suspended due to illegal content (for example:, child pornography, copyrighted material, etc)   \"OPERATIONAL_ISSUE\" - The instance is causing operational issues (for example:, causing the database to crash)",
-				Type:        schema.TypeStringArray,
+				Name:          "suspension_reason",
+				Description:   "If the instance state is SUSPENDED, the reason for the suspension  Possible values:   \"SQL_SUSPENSION_REASON_UNSPECIFIED\" - This is an unknown suspension reason   \"BILLING_ISSUE\" - The instance is suspended due to billing issues (for example:, GCP account issue)   \"LEGAL_ISSUE\" - The instance is suspended due to illegal content (for example:, child pornography, copyrighted material, etc)   \"OPERATIONAL_ISSUE\" - The instance is causing operational issues (for example:, causing the database to crash)",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -653,9 +654,10 @@ func SQLInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "gcp_sql_instance_settings_deny_maintenance_periods",
-				Description: "Deny Maintenance Periods This specifies a date range during when all CSA rollout will be denied",
-				Resolver:    fetchSqlInstanceSettingsDenyMaintenancePeriods,
+				Name:          "gcp_sql_instance_settings_deny_maintenance_periods",
+				Description:   "Deny Maintenance Periods This specifies a date range during when all CSA rollout will be denied",
+				Resolver:      fetchSqlInstanceSettingsDenyMaintenancePeriods,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -686,9 +688,10 @@ func SQLInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "gcp_sql_instance_settings_ip_config_authorized_networks",
-				Description: "An entry for an Access Control list",
-				Resolver:    fetchSqlInstanceSettingsIpConfigurationAuthorizedNetworks,
+				Name:          "gcp_sql_instance_settings_ip_config_authorized_networks",
+				Description:   "An entry for an Access Control list",
+				Resolver:      fetchSqlInstanceSettingsIpConfigurationAuthorizedNetworks,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",

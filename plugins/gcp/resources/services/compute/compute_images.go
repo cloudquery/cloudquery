@@ -130,9 +130,10 @@ func ComputeImages() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "licenses",
-				Description: "Any applicable license URI",
-				Type:        schema.TypeStringArray,
+				Name:          "licenses",
+				Description:   "Any applicable license URI",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "name",

@@ -15,7 +15,8 @@ cq-provider-gcp
 *.log
 .cq_reattach
 # Local .terraform directories
-**/.terraform/*
+**/.terraform
+tmp/
 
 # .tfstate files
 *.tfstate

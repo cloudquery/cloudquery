@@ -101,10 +101,11 @@ func ComputeSubnetworks() *schema.Table {
 				Resolver:    schema.PathResolver("LogConfig.Metadata"),
 			},
 			{
-				Name:        "log_config_metadata_fields",
-				Description: "Can only be specified if VPC flow logs for this subnetwork is enabled and \"metadata\" was set to CUSTOM_METADATA",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("LogConfig.MetadataFields"),
+				Name:          "log_config_metadata_fields",
+				Description:   "Can only be specified if VPC flow logs for this subnetwork is enabled and \"metadata\" was set to CUSTOM_METADATA",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
+				Resolver:      schema.PathResolver("LogConfig.MetadataFields"),
 			},
 			{
 				Name:        "name",

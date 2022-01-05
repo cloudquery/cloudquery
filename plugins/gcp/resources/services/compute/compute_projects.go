@@ -65,9 +65,10 @@ func ComputeProjects() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "enabled_features",
-				Description: "Restricted features enabled for use on this project",
-				Type:        schema.TypeStringArray,
+				Name:          "enabled_features",
+				Description:   "Restricted features enabled for use on this project",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "compute_project_id",

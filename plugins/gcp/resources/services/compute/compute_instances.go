@@ -170,15 +170,17 @@ func ComputeInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ReservationAffinity.Key"),
 			},
 			{
-				Name:        "reservation_affinity_values",
-				Description: "Corresponds to the label values of a reservation resource",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ReservationAffinity.Values"),
+				Name:          "reservation_affinity_values",
+				Description:   "Corresponds to the label values of a reservation resource",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
+				Resolver:      schema.PathResolver("ReservationAffinity.Values"),
 			},
 			{
-				Name:        "resource_policies",
-				Description: "Resource policies applied to this instance",
-				Type:        schema.TypeStringArray,
+				Name:          "resource_policies",
+				Description:   "Resource policies applied to this instance",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "satisfies_pzs",
@@ -374,10 +376,11 @@ func ComputeInstances() *schema.Table {
 						Resolver:    schema.PathResolver("InitializeParams.DiskType"),
 					},
 					{
-						Name:        "labels",
-						Description: "Labels to apply to this disk These can be later modified by the diskssetLabels method This field is only applicable for persistent disks",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InitializeParams.Labels"),
+						Name:          "labels",
+						Description:   "Labels to apply to this disk These can be later modified by the diskssetLabels method This field is only applicable for persistent disks",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
+						Resolver:      schema.PathResolver("InitializeParams.Labels"),
 					},
 					{
 						Name:        "on_update_action",
@@ -392,10 +395,11 @@ func ComputeInstances() *schema.Table {
 						Resolver:    schema.PathResolver("InitializeParams.ProvisionedIops"),
 					},
 					{
-						Name:        "resource_policies",
-						Description: "Resource policies applied to this disk for automatic snapshot creations Specified using the full or partial URL For instance template, specify only the resource policy name",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("InitializeParams.ResourcePolicies"),
+						Name:          "resource_policies",
+						Description:   "Resource policies applied to this disk for automatic snapshot creations Specified using the full or partial URL For instance template, specify only the resource policy name",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
+						Resolver:      schema.PathResolver("InitializeParams.ResourcePolicies"),
 					},
 					{
 						Name:        "source_image",
@@ -561,9 +565,10 @@ func ComputeInstances() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:        "gcp_compute_instance_network_interface_access_configs",
-						Description: "An access configuration attached to an instance's network interface Only one access config per instance is supported",
-						Resolver:    fetchComputeInstanceNetworkInterfaceAccessConfigs,
+						Name:          "gcp_compute_instance_network_interface_access_configs",
+						Description:   "An access configuration attached to an instance's network interface Only one access config per instance is supported",
+						Resolver:      fetchComputeInstanceNetworkInterfaceAccessConfigs,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "instance_network_interface_cq_id",
@@ -615,9 +620,10 @@ func ComputeInstances() *schema.Table {
 						},
 					},
 					{
-						Name:        "gcp_compute_instance_network_interface_alias_ip_ranges",
-						Description: "An alias IP range attached to an instance's network interface",
-						Resolver:    fetchComputeInstanceNetworkInterfaceAliasIpRanges,
+						Name:          "gcp_compute_instance_network_interface_alias_ip_ranges",
+						Description:   "An alias IP range attached to an instance's network interface",
+						Resolver:      fetchComputeInstanceNetworkInterfaceAliasIpRanges,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "instance_network_interface_cq_id",
@@ -645,9 +651,10 @@ func ComputeInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "gcp_compute_instance_scheduling_node_affinities",
-				Description: "Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled",
-				Resolver:    fetchComputeInstanceSchedulingNodeAffinities,
+				Name:          "gcp_compute_instance_scheduling_node_affinities",
+				Description:   "Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled",
+				Resolver:      fetchComputeInstanceSchedulingNodeAffinities,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -701,9 +708,10 @@ func ComputeInstances() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "scopes",
-						Description: "The list of scopes to be made available for this service account",
-						Type:        schema.TypeStringArray,
+						Name:          "scopes",
+						Description:   "The list of scopes to be made available for this service account",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
 					},
 				},
 			},

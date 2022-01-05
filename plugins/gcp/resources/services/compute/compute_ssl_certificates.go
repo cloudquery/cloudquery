@@ -106,9 +106,10 @@ func ComputeSslCertificates() *schema.Table {
 				Resolver:    schema.PathResolver("SelfManaged.PrivateKey"),
 			},
 			{
-				Name:        "subject_alternative_names",
-				Description: "Domains associated with the certificate via Subject Alternative Name",
-				Type:        schema.TypeStringArray,
+				Name:          "subject_alternative_names",
+				Description:   "Domains associated with the certificate via Subject Alternative Name",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "type",

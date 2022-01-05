@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resources/services/bigquery"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/cloudfunctions"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/compute"
-	"github.com/cloudquery/cq-provider-gcp/resources/services/crm"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/dns"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/domains"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/iam"
@@ -72,7 +71,6 @@ func Provider() *provider.Provider {
 			"storage.buckets":              storage.StorageBuckets(),
 			"sql.instances":                sql.SQLInstances(),
 			"domains.registrations":        domains.DomainsRegistration(),
-			"crm.projects":                 crm.CrmProjects(),
 			"bigquery.datasets":            bigquery.BigqueryDatasets(),
 		},
 		Config: func() provider.Config {

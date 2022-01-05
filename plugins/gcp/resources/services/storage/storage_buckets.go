@@ -205,9 +205,10 @@ func StorageBuckets() *schema.Table {
 				Resolver:    schema.PathResolver("Website.NotFoundPage"),
 			},
 			{
-				Name:        "zone_affinity",
-				Description: "The zone or zones from which the bucket is intended to use zonal quota Requests for data from outside the specified affinities are still allowed but won't be able to use zonal quota The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response",
-				Type:        schema.TypeStringArray,
+				Name:          "zone_affinity",
+				Description:   "The zone or zones from which the bucket is intended to use zonal quota Requests for data from outside the specified affinities are still allowed but won't be able to use zonal quota The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response",
+				IgnoreInTests: true,
+				Type:          schema.TypeStringArray,
 			},
 			{
 				Name:        "policy",
@@ -218,11 +219,12 @@ func StorageBuckets() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "gcp_storage_bucket_acls",
-				Description: "Access controls on the bucket.",
-				Resolver:    fetchStorageBucketAcls,
-				IgnoreError: client.IgnoreErrorHandler,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				Name:          "gcp_storage_bucket_acls",
+				Description:   "Access controls on the bucket.",
+				Resolver:      fetchStorageBucketAcls,
+				IgnoreError:   client.IgnoreErrorHandler,
+				IgnoreInTests: true,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -331,17 +333,19 @@ func StorageBuckets() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:        "response_header",
-						Description: "The list of HTTP headers other than the simple response headers to give permission for the user-agent to share across domains",
-						Type:        schema.TypeStringArray,
+						Name:          "response_header",
+						Description:   "The list of HTTP headers other than the simple response headers to give permission for the user-agent to share across domains",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
 					},
 				},
 			},
 			{
-				Name:        "gcp_storage_bucket_default_object_acls",
-				Description: "Default access controls to apply to new objects when no ACL is provided.",
-				Resolver:    fetchStorageBucketDefaultObjectAcls,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				Name:          "gcp_storage_bucket_default_object_acls",
+				Description:   "Default access controls to apply to new objects when no ACL is provided.",
+				Resolver:      fetchStorageBucketDefaultObjectAcls,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -487,10 +491,11 @@ func StorageBuckets() *schema.Table {
 						Resolver:    schema.PathResolver("Condition.DaysSinceNoncurrentTime"),
 					},
 					{
-						Name:        "condition_is_live",
-						Description: "Relevant only for versioned objects If the value is true, this condition matches live objects; if the value is false, it matches archived objects",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("Condition.IsLive"),
+						Name:          "condition_is_live",
+						Description:   "Relevant only for versioned objects If the value is true, this condition matches live objects; if the value is false, it matches archived objects",
+						Type:          schema.TypeBool,
+						IgnoreInTests: true,
+						Resolver:      schema.PathResolver("Condition.IsLive"),
 					},
 					{
 						Name:        "condition_matches_pattern",
@@ -499,10 +504,11 @@ func StorageBuckets() *schema.Table {
 						Resolver:    schema.PathResolver("Condition.MatchesPattern"),
 					},
 					{
-						Name:        "condition_matches_storage_class",
-						Description: "Objects having any of the storage classes specified by this condition will be matched Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, and DURABLE_REDUCED_AVAILABILITY",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("Condition.MatchesStorageClass"),
+						Name:          "condition_matches_storage_class",
+						Description:   "Objects having any of the storage classes specified by this condition will be matched Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, and DURABLE_REDUCED_AVAILABILITY",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
+						Resolver:      schema.PathResolver("Condition.MatchesStorageClass"),
 					},
 					{
 						Name:        "condition_noncurrent_time_before",

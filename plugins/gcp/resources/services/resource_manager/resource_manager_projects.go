@@ -33,10 +33,11 @@ func ResourceManagerProjects() *schema.Table {
 				Resolver:    client.ISODateResolver("CreateTime"),
 			},
 			{
-				Name:        "delete_time",
-				Description: "The time at which this resource was requested for deletion",
-				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("DeleteTime"),
+				Name:          "delete_time",
+				Description:   "The time at which this resource was requested for deletion",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
+				Resolver:      client.ISODateResolver("DeleteTime"),
 			},
 			{
 				Name:        "display_name",

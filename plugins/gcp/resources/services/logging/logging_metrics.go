@@ -118,10 +118,11 @@ func LoggingMetrics() *schema.Table {
 				Resolver:    schema.PathResolver("MetricDescriptor.MetricKind"),
 			},
 			{
-				Name:        "metric_descriptor_monitored_resource_types",
-				Description: "Read-only If present, then a time series, which is identified partially by a metric type and a MonitoredResourceDescriptor, that is associated with this metric type can only be associated with one of the monitored resource types listed here",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("MetricDescriptor.MonitoredResourceTypes"),
+				Name:          "metric_descriptor_monitored_resource_types",
+				Description:   "Read-only If present, then a time series, which is identified partially by a metric type and a MonitoredResourceDescriptor, that is associated with this metric type can only be associated with one of the monitored resource types listed here",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
+				Resolver:      schema.PathResolver("MetricDescriptor.MonitoredResourceTypes"),
 			},
 			{
 				Name:        "metric_descriptor_name",

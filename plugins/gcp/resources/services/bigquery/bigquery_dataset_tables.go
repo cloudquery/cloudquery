@@ -90,10 +90,11 @@ func BigqueryDatasetTables() *schema.Table {
 				Resolver:    schema.PathResolver("ExternalDataConfiguration.MaxBadRecords"),
 			},
 			{
-				Name:        "external_data_configuration_schema",
-				Description: "The schema for the data Schema is required for CSV and JSON formats Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, and Avro formats",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveBigqueryDatasetTableExternalDataConfigurationSchema,
+				Name:          "external_data_configuration_schema",
+				Description:   "The schema for the data Schema is required for CSV and JSON formats Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, and Avro formats",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
+				Resolver:      resolveBigqueryDatasetTableExternalDataConfigurationSchema,
 			},
 			{
 				Name:        "external_data_configuration_source_format",
@@ -102,10 +103,11 @@ func BigqueryDatasetTables() *schema.Table {
 				Resolver:    schema.PathResolver("ExternalDataConfiguration.SourceFormat"),
 			},
 			{
-				Name:        "external_data_configuration_source_uris",
-				Description: "The fully-qualified URIs that point to your data in Google Cloud For Google Cloud Storage URIs: Each URI can contain one '*' wildcard character and it must come after the 'bucket' name Size limits related to load jobs apply to external data sources For Google Cloud Bigtable URIs: Exactly one URI can be specified and it has be a fully specified and valid HTTPS URL for a Google Cloud Bigtable table For Google Cloud Datastore backups, exactly one URI can be specified Also, the '*' wildcard character is not allowed",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ExternalDataConfiguration.SourceUris"),
+				Name:          "external_data_configuration_source_uris",
+				Description:   "The fully-qualified URIs that point to your data in Google Cloud For Google Cloud Storage URIs: Each URI can contain one '*' wildcard character and it must come after the 'bucket' name Size limits related to load jobs apply to external data sources For Google Cloud Bigtable URIs: Exactly one URI can be specified and it has be a fully specified and valid HTTPS URL for a Google Cloud Bigtable table For Google Cloud Datastore backups, exactly one URI can be specified Also, the '*' wildcard character is not allowed",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
+				Resolver:      schema.PathResolver("ExternalDataConfiguration.SourceUris"),
 			},
 			{
 				Name:        "friendly_name",
@@ -162,9 +164,10 @@ func BigqueryDatasetTables() *schema.Table {
 				Resolver:    schema.PathResolver("MaterializedView.RefreshIntervalMs"),
 			},
 			{
-				Name:     "model_options_labels",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Model.ModelOptions.Labels"),
+				Name:          "model_options_labels",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
+				Resolver:      schema.PathResolver("Model.ModelOptions.Labels"),
 			},
 			{
 				Name:     "model_options_loss_type",
@@ -297,10 +300,11 @@ func BigqueryDatasetTables() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "gcp_bigquery_dataset_table_dataset_model_training_runs",
-				Description: "Training options used by this training run These options are mutable for subsequent training runs Default values are explicitly stored for options not specified in the input query of the first training run For subsequent training runs, any option not explicitly specified in the input query will be copied from the previous training run",
-				Resolver:    fetchBigqueryDatasetTableDatasetModelTrainingRuns,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "start_time"}},
+				Name:          "gcp_bigquery_dataset_table_dataset_model_training_runs",
+				Description:   "Training options used by this training run These options are mutable for subsequent training runs Default values are explicitly stored for options not specified in the input query of the first training run For subsequent training runs, any option not explicitly specified in the input query will be copied from the previous training run",
+				Resolver:      fetchBigqueryDatasetTableDatasetModelTrainingRuns,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "start_time"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "dataset_table_cq_id",
@@ -371,9 +375,10 @@ func BigqueryDatasetTables() *schema.Table {
 				},
 			},
 			{
-				Name:        "gcp_bigquery_dataset_table_user_defined_functions",
-				Description: "This is used for defining User Defined Function (UDF) resources only when using legacy SQL",
-				Resolver:    fetchBigqueryDatasetTableUserDefinedFunctions,
+				Name:          "gcp_bigquery_dataset_table_user_defined_functions",
+				Description:   "This is used for defining User Defined Function (UDF) resources only when using legacy SQL",
+				Resolver:      fetchBigqueryDatasetTableUserDefinedFunctions,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "dataset_table_cq_id",

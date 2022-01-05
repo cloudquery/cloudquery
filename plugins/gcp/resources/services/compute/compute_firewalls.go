@@ -35,9 +35,10 @@ func ComputeFirewalls() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "destination_ranges",
-				Description: "If destination ranges are specified, the firewall rule applies only to traffic that has destination IP address in these ranges These ranges must be expressed in CIDR format Only IPv4 is supported",
-				Type:        schema.TypeStringArray,
+				Name:          "destination_ranges",
+				Description:   "If destination ranges are specified, the firewall rule applies only to traffic that has destination IP address in these ranges These ranges must be expressed in CIDR format Only IPv4 is supported",
+				IgnoreInTests: true,
+				Type:          schema.TypeStringArray,
 			},
 			{
 				Name:        "direction",
@@ -98,9 +99,10 @@ func ComputeFirewalls() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "source_service_accounts",
-				Description: "If source service accounts are specified, the firewall rules apply only to traffic originating from an instance with a service account in this list Source service accounts cannot be used to control traffic to an instance's external IP address because service accounts are associated with an instance, not an IP address sourceRanges can be set at the same time as sourceServiceAccounts If both are set, the firewall applies to traffic that has a source IP address within the sourceRanges OR a source IP that belongs to an instance with service account listed in sourceServiceAccount The connection does not need to match both fields for the firewall to apply sourceServiceAccounts cannot be used at the same time as sourceTags or targetTags",
-				Type:        schema.TypeStringArray,
+				Name:          "source_service_accounts",
+				Description:   "If source service accounts are specified, the firewall rules apply only to traffic originating from an instance with a service account in this list Source service accounts cannot be used to control traffic to an instance's external IP address because service accounts are associated with an instance, not an IP address sourceRanges can be set at the same time as sourceServiceAccounts If both are set, the firewall applies to traffic that has a source IP address within the sourceRanges OR a source IP that belongs to an instance with service account listed in sourceServiceAccount The connection does not need to match both fields for the firewall to apply sourceServiceAccounts cannot be used at the same time as sourceTags or targetTags",
+				IgnoreInTests: true,
+				Type:          schema.TypeStringArray,
 			},
 			{
 				Name:        "source_tags",
@@ -108,9 +110,10 @@ func ComputeFirewalls() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "target_service_accounts",
-				Description: "A list of service accounts indicating sets of instances located in the network that may make network connections as specified in allowed[] targetServiceAccounts cannot be used at the same time as targetTags or sourceTags If neither targetServiceAccounts nor targetTags are specified, the firewall rule applies to all instances on the specified network",
-				Type:        schema.TypeStringArray,
+				Name:          "target_service_accounts",
+				Description:   "A list of service accounts indicating sets of instances located in the network that may make network connections as specified in allowed[] targetServiceAccounts cannot be used at the same time as targetTags or sourceTags If neither targetServiceAccounts nor targetTags are specified, the firewall rule applies to all instances on the specified network",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "target_tags",
