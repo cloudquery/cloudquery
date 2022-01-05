@@ -182,9 +182,9 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 					}},
 				},
 				Views: []*View{{
-					Name:        "aws-cis-view",
+					Name:  "aws-cis-view",
 					Title: "AWS CIS View",
-					Query:       "SELECT * FROM my.view",
+					Query: "SELECT * FROM my.view",
 				}},
 				Checks: []*Check{{
 					Name:  "top-level-query",

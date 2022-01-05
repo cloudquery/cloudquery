@@ -27,18 +27,18 @@ func TestManager_Load(t *testing.T) {
 				Source: "github.com/cloudquery-policies/test_policy",
 			},
 			ExpectedPolicy: &Policy{
-				Name:        "test",
+				Name:  "test",
 				Title: "this is a test policy",
-				Doc:         "MAIN README",
+				Doc:   "MAIN README",
 				Policies: Policies{
 					{
-						Name:        "sub-policy",
+						Name:  "sub-policy",
 						Title: "sub policy description",
-						Doc:         "README FOR SUBPOLICY",
+						Doc:   "README FOR SUBPOLICY",
 						Checks: []*Check{
 							{
 								Name:         "check",
-								Title:  "test check",
+								Title:        "test check",
 								Doc:          "some doc md",
 								ExpectOutput: true,
 								Type:         AutomaticQuery,
