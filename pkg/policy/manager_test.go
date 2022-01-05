@@ -1,149 +1,73 @@
 package policy
 
 import (
+	"context"
+	"os"
+	"path/filepath"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/hashicorp/go-hclog"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestParseRemotePolicySource(t *testing.T) {
-	tests := []struct {
-		name      string
-		policy    *config.Policy
-		expected  *RemotePolicy
-		wantErr   bool
-		errString string
+func TestManager_Load(t *testing.T) {
+	// Skip test for now since github is annoying
+	t.Skip()
+	cases := []struct {
+		Name           string
+		Policy         *Policy
+		ExpectedPolicy *Policy
+		ErrorOutput    string
 	}{
 		{
-			"repository with .git suffix and version",
-			&config.Policy{
-				Type:    config.Remote,
-				Source:  "https://github.com/cloudquery/cloudquery.git",
-				Version: "0.0.1",
+			Name: "load github policy",
+			Policy: &Policy{
+				Name:   "test",
+				Source: "github.com/cloudquery-policies/test_policy",
 			},
-			&RemotePolicy{
-				SourceControl: "https://github.com/",
-				Organization:  "cloudquery",
-				Repository:    "cloudquery",
-				Version:       "0.0.1",
+			ExpectedPolicy: &Policy{
+				Name:  "test",
+				Title: "this is a test policy",
+				Doc:   "MAIN README",
+				Policies: Policies{
+					{
+						Name:  "sub-policy",
+						Title: "sub policy description",
+						Doc:   "README FOR SUBPOLICY",
+						Checks: []*Check{
+							{
+								Name:         "check",
+								Title:        "test check",
+								Doc:          "some doc md",
+								ExpectOutput: true,
+								Type:         AutomaticQuery,
+								Query:        "SELECT 1;",
+							},
+						},
+					},
+				},
+				Source: "github.com/cloudquery-policies/test_policy",
+				meta: &Meta{
+					Type:      "github",
+					Version:   "",
+					subPolicy: "",
+					Directory: "cq/policies/manager/github.com/cloudquery-policies/test_policy",
+				},
 			},
-			false,
-			"",
-		},
-		{
-			"repository with .git suffix and no version",
-			&config.Policy{
-				Type:   config.Remote,
-				Source: "https://github.com/cloudquery/cloudquery.git",
-			},
-			&RemotePolicy{
-				SourceControl: "https://github.com/",
-				Organization:  "cloudquery",
-				Repository:    "cloudquery",
-				Version:       "",
-			},
-			false,
-			"",
-		},
-		{
-			"repository without .git suffix and version",
-			&config.Policy{
-				Type:    config.Remote,
-				Source:  "https://github.com/cloudquery/cloudquery",
-				Version: "0.0.1",
-			},
-			&RemotePolicy{
-				SourceControl: "https://github.com/",
-				Organization:  "cloudquery",
-				Repository:    "cloudquery",
-				Version:       "0.0.1",
-			},
-			false,
-			"",
-		},
-		{
-			"repository without .git suffix and no version",
-			&config.Policy{
-				Type:   config.Remote,
-				Source: "https://github.com/cloudquery/cloudquery",
-			},
-			&RemotePolicy{
-				SourceControl: "https://github.com/",
-				Organization:  "cloudquery",
-				Repository:    "cloudquery",
-			},
-			false,
-			"",
-		},
-		{
-			"repository without .git suffix and username",
-			&config.Policy{
-				Type:    config.Remote,
-				Source:  "https://cq:cq@github.com/cloudquery/cloudquery",
-				Version: "0.0.1",
-			},
-			&RemotePolicy{
-				SourceControl: "https://cq:cq@github.com/",
-				Organization:  "cloudquery",
-				Repository:    "cloudquery",
-				Version:       "0.0.1",
-			},
-			false,
-			"",
-		},
-		{
-			"repository with .git suffix and wrong path 1",
-			&config.Policy{
-				Type:    config.Remote,
-				Source:  "https://cq:cq@github.com/cloudquery/cloudquery/cloud",
-				Version: "0.0.1",
-			},
-			nil,
-			true,
-			"cloud not parse policy source url",
-		},
-		{
-			"repository with .git suffix and wrong path 2",
-			&config.Policy{
-				Type:    config.Remote,
-				Source:  "https://cq:cq@github.com/cloudquer",
-				Version: "0.0.1",
-			},
-			nil,
-			true,
-			"cloud not parse policy source url",
-		},
-		{
-			"repository from hub",
-			&config.Policy{
-				Type:    config.Hub,
-				Source:  "aws-cis-1.2",
-				Version: "0.0.1",
-			},
-			&RemotePolicy{
-				SourceControl: "https://github.com/",
-				Organization:  "cloudquery-policies",
-				Repository:    "aws-cis-1.2",
-				Version:       "0.0.1",
-			},
-			false,
-			"",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
 
-			remotePolicy, err := ParsePolicyFromSource(tt.policy)
-
-			if tt.wantErr != (err != nil) {
-				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, err != nil, err)
-			}
-			if tt.errString != "" {
-				assert.Equal(t, err.Error(), tt.errString)
-			}
-			assert.Equal(t, tt.expected, remotePolicy)
+	_ = os.RemoveAll("./test")
+	m := NewManager("./test", nil, hclog.Default())
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			p, err := m.Load(context.Background(), tc.Policy)
+			assert.NoError(t, err)
+			assert.NotNil(t, p)
+			p.meta.Directory = filepath.ToSlash(p.meta.Directory)
+			assert.Equal(t, tc.ExpectedPolicy, p)
 		})
 	}
+
 }

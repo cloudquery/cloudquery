@@ -8,11 +8,9 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
-func setupDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
+func setupPolicyDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
 	poolCfg, err := pgxpool.ParseConfig("postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 	poolCfg.LazyConnect = true
@@ -57,7 +55,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupDatabase(t, t.Name())
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
@@ -65,7 +63,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			res, err := executor.executeQuery(context.Background(), &Query{
+			res, err := executor.executeQuery(context.Background(), &Check{
 				Query:        tc.Query,
 				ExpectOutput: tc.ExpectOutput,
 			})
@@ -82,7 +80,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 func TestExecutor_executePolicy(t *testing.T) {
 	cases := []struct {
 		Name          string
-		Queries       []*Query
+		Queries       []*Check
 		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
@@ -90,7 +88,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 	}{
 		{
 			Name: "multiple_queries",
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:         "query-1",
 					ExpectOutput: false,
@@ -109,14 +107,11 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Name: "query_with_dependent_view",
 			Views: []*View{
 				{
-					Name: "testview",
-					Query: &Query{
-						Name:  "get-john",
-						Query: fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'john'", t.Name()),
-					},
+					Name:  "testview",
+					Query: fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'john'", t.Name()),
 				},
 			},
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:         "query-with-view",
 					ExpectOutput: true,
@@ -128,7 +123,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 		{
 			Name: "broken_policy_query",
-			Queries: []*Query{
+			Queries: []*Check{
 				{
 					Name:  "broken-query",
 					Query: "SECT * OM testview",
@@ -142,20 +137,17 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Name: "broken_policy_view",
 			Views: []*View{
 				{
-					Name: "brokenview",
-					Query: &Query{
-						Name:  "broken-query-view",
-						Query: "TCELES * MOFR *",
-					},
+					Name:  "brokenview",
+					Query: "TCELES * MOFR *",
 				},
 			},
-			ErrorOutput:   "broken_policy_view/brokenview/broken-query-view: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
 	}
 
-	pool, tearDownFunc := setupDatabase(t, t.Name())
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
@@ -164,19 +156,19 @@ func TestExecutor_executePolicy(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			p := &Policy{
-				Name:    tc.Name,
-				Queries: tc.Queries,
-				Views:   tc.Views,
+				Name:   tc.Name,
+				Checks: tc.Queries,
+				Views:  tc.Views,
 			}
 			execReq := &ExecuteRequest{
-				Policy: &config.Policy{
+				Policy: &Policy{
 					Name: tc.Name,
 				},
 				UpdateCallback: nil,
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.executePolicy(context.Background(), execReq, p, nil)
+			res, err := executor.Execute(context.Background(), execReq, p, nil)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {
@@ -189,6 +181,163 @@ func TestExecutor_executePolicy(t *testing.T) {
 			}
 			if res != nil {
 				assert.Equal(t, tc.Pass, res.Passed)
+			}
+		})
+	}
+}
+
+var (
+	multiLayerPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:         "other-query",
+						Query:        "SELECT 1 as result;",
+						ExpectOutput: true,
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	failingPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:  "other-query",
+						Query: "SELECT 1 as result;",
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+)
+
+func TestExecutor_Execute(t *testing.T) {
+	cases := []struct {
+		Name                 string
+		Policy               *Policy
+		Selector             []string
+		ShouldBeEmpty        bool
+		Pass                 bool
+		ErrorOutput          string
+		TotalExpectedResults int
+		StopOnFailure        bool
+	}{
+		{
+			Name: "simple policy",
+			Policy: &Policy{
+				Name:     "test",
+				Policies: nil,
+				Checks: []*Check{{
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				}},
+			},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+		},
+		{
+			Name:                 "multilayer policies",
+			Policy:               multiLayerPolicy,
+			Pass:                 true,
+			TotalExpectedResults: 3,
+		},
+		{
+			Name:                 "multilayer policies \\w selector",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"subpolicy"},
+			Pass:                 true,
+			TotalExpectedResults: 2,
+		},
+		{
+			Name:                 "multilayer policies \\w invalid selector",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"invalidselector"},
+			Pass:                 true,
+			ShouldBeEmpty:        true,
+			TotalExpectedResults: 0,
+			ErrorOutput:          "test//invalidselector: selected policy/query is not found",
+		},
+		{
+			Name:                 "multilayer policies \\w selector on query",
+			Policy:               multiLayerPolicy,
+			Selector:             []string{"subpolicy", "sub-query"},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+		},
+		{
+			Name:                 "failing policy",
+			Policy:               failingPolicy,
+			Pass:                 false,
+			TotalExpectedResults: 3,
+		},
+		{
+			Name:                 "failing policy - stop on failure",
+			Policy:               failingPolicy,
+			Pass:                 false,
+			TotalExpectedResults: 2,
+			StopOnFailure:        true,
+		},
+		{
+			Name:                 "failing policy \\w selector",
+			Policy:               failingPolicy,
+			Selector:             []string{"subpolicy", "sub-query"},
+			Pass:                 true,
+			TotalExpectedResults: 1,
+			StopOnFailure:        true,
+		},
+	}
+
+	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	defer tearDownFunc(t)
+	conn, err := pool.Acquire(context.Background())
+	assert.NoError(t, err)
+	executor := NewExecutor(conn, hclog.Default(), nil)
+
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			execReq := &ExecuteRequest{
+				Policy:         tc.Policy,
+				UpdateCallback: nil,
+				StopOnFailure:  tc.StopOnFailure,
+			}
+
+			res, err := executor.Execute(context.Background(), execReq, tc.Policy, tc.Selector)
+			if tc.ErrorOutput != "" {
+				assert.EqualError(t, err, tc.ErrorOutput)
+			} else {
+				assert.NoError(t, err)
+			}
+			if tc.ShouldBeEmpty {
+				assert.Empty(t, res)
+			} else {
+				assert.NotEmpty(t, res)
+			}
+			if res != nil {
+				assert.Equal(t, tc.Pass, res.Passed)
+				assert.Len(t, res.Results, tc.TotalExpectedResults)
 			}
 		})
 	}
