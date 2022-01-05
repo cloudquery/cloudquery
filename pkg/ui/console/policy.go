@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/hashicorp/go-getter"
+	"github.com/cloudquery/cloudquery/internal/getter"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -18,7 +18,7 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	if policyPath == "" && len(policies) == 0 {
 		return nil, errors.New("no policies defined in configuration")
 	}
-	policyName, subPath := getter.SourceDirSubdir(policyPath)
+	policyName, subPath := getter.ParseSourceSubPolicy(policyPath)
 	// run them all
 	if policyName == "" {
 		return policies, nil

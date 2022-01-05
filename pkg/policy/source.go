@@ -14,8 +14,7 @@ import (
 const defaultPolicyFileName = "policy.hcl"
 
 func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
-	source, _ := parseSyntacticUrl(name)
-	t, found, err := getter.DetectType(source)
+	t, found, err := getter.DetectType(name)
 
 	if err != nil {
 		return nil, false, fmt.Errorf("failed to detect policy in hub: %w", err)
@@ -36,7 +35,8 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 }
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
-	source, subPolicy := getter.SplitPackageSubDir(source)
+	source, subPolicy := getter.ParseSourceSubPolicy(source)
+	// parse syntactic URL holding @ instead of ?ref for params
 	source, version := parseSyntacticUrl(source)
 	if version == "" {
 		u, _ := url.Parse(source)
