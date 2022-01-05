@@ -212,7 +212,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 
 	result := &QueryResult{
 		Name:        q.Name,
-		Description: q.Description,
+		Description: q.Title,
 		Columns:     make([]string, 0),
 		Data:        make([][]interface{}, 0),
 		Type:        q.Type,

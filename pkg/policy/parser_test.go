@@ -41,7 +41,7 @@ const (
 }`
 
 	testPolicy = `policy "aws-cis-v1.3.0" {
- description = "AWS CIS V1.3.0"
+ title = "AWS CIS V1.3.0"
  doc = "some doc info"
  configuration {
    provider "aws" {
@@ -50,25 +50,25 @@ const (
  }
 
  view "aws-cis-view" {
-   description = "AWS CIS View"
+   title = "AWS CIS View"
    query = "SELECT * FROM my.view"
  }
 
  check "top-level-query" {
-   description = "Top Level Check"
+   title = "Top Level Check"
    query = "SELECT * FROM test"
    type = "manual"
  }
 
  policy "sub-policy-1" {
-   description = "Sub Policy 1"
+   title = "Sub Policy 1"
    check "sub-level-query" {
      query = "SELECT * from test.subquery"
    }
  }
 
  policy "sub-policy-2" {
-   description = "Sub Policy 2"
+   title = "Sub Policy 2"
    check "sub-level-query" {
      query = "SELECT * from test.subquery"
      type = "manual"
@@ -172,9 +172,9 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 			name:      "complex policy",
 			policyHCL: testPolicy,
 			expected: &Policy{
-				Name:        "aws-cis-v1.3.0",
-				Description: "AWS CIS V1.3.0",
-				Doc:         "some doc info",
+				Name:  "aws-cis-v1.3.0",
+				Title: "AWS CIS V1.3.0",
+				Doc:   "some doc info",
 				Config: &Configuration{
 					Providers: []*Provider{{
 						Type:    "aws",
@@ -183,19 +183,19 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 				},
 				Views: []*View{{
 					Name:        "aws-cis-view",
-					Description: "AWS CIS View",
+					Title: "AWS CIS View",
 					Query:       "SELECT * FROM my.view",
 				}},
 				Checks: []*Check{{
-					Name:        "top-level-query",
-					Description: "Top Level Check",
-					Type:        ManualQuery,
-					Query:       "SELECT * FROM test",
+					Name:  "top-level-query",
+					Title: "Top Level Check",
+					Type:  ManualQuery,
+					Query: "SELECT * FROM test",
 				}},
 				Policies: []*Policy{
 					{
-						Name:        "sub-policy-1",
-						Description: "Sub Policy 1",
+						Name:  "sub-policy-1",
+						Title: "Sub Policy 1",
 						Checks: []*Check{{
 							Name:  "sub-level-query",
 							Query: "SELECT * from test.subquery",
@@ -203,8 +203,8 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 						}},
 					},
 					{
-						Name:        "sub-policy-2",
-						Description: "Sub Policy 2",
+						Name:  "sub-policy-2",
+						Title: "Sub Policy 2",
 						Checks: []*Check{{
 							Name:  "sub-level-query",
 							Query: "SELECT * from test.subquery",

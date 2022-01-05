@@ -28,17 +28,17 @@ func TestManager_Load(t *testing.T) {
 			},
 			ExpectedPolicy: &Policy{
 				Name:        "test",
-				Description: "this is a test policy",
+				Title: "this is a test policy",
 				Doc:         "MAIN README",
 				Policies: Policies{
 					{
 						Name:        "sub-policy",
-						Description: "sub policy description",
+						Title: "sub policy description",
 						Doc:         "README FOR SUBPOLICY",
 						Checks: []*Check{
 							{
 								Name:         "check",
-								Description:  "test check",
+								Title:  "test check",
 								Doc:          "some doc md",
 								ExpectOutput: true,
 								Type:         AutomaticQuery,

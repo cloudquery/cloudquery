@@ -15,8 +15,8 @@ func (pp Policies) All() []string {
 type Policy struct {
 	// Name of the policy
 	Name string `hcl:"name,label"`
-	// Short human-readable Description about the policy
-	Description string `hcl:"description,optional"`
+	// Short human-readable title about the policy
+	Title string `hcl:"title,optional"`
 	// Full documentation about the policy, this will be shown in the hub
 	Doc    string         `hcl:"doc,optional"`
 	Config *Configuration `hcl:"configuration,block"`
@@ -71,9 +71,9 @@ type Meta struct {
 }
 
 type View struct {
-	Name        string `hcl:"name,label"`
-	Description string `hcl:"description,optional"`
-	Query       string `hcl:"query"`
+	Name  string `hcl:"name,label"`
+	Title string `hcl:"title,optional"`
+	Query string `hcl:"query"`
 }
 
 type Configuration struct {
@@ -94,7 +94,7 @@ const (
 
 type Check struct {
 	Name         string    `hcl:"name,label"`
-	Description  string    `hcl:"description,optional"`
+	Title        string    `hcl:"title,optional"`
 	Doc          string    `hcl:"doc,optional"`
 	ExpectOutput bool      `hcl:"expect_output,optional"`
 	Type         QueryType `hcl:"type,optional"`

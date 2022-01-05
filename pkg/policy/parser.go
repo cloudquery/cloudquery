@@ -21,7 +21,7 @@ var policyWrapperSchema = &hcl.BodySchema{
 var policySchema = &hcl.BodySchema{
 	Attributes: []hcl.AttributeSchema{
 		{
-			Name: "description",
+			Name: "title",
 		},
 		{
 			Name: "source",
@@ -83,8 +83,8 @@ func DecodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnos
 func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.EvalContext, r *hcl.Range) (*Policy, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 	p := &Policy{Name: labels[0]}
-	if descriptionAttr, ok := content.Attributes["description"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Description)...)
+	if descriptionAttr, ok := content.Attributes["title"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Title)...)
 	}
 	if descriptionAttr, ok := content.Attributes["doc"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Doc)...)

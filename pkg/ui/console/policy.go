@@ -43,7 +43,7 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 
 func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyPath string) {
 	for _, p := range pp {
-		t.Append(path.Join(policyPath, strings.ToLower(p.Name)), p.Description)
+		t.Append(path.Join(policyPath, strings.ToLower(p.Name)), p.Title)
 		buildDescribePolicyTable(t, p.Policies, path.Join(policyPath, strings.ToLower(p.Name)))
 	}
 }
