@@ -154,12 +154,7 @@ func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.
 	if err != nil {
 		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
 	}
-	if err != nil {
-		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
-	}
-	if err != nil {
-		return nil, err
-	}
+
 	release, err := h.getRelease(ctx, organization, providerName, "latest")
 	if err != nil {
 		return nil, err

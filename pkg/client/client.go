@@ -320,13 +320,18 @@ type ProviderUpdateSummary struct {
 func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
 	var summary []ProviderUpdateSummary
 	for _, p := range c.Providers {
-		version, err := c.Hub.CheckProviderUpdate(ctx, p)
-		if err != nil {
-			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+		// if version is latest it means there is no update as DownloadProvider will download the latest verison automatically
+		if strings.Compare(p.Version, "latest") == 0 {
+			c.Logger.Debug("version is latest already", "provider", p.Name, "version", p.Version)
 			continue
 		}
-
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
+			continue
+		}
 		if version == nil {
+			c.Logger.Debug("version is latest already", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
