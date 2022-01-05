@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/policy"
+
 	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
@@ -87,7 +89,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				config.Providers = append(config.Providers, cfg)
 			}
 		case "policy":
-			cfg, cfgDiags := decodePolicyConfigBlock(block, &p.HCLContext)
+			cfg, cfgDiags := policy.DecodePolicyBlock(block, &p.HCLContext)
 			diags = append(diags, cfgDiags...)
 			if cfg != nil {
 				config.Policies = append(config.Policies, cfg)
