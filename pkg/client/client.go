@@ -322,7 +322,7 @@ func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateS
 	for _, p := range c.Providers {
 		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
 		if strings.Compare(p.Version, "latest") == 0 {
-			c.Logger.Debug("version is latest already", "provider", p.Name, "version", p.Version)
+			c.Logger.Debug("version is latest", "provider", p.Name, "version", p.Version)
 			continue
 		}
 		version, err := c.Hub.CheckProviderUpdate(ctx, p)
