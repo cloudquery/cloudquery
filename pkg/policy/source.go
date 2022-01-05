@@ -3,6 +3,7 @@ package policy
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"path/filepath"
 	"strings"
 
@@ -13,7 +14,8 @@ import (
 const defaultPolicyFileName = "policy.hcl"
 
 func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
-	t, found, err := getter.DetectType(name)
+	source, _ := parseSyntacticUrl(name)
+	t, found, err := getter.DetectType(source)
 
 	if err != nil {
 		return nil, false, fmt.Errorf("failed to detect policy in hub: %w", err)
@@ -35,12 +37,12 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
 	source, subPolicy := getter.SplitPackageSubDir(source)
-	u := strings.Split(source, "@")
-	source = u[0]
-	version := ""
-	if len(u) > 1 {
-		version = u[1]
-		source = fmt.Sprintf("%s?ref=%s", source, u[1])
+	source, version := parseSyntacticUrl(source)
+	if version == "" {
+		u, _ := url.Parse(source)
+		if u != nil {
+			version = u.Query().Get("ref")
+		}
 	}
 
 	detectorType, _, err := getter.DetectType(source)
@@ -67,4 +69,12 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		subPolicy: subPolicy,
 		Directory: policyDir,
 	}, nil
+}
+
+func parseSyntacticUrl(source string) (string, string) {
+	u := strings.Split(source, "@")
+	if len(u) > 1 {
+		return fmt.Sprintf("%s?ref=%s", u[0], u[1]), u[1]
+	}
+	return source, ""
 }

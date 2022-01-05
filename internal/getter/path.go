@@ -27,5 +27,9 @@ func NormalizePath(src string) string {
 	if err == nil {
 		src = filepath.Join(_url.Host, _url.Path)
 	}
+	srcParts = strings.Split(src, "@")
+	if len(srcParts) > 1 {
+		src = srcParts[0]
+	}
 	return filepath.ToSlash(strings.TrimRight(src, filepath.Ext(src)))
 }
