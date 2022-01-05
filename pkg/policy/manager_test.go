@@ -2,6 +2,7 @@ package policy
 
 import (
 	"context"
+	"github.com/hashicorp/go-hclog"
 	"os"
 	"path/filepath"
 	"testing"
@@ -54,8 +55,8 @@ func TestManager_Load(t *testing.T) {
 		},
 	}
 
-	_ = os.RemoveAll("./cq/policies/manager")
-	m := NewManager("./cq/policies/manager", nil, nil)
+	_ = os.RemoveAll("./test")
+	m := NewManager("./test", nil, hclog.Default())
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			p, err := m.Load(context.Background(), tc.Policy)

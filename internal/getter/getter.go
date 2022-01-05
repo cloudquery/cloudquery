@@ -12,7 +12,7 @@ import (
 
 var (
 	detectors = []getter.Detector{
-		new(getter.GitHubDetector),
+		new(GitHubDetector),
 		new(getter.GitDetector),
 		new(getter.S3Detector),
 		new(getter.GCSDetector),

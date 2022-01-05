@@ -51,6 +51,7 @@ func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error)
 	var err error
 	// if policy is configured with source we load it first
 	if policy.Source != "" {
+		m.logger.Debug("loading policy from source", "policy", policy.Name, "source", policy.Source)
 		policy, err = m.loadPolicyFromSource(ctx, policy.Name, policy.SubPolicy(), policy.Source)
 		if err != nil {
 			return nil, err
@@ -59,6 +60,7 @@ func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error)
 	// TODO: add recursive stop
 	// load inner policies
 	for i, p := range policy.Policies {
+		m.logger.Debug("loading inner policy from source", "policy", policy.Name, "inner_policy", policy.Name)
 		policy.Policies[i], err = m.Load(ctx, p)
 		if err != nil {
 			return nil, err
