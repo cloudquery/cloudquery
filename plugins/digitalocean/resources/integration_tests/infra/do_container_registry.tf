@@ -1,4 +1,4 @@
 resource "digitalocean_container_registry" "do_cr" {
-  name                   = "do-cr${var.test_prefix}-${var.test_suffix}"
+  name                   = random_id.test_id.hex
   subscription_tier_slug = "starter"
 }

@@ -1,5 +1,5 @@
 resource "digitalocean_project" "do_project" {
-  name        = "do_project-${var.test_prefix}-${var.test_suffix}"
+  name        = "do_project-${random_id.test_id.hex}"
   description = "A project for e2e testing"
   purpose     = "E2E"
   environment = "Development"

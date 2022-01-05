@@ -1,5 +1,5 @@
 resource "digitalocean_database_cluster" "do_cluster" {
-  name       = "do-database-cluster-${var.test_prefix}-${var.test_suffix}"
+  name       = "do-database-cluster-${random_id.test_id.hex}"
   engine     = "pg"
   version    = "11"
   size       = "db-s-1vcpu-1gb"
@@ -9,17 +9,17 @@ resource "digitalocean_database_cluster" "do_cluster" {
 
 resource "digitalocean_database_db" "do_database" {
   cluster_id = digitalocean_database_cluster.do_cluster.id
-  name       = "do-database-${var.test_prefix}-${var.test_suffix}"
+  name       = "do-database-${random_id.test_id.hex}"
 }
 
 resource "digitalocean_database_user" "do_database_user" {
   cluster_id = digitalocean_database_cluster.do_cluster.id
-  name       = "do-database-user-${var.test_prefix}-${var.test_suffix}"
+  name       = "do-database-user-${random_id.test_id.hex}"
 }
 
 resource "digitalocean_database_replica" "do_database_replica" {
   cluster_id = digitalocean_database_cluster.do_cluster.id
-  name       = "do-database-replica-${var.test_prefix}-${var.test_suffix}"
+  name       = "do-database-replica-${random_id.test_id.hex}"
   size       = "db-s-1vcpu-1gb"
   region     = "nyc1"
 

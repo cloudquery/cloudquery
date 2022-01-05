@@ -1,5 +1,5 @@
 resource "digitalocean_firewall" "do_firewall" {
-  name = "do-firewall-${var.test_prefix}-${var.test_suffix}"
+  name = "do-firewall${random_id.test_id.hex}"
 
   droplet_ids = [digitalocean_droplet.do_droplet_other_project.id]
 

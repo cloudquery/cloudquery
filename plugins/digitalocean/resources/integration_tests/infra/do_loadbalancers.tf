@@ -1,5 +1,5 @@
 resource "digitalocean_loadbalancer" "do_loadbalancer" {
-  name   = "do-loadbalancer-${var.test_prefix}-${var.test_suffix}"
+  name   = "do-loadbalancer${random_id.test_id.hex}"
   region = "nyc3"
 
   forwarding_rule {

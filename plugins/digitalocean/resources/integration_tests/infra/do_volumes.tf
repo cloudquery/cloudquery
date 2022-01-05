@@ -1,6 +1,6 @@
 resource "digitalocean_volume" "do_volume" {
   region                  = "nyc3"
-  name                    = "dovolume${var.test_suffix}"
+  name                    = "dovolume${random_id.test_id.hex}"
   size                    = 100
   initial_filesystem_type = "ext4"
   description             = "test volume"

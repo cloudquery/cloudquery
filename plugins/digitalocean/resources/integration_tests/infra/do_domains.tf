@@ -9,7 +9,7 @@ resource "digitalocean_record" "do_domain_record_txt" {
   domain = digitalocean_domain.do_domain.name
   type   = "TXT"
   name   = "test"
-  value  = "do_record_txt${var.test_prefix}-${var.test_suffix}"
+  value  = "do_record_txt${random_id.test_id.hex}"
 }
 
 resource "digitalocean_record" "do_domain_record_ns" {
@@ -20,5 +20,5 @@ resource "digitalocean_record" "do_domain_record_ns" {
 }
 
 resource "digitalocean_domain" "do_domain" {
-  name = "${var.test_prefix}-${var.test_suffix}.com"
+  name = "cqdomain${random_id.test_id.hex}.com"
 }
