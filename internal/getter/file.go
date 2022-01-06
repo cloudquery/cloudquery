@@ -17,7 +17,7 @@ func (d *fileDetector) Detect(src, pwd string) (string, bool, error) {
 		return "", false, nil
 	}
 	checkPath := src
-	if pwd != "" && !filepath.IsAbs(src){
+	if pwd != "" && !filepath.IsAbs(src) {
 		checkPath = filepath.Join(pwd, src)
 	}
 	if ok, _ := afero.Exists(afero.NewOsFs(), checkPath); !ok {
