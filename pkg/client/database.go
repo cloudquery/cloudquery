@@ -18,6 +18,10 @@ func CreateDatabase(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 		return nil, fmt.Errorf("missing DSN")
 	}
 	poolCfg, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return nil, err
+	}
+
 	poolCfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		UUIDType := pgtype.DataType{
 			Value: &UUID{},
@@ -27,10 +31,6 @@ func CreateDatabase(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 
 		conn.ConnInfo().RegisterDataType(UUIDType)
 		return nil
-	}
-
-	if err != nil {
-		return nil, err
 	}
 	poolCfg.LazyConnect = true
 	pool, err := pgxpool.ConnectConfig(ctx, poolCfg)
