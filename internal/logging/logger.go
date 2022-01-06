@@ -7,10 +7,11 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/natefinch/lumberjack.v2"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 // Config for logging
@@ -76,6 +77,12 @@ func Configure(config Config) zerolog.Logger {
 	}
 
 	logger := zerolog.New(mw).With().Timestamp().Logger()
+
+	// Default level is info, unless verbose flag is on
+	logger.Level(zerolog.InfoLevel)
+	if config.Verbose {
+		logger.Level(zerolog.DebugLevel)
+	}
 
 	logger.Info().
 		Bool("fileLogging", config.FileLoggingEnabled).
