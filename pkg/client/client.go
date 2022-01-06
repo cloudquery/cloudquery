@@ -331,7 +331,7 @@ func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateS
 			continue
 		}
 		if version == nil {
-			c.Logger.Debug("version is latest already", "provider", p.Name, "version", p.Version)
+			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
