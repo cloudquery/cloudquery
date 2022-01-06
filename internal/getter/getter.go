@@ -79,23 +79,23 @@ func Get(ctx context.Context, installPath, url string, options ...getter.ClientO
 	return nil
 }
 
-func DetectType(src string) (string, bool, error) {
+func DetectType(src string) (string, string, bool, error) {
 	forcedProtocol := strings.Split(src, "::")
 	if len(forcedProtocol) > 1 {
 		if _, ok := detectorsMap[forcedProtocol[0]]; ok {
-			return forcedProtocol[0], true, nil
+			return forcedProtocol[0], src, true, nil
 		}
 	}
 
 	pwd, _ := os.Getwd()
 	for t, d := range detectorsMap {
-		_, found, err := d.Detect(src, pwd)
+		source, found, err := d.Detect(src, pwd)
 		if err != nil {
-			return "", false, fmt.Errorf("failed to detect url %s: %w", src, err)
+			return "", source, false, fmt.Errorf("failed to detect url %s: %w", src, err)
 		}
 		if found {
-			return t, true, nil
+			return t, source, true, nil
 		}
 	}
-	return "", false, nil
+	return "", "", false, nil
 }

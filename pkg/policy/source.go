@@ -14,7 +14,7 @@ import (
 const defaultPolicyFileName = "policy.hcl"
 
 func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
-	t, found, err := getter.DetectType(name)
+	t, _, found, err := getter.DetectType(name)
 
 	if err != nil {
 		return nil, false, fmt.Errorf("failed to detect policy in hub: %w", err)
@@ -45,7 +45,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		}
 	}
 
-	detectorType, _, err := getter.DetectType(source)
+	detectorType, source, _, err := getter.DetectType(source)
 	if err != nil {
 		return nil, nil, err
 	}
