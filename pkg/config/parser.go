@@ -16,8 +16,7 @@ import (
 type SourceType string
 
 const (
-	SourceJSON = "json"
-	SourceHCL  = "hcl"
+	SourceHCL = "hcl"
 )
 
 // EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
@@ -103,8 +102,10 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 	var file *hcl.File
 	var diags hcl.Diagnostics
 	switch ext {
-	case SourceJSON:
-		file, diags = p.p.ParseJSON(data, name)
+	// currently we support only hcl and not json as it has numerous complexities in supporting both.
+	// especially around dynamic hcl reading like done in provider block to send configuration over the wire
+	case SourceHCL:
+		file, diags = p.p.ParseHCL(data, name)
 	default:
 		file, diags = p.p.ParseHCL(data, name)
 	}

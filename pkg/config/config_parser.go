@@ -24,10 +24,6 @@ func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Di
 	return p.loadConfigFromSource(name, data, SourceHCL)
 }
 
-func (p *Parser) LoadConfigFromJson(name string, data []byte) (*Config, hcl.Diagnostics) {
-	return p.loadConfigFromSource(name, data, SourceJSON)
-}
-
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
 	body, diags := p.LoadHCLFile(path)
 	if body == nil {
