@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -88,8 +90,9 @@ func Test_emptyInterfaceFieldNames(t *testing.T) {
 	}
 	for _, tt := range tests {
 		got := emptyInterfaceFieldNames(tt.s)
-		if !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("emptyInterfaceFieldNames(%#v) = %v but want %v", tt.s, got, tt.want)
+		results := cmp.Diff(got, tt.want)
+		if results != "" {
+			t.Errorf(results)
 		}
 	}
 }
@@ -106,4 +109,59 @@ func Test_initServices_NoNilValues(t *testing.T) {
 func Test_obfuscateAccountId(t *testing.T) {
 	assert.Equal(t, "1111xxxxxxxx", obfuscateAccountId("1111111111"))
 	assert.Equal(t, "11", obfuscateAccountId("11"))
+}
+
+func Test_isValidRegions(t *testing.T) {
+	tests := []struct {
+		regions []string
+		want    error
+	}{
+		{
+			regions: []string{"us-east-1"},
+			want:    nil,
+		}, {
+			regions: []string{"us-east-1", "*"},
+			want:    errInvalidRegion,
+		}, {
+			regions: []string{"*"},
+			want:    nil,
+		}, {
+			regions: []string{"*", "us-east-1"},
+			want:    errInvalidRegion,
+		},
+	}
+	for i, tt := range tests {
+		err := isValidRegions(tt.regions)
+		results := cmp.Diff(err, tt.want, cmpopts.EquateErrors())
+		if results != "" {
+			t.Errorf("Case-%d failed: %s", i, results)
+		}
+	}
+}
+func Test_isAllRegions(t *testing.T) {
+	tests := []struct {
+		regions []string
+		want    bool
+	}{
+		{
+			regions: []string{"us-east-1"},
+			want:    false,
+		}, {
+			regions: []string{"us-east-1", "*"},
+			want:    false,
+		}, {
+			regions: []string{"*"},
+			want:    true,
+		}, {
+			regions: []string{"*", "us-east-1"},
+			want:    false,
+		},
+	}
+	for i, tt := range tests {
+		err := isAllRegions(tt.regions)
+		results := cmp.Diff(err, tt.want)
+		if results != "" {
+			t.Errorf("Case-%d failed: %s", i, results)
+		}
+	}
 }

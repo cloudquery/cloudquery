@@ -69,33 +69,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-// Provider Client passed as meta to all table fetchers
-
-var allRegions = []string{
-	"us-east-1",
-	"us-east-2",
-	"us-west-1",
-	"us-west-2",
-	"af-south-1",
-	"ap-east-1",
-	"ap-south-1",
-	"ap-northeast-1",
-	"ap-northeast-2",
-	"ap-southeast-1",
-	"ap-southeast-2",
-	"ca-central-1",
-	"cn-north-1",
-	"cn-northwest-1",
-	"eu-central-1",
-	"eu-west-1",
-	"eu-west-2",
-	"eu-west-3",
-	"eu-south-1",
-	"eu-north-1",
-	"me-south-1",
-	"sa-east-1",
-}
-
 var envVarsToCheck = []string{
 	"AWS_PROFILE",
 	"AWS_ACCESS_KEY_ID",
@@ -111,6 +84,8 @@ const (
 	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws en	v variables: %s"
 	defaultVar                 = "default"
 )
+
+var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
 
 type Services struct {
 	ACM                    ACMClient
@@ -180,7 +155,7 @@ func (s *ServicesManager) ServicesByAccountAndRegion(accountId string, region st
 
 func (s *ServicesManager) InitServicesForAccountAndRegion(accountId string, region string, services Services) {
 	if s.services[accountId] == nil {
-		s.services[accountId] = make(map[string]*Services, len(allRegions))
+		s.services[accountId] = make(map[string]*Services)
 	}
 	s.services[accountId][region] = &services
 }
@@ -189,7 +164,6 @@ type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
 	Accounts        []Account
-	regions         []string
 	logLevel        *string
 	maxRetries      int
 	maxBackoff      int
@@ -219,14 +193,13 @@ func (s3Manager S3Manager) GetBucketRegion(ctx context.Context, bucket string, o
 	return manager.GetBucketRegion(ctx, s3Manager.s3Client, bucket, optFns...)
 }
 
-func NewAwsClient(logger hclog.Logger, accounts []Account, regions []string) Client {
+func NewAwsClient(logger hclog.Logger, accounts []Account) Client {
 	return Client{
 		ServicesManager: ServicesManager{
 			services: ServicesAccountRegionMap{},
 		},
 		logger:   logger,
 		Accounts: accounts,
-		regions:  regions,
 	}
 }
 func (c *Client) Logger() hclog.Logger {
@@ -240,7 +213,6 @@ func (c *Client) Services() *Services {
 func (c *Client) withAccountID(accountID string) *Client {
 	return &Client{
 		Accounts:             c.Accounts,
-		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
@@ -255,7 +227,6 @@ func (c *Client) withAccountID(accountID string) *Client {
 func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
 		Accounts:             c.Accounts,
-		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
@@ -270,7 +241,6 @@ func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace string) *Client {
 	return &Client{
 		Accounts:             c.Accounts,
-		regions:              c.regions,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
@@ -282,15 +252,42 @@ func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace st
 	}
 }
 
+func isValidRegions(regions []string) error {
+	// validate regions values
+	var hasWildcard bool
+	for i, region := range regions {
+		if region == "*" {
+			hasWildcard = true
+		}
+		if i != 0 && region == "*" {
+			return errInvalidRegion
+		}
+		if i > 0 && hasWildcard {
+			return errInvalidRegion
+		}
+	}
+	return nil
+}
+func isAllRegions(regions []string) bool {
+
+	// if regions array is not valid return false
+	err := isValidRegions(regions)
+	if err != nil {
+		return false
+	}
+
+	wildcardAllRegions := false
+	if (len(regions) == 1 && regions[0] == "*") || (len(regions) == 0) {
+		wildcardAllRegions = true
+	}
+	return wildcardAllRegions
+
+}
+
 func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, error) {
 	ctx := context.Background()
 	awsConfig := providerConfig.(*Config)
-	client := NewAwsClient(logger, awsConfig.Accounts, awsConfig.Regions)
-
-	if len(client.regions) == 0 {
-		client.regions = allRegions
-		logger.Info(fmt.Sprintf("No regions specified in config.yml. Assuming all %d regions", len(client.regions)))
-	}
+	client := NewAwsClient(logger, awsConfig.Accounts)
 
 	if len(awsConfig.Accounts) == 0 {
 		awsConfig.Accounts = append(awsConfig.Accounts, Account{
@@ -303,6 +300,19 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	for _, account := range awsConfig.Accounts {
 		var err error
 		var awsCfg aws.Config
+		localRegions := account.Regions
+
+		if len(localRegions) == 0 {
+			localRegions = awsConfig.Regions
+		}
+
+		err = isValidRegions(localRegions)
+		if err != nil {
+			return nil, err
+		}
+		if isAllRegions(localRegions) {
+			logger.Info("All regions specified in config.yml. Assuming all regions")
+		}
 
 		// account id can be defined in account block label or in block attr
 		// we take the block att as default and use the block label if the attr is not defined
@@ -372,26 +382,26 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
 			func(o *ec2.Options) {
 				o.Region = defaultRegion
-				if len(awsConfig.Regions) > 0 {
-					o.Region = awsConfig.Regions[0]
+				if len(localRegions) > 0 && !isAllRegions(localRegions) {
+					o.Region = localRegions[0]
 				}
 			})
 		if err != nil {
 			return nil, fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", accountID, err)
 		}
-		client.regions = filterDisabledRegions(client.regions, res.Regions)
+		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
-		if len(client.regions) == 0 {
+		if len(account.Regions) == 0 {
 			return nil, fmt.Errorf("no enabled regions provided in config for account %s", accountID)
 		}
 
 		if client.AccountID == "" {
 			// set default
 			client.AccountID = *output.Account
-			client.Region = client.regions[0]
+			client.Region = account.Regions[0]
 			client.Accounts = append(client.Accounts, Account{ID: *output.Account, RoleARN: *output.Arn})
 		}
-		for _, region := range client.regions {
+		for _, region := range account.Regions {
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))
 		}
 	}
@@ -473,9 +483,17 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 	}
 
 	var filteredRegions []string
-	for _, r := range regions {
-		if regionsMap[r] {
-			filteredRegions = append(filteredRegions, r)
+	// Our list of regions might not always be the latest and most up to date list
+	// if a user specifies all regions via a "*" then they should get the most broad list possible
+	if isAllRegions(regions) {
+		for region := range regionsMap {
+			filteredRegions = append(filteredRegions, region)
+		}
+	} else {
+		for _, r := range regions {
+			if regionsMap[r] {
+				filteredRegions = append(filteredRegions, r)
+			}
 		}
 	}
 	return filteredRegions

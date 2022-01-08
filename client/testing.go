@@ -39,7 +39,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 				c := NewAwsClient(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
-				}), accounts, []string{"us-east-1"})
+				}), accounts)
 				c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", builder(t, ctrl))
 				return &c, nil
 			},

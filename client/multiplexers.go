@@ -16,7 +16,7 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for accountID := range client.ServicesManager.services {
-			for _, region := range client.regions {
+			for region := range client.ServicesManager.services[accountID] {
 				if !isSupportedServiceForRegion(service, region) {
 					meta.Logger().Trace("region is not supported for service", "service", service, "region", region)
 					continue
@@ -37,7 +37,7 @@ func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.C
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for accountID := range client.ServicesManager.services {
-			for _, region := range client.regions {
+			for region := range client.ServicesManager.services[accountID] {
 				for _, ns := range AllNamespaces {
 					if !isSupportedServiceForRegion(service, region) {
 						meta.Logger().Trace("region is not supported for service", "service", service, "region", region)
