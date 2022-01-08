@@ -13,7 +13,7 @@ import (
 )
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
-	body, diags := p.loadFromSource(name, data)
+	body, diags := p.LoadFromSource(name, data)
 	if body == nil {
 		return nil, diags
 	}
