@@ -12,16 +12,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (p *Parser) loadConfigFromSource(name string, data []byte, source SourceType) (*Config, hcl.Diagnostics) {
-	body, diags := p.loadFromSource(name, data, source)
+func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
+	body, diags := p.loadFromSource(name, data)
 	if body == nil {
 		return nil, diags
 	}
 	return p.decodeConfig(body, diags)
-}
-
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
-	return p.loadConfigFromSource(name, data, SourceHCL)
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
