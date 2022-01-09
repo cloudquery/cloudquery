@@ -69,7 +69,12 @@ func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Polic
 			panic("unexpected block")
 		}
 	}
-	return nil, diags
+	return nil, hcl.Diagnostics{{
+		Severity: hcl.DiagError,
+		Summary:  `No policy root found`,
+		Detail:   `policy root block required in policy file`,
+		Subject:  &content.MissingItemRange,
+	}}
 }
 
 func DecodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
