@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
@@ -13,6 +14,14 @@ import (
 )
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
+	if strings.HasSuffix(name, ".json") {
+		// we dropped support for json so error out with an explainable message
+		return nil, hcl.Diagnostics{{
+			Severity: hcl.DiagError,
+			Summary:  `json is not supported please use hcl format`,
+			Detail:   `json is not supported please use hcl format`,
+		}}
+	}
 	body, diags := p.LoadFromSource(name, data)
 	if body == nil {
 		return nil, diags
