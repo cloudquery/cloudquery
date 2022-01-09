@@ -51,7 +51,9 @@ var policySchema = &hcl.BodySchema{
 
 func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policy, hcl.Diagnostics) {
 	content, contentDiags := body.Content(policyWrapperSchema)
-	diags = append(diags, contentDiags...)
+	if contentDiags.HasErrors() {
+		return nil, diags
+	}
 	if len(content.Blocks) > 1 {
 		return nil, hcl.Diagnostics{{
 			Severity: hcl.DiagError,
