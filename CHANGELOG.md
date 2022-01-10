@@ -19,7 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Policy command updated and spec changed [#369](https://github.com/cloudquery/cloudquery/pull/369)
 ### Fixed
 * Fixed empty policy bug [#399](https://github.com/cloudquery/cloudquery/pull/399)
-* Fixed lambda json conversion [#397](https://github.com/cloudquery/cloudquery/pull/399)
+* Fixed lambda json conversion [#397](https://github.com/cloudquery/cloudquery/pull/397)
+* Remove confusing error message [#391](https://github.com/cloudquery/cloudquery/pull/391)
+* Respect absolute file path in policies [#395](https://github.com/cloudquery/cloudquery/pull/395)
+* Fix isLevel for logger [#385](https://github.com/cloudquery/cloudquery/pull/385)
+* Fix pathing for hub to use real source path [#394](https://github.com/cloudquery/cloudquery/pull/394)
+* Sentry send stack trace only on panic [#390](https://github.com/cloudquery/cloudquery/pull/390)
+* CreateDatabase: check for err in correct place [#389](https://github.com/cloudquery/cloudquery/pull/389)
+* Remove stack traces from sentry [#387](https://github.com/cloudquery/cloudquery/pull/87)
+* Prevent reporting of errors to sentry twice [#386](https://github.com/cloudquery/cloudquery/pull/386)
 
 
 ## [v0.18.0]- 2022-01-03
