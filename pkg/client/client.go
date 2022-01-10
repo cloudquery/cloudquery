@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -51,6 +50,7 @@ var (
 
 const (
 	migrationsEmbeddedDirectoryPath = "migrations"
+	latestVersion                   = "latest"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -299,8 +299,10 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		}
 	}
 	// migrate cloudquery core tables to latest version
-	if err := c.MigrateCore(ctx); err != nil {
-		return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+	if c.DSN != "" {
+		if err := c.MigrateCore(ctx); err != nil {
+			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+		}
 	}
 
 	if err := c.setupTableCreator(ctx); err != nil {
@@ -997,7 +999,7 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	migrations, err := readMigrationFiles(c.Logger, coreMigrations)
+	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
 	if err != nil {
 		return err
 	}
@@ -1013,9 +1015,8 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 		}
 	}()
 
-        const latestVersion := "latest" // todo move this out of the function
 	if err := m.UpgradeProvider(latestVersion); err != migrate.ErrNoChange {
-		return fmt.Errorf("failed to migrate cloudquery core schema: %w",  err)
+		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil
 }
@@ -1186,33 +1187,4 @@ func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
 		return err
 	}
 	return nil
-}
-
-func readMigrationFiles(log hclog.Logger, migrationFiles embed.FS) (map[string][]byte, error) {
-	var (
-		err        error
-		migrations = make(map[string][]byte)
-	)
-	files, err := migrationFiles.ReadDir(migrationsEmbeddedDirectoryPath)
-	if err != nil {
-		log.Info("Provider doesn't define any migration files")
-		return migrations, nil
-	}
-	for _, m := range files {
-		f, err := migrationFiles.Open(path.Join(migrationsEmbeddedDirectoryPath, m.Name()))
-		if err != nil {
-			return nil, err
-		}
-		info, _ := m.Info()
-		if info.Size() == 0 {
-			migrations[m.Name()] = []byte("")
-			continue
-		}
-		data := make([]byte, info.Size())
-		if _, err := f.Read(data); err != nil {
-			return nil, err
-		}
-		migrations[m.Name()] = data
-	}
-	return migrations, nil
 }
