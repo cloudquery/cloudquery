@@ -44,11 +44,13 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 			),
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
-		setSentryVars(trace.SpanFromContext(ctx).SpanContext().TraceID().String())
+		setSentryVars(trace.SpanFromContext(ctx).SpanContext().TraceID().String(), tele.RandomId())
 
 		var exitError error
 		defer func() {
-			spanEnder(exitError, trace.WithStackTrace(false))
+			if spanEnder(exitError, trace.WithStackTrace(false)) && exitError != nil {
+				sentry.CaptureException(exitError)
+			}
 			tele.Shutdown(cmd.Context())
 		}()
 

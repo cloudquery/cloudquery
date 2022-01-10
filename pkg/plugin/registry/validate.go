@@ -1,3 +1,4 @@
+//nolint: staticcheck
 package registry
 
 import (
@@ -10,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 const cloudQueryPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -106,7 +107,7 @@ func validateFile(targetPath string, signaturePath string) error {
 	}
 	defer signature.Close()
 
-	_, err = openpgp.CheckDetachedSignature(keyring, target, signature)
+	_, err = openpgp.CheckDetachedSignature(keyring, target, signature, nil)
 	if err != nil {
 		return err
 	}

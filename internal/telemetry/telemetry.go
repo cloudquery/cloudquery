@@ -61,6 +61,9 @@ type Client struct {
 	// true if we created a new telemetry-random-id file. This is used to enable the warning message in the console client.
 	newRandomId bool
 
+	// Contents of the generated/persisted random id
+	randomIdValue string
+
 	// endpoint to send data to
 	endpoint string
 
@@ -69,6 +72,8 @@ type Client struct {
 }
 
 type Option func(*Client)
+
+const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
 
 func WithFS(fs afero.Fs) Option {
 	return func(c *Client) {
@@ -234,6 +239,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	if randId == "" {
 		randId = genRandomId() // generate ephemeral random ID on error
 	}
+	c.randomIdValue = randId
 
 	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
 
@@ -265,6 +271,11 @@ func (c *Client) randomId() (string, error) {
 // NewRandomId returns true if we created a new random id in this session
 func (c *Client) NewRandomId() bool {
 	return c.newRandomId
+}
+
+// RandomId returns the generated ID
+func (c *Client) RandomId() string {
+	return c.randomIdValue
 }
 
 // httpExporter creates the default HTTP SpanExporter

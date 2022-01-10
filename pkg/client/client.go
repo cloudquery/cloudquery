@@ -150,10 +150,7 @@ func (p ProviderFetchSummary) Metrics() map[string]int64 {
 // PoliciesRunRequest is the request used to run a policy.
 type PoliciesRunRequest struct {
 	// Policies to run
-	Policies []*config.Policy
-
-	// PolicyName is optional attr to run specific policy
-	PolicyName string
+	Policies policy.Policies
 
 	// OutputDir is the output dir for policy execution output.
 	OutputDir string
@@ -163,9 +160,6 @@ type PoliciesRunRequest struct {
 
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallback policy.UpdateCallback
-
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
 
 	// FailOnViolation if true policy run will return error if there are violations
 	FailOnViolation bool
@@ -335,13 +329,18 @@ type ProviderUpdateSummary struct {
 func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
 	var summary []ProviderUpdateSummary
 	for _, p := range c.Providers {
-		version, err := c.Hub.CheckProviderUpdate(ctx, p)
-		if err != nil {
-			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
+		if strings.Compare(p.Version, "latest") == 0 {
+			c.Logger.Debug("version is latest", "provider", p.Name, "version", p.Version)
 			continue
 		}
-
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
+			continue
+		}
 		if version == nil {
+			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
@@ -764,31 +763,19 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr 
 	return m.DropProvider(ctx, s.ResourceTables)
 }
 
-func (c *Client) DownloadPolicy(ctx context.Context, args []string) (pol *policy.RemotePolicy, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadPolicy")
+func (c *Client) LoadPolicy(ctx context.Context, name, source string) (pol *policy.Policy, retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "LoadPolicy")
 	defer spanEnder(retErr)
-
-	c.Logger.Info("Downloading policy from GitHub", "args", args)
-
-	remotePolicy, err := policy.ParsePolicyFromArgs(args)
-	if err != nil {
-		return nil, err
-	}
-	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
-
-	err = c.PolicyManager.DownloadPolicy(ctx, remotePolicy)
-	if err != nil {
-		return nil, err
-	}
-	return remotePolicy, nil
+	c.Logger.Info("Downloading policy from remote source", "name", name, "source", source)
+	return c.PolicyManager.Load(ctx, &policy.Policy{Name: name, Source: source})
 }
 
 func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
 	results := make([]*policy.ExecutionResult, 0)
 
-	for _, policyConfig := range req.Policies {
-		c.Logger = c.Logger.With("policy", policyConfig.Name, "version", policyConfig.Version, "type", policyConfig.Type, "subPath", policyConfig.SubPath)
-		result, err := c.runPolicy(ctx, policyConfig, req)
+	for _, p := range req.Policies {
+		c.Logger = c.Logger.With("policy", p.Name, "version", p.Version(), "subPath", p.SubPolicy())
+		result, err := c.runPolicy(ctx, p, req)
 
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
@@ -796,8 +783,9 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 			// update the ui with the error
 			if req.RunCallback != nil {
 				req.RunCallback(policy.Update{
-					PolicyName:      policyConfig.Name,
-					Version:         policyConfig.Version,
+					PolicyName:      p.Name,
+					Source:          p.Source,
+					Version:         p.Version(),
 					FinishedQueries: 0,
 					QueriesCount:    0,
 					Error:           err.Error(),
@@ -806,7 +794,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 
 			// add the execution error to the results
 			results = append(results, &policy.ExecutionResult{
-				PolicyName: policyConfig.Name,
+				PolicyName: p.Name,
 				Passed:     false,
 				Error:      err.Error(),
 			})
@@ -824,35 +812,15 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	return results, nil
 }
 
-func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (policy.Policies, error) {
-	loadedPolicies := make(policy.Policies, 0, len(req.Policies))
-	for _, policyConfig := range req.Policies {
-		c.Logger.Info("Loading the policy", "args", policyConfig)
-		execReq := &policy.ExecuteRequest{
-			Policy:         policyConfig,
-			StopOnFailure:  req.StopOnFailure,
-			SkipVersioning: req.SkipVersioning,
-			UpdateCallback: req.RunCallback,
-		}
-		policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-		if err != nil {
-			c.Logger.Error("failed loading the policy", "err", err)
-			return nil, fmt.Errorf("failed to load policy: %w", err)
-		}
-		loadedPolicies = append(loadedPolicies, policies...)
-	}
-	return loadedPolicies, nil
-}
-
-func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
 	spanAttrs := []attribute.KeyValue{
-		attribute.String("policy_name", policyConfig.Name),
+		attribute.String("policy_name", p.Name),
 	}
 
-	if strings.HasPrefix(policyConfig.Name, policy.CloudQueryOrg) {
+	if strings.HasPrefix(p.Name, policy.CloudQueryOrg) {
 		spanAttrs = append(spanAttrs,
-			attribute.String("policy_version", policyConfig.Version),
-			attribute.String("policy_subpath", policyConfig.SubPath),
+			attribute.String("policy_version", p.Version()),
+			attribute.String("policy_subpath", p.SubPolicy()),
 		)
 	}
 
@@ -871,22 +839,19 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	}
 
 	execReq := &policy.ExecuteRequest{
-		Policy:           policyConfig,
+		Policy:           p,
 		StopOnFailure:    req.StopOnFailure,
-		SkipVersioning:   req.SkipVersioning,
 		ProviderVersions: versions,
 		UpdateCallback:   req.RunCallback,
 	}
 
-	// load the policy
-	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
+	execReq.Policy, err = c.PolicyManager.Load(ctx, p)
 	if err != nil {
-		c.Logger.Error("failed loading the policy", "err", err)
-		return nil, fmt.Errorf("failed to load policy: %w", err)
+		return nil, err
 	}
 
 	c.Logger.Info("running the policy")
-	result, err := c.PolicyManager.Run(ctx, execReq, policies)
+	result, err := c.PolicyManager.Run(ctx, execReq)
 	if err != nil {
 		return nil, err
 	}
@@ -894,8 +859,8 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	// execution was not finished
 	if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
 		req.RunCallback(policy.Update{
-			PolicyName:      policyConfig.Name,
-			Version:         policyConfig.Version,
+			PolicyName:      p.Name,
+			Version:         p.Version(),
 			FinishedQueries: 0,
 			QueriesCount:    0,
 			Error:           "Execution stopped",

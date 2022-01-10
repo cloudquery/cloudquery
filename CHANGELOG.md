@@ -10,6 +10,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added core migrations implementation
 * Added fetch summary saving to `fetches` table
 
+
+<!-- 
+## Unreleased
+### Added
+### Changed
+### Fixed
+### Breaking Changes
+-->
+
+## [v0.19.0] - 2022-01-10
+### Breaking Changes
+* Policy command updated and spec changed [#369](https://github.com/cloudquery/cloudquery/pull/369)
+### Fixed
+* Fixed empty policy bug [#399](https://github.com/cloudquery/cloudquery/pull/399).
+* Fixed lambda json conversion [#397](https://github.com/cloudquery/cloudquery/pull/397).
+* Removed confusing error message [#391](https://github.com/cloudquery/cloudquery/pull/391).
+* Respected absolute file path in policies [#395](https://github.com/cloudquery/cloudquery/pull/395).
+* Fixed isLevel for logger [#385](https://github.com/cloudquery/cloudquery/pull/385).
+* Fixed pathing for hub to use real source path [#394](https://github.com/cloudquery/cloudquery/pull/394).
+* CreateDatabase: check for err in correct place [#389](https://github.com/cloudquery/cloudquery/pull/389).
+* Prevented reporting of errors to sentry twice [#386](https://github.com/cloudquery/cloudquery/pull/386).
+
+### :gear: Changed
+* Removed stack traces from sentry [#387](https://github.com/cloudquery/cloudquery/pull/87).
+* Sentry send stack trace only on panic [#390](https://github.com/cloudquery/cloudquery/pull/390).
+
+
+
+## [v0.18.0]- 2022-01-03
+### 🚀 Added
+* On cancel show error [#371](https://github.com/cloudquery/cloudquery/pull/371)
+### 💥 Breaking Changes
+* Upgrade to sdk [v0.6.1](https://github.com/cloudquery/cq-provider-sdk/releases/tag/v0.6.1)
+### :gear: Changed
+* remove the need for json hcl2json convertor [#375](https://github.com/cloudquery/cloudquery/pull/375)
+* removed gen config [#370](https://github.com/cloudquery/cloudquery/pull/370)
+### :spider: Fixed
+* Table upgrades with history mode enabled [#381](https://github.com/cloudquery/cloudquery/pull/381).
+
 ## [v0.17.4]- 2021-12-23
 
 ### 💥 Breaking Changes
