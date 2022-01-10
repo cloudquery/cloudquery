@@ -65,7 +65,9 @@ func TestManager_Load(t *testing.T) {
 			p, err := m.Load(context.Background(), tc.Policy)
 			assert.NoError(t, err)
 			assert.NotNil(t, p)
-			p.meta.Directory = filepath.ToSlash(p.meta.Directory)
+			if p.meta != nil {
+				p.meta.Directory = filepath.ToSlash(p.meta.Directory)
+			}
 			assert.Equal(t, tc.ExpectedPolicy, p)
 		})
 	}

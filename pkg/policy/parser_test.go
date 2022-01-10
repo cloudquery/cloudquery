@@ -107,6 +107,13 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		errString string
 	}{
 		{
+			name:      "test empty policy hcl",
+			policyHCL: "",
+			expected:  nil,
+			wantErr:   true,
+			errString: "No policy root found; policy root block required in policy file",
+		},
+		{
 			name:      "test policy with source",
 			policyHCL: testPolicySource,
 			expected: &Policy{
