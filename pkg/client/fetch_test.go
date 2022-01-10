@@ -24,13 +24,12 @@ var fetchSummaryTests = []fetchSummaryTest{
 		summary: FetchSummary{
 			ProviderName:    "test",
 			ProviderVersion: "v0.0.0",
-			ProviderMeta:    []byte("{\"hello\":\"test\"}"),
 		},
 	},
 	{
 		summary: FetchSummary{
 			ProviderName: "test1",
-			FetchedResources: []ResourceFetchSummary{
+			FetchedResources: &[]ResourceFetchSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,

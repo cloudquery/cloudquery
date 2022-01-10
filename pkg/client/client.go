@@ -553,10 +553,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.FetchedResources = append(fs.FetchedResources, ResourceFetchSummary{
+				*fs.FetchedResources = append(*fs.FetchedResources, ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
-					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use string representation of status
+					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
 					Error:                       resp.Error,
 					PartialFetchFailedResources: resp.PartialFetchFailedResources,
 					ResourceCount:               resp.ResourceCount,
@@ -980,7 +980,7 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 		}
 	}()
 
-	if err := m.UpgradeProvider(latestVersion); err != migrate.ErrNoChange {
+	if err := m.UpgradeProvider(latestVersion); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil

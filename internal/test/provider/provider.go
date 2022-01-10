@@ -58,7 +58,7 @@ func Provider() *provider.Provider {
 		ResourceMap: map[string]*schema.Table{
 			"slow_resource": {
 				Name: "slow_resource",
-				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 					meta.Logger().Info("fetching")
 					select {
 					case <-ctx.Done():
@@ -84,7 +84,7 @@ func Provider() *provider.Provider {
 			},
 			"very_slow_resource": {
 				Name: "very_slow_resource",
-				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 					meta.Logger().Info("fetching very slow")
 					select {
 					case <-ctx.Done():
@@ -96,7 +96,7 @@ func Provider() *provider.Provider {
 			},
 			"error_resource": {
 				Name: "error_resource",
-				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+				Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 					return fmt.Errorf("error from provider")
 				},
 			},

@@ -2,12 +2,14 @@ package client
 
 import (
 	"context"
+	"database/sql/driver"
+	"encoding/json"
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/doug-martin/goqu/v9"
 	"github.com/google/uuid"
-	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -16,16 +18,15 @@ import (
 type FetchSummary struct {
 	СqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
-	FetchId            uuid.UUID              `db:"fetch_id"`
-	Start              time.Time              `db:"start"`
-	Finish             time.Time              `db:"finish"`
-	IsSuccess          bool                   `db:"is_success"`
-	TotalResourceCount uint64                 `db:"total_resource_count"`
-	TotalErrorsCount   uint64                 `db:"total_errors_count"`
-	ProviderName       string                 `db:"provider_name"`
-	ProviderVersion    string                 `db:"provider_version"`
-	ProviderMeta       []byte                 `db:"provider_meta"` // reserved field to store provider's metadata such as
-	FetchedResources   []ResourceFetchSummary `db:"results"`
+	FetchId            uuid.UUID               `db:"fetch_id"`
+	Start              time.Time               `db:"start"`
+	Finish             time.Time               `db:"finish"`
+	IsSuccess          bool                    `db:"is_success"`
+	TotalResourceCount uint64                  `db:"total_resource_count"`
+	TotalErrorsCount   uint64                  `db:"total_errors_count"`
+	ProviderName       string                  `db:"provider_name"`
+	ProviderVersion    string                  `db:"provider_version"`
+	FetchedResources   *[]ResourceFetchSummary `db:"results"`
 }
 
 // ResourceFetchSummary includes a data about fetching specific resource
@@ -47,6 +48,11 @@ type ResourceFetchSummary struct {
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
+// Value implements Valuer interface required by goqu
+func (r ResourceFetchSummary) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
 // SaveFetchSummary saves fetch summary into fetches database
 func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary) error {
 	conn, err := pool.Acquire(ctx)
@@ -60,8 +66,11 @@ func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary)
 		return err
 	}
 	fs.СqId = id
-	dbStruct := sqlbuilder.NewStruct(new(FetchSummary))
-	sql, args := dbStruct.InsertInto("cloudquery.fetches", fs).BuildWithFlavor(sqlbuilder.PostgreSQL)
+	q := goqu.Dialect("postgres").Insert("cloudquery.fetches").Rows(fs)
+	sql, args, err := q.ToSQL()
+	if err != nil {
+		return err
+	}
 
 	_, err = conn.Exec(ctx, sql, args...)
 	return err

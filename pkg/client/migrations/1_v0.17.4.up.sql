@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS fetches
     provider_name        TEXT,
     provider_version     TEXT,
     is_success           BOOLEAN,
-    provider_meta        jsonb,
     results              jsonb,
     CONSTRAINT "fetches_id" PRIMARY KEY (id),
     CONSTRAINT "fetches_pk" UNIQUE (fetch_id, provider_name),
