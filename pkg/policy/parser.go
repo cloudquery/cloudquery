@@ -51,7 +51,9 @@ var policySchema = &hcl.BodySchema{
 
 func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policy, hcl.Diagnostics) {
 	content, contentDiags := body.Content(policyWrapperSchema)
-	diags = append(diags, contentDiags...)
+	if contentDiags.HasErrors() {
+		return nil, diags
+	}
 	if len(content.Blocks) > 1 {
 		return nil, hcl.Diagnostics{{
 			Severity: hcl.DiagError,
@@ -69,7 +71,12 @@ func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Polic
 			panic("unexpected block")
 		}
 	}
-	return nil, diags
+	return nil, hcl.Diagnostics{{
+		Severity: hcl.DiagError,
+		Summary:  `No policy root found`,
+		Detail:   `policy root block required in policy file`,
+		Subject:  &content.MissingItemRange,
+	}}
 }
 
 func DecodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
