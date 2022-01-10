@@ -1013,9 +1013,8 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 		}
 	}()
 
-	version := "latest"
-	err = m.UpgradeProvider(version)
-	if err != migrate.ErrNoChange {
+        const latestVersion := "latest" // todo move this out of the function
+	if err := m.UpgradeProvider(latestVersion); err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w",  err)
 	}
 	return nil
