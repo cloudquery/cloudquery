@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/services/container"
+	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/services/monitor"
 	"github.com/cloudquery/cq-provider-azure/resources/services/mysql"
 	"github.com/cloudquery/cq-provider-azure/resources/services/network"
@@ -41,7 +42,7 @@ func Provider() *provider.Provider {
 			"container.managed_clusters":     container.ContainerManagedClusters(),
 			// This resource is currently not working
 			// https://github.com/cloudquery/cq-provider-azure/issues/107
-			// "keyvault.vaults":      keyvault.KeyvaultVaults(),
+			"keyvault.vaults":      keyvault.KeyvaultVaults(),
 			"monitor.log_profiles": monitor.MonitorLogProfiles(),
 			// This resource is currently not working
 			// "monitor.diagnostic_settings":         monitor.MonitorDiagnosticSettings(),

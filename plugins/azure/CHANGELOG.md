@@ -7,12 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- 
 ## Unreleased
-### 🚀 Added
-### :gear: Changed
-### :spider: Fixed
-### 💥 Breaking Changes
+### Added
+### Changed
+### Fixed
+### Breaking Changes
 
 -->
+
+## [v0.3.9] - 2022-01-03
+###### SDK Version: 0.6.1
+### 🚀 Added
+* Add `keyvault.vault` resource back (this result requires special permissions) [#111](https://github.com/cloudquery/cq-provider-azure/pull/111)
 
 ## [v0.3.9] - 2022-01-03
 ###### SDK Version: 0.6.1
