@@ -201,7 +201,7 @@ type FetchDoneResult struct {
 
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
-	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
+	CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error
 }
 
 type TableRemover interface {
@@ -244,7 +244,7 @@ type Client struct {
 	ModuleManager module.Manager
 	// ModuleManager manages all modules lifecycle
 	PolicyManager policy.Manager
-	// TableCreator defines how table are created in the database
+	// TableCreator defines how table are created in the database, only for plugin protocol < 4
 	TableCreator TableCreator
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
@@ -581,7 +581,13 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	return response, nil
 }
 
-func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
+type ProviderSchema struct {
+	*cqproto.GetProviderSchemaResponse
+
+	ProtocolVersion int
+}
+
+func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -596,7 +602,16 @@ func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*c
 			c.Logger.Warn("failed to kill provider", "provider", providerName)
 		}
 	}()
-	return providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+
+	schema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProviderSchema{
+		GetProviderSchemaResponse: schema,
+		ProtocolVersion:           providerPlugin.ProtocolVersion(),
+	}, nil
 }
 
 func (c *Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
@@ -632,17 +647,37 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		return err
 	}
 	defer conn.Release()
-	for name, t := range s.ResourceTables {
-		c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
-		if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
+
+	runTableCreator := func() error {
+		for name, t := range s.ResourceTables {
+			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
+			if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	switch s.ProtocolVersion {
+	case cqproto.V3:
+		if err := runTableCreator(); err != nil {
 			return err
 		}
+
+	default: // Protocol 4 onwards
+		if s.Migrations == nil { // Keep the table creator if we don't have any migrations defined for this provider
+			if err := runTableCreator(); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if s.Migrations == nil {
 		c.Logger.Debug("provider doesn't support migrations", "provider", providerName)
 		return nil
 	}
+
 	// create migration table and set it to version based on latest create table
 	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
 	if err != nil {
