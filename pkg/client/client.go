@@ -247,6 +247,8 @@ type Client struct {
 	PolicyManager policy.Manager
 	// TableCreator defines how table are created in the database, only for plugin protocol < 4
 	TableCreator TableCreator
+	// MigrationHook is called after migrations are finished in the database when they are being set up, or before they are teared down
+	MigrationHook provider.MigrationHook
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 	// pool is a list of connection that are used for policy/query execution
@@ -943,6 +945,7 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 	if err != nil {
 		return nil, nil, err
 	}
+	m.SetHook(c.MigrationHook)
 	return m, providerConfig, err
 }
 
