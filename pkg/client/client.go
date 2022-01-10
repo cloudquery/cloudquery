@@ -649,7 +649,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 	}
 	defer conn.Release()
 
-	if s.ProtocolVersion <= cqproto.V3 || s.Migrations == nil {
+	if s.ProtocolVersion != cqproto.Vunmanaged && (s.ProtocolVersion <= cqproto.V3 || s.Migrations == nil) {
 		// Keep the table creator if we don't have any migrations defined for this provider, or if we're running an older protocol
 		for name, t := range s.ResourceTables {
 			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)

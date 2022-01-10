@@ -145,7 +145,7 @@ func (m unmanagedPlugin) Name() string { return m.name }
 
 func (m unmanagedPlugin) Version() string { return Unmanaged }
 
-func (m unmanagedPlugin) ProtocolVersion() int { return m.client.NegotiatedVersion() }
+func (m unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
 
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 

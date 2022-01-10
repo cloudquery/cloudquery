@@ -480,7 +480,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 				s.Version = deets.Version
 			}
 		}
-		list[i] = s
+		list[i] = s.GetProviderSchemaResponse
 	}
 
 	return list, nil
