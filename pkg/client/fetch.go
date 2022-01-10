@@ -29,6 +29,14 @@ type FetchSummary struct {
 	FetchedResources   *[]ResourceFetchSummary `db:"results"`
 }
 
+func (f *FetchSummary) addResourceFetchSummary(r ResourceFetchSummary) {
+	if f.FetchedResources == nil {
+		f.FetchedResources = &[]ResourceFetchSummary{r}
+		return
+	}
+	*f.FetchedResources = append(*f.FetchedResources, r)
+}
+
 // ResourceFetchSummary includes a data about fetching specific resource
 type ResourceFetchSummary struct {
 	ResourceName string `json:"resource_name"`
