@@ -154,6 +154,8 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
 github.com/cloudquery/cq-provider-sdk v0.5.5 h1:ZaUgH+g1bh+lSxpF12MInFm8PIugYG732QInRsPu8E8=
 github.com/cloudquery/cq-provider-sdk v0.5.5/go.mod h1:ZKD0C3BX/EIPTGOtWlBisl/xp0k+yvoFDjHiByCg8GE=
+github.com/cloudquery/cq-provider-sdk v0.6.1 h1:pyHabGR81AdsnwtZF0oaJhF9VPK5tHiC8DukA5JEW/A=
+github.com/cloudquery/cq-provider-sdk v0.6.1/go.mod h1:lLjzStk8uqMiunTDnAp26QXyQ3XAMexOqzuo8T2riMc=
 github.com/cloudquery/faker/v3 v3.7.4 h1:cCcU3r0yHpS0gqKj9rRKAGS0/hY33fBxbqCNFtDD4ec=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
