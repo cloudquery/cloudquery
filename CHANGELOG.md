@@ -8,10 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- 
 ## Unreleased
-### 🚀 Added
-### :gear: Changed
-### :spider: Fixed
+### Added
+### Changed
+### Fixed
+### Breaking Changes
 -->
+
+## [v0.19.0] - 2022-01-10
+### Breaking Changes
+* Policy command updated and spec changed [#369](https://github.com/cloudquery/cloudquery/pull/369)
+### Fixed
+* Fixed empty policy bug [#399](https://github.com/cloudquery/cloudquery/pull/399)
+* Fixed lambda json conversion [#397](https://github.com/cloudquery/cloudquery/pull/399)
 
 
 ## [v0.18.0]- 2022-01-03
