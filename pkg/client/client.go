@@ -25,6 +25,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/migrations"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/getsentry/sentry-go"
@@ -648,29 +649,14 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 	}
 	defer conn.Release()
 
-	runTableCreator := func() error {
+	if s.ProtocolVersion <= cqproto.V3 || s.Migrations == nil {
+		// Keep the table creator if we don't have any migrations defined for this provider, or if we're running an older protocol
 		for name, t := range s.ResourceTables {
 			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
 			if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
 				return err
 			}
 		}
-		return nil
-	}
-
-	switch s.ProtocolVersion {
-	case cqproto.V3:
-		if err := runTableCreator(); err != nil {
-			return err
-		}
-
-	default: // Protocol 4 onwards
-		if s.Migrations == nil { // Keep the table creator if we don't have any migrations defined for this provider
-			if err := runTableCreator(); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if s.Migrations == nil {
@@ -1008,7 +994,7 @@ func (c *Client) setupTableCreator(ctx context.Context) error {
 	}
 	if c.HistoryCfg == nil {
 		c.Logger.Debug("using default table creator without history mode enabled.")
-		c.TableCreator = provider.NewTableCreator(c.Logger)
+		c.TableCreator = migrations.NewTableCreator(c.Logger)
 		return nil
 	}
 	creator, err := history.NewHistoryTableCreator(c.HistoryCfg, c.Logger)
