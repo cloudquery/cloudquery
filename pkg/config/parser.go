@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"io/fs"
-	"path/filepath"
 	"strings"
 
 	"github.com/hashicorp/hcl/v2"
@@ -16,8 +15,7 @@ import (
 type SourceType string
 
 const (
-	SourceJSON = "json"
-	SourceHCL  = "hcl"
+	SourceHCL = "hcl"
 )
 
 // EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
@@ -79,8 +77,7 @@ func NewParser(options ...Option) *Parser {
 // callers may wish to ignore the provided error diagnostics and produce
 // a more context-sensitive error instead.
 //
-// The file will be parsed using the HCL native syntax unless the filename
-// ends with ".json", in which case the HCL JSON syntax will be used.
+// The file will be parsed using the HCL native syntax
 func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 	src, err := p.fs.ReadFile(path)
 
@@ -96,18 +93,11 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 			},
 		}
 	}
-	return p.loadFromSource(path, src, SourceType(filepath.Ext(path)))
+	return p.LoadFromSource(path, src)
 }
 
-func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.Body, hcl.Diagnostics) {
-	var file *hcl.File
-	var diags hcl.Diagnostics
-	switch ext {
-	case SourceJSON:
-		file, diags = p.p.ParseJSON(data, name)
-	default:
-		file, diags = p.p.ParseHCL(data, name)
-	}
+func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, hcl.Diagnostics) {
+	file, diags := p.p.ParseHCL(data, name)
 	// If the returned file or body is nil, then we'll return a non-nil empty
 	// body so we'll meet our contract that nil means an error reading the file.
 	if file == nil || file.Body == nil {
@@ -115,10 +105,6 @@ func (p *Parser) loadFromSource(name string, data []byte, ext SourceType) (hcl.B
 	}
 
 	return file.Body, diags
-}
-
-func (p *Parser) LoadFromSource(name string, data []byte, ext SourceType) (hcl.Body, hcl.Diagnostics) {
-	return p.loadFromSource(name, data, ext)
 }
 
 func EnvToHCLContext(evalContext *hcl.EvalContext, prefix string, vars []string) {
