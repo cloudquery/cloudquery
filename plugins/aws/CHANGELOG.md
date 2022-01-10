@@ -5,18 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- 
-## Unreleased
-
-### 🚀 Added
-
-### :gear: Changed
-
+## [v0.9.0] - 2022-01-10
+###### SDK Version: 0.6.1
 ### :spider: Fixed
-
+* chore: update partition_service_region.json [#398](https://github.com/cloudquery/cq-provider-aws/pull/398)
 ### 💥 Breaking Changes
-
--->
+* SG simplification [#363](https://github.com/cloudquery/cq-provider-aws/pull/363)
+* upgrade initial migration to v0.8.5 due to protocol ugprade v3 [#390](https://github.com/cloudquery/cq-provider-aws/pull/390)
+### 🚀 Added
+* Support Wildcard for Region [#391](https://github.com/cloudquery/cq-provider-aws/pull/391)
+* added asciicheck linter [#397](https://github.com/cloudquery/cq-provider-aws/pull/397)
+* turn issue template into github forms [#388](https://github.com/cloudquery/cq-provider-aws/pull/388)
 
 ## [v0.8.5] - 2022-01-03
 ### :spider: Fixed
