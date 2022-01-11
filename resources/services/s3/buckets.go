@@ -472,6 +472,13 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		return err
 	}
 	if err := resolveBucketLogging(ctx, meta, resource, *r.Name, bucketRegion); err != nil {
+		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchBucket" {
+			// Not sure why happens here and not earlier in GetBucketRegion. Maybe it's being deleted
+			// while fetching. In that case we might need to add this to global ignore but would like to
+			// add this here first.
+			log.Debug("resolveBucketLogging: Skipping bucket (already deleted)", "bucket", *r.Name)
+			return nil
+		}
 		return err
 	}
 
