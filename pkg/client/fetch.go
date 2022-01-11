@@ -16,7 +16,7 @@ import (
 // FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
 // resources fetch results
 type FetchSummary struct {
-	СqId uuid.UUID `db:"id"`
+	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
 	FetchId            uuid.UUID               `db:"fetch_id"`
 	Start              time.Time               `db:"start"`
@@ -73,7 +73,7 @@ func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary)
 	if err != nil {
 		return err
 	}
-	fs.СqId = id
+	fs.CqId = id
 	q := goqu.Dialect("postgres").Insert("cloudquery.fetches").Rows(fs)
 	sql, args, err := q.ToSQL()
 	if err != nil {

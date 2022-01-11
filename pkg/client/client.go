@@ -49,8 +49,7 @@ var (
 )
 
 const (
-	migrationsEmbeddedDirectoryPath = "migrations"
-	latestVersion                   = "latest"
+	latestVersion = "latest"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
