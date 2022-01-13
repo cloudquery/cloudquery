@@ -114,6 +114,7 @@ func ConfigConfigurationRecorders() *schema.Table {
 // ====================================================================================================================
 func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
+
 	resp, err := c.Services().ConfigService.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{}, func(options *configservice.Options) {
 		options.Region = c.Region
 	})
@@ -134,23 +135,31 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 		return err
 	}
 	for _, configurationRecorder := range resp.ConfigurationRecorders {
+		if configurationRecorder.Name == nil {
+			continue
+		}
 		var configurationRecorderStatus types.ConfigurationRecorderStatus
 		for _, s := range status.ConfigurationRecordersStatus {
-			if s.Name == configurationRecorder.Name {
+			if s.Name == nil {
+				continue
+			}
+			if *s.Name == *configurationRecorder.Name {
 				configurationRecorderStatus = s
+				res <- configurationRecorderWrapper{
+					ConfigurationRecorder:      configurationRecorder,
+					StatusLastErrorCode:        configurationRecorderStatus.LastErrorCode,
+					StatusLastErrorMessage:     configurationRecorderStatus.LastErrorMessage,
+					StatusLastStartTime:        configurationRecorderStatus.LastStartTime,
+					StatusLastStatus:           configurationRecorderStatus.LastStatus,
+					StatusLastStatusChangeTime: configurationRecorderStatus.LastStatusChangeTime,
+					StatusLastStopTime:         configurationRecorderStatus.LastStopTime,
+					StatusRecording:            configurationRecorderStatus.Recording,
+				}
+
 				break
 			}
 		}
-		res <- configurationRecorderWrapper{
-			ConfigurationRecorder:      configurationRecorder,
-			StatusLastErrorCode:        configurationRecorderStatus.LastErrorCode,
-			StatusLastErrorMessage:     configurationRecorderStatus.LastErrorMessage,
-			StatusLastStartTime:        configurationRecorderStatus.LastStartTime,
-			StatusLastStatus:           configurationRecorderStatus.LastStatus,
-			StatusLastStatusChangeTime: configurationRecorderStatus.LastStatusChangeTime,
-			StatusLastStopTime:         configurationRecorderStatus.LastStopTime,
-			StatusRecording:            configurationRecorderStatus.Recording,
-		}
+
 	}
 	return nil
 }
