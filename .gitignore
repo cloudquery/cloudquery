@@ -17,7 +17,7 @@ cq-provider-aws
 .cq/*
 # Local .terraform directories
 **/.terraform/*
-
+node_modules/
 # .tfstate files
 *.tfstate
 *.tfstate.*
