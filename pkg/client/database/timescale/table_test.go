@@ -1,7 +1,7 @@
 //go:build history
 // +build history
 
-package history_test
+package timescale_test
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
@@ -55,7 +55,7 @@ var testTable = &schema.Table{
 }
 
 func TestHistory_SetupHistory(t *testing.T) {
-	pool, err := client.CreateDatabase(context.Background(), testDBConnection)
+	pool, err := postgres.Connect(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer pool.Close()
 	conn, err := pool.Acquire(context.Background())
@@ -65,14 +65,14 @@ func TestHistory_SetupHistory(t *testing.T) {
 }
 
 func TestHistoryTableCreator_CreateTables(t *testing.T) {
-	m, err := history.NewHistoryTableCreator(&history.Config{Retention: 1,
+	m, err := NewDDLManager(&history.Config{Retention: 1,
 		TimeInterval:   1,
 		TimeTruncation: 24,
 	}, hclog.L())
 	assert.NoError(t, err)
 	assert.NotNil(t, m)
 
-	pool, err := client.CreateDatabase(context.Background(), testDBConnection)
+	pool, err := postgres.Connect(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer pool.Close()
 	conn, err := pool.Acquire(context.Background())

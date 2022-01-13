@@ -398,7 +398,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	assert.Nil(t, err)
 
 	// insert dummy migration files like test provider just for version number return
-	m, _, err := c.buildProviderMigrator(map[string][]byte{
+	m, _, err := c.buildProviderMigrator(ctx, map[string][]byte{
 		"1_v0.0.1.up.sql":   []byte(""),
 		"1_v0.0.1.down.sql": []byte(""),
 		"2_v0.0.2.up.sql":   []byte(""),

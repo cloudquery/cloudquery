@@ -1,49 +1,47 @@
-package history
+package timescale
 
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
-	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-type CreateHyperTableResult struct {
-	HypertableId int    `db:"hypertable_id"`
-	SchemaName   string `db:"schema_name"`
-	TableName    string `db:"table_name"`
-	Created      bool   `db:"created"`
+/*
+setup -> (creates history schema, history functions)
+create (migrate) -> creates all tables in history schema (we set schema like we do now)
+finalizes -> fix constraints / pks and run create_hypertable + retention policy and all tables
+
++ recreate views in public schema
+
+need to fix PKs and constraints (remove FKs, add cq_fetch_date to UNIQUE) BEFORE we can do create_hypertable
+*/
+
+type DDLManager struct {
+	log     hclog.Logger
+	cfg     *history.Config
+	dialect schema.Dialect
 }
 
-type TableCreator struct {
-	log hclog.Logger
-	cfg *Config
-}
+func NewDDLManager(cfg *history.Config, l hclog.Logger, dt schema.DialectType) (*DDLManager, error) {
+	if dt != schema.TSDB {
+		return nil, fmt.Errorf("history is only supported on timescaledb")
+	}
 
-func NewHistoryTableCreator(cfg *Config, l hclog.Logger) (*TableCreator, error) {
-	return &TableCreator{
-		l,
-		cfg,
+	return &DDLManager{
+		log:     l,
+		cfg:     cfg,
+		dialect: schema.GetDialect(dt),
 	}, nil
 }
 
-func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
-	sql, err := h.buildTableSQL(t, p)
-	if err != nil {
-		return err
-	}
-
-	h.log.Debug("creating table if not exists", "table", t.Name)
-	if _, err := conn.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to create table: %w", err)
-	}
-
+func (h DDLManager) CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
 	if err := h.createHyperTable(ctx, t, p, conn); err != nil {
 		return fmt.Errorf("failed to create hypertable for table: %s: %w", t.Name, err)
 	}
@@ -84,8 +82,8 @@ func (h TableCreator) CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p 
 	return nil
 }
 
-func (h TableCreator) createHyperTable(ctx context.Context, t, p *schema.Table, conn *pgxpool.Conn) error {
-	var hyperTable CreateHyperTableResult
+func (h DDLManager) createHyperTable(ctx context.Context, t, p *schema.Table, conn *pgxpool.Conn) error {
+	var hyperTable createHyperTableResult
 	tName := fmt.Sprintf(`"history"."%s"`, t.Name)
 	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
 		return fmt.Errorf("failed to create hypertable: %w", err)
@@ -101,7 +99,7 @@ func (h TableCreator) createHyperTable(ctx context.Context, t, p *schema.Table, 
 	return nil
 }
 
-func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
+func (h DDLManager) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error {
 	c := h.findParentIdColumn(t)
 	if c == nil {
 		return fmt.Errorf("failed to find parent cq id column for %s", t.Name)
@@ -115,7 +113,7 @@ func (h TableCreator) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Con
 	return nil
 }
 
-func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
+func (h DDLManager) findParentIdColumn(t *schema.Table) *schema.Column {
 	for _, c := range t.Columns {
 		if c.Meta().Resolver != nil && c.Meta().Resolver.Name == "ParentIdResolver" {
 			return &c
@@ -129,37 +127,4 @@ func (h TableCreator) findParentIdColumn(t *schema.Table) *schema.Column {
 	}
 
 	return nil
-}
-
-func (h TableCreator) buildTableSQL(table, _ *schema.Table) (string, error) {
-	// Build SQL to create a table.
-	ctb := sqlbuilder.CreateTable(fmt.Sprintf("history.%s", table.Name)).IfNotExists()
-	var uniques []string
-	for _, c := range schema.GetDefaultSDKColumns() {
-		ctb.Define(c.Name, schema.GetPgTypeFromType(c.Type))
-		if c.CreationOptions.Unique {
-			uniques = append(uniques, c.Name)
-		}
-	}
-	ctb.Define("cq_fetch_date", schema.GetPgTypeFromType(schema.TypeTimestamp))
-	h.buildColumns(ctb, table.Columns)
-	for _, s := range uniques {
-		ctb.Define(fmt.Sprintf("UNIQUE (cq_fetch_date, %s)", s))
-	}
-	allKeys := append([]string{"cq_fetch_date"}, table.PrimaryKeys()...)
-	ctb.Define(fmt.Sprintf("constraint %s_pk primary key(%s)", schema.TruncateTableConstraint(table.Name), strings.Join(allKeys, ",")))
-
-	sql, _ := ctb.BuildWithFlavor(sqlbuilder.PostgreSQL)
-	h.log.Trace("creating table if not exists", "table", table.Name)
-	return sql, nil
-}
-
-func (h TableCreator) buildColumns(ctb *sqlbuilder.CreateTableBuilder, cc []schema.Column) {
-	for _, c := range cc {
-		defs := []string{strconv.Quote(c.Name), schema.GetPgTypeFromType(c.Type)}
-		if c.CreationOptions.Unique {
-			defs = []string{strconv.Quote(c.Name), schema.GetPgTypeFromType(c.Type), "unique"}
-		}
-		ctb.Define(defs...)
-	}
 }
