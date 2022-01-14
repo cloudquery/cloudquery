@@ -38,7 +38,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
 	otrace "go.opentelemetry.io/otel/trace"
@@ -206,11 +205,11 @@ type FetchDoneResult struct {
 
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
-	CreateTable(ctx context.Context, conn *pgxpool.Conn, t, p *schema.Table) error
+	CreateTable(context.Context, schema.QueryExecer, *schema.Table, *schema.Table) error
 }
 
 type TableRemover interface {
-	DropTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table) error
+	DropTable(context.Context, schema.QueryExecer, *schema.Table) error
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -253,8 +252,6 @@ type Client struct {
 	TableCreator TableCreator
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
-	// pool is a list of connection that are used for policy/query execution
-	pool *pgxpool.Pool
 
 	db              *sdkdb.DB
 	dialectExecutor database.DialectExecutor
@@ -310,7 +307,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	c.initModules()
 
-	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.db, c.Logger)
 
 	return c, nil
 }
@@ -659,18 +656,14 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		// TODO Throw error about upgrading
 		// Keep the table creator if we don't have any migrations defined for this provider, or if we're running an older protocol
 
-		conn, err := c.pool.Acquire(ctx)
-		if err != nil {
-			return err
-		}
-		defer conn.Release()
-
 		for name, t := range s.ResourceTables {
 			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
-			if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
+			if err := c.TableCreator.CreateTable(ctx, c.db, t, nil); err != nil {
 				return fmt.Errorf("CreateTable(%s) failed: %w", t.Name, err)
 			}
 		}
+
+		return nil
 	}
 
 	if s.Migrations == nil {
@@ -906,8 +899,8 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 
 func (c *Client) Close() {
 	c.Manager.Shutdown()
-	if c.pool != nil {
-		c.pool.Close()
+	if c.db != nil {
+		c.db.Close()
 	}
 }
 
@@ -928,7 +921,7 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 }
 
 func (c *Client) initModules() {
-	c.ModuleManager = module.NewManager(c.pool, c.Logger)
+	c.ModuleManager = module.NewManager(c.db, c.Logger)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 

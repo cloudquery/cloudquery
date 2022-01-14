@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 // ManagerImpl is the manager implementation struct.
@@ -14,8 +14,8 @@ type ManagerImpl struct {
 	modules  map[string]Module
 	modOrder []string
 
-	// Instance of a database connection pool
-	pool *pgxpool.Pool
+	// Instance of database
+	pool schema.QueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -35,7 +35,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(pool *pgxpool.Pool, logger hclog.Logger) *ManagerImpl {
+func NewManager(pool schema.QueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]Module),
 		pool:    pool,
@@ -64,14 +64,7 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
 
-	var err error
-
-	// Acquire connection from the connection pool
-	execReq.Conn, err = m.pool.Acquire(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
-	}
-	defer execReq.Conn.Release()
+	execReq.Conn = m.pool
 
 	return mod.Execute(ctx, execReq), nil
 }
