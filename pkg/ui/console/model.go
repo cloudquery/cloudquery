@@ -1,6 +1,9 @@
 package console
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 // ModuleCallRequest is the request used to call a module.
 type ModuleCallRequest struct {
@@ -18,9 +21,10 @@ type ModuleCallRequest struct {
 }
 
 type ExitCodeError struct {
-	ExitCode int
+	OriginalError error
+	ExitCode      int
 }
 
 func (e *ExitCodeError) Error() string {
-	return "exit code " + strconv.Itoa(e.ExitCode)
+	return fmt.Sprintf("exit code %s. err: %s", strconv.Itoa(e.ExitCode), e.OriginalError.Error())
 }
