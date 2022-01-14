@@ -6,6 +6,7 @@ Represents the data structure of a method's request or response payload.
 | ------------- | ------------- | -----  |
 |rest_api_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_rest_apis table (FK)|
 |rest_api_id|text|The API's identifier. This identifier is unique across all of your APIs in API Gateway.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |model_template|text||
 |content_type|text|The content-type for the model.|
 |description|text|The description of the model.|

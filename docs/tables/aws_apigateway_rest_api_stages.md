@@ -6,6 +6,7 @@ Represents a unique identifier for a version of a deployed RestApi that is calla
 | ------------- | ------------- | -----  |
 |rest_api_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_rest_apis table (FK)|
 |rest_api_id|text|The API's identifier. This identifier is unique across all of your APIs in API Gateway.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |access_log_settings_destination_arn|text|The Amazon Resource Name (ARN) of the CloudWatch Logs log group or Kinesis Data Firehose delivery stream to receive access logs. If you specify a Kinesis Data Firehose delivery stream, the stream name must begin with amazon-apigateway-.|
 |access_log_settings_format|text|A single line format of the access logs of data, as specified by selected $context variables (https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#context-variable-reference). The format must include at least $context.requestId.|
 |cache_cluster_enabled|boolean|Specifies whether a cache cluster is enabled for the stage.|

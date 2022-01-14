@@ -6,6 +6,7 @@ Represents an API stage.
 | ------------- | ------------- | -----  |
 |api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
 |api_id|text|The API ID.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |stage_name|text|The name of the stage.|
 |access_log_settings_destination_arn|text|The ARN of the CloudWatch Logs log group to receive access logs.|
 |access_log_settings_format|text|A single line format of the access logs of data, as specified by selected $context variables. The format must include at least $context.requestId.|

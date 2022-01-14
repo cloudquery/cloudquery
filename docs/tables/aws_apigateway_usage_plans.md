@@ -6,6 +6,7 @@ Represents a usage plan than can specify who can assess associated API stages wi
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |description|text|The description of a usage plan.|
 |id|text|The identifier of a UsagePlan resource.|
 |name|text|The name of a usage plan.|

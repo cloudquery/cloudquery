@@ -6,6 +6,7 @@ Represents a custom domain name as a user-friendly host name of an API (RestApi)
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |certificate_arn|text|The reference to an AWS-managed certificate that will be used by edge-optimized endpoint for this domain name. AWS Certificate Manager is the only supported source.|
 |certificate_name|text|The name of the certificate that will be used by edge-optimized endpoint for this domain name.|
 |certificate_upload_date|timestamp without time zone|The timestamp when the certificate that was used by edge-optimized endpoint for this domain name was uploaded.|

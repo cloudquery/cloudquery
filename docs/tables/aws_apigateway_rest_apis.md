@@ -6,6 +6,7 @@ Represents a REST API.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |api_key_source|text|The source of the API key for metering requests according to a usage plan. Valid values are:|
 |binary_media_types|text[]|The list of binary media types supported by the RestApi. By default, the RestApi supports only UTF-8-encoded text payloads.|
 |created_date|timestamp without time zone|The timestamp when the API was created.|

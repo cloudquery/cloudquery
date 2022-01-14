@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"embed"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 const (
@@ -148,4 +150,39 @@ func accountObfusactor(aa []Account, msg string) string {
 		msg = strings.ReplaceAll(msg, a.ID, obfuscateAccountId(a.ID))
 	}
 	return msg
+}
+
+type AWSService string
+
+const (
+	ApigatewayService AWSService = "apigateway"
+)
+
+type serviceInfo struct {
+	useAccoundID bool
+}
+
+var knownServices = map[AWSService]serviceInfo{}
+
+// ResolveARN returns a column resolver that will set a field value to a proper ARN
+// based on provided AWS service and resource id value returned by resourceID function.
+func ResolveARN(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		cl := meta.(*Client)
+		idParts, err := resourceID(resource)
+		if err != nil {
+			return fmt.Errorf("error resolving resource id: %w", err)
+		}
+		var accountID string
+		if knownServices[service].useAccoundID {
+			accountID = cl.AccountID
+		}
+		return resource.Set(c.Name, arn.ARN{
+			Partition: "aws",
+			Service:   string(service),
+			Region:    cl.Region,
+			AccountID: accountID,
+			Resource:  strings.Join(idParts, "/"),
+		}.String())
+	}
 }

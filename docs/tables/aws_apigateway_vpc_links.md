@@ -6,6 +6,7 @@ An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual P
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |description|text|The description of the VPC link.|
 |id|text|The identifier of the VpcLink. It is used in an Integration to reference this VpcLink.|
 |name|text|The name used to label and identify the VPC link.|
