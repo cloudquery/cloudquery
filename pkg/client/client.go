@@ -147,14 +147,8 @@ type PoliciesRunRequest struct {
 	// OutputDir is the output dir for policy execution output.
 	OutputDir string
 
-	// StopOnFailure signals policy execution to stop after first failure.
-	StopOnFailure bool
-
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallback policy.UpdateCallback
-
-	// FailOnViolation if true policy run will return error if there are violations
-	FailOnViolation bool
 }
 
 // ModuleRunRequest is the request used to run a module.
@@ -729,31 +723,11 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
+			// this error means error in execution and not policy violation
+			// we should exit immeditly as this is a non-recoverable error
+			// might mean schema is incorrect, provider version
 			c.Logger.Error("policy execution finished with error", "err", err)
-			// update the ui with the error
-			if req.RunCallback != nil {
-				req.RunCallback(policy.Update{
-					PolicyName:      p.Name,
-					Source:          p.Source,
-					Version:         p.Version(),
-					FinishedQueries: 0,
-					QueriesCount:    0,
-					Error:           err.Error(),
-				})
-			}
-
-			// add the execution error to the results
-			results = append(results, &policy.ExecutionResult{
-				PolicyName: p.Name,
-				Passed:     false,
-				Error:      err.Error(),
-			})
-
-			// if failOnViolation is set, we should stop the execution
-			if req.FailOnViolation {
-				return results, nil
-			}
-			continue
+			return results, err
 		}
 
 		results = append(results, result)
@@ -790,7 +764,6 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 
 	execReq := &policy.ExecuteRequest{
 		Policy:           p,
-		StopOnFailure:    req.StopOnFailure,
 		ProviderVersions: versions,
 		UpdateCallback:   req.RunCallback,
 	}
@@ -804,17 +777,6 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	result, err := c.PolicyManager.Run(ctx, execReq)
 	if err != nil {
 		return nil, err
-	}
-
-	// execution was not finished
-	if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
-		req.RunCallback(policy.Update{
-			PolicyName:      p.Name,
-			Version:         p.Version(),
-			FinishedQueries: 0,
-			QueriesCount:    0,
-			Error:           "Execution stopped",
-		})
 	}
 
 	// Store output in file if requested
