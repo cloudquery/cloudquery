@@ -516,7 +516,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 	t.SetHeaders("Path", "Description")
 	buildDescribePolicyTable(t, policy.Policies{p}, "")
 	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`", p.Name, getNestedPolicyExample(p.Policies[0], ""))
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
 }
 
