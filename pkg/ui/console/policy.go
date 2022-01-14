@@ -49,6 +49,7 @@ func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyRootPath str
 	}
 }
 
+// buildPolicyPath separates policy root path from in policy path with `//`
 func buildPolicyPath(rootPath, name string) string {
 	policyPath := fmt.Sprintf("%s//%s", rootPath, strings.ToLower(name))
 	if strings.Contains(rootPath, "/") {
