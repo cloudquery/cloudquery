@@ -438,7 +438,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
-			stream, err := providerPlugin.Provider().FetchResources(ctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
+			stream, err := providerPlugin.Provider().FetchResources(ctx,
+				&cqproto.FetchResourcesRequest{
+					Resources:              providerConfig.Resources,
+					PartialFetchingEnabled: providerConfig.EnablePartialFetch,
+					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
+				})
 			if err != nil {
 				return err
 			}
