@@ -93,10 +93,8 @@ func Policy(ctx context.Context, cfg *config.Config) error {
 		return fmt.Errorf("unable to create client: %w", err)
 	}
 	_, err = c.RunPolicies(ctx, &client.PoliciesRunRequest{
-		Policies:        cfg.Policies,
-		OutputDir:       outputPath,
-		StopOnFailure:   false,
-		FailOnViolation: false,
+		Policies:  cfg.Policies,
+		OutputDir: outputPath,
 	})
 	if err != nil {
 		return fmt.Errorf("error running query: %s", err)
