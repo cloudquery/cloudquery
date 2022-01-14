@@ -652,10 +652,8 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		return err
 	}
 
-	if (s.ProtocolVersion != cqproto.Vunmanaged && s.ProtocolVersion <= cqproto.V3) || s.Migrations == nil {
-		// TODO Throw error about upgrading
-		// Keep the table creator if we don't have any migrations defined for this provider, or if we're running an older protocol
-
+	if s.Migrations == nil {
+		// Keep the table creator if we don't have any migrations defined for this provider and hope that it works
 		for name, t := range s.ResourceTables {
 			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
 			if err := c.TableCreator.CreateTable(ctx, c.db, t, nil); err != nil {
@@ -663,11 +661,6 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 			}
 		}
 
-		return nil
-	}
-
-	if s.Migrations == nil {
-		c.Logger.Debug("provider doesn't support migrations", "provider", providerName)
 		return nil
 	}
 
