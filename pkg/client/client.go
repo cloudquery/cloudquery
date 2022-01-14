@@ -654,15 +654,17 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 	if err != nil {
 		return err
 	}
-	conn, err := c.pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
 
 	if (s.ProtocolVersion != cqproto.Vunmanaged && s.ProtocolVersion <= cqproto.V3) || s.Migrations == nil {
 		// TODO Throw error about upgrading
 		// Keep the table creator if we don't have any migrations defined for this provider, or if we're running an older protocol
+
+		conn, err := c.pool.Acquire(ctx)
+		if err != nil {
+			return err
+		}
+		defer conn.Release()
+
 		for name, t := range s.ResourceTables {
 			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
 			if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
@@ -686,13 +688,10 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
-	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
-		mv, err := m.FindLatestMigration(cfg.Version)
-		if err != nil {
-			return err
-		}
-		c.Logger.Debug("setting provider schema migration version", "version", cfg.Version, "migration_version", mv)
-		return m.SetVersion(cfg.Version)
+
+	c.Logger.Debug("setting provider schema migration version", "version", cfg.Version)
+	if err := m.UpgradeProvider(cfg.Version); err != nil && err != migrate.ErrNoChange {
+		return err
 	}
 	return nil
 }
@@ -948,7 +947,7 @@ func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[strin
 		return nil, nil, fmt.Errorf("dialectExecutor.Setup: %w", err)
 	}
 
-	m, err := migrator.New(c.Logger, migrations, dsn, fmt.Sprintf("%s_%s", org, name), c.dialectExecutor.Finalize)
+	m, err := migrator.New(c.Logger, c.db.DialectType(), migrations, dsn, fmt.Sprintf("%s_%s", org, name), c.dialectExecutor.Finalize)
 	if err != nil {
 		return nil, nil, err
 	}
