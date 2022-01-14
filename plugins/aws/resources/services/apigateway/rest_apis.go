@@ -11,6 +11,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+const restApiIDPart = "/restapis"
+
 func ApigatewayRestApis() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_rest_apis",
@@ -32,6 +34,14 @@ func ApigatewayRestApis() *schema.Table {
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+					return []string{restApiIDPart, *resource.Item.(types.RestApi).Id}, nil
+				}),
 			},
 			{
 				Name:        "api_key_source",
@@ -127,6 +137,16 @@ func ApigatewayRestApis() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.Authorizer)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "authorizers", *r.Id}, nil
+						}),
+					},
+					{
 						Name:        "auth_type",
 						Description: "Optional customer-defined field, used in OpenAPI imports and exports without functional impact.",
 						Type:        schema.TypeString,
@@ -199,6 +219,16 @@ func ApigatewayRestApis() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.Deployment)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "deployments", *r.Id}, nil
+						}),
+					},
+					{
 						Name:        "api_summary",
 						Description: "A summary of the RestApi at the date and time that the deployment resource was created.",
 						Type:        schema.TypeJSON,
@@ -238,6 +268,16 @@ func ApigatewayRestApis() *schema.Table {
 						Description: "The API's identifier. This identifier is unique across all of your APIs in API Gateway.",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.DocumentationPart)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "documentation/parts", *r.Id}, nil
+						}),
 					},
 					{
 						Name:        "id",
@@ -301,6 +341,16 @@ func ApigatewayRestApis() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.DocumentationVersion)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "documentation/versions", *r.Version}, nil
+						}),
+					},
+					{
 						Name:        "created_date",
 						Description: "The date when the API documentation snapshot is created.",
 						Type:        schema.TypeTimestamp,
@@ -333,6 +383,16 @@ func ApigatewayRestApis() *schema.Table {
 						Description: "The API's identifier. This identifier is unique across all of your APIs in API Gateway.",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.GatewayResponse)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "gatewayresponses", string(r.ResponseType)}, nil
+						}),
 					},
 					{
 						Name:        "default_response",
@@ -378,6 +438,16 @@ func ApigatewayRestApis() *schema.Table {
 						Description: "The API's identifier. This identifier is unique across all of your APIs in API Gateway.",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.Model)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "models", *r.Name}, nil
+						}),
 					},
 					{
 						Name:     "model_template",
@@ -431,6 +501,16 @@ func ApigatewayRestApis() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.RequestValidator)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "requestvalidators", *r.Id}, nil
+						}),
+					},
+					{
 						Name:        "id",
 						Description: "The identifier of this RequestValidator.",
 						Type:        schema.TypeString,
@@ -470,6 +550,16 @@ func ApigatewayRestApis() *schema.Table {
 						Description: "The API's identifier. This identifier is unique across all of your APIs in API Gateway.",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.Resource)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "resources", *r.Id}, nil
+						}),
 					},
 					{
 						Name:        "id",
@@ -515,6 +605,16 @@ func ApigatewayRestApis() *schema.Table {
 						Description: "The API's identifier. This identifier is unique across all of your APIs in API Gateway.",
 						Type:        schema.TypeString,
 						Resolver:    schema.ParentResourceFieldResolver("id"),
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.Stage)
+							p := resource.Parent.Item.(types.RestApi)
+							return []string{restApiIDPart, *p.Id, "stages", *r.StageName}, nil
+						}),
 					},
 					{
 						Name:        "access_log_settings_destination_arn",
