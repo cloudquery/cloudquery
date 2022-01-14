@@ -14,8 +14,10 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/jackc/pgx/v4/pgxpool"
 
 	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
@@ -286,7 +288,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
+
+		var dt schema.DialectType
+		dt, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
 		if err != nil {
 			return nil, fmt.Errorf("getExecutor: %w", err)
 		}
@@ -294,6 +298,15 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		// migrate cloudquery core tables to latest version
 		if err := c.MigrateCore(ctx); err != nil {
 			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+		}
+
+		if c.HistoryCfg != nil && dt != schema.TSDB {
+			// check if we're already on TSDB but the dsn is wrong
+			if ok, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg).Validate(ctx); ok && err == nil {
+				return nil, fmt.Errorf("you must update the dsn to use tsdb:// prefix")
+			}
+
+			return nil, fmt.Errorf("history is only supported on timescaledb")
 		}
 
 		if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
@@ -412,13 +425,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
-	searchPath := ""
+	var dsn string
 	if c.HistoryCfg != nil {
-		searchPath = "history"
-	}
-	dsn, err := parseDSN(c.DSN, searchPath)
-	if err != nil {
-		return nil, err
+		var err error
+		dsn, err = history.TransformDSN(c.DSN)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		parsed, err := helpers.ParseConnectionString(c.DSN)
+		if err != nil {
+			return nil, err
+		}
+		dsn = parsed.String()
 	}
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
@@ -457,11 +476,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
-				pLog.Info("history enabled adding fetch date", "fetch_date", c.HistoryCfg.FetchDate().Format(time.RFC3339))
+				fd := c.HistoryCfg.FetchDate()
+				pLog.Info("history enabled adding fetch date", "fetch_date", fd.Format(time.RFC3339))
 				if request.ExtraFields == nil {
 					request.ExtraFields = make(map[string]interface{})
 				}
-				request.ExtraFields["cq_fetch_date"] = c.HistoryCfg.FetchDate()
+				request.ExtraFields["cq_fetch_date"] = fd
 			}
 			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
@@ -979,20 +999,6 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
 	}
 	return providerConfig, nil
-}
-
-func parseDSN(dsn, searchPath string) (string, error) {
-	url, err := helpers.ParseConnectionString(dsn)
-	if err != nil {
-		return "", err
-	}
-	if searchPath == "" {
-		return url.String(), nil
-	}
-	if url.RawQuery != "" {
-		return url.String() + "&search_path=history", nil
-	}
-	return url.String() + "search_path=history", nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {

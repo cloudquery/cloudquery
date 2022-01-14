@@ -13,9 +13,8 @@ import (
 )
 
 const (
-	listTables        = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' ORDER BY 1`
-	getColumnComments = `WITH x AS (SELECT column_name, pg_catalog.col_description(format('%s.%s',table_schema,table_name)::regclass::oid,ordinal_position) AS comment FROM information_schema.columns w
-here table_schema=$1 AND table_name=$2) SELECT * FROM x WHERE comment IS NOT NULL;`
+	listTables        = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
+	getColumnComments = `WITH x AS (SELECT column_name, pg_catalog.col_description(format('%s.%s',table_schema,table_name)::regclass::oid,ordinal_position) AS comment FROM information_schema.columns WHERE table_schema=$1 AND table_name=$2) SELECT * FROM x WHERE comment IS NOT NULL;`
 
 	createHyperTable    = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
 	dataRetentionPolicy = `SELECT add_retention_policy($1, INTERVAL '%d day', if_not_exists => true);`
@@ -48,7 +47,7 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.Di
 
 func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error {
 	var tables []string
-	if err := pgxscan.Get(ctx, conn, &tables, listTables, SchemaName); err != nil {
+	if err := pgxscan.Select(ctx, conn, &tables, listTables, SchemaName); err != nil {
 		return fmt.Errorf("failed to list tables: %w", err)
 	}
 
