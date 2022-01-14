@@ -11,12 +11,13 @@ import (
 )
 
 type Provider struct {
-	Name               string   `hcl:"name,label"`
-	Alias              string   `hcl:"alias,optional"`
-	EnablePartialFetch bool     `hcl:"enable_partial_fetch,optional"`
-	Resources          []string `hcl:"resources,optional"`
-	Env                []string `hcl:"env,optional"`
-	Configuration      []byte
+	Name                          string   `hcl:"name,label"`
+	Alias                         string   `hcl:"alias,optional"`
+	EnablePartialFetch            bool     `hcl:"enable_partial_fetch,optional"`
+	Resources                     []string `hcl:"resources,optional"`
+	Env                           []string `hcl:"env,optional"`
+	Configuration                 []byte
+	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
 }
 
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
