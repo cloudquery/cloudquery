@@ -6,6 +6,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/client/database/postgres"
 	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -27,7 +28,7 @@ var (
 	_ DialectExecutor = (*timescale.Executor)(nil)
 )
 
-func GetExecutor(logger hclog.Logger, dsn string) (schema.DialectType, DialectExecutor, error) {
+func GetExecutor(logger hclog.Logger, dsn string, c *history.Config) (schema.DialectType, DialectExecutor, error) {
 	if dsn == "" {
 		return schema.Postgres, nil, fmt.Errorf("missing DSN")
 	}
@@ -41,7 +42,7 @@ func GetExecutor(logger hclog.Logger, dsn string) (schema.DialectType, DialectEx
 	case schema.Postgres:
 		return dType, postgres.New(logger, dsn), nil
 	case schema.TSDB:
-		return dType, timescale.New(logger, dsn), nil
+		return dType, timescale.New(logger, dsn, c), nil
 	default:
 		return dType, nil, fmt.Errorf("unhandled dialect type")
 	}

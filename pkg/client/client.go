@@ -289,7 +289,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN)
+		_, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
 		if err != nil {
 			return nil, fmt.Errorf("getExecutor: %w", err)
 		}

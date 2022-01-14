@@ -1,15 +1,15 @@
 //go:build history
 // +build history
 
-package timescale_test
+package history_test
 
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -61,11 +61,11 @@ func TestHistory_SetupHistory(t *testing.T) {
 	conn, err := pool.Acquire(context.Background())
 	assert.NoError(t, err)
 	defer conn.Release()
-	assert.NoError(t, history.SetupHistory(context.Background(), conn))
+	assert.NoError(t, SetupHistory(context.Background(), conn))
 }
 
 func TestHistoryTableCreator_CreateTables(t *testing.T) {
-	m, err := NewDDLManager(&history.Config{Retention: 1,
+	m, err := NewDDLManager(&Config{Retention: 1,
 		TimeInterval:   1,
 		TimeTruncation: 24,
 	}, hclog.L())
@@ -79,7 +79,7 @@ func TestHistoryTableCreator_CreateTables(t *testing.T) {
 	assert.NoError(t, err)
 	defer conn.Release()
 	// Call setup history as previous test can execute before
-	assert.NoError(t, history.SetupHistory(context.Background(), conn))
+	assert.NoError(t, SetupHistory(context.Background(), conn))
 
 	assert.NoError(t, m.CreateTable(context.Background(), conn, testTable, nil))
 	// creating tables again shouldn't create any errors
@@ -105,4 +105,39 @@ func TestHistoryTableCreator_CreateTables(t *testing.T) {
 	res, err = conn.Exec(context.Background(), "select * from test_rel_table")
 	assert.Nil(t, err)
 	assert.Equal(t, res.RowsAffected(), int64(0))
+}
+
+func TestDSNElement(t *testing.T) {
+	tbl := []struct {
+		input    string
+		mod      map[string]string
+		expected string
+	}{
+		{
+			input:    "postgres://a:b@c.d?x=y&z=f",
+			mod:      map[string]string{"ADD": "THIS"},
+			expected: "postgres://a:b@c.d?x=y&z=f&ADD=THIS",
+		},
+		{
+			input:    "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable",
+			mod:      map[string]string{"ADD": "THIS"},
+			expected: "postgres://postgres:pass@localhost:5432/postgres?ADD=THIS&sslmode=disable",
+		},
+		{
+			input:    "tsdb://a:b@c.d?x=y&z=f",
+			mod:      map[string]string{"ADD": "THIS"},
+			expected: "tsdb://a:b@c.d?x=y&z=f&ADD=THIS",
+		},
+	}
+	for _, tc := range tbl {
+		out := setDsnElement(tc.input, tc.mod)
+		u1, err := url.Parse(tc.expected)
+		assert.NoError(t, err)
+		u2, err := url.Parse(out)
+		assert.NoError(t, err)
+		assert.EqualValues(t, u1.Scheme, u2.Scheme)
+		assert.EqualValues(t, u1.Host, u2.Host)
+		assert.EqualValues(t, u1.Path, u2.Path)
+		assert.EqualValues(t, u1.Query(), u2.Query())
+	}
 }
