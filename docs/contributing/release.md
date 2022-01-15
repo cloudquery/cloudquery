@@ -4,15 +4,14 @@
 ## Automation:
 - All commit messages will be validated by GitHub Action
     - (This action should be required for merge)
-- All merges to main branch will trigger release `dry-run` so that users can be sure of what will occur
-- Releases will be triggered via a manual `workflow_dispatch`
+- Release Notes will be triggered manually during 
+
 
 ## Commit Messages
 
 
 | Title      | Message | Action |
 | ----------- | ----------- |----------- |
-| `<Message>`      |  `BREAKING CHANGE: <String>`       | major release|
 | `feat: <Message>`      |  `<String>`       | minor release|
 | `enhancement: <Message>`      |  `<String>`       | patch release|
 | `docs: <Message>`      |  `<String>`       | patch release|
