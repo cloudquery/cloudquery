@@ -1,2 +1,50 @@
 run:
-  timeout: 5m
+  tests: true
+  skip-dirs:
+    - bin
+    - docs
+    - client/mocks
+  timeout: 3m
+
+linters-settings:
+  errcheck:
+    check-blank: false
+    ignore: fmt:.*,[rR]ead|[wW]rite|[cC]lose,io:Copy
+  gocritic:
+    disabled-checks:
+      - commentFormatting
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - deadcode
+    - depguard
+    - dupl
+    - errcheck
+    - gocritic
+    - gofmt
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - prealloc
+    - staticcheck
+    - structcheck
+    - unconvert
+    - varcheck
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - dupl
+        - gocritic
+    # Exclude some linters from running on resource files.
+    - path: resources(\\|\/).*\.go
+      linters:
+        - dupl
