@@ -942,7 +942,7 @@ func (c *Client) initModules() {
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
-func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
+func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
 		return nil, nil, err
