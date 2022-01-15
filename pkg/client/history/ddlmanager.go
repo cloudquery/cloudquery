@@ -37,11 +37,16 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.Di
 		return nil, fmt.Errorf("history is only supported on timescaledb")
 	}
 
+	dialect, err := schema.GetDialect(dt)
+	if err != nil {
+		return nil, err
+	}
+
 	return &DDLManager{
 		log:     l,
 		conn:    conn,
 		cfg:     cfg,
-		dialect: schema.GetDialect(dt),
+		dialect: dialect,
 	}, nil
 }
 

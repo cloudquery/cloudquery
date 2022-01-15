@@ -33,7 +33,7 @@ func GetExecutor(logger hclog.Logger, dsn string, c *history.Config) (schema.Dia
 		return schema.Postgres, nil, fmt.Errorf("missing DSN")
 	}
 
-	dType, dsn, err := sdkdb.DSNtoDialect(dsn)
+	dType, dsn, err := sdkdb.ParseDialectDSN(dsn)
 	if err != nil {
 		return dType, nil, err
 	}

@@ -315,7 +315,11 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			c.Logger.Warn("postgres validation warning")
 		}
 
-		c.TableCreator = migration.NewTableCreator(c.Logger, schema.GetDialect(c.db.DialectType()))
+		dialect, err := schema.GetDialect(c.db.DialectType())
+		if err != nil {
+			return nil, err
+		}
+		c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 	}
 
 	c.initModules()

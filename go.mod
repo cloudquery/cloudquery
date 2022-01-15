@@ -141,4 +141,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
 
-//replace github.com/cloudquery/cq-provider-sdk v0.6.1 => ../cq-provider-sdk
+replace github.com/cloudquery/cq-provider-sdk v0.6.1 => ../cq-provider-sdk
+replace github.com/cloudquery/cq-provider-sdk v0.6.2-0.20220114183641-587ed0610c0f => ../cq-provider-sdk
