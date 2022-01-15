@@ -4,10 +4,6 @@ run:
   skip-dirs:
     - bin
     - docs
-  skip-files:
-    # TODO: exclude neo4j file for now, remove once database module is refactored
-    - database/neo4j.go
-    - client/client_test.go
 
 linters-settings:
   errcheck:
