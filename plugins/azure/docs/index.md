@@ -18,6 +18,9 @@ To authenticate cloudquery with your Azure account you can use any of the follow
 
 To have access to ad(Active Directory) resources the `app registration/user` should be [added](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal) as Assignment to `Application administrator` role in Active Directory `Roles and administrators` section
 
+To list keyvault's data each keyvault should have [access policy](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal) that allows a principal(app registration, user) to get the data. 
+
+
 
 ### Configuration
 
