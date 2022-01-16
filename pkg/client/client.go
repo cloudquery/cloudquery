@@ -492,9 +492,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				Connection: cqproto.ConnectionDetails{
 					DSN: dsn,
 				},
-				Config:        providerConfig.Configuration,
-				DisableDelete: true,
-				ExtraFields:   request.ExtraFields,
+				Config:      providerConfig.Configuration,
+				ExtraFields: request.ExtraFields,
 			})
 			if err != nil {
 				pLog.Error("failed to configure provider", "error", err)
