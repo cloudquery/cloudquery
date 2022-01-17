@@ -107,98 +107,6 @@ func (h DDLManager) recreateView(ctx context.Context, conn *pgxpool.Conn, table 
 }
 
 func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
-	const (
-		createHistorySchema   = `CREATE SCHEMA IF NOT EXISTS history;`
-		cascadeDeleteFunction = `
-				CREATE OR REPLACE FUNCTION history.cascade_delete()
-					RETURNS trigger
-					LANGUAGE 'plpgsql'
-					COST 100
-					VOLATILE NOT LEAKPROOF
-				AS $BODY$
-				BEGIN
-					BEGIN
-						IF (TG_OP = 'DELETE') THEN
-							EXECUTE format('DELETE FROM history.%I where %I = %L AND cq_fetch_date = %L', TG_ARGV[0], TG_ARGV[1], OLD.cq_id, OLD.cq_fetch_date);
-							RETURN OLD;
-						END IF;
-						RETURN NULL; -- result is ignored since this is an AFTER trigger
-					END;
-				END;
-				$BODY$;`
-
-		// Creates trigger on a referenced table, so each time a row from the parent table is deleted, referencing (child) rows are also cleared from database.
-		setupTriggerFunction = `
-				CREATE OR REPLACE FUNCTION history.setup_tsdb_child(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
-					RETURNS integer
-					LANGUAGE 'plpgsql'
-					COST 100
-					VOLATILE PARALLEL UNSAFE
-				AS $BODY$
-				BEGIN
-					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
-
-					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _table_name )  then
-					EXECUTE format(
-						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE history.cascade_delete(%s, %s)'::text,
-						_table_name, _parent_table_name, _table_name, _column_name);
-					return 0;
-					ELSE
-						return 1;
-					END IF;
-				END;
-				$BODY$;`
-
-		// Creates hypertable on the given table with a default chunk_time_interval, and adds a default retention policy
-		setupParentFunction = `
-				CREATE OR REPLACE FUNCTION history.setup_tsdb_parent(_table_name text)
-					RETURNS integer
-					LANGUAGE 'plpgsql'
-					COST 100
-					VOLATILE PARALLEL UNSAFE
-				AS $BODY$
-				DECLARE
-					result integer;
-				BEGIN
-					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
-					SELECT public.add_retention_policy(_table_name, INTERVAL '14 day', if_not_exists => true) into result;
-					RETURN result;
-				END;
-				$BODY$;`
-
-		// Updates the retention policy on the given table, only if a policy already exists.
-		defineRetentionFunction = `
-				CREATE OR REPLACE FUNCTION history.update_retention(_table_name text, _retention interval)
-					RETURNS integer
-					LANGUAGE 'plpgsql'
-					COST 100
-					VOLATILE PARALLEL UNSAFE
-				AS $BODY$
-				DECLARE
-					result integer;
-				BEGIN
-					IF EXISTS ( SELECT 1 FROM timescaledb_information.jobs WHERE proc_name = 'policy_retention' AND hypertable_name = _table_name) THEN
-						PERFORM remove_retention_policy(_table_name, if_exists => true);
-						SELECT add_retention_policy(_table_name, _retention, if_not_exists => true) INTO result;
-						RETURN result;
-					ELSE
-						RETURN -2;
-					END IF;
-				END;
-				$BODY$;`
-
-		findLatestFetchDate = `
-			CREATE OR REPLACE FUNCTION find_latest(schema TEXT, _table_name TEXT) 
-			RETURNS timestamp without time zone AS $body$
-			DECLARE
-			 fetchDate timestamp without time zone;
-			BEGIN
-				EXECUTE format('SELECT cq_fetch_date FROM %I.%I order by cq_fetch_date desc limit 1', schema, _table_name) into fetchDate;
-				return fetchDate;
-			END;
-			$body$  LANGUAGE plpgsql IMMUTABLE`
-	)
-
 	return conn.BeginFunc(ctx, func(tx pgx.Tx) error {
 		if _, err := tx.Exec(ctx, createHistorySchema); err != nil {
 			return err
@@ -225,3 +133,95 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 func TransformDSN(inputDSN string) (string, error) {
 	return dsn.SetDSNElement(inputDSN, map[string]string{"search_path": schemaName})
 }
+
+const (
+	createHistorySchema   = `CREATE SCHEMA IF NOT EXISTS history;`
+	cascadeDeleteFunction = `
+				CREATE OR REPLACE FUNCTION history.cascade_delete()
+					RETURNS trigger
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE NOT LEAKPROOF
+				AS $BODY$
+				BEGIN
+					BEGIN
+						IF (TG_OP = 'DELETE') THEN
+							EXECUTE format('DELETE FROM history.%I where %I = %L AND cq_fetch_date = %L', TG_ARGV[0], TG_ARGV[1], OLD.cq_id, OLD.cq_fetch_date);
+							RETURN OLD;
+						END IF;
+						RETURN NULL; -- result is ignored since this is an AFTER trigger
+					END;
+				END;
+				$BODY$;`
+
+	// Creates trigger on a referenced table, so each time a row from the parent table is deleted, referencing (child) rows are also cleared from database.
+	setupTriggerFunction = `
+				CREATE OR REPLACE FUNCTION history.setup_tsdb_child(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				BEGIN
+					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
+
+					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _table_name )  then
+					EXECUTE format(
+						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE history.cascade_delete(%s, %s)'::text,
+						_table_name, _parent_table_name, _table_name, _column_name);
+					return 0;
+					ELSE
+						return 1;
+					END IF;
+				END;
+				$BODY$;`
+
+	// Creates hypertable on the given table with a default chunk_time_interval, and adds a default retention policy
+	setupParentFunction = `
+				CREATE OR REPLACE FUNCTION history.setup_tsdb_parent(_table_name text)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				DECLARE
+					result integer;
+				BEGIN
+					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
+					SELECT public.add_retention_policy(_table_name, INTERVAL '14 day', if_not_exists => true) into result;
+					RETURN result;
+				END;
+				$BODY$;`
+
+	// Updates the retention policy on the given table, only if a policy already exists.
+	defineRetentionFunction = `
+				CREATE OR REPLACE FUNCTION history.update_retention(_table_name text, _retention interval)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				DECLARE
+					result integer;
+				BEGIN
+					IF EXISTS ( SELECT 1 FROM timescaledb_information.jobs WHERE proc_name = 'policy_retention' AND hypertable_name = _table_name) THEN
+						PERFORM remove_retention_policy(_table_name, if_exists => true);
+						SELECT add_retention_policy(_table_name, _retention, if_not_exists => true) INTO result;
+						RETURN result;
+					ELSE
+						RETURN -2;
+					END IF;
+				END;
+				$BODY$;`
+
+	findLatestFetchDate = `
+			CREATE OR REPLACE FUNCTION find_latest(schema TEXT, _table_name TEXT) 
+			RETURNS timestamp without time zone AS $body$
+			DECLARE
+			 fetchDate timestamp without time zone;
+			BEGIN
+				EXECUTE format('SELECT cq_fetch_date FROM %I.%I order by cq_fetch_date desc limit 1', schema, _table_name) into fetchDate;
+				return fetchDate;
+			END;
+			$body$  LANGUAGE plpgsql IMMUTABLE`
+)

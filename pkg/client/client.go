@@ -203,10 +203,6 @@ type TableCreator interface {
 	CreateTable(context.Context, schema.QueryExecer, *schema.Table, *schema.Table) error
 }
 
-type TableRemover interface {
-	DropTable(context.Context, schema.QueryExecer, *schema.Table) error
-}
-
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -277,42 +273,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
 	} else {
-		c.db, err = sdkdb.New(ctx, c.Logger, c.DSN)
-		if err != nil {
+		if err := c.initDatabase(ctx); err != nil {
 			return nil, err
 		}
-
-		var dt schema.DialectType
-		dt, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
-		if err != nil {
-			return nil, fmt.Errorf("getExecutor: %w", err)
-		}
-
-		if c.HistoryCfg != nil && dt != schema.TSDB {
-			// check if we're already on TSDB but the dsn is wrong
-			if ok, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg).Validate(ctx); ok && err == nil {
-				return nil, fmt.Errorf("you must update the dsn to use tsdb:// prefix")
-			}
-
-			return nil, fmt.Errorf("history is only supported on timescaledb")
-		}
-
-		if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
-			return nil, fmt.Errorf("validate: %w", err)
-		} else if !ok {
-			c.Logger.Warn("postgres validation warning")
-		}
-
-		// migrate cloudquery core tables to latest version
-		if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
-			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
-		}
-
-		dialect, err := schema.GetDialect(c.db.DialectType())
-		if err != nil {
-			return nil, err
-		}
-		c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 	}
 
 	c.initModules()
@@ -1110,4 +1073,46 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 
 func createCoreSchema(ctx context.Context, db schema.QueryExecer) error {
 	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+}
+
+func (c *Client) initDatabase(ctx context.Context) error {
+	var err error
+	c.db, err = sdkdb.New(ctx, c.Logger, c.DSN)
+	if err != nil {
+		return err
+	}
+
+	var dt schema.DialectType
+	dt, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
+	if err != nil {
+		return fmt.Errorf("getExecutor: %w", err)
+	}
+
+	if c.HistoryCfg != nil && dt != schema.TSDB {
+		// check if we're already on TSDB but the dsn is wrong
+		if ok, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg).Validate(ctx); ok && err == nil {
+			return fmt.Errorf("you must update the dsn to use tsdb:// prefix")
+		}
+
+		return fmt.Errorf("history is only supported on timescaledb")
+	}
+
+	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
+		return fmt.Errorf("validate: %w", err)
+	} else if !ok {
+		c.Logger.Warn("postgres validation warning")
+	}
+
+	// migrate cloudquery core tables to latest version
+	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
+		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+	}
+
+	dialect, err := schema.GetDialect(c.db.DialectType())
+	if err != nil {
+		return err
+	}
+	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
+
+	return nil
 }
