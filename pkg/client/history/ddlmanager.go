@@ -15,7 +15,6 @@ import (
 const (
 	listTables = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
 
-	createHyperTable     = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d hour', if_not_exists => true);`
 	setChunkTimeInterval = `SELECT * FROM set_chunk_time_interval($1, INTERVAL '%d hour');`
 	dataRetentionPolicy  = `SELECT history.update_retention($1, INTERVAL '%d day');`
 
@@ -57,8 +56,8 @@ func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error 
 	}
 
 	for _, table := range tables {
-		if err := h.createHyperTable(ctx, conn, table); err != nil {
-			return fmt.Errorf("failed to create hypertable for table: %s: %w", table, err)
+		if err := h.configureHyperTable(ctx, conn, table); err != nil {
+			return fmt.Errorf("failed to configure hypertable for table: %s: %w", table, err)
 		}
 		if err := h.recreateView(ctx, conn, table); err != nil {
 			return fmt.Errorf("recreateView: %w", err)
@@ -68,32 +67,20 @@ func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error 
 	return nil
 }
 
-func (h DDLManager) createHyperTable(ctx context.Context, conn *pgxpool.Conn, tableName string) error {
-	var hyperTable struct {
-		HypertableId int    `db:"hypertable_id"`
-		SchemaName   string `db:"schema_name"`
-		TableName    string `db:"table_name"`
-		Created      bool   `db:"created"`
-	}
-
+func (h DDLManager) configureHyperTable(ctx context.Context, conn *pgxpool.Conn, tableName string) error {
 	tName := fmt.Sprintf(`"%s"."%s"`, schemaName, tableName)
-	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
-		return fmt.Errorf("failed to create hypertable: %w", err)
+
+	if _, err := conn.Exec(ctx, fmt.Sprintf(setChunkTimeInterval, h.cfg.TimeInterval), tName); err != nil {
+		return err
 	}
-	if hyperTable.Created {
-		h.log.Debug("created hyper table for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "interval", h.cfg.TimeInterval)
-	} else {
-		if _, err := conn.Exec(ctx, fmt.Sprintf(setChunkTimeInterval, h.cfg.TimeInterval), tName); err != nil {
-			return err
-		}
-		h.log.Debug("updated chunk_time_interval for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "interval", h.cfg.TimeInterval)
-	}
+	h.log.Debug("updated chunk_time_interval for table", "table", tableName, "interval", h.cfg.TimeInterval)
 
 	// Below call is only needed for "parent" tables. dataRetentionPolicy function takes care of that by updating retention ONLY IF a previous retention policy is set.
 	if _, err := conn.Exec(ctx, fmt.Sprintf(dataRetentionPolicy, h.cfg.Retention), tName); err != nil {
 		return err
 	}
-	h.log.Debug("created data retention policy", "table", hyperTable.TableName, "days", h.cfg.Retention)
+
+	h.log.Debug("created data retention policy", "table", tableName, "days", h.cfg.Retention)
 	return nil
 }
 
@@ -142,13 +129,15 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 
 		// Creates trigger on a referenced table, so each time a row from the parent table is deleted, referencing (child) rows are also cleared from database.
 		setupTriggerFunction = `
-				CREATE OR REPLACE FUNCTION history.setup_tsdb_trigger(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
+				CREATE OR REPLACE FUNCTION history.setup_tsdb_child(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
 					RETURNS integer
 					LANGUAGE 'plpgsql'
 					COST 100
 					VOLATILE PARALLEL UNSAFE
 				AS $BODY$
 				BEGIN
+					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
+
 					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _table_name )  then
 					EXECUTE format(
 						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE history.cascade_delete(%s, %s)'::text,
