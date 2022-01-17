@@ -16,7 +16,7 @@ const (
 	listTables = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
 
 	createHyperTable    = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
-	dataRetentionPolicy = `SELECT add_retention_policy($1, INTERVAL '%d day', if_not_exists => true);`
+	dataRetentionPolicy = `SELECT history.update_retention($1, INTERVAL '%d day');`
 
 	dropTableView   = `DROP VIEW IF EXISTS "%[1]s"`
 	createTableView = `CREATE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
@@ -163,6 +163,39 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 					RETURN result;
 				END;
 				$BODY$;`
+		defineMainFunction = `
+				CREATE OR REPLACE FUNCTION history.define_main(_table_name text)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				DECLARE
+					result integer;
+				BEGIN
+					SELECT public.add_retention_policy(_table_name, INTERVAL '14 day', if_not_exists => true) into result;
+					RETURN result;
+				END;
+				$BODY$;`
+		defineRetentionFunction = `
+				CREATE OR REPLACE FUNCTION history.update_retention(_table_name text, _retention interval)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				DECLARE
+					result integer;
+				BEGIN
+					IF EXISTS ( SELECT 1 FROM timescaledb_information.jobs WHERE proc_name = 'policy_retention' AND hypertable_name = _table_name) THEN
+						PERFORM remove_retention_policy(_table_name, if_exists => true);
+						SELECT add_retention_policy(_table_name, _retention, if_not_exists => true) INTO result;
+						RETURN result;
+					ELSE
+						RETURN -2;
+					END IF;
+				END;
+				$BODY$;`
 
 		findLatestFetchDate = `
 			CREATE OR REPLACE FUNCTION find_latest(schema TEXT, _table_name TEXT) 
@@ -184,6 +217,12 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 			return err
 		}
 		if _, err := tx.Exec(ctx, defineFKFunction); err != nil {
+			return err
+		}
+		if _, err := tx.Exec(ctx, defineMainFunction); err != nil {
+			return err
+		}
+		if _, err := tx.Exec(ctx, defineRetentionFunction); err != nil {
 			return err
 		}
 		if _, err := tx.Exec(ctx, cascadeDeleteFunction); err != nil {
