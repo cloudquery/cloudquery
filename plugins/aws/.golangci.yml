@@ -1,3 +1,4 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 run:
   tests: true
   skip-dirs:

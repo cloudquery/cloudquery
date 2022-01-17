@@ -1,21 +1,36 @@
-changelog:
-  exclude:
-    labels:
-      - ignore-for-release
-  categories:
-    - title: 💥 Breaking Changes
-      labels:
-        - feature
-    - title: 🚀 Added
-      labels:
-        - enhancement
-        - docs
-    - title: Fixed
-      labels:
-        - fix
-    - title: Other Changes
-      labels:
-        - refactor
-        - chore
-        - ci
-        - test
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: release
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  release-binary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Run GoReleaser Dry-Run
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --rm-dist --skip-validate --skip-publish --skip-sign
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.PRIVATE_KEY }}
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
