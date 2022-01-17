@@ -8,18 +8,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func WafRules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_waf_rules",
-		Description:  "This is AWS WAF Classic documentation",
-		Resolver:     fetchWafRules,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_waf_rules",
+		Description:   "This is AWS WAF Classic documentation",
+		Resolver:      fetchWafRules,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -55,10 +57,11 @@ func WafRules() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_waf_rule_predicates",
-				Description: "This is AWS WAF Classic documentation",
-				Resolver:    fetchWafRulePredicates,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"rule_cq_id", "data_id"}},
+				Name:          "aws_waf_rule_predicates",
+				Description:   "This is AWS WAF Classic documentation",
+				Resolver:      fetchWafRulePredicates,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"rule_cq_id", "data_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "rule_cq_id",

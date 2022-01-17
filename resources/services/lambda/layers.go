@@ -8,8 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	smithy "github.com/aws/smithy-go"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -60,10 +61,11 @@ func LambdaLayers() *schema.Table {
 				Resolver:    schema.PathResolver("LatestMatchingVersion.LayerVersionArn"),
 			},
 			{
-				Name:        "latest_matching_version_license_info",
-				Description: "The layer's open-source license.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.LicenseInfo"),
+				Name:          "latest_matching_version_license_info",
+				Description:   "The layer's open-source license.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LatestMatchingVersion.LicenseInfo"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "latest_matching_version",
@@ -118,9 +120,10 @@ func LambdaLayers() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "license_info",
-						Description: "The layer's open-source license.",
-						Type:        schema.TypeString,
+						Name:          "license_info",
+						Description:   "The layer's open-source license.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "version",
@@ -130,9 +133,10 @@ func LambdaLayers() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:     "aws_lambda_layer_version_policies",
-						Resolver: fetchLambdaLayerVersionPolicies,
-						Options:  schema.TableCreationOptions{PrimaryKeys: []string{"layer_version_cq_id", "revision_id"}},
+						Name:          "aws_lambda_layer_version_policies",
+						Resolver:      fetchLambdaLayerVersionPolicies,
+						Options:       schema.TableCreationOptions{PrimaryKeys: []string{"layer_version_cq_id", "revision_id"}},
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "layer_version_cq_id",

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -71,16 +72,18 @@ func CloudfrontCachePolicies() *schema.Table {
 				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.CookieBehavior"),
 			},
 			{
-				Name:        "cookies_quantity",
-				Description: "The number of cookie names in the Items list",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies.Quantity"),
+				Name:          "cookies_quantity",
+				Description:   "The number of cookie names in the Items list",
+				Type:          schema.TypeInt,
+				Resolver:      schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies.Quantity"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "cookies",
-				Description: "A list of cookie names",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies.Items"),
+				Name:          "cookies",
+				Description:   "A list of cookie names",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "enable_accept_encoding_gzip",

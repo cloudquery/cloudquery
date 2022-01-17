@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -86,10 +87,11 @@ func MqBrokers() *schema.Table {
 				Resolver:    schema.PathResolver("EncryptionOptions.UseAwsOwnedKey"),
 			},
 			{
-				Name:        "encryption_options_kms_key_id",
-				Description: "The symmetric customer master key (CMK) to use for the AWS Key Management Service (KMS).",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionOptions.KmsKeyId"),
+				Name:          "encryption_options_kms_key_id",
+				Description:   "The symmetric customer master key (CMK) to use for the AWS Key Management Service (KMS).",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("EncryptionOptions.KmsKeyId"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "engine_type",
@@ -107,10 +109,11 @@ func MqBrokers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "ldap_server_metadata",
-				Description: "The metadata of the LDAP server used to authenticate and authorize connections to the broker.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveMqBrokerLdapServerMetadata,
+				Name:          "ldap_server_metadata",
+				Description:   "The metadata of the LDAP server used to authenticate and authorize connections to the broker.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveMqBrokerLdapServerMetadata,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "logs",
@@ -130,25 +133,29 @@ func MqBrokers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "pending_engine_version",
-				Description: "The version of the broker engine to upgrade to",
-				Type:        schema.TypeString,
+				Name:          "pending_engine_version",
+				Description:   "The version of the broker engine to upgrade to",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "pending_host_instance_type",
-				Description: "The host instance type of the broker to upgrade to",
-				Type:        schema.TypeString,
+				Name:          "pending_host_instance_type",
+				Description:   "The host instance type of the broker to upgrade to",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "pending_ldap_server_metadata",
-				Description: "The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker once it is rebooted.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveMqBrokerPendingLdapServerMetadata,
+				Name:          "pending_ldap_server_metadata",
+				Description:   "The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker once it is rebooted.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveMqBrokerPendingLdapServerMetadata,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "pending_security_groups",
-				Description: "The list of pending security groups to authorize connections to brokers.",
-				Type:        schema.TypeStringArray,
+				Name:          "pending_security_groups",
+				Description:   "The list of pending security groups to authorize connections to brokers.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "publicly_accessible",
@@ -178,10 +185,11 @@ func MqBrokers() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_mq_broker_configurations",
-				Resolver:    fetchMqBrokerConfigurations,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
+				Name:          "aws_mq_broker_configurations",
+				Resolver:      fetchMqBrokerConfigurations,
+				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "broker_cq_id",
@@ -302,10 +310,11 @@ func MqBrokers() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:        "pending",
-						Description: "The status of the changes pending for the ActiveMQ user.",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveMqBrokerUserPending,
+						Name:          "pending",
+						Description:   "The status of the changes pending for the ActiveMQ user.",
+						Type:          schema.TypeJSON,
+						Resolver:      resolveMqBrokerUserPending,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "username",

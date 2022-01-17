@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -63,9 +64,10 @@ func EmrClusters() *schema.Table {
 				Resolver:    resolveEMRClusterJSONField(func(c *types.Cluster) interface{} { return c.Configurations }),
 			},
 			{
-				Name:        "custom_ami_id",
-				Description: "The ID of a custom Amazon EBS-backed Linux AMI if the cluster uses a custom AMI.",
-				Type:        schema.TypeString,
+				Name:          "custom_ami_id",
+				Description:   "The ID of a custom Amazon EBS-backed Linux AMI if the cluster uses a custom AMI.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "ebs_root_volume_size",
@@ -149,39 +151,45 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "kerberos_kdc_admin_password",
-				Description: "The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster.  This member is required.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KerberosAttributes.KdcAdminPassword"),
+				Name:          "kerberos_kdc_admin_password",
+				Description:   "The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster.  This member is required.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("KerberosAttributes.KdcAdminPassword"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kerberos_realm",
-				Description: "The name of the Kerberos realm to which all nodes in a cluster belong",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KerberosAttributes.Realm"),
+				Name:          "kerberos_realm",
+				Description:   "The name of the Kerberos realm to which all nodes in a cluster belong",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("KerberosAttributes.Realm"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kerberos_ad_domain_join_password",
-				Description: "The Active Directory password for ADDomainJoinUser.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KerberosAttributes.ADDomainJoinPassword"),
+				Name:          "kerberos_ad_domain_join_password",
+				Description:   "The Active Directory password for ADDomainJoinUser.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("KerberosAttributes.ADDomainJoinPassword"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kerberos_ad_domain_join_user",
-				Description: "Required only when establishing a cross-realm trust with an Active Directory domain",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KerberosAttributes.ADDomainJoinUser"),
+				Name:          "kerberos_ad_domain_join_user",
+				Description:   "Required only when establishing a cross-realm trust with an Active Directory domain",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("KerberosAttributes.ADDomainJoinUser"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kerberos_cross_realm_trust_principal_password",
-				Description: "Required only when establishing a cross-realm trust with a KDC in a different realm",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KerberosAttributes.CrossRealmTrustPrincipalPassword"),
+				Name:          "kerberos_cross_realm_trust_principal_password",
+				Description:   "Required only when establishing a cross-realm trust with a KDC in a different realm",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("KerberosAttributes.CrossRealmTrustPrincipalPassword"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "log_encryption_kms_key_id",
-				Description: "The AWS KMS customer master key (CMK) used for encrypting log files",
-				Type:        schema.TypeString,
+				Name:          "log_encryption_kms_key_id",
+				Description:   "The AWS KMS customer master key (CMK) used for encrypting log files",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "log_uri",
@@ -204,9 +212,10 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "outpost_arn",
-				Description: "The Amazon Resource Name (ARN) of the Outpost where the cluster is launched.",
-				Type:        schema.TypeString,
+				Name:          "outpost_arn",
+				Description:   "The Amazon Resource Name (ARN) of the Outpost where the cluster is launched.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "placement_groups",
@@ -225,14 +234,16 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "requested_ami_version",
-				Description: "The AMI version requested for this cluster.",
-				Type:        schema.TypeString,
+				Name:          "requested_ami_version",
+				Description:   "The AMI version requested for this cluster.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "running_ami_version",
-				Description: "The AMI version running on this cluster.",
-				Type:        schema.TypeString,
+				Name:          "running_ami_version",
+				Description:   "The AMI version running on this cluster.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "scale_down_behavior",
@@ -240,9 +251,10 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "security_configuration",
-				Description: "The name of the security configuration applied to the cluster.",
-				Type:        schema.TypeString,
+				Name:          "security_configuration",
+				Description:   "The name of the security configuration applied to the cluster.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "service_role",

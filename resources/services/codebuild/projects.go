@@ -9,18 +9,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func CodebuildProjects() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_codebuild_projects",
-		Description:  "Information about a build project.",
-		Resolver:     fetchCodebuildProjects,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("codebuild"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_codebuild_projects",
+		Description:   "Information about a build project.",
+		Resolver:      fetchCodebuildProjects,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("codebuild"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -467,9 +469,10 @@ func CodebuildProjects() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_codebuild_project_environment_variables",
-				Description: "Information about an environment variable for a build project or a build.",
-				Resolver:    fetchCodebuildProjectEnvironmentVariables,
+				Name:          "aws_codebuild_project_environment_variables",
+				Description:   "Information about an environment variable for a build project or a build.",
+				Resolver:      fetchCodebuildProjectEnvironmentVariables,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "project_cq_id",
@@ -495,9 +498,10 @@ func CodebuildProjects() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_codebuild_project_file_system_locations",
-				Description: "Information about a file system created by Amazon Elastic File System (EFS)",
-				Resolver:    fetchCodebuildProjectFileSystemLocations,
+				Name:          "aws_codebuild_project_file_system_locations",
+				Description:   "Information about a file system created by Amazon Elastic File System (EFS)",
+				Resolver:      fetchCodebuildProjectFileSystemLocations,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "project_cq_id",
@@ -533,9 +537,10 @@ func CodebuildProjects() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_codebuild_project_secondary_artifacts",
-				Description: "Information about the build output artifacts for the build project.",
-				Resolver:    fetchCodebuildProjectSecondaryArtifacts,
+				Name:          "aws_codebuild_project_secondary_artifacts",
+				Description:   "Information about the build output artifacts for the build project.",
+				Resolver:      fetchCodebuildProjectSecondaryArtifacts,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "project_cq_id",
@@ -596,9 +601,10 @@ func CodebuildProjects() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_codebuild_project_secondary_sources",
-				Description: "Information about the build input source code for the build project.",
-				Resolver:    fetchCodebuildProjectSecondarySources,
+				Name:          "aws_codebuild_project_secondary_sources",
+				Description:   "Information about the build input source code for the build project.",
+				Resolver:      fetchCodebuildProjectSecondarySources,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "project_cq_id",

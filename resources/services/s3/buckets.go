@@ -8,8 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	smithy "github.com/aws/smithy-go"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -36,12 +37,14 @@ func S3Buckets() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name: "logging_target_prefix",
-				Type: schema.TypeString,
+				Name:          "logging_target_prefix",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name: "logging_target_bucket",
-				Type: schema.TypeString,
+				Name:          "logging_target_bucket",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "versioning_status",
@@ -52,8 +55,9 @@ func S3Buckets() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "policy",
-				Type: schema.TypeJSON,
+				Name:          "policy",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "tags",
@@ -90,10 +94,11 @@ func S3Buckets() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "replication_role",
-				Description: "The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that Amazon S3 assumes when replicating objects",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Role"),
+				Name:          "replication_role",
+				Description:   "The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that Amazon S3 assumes when replicating objects",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Role"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "arn",
@@ -130,10 +135,11 @@ func S3Buckets() *schema.Table {
 						Resolver:    schema.PathResolver("Grantee.DisplayName"),
 					},
 					{
-						Name:        "email_address",
-						Description: "Email address of the grantee",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Grantee.EmailAddress"),
+						Name:          "email_address",
+						Description:   "Email address of the grantee",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("Grantee.EmailAddress"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "grantee_id",
@@ -142,10 +148,11 @@ func S3Buckets() *schema.Table {
 						Resolver:    schema.PathResolver("Grantee.ID"),
 					},
 					{
-						Name:        "uri",
-						Description: "URI of the grantee group.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Grantee.URI"),
+						Name:          "uri",
+						Description:   "URI of the grantee group.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("Grantee.URI"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "permission",
@@ -155,10 +162,11 @@ func S3Buckets() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_s3_bucket_cors_rules",
-				Description: "Specifies a cross-origin access rule for an Amazon S3 bucket.",
-				Resolver:    fetchS3BucketCorsRules,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				Name:          "aws_s3_bucket_cors_rules",
+				Description:   "Specifies a cross-origin access rule for an Amazon S3 bucket.",
+				Resolver:      fetchS3BucketCorsRules,
+				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -200,10 +208,11 @@ func S3Buckets() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_s3_bucket_encryption_rules",
-				Description: "Specifies the default server-side encryption configuration.",
-				Resolver:    fetchS3BucketEncryptionRules,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				Name:          "aws_s3_bucket_encryption_rules",
+				Description:   "Specifies the default server-side encryption configuration.",
+				Resolver:      fetchS3BucketEncryptionRules,
+				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -231,11 +240,12 @@ func S3Buckets() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_s3_bucket_replication_rules",
-				Description: "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
-				Resolver:    fetchS3BucketReplicationRules,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				Name:          "aws_s3_bucket_replication_rules",
+				Description:   "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
+				Resolver:      fetchS3BucketReplicationRules,
+				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -350,11 +360,12 @@ func S3Buckets() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_s3_bucket_lifecycles",
-				Description: "A lifecycle rule for individual objects in an Amazon S3 bucket.",
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Resolver:    fetchS3BucketLifecycles,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				Name:          "aws_s3_bucket_lifecycles",
+				Description:   "A lifecycle rule for individual objects in an Amazon S3 bucket.",
+				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				Resolver:      fetchS3BucketLifecycles,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",

@@ -8,18 +8,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2VpcEndpoints() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_vpc_endpoints",
-		Description:  "Describes a VPC endpoint.",
-		Resolver:     fetchEc2VpcEndpoints,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_vpc_endpoints",
+		Description:   "Describes a VPC endpoint.",
+		Resolver:      fetchEc2VpcEndpoints,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -128,10 +130,11 @@ func Ec2VpcEndpoints() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_vpc_endpoint_dns_entries",
-				Description: "Describes a DNS entry.",
-				Resolver:    fetchEc2VpcEndpointDnsEntries,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "dns_name"}},
+				Name:          "aws_ec2_vpc_endpoint_dns_entries",
+				Description:   "Describes a DNS entry.",
+				Resolver:      fetchEc2VpcEndpointDnsEntries,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "dns_name"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vpc_endpoint_cq_id",
@@ -152,10 +155,11 @@ func Ec2VpcEndpoints() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ec2_vpc_endpoint_groups",
-				Description: "Describes a security group.",
-				Resolver:    fetchEc2VpcEndpointGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "group_id"}},
+				Name:          "aws_ec2_vpc_endpoint_groups",
+				Description:   "Describes a security group.",
+				Resolver:      fetchEc2VpcEndpointGroups,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vpc_endpoint_cq_id", "group_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vpc_endpoint_cq_id",

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -42,20 +43,23 @@ func SsmDocuments() *schema.Table {
 				Resolver:    resolveSSMDocumentARN,
 			},
 			{
-				Name:        "approved_version",
-				Description: "The version of the document currently approved for use in the organization.",
-				Type:        schema.TypeString,
+				Name:          "approved_version",
+				Description:   "The version of the document currently approved for use in the organization.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "attachments_information",
-				Description: "Details about the document attachments, including names, locations, sizes, and so on.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.AttachmentsInformation }),
+				Name:          "attachments_information",
+				Description:   "Details about the document attachments, including names, locations, sizes, and so on.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.AttachmentsInformation }),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "author",
-				Description: "The user in your organization who created the document.",
-				Type:        schema.TypeString,
+				Name:          "author",
+				Description:   "The user in your organization who created the document.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "created_date",
@@ -73,9 +77,10 @@ func SsmDocuments() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "display_name",
-				Description: "The friendly name of the SSM document",
-				Type:        schema.TypeString,
+				Name:          "display_name",
+				Description:   "The friendly name of the SSM document",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "document_format",
@@ -124,9 +129,10 @@ func SsmDocuments() *schema.Table {
 				Resolver:    resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.Parameters }),
 			},
 			{
-				Name:        "pending_review_version",
-				Description: "The version of the document that is currently under review.",
-				Type:        schema.TypeString,
+				Name:          "pending_review_version",
+				Description:   "The version of the document that is currently under review.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "platform_types",
@@ -134,10 +140,11 @@ func SsmDocuments() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "requires",
-				Description: "A list of SSM documents required by a document.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.Requires }),
+				Name:          "requires",
+				Description:   "A list of SSM documents required by a document.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.Requires }),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "review_status",
@@ -150,9 +157,10 @@ func SsmDocuments() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "sha1",
-				Description: "The SHA1 hash of the document, which you can use for verification.",
-				Type:        schema.TypeString,
+				Name:          "sha1",
+				Description:   "The SHA1 hash of the document, which you can use for verification.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "status",
@@ -160,25 +168,29 @@ func SsmDocuments() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "status_information",
-				Description: "A message returned by Amazon Web Services Systems Manager that explains the Status value",
-				Type:        schema.TypeString,
+				Name:          "status_information",
+				Description:   "A message returned by Amazon Web Services Systems Manager that explains the Status value",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "target_type",
-				Description: "The target type which defines the kinds of resources the document can run on. For example, /AWS::EC2::Instance",
-				Type:        schema.TypeString,
+				Name:          "target_type",
+				Description:   "The target type which defines the kinds of resources the document can run on. For example, /AWS::EC2::Instance",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "version_name",
-				Description: "The version of the artifact associated with the document.",
-				Type:        schema.TypeString,
+				Name:          "version_name",
+				Description:   "The version of the artifact associated with the document.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "review_information",
-				Description: "Details about the review of a document.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.ReviewInformation }),
+				Name:          "review_information",
+				Description:   "Details about the review of a document.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.ReviewInformation }),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "tags",
@@ -187,14 +199,16 @@ func SsmDocuments() *schema.Table {
 				Resolver:    resolveSSMDocumentTags,
 			},
 			{
-				Name:        "account_ids",
-				Description: "The account IDs that have permission to use this document",
-				Type:        schema.TypeStringArray,
+				Name:          "account_ids",
+				Description:   "The account IDs that have permission to use this document",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "account_sharing_info_list",
-				Description: "A list of Amazon Web Services accounts where the current document is shared and the version shared with each account.",
-				Type:        schema.TypeJSON,
+				Name:          "account_sharing_info_list",
+				Description:   "A list of Amazon Web Services accounts where the current document is shared and the version shared with each account.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 		},
 	}

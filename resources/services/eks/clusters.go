@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -43,9 +44,10 @@ func EksClusters() *schema.Table {
 				Resolver:    schema.PathResolver("CertificateAuthority.Data"),
 			},
 			{
-				Name:        "client_request_token",
-				Description: "Unique, case-sensitive identifier that you provide to ensure the idempotency of the request.",
-				Type:        schema.TypeString,
+				Name:          "client_request_token",
+				Description:   "Unique, case-sensitive identifier that you provide to ensure the idempotency of the request.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "created_at",
@@ -144,9 +146,10 @@ func EksClusters() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_eks_cluster_encryption_configs",
-				Description: "The encryption configuration for the cluster.",
-				Resolver:    fetchEksClusterEncryptionConfigs,
+				Name:          "aws_eks_cluster_encryption_configs",
+				Description:   "The encryption configuration for the cluster.",
+				Resolver:      fetchEksClusterEncryptionConfigs,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",

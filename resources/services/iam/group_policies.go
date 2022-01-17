@@ -10,18 +10,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	smithy "github.com/aws/smithy-go"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func IamGroupPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_group_policies",
-		Description: "Inline policies that are embedded in the specified IAM group",
-		Resolver:    fetchIamGroupPolicies,
-		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"group_cq_id", "policy_name"}},
+		Name:          "aws_iam_group_policies",
+		Description:   "Inline policies that are embedded in the specified IAM group",
+		Resolver:      fetchIamGroupPolicies,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"group_cq_id", "policy_name"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

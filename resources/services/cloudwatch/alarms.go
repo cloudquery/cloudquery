@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func CloudwatchAlarms() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudwatch_alarms",
-		Description:  "The details about a metric alarm.",
-		Resolver:     fetchCloudwatchAlarms,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_cloudwatch_alarms",
+		Description:   "The details about a metric alarm.",
+		Resolver:      fetchCloudwatchAlarms,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("logs"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -172,10 +174,11 @@ func CloudwatchAlarms() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudwatch_alarm_metrics",
-				Description: "This structure is used in both GetMetricData and PutMetricAlarm.",
-				Resolver:    fetchCloudwatchAlarmMetrics,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"alarm_cq_id", "id"}},
+				Name:          "aws_cloudwatch_alarm_metrics",
+				Description:   "This structure is used in both GetMetricData and PutMetricAlarm.",
+				Resolver:      fetchCloudwatchAlarmMetrics,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"alarm_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "alarm_cq_id",

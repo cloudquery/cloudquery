@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2Images() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_images",
-		Description:  "Describes an image.",
-		Resolver:     fetchEc2Images,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_images",
+		Description:   "Describes an image.",
+		Resolver:      fetchEc2Images,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -178,9 +180,10 @@ func Ec2Images() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_image_block_device_mappings",
-				Description: "Describes a block device mapping.",
-				Resolver:    fetchEc2ImageBlockDeviceMappings,
+				Name:          "aws_ec2_image_block_device_mappings",
+				Description:   "Describes a block device mapping.",
+				Resolver:      fetchEc2ImageBlockDeviceMappings,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "image_cq_id",

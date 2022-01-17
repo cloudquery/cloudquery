@@ -6,18 +6,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func DirectconnectLags() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_directconnect_lags",
-		Description:  "Information about Direct Connect Link Aggregation Group (LAG)",
-		Resolver:     fetchDirectconnectLags,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_directconnect_lags",
+		Description:   "Information about Direct Connect Link Aggregation Group (LAG)",
+		Resolver:      fetchDirectconnectLags,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -132,10 +134,11 @@ func DirectconnectLags() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_directconnect_lag_mac_sec_keys",
-				Description: "The MAC Security (MACsec) security keys associated with the LAG.",
-				Resolver:    fetchDirectconnectLagMacSecKeys,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"lag_cq_id", "secret_arn"}},
+				Name:          "aws_directconnect_lag_mac_sec_keys",
+				Description:   "The MAC Security (MACsec) security keys associated with the LAG.",
+				Resolver:      fetchDirectconnectLagMacSecKeys,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"lag_cq_id", "secret_arn"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "lag_cq_id",

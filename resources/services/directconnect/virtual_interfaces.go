@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func DirectconnectVirtualInterfaces() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_directconnect_virtual_interfaces",
-		Description:  "Information about a virtual interface. A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network",
-		Resolver:     fetchDirectconnectVirtualInterfaces,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_directconnect_virtual_interfaces",
+		Description:   "Information about a virtual interface. A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network",
+		Resolver:      fetchDirectconnectVirtualInterfaces,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -155,10 +157,11 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_directconnect_virtual_interface_bgp_peers",
-				Description: "Information about a BGP peer. ",
-				Resolver:    fetchDirectconnectVirtualInterfaceBgpPeers,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_interface_cq_id", "bgp_peer_id"}},
+				Name:          "aws_directconnect_virtual_interface_bgp_peers",
+				Description:   "Information about a BGP peer. ",
+				Resolver:      fetchDirectconnectVirtualInterfaceBgpPeers,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_interface_cq_id", "bgp_peer_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_interface_cq_id",

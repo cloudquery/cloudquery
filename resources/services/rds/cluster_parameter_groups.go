@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -106,9 +107,10 @@ func RdsClusterParameterGroups() *schema.Table {
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "minimum_engine_version",
-						Description: "The earliest engine version to which the parameter can apply.",
-						Type:        schema.TypeString,
+						Name:          "minimum_engine_version",
+						Description:   "The earliest engine version to which the parameter can apply.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "parameter_name",

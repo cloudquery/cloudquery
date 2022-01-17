@@ -9,18 +9,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func SecretsmanagerSecrets() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_secretsmanager_secrets",
-		Description:  "A structure that contains the details about a secret",
-		Resolver:     fetchSecretsmanagerSecrets,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("secretsmanager"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_secretsmanager_secrets",
+		Description:   "A structure that contains the details about a secret",
+		Resolver:      fetchSecretsmanagerSecrets,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("secretsmanager"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

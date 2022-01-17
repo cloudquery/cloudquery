@@ -8,18 +8,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func ElasticbeanstalkEnvironments() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticbeanstalk_environments",
-		Description:  "Describes the properties of an environment.",
-		Resolver:     fetchElasticbeanstalkEnvironments,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_elasticbeanstalk_environments",
+		Description:   "Describes the properties of an environment.",
+		Resolver:      fetchElasticbeanstalkEnvironments,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -173,10 +175,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticbeanstalk_configuration_settings",
-				Description: "Describes the settings for a configuration set.",
-				Resolver:    fetchElasticbeanstalkConfigurationSettings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "application_arn"}},
+				Name:          "aws_elasticbeanstalk_configuration_settings",
+				Description:   "Describes the settings for a configuration set.",
+				Resolver:      fetchElasticbeanstalkConfigurationSettings,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "application_arn"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "environment_cq_id",
@@ -238,9 +241,10 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:        "aws_elasticbeanstalk_configuration_setting_options",
-						Description: "A specification identifying an individual configuration option along with its current value",
-						Resolver:    fetchElasticbeanstalkConfigurationSettingOptionSettings,
+						Name:          "aws_elasticbeanstalk_configuration_setting_options",
+						Description:   "A specification identifying an individual configuration option along with its current value",
+						Resolver:      fetchElasticbeanstalkConfigurationSettingOptionSettings,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "configuration_setting_cq_id",
@@ -273,10 +277,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_elasticbeanstalk_configuration_options",
-				Description: "Describes the possible values for a configuration option.",
-				Resolver:    fetchElasticbeanstalkConfigurationOptions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "application_arn", "name", "namespace"}},
+				Name:          "aws_elasticbeanstalk_configuration_options",
+				Description:   "Describes the possible values for a configuration option.",
+				Resolver:      fetchElasticbeanstalkConfigurationOptions,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "application_arn", "name", "namespace"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "environment_cq_id",
@@ -359,10 +364,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_elasticbeanstalk_environment_links",
-				Description: "A link to another environment, defined in the environment's manifest",
-				Resolver:    fetchElasticbeanstalkEnvironmentLinks,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "link_name"}},
+				Name:          "aws_elasticbeanstalk_environment_links",
+				Description:   "A link to another environment, defined in the environment's manifest",
+				Resolver:      fetchElasticbeanstalkEnvironmentLinks,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"environment_cq_id", "link_name"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "environment_cq_id",

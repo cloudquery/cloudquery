@@ -11,18 +11,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Wafv2RuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafv2_rule_groups",
-		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
-		Resolver:     fetchWafv2RuleGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_wafv2_rule_groups",
+		Description:   "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
+		Resolver:      fetchWafv2RuleGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("waf-regional"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

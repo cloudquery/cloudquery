@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	sagemakertypes "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -34,19 +35,22 @@ func SagemakerNotebookInstances() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "network_interface_id",
-				Description: "The network interface IDs that Amazon SageMaker created at the time of creating the instance.",
-				Type:        schema.TypeString,
+				Name:          "network_interface_id",
+				Description:   "The network interface IDs that Amazon SageMaker created at the time of creating the instance.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kms_key_id",
-				Description: "The Amazon Web Services KMS key ID Amazon SageMaker uses to encrypt data when storing it on the ML storage volume attached to the instance.",
-				Type:        schema.TypeString,
+				Name:          "kms_key_id",
+				Description:   "The Amazon Web Services KMS key ID Amazon SageMaker uses to encrypt data when storing it on the ML storage volume attached to the instance.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "subnet_id",
-				Description: "The ID of the VPC subnet.",
-				Type:        schema.TypeString,
+				Name:          "subnet_id",
+				Description:   "The ID of the VPC subnet.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "volume_size_in_gb",
@@ -55,9 +59,10 @@ func SagemakerNotebookInstances() *schema.Table {
 				Resolver:    schema.PathResolver("VolumeSizeInGB"),
 			},
 			{
-				Name:        "accelerator_types",
-				Description: "A list of the Elastic Inference (EI) instance types associated with this notebook instance.",
-				Type:        schema.TypeStringArray,
+				Name:          "accelerator_types",
+				Description:   "A list of the Elastic Inference (EI) instance types associated with this notebook instance.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "security_groups",
@@ -89,9 +94,10 @@ func SagemakerNotebookInstances() *schema.Table {
 				Resolver:    schema.PathResolver("NotebookInstanceName"),
 			},
 			{
-				Name:        "additional_code_repositories",
-				Description: "An array of up to three Git repositories associated with the notebook instance. These can be either the names of Git repositories stored as resources in your account, or the URL of Git repositories in Amazon Web Services CodeCommit (https://docs.aws.amazon.com/codecommit/latest/userguide/welcome.html) or in any other Git repository",
-				Type:        schema.TypeStringArray,
+				Name:          "additional_code_repositories",
+				Description:   "An array of up to three Git repositories associated with the notebook instance. These can be either the names of Git repositories stored as resources in your account, or the URL of Git repositories in Amazon Web Services CodeCommit (https://docs.aws.amazon.com/codecommit/latest/userguide/welcome.html) or in any other Git repository",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "creation_time",
@@ -99,9 +105,10 @@ func SagemakerNotebookInstances() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "default_code_repository",
-				Description: "The Git repository associated with the notebook instance as its default code repository",
-				Type:        schema.TypeString,
+				Name:          "default_code_repository",
+				Description:   "The Git repository associated with the notebook instance as its default code repository",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "instance_type",
@@ -114,9 +121,10 @@ func SagemakerNotebookInstances() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "notebook_instance_lifecycle_config_name",
-				Description: "The name of a notebook instance lifecycle configuration associated with this notebook instance",
-				Type:        schema.TypeString,
+				Name:          "notebook_instance_lifecycle_config_name",
+				Description:   "The name of a notebook instance lifecycle configuration associated with this notebook instance",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "notebook_instance_status",

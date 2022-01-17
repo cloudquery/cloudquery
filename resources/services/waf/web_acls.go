@@ -9,18 +9,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func WafWebAcls() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_waf_web_acls",
-		Description:  "This is AWS WAF Classic documentation",
-		Resolver:     fetchWafWebAcls,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_waf_web_acls",
+		Description:   "This is AWS WAF Classic documentation",
+		Resolver:      fetchWafWebAcls,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -70,10 +72,11 @@ func WafWebAcls() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_waf_web_acl_rules",
-				Description: "This is AWS WAF Classic documentation",
-				Resolver:    fetchWafWebAclRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "rule_id"}},
+				Name:          "aws_waf_web_acl_rules",
+				Description:   "This is AWS WAF Classic documentation",
+				Resolver:      fetchWafWebAclRules,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "rule_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",

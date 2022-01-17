@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -53,9 +54,10 @@ func Ec2SecurityGroups() *schema.Table {
 				Resolver:    schema.PathResolver("GroupId"),
 			},
 			{
-				Name:        "group_name",
-				Description: "The name of the security group.",
-				Type:        schema.TypeString,
+				Name:          "group_name",
+				Description:   "The name of the security group.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "owner_id",
@@ -69,9 +71,10 @@ func Ec2SecurityGroups() *schema.Table {
 				Resolver:    resolveEc2securityGroupTags,
 			},
 			{
-				Name:        "vpc_id",
-				Description: "The ID of the VPC for the security group.",
-				Type:        schema.TypeString,
+				Name:          "vpc_id",
+				Description:   "The ID of the VPC for the security group.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -135,9 +138,10 @@ func Ec2SecurityGroups() *schema.Table {
 						},
 					},
 					{
-						Name:        "aws_ec2_security_group_ip_permission_prefix_list_ids",
-						Description: "Describes a prefix list ID.",
-						Resolver:    fetchEc2SecurityGroupIpPermissionPrefixListIds,
+						Name:          "aws_ec2_security_group_ip_permission_prefix_list_ids",
+						Description:   "Describes a prefix list ID.",
+						Resolver:      fetchEc2SecurityGroupIpPermissionPrefixListIds,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "security_group_ip_permission_cq_id",
@@ -180,14 +184,16 @@ func Ec2SecurityGroups() *schema.Table {
 								Type:        schema.TypeString,
 							},
 							{
-								Name:        "group_name",
-								Description: "The name of the security group.",
-								Type:        schema.TypeString,
+								Name:          "group_name",
+								Description:   "The name of the security group.",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
 							},
 							{
-								Name:        "peering_status",
-								Description: "The status of a VPC peering connection, if applicable.",
-								Type:        schema.TypeString,
+								Name:          "peering_status",
+								Description:   "The status of a VPC peering connection, if applicable.",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
 							},
 							{
 								Name:        "user_id",
@@ -195,14 +201,16 @@ func Ec2SecurityGroups() *schema.Table {
 								Type:        schema.TypeString,
 							},
 							{
-								Name:        "vpc_id",
-								Description: "The ID of the VPC for the referenced security group, if applicable.",
-								Type:        schema.TypeString,
+								Name:          "vpc_id",
+								Description:   "The ID of the VPC for the referenced security group, if applicable.",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
 							},
 							{
-								Name:        "vpc_peering_connection_id",
-								Description: "The ID of the VPC peering connection, if applicable.",
-								Type:        schema.TypeString,
+								Name:          "vpc_peering_connection_id",
+								Description:   "The ID of the VPC peering connection, if applicable.",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
 							},
 						},
 					},

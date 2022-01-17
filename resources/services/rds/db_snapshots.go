@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -94,14 +95,16 @@ func RdsDbSnapshots() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "iops",
-				Description: "Specifies the Provisioned IOPS (I/O operations per second) value of the DB instance at the time of the snapshot.",
-				Type:        schema.TypeInt,
+				Name:          "iops",
+				Description:   "Specifies the Provisioned IOPS (I/O operations per second) value of the DB instance at the time of the snapshot.",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kms_key_id",
-				Description: "If Encrypted is true, the AWS KMS key identifier for the encrypted DB snapshot. The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).",
-				Type:        schema.TypeString,
+				Name:          "kms_key_id",
+				Description:   "If Encrypted is true, the AWS KMS key identifier for the encrypted DB snapshot. The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "license_model",
@@ -145,15 +148,17 @@ func RdsDbSnapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "source_db_snapshot_identifier",
-				Description: "The DB snapshot Amazon Resource Name (ARN) that the DB snapshot was copied from. It only has value in case of cross-customer or cross-region copy.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SourceDBSnapshotIdentifier"),
+				Name:          "source_db_snapshot_identifier",
+				Description:   "The DB snapshot Amazon Resource Name (ARN) that the DB snapshot was copied from. It only has value in case of cross-customer or cross-region copy.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("SourceDBSnapshotIdentifier"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "source_region",
-				Description: "The AWS Region that the DB snapshot was created in or copied from.",
-				Type:        schema.TypeString,
+				Name:          "source_region",
+				Description:   "The AWS Region that the DB snapshot was created in or copied from.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "status",
@@ -166,14 +171,16 @@ func RdsDbSnapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "tde_credential_arn",
-				Description: "The ARN from the key store with which to associate the instance for TDE encryption.",
-				Type:        schema.TypeString,
+				Name:          "tde_credential_arn",
+				Description:   "The ARN from the key store with which to associate the instance for TDE encryption.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "timezone",
-				Description: "The time zone of the DB snapshot",
-				Type:        schema.TypeString,
+				Name:          "timezone",
+				Description:   "The time zone of the DB snapshot",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "vpc_id",

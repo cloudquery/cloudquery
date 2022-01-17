@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -75,10 +76,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.AllowedMethods.CachedMethods.Items"),
 			},
 			{
-				Name:        "cache_behavior_cache_policy_id",
-				Description: "The unique identifier of the cache policy that is attached to the default cache behavior",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.CachePolicyId"),
+				Name:          "cache_behavior_cache_policy_id",
+				Description:   "The unique identifier of the cache policy that is attached to the default cache behavior",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.CachePolicyId"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cache_behavior_compress",
@@ -105,10 +107,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.Cookies.Forward"),
 			},
 			{
-				Name:        "cache_behavior_forwarded_values_cookies_whitelisted_names",
-				Description: "A list of cookie names.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.Cookies.WhitelistedNames.Items"),
+				Name:          "cache_behavior_forwarded_values_cookies_whitelisted_names",
+				Description:   "A list of cookie names.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.Cookies.WhitelistedNames.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cache_behavior_forwarded_values_query_string",
@@ -117,16 +120,18 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.QueryString"),
 			},
 			{
-				Name:        "cache_behavior_forwarded_values_headers",
-				Description: "A list of HTTP header names.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.Headers.Items"),
+				Name:          "cache_behavior_forwarded_values_headers",
+				Description:   "A list of HTTP header names.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.Headers.Items"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "cache_behavior_forwarded_values_query_string_cache_keys",
-				Description: "A list that contains the query string parameters that you want CloudFront to use as a basis for caching for a cache behavior",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.QueryStringCacheKeys.Items"),
+				Name:          "cache_behavior_forwarded_values_query_string_cache_keys",
+				Description:   "A list that contains the query string parameters that you want CloudFront to use as a basis for caching for a cache behavior",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.ForwardedValues.QueryStringCacheKeys.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cache_behavior_max_ttl",
@@ -141,16 +146,18 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.MinTTL"),
 			},
 			{
-				Name:        "cache_behavior_origin_request_policy_id",
-				Description: "The unique identifier of the origin request policy that is attached to the default cache behavior",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.OriginRequestPolicyId"),
+				Name:          "cache_behavior_origin_request_policy_id",
+				Description:   "The unique identifier of the origin request policy that is attached to the default cache behavior",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.OriginRequestPolicyId"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "cache_behavior_realtime_log_config_arn",
-				Description: "The Amazon Resource Name (ARN) of the real-time log configuration that is attached to this cache behavior",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.RealtimeLogConfigArn"),
+				Name:          "cache_behavior_realtime_log_config_arn",
+				Description:   "The Amazon Resource Name (ARN) of the real-time log configuration that is attached to this cache behavior",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.RealtimeLogConfigArn"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cache_behavior_smooth_streaming",
@@ -165,10 +172,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedKeyGroups.Enabled"),
 			},
 			{
-				Name:        "cache_behavior_trusted_key_groups",
-				Description: "A list of key groups identifiers.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedKeyGroups.Items"),
+				Name:          "cache_behavior_trusted_key_groups",
+				Description:   "A list of key groups identifiers.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedKeyGroups.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cache_behavior_trusted_signers_enabled",
@@ -177,10 +185,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedSigners.Enabled"),
 			},
 			{
-				Name:        "cache_behavior_trusted_signers",
-				Description: "A list of AWS account identifiers.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedSigners.Items"),
+				Name:          "cache_behavior_trusted_signers",
+				Description:   "A list of AWS account identifiers.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.DefaultCacheBehavior.TrustedSigners.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "enabled",
@@ -189,10 +198,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.Enabled"),
 			},
 			{
-				Name:        "aliases",
-				Description: "A complex type that contains the CNAME aliases, if any, that you want to associate with this distribution.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("DistributionConfig.Aliases.Items"),
+				Name:          "aliases",
+				Description:   "A complex type that contains the CNAME aliases, if any, that you want to associate with this distribution.",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("DistributionConfig.Aliases.Items"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "default_root_object",
@@ -255,16 +265,18 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.Restrictions.GeoRestriction.Items"),
 			},
 			{
-				Name:        "viewer_certificate_acm_certificate_arn",
-				Description: "If the distribution uses Aliases (alternate domain names or CNAMEs) and the SSL/TLS certificate is stored in AWS Certificate Manager (ACM) (https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html), provide the Amazon Resource Name (ARN) of the ACM certificate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.ViewerCertificate.ACMCertificateArn"),
+				Name:          "viewer_certificate_acm_certificate_arn",
+				Description:   "If the distribution uses Aliases (alternate domain names or CNAMEs) and the SSL/TLS certificate is stored in AWS Certificate Manager (ACM) (https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html), provide the Amazon Resource Name (ARN) of the ACM certificate",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.ViewerCertificate.ACMCertificateArn"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "viewer_certificate",
-				Description: "This field is deprecated",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.ViewerCertificate.Certificate"),
+				Name:          "viewer_certificate",
+				Description:   "This field is deprecated",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.ViewerCertificate.Certificate"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "viewer_certificate_source",
@@ -279,10 +291,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver:    schema.PathResolver("DistributionConfig.ViewerCertificate.CloudFrontDefaultCertificate"),
 			},
 			{
-				Name:        "viewer_certificate_iam_certificate_id",
-				Description: "If the distribution uses Aliases (alternate domain names or CNAMEs) and the SSL/TLS certificate is stored in AWS Identity and Access Management (AWS IAM) (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html), provide the ID of the IAM certificate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DistributionConfig.ViewerCertificate.IAMCertificateId"),
+				Name:          "viewer_certificate_iam_certificate_id",
+				Description:   "If the distribution uses Aliases (alternate domain names or CNAMEs) and the SSL/TLS certificate is stored in AWS Identity and Access Management (AWS IAM) (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html), provide the ID of the IAM certificate",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DistributionConfig.ViewerCertificate.IAMCertificateId"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "viewer_certificate_minimum_protocol_version",
@@ -360,9 +373,10 @@ func CloudfrontDistributions() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudfront_distribution_default_cache_behavior_functions",
-				Description: "A complex type that contains a Lambda function association.",
-				Resolver:    fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions,
+				Name:          "aws_cloudfront_distribution_default_cache_behavior_functions",
+				Description:   "A complex type that contains a Lambda function association.",
+				Resolver:      fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "distribution_cq_id",
@@ -426,16 +440,18 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    resolveCloudfrontDistributionOriginsCustomHeaders,
 					},
 					{
-						Name:        "custom_origin_config_http_port",
-						Description: "The HTTP port that CloudFront uses to connect to the origin",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("CustomOriginConfig.HTTPPort"),
+						Name:          "custom_origin_config_http_port",
+						Description:   "The HTTP port that CloudFront uses to connect to the origin",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("CustomOriginConfig.HTTPPort"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "custom_origin_config_https_port",
-						Description: "The HTTPS port that CloudFront uses to connect to the origin",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("CustomOriginConfig.HTTPSPort"),
+						Name:          "custom_origin_config_https_port",
+						Description:   "The HTTPS port that CloudFront uses to connect to the origin",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("CustomOriginConfig.HTTPSPort"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "custom_origin_config_protocol_policy",
@@ -444,22 +460,25 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("CustomOriginConfig.OriginProtocolPolicy"),
 					},
 					{
-						Name:        "custom_origin_config_keepalive_timeout",
-						Description: "Specifies how long, in seconds, CloudFront persists its connection to the origin",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("CustomOriginConfig.OriginKeepaliveTimeout"),
+						Name:          "custom_origin_config_keepalive_timeout",
+						Description:   "Specifies how long, in seconds, CloudFront persists its connection to the origin",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("CustomOriginConfig.OriginKeepaliveTimeout"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "custom_origin_config_read_timeout",
-						Description: "Specifies how long, in seconds, CloudFront waits for a response from the origin. This is also known as the origin response timeout",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("CustomOriginConfig.OriginReadTimeout"),
+						Name:          "custom_origin_config_read_timeout",
+						Description:   "Specifies how long, in seconds, CloudFront waits for a response from the origin. This is also known as the origin response timeout",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("CustomOriginConfig.OriginReadTimeout"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "custom_origin_config_ssl_protocols",
-						Description: "A list that contains allowed SSL/TLS protocols for this distribution.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("CustomOriginConfig.OriginSslProtocols.Items"),
+						Name:          "custom_origin_config_ssl_protocols",
+						Description:   "A list that contains allowed SSL/TLS protocols for this distribution.",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("CustomOriginConfig.OriginSslProtocols.Items"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "origin_path",
@@ -473,10 +492,11 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("OriginShield.Enabled"),
 					},
 					{
-						Name:        "origin_shield_region",
-						Description: "The AWS Region for Origin Shield",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("OriginShield.OriginShieldRegion"),
+						Name:          "origin_shield_region",
+						Description:   "The AWS Region for Origin Shield",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("OriginShield.OriginShieldRegion"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "s3_origin_config_origin_access_identity",
@@ -525,9 +545,10 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("AllowedMethods.CachedMethods.Items"),
 					},
 					{
-						Name:        "cache_policy_id",
-						Description: "The unique identifier of the cache policy that is attached to this cache behavior",
-						Type:        schema.TypeString,
+						Name:          "cache_policy_id",
+						Description:   "The unique identifier of the cache policy that is attached to this cache behavior",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "compress",
@@ -552,10 +573,11 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("ForwardedValues.Cookies.Forward"),
 					},
 					{
-						Name:        "forwarded_values_cookies_whitelisted_names",
-						Description: "A list of cookie names.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("ForwardedValues.Cookies.WhitelistedNames.Items"),
+						Name:          "forwarded_values_cookies_whitelisted_names",
+						Description:   "A list of cookie names.",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("ForwardedValues.Cookies.WhitelistedNames.Items"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "forwarded_values_query_string",
@@ -570,10 +592,11 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("ForwardedValues.Headers.Items"),
 					},
 					{
-						Name:        "forwarded_values_query_string_cache_keys",
-						Description: "A list that contains the query string parameters that you want CloudFront to use as a basis for caching for a cache behavior",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("ForwardedValues.QueryStringCacheKeys.Items"),
+						Name:          "forwarded_values_query_string_cache_keys",
+						Description:   "A list that contains the query string parameters that you want CloudFront to use as a basis for caching for a cache behavior",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("ForwardedValues.QueryStringCacheKeys.Items"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "max_ttl",
@@ -588,14 +611,16 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("MinTTL"),
 					},
 					{
-						Name:        "origin_request_policy_id",
-						Description: "The unique identifier of the origin request policy that is attached to this cache behavior",
-						Type:        schema.TypeString,
+						Name:          "origin_request_policy_id",
+						Description:   "The unique identifier of the origin request policy that is attached to this cache behavior",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "realtime_log_config_arn",
-						Description: "The Amazon Resource Name (ARN) of the real-time log configuration that is attached to this cache behavior",
-						Type:        schema.TypeString,
+						Name:          "realtime_log_config_arn",
+						Description:   "The Amazon Resource Name (ARN) of the real-time log configuration that is attached to this cache behavior",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "smooth_streaming",
@@ -609,10 +634,11 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("TrustedKeyGroups.Enabled"),
 					},
 					{
-						Name:        "trusted_key_groups",
-						Description: "A list of key groups identifiers.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("TrustedKeyGroups.Items"),
+						Name:          "trusted_key_groups",
+						Description:   "A list of key groups identifiers.",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("TrustedKeyGroups.Items"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "trusted_signers_enabled",
@@ -621,17 +647,19 @@ func CloudfrontDistributions() *schema.Table {
 						Resolver:    schema.PathResolver("TrustedSigners.Enabled"),
 					},
 					{
-						Name:        "trusted_signers",
-						Description: "A list of AWS account identifiers.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("TrustedSigners.Items"),
+						Name:          "trusted_signers",
+						Description:   "A list of AWS account identifiers.",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("TrustedSigners.Items"),
+						IgnoreInTests: true,
 					},
 				},
 				Relations: []*schema.Table{
 					{
-						Name:        "aws_cloudfront_distribution_cache_behavior_lambda_functions",
-						Description: "A complex type that contains a Lambda function association.",
-						Resolver:    fetchCloudfrontDistributionCacheBehaviorLambdaFunctions,
+						Name:          "aws_cloudfront_distribution_cache_behavior_lambda_functions",
+						Description:   "A complex type that contains a Lambda function association.",
+						Resolver:      fetchCloudfrontDistributionCacheBehaviorLambdaFunctions,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "distribution_cache_behavior_cq_id",
@@ -694,9 +722,10 @@ func CloudfrontDistributions() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_cloudfront_distribution_origin_groups",
-				Description: "An origin group includes two origins (a primary origin and a second origin to failover to) and a failover criteria that you specify",
-				Resolver:    fetchCloudfrontDistributionOriginGroups,
+				Name:          "aws_cloudfront_distribution_origin_groups",
+				Description:   "An origin group includes two origins (a primary origin and a second origin to failover to) and a failover criteria that you specify",
+				Resolver:      fetchCloudfrontDistributionOriginGroups,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "distribution_cq_id",

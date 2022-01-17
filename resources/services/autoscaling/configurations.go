@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -53,15 +54,17 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "associate_public_ip_address",
-				Description: "For Auto Scaling groups that are running in a VPC, specifies whether to assign a public IP address to the group's instances. For more information, see Launching Auto Scaling instances in a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html) in the Amazon EC2 Auto Scaling User Guide.",
-				Type:        schema.TypeBool,
+				Name:          "associate_public_ip_address",
+				Description:   "For Auto Scaling groups that are running in a VPC, specifies whether to assign a public IP address to the group's instances. For more information, see Launching Auto Scaling instances in a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html) in the Amazon EC2 Auto Scaling User Guide.",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "classic_link_vpc_id",
-				Description: "The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to. For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html) in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink) in the Amazon EC2 Auto Scaling User Guide.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ClassicLinkVPCId"),
+				Name:          "classic_link_vpc_id",
+				Description:   "The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to. For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html) in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink) in the Amazon EC2 Auto Scaling User Guide.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ClassicLinkVPCId"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "classic_link_vpc_security_groups",
@@ -120,9 +123,10 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Resolver:    schema.PathResolver("MetadataOptions.HttpTokens"),
 			},
 			{
-				Name:        "placement_tenancy",
-				Description: "The tenancy of the instance, either default or dedicated. An instance with dedicated tenancy runs on isolated, single-tenant hardware and can only be launched into a VPC. For more information, see Configuring instance tenancy with Amazon EC2 Auto Scaling (https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-dedicated-instances.html) in the Amazon EC2 Auto Scaling User Guide.",
-				Type:        schema.TypeString,
+				Name:          "placement_tenancy",
+				Description:   "The tenancy of the instance, either default or dedicated. An instance with dedicated tenancy runs on isolated, single-tenant hardware and can only be launched into a VPC. For more information, see Configuring instance tenancy with Amazon EC2 Auto Scaling (https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-dedicated-instances.html) in the Amazon EC2 Auto Scaling User Guide.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "ramdisk_id",
@@ -135,9 +139,10 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "spot_price",
-				Description: "The maximum hourly price to be paid for any Spot Instance launched to fulfill the request. Spot Instances are launched when the price you specify exceeds the current Spot price. For more information, see Requesting Spot Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-launch-spot-instances.html) in the Amazon EC2 Auto Scaling User Guide.",
-				Type:        schema.TypeString,
+				Name:          "spot_price",
+				Description:   "The maximum hourly price to be paid for any Spot Instance launched to fulfill the request. Spot Instances are launched when the price you specify exceeds the current Spot price. For more information, see Requesting Spot Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-launch-spot-instances.html) in the Amazon EC2 Auto Scaling User Guide.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "user_data",
@@ -170,22 +175,25 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 						Resolver:    schema.PathResolver("Ebs.DeleteOnTermination"),
 					},
 					{
-						Name:        "ebs_encrypted",
-						Description: "Specifies whether the volume should be encrypted.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("Ebs.Encrypted"),
+						Name:          "ebs_encrypted",
+						Description:   "Specifies whether the volume should be encrypted.",
+						Type:          schema.TypeBool,
+						Resolver:      schema.PathResolver("Ebs.Encrypted"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "ebs_iops",
-						Description: "The number of I/O operations per second (IOPS) to provision for the volume.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Ebs.Iops"),
+						Name:          "ebs_iops",
+						Description:   "The number of I/O operations per second (IOPS) to provision for the volume.",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("Ebs.Iops"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "ebs_snapshot_id",
-						Description: "The snapshot ID of the volume to use. You must specify either a VolumeSize or a SnapshotId.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Ebs.SnapshotId"),
+						Name:          "ebs_snapshot_id",
+						Description:   "The snapshot ID of the volume to use. You must specify either a VolumeSize or a SnapshotId.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("Ebs.SnapshotId"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "ebs_volume_size",
@@ -200,14 +208,16 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 						Resolver:    schema.PathResolver("Ebs.VolumeType"),
 					},
 					{
-						Name:        "no_device",
-						Description: "Setting this value to true suppresses the specified device included in the block device mapping of the AMI.",
-						Type:        schema.TypeBool,
+						Name:          "no_device",
+						Description:   "Setting this value to true suppresses the specified device included in the block device mapping of the AMI.",
+						Type:          schema.TypeBool,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "virtual_name",
-						Description: "The name of the virtual device (for example, ephemeral0). You can specify either VirtualName or Ebs, but not both.",
-						Type:        schema.TypeString,
+						Name:          "virtual_name",
+						Description:   "The name of the virtual device (for example, ephemeral0). You can specify either VirtualName or Ebs, but not both.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 				},
 			},

@@ -6,17 +6,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2VpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_vpn_gateways",
-		Resolver:     fetchEc2VpnGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_vpn_gateways",
+		Resolver:      fetchEc2VpnGateways,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -65,9 +67,10 @@ func Ec2VpnGateways() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:     "aws_ec2_vpc_attachment",
-				Resolver: fetchEc2VpcAttachments,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"vpn_gateway_cq_id", "vpc_id"}},
+				Name:          "aws_ec2_vpc_attachment",
+				Resolver:      fetchEc2VpcAttachments,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vpn_gateway_cq_id", "vpc_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:     "vpn_gateway_cq_id",

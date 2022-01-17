@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -141,9 +142,10 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:        "error",
-						Description: "The error that resulted in an Error finding.",
-						Type:        schema.TypeString,
+						Name:          "error",
+						Description:   "The error that resulted in an Error finding.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "is_public",
@@ -163,9 +165,10 @@ func AccessAnalyzerAnalyzer() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:        "aws_access_analyzer_analyzer_finding_sources",
-						Description: "The source of the finding.",
-						Resolver:    fetchAccessAnalyzerAnalyzerFindingSources,
+						Name:          "aws_access_analyzer_analyzer_finding_sources",
+						Description:   "The source of the finding.",
+						Resolver:      fetchAccessAnalyzerAnalyzerFindingSources,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "analyzer_finding_cq_id",

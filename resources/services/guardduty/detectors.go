@@ -7,17 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func GuarddutyDetectors() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_guardduty_detectors",
-		Resolver:     fetchGuarddutyDetectors,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("guardduty"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		Name:          "aws_guardduty_detectors",
+		Resolver:      fetchGuarddutyDetectors,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("guardduty"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -103,9 +105,10 @@ func GuarddutyDetectors() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_guardduty_detector_members",
-				Description: "Contains information about the member account.",
-				Resolver:    fetchGuarddutyDetectorMembers,
+				Name:          "aws_guardduty_detector_members",
+				Description:   "Contains information about the member account.",
+				Resolver:      fetchGuarddutyDetectorMembers,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "detector_cq_id",

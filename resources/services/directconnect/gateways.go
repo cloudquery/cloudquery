@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func DirectconnectGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_directconnect_gateways",
-		Description:  "Information about a Direct Connect gateway, which enables you to connect virtual interfaces and virtual private gateway or transit gateways.",
-		Resolver:     fetchDirectconnectGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		Name:          "aws_directconnect_gateways",
+		Description:   "Information about a Direct Connect gateway, which enables you to connect virtual interfaces and virtual private gateway or transit gateways.",
+		Resolver:      fetchDirectconnectGateways,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -76,10 +78,11 @@ func DirectconnectGateways() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_directconnect_gateway_associations",
-				Description: "Information about the association between an Direct Connect Gateway and either a Virtual Private Gateway, or Transit Gateway",
-				Resolver:    fetchDirectconnectGatewayAssociations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"gateway_cq_id", "association_id"}},
+				Name:          "aws_directconnect_gateway_associations",
+				Description:   "Information about the association between an Direct Connect Gateway and either a Virtual Private Gateway, or Transit Gateway",
+				Resolver:      fetchDirectconnectGatewayAssociations,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"gateway_cq_id", "association_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "gateway_cq_id",
@@ -162,9 +165,10 @@ func DirectconnectGateways() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_directconnect_gateway_attachments",
-				Description: "Information about the attachment between a Direct Connect gateway and virtual interfaces.",
-				Resolver:    fetchDirectconnectGatewayAttachments,
+				Name:          "aws_directconnect_gateway_attachments",
+				Description:   "Information about the attachment between a Direct Connect gateway and virtual interfaces.",
+				Resolver:      fetchDirectconnectGatewayAttachments,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "gateway_cq_id",

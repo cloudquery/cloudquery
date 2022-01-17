@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -44,9 +45,10 @@ func KmsKeys() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "cloud_hsm_cluster_id",
-				Description: "The cluster ID of the AWS CloudHSM cluster that contains the key material for the CMK",
-				Type:        schema.TypeString,
+				Name:          "cloud_hsm_cluster_id",
+				Description:   "The cluster ID of the AWS CloudHSM cluster that contains the key material for the CMK",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "creation_date",
@@ -54,9 +56,10 @@ func KmsKeys() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "custom_key_store_id",
-				Description: "A unique identifier for the custom key store.",
-				Type:        schema.TypeString,
+				Name:          "custom_key_store_id",
+				Description:   "A unique identifier for the custom key store.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "customer_master_key_spec",
@@ -109,14 +112,16 @@ func KmsKeys() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "signing_algorithms",
-				Description: "The signing algorithms that the CMK supports.",
-				Type:        schema.TypeStringArray,
+				Name:          "signing_algorithms",
+				Description:   "The signing algorithms that the CMK supports.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "valid_to",
-				Description: "The time at which the imported key material expires.",
-				Type:        schema.TypeTimestamp,
+				Name:          "valid_to",
+				Description:   "The time at which the imported key material expires.",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "arn",

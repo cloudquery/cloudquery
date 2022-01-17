@@ -10,8 +10,9 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/mitchellh/mapstructure"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Elbv2LoadBalancers() *schema.Table {
@@ -37,10 +38,11 @@ func Elbv2LoadBalancers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "web_acl_arn",
-				Description: "arn of associated web acl",
-				Type:        schema.TypeString,
-				Resolver:    resolveElbv2loadBalancerWebACLArn,
+				Name:          "web_acl_arn",
+				Description:   "arn of associated web acl",
+				Type:          schema.TypeString,
+				Resolver:      resolveElbv2loadBalancerWebACLArn,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "tags",
@@ -58,9 +60,10 @@ func Elbv2LoadBalancers() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "customer_owned_ipv4_pool",
-				Description: "[Application Load Balancers on Outposts] The ID of the customer-owned address pool.",
-				Type:        schema.TypeString,
+				Name:          "customer_owned_ipv4_pool",
+				Description:   "[Application Load Balancers on Outposts] The ID of the customer-owned address pool.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "dns_name",
@@ -91,9 +94,10 @@ func Elbv2LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "security_groups",
-				Description: "The IDs of the security groups for the load balancer.",
-				Type:        schema.TypeStringArray,
+				Name:          "security_groups",
+				Description:   "The IDs of the security groups for the load balancer.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "state_code",
@@ -102,10 +106,11 @@ func Elbv2LoadBalancers() *schema.Table {
 				Resolver:    schema.PathResolver("State.Code"),
 			},
 			{
-				Name:        "state_reason",
-				Description: "A description of the state.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("State.Reason"),
+				Name:          "state_reason",
+				Description:   "A description of the state.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("State.Reason"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "type",
@@ -139,9 +144,10 @@ func Elbv2LoadBalancers() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("name"),
 					},
 					{
-						Name:        "outpost_id",
-						Description: "[Application Load Balancers on Outposts] The ID of the Outpost.",
-						Type:        schema.TypeString,
+						Name:          "outpost_id",
+						Description:   "[Application Load Balancers on Outposts] The ID of the Outpost.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "subnet_id",
@@ -156,9 +162,10 @@ func Elbv2LoadBalancers() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:        "aws_elbv2_load_balancer_availability_zone_addresses",
-						Description: "Information about a static IP address for a load balancer.",
-						Resolver:    fetchElbv2LoadBalancerAvailabilityZoneAddresses,
+						Name:          "aws_elbv2_load_balancer_availability_zone_addresses",
+						Description:   "Information about a static IP address for a load balancer.",
+						Resolver:      fetchElbv2LoadBalancerAvailabilityZoneAddresses,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "load_balancer_availability_zone_cq_id",
