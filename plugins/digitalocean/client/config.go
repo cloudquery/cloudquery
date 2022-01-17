@@ -17,7 +17,7 @@ type Config struct {
 func (c Config) Example() string {
 	return `
 		configuration {
-			// API Token to access DigialOcean resources 
+			// API Token to access DigitalOcean resources 
 			// See https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication
 			token = "<YOUR_API_TOKEN_HERE>"
 			// List of regions to fetch spaces from, if not given all regions are assumed

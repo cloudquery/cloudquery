@@ -21,16 +21,21 @@ const MaxItemsPerPage = 200
 type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
-	logger       hclog.Logger
-	DoClient     *godo.Client
-	Regions      []string
-	SpacesRegion string
-
-	S3 *s3.Client
+	logger           hclog.Logger
+	DoClient         *godo.Client
+	Regions          []string
+	SpacesRegion     string
+	CredentialStatus DoCredentialStruct
+	S3               *s3.Client
 }
 
 func (c *Client) Logger() hclog.Logger {
 	return c.logger
+}
+
+type DoCredentialStruct struct {
+	Api    bool
+	Spaces bool
 }
 
 func (c *Client) WithSpacesRegion(region string) *Client {
@@ -73,9 +78,18 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		return nil, fmt.Errorf("missing API token")
 	}
 
+	credStatus := DoCredentialStruct{
+		Api:    true,
+		Spaces: true,
+	}
+
 	if providerConfig.SpacesAccessKey == "" || providerConfig.SpacesAccessKeyId == "" {
 		providerConfig.SpacesAccessKeyId, providerConfig.SpacesAccessKey = getSpacesTokenFromEnv()
 	}
+	if providerConfig.SpacesAccessKey == "" || providerConfig.SpacesAccessKeyId == "" {
+		credStatus.Spaces = false
+	}
+
 	awsCfg, err := awscfg.LoadDefaultConfig(context.Background(),
 		awscfg.WithCredentialsProvider(SpacesCredentialsProvider{providerConfig.SpacesAccessKey, providerConfig.SpacesAccessKeyId}),
 		awscfg.WithEndpointResolver(SpacesEndpointResolver{}),
@@ -96,11 +110,12 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	}
 
 	client := Client{
-		logger:       logger,
-		DoClient:     godo.NewFromToken(providerConfig.Token),
-		Regions:      spacesRegions,
-		SpacesRegion: "nyc3",
-		S3:           s3.NewFromConfig(awsCfg),
+		logger:           logger,
+		DoClient:         godo.NewFromToken(providerConfig.Token),
+		Regions:          spacesRegions,
+		SpacesRegion:     "nyc3",
+		S3:               s3.NewFromConfig(awsCfg),
+		CredentialStatus: credStatus,
 	}
 	return &client, nil
 }
