@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -15,13 +16,14 @@ const usagePlanIDPart = "/usageplans"
 
 func ApigatewayUsagePlans() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_usage_plans",
-		Description:  "Represents a usage plan than can specify who can assess associated API stages with specified request limits and quotas.",
-		Resolver:     fetchApigatewayUsagePlans,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_apigateway_usage_plans",
+		Description:   "Represents a usage plan than can specify who can assess associated API stages with specified request limits and quotas.",
+		Resolver:      fetchApigatewayUsagePlans,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("apigateway"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -102,10 +104,11 @@ func ApigatewayUsagePlans() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_apigateway_usage_plan_api_stages",
-				Description: "API stage name of the associated API stage in a usage plan.",
-				Resolver:    fetchApigatewayUsagePlanApiStages,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "api_id", "stage"}},
+				Name:          "aws_apigateway_usage_plan_api_stages",
+				Description:   "API stage name of the associated API stage in a usage plan.",
+				Resolver:      fetchApigatewayUsagePlanApiStages,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "api_id", "stage"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "usage_plan_cq_id",
@@ -137,10 +140,11 @@ func ApigatewayUsagePlans() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_apigateway_usage_plan_keys",
-				Description: "Represents a usage plan key to identify a plan customer.",
-				Resolver:    fetchApigatewayUsagePlanKeys,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "id"}},
+				Name:          "aws_apigateway_usage_plan_keys",
+				Description:   "Represents a usage plan key to identify a plan customer.",
+				Resolver:      fetchApigatewayUsagePlanKeys,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"usage_plan_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "usage_plan_cq_id",

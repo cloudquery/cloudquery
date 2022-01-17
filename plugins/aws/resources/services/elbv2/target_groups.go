@@ -8,18 +8,20 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Elbv2TargetGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elbv2_target_groups",
-		Description:  "Information about a target group.",
-		Resolver:     fetchElbv2TargetGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_elbv2_target_groups",
+		Description:   "Information about a target group.",
+		Resolver:      fetchElbv2TargetGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

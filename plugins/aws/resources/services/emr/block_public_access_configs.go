@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -38,22 +39,25 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 				Resolver:    schema.PathResolver("BlockPublicAccessConfiguration.BlockPublicSecurityGroupRules"),
 			},
 			{
-				Name:        "classification",
-				Description: "The classification within a configuration.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BlockPublicAccessConfiguration.Classification"),
+				Name:          "classification",
+				Description:   "The classification within a configuration.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Classification"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "configurations",
-				Description: "A list of additional configurations to apply within a configuration object.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveEmrBlockPublicAccessConfigConfigurations,
+				Name:          "configurations",
+				Description:   "A list of additional configurations to apply within a configuration object.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveEmrBlockPublicAccessConfigConfigurations,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "properties",
-				Description: "A set of properties specified within a configuration classification.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("BlockPublicAccessConfiguration.Properties"),
+				Name:          "properties",
+				Description:   "A set of properties specified within a configuration classification.",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Properties"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "created_by_arn",

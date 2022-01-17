@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func CognitoIdentityPools() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cognito_identity_pools",
-		Description:  "An object representing an Amazon Cognito identity pool.",
-		Resolver:     fetchCognitoIdentityPools,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("cognito-identity"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_cognito_identity_pools",
+		Description:   "An object representing an Amazon Cognito identity pool.",
+		Resolver:      fetchCognitoIdentityPools,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-identity"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -91,10 +93,11 @@ func CognitoIdentityPools() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cognito_identity_pool_cognito_identity_providers",
-				Description: "A provider representing an Amazon Cognito user pool and its client ID.",
-				Resolver:    fetchCognitoIdentityPoolCognitoIdentityProviders,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"identity_pool_cq_id", "client_id"}},
+				Name:          "aws_cognito_identity_pool_cognito_identity_providers",
+				Description:   "A provider representing an Amazon Cognito user pool and its client ID.",
+				Resolver:      fetchCognitoIdentityPoolCognitoIdentityProviders,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"identity_pool_cq_id", "client_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "identity_pool_cq_id",

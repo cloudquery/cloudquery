@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -116,16 +117,18 @@ func Ec2NetworkAcls() *schema.Table {
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "icmp_type_code",
-						Description: "The ICMP code.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("IcmpTypeCode.Code"),
+						Name:          "icmp_type_code",
+						Description:   "The ICMP code.",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("IcmpTypeCode.Code"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "icmp_type_code_type",
-						Description: "The ICMP type.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("IcmpTypeCode.Type"),
+						Name:          "icmp_type_code_type",
+						Description:   "The ICMP type.",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("IcmpTypeCode.Type"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "ipv6_cidr_block",
@@ -133,16 +136,18 @@ func Ec2NetworkAcls() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "port_range_from",
-						Description: "The first port in the range.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("PortRange.From"),
+						Name:          "port_range_from",
+						Description:   "The first port in the range.",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("PortRange.From"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "port_range_to",
-						Description: "The last port in the range.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("PortRange.To"),
+						Name:          "port_range_to",
+						Description:   "The last port in the range.",
+						Type:          schema.TypeInt,
+						Resolver:      schema.PathResolver("PortRange.To"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "protocol",

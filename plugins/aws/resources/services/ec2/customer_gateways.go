@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2CustomerGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_customer_gateways",
-		Description:  "Describes a customer gateway.",
-		Resolver:     fetchEc2CustomerGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_customer_gateways",
+		Description:   "Describes a customer gateway.",
+		Resolver:      fetchEc2CustomerGateways,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

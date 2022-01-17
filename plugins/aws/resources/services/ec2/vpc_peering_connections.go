@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func Ec2VpcPeeringConnections() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_vpc_peering_connections",
-		Description:  "Describes a VPC peering connection.",
-		Resolver:     fetchEc2VpcPeeringConnections,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		Name:          "aws_ec2_vpc_peering_connections",
+		Description:   "Describes a VPC peering connection.",
+		Resolver:      fetchEc2VpcPeeringConnections,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

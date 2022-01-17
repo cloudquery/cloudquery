@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -21,6 +22,7 @@ func CloudtrailTrails() *schema.Table {
 		DeleteFilter:         client.DeleteAccountFilter,
 		PostResourceResolver: postCloudtrailTrailResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		IgnoreInTests:        true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -179,9 +181,10 @@ func CloudtrailTrails() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudtrail_trail_event_selectors",
-				Description: "Use event selectors to further specify the management and data event settings for your trail",
-				Resolver:    fetchCloudtrailTrailEventSelectors,
+				Name:          "aws_cloudtrail_trail_event_selectors",
+				Description:   "Use event selectors to further specify the management and data event settings for your trail",
+				Resolver:      fetchCloudtrailTrailEventSelectors,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "trail_cq_id",

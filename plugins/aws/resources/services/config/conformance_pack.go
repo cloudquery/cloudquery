@@ -7,22 +7,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	smithy "github.com/aws/smithy-go"
+	"github.com/aws/smithy-go"
 )
 
 func ConfigConformancePack() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_config_conformance_packs",
-		Description:  "Returns details of a conformance pack.",
-		Resolver:     fetchConfigConformancePacks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options: schema.TableCreationOptions{
-			PrimaryKeys: []string{"arn"},
-		},
+		Name:          "aws_config_conformance_packs",
+		Description:   "Returns details of a conformance pack.",
+		Resolver:      fetchConfigConformancePacks,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

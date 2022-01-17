@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -42,21 +43,24 @@ func Ec2Eips() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "carrier_ip",
-				Description: "The carrier IP address associated",
-				Type:        schema.TypeInet,
-				Resolver:    schema.IPAddressResolver("CarrierIp"),
+				Name:          "carrier_ip",
+				Description:   "The carrier IP address associated",
+				Type:          schema.TypeInet,
+				Resolver:      schema.IPAddressResolver("CarrierIp"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "customer_owned_ip",
-				Description: "The customer-owned IP address.",
-				Type:        schema.TypeInet,
-				Resolver:    schema.IPAddressResolver("CustomerOwnedIp"),
+				Name:          "customer_owned_ip",
+				Description:   "The customer-owned IP address.",
+				Type:          schema.TypeInet,
+				Resolver:      schema.IPAddressResolver("CustomerOwnedIp"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "customer_owned_ipv4_pool",
-				Description: "The ID of the customer-owned address pool.",
-				Type:        schema.TypeString,
+				Name:          "customer_owned_ipv4_pool",
+				Description:   "The ID of the customer-owned address pool.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "domain",
@@ -64,9 +68,10 @@ func Ec2Eips() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "instance_id",
-				Description: "The ID of the instance that the address is associated with (if any).",
-				Type:        schema.TypeString,
+				Name:          "instance_id",
+				Description:   "The ID of the instance that the address is associated with (if any).",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "network_border_group",

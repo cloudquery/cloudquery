@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -38,24 +39,28 @@ func IamPasswordPolicies() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "hard_expiry",
-				Description: "Specifies whether IAM users are prevented from setting a new password after their password has expired. ",
-				Type:        schema.TypeBool,
+				Name:          "hard_expiry",
+				Description:   "Specifies whether IAM users are prevented from setting a new password after their password has expired. ",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "max_password_age",
-				Description: "The number of days that an IAM user password is valid. ",
-				Type:        schema.TypeInt,
+				Name:          "max_password_age",
+				Description:   "The number of days that an IAM user password is valid. ",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "minimum_password_length",
-				Description: "Minimum length to require for IAM user passwords. ",
-				Type:        schema.TypeInt,
+				Name:          "minimum_password_length",
+				Description:   "Minimum length to require for IAM user passwords. ",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "password_reuse_prevention",
-				Description: "Specifies the number of previous passwords that IAM users are prevented from reusing. ",
-				Type:        schema.TypeInt,
+				Name:          "password_reuse_prevention",
+				Description:   "Specifies the number of previous passwords that IAM users are prevented from reusing. ",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "require_lowercase_characters",

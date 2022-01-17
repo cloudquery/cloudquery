@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func CloudwatchlogsFilters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudwatchlogs_filters",
-		Description:  "Metric filters express how CloudWatch Logs would extract metric observations from ingested log events and transform them into metric data in a CloudWatch metric.",
-		Resolver:     fetchCloudwatchlogsFilters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name", "log_group_name"}},
+		Name:          "aws_cloudwatchlogs_filters",
+		Description:   "Metric filters express how CloudWatch Logs would extract metric observations from ingested log events and transform them into metric data in a CloudWatch metric.",
+		Resolver:      fetchCloudwatchlogsFilters,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("logs"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name", "log_group_name"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -57,10 +59,11 @@ func CloudwatchlogsFilters() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudwatchlogs_filter_metric_transformations",
-				Description: "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
-				Resolver:    fetchCloudwatchlogsFilterMetricTransformations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"filter_cq_id", "metric_name"}},
+				Name:          "aws_cloudwatchlogs_filter_metric_transformations",
+				Description:   "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
+				Resolver:      fetchCloudwatchlogsFilterMetricTransformations,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"filter_cq_id", "metric_name"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "filter_cq_id",

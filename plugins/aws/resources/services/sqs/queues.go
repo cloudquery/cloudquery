@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/mitchellh/mapstructure"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func SQSQueues() *schema.Table {
@@ -40,9 +41,10 @@ func SQSQueues() *schema.Table {
 				Resolver:    schema.PathResolver("URL"),
 			},
 			{
-				Name:        "policy",
-				Description: "The queue's policy. A valid Amazon Web Services policy.",
-				Type:        schema.TypeJSON,
+				Name:          "policy",
+				Description:   "The queue's policy. A valid Amazon Web Services policy.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "visibility_timeout",
@@ -101,44 +103,52 @@ func SQSQueues() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "redrive_policy",
-				Description: "The parameters for the dead-letter queue functionality of the source queue as a JSON object.",
-				Type:        schema.TypeJSON,
+				Name:          "redrive_policy",
+				Description:   "The parameters for the dead-letter queue functionality of the source queue as a JSON object.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "fifo_queue",
-				Description: "True if the queue is FIFO queue.",
-				Type:        schema.TypeBool,
+				Name:          "fifo_queue",
+				Description:   "True if the queue is FIFO queue.",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "content_based_deduplication",
-				Description: "True if content-based deduplication is enabled for the queue.",
-				Type:        schema.TypeBool,
+				Name:          "content_based_deduplication",
+				Description:   "True if content-based deduplication is enabled for the queue.",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kms_master_key_id",
-				Description: "ID of an Amazon Web Services managed customer master key (CMK) for Amazon SQS or a custom CMK.",
-				Type:        schema.TypeString,
+				Name:          "kms_master_key_id",
+				Description:   "ID of an Amazon Web Services managed customer master key (CMK) for Amazon SQS or a custom CMK.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "kms_data_key_reuse_period_seconds",
-				Description: "The length of time, in seconds, for which Amazon SQS can reuse a data key to encrypt or decrypt messages before calling KMS again.",
-				Type:        schema.TypeInt,
+				Name:          "kms_data_key_reuse_period_seconds",
+				Description:   "The length of time, in seconds, for which Amazon SQS can reuse a data key to encrypt or decrypt messages before calling KMS again.",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "deduplication_scope",
-				Description: "Specifies whether message deduplication occurs at the message group or queue level.",
-				Type:        schema.TypeString,
+				Name:          "deduplication_scope",
+				Description:   "Specifies whether message deduplication occurs at the message group or queue level.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "fifo_throughput_limit",
-				Description: "Specifies whether message deduplication occurs at the message group or queue level.",
-				Type:        schema.TypeString,
+				Name:          "fifo_throughput_limit",
+				Description:   "Specifies whether message deduplication occurs at the message group or queue level.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "redrive_allow_policy",
-				Description: "The parameters for the permissions for the dead-letter queue redrive permission.",
-				Type:        schema.TypeJSON,
+				Name:          "redrive_allow_policy",
+				Description:   "The parameters for the permissions for the dead-letter queue redrive permission.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "tags",

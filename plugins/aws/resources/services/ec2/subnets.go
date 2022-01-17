@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -58,9 +59,10 @@ func Ec2Subnets() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "customer_owned_ipv4_pool",
-				Description: "The customer-owned IPv4 address pool associated with the subnet.",
-				Type:        schema.TypeString,
+				Name:          "customer_owned_ipv4_pool",
+				Description:   "The customer-owned IPv4 address pool associated with the subnet.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "default_for_az",
@@ -78,9 +80,10 @@ func Ec2Subnets() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "outpost_arn",
-				Description: "The Amazon Resource Name (ARN) of the Outpost.",
-				Type:        schema.TypeString,
+				Name:          "outpost_arn",
+				Description:   "The Amazon Resource Name (ARN) of the Outpost.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "owner_id",
@@ -118,10 +121,11 @@ func Ec2Subnets() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_subnet_ipv6_cidr_block_association_sets",
-				Description: "Describes an IPv6 CIDR block associated with a subnet.",
-				Resolver:    fetchEc2SubnetIpv6CidrBlockAssociationSets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
+				Name:          "aws_ec2_subnet_ipv6_cidr_block_association_sets",
+				Description:   "Describes an IPv6 CIDR block associated with a subnet.",
+				Resolver:      fetchEc2SubnetIpv6CidrBlockAssociationSets,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "subnet_cq_id",

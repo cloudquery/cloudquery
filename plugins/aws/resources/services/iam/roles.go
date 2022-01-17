@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -78,10 +79,11 @@ func IamRoles() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "permissions_boundary_arn",
-				Description: "The ARN of the policy used to set the permissions boundary for the user or role. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				Name:          "permissions_boundary_arn",
+				Description:   "The ARN of the policy used to set the permissions boundary for the user or role. ",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "permissions_boundary_type",
@@ -90,16 +92,18 @@ func IamRoles() *schema.Table {
 				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
 			},
 			{
-				Name:        "role_last_used_last_used_date",
-				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601) that the role was last used. This field is null if the role has not been used within the IAM tracking period. For more information about the tracking period, see Regions where data is tracked (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html#access-advisor_tracking-period) in the IAM User Guide. ",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("RoleLastUsed.LastUsedDate"),
+				Name:          "role_last_used_last_used_date",
+				Description:   "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601) that the role was last used. This field is null if the role has not been used within the IAM tracking period. For more information about the tracking period, see Regions where data is tracked (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html#access-advisor_tracking-period) in the IAM User Guide. ",
+				Type:          schema.TypeTimestamp,
+				Resolver:      schema.PathResolver("RoleLastUsed.LastUsedDate"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "role_last_used_region",
-				Description: "The name of the AWS Region in which the role was last used. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RoleLastUsed.Region"),
+				Name:          "role_last_used_region",
+				Description:   "The name of the AWS Region in which the role was last used. ",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("RoleLastUsed.Region"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "tags",

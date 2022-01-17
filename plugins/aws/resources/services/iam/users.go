@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -40,8 +41,9 @@ func IamUsers() *schema.Table {
 				Resolver: schema.PathResolver("UserId"),
 			},
 			{
-				Name: "password_last_used",
-				Type: schema.TypeTimestamp,
+				Name:          "password_last_used",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "arn",
@@ -56,12 +58,14 @@ func IamUsers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "password_last_changed",
-				Type: schema.TypeTimestamp,
+				Name:          "password_last_changed",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
-				Name: "password_next_rotation",
-				Type: schema.TypeTimestamp,
+				Name:          "password_next_rotation",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "mfa_active",
@@ -76,9 +80,10 @@ func IamUsers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "permissions_boundary_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				Name:          "permissions_boundary_arn",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "permissions_boundary_type",
@@ -111,8 +116,9 @@ func IamUsers() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "access_key_2_last_rotated",
-				Type: schema.TypeTimestamp,
+				Name:          "access_key_2_last_rotated",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 
 			{
@@ -120,16 +126,18 @@ func IamUsers() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "cert_1_last_rotated",
-				Type: schema.TypeTimestamp,
+				Name:          "cert_1_last_rotated",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "cert_2_active",
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "cert_2_last_rotated",
-				Type: schema.TypeTimestamp,
+				Name:          "cert_2_last_rotated",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -176,9 +184,10 @@ func IamUsers() *schema.Table {
 				},
 			},
 			{
-				Name:     "aws_iam_user_groups",
-				Resolver: fetchIamUserGroups,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "group_id"}},
+				Name:          "aws_iam_user_groups",
+				Resolver:      fetchIamUserGroups,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "group_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:     "user_cq_id",

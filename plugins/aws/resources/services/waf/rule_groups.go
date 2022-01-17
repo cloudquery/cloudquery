@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -33,9 +34,10 @@ func WafRuleGroups() *schema.Table {
 				Resolver: resolveWafRuleGroupArn,
 			},
 			{
-				Name:     "rule_ids",
-				Type:     schema.TypeStringArray,
-				Resolver: resolveWafRuleGroupRuleIds,
+				Name:          "rule_ids",
+				Type:          schema.TypeStringArray,
+				Resolver:      resolveWafRuleGroupRuleIds,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "tags",

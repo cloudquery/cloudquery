@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -55,8 +56,9 @@ func Ec2EbsVolumes() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "fast_restored",
-				Type: schema.TypeBool,
+				Name:          "fast_restored",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "iops",
@@ -71,8 +73,9 @@ func Ec2EbsVolumes() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "outpost_arn",
-				Type: schema.TypeString,
+				Name:          "outpost_arn",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "size",

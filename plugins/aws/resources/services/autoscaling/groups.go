@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -97,9 +98,10 @@ func AutoscalingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("AutoScalingGroupARN"),
 			},
 			{
-				Name:        "capacity_rebalance",
-				Description: "Indicates whether Capacity Rebalancing is enabled.",
-				Type:        schema.TypeBool,
+				Name:          "capacity_rebalance",
+				Description:   "Indicates whether Capacity Rebalancing is enabled.",
+				Type:          schema.TypeBool,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "enabled_metrics",
@@ -118,22 +120,25 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "launch_template_id",
-				Description: "The ID of the launch template",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
+				Name:          "launch_template_id",
+				Description:   "The ID of the launch template",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "launch_template_name",
-				Description: "The name of the launch template",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
+				Name:          "launch_template_name",
+				Description:   "The name of the launch template",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "launch_template_version",
-				Description: "The version number, $Latest, or $Default",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LaunchTemplate.Version"),
+				Name:          "launch_template_version",
+				Description:   "The version number, $Latest, or $Default",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LaunchTemplate.Version"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "load_balancer_names",
@@ -141,14 +146,16 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "max_instance_lifetime",
-				Description: "The maximum amount of time, in seconds, that an instance can be in service. Valid Range: Minimum value of 0.",
-				Type:        schema.TypeInt,
+				Name:          "max_instance_lifetime",
+				Description:   "The maximum amount of time, in seconds, that an instance can be in service. Valid Range: Minimum value of 0.",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "mixed_instances_policy",
-				Description: "The mixed instances policy for the group.",
-				Type:        schema.TypeJSON,
+				Name:          "mixed_instances_policy",
+				Description:   "The mixed instances policy for the group.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "new_instances_protected_from_scale_in",
@@ -156,9 +163,10 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "placement_group",
-				Description: "The name of the placement group into which to launch your instances, if any.",
-				Type:        schema.TypeString,
+				Name:          "placement_group",
+				Description:   "The name of the placement group into which to launch your instances, if any.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "service_linked_role_arn",
@@ -167,9 +175,10 @@ func AutoscalingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("ServiceLinkedRoleARN"),
 			},
 			{
-				Name:        "status",
-				Description: "The current state of the group when the DeleteAutoScalingGroup operation is in progress.",
-				Type:        schema.TypeString,
+				Name:          "status",
+				Description:   "The current state of the group when the DeleteAutoScalingGroup operation is in progress.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "suspended_processes",
@@ -245,27 +254,31 @@ func AutoscalingGroups() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "launch_template_id",
-						Description: "The ID of the launch template",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
+						Name:          "launch_template_id",
+						Description:   "The ID of the launch template",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "launch_template_name",
-						Description: "The name of the launch template",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
+						Name:          "launch_template_name",
+						Description:   "The name of the launch template",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "launch_template_version",
-						Description: "The version number, $Latest, or $Default",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LaunchTemplate.Version"),
+						Name:          "launch_template_version",
+						Description:   "The version number, $Latest, or $Default",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("LaunchTemplate.Version"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "weighted_capacity",
-						Description: "The number of capacity units contributed by the instance based on its instance type",
-						Type:        schema.TypeString,
+						Name:          "weighted_capacity",
+						Description:   "The number of capacity units contributed by the instance based on its instance type",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -308,9 +321,10 @@ func AutoscalingGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_autoscaling_group_scaling_policies",
-				Description: "Describes a scaling policy.",
-				Resolver:    fetchAutoscalingGroupScalingPolicies,
+				Name:          "aws_autoscaling_group_scaling_policies",
+				Description:   "Describes a scaling policy.",
+				Resolver:      fetchAutoscalingGroupScalingPolicies,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "group_cq_id",
@@ -450,9 +464,10 @@ func AutoscalingGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_autoscaling_group_lifecycle_hooks",
-				Description: "Describes a lifecycle hook, which tells Amazon EC2 Auto Scaling that you want to perform an action whenever it launches instances or terminates instances.",
-				Resolver:    fetchAutoscalingGroupLifecycleHooks,
+				Name:          "aws_autoscaling_group_lifecycle_hooks",
+				Description:   "Describes a lifecycle hook, which tells Amazon EC2 Auto Scaling that you want to perform an action whenever it launches instances or terminates instances.",
+				Resolver:      fetchAutoscalingGroupLifecycleHooks,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "group_cq_id",
@@ -580,7 +595,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 
-	//return nil
+	// return nil
 }
 func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p, ok := resource.Item.(autoscalingGroupWrapper)

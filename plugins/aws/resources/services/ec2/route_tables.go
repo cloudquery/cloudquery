@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -89,15 +90,17 @@ func Ec2RouteTables() *schema.Table {
 						Resolver:    schema.PathResolver("AssociationState.State"),
 					},
 					{
-						Name:        "association_state_status_message",
-						Description: "The status message, if applicable.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AssociationState.StatusMessage"),
+						Name:          "association_state_status_message",
+						Description:   "The status message, if applicable.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("AssociationState.StatusMessage"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "gateway_id",
-						Description: "The ID of the internet gateway or virtual private gateway.",
-						Type:        schema.TypeString,
+						Name:          "gateway_id",
+						Description:   "The ID of the internet gateway or virtual private gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "main",
@@ -112,10 +115,11 @@ func Ec2RouteTables() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ec2_route_table_propagating_vgws",
-				Description: "Describes a virtual private gateway propagating route.",
-				Resolver:    fetchEc2RouteTablePropagatingVgws,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "gateway_id"}},
+				Name:          "aws_ec2_route_table_propagating_vgws",
+				Description:   "Describes a virtual private gateway propagating route.",
+				Resolver:      fetchEc2RouteTablePropagatingVgws,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "gateway_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "route_table_cq_id",
@@ -142,9 +146,10 @@ func Ec2RouteTables() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "carrier_gateway_id",
-						Description: "The ID of the carrier gateway.",
-						Type:        schema.TypeString,
+						Name:          "carrier_gateway_id",
+						Description:   "The ID of the carrier gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "destination_cidr_block",
@@ -157,14 +162,16 @@ func Ec2RouteTables() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "destination_prefix_list_id",
-						Description: "The prefix of the AWS service.",
-						Type:        schema.TypeString,
+						Name:          "destination_prefix_list_id",
+						Description:   "The prefix of the AWS service.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "egress_only_internet_gateway_id",
-						Description: "The ID of the egress-only internet gateway.",
-						Type:        schema.TypeString,
+						Name:          "egress_only_internet_gateway_id",
+						Description:   "The ID of the egress-only internet gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "gateway_id",
@@ -172,29 +179,34 @@ func Ec2RouteTables() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "instance_id",
-						Description: "The ID of a NAT instance in your VPC.",
-						Type:        schema.TypeString,
+						Name:          "instance_id",
+						Description:   "The ID of a NAT instance in your VPC.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "instance_owner_id",
-						Description: "The AWS account ID of the owner of the instance.",
-						Type:        schema.TypeString,
+						Name:          "instance_owner_id",
+						Description:   "The AWS account ID of the owner of the instance.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "local_gateway_id",
-						Description: "The ID of the local gateway.",
-						Type:        schema.TypeString,
+						Name:          "local_gateway_id",
+						Description:   "The ID of the local gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "nat_gateway_id",
-						Description: "The ID of a NAT gateway.",
-						Type:        schema.TypeString,
+						Name:          "nat_gateway_id",
+						Description:   "The ID of a NAT gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "network_interface_id",
-						Description: "The ID of the network interface.",
-						Type:        schema.TypeString,
+						Name:          "network_interface_id",
+						Description:   "The ID of the network interface.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "origin",
@@ -207,14 +219,16 @@ func Ec2RouteTables() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "transit_gateway_id",
-						Description: "The ID of a transit gateway.",
-						Type:        schema.TypeString,
+						Name:          "transit_gateway_id",
+						Description:   "The ID of a transit gateway.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "vpc_peering_connection_id",
-						Description: "The ID of a VPC peering connection.",
-						Type:        schema.TypeString,
+						Name:          "vpc_peering_connection_id",
+						Description:   "The ID of a VPC peering connection.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 				},
 			},

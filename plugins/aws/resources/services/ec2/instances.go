@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -43,14 +44,16 @@ func Ec2Instances() *schema.Table {
 				}),
 			},
 			{
-				Name:     "state_transition_reason_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: resolveEc2InstanceStateTransitionReasonTime,
+				Name:          "state_transition_reason_time",
+				Type:          schema.TypeTimestamp,
+				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "ami_launch_index",
-				Description: "The AMI launch index, which can be used to find this instance in the launch group.",
-				Type:        schema.TypeInt,
+				Name:          "ami_launch_index",
+				Description:   "The AMI launch index, which can be used to find this instance in the launch group.",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "architecture",
@@ -63,9 +66,10 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "capacity_reservation_id",
-				Description: "The ID of the Capacity Reservation.",
-				Type:        schema.TypeString,
+				Name:          "capacity_reservation_id",
+				Description:   "The ID of the Capacity Reservation.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "cap_reservation_preference",
@@ -74,16 +78,18 @@ func Ec2Instances() *schema.Table {
 				Resolver:    schema.PathResolver("CapacityReservationSpecification.CapacityReservationPreference"),
 			},
 			{
-				Name:        "cap_reservation_target_capacity_reservation_id",
-				Description: "The ID of the targeted Capacity Reservation.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CapacityReservationSpecification.CapacityReservationTarget.CapacityReservationId"),
+				Name:          "cap_reservation_target_capacity_reservation_id",
+				Description:   "The ID of the targeted Capacity Reservation.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("CapacityReservationSpecification.CapacityReservationTarget.CapacityReservationId"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "cap_reservation_target_capacity_reservation_rg_arn",
-				Description: "The ARN of the targeted Capacity Reservation group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CapacityReservationSpecification.CapacityReservationTarget.CapacityReservationResourceGroupArn"),
+				Name:          "cap_reservation_target_capacity_reservation_rg_arn",
+				Description:   "The ARN of the targeted Capacity Reservation group.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("CapacityReservationSpecification.CapacityReservationTarget.CapacityReservationResourceGroupArn"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "client_token",
@@ -130,16 +136,18 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "iam_instance_profile_arn",
-				Description: "The Amazon Resource Name (ARN) of the instance profile.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IamInstanceProfile.Arn"),
+				Name:          "iam_instance_profile_arn",
+				Description:   "The Amazon Resource Name (ARN) of the instance profile.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IamInstanceProfile.Arn"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "iam_instance_profile_id",
-				Description: "The ID of the instance profile.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IamInstanceProfile.Id"),
+				Name:          "iam_instance_profile_id",
+				Description:   "The ID of the instance profile.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IamInstanceProfile.Id"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "image_id",
@@ -163,14 +171,16 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "kernel_id",
-				Description: "The kernel associated with this instance, if applicable.",
-				Type:        schema.TypeString,
+				Name:          "kernel_id",
+				Description:   "The kernel associated with this instance, if applicable.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "key_name",
-				Description: "The name of the key pair, if this instance was launched with an associated key pair.",
-				Type:        schema.TypeString,
+				Name:          "key_name",
+				Description:   "The name of the key pair, if this instance was launched with an associated key pair.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "launch_time",
@@ -220,15 +230,17 @@ func Ec2Instances() *schema.Table {
 				Resolver:    schema.PathResolver("Monitoring.State"),
 			},
 			{
-				Name:        "outpost_arn",
-				Description: "The Amazon Resource Name (ARN) of the Outpost.",
-				Type:        schema.TypeString,
+				Name:          "outpost_arn",
+				Description:   "The Amazon Resource Name (ARN) of the Outpost.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "placement_affinity",
-				Description: "The affinity setting for the instance on the Dedicated Host",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Placement.Affinity"),
+				Name:          "placement_affinity",
+				Description:   "The affinity setting for the instance on the Dedicated Host",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Placement.Affinity"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "placement_availability_zone",
@@ -243,28 +255,32 @@ func Ec2Instances() *schema.Table {
 				Resolver:    schema.PathResolver("Placement.GroupName"),
 			},
 			{
-				Name:        "placement_host_id",
-				Description: "The ID of the Dedicated Host on which the instance resides",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Placement.HostId"),
+				Name:          "placement_host_id",
+				Description:   "The ID of the Dedicated Host on which the instance resides",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Placement.HostId"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "placement_host_resource_group_arn",
-				Description: "The ARN of the host resource group in which to launch the instances",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Placement.HostResourceGroupArn"),
+				Name:          "placement_host_resource_group_arn",
+				Description:   "The ARN of the host resource group in which to launch the instances",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Placement.HostResourceGroupArn"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "placement_partition_number",
-				Description: "The number of the partition the instance is in",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Placement.PartitionNumber"),
+				Name:          "placement_partition_number",
+				Description:   "The number of the partition the instance is in",
+				Type:          schema.TypeInt,
+				Resolver:      schema.PathResolver("Placement.PartitionNumber"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "placement_spread_domain",
-				Description: "Reserved for future use",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Placement.SpreadDomain"),
+				Name:          "placement_spread_domain",
+				Description:   "Reserved for future use",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Placement.SpreadDomain"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "placement_tenancy",
@@ -293,14 +309,16 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "public_ip_address",
-				Description: "The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable",
-				Type:        schema.TypeString,
+				Name:          "public_ip_address",
+				Description:   "The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "ramdisk_id",
-				Description: "The RAM disk associated with this instance, if applicable.",
-				Type:        schema.TypeString,
+				Name:          "ramdisk_id",
+				Description:   "The RAM disk associated with this instance, if applicable.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "root_device_name",
@@ -318,14 +336,16 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "spot_instance_request_id",
-				Description: "If the request is a Spot Instance request, the ID of the request.",
-				Type:        schema.TypeString,
+				Name:          "spot_instance_request_id",
+				Description:   "If the request is a Spot Instance request, the ID of the request.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "sriov_net_support",
-				Description: "Specifies whether enhanced networking with the Intel 82599 Virtual Function interface is enabled.",
-				Type:        schema.TypeString,
+				Name:          "sriov_net_support",
+				Description:   "Specifies whether enhanced networking with the Intel 82599 Virtual Function interface is enabled.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "state_code",
@@ -340,16 +360,18 @@ func Ec2Instances() *schema.Table {
 				Resolver:    schema.PathResolver("State.Name"),
 			},
 			{
-				Name:        "state_reason_code",
-				Description: "The reason code for the state change.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StateReason.Code"),
+				Name:          "state_reason_code",
+				Description:   "The reason code for the state change.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("StateReason.Code"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "state_reason_message",
-				Description: "The message for the state change.  * Server.InsufficientInstanceCapacity: There was insufficient capacity available to satisfy the launch request.  * Server.InternalError: An internal error caused the instance to terminate during launch.  * Server.ScheduledStop: The instance was stopped due to a scheduled retirement.  * Server.SpotInstanceShutdown: The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Server.SpotInstanceTermination: The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Client.InstanceInitiatedShutdown: The instance was shut down using the shutdown -h command from the instance.  * Client.InstanceTerminated: The instance was terminated or rebooted during AMI creation.  * Client.InternalError: A client error caused the instance to terminate during launch.  * Client.InvalidSnapshot.NotFound: The specified snapshot was not found.  * Client.UserInitiatedHibernate: Hibernation was initiated on the instance.  * Client.UserInitiatedShutdown: The instance was shut down using the Amazon EC2 API.  * Client.VolumeLimitExceeded: The limit on the number of EBS volumes or total storage was exceeded",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StateReason.Message"),
+				Name:          "state_reason_message",
+				Description:   "The message for the state change.  * Server.InsufficientInstanceCapacity: There was insufficient capacity available to satisfy the launch request.  * Server.InternalError: An internal error caused the instance to terminate during launch.  * Server.ScheduledStop: The instance was stopped due to a scheduled retirement.  * Server.SpotInstanceShutdown: The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Server.SpotInstanceTermination: The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Client.InstanceInitiatedShutdown: The instance was shut down using the shutdown -h command from the instance.  * Client.InstanceTerminated: The instance was terminated or rebooted during AMI creation.  * Client.InternalError: A client error caused the instance to terminate during launch.  * Client.InvalidSnapshot.NotFound: The specified snapshot was not found.  * Client.UserInitiatedHibernate: Hibernation was initiated on the instance.  * Client.UserInitiatedShutdown: The instance was shut down using the Amazon EC2 API.  * Client.VolumeLimitExceeded: The limit on the number of EBS volumes or total storage was exceeded",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("StateReason.Message"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "state_transition_reason",
@@ -423,10 +445,11 @@ func Ec2Instances() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ec2_instance_elastic_gpu_associations",
-				Description: "Describes the association between an instance and an Elastic Graphics accelerator.",
-				Resolver:    fetchEc2InstanceElasticGpuAssociations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "elastic_gpu_association_id"}},
+				Name:          "aws_ec2_instance_elastic_gpu_associations",
+				Description:   "Describes the association between an instance and an Elastic Graphics accelerator.",
+				Resolver:      fetchEc2InstanceElasticGpuAssociations,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "elastic_gpu_association_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -457,10 +480,11 @@ func Ec2Instances() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ec2_instance_elastic_inference_accelerator_associations",
-				Description: "Describes the association between an instance and an elastic inference accelerator.",
-				Resolver:    fetchEc2InstanceElasticInferenceAcceleratorAssociations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "elastic_inference_accelerator_association_id"}},
+				Name:          "aws_ec2_instance_elastic_inference_accelerator_associations",
+				Description:   "Describes the association between an instance and an elastic inference accelerator.",
+				Resolver:      fetchEc2InstanceElasticInferenceAcceleratorAssociations,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "elastic_inference_accelerator_association_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -511,10 +535,11 @@ func Ec2Instances() *schema.Table {
 						}),
 					},
 					{
-						Name:        "association_carrier_ip",
-						Description: "The carrier IP address associated with the network interface.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.CarrierIp"),
+						Name:          "association_carrier_ip",
+						Description:   "The carrier IP address associated with the network interface.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("Association.CarrierIp"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "association_ip_owner_id",
@@ -608,9 +633,10 @@ func Ec2Instances() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "private_dns_name",
-						Description: "The private DNS name.",
-						Type:        schema.TypeString,
+						Name:          "private_dns_name",
+						Description:   "The private DNS name.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "private_ip_address",
@@ -670,9 +696,10 @@ func Ec2Instances() *schema.Table {
 						},
 					},
 					{
-						Name:        "aws_ec2_instance_network_interface_ipv6_addresses",
-						Description: "Describes an IPv6 address.",
-						Resolver:    fetchEc2InstanceNetworkInterfaceIpv6Addresses,
+						Name:          "aws_ec2_instance_network_interface_ipv6_addresses",
+						Description:   "Describes an IPv6 address.",
+						Resolver:      fetchEc2InstanceNetworkInterfaceIpv6Addresses,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "instance_network_interface_cq_id",
@@ -699,10 +726,11 @@ func Ec2Instances() *schema.Table {
 								Resolver:    schema.ParentIdResolver,
 							},
 							{
-								Name:        "association_carrier_ip",
-								Description: "The carrier IP address associated with the network interface.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Association.CarrierIp"),
+								Name:          "association_carrier_ip",
+								Description:   "The carrier IP address associated with the network interface.",
+								Type:          schema.TypeString,
+								Resolver:      schema.PathResolver("Association.CarrierIp"),
+								IgnoreInTests: true,
 							},
 							{
 								Name:        "association_ip_owner_id",
@@ -729,9 +757,10 @@ func Ec2Instances() *schema.Table {
 								Resolver:    schema.PathResolver("Primary"),
 							},
 							{
-								Name:        "private_dns_name",
-								Description: "The private IPv4 DNS name.",
-								Type:        schema.TypeString,
+								Name:          "private_dns_name",
+								Description:   "The private IPv4 DNS name.",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
 							},
 							{
 								Name:        "private_ip_address",
@@ -743,10 +772,11 @@ func Ec2Instances() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ec2_instance_product_codes",
-				Description: "Describes a product code.",
-				Resolver:    fetchEc2InstanceProductCodes,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "product_code_id"}},
+				Name:          "aws_ec2_instance_product_codes",
+				Description:   "Describes a product code.",
+				Resolver:      fetchEc2InstanceProductCodes,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "product_code_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -826,13 +856,13 @@ func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schem
 	re := regexp.MustCompile(`\((.*)\)`)
 	match := re.FindStringSubmatch(*instance.StateTransitionReason)
 	if len(match) < 2 {
-		//failed to get time from message
+		// failed to get time from message
 		return nil
 	}
 	const layout = "2006-01-02 15:04:05 MST"
 	tm, err := time.Parse(layout, match[1])
 	if err != nil {
-		//failed to parse last transition time
+		// failed to parse last transition time
 		return nil
 	}
 	return resource.Set(c.Name, tm)

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -40,9 +41,10 @@ func Route53HostedZones() *schema.Table {
 				Resolver:    resolveRoute53HostedZoneArn,
 			},
 			{
-				Name:        "delegation_set_id",
-				Description: "A complex type that lists the Amazon Route 53 name servers for the specified hosted zone.",
-				Type:        schema.TypeString,
+				Name:          "delegation_set_id",
+				Description:   "A complex type that lists the Amazon Route 53 name servers for the specified hosted zone.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "caller_reference",
@@ -73,16 +75,18 @@ func Route53HostedZones() *schema.Table {
 				Resolver:    schema.PathResolver("Config.PrivateZone"),
 			},
 			{
-				Name:        "linked_service_description",
-				Description: "If the health check or hosted zone was created by another service, an optional description that can be provided by the other service.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LinkedService.Description"),
+				Name:          "linked_service_description",
+				Description:   "If the health check or hosted zone was created by another service, an optional description that can be provided by the other service.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LinkedService.Description"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "linked_service_principal",
-				Description: "If the health check or hosted zone was created by another service, the service that created the resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LinkedService.ServicePrincipal"),
+				Name:          "linked_service_principal",
+				Description:   "If the health check or hosted zone was created by another service, the service that created the resource.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("LinkedService.ServicePrincipal"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "resource_record_set_count",
@@ -92,10 +96,11 @@ func Route53HostedZones() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_route53_hosted_zone_query_logging_configs",
-				Description: "A complex type that contains information about a configuration for DNS query logging.",
-				Resolver:    fetchRoute53HostedZoneQueryLoggingConfigs,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
+				Name:          "aws_route53_hosted_zone_query_logging_configs",
+				Description:   "A complex type that contains information about a configuration for DNS query logging.",
+				Resolver:      fetchRoute53HostedZoneQueryLoggingConfigs,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "hosted_zone_cq_id",
@@ -166,32 +171,37 @@ func Route53HostedZones() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "geo_location_continent_code",
-						Description: "The two-letter code for the continent.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("GeoLocation.ContinentCode"),
+						Name:          "geo_location_continent_code",
+						Description:   "The two-letter code for the continent.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("GeoLocation.ContinentCode"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "geo_location_country_code",
-						Description: "For geolocation resource record sets, the two-letter code for a country.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("GeoLocation.CountryCode"),
+						Name:          "geo_location_country_code",
+						Description:   "For geolocation resource record sets, the two-letter code for a country.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("GeoLocation.CountryCode"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "geo_location_subdivision_code",
-						Description: "For geolocation resource record sets, the two-letter code for a state of the United States.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("GeoLocation.SubdivisionCode"),
+						Name:          "geo_location_subdivision_code",
+						Description:   "For geolocation resource record sets, the two-letter code for a state of the United States.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("GeoLocation.SubdivisionCode"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "health_check_id",
-						Description: "If you want Amazon Route 53 to return this resource record set in response to a DNS query only when the status of a health check is healthy, include the HealthCheckId element and specify the ID of the applicable health check.",
-						Type:        schema.TypeString,
+						Name:          "health_check_id",
+						Description:   "If you want Amazon Route 53 to return this resource record set in response to a DNS query only when the status of a health check is healthy, include the HealthCheckId element and specify the ID of the applicable health check.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "multi_value_answer",
-						Description: "Multivalue answer resource record sets only: To route traffic approximately randomly to multiple resources, such as web servers, create one multivalue answer record for each resource and specify true for MultiValueAnswer.",
-						Type:        schema.TypeBool,
+						Name:          "multi_value_answer",
+						Description:   "Multivalue answer resource record sets only: To route traffic approximately randomly to multiple resources, such as web servers, create one multivalue answer record for each resource and specify true for MultiValueAnswer.",
+						Type:          schema.TypeBool,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "region",
@@ -199,9 +209,10 @@ func Route53HostedZones() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "set_identifier",
-						Description: "Resource record sets that have a routing policy other than simple: An identifier that differentiates among multiple resource record sets that have the same combination of name and type, such as multiple weighted resource record sets named acme.",
-						Type:        schema.TypeString,
+						Name:          "set_identifier",
+						Description:   "Resource record sets that have a routing policy other than simple: An identifier that differentiates among multiple resource record sets that have the same combination of name and type, such as multiple weighted resource record sets named acme.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "ttl",
@@ -210,22 +221,25 @@ func Route53HostedZones() *schema.Table {
 						Resolver:    schema.PathResolver("TTL"),
 					},
 					{
-						Name:        "traffic_policy_instance_id",
-						Description: "When you create a traffic policy instance, Amazon Route 53 automatically creates a resource record set.",
-						Type:        schema.TypeString,
+						Name:          "traffic_policy_instance_id",
+						Description:   "When you create a traffic policy instance, Amazon Route 53 automatically creates a resource record set.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "weight",
-						Description: "Weighted resource record sets only: Among resource record sets that have the same combination of DNS name and type, a value that determines the proportion of DNS queries that Amazon Route 53 responds to using the current resource record set.",
-						Type:        schema.TypeBigInt,
+						Name:          "weight",
+						Description:   "Weighted resource record sets only: Among resource record sets that have the same combination of DNS name and type, a value that determines the proportion of DNS queries that Amazon Route 53 responds to using the current resource record set.",
+						Type:          schema.TypeBigInt,
+						IgnoreInTests: true,
 					},
 				},
 			},
 			{
-				Name:        "aws_route53_hosted_zone_traffic_policy_instances",
-				Description: "A complex type that contains settings for the new traffic policy instance.",
-				Resolver:    fetchRoute53HostedZoneTrafficPolicyInstances,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
+				Name:          "aws_route53_hosted_zone_traffic_policy_instances",
+				Description:   "A complex type that contains settings for the new traffic policy instance.",
+				Resolver:      fetchRoute53HostedZoneTrafficPolicyInstances,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "hosted_zone_cq_id",
@@ -284,10 +298,11 @@ func Route53HostedZones() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_route53_hosted_zone_vpc_association_authorizations",
-				Description: "(Private hosted zones only) A complex type that contains information about an Amazon VPC.",
-				Resolver:    fetchRoute53HostedZoneVpcAssociationAuthorizations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "vpc_id"}},
+				Name:          "aws_route53_hosted_zone_vpc_association_authorizations",
+				Description:   "(Private hosted zones only) A complex type that contains information about an Amazon VPC.",
+				Resolver:      fetchRoute53HostedZoneVpcAssociationAuthorizations,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "vpc_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "hosted_zone_cq_id",

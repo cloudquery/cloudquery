@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func DirectconnectConnections() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_directconnect_connections",
-		Description:  "Information about a Direct Connect Connection",
-		Resolver:     fetchDirectconnectConnections,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_directconnect_connections",
+		Description:   "Information about a Direct Connect Connection",
+		Resolver:      fetchDirectconnectConnections,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -136,10 +138,11 @@ func DirectconnectConnections() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_directconnect_connection_mac_sec_keys",
-				Description: "The MAC Security (MACsec) security keys associated with the connection.",
-				Resolver:    fetchDirectconnectConnectionMacSecKeys,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"connection_cq_id", "secret_arn"}},
+				Name:          "aws_directconnect_connection_mac_sec_keys",
+				Description:   "The MAC Security (MACsec) security keys associated with the connection.",
+				Resolver:      fetchDirectconnectConnectionMacSecKeys,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"connection_cq_id", "secret_arn"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "connection_cq_id",

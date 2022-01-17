@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func EcrRepositories() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ecr_repositories",
-		Description:  "An object representing a repository.",
-		Resolver:     fetchEcrRepositories,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("api.ecr"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		Name:          "aws_ecr_repositories",
+		Description:   "An object representing a repository.",
+		Resolver:      fetchEcrRepositories,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("api.ecr"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -86,10 +88,11 @@ func EcrRepositories() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ecr_repository_images",
-				Description: "An object that describes an image returned by a DescribeImages operation.",
-				Resolver:    fetchEcrRepositoryImages,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"repository_cq_id", "image_digest"}},
+				Name:          "aws_ecr_repository_images",
+				Description:   "An object that describes an image returned by a DescribeImages operation.",
+				Resolver:      fetchEcrRepositoryImages,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"repository_cq_id", "image_digest"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "repository_cq_id",

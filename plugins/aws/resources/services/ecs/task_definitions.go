@@ -8,18 +8,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func EcsTaskDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ecs_task_definitions",
-		Description:  "The details of a task definition which describes the container and volume definitions of an Amazon Elastic Container Service task",
-		Resolver:     fetchEcsTaskDefinitions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ecs"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_ecs_task_definitions",
+		Description:   "The details of a task definition which describes the container and volume definitions of an Amazon Elastic Container Service task",
+		Resolver:      fetchEcsTaskDefinitions,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ecs"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -159,9 +161,10 @@ func EcsTaskDefinitions() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ecs_task_definition_container_definitions",
-				Description: "Container definitions are used in task definitions to describe the different containers that are launched as part of a task.",
-				Resolver:    fetchEcsTaskDefinitionContainerDefinitions,
+				Name:          "aws_ecs_task_definition_container_definitions",
+				Description:   "Container definitions are used in task definitions to describe the different containers that are launched as part of a task.",
+				Resolver:      fetchEcsTaskDefinitionContainerDefinitions,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "task_definition_cq_id",
@@ -467,9 +470,10 @@ func EcsTaskDefinitions() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_ecs_task_definition_volumes",
-				Description: "A data volume used in a task definition",
-				Resolver:    fetchEcsTaskDefinitionVolumes,
+				Name:          "aws_ecs_task_definition_volumes",
+				Description:   "A data volume used in a task definition",
+				Resolver:      fetchEcsTaskDefinitionVolumes,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "task_definition_cq_id",

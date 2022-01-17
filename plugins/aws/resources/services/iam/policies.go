@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -49,9 +50,10 @@ func IamPolicies() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "description",
-				Description: "A friendly description of the policy. ",
-				Type:        schema.TypeString,
+				Name:          "description",
+				Description:   "A friendly description of the policy. ",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "is_attachable",

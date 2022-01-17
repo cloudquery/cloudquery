@@ -7,18 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func ApigatewayAPIKeys() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_api_keys",
-		Description:  "A resource that can be distributed to callers for executing Method resources that require an API key.",
-		Resolver:     fetchApigatewayApiKeys,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_apigateway_api_keys",
+		Description:   "A resource that can be distributed to callers for executing Method resources that require an API key.",
+		Resolver:      fetchApigatewayApiKeys,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("apigateway"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

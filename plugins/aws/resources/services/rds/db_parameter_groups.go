@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -126,9 +127,10 @@ func RdsDbParameterGroups() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "supported_engine_modes",
-						Description: "The valid DB engine modes.",
-						Type:        schema.TypeStringArray,
+						Name:          "supported_engine_modes",
+						Description:   "The valid DB engine modes.",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
 					},
 				},
 			},

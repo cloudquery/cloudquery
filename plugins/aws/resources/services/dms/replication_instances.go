@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -13,13 +14,14 @@ import (
 
 func DmsReplicationInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_dms_replication_instances",
-		Description:  "Provides information that defines a replication instance.",
-		Resolver:     fetchDmsReplicationInstances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("dms"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		Name:          "aws_dms_replication_instances",
+		Description:   "Provides information that defines a replication instance.",
+		Resolver:      fetchDmsReplicationInstances,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("dms"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -198,9 +200,10 @@ func DmsReplicationInstances() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_dms_replication_instance_replication_subnet_group_subnets",
-				Description: "In response to a request by the DescribeReplicationSubnetGroups operation, this object identifies a subnet by its given Availability Zone, subnet identifier, and status.",
-				Resolver:    fetchDmsReplicationInstanceReplicationSubnetGroupSubnets,
+				Name:          "aws_dms_replication_instance_replication_subnet_group_subnets",
+				Description:   "In response to a request by the DescribeReplicationSubnetGroups operation, this object identifies a subnet by its given Availability Zone, subnet identifier, and status.",
+				Resolver:      fetchDmsReplicationInstanceReplicationSubnetGroupSubnets,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "replication_instance_cq_id",
@@ -227,9 +230,10 @@ func DmsReplicationInstances() *schema.Table {
 				},
 			},
 			{
-				Name:        "aws_dms_replication_instance_vpc_security_groups",
-				Description: "Describes the status of a security group associated with the virtual private cloud (VPC) hosting your replication and DB instances.",
-				Resolver:    fetchDmsReplicationInstanceVpcSecurityGroups,
+				Name:          "aws_dms_replication_instance_vpc_security_groups",
+				Description:   "Describes the status of a security group associated with the virtual private cloud (VPC) hosting your replication and DB instances.",
+				Resolver:      fetchDmsReplicationInstanceVpcSecurityGroups,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "replication_instance_cq_id",

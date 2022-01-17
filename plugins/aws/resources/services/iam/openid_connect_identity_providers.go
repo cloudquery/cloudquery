@@ -6,18 +6,20 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func IamOpenidConnectIdentityProviders() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_openid_connect_identity_providers",
-		Description:  "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
-		Resolver:     fetchIamOpenidConnectIdentityProviders,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iam_openid_connect_identity_providers",
+		Description:   "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
+		Resolver:      fetchIamOpenidConnectIdentityProviders,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

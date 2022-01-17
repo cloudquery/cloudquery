@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -54,22 +55,25 @@ func FsxBackups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "directory_information_active_directory_id",
-				Description: "The ID of the AWS Managed Microsoft Active Directory instance to which the file system is joined.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DirectoryInformation.ActiveDirectoryId"),
+				Name:          "directory_information_active_directory_id",
+				Description:   "The ID of the AWS Managed Microsoft Active Directory instance to which the file system is joined.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DirectoryInformation.ActiveDirectoryId"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "directory_information_domain_name",
-				Description: "The fully qualified domain name of the self-managed AD directory.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DirectoryInformation.DomainName"),
+				Name:          "directory_information_domain_name",
+				Description:   "The fully qualified domain name of the self-managed AD directory.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DirectoryInformation.DomainName"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "failure_details_message",
-				Description: "A message describing the backup creation failure.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FailureDetails.Message"),
+				Name:          "failure_details_message",
+				Description:   "A message describing the backup creation failure.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("FailureDetails.Message"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "kms_key_id",
