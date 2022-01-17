@@ -26,7 +26,7 @@ type FetchSummary struct {
 	TotalErrorsCount   uint64                  `db:"total_errors_count"`
 	ProviderName       string                  `db:"provider_name"`
 	ProviderVersion    string                  `db:"provider_version"`
-	FetchedResources   *[]ResourceFetchSummary `db:"results"`
+	Resources   *[]ResourceFetchSummary `db:"results"`
 }
 
 func (f *FetchSummary) addResourceFetchSummary(r ResourceFetchSummary) {
