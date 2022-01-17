@@ -46,6 +46,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
@@ -137,6 +138,7 @@ type Services struct {
 	WafV2                  WafV2Client
 	Codebuild              CodebuildClient
 	GuardDuty              GuardDutyClient
+	IOT                    IOTClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -462,6 +464,7 @@ func initServices(region string, c aws.Config) Services {
 		Waf:                    waf.NewFromConfig(awsCfg),
 		WafV2:                  wafv2.NewFromConfig(awsCfg),
 		Codebuild:              codebuild.NewFromConfig(awsCfg),
+		IOT:                    iot.NewFromConfig(awsCfg),
 	}
 }
 
