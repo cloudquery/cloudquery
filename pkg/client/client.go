@@ -551,7 +551,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.Resources = append(fs.Resources, ResourceFetchSummary{
+				if fs.Resources == nil {
+					fs.Resources = &[]ResourceFetchSummary{}
+				}
+
+				*fs.Resources = append(*fs.Resources, ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status

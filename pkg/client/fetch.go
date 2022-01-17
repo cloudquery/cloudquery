@@ -26,15 +26,7 @@ type FetchSummary struct {
 	TotalErrorsCount   uint64                  `db:"total_errors_count"`
 	ProviderName       string                  `db:"provider_name"`
 	ProviderVersion    string                  `db:"provider_version"`
-	Resources   *[]ResourceFetchSummary `db:"results"`
-}
-
-func (f *FetchSummary) addResourceFetchSummary(r ResourceFetchSummary) {
-	if f.FetchedResources == nil {
-		f.FetchedResources = &[]ResourceFetchSummary{r}
-		return
-	}
-	*f.FetchedResources = append(*f.FetchedResources, r)
+	Resources          *[]ResourceFetchSummary `db:"results"`
 }
 
 // ResourceFetchSummary includes a data about fetching specific resource
