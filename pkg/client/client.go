@@ -26,7 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -422,19 +422,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
-	var dsn string
+	var dsnURI string
 	if c.HistoryCfg != nil {
 		var err error
-		dsn, err = history.TransformDSN(c.DSN)
+		dsnURI, err = history.TransformDSN(c.DSN)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		parsed, err := helpers.ParseConnectionString(c.DSN)
+		parsed, err := dsn.ParseConnectionString(c.DSN)
 		if err != nil {
 			return nil, err
 		}
-		dsn = parsed.String()
+		dsnURI = parsed.String()
 	}
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
@@ -483,7 +483,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
-					DSN: dsn,
+					DSN: dsnURI,
 				},
 				Config:      providerConfig.Configuration,
 				ExtraFields: request.ExtraFields,
@@ -971,11 +971,11 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 	if err != nil {
 		return err
 	}
-	dsn, err := helpers.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
+	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
 	if err != nil {
 		return err
 	}
-	m, err := migrator.New(c.Logger, schema.Postgres, migrations, dsn, "cloudquery_core", nil)
+	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core", nil)
 	if err != nil {
 		return err
 	}

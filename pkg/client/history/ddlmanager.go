@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
@@ -222,6 +222,6 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 	})
 }
 
-func TransformDSN(dsn string) (string, error) {
-	return helpers.SetDSNElement(dsn, map[string]string{"search_path": schemaName})
+func TransformDSN(inputDSN string) (string, error) {
+	return dsn.SetDSNElement(inputDSN, map[string]string{"search_path": schemaName})
 }
