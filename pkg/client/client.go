@@ -14,8 +14,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/jackc/pgx/v4/pgxpool"
-
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
@@ -31,7 +29,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
-	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/getsentry/sentry-go"
@@ -50,12 +47,8 @@ import (
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
-	//go:embed migrations/*.sql
+	//go:embed migrations/*/*.sql
 	coreMigrations embed.FS
-)
-
-const (
-	latestVersion = "latest"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -295,11 +288,6 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			return nil, fmt.Errorf("getExecutor: %w", err)
 		}
 
-		// migrate cloudquery core tables to latest version
-		if err := c.MigrateCore(ctx); err != nil {
-			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
-		}
-
 		if c.HistoryCfg != nil && dt != schema.TSDB {
 			// check if we're already on TSDB but the dsn is wrong
 			if ok, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg).Validate(ctx); ok && err == nil {
@@ -313,6 +301,11 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			return nil, fmt.Errorf("validate: %w", err)
 		} else if !ok {
 			c.Logger.Warn("postgres validation warning")
+		}
+
+		// migrate cloudquery core tables to latest version
+		if err := c.MigrateCore(ctx); err != nil {
+			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 		}
 
 		dialect, err := schema.GetDialect(c.db.DialectType())
@@ -472,7 +465,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			}
 
 			defer func() {
-				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+				if err := c.SaveFetchSummary(ctx, &fs); err != nil {
 					c.Logger.Error("failed to save fetch summary", "err", err)
 				}
 			}()
@@ -964,16 +957,16 @@ func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[strin
 }
 
 func (c *Client) MigrateCore(ctx context.Context) error {
-	err := createCoreSchema(ctx, c.pool)
+	err := createCoreSchema(ctx, c.db)
 	if err != nil {
 		return err
 	}
-	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
+	migrations, err := migrator.ReadMigrationFiles(c.Logger, coreMigrations)
 	if err != nil {
 		return err
 	}
 	dsn := c.DSN + "&search_path=cloudquery"
-	m, err := provider.NewMigrator(c.Logger, migrations, dsn, "cloudquery_core")
+	m, err := migrator.New(c.Logger, schema.Postgres, migrations, dsn, "cloudquery_core", nil)
 	if err != nil {
 		return err
 	}
@@ -984,7 +977,7 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 		}
 	}()
 
-	if err := m.UpgradeProvider(latestVersion); err != nil && err != migrate.ErrNoChange {
+	if err := m.UpgradeProvider("latest"); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil
@@ -1106,16 +1099,6 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 	)
 }
 
-func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
-	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-	if err != nil {
-		return err
-	}
-	return nil
+func createCoreSchema(ctx context.Context, db schema.QueryExecer) error {
+	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
 }
