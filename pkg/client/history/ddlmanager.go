@@ -13,8 +13,7 @@ import (
 )
 
 const (
-	listTables        = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
-	getColumnComments = `WITH x AS (SELECT column_name, pg_catalog.col_description(format('%s.%s',table_schema,table_name)::regclass::oid,ordinal_position) AS comment FROM information_schema.columns WHERE table_schema=$1 AND table_name=$2) SELECT * FROM x WHERE comment IS NOT NULL;`
+	listTables = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
 
 	createHyperTable    = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
 	dataRetentionPolicy = `SELECT add_retention_policy($1, INTERVAL '%d day', if_not_exists => true);`
@@ -22,7 +21,7 @@ const (
 	dropTableView   = `DROP VIEW IF EXISTS "%[1]s"`
 	createTableView = `CREATE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
 
-	SchemaName = "history"
+	schemaName = "history"
 )
 
 type DDLManager struct {
@@ -52,34 +51,23 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.Di
 
 func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error {
 	var tables []string
-	if err := pgxscan.Select(ctx, conn, &tables, listTables, SchemaName); err != nil {
+	if err := pgxscan.Select(ctx, conn, &tables, listTables, schemaName); err != nil {
 		return fmt.Errorf("failed to list tables: %w", err)
 	}
 
 	for _, table := range tables {
-		parentIdCol, parentTable, err := h.getTableParent(ctx, conn, table)
-		if err != nil {
-			return fmt.Errorf("getTableParent failed for %s: %w", table, err)
-		}
-
-		if err := h.createHyperTable(ctx, conn, table, parentTable != ""); err != nil {
+		if err := h.createHyperTable(ctx, conn, table); err != nil {
 			return fmt.Errorf("failed to create hypertable for table: %s: %w", table, err)
 		}
 		if err := h.recreateView(ctx, conn, table); err != nil {
 			return fmt.Errorf("recreateView: %w", err)
-		}
-
-		if parentTable != "" {
-			if err := h.buildCascadeTrigger(ctx, conn, table, parentIdCol, parentTable); err != nil {
-				return fmt.Errorf("table build %s failed: %w", table, err)
-			}
 		}
 	}
 
 	return nil
 }
 
-func (h DDLManager) createHyperTable(ctx context.Context, conn *pgxpool.Conn, tableName string, hasParent bool) error {
+func (h DDLManager) createHyperTable(ctx context.Context, conn *pgxpool.Conn, tableName string) error {
 	var hyperTable struct {
 		HypertableId int    `db:"hypertable_id"`
 		SchemaName   string `db:"schema_name"`
@@ -87,14 +75,13 @@ func (h DDLManager) createHyperTable(ctx context.Context, conn *pgxpool.Conn, ta
 		Created      bool   `db:"created"`
 	}
 
-	tName := fmt.Sprintf(`"%s"."%s"`, SchemaName, tableName)
+	tName := fmt.Sprintf(`"%s"."%s"`, schemaName, tableName)
 	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
 		return fmt.Errorf("failed to create hypertable: %w", err)
 	}
 	h.log.Debug("created hyper table for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "created", hyperTable.Created)
-	if hasParent { // TODO
-		return nil
-	}
+
+	// FIXME: below call is only needed for "parent" tables
 	if _, err := conn.Exec(ctx, fmt.Sprintf(dataRetentionPolicy, h.cfg.Retention), tName); err != nil {
 		return err
 	}
@@ -122,38 +109,6 @@ func (h DDLManager) recreateView(ctx context.Context, conn *pgxpool.Conn, table 
 		return fmt.Errorf("tx failed for %s: %w", table, err)
 	}
 	return nil
-}
-
-func (h DDLManager) buildCascadeTrigger(ctx context.Context, conn *pgxpool.Conn, table, parentIdColumn, parentTable string) error {
-	if _, err := conn.Exec(ctx, "SELECT history.build_trigger($1, $2, $3);", parentTable, table, parentIdColumn); err != nil {
-		return fmt.Errorf("failed to create trigger: %w", err)
-	}
-	return nil
-}
-
-func (h DDLManager) getTableParent(ctx context.Context, conn *pgxpool.Conn, tableName string) (parentIdColumn, parentTable string, err error) {
-	var comments []struct {
-		Col     string `db:"column_name"`
-		Comment string `db:"comment"`
-	}
-	if err := pgxscan.Select(ctx, conn, &comments, getColumnComments, SchemaName, tableName); err != nil {
-		return "", "", fmt.Errorf("failed to get column comments: %w", err)
-	}
-
-	found := 0
-	for _, c := range comments {
-		parentTable, _ = schema.GetFKFromComment(c.Comment)
-		if parentTable != "" {
-			found++
-			parentIdColumn = c.Col
-		}
-	}
-
-	if found > 1 {
-		return "", "", fmt.Errorf("multiple FK comments found in table")
-	}
-
-	return
 }
 
 func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
@@ -194,6 +149,20 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 					END IF;
 				END;
 				$BODY$;`
+		defineFKFunction = `
+				CREATE OR REPLACE FUNCTION history.define_fk(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
+					RETURNS integer
+					LANGUAGE 'plpgsql'
+					COST 100
+					VOLATILE PARALLEL UNSAFE
+				AS $BODY$
+				DECLARE
+					result integer;
+				BEGIN
+					SELECT history.build_trigger(_parent_table_name, _table_name, _column_name) into result;
+					RETURN result;
+				END;
+				$BODY$;`
 
 		findLatestFetchDate = `
 			CREATE OR REPLACE FUNCTION find_latest(schema TEXT, _table_name TEXT) 
@@ -214,6 +183,9 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 		if _, err := tx.Exec(ctx, buildTriggerFunction); err != nil {
 			return err
 		}
+		if _, err := tx.Exec(ctx, defineFKFunction); err != nil {
+			return err
+		}
 		if _, err := tx.Exec(ctx, cascadeDeleteFunction); err != nil {
 			return err
 		}
@@ -225,7 +197,7 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 }
 
 func TransformDSN(dsn string) (string, error) {
-	return setDsnElement(dsn, map[string]string{"search_path": SchemaName})
+	return setDsnElement(dsn, map[string]string{"search_path": schemaName})
 }
 
 func setDsnElement(dsn string, elems map[string]string) (string, error) {
