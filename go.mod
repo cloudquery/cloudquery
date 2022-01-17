@@ -40,6 +40,7 @@ require (
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/google/go-cmp v0.5.6
+	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-getter v1.5.10
 	github.com/huandu/go-sqlbuilder v1.13.0
 	github.com/jackc/pgconn v1.10.0
@@ -72,7 +73,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.0.5 // indirect
 	github.com/googleapis/google-cloud-go-testing v0.0.0-20200911160855-bcd43fbb19e8 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
