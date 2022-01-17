@@ -6,6 +6,7 @@ Describes a cluster.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |allow_version_upgrade|boolean|A boolean value that, if true, indicates that major version upgrades will be applied automatically to the cluster during the maintenance window.|
 |automated_snapshot_retention_period|integer|The number of days that automatic cluster snapshots are retained.|
 |availability_zone|text|The name of the Availability Zone in which the cluster is located.|

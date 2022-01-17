@@ -91,8 +91,10 @@ func Ec2TransitGateways() *schema.Table {
 				Resolver: resolveEc2TransitGatewayTags,
 			},
 			{
-				Name: "transit_gateway_arn",
-				Type: schema.TypeString,
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TransitGatewayArn"),
 			},
 			{
 				Name:     "transit_gateway_cidr_blocks",

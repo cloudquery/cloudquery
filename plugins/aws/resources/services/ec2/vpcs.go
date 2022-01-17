@@ -33,6 +33,14 @@ func Ec2Vpcs() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"vpc", *resource.Item.(types.Vpc).VpcId}, nil
+				}),
+			},
+			{
 				Name:        "cidr_block",
 				Description: "The primary IPv4 CIDR block for the VPC.",
 				Type:        schema.TypeString,

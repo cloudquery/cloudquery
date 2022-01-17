@@ -108,10 +108,7 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 
 func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) interface{}) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		g, ok := resource.Item.(types.DBSecurityGroup)
-		if !ok {
-			return client.UnexpectedResourceType(g, resource.Item)
-		}
+		g := resource.Item.(types.DBSecurityGroup)
 		b, err := json.Marshal(getter(g))
 		if err != nil {
 			return err
@@ -121,10 +118,7 @@ func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) int
 }
 
 func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g, ok := resource.Item.(types.DBSecurityGroup)
-	if !ok {
-		return client.UnexpectedResourceType(g, resource.Item)
-	}
+	g := resource.Item.(types.DBSecurityGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn}, func(o *rds.Options) {

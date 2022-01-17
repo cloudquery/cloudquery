@@ -6,6 +6,7 @@ Describes a flow log.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |id|text|The flow log ID.|
 |creation_time|timestamp without time zone|The date and time the flow log was created.|
 |deliver_logs_error_message|text|Information about the error that occurred.|

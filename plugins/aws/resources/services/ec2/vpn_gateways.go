@@ -29,6 +29,14 @@ func Ec2VpnGateways() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"vpn-gateway", *resource.Item.(types.VpnGateway).VpnGatewayId}, nil
+				}),
+			},
+			{
 				Name: "amazon_side_asn",
 				Type: schema.TypeBigInt,
 			},

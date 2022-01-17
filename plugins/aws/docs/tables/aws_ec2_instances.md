@@ -6,6 +6,7 @@ Describes an instance.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |state_transition_reason_time|timestamp without time zone||
 |ami_launch_index|integer|The AMI launch index, which can be used to find this instance in the launch group.|
 |architecture|text|The architecture of the image.|

@@ -34,6 +34,14 @@ func RedshiftSubnetGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.RedshiftService, func(resource *schema.Resource) ([]string, error) {
+					return []string{"subnetgroup", *resource.Item.(types.ClusterSubnetGroup).ClusterSubnetGroupName}, nil
+				}),
+			},
+			{
 				Name:        "cluster_subnet_group_name",
 				Description: "The name of the cluster subnet group.",
 				Type:        schema.TypeString,

@@ -114,9 +114,10 @@ func EfsFilesystems() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "file_system_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the EFS file system, in the format arn:aws:elasticfilesystem:region:account-id:file-system/file-system-id .",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("FileSystemArn"),
 			},
 			{
 				Name:        "kms_key_id",

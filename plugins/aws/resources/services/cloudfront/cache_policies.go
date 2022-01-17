@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -24,6 +25,14 @@ func CloudfrontCachePolicies() *schema.Table {
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARNWithAccount(client.CloudfrontService, func(resource *schema.Resource) ([]string, error) {
+					return []string{"cache-policy", *resource.Item.(types.CachePolicySummary).CachePolicy.Id}, nil
+				}),
 			},
 			{
 				Name:        "min_ttl",

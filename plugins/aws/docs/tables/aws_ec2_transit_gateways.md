@@ -19,7 +19,7 @@
 |propagation_default_route_table_id|text||
 |state|text||
 |tags|jsonb||
-|transit_gateway_arn|text||
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |transit_gateway_cidr_blocks|text[]||
 |id|text||
 |vpn_ecmp_support|text||

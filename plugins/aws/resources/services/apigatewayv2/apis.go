@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	apiIDPart      = "/apis"
-	apiRouteIDPart = "routes"
+	apiIDPart            = "/apis"
+	apiRouteIDPart       = "routes"
+	apiIntegrationIDPart = "integrations"
 )
 
 func Apigatewayv2Apis() *schema.Table {
@@ -42,7 +43,7 @@ func Apigatewayv2Apis() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the resource.",
 				Type:        schema.TypeString,
-				Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+				Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 					return []string{apiIDPart, *resource.Item.(types.Api).ApiId}, nil
 				}),
 			},
@@ -182,7 +183,7 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Authorizer)
 							p := resource.Parent.Item.(types.Api)
 							return []string{apiIDPart, *p.ApiId, "authorizers", *r.AuthorizerId}, nil
@@ -274,7 +275,7 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Deployment)
 							p := resource.Parent.Item.(types.Api)
 							return []string{apiIDPart, *p.ApiId, "deployments", *r.DeploymentId}, nil
@@ -334,10 +335,10 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Integration)
 							p := resource.Parent.Item.(types.Api)
-							return []string{apiIDPart, *p.ApiId, "integrations", *r.IntegrationId}, nil
+							return []string{apiIDPart, *p.ApiId, apiIntegrationIDPart, *r.IntegrationId}, nil
 						}),
 					},
 					{
@@ -465,10 +466,11 @@ func Apigatewayv2Apis() *schema.Table {
 								Name:        "arn",
 								Description: "The Amazon Resource Name (ARN) for the resource.",
 								Type:        schema.TypeString,
-								Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+								Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 									r := resource.Item.(types.IntegrationResponse)
+									i := resource.Parent.Item.(types.Integration)
 									api := resource.Parent.Parent.Item.(types.Api)
-									return []string{apiIDPart, *api.ApiId, "integrationresponses", *r.IntegrationResponseId}, nil
+									return []string{apiIDPart, *api.ApiId, apiIntegrationIDPart, *i.IntegrationId, "integrationresponses", *r.IntegrationResponseId}, nil
 								}),
 							},
 							{
@@ -527,7 +529,7 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Model)
 							p := resource.Parent.Item.(types.Api)
 							return []string{apiIDPart, *p.ApiId, "models", *r.ModelId}, nil
@@ -587,7 +589,7 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Route)
 							p := resource.Parent.Item.(types.Api)
 							return []string{apiIDPart, *p.ApiId, apiRouteIDPart, *r.RouteId}, nil
@@ -682,7 +684,7 @@ func Apigatewayv2Apis() *schema.Table {
 								Name:        "arn",
 								Description: "The Amazon Resource Name (ARN) for the resource.",
 								Type:        schema.TypeString,
-								Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+								Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 									r := resource.Item.(types.RouteResponse)
 									route := resource.Parent.Item.(types.Route)
 									api := resource.Parent.Parent.Item.(types.Api)
@@ -740,7 +742,7 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.Stage)
 							p := resource.Parent.Item.(types.Api)
 							return []string{apiIDPart, *p.ApiId, "stages", *r.StageName}, nil

@@ -33,6 +33,14 @@ func Ec2InternetGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"internet-gateway", *resource.Item.(types.InternetGateway).InternetGatewayId}, nil
+				}),
+			},
+			{
 				Name:        "id",
 				Description: "The ID of the internet gateway.",
 				Type:        schema.TypeString,

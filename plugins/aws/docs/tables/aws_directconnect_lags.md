@@ -6,6 +6,7 @@ Information about Direct Connect Link Aggregation Group (LAG)
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |allows_hosted_connections|boolean|Indicates whether the LAG can host other connections.|
 |aws_device_v2|text|The AWS Direct Connect endpoint that hosts the LAG.|
 |connection_ids|text[]|The list of IDs of Direct Connect Connections bundled by the LAG|

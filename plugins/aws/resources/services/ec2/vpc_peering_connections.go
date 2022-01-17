@@ -33,6 +33,14 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"vpc-peering-connection", *resource.Item.(types.VpcPeeringConnection).VpcPeeringConnectionId}, nil
+				}),
+			},
+			{
 				Name:        "accepter_cidr_block",
 				Description: "The IPv4 CIDR block for the VPC.",
 				Type:        schema.TypeString,

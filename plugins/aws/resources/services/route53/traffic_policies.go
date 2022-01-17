@@ -56,9 +56,11 @@ func Route53TrafficPolicies() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the route 53 traffic policy",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
 				Type:        schema.TypeString,
-				Resolver:    resolveRoute53TrafficPoliciesArn,
+				Resolver: client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"trafficpolicy", *resource.Item.(types.TrafficPolicySummary).Id}, nil
+				}),
 			},
 		},
 		Relations: []*schema.Table{
@@ -165,11 +167,4 @@ func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema
 		return err
 	}
 	return resource.Set(c.Name, value)
-}
-func resolveRoute53TrafficPoliciesArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	tr, ok := resource.Item.(types.TrafficPolicySummary)
-	if !ok {
-		return fmt.Errorf("not route53 traffic policy")
-	}
-	return resource.Set(c.Name, client.GenerateResourceARN("route53", "trafficpolicy", *tr.Id, "", ""))
 }

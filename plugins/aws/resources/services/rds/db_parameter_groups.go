@@ -162,10 +162,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
-	g, ok := parent.Item.(types.DBParameterGroup)
-	if !ok {
-		return client.UnexpectedResourceType(g, parent.Item)
-	}
+	g := parent.Item.(types.DBParameterGroup)
 	input := rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	for {
 		output, err := svc.DescribeDBParameters(ctx, &input, func(o *rds.Options) {
@@ -184,10 +181,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 }
 
 func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g, ok := resource.Item.(types.DBParameterGroup)
-	if !ok {
-		return client.UnexpectedResourceType(g, resource.Item)
-	}
+	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(o *rds.Options) {

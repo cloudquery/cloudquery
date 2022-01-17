@@ -39,7 +39,7 @@ func ApigatewayUsagePlans() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the resource.",
 				Type:        schema.TypeString,
-				Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+				Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 					return []string{usagePlanIDPart, *resource.Item.(types.UsagePlan).Id}, nil
 				}),
 			},
@@ -158,7 +158,7 @@ func ApigatewayUsagePlans() *schema.Table {
 						Name:        "arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver: client.ResolveARN(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 							r := resource.Item.(types.UsagePlanKey)
 							p := resource.Parent.Item.(types.UsagePlan)
 							return []string{usagePlanIDPart, *p.Id, "keys", *r.Id}, nil

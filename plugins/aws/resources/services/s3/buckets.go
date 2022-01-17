@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -98,9 +97,11 @@ func S3Buckets() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the s3 bucket",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
 				Type:        schema.TypeString,
-				Resolver:    resolveS3BucketsArn,
+				Resolver: client.ResolveARNGlobal(client.S3Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{*resource.Item.(*WrappedBucket).Name}, nil
+				}),
 			},
 		},
 		Relations: []*schema.Table{
@@ -612,14 +613,6 @@ func resolveS3BucketLifecycleTransitions(ctx context.Context, meta schema.Client
 		return err
 	}
 	return resource.Set("transitions", data)
-}
-
-func resolveS3BucketsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	buc, ok := resource.Item.(*WrappedBucket)
-	if !ok {
-		return fmt.Errorf("not s3 bucket")
-	}
-	return resource.Set(c.Name, client.GenerateResourceARN("s3", "", *buc.Name, "", ""))
 }
 
 // ====================================================================================================================

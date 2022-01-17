@@ -114,7 +114,7 @@ func RdsClusters() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "db_cluster_arn",
+				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the DB cluster.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBClusterArn"),

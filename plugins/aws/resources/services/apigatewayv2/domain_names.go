@@ -13,6 +13,8 @@ import (
 	apigatewayv2fix "github.com/cloudquery/cq-provider-aws/resources/forks/apigatewayv2"
 )
 
+const domainNamesIDPart = "domainnames"
+
 func Apigatewayv2DomainNames() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigatewayv2_domain_names",
@@ -34,6 +36,14 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+					return []string{domainNamesIDPart, *resource.Item.(types.DomainName).DomainName}, nil
+				}),
 			},
 			{
 				Name:        "domain_name",
@@ -144,6 +154,16 @@ func Apigatewayv2DomainNames() *schema.Table {
 						Name:        "api_id",
 						Description: "The API identifier.",
 						Type:        schema.TypeString,
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
+							r := resource.Item.(types.ApiMapping)
+							p := resource.Parent.Item.(types.DomainName)
+							return []string{domainNamesIDPart, *p.DomainName, "apimappings", *r.ApiMappingId}, nil
+						}),
 					},
 					{
 						Name:        "stage",

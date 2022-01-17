@@ -2,7 +2,6 @@ package directconnect
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
@@ -31,6 +30,14 @@ func DirectconnectLags() *schema.Table {
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.DirectConnectService, func(resource *schema.Resource) ([]string, error) {
+					return []string{"dxlag", *resource.Item.(types.Lag).LagId}, nil
+				}),
 			},
 			{
 				Name:        "allows_hosted_connections",
@@ -196,10 +203,7 @@ func resolveDirectconnectLagTags(ctx context.Context, meta schema.ClientMeta, re
 }
 
 func fetchDirectconnectLagMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	connection, ok := parent.Item.(types.Lag)
-	if !ok {
-		return fmt.Errorf("not a direct connect LAG")
-	}
+	connection := parent.Item.(types.Lag)
 	res <- connection.MacSecKeys
 	return nil
 }

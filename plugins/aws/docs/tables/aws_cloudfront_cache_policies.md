@@ -5,6 +5,7 @@ Contains a cache policy.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |min_ttl|bigint|The minimum amount of time, in seconds, that you want objects to stay in the CloudFront cache before CloudFront sends another request to the origin to see if the object has been updated|
 |name|text|A unique name to identify the cache policy|
 |comment|text|A comment to describe the cache policy|

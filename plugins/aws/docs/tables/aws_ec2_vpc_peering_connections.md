@@ -6,6 +6,7 @@ Describes a VPC peering connection.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |accepter_cidr_block|text|The IPv4 CIDR block for the VPC.|
 |accepter_cidr_block_set|text[]|Information about the IPv4 CIDR blocks for the VPC.|
 |accepter_ipv6_cidr_block_set|text[]|The IPv6 CIDR block for the VPC.|
