@@ -6,6 +6,7 @@ Information about a Direct Connect Connection
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |aws_device_v2|text|The Direct Connect endpoint on which the physical connection terminates.|
 |bandwidth|text|The bandwidth of the connection.|
 |id|text|The ID of the connection.|

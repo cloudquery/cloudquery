@@ -6,6 +6,7 @@ Describes a VPC endpoint.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |creation_timestamp|timestamp without time zone|The date and time that the VPC endpoint was created.|
 |last_error_code|text|The error code for the VPC endpoint error.|
 |last_error_message|text|The error message for the VPC endpoint error.|

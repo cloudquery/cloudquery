@@ -2,7 +2,6 @@ package route53
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -26,6 +25,14 @@ func Route53ReusableDelegationSets() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"delegationset", *resource.Item.(types.DelegationSet).Id}, nil
+				}),
+			},
+			{
 				Name: "name_servers",
 				Type: schema.TypeStringArray,
 			},
@@ -37,12 +44,6 @@ func Route53ReusableDelegationSets() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
-			},
-			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the route 53 delegation set",
-				Type:        schema.TypeString,
-				Resolver:    resolveRoute53DelegationSetsArn,
 			},
 		},
 	}
@@ -68,11 +69,4 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 		config.Marker = response.Marker
 	}
 	return nil
-}
-func resolveRoute53DelegationSetsArn(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	dl, ok := resource.Item.(types.DelegationSet)
-	if !ok {
-		return fmt.Errorf("not route53 delegation set")
-	}
-	return resource.Set(c.Name, client.GenerateResourceARN("route53", "delegationset", *dl.Id, "", ""))
 }

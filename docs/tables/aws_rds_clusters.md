@@ -22,7 +22,7 @@ Contains the details of an Amazon Aurora DB cluster
 |copy_tags_to_snapshot|boolean|Specifies whether tags are copied from the DB cluster to snapshots of the DB cluster.|
 |cross_account_clone|boolean|Specifies whether the DB cluster is a clone of a DB cluster owned by a different AWS account.|
 |custom_endpoints|text[]|Identifies all custom endpoints associated with the cluster.|
-|db_cluster_arn|text|The Amazon Resource Name (ARN) for the DB cluster.|
+|arn|text|The Amazon Resource Name (ARN) for the DB cluster.|
 |db_cluster_identifier|text|Contains a user-supplied DB cluster identifier|
 |db_cluster_parameter_group|text|Specifies the name of the DB cluster parameter group for the DB cluster.|
 |db_cluster_option_group_memberships|jsonb|Provides the map of option group memberships for this DB cluster.|

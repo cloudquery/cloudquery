@@ -6,7 +6,7 @@ Describes a security group .
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the security group|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |description|text|A description of the security group.|
 |id|text|The ID of the security group.|
 |group_name|text|The name of the security group.|

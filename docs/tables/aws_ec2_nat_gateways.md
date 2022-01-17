@@ -6,6 +6,7 @@ Describes a NAT gateway.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |id|text|The ID of the NAT gateway.|
 |create_time|timestamp without time zone|The date and time the NAT gateway was created.|
 |delete_time|timestamp without time zone|The date and time the NAT gateway was deleted, if applicable.|

@@ -21,7 +21,7 @@ A description of the file system.
 |availability_zone_id|text|The unique and consistent identifier of the Availability Zone in which the file system's One Zone storage classes exist.|
 |availability_zone_name|text|Describes the AWS Availability Zone in which the file system is located, and is valid only for file systems using One Zone storage classes.|
 |encrypted|boolean|A Boolean value that, if true, indicates that the file system is encrypted.|
-|file_system_arn|text|The Amazon Resource Name (ARN) for the EFS file system, in the format arn:aws:elasticfilesystem:region:account-id:file-system/file-system-id .|
+|arn|text|The Amazon Resource Name (ARN) for the EFS file system, in the format arn:aws:elasticfilesystem:region:account-id:file-system/file-system-id .|
 |kms_key_id|text|The ID of an AWS Key Management Service (AWS KMS) customer master key (CMK) that was used to protect the encrypted file system.|
 |name|text|You can add tags to a file system, including a Name tag.|
 |provisioned_throughput_in_mibps|float|The amount of provisioned throughput, measured in MiB/s, for the file system.|

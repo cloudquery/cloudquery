@@ -6,6 +6,7 @@ Describes a VPC.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |cidr_block|text|The primary IPv4 CIDR block for the VPC.|
 |dhcp_options_id|text|The ID of the set of DHCP options you've associated with the VPC.|
 |instance_tenancy|text|The allowed tenancy of instances launched into the VPC.|

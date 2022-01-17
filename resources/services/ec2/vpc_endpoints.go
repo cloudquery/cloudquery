@@ -34,6 +34,14 @@ func Ec2VpcEndpoints() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"vpc-endpoint", *resource.Item.(types.VpcEndpoint).VpcEndpointId}, nil
+				}),
+			},
+			{
 				Name:        "creation_timestamp",
 				Description: "The date and time that the VPC endpoint was created.",
 				Type:        schema.TypeTimestamp,

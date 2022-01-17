@@ -6,6 +6,7 @@ Information about a load balancer.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |attributes_access_log_enabled|boolean||
 |attributes_access_log_s3_bucket_name|text||
 |attributes_access_log_s3_bucket_prefix|text||

@@ -33,6 +33,14 @@ func Ec2NetworkAcls() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) for the resource.",
+				Type:        schema.TypeString,
+				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
+					return []string{"network-acl", *resource.Item.(types.NetworkAcl).NetworkAclId}, nil
+				}),
+			},
+			{
 				Name:        "is_default",
 				Description: "Indicates whether this is the default network ACL for the VPC.",
 				Type:        schema.TypeBool,

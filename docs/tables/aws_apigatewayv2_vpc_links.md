@@ -6,6 +6,7 @@ Represents a VPC link.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |name|text|The name of the VPC link.|
 |security_group_ids|text[]|A list of security group IDs for the VPC link.|
 |subnet_ids|text[]|A list of subnet IDs to include in the VPC link.|

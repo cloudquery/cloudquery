@@ -5,6 +5,7 @@ Information about a virtual interface. A virtual interface (VLAN) transmits the 
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
+|arn|text|The Amazon Resource Name (ARN) for the resource.|
 |address_family|text|The address family for the BGP peer.|
 |amazon_address|text|The IP address assigned to the Amazon interface.|
 |amazon_side_asn|bigint|The autonomous system number (ASN) for the Amazon side of the connection.|
