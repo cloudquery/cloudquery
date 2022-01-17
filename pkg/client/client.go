@@ -304,7 +304,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		}
 
 		// migrate cloudquery core tables to latest version
-		if err := c.MigrateCore(ctx); err != nil {
+		if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
 			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 		}
 
@@ -956,16 +956,25 @@ func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[strin
 	return m, providerConfig, err
 }
 
-func (c *Client) MigrateCore(ctx context.Context) error {
+func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
 	err := createCoreSchema(ctx, c.db)
 	if err != nil {
 		return err
 	}
+
+	newDSN, err := de.Setup(ctx)
+	if err != nil {
+		return err
+	}
+
 	migrations, err := migrator.ReadMigrationFiles(c.Logger, coreMigrations)
 	if err != nil {
 		return err
 	}
-	dsn := c.DSN + "&search_path=cloudquery"
+	dsn, err := helpers.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
+	if err != nil {
+		return err
+	}
 	m, err := migrator.New(c.Logger, schema.Postgres, migrations, dsn, "cloudquery_core", nil)
 	if err != nil {
 		return err

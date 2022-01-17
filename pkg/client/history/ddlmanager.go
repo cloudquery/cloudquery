@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	listTables = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
+	listHyperTables = `SELECT hypertable_name FROM timescaledb_information.hypertables WHERE hypertable_schema=$1 ORDER BY 1`
 
 	setChunkTimeInterval = `SELECT * FROM set_chunk_time_interval($1, INTERVAL '%d hour');`
 	dataRetentionPolicy  = `SELECT history.update_retention($1, INTERVAL '%d day');`
@@ -51,8 +51,8 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.Di
 
 func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error {
 	var tables []string
-	if err := pgxscan.Select(ctx, conn, &tables, listTables, schemaName); err != nil {
-		return fmt.Errorf("failed to list tables: %w", err)
+	if err := pgxscan.Select(ctx, conn, &tables, listHyperTables, schemaName); err != nil {
+		return fmt.Errorf("failed to list hypertables: %w", err)
 	}
 
 	for _, table := range tables {
@@ -223,19 +223,5 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 }
 
 func TransformDSN(dsn string) (string, error) {
-	return setDsnElement(dsn, map[string]string{"search_path": schemaName})
-}
-
-func setDsnElement(dsn string, elems map[string]string) (string, error) {
-	u, err := helpers.ParseConnectionString(dsn)
-	if err != nil {
-		return "", err
-	}
-
-	vals := u.Query()
-	for k, v := range elems {
-		vals.Set(k, v)
-	}
-	u.RawQuery = vals.Encode()
-	return u.String(), nil
+	return helpers.SetDSNElement(dsn, map[string]string{"search_path": schemaName})
 }
