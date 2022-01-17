@@ -3,6 +3,8 @@ package provider
 import (
 	"embed"
 
+	"github.com/cloudquery/cq-provider-aws/resources/services/iot"
+
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
@@ -188,6 +190,17 @@ func Provider() *provider.Provider {
 			"wafv2.managed_rule_groups":             wafv2.Wafv2ManagedRuleGroups(),
 			"wafv2.rule_groups":                     wafv2.Wafv2RuleGroups(),
 			"wafv2.web_acls":                        wafv2.Wafv2WebAcls(),
+			"iot.things":                            iot.IotThings(),
+			"iot.ca_certificates":                   iot.IotCaCertificates(),
+			"iot.certificates":                      iot.IotCertificates(),
+			"iot.streams":                           iot.IotStreams(),
+			"iot.billing_groups":                    iot.IotBillingGroups(),
+			"iot.thing_groups":                      iot.IotThingGroups(),
+			"iot.thing_types":                       iot.IotThingTypes(),
+			//todo disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
+			//"iot.security_profiles":                 iot.IotSecurityProfiles(),
+			"iot.policies":    iot.IotPolicies(),
+			"iot.topic_rules": iot.IotTopicRules(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
