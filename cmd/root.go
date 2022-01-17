@@ -138,7 +138,13 @@ func init() {
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging, initSentry)
+	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry)
+}
+
+func initUlimit() {
+	if fileDescriptorF != nil {
+		fileDescriptorF()
+	}
 }
 
 func initConfig() {
