@@ -318,7 +318,7 @@ func (h Hub) loadExisting() {
 	osFs := file.NewOsFs()
 	_ = osFs.WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			h.Logger.Warn("failed to read plugin directory, no existing plugins loaded", "directory", h.PluginDirectory)
+			h.Logger.Debug("failed to read plugin directory, no existing plugins loaded", "directory", h.PluginDirectory)
 			return nil
 		}
 		if info.IsDir() {

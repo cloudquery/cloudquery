@@ -41,11 +41,24 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	return nil, fmt.Errorf("no policy with name %s found in configuration or remote. Available in config: %s", policyName, policies.All())
 }
 
-func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyPath string) {
+func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyRootPath string) {
 	for _, p := range pp {
-		t.Append(path.Join(policyPath, strings.ToLower(p.Name)), p.Title)
-		buildDescribePolicyTable(t, p.Policies, path.Join(policyPath, strings.ToLower(p.Name)))
+		policyPath := buildPolicyPath(policyRootPath, p.Name)
+		t.Append(policyPath, p.Title)
+		buildDescribePolicyTable(t, p.Policies, policyPath)
 	}
+}
+
+// buildPolicyPath separates policy root path from in policy path with `//`
+func buildPolicyPath(rootPath, name string) string {
+	policyPath := fmt.Sprintf("%s//%s", rootPath, strings.ToLower(name))
+	if strings.Contains(rootPath, "/") {
+		policyPath = fmt.Sprintf("%s/%s", rootPath, strings.ToLower(name))
+	}
+	if rootPath == "" {
+		policyPath = strings.ToLower(name)
+	}
+	return policyPath
 }
 
 func getNestedPolicyExample(p *policy.Policy, policyPath string) string {

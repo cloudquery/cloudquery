@@ -3,7 +3,9 @@ package persistentdata
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/spf13/afero"
@@ -64,6 +66,9 @@ func (c *Client) Get() (v Value, err error) {
 
 	for _, prefix := range writeOrder() {
 		v.Path = filepath.Join(prefix, dirname, c.fn)
+		if err = os.MkdirAll(path.Dir(v.Path), fs.ModePerm); err != nil {
+			continue
+		}
 		if err = c.write(v.Path, v.Content); err != nil {
 			continue
 		}
