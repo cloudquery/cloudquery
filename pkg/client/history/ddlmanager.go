@@ -15,8 +15,9 @@ import (
 const (
 	listTables = `SELECT table_name FROM information_schema.tables WHERE table_schema=$1 AND table_type='BASE TABLE' AND table_name NOT LIKE '%_schema_migrations' ORDER BY 1`
 
-	createHyperTable    = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d day', if_not_exists => true);`
-	dataRetentionPolicy = `SELECT history.update_retention($1, INTERVAL '%d day');`
+	createHyperTable     = `SELECT * FROM create_hypertable($1, 'cq_fetch_date', chunk_time_interval => INTERVAL '%d hour', if_not_exists => true);`
+	setChunkTimeInterval = `SELECT * FROM set_chunk_time_interval($1, INTERVAL '%d hour');`
+	dataRetentionPolicy  = `SELECT history.update_retention($1, INTERVAL '%d day');`
 
 	dropTableView   = `DROP VIEW IF EXISTS "%[1]s"`
 	createTableView = `CREATE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
@@ -79,9 +80,16 @@ func (h DDLManager) createHyperTable(ctx context.Context, conn *pgxpool.Conn, ta
 	if err := pgxscan.Get(ctx, conn, &hyperTable, fmt.Sprintf(createHyperTable, h.cfg.TimeInterval), tName); err != nil {
 		return fmt.Errorf("failed to create hypertable: %w", err)
 	}
-	h.log.Debug("created hyper table for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "created", hyperTable.Created)
+	if hyperTable.Created {
+		h.log.Debug("created hyper table for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "interval", h.cfg.TimeInterval)
+	} else {
+		if _, err := conn.Exec(ctx, fmt.Sprintf(setChunkTimeInterval, h.cfg.TimeInterval), tName); err != nil {
+			return err
+		}
+		h.log.Debug("updated chunk_time_interval for table", "table", hyperTable.TableName, "id", hyperTable.HypertableId, "interval", h.cfg.TimeInterval)
+	}
 
-	// FIXME: below call is only needed for "parent" tables
+	// Below call is only needed for "parent" tables. dataRetentionPolicy function takes care of that by updating retention ONLY IF a previous retention policy is set.
 	if _, err := conn.Exec(ctx, fmt.Sprintf(dataRetentionPolicy, h.cfg.Retention), tName); err != nil {
 		return err
 	}
@@ -131,26 +139,30 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 					END;
 				END;
 				$BODY$;`
-		buildTriggerFunction = `
-				CREATE OR REPLACE FUNCTION history.build_trigger(_table_name text, _child_table_name text, _parent_id text)
+
+		// Creates trigger on a referenced table, so each time a row from the parent table is deleted, referencing (child) rows are also cleared from database.
+		setupTriggerFunction = `
+				CREATE OR REPLACE FUNCTION history.setup_tsdb_trigger(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
 					RETURNS integer
 					LANGUAGE 'plpgsql'
 					COST 100
 					VOLATILE PARALLEL UNSAFE
 				AS $BODY$
 				BEGIN
-					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _child_table_name )  then
+					IF NOT EXISTS ( SELECT 1 FROM pg_trigger WHERE tgname = _table_name )  then
 					EXECUTE format(
 						'CREATE TRIGGER %I BEFORE DELETE ON history.%I FOR EACH ROW EXECUTE PROCEDURE history.cascade_delete(%s, %s)'::text,
-						_child_table_name, _table_name, _child_table_name, _parent_id);
+						_table_name, _parent_table_name, _table_name, _column_name);
 					return 0;
 					ELSE
 						return 1;
 					END IF;
 				END;
 				$BODY$;`
-		defineFKFunction = `
-				CREATE OR REPLACE FUNCTION history.define_fk(_table_name text, _column_name text, _parent_table_name text, _parent_column_name text)
+
+		// Creates hypertable on the given table with a default chunk_time_interval, and adds a default retention policy
+		setupParentFunction = `
+				CREATE OR REPLACE FUNCTION history.setup_tsdb_parent(_table_name text)
 					RETURNS integer
 					LANGUAGE 'plpgsql'
 					COST 100
@@ -159,24 +171,13 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 				DECLARE
 					result integer;
 				BEGIN
-					SELECT history.build_trigger(_parent_table_name, _table_name, _column_name) into result;
-					RETURN result;
-				END;
-				$BODY$;`
-		defineMainFunction = `
-				CREATE OR REPLACE FUNCTION history.define_main(_table_name text)
-					RETURNS integer
-					LANGUAGE 'plpgsql'
-					COST 100
-					VOLATILE PARALLEL UNSAFE
-				AS $BODY$
-				DECLARE
-					result integer;
-				BEGIN
+					PERFORM public.create_hypertable(_table_name, 'cq_fetch_date', chunk_time_interval => INTERVAL '1 day', if_not_exists => true);
 					SELECT public.add_retention_policy(_table_name, INTERVAL '14 day', if_not_exists => true) into result;
 					RETURN result;
 				END;
 				$BODY$;`
+
+		// Updates the retention policy on the given table, only if a policy already exists.
 		defineRetentionFunction = `
 				CREATE OR REPLACE FUNCTION history.update_retention(_table_name text, _retention interval)
 					RETURNS integer
@@ -213,13 +214,10 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 		if _, err := tx.Exec(ctx, createHistorySchema); err != nil {
 			return err
 		}
-		if _, err := tx.Exec(ctx, buildTriggerFunction); err != nil {
+		if _, err := tx.Exec(ctx, setupTriggerFunction); err != nil {
 			return err
 		}
-		if _, err := tx.Exec(ctx, defineFKFunction); err != nil {
-			return err
-		}
-		if _, err := tx.Exec(ctx, defineMainFunction); err != nil {
+		if _, err := tx.Exec(ctx, setupParentFunction); err != nil {
 			return err
 		}
 		if _, err := tx.Exec(ctx, defineRetentionFunction); err != nil {
