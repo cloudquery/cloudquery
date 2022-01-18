@@ -18,15 +18,25 @@ import (
 type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
-	FetchId            uuid.UUID               `db:"fetch_id"`
-	Start              time.Time               `db:"start"`
-	Finish             time.Time               `db:"finish"`
-	IsSuccess          bool                    `db:"is_success"`
-	TotalResourceCount uint64                  `db:"total_resource_count"`
-	TotalErrorsCount   uint64                  `db:"total_errors_count"`
-	ProviderName       string                  `db:"provider_name"`
-	ProviderVersion    string                  `db:"provider_version"`
-	Resources          *[]ResourceFetchSummary `db:"results"`
+	FetchId            uuid.UUID              `db:"fetch_id"`
+	Start              time.Time              `db:"start"`
+	Finish             time.Time              `db:"finish"`
+	IsSuccess          bool                   `db:"is_success"`
+	TotalResourceCount uint64                 `db:"total_resource_count"`
+	TotalErrorsCount   uint64                 `db:"total_errors_count"`
+	ProviderName       string                 `db:"provider_name"`
+	ProviderVersion    string                 `db:"provider_version"`
+	Resources          ResourceFetchSummaries `db:"results"`
+}
+
+type ResourceFetchSummaries []ResourceFetchSummary
+
+// Value implements Valuer interface required by goqu
+func (r ResourceFetchSummaries) Value() (driver.Value, error) {
+	if len(r) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(r)
 }
 
 // ResourceFetchSummary includes a data about fetching specific resource
@@ -46,11 +56,6 @@ type ResourceFetchSummary struct {
 	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
 	// details on how to solve this issue
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
-}
-
-// Value implements Valuer interface required by goqu
-func (r ResourceFetchSummary) Value() (driver.Value, error) {
-	return json.Marshal(r)
 }
 
 // SaveFetchSummary saves fetch summary into fetches database

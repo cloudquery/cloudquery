@@ -29,7 +29,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 	{
 		summary: FetchSummary{
 			ProviderName: "test1",
-			Resources: &[]ResourceFetchSummary{
+			Resources: []ResourceFetchSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -41,6 +41,21 @@ var fetchSummaryTests = []fetchSummaryTest{
 		summary: FetchSummary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
+		},
+	},
+	{
+		summary: FetchSummary{
+			ProviderName: "test4",
+			Resources: []ResourceFetchSummary{
+				{
+					ResourceName:  "test",
+					ResourceCount: 99,
+				},
+				{
+					ResourceName:  "test2",
+					ResourceCount: 99,
+				},
+			},
 		},
 	},
 	{
