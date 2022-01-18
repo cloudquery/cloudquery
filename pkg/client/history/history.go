@@ -22,6 +22,7 @@ func (c Config) FetchDate() time.Time {
 	return time.Now().UTC().Truncate(time.Duration(c.TimeTruncation) * time.Hour)
 }
 
+// TransformDSN sets the search_path of the given DSN to the history schema
 func TransformDSN(inputDSN string) (string, error) {
 	return dsn.SetDSNElement(inputDSN, map[string]string{"search_path": SchemaName})
 }
