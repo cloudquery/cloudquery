@@ -209,6 +209,10 @@ func (c *Client) HasError() error {
 	return c.err
 }
 
+func (c *Client) Enabled() bool {
+	return !c.disabled
+}
+
 func (c *Client) setError(err error) {
 	if err != nil {
 		c.logger.Debug("telemetry error occurred", "error", err)
