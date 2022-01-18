@@ -272,10 +272,8 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
-	} else {
-		if err := c.initDatabase(ctx); err != nil {
-			return nil, err
-		}
+	} else if err := c.initDatabase(ctx); err != nil {
+		return nil, err
 	}
 
 	c.initModules()
