@@ -1,4 +1,4 @@
-package policytesting
+package testing
 
 import (
 	"fmt"
