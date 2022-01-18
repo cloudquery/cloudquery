@@ -384,10 +384,32 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 }
 
 func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+
+	if err := c.buildProviderTables(ctx, providerName); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c Client) BuildAllProviderTables(ctx context.Context) error {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+
+	for _, p := range c.c.Providers {
+		if err := c.buildProviderTables(ctx, p.Name); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
