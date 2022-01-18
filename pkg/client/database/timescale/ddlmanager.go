@@ -1,10 +1,10 @@
-package history
+package timescale
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/database/dsn"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-hclog"
@@ -20,18 +20,16 @@ const (
 
 	dropTableView   = `DROP VIEW IF EXISTS "%[1]s"`
 	createTableView = `CREATE VIEW "%[1]s" AS SELECT * FROM history."%[1]s" WHERE cq_fetch_date = find_latest('history', '%[1]s')`
-
-	schemaName = "history"
 )
 
 type DDLManager struct {
 	log     hclog.Logger
 	conn    *pgxpool.Conn
-	cfg     *Config
+	cfg     *history.Config
 	dialect schema.Dialect
 }
 
-func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.DialectType) (*DDLManager, error) {
+func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *history.Config, dt schema.DialectType) (*DDLManager, error) {
 	if dt != schema.TSDB {
 		return nil, fmt.Errorf("history is only supported on timescaledb")
 	}
@@ -51,7 +49,7 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *Config, dt schema.Di
 
 func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error {
 	var tables []string
-	if err := pgxscan.Select(ctx, conn, &tables, listHyperTables, schemaName); err != nil {
+	if err := pgxscan.Select(ctx, conn, &tables, listHyperTables, history.SchemaName); err != nil {
 		return fmt.Errorf("failed to list hypertables: %w", err)
 	}
 
@@ -68,7 +66,7 @@ func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error 
 }
 
 func (h DDLManager) configureHyperTable(ctx context.Context, conn *pgxpool.Conn, tableName string) error {
-	tName := fmt.Sprintf(`"%s"."%s"`, schemaName, tableName)
+	tName := fmt.Sprintf(`"%s"."%s"`, history.SchemaName, tableName)
 
 	if _, err := conn.Exec(ctx, fmt.Sprintf(setChunkTimeInterval, h.cfg.TimeInterval), tName); err != nil {
 		return err
@@ -128,10 +126,6 @@ func AddHistoryFunctions(ctx context.Context, conn *pgxpool.Conn) error {
 		}
 		return nil
 	})
-}
-
-func TransformDSN(inputDSN string) (string, error) {
-	return dsn.SetDSNElement(inputDSN, map[string]string{"search_path": schemaName})
 }
 
 const (

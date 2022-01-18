@@ -39,7 +39,7 @@ func (e Executor) Setup(ctx context.Context) (string, error) {
 	}
 	defer conn.Release()
 
-	if err := history.AddHistoryFunctions(ctx, conn); err != nil {
+	if err := AddHistoryFunctions(ctx, conn); err != nil {
 		return e.dsn, fmt.Errorf("failed to create history functions: %w", err)
 	}
 
@@ -84,7 +84,7 @@ func (e Executor) Finalize(ctx context.Context) error {
 	}
 	defer conn.Release()
 
-	ddl, err := history.NewDDLManager(e.logger, conn, e.cfg, schema.TSDB)
+	ddl, err := NewDDLManager(e.logger, conn, e.cfg, schema.TSDB)
 	if err != nil {
 		return err
 	}

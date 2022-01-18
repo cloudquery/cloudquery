@@ -2,7 +2,11 @@ package history
 
 import (
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 )
+
+const SchemaName = "history"
 
 type Config struct {
 	// Retention of data in days, defaults to 7
@@ -16,4 +20,8 @@ type Config struct {
 
 func (c Config) FetchDate() time.Time {
 	return time.Now().UTC().Truncate(time.Duration(c.TimeTruncation) * time.Hour)
+}
+
+func TransformDSN(inputDSN string) (string, error) {
+	return dsn.SetDSNElement(inputDSN, map[string]string{"search_path": SchemaName})
 }
