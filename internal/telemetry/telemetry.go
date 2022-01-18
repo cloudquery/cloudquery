@@ -61,6 +61,9 @@ type Client struct {
 	// true if we created a new telemetry-random-id file. This is used to enable the warning message in the console client.
 	newRandomId bool
 
+	// Contents of the generated/persisted random id
+	randomIdValue string
+
 	// endpoint to send data to
 	endpoint string
 
@@ -69,6 +72,8 @@ type Client struct {
 }
 
 type Option func(*Client)
+
+const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
 
 func WithFS(fs afero.Fs) Option {
 	return func(c *Client) {
@@ -225,6 +230,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 		attribute.String("commit", c.commit),
 		attribute.String("build_date", c.buildDate),
 		attribute.Bool("ci", IsCI()),
+		attribute.Bool("faas", IsFaaS()),
 		attribute.Bool("terminal", ui.IsTerminal()),
 	}
 	if !c.newRandomId && randId != "" {
@@ -233,6 +239,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 	if randId == "" {
 		randId = genRandomId() // generate ephemeral random ID on error
 	}
+	c.randomIdValue = randId
 
 	attr = append(attr, semconv.ServiceInstanceIDKey.String(randId))
 
@@ -264,6 +271,11 @@ func (c *Client) randomId() (string, error) {
 // NewRandomId returns true if we created a new random id in this session
 func (c *Client) NewRandomId() bool {
 	return c.newRandomId
+}
+
+// RandomId returns the generated ID
+func (c *Client) RandomId() string {
+	return c.randomIdValue
 }
 
 // httpExporter creates the default HTTP SpanExporter
@@ -302,6 +314,21 @@ func (c *Client) grpcExporter(ctx context.Context) (trace.SpanExporter, error) {
 func IsCI() bool {
 	for _, v := range []string{
 		"CI", "BUILD_ID", "BUILDKITE", "CIRCLECI", "CIRCLE_CI", "CIRRUS_CI", "CODEBUILD_BUILD_ID", "GITHUB_ACTIONS", "GITLAB_CI", "HEROKU_TEST_RUN_ID", "TEAMCITY_VERSION", "TF_BUILD", "TRAVIS",
+	} {
+		if os.Getenv(v) != "" {
+			return true
+		}
+	}
+
+	return false
+}
+
+// IsFaaS determines if we're running under a Lambda env by checking Lambda-specific env vars
+func IsFaaS() bool {
+	for _, v := range []string{
+		"LAMBDA_TASK_ROOT", "AWS_LAMBDA_FUNCTION_NAME", // AWS
+		"FUNCTION_TARGET",             // GCP
+		"AZURE_FUNCTIONS_ENVIRONMENT", // Azure
 	} {
 		if os.Getenv(v) != "" {
 			return true

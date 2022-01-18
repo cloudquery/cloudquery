@@ -154,12 +154,7 @@ func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.
 	if err != nil {
 		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
 	}
-	if err != nil {
-		return nil, fmt.Errorf("bad version: provider %s, version %s", providerName, requestedProvider.Version)
-	}
-	if err != nil {
-		return nil, err
-	}
+
 	release, err := h.getRelease(ctx, organization, providerName, "latest")
 	if err != nil {
 		return nil, err
@@ -323,7 +318,7 @@ func (h Hub) loadExisting() {
 	osFs := file.NewOsFs()
 	_ = osFs.WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			h.Logger.Warn("failed to read plugin directory, no existing plugins loaded", "directory", h.PluginDirectory)
+			h.Logger.Debug("failed to read plugin directory, no existing plugins loaded", "directory", h.PluginDirectory)
 			return nil
 		}
 		if info.IsDir() {

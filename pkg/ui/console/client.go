@@ -2,21 +2,27 @@ package console
 
 import (
 	"context"
+	"crypto/sha1"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
-	"path"
-	"strings"
+	"strconv"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/fatih/color"
+	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/vbauerster/mpb/v6/decor"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 
@@ -64,9 +70,10 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	client := &Client{c, cfg, progressUpdater}
-	client.checkForUpdate(ctx)
-	return client, err
+	cClient := &Client{c, cfg, progressUpdater}
+	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
+	cClient.checkForUpdate(ctx)
+	return cClient, err
 }
 
 func (c Client) DownloadProviders(ctx context.Context) error {
@@ -111,13 +118,17 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
-		Providers:         c.cfg.Providers,
-		UpdateCallback:    fetchCallback,
-		DisableDataDelete: viper.GetBool("disable-delete"),
+		Providers:      c.cfg.Providers,
+		UpdateCallback: fetchCallback,
 	}
 	response, err := c.c.Fetch(ctx, request)
 	if err != nil {
-		return err
+		// Ignore context cancelled error
+
+		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
+			return err
+		}
+
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
@@ -128,8 +139,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
-		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary:  %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, emojiStatus[ui.StatusOK], summary.TotalResourcesFetched,
+		status := emojiStatus[ui.StatusOK]
+		if summary.Status == "Canceled" {
+			status = emojiStatus[ui.StatusError] + " (canceled)"
+		}
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
+			summary.ProviderName, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
@@ -139,8 +154,8 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n\n")
-	remotePolicy, err := c.c.DownloadPolicy(ctx, args)
+	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
+	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
 	if err != nil {
 		time.Sleep(100 * time.Millisecond)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -151,18 +166,25 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 		time.Sleep(300 * time.Millisecond)
 		c.updater.Wait()
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
 	// Show policy instructions
-	printPolicyDownloadInstructions(remotePolicy)
+	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf(`
+Add this block into your CloudQuery config file:
+
+policy "%s" {
+    source = "%s"
+}
+
+`, p.Name, p.Source))
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outputDir string, stopOnFailure, skipVersioning, failOnViolation, noResults bool) error {
-	c.c.Logger.Debug("received params:", "args", args, "policyName", policyName, "outputDir", outputDir, "stopOnFailure", stopOnFailure, "skipVersioning", skipVersioning, "failOnViolation", failOnViolation, "noResults", noResults)
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) error {
+	c.c.Logger.Debug("run policy received params:", "policy", policySource, "outputDir", outputDir, "noResults", noResults)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	policiesToRun, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
+	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -176,18 +198,13 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 
 	// if we are running in a terminal, build the progress bar
 	if ui.IsTerminal() {
-		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun, failOnViolation)
+		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
-
 	// Policies run request
 	req := &client.PoliciesRunRequest{
-		Policies:        policiesToRun,
-		PolicyName:      policyName,
-		OutputDir:       outputDir,
-		StopOnFailure:   stopOnFailure,
-		SkipVersioning:  skipVersioning,
-		FailOnViolation: failOnViolation,
-		RunCallback:     policyRunCallback,
+		Policies:    policiesToRun,
+		OutputDir:   outputDir,
+		RunCallback: policyRunCallback,
 	}
 	results, err := c.c.RunPolicies(ctx, req)
 
@@ -211,47 +228,19 @@ func (c Client) RunPolicies(ctx context.Context, args []string, policyName, outp
 	return nil
 }
 
-func (c Client) DescribePolicies(ctx context.Context, args []string, policyName string, skipVersioning bool) error {
-	policiesToDescribe, err := policy.FilterPolicies(args, c.cfg.Policies, policyName)
+func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
+	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Debug("policies to described", "policies", policiesToDescribe)
-	req := &client.PoliciesRunRequest{
-		Policies:       policiesToDescribe,
-		PolicyName:     policyName,
-		SkipVersioning: skipVersioning,
+	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
+	for _, p := range policiesToDescribe {
+		if err := c.describePolicy(ctx, p); err != nil {
+			return err
+		}
 	}
-	return c.describePolicies(ctx, req)
-}
-
-func (c Client) describePolicies(ctx context.Context, req *client.PoliciesRunRequest) error {
-	policies, err := c.c.LoadPolicies(ctx, req)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return fmt.Errorf("failed to load policies: %w", err)
-	}
-	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", req.PolicyName)
-	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
-	t.SetHeaders("Path", "Description")
-	buildDescribePolicyTable(t, policies, "")
-	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s %s`", req.PolicyName, getNestedPolicyExample(policies[0], ""))
 	return nil
-}
-
-func getNestedPolicyExample(p *policy.Policy, policyPath string) string {
-	if len(p.Policies) > 0 {
-		return getNestedPolicyExample(p.Policies[0], path.Join(policyPath, strings.ToLower(p.Name)))
-	}
-	return policyPath
-}
-func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyPath string) {
-	for _, p := range pp {
-		t.Append(path.Join(policyPath, strings.ToLower(p.Name)), p.Description)
-		buildDescribePolicyTable(t, p.Policies, path.Join(policyPath, strings.ToLower(p.Name)))
-	}
 }
 
 func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
@@ -395,10 +384,32 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 }
 
 func (c Client) BuildProviderTables(ctx context.Context, providerName string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+
+	if err := c.buildProviderTables(ctx, providerName); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c Client) BuildAllProviderTables(ctx context.Context) error {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+
+	for _, p := range c.c.Providers {
+		if err := c.buildProviderTables(ctx, p.Name); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
+	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
@@ -489,6 +500,48 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	}
 }
 
+func (c Client) setTelemetryAttributes(span trace.Span) {
+	cfgJSON, _ := json.Marshal(c.cfg)
+	s := sha1.New()
+	_, _ = s.Write(cfgJSON)
+	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
+	attrs := []attribute.KeyValue{
+		attribute.String("cfghash", cfgHash),
+	}
+	if c.c.HistoryCfg != nil {
+		attrs = append(attrs, attribute.Bool("history_enabled", true))
+	}
+	span.SetAttributes(attrs...)
+
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		if telemetry.IsCI() {
+			scope.SetUser(sentry.User{
+				ID: cfgHash,
+			})
+		}
+		if c.c.HistoryCfg != nil {
+			scope.SetTags(map[string]string{
+				"history_enabled": strconv.FormatBool(true),
+			})
+		}
+	})
+}
+
+func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
+	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return fmt.Errorf("failed to load policies: %w", err)
+	}
+	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
+	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
+	t.SetHeaders("Path", "Description")
+	buildDescribePolicyTable(t, policy.Policies{p}, "")
+	t.Render()
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
+	return nil
+}
+
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, client.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
@@ -531,24 +584,9 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	return fetchProgress, fetchCallback
 }
 
-func loadConfig(path string) (*config.Config, bool) {
-	parser := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-	)
-	cfg, diags := parser.LoadConfigFile(path)
-	if diags != nil {
-		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
-		for _, d := range diags {
-			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
-		}
-		return nil, false
-	}
-	return cfg, true
-}
-
-func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, failOnViolation bool) (*Progress, policy.UpdateCallback) {
+func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Progress, policy.UpdateCallback) {
 	policyRunProgress := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Queries: %d/%d")}
+		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Checks: %d/%d")}
 	})
 
 	for _, p := range policies {
@@ -557,18 +595,17 @@ func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, fail
 
 	policyRunCallback := func(update policy.Update) {
 		bar := policyRunProgress.GetBar(update.PolicyName)
-
+		// try to get with policy source
+		if bar == nil {
+			bar = policyRunProgress.GetBar(update.Source)
+		}
+		if bar == nil {
+			policyRunProgress.AbortAll()
+			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, policy run will complete shortly\n")
+			return
+		}
 		if update.Error != "" {
 			policyRunProgress.Update(update.PolicyName, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
-
-			if failOnViolation {
-				// update running progress as the process has terminated
-				for _, bar := range policyRunProgress.bars {
-					if bar.Status == ui.StatusInProgress {
-						policyRunProgress.Update(bar.Name, ui.StatusError, "execution stops", 0)
-					}
-				}
-			}
 			return
 		}
 
@@ -595,126 +632,17 @@ func buildPolicyRunProgress(ctx context.Context, policies []*config.Policy, fail
 	return policyRunProgress, policyRunCallback
 }
 
-func printPolicyResponse(results []*policy.ExecutionResult) {
-	if results == nil {
-		return
+func loadConfig(path string) (*config.Config, bool) {
+	parser := config.NewParser(
+		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+	)
+	cfg, diags := parser.LoadConfigFile(path)
+	if diags != nil {
+		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
+		for _, d := range diags {
+			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
+		}
+		return nil, false
 	}
-	for _, execResult := range results {
-		ui.ColorizedOutput(ui.ColorUnderline, "%s %s Results:\n\n", emojiStatus[ui.StatusInfo], execResult.PolicyName)
-
-		if !execResult.Passed {
-			if execResult.Error != "" {
-				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy failed to run\nError: %s\n\n", emojiStatus[ui.StatusError], execResult.Error))
-			} else {
-				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
-			}
-		}
-		fmtString := defineResultColumnWidths(execResult.Results)
-		for _, res := range execResult.Results {
-			switch {
-			case res.Passed:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK]+" ", res.Name, res.Description, color.GreenString("passed"))
-				ui.ColorizedOutput(ui.ColorInfo, "\n")
-			case res.Type == policy.ManualQuery:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
-				ui.ColorizedOutput(ui.ColorInfo, "\n")
-				outputTable := createOutputTable(res)
-				for _, row := range strings.Split(outputTable, "\n") {
-					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
-				}
-
-			default:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
-				ui.ColorizedOutput(ui.ColorWarning, "\n")
-				queryOutput := findOutput(res.Columns, res.Data)
-				if len(queryOutput) > 0 {
-					for _, output := range queryOutput {
-						ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n\n", emojiStatus[ui.StatusError], output)
-					}
-
-				}
-
-			}
-			ui.ColorizedOutput(ui.ColorWarning, "\n")
-		}
-	}
-}
-
-func createOutputTable(res *policy.QueryResult) string {
-	data := make([][]string, 0)
-	for rowIndex := range res.Data {
-		rowData := []string{}
-		for colIndex := range res.Data[rowIndex] {
-			rowData = append(rowData, fmt.Sprintf("%v", res.Data[rowIndex][colIndex]))
-		}
-		data = append(data, rowData)
-	}
-	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	table.SetHeader(res.Columns)
-	table.SetRowLine(true)
-	table.SetAutoFormatHeaders(false)
-	table.AppendBulk(data)
-	table.Render()
-	return tableString.String()
-}
-
-func defineResultColumnWidths(execResult []*policy.QueryResult) string {
-	maxNameLength := 0
-	maxDescrLength := 0
-	// maxColumnWid
-	for _, res := range execResult {
-		if len(res.Name) > maxNameLength {
-			maxNameLength = len(res.Name) + 1
-		}
-		if len(res.Description) > maxDescrLength {
-			maxDescrLength = len(res.Description) + 1
-		}
-	}
-
-	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds", maxNameLength, maxDescrLength, 10)
-
-}
-
-func findOutput(columnNames []string, data [][]interface{}) []string {
-	outputKeys := []string{"id", "identifier", "resource_identifier", "uid", "uuid", "arn"}
-	outputKey := ""
-	outputResources := make([]string, 0)
-	for _, key := range outputKeys {
-		for _, column := range columnNames {
-			if key == column {
-				outputKey = key
-			}
-		}
-		if outputKey != "" {
-			break
-		}
-	}
-	if outputKey == "" {
-		return []string{}
-	}
-	for index, column := range columnNames {
-		if column != outputKey {
-			continue
-		}
-		for _, row := range data {
-			outputResources = append(outputResources, fmt.Sprintf("%v", row[index]))
-		}
-	}
-
-	return outputResources
-}
-
-func printPolicyDownloadInstructions(policy *policy.RemotePolicy) {
-	policySource, _ := policy.GetURL()
-	ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf(`
-Add this block into your CloudQuery config file:
-
-policy "%s-%s" {
-	type = "remote"
-	source = "%s"
-	sub_path = ""
-	version = "%s"
-}
-`, policy.Organization, policy.Repository, policySource, policy.Version))
+	return cfg, true
 }

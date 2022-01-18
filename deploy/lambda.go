@@ -2,7 +2,6 @@ package deploy
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -12,8 +11,8 @@ import (
 )
 
 type Request struct {
-	TaskName string      `json:"taskName"`
-	Config   interface{} `json:"config"`
+	TaskName string `json:"taskName"`
+	HCL      string `json:"hcl"`
 }
 
 func LambdaHandler(ctx context.Context, req Request) (string, error) {
@@ -32,14 +31,10 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 		policyDir = "."
 	}
 	viper.Set("policy-dir", policyDir)
-	b, err := json.Marshal(req.Config)
 
-	if err != nil {
-		return "", err
-	}
 	cfg, diags := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-	).LoadConfigFromJson("config.json", b)
+	).LoadConfigFromSource("config.hcl", []byte(req.HCL))
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
 	}
@@ -98,12 +93,8 @@ func Policy(ctx context.Context, cfg *config.Config) error {
 		return fmt.Errorf("unable to create client: %w", err)
 	}
 	_, err = c.RunPolicies(ctx, &client.PoliciesRunRequest{
-		Policies:        cfg.Policies,
-		PolicyName:      "",
-		OutputDir:       outputPath,
-		StopOnFailure:   false,
-		SkipVersioning:  false,
-		FailOnViolation: false,
+		Policies:  cfg.Policies,
+		OutputDir: outputPath,
 	})
 	if err != nil {
 		return fmt.Errorf("error running query: %s", err)

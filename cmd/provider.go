@@ -74,11 +74,12 @@ var (
 		Use:   "build-schema [provider]",
 		Short: providerBuildSchemaHelpMsg,
 		Long:  providerBuildSchemaHelpMsg,
+		Args:  cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			if len(args) != 1 {
-				return fmt.Errorf("missing provider name")
+			if len(args) == 1 {
+				return c.BuildProviderTables(ctx, args[0])
 			}
-			return c.BuildProviderTables(ctx, args[0])
+			return c.BuildAllProviderTables(ctx)
 		}),
 	}
 

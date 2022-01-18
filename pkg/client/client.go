@@ -2,31 +2,19 @@ package client
 
 import (
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"io"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/helpers"
-	"github.com/getsentry/sentry-go"
-
-	"github.com/cloudquery/cloudquery/pkg/client/history"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
-	zerolog "github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/attribute"
-	otrace "go.opentelemetry.io/otel/trace"
-	"golang.org/x/sync/errgroup"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -35,13 +23,33 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/getsentry/sentry-go"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/google/uuid"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
+	zerolog "github.com/rs/zerolog/log"
+	"go.opentelemetry.io/otel/attribute"
+	otrace "go.opentelemetry.io/otel/trace"
+	"golang.org/x/sync/errgroup"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
+	//go:embed migrations/*.sql
+	coreMigrations embed.FS
+)
+
+const (
+	latestVersion = "latest"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -50,9 +58,6 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
-	// Optional: Disable deletion of data from tables.
-	// Use this with caution, as it can create duplicates of data!
-	DisableDataDelete bool
 	// Optional: Adds extra fields to the provider, this is used for testing purposes.
 	ExtraFields map[string]interface{}
 }
@@ -83,6 +88,7 @@ type ProviderFetchSummary struct {
 	FetchErrors           []error
 	TotalResourcesFetched uint64
 	FetchResources        map[string]cqproto.ResourceFetchSummary
+	Status                string
 }
 
 func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
@@ -143,25 +149,13 @@ func (p ProviderFetchSummary) Metrics() map[string]int64 {
 // PoliciesRunRequest is the request used to run a policy.
 type PoliciesRunRequest struct {
 	// Policies to run
-	Policies []*config.Policy
-
-	// PolicyName is optional attr to run specific policy
-	PolicyName string
+	Policies policy.Policies
 
 	// OutputDir is the output dir for policy execution output.
 	OutputDir string
 
-	// StopOnFailure signals policy execution to stop after first failure.
-	StopOnFailure bool
-
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallback policy.UpdateCallback
-
-	// SkipVersioning if true policy will be executed without checking out the version of the policy repo using git tags
-	SkipVersioning bool
-
-	// FailOnViolation if true policy run will return error if there are violations
-	FailOnViolation bool
 }
 
 // ModuleRunRequest is the request used to run a module.
@@ -288,9 +282,16 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 			return nil, err
 		}
 		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
-			c.Logger.Warn("postgrest validation warning", "err", err)
+			c.Logger.Warn("postgres validation warning", "err", err)
 		}
 	}
+	// migrate cloudquery core tables to latest version
+	if c.DSN != "" {
+		if err := c.MigrateCore(ctx); err != nil {
+			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+		}
+	}
+
 	if err := c.setupTableCreator(ctx); err != nil {
 		return nil, err
 	}
@@ -321,13 +322,18 @@ type ProviderUpdateSummary struct {
 func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
 	var summary []ProviderUpdateSummary
 	for _, p := range c.Providers {
-		version, err := c.Hub.CheckProviderUpdate(ctx, p)
-		if err != nil {
-			c.Logger.Warn("Failed check provider update", "provider", p.Name)
+		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
+		if strings.Compare(p.Version, "latest") == 0 {
+			c.Logger.Debug("version is latest", "provider", p.Name, "version", p.Version)
 			continue
 		}
-
+		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		if err != nil {
+			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
+			continue
+		}
 		if version == nil {
+			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
@@ -395,7 +401,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
-	c.Logger.Info("received fetch request", "disable_delete", request.DisableDataDelete, "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
+	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
 	searchPath := ""
 	if c.HistoryCfg != nil {
@@ -410,6 +416,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
 	// future refactor should probably use a something else rather than error group.
 	errGroup, _ := errgroup.WithContext(ctx)
+	fetchId, err := uuid.NewUUID()
+	if err != nil {
+		return nil, err
+	}
+
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
@@ -418,8 +429,22 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
 		}
+
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
+			fs := FetchSummary{
+				FetchId:         fetchId,
+				ProviderName:    providerConfig.Name,
+				ProviderVersion: providerPlugin.Version(),
+				Start:           time.Now().UTC(),
+			}
+
+			defer func() {
+				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+					c.Logger.Error("failed to save fetch summary", "err", err)
+				}
+			}()
+
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
@@ -434,9 +459,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				Connection: cqproto.ConnectionDetails{
 					DSN: dsn,
 				},
-				Config: providerConfig.Configuration,
-				// Disable delete on user request or if history is enabled
-				DisableDelete: request.DisableDataDelete || c.HistoryCfg != nil,
+				Config:        providerConfig.Configuration,
+				DisableDelete: true,
 				ExtraFields:   request.ExtraFields,
 			})
 			if err != nil {
@@ -447,7 +471,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
-			stream, err := providerPlugin.Provider().FetchResources(ctx, &cqproto.FetchResourcesRequest{Resources: providerConfig.Resources, PartialFetchingEnabled: providerConfig.EnablePartialFetch})
+			stream, err := providerPlugin.Provider().FetchResources(ctx,
+				&cqproto.FetchResourcesRequest{
+					Resources:              providerConfig.Resources,
+					PartialFetchingEnabled: providerConfig.EnablePartialFetch,
+					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
+				})
 			if err != nil {
 				return err
 			}
@@ -457,25 +486,41 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				partialFetchResults []*cqproto.FailedResourceFetch
 				fetchedResources           = make(map[string]cqproto.ResourceFetchSummary, len(providerConfig.Resources))
 				totalResources      uint64 = 0
+				totalErrors         uint64 = 0
 			)
 			for {
 				resp, err := stream.Recv()
-				if err == io.EOF {
-					pLog.Info("provider finished fetch", "execution", time.Since(fetchStart).String())
-					for _, fetchError := range partialFetchResults {
-						pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
-					}
-					fetchSummaries <- ProviderFetchSummary{
-						ProviderName:          providerConfig.Name,
-						Version:               providerPlugin.Version(),
-						TotalResourcesFetched: totalResources,
-						PartialFetchErrors:    partialFetchResults,
-						FetchErrors:           fetchErrors,
-						FetchResources:        fetchedResources,
-					}
-					return nil
-				}
+
 				if err != nil {
+					st, ok := status.FromError(err)
+
+					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
+						message := "provider finished fetch"
+						status := "Finished"
+						if ok && st.Code() == gcodes.Canceled {
+							message = "provider fetch canceled"
+							status = "Canceled"
+						}
+
+						pLog.Info(message, "execution", time.Since(fetchStart).String())
+						for _, fetchError := range partialFetchResults {
+							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
+						}
+						fetchSummaries <- ProviderFetchSummary{
+							ProviderName:          providerConfig.Name,
+							Version:               providerPlugin.Version(),
+							TotalResourcesFetched: totalResources,
+							PartialFetchErrors:    partialFetchResults,
+							FetchErrors:           fetchErrors,
+							FetchResources:        fetchedResources,
+							Status:                status,
+						}
+						fs.Finish = time.Now().UTC()
+						fs.IsSuccess = true
+						fs.TotalErrorsCount = totalErrors
+						fs.TotalResourceCount = totalResources
+						return nil
+					}
 					pLog.Error("received provider fetch error", "error", err)
 					return err
 				}
@@ -493,6 +538,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				}
 
 				totalResources += resp.ResourceCount
+				totalErrors += uint64(len(resp.PartialFetchFailedResources))
 				fetchedResources[resp.ResourceName] = resp.Summary
 
 				if resp.Error != "" {
@@ -504,6 +550,16 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				if request.UpdateCallback != nil {
 					request.UpdateCallback(update)
 				}
+
+				fs.Resources = append(fs.Resources, ResourceFetchSummary{
+					ResourceName:                resp.ResourceName,
+					FinishedResources:           resp.FinishedResources,
+					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
+					Error:                       resp.Error,
+					PartialFetchFailedResources: resp.PartialFetchFailedResources,
+					ResourceCount:               resp.ResourceCount,
+					Diagnostics:                 resp.Summary.Diagnostics,
+				})
 			}
 		})
 	}
@@ -705,58 +761,27 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr 
 	return m.DropProvider(ctx, s.ResourceTables)
 }
 
-func (c *Client) DownloadPolicy(ctx context.Context, args []string) (pol *policy.RemotePolicy, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadPolicy")
+func (c *Client) LoadPolicy(ctx context.Context, name, source string) (pol *policy.Policy, retErr error) {
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "LoadPolicy")
 	defer spanEnder(retErr)
-
-	c.Logger.Info("Downloading policy from GitHub", "args", args)
-
-	remotePolicy, err := policy.ParsePolicyFromArgs(args)
-	if err != nil {
-		return nil, err
-	}
-	c.Logger.Debug("Parsed policy download input arguments", "policy", args)
-
-	err = c.PolicyManager.DownloadPolicy(ctx, remotePolicy)
-	if err != nil {
-		return nil, err
-	}
-	return remotePolicy, nil
+	c.Logger.Info("Downloading policy from remote source", "name", name, "source", source)
+	return c.PolicyManager.Load(ctx, &policy.Policy{Name: name, Source: source})
 }
 
 func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
 	results := make([]*policy.ExecutionResult, 0)
 
-	for _, policyConfig := range req.Policies {
-		c.Logger = c.Logger.With("policy", policyConfig.Name, "version", policyConfig.Version, "type", policyConfig.Type, "subPath", policyConfig.SubPath)
-		result, err := c.runPolicy(ctx, policyConfig, req)
+	for _, p := range req.Policies {
+		c.Logger = c.Logger.With("policy", p.Name, "version", p.Version(), "subPath", p.SubPolicy())
+		result, err := c.runPolicy(ctx, p, req)
 
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
+			// this error means error in execution and not policy violation
+			// we should exit immeditly as this is a non-recoverable error
+			// might mean schema is incorrect, provider version
 			c.Logger.Error("policy execution finished with error", "err", err)
-			// update the ui with the error
-			if req.RunCallback != nil {
-				req.RunCallback(policy.Update{
-					PolicyName:      policyConfig.Name,
-					Version:         policyConfig.Version,
-					FinishedQueries: 0,
-					QueriesCount:    0,
-					Error:           err.Error(),
-				})
-			}
-
-			// add the execution error to the results
-			results = append(results, &policy.ExecutionResult{
-				PolicyName: policyConfig.Name,
-				Passed:     false,
-				Error:      err.Error(),
-			})
-
-			// if failOnViolation is set, we should stop the execution
-			if req.FailOnViolation {
-				return results, nil
-			}
-			continue
+			return results, err
 		}
 
 		results = append(results, result)
@@ -765,29 +790,22 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 	return results, nil
 }
 
-func (c *Client) LoadPolicies(ctx context.Context, req *PoliciesRunRequest) (policy.Policies, error) {
-	loadedPolicies := make(policy.Policies, 0, len(req.Policies))
-	for _, policyConfig := range req.Policies {
-		c.Logger.Info("Loading the policy", "args", policyConfig)
-		execReq := &policy.ExecuteRequest{
-			Policy:         policyConfig,
-			StopOnFailure:  req.StopOnFailure,
-			SkipVersioning: req.SkipVersioning,
-			UpdateCallback: req.RunCallback,
-		}
-		policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-		if err != nil {
-			c.Logger.Error("failed loading the policy", "err", err)
-			return nil, fmt.Errorf("failed to load policy: %w", err)
-		}
-		loadedPolicies = append(loadedPolicies, policies...)
+func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+	spanAttrs := []attribute.KeyValue{
+		attribute.String("policy_name", p.Name),
 	}
-	return loadedPolicies, nil
-}
 
-func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req *PoliciesRunRequest) (*policy.ExecutionResult, error) {
+	if strings.HasPrefix(p.Name, policy.CloudQueryOrg) {
+		spanAttrs = append(spanAttrs,
+			attribute.String("policy_version", p.Version()),
+			attribute.String("policy_subpath", p.SubPolicy()),
+		)
+	}
+
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(spanAttrs...))
+	defer spanEnder(retErr)
+
 	c.Logger.Info("preparing to run policy")
-
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -799,35 +817,20 @@ func (c *Client) runPolicy(ctx context.Context, policyConfig *config.Policy, req
 	}
 
 	execReq := &policy.ExecuteRequest{
-		Policy:           policyConfig,
-		StopOnFailure:    req.StopOnFailure,
-		SkipVersioning:   req.SkipVersioning,
+		Policy:           p,
 		ProviderVersions: versions,
 		UpdateCallback:   req.RunCallback,
 	}
 
-	// load the policy
-	policies, err := c.PolicyManager.Load(ctx, policyConfig, execReq)
-	if err != nil {
-		c.Logger.Error("failed loading the policy", "err", err)
-		return nil, fmt.Errorf("failed to load policy: %w", err)
-	}
-
-	c.Logger.Info("running the policy")
-	result, err := c.PolicyManager.Run(ctx, execReq, policies)
+	execReq.Policy, err = c.PolicyManager.Load(ctx, p)
 	if err != nil {
 		return nil, err
 	}
 
-	// execution was not finished
-	if !result.Passed && req.StopOnFailure && req.RunCallback != nil {
-		req.RunCallback(policy.Update{
-			PolicyName:      policyConfig.Name,
-			Version:         policyConfig.Version,
-			FinishedQueries: 0,
-			QueriesCount:    0,
-			Error:           "Execution stopped",
-		})
+	c.Logger.Info("running the policy")
+	result, err := c.PolicyManager.Run(ctx, execReq)
+	if err != nil {
+		return nil, err
 	}
 
 	// Store output in file if requested
@@ -920,6 +923,33 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 		return nil, nil, err
 	}
 	return m, providerConfig, err
+}
+
+func (c *Client) MigrateCore(ctx context.Context) error {
+	err := createCoreSchema(ctx, c.pool)
+	if err != nil {
+		return err
+	}
+	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
+	if err != nil {
+		return err
+	}
+	dsn := c.DSN + "&search_path=cloudquery"
+	m, err := provider.NewMigrator(c.Logger, migrations, dsn, "cloudquery_core")
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err := m.Close(); err != nil {
+			c.Logger.Error("failed to close migrator connection", "error", err)
+		}
+	}()
+
+	if err := m.UpgradeProvider(latestVersion); err != nil && err != migrate.ErrNoChange {
+		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
+	}
+	return nil
 }
 
 func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
@@ -1074,4 +1104,18 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 		attribute.Int64("fetch.warnings.total", int64(totalWarnings)),
 		attribute.Int64("fetch.errors.total", int64(totalErrors)),
 	)
+}
+
+func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
+	conn, err := pool.Acquire(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+	if err != nil {
+		return err
+	}
+	return nil
 }

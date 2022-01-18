@@ -3,6 +3,9 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
+
+	"github.com/cloudquery/cloudquery/pkg/policy"
 
 	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2"
@@ -10,20 +13,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (p *Parser) loadConfigFromSource(name string, data []byte, source SourceType) (*Config, hcl.Diagnostics) {
-	body, diags := p.loadFromSource(name, data, source)
+func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
+	if strings.HasSuffix(name, ".json") {
+		// we dropped support for json so error out with an explainable message
+		return nil, hcl.Diagnostics{{
+			Severity: hcl.DiagError,
+			Summary:  `json is not supported please use hcl format`,
+			Detail:   `json is not supported please use hcl format`,
+		}}
+	}
+	body, diags := p.LoadFromSource(name, data)
 	if body == nil {
 		return nil, diags
 	}
 	return p.decodeConfig(body, diags)
-}
-
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
-	return p.loadConfigFromSource(name, data, SourceHCL)
-}
-
-func (p *Parser) LoadConfigFromJson(name string, data []byte) (*Config, hcl.Diagnostics) {
-	return p.loadConfigFromSource(name, data, SourceJSON)
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, hcl.Diagnostics) {
@@ -87,7 +90,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				config.Providers = append(config.Providers, cfg)
 			}
 		case "policy":
-			cfg, cfgDiags := decodePolicyConfigBlock(block, &p.HCLContext)
+			cfg, cfgDiags := policy.DecodePolicyBlock(block, &p.HCLContext)
 			diags = append(diags, cfgDiags...)
 			if cfg != nil {
 				config.Policies = append(config.Policies, cfg)

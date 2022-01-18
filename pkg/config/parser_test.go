@@ -216,7 +216,7 @@ func TestProviderLoadConfiguration(t *testing.T) {
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 
 	c := AwsConfig{}
-	errs := hclsimple.Decode("res.json", cfg.Providers[0].Configuration, nil, &c)
+	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
 
 }
@@ -254,11 +254,16 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 		"CQ_VAR_ROLE_ARN=12312312",
 	}))
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testEnvVarConfig))
-	assert.Nil(t, diags)
+	if diags != nil {
+		for _, d := range diags {
+			t.Error(d.Summary)
+		}
+		return
+	}
 	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
 
 	c := AwsConfig{}
-	errs := hclsimple.Decode("res.json", cfg.Providers[0].Configuration, nil, &c)
+	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
 
 	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)

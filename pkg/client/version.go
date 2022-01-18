@@ -14,11 +14,11 @@ import (
 	"github.com/spf13/afero"
 )
 
-const DefaultVersion = "development"
+const DevelopmentVersion = "development"
 
 var (
 	// Version variable is injected in build time
-	Version = DefaultVersion
+	Version = DevelopmentVersion
 )
 
 const (
@@ -58,9 +58,13 @@ var getLatestRelease = doGetLatestRelease
 // * "last update check" content and that version is newer than current
 // * Github latest release version and it's newer than current
 func MaybeCheckForUpdate(ctx context.Context, fs afero.Afero, nowUnix, period int64) (*version.Version, error) {
+	if Version == DevelopmentVersion {
+		// development version or something with local changes, skip update checks
+		return nil, nil
+	}
+
 	currentVersion, err := version.NewSemver(Version)
 	if err != nil {
-		// must be a development version or something with local changes
 		return nil, err
 	}
 

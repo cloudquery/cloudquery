@@ -6,15 +6,18 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
+	"github.com/hashicorp/hcl/v2/hclsyntax"
+	"github.com/hashicorp/hcl/v2/hclwrite"
 )
 
 type Provider struct {
-	Name               string   `hcl:"name,label"`
-	Alias              string   `hcl:"alias,optional"`
-	EnablePartialFetch bool     `hcl:"enable_partial_fetch,optional"`
-	Resources          []string `hcl:"resources,optional"`
-	Env                []string `hcl:"env,optional"`
-	Configuration      []byte
+	Name                          string   `hcl:"name,label"`
+	Alias                         string   `hcl:"alias,optional"`
+	EnablePartialFetch            bool     `hcl:"enable_partial_fetch,optional"`
+	Resources                     []string `hcl:"resources,optional"`
+	Env                           []string `hcl:"env,optional"`
+	Configuration                 []byte
+	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
 }
 
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
@@ -66,16 +69,15 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
-			if b, err := convert.Body(block.Body, convert.Options{Variables: ctx.Variables, Simplify: true}); err == nil {
-				provider.Configuration = b
-			} else {
-				diags = append(diags, &hcl.Diagnostic{
-					Severity: hcl.DiagError,
-					Summary:  "Failed to encode provider configuration",
-					Detail:   err.Error(),
-					Subject:  block.DefRange.Ptr(),
-				})
+			// this should always be hclsyntax.Body
+			body := block.Body.(*hclsyntax.Body)
+			f := hclwrite.NewEmptyFile()
+
+			valDiags := convert.WriteBody(ctx, body, f.Body())
+			if valDiags != nil {
+				diags = append(diags, valDiags...)
 			}
+			provider.Configuration = f.Bytes()
 		default:
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,

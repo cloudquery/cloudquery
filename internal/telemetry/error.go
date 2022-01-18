@@ -1,11 +1,11 @@
 package telemetry
 
 import (
+	"context"
 	"errors"
 	"net"
 	"strings"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	"go.opentelemetry.io/otel/codes"
@@ -14,21 +14,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// RecordError should be called on a span to mark it as errored. By default error values are not recorded, unless the debug flag is set.
-func RecordError(span trace.Span, err error, opts ...trace.EventOption) {
+// RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
+func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 	if err == nil {
-		return
+		return false
 	}
 
 	if cls := classifyError(err); cls != errNoClass {
 		span.SetStatus(codes.Error, string(cls))
-		return
+		return false
 	}
-
-	sentry.CaptureException(err)
 
 	span.RecordError(err, opts...)
 	span.SetStatus(codes.Error, err.Error())
+	return true
 }
 
 type errClass string
@@ -53,6 +52,10 @@ func classifyError(err error) errClass {
 		}
 	}
 
+	if errors.Is(err, context.Canceled) {
+		return errCancellation
+	}
+
 	{
 		var ope *net.OpError
 		if errors.As(err, &ope) && ope.Op == "dial" {
@@ -75,10 +78,16 @@ func classifyError(err error) errClass {
 			switch pgCode[0:2] {
 			// Class 28 - Invalid Authorization Specification
 			// Class 3D - Invalid Catalog Name
-			case "28", "3D":
+			// Class 57 - Operator Intervention
+			case "28", "3D", "57":
 				return errDatabase
 			}
 		}
+	}
+
+	if errors.Is(err, pq.ErrSSLNotSupported) ||
+		errors.Is(err, pq.ErrSSLKeyHasWorldPermissions) {
+		return errDatabase
 	}
 
 	return errNoClass

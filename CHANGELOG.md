@@ -4,6 +4,76 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased] 
+
+### :rocket: Added
+* Added core migrations implementation
+* Added fetch summary saving to `fetches` table
+
+
+<!-- 
+## Unreleased
+### Added
+### Changed
+### Fixed
+### Breaking Changes
+-->
+
+## [v0.19.0] - 2022-01-10
+### Breaking Changes
+* Policy command updated and spec changed [#369](https://github.com/cloudquery/cloudquery/pull/369)
+### Fixed
+* Fixed empty policy bug [#399](https://github.com/cloudquery/cloudquery/pull/399).
+* Fixed lambda json conversion [#397](https://github.com/cloudquery/cloudquery/pull/397).
+* Removed confusing error message [#391](https://github.com/cloudquery/cloudquery/pull/391).
+* Respected absolute file path in policies [#395](https://github.com/cloudquery/cloudquery/pull/395).
+* Fixed isLevel for logger [#385](https://github.com/cloudquery/cloudquery/pull/385).
+* Fixed pathing for hub to use real source path [#394](https://github.com/cloudquery/cloudquery/pull/394).
+* CreateDatabase: check for err in correct place [#389](https://github.com/cloudquery/cloudquery/pull/389).
+* Prevented reporting of errors to sentry twice [#386](https://github.com/cloudquery/cloudquery/pull/386).
+
+### :gear: Changed
+* Removed stack traces from sentry [#387](https://github.com/cloudquery/cloudquery/pull/87).
+* Sentry send stack trace only on panic [#390](https://github.com/cloudquery/cloudquery/pull/390).
+
+
+
+## [v0.18.0]- 2022-01-03
+### 🚀 Added
+* On cancel show error [#371](https://github.com/cloudquery/cloudquery/pull/371)
+### 💥 Breaking Changes
+* Upgrade to sdk [v0.6.1](https://github.com/cloudquery/cq-provider-sdk/releases/tag/v0.6.1)
+### :gear: Changed
+* remove the need for json hcl2json convertor [#375](https://github.com/cloudquery/cloudquery/pull/375)
+* removed gen config [#370](https://github.com/cloudquery/cloudquery/pull/370)
+### :spider: Fixed
+* Table upgrades with history mode enabled [#381](https://github.com/cloudquery/cloudquery/pull/381).
+
+## [v0.17.4]- 2021-12-23
+
+### 💥 Breaking Changes
+* Removed old terraform deployment from core package, new deployment located [here](https://github.com/cloudquery/terraform-aws-cloudquery) [#357](https://github.com/cloudquery/cloudquery/pull/357).
+
+### :rocket: Added
+* Drift: Use correct ID for EMR clusters [#360](https://github.com/cloudquery/cloudquery/pull/360).
+* Policy: added more logging to policy execution [#341](https://github.com/cloudquery/cloudquery/pull/341).
+* Added hash of config to telemetry [#358](https://github.com/cloudquery/cloudquery/pull/359).
+
+### :spider: Fixed
+* Fixed Sentry issues [#347](https://github.com/cloudquery/cloudquery/pull/347).
+
+
+### :gear: Changed
+* Changed how we classify errors for sentry reducing errors sent, so only critical errors are report [#350](https://github.com/cloudquery/cloudquery/pull/350).
+* Disable sentry module reporting [#351](https://github.com/cloudquery/cloudquery/pull/351).
+* Made `source` attribute optional in CloudQuery config [#352](https://github.com/cloudquery/cloudquery/pull/352).
+* Improved misleading help messaeg in cloudquery init [#359](https://github.com/cloudquery/cloudquery/pull/359).
+
+
+## [v0.17.3]- 2021-12-16
+
+### :spider: Fixed
+* Report panics to Sentry [#347](https://github.com/cloudquery/cloudquery/pull/347).
 
 ## [v0.17.2] - 2021-12-16
 
