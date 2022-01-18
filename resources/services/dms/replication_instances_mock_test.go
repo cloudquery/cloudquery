@@ -1,3 +1,4 @@
+//go:build mock
 // +build mock
 
 package dms
