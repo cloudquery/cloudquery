@@ -949,7 +949,7 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 		}
 	}()
 
-	if err := m.UpgradeProvider("latest"); err != nil && err != migrate.ErrNoChange {
+	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil
