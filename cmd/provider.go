@@ -78,9 +78,8 @@ var (
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if len(args) == 1 {
 				return c.BuildProviderTables(ctx, args[0])
-			} else {
-				return c.BuildAllProviderTables(ctx)
 			}
+			return c.BuildAllProviderTables(ctx)
 		}),
 	}
 
