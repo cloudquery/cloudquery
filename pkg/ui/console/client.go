@@ -229,6 +229,21 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	return nil
 }
 
+func (c Client) SnapshotPolicy(ctx context.Context, policySource string) error {
+	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return err
+	}
+	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
+	for _, p := range policiesToDescribe {
+		if err := c.snapshotPolicy(ctx, p); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
 	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
@@ -526,6 +541,22 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 			})
 		}
 	})
+}
+
+func (c Client) snapshotPolicy(ctx context.Context, p *policy.Policy) error {
+	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return fmt.Errorf("failed to load policies: %w", err)
+	}
+
+	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
+	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
+	t.SetHeaders("Path", "Description")
+	buildDescribePolicyTable(t, policy.Policies{p}, "")
+	t.Render()
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
+	return nil
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
