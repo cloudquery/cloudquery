@@ -1,0 +1,61 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+run:
+  tests: true
+  skip-dirs:
+    - bin
+    - docs
+    - client/mocks
+    - resources/forks
+  timeout: 3m
+  build-tags:
+    - all
+
+linters-settings:
+  errcheck:
+    check-blank: false
+    ignore: fmt:.*,[rR]ead|[wW]rite|[cC]lose,io:Copy
+  gocritic:
+    disabled-checks:
+      - commentFormatting
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 500
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - deadcode
+    - depguard
+    - dupl
+    - errcheck
+    - gocritic
+    - gofmt
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - prealloc
+    - staticcheck
+    - structcheck
+    - unconvert
+    - varcheck
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - dupl
+        - gocritic
+     # Exclude some linters from running on resource files.
+    - path: resources(\\|\/).*\.go
+      linters:
+        - dupl
+    # Exclude some linters from running on services files.
+    - path: services\.go
+      linters:
+        - dupl
