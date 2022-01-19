@@ -19,12 +19,13 @@ type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
 	FetchId            uuid.UUID              `db:"fetch_id"`
-	Start              time.Time              `db:"start"`
-	Finish             time.Time              `db:"finish"`
+	Start              *time.Time             `db:"start"`
+	Finish             *time.Time             `db:"finish"`
 	IsSuccess          bool                   `db:"is_success"`
 	TotalResourceCount uint64                 `db:"total_resource_count"`
 	TotalErrorsCount   uint64                 `db:"total_errors_count"`
 	ProviderName       string                 `db:"provider_name"`
+	ProviderAlias      string                 `db:"provider_alias"`
 	ProviderVersion    string                 `db:"provider_version"`
 	Resources          ResourceFetchSummaries `db:"results"`
 }

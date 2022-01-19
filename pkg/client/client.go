@@ -423,28 +423,26 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
+		fs := FetchSummary{
+			FetchId:       fetchId,
+			ProviderName:  providerConfig.Name,
+			ProviderAlias: providerConfig.Alias,
+		}
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
 		}
+		fs.ProviderVersion = providerPlugin.Version()
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := FetchSummary{
-				FetchId:         fetchId,
-				ProviderName:    providerConfig.Name,
-				ProviderVersion: providerPlugin.Version(),
-				Start:           time.Now().UTC(),
-			}
-
 			defer func() {
 				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
 					c.Logger.Error("failed to save fetch summary", "err", err)
 				}
 			}()
-
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
@@ -471,6 +469,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
+			fs.Start = &fetchStart
 			stream, err := providerPlugin.Provider().FetchResources(ctx,
 				&cqproto.FetchResourcesRequest{
 					Resources:              providerConfig.Resources,
@@ -507,7 +506,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
 						}
 						fetchSummaries <- ProviderFetchSummary{
-							ProviderName:          providerConfig.Name,
+							ProviderName:          providerConfig.Alias,
 							Version:               providerPlugin.Version(),
 							TotalResourcesFetched: totalResources,
 							PartialFetchErrors:    partialFetchResults,
@@ -515,7 +514,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 							FetchResources:        fetchedResources,
 							Status:                status,
 						}
-						fs.Finish = time.Now().UTC()
+						t := time.Now().UTC()
+						fs.Finish = &t
 						fs.IsSuccess = true
 						fs.TotalErrorsCount = totalErrors
 						fs.TotalResourceCount = totalResources
