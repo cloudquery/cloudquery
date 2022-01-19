@@ -1,5 +1,3 @@
-//go:build !integration
-
 package network
 
 import (
@@ -31,38 +29,24 @@ func buildNetworkPublicIpAddressesMock(t *testing.T, ctrl *gomock.Controller) se
 					PublicIPAddress: &network.PublicIPAddress{},
 				},
 			},
+			ServicePublicIPAddress: &network.PublicIPAddress{},
+			LinkedPublicIPAddress:  &network.PublicIPAddress{},
 		},
 	}
-	require.Nil(t, faker.FakeData(&pip.ExtendedLocation))
-	require.Nil(t, faker.FakeData(&pip.Sku))
-	require.Nil(t, faker.FakeData(&pip.Etag))
-	require.Nil(t, faker.FakeData(&pip.Zones))
-	require.Nil(t, faker.FakeData(&pip.ID))
-	require.Nil(t, faker.FakeData(&pip.Name))
-	require.Nil(t, faker.FakeData(&pip.Type))
-	require.Nil(t, faker.FakeData(&pip.Location))
-	require.Nil(t, faker.FakeData(&pip.Tags))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.PublicIPAllocationMethod))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.PublicIPAddressVersion))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.DNSSettings))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.DdosSettings))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPTags))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPAddress))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.PublicIPPrefix))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IdleTimeoutInMinutes))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.ResourceGUID))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.ProvisioningState))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.ID))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.Etag))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.Name))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PrivateIPAddress))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PrivateIPAllocationMethod))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.ProvisioningState))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.Subnet.ID))
-	require.Nil(t, faker.FakeData(&pip.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PublicIPAddress.ID))
-
+	require.Nil(t, faker.FakeDataSkipFields(&pip, []string{"PublicIPAddressPropertiesFormat"}))
+	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat, []string{"PublicIPAllocationMethod", "PublicIPAddressVersion", "IPConfiguration",
+		"ServicePublicIPAddress", "ProvisioningState", "MigrationPhase", "LinkedPublicIPAddress"}))
+	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.IPConfiguration, []string{"IPConfigurationPropertiesFormat"}))
+	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.ServicePublicIPAddress, []string{"PublicIPAddressPropertiesFormat"}))
+	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.LinkedPublicIPAddress, []string{"PublicIPAddressPropertiesFormat"}))
+	pip.PublicIPAddressPropertiesFormat.PublicIPAllocationMethod = "test"
+	pip.PublicIPAddressPropertiesFormat.PublicIPAddressVersion = "test"
+	pip.PublicIPAddressPropertiesFormat.ProvisioningState = "test"
+	pip.PublicIPAddressPropertiesFormat.MigrationPhase = "test"
 	fakeId := client.FakeResourceGroup + "/" + *pip.ID
 	pip.ID = &fakeId
+	ip := faker.IPv4()
+	pip.IPAddress = &ip
 
 	page := network.NewPublicIPAddressListResultPage(network.PublicIPAddressListResult{Value: &[]network.PublicIPAddress{pip}}, func(ctx context.Context, result network.PublicIPAddressListResult) (network.PublicIPAddressListResult, error) {
 		return network.PublicIPAddressListResult{}, nil
