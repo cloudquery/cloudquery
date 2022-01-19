@@ -16,8 +16,10 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/jackc/pgx/v4"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -308,8 +310,6 @@ func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-/*
-// TODO re-enable after more migrations are introduced
 func TestClient_ProviderMigrations(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
@@ -354,6 +354,8 @@ func TestClient_ProviderMigrations(t *testing.T) {
 
 }
 
+/*
+// TODO re-enable after more migrations are introduced
 func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
