@@ -1,6 +1,9 @@
 package policy
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Policies []*Policy
 
@@ -61,6 +64,26 @@ func (p Policy) TotalQueries() int {
 		}
 	}
 	return count + len(p.Checks)
+}
+
+func (p Policy) Filter(path string) Policy {
+	selectorPath := strings.SplitN(path, "/", 3)
+	if len(selectorPath) == 0 {
+		return p
+	}
+	var emptyPolicy Policy
+	if selectorPath[0] != p.Name {
+		return emptyPolicy
+	}
+	if len(selectorPath) == 1 {
+		return p
+	}
+	for _, policy := range p.Policies {
+		if policy.Name == selectorPath[1] {
+			return policy.Filter(strings.SplitN(path, "/", 2)[1])
+		}
+	}
+	return emptyPolicy
 }
 
 type Meta struct {
