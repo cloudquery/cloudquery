@@ -359,7 +359,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	defer cancelServe()
 
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:15432/postgres?sslmode=disable"
+		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 		options.Providers = requiredTestProviders
 	})
 	assert.Nil(t, err)
@@ -374,7 +374,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	err = c.UpgradeProvider(ctx, "test")
 	assert.ErrorIs(t, err, migrate.ErrNoChange)
 
-	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:15432/postgres?sslmode=disable")
+	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
 		assert.FailNow(t, "failed to create connection")
 		return
