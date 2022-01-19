@@ -25,6 +25,8 @@ func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) serv
 	if err := faker.FakeData(&resource); err != nil {
 		t.Fatal(err)
 	}
+	id := "/subscriptions/" + client.TestSubscriptionID
+	resource.ID = &id
 	resourcesPage := resources2.NewListResultPage(
 		resources2.ListResult{Value: &[]resources2.GenericResourceExpanded{resource}},
 		func(ctx context.Context, result resources2.ListResult) (resources2.ListResult, error) {
@@ -37,7 +39,7 @@ func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) serv
 	if err := faker.FakeData(&d1); err != nil {
 		t.Fatal(err)
 	}
-	ds.EXPECT().List(gomock.Any(), "/subscriptions/"+client.TestSubscriptionID).Return(
+	ds.EXPECT().List(gomock.Any(), id).Return(
 		insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d1}}, nil,
 	)
 

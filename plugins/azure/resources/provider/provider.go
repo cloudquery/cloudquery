@@ -45,7 +45,7 @@ func Provider() *provider.Provider {
 			"keyvault.vaults":      keyvault.KeyvaultVaults(),
 			"monitor.log_profiles": monitor.MonitorLogProfiles(),
 			// This resource is currently not working
-			// "monitor.diagnostic_settings":         monitor.MonitorDiagnosticSettings(),
+			"monitor.diagnostic_settings":         monitor.MonitorDiagnosticSettings(),
 			"monitor.activity_logs":               monitor.MonitorActivityLogs(),
 			"monitor.activity_log_alerts":         monitor.MonitorActivityLogAlerts(),
 			"mysql.servers":                       mysql.MySQLServers(),
