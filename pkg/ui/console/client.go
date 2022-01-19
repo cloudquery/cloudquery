@@ -540,7 +540,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
 	buildDescribePolicyTable(t, policy.Policies{&pol}, selector[:strings.LastIndexAny(selector, "/")])
 	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
 }
 
