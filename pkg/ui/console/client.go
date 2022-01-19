@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -236,7 +237,7 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 	}
 	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
 	for _, p := range policiesToDescribe {
-		if err := c.describePolicy(ctx, p); err != nil {
+		if err := c.describePolicy(ctx, p, policySource); err != nil {
 			return err
 		}
 	}
@@ -536,7 +537,8 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	buildDescribePolicyTable(t, policy.Policies{p}, "")
+	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
+	buildDescribePolicyTable(t, policy.Policies{&pol}, "")
 	t.Render()
 	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
