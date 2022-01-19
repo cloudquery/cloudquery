@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -225,47 +226,67 @@ func CloudtrailTrails() *schema.Table {
 func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
+	log := meta.(*client.Client).Logger()
 	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
 		options.Region = c.Region
 	})
+
 	if err != nil {
 		return err
 	}
 
-	processTrailsBundle := func(trails []types.Trail, region string) error {
+	getBundledTrailsWithTags := func(trails []types.Trail, region string) ([]CloudTrailWrapper, error) {
+		processed := make([]CloudTrailWrapper, len(trails))
+
 		input := cloudtrail.ListTagsInput{
 			ResourceIdList: make([]string, 0, len(trails)),
 		}
-		for _, h := range trails {
+
+		for i, h := range trails {
+			processed[i] = CloudTrailWrapper{
+				Trail: h,
+				Tags:  make(map[string]interface{}),
+			}
+
+			// Before fetching trail tags we have to check if the trail is organization trail
+			// If the trail is organization trail and the account id is not matched with current account id
+			// We skip, and not fetch the trail tags
+			arnParts, err := arn.Parse(*h.TrailARN)
+			if err != nil {
+				log.Warn("cloud not parse cloudtrail ARN", "arn", *h.TrailARN)
+				continue
+			}
+			if *h.IsOrganizationTrail && c.AccountID != arnParts.AccountID {
+				log.Warn("the trail is an organization level trail, cloud not fetch tags", "arn", *h.TrailARN)
+				continue
+			}
+
 			input.ResourceIdList = append(input.ResourceIdList, *h.TrailARN)
 		}
+
+		if len(input.ResourceIdList) == 0 {
+			return processed, nil
+		}
+
 		for {
 			response, err := svc.ListTags(ctx, &input, func(options *cloudtrail.Options) {
 				options.Region = region
 			})
 			if err != nil {
-				return err
+				return nil, err
 			}
-			if len(response.ResourceTagList) == 0 {
-				break
-			}
-			for _, tr := range trails {
-				wrapper := CloudTrailWrapper{
-					Trail: tr,
-					Tags:  make(map[string]interface{}),
-				}
+			for _, tr := range processed {
 				for _, t := range getCloudTrailTagsByResourceID(*tr.TrailARN, response.ResourceTagList) {
-					wrapper.Tags[*t.Key] = t.Value
+					tr.Tags[*t.Key] = t.Value
 				}
-				res <- wrapper
 			}
-
 			if aws.ToString(response.NextToken) == "" {
 				break
 			}
 			input.NextToken = response.NextToken
 		}
-		return nil
+
+		return processed, nil
 	}
 
 	// since api returns all the cloudtrails despite region we aggregate trails by region to get tags.
@@ -281,15 +302,17 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 				end = len(trails)
 			}
 			t := trails[i:end]
-			err := processTrailsBundle(t, region)
+			processed, err := getBundledTrailsWithTags(t, region)
 			if err != nil {
 				return err
 			}
+			res <- processed
 		}
 	}
 
 	return nil
 }
+
 func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
@@ -360,6 +383,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
+
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(CloudTrailWrapper)
 	if !ok {
