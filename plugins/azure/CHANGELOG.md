@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :spider: Fixed
 * Fixed names of `azure_network_virtual_network_subnets`, `azure_network_virtual_network_peerings`, `azure_network_virtual_network_ip_allocations` tables according to naming convention [#76](https://github.com/cloudquery/cq-provider-azure/issues/76)
+### :gear: Changed
+* `azure_network_virtual_network_ip_allocations` is now a string array column of `azure_network_virtual_networks`  
 
 
 ## [v0.3.7] - 2021-10-07

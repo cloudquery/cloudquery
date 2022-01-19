@@ -1,5 +1,3 @@
-//go:build !integration
-
 package network
 
 import (
@@ -94,6 +92,7 @@ func buildNetworkVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) serv
 
 	fakeId := client.FakeResourceGroup + "/" + *vn.ID
 	vn.ID = &fakeId
+	vn.DhcpOptions.DNSServers = &[]string{faker.IPv4()}
 
 	page := network.NewVirtualNetworkListResultPage(network.VirtualNetworkListResult{Value: &[]network.VirtualNetwork{vn}}, func(ctx context.Context, result network.VirtualNetworkListResult) (network.VirtualNetworkListResult, error) {
 		return network.VirtualNetworkListResult{}, nil
