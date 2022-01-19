@@ -6,6 +6,7 @@ package timescale
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -16,10 +17,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
-)
-
-const (
-	testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" // timescale
 )
 
 var testTable = &schema.Table{
@@ -49,9 +46,17 @@ var testTable = &schema.Table{
 	Options: schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 }
 
+func getDSN() {
+	dbDSN := os.Getenv("CQ_TIMESCALE_TEST_DSN")
+	if dbDSN == "" {
+		dbDSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" // timescale
+	}
+	return dbDSN
+}
+
 func TestSetupHistory(t *testing.T) {
 	ctx := context.TODO()
-	ts, err := New(hclog.L(), testDBConnection, &history.Config{
+	ts, err := New(hclog.L(), getDSN(), &history.Config{
 		Retention:      1,
 		TimeInterval:   1,
 		TimeTruncation: 24,
@@ -81,7 +86,7 @@ func TestSetupHistory(t *testing.T) {
 		newDowns := make([]string, len(downs))
 		for i, sql := range downs {
 			if strings.HasPrefix(sql, "DROP TABLE ") {
-				sql += " CASCADE"
+				sql = strings.TrimSuffix(sql, ";") + " CASCADE"
 			}
 			newDowns[i] = sql
 		}
@@ -107,7 +112,7 @@ func TestSetupHistory(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	pool, err := pgsdk.Connect(ctx, testDBConnection)
+	pool, err := pgsdk.Connect(ctx, getDSN())
 	assert.NoError(t, err)
 	defer pool.Close()
 
