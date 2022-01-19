@@ -1,14 +1,22 @@
 package client
 
 import (
+	"context"
+	"io/ioutil"
+	"log"
+	"os"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
+	stsTypes "github.com/aws/aws-sdk-go-v2/service/sts/types"
 )
 
 // emptyInterfaceFieldNames looks at value s, which should be a struct (or a pointer to a struct),
@@ -131,7 +139,7 @@ func Test_isValidRegions(t *testing.T) {
 		},
 	}
 	for i, tt := range tests {
-		err := isValidRegions(tt.regions)
+		err := verifyRegions(tt.regions)
 		results := cmp.Diff(err, tt.want, cmpopts.EquateErrors())
 		if results != "" {
 			t.Errorf("Case-%d failed: %s", i, results)
@@ -163,5 +171,130 @@ func Test_isAllRegions(t *testing.T) {
 		if results != "" {
 			t.Errorf("Case-%d failed: %s", i, results)
 		}
+	}
+}
+
+type mockAssumeRole func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
+
+func (m mockAssumeRole) AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
+	return m(ctx, params, optFns...)
+}
+
+func Test_Configure(t *testing.T) {
+	ctx := context.Background()
+	logger := hclog.New(&hclog.LoggerOptions{})
+	f, err := ioutil.TempFile("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	defer os.Remove(f.Name())
+	data := []byte(`[test]
+	aws_access_key_id = <YOUR_TEMP_ACCESS_KEY_ID>
+	aws_secret_access_key = <YOUR_TEMP_SECRET_ACCESS_KEY>
+	aws_session_token = <YOUR_SESSION_TOKEN>
+	[default]
+	aws_access_key_id = <DEFAULT>
+	aws_secret_access_key = <YOUR_TEMP_SECRET_ACCESS_KEY>
+	aws_session_token = <YOUR_SESSION_TOKEN>
+	`)
+	if _, err := f.Write(data); err != nil {
+		log.Fatal(err)
+	}
+	os.Setenv("AWS_SHARED_CREDENTIALS_FILE", f.Name())
+
+	tests := []struct {
+		stsclient    func(t *testing.T) AssumeRoleAPIClient
+		account      Account
+		awsConfig    *Config
+		keyId        string
+		envVariables []struct {
+			key string
+			val string
+		}
+	}{
+		{
+			stsclient: func(t *testing.T) AssumeRoleAPIClient {
+				return mockAssumeRole(func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
+					t.Helper()
+					return &sts.AssumeRoleOutput{}, nil
+				})
+			},
+			account: Account{
+				LocalProfile: "test",
+			},
+			awsConfig: &Config{},
+			keyId:     "<YOUR_TEMP_ACCESS_KEY_ID>",
+		}, {
+			stsclient: func(t *testing.T) AssumeRoleAPIClient {
+				return mockAssumeRole(func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
+					t.Helper()
+					return &sts.AssumeRoleOutput{}, nil
+				})
+			},
+			account:   Account{},
+			awsConfig: &Config{},
+			keyId:     "<DEFAULT>",
+		},
+		{
+			stsclient: func(t *testing.T) AssumeRoleAPIClient {
+				return mockAssumeRole(func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
+					t.Helper()
+					return &sts.AssumeRoleOutput{
+						Credentials: &stsTypes.Credentials{
+							AccessKeyId:     aws.String("<AssumedRoleKeyId>"),
+							Expiration:      aws.Time(time.Now()),
+							SecretAccessKey: aws.String("<AssumedRoleKeySecret>"),
+							SessionToken:    aws.String("<AssumedRoleSessionToken>"),
+						},
+					}, nil
+				})
+			},
+
+			account: Account{
+				LocalProfile: "test",
+				RoleARN:      "arn:aws:iam::123456789012:role/demo",
+			},
+			awsConfig: &Config{},
+			keyId:     "<AssumedRoleKeyId>",
+		}, {
+			stsclient: func(t *testing.T) AssumeRoleAPIClient {
+				return mockAssumeRole(func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
+					t.Helper()
+					return &sts.AssumeRoleOutput{
+						Credentials: &stsTypes.Credentials{
+							AccessKeyId:     aws.String("<AssumedRoleKeyId>"),
+							Expiration:      aws.Time(time.Now()),
+							SecretAccessKey: aws.String("<AssumedRoleKeySecret>"),
+							SessionToken:    aws.String("<AssumedRoleKeySecret>"),
+						},
+					}, nil
+				})
+			},
+
+			account: Account{
+				LocalProfile: "test",
+				RoleARN:      "arn:aws:iam::123456789012:role/demo",
+				AccountID:    "asdfasdf",
+			},
+			awsConfig: &Config{},
+			keyId:     "<AssumedRoleKeyId>",
+		},
+	}
+
+	for i, tt := range tests {
+		stsClient := tt.stsclient(t)
+		awsClient, err := configureAwsClient(ctx, logger, tt.awsConfig, tt.account, stsClient)
+		if err != nil {
+			t.Errorf("Case-%d failed: %+v", i, err)
+		}
+		a, err := awsClient.Credentials.Retrieve(ctx)
+		if err != nil {
+			t.Errorf("Case-%d failed: %+v", i, err)
+		}
+		if a.AccessKeyID != tt.keyId {
+			t.Errorf("Case-%d failed: %+v", i, err)
+		}
+
 	}
 }
