@@ -528,7 +528,7 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 	})
 }
 
-func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
+func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
 	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -538,7 +538,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
 	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	buildDescribePolicyTable(t, policy.Policies{&pol}, "")
+	buildDescribePolicyTable(t, policy.Policies{&pol}, selector[:strings.LastIndexAny(selector, "/")])
 	t.Render()
 	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
