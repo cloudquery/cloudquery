@@ -62,10 +62,10 @@ func setupDB(t *testing.T) (dsn string) {
 	t.Cleanup(func() {
 		defer conn.Close(context.Background())
 
-		//if t.Failed() {
-		//	t.Log("Not dropping database", newDB)
-		//	return
-		//}
+		if os.Getenv("CQ_TEST_DEBUG") != "" && t.Failed() {
+			t.Log("Not dropping database", newDB)
+			return
+		}
 
 		if _, err := conn.Exec(context.Background(), "DROP DATABASE "+newDB+" WITH(FORCE)"); err != nil {
 			t.Logf("teardown: drop database failed: %v", err)
