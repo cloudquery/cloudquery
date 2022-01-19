@@ -46,7 +46,7 @@ var testTable = &schema.Table{
 	Options: schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 }
 
-func getDSN() {
+func getDSN() string {
 	dbDSN := os.Getenv("CQ_TIMESCALE_TEST_DSN")
 	if dbDSN == "" {
 		dbDSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" // timescale
