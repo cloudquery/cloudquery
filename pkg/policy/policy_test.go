@@ -1,0 +1,111 @@
+package policy
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+)
+
+func TestFilterPolicies(t *testing.T) {
+	filterTests := []struct {
+		p              Policy
+		path           string
+		expectError    bool
+		expectedPolicy Policy
+	}{
+		{
+			expectError: false,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test2",
+						Policies: Policies{
+							&Policy{
+								Name: "test",
+							},
+						},
+					},
+				},
+			},
+			path:           "aws/test1",
+			expectedPolicy: Policy{},
+		}, {
+			expectError: true,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test",
+					},
+				},
+			},
+			path: "aws/test1",
+			expectedPolicy: Policy{
+				Name: "test",
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "aws/level-1/level-2/level-3",
+			expectedPolicy: Policy{
+				Name: "level-3",
+			},
+		}, {
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "aws/level-1/level-2",
+			expectedPolicy: Policy{
+				Name: "level-2",
+				Policies: Policies{
+					&Policy{
+						Name: "level-3",
+					},
+				},
+			},
+		},
+	}
+	for i, tt := range filterTests {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			diff := cmp.Diff(tt.expectedPolicy, tt.p.Filter(tt.path), cmpopts.IgnoreUnexported(Policy{}))
+			if diff != "" && !tt.expectError {
+				t.Fatalf("values are not the same %s", diff)
+			}
+		})
+	}
+}
