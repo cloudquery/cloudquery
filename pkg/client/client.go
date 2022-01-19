@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -640,6 +641,15 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 
 		return nil
 	}
+
+	defer func() {
+		if retErr == nil || !errors.Is(retErr, fs.ErrNotExist) {
+			return
+		}
+
+		c.Logger.Error("BuildProviderTables failed", "error", retErr)
+		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+	}()
 
 	// create migration table and set it to version based on latest create table
 	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)

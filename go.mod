@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.7.0-alpha
+	github.com/cloudquery/cq-provider-sdk v0.7.0-alpha.0.20220119154925-739f3acc9e08
 	github.com/fatih/color v1.13.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/golang-migrate/migrate/v4 v4.15.0
@@ -141,4 +141,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
 
-//replace github.com/cloudquery/cq-provider-sdk v0.7.0-alpha => ../cq-provider-sdk
+//replace github.com/cloudquery/cq-provider-sdk v0.7.0-alpha.0.20220119154925-739f3acc9e08 => ../cq-provider-sdk
