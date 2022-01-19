@@ -791,6 +791,8 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 }
 
 func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+	executionTime := time.Now()
+
 	spanAttrs := []attribute.KeyValue{
 		attribute.String("policy_name", p.Name),
 	}
@@ -832,6 +834,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	if err != nil {
 		return nil, err
 	}
+	result.ExecutionTime = executionTime
 
 	// Store output in file if requested
 	if req.OutputDir != "" {
