@@ -1,10 +1,11 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 name: release
 on:
   push:
     tags:
       - "*"
 jobs:
-  release:
+  release-binary:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
