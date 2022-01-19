@@ -600,7 +600,7 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *
 func fetchSagemakerTrainingJobAlgorithmSpecifications(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.AlgorithmSpecification
 	return nil
@@ -608,7 +608,7 @@ func fetchSagemakerTrainingJobAlgorithmSpecifications(_ context.Context, _ schem
 func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*types.AlgorithmSpecification)
 	if !ok {
-		return fmt.Errorf("expected AlgorithmSpecification but got %T", r)
+		return fmt.Errorf("expected AlgorithmSpecification but got %T", resource.Item)
 	}
 	var metricDefinitions = make([]map[string]interface{}, len(r.MetricDefinitions))
 
@@ -627,7 +627,7 @@ func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ conte
 func fetchSagemakerTrainingJobDebugHookConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.DebugHookConfig
 	return nil
@@ -635,7 +635,7 @@ func fetchSagemakerTrainingJobDebugHookConfigs(_ context.Context, _ schema.Clien
 func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*types.DebugHookConfig)
 	if !ok {
-		return fmt.Errorf("expected DebugHookConfig but got %T", r)
+		return fmt.Errorf("expected DebugHookConfig but got %T", resource.Item)
 	}
 	var collectionConfigurations = make([]map[string]interface{}, len(r.CollectionConfigurations))
 
@@ -654,7 +654,7 @@ func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ conte
 func fetchSagemakerTrainingJobDebugRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.DebugRuleConfigurations
 	return nil
@@ -662,7 +662,7 @@ func fetchSagemakerTrainingJobDebugRuleConfigurations(_ context.Context, _ schem
 func fetchSagemakerTrainingJobDebugRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.DebugRuleEvaluationStatuses
 	return nil
@@ -670,7 +670,7 @@ func fetchSagemakerTrainingJobDebugRuleEvaluationStatuses(_ context.Context, _ s
 func fetchSagemakerTrainingJobInputDataConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.InputDataConfig
 	return nil
@@ -678,7 +678,7 @@ func fetchSagemakerTrainingJobInputDataConfigs(_ context.Context, _ schema.Clien
 func fetchSagemakerTrainingJobProfilerRuleConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.ProfilerRuleConfigurations
 	return nil
@@ -686,7 +686,7 @@ func fetchSagemakerTrainingJobProfilerRuleConfigurations(_ context.Context, _ sc
 func fetchSagemakerTrainingJobProfilerRuleEvaluationStatuses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r, ok := parent.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
 	res <- r.ProfilerRuleEvaluationStatuses
 	return nil
@@ -694,7 +694,10 @@ func fetchSagemakerTrainingJobProfilerRuleEvaluationStatuses(_ context.Context, 
 func resolveSagemakerTrainingJobCheckpointConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.CheckpointConfig == nil {
+		return nil
 	}
 	checkpointConfig := map[string]interface{}{
 		"s3_uri":     aws.ToString(r.CheckpointConfig.S3Uri),
@@ -705,7 +708,10 @@ func resolveSagemakerTrainingJobCheckpointConfig(_ context.Context, _ schema.Cli
 func resolveSagemakerTrainingJobExperimentConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.ExperimentConfig == nil {
+		return nil
 	}
 	experimentConfig := map[string]interface{}{
 		"experiment_name":              aws.ToString(r.ExperimentConfig.ExperimentName),
@@ -717,7 +723,10 @@ func resolveSagemakerTrainingJobExperimentConfig(_ context.Context, _ schema.Cli
 func resolveSagemakerTrainingJobModelArtifacts(__ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.ModelArtifacts == nil {
+		return nil
 	}
 	modelArtifacts := map[string]interface{}{
 		"s3_model_artifacts": aws.ToString(r.ModelArtifacts.S3ModelArtifacts),
@@ -727,7 +736,10 @@ func resolveSagemakerTrainingJobModelArtifacts(__ context.Context, _ schema.Clie
 func resolveSagemakerTrainingJobOutputDataConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.OutputDataConfig == nil {
+		return nil
 	}
 	outputDataConfig := map[string]interface{}{
 		"s3_output_path": aws.ToString(r.OutputDataConfig.S3OutputPath),
@@ -738,7 +750,10 @@ func resolveSagemakerTrainingJobOutputDataConfig(_ context.Context, _ schema.Cli
 func resolveSagemakerTrainingJobProfilerConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.ProfilerConfig == nil {
+		return nil
 	}
 	profilerConfig := map[string]interface{}{
 		"s3_output_path":           aws.ToString(r.ProfilerConfig.S3OutputPath),
@@ -750,7 +765,10 @@ func resolveSagemakerTrainingJobProfilerConfig(_ context.Context, _ schema.Clien
 func resolveSagemakerTrainingJobResourceConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.ResourceConfig == nil {
+		return nil
 	}
 	resourceConfig := map[string]interface{}{
 		"instance_count":    r.ResourceConfig.InstanceCount,
@@ -763,7 +781,10 @@ func resolveSagemakerTrainingJobResourceConfig(_ context.Context, _ schema.Clien
 func resolveSagemakerTrainingJobStoppingCondition(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.StoppingCondition == nil {
+		return nil
 	}
 	stoppingCondition := map[string]interface{}{
 		"max_runtime_in_seconds":   r.StoppingCondition.MaxRuntimeInSeconds,
@@ -774,18 +795,24 @@ func resolveSagemakerTrainingJobStoppingCondition(_ context.Context, _ schema.Cl
 func resolveSagemakerTrainingJobTensorBoardOutputConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.TensorBoardOutputConfig == nil {
+		return nil
 	}
 	tensorBoardOutputConfig := map[string]interface{}{
-		"max_runtime_in_seconds":   r.StoppingCondition.MaxRuntimeInSeconds,
-		"max_wait_time_in_seconds": r.StoppingCondition.MaxWaitTimeInSeconds,
+		"s3_output_path": r.TensorBoardOutputConfig.S3OutputPath,
+		"local_path":     r.TensorBoardOutputConfig.LocalPath,
 	}
 	return resource.Set(c.Name, tensorBoardOutputConfig)
 }
 func resolveSagemakerTrainingJobVpcConfig(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
-		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r.VpcConfig == nil {
+		return nil
 	}
 	vpcConfig := map[string]interface{}{
 		"subnets":            r.VpcConfig.Subnets,
@@ -797,7 +824,7 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 
 	if !ok {
-		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)
+		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
 	}
 
 	c := meta.(*client.Client)
@@ -823,7 +850,7 @@ func resolveSagemakerTrainingJobSecondaryStatusTransitions(_ context.Context, _ 
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 
 	if !ok {
-		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)
+		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", resource.Item)
 	}
 	var secondaryStatusTransitions = make([]map[string]interface{}, len(r.SecondaryStatusTransitions))
 
@@ -845,7 +872,7 @@ func resolveSagemakerTrainingJobFinalMetricDataList(_ context.Context, _ schema.
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 
 	if !ok {
-		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)
+		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", resource.Item)
 	}
 	var finalMetricDataList = make([]map[string]interface{}, len(r.FinalMetricDataList))
 
