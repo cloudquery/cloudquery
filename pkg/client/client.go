@@ -428,21 +428,23 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
 		}
+		saveFetchSummary := func() {
+			if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+				c.Logger.Error("failed to save fetch summary", "err", err)
+			}
+		}
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
+			saveFetchSummary()
 			return nil, err
 		}
 		fs.ProviderVersion = providerPlugin.Version()
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			defer func() {
-				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
-					c.Logger.Error("failed to save fetch summary", "err", err)
-				}
-			}()
+			defer saveFetchSummary()
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
