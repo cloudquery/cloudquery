@@ -42,7 +42,11 @@ func GetExecutor(logger hclog.Logger, dsn string, c *history.Config) (schema.Dia
 	case schema.Postgres:
 		return dType, postgres.New(logger, dsn), nil
 	case schema.TSDB:
-		return dType, timescale.New(logger, dsn, c), nil
+		ts, err := timescale.New(logger, dsn, c)
+		if err != nil {
+			return dType, nil, err
+		}
+		return dType, ts, nil
 	default:
 		return dType, nil, fmt.Errorf("unhandled dialect type")
 	}

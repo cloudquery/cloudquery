@@ -18,12 +18,15 @@ type Executor struct {
 	cfg    *history.Config
 }
 
-func New(logger hclog.Logger, dsn string, cfg *history.Config) Executor {
-	return Executor{
+func New(logger hclog.Logger, dsn string, cfg *history.Config) (*Executor, error) {
+	if cfg == nil {
+		return nil, fmt.Errorf("missing history config")
+	}
+	return &Executor{
 		logger: logger,
 		dsn:    dsn,
 		cfg:    cfg,
-	}
+	}, nil
 }
 
 // Setup sets all required history functions and validation checks that it can run cleanly.

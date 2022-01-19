@@ -51,11 +51,12 @@ var testTable = &schema.Table{
 
 func TestSetupHistory(t *testing.T) {
 	ctx := context.TODO()
-	ts := New(hclog.L(), testDBConnection, &history.Config{
+	ts, err := New(hclog.L(), testDBConnection, &history.Config{
 		Retention:      1,
 		TimeInterval:   1,
 		TimeTruncation: 24,
 	})
+	assert.NoError(t, err)
 
 	ok, err := ts.Validate(ctx)
 	assert.NoError(t, err)

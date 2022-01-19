@@ -1088,7 +1088,11 @@ func (c *Client) initDatabase(ctx context.Context) error {
 
 	if c.HistoryCfg != nil && dt != schema.TSDB {
 		// check if we're already on TSDB but the dsn is wrong
-		if ok, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg).Validate(ctx); ok && err == nil {
+		ts, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg)
+		if err != nil {
+			return err
+		}
+		if ok, err := ts.Validate(ctx); ok && err == nil {
 			return fmt.Errorf("you must update the dsn to use tsdb:// prefix")
 		}
 
