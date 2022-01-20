@@ -19,6 +19,7 @@ type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
 	FetchId            uuid.UUID              `db:"fetch_id"`
+	CreatedAt          *time.Time             `db:"created_at"`
 	Start              *time.Time             `db:"start"`
 	Finish             *time.Time             `db:"finish"`
 	IsSuccess          bool                   `db:"is_success"`

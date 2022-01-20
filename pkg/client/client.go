@@ -423,10 +423,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
+		createdAt := time.Now().UTC()
 		fs := FetchSummary{
 			FetchId:       fetchId,
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
+			CreatedAt:     &createdAt,
 		}
 		saveFetchSummary := func() {
 			if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
