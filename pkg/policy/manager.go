@@ -2,6 +2,8 @@ package policy
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
@@ -100,8 +102,13 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 			})
 		}
 	}
+	selector := strings.ReplaceAll(request.Policy.meta.subPolicy, "//", "/")
+	filteredPolicy := request.Policy.Filter(selector)
+	if len(filteredPolicy.Policies.All()) == 0 && len(filteredPolicy.Checks) == 0 {
+		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", filteredPolicy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, selector, ErrPolicyOrQueryNotFound)
+	}
 
-	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
 	// execute the queries
 	return NewExecutor(m.pool, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }
