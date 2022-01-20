@@ -3,10 +3,12 @@ package client
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"net"
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -25,24 +27,66 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var (
-	providerSrc           = "cloudquery"
-	requiredTestProviders = []*config.RequiredProvider{
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+func requiredTestProviders() []*config.RequiredProvider {
+	providerSrc := "cloudquery"
+	return []*config.RequiredProvider{
 		{
 			Name:    "test",
 			Source:  &providerSrc,
 			Version: "v0.0.9",
 		},
 	}
-)
+}
+
+func setupDB(t *testing.T) (dsn string) {
+	baseDSN := os.Getenv("CQ_CLIENT_TEST_DSN")
+	if baseDSN == "" {
+		baseDSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+	}
+
+	conn, err := pgx.Connect(context.Background(), baseDSN)
+	if err != nil {
+		assert.FailNow(t, "failed to create connection")
+		return
+	}
+
+	newDB := "test_" + strconv.Itoa(rand.Int())
+
+	_, err = conn.Exec(context.Background(), "CREATE DATABASE "+newDB)
+	assert.NoError(t, err)
+
+	t.Cleanup(func() {
+		defer conn.Close(context.Background())
+
+		if os.Getenv("CQ_TEST_DEBUG") != "" && t.Failed() {
+			t.Log("Not dropping database", newDB)
+			return
+		}
+
+		if _, err := conn.Exec(context.Background(), "DROP DATABASE "+newDB+" WITH(FORCE)"); err != nil {
+			t.Logf("teardown: drop database failed: %v", err)
+		}
+	})
+
+	return strings.Replace(baseDSN, "/postgres?", "/"+newDB+"?", 1)
+}
 
 func TestClient_FailOnFetchWithPartialFetch(t *testing.T) {
 	ctx := context.Background()
+
+	dbDSN := setupDB(t)
+
 	c, err := New(ctx, func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
+	t.Cleanup(c.Close)
+
 	// download test provider if it doesn't already exist
 	err = c.DownloadProviders(ctx)
 	assert.Nil(t, err)
@@ -72,11 +116,15 @@ func TestClient_FailOnFetchWithPartialFetch(t *testing.T) {
 
 func TestClient_FailOnFetch(t *testing.T) {
 	ctx := context.Background()
+	dbDSN := setupDB(t)
+
 	c, err := New(ctx, func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
+	t.Cleanup(c.Close)
+
 	// download test provider if it doesn't already exist
 	err = c.DownloadProviders(ctx)
 	assert.Nil(t, err)
@@ -102,11 +150,15 @@ func TestClient_FailOnFetch(t *testing.T) {
 
 func TestClient_PartialFetch(t *testing.T) {
 	ctx := context.Background()
+	dbDSN := setupDB(t)
+
 	c, err := New(ctx, func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
+	t.Cleanup(c.Close)
+
 	// download test provider if it doesn't already exist
 	err = c.DownloadProviders(ctx)
 	assert.Nil(t, err)
@@ -131,12 +183,15 @@ func TestClient_PartialFetch(t *testing.T) {
 
 func TestClient_TestNoDownload(t *testing.T) {
 	_ = os.RemoveAll(".cq/downloadTest")
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = setupDB(t)
+		options.Providers = requiredTestProviders()
 		options.PluginDirectory = ".cq/downloadTest"
 	})
 	assert.Nil(t, err)
+	t.Cleanup(c.Close)
+
 	_, err = c.Manager.GetPluginDetails("test")
 	assert.Error(t, err)
 
@@ -150,12 +205,14 @@ func TestClient_TestNoDownload(t *testing.T) {
 	pd, err := c.Manager.GetPluginDetails("test")
 	assert.Nil(t, err)
 	assert.Equal(t, "test", pd.Name)
+
 	c, err = New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = setupDB(t)
+		options.Providers = requiredTestProviders()
 		options.PluginDirectory = ".cq/downloadTest"
 	})
 	assert.Nil(t, err)
+	t.Cleanup(c.Close)
 	pd2, err := c.Manager.GetPluginDetails("test")
 	assert.Nil(t, err)
 	assert.Equal(t, pd2.FilePath, pd.FilePath)
@@ -167,16 +224,20 @@ func TestClient_TestNoDownload(t *testing.T) {
 func TestClient_FetchTimeout(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
+
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
+	t.Cleanup(c.Close)
 	assert.Nil(t, err)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
 	defer cancel()
 	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
@@ -195,18 +256,24 @@ func TestClient_FetchTimeout(t *testing.T) {
 func TestClient_FetchNilConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	cfg, diags := config.NewParser().LoadConfigFromSource("config.hcl", []byte(testConfig))
+
+	dbDSN := setupDB(t)
+
+	testCfg := []byte(strings.Replace(testConfig, "DSN_PLACEHOLDER", `"`+dbDSN+`"`, 1))
+
+	cfg, diags := config.NewParser().LoadConfigFromSource("config.hcl", testCfg)
 	assert.Nil(t, diags)
 	// Set configuration to nil
 	cfg.Providers[0].Configuration = nil
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
+	t.Cleanup(c.Close)
 	ctx := context.Background()
 	_, err = c.Fetch(ctx, FetchRequest{
 		Providers: []*config.Provider{
@@ -223,15 +290,18 @@ func TestClient_FetchNilConfig(t *testing.T) {
 func TestClient_Fetch(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
+
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
-	assert.Nil(t, err)
+	t.Cleanup(c.Close)
 
 	ctx := context.Background()
 	_, err = c.Fetch(ctx, FetchRequest{
@@ -248,15 +318,19 @@ func TestClient_Fetch(t *testing.T) {
 func TestClient_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
+
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 		return
 	}
+	t.Cleanup(c.Close)
 	ctx := context.Background()
 	s, err := c.GetProviderSchema(ctx, "test")
 	if s == nil {
@@ -272,15 +346,18 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 		return
 	}
+	t.Cleanup(c.Close)
 
 	ctx := context.Background()
 	pConfig, err := c.GetProviderConfiguration(ctx, "test")
@@ -298,14 +375,17 @@ func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.NoError(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
+	t.Cleanup(c.Close)
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
@@ -317,14 +397,17 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.NoError(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
+	t.Cleanup(c.Close)
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
@@ -333,7 +416,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	err = c.UpgradeProvider(ctx, "test")
 	assert.ErrorIs(t, err, migrate.ErrNoChange)
 
-	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable")
+	conn, err := pgx.Connect(ctx, dbDSN)
 	if err != nil {
 		assert.FailNow(t, "failed to create connection")
 		return
@@ -344,7 +427,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	c.Providers[0].Version = "v0.0.1"
 	err = c.DowngradeProvider(ctx, "test")
 	assert.NoError(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
+	_, err = conn.Exec(ctx, "select some_bool from slow_resource")
 	assert.NoError(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Error(t, err)
@@ -352,7 +435,7 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	c.Providers[0].Version = "v0.0.2"
 	err = c.UpgradeProvider(ctx, "test")
 	assert.NoError(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
+	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
 	assert.NoError(t, err)
 
 }
@@ -361,14 +444,17 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
+	dbDSN := setupDB(t)
+
 	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-		options.Providers = requiredTestProviders
+		options.DSN = dbDSN
+		options.Providers = requiredTestProviders()
 	})
 	assert.Nil(t, err)
 	if c == nil {
 		assert.FailNow(t, "failed to create client")
 	}
+	t.Cleanup(c.Close)
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
 	assert.Nil(t, err)
@@ -377,7 +463,7 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	err = c.UpgradeProvider(ctx, "test")
 	assert.ErrorIs(t, err, migrate.ErrNoChange)
 
-	conn, err := pgx.Connect(ctx, "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable")
+	conn, err := pgx.Connect(ctx, dbDSN)
 	if err != nil {
 		assert.FailNow(t, "failed to create connection")
 		return
@@ -388,37 +474,40 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	c.Providers[0].Version = "v0.0.1"
 	err = c.DowngradeProvider(ctx, "test")
 	assert.Nil(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
+	_, err = conn.Exec(ctx, "select some_bool from slow_resource")
 	assert.Nil(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Error(t, err)
 
 	c.Providers[0].Version = "v0.0.5"
-	// latest migration should be to v0.0.2
+	// latest migration should be to v0.0.3
 	err = c.UpgradeProvider(ctx, "test")
 	assert.Nil(t, err)
 	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
 	assert.Nil(t, err)
 
 	// insert dummy migration files like test provider just for version number return
-	m, _, err := c.buildProviderMigrator(map[string][]byte{
-		"1_v0.0.1.up.sql":   []byte(""),
-		"1_v0.0.1.down.sql": []byte(""),
-		"2_v0.0.2.up.sql":   []byte(""),
-		"2_v0.0.2.down.sql": []byte(""),
+	m, _, err := c.buildProviderMigrator(ctx, map[string]map[string][]byte{
+		"postgres": {
+			"1_v0.0.1.up.sql":   []byte(""),
+			"1_v0.0.1.down.sql": []byte(""),
+			"2_v0.0.2.up.sql":   []byte(""),
+			"2_v0.0.2.down.sql": []byte(""),
+			"3_v0.0.3.up.sql":   []byte(""),
+			"3_v0.0.3.down.sql": []byte(""),
+		},
 	}, "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	// migrations should be in 2 i.e v0.0.2
+	assert.NoError(t, err)
+
+	// migrations should be in 3 i.e v0.0.3
 	v, dirty, err := m.Version()
-	assert.Equal(t, []interface{}{"v0.0.2", false, nil}, []interface{}{v, dirty, err})
+	assert.Equal(t, []interface{}{"v0.0.3", false, nil}, []interface{}{v, dirty, err})
 
 }
 
 const testConfig = `cloudquery {
   connection {
-    dsn = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+    dsn = DSN_PLACEHOLDER
   }
   provider "test" {
     source = "cloudquery"
@@ -677,11 +766,13 @@ func Test_CheckForProviderUpdates(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
+
 			c, err := New(ctx, func(options *Client) {
-				options.DSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+				options.DSN = setupDB(t)
 				options.Providers = tt.providers
 			})
 			assert.Nil(t, err)
+			t.Cleanup(c.Close)
 			providers, err := c.CheckForProviderUpdates(ctx)
 			assert.Nil(t, err)
 			assert.Len(t, providers, tt.updates)

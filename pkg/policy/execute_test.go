@@ -5,31 +5,27 @@ import (
 	"fmt"
 	"testing"
 
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
 )
 
-func setupPolicyDatabase(t *testing.T, tableName string) (*pgxpool.Pool, func(t *testing.T)) {
-	poolCfg, err := pgxpool.ParseConfig("postgres://postgres:pass@localhost:5432/postgres")
-	assert.NoError(t, err)
-	poolCfg.LazyConnect = true
-	pool, err := pgxpool.ConnectConfig(context.Background(), poolCfg)
-	assert.NoError(t, err)
-	conn, err := pool.Acquire(context.Background())
+func setupPolicyDatabase(t *testing.T, tableName string) (schema.QueryExecer, func(t *testing.T)) {
+	conn, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 
 	// Setup test data
-	_, err = conn.Exec(context.Background(), fmt.Sprintf("DROP TABLE IF EXISTS %s", tableName))
+	err = conn.Exec(context.Background(), fmt.Sprintf("DROP TABLE IF EXISTS %s", tableName))
 	assert.NoError(t, err)
-	_, err = conn.Exec(context.Background(), fmt.Sprintf("CREATE TABLE %s (id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)", tableName))
+	err = conn.Exec(context.Background(), fmt.Sprintf("CREATE TABLE %s (id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)", tableName))
 	assert.NoError(t, err)
-	_, err = conn.Exec(context.Background(), fmt.Sprintf("INSERT INTO %s VALUES (1, 'john')", tableName))
+	err = conn.Exec(context.Background(), fmt.Sprintf("INSERT INTO %s VALUES (1, 'john')", tableName))
 	assert.NoError(t, err)
 
 	// Return conn and tear down func
-	return pool, func(t *testing.T) {
-		_, err = conn.Exec(context.Background(), fmt.Sprintf("DROP TABLE IF EXISTS %s CASCADE", tableName))
+	return conn, func(t *testing.T) {
+		err = conn.Exec(context.Background(), fmt.Sprintf("DROP TABLE IF EXISTS %s CASCADE", tableName))
 		assert.NoError(t, err)
 	}
 }
@@ -55,10 +51,8 @@ func TestExecutor_executeQuery(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	conn, err := pool.Acquire(context.Background())
-	assert.NoError(t, err)
 	executor := NewExecutor(conn, hclog.Default(), nil)
 
 	for _, tc := range cases {
@@ -147,10 +141,8 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	conn, err := pool.Acquire(context.Background())
-	assert.NoError(t, err)
 	executor := NewExecutor(conn, hclog.Default(), nil)
 
 	for _, tc := range cases {
@@ -310,10 +302,8 @@ func TestExecutor_Execute(t *testing.T) {
 		},
 	}
 
-	pool, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	conn, err := pool.Acquire(context.Background())
-	assert.NoError(t, err)
 	executor := NewExecutor(conn, hclog.Default(), nil)
 
 	for _, tc := range cases {
