@@ -39,7 +39,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 		ShouldBeEmpty bool
 	}{
 		{
-			Name:          "nooutput",
+			Name:          "no output",
 			Query:         fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'peter'", t.Name()),
 			ExpectOutput:  false,
 			ShouldBeEmpty: true,
@@ -134,6 +134,12 @@ func TestExecutor_executePolicy(t *testing.T) {
 				{
 					Name:  "brokenview",
 					Query: "TCELES * MOFR *",
+				},
+			},
+			Queries: []*Check{
+				{
+					Name:  "broken-query",
+					Query: "SECT * OM testview",
 				},
 			},
 			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
