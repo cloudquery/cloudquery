@@ -1,44 +1,50 @@
-package client
+package postgres
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
+	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+type Executor struct {
+	logger hclog.Logger
+	dsn    string
+}
+
 var MinPostgresVersion = version.Must(version.NewVersion("11.0"))
 
-func CreateDatabase(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
-	if dsn == "" {
-		return nil, fmt.Errorf("missing DSN")
+func New(logger hclog.Logger, dsn string) Executor {
+	return Executor{
+		logger: logger,
+		dsn:    dsn,
 	}
-	poolCfg, err := pgxpool.ParseConfig(dsn)
+}
+
+func (e Executor) Setup(ctx context.Context) (string, error) {
+	return e.dsn, nil
+}
+
+func (e Executor) Validate(ctx context.Context) (bool, error) {
+	pool, err := sdkpg.Connect(ctx, e.dsn)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 
-	poolCfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
-		UUIDType := pgtype.DataType{
-			Value: &UUID{},
-			Name:  "uuid",
-			OID:   pgtype.UUIDOID,
-		}
-
-		conn.ConnInfo().RegisterDataType(UUIDType)
-		return nil
+	if err := ValidatePostgresVersion(ctx, pool, MinPostgresVersion); err != nil {
+		return false, err
 	}
-	poolCfg.LazyConnect = true
-	pool, err := pgxpool.ConnectConfig(ctx, poolCfg)
 
-	if err != nil {
-		return nil, err
-	}
-	return pool, err
+	return true, nil
+}
+
+func (e Executor) Finalize(ctx context.Context) error {
+	return nil
 }
 
 // queryRower helps with unit tests
