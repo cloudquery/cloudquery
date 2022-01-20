@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"path/filepath"
-	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
