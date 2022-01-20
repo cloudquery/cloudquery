@@ -3,6 +3,7 @@ package policy
 import (
 	"context"
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/hashicorp/go-hclog"
@@ -168,7 +169,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.Execute(context.Background(), execReq, p, nil)
+			res, err := executor.Execute(context.Background(), execReq, p)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {
@@ -238,7 +239,7 @@ func TestExecutor_Execute(t *testing.T) {
 	cases := []struct {
 		Name                 string
 		Policy               *Policy
-		Selector             []string
+		Selector             string
 		ShouldBeEmpty        bool
 		Pass                 bool
 		ErrorOutput          string
@@ -267,14 +268,14 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"subpolicy"},
+			Selector:             "subpolicy",
 			Pass:                 true,
 			TotalExpectedResults: 2,
 		},
 		{
 			Name:                 "multilayer policies \\w invalid selector",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"invalidselector"},
+			Selector:             "invalidselector",
 			Pass:                 true,
 			ShouldBeEmpty:        true,
 			TotalExpectedResults: 0,
@@ -283,7 +284,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector on query",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"subpolicy", "sub-query"},
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 		},
@@ -303,7 +304,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "failing policy \\w selector",
 			Policy:               failingPolicy,
-			Selector:             []string{"subpolicy", "sub-query"},
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 			StopOnFailure:        true,
@@ -323,8 +324,9 @@ func TestExecutor_Execute(t *testing.T) {
 				UpdateCallback: nil,
 				StopOnFailure:  tc.StopOnFailure,
 			}
-
-			res, err := executor.Execute(context.Background(), execReq, tc.Policy, tc.Selector)
+			filtered := tc.Policy.Filter(tc.Selector)
+			log.Println(filtered.Checks)
+			res, err := executor.Execute(context.Background(), execReq, &filtered)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {
