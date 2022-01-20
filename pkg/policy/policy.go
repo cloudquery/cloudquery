@@ -67,6 +67,9 @@ func (p Policy) TotalQueries() int {
 }
 
 func (p Policy) Filter(path string) Policy {
+	if path == "" {
+		return p
+	}
 	selectorPath := strings.SplitN(path, "/", 3)
 	if len(selectorPath) == 0 {
 		return p
