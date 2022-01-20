@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
@@ -321,7 +320,6 @@ func TestExecutor_Execute(t *testing.T) {
 				StopOnFailure:  tc.StopOnFailure,
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
-			log.Println(len(filtered.Checks), tc.Selector)
 			res, err := executor.Execute(context.Background(), execReq, &filtered)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
