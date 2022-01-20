@@ -271,12 +271,12 @@ func TestExecutor_Execute(t *testing.T) {
 			Pass:                 true,
 			ShouldBeEmpty:        true,
 			TotalExpectedResults: 0,
-			ErrorOutput:          "test//invalidselector: selected policy/query is not found",
+			ErrorOutput:          "no checks or policies to execute",
 		},
 		{
 			Name:                 "multilayer policies \\w selector on query",
 			Policy:               multiLayerPolicy,
-			Selector:             "subpolicy/sub-query",
+			Selector:             "test/subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 		},
@@ -296,7 +296,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "failing policy \\w selector",
 			Policy:               failingPolicy,
-			Selector:             "subpolicy/sub-query",
+			Selector:             "test/subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 			StopOnFailure:        true,
