@@ -132,7 +132,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Views: []*View{
 				{
 					Name:  "brokenview",
-					Query: "TCELES * MOFR *",
+					Query: "INVALID * MOFR *",
 				},
 			},
 			Queries: []*Check{
@@ -141,7 +141,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
