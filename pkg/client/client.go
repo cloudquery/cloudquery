@@ -83,6 +83,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	ProviderAlias         string
 	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
@@ -510,7 +511,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
 						}
 						fetchSummaries <- ProviderFetchSummary{
-							ProviderName:          providerConfig.Alias,
+							ProviderName:          providerConfig.Name,
+							ProviderAlias:         providerConfig.Alias,
 							Version:               providerPlugin.Version(),
 							TotalResourcesFetched: totalResources,
 							PartialFetchErrors:    partialFetchResults,
@@ -577,7 +579,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	close(fetchSummaries)
 
 	for ps := range fetchSummaries {
-		response.ProviderFetchSummary[ps.ProviderName] = ps
+		key := fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)
+		if ps.ProviderName == ps.ProviderAlias {
+			key = ps.ProviderName
+		}
+		response.ProviderFetchSummary[key] = ps
 	}
 
 	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
