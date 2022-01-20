@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 
 	"path/filepath"
@@ -148,7 +147,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	}
 
 	for _, q := range policy.Checks {
-		log.Println(q.Name)
 		e.log = e.log.With("query", q.Name)
 		qr, err := e.executeQuery(ctx, q)
 		if err != nil {
