@@ -78,18 +78,16 @@ func (p Policy) Filter(path string) Policy {
 	if selectorPath[0] != p.Name {
 		return emptyPolicy
 	}
-	if len(selectorPath) == 1 {
-		if selectorPath[0] == p.Name {
-			return p
-		}
-		for _, check := range p.Checks {
-			if check.Name == selectorPath[0] {
-				p.Checks = make([]*Check, 1)
-				p.Checks = append(p.Checks, check)
-				return p
-			}
 
+	if strings.Count(path, "/") > 0 {
+		for _, policy := range p.Policies {
+			if policy.Name == selectorPath[1] {
+				return policy.Filter(strings.SplitN(path, "/", 2)[1])
+			}
 		}
+	}
+	if selectorPath[0] == p.Name && strings.Count(path, "/") == 0 {
+		return p
 	}
 	for _, check := range p.Checks {
 		if check.Name == selectorPath[1] {
