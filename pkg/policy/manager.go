@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
@@ -111,13 +110,9 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 		}
 	}
 
-	var selector []string
-	if request.Policy.meta.subPolicy != "" {
-		selector = strings.Split(request.Policy.meta.subPolicy, "/")
-	}
-
+	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
 	// execute the queries
-	return NewExecutor(conn, m.logger, progressUpdate).Execute(ctx, request, request.Policy, selector)
+	return NewExecutor(conn, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }
 
 func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, subPolicy, sourceURL string) (*Policy, error) {
