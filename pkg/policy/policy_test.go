@@ -99,6 +99,161 @@ func TestFilterPolicies(t *testing.T) {
 				},
 			},
 		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "aws/level-1/level-2/level-3/Control-1",
+			expectedPolicy: Policy{
+				Name: "level-3",
+				Checks: []*Check{
+					{
+						Name: "Control-1",
+					},
+				},
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+											{
+												Name: "Control-2",
+											},
+											{
+												Name: "Control-3",
+											},
+											{
+												Name: "Control-4",
+											},
+											{
+												Name: "Control-5",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "aws/level-1/level-2/level-3",
+			expectedPolicy: Policy{
+				Name: "level-3",
+				Checks: []*Check{
+					{
+						Name: "Control-1",
+					},
+					{
+						Name: "Control-2",
+					},
+					{
+						Name: "Control-3",
+					},
+					{
+						Name: "Control-4",
+					},
+					{
+						Name: "Control-5",
+					},
+				},
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+											{
+												Name: "Control-2",
+											},
+											{
+												Name: "Control-3",
+											},
+											{
+												Name: "Control-4",
+											},
+											{
+												Name: "Control-5",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "aws/level-1/level-2",
+			expectedPolicy: Policy{
+				Name: "level-2",
+				Policies: Policies{
+					&Policy{
+						Name: "level-3",
+						Checks: []*Check{
+							{
+								Name: "Control-1",
+							},
+							{
+								Name: "Control-2",
+							},
+							{
+								Name: "Control-3",
+							},
+							{
+								Name: "Control-4",
+							},
+							{
+								Name: "Control-5",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	for i, tt := range filterTests {
 		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
