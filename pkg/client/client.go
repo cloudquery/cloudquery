@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -14,6 +15,8 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
@@ -23,8 +26,10 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/helpers"
-	"github.com/cloudquery/cq-provider-sdk/provider"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/database/dsn"
+	"github.com/cloudquery/cq-provider-sdk/migration"
+	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/getsentry/sentry-go"
@@ -33,7 +38,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
 	otrace "go.opentelemetry.io/otel/trace"
@@ -44,12 +48,8 @@ import (
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
-	//go:embed migrations/*.sql
+	//go:embed migrations/*/*.sql
 	coreMigrations embed.FS
-)
-
-const (
-	latestVersion = "latest"
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -58,7 +58,7 @@ type FetchRequest struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	Providers []*config.Provider
-	// Optional: Adds extra fields to the provider, this is used for testing purposes.
+	// Optional: Adds extra fields to the provider, this is used for history mode and testing purposes.
 	ExtraFields map[string]interface{}
 }
 
@@ -201,11 +201,7 @@ type FetchDoneResult struct {
 
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
-	CreateTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table, p *schema.Table) error
-}
-
-type TableRemover interface {
-	DropTable(ctx context.Context, conn *pgxpool.Conn, t *schema.Table) error
+	CreateTable(context.Context, schema.QueryExecer, *schema.Table, *schema.Table) error
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -244,12 +240,13 @@ type Client struct {
 	ModuleManager module.Manager
 	// ModuleManager manages all modules lifecycle
 	PolicyManager policy.Manager
-	// TableCreator defines how table are created in the database
+	// TableCreator defines how tables are created in the database, only for plugin protocol < 4
 	TableCreator TableCreator
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
-	// pool is a list of connection that are used for policy/query execution
-	pool *pgxpool.Pool
+
+	db              *sdkdb.DB
+	dialectExecutor database.DialectExecutor
 }
 
 func New(ctx context.Context, options ...Option) (*Client, error) {
@@ -276,29 +273,13 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
-	} else {
-		c.pool, err = CreateDatabase(ctx, c.DSN)
-		if err != nil {
-			return nil, err
-		}
-		if err := ValidatePostgresVersion(ctx, c.pool, MinPostgresVersion); err != nil {
-			c.Logger.Warn("postgres validation warning", "err", err)
-		}
-	}
-	// migrate cloudquery core tables to latest version
-	if c.DSN != "" {
-		if err := c.MigrateCore(ctx); err != nil {
-			return nil, fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
-		}
-	}
-
-	if err := c.setupTableCreator(ctx); err != nil {
+	} else if err := c.initDatabase(ctx); err != nil {
 		return nil, err
 	}
 
 	c.initModules()
 
-	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.pool, c.Logger)
+	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.db, c.Logger)
 
 	return c, nil
 }
@@ -403,13 +384,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
-	searchPath := ""
+	var dsnURI string
 	if c.HistoryCfg != nil {
-		searchPath = "history"
-	}
-	dsn, err := parseDSN(c.DSN, searchPath)
-	if err != nil {
-		return nil, err
+		var err error
+		dsnURI, err = history.TransformDSN(c.DSN)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		parsed, err := dsn.ParseConnectionString(c.DSN)
+		if err != nil {
+			return nil, err
+		}
+		dsnURI = parsed.String()
 	}
 
 	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
@@ -440,7 +427,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			}
 
 			defer func() {
-				if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+				if err := c.SaveFetchSummary(ctx, &fs); err != nil {
 					c.Logger.Error("failed to save fetch summary", "err", err)
 				}
 			}()
@@ -448,20 +435,20 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
-				pLog.Info("history enabled adding fetch date", "fetch_date", c.HistoryCfg.FetchDate().Format(time.RFC3339))
+				fd := c.HistoryCfg.FetchDate()
+				pLog.Info("history enabled adding fetch date", "fetch_date", fd.Format(time.RFC3339))
 				if request.ExtraFields == nil {
 					request.ExtraFields = make(map[string]interface{})
 				}
-				request.ExtraFields["cq_fetch_date"] = c.HistoryCfg.FetchDate()
+				request.ExtraFields["cq_fetch_date"] = fd
 			}
 			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
-					DSN: dsn,
+					DSN: dsnURI,
 				},
-				Config:        providerConfig.Configuration,
-				DisableDelete: true,
-				ExtraFields:   request.ExtraFields,
+				Config:      providerConfig.Configuration,
+				ExtraFields: request.ExtraFields,
 			})
 			if err != nil {
 				pLog.Error("failed to configure provider", "error", err)
@@ -581,7 +568,13 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	return response, nil
 }
 
-func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
+type ProviderSchema struct {
+	*cqproto.GetProviderSchemaResponse
+
+	ProtocolVersion int
+}
+
+func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -596,7 +589,16 @@ func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*c
 			c.Logger.Warn("failed to kill provider", "provider", providerName)
 		}
 	}()
-	return providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+
+	schema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProviderSchema{
+		GetProviderSchemaResponse: schema,
+		ProtocolVersion:           providerPlugin.ProtocolVersion(),
+	}, nil
 }
 
 func (c *Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
@@ -627,24 +629,30 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 	if err != nil {
 		return err
 	}
-	conn, err := c.pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-	for name, t := range s.ResourceTables {
-		c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
-		if err := c.TableCreator.CreateTable(ctx, conn, t, nil); err != nil {
-			return err
-		}
-	}
 
 	if s.Migrations == nil {
-		c.Logger.Debug("provider doesn't support migrations", "provider", providerName)
+		// Keep the table creator if we don't have any migrations defined for this provider and hope that it works
+		for name, t := range s.ResourceTables {
+			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
+			if err := c.TableCreator.CreateTable(ctx, c.db, t, nil); err != nil {
+				return fmt.Errorf("CreateTable(%s) failed: %w", t.Name, err)
+			}
+		}
+
 		return nil
 	}
+
+	defer func() {
+		if retErr == nil || !errors.Is(retErr, fs.ErrNotExist) {
+			return
+		}
+
+		c.Logger.Error("BuildProviderTables failed", "error", retErr)
+		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+	}()
+
 	// create migration table and set it to version based on latest create table
-	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
 	}
@@ -653,13 +661,10 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
-	if _, _, err := m.Version(); err == migrate.ErrNilVersion {
-		mv, err := m.FindLatestMigration(cfg.Version)
-		if err != nil {
-			return err
-		}
-		c.Logger.Debug("setting provider schema migration version", "version", cfg.Version, "migration_version", mv)
-		return m.SetVersion(cfg.Version)
+
+	c.Logger.Debug("setting provider schema migration version", "version", cfg.Version)
+	if err := m.UpgradeProvider(cfg.Version); err != nil && err != migrate.ErrNoChange {
+		return err
 	}
 	return nil
 }
@@ -684,7 +689,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	if s.Migrations == nil {
 		return ErrMigrationsNotSupported
 	}
-	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
 	}
@@ -725,7 +730,7 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 	if s.Migrations == nil {
 		return fmt.Errorf("provider doesn't support migrations")
 	}
-	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
 	}
@@ -748,7 +753,7 @@ func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr 
 	if err != nil {
 		return err
 	}
-	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
 	}
@@ -874,8 +879,8 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 
 func (c *Client) Close() {
 	c.Manager.Shutdown()
-	if c.pool != nil {
-		c.pool.Close()
+	if c.db != nil {
+		c.db.Close()
 	}
 }
 
@@ -887,7 +892,7 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 	if s.Migrations == nil {
 		return fmt.Errorf("provider doesn't support migrations")
 	}
-	m, cfg, err := c.buildProviderMigrator(s.Migrations, providerName)
+	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
 	}
@@ -896,11 +901,11 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 }
 
 func (c *Client) initModules() {
-	c.ModuleManager = module.NewManager(c.pool, c.Logger)
+	c.ModuleManager = module.NewManager(c.db, c.Logger)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
-func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerName string) (*provider.Migrator, *config.RequiredProvider, error) {
+func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
 		return nil, nil, err
@@ -910,32 +915,38 @@ func (c *Client) buildProviderMigrator(migrations map[string][]byte, providerNam
 		return nil, nil, err
 	}
 
-	dsn := c.DSN
-	if c.HistoryCfg != nil {
-		dsn, err = parseDSN(c.DSN, "history")
-		if err != nil {
-			return nil, nil, err
-		}
+	dsn, err := c.dialectExecutor.Setup(ctx)
+	if err != nil {
+		return nil, nil, fmt.Errorf("dialectExecutor.Setup: %w", err)
 	}
 
-	m, err := provider.NewMigrator(c.Logger, migrations, dsn, fmt.Sprintf("%s_%s", org, name))
+	m, err := migrator.New(c.Logger, c.db.DialectType(), migrations, dsn, fmt.Sprintf("%s_%s", org, name), c.dialectExecutor.Finalize)
 	if err != nil {
 		return nil, nil, err
 	}
 	return m, providerConfig, err
 }
 
-func (c *Client) MigrateCore(ctx context.Context) error {
-	err := createCoreSchema(ctx, c.pool)
+func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
+	err := createCoreSchema(ctx, c.db)
 	if err != nil {
 		return err
 	}
-	migrations, err := provider.ReadMigrationFiles(c.Logger, coreMigrations)
+
+	newDSN, err := de.Setup(ctx)
 	if err != nil {
 		return err
 	}
-	dsn := c.DSN + "&search_path=cloudquery"
-	m, err := provider.NewMigrator(c.Logger, migrations, dsn, "cloudquery_core")
+
+	migrations, err := migrator.ReadMigrationFiles(c.Logger, coreMigrations)
+	if err != nil {
+		return err
+	}
+	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
+	if err != nil {
+		return err
+	}
+	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core", nil)
 	if err != nil {
 		return err
 	}
@@ -946,7 +957,7 @@ func (c *Client) MigrateCore(ctx context.Context) error {
 		}
 	}()
 
-	if err := m.UpgradeProvider(latestVersion); err != nil && err != migrate.ErrNoChange {
+	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil
@@ -964,44 +975,6 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 		return nil, fmt.Errorf("provider %s doesn't exist in configuration", providerName)
 	}
 	return providerConfig, nil
-}
-
-func (c *Client) setupTableCreator(ctx context.Context) error {
-	if c.TableCreator != nil {
-		c.Logger.Debug("table creator already set")
-		return nil
-	}
-	if c.HistoryCfg == nil {
-		c.Logger.Debug("using default table creator without history mode enabled.")
-		c.TableCreator = provider.NewTableCreator(c.Logger)
-		return nil
-	}
-	creator, err := history.NewHistoryTableCreator(c.HistoryCfg, c.Logger)
-	if err != nil {
-		return err
-	}
-	// set history table creator
-	c.TableCreator = creator
-	conn, err := c.pool.Acquire(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to acquire connection for history setup: %w", err)
-	}
-	defer conn.Release()
-	return history.SetupHistory(ctx, conn)
-}
-
-func parseDSN(dsn, searchPath string) (string, error) {
-	url, err := helpers.ParseConnectionString(dsn)
-	if err != nil {
-		return "", err
-	}
-	if searchPath == "" {
-		return url.String(), nil
-	}
-	if url.RawQuery != "" {
-		return url.String() + "&search_path=history", nil
-	}
-	return url.String() + "search_path=history", nil
 }
 
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
@@ -1106,16 +1079,52 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 	)
 }
 
-func createCoreSchema(ctx context.Context, pool *pgxpool.Pool) error {
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
+func createCoreSchema(ctx context.Context, db schema.QueryExecer) error {
+	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+}
 
-	_, err = conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
+func (c *Client) initDatabase(ctx context.Context) error {
+	var err error
+	c.db, err = sdkdb.New(ctx, c.Logger, c.DSN)
 	if err != nil {
 		return err
 	}
+
+	var dt schema.DialectType
+	dt, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
+	if err != nil {
+		return fmt.Errorf("getExecutor: %w", err)
+	}
+
+	if c.HistoryCfg != nil && dt != schema.TSDB {
+		// check if we're already on TSDB but the dsn is wrong
+		ts, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg)
+		if err != nil {
+			return err
+		}
+		if ok, err := ts.Validate(ctx); ok && err == nil {
+			return fmt.Errorf("you must update the dsn to use tsdb:// prefix")
+		}
+
+		return fmt.Errorf("history is only supported on timescaledb")
+	}
+
+	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
+		return fmt.Errorf("validate: %w", err)
+	} else if !ok {
+		c.Logger.Warn("postgres validation warning")
+	}
+
+	// migrate cloudquery core tables to latest version
+	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
+		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+	}
+
+	dialect, err := schema.GetDialect(c.db.DialectType())
+	if err != nil {
+		return err
+	}
+	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
+
 	return nil
 }

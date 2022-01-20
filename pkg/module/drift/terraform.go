@@ -15,7 +15,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/hashicorp/go-hclog"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/olekukonko/tablewriter"
 	"github.com/tidwall/gjson"
 )
@@ -161,7 +160,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn *pgxpool.Conn, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn schema.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
 		Different: nil,
 		Equal:     nil,

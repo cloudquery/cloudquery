@@ -30,6 +30,36 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
+			path: "",
+			expectedPolicy: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test2",
+						Policies: Policies{
+							&Policy{
+								Name: "test",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			expectError: false,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test2",
+						Policies: Policies{
+							&Policy{
+								Name: "test",
+							},
+						},
+					},
+				},
+			},
 			path:           "aws/test1",
 			expectedPolicy: Policy{},
 		}, {

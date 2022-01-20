@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 const (
@@ -21,7 +21,7 @@ type ManagerImpl struct {
 	policyDirectory string
 
 	// Instance of a database connection pool
-	pool *pgxpool.Pool
+	pool schema.QueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -38,7 +38,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(policyDir string, pool *pgxpool.Pool, logger hclog.Logger) *ManagerImpl {
+func NewManager(policyDir string, pool schema.QueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		policyDirectory: policyDir,
 		pool:            pool,
@@ -69,14 +69,6 @@ func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error)
 }
 
 func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*ExecutionResult, error) {
-	// Acquire connection from the connection pool
-	conn, err := m.pool.Acquire(ctx)
-	m.logger.Trace("acquired connection from the connection pool", "err", err)
-	if err != nil {
-		return nil, fmt.Errorf("failed to acquire connection from the connection pool: %w", err)
-	}
-	defer conn.Release()
-
 	var (
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
