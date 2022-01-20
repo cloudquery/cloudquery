@@ -1,1 +1,0 @@
-ALTER TABLE IF EXISTS "aws_ec2_security_groups" ADD COLUMN arn text;

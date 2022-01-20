@@ -17,6 +17,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.1.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.1.2
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.3.1
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.3.3
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.5.1
@@ -45,6 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.4.0
+	github.com/aws/aws-sdk-go-v2/service/route53domains v1.6.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.19.1
@@ -57,10 +59,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
 	github.com/aws/smithy-go v1.9.1
 	github.com/bxcodec/faker v2.0.1+incompatible
-	github.com/cloudquery/cq-provider-sdk v0.6.1
+	github.com/cloudquery/cq-provider-sdk v0.7.0-alpha2
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
 	github.com/golang/mock v1.6.0
+	github.com/google/go-cmp v0.5.6
 	github.com/hashicorp/go-hclog v1.0.0
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/spf13/cast v1.4.1
@@ -96,8 +99,6 @@ require (
 	github.com/hashicorp/go-version v1.3.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.10.1 // indirect
 	github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493 // indirect
-	github.com/huandu/go-sqlbuilder v1.13.0 // indirect
-	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.0 // indirect
@@ -144,10 +145,4 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-)
-
-require (
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.14.1
-	github.com/aws/aws-sdk-go-v2/service/route53domains v1.6.0
-	github.com/google/go-cmp v0.5.6
 )

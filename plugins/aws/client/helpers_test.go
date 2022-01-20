@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
@@ -28,7 +29,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil),
+			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
 			"arn:aws:apigateway:region::restapis/myid",
 			false,
 		},
@@ -39,7 +40,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil),
+			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
 			"arn:aws:apigateway:region::/restapis/myid",
 			false,
 		},
@@ -50,7 +51,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return nil, errors.New("test")
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil),
+			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
 			nil,
 			true,
 		},
