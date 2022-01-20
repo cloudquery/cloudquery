@@ -1,8 +1,8 @@
 package client
 
 type Account struct {
-	ID           string   `hcl:",label"`
-	AccountID    string   `hcl:"account_id,optional"`
+	ID           string `hcl:",label"`
+	AccountID    string
 	AccountName  string   `hcl:"account_name,optional"`
 	RoleARN      string   `hcl:"role_arn,optional"`
 	LocalProfile string   `hcl:"local_profile,optional"`
@@ -21,11 +21,11 @@ type Config struct {
 func (c Config) Example() string {
 	return ` configuration {
   // Optional. if you want to assume role to multiple account and fetch data from them
-  // accounts "<YOUR ACCOUNT ID>" {
+  // accounts "<UNIQUE ACCOUNT IDENTIFIER>" {
     // Optional. Role ARN we want to assume when accessing this account
     // role_arn = < YOUR_ROLE_ARN >
-    // Optional. Account ID we want to assume when accessing this account - override the block label
-    // account_id = < YOUR ACCOUNT ID >
+    // Optional. Named profile in config or credential file from where CQ should grab credentials
+    // LocalProfile = < PROFILE_NAME >
   // }
   // Optional. by default assumes all regions
   // regions = ["us-east-1", "us-west-2"]
