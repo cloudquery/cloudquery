@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 // FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
@@ -59,13 +58,7 @@ type ResourceFetchSummary struct {
 }
 
 // SaveFetchSummary saves fetch summary into fetches database
-func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary) error {
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
+func (c *Client) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return err
@@ -77,6 +70,5 @@ func SaveFetchSummary(ctx context.Context, pool *pgxpool.Pool, fs *FetchSummary)
 		return err
 	}
 
-	_, err = conn.Exec(ctx, sql, args...)
-	return err
+	return c.db.Exec(ctx, sql, args...)
 }

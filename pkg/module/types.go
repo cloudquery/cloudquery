@@ -3,10 +3,9 @@ package module
 import (
 	"context"
 
-	"github.com/hashicorp/hcl/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/hashicorp/hcl/v2"
 )
 
 type Module interface {
@@ -29,7 +28,7 @@ type ExecuteRequest struct {
 	// Providers is the list of providers to process
 	Providers []*cqproto.GetProviderSchemaResponse
 	// Conn is the db connection to use
-	Conn *pgxpool.Conn
+	Conn schema.QueryExecer
 }
 
 type ExecutionResult struct {

@@ -422,6 +422,13 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 
 	if len(cfg.versionConstraints) > 0 {
 		pver, err := version.NewSemver(p.Version)
+		if err == nil {
+			if pr := pver.Prerelease(); pr != "" && strings.HasPrefix(pr, "SNAPSHOT") {
+				// re-parse without prerelease info
+				v := strings.SplitN(p.Version, "-", 2)
+				pver, err = version.NewVersion(v[0])
+			}
+		}
 		if err != nil {
 			return false, []*hcl.Diagnostic{
 				{
