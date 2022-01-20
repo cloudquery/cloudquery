@@ -2,7 +2,6 @@ package policy
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
@@ -104,7 +103,7 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 
 	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
 	// execute the queries
-	return NewExecutor(conn, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
+	return NewExecutor(m.pool, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }
 
 func (m *ManagerImpl) loadPolicyFromSource(ctx context.Context, name, subPolicy, sourceURL string) (*Policy, error) {
