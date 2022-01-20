@@ -12,6 +12,10 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
+const (
+	validateTimescaleInstalled = `SELECT EXISTS(SELECT 1 FROM pg_extension where extname = 'timescaledb')`
+)
+
 type Executor struct {
 	logger hclog.Logger
 	dsn    string
@@ -48,12 +52,7 @@ func (e Executor) Setup(ctx context.Context) (string, error) {
 
 	return history.TransformDSN(e.dsn)
 }
-
 func (e Executor) Validate(ctx context.Context) (bool, error) {
-	const (
-		validateTimescaleInstalled = `SELECT EXISTS(SELECT 1 FROM pg_extension where extname = 'timescaledb')`
-	)
-
 	pool, err := pgsdk.Connect(ctx, e.dsn)
 	if err != nil {
 		return false, err
