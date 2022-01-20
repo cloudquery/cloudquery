@@ -420,7 +420,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
-			if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
+			if err := c.SaveFetchSummary(ctx, &fs); err != nil {
 				c.Logger.Error("failed to save fetch summary", "err", err)
 			}
 		}

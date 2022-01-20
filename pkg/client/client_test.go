@@ -37,7 +37,7 @@ func requiredTestProviders() []*config.RequiredProvider {
 		{
 			Name:    "test",
 			Source:  &providerSrc,
-			Version: "v0.0.9",
+			Version: "latest",
 		},
 	}
 }
