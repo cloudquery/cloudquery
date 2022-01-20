@@ -27,6 +27,7 @@ var pluginMap = map[string]plugin.Plugin{
 type Plugin interface {
 	Name() string
 	Version() string
+	ProtocolVersion() int
 	Provider() cqproto.CQProvider
 	Close()
 }
@@ -46,7 +47,7 @@ func newRemotePlugin(details *registry.ProviderDetails, alias string, env []stri
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
-			3: pluginMap,
+			cqproto.V4: pluginMap,
 		},
 		Managed:          true,
 		Cmd:              cmd,
@@ -88,6 +89,8 @@ func newRemotePlugin(details *registry.ProviderDetails, alias string, env []stri
 func (m managedPlugin) Name() string { return m.name }
 
 func (m managedPlugin) Version() string { return m.version }
+
+func (m managedPlugin) ProtocolVersion() int { return m.client.NegotiatedVersion() }
 
 func (m managedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
@@ -140,6 +143,8 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 func (m unmanagedPlugin) Name() string { return m.name }
 
 func (m unmanagedPlugin) Version() string { return Unmanaged }
+
+func (m unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
 
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 

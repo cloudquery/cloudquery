@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -75,38 +74,21 @@ var fetchSummaryTests = []fetchSummaryTest{
 	},
 }
 
-func setupDatabase(dsn string) (*pgxpool.Pool, error) {
-	poolCfg, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return nil, err
-	}
-	poolCfg.LazyConnect = true
-	pool, err := pgxpool.ConnectConfig(context.Background(), poolCfg)
-	if err != nil {
-		return nil, err
-	}
-	return pool, nil
-}
-
 func TestFetchSummary(t *testing.T) {
-	option := func(c *Client) {
+	c, err := New(context.Background(), func(c *Client) {
 		c.DSN = testDBConnection
-	}
-	_, err := New(context.Background(), option)
+	})
 	assert.NoError(t, err)
-	pool, err := setupDatabase(testDBConnection)
-	assert.NoError(t, err)
-	defer pool.Close()
-	assert.NoError(t, err)
+
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {
 		if !f.skipFetchId {
 			f.summary.FetchId = fetchId
 		}
 		f.summary.Start = time.Now()
-		err := SaveFetchSummary(context.Background(), pool, &f.summary)
+		err := c.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
-			assert.Equal(t, f.err.Error(), err.Error())
+			assert.EqualError(t, err, f.err.Error())
 		} else {
 			assert.NoError(t, err)
 		}
