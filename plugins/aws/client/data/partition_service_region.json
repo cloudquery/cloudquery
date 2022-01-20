@@ -617,6 +617,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -5623,7 +5624,9 @@
             "dms": {},
             "dms-fips": {},
             "us-iso-east-1": {},
-            "us-iso-east-1-fips": {}
+            "us-iso-east-1-fips": {},
+            "us-iso-west-1": {},
+            "us-iso-west-1-fips": {}
           }
         },
         "ds": {
@@ -6548,7 +6551,9 @@
         },
         "identitystore": {
           "regions": {
+            "fips-us-gov-east-1": {},
             "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
@@ -6736,6 +6741,7 @@
         },
         "portal.sso": {
           "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
