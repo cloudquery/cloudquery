@@ -268,7 +268,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector",
 			Policy:               multiLayerPolicy,
-			Selector:             "subpolicy",
+			Selector:             "test/subpolicy",
 			Pass:                 true,
 			TotalExpectedResults: 2,
 		},
@@ -325,7 +325,7 @@ func TestExecutor_Execute(t *testing.T) {
 				StopOnFailure:  tc.StopOnFailure,
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
-			log.Println(filtered.Checks)
+			log.Println(len(filtered.Checks), tc.Selector)
 			res, err := executor.Execute(context.Background(), execReq, &filtered)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
