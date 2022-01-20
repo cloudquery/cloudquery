@@ -201,7 +201,11 @@ func Test_Configure(t *testing.T) {
 	if _, err := f.Write(data); err != nil {
 		log.Fatal(err)
 	}
+
 	os.Setenv("AWS_SHARED_CREDENTIALS_FILE", f.Name())
+	os.Unsetenv("AWS_ACCESS_KEY_ID")
+	os.Unsetenv("AWS_SECRET_ACCESS_KEY")
+	os.Unsetenv("AWS_SESSION_TOKEN")
 
 	tests := []struct {
 		stsclient    func(t *testing.T) AssumeRoleAPIClient
