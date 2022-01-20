@@ -430,6 +430,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
 			CreatedAt:     &createdAt,
+			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
 			if err := SaveFetchSummary(ctx, c.pool, &fs); err != nil {
@@ -579,11 +580,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	close(fetchSummaries)
 
 	for ps := range fetchSummaries {
-		key := fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)
-		if ps.ProviderName == ps.ProviderAlias {
-			key = ps.ProviderName
-		}
-		response.ProviderFetchSummary[key] = ps
+		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
 	}
 
 	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)

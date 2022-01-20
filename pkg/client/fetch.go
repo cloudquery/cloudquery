@@ -28,6 +28,7 @@ type FetchSummary struct {
 	ProviderName       string                 `db:"provider_name"`
 	ProviderAlias      string                 `db:"provider_alias"`
 	ProviderVersion    string                 `db:"provider_version"`
+	CoreVersion        string                 `db:"core_version"`
 	Resources          ResourceFetchSummaries `db:"results"`
 }
 
