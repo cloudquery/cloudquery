@@ -10,98 +10,113 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
-	"github.com/cloudquery/cloudquery/pkg/policy"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/gofrs/uuid"
 	"github.com/jeremywohl/flatten"
-	uuid "github.com/satori/go.uuid"
 )
 
-type ConnectionManager struct {
-	pool *pgxpool.Pool
-}
+// import (
+// 	"context"
+// 	"encoding/json"
+// 	"fmt"
+// 	"log"
+// 	"os"
+// 	"path/filepath"
+// 	"regexp"
+// 	"strings"
 
-func New(psqlInfo string) *ConnectionManager {
-	pool, err := client.CreateDatabase(context.Background(), psqlInfo)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return &ConnectionManager{pool: pool}
-}
+// 	"github.com/cloudquery/cloudquery/pkg/policy"
 
-func (c ConnectionManager) DumpAllPolicies(ctx context.Context, policies policy.Policies, path string) error {
-	return c.TraversePolicies(ctx, policies, path)
-}
+// 	"github.com/jackc/pgx/v4/pgxpool"
+// 	"github.com/jeremywohl/flatten"
+// 	uuid "github.com/satori/go.uuid"
+// )
 
-func AggregatePolicies(aggregatedPolicies map[string]string, policies policy.Policies, path string) map[string]string {
-	for _, policy := range policies {
-		pathLocal := fmt.Sprintf("%s/%s", path, policy.Name)
+// type ConnectionManager struct {
+// 	pool *pgxpool.Pool
+// }
 
-		for _, query := range policy.Checks {
-			queryPath := fmt.Sprintf("%s/query/%s", pathLocal, query.Name)
-			if _, ok := aggregatedPolicies[queryPath]; !ok {
-				aggregatedPolicies[queryPath] = query.Query
-			}
+// func New(psqlInfo string) *ConnectionManager {
+// 	// pool, err := cq.Client.CreateDatabase(context.Background(), psqlInfo)
+// 	// if err != nil {
+// 	// 	log.Fatal(err)
+// 	// }
+// 	var pool *pgxpool.Pool
+// 	return &ConnectionManager{pool: pool}
+// }
 
-		}
-		AggregatePolicies(aggregatedPolicies, policy.Policies, pathLocal)
-	}
-	return aggregatedPolicies
-}
+// func (c ConnectionManager) DumpAllPolicies(ctx context.Context, policies policy.Policies, path string) error {
+// 	return c.TraversePolicies(ctx, policies, path)
+// }
 
-func (c ConnectionManager) TraversePolicies(ctx context.Context, policies policy.Policies, path string) error {
-	for _, policy := range policies {
-		pathLocal := fmt.Sprintf("%s/%s", path, policy.Name)
-		for _, view := range policy.Views {
-			c.CreateView(context.Background(), view.Name, view.Query)
-		}
+// func AggregatePolicies(aggregatedPolicies map[string]string, policies policy.Policies, path string) map[string]string {
+// 	for _, policy := range policies {
+// 		pathLocal := fmt.Sprintf("%s/%s", path, policy.Name)
 
-		for _, query := range policy.Checks {
-			c.HandleQuery(context.Background(), query, fmt.Sprintf("%s/query/%s", pathLocal, query.Name))
-		}
-		c.TraversePolicies(ctx, policy.Policies, pathLocal)
-	}
-	return nil
-}
+// 		for _, query := range policy.Checks {
+// 			queryPath := fmt.Sprintf("%s/query/%s", pathLocal, query.Name)
+// 			if _, ok := aggregatedPolicies[queryPath]; !ok {
+// 				aggregatedPolicies[queryPath] = query.Query
+// 			}
 
-func (c ConnectionManager) HandleQuery(ctx context.Context, query *policy.Check, path string) error {
+// 		}
+// 		AggregatePolicies(aggregatedPolicies, policy.Policies, pathLocal)
+// 	}
+// 	return aggregatedPolicies
+// }
 
-	path = createPath(path, query.Name)
-	// tables, _ := c.ExtractTableNames(context.Background(), query.Query)
-	// StoreSnapshot(path, tables)
-	fullPath := fmt.Sprintf("%s/queryResults", path)
-	create(fullPath)
+// func (c ConnectionManager) TraversePolicies(ctx context.Context, policies policy.Policies, path string) error {
+// 	for _, policy := range policies {
+// 		pathLocal := fmt.Sprintf("%s/%s", path, policy.Name)
+// 		for _, view := range policy.Views {
+// 			c.CreateView(context.Background(), view.Name, view.Query)
+// 		}
 
-	q := fmt.Sprintf("\\copy (%s) TO '%s' with csv", cleanQuery(query.Query), fullPath)
-	StoreOutput(q, path)
-	return nil
-}
+// 		for _, query := range policy.Checks {
+// 			c.HandleQuery(context.Background(), query, fmt.Sprintf("%s/query/%s", pathLocal, query.Name))
+// 		}
+// 		c.TraversePolicies(ctx, policy.Policies, pathLocal)
+// 	}
+// 	return nil
+// }
 
-func (c ConnectionManager) CreateView(ctx context.Context, name, query string) (err error) {
-	// log.Printf("creating view: %s", name)
-	fullQuery := fmt.Sprintf("CREATE OR REPLACE VIEW %s AS %s", name, query)
+// func (c ConnectionManager) HandleQuery(ctx context.Context, query *policy.Check, path string) error {
 
-	_, err = c.pool.Query(ctx, fullQuery)
-	if err != nil {
-		log.Println(fullQuery)
-		log.Fatal(err)
-	}
+// 	path = createPath(path, query.Name)
+// 	// tables, _ := c.ExtractTableNames(context.Background(), query.Query)
+// 	// StoreSnapshot(path, tables)
+// 	fullPath := fmt.Sprintf("%s/queryResults", path)
+// 	create(fullPath)
 
-	return err
-}
+// 	q := fmt.Sprintf("\\copy (%s) TO '%s' with csv", cleanQuery(query.Query), fullPath)
+// 	StoreOutput(q, path)
+// 	return nil
+// }
 
-func (c ConnectionManager) GetOutput(ctx context.Context, query, resultsPath string) (err error) {
-	copyQuery := fmt.Sprintf("COPY (%s) TO './PolicyTesting/database-data%s';", strings.TrimSuffix(query, ";"), strings.ReplaceAll(resultsPath, "/query/", "/")+"results")
-	log.Println(copyQuery)
-	resp, err := c.pool.Exec(ctx, copyQuery)
-	if err != nil {
-		log.Println(copyQuery)
-		log.Fatal(err)
-	}
-	log.Println(resp)
-	return err
+// func (c ConnectionManager) CreateView(ctx context.Context, name, query string) (err error) {
+// 	// log.Printf("creating view: %s", name)
+// 	fullQuery := fmt.Sprintf("CREATE OR REPLACE VIEW %s AS %s", name, query)
 
-}
+// 	_, err = c.pool.Query(ctx, fullQuery)
+// 	if err != nil {
+// 		log.Println(fullQuery)
+// 		log.Fatal(err)
+// 	}
+
+// 	return err
+// }
+
+// func (c ConnectionManager) GetOutput(ctx context.Context, query, resultsPath string) (err error) {
+// 	copyQuery := fmt.Sprintf("COPY (%s) TO './PolicyTesting/database-data%s';", strings.TrimSuffix(query, ";"), strings.ReplaceAll(resultsPath, "/query/", "/")+"results")
+// 	log.Println(copyQuery)
+// 	resp, err := c.pool.Exec(ctx, copyQuery)
+// 	if err != nil {
+// 		log.Println(copyQuery)
+// 		log.Fatal(err)
+// 	}
+// 	log.Println(resp)
+// 	return err
+
+// }
 
 func (c ConnectionManager) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
 	if strings.LastIndex(query, ";") > 0 {

@@ -3,11 +3,15 @@ package policy
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
+	uuid "github.com/satori/go.uuid"
 
 	"github.com/hashicorp/go-hclog"
 )
@@ -36,6 +40,9 @@ type Manager interface {
 
 	// Load the policy
 	Load(ctx context.Context, policy *Policy) (*Policy, error)
+
+	// Take a Snapshot of a policy
+	Snapshot(ctx context.Context, policy *Policy) error
 }
 
 // NewManager returns a new manager instance.
@@ -45,6 +52,36 @@ func NewManager(policyDir string, pool schema.QueryExecer, logger hclog.Logger) 
 		pool:            pool,
 		logger:          logger,
 	}
+}
+
+func createPath(path, queryName string) string {
+	if !strings.HasPrefix(path, "/") {
+		path = fmt.Sprintf("/%s", path)
+	}
+	path = strings.TrimSuffix(path, "/")
+
+	path = strings.TrimSuffix(path, "/query/"+queryName)
+
+	u2 := uuid.NewV4()
+
+	cleanedPath := filepath.Join("./database-data/", path, "/query"+"-"+queryName+"/", "tests", u2.String())
+
+	// generate test name (uuid)
+	err := os.MkdirAll(cleanedPath, os.ModePerm)
+	if err != nil {
+		log.Printf("%+v\n", err)
+	}
+	return cleanedPath
+}
+
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy) error {
+
+	tableNames, _ := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
+
+	snapShotPath := createPath("./", policy.Checks[0].Name)
+	log.Println(snapShotPath)
+	StoreSnapshot(snapShotPath, tableNames)
+	return nil
 }
 
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {

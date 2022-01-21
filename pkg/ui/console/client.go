@@ -550,8 +550,10 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector,
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
+
 	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	log.Println(pol.Checks)
+	log.Println(c.c.DSN)
+	c.c.PolicyManager.Snapshot(ctx, &pol)
 	return nil
 }
 
