@@ -19,7 +19,7 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
-			Name:    "aws_mock_test_provider",
+			Name:    "gcp_mock_test_provider",
 			Version: "development",
 			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 				svc, err := createService()
