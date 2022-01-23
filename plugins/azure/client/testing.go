@@ -32,7 +32,7 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
-			Name:    "aws_mock_test_provider",
+			Name:    "azure_mock_test_provider",
 			Version: "development",
 			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
 				c := NewAzureClient(logging.New(&hclog.LoggerOptions{
@@ -59,7 +59,7 @@ func AzureTestHelper(t *testing.T, table *schema.Table) {
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
-			Name:      "aws_mock_test_provider",
+			Name:      "azure_mock_test_provider",
 			Version:   "development",
 			Configure: Configure,
 			Config: func() provider.Config {
