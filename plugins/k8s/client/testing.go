@@ -43,7 +43,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
-			Name:    "aws_mock_test_provider",
+			Name:    "k8s_mock_test_provider",
 			Version: "development",
 			Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
 				c := &Client{

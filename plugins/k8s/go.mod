@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-k8s
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.6.1
+	github.com/cloudquery/cq-provider-sdk v0.7.0-alpha2
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.0.0
@@ -45,8 +45,6 @@ require (
 	github.com/hashicorp/go-version v1.3.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.10.1 // indirect
 	github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493 // indirect
-	github.com/huandu/go-sqlbuilder v1.13.0 // indirect
-	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect

@@ -1,6 +1,8 @@
 package provider
 
 import (
+	"embed"
+
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/apps"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/batch"
@@ -15,6 +17,9 @@ import (
 const ProviderName = "k8s"
 
 var (
+	//go:embed migrations/*/*.sql
+	migrationFiles embed.FS
+
 	Version = "Development"
 )
 
@@ -45,5 +50,6 @@ func Provider() *provider.Provider {
 			"rbac.role_bindings":          rbac.RoleBindings(),
 			"rbac.roles":                  rbac.Roles(),
 		},
+		Migrations: migrationFiles,
 	}
 }
