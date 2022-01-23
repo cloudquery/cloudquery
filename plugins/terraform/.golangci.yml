@@ -1,10 +1,14 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 run:
   tests: true
   skip-dirs:
     - bin
     - docs
     - client/mocks
+    - resources/forks
   timeout: 3m
+  build-tags:
+    - all
 
 linters-settings:
   errcheck:
@@ -13,6 +17,9 @@ linters-settings:
   gocritic:
     disabled-checks:
       - commentFormatting
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 500
 
 linters:
   disable-all: true
@@ -29,7 +36,6 @@ linters:
     - gosimple
     - govet
     - ineffassign
-    - interfacer
     - misspell
     - nakedret
     - prealloc
@@ -45,7 +51,11 @@ issues:
       linters:
         - dupl
         - gocritic
-    # Exclude some linters from running on resource files.
+     # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
+      linters:
+        - dupl
+    # Exclude some linters from running on services files.
+    - path: services\.go
       linters:
         - dupl
