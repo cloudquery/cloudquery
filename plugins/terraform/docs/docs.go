@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	err := docs.GenerateDocs(resources.Provider(), "./docs")
+	err := docs.GenerateDocs(resources.Provider(), "./docs", true)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to generate docs: %s\n", err)
 	}

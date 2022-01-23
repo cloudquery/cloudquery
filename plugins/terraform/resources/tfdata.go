@@ -160,7 +160,7 @@ func TFData() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan interface{}) error {
+func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
 	res <- backend.Data.State
@@ -179,7 +179,7 @@ func resolveBackendName(_ context.Context, meta schema.ClientMeta, resource *sch
 	return resource.Set("backend_name", backend.BackendName)
 }
 
-func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	state, ok := parent.Item.(client.State)
 	if !ok {
 		return fmt.Errorf("not terraform state")
@@ -190,7 +190,7 @@ func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *s
 	return nil
 }
 
-func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan interface{}) error {
+func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	resource, ok := parent.Item.(client.Resource)
 	if !ok {
 		return fmt.Errorf("not terraform Resource")
