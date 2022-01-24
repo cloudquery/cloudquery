@@ -3679,6 +3679,7 @@ CREATE TABLE IF NOT EXISTS "aws_efs_filesystems" (
 	"cq_meta" jsonb,
 	"cq_fetch_date" timestamp without time zone NOT NULL,
 	"account_id" text,
+	"backup_policy_status" text,
 	"region" text,
 	"creation_time" timestamp without time zone,
 	"creation_token" text,

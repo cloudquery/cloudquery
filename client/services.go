@@ -238,6 +238,7 @@ type EcrClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_efs.go . EfsClient
 type EfsClient interface {
 	DescribeFileSystems(ctx context.Context, params *efs.DescribeFileSystemsInput, optFns ...func(*efs.Options)) (*efs.DescribeFileSystemsOutput, error)
+	DescribeBackupPolicy(ctx context.Context, params *efs.DescribeBackupPolicyInput, optFns ...func(*efs.Options)) (*efs.DescribeBackupPolicyOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_elasticbeanstalk.go . ElasticbeanstalkClient

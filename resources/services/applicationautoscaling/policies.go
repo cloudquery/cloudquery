@@ -40,24 +40,24 @@ func ApplicationautoscalingPolicies() *schema.Table {
 			},
 			{
 				Name:        "creation_time",
-				Description: "The Unix timestamp for when the scaling policy was created.  This member is required.",
+				Description: "The Unix timestamp for when the scaling policy was created. ",
 				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the scaling policy.  This member is required.",
+				Description: "The Amazon Resource Name (ARN) of the scaling policy. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PolicyARN"),
 			},
 			{
 				Name:        "name",
-				Description: "The name of the scaling policy.  This member is required.",
+				Description: "The name of the scaling policy. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PolicyName"),
 			},
 			{
 				Name:        "type",
-				Description: "The scaling policy type.  This member is required.",
+				Description: "The scaling policy type. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PolicyType"),
 			},
@@ -73,7 +73,7 @@ func ApplicationautoscalingPolicies() *schema.Table {
 			},
 			{
 				Name:        "service_namespace",
-				Description: "The namespace of the Amazon Web Services service that provides the resource, or a custom-resource.  This member is required.",
+				Description: "The namespace of the Amazon Web Services service that provides the resource, or a custom-resource. ",
 				Type:        schema.TypeString,
 			},
 			{

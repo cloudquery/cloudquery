@@ -14,8 +14,8 @@ Provides summary information for an Amazon SageMaker notebook instance.
 |security_groups|jsonb|The IDs of the VPC security groups.|
 |direct_internet_access|boolean|Describes whether Amazon SageMaker provides internet access to the notebook instance.|
 |tags|jsonb|The tags associated with the notebook instance.|
-|arn|text|The Amazon Resource Name (ARN) of the notebook instance.  This member is required.|
-|name|text|The name of the notebook instance that you want a summary for.  This member is required.|
+|arn|text|The Amazon Resource Name (ARN) of the notebook instance. |
+|name|text|The name of the notebook instance that you want a summary for. |
 |additional_code_repositories|text[]|An array of up to three Git repositories associated with the notebook instance. These can be either the names of Git repositories stored as resources in your account, or the URL of Git repositories in Amazon Web Services CodeCommit (https://docs.aws.amazon.com/codecommit/latest/userguide/welcome.html) or in any other Git repository|
 |creation_time|timestamp without time zone|A timestamp that shows when the notebook instance was created.|
 |default_code_repository|text|The Git repository associated with the notebook instance as its default code repository|

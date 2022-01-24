@@ -83,12 +83,12 @@ func SagemakerEndpointConfigurations() *schema.Table {
 					},
 					{
 						Name:        "initial_instance_count",
-						Description: "Number of instances to launch initially.  This member is required.",
+						Description: "Number of instances to launch initially. ",
 						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "instance_type",
-						Description: "The ML compute instance type.  This member is required.",
+						Description: "The ML compute instance type. ",
 						Type:        schema.TypeString,
 					},
 					{
@@ -98,7 +98,7 @@ func SagemakerEndpointConfigurations() *schema.Table {
 					},
 					{
 						Name:        "variant_name",
-						Description: "The name of the production variant.  This member is required.",
+						Description: "The name of the production variant. ",
 						Type:        schema.TypeString,
 					},
 					{
@@ -108,7 +108,7 @@ func SagemakerEndpointConfigurations() *schema.Table {
 					},
 					{
 						Name:        "core_dump_config_destination_s3_uri",
-						Description: "The Amazon S3 bucket to send the core dump to.  This member is required.",
+						Description: "The Amazon S3 bucket to send the core dump to. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("CoreDumpConfig.DestinationS3Uri"),
 					},

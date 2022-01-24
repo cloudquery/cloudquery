@@ -26,7 +26,7 @@ The detailed description of the cluster.
 |ec2_instance_attribute_service_access_security_group|text|The identifier of the Amazon EC2 security group for the Amazon EMR service to access clusters in VPC private subnets.|
 |id|text|The unique identifier for the cluster.|
 |instance_collection_type|text|The instance group configuration of the cluster.|
-|kerberos_kdc_admin_password|text|The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster.  This member is required.|
+|kerberos_kdc_admin_password|text|The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster. |
 |kerberos_realm|text|The name of the Kerberos realm to which all nodes in a cluster belong|
 |kerberos_ad_domain_join_password|text|The Active Directory password for ADDomainJoinUser.|
 |kerberos_ad_domain_join_user|text|Required only when establishing a cross-realm trust with an Active Directory domain|

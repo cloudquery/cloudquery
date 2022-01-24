@@ -31,11 +31,11 @@ A container for information about the user pool.
 |estimated_number_of_users|integer|A number estimating the size of the user pool.|
 |id|text|The ID of the user pool.|
 |lambda_config_create_auth_challenge|text|Creates an authentication challenge.|
-|lambda_config_custom_email_sender_lambda_arn|text|The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send email notifications to users.  This member is required.|
-|lambda_config_custom_email_sender_lambda_version|text|The Lambda version represents the signature of the "request" attribute in the "event" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0.  This member is required.|
+|lambda_config_custom_email_sender_lambda_arn|text|The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send email notifications to users. |
+|lambda_config_custom_email_sender_lambda_version|text|The Lambda version represents the signature of the "request" attribute in the "event" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0. |
 |lambda_config_custom_message|text|A custom Message AWS Lambda trigger.|
-|lambda_config_custom_sms_sender_lambda_arn|text|The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send SMS notifications to users.  This member is required.|
-|lambda_config_custom_sms_sender_lambda_version|text|The Lambda version represents the signature of the "request" attribute in the "event" information Amazon Cognito passes to your custom SMS Lambda function. The only supported value is V1_0.  This member is required.|
+|lambda_config_custom_sms_sender_lambda_arn|text|The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send SMS notifications to users. |
+|lambda_config_custom_sms_sender_lambda_version|text|The Lambda version represents the signature of the "request" attribute in the "event" information Amazon Cognito passes to your custom SMS Lambda function. The only supported value is V1_0. |
 |lambda_config_define_auth_challenge|text|Defines the authentication challenge.|
 |lambda_config_kms_key_id|text|The Amazon Resource Name of Key Management Service Customer master keys|
 |lambda_config_post_authentication|text|A post-authentication AWS Lambda trigger.|
@@ -60,7 +60,7 @@ A container for information about the user pool.
 |sms_configuration_failure|text|The reason why the SMS configuration cannot send the messages to your users. This message might include comma-separated values to describe why your SMS configuration can't send messages to user pool end users.  * InvalidSmsRoleAccessPolicyException - The IAM role which Cognito uses to send SMS messages is not properly configured|
 |sms_verification_message|text|The contents of the SMS verification message.|
 |status|text|The status of a user pool.|
-|user_pool_add_ons_advanced_security_mode|text|The advanced security mode.  This member is required.|
+|user_pool_add_ons_advanced_security_mode|text|The advanced security mode. |
 |user_pool_tags|jsonb|The tags that are assigned to the user pool|
 |username_attributes|text[]|Specifies whether email addresses or phone numbers can be specified as usernames when a user signs up.|
 |username_configuration_case_sensitive|boolean|Specifies whether username case sensitivity will be applied for all users in the user pool through Cognito APIs|

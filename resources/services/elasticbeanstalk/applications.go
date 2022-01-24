@@ -72,7 +72,7 @@ func ElasticbeanstalkApplications() *schema.Table {
 			},
 			{
 				Name:        "max_age_rule_enabled",
-				Description: "Specify true to apply the rule, or false to disable it.  This member is required.",
+				Description: "Specify true to apply the rule, or false to disable it. ",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxAgeRule.Enabled"),
 			},
@@ -90,7 +90,7 @@ func ElasticbeanstalkApplications() *schema.Table {
 			},
 			{
 				Name:        "max_count_rule_enabled",
-				Description: "Specify true to apply the rule, or false to disable it.  This member is required.",
+				Description: "Specify true to apply the rule, or false to disable it. ",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxCountRule.Enabled"),
 			},

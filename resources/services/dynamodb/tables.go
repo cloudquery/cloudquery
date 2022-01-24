@@ -467,7 +467,7 @@ func DynamodbTables() *schema.Table {
 					},
 					{
 						Name:        "continuous_backups_status",
-						Description: "ContinuousBackupsStatus can be one of the following states: ENABLED, DISABLED  This member is required.",
+						Description: "ContinuousBackupsStatus can be one of the following states: ENABLED, DISABLED ",
 						Type:        schema.TypeString,
 					},
 					{

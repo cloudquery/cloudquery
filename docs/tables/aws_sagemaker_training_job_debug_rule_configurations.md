@@ -6,7 +6,7 @@ Configuration information for SageMaker Debugger rules for debugging
 | ------------- | ------------- | -----  |
 |training_job_cq_id|uuid|Unique CloudQuery ID of aws_sagemaker_training_jobs table (FK)|
 |rule_configuration_name|text|The name of the rule configuration|
-|rule_evaluator_image|text|The Amazon Elastic Container (ECR) Image for the managed rule evaluation.  This member is required.|
+|rule_evaluator_image|text|The Amazon Elastic Container (ECR) Image for the managed rule evaluation. |
 |instance_type|text|The instance type to deploy a Debugger custom rule for debugging a training job.|
 |local_path|text|Path to local storage location for output of rules|
 |rule_parameters|jsonb|Runtime configuration for rule container.|

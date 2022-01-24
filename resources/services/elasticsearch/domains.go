@@ -46,7 +46,7 @@ func ElasticsearchDomains() *schema.Table {
 			},
 			{
 				Name:        "id",
-				Description: "The unique identifier for the specified Elasticsearch domain.  This member is required.",
+				Description: "The unique identifier for the specified Elasticsearch domain. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DomainId"),
 			},

@@ -9,7 +9,7 @@ Details on a service within a cluster
 |cluster_arn|text|The Amazon Resource Name (ARN) of the cluster that hosts the service.|
 |created_at|timestamp without time zone|The Unix timestamp for when the service was created.|
 |created_by|text|The principal that created the service.|
-|deployment_configuration_deployment_circuit_breaker_enable|boolean|Whether to enable the deployment circuit breaker logic for the service.  This member is required.|
+|deployment_configuration_deployment_circuit_breaker_enable|boolean|Whether to enable the deployment circuit breaker logic for the service. |
 |deployment_configuration_deployment_circuit_breaker_rollback|boolean|Whether to enable Amazon ECS to roll back the service if a service deployment fails|
 |deployment_configuration_maximum_percent|integer|If a service is using the rolling update (ECS) deployment type, the maximum percent parameter represents an upper limit on the number of tasks in a service that are allowed in the RUNNING or PENDING state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the DRAINING state if the service contains tasks using the EC2 launch type|
 |deployment_configuration_minimum_healthy_percent|integer|If a service is using the rolling update (ECS) deployment type, the minimum healthy percent represents a lower limit on the number of tasks in a service that must remain in the RUNNING state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the DRAINING state if the service contains tasks using the EC2 launch type|
