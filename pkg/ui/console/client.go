@@ -551,7 +551,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector,
 	}
 
 	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	return c.c.PolicyManager.Snapshot(ctx, &pol)
+	return c.c.PolicyManager.Snapshot(ctx, &pol, destination)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
