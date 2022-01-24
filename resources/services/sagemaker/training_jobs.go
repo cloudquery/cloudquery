@@ -602,6 +602,9 @@ func fetchSagemakerTrainingJobAlgorithmSpecifications(_ context.Context, _ schem
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
+	if r.AlgorithmSpecification == nil {
+		return nil
+	}
 	res <- r.AlgorithmSpecification
 	return nil
 }
@@ -610,6 +613,10 @@ func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ conte
 	if !ok {
 		return fmt.Errorf("expected AlgorithmSpecification but got %T", resource.Item)
 	}
+	if len(r.MetricDefinitions) == 0 {
+		return nil
+	}
+
 	var metricDefinitions = make([]map[string]interface{}, len(r.MetricDefinitions))
 
 	for i, metric := range r.MetricDefinitions {
@@ -629,6 +636,10 @@ func fetchSagemakerTrainingJobDebugHookConfigs(_ context.Context, _ schema.Clien
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", parent.Item)
 	}
+	if r.DebugHookConfig == nil {
+		return nil
+	}
+
 	res <- r.DebugHookConfig
 	return nil
 }
@@ -637,6 +648,10 @@ func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ conte
 	if !ok {
 		return fmt.Errorf("expected DebugHookConfig but got %T", resource.Item)
 	}
+	if len(r.CollectionConfigurations) == 0 {
+		return nil
+	}
+
 	var collectionConfigurations = make([]map[string]interface{}, len(r.CollectionConfigurations))
 
 	for i, config := range r.CollectionConfigurations {
@@ -699,6 +714,7 @@ func resolveSagemakerTrainingJobCheckpointConfig(_ context.Context, _ schema.Cli
 	if r.CheckpointConfig == nil {
 		return nil
 	}
+
 	checkpointConfig := map[string]interface{}{
 		"s3_uri":     aws.ToString(r.CheckpointConfig.S3Uri),
 		"local_path": aws.ToString(r.CheckpointConfig.LocalPath),
@@ -709,10 +725,10 @@ func resolveSagemakerTrainingJobExperimentConfig(_ context.Context, _ schema.Cli
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
-	}
-	if r.ExperimentConfig == nil {
+	} else if r.ExperimentConfig == nil {
 		return nil
 	}
+
 	experimentConfig := map[string]interface{}{
 		"experiment_name":              aws.ToString(r.ExperimentConfig.ExperimentName),
 		"trial_component_display_name": aws.ToString(r.ExperimentConfig.TrialComponentDisplayName),
@@ -728,6 +744,7 @@ func resolveSagemakerTrainingJobModelArtifacts(__ context.Context, _ schema.Clie
 	if r.ModelArtifacts == nil {
 		return nil
 	}
+
 	modelArtifacts := map[string]interface{}{
 		"s3_model_artifacts": aws.ToString(r.ModelArtifacts.S3ModelArtifacts),
 	}
@@ -741,6 +758,7 @@ func resolveSagemakerTrainingJobOutputDataConfig(_ context.Context, _ schema.Cli
 	if r.OutputDataConfig == nil {
 		return nil
 	}
+
 	outputDataConfig := map[string]interface{}{
 		"s3_output_path": aws.ToString(r.OutputDataConfig.S3OutputPath),
 		"kms_key_id":     aws.ToString(r.OutputDataConfig.KmsKeyId),
@@ -755,6 +773,7 @@ func resolveSagemakerTrainingJobProfilerConfig(_ context.Context, _ schema.Clien
 	if r.ProfilerConfig == nil {
 		return nil
 	}
+
 	profilerConfig := map[string]interface{}{
 		"s3_output_path":           aws.ToString(r.ProfilerConfig.S3OutputPath),
 		"profiling_interval_in_ms": aws.ToInt64(r.ProfilerConfig.ProfilingIntervalInMilliseconds),
@@ -770,6 +789,7 @@ func resolveSagemakerTrainingJobResourceConfig(_ context.Context, _ schema.Clien
 	if r.ResourceConfig == nil {
 		return nil
 	}
+
 	resourceConfig := map[string]interface{}{
 		"instance_count":    r.ResourceConfig.InstanceCount,
 		"instance_type":     r.ResourceConfig.InstanceType,
@@ -786,6 +806,7 @@ func resolveSagemakerTrainingJobStoppingCondition(_ context.Context, _ schema.Cl
 	if r.StoppingCondition == nil {
 		return nil
 	}
+
 	stoppingCondition := map[string]interface{}{
 		"max_runtime_in_seconds":   r.StoppingCondition.MaxRuntimeInSeconds,
 		"max_wait_time_in_seconds": r.StoppingCondition.MaxWaitTimeInSeconds,
@@ -800,6 +821,7 @@ func resolveSagemakerTrainingJobTensorBoardOutputConfig(_ context.Context, _ sch
 	if r.TensorBoardOutputConfig == nil {
 		return nil
 	}
+
 	tensorBoardOutputConfig := map[string]interface{}{
 		"s3_output_path": r.TensorBoardOutputConfig.S3OutputPath,
 		"local_path":     r.TensorBoardOutputConfig.LocalPath,
@@ -814,6 +836,7 @@ func resolveSagemakerTrainingJobVpcConfig(_ context.Context, _ schema.ClientMeta
 	if r.VpcConfig == nil {
 		return nil
 	}
+
 	vpcConfig := map[string]interface{}{
 		"subnets":            r.VpcConfig.Subnets,
 		"security_group_ids": r.VpcConfig.SecurityGroupIds,
@@ -822,9 +845,11 @@ func resolveSagemakerTrainingJobVpcConfig(_ context.Context, _ schema.ClientMeta
 }
 func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
-
 	if !ok {
 		return fmt.Errorf("expected DescribeTrainingJobOutput but got %T", resource.Item)
+	}
+	if r == nil {
+		return nil
 	}
 
 	c := meta.(*client.Client)
@@ -848,10 +873,13 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 }
 func resolveSagemakerTrainingJobSecondaryStatusTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
-
 	if !ok {
 		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", resource.Item)
 	}
+	if len(r.SecondaryStatusTransitions) == 0 {
+		return nil
+	}
+
 	var secondaryStatusTransitions = make([]map[string]interface{}, len(r.SecondaryStatusTransitions))
 
 	for i, status := range r.SecondaryStatusTransitions {
@@ -870,12 +898,14 @@ func resolveSagemakerTrainingJobSecondaryStatusTransitions(_ context.Context, _ 
 }
 func resolveSagemakerTrainingJobFinalMetricDataList(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r, ok := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
-
 	if !ok {
 		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", resource.Item)
 	}
-	var finalMetricDataList = make([]map[string]interface{}, len(r.FinalMetricDataList))
+	if len(r.FinalMetricDataList) == 0 {
+		return nil
+	}
 
+	var finalMetricDataList = make([]map[string]interface{}, len(r.FinalMetricDataList))
 	for i, config := range r.FinalMetricDataList {
 		finalMetricDataList[i] = map[string]interface{}{
 			"metric_name": config.MetricName,
