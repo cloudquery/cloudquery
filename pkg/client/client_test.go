@@ -104,7 +104,10 @@ func TestClient_FailOnFetchWithPartialFetch(t *testing.T) {
 		},
 	})
 	assert.Nil(t, err)
-	testSummary, ok := result.ProviderFetchSummary["test"]
+	if result == nil {
+		return
+	}
+	testSummary, ok := result.ProviderFetchSummary["test(test_alias)"]
 	assert.True(t, ok)
 	assert.True(t, testSummary.HasErrors())
 	assert.Len(t, testSummary.PartialFetchErrors, 2)
@@ -139,7 +142,7 @@ func TestClient_FailOnFetch(t *testing.T) {
 		},
 	})
 	assert.Nil(t, err)
-	testSummary, ok := result.ProviderFetchSummary["test"]
+	testSummary, ok := result.ProviderFetchSummary["test(test_alias)"]
 	assert.True(t, ok)
 	assert.True(t, testSummary.HasErrors())
 	assert.Len(t, testSummary.FetchErrors, 2)
@@ -173,7 +176,7 @@ func TestClient_PartialFetch(t *testing.T) {
 		},
 	})
 	assert.Nil(t, err)
-	testSummary, ok := result.ProviderFetchSummary["test"]
+	testSummary, ok := result.ProviderFetchSummary["test(test_alias)"]
 	assert.True(t, ok)
 	assert.Len(t, testSummary.PartialFetchErrors, 2)
 }
@@ -578,7 +581,6 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 }
 
 func Test_normalizeResources(t *testing.T) {
-
 	tests := []struct {
 		name      string
 		requested []string

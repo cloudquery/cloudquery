@@ -83,6 +83,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	ProviderAlias         string
 	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
@@ -410,6 +411,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
+		createdAt := time.Now().UTC()
+		fetchSummary := FetchSummary{
+			FetchId:       fetchId,
+			ProviderName:  providerConfig.Name,
+			ProviderAlias: providerConfig.Alias,
+			CreatedAt:     &createdAt,
+			CoreVersion:   Version,
+		}
+		saveFetchSummary := func() {
+			if err := c.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+				c.Logger.Error("failed to save fetch summary", "err", err)
+			}
+		}
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
@@ -419,19 +433,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := FetchSummary{
-				FetchId:         fetchId,
-				ProviderName:    providerConfig.Name,
-				ProviderVersion: providerPlugin.Version(),
-				Start:           time.Now().UTC(),
-			}
-
-			defer func() {
-				if err := c.SaveFetchSummary(ctx, &fs); err != nil {
-					c.Logger.Error("failed to save fetch summary", "err", err)
-				}
-			}()
-
+			defer saveFetchSummary()
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
@@ -458,6 +460,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
+			fetchSummary.Start = &fetchStart
 			stream, err := providerPlugin.Provider().FetchResources(ctx,
 				&cqproto.FetchResourcesRequest{
 					Resources:              providerConfig.Resources,
@@ -483,10 +486,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
 						message := "provider finished fetch"
-						status := "Finished"
+						fetchStatus := "Finished"
 						if ok && st.Code() == gcodes.Canceled {
 							message = "provider fetch canceled"
-							status = "Canceled"
+							fetchStatus = "Canceled"
 						}
 
 						pLog.Info(message, "execution", time.Since(fetchStart).String())
@@ -495,17 +498,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						}
 						fetchSummaries <- ProviderFetchSummary{
 							ProviderName:          providerConfig.Name,
+							ProviderAlias:         providerConfig.Alias,
 							Version:               providerPlugin.Version(),
 							TotalResourcesFetched: totalResources,
 							PartialFetchErrors:    partialFetchResults,
 							FetchErrors:           fetchErrors,
 							FetchResources:        fetchedResources,
-							Status:                status,
+							Status:                fetchStatus,
 						}
-						fs.Finish = time.Now().UTC()
-						fs.IsSuccess = true
-						fs.TotalErrorsCount = totalErrors
-						fs.TotalResourceCount = totalResources
+						t := time.Now().UTC()
+						fetchSummary.Finish = &t
+						fetchSummary.IsSuccess = true
+						fetchSummary.TotalErrorsCount = totalErrors
+						fetchSummary.TotalResourceCount = totalResources
 						return nil
 					}
 					pLog.Error("received provider fetch error", "error", err)
@@ -538,7 +543,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.Resources = append(fs.Resources, ResourceFetchSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
@@ -560,7 +565,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	close(fetchSummaries)
 
 	for ps := range fetchSummaries {
-		response.ProviderFetchSummary[ps.ProviderName] = ps
+		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
 	}
 
 	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)

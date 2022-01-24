@@ -144,8 +144,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if summary.Status == "Canceled" {
 			status = emojiStatus[ui.StatusError] + " (canceled)"
 		}
+		key := summary.ProviderName
+		if summary.ProviderName != summary.ProviderAlias {
+			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
+		}
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, status, summary.TotalResourcesFetched,
+			key, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
