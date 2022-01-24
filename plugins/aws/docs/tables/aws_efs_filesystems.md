@@ -6,7 +6,7 @@ A description of the file system.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|backup_policy_status|text||
+|backup_policy_status|text|Status of efs filesystem's backup policy|
 |creation_time|timestamp without time zone|The time that the file system was created, in seconds (since 1970-01-01T00:00:00Z). |
 |creation_token|text|The opaque string specified in the request. |
 |id|text|The ID of the file system, assigned by Amazon EFS. |

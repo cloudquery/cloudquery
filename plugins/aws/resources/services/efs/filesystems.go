@@ -2,6 +2,10 @@ package efs
 
 import (
 	"context"
+	"errors"
+	"fmt"
+
+	"github.com/aws/smithy-go"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
@@ -34,9 +38,10 @@ func EfsFilesystems() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "backup_policy_status",
-				Type:     schema.TypeString,
-				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
+				Description: "Status of efs filesystem's backup policy",
+				Name:        "backup_policy_status",
+				Type:        schema.TypeString,
+				Resolver:    ResolveEfsFilesystemBackupPolicyStatus,
 			},
 			{
 				Name:        "creation_time",
@@ -173,16 +178,25 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	var config efs.DescribeBackupPolicyInput
+	p, ok := resource.Item.(types.FileSystemDescription)
+	if !ok {
+		return fmt.Errorf("expected types.FileSystemDescription but got %T", resource.Item)
+	}
+	config := efs.DescribeBackupPolicyInput{
+		FileSystemId: p.FileSystemId,
+	}
 	client := meta.(*client.Client)
 	svc := client.Services().EFS
 	response, err := svc.DescribeBackupPolicy(ctx, &config, func(options *efs.Options) {
 		options.Region = client.Region
 	})
 	if err != nil {
+		var ae smithy.APIError
+		if errors.As(err, &ae) && ae.ErrorCode() == "PolicyNotFound" {
+			return resource.Set(c.Name, response.BackupPolicy.Status)
+		}
 		return err
 	}
-
 	if response.BackupPolicy == nil {
 		return nil
 	}
