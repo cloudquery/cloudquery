@@ -109,7 +109,7 @@ func SagemakerModels() *schema.Table {
 					},
 					{
 						Name:        "image_config_repository_access_mode",
-						Description: "Set this to one of the following values:  * Platform - The model image is hosted in Amazon ECR.  * Vpc - The model image is hosted in a private Docker registry in your VPC.  This member is required.",
+						Description: "Set this to one of the following values:  * Platform - The model image is hosted in Amazon ECR.  * Vpc - The model image is hosted in a private Docker registry in your VPC. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ImageConfig.RepositoryAccessMode"),
 					},

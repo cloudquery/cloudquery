@@ -266,7 +266,7 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "s3_output_path",
-						Description: "Path to Amazon S3 storage location for metrics and tensors.  This member is required.",
+						Description: "Path to Amazon S3 storage location for metrics and tensors. ",
 						Type:        schema.TypeString,
 					},
 					{
@@ -305,7 +305,7 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "rule_evaluator_image",
-						Description: "The Amazon Elastic Container (ECR) Image for the managed rule evaluation.  This member is required.",
+						Description: "The Amazon Elastic Container (ECR) Image for the managed rule evaluation. ",
 						Type:        schema.TypeString,
 					},
 					{
@@ -387,12 +387,12 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "channel_name",
-						Description: "The name of the channel.  This member is required.",
+						Description: "The name of the channel. ",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "data_source_file_directory_path",
-						Description: "The full path to the directory to associate with the channel.  This member is required.",
+						Description: "The full path to the directory to associate with the channel. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DataSource.FileSystemDataSource.DirectoryPath"),
 					},
@@ -404,13 +404,13 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "data_source_file_system_id",
-						Description: "The file system id.  This member is required.",
+						Description: "The file system id. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DataSource.FileSystemDataSource.FileSystemId"),
 					},
 					{
 						Name:        "data_source_file_system_type",
-						Description: "The file system type.  This member is required.",
+						Description: "The file system type. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DataSource.FileSystemDataSource.FileSystemType"),
 					},
@@ -460,7 +460,7 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "shuffle_config_seed",
-						Description: "Determines the shuffling order in ShuffleConfig value.  This member is required.",
+						Description: "Determines the shuffling order in ShuffleConfig value. ",
 						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("ShuffleConfig.Seed"),
 					},
@@ -484,7 +484,7 @@ func SagemakerTrainingJobs() *schema.Table {
 					},
 					{
 						Name:        "rule_evaluator_image",
-						Description: "The Amazon Elastic Container (ECR) Image for the managed rule evaluation.  This member is required.",
+						Description: "The Amazon Elastic Container (ECR) Image for the managed rule evaluation. ",
 						Type:        schema.TypeString,
 					},
 					{

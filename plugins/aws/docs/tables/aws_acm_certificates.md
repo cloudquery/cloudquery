@@ -24,8 +24,8 @@ Contains metadata about an ACM certificate
 |certificate_transparency_logging_preference|text|You can opt out of certificate transparency logging by specifying the DISABLED option|
 |renewal_eligibility|text|Specifies whether the certificate is eligible for renewal|
 |renewal_summary_domain_validation_options|jsonb|Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal.|
-|renewal_summary_status|text|The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate.  This member is required.|
-|renewal_summary_updated_at|timestamp without time zone|The time at which the renewal summary was last updated.  This member is required.|
+|renewal_summary_status|text|The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate. |
+|renewal_summary_updated_at|timestamp without time zone|The time at which the renewal summary was last updated. |
 |renewal_summary_failure_reason|text|The reason that a renewal request was unsuccessful.|
 |revocation_reason|text|The reason the certificate was revoked|
 |revoked_at|timestamp without time zone|The time at which the certificate was revoked|

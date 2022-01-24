@@ -152,7 +152,7 @@ func EmrClusters() *schema.Table {
 			},
 			{
 				Name:          "kerberos_kdc_admin_password",
-				Description:   "The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster.  This member is required.",
+				Description:   "The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster. ",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("KerberosAttributes.KdcAdminPassword"),
 				IgnoreInTests: true,

@@ -193,14 +193,14 @@ func CognitoUserPools() *schema.Table {
 			},
 			{
 				Name:          "lambda_config_custom_email_sender_lambda_arn",
-				Description:   "The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send email notifications to users.  This member is required.",
+				Description:   "The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send email notifications to users. ",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("LambdaConfig.CustomEmailSender.LambdaArn"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "lambda_config_custom_email_sender_lambda_version",
-				Description: "The Lambda version represents the signature of the \"request\" attribute in the \"event\" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0.  This member is required.",
+				Description: "The Lambda version represents the signature of the \"request\" attribute in the \"event\" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LambdaConfig.CustomEmailSender.LambdaVersion"),
 			},
@@ -213,14 +213,14 @@ func CognitoUserPools() *schema.Table {
 			},
 			{
 				Name:          "lambda_config_custom_sms_sender_lambda_arn",
-				Description:   "The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send SMS notifications to users.  This member is required.",
+				Description:   "The Lambda Amazon Resource Name of the Lambda function that Amazon Cognito triggers to send SMS notifications to users. ",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("LambdaConfig.CustomSMSSender.LambdaArn"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "lambda_config_custom_sms_sender_lambda_version",
-				Description: "The Lambda version represents the signature of the \"request\" attribute in the \"event\" information Amazon Cognito passes to your custom SMS Lambda function. The only supported value is V1_0.  This member is required.",
+				Description: "The Lambda version represents the signature of the \"request\" attribute in the \"event\" information Amazon Cognito passes to your custom SMS Lambda function. The only supported value is V1_0. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LambdaConfig.CustomSMSSender.LambdaVersion"),
 			},
@@ -377,7 +377,7 @@ func CognitoUserPools() *schema.Table {
 			},
 			{
 				Name:        "user_pool_add_ons_advanced_security_mode",
-				Description: "The advanced security mode.  This member is required.",
+				Description: "The advanced security mode. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("UserPoolAddOns.AdvancedSecurityMode"),
 			},

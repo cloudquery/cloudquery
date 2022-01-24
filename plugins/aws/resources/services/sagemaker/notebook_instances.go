@@ -83,13 +83,13 @@ func SagemakerNotebookInstances() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the notebook instance.  This member is required.",
+				Description: "The Amazon Resource Name (ARN) of the notebook instance. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("NotebookInstanceArn"),
 			},
 			{
 				Name:        "name",
-				Description: "The name of the notebook instance that you want a summary for.  This member is required.",
+				Description: "The name of the notebook instance that you want a summary for. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("NotebookInstanceName"),
 			},

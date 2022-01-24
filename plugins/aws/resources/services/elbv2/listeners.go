@@ -115,24 +115,24 @@ func Elbv2Listeners() *schema.Table {
 					},
 					{
 						Name:        "type",
-						Description: "The type of action.  This member is required.",
+						Description: "The type of action. ",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "auth_cognito_user_pool_arn",
-						Description: "The Amazon Resource Name (ARN) of the Amazon Cognito user pool.  This member is required.",
+						Description: "The Amazon Resource Name (ARN) of the Amazon Cognito user pool. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolArn"),
 					},
 					{
 						Name:        "auth_cognito_user_pool_client_id",
-						Description: "The ID of the Amazon Cognito user pool client.  This member is required.",
+						Description: "The ID of the Amazon Cognito user pool client. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolClientId"),
 					},
 					{
 						Name:        "auth_cognito_user_pool_domain",
-						Description: "The domain prefix or fully-qualified domain name of the Amazon Cognito user pool.  This member is required.",
+						Description: "The domain prefix or fully-qualified domain name of the Amazon Cognito user pool. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolDomain"),
 					},
@@ -174,7 +174,7 @@ func Elbv2Listeners() *schema.Table {
 					},
 					{
 						Name:        "auth_oidc_client_id",
-						Description: "The OAuth 2.0 client identifier.  This member is required.",
+						Description: "The OAuth 2.0 client identifier. ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuthenticateOidcConfig.ClientId"),
 					},
@@ -240,7 +240,7 @@ func Elbv2Listeners() *schema.Table {
 					},
 					{
 						Name:        "fixed_response_config_status_code",
-						Description: "The HTTP response code (2XX, 4XX, or 5XX).  This member is required.",
+						Description: "The HTTP response code (2XX, 4XX, or 5XX). ",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("FixedResponseConfig.StatusCode"),
 					},

@@ -225,7 +225,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "deployment_configuration_deployment_circuit_breaker_enable",
-						Description: "Whether to enable the deployment circuit breaker logic for the service.  This member is required.",
+						Description: "Whether to enable the deployment circuit breaker logic for the service. ",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("DeploymentConfiguration.DeploymentCircuitBreaker.Enable"),
 					},
