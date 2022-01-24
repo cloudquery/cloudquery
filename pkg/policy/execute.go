@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -68,6 +69,9 @@ type QueryResult struct {
 type ExecutionResult struct {
 	// PolicyName is the running policy name
 	PolicyName string
+
+	// ExecutionTime is when the policy has been started
+	ExecutionTime time.Time
 
 	// True if all policies have passed
 	Passed bool
