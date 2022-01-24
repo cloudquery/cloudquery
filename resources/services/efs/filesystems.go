@@ -193,7 +193,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	if err != nil {
 		var ae smithy.APIError
 		if errors.As(err, &ae) && ae.ErrorCode() == "PolicyNotFound" {
-			return resource.Set(c.Name, response.BackupPolicy.Status)
+			return resource.Set(c.Name, types.StatusDisabled)
 		}
 		return err
 	}
