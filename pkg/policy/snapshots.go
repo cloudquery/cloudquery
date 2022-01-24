@@ -2,12 +2,17 @@ package policy
 
 import (
 	"bytes"
+	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
+	"strings"
 
 	pg "github.com/bbernays/pg-commands"
+	"github.com/jeremywohl/flatten"
 )
 
 func StoreOutput(query string, outputLocation string) {
@@ -87,44 +92,55 @@ func RestoreSnapshot(fileName string) {
 
 }
 
-// func (c ConnectionManager) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
-// 	if strings.LastIndex(query, ";") > 0 {
-// 		query = query[:strings.LastIndex(query, ";")]
-// 	}
+func cleanQuery(query string) string {
+	var re = regexp.MustCompile(`(?s)\/\*.*?\*\/|--.*?\n`)
+	query = re.ReplaceAllString(query, "")
+	// query = strings.ReplaceAll(query, "\n", " ")
+	query = strings.TrimSuffix(query, ";")
+	query = strings.TrimSpace(query)
+	query = strings.TrimSuffix(query, ";")
 
-// 	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", query)
-// 	rows, err := c.pool.Query(ctx, explainQuery)
-// 	if err != nil {
-// 		log.Println(explainQuery)
-// 		log.Fatal(err)
-// 	}
+	return strings.TrimSpace(query)
+}
+func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
+	e.log.Debug("extracting Table names-raw", "raw query", query)
+	cleanedQuery := cleanQuery(query)
+	e.log.Debug("extracting Table names-cleaned", "cleaned query", cleanedQuery)
+	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", cleanedQuery)
 
-// 	for rows.Next() {
-// 		var s string
-// 		if err := rows.Scan(&s); err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		var arrayJsonMap []map[string](interface{})
-// 		err := json.Unmarshal([]byte(s), &arrayJsonMap)
-// 		if err != nil {
-// 			log.Printf("ERROR: fail to unmarshal json, %s", err.Error())
-// 		}
+	rows, err := e.conn.Query(ctx, explainQuery)
+	if err != nil {
+		return tableNames, err
+	}
 
-// 		flat, err := flatten.Flatten(arrayJsonMap[0], "", flatten.DotStyle)
-// 		if err != nil {
-// 			log.Printf("ERROR: fail to flatten json, %s", err.Error())
-// 		}
-// 		for key, val := range flat {
-// 			if strings.HasSuffix(key, "Relation Name") {
-// 				tableNames = append(tableNames, val.(string))
-// 			}
+	for rows.Next() {
+		var s string
+		if err := rows.Scan(&s); err != nil {
+			log.Fatal(err)
+		}
+		var arrayJsonMap []map[string](interface{})
+		err := json.Unmarshal([]byte(s), &arrayJsonMap)
+		if err != nil {
+			e.log.Error("failed to unmarshal json", "err", err)
+			return tableNames, err
+		}
 
-// 		}
-// 	}
-// 	if err := rows.Err(); err != nil {
-// 		log.Println(query)
-// 		log.Fatal(err)
-// 	}
+		flat, err := flatten.Flatten(arrayJsonMap[0], "", flatten.DotStyle)
+		if err != nil {
+			e.log.Error("failed to flatten json", "err", err)
+			return tableNames, err
+		}
+		for key, val := range flat {
+			if strings.HasSuffix(key, "Relation Name") {
+				tableNames = append(tableNames, val.(string))
+			}
 
-// 	return tableNames, err
-// }
+		}
+	}
+	if err := rows.Err(); err != nil {
+		log.Println(query)
+		log.Fatal(err)
+	}
+
+	return tableNames, err
+}
