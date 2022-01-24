@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
@@ -143,8 +144,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if summary.Status == "Canceled" {
 			status = emojiStatus[ui.StatusError] + " (canceled)"
 		}
+		key := summary.ProviderName
+		if summary.ProviderName != summary.ProviderAlias {
+			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
+		}
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, status, summary.TotalResourcesFetched,
+			key, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
@@ -236,7 +241,7 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 	}
 	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
 	for _, p := range policiesToDescribe {
-		if err := c.describePolicy(ctx, p); err != nil {
+		if err := c.describePolicy(ctx, p, policySource); err != nil {
 			return err
 		}
 	}
@@ -480,7 +485,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 				s.Version = deets.Version
 			}
 		}
-		list[i] = s
+		list[i] = s.GetProviderSchemaResponse
 	}
 
 	return list, nil
@@ -527,7 +532,7 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 	})
 }
 
-func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
+func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
 	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -536,9 +541,10 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy) error {
 	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	buildDescribePolicyTable(t, policy.Policies{p}, "")
+	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
+	buildDescribePolicyTable(t, policy.Policies{&pol}, selector[:strings.LastIndexAny(selector, "/")])
 	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
+	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
 }
 
