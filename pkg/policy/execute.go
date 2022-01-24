@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -262,16 +263,25 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 	return nil
 }
 
-func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
-	if strings.LastIndex(query, ";") > 0 {
-		query = query[:strings.LastIndex(query, ";")]
-	}
+func cleanQuery(query string) string {
+	var re = regexp.MustCompile(`(?s)\/\*.*?\*\/|--.*?\n`)
+	query = re.ReplaceAllString(query, "")
+	// query = strings.ReplaceAll(query, "\n", " ")
+	query = strings.TrimSuffix(query, ";")
+	query = strings.TrimSpace(query)
+	query = strings.TrimSuffix(query, ";")
 
-	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", query)
+	return strings.TrimSpace(query)
+}
+func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
+	e.log.Debug("extracting Table names-raw", "raw query", query)
+	cleanedQuery := cleanQuery(query)
+	e.log.Debug("extracting Table names-cleaned", "cleaned query", cleanedQuery)
+	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", cleanedQuery)
+
 	rows, err := e.conn.Query(ctx, explainQuery)
 	if err != nil {
-		log.Println(explainQuery)
-		log.Fatal(err)
+		return tableNames, err
 	}
 
 	for rows.Next() {
@@ -282,12 +292,14 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 		var arrayJsonMap []map[string](interface{})
 		err := json.Unmarshal([]byte(s), &arrayJsonMap)
 		if err != nil {
-			log.Printf("ERROR: fail to unmarshal json, %s", err.Error())
+			e.log.Error("failed to unmarshal json", "err", err)
+			return tableNames, err
 		}
 
 		flat, err := flatten.Flatten(arrayJsonMap[0], "", flatten.DotStyle)
 		if err != nil {
-			log.Printf("ERROR: fail to flatten json, %s", err.Error())
+			e.log.Error("failed to flatten json", "err", err)
+			return tableNames, err
 		}
 		for key, val := range flat {
 			if strings.HasSuffix(key, "Relation Name") {

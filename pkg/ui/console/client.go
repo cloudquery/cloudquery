@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -552,9 +551,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector,
 	}
 
 	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	log.Println(c.c.DSN)
-	c.c.PolicyManager.Snapshot(ctx, &pol)
-	return nil
+	return c.c.PolicyManager.Snapshot(ctx, &pol)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
