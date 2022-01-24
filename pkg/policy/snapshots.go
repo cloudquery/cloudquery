@@ -17,15 +17,18 @@ import (
 	"github.com/jeremywohl/flatten"
 )
 
-func StoreOutput(query string, outputLocation string) {
-	exc := pg.NewExec(&pg.Postgres{
-		Host:     "localhost",
-		Port:     5432,
-		DB:       "postgres",
-		Username: "postgres",
-		Password: "pass",
+func StoreOutput(query string, outputLocation, dsn string) error {
+	config, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return err
+	}
+	exc := pg.NewDump(&pg.Postgres{
+		Host:     config.ConnConfig.Host,
+		Port:     int(config.ConnConfig.Port),
+		DB:       config.ConnConfig.Database,
+		Username: config.ConnConfig.User,
+		Password: config.ConnConfig.Password,
 	})
-	exc.Query = query
 	dumpExec := exc.Exec(pg.ExecOptions{StreamPrint: false})
 	if dumpExec.Error != nil {
 		fmt.Println(query)
@@ -34,6 +37,7 @@ func StoreOutput(query string, outputLocation string) {
 	} else {
 		fmt.Println(query)
 	}
+	return nil
 }
 
 func StoreSnapshot(path string, tables []string, dsn string) error {
@@ -44,7 +48,6 @@ func StoreSnapshot(path string, tables []string, dsn string) error {
 	if err != nil {
 		return err
 	}
-	// config, err := ParseConfig(dsn)
 	dump := pg.NewDump(&pg.Postgres{
 		Host:     config.ConnConfig.Host,
 		Port:     int(config.ConnConfig.Port),
@@ -76,7 +79,6 @@ func RestoreSnapshot(fileName, dsn string) error {
 	if err != nil {
 		return err
 	}
-	// config, err := ParseConfig(dsn)
 	pgConnection := pg.NewDump(&pg.Postgres{
 		Host:     config.ConnConfig.Host,
 		Port:     int(config.ConnConfig.Port),
@@ -96,10 +98,11 @@ func RestoreSnapshot(fileName, dsn string) error {
 	cmd.Stdout = &out
 	cmd.Stderr = &stderr
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		log.Fatalf("Error executing query. Command Output: %+v\n: %+v, %v", out.String(), stderr.String(), err)
 	}
+	return err
 
 }
 
