@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
