@@ -119,9 +119,6 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 
 // Execute executes given policy and the related sub queries/views.
 func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
-	if len(policy.Policies.All()) == 0 && len(policy.Checks) == 0 {
-		return nil, fmt.Errorf("no checks or policies to execute")
-	}
 	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
@@ -164,10 +161,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 			return &total, nil
 		}
 	}
-	// if !found && len(selector) > 0 {
-	// 	e.log.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", policy.Policies.All())
-	// 	return nil, fmt.Errorf("%s//%s: %w", policy.Name, path.Join(selector...), ErrPolicyOrQueryNotFound)
-	// }
 	return &total, nil
 }
 
