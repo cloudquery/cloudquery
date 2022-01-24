@@ -69,16 +69,21 @@ func StoreSnapshot(path string, tables []string, dsn string) error {
 	}
 	return nil
 }
-func RestoreSnapshot(fileName string) {
+func RestoreSnapshot(fileName, dsn string) error {
 	// dumpExec.File
 	file := "postgres_1640202245.sql"
-	pgConnection := pg.Postgres{
-		Host:     "localhost",
-		Port:     5432,
-		DB:       "postgres",
-		Username: "postgres",
-		Password: "pass",
+	config, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return err
 	}
+	// config, err := ParseConfig(dsn)
+	pgConnection := pg.NewDump(&pg.Postgres{
+		Host:     config.ConnConfig.Host,
+		Port:     int(config.ConnConfig.Port),
+		DB:       config.ConnConfig.Database,
+		Username: config.ConnConfig.User,
+		Password: config.ConnConfig.Password,
+	})
 	cmd := exec.Command("psql", "-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB, "-a", "-f", file)
 	fmt.Println(cmd.Env)
 	fmt.Println("psql", "-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB, "-a", "-f", file)
