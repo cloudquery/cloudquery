@@ -3,7 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -54,7 +53,7 @@ func NewManager(policyDir string, pool schema.QueryExecer, logger hclog.Logger) 
 	}
 }
 
-func createPath(directory, queryName string) string, error {
+func createPath(directory, queryName string) (string, error) {
 	path := strings.TrimSuffix(directory, "/")
 	cleanedPath := filepath.Join(path, "/query"+"-"+queryName+"/", "tests", uuid.NewV4().String())
 
@@ -68,11 +67,11 @@ func createPath(directory, queryName string) string, error {
 func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination string) error {
 
 	tableNames, err := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
-	if error != nil {
+	if err != nil {
 		return err
 	}
 	snapShotPath, err := createPath(destination, policy.Checks[0].Name)
-	if error != nil {
+	if err != nil {
 		return err
 	}
 	StoreSnapshot(snapShotPath, tableNames)
