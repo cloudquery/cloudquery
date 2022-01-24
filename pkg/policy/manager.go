@@ -66,7 +66,11 @@ func createPath(directory, queryName string) (string, error) {
 
 func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error {
 
-	tableNames, err := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
+	e := NewExecutor(m.pool, m.logger, nil)
+	if err := e.createViews(ctx, policy); err != nil {
+		return err
+	}
+	tableNames, err := e.ExtractTableNames(ctx, policy.Checks[0].Query)
 	if err != nil {
 		return err
 	}

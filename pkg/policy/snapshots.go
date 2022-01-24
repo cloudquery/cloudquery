@@ -55,7 +55,7 @@ func StoreSnapshot(path string, tables []string, dsn string) error {
 		Username: config.ConnConfig.User,
 		Password: config.ConnConfig.Password,
 	})
-	dump.Options = []string{"-a", "--column-inserts"}
+	dump.Options = []string{}
 	for _, table := range tables {
 		dump.Options = append(dump.Options, "-t", table)
 	}
@@ -131,6 +131,7 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 		if err := rows.Scan(&s); err != nil {
 			log.Fatal(err)
 		}
+		log.Println(s)
 		var arrayJsonMap []map[string](interface{})
 		err := json.Unmarshal([]byte(s), &arrayJsonMap)
 		if err != nil {
@@ -145,6 +146,9 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 		}
 		for key, val := range flat {
 			if strings.HasSuffix(key, "Relation Name") {
+				tableNames = append(tableNames, val.(string))
+			}
+			if strings.HasSuffix(key, "Alias") {
 				tableNames = append(tableNames, val.(string))
 			}
 
