@@ -8,6 +8,212 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
+func TestHasChecks(t *testing.T) {
+	filterTests := []struct {
+		p      Policy
+		result bool
+	}{
+		{
+			result: true,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test2",
+						Policies: Policies{
+							&Policy{
+								Name: "test",
+								Checks: []*Check{
+									{
+										Name: "Control-1",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			result: false,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test2",
+						Policies: Policies{
+							&Policy{
+								Name: "test",
+							},
+						},
+					},
+				},
+			},
+		}, {
+			result: false,
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "test",
+					},
+				},
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			result: false,
+		}, {
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			result: false,
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			result: true,
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+											{
+												Name: "Control-2",
+											},
+											{
+												Name: "Control-3",
+											},
+											{
+												Name: "Control-4",
+											},
+											{
+												Name: "Control-5",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			result: true,
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+										Checks: []*Check{
+											{
+												Name: "Control-1",
+											},
+											{
+												Name: "Control-2",
+											},
+											{
+												Name: "Control-3",
+											},
+											{
+												Name: "Control-4",
+											},
+											{
+												Name: "Control-5",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			result: true,
+		},
+	}
+	for i, tt := range filterTests {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			diff := cmp.Diff(tt.result, tt.p.HasChecks(), cmpopts.IgnoreUnexported(Policy{}))
+			if diff != "" {
+				t.Fatalf("values are not the same %s", diff)
+			}
+		})
+	}
+}
+
 func TestFilterPolicies(t *testing.T) {
 	filterTests := []struct {
 		p              Policy

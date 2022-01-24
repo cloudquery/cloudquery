@@ -103,7 +103,7 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 	}
 
 	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
-	if len(filteredPolicy.Policies.All()) == 0 && len(filteredPolicy.Checks) == 0 {
+	if !filteredPolicy.HasChecks() {
 		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", request.Policy.meta.subPolicy, "available_policies", filteredPolicy.Policies.All())
 		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
 	}

@@ -56,6 +56,15 @@ func (p Policy) SubPolicy() string {
 	return p.meta.subPolicy
 }
 
+func (p Policy) HasChecks() bool {
+	for _, policy := range p.Policies {
+		if policy.HasChecks() {
+			return true
+		}
+	}
+	return len(p.Checks) > 0
+}
+
 func (p Policy) TotalQueries() int {
 	count := 0
 	if len(p.Policies) > 0 {
