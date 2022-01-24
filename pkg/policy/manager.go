@@ -41,7 +41,7 @@ type Manager interface {
 	Load(ctx context.Context, policy *Policy) (*Policy, error)
 
 	// Take a Snapshot of a policy
-	Snapshot(ctx context.Context, policy *Policy, destination string) error
+	Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error
 }
 
 // NewManager returns a new manager instance.
@@ -64,7 +64,7 @@ func createPath(directory, queryName string) (string, error) {
 	return cleanedPath, nil
 }
 
-func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination string) error {
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error {
 
 	tableNames, err := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
 	if err != nil {
@@ -74,8 +74,8 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination 
 	if err != nil {
 		return err
 	}
-	StoreSnapshot(snapShotPath, tableNames)
-	return nil
+
+	return StoreSnapshot(snapShotPath, tableNames, dsn)
 }
 
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {

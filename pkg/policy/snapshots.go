@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +13,7 @@ import (
 	"strings"
 
 	pg "github.com/bbernays/pg-commands"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jeremywohl/flatten"
 )
 
@@ -34,17 +36,21 @@ func StoreOutput(query string, outputLocation string) {
 	}
 }
 
-func StoreSnapshot(path string, tables []string) {
+func StoreSnapshot(path string, tables []string, dsn string) error {
 	if len(tables) == 0 {
-		return
+		return errors.New("no tables to snapshot")
 	}
-
+	config, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return err
+	}
+	// config, err := ParseConfig(dsn)
 	dump := pg.NewDump(&pg.Postgres{
-		Host:     "localhost",
-		Port:     5432,
-		DB:       "postgres",
-		Username: "postgres",
-		Password: "pass",
+		Host:     config.ConnConfig.Host,
+		Port:     int(config.ConnConfig.Port),
+		DB:       config.ConnConfig.Database,
+		Username: config.ConnConfig.User,
+		Password: config.ConnConfig.Password,
 	})
 	dump.Options = []string{"-a", "--column-inserts"}
 	for _, table := range tables {
@@ -57,11 +63,11 @@ func StoreSnapshot(path string, tables []string) {
 
 	dumpExec := dump.Exec(pg.ExecOptions{StreamPrint: false})
 	if dumpExec.Error != nil {
-
 		fmt.Println(dumpExec.Error.Err)
 		fmt.Println(dumpExec.Output)
-
+		return errors.New("error dumping tables")
 	}
+	return nil
 }
 func RestoreSnapshot(fileName string) {
 	// dumpExec.File
