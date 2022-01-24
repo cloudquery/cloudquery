@@ -95,7 +95,6 @@ func RestoreSnapshot(fileName string) {
 func cleanQuery(query string) string {
 	var re = regexp.MustCompile(`(?s)\/\*.*?\*\/|--.*?\n`)
 	query = re.ReplaceAllString(query, "")
-	// query = strings.ReplaceAll(query, "\n", " ")
 	query = strings.TrimSuffix(query, ";")
 	query = strings.TrimSpace(query)
 	query = strings.TrimSuffix(query, ";")
