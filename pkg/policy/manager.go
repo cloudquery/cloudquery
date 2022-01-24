@@ -102,11 +102,11 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 			})
 		}
 	}
-	selector := strings.ReplaceAll(request.Policy.meta.subPolicy, "//", "/")
-	filteredPolicy := request.Policy.Filter(selector)
+
+	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
 	if len(filteredPolicy.Policies.All()) == 0 && len(filteredPolicy.Checks) == 0 {
-		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", filteredPolicy.Policies.All())
-		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, selector, ErrPolicyOrQueryNotFound)
+		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", request.Policy.meta.subPolicy, "available_policies", filteredPolicy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
 	}
 
 	// execute the queries
