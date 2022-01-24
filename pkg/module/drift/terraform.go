@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -83,6 +84,8 @@ func (r TFInstances) AsResourceList(identifiers []string, alist AttrList, path s
 }
 
 func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist AttrList, path string) ResourceList {
+	registerGJsonHelpers()
+
 	var elems []gjson.Result
 
 	root := gjson.ParseBytes(ins.AttributesRaw)
@@ -413,4 +416,43 @@ func equals(a, b interface{}) bool {
 	}
 
 	return false
+}
+
+func registerGJsonHelpers() {
+	if !gjson.ModifierExists("inverse", nil) {
+		// inverse a boolean
+		gjson.AddModifier("inverse", func(body, arg string) string {
+			if body == "false" {
+				return "true"
+			}
+			return "false"
+		})
+	}
+	if !gjson.ModifierExists("coalesce", nil) {
+		// if null, return empty string or map
+		gjson.AddModifier("coalesce", func(body, arg string) string {
+			if body == "" {
+				if arg == "map" {
+					return `{}`
+				}
+
+				return `""`
+			}
+			return body
+		})
+	}
+	if !gjson.ModifierExists("iftrue", nil) {
+		// if given statement is true, return the arg. otherwise return nil.
+		gjson.AddModifier("iftrue", func(body, arg string) string {
+			b, err := strconv.ParseBool(body)
+			if err != nil {
+				uq, _ := strconv.Unquote(body)
+				b, _ = strconv.ParseBool(uq)
+			}
+			if b {
+				return strconv.Quote(arg)
+			}
+			return ""
+		})
+	}
 }

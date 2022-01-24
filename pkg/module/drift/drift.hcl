@@ -22,7 +22,7 @@ config {
 
     # TODO get from provider... But this could also override/decorate the * entry above, if specified
     provider "aws" {
-        version = ">=0.8.0"
+        version = ">=0.10.0"
 
         resource "*" {
             ignore_identifiers = [ ]
@@ -892,6 +892,174 @@ config {
         }
 
         # TODO: iam.virtual_mfa_devices (no data in tests)
+
+        # TODO: iot.billing_groups (no data in tests)
+
+        # TODO: iot.ca_certificates (no data in tests)
+
+        resource "iot.certificates" {
+            identifiers = [ "id" ]
+
+            ignore_attributes = [ "customer_version", "ca_certificate_id", "mode", "policies", "last_modified_date", "generation_id", "owned_by", "previous_owned_by", "transfer_data_accept_date", "transfer_data_reject_date", "transfer_data_reject_reason", "transfer_data_transfer_date", "transfer_data_transfer_message", "validity_not_after", "validity_not_before" ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_certificate"
+
+                    attribute_map = [
+                        "pem=certificate_pem",
+                        "status=active|@iftrue:ACTIVE"
+                    ]
+                }
+            }
+        }
+
+        resource "iot.policies" {
+            identifiers = [ "name" ]
+            ignore_attributes = [ "generation_id", "last_modified_date" ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_policy"
+
+                    attribute_map = [
+                        "name=id",
+                        "document=policy",
+                        "tags=tags_all|@coalesce:map"
+                    ]
+                }
+            }
+        }
+
+        # TODO: iot.streams (no data in tests)
+
+        resource "iot.thing_groups" {
+            identifiers = [ "name" ]
+            ignore_attributes = [ "id", "things_in_group", "index_name", "query_string", "query_version", "status", "root_to_parent_thing_groups", "attribute_payload_merge" ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_thing_group"
+
+                    attribute_map = [
+                        "name=id",
+                        "thing_group_description=properties.#.description|@flatten|0|@coalesce",
+                        "attribute_payload_attributes=properties.#.attribute_payload.#.attributes|@flatten|0"
+                    ]
+                }
+            }
+        }
+
+        resource "iot.thing_types" {
+            identifiers = [ "name" ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_thing_type"
+
+                    attribute_map = [
+                        "description=properties.#.description|@flatten|0"
+                    ]
+                }
+            }
+        }
+
+        resource "iot.things" {
+            identifiers = [ "name" ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_thing"
+
+                    attribute_map = [
+                        "type_name=thing_type_name"
+                    ]
+                }
+            }
+        }
+
+        resource "iot.topic_rules" {
+            identifiers = [ "rule_name" ]
+            ignore_attributes = [
+                "created_at",
+                "error_action_cloudwatch_logs_log_group_name", "error_action_cloudwatch_logs_role_arn", "error_action_firehose_batch_mode",
+                "error_action_http_url", "error_action_http_auth_sigv4_role_arn", "error_action_http_auth_sigv4_service_name", "error_action_http_auth_sigv4_signing_region", "error_action_http_confirmation_url", "error_action_http_headers",
+                "error_action_iot_analytics_batch_mode", "error_action_iot_analytics_channel_arn",
+                "error_action_iot_events_batch_mode",
+                "error_action_iot_site_wise",
+                "error_action_kafka_client_properties", "error_action_kafka_destination_arn", "error_action_kafka_topic", "error_action_kafka_key", "error_action_kafka_partition",
+                "error_action_open_search_endpoint", "error_action_open_search_id", "error_action_open_search_index", "error_action_open_search_role_arn", "error_action_open_search_type",
+                "error_action_salesforce_token", "error_action_salesforce_url",
+                "error_action_s3_canned_acl",
+                "error_action_timestream_database_name", "error_action_timestream_dimensions", "error_action_timestream_role_arn", "error_action_timestream_table_name", "error_action_timestream_timestamp_unit", "error_action_timestream_timestamp_value"
+            ]
+
+            iac {
+                terraform {
+                    type = "aws_iot_topic_rule"
+
+                    attribute_map = [
+                        "rule_name=name",
+                        "rule_disabled=enabled|@inverse",
+                        "aws_iot_sql_version=sql_version",
+                        "error_action_cloudwatch_alarm_name=error_action.#.cloudwatch_alarm.#.name|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_alarm_role_arn=error_action.#.cloudwatch_alarm.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_alarm_state_reason=error_action.#.cloudwatch_alarm.#.state_reason|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_alarm_state_value=error_action.#.cloudwatch_alarm.#.state_value|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_metric_name=error_action.#.cloudwatch_metric.#.metric_name|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_metric_namespace=error_action.#.cloudwatch_metric.#.metric_namespace|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_unit=error_action.#.cloudwatch_metric.#.metric_unit|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_value=error_action.#.cloudwatch_metric.#.metric_value|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_role_arn=error_action.#.cloudwatch_metric.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_cloudwatch_metric_timestamp=error_action.#.cloudwatch_metric.#.metric_timestamp|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_hash_key_field=error_action.#.dynamodb.#.hash_key_field|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_hash_key_value=error_action.#.dynamodb.#.hash_key_value|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_role_arn=error_action.#.dynamodb.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_table_name=error_action.#.dynamodb.#.table_name|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_hash_key_type=error_action.#.dynamodb.#.hash_key_type|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_operation=error_action.#.dynamodb.#.operation|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_payload_field=error_action.#.dynamodb.#.payload_field|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_range_key_field=error_action.#.dynamodb.#.range_key_field|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_range_key_type=error_action.#.dynamodb.#.range_key_type|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_range_key_value=error_action.#.dynamodb.#.range_key_value|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_v2_put_item_table_name=error_action.#.dynamodbv2.#.put_item.table_name|@flatten|0|@coalesce",
+                        "error_action_dynamo_db_v2_role_arn=error_action.#.dynamodbv2.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_elasticsearch_endpoint=error_action.#.elasticsearch.#.endpoint|@flatten|0|@coalesce",
+                        "error_action_elasticsearch_id=error_action.#.elasticsearch.#.id|@flatten|0|@coalesce",
+                        "error_action_elasticsearch_index=error_action.#.elasticsearch.#.index|@flatten|0|@coalesce",
+                        "error_action_elasticsearch_role_arn=error_action.#.elasticsearch.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_elasticsearch_type=error_action.#.elasticsearch.#.type|@flatten|0|@coalesce",
+                        "error_action_firehose_delivery_stream_name=error_action.#.firehose.#.delivery_stream_name|@flatten|0|@coalesce",
+                        "error_action_firehose_role_arn=error_action.#.firehose.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_firehose_separator=error_action.#.firehose.#.separator|@flatten|0|@coalesce",
+                        "error_action_iot_analytics_channel_name=error_action.#.iot_analytics.#.channel_name|@flatten|0|@coalesce",
+                        "error_action_iot_analytics_role_arn=error_action.#.iot_analytics.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_iot_events_input_name=error_action.#.iot_events.#.input_name|@flatten|0|@coalesce",
+                        "error_action_iot_events_role_arn=error_action.#.iot_events.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_iot_events_message_id=error_action.#.iot_events.#.message_id|@flatten|0|@coalesce",
+                        "error_action_kinesis_stream_name=error_action.#.kinesis.#.stream_name|@flatten|0|@coalesce",
+                        "error_action_kinesis_partition_key=error_action.#.kinesis.#.partition_key|@flatten|0|@coalesce",
+                        "error_action_kinesis_role_arn=error_action.#.kinesis.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_lambda_function_arn=error_action.#.lambda.#.function_arn|@flatten|0|@coalesce",
+                        "error_action_republish_topic=error_action.#.republish.#.topic|@flatten|0|@coalesce",
+                        "error_action_republish_qos=error_action.#.republish.#.qos|@flatten|0",
+                        "error_action_republish_role_arn=error_action.#.republish.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_s3_bucket_name=error_action.#.s3.#.bucket_name|@flatten|0|@coalesce",
+                        "error_action_s3_key=error_action.#.s3.#.key|@flatten|0|@coalesce",
+                        "error_action_s3_role_arn=error_action.#.s3.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_sns_role_arn=error_action.#.sns.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_sns_target_arn=error_action.#.sns.#.target_arn|@flatten|0|@coalesce",
+                        "error_action_sns_message_format=error_action.#.sns.#.message_format|@flatten|0|@coalesce",
+                        "error_action_sqs_queue_url=error_action.#.sqs.#.queue_url|@flatten|0|@coalesce",
+                        "error_action_sqs_role_arn=error_action.#.sqs.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_sqs_use_base64=error_action.#.sqs.#.use_base64|@flatten|0",
+                        "error_action_step_functions_role_arn=error_action.#.step_functions.#.role_arn|@flatten|0|@coalesce",
+                        "error_action_step_functions_state_machine_name=error_action.#.step_functions.#.state_machine_name|@flatten|0|@coalesce",
+                        "error_action_step_functions_execution_name_prefix=error_action.#.step_functions.#.execution_name_prefix|@flatten|0|@coalesce",
+                    ]
+                }
+            }
+        }
 
         resource "kms.keys" {
             identifiers = [ "id" ]
