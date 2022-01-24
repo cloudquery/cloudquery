@@ -42,7 +42,7 @@ type Manager interface {
 	Load(ctx context.Context, policy *Policy) (*Policy, error)
 
 	// Take a Snapshot of a policy
-	Snapshot(ctx context.Context, policy *Policy) error
+	Snapshot(ctx context.Context, policy *Policy, destination string) error
 }
 
 // NewManager returns a new manager instance.
@@ -54,32 +54,27 @@ func NewManager(policyDir string, pool schema.QueryExecer, logger hclog.Logger) 
 	}
 }
 
-func createPath(path, queryName string) string {
-	if !strings.HasPrefix(path, "/") {
-		path = fmt.Sprintf("/%s", path)
-	}
-	path = strings.TrimSuffix(path, "/")
+func createPath(directory, queryName string) string, error {
+	path := strings.TrimSuffix(directory, "/")
+	cleanedPath := filepath.Join(path, "/query"+"-"+queryName+"/", "tests", uuid.NewV4().String())
 
-	path = strings.TrimSuffix(path, "/query/"+queryName)
-
-	u2 := uuid.NewV4()
-
-	cleanedPath := filepath.Join("./database-data/", path, "/query"+"-"+queryName+"/", "tests", u2.String())
-
-	// generate test name (uuid)
 	err := os.MkdirAll(cleanedPath, os.ModePerm)
 	if err != nil {
-		log.Printf("%+v\n", err)
+		return "", err
 	}
-	return cleanedPath
+	return cleanedPath, nil
 }
 
-func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy) error {
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination string) error {
 
-	tableNames, _ := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
-
-	snapShotPath := createPath("./", policy.Checks[0].Name)
-	log.Println(snapShotPath)
+	tableNames, err := NewExecutor(m.pool, m.logger, nil).ExtractTableNames(ctx, policy.Checks[0].Query)
+	if error != nil {
+		return err
+	}
+	snapShotPath, err := createPath(destination, policy.Checks[0].Name)
+	if error != nil {
+		return err
+	}
 	StoreSnapshot(snapShotPath, tableNames)
 	return nil
 }
