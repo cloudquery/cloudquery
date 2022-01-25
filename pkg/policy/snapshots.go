@@ -1,12 +1,10 @@
 package policy
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -17,37 +15,11 @@ import (
 	"github.com/jeremywohl/flatten"
 )
 
-func StoreOutput(query string, outputLocation, dsn string) error {
-	config, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return err
-	}
-	exc := pg.NewDump(&pg.Postgres{
-		Host:     config.ConnConfig.Host,
-		Port:     int(config.ConnConfig.Port),
-		DB:       config.ConnConfig.Database,
-		Username: config.ConnConfig.User,
-		Password: config.ConnConfig.Password,
-	})
-	dumpExec := exc.Exec(pg.ExecOptions{StreamPrint: false})
-	if dumpExec.Error != nil {
-		fmt.Println(query)
-		fmt.Println(dumpExec.Error.Err)
-		fmt.Println(dumpExec.Output)
-	} else {
-		fmt.Println(query)
-	}
-	return nil
-}
-
-func StoreSnapshot(path string, tables []string, dsn string) error {
+func StoreSnapshot(path string, tables []string, config *pgxpool.Config) error {
 	if len(tables) == 0 {
 		return errors.New("no tables to snapshot")
 	}
-	config, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return err
-	}
+
 	dump := pg.NewDump(&pg.Postgres{
 		Host:     config.ConnConfig.Host,
 		Port:     int(config.ConnConfig.Port),
@@ -59,51 +31,19 @@ func StoreSnapshot(path string, tables []string, dsn string) error {
 	for _, table := range tables {
 		dump.Options = append(dump.Options, "-t", table)
 	}
-	log.Println(path)
+
 	dump.SetFileName(path + "/pg-dump.sql")
 	dump.SetupFormat("plain")
 	dump.SetPath("./")
 
 	dumpExec := dump.Exec(pg.ExecOptions{StreamPrint: false})
+
 	if dumpExec.Error != nil {
 		fmt.Println(dumpExec.Error.Err)
 		fmt.Println(dumpExec.Output)
 		return errors.New("error dumping tables")
 	}
 	return nil
-}
-func RestoreSnapshot(fileName, dsn string) error {
-	// dumpExec.File
-	file := "postgres_1640202245.sql"
-	config, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return err
-	}
-	pgConnection := pg.NewDump(&pg.Postgres{
-		Host:     config.ConnConfig.Host,
-		Port:     int(config.ConnConfig.Port),
-		DB:       config.ConnConfig.Database,
-		Username: config.ConnConfig.User,
-		Password: config.ConnConfig.Password,
-	})
-	cmd := exec.Command("psql", "-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB, "-a", "-f", file)
-	fmt.Println(cmd.Env)
-	fmt.Println("psql", "-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB, "-a", "-f", file)
-
-	cmd.Env = append(cmd.Env, "PGPASSWORD=pass")
-	cmd.Env = append(cmd.Env, os.Environ()...)
-
-	var out, stderr bytes.Buffer
-
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("Error executing query. Command Output: %+v\n: %+v, %v", out.String(), stderr.String(), err)
-	}
-	return err
-
 }
 
 func cleanQuery(query string) string {
@@ -125,13 +65,11 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 	if err != nil {
 		return tableNames, err
 	}
-
 	for rows.Next() {
 		var s string
 		if err := rows.Scan(&s); err != nil {
-			log.Fatal(err)
+			e.log.Error("error scanning into variable", "error", err)
 		}
-		log.Println(s)
 		var arrayJsonMap []map[string](interface{})
 		err := json.Unmarshal([]byte(s), &arrayJsonMap)
 		if err != nil {
@@ -155,9 +93,46 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 		}
 	}
 	if err := rows.Err(); err != nil {
-		log.Println(query)
-		log.Fatal(err)
+		e.log.Error("Error fetching rows", "query", query, "error", err)
+		return tableNames, err
 	}
 
 	return tableNames, err
+}
+
+func (e *Executor) StoreOutput(ctx context.Context, pol *Policy, destination string, config *pgxpool.Config) (err error) {
+
+	queries := []string{
+		`SET client_encoding='UTF8'`,
+	}
+
+	for _, v := range pol.Views {
+		queries = append(queries, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query))
+	}
+
+	queries = append(queries, fmt.Sprintf("\\COPY (SELECT json_agg(foo)::jsonb FROM (%s) foo ) TO '%s'", cleanQuery(pol.Checks[0].Query), destination+"/"+"data.json"))
+	pgConnection := pg.NewDump(&pg.Postgres{
+		Host:     config.ConnConfig.Host,
+		Port:     int(config.ConnConfig.Port),
+		DB:       config.ConnConfig.Database,
+		Username: config.ConnConfig.User,
+		Password: config.ConnConfig.Password,
+	})
+	//construct arguments
+	args := []string{"-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB}
+	for _, q := range queries {
+		args = append(args, "-c", q)
+	}
+
+	//Execute psql command
+	cmd := exec.Command("psql", args...)
+	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, pgConnection.Password))
+
+	stdoutStderr, err := cmd.CombinedOutput()
+	if err != nil {
+		e.log.Error("StandardError", "Output", stdoutStderr)
+		return err
+	}
+
+	return nil
 }

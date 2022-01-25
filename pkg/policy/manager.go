@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
+	"github.com/jackc/pgx/v4/pgxpool"
 	uuid "github.com/satori/go.uuid"
 
 	"github.com/hashicorp/go-hclog"
@@ -70,6 +71,11 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination,
 	if err := e.createViews(ctx, policy); err != nil {
 		return err
 	}
+
+	config, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return err
+	}
 	tableNames, err := e.ExtractTableNames(ctx, policy.Checks[0].Query)
 	if err != nil {
 		return err
@@ -78,10 +84,13 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination,
 	if err != nil {
 		return err
 	}
+	err = StoreSnapshot(snapShotPath, tableNames, config)
+	if err != nil {
+		return err
+	}
 
-	return StoreSnapshot(snapShotPath, tableNames, dsn)
+	return e.StoreOutput(ctx, policy, snapShotPath, config)
 }
-
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {
 	var err error
 	// if policy is configured with source we load it first
