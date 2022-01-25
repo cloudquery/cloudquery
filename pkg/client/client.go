@@ -384,30 +384,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
-	{
-		// Report about multiple (aliased) providers in the same fetch
-		numProviders := make(map[string]int, len(request.Providers))
-		for _, p := range request.Providers {
-			numProviders[p.Name]++
-		}
-		var multiProviders []string
-		for k, v := range numProviders {
-			if v > 1 {
-				multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
-			}
-		}
-		if len(multiProviders) > 0 {
-			sort.Strings(multiProviders)
-			trace.SpanFromContext(ctx).SetAttributes(
-				attribute.StringSlice("multi_providers", multiProviders),
-			)
-			sentry.ConfigureScope(func(scope *sentry.Scope) {
-				scope.SetTags(map[string]string{
-					"multi_providers": strings.Join(multiProviders, ","),
-				})
-			})
-		}
-	}
+	reportNumProviders(ctx, request.Providers)
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
@@ -1161,4 +1138,31 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 
 	return nil
+}
+
+// reportNumProviders counts multiple (aliased) providers and sets tracing and sentry specific attributes
+func reportNumProviders(ctx context.Context, provs []*config.Provider) {
+	numProviders := make(map[string]int, len(provs))
+	for _, p := range provs {
+		numProviders[p.Name]++
+	}
+	var multiProviders []string
+	for k, v := range numProviders {
+		if v > 1 {
+			multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
+		}
+	}
+	if len(multiProviders) == 0 {
+		return
+	}
+
+	sort.Strings(multiProviders)
+	trace.SpanFromContext(ctx).SetAttributes(
+		attribute.StringSlice("multi_providers", multiProviders),
+	)
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTags(map[string]string{
+			"multi_providers": strings.Join(multiProviders, ","),
+		})
+	})
 }
