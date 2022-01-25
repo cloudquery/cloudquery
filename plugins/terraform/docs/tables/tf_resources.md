@@ -4,6 +4,7 @@ Terraform resources
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
+|tf_data_cq_id|uuid|Unique CloudQuery ID of tf_data table (FK)|
 |running_id|uuid|Unique fetch operation id|
 |module|text|Resource module if exists|
 |mode|text|Resource mode, for example: data, managed, etc|
