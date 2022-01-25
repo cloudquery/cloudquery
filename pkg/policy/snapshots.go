@@ -118,13 +118,13 @@ func (e *Executor) StoreOutput(ctx context.Context, pol *Policy, destination str
 		Username: config.ConnConfig.User,
 		Password: config.ConnConfig.Password,
 	})
-	//construct arguments
+	// construct arguments
 	args := []string{"-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB}
 	for _, q := range queries {
 		args = append(args, "-c", q)
 	}
 
-	//Execute psql command
+	// Execute psql command
 	cmd := exec.Command("psql", args...)
 	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, pgConnection.Password))
 
