@@ -538,11 +538,18 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
+
 	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	buildDescribePolicyTable(t, policy.Policies{&pol}, selector[:strings.LastIndexAny(selector, "/")])
+	selector = strings.ReplaceAll(selector, "//", "/")
+	pol := p.Filter(selector)
+	outputSelector := selector
+	if strings.Count(selector, "/") > 0 {
+		outputSelector = selector[:strings.LastIndexAny(selector, "/")]
+	}
+
+	buildDescribePolicyTable(t, policy.Policies{&pol}, outputSelector)
 	t.Render()
 	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
