@@ -338,13 +338,19 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
+	dupes := make(map[string]struct{}, len(providers))
 	for _, p := range providers {
+		if _, ok := dupes[p.Name]; ok {
+			continue
+		}
+
 		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
 			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
 		}
+		dupes[p.Name] = struct{}{}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
 	return nil
