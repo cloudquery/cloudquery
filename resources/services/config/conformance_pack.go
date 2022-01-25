@@ -95,7 +95,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 		})
 
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
-		if c.Region == "af-south-1" && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
+		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
 			return nil
 		}
 
