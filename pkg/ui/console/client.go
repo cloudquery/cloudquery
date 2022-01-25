@@ -554,8 +554,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector,
 	if len(pol.Checks) != 1 && len(pol.Policies) == 0 {
 		return errors.New("selector must specify only a single control")
 	}
-	c.c.PolicyManager.Snapshot(ctx, &pol, destination, c.c.DSN)
-	return nil
+	return c.c.PolicyManager.Snapshot(ctx, &pol, destination, c.c.DSN)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
