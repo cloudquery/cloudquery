@@ -270,7 +270,7 @@ func TestExecutor_Execute(t *testing.T) {
 			Pass:                 true,
 			ShouldBeEmpty:        true,
 			TotalExpectedResults: 0,
-			ErrorOutput:          "test//invalidselector: selected policy/query is not found",
+			ErrorOutput:          "test//invalidselector: selected policy/query not found",
 		},
 		{
 			Name:                 "multilayer policies \\w selector on query",
