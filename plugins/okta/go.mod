@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-okta
 go 1.16
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.7.0-alpha2
+	github.com/cloudquery/cq-provider-sdk v0.7.0
 	github.com/hashicorp/go-hclog v1.0.0
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/kr/text v0.2.0 // indirect
