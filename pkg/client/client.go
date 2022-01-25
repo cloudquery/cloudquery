@@ -818,6 +818,11 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	defer spanEnder(retErr)
 
 	c.Logger.Info("preparing to run policy")
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -864,6 +869,10 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 	defer spanEnder(retErr)
 
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
 
 	modReq := &module.ExecuteRequest{
 		Providers: req.Providers,
@@ -913,7 +922,18 @@ func (c *Client) initModules() {
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
+func (c *Client) ensureConnection() error {
+	if c.dialectExecutor != nil {
+		return nil
+	}
+	return fmt.Errorf("missing connection info in config.hcl")
+}
+
 func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
+	if err := c.ensureConnection(); err != nil {
+		return nil, nil, err
+	}
+
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
 		return nil, nil, err
