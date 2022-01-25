@@ -16,7 +16,7 @@ import (
 	"github.com/spf13/afero"
 )
 
-var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
 
 type UpdateCallback func(update Update)
 
