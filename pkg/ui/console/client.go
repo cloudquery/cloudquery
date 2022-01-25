@@ -543,7 +543,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	t.SetHeaders("Path", "Description")
 	selector = strings.ReplaceAll(selector, "//", "/")
 	pol := p.Filter(selector)
-	if strings.Count(selector, "/") > 0 {
+	if strings.Contains(selector, "/") {
 		selector = selector[:strings.LastIndexAny(selector, "/")]
 	}
 
