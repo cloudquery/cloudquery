@@ -40,6 +40,7 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	otrace "go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 	gcodes "google.golang.org/grpc/codes"
@@ -382,6 +383,31 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
+
+	{
+		// Report about multiple (aliased) providers in the same fetch
+		numProviders := make(map[string]int, len(request.Providers))
+		for _, p := range request.Providers {
+			numProviders[p.Name]++
+		}
+		var multiProviders []string
+		for k, v := range numProviders {
+			if v > 1 {
+				multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
+			}
+		}
+		if len(multiProviders) > 0 {
+			sort.Strings(multiProviders)
+			trace.SpanFromContext(ctx).SetAttributes(
+				attribute.StringSlice("multi_providers", multiProviders),
+			)
+			sentry.ConfigureScope(func(scope *sentry.Scope) {
+				scope.SetTags(map[string]string{
+					"multi_providers": strings.Join(multiProviders, ","),
+				})
+			})
+		}
+	}
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
