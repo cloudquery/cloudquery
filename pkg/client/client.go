@@ -653,7 +653,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		}
 
 		c.Logger.Error("BuildProviderTables failed", "error", retErr)
-		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}()
 
 	// create migration table and set it to version based on latest create table
@@ -711,7 +711,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
