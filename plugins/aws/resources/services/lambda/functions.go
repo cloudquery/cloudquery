@@ -1015,6 +1015,10 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", r)
 	}
+	if r.Configuration == nil {
+		return nil
+	}
+
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
 
@@ -1109,6 +1113,9 @@ func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.Clien
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", r)
 	}
+	if r.Configuration == nil {
+		return nil
+	}
 
 	res <- r.Configuration.FileSystemConfigs
 	return nil
@@ -1117,6 +1124,9 @@ func fetchLambdaFunctionLayers(ctx context.Context, meta schema.ClientMeta, pare
 	r, ok := parent.Item.(*lambda.GetFunctionOutput)
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", r)
+	}
+	if r.Configuration == nil {
+		return nil
 	}
 
 	res <- r.Configuration.Layers
@@ -1127,6 +1137,10 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
 	}
+	if p.Configuration == nil {
+		return nil
+	}
+
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
@@ -1179,6 +1193,10 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
 	}
+	if p.Configuration == nil {
+		return nil
+	}
+
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListVersionsByFunctionInput{
 		FunctionName: p.Configuration.FunctionName,
@@ -1220,6 +1238,10 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
 	}
+	if p.Configuration == nil {
+		return nil
+	}
+
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListProvisionedConcurrencyConfigsInput{
 		FunctionName: p.Configuration.FunctionName,
@@ -1243,6 +1265,10 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
 	}
+	if p.Configuration == nil {
+		return nil
+	}
+
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListEventSourceMappingsInput{
 		FunctionName: p.Configuration.FunctionName,
@@ -1266,6 +1292,10 @@ func resolveLambdaFunctionEventSourceMappingAccessConfigurations(ctx context.Con
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of EventSourceMappingConfiguration", p)
 	}
+	if len(p.SourceAccessConfigurations) == 0 {
+		return nil
+	}
+
 	data, err := json.Marshal(p.SourceAccessConfigurations)
 	if err != nil {
 		return err
