@@ -39,7 +39,7 @@ require (
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.12.0
-	github.com/google/go-cmp v0.5.6
+	github.com/google/go-cmp v0.5.7
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-getter v1.5.10
 	github.com/jackc/pgconn v1.10.0

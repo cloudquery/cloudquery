@@ -2,8 +2,10 @@ package drift
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -390,6 +392,22 @@ func efaceToString(a interface{}) string {
 }
 
 func equals(a, b interface{}) bool {
+	// case of assume_role_policy fields: string and map[string]interface{} needs to be compared
+	if _, ok := b.(map[string]interface{}); ok {
+		if aMap, ok := isStringAMap(a); ok {
+			a = aMap
+		}
+	} else if _, ok := a.(map[string]interface{}); ok {
+		if bMap, ok := isStringAMap(b); ok {
+			b = bMap
+		}
+	}
+
+	// nil and empty strings, slices or maps are considered equal for our comparisons
+	if isEmptyStringSliceOrMap(a) && isEmptyStringSliceOrMap(b) {
+		return true
+	}
+
 	as := efaceToString(a)
 	bs := efaceToString(b)
 	if as == bs {
@@ -415,7 +433,30 @@ func equals(a, b interface{}) bool {
 		return aa.String() == ba.String()
 	}
 
-	return false
+	return cmp.Equal(a, b, cmpopts.EquateEmpty())
+}
+
+func isStringAMap(a interface{}) (map[string]interface{}, bool) {
+	if astr, ok := a.(string); ok {
+		var newA map[string]interface{}
+		if json.Unmarshal([]byte(astr), &newA) == nil {
+			return newA, true
+		}
+	}
+	return nil, false
+}
+
+func isEmptyStringSliceOrMap(val interface{}) bool {
+	if val == nil {
+		return true
+	}
+	v := reflect.ValueOf(val)
+	switch v.Kind() {
+	case reflect.String, reflect.Slice, reflect.Array, reflect.Map:
+		return v.Len() == 0
+	default:
+		return false
+	}
 }
 
 func registerGJsonHelpers() {
@@ -426,19 +467,6 @@ func registerGJsonHelpers() {
 				return "true"
 			}
 			return "false"
-		})
-	}
-	if !gjson.ModifierExists("coalesce", nil) {
-		// if null, return empty string or map
-		gjson.AddModifier("coalesce", func(body, arg string) string {
-			if body == "" {
-				if arg == "map" {
-					return `{}`
-				}
-
-				return `""`
-			}
-			return body
 		})
 	}
 	if !gjson.ModifierExists("iftrue", nil) {
