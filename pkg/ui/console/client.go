@@ -129,16 +129,17 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
 			return err
 		}
-
-		if response == nil {
-			response = &client.FetchResponse{}
-		}
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
 		printFetchResponse(response)
+	}
+
+	if response == nil {
+		ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
+		return nil
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
