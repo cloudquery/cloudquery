@@ -77,6 +77,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSummary(t *testing.T) {
+	//todo be sure that it is running after core migrations
 	// create database connection
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)

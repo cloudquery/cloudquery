@@ -128,7 +128,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
 	if err := e.checkFetches(ctx, policy.Config); err != nil {
-		return nil, fmt.Errorf("%s: %w", policy.Name, err)
+		return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` berfore running policy", policy.Name, err)
 	}
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
@@ -203,7 +203,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
 		}
 		if fetchSummary == nil {
-			return fmt.Errorf("there were no fetches for provider %s. please run cloudquery fetch berfore running policy", p.Type)
+			return fmt.Errorf("there is no finished fetches for provider %s", p.Type)
 		}
 		if fetchSummary.IsSuccess == false {
 			return fmt.Errorf("last fetch for provider %s wasn't successful", p.Type)

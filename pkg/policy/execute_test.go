@@ -2,16 +2,16 @@ package policy
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
-	uuid "github.com/google/uuid"
-	"testing"
-	"time"
-
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
+	"testing"
+	"time"
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (schema.QueryExecer, func(t *testing.T)) {
@@ -340,6 +340,10 @@ func setupCheckFetchDatabase(db schema.QueryExecer, fetchSummary *fetch_summary.
 	if fetchSummary == nil {
 		return nil, func(t *testing.T) {}
 	}
+	fetchSummary.CqId = uuid.New()
+	fetchSummary.FetchId = uuid.New()
+	finish := time.Now().UTC()
+	fetchSummary.Finish = &finish
 	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(db)
 	err := fetchSummaryClient.SaveFetchSummary(context.Background(), fetchSummary)
 	if err != nil {
@@ -354,8 +358,7 @@ func setupCheckFetchDatabase(db schema.QueryExecer, fetchSummary *fetch_summary.
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
-	//todo migrate database to check it
-
+	//todo be sure that it is running after core migrations
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	executor := NewExecutor(db, hclog.Default(), nil)
 
@@ -376,19 +379,60 @@ func TestExecutor_CheckFetches(t *testing.T) {
 			f:   &fetch_summary.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", IsSuccess: true},
 			err: nil,
 		},
+		{
+			Name: "no fetches",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "test2", Version: "~> v0.2.0"},
+				},
+			},
+			err: errors.New("there is no finished fetches for provider test2"),
+		},
+		{
+			Name: "no fetches",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "test3", Version: "~> v0.2.0"},
+				},
+			},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
+			err: errors.New("last fetch for provider test3 wasn't successful"),
+		},
+		{
+			Name: "no fetches",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "test4", Version: "~> v0.3.0"},
+				},
+			},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", IsSuccess: true},
+			err: errors.New("the latest fetch for provider test4 does not satisfy version requirement ~> v0.3.0"),
+		},
+		{
+			Name: "no fetches",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "test4", Version: ""},
+				},
+			},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", IsSuccess: true},
+			err: errors.New("failed to parse version constraint for provider test4: Malformed constraint: "),
+		},
 	}
 
 	for _, tc := range cases {
-		tc.f.CqId = uuid.New()
-		tc.f.FetchId = uuid.New()
-		finish := time.Now().UTC()
-		tc.f.Finish = &finish
-		err, clear := setupCheckFetchDatabase(db, tc.f)
-		assert.NoError(t, err)
+		t.Run(tc.Name, func(t *testing.T) {
+			err, clear := setupCheckFetchDatabase(db, tc.f)
+			assert.NoError(t, err)
 
-		err = executor.checkFetches(context.Background(), &tc.Config)
-		assert.Equal(t, err, tc.err)
-		clear(t)
+			err = executor.checkFetches(context.Background(), &tc.Config)
+			if tc.err != nil {
+				assert.Equal(t, tc.err.Error(), err.Error())
+			} else {
+				assert.NoError(t, err)
+			}
+			clear(t)
+		})
 
 	}
 }
