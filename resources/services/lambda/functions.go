@@ -1170,6 +1170,9 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of *GetFunctionOutput", p)
 	}
+	if p.Configuration == nil {
+		return nil
+	}
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListFunctionEventInvokeConfigsInput{
 		FunctionName: p.Configuration.FunctionName,

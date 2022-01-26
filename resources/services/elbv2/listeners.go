@@ -440,6 +440,9 @@ func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Contex
 	if !ok {
 		return fmt.Errorf("expected to have types.Action but got %T", parent.Item)
 	}
+	if action.ForwardConfig == nil {
+		return nil
+	}
 	res <- action.ForwardConfig.TargetGroups
 	return nil
 }
