@@ -40,6 +40,7 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	otrace "go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 	gcodes "google.golang.org/grpc/codes"
@@ -83,6 +84,7 @@ type FetchUpdate struct {
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
 	ProviderName          string
+	ProviderAlias         string
 	Version               string
 	PartialFetchErrors    []*cqproto.FailedResourceFetch
 	FetchErrors           []error
@@ -382,6 +384,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
+	reportNumProviders(ctx, request.Providers)
+
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
 	var dsnURI string
@@ -410,6 +414,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
+		createdAt := time.Now().UTC()
+		fetchSummary := FetchSummary{
+			FetchId:       fetchId,
+			ProviderName:  providerConfig.Name,
+			ProviderAlias: providerConfig.Alias,
+			CreatedAt:     &createdAt,
+			CoreVersion:   Version,
+		}
+		saveFetchSummary := func() {
+			if err := c.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+				c.Logger.Error("failed to save fetch summary", "err", err)
+			}
+		}
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
@@ -419,19 +436,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 		// TODO: move this into an outer function
 		errGroup.Go(func() error {
-			fs := FetchSummary{
-				FetchId:         fetchId,
-				ProviderName:    providerConfig.Name,
-				ProviderVersion: providerPlugin.Version(),
-				Start:           time.Now().UTC(),
-			}
-
-			defer func() {
-				if err := c.SaveFetchSummary(ctx, &fs); err != nil {
-					c.Logger.Error("failed to save fetch summary", "err", err)
-				}
-			}()
-
+			defer saveFetchSummary()
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
 			if c.HistoryCfg != nil {
@@ -458,6 +463,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
 			fetchStart := time.Now()
+			fetchSummary.Start = &fetchStart
 			stream, err := providerPlugin.Provider().FetchResources(ctx,
 				&cqproto.FetchResourcesRequest{
 					Resources:              providerConfig.Resources,
@@ -483,10 +489,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
 						message := "provider finished fetch"
-						status := "Finished"
+						fetchStatus := "Finished"
 						if ok && st.Code() == gcodes.Canceled {
 							message = "provider fetch canceled"
-							status = "Canceled"
+							fetchStatus = "Canceled"
 						}
 
 						pLog.Info(message, "execution", time.Since(fetchStart).String())
@@ -495,17 +501,19 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 						}
 						fetchSummaries <- ProviderFetchSummary{
 							ProviderName:          providerConfig.Name,
+							ProviderAlias:         providerConfig.Alias,
 							Version:               providerPlugin.Version(),
 							TotalResourcesFetched: totalResources,
 							PartialFetchErrors:    partialFetchResults,
 							FetchErrors:           fetchErrors,
 							FetchResources:        fetchedResources,
-							Status:                status,
+							Status:                fetchStatus,
 						}
-						fs.Finish = time.Now().UTC()
-						fs.IsSuccess = true
-						fs.TotalErrorsCount = totalErrors
-						fs.TotalResourceCount = totalResources
+						t := time.Now().UTC()
+						fetchSummary.Finish = &t
+						fetchSummary.IsSuccess = true
+						fetchSummary.TotalErrorsCount = totalErrors
+						fetchSummary.TotalResourceCount = totalResources
 						return nil
 					}
 					pLog.Error("received provider fetch error", "error", err)
@@ -538,7 +546,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fs.Resources = append(fs.Resources, ResourceFetchSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
@@ -560,7 +568,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	close(fetchSummaries)
 
 	for ps := range fetchSummaries {
-		response.ProviderFetchSummary[ps.ProviderName] = ps
+		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
 	}
 
 	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
@@ -648,7 +656,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		}
 
 		c.Logger.Error("BuildProviderTables failed", "error", retErr)
-		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}()
 
 	// create migration table and set it to version based on latest create table
@@ -706,7 +714,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
@@ -796,6 +804,8 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 }
 
 func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+	executionTime := time.Now()
+
 	spanAttrs := []attribute.KeyValue{
 		attribute.String("policy_name", p.Name),
 	}
@@ -811,6 +821,11 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	defer spanEnder(retErr)
 
 	c.Logger.Info("preparing to run policy")
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -837,6 +852,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	if err != nil {
 		return nil, err
 	}
+	result.ExecutionTime = executionTime
 
 	// Store output in file if requested
 	if req.OutputDir != "" {
@@ -856,6 +872,10 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 	defer spanEnder(retErr)
 
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
 
 	modReq := &module.ExecuteRequest{
 		Providers: req.Providers,
@@ -905,7 +925,18 @@ func (c *Client) initModules() {
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
+func (c *Client) ensureConnection() error {
+	if c.dialectExecutor != nil {
+		return nil
+	}
+	return fmt.Errorf("missing connection info in config.hcl")
+}
+
 func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
+	if err := c.ensureConnection(); err != nil {
+		return nil, nil, err
+	}
+
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
 		return nil, nil, err
@@ -1127,4 +1158,31 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 
 	return nil
+}
+
+// reportNumProviders counts multiple (aliased) providers and sets tracing and sentry specific attributes
+func reportNumProviders(ctx context.Context, provs []*config.Provider) {
+	numProviders := make(map[string]int, len(provs))
+	for _, p := range provs {
+		numProviders[p.Name]++
+	}
+	var multiProviders []string
+	for k, v := range numProviders {
+		if v > 1 {
+			multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
+		}
+	}
+	if len(multiProviders) == 0 {
+		return
+	}
+
+	sort.Strings(multiProviders)
+	trace.SpanFromContext(ctx).SetAttributes(
+		attribute.StringSlice("multi_providers", multiProviders),
+	)
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTags(map[string]string{
+			"multi_providers": strings.Join(multiProviders, ","),
+		})
+	})
 }

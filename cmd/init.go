@@ -72,6 +72,7 @@ func Initialize(ctx context.Context, providers []string) error {
 		return diags
 	}
 
+	cfg.CloudQuery.Connection.DSN = "" // Don't connect
 	c, err := console.CreateClientFromConfig(ctx, cfg)
 	if err != nil {
 		return err

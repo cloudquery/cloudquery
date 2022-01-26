@@ -85,7 +85,8 @@ func TestFetchSummary(t *testing.T) {
 		if !f.skipFetchId {
 			f.summary.FetchId = fetchId
 		}
-		f.summary.Start = time.Now()
+		start := time.Now()
+		f.summary.Start = &start
 		err := c.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())
