@@ -5,18 +5,22 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
+	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
+
+// fileDescriptorF gets set trough system relevant files like ulimit_unix.go
+var fileDescriptorF func()
 
 func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []string) error) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
@@ -89,7 +93,7 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		defer c.Client().Close()
 	}
 
-	if tele.NewRandomId() {
+	if tele.Enabled() && tele.NewRandomId() {
 		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
 		if delayMessage {
 			select {

@@ -19,8 +19,16 @@ var (
   # Download & Run the policies defined in your config
   cloudquery policy run
 
-  # Run a specific policy by it's name
-  cloudquery policy run --policy my_aws_policy
+  # Run a specific policy that is not defined in the config.hcl
+  # Run official policy
+  cloudquery policy run aws
+
+  # The following will be the same as above
+  # Official policies are hosted here: https://github.com/cloudquery-policies
+  cloudquery policy run aws//cis_v1.2.0
+	
+  # Run community policy
+  cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/aws
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {

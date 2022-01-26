@@ -6,17 +6,17 @@ import (
 	"errors"
 	"fmt"
 	"path"
-	"strings"
-
 	"path/filepath"
+	"strings"
+	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/spf13/afero"
 )
 
-var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
 
 type UpdateCallback func(update Update)
 
@@ -46,7 +46,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn *pgxpool.Conn
+	conn schema.QueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -69,6 +69,9 @@ type QueryResult struct {
 type ExecutionResult struct {
 	// PolicyName is the running policy name
 	PolicyName string
+
+	// ExecutionTime is when the policy has been started
+	ExecutionTime time.Time
 
 	// True if all policies have passed
 	Passed bool
@@ -99,7 +102,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn *pgxpool.Conn, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn schema.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,
@@ -239,7 +242,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
 		e.log.Info("creating policy view", "view", v.Name)
-		if _, err := e.conn.Exec(ctx, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
+		if err := e.conn.Exec(ctx, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
 			return fmt.Errorf("failed to create view %s/%s: %w", policy.Name, v.Name, err)
 		}
 	}
