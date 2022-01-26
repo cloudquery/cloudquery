@@ -4,14 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (schema.QueryExecer, func(t *testing.T)) {
@@ -358,7 +359,7 @@ func setupCheckFetchDatabase(db schema.QueryExecer, fetchSummary *fetch_summary.
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
-	//todo be sure that it is running after core migrations
+	// todo be sure that it is running after core migrations
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	executor := NewExecutor(db, hclog.Default(), nil)
 

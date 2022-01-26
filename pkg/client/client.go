@@ -5,7 +5,6 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	"io"
 	"io/fs"
 	"path/filepath"
@@ -13,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"

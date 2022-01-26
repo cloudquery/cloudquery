@@ -3,10 +3,11 @@ package fetch_summary
 import (
 	"context"
 	"errors"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/hashicorp/go-hclog"
 	"testing"
 	"time"
+
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/hashicorp/go-hclog"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -77,7 +78,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSummary(t *testing.T) {
-	//todo be sure that it is running after core migrations
+	// todo be sure that it is running after core migrations
 	// create database connection
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
