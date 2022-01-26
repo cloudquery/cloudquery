@@ -35,7 +35,7 @@ provider "aws" {
     // accounts "<YOUR ID>" {
       // Optional. Role ARN we want to assume when accessing this account
       // role_arn = < YOUR_ROLE_ARN >
-      // override provider configs for a specific account
+      // Optional. Override provider configs for a specific account
       // regions = ["us-east-1", "us-east-2"]
     }
     // Optional. Enable AWS SDK debug logging.
@@ -73,6 +73,8 @@ provider "aws" {
       role_arn = <YOUR_ROLE_ARN_1>
       // Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
       local_profile = "<NAMED_PROFILE>
+      // Optional. Specify the Role Session name
+      role_session_name = 
     }
     accounts "<AccountID_Alias_2>" {
       // Optional. Role ARN we want to assume when accessing this account
