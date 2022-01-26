@@ -26,7 +26,7 @@ func (c Config) Example() string {
     // Optional. Role ARN we want to assume when accessing this account
     // role_arn = < YOUR_ROLE_ARN >
     // Optional. Named profile in config or credential file from where CQ should grab credentials
-    // LocalProfile = < PROFILE_NAME >
+    // local_profile = < PROFILE_NAME >
   // }
   // Optional. by default assumes all regions
   // regions = ["us-east-1", "us-west-2"]
