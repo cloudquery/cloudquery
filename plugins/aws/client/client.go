@@ -323,6 +323,11 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 				opts.ExternalID = &account.ExternalID
 			})
 		}
+		if account.RoleSessionName != "" {
+			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
+				opts.RoleSessionName = account.RoleSessionName
+			})
+		}
 		if stsClient == nil {
 			stsClient = sts.NewFromConfig(awsCfg)
 		}
