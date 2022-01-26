@@ -130,6 +130,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 			return err
 		}
 
+		if response == nil {
+			response = &client.FetchResponse{}
+		}
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
