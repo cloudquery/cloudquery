@@ -110,7 +110,7 @@ func (e *Executor) StoreOutput(ctx context.Context, pol *Policy, destination str
 		queries = append(queries, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query))
 	}
 
-	queries = append(queries, fmt.Sprintf("\\COPY (SELECT json_agg(foo)::jsonb FROM (%s) foo ) TO '%s'", cleanQuery(pol.Checks[0].Query), destination+"/"+"data.json"))
+	queries = append(queries, fmt.Sprintf("\\COPY (SELECT COALESCE(JSON_AGG(FOO)::JSONB, '[]'::JSONB) FROM (%s) foo)  TO '%s'", cleanQuery(pol.Checks[0].Query), destination+"/"+"data.json"))
 	pgConnection := pg.NewDump(&pg.Postgres{
 		Host:     config.ConnConfig.Host,
 		Port:     int(config.ConnConfig.Port),
