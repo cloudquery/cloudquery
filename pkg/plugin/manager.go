@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sort"
 
@@ -86,10 +85,8 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 	}
 
 	sort.Strings(traceData)
-	b, _ := json.Marshal(traceData)
 	trace.SpanFromContext(ctx).SetAttributes(
 		attribute.StringSlice("providers", traceData),
-		attribute.String("provider_list", string(b)),
 	)
 
 	return nil

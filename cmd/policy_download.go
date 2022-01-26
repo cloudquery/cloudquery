@@ -17,17 +17,14 @@ var (
 		Long:  policyDownloadHelpMsg,
 		Example: `
   # Download official policy
-  cloudquery policy download aws-cis-1.2.0
+  cloudquery policy download aws
   
   # The following will be the same as above
   # Official policies are hosted here: https://github.com/cloudquery-policies
-  cloudquery policy download cloudquery-policies/aws-cis-1.2.0
-
+  cloudquery policy download aws//cis-1.2.0
+	
   # Download community policy
-  cloudquery policy download COMMUNITY_GITHUB_ORG/aws-cis-1.2.0
-
-  # Download community from any source control
-  cloudquery policy download https://github.com/COMMUNITY_GITHUB_ORG/aws-cis-1.2.0
+  cloudquery policy download github.com/COMMUNITY_GITHUB_ORG/aws
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),

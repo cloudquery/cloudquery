@@ -129,7 +129,6 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
 			return err
 		}
-
 	}
 
 	if ui.IsTerminal() && fetchProgress != nil {
@@ -138,14 +137,23 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		printFetchResponse(response)
 	}
 
+	if response == nil {
+		ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
+		return nil
+	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	for _, summary := range response.ProviderFetchSummary {
 		status := emojiStatus[ui.StatusOK]
 		if summary.Status == "Canceled" {
 			status = emojiStatus[ui.StatusError] + " (canceled)"
 		}
+		key := summary.ProviderName
+		if summary.ProviderName != summary.ProviderAlias {
+			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
+		}
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			summary.ProviderName, status, summary.TotalResourcesFetched,
+			key, status, summary.TotalResourcesFetched,
 			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
@@ -349,13 +357,19 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
+	dupes := make(map[string]struct{}, len(providers))
 	for _, p := range providers {
+		if _, ok := dupes[p.Name]; ok {
+			continue
+		}
+
 		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
 			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
 			return err
 		} else {
 			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
 		}
+		dupes[p.Name] = struct{}{}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
 	return nil
@@ -566,8 +580,13 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
-	buildDescribePolicyTable(t, policy.Policies{&pol}, selector[:strings.LastIndexAny(selector, "/")])
+	selector = strings.ReplaceAll(selector, "//", "/")
+	pol := p.Filter(selector)
+	if strings.Contains(selector, "/") {
+		selector = selector[:strings.LastIndexAny(selector, "/")]
+	}
+
+	buildDescribePolicyTable(t, policy.Policies{&pol}, selector)
 	t.Render()
 	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
