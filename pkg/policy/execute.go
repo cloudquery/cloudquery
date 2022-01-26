@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	"path"
 	"path/filepath"
 	"strings"
@@ -16,6 +17,8 @@ import (
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+
+const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
 type UpdateCallback func(update Update)
 
@@ -124,6 +127,9 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
+	if err := e.checkFetches(ctx, policy.Config); err != nil {
+		return nil, fmt.Errorf("%s: %w", policy.Name, err)
+	}
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
@@ -179,6 +185,38 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		return nil, fmt.Errorf("%s//%s: %w", policy.Name, path.Join(selector...), ErrPolicyOrQueryNotFound)
 	}
 	return &total, nil
+}
+
+// checkFetches checks if there are fetch reports in database that satisfy providers from policy
+func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration) error {
+	if policyConfig == nil {
+		return nil
+	}
+	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(e.conn)
+	for _, p := range policyConfig.Providers {
+		c, err := version.NewConstraint(p.Version)
+		if err != nil {
+			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
+		}
+		fetchSummary, err := fetchSummaryClient.GetLatestFetchSummaryForProvider(ctx, p.Type)
+		if err != nil {
+			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
+		}
+		if fetchSummary == nil {
+			return fmt.Errorf("there were no fetches for provider %s. please run cloudquery fetch berfore running policy", p.Type)
+		}
+		if fetchSummary.IsSuccess == false {
+			return fmt.Errorf("last fetch for provider %s wasn't successful", p.Type)
+		}
+		v, err := version.NewVersion(fetchSummary.ProviderVersion)
+		if err != nil {
+			return fmt.Errorf("failed to parse version for %s fetch summary: %w", p.Type, err)
+		}
+		if !c.Check(v) {
+			return fmt.Errorf("the latest fetch for provider %s does not satisfy version requirement %s", p.Type, c)
+		}
+	}
+	return nil
 }
 
 func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*version.Version) error {

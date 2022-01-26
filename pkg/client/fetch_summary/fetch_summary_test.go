@@ -1,8 +1,10 @@
-package client
+package fetch_summary
 
 import (
 	"context"
 	"errors"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/hashicorp/go-hclog"
 	"testing"
 	"time"
 
@@ -75,10 +77,11 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSummary(t *testing.T) {
-	c, err := New(context.Background(), func(c *Client) {
-		c.DSN = testDBConnection
-	})
+	// create database connection
+	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
+
+	fetchSummaryClient := NewFetchSummaryClient(db)
 
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {
@@ -87,7 +90,7 @@ func TestFetchSummary(t *testing.T) {
 		}
 		start := time.Now()
 		f.summary.Start = &start
-		err := c.SaveFetchSummary(context.Background(), &f.summary)
+		err := fetchSummaryClient.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())
 		} else {

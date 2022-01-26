@@ -3,7 +3,10 @@ package policy
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
+	uuid "github.com/google/uuid"
 	"testing"
+	"time"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -330,5 +333,62 @@ func TestExecutor_Execute(t *testing.T) {
 				assert.Len(t, res.Results, tc.TotalExpectedResults)
 			}
 		})
+	}
+}
+
+func setupCheckFetchDatabase(db schema.QueryExecer, fetchSummary *fetch_summary.FetchSummary) (error, func(t *testing.T)) {
+	if fetchSummary == nil {
+		return nil, func(t *testing.T) {}
+	}
+	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(db)
+	err := fetchSummaryClient.SaveFetchSummary(context.Background(), fetchSummary)
+	if err != nil {
+		return err, nil
+	}
+
+	// Return conn and tear down func
+	return nil, func(t *testing.T) {
+		err = db.Exec(context.Background(), fmt.Sprintf(`DELETE FROM "cloudquery"."fetches" WHERE "id" = '%s';`, fetchSummary.FetchId.String()))
+		assert.NoError(t, err)
+	}
+}
+
+func TestExecutor_CheckFetches(t *testing.T) {
+	//todo migrate database to check it
+
+	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
+	executor := NewExecutor(db, hclog.Default(), nil)
+
+	assert.NoError(t, err)
+	cases := []struct {
+		Name   string
+		Config Configuration
+		f      *fetch_summary.FetchSummary
+		err    error
+	}{
+		{
+			Name: "correct version",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "test1", Version: "~> v0.2.0"},
+				},
+			},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", IsSuccess: true},
+			err: nil,
+		},
+	}
+
+	for _, tc := range cases {
+		tc.f.CqId = uuid.New()
+		tc.f.FetchId = uuid.New()
+		finish := time.Now().UTC()
+		tc.f.Finish = &finish
+		err, clear := setupCheckFetchDatabase(db, tc.f)
+		assert.NoError(t, err)
+
+		err = executor.checkFetches(context.Background(), &tc.Config)
+		assert.Equal(t, err, tc.err)
+		clear(t)
+
 	}
 }

@@ -1,4 +1,4 @@
-package client
+package fetch_summary
 
 import (
 	"context"
@@ -6,11 +6,24 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/georgysavva/scany/pgxscan"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/google/uuid"
 )
+
+type FetchSummaryClient struct {
+	db schema.QueryExecer
+}
+
+func NewFetchSummaryClient(db schema.QueryExecer) *FetchSummaryClient {
+	return &FetchSummaryClient{
+		db: db,
+	}
+}
 
 // FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
 // resources fetch results
@@ -61,7 +74,7 @@ type ResourceFetchSummary struct {
 }
 
 // SaveFetchSummary saves fetch summary into fetches database
-func (c *Client) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
+func (c *FetchSummaryClient) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return err
@@ -72,6 +85,28 @@ func (c *Client) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
 	if err != nil {
 		return err
 	}
-
 	return c.db.Exec(ctx, sql, args...)
+}
+
+// GetLatestFetchSummaryForProvider gets latest fetch summary for specific provider
+func (c *FetchSummaryClient) GetLatestFetchSummaryForProvider(ctx context.Context, provider string) (*FetchSummary, error) {
+	q := goqu.Dialect("postgres").
+		Select("provider_version", "is_success").
+		From("cloudquery.fetches").
+		Where(goqu.Ex{"provider_name": provider, "finish": goqu.Op{"isNot": nil}}).
+		Limit(1).
+		Order(goqu.I("finish").Desc())
+	sql, _, err := q.ToSQL()
+	if err != nil {
+		return nil, err
+	}
+	var data []FetchSummary
+	err = pgxscan.Select(ctx, c.db, &data, sql)
+	if err != nil {
+		return nil, err
+	}
+	if len(data) == 0 {
+		return nil, nil
+	}
+	return &data[0], nil
 }

@@ -5,6 +5,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
 	"io"
 	"io/fs"
 	"path/filepath"
@@ -409,10 +410,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		return nil, err
 	}
 
+	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(c.db)
+
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		createdAt := time.Now().UTC()
-		fetchSummary := FetchSummary{
+		fetchSummary := fetch_summary.FetchSummary{
 			FetchId:       fetchId,
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
@@ -420,7 +423,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
-			if err := c.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+			if err := fetchSummaryClient.SaveFetchSummary(ctx, &fetchSummary); err != nil {
 				c.Logger.Error("failed to save fetch summary", "err", err)
 			}
 		}
@@ -543,7 +546,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, fetch_summary.ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
