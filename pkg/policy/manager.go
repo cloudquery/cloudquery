@@ -73,7 +73,12 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
 	)
-
+	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
+	if !filteredPolicy.HasChecks() {
+		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", request.Policy.meta.subPolicy, "available_policies", filteredPolicy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
+	}
+	totalQueriesToRun = filteredPolicy.TotalQueries()
 	m.logger.Info("policy Checks count", "total", totalQueriesToRun)
 	// set the progress total queries to run
 	if request.UpdateCallback != nil {
@@ -100,11 +105,6 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 				Error:           "",
 			})
 		}
-	}
-	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
-	if !filteredPolicy.HasChecks() {
-		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", request.Policy.meta.subPolicy, "available_policies", filteredPolicy.Policies.All())
-		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
 	}
 
 	// execute the queries
