@@ -154,7 +154,6 @@ const testBadVersion = `cloudquery {
   }
 }`
 
-
 type Account struct {
 	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`

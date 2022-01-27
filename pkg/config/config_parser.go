@@ -2,11 +2,12 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
-	"os"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
