@@ -101,6 +101,9 @@ func (e *Executor) ExtractTableNames(ctx context.Context, query string) (tableNa
 }
 
 func (e *Executor) StoreOutput(ctx context.Context, pol *Policy, destination string, config *pgxpool.Config) (err error) {
+	if !pol.HasChecks() {
+		return errors.New("no checks")
+	}
 
 	queries := []string{
 		`SET client_encoding='UTF8'`,
