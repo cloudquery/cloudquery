@@ -266,7 +266,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path:           "aws/test1",
+			path:           "test1",
 			expectedPolicy: Policy{},
 		}, {
 			expectError: true,
@@ -302,7 +302,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/level-1/level-2/level-3",
+			path: "level-1/level-2/level-3",
 			expectedPolicy: Policy{
 				Name: "level-3",
 			},
@@ -325,7 +325,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/level-1/level-2",
+			path: "level-1/level-2",
 			expectedPolicy: Policy{
 				Name: "level-2",
 				Policies: Policies{
@@ -359,7 +359,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/level-1/level-2/level-3/Control-1",
+			path: "level-1/level-2/level-3/Control-1",
 			expectedPolicy: Policy{
 				Name: "level-3",
 				Checks: []*Check{
@@ -405,7 +405,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/level-1/level-2/level-3",
+			path: "level-1/level-2/level-3",
 			expectedPolicy: Policy{
 				Name: "level-3",
 				Checks: []*Check{
@@ -463,7 +463,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/level-1/level-2",
+			path: "level-1/level-2",
 			expectedPolicy: Policy{
 				Name: "level-2",
 				Policies: Policies{
