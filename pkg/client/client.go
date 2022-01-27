@@ -1140,10 +1140,10 @@ func (c *Client) initDatabase(ctx context.Context) error {
 		return fmt.Errorf("history is only supported on timescaledb")
 	}
 
-	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
+	if ok, err := c.dialectExecutor.Validate(ctx); !ok && err != nil {
 		return fmt.Errorf("validate: %w", err)
 	} else if !ok {
-		c.Logger.Warn("postgres validation warning")
+		c.Logger.Warn("postgres validation warning: %s", err.Error())
 	}
 
 	// migrate cloudquery core tables to latest version
