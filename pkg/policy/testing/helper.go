@@ -2,7 +2,6 @@ package testing
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,7 +13,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/testlog"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/stretchr/testify/assert"
 )
 
 // Inputs:
@@ -34,7 +32,7 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
-func TestResource(t *testing.T, policy *policy.Policy) {
+func TestPolicy(t *testing.T, pol policy.Policy) {
 	t.Helper()
 
 	// No need for configuration or db connection, get it out of the way first
@@ -54,13 +52,10 @@ func TestResource(t *testing.T, policy *policy.Policy) {
 	l := testlog.New(t)
 	l.SetLevel(hclog.Debug)
 
-	// 1. Walk database directory
-	// 	For each sub-directory:
-	// 		a. Clean DB
-	// DROP SCHEMA public CASCADE;
-	// CREATE SCHEMA public;
-	// GRANT ALL ON SCHEMA public TO postgres;
-	// GRANT ALL ON SCHEMA public TO public;
+	// e := policy.NewExecutor(nil, l, nil)
+
+	t.Log(pool.Config().ConnString())
+	// e.StoreOutput(ctx, pol, pool.Config().ConnString())
 	// 		b. Restore Database in .sql file
 	// 		c. Run query
 	// 		d. Compare values in output.json
@@ -108,46 +103,5 @@ func setupDatabase() (*pgxpool.Pool, error) {
 		pool, dbErr = pgxpool.ConnectConfig(ctx, dbCfg)
 	})
 	return pool, dbErr
-
-}
-
-func TestPolicy(t *testing.T, pol policy.Policy) {
-	t.Helper()
-	ctx := context.Background()
-
-	l := testlog.New(t)
-	l.SetLevel(hclog.Debug)
-	pool, err := setupDatabase()
-	if err != nil {
-		t.Fatal(err)
-	}
-	ctx := context.Background()
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer conn.Release()
-
-	l := testlog.New(t)
-	l.SetLevel(hclog.Debug)
-	resource.Provider.Logger = l
-	tableCreator := provider.NewTableCreator(l)
-	if err := tableCreator.CreateTable(context.Background(), conn, resource.Table, nil); err != nil {
-		assert.FailNow(t, fmt.Sprintf("failed to create tables %s", resource.Table.Name), err)
-	}
-
-	if err := deleteTables(conn, resource.Table); err != nil {
-		t.Fatal(err)
-	}
-
-	if err = fetch(t, &resource); err != nil {
-		t.Fatal(err)
-	}
-
-	verifyNoEmptyColumns(t, resource, conn)
-
-	if err := conn.Conn().Close(ctx); err != nil {
-		t.Fatal(err)
-	}
 
 }
