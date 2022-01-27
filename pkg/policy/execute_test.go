@@ -265,7 +265,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector",
 			Policy:               multiLayerPolicy,
-			Selector:             "test/subpolicy",
+			Selector:             "subpolicy",
 			Pass:                 true,
 			TotalExpectedResults: 2,
 		},
@@ -281,7 +281,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector on query",
 			Policy:               multiLayerPolicy,
-			Selector:             "test/subpolicy/sub-query",
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 		},
@@ -301,7 +301,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "failing policy \\w selector",
 			Policy:               failingPolicy,
-			Selector:             "test/subpolicy/sub-query",
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 			StopOnFailure:        true,

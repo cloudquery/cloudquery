@@ -3,10 +3,6 @@ package policy
 import (
 	"context"
 	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
@@ -118,7 +114,12 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
 	)
-
+	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
+	if !filteredPolicy.HasChecks() {
+		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", request.Policy.meta.subPolicy, "available_policies", filteredPolicy.Policies.All())
+		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
+	}
+	totalQueriesToRun = filteredPolicy.TotalQueries()
 	m.logger.Info("policy Checks count", "total", totalQueriesToRun)
 	// set the progress total queries to run
 	if request.UpdateCallback != nil {
@@ -146,13 +147,6 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 			})
 		}
 	}
-	selector := strings.ReplaceAll(request.Policy.meta.subPolicy, "//", "/")
-	filteredPolicy := request.Policy.Filter(selector)
-	if len(filteredPolicy.Policies.All()) == 0 && len(filteredPolicy.Checks) == 0 {
-		m.logger.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", filteredPolicy.Policies.All())
-		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, selector, ErrPolicyOrQueryNotFound)
-	}
-
 	// execute the queries
 	return NewExecutor(m.pool, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }
