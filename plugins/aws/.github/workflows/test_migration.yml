@@ -1,3 +1,4 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 name: test_migration
 
 on:
@@ -61,7 +62,6 @@ jobs:
       - name: Get dependencies
         run: |
           go get -v -t -d ./...
-
       - name: Test migrations for Postgres
         run: |
           go test -v ./resources/provider/provider_test.go
@@ -73,13 +73,3 @@ jobs:
           go test -v ./resources/provider/provider_test.go
         env:
           CQ_MIGRATION_TEST_DSN: tsdb://postgres:pass@localhost:5432/postgres?sslmode=disable
-
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        if: ${{ failure() }}
-        env:
-          SLACK_CHANNEL: oss-tests
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: 'AWS - migration test failed'
-          SLACK_TITLE: AWS - migration test failed
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
