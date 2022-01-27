@@ -24,10 +24,11 @@ func MySQLServers() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "The Azure Active Directory principal id",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "The Azure Active Directory principal id",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -36,10 +37,11 @@ func MySQLServers() *schema.Table {
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "The Azure Active Directory tenant id",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "The Azure Active Directory tenant id",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "sku_name",
@@ -60,10 +62,11 @@ func MySQLServers() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Capacity"),
 			},
 			{
-				Name:        "sku_size",
-				Description: "The size code, to be interpreted by resource as appropriate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Size"),
+				Name:          "sku_size",
+				Description:   "The size code, to be interpreted by resource as appropriate",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Sku.Size"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "sku_family",
@@ -162,10 +165,11 @@ func MySQLServers() *schema.Table {
 				Resolver:    schema.PathResolver("ServerProperties.MasterServerID"),
 			},
 			{
-				Name:        "replica_capacity",
-				Description: "The maximum number of replicas that a master server can have",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ServerProperties.ReplicaCapacity"),
+				Name:          "replica_capacity",
+				Description:   "The maximum number of replicas that a master server can have",
+				Type:          schema.TypeInt,
+				Resolver:      schema.PathResolver("ServerProperties.ReplicaCapacity"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "public_network_access",

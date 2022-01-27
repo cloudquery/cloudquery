@@ -69,9 +69,7 @@ func AzureTestHelper(t *testing.T, table *schema.Table) {
 				"test_resource": table,
 			},
 		},
-		Table:         table,
-		Config:        "",
-		SkipEmptyRows: true,
+		Table:  table,
+		Config: "",
 	})
-
 }

@@ -25,10 +25,11 @@ func MonitorActivityLogs() *schema.Table {
 				Resolver:    schema.PathResolver("Authorization.Action"),
 			},
 			{
-				Name:        "authorization_role",
-				Description: "the role of the user For instance: Subscription Admin",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Authorization.Role"),
+				Name:          "authorization_role",
+				Description:   "the role of the user For instance: Subscription Admin",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Authorization.Role"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "authorization_scope",
@@ -112,10 +113,11 @@ func MonitorActivityLogs() *schema.Table {
 				Resolver:    schema.PathResolver("HTTPRequest.Method"),
 			},
 			{
-				Name:        "http_request_uri",
-				Description: "the Uri",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("HTTPRequest.URI"),
+				Name:          "http_request_uri",
+				Description:   "the Uri",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("HTTPRequest.URI"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "level",

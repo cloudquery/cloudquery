@@ -9,5 +9,5 @@ HostNameSslState SSL-enabled hostname
 |ssl_state|text|SSL type Possible values include: 'SslStateDisabled', 'SslStateSniEnabled', 'SslStateIPBasedEnabled'|
 |virtual_ip|text|Virtual IP address assigned to the hostname if IP based SSL is enabled|
 |thumbprint|text|SSL certificate thumbprint|
-|to_update|boolean|Set to <code>true</code> to update existing hostname|
+|to_update|boolean|Set to true to update existing hostname|
 |host_type|text|Indicates whether the hostname is a standard or repository hostname Possible values include: 'HostTypeStandard', 'HostTypeRepository'|

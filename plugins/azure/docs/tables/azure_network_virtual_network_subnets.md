@@ -15,8 +15,8 @@ Azure virtual network subnet
 |network_security_group_type|text|Resource type.|
 |network_security_group_location|text|Resource location.|
 |network_security_group_tags|jsonb|Resource tags.|
-|route_table_disable_bgp_route_propagation|boolean|Whether to disable the routes learned by BGP on that route table|
-|route_table_provisioning_state|text|The provisioning state of the route table resource|
+|route_table_disable_bgp_route_propagation|boolean|Whether to disable the routes learned by BGP on that route table.|
+|route_table_provisioning_state|text|The provisioning state of the route table resource.|
 |route_table_resource_guid|text|The resource GUID property of the route table.|
 |route_table_etag|text|A unique read-only string that changes whenever the resource is updated.|
 |route_table_id|text|Resource ID.|

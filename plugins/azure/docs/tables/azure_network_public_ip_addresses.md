@@ -5,16 +5,16 @@ PublicIPAddress public IP address resource.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |subscription_id|text|Azure subscription id|
-|extended_location_name|text|The name of the extended location.|
-|extended_location_type|text|The type of the extended location.|
+|extended_location_name.|text|The name of the extended location|
+|extended_location_type.|text|The type of the extended location|
 |sku_name|text|Name of a public IP address SKU|
 |sku_tier|text|Tier of a public IP address SKU|
 |public_ip_allocation_method|text|The public IP address allocation method|
 |public_ip_address_version|text|The public IP address version|
 |ip_configuration|jsonb|The IP configuration associated with the public IP address.|
-|dns_settings_domain_name_label|text|The domain name label|
-|dns_settings_fqdn|text|The Fully Qualified Domain Name of the A DNS record associated with the public IP|
-|dns_settings_reverse_fqdn|text|The reverse FQDN|
+|dns_settings_domain_name_label|text|The domain name label.|
+|dns_settings_fqdn|text|The Fully Qualified Domain Name of the A DNS record associated with the public IP.|
+|dns_settings_reverse_fqdn|text|The reverse FQDN.|
 |ddos_settings_ddos_custom_policy_id|text|Resource ID.|
 |ddos_settings_protection_coverage|text|The DDoS protection policy customizability of the public IP|
 |ddos_settings_protected_ip|boolean|Enables DDoS protection on the public IP.|

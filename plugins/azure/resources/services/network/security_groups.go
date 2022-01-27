@@ -83,10 +83,11 @@ func NetworkSecurityGroups() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "description",
-						Description: "A description for this rule Restricted to 140 chars",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SecurityRulePropertiesFormat.Description"),
+						Name:          "description",
+						Description:   "A description for this rule Restricted to 140 chars",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("SecurityRulePropertiesFormat.Description"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "protocol",
@@ -208,10 +209,11 @@ func NetworkSecurityGroups() *schema.Table {
 						Resolver:    schema.PathResolver("FlowLogPropertiesFormat.TargetResourceID"),
 					},
 					{
-						Name:        "target_resource_guid",
-						Description: "Guid of network security group to which flow log will be applied",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("FlowLogPropertiesFormat.TargetResourceGUID"),
+						Name:          "target_resource_guid",
+						Description:   "Guid of network security group to which flow log will be applied",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("FlowLogPropertiesFormat.TargetResourceGUID"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "storage_id",
@@ -286,9 +288,10 @@ func NetworkSecurityGroups() *schema.Table {
 						Resolver:    schema.PathResolver("FlowLogPropertiesFormat.ProvisioningState"),
 					},
 					{
-						Name:        "etag",
-						Description: "A unique read-only string that changes whenever the resource is updated",
-						Type:        schema.TypeString,
+						Name:          "etag",
+						Description:   "A unique read-only string that changes whenever the resource is updated",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "id",
@@ -302,9 +305,10 @@ func NetworkSecurityGroups() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "type",
-						Description: "Resource type",
-						Type:        schema.TypeString,
+						Name:          "type",
+						Description:   "Resource type",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "location",
@@ -312,9 +316,10 @@ func NetworkSecurityGroups() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "tags",
-						Description: "Resource tags",
-						Type:        schema.TypeJSON,
+						Name:          "tags",
+						Description:   "Resource tags",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
 					},
 				},
 			},

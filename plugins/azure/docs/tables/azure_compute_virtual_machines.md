@@ -29,8 +29,8 @@ VirtualMachine describes a Virtual Machine
 |allow_extension_operations|boolean|Specifies whether extension operations should be allowed on the virtual machine <br><br>This may only be set to False when no extensions are present on the virtual machine|
 |require_guest_provision_signal|boolean|Specifies whether the guest provision signal is required to infer provision success of the virtual machine  **Note: This property is for private testing only, and all customers must not set the property to false**|
 |network_profile_network_interfaces|jsonb|Specifies the list of resource Ids for the network interfaces associated with the virtual machine|
-|security_profile_uefi_settings_secure_boot_enabled|boolean|Specifies whether secure boot should be enabled on the virtual machine <br><br>Minimum api-version: 2020-12-01|
-|security_profile_uefi_settings_v_tpm_enabled|boolean|Specifies whether vTPM should be enabled on the virtual machine <br><br>Minimum api-version: 2020-12-01|
+|security_profile_uefi_settings_secure_boot_enabled|boolean|Specifies whether secure boot should be enabled on the virtual machine.|
+|security_profile_uefi_settings_v_tpm_enabled|boolean|Specifies whether vTPM should be enabled on the virtual machine.|
 |security_profile_encryption_at_host|boolean|This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set This will enable the encryption for all the disks including Resource/Temp disk at host itself <br><br> Default: The Encryption at host will be disabled unless this property is set to true for the resource|
 |security_profile_security_type|text|Specifies the SecurityType of the virtual machine It is set as TrustedLaunch to enable UefiSettings <br><br> Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch Possible values include: 'SecurityTypesTrustedLaunch'|
 |diagnostics_profile_boot_diagnostics_enabled|boolean|Whether boot diagnostics should be enabled on the Virtual Machine|
