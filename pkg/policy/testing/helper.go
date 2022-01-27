@@ -52,10 +52,17 @@ func TestPolicy(t *testing.T, pol policy.Policy) {
 	l := testlog.New(t)
 	l.SetLevel(hclog.Debug)
 
-	// e := policy.NewExecutor(nil, l, nil)
+	e := policy.NewExecutor(nil, l, nil)
 
 	t.Log(pool.Config().ConnString())
-	// e.StoreOutput(ctx, pol, pool.Config().ConnString())
+	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = e.StoreOutput(ctx, &pol, "/", config)
+	if err != nil {
+		log.Fatal(err)
+	}
 	// 		b. Restore Database in .sql file
 	// 		c. Run query
 	// 		d. Compare values in output.json
