@@ -791,7 +791,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
 			// this error means error in execution and not policy violation
-			// we should exit immeditly as this is a non-recoverable error
+			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			c.Logger.Error("policy execution finished with error", "err", err)
 			return results, err
