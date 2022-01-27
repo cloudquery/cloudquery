@@ -2,8 +2,12 @@ package testing
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -11,6 +15,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cq-provider-sdk/testlog"
+	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -32,6 +37,18 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+func cleanDatabase(ctx context.Context, conn *pgxpool.Conn) error {
+	out, err := conn.Exec(ctx, `DROP SCHEMA public CASCADE;
+	CREATE SCHEMA public;
+	GRANT ALL ON SCHEMA public TO postgres;
+	GRANT ALL ON SCHEMA public TO public`)
+	if err != nil {
+		return err
+	}
+	log.Println(out)
+	return nil
+}
+
 func TestPolicy(t *testing.T, pol policy.Policy) {
 	t.Helper()
 
@@ -43,29 +60,63 @@ func TestPolicy(t *testing.T, pol policy.Policy) {
 		t.Fatal(err)
 	}
 	ctx := context.Background()
+	l := testlog.New(t)
+	l.SetLevel(hclog.Debug)
+	e := policy.NewExecutor(nil, l, nil)
+	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
+	if err != nil {
+		log.Fatalf("Error parsing config: %+v", err)
+	}
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer conn.Release()
 
-	l := testlog.New(t)
-	l.SetLevel(hclog.Debug)
-
-	e := policy.NewExecutor(nil, l, nil)
-
-	t.Log(pool.Config().ConnString())
-	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
+	cleanDatabase(ctx, conn)
+	conn.Conn().Close(ctx)
+	fileP := "/Users/benbernays/Documents/GitHub/cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/pg-dump.sql"
+	err = e.RestoreSnapshot(ctx, fileP, config)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
-	err = e.StoreOutput(ctx, &pol, "/", config)
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error creating config: %+v", err)
 	}
-	// 		b. Restore Database in .sql file
+	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
+	if err != nil {
+		log.Fatalf("Error creating temp dir: %+v", err)
+	}
 	// 		c. Run query
-	// 		d. Compare values in output.json
+	err = e.StoreOutput(ctx, &pol, uniqueTempDir, config)
+	if err != nil {
+		log.Fatalf("Error storing output: %+v", err)
+	}
+
+	f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.json"))
+	f2, _ := OpenAndParse("/Users/benbernays/Documents/GitHub/cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/data.json")
+	diff := cmp.Diff(f1, f2)
+	if diff != "" {
+		t.Fatal(diff)
+	}
+
+}
+func OpenAndParse(filePath string) ([]map[string]interface{}, error) {
+	jsonFile, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	var result []map[string]interface{}
+	err = json.Unmarshal([]byte(byteValue), &result)
+	if err != nil {
+		return nil, err
+	}
+	return result, err
 
 }
 
@@ -100,7 +151,7 @@ func FilePathWalkDir(root string) ([]string, error) {
 func setupDatabase() (*pgxpool.Pool, error) {
 	dbConnOnce.Do(func() {
 		var dbCfg *pgxpool.Config
-		dbCfg, dbErr = pgxpool.ParseConfig(getEnv("DATABASE_URL", "host=localhost user=postgres password=pass DB.name=postgres port=5432"))
+		dbCfg, dbErr = pgxpool.ParseConfig(getEnv("DATABASE_URL", "host=localhost user=postgres password=pass database=postgres port=5432"))
 		if dbErr != nil {
 			return
 		}

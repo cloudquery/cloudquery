@@ -563,8 +563,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector,
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
-
-	pol := p.Filter(strings.ReplaceAll(selector, "//", "/"))
+	pol := p.Filter(strings.Split(selector, "//")[1])
 	if len(pol.Checks) != 1 && len(pol.Policies) == 0 {
 		return errors.New("selector must specify only a single control")
 	}

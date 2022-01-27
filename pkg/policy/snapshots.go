@@ -46,6 +46,22 @@ func StoreSnapshot(path string, tables []string, config *pgxpool.Config) error {
 	return nil
 }
 
+func (e *Executor) RestoreSnapshot(tx context.Context, source string, config *pgxpool.Config) error {
+	args := []string{"-U", config.ConnConfig.User, "-h", config.ConnConfig.Host, "-d", config.ConnConfig.Database, "-p", fmt.Sprint(config.ConnConfig.Port), "<", source}
+	e.log.Info("cli args", "args", args)
+	// Execute psql command
+	cmd := exec.Command("psql", args...)
+	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, config.ConnConfig.Password))
+
+	stdoutStderr, err := cmd.CombinedOutput()
+	if err != nil {
+		e.log.Error("StandardError", "Output", string(stdoutStderr))
+		return err
+	}
+	e.log.Info("StandardOut", "Output", string(stdoutStderr))
+	return nil
+}
+
 func cleanQuery(query string) string {
 	var re = regexp.MustCompile(`(?s)\/\*.*?\*\/|--.*?\n`)
 	query = re.ReplaceAllString(query, "")
@@ -114,26 +130,21 @@ func (e *Executor) StoreOutput(ctx context.Context, pol *Policy, destination str
 	}
 
 	queries = append(queries, fmt.Sprintf("\\COPY (SELECT COALESCE(JSON_AGG(FOO)::JSONB, '[]'::JSONB) FROM (%s) foo)  TO '%s'", cleanQuery(pol.Checks[0].Query), destination+"/"+"data.json"))
-	pgConnection := pg.NewDump(&pg.Postgres{
-		Host:     config.ConnConfig.Host,
-		Port:     int(config.ConnConfig.Port),
-		DB:       config.ConnConfig.Database,
-		Username: config.ConnConfig.User,
-		Password: config.ConnConfig.Password,
-	})
+
+	e.log.Info("destination of query", "dest", destination+"/"+"data.json")
 	// construct arguments
-	args := []string{"-U", pgConnection.Username, "-h", pgConnection.Host, "-d", pgConnection.DB}
+	args := []string{"-U", config.ConnConfig.User, "-h", config.ConnConfig.Host, "-d", config.ConnConfig.Database, "-p", fmt.Sprint(config.ConnConfig.Port)}
 	for _, q := range queries {
 		args = append(args, "-c", q)
 	}
 
 	// Execute psql command
 	cmd := exec.Command("psql", args...)
-	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, pgConnection.Password))
+	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, config.ConnConfig.Password))
 
 	stdoutStderr, err := cmd.CombinedOutput()
 	if err != nil {
-		e.log.Error("StandardError", "Output", stdoutStderr)
+		e.log.Error("StandardError", "Output", string(stdoutStderr))
 		return err
 	}
 
