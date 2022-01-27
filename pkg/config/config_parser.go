@@ -141,7 +141,7 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 	}
 	if dir := viper.GetString("policy-dir"); dir != "" {
 		if dir == "." {
-			if dir, err := os.Getwd(); err != nil {
+			if dir, err := os.Getwd(); err == nil {
 				cq.PolicyDirectory = dir
 			}
 		} else {
