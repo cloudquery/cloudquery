@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
 	"sync"
 	"testing"
 
@@ -43,7 +41,7 @@ func cleanDatabase(ctx context.Context, conn *pgxpool.Conn) error {
 }
 
 // pol policy.Policy
-func TestPolicy(t *testing.T, source, selector string) {
+func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 	// var pols policy.Policies
 	// pols = append(pols, &policy.Policy{Name: "aws", Source: source})
 	// Setup dependencies
@@ -59,13 +57,16 @@ func TestPolicy(t *testing.T, source, selector string) {
 	// if err != nil {
 	// 	t.Fatal(err)
 	// }
+	cwd, _ := os.Getwd()
+	l.Info("cwd is", "cwd", cwd)
 	policyManager := policy.NewManager(uniqueTempDir, nil, l)
-
-	p, err := policyManager.Load(ctx, &policy.Policy{Name: "aws", Source: source})
+	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: source})
 	if err != nil {
 		t.Fatal(err)
 	}
+	l.Info("p", "pol", p.HasChecks())
 	pol := p.Filter(selector)
+	l.Info("p", "pol", pol.HasChecks())
 	t.Helper()
 	pool, err := setupDatabase()
 	if err != nil {
@@ -75,7 +76,7 @@ func TestPolicy(t *testing.T, source, selector string) {
 	e := policy.NewExecutor(nil, l, nil)
 	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
 	if err != nil {
-		log.Fatalf("Error parsing config: %+v", err)
+		t.Fatalf("Error parsing config: %+v", err)
 	}
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
@@ -83,35 +84,36 @@ func TestPolicy(t *testing.T, source, selector string) {
 	}
 	defer conn.Release()
 
-	err = cleanDatabase(ctx, conn)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testPath := path.Join(snapshotDirectory, "query-"+pol.Checks[0].Name, "tests", "")
+	tests, _ := FindAllTestCases(testPath)
+	for _, test := range tests {
 
-	conn.Conn().Close(ctx)
-	fileP := "./cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/pg-dump.sql"
-	err = e.RestoreSnapshot(ctx, fileP, config)
-	if err != nil {
-		t.Fatal(err)
-	}
+		err = cleanDatabase(ctx, conn)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	if err != nil {
-		log.Fatalf("Error creating config: %+v", err)
-	}
+		fileP := path.Join(testPath, test, "pg-dump.sql")
+		err = e.RestoreSnapshot(ctx, fileP, config)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err != nil {
+			t.Fatalf("Error creating config: %+v", err)
+		}
 
-	if err != nil {
-		log.Fatalf("Error creating temp dir: %+v", err)
+		if err != nil {
+			t.Fatalf("Error creating temp dir: %+v", err)
+		}
+		// 		c. Run query
+		err = e.StoreOutput(ctx, &pol, uniqueTempDir, config)
+		if err != nil {
+			t.Fatalf("Error storing output: %+v", err)
+		}
+		f2, _ := OpenAndParse(path.Join(testPath, test, "data.json"))
+		f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.json"))
+		compareArbitraryArrays(t, f1, f2)
 	}
-	// 		c. Run query
-	err = e.StoreOutput(ctx, &pol, uniqueTempDir, config)
-	if err != nil {
-		log.Fatalf("Error storing output: %+v", err)
-	}
-
-	f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.json"))
-	f2, _ := OpenAndParse("./cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/data.json")
-
-	compareArbitraryArrays(t, f1, f2)
 
 }
 
@@ -162,28 +164,11 @@ func OpenAndParse(filePath string) ([]map[string]interface{}, error) {
 
 }
 
-func FilterFiles(files []string) map[string][]string {
-	t := make(map[string][]string)
-	for _, file := range files {
-		specific := strings.Split(file, "tests")[1]
-		test := strings.Split(specific, "/")
-		log.Println(test[2])
-		log.Println(test, len(test))
-		if _, ok := t[test[0]]; !ok {
-			t[test[0]] = []string{}
-		}
-
-		// t[test[0]] = append(t[test[0]], test[1])
-		log.Println(t[test[0]])
-	}
-	return t
-}
-
-func FilePathWalkDir(root string) ([]string, error) {
+func FindAllTestCases(root string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			files = append(files, path)
+		if info.IsDir() && path != root {
+			files = append(files, info.Name())
 		}
 		return nil
 	})
