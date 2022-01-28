@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -47,10 +49,26 @@ func StoreSnapshot(path string, tables []string, config *pgxpool.Config) error {
 }
 
 func (e *Executor) RestoreSnapshot(tx context.Context, source string, config *pgxpool.Config) error {
-	args := []string{"-U", config.ConnConfig.User, "-h", config.ConnConfig.Host, "-d", config.ConnConfig.Database, "-p", fmt.Sprint(config.ConnConfig.Port), "<", source}
+
+	args := []string{"-U", config.ConnConfig.User, "-h", config.ConnConfig.Host, "-d", config.ConnConfig.Database, "-p", fmt.Sprint(config.ConnConfig.Port)}
 	e.log.Info("cli args", "args", args)
 	// Execute psql command
 	cmd := exec.Command("psql", args...)
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		defer stdin.Close()
+		dat, err := os.ReadFile(source)
+		if err != nil {
+			log.Fatalf("unable to read file: %v", err)
+		}
+
+		io.WriteString(stdin, string(dat))
+	}()
+
 	cmd.Env = append(os.Environ(), fmt.Sprintf(`PGPASSWORD=%v`, config.ConnConfig.Password))
 
 	stdoutStderr, err := cmd.CombinedOutput()
@@ -58,7 +76,6 @@ func (e *Executor) RestoreSnapshot(tx context.Context, source string, config *pg
 		e.log.Error("StandardError", "Output", string(stdoutStderr))
 		return err
 	}
-	e.log.Info("StandardOut", "Output", string(stdoutStderr))
 	return nil
 }
 
