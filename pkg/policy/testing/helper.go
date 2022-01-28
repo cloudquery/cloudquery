@@ -42,15 +42,36 @@ func cleanDatabase(ctx context.Context, conn *pgxpool.Conn) error {
 	return err
 }
 
-func TestPolicy(t *testing.T, pol policy.Policy) {
+// pol policy.Policy
+func TestPolicy(t *testing.T, source, selector string) {
+	// var pols policy.Policies
+	// pols = append(pols, &policy.Policy{Name: "aws", Source: source})
+	// Setup dependencies
+	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
+	if err != nil {
+		t.Fatal(err)
+	}
+	l := testlog.New(t)
+	l.SetLevel(hclog.Debug)
+
+	ctx := context.Background()
+	// _, err = console.FilterPolicies(source, pols)
+	// if err != nil {
+	// 	t.Fatal(err)
+	// }
+	policyManager := policy.NewManager(uniqueTempDir, nil, l)
+
+	p, err := policyManager.Load(ctx, &policy.Policy{Name: "aws", Source: source})
+	if err != nil {
+		t.Fatal(err)
+	}
+	pol := p.Filter(selector)
 	t.Helper()
 	pool, err := setupDatabase()
 	if err != nil {
 		t.Fatal(err)
 	}
-	ctx := context.Background()
-	l := testlog.New(t)
-	l.SetLevel(hclog.Debug)
+
 	e := policy.NewExecutor(nil, l, nil)
 	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
 	if err != nil {
@@ -77,7 +98,7 @@ func TestPolicy(t *testing.T, pol policy.Policy) {
 	if err != nil {
 		log.Fatalf("Error creating config: %+v", err)
 	}
-	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
+
 	if err != nil {
 		log.Fatalf("Error creating temp dir: %+v", err)
 	}
