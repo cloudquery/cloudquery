@@ -3,6 +3,9 @@ package provider
 import (
 	"embed"
 
+	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
@@ -18,8 +21,6 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/storage"
 	"github.com/cloudquery/cq-provider-azure/resources/services/subscription"
 	"github.com/cloudquery/cq-provider-azure/resources/services/web"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 var (
@@ -30,10 +31,11 @@ var (
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Version:    Version,
-		Name:       "azure",
-		Configure:  client.Configure,
-		Migrations: azureMigrations,
+		Version:         Version,
+		Name:            "azure",
+		Configure:       client.Configure,
+		ErrorClassifier: client.ErrorClassifier,
+		Migrations:      azureMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"authorization.role_assignments": authorization.AuthorizationRoleAssignments(),
 			"authorization.role_definitions": authorization.AuthorizationRoleDefinitions(),
