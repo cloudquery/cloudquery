@@ -5,10 +5,29 @@ on:
     branches:
       - main
   workflow_dispatch:
+  pull_request_target:
 
 jobs:
+  is_organization_member:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target'
+    outputs:
+      status: ${{ steps.is_organization_member.result }}
+    steps:
+      - uses: yevgenypats/is-organization-member@2cff10d857776aacefe5fb11acea8c1a8d270d3f
+        id: is_organization_member
+        with:
+          organization: cloudquery
+          username: ${{ github.event.pull_request.user.login }}
+          token: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Skip if not member and event is pull_request_target
+        run: |
+            echo "user is not part of org. Please run 'go test -tags=integration ./..'"
+            echo "and paste the output in the PR"
+
   integration_test:
-    if: github.repository == 'cloudquery/cq-provider-aws'
+    needs: is_organization_member
+    if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]
@@ -36,15 +55,17 @@ jobs:
         with:
           go-version: ^1.16
 
+
       - name: Check out code into the Go module directory
+        if: github.event_name != 'pull_request_target'
         uses: actions/checkout@v2
 
-      - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
-
-      - name: Build
-        run: go build -v .
+      - name: Checkout
+        uses: actions/checkout@v2
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -54,13 +75,12 @@ jobs:
           aws-region: us-east-1
 
       - name: Integration Test
-        id: integration-test
         run: |
           go test -tags=integration ./...
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-        if: ${{ failure() }}
+        if: ${{  github.event_name != 'pull_request_target' && failure() }}
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: ${{ job.status }}
@@ -68,16 +88,3 @@ jobs:
           SLACK_TITLE: AWS - E2E tests failed
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
-      - name: Slack Notification Warnings
-        uses: rtCamp/action-slack-notify@v2
-        if: ${{ success() && steps.integration-test.outputs.output != '' }}
-        env:
-          SLACK_CHANNEL: oss-tests
-          SLACK_COLOR: "#f29a35"
-          SLACK_MESSAGE: "${{steps.integration-test.outputs.output}}\n\n For more details, please check the logs: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
-          SLACK_TITLE: AWS - E2E tests finished with warnings
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
-      - name: Cancel if has warnings
-        if: ${{ success() && steps.integration-test.outputs.output != '' }}
-        run: exit 1
