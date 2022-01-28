@@ -97,5 +97,5 @@ func DetectType(src string) (string, string, bool, error) {
 			return t, source, true, nil
 		}
 	}
-	return "", "", false, nil
+	return "", src, false, nil
 }
