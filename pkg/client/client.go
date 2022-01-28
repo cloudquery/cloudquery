@@ -1141,9 +1141,12 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	}
 
 	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
-		return fmt.Errorf("validate: %w", err)
+		if !ok {
+			return fmt.Errorf("validate: %w", err)
+		}
+		c.Logger.Warn("database validation warning", "message", err.Error())
 	} else if !ok {
-		c.Logger.Warn("postgres validation warning")
+		c.Logger.Warn("database validation warning")
 	}
 
 	migrate cloudquery core tables to latest version
