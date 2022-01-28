@@ -45,29 +45,26 @@ func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 	// var pols policy.Policies
 	// pols = append(pols, &policy.Policy{Name: "aws", Source: source})
 	// Setup dependencies
+	t.Helper()
 	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 	if err != nil {
 		t.Fatal(err)
 	}
 	l := testlog.New(t)
-	l.SetLevel(hclog.Debug)
+	l.SetLevel(hclog.Info)
 
 	ctx := context.Background()
 	// _, err = console.FilterPolicies(source, pols)
 	// if err != nil {
 	// 	t.Fatal(err)
 	// }
-	cwd, _ := os.Getwd()
-	l.Info("cwd is", "cwd", cwd)
 	policyManager := policy.NewManager(uniqueTempDir, nil, l)
 	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: source})
 	if err != nil {
 		t.Fatal(err)
 	}
-	l.Info("p", "pol", p.HasChecks())
 	pol := p.Filter(selector)
-	l.Info("p", "pol", pol.HasChecks())
-	t.Helper()
+
 	pool, err := setupDatabase()
 	if err != nil {
 		t.Fatal(err)
