@@ -1146,10 +1146,10 @@ func (c *Client) initDatabase(ctx context.Context) error {
 		c.Logger.Warn("postgres validation warning")
 	}
 
-	// migrate cloudquery core tables to latest version
-	// if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
-	// 	return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
-	// }
+	migrate cloudquery core tables to latest version
+	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
+		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
+	}
 	dialect, err := schema.GetDialect(c.db.DialectType())
 	if err != nil {
 		return err
