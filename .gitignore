@@ -21,3 +21,4 @@ config.hcl
 config_old.hcl
 /pkg/policy/tests/output/
 /pkg/policy/cq/*
+database-data/*
