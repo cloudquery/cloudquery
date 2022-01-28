@@ -18,11 +18,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/stretchr/testify/assert"
 )
-
-// Inputs:
-// 	- Directory
-// 	- Database DSN
 
 var (
 	dbConnOnce sync.Once
@@ -38,23 +35,15 @@ func getEnv(key, fallback string) string {
 }
 
 func cleanDatabase(ctx context.Context, conn *pgxpool.Conn) error {
-	out, err := conn.Exec(ctx, `DROP SCHEMA public CASCADE;
+	_, err := conn.Exec(ctx, `DROP SCHEMA public CASCADE;
 	CREATE SCHEMA public;
 	GRANT ALL ON SCHEMA public TO postgres;
 	GRANT ALL ON SCHEMA public TO public`)
-	if err != nil {
-		return err
-	}
-	log.Println(out)
-	return nil
+	return err
 }
 
 func TestPolicy(t *testing.T, pol policy.Policy) {
 	t.Helper()
-
-	// No need for configuration or db connection, get it out of the way first
-	// testTableIdentifiersForProvider(t, resource.Provider)
-
 	pool, err := setupDatabase()
 	if err != nil {
 		t.Fatal(err)
@@ -73,9 +62,13 @@ func TestPolicy(t *testing.T, pol policy.Policy) {
 	}
 	defer conn.Release()
 
-	cleanDatabase(ctx, conn)
+	err = cleanDatabase(ctx, conn)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	conn.Conn().Close(ctx)
-	fileP := "/Users/benbernays/Documents/GitHub/cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/pg-dump.sql"
+	fileP := "./cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/pg-dump.sql"
 	err = e.RestoreSnapshot(ctx, fileP, config)
 	if err != nil {
 		t.Fatal(err)
@@ -95,10 +88,38 @@ func TestPolicy(t *testing.T, pol policy.Policy) {
 	}
 
 	f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.json"))
-	f2, _ := OpenAndParse("/Users/benbernays/Documents/GitHub/cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/data.json")
-	diff := cmp.Diff(f1, f2)
-	if diff != "" {
-		t.Fatal(diff)
+	f2, _ := OpenAndParse("./cloudquery/database-data/query-EC2.18/tests/0474763d-7fb0-4f0d-a42b-48b8df300146/data.json")
+
+	compareArbitraryArrays(t, f1, f2)
+
+}
+
+func compareArbitraryArrays(t *testing.T, f1, f2 []map[string]interface{}) {
+	assert.Equal(t, len(f1), len(f2), "Query results should have same number of items.")
+
+	for _, item1 := range f1 {
+		diffItemPresent := false
+		for _, item2 := range f2 {
+			diff := cmp.Diff(item1, item2)
+			if diff == "" {
+				diffItemPresent = true
+			}
+		}
+		if !diffItemPresent {
+			t.Fatalf("Item %+v, not found", item1)
+		}
+	}
+	for item1 := range f2 {
+		diffItemPresent := false
+		for item2 := range f1 {
+			diff := cmp.Diff(item1, item2)
+			if diff == "" {
+				diffItemPresent = true
+			}
+		}
+		if !diffItemPresent {
+			t.Fatalf("Item %+v, not found", item1)
+		}
 	}
 
 }
