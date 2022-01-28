@@ -153,7 +153,7 @@ func OpenAndParse(filePath string) ([]map[string]interface{}, error) {
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	var result []map[string]interface{}
-	err = json.Unmarshal([]byte(byteValue), &result)
+	err = json.Unmarshal(byteValue, &result)
 	if err != nil {
 		return nil, err
 	}
