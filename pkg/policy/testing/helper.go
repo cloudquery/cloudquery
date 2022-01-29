@@ -81,6 +81,8 @@ func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 	}
 	defer conn.Release()
 
+	clie := policy.NewCliExecutor(e, config.ConnConfig)
+
 	testPath := path.Join(snapshotDirectory, "query-"+pol.Checks[0].Name, "tests", "")
 	tests, _ := FindAllTestCases(testPath)
 	for _, test := range tests {
@@ -91,7 +93,7 @@ func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 		}
 
 		fileP := path.Join(testPath, test, "pg-dump.sql")
-		err = e.RestoreSnapshot(ctx, fileP, config)
+		err = clie.RestoreSnapshot(ctx, fileP, config)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -103,7 +105,7 @@ func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 			t.Fatalf("Error creating temp dir: %+v", err)
 		}
 		// 		c. Run query
-		err = e.StoreOutput(ctx, &pol, uniqueTempDir, config)
+		err = clie.StoreOutput(ctx, &pol, uniqueTempDir, config)
 		if err != nil {
 			t.Fatalf("Error storing output: %+v", err)
 		}

@@ -14,7 +14,7 @@ require (
 	github.com/hashicorp/go-plugin v1.4.3
 	github.com/hashicorp/go-version v1.3.0
 	github.com/hashicorp/hcl/v2 v2.10.1
-	github.com/jackc/pgx/v4 v4.13.0
+	github.com/jackc/pgx/v4 v4.14.1
 	github.com/mattn/go-isatty v0.0.14
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/rs/zerolog v1.20.0
@@ -43,9 +43,9 @@ require (
 	github.com/google/go-cmp v0.5.7
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-getter v1.5.10
-	github.com/jackc/pgconn v1.10.0
+	github.com/jackc/pgconn v1.10.1
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
-	github.com/jackc/pgtype v1.8.1
+	github.com/jackc/pgtype v1.9.1
 	github.com/jeremywohl/flatten v1.0.1
 	github.com/lib/pq v1.10.3
 	github.com/olekukonko/tablewriter v0.0.5
@@ -89,9 +89,9 @@ require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.1.1 // indirect
+	github.com/jackc/pgproto3/v2 v2.2.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/puddle v1.1.4 // indirect
+	github.com/jackc/puddle v1.2.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
