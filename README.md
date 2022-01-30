@@ -26,7 +26,7 @@ CloudQuery key use-cases and features:
 
 ### Supported providers (Actively expanding)
 
-Checkout https://hub.cloudquery.io
+Check out https://hub.cloudquery.io.
 
 If you want us to add a new provider or resource please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
@@ -60,7 +60,7 @@ brew upgrade cloudquery
 ### Running
 
 First generate a `config.hcl` file that will describe which resources you want cloudquery to pull, normalize
-and transform resources to the specified SQL database by running the following command:
+and transform to the specified SQL database by running the following command:
 
 ```shell script
 cloudquery init aws # choose one or more from: [aws azure gcp okta]
