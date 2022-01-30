@@ -13,13 +13,14 @@ import (
 
 func IotStreams() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_streams",
-		Description:  "Information about a stream.",
-		Resolver:     fetchIotStreams,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iot_streams",
+		Description:   "Information about a stream.",
+		Resolver:      fetchIotStreams,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

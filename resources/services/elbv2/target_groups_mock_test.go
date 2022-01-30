@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package elbv2
 
 import (

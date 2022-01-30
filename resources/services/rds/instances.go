@@ -14,13 +14,14 @@ import (
 
 func RdsInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_instances",
-		Description:  "Contains the details of an Amazon RDS DB instance",
-		Resolver:     fetchRdsInstances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_rds_instances",
+		Description:   "Contains the details of an Amazon RDS DB instance",
+		Resolver:      fetchRdsInstances,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -488,10 +489,11 @@ func RdsInstances() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_rds_instance_associated_roles",
-				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
-				Resolver:    fetchRdsInstanceAssociatedRoles,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "role_arn"}},
+				Name:          "aws_rds_instance_associated_roles",
+				Description:   "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
+				Resolver:      fetchRdsInstanceAssociatedRoles,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "role_arn"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",

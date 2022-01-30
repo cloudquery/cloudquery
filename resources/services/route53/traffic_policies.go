@@ -14,13 +14,14 @@ import (
 
 func Route53TrafficPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_route53_traffic_policies",
-		Description:  "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
-		Resolver:     fetchRoute53TrafficPolicies,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_route53_traffic_policies",
+		Description:   "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
+		Resolver:      fetchRoute53TrafficPolicies,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

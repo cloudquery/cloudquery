@@ -10,13 +10,14 @@ import (
 
 func DirectconnectVirtualGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_directconnect_virtual_gateways",
-		Description:  "Information about a virtual private gateway for a private virtual interface.",
-		Resolver:     fetchDirectconnectVirtualGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_directconnect_virtual_gateways",
+		Description:   "Information about a virtual private gateway for a private virtual interface.",
+		Resolver:      fetchDirectconnectVirtualGateways,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

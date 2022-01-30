@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package dms
 
 import (
@@ -22,9 +19,9 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 	if err := faker.FakeData(&l); err != nil {
 		t.Fatal(err)
 	}
-	l.ReplicationInstancePrivateIpAddress = aws.String("1.2.3.4")
+	l.ReplicationInstancePrivateIpAddress = aws.String("1.2.3.4") //nolint
 	l.ReplicationInstancePrivateIpAddresses = []string{"1.2.3.4"}
-	l.ReplicationInstancePublicIpAddress = aws.String("1.2.3.4")
+	l.ReplicationInstancePublicIpAddress = aws.String("1.2.3.4") //nolint
 	l.ReplicationInstancePublicIpAddresses = []string{"1.2.3.4"}
 	m.EXPECT().DescribeReplicationInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&databasemigrationservice.DescribeReplicationInstancesOutput{

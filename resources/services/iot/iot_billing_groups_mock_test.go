@@ -1,5 +1,3 @@
-//go:build mock
-
 package iot
 
 import (

@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package wafv2
 
 import (

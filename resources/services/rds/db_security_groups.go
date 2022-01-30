@@ -69,9 +69,10 @@ func RdsDbSecurityGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "vpc_id",
-				Description: "Provides the VpcId of the DB security group.",
-				Type:        schema.TypeString,
+				Name:          "vpc_id",
+				Description:   "Provides the VpcId of the DB security group.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "tags",

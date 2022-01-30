@@ -46,9 +46,10 @@ func SnsTopics() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "delivery_policy",
-				Description: "The JSON serialization of the topic's delivery policy.",
-				Type:        schema.TypeJSON,
+				Name:          "delivery_policy",
+				Description:   "The JSON serialization of the topic's delivery policy.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "display_name",

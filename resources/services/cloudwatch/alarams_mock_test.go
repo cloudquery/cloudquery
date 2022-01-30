@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package cloudwatch
 
 import (
@@ -32,6 +29,6 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	return services
 }
 
-func TestAutoscalingLaunchConfiguration(t *testing.T) {
+func TestCloudwatchAlarms(t *testing.T) {
 	client.AwsMockTestHelper(t, CloudwatchAlarms(), buildCloudWatchAlarmsMock, client.TestOptions{})
 }

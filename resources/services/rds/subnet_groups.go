@@ -88,10 +88,11 @@ func RdsSubnetGroups() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "subnet_outpost_arn",
-						Description: "The Amazon Resource Name (ARN) of the Outpost.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SubnetOutpost.Arn"),
+						Name:          "subnet_outpost_arn",
+						Description:   "The Amazon Resource Name (ARN) of the Outpost.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("SubnetOutpost.Arn"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "subnet_status",

@@ -1,6 +1,8 @@
 package client
 
-import "github.com/hashicorp/go-hclog"
+import (
+	"github.com/hashicorp/go-hclog"
+)
 
 type awsLogger struct {
 	hclog.Logger

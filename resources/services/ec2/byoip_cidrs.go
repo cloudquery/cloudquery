@@ -11,13 +11,14 @@ import (
 
 func Ec2ByoipCidrs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_byoip_cidrs",
-		Description:  "Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).",
-		Resolver:     fetchEc2ByoipCidrs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreWithInvalidAction,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
+		Name:          "aws_ec2_byoip_cidrs",
+		Description:   "Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).",
+		Resolver:      fetchEc2ByoipCidrs,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
+		IgnoreError:   client.IgnoreWithInvalidAction,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

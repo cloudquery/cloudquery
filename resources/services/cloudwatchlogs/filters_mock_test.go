@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package cloudwatchlogs
 
 import (
@@ -30,6 +27,6 @@ func buildCloudwatchLogsFiltersMock(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
-func TestAutoscalingLaunchConfiguration(t *testing.T) {
+func TestCloudwatchlogsFilter(t *testing.T) {
 	client.AwsMockTestHelper(t, CloudwatchlogsFilters(), buildCloudwatchLogsFiltersMock, client.TestOptions{})
 }

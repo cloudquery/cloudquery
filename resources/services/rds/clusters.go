@@ -13,13 +13,14 @@ import (
 
 func RdsClusters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_clusters",
-		Description:  "Contains the details of an Amazon Aurora DB cluster",
-		Resolver:     fetchRdsClusters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_rds_clusters",
+		Description:   "Contains the details of an Amazon Aurora DB cluster",
+		Resolver:      fetchRdsClusters,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

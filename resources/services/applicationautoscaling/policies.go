@@ -13,12 +13,13 @@ import (
 
 func ApplicationautoscalingPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_applicationautoscaling_policies",
-		Description:  "Information about a scaling policy to use with Application Auto Scaling",
-		Resolver:     fetchApplicationautoscalingPolicies,
-		Multiplex:    client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_applicationautoscaling_policies",
+		Description:   "Information about a scaling policy to use with Application Auto Scaling",
+		Resolver:      fetchApplicationautoscalingPolicies,
+		Multiplex:     client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
