@@ -21,7 +21,7 @@ jobs:
         id: is_organization_member
         with:
           organization: cloudquery
-          username: ${{ github.event.pull_request.user.login }}
+          username: ${{ github.event.pull_request_target.user.login }}
           token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Skip if not member and event is pull_request_target
         if: github.event_name == 'pull_request_target'
@@ -68,8 +68,8 @@ jobs:
         uses: actions/checkout@v2
         if: ${{ github.event_name == 'pull_request_target' }}
         with:
-          ref: ${{github.event.pull_request.head.ref}}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{github.event.pull_request_target.head.ref}}
+          repository: ${{github.event.pull_request_target.head.repo.full_name}}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
