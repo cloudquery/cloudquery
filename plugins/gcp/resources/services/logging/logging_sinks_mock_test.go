@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package logging
 
 import (

@@ -1,5 +1,3 @@
-// +build mock
-
 package compute
 
 import (

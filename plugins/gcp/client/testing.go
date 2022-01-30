@@ -38,9 +38,7 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 				return &Config{}
 			},
 		},
-		Table:          table,
-		Config:         "",
-		SkipEmptyJsonB: options.SkipEmptyJsonB,
+		Config: "",
 	})
 }
 
@@ -58,6 +56,5 @@ func GcpTestHelper(t *testing.T, table *schema.Table) {
 				"test_resource": table,
 			},
 		},
-		Table: table,
 	})
 }

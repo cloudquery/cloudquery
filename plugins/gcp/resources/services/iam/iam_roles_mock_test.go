@@ -1,19 +1,17 @@
-//go:build mock
-// +build mock
-
 package iam
 
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/cloudquery/cq-provider-gcp/client"
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/julienschmidt/httprouter"
 	iam "google.golang.org/api/iam/v1"
 	"google.golang.org/api/option"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func createIamRolesTestServer() (*client.Services, error) {
