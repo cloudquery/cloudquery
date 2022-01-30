@@ -1,5 +1,5 @@
 # DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: Provider Doc Validation
+name: lint_doc
 on:
   push:
     branches:

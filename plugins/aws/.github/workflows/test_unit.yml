@@ -1,15 +1,13 @@
 # DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: Provider Mock Test
+name: Provider Unit Tests
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches: [main]
-    # paths:
-    #   - '*.go'
-    #   - '*.sql'
+    branches:
+      - main
 jobs:
   postgres:
     strategy:
@@ -45,8 +43,9 @@ jobs:
       - name: Get dependencies
         run: |
           go get -v -t -d ./...
+
       - name: Build
         run: go build -v .
 
       - name: Test
-        run: go test -tags=mock ./...
+        run: go test ./...
