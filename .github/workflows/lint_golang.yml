@@ -1,5 +1,5 @@
 # DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: Golang Lint
+name: lint_golang
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   golangci:
-    name: GoLangCI Lint
+    name: Lint with GolangCI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
