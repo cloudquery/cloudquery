@@ -14,7 +14,7 @@ jobs:
   is_organization_member:
     runs-on: ubuntu-latest
     outputs:
-      status: ${{ steps.is_organization_member.result }}
+      status: ${{ steps.is_organization_member.outputs.result }}
     steps:
       - uses: yevgenypats/is-organization-member@2cff10d857776aacefe5fb11acea8c1a8d270d3f
         if: github.event_name == 'pull_request_target'
@@ -24,7 +24,7 @@ jobs:
           username: ${{ github.event.pull_request.user.login }}
           token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Skip if not member and event is pull_request_target
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name != 'pull_request_target' || steps.is_organization_member.outputs.result == 'false'
         run: |
             echo "user is not part of org. Please run 'go test -run=TestIntegration -tags=integration ./..'"
             echo "and paste the output in the PR"
