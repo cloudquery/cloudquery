@@ -12,13 +12,14 @@ import (
 
 func IotBillingGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_billing_groups",
-		Description:  "Billing groups are groups of things created for billing purposes that collect billable information for the things",
-		Resolver:     fetchIotBillingGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iot_billing_groups",
+		Description:   "Billing groups are groups of things created for billing purposes that collect billable information for the things",
+		Resolver:      fetchIotBillingGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

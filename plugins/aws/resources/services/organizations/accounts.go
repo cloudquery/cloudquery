@@ -15,13 +15,14 @@ import (
 
 func OrganizationsAccounts() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_organizations_accounts",
-		Description:  "Contains information about an AWS account that is a member of an organization.",
-		Resolver:     fetchOrganizationsAccounts,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_organizations_accounts",
+		Description:   "Contains information about an AWS account that is a member of an organization.",
+		Resolver:      fetchOrganizationsAccounts,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

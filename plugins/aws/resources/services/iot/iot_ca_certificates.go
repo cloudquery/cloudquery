@@ -13,13 +13,14 @@ import (
 
 func IotCaCertificates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_ca_certificates",
-		Description:  "Describes a CA certificate.",
-		Resolver:     fetchIotCaCertificates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iot_ca_certificates",
+		Description:   "Describes a CA certificate.",
+		Resolver:      fetchIotCaCertificates,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

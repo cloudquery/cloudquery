@@ -11,13 +11,14 @@ import (
 
 func SnsSubscriptions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sns_subscriptions",
-		Description:  "A wrapper type for the attributes of an Amazon SNS subscription.",
-		Resolver:     fetchSnsSubscriptions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_sns_subscriptions",
+		Description:   "A wrapper type for the attributes of an Amazon SNS subscription.",
+		Resolver:      fetchSnsSubscriptions,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("sns"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

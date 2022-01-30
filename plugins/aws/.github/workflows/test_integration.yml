@@ -1,4 +1,5 @@
-name: integration_test
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: test_integration
 
 on:
   push:
@@ -10,7 +11,6 @@ on:
 jobs:
   is_organization_member:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request_target'
     outputs:
       status: ${{ steps.is_organization_member.result }}
     steps:
@@ -22,10 +22,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Skip if not member and event is pull_request_target
         run: |
-            echo "user is not part of org. Please run 'go test -tags=integration ./..'"
+            echo "user is not part of org. Please run 'go test -run=TestIntegration -tags=integration ./..'"
             echo "and paste the output in the PR"
 
-  integration_test:
+  test_integration:
     needs: is_organization_member
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     strategy:
@@ -76,7 +76,7 @@ jobs:
 
       - name: Integration Test
         run: |
-          go test -tags=integration ./...
+          go test -run=TestIntegration -tags=integration ./...
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2

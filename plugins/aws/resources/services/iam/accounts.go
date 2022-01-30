@@ -12,13 +12,14 @@ import (
 
 func IamAccounts() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_accounts",
-		Description:  "Information about IAM entity usage and IAM quotas in the AWS account.",
-		Resolver:     fetchAccountSummary,
-		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		Name:          "aws_accounts",
+		Description:   "Information about IAM entity usage and IAM quotas in the AWS account.",
+		Resolver:      fetchAccountSummary,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

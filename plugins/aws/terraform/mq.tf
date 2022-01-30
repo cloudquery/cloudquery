@@ -10,7 +10,7 @@
     auto_minor_version_upgrade = true
     deployment_mode            = "ACTIVE_STANDBY_MULTI_AZ"
     engine_type                = "ActiveMQ"
-    engine_version             = "5.15.14"
+    engine_version             = "5.15.15"
     host_instance_type         = "mq.t3.micro"
     publicly_accessible        = false
     general_log_enabled        = true

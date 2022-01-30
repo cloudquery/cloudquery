@@ -45,6 +45,6 @@ func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) clien
 	}
 }
 
-func TestAutoscalingLaunchConfiguration(t *testing.T) {
+func TestDirectconnectGateways(t *testing.T) {
 	client.AwsMockTestHelper(t, DirectconnectGateways(), buildDirectconnectGatewaysMock, client.TestOptions{})
 }

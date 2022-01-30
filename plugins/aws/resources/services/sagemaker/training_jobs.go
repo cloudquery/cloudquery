@@ -14,13 +14,14 @@ import (
 
 func SagemakerTrainingJobs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sagemaker_training_jobs",
-		Description:  "Provides summary information about a training job.",
-		Resolver:     fetchSagemakerTrainingJobs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_sagemaker_training_jobs",
+		Description:   "Provides summary information about a training job.",
+		Resolver:      fetchSagemakerTrainingJobs,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

@@ -51,9 +51,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 				return &Config{}
 			},
 		},
-		Table:          table,
-		Config:         cfg,
-		SkipEmptyJsonB: options.SkipEmptyJsonB,
+		Config: cfg,
 	})
 }
 
@@ -75,7 +73,6 @@ func AWSTestHelper(t *testing.T, table *schema.Table) {
 				"test_resource": table,
 			},
 		},
-		Table:  table,
 		Config: cfg,
 	})
 

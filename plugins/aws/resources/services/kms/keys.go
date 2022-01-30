@@ -67,9 +67,10 @@ func KmsKeys() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "deletion_date",
-				Description: "he date and time after which AWS KMS deletes the CMK. This value is present only when KeyState is PendingDeletion.",
-				Type:        schema.TypeTimestamp,
+				Name:          "deletion_date",
+				Description:   "he date and time after which AWS KMS deletes the CMK. This value is present only when KeyState is PendingDeletion.",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "description",

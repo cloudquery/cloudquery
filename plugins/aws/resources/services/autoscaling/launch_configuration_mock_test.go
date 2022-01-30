@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package autoscaling
 
 import (
@@ -31,6 +28,6 @@ func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Control
 	return services
 }
 
-func TestAutoscalingLaunchConfiguration(t *testing.T) {
+func TestAutoscalingLaunchConfigurations(t *testing.T) {
 	client.AwsMockTestHelper(t, AutoscalingLaunchConfigurations(), buildAutoscalingLaunchConfigurationsMock, client.TestOptions{})
 }

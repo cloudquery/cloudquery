@@ -13,13 +13,14 @@ import (
 
 func SsmInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ssm_instances",
-		Description:  "Describes a filter for a specific list of instances.",
-		Resolver:     fetchSsmInstances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ssm"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_ssm_instances",
+		Description:   "Describes a filter for a specific list of instances.",
+		Resolver:      fetchSsmInstances,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ssm"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

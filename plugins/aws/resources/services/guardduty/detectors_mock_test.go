@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package guardduty
 
 import (

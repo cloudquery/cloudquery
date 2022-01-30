@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package ec2
 
 import (
