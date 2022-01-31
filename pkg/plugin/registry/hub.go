@@ -43,10 +43,6 @@ type Hub struct {
 	providers map[string]ProviderDetails
 }
 
-const (
-	providerDisplayMsg = "cq-provider-%s@%s"
-)
-
 type Option func(h *Hub)
 
 func NewRegistryHub(url string, opts ...Option) *Hub {
@@ -102,9 +98,9 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 
 	l := h.Logger.With("provider", providerName, "version", version)
 	checksumsPath := filepath.Join(h.PluginDirectory, organization, providerName, version+".checksums.txt")
-	checksumsURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/latest/download/checksums.txt", organization, providerName)
+	checksumsURL := fmt.Sprintf("https://github.com/%s/%s/releases/latest/download/checksums.txt", organization, ProviderRepoName(providerName))
 	if version != "latest" {
-		checksumsURL = fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/checksums.txt", organization, providerName, version)
+		checksumsURL = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", organization, ProviderRepoName(providerName), version)
 	}
 	if h.ProgressUpdater != nil {
 		h.ProgressUpdater.Update(providerName, ui.StatusInProgress, "Verifying...", 1)
@@ -195,7 +191,7 @@ func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.Req
 
 	if h.ProgressUpdater != nil {
 		// Setup a done download progress
-		h.ProgressUpdater.Add(providerName, fmt.Sprintf("cq-provider-%s@%s", providerName, providerVersion), providerVersion, 2)
+		h.ProgressUpdater.Add(providerName, fmt.Sprintf("%s@%s", ProviderRepoName(providerName), providerVersion), providerVersion, 2)
 	}
 
 	if noVerify {
@@ -226,10 +222,10 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	// Create a new progress updater callback func
 	var progressCB ui.ProgressUpdateFunc
 	if h.ProgressUpdater != nil {
-		progressCB = ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf(providerDisplayMsg, providerName, providerVersion))
+		progressCB = ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf("%s@%s", ProviderRepoName(providerName), providerVersion))
 	}
 
-	providerURL := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/%s", organization, providerName, providerVersion, getPluginBinaryName(providerName))
+	providerURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/%s", organization, ProviderRepoName(providerName), providerVersion, getPluginBinaryName(providerName))
 	providerPath := h.getProviderPath(organization, providerName, providerVersion)
 	if err := osFs.DownloadFile(ctx, providerPath, providerURL, progressCB); err != nil {
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", organization, providerName, providerVersion, err)
@@ -257,20 +253,11 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 func (h Hub) getRelease(ctx context.Context, organization, providerName, version string) (*github.RepositoryRelease, error) {
 	client := github.NewClient(nil)
 	if version != "latest" {
-		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName), version)
+		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, ProviderRepoName(providerName), version)
 		return release, err
 	}
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
+	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, ProviderRepoName(providerName))
 	return release, err
-}
-
-func (h Hub) getLatestReleaseVersion(ctx context.Context, organization, providerName string) (*version.Version, error) {
-	client := github.NewClient(nil)
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, fmt.Sprintf("cq-provider-%s", providerName))
-	if err != nil {
-		return nil, err
-	}
-	return version.NewVersion(release.GetTagName())
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
@@ -351,7 +338,7 @@ func (h Hub) loadExisting() {
 
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
 func getPluginBinaryName(providerName string) string {
-	return fmt.Sprintf("cq-provider-%s_%s", providerName, GetBinarySuffix())
+	return fmt.Sprintf("%s_%s", ProviderRepoName(providerName), GetBinarySuffix())
 }
 
 func GetBinarySuffix() string {
