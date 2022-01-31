@@ -1,4 +1,4 @@
-package drift
+package s3
 
 import (
 	"sort"
@@ -33,7 +33,7 @@ func (m *mockS3Client) ListObjectsV2Pages(_ *s3.ListObjectsV2Input, fn func(*s3.
 	return nil
 }
 
-func TestS3Glob(t *testing.T) {
+func TestGlob(t *testing.T) {
 	table := []struct {
 		name              string
 		pattern           string
@@ -101,7 +101,7 @@ func TestS3Glob(t *testing.T) {
 	for _, tt := range table {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			matches, err := globS3(mockS3, "", tt.pattern)
+			matches, err := Glob(mockS3, "", tt.pattern)
 			assert.NoError(t, err)
 			if tt.expectedSameInput {
 				// this is when the pattern doesn't contain any stars

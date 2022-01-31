@@ -3,9 +3,10 @@ package e2etest
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"net/url"
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
@@ -13,19 +14,15 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
 )
 
 const (
 	// Set this environment variable to any non empty value to enable the tests
 	envVarSwitch = "E2E_TESTS"
-	// Location of a YAML file with a list of known resources/ids
-	envVarKnownResourcesPath = "KNOWN_RESOURCES"
 	// Path to a Terraform state file
 	envVarTFStatePath = "TFSTATE_PATH"
 
@@ -40,94 +37,45 @@ func TestDriftWithoutTheCloud(t *testing.T) {
 	logger := hclog.New(&hclog.LoggerOptions{})
 	ctx := context.Background()
 	tmpdir := t.TempDir()
+	tmpdir = "/tmp/cqtest"
 	for _, providerName := range providersToTestForDrift {
 		t.Run(providerName, func(t *testing.T) {
 			c := prepareClient(t, ctx, providerName, tmpdir, logger)
 			s, err := getProviderSchemaResponse(ctx, c, providerName)
 			require.Nil(t, err)
 
-			tests := []struct {
-				name string
-				test func(*testing.T)
-			}{
-				{
-					"successful run with all the tables",
-					func(t *testing.T) {
-						require.Nil(t, c.BuildProviderTables(ctx, providerName))
-						mr, err := runDriftModule(t, ctx, c, "empty.tfstate", s)
-						require.Nil(t, err)
-						require.Nil(t, mr.Error)
-						_, ok := mr.Result.(*drift.Results)
-						require.True(t, ok, "result of module call is not *drift.Results")
-					},
-				},
+			t.Run("successful run with all the tables", func(t *testing.T) {
+				require.Nil(t, c.BuildProviderTables(ctx, providerName))
+				mr, err := runDriftModule(t, ctx, c, "empty.tfstate", s)
+				require.Nil(t, err)
+				require.Nil(t, mr.Error)
+				_, ok := mr.Result.(*drift.Results)
+				require.True(t, ok, "result of module call is not *drift.Results")
+			})
 
-				{
-					"should fail with some tables missing",
-					func(t *testing.T) {
-						require.Nil(t, c.BuildProviderTables(ctx, providerName))
-						// we'll keep deleting tables until we get an error
-						// because some tables may not be used/ implemented in drift detection
-						pool := setupDatabase(t)
-						defer pool.Close()
-						conn, err := pool.Acquire(ctx)
-						require.Nil(t, err)
-						defer conn.Release()
-						for _, tab := range s.ResourceTables {
-							_, err := conn.Exec(ctx, fmt.Sprintf("DROP TABLE %s CASCADE", tab.Name))
-							require.Nil(t, err)
-							mr, err := runDriftModule(t, ctx, c, "empty.tfstate", s)
-							require.Nil(t, err)
-							if mr.Error != nil {
-								return
-							}
-						}
+			t.Run("should fail with some tables missing", func(t *testing.T) {
+				require.Nil(t, c.BuildProviderTables(ctx, providerName))
+				// we'll keep deleting tables until we get an error
+				// because some tables may not be used/ implemented in drift detection
+				pool := setupDatabase(t)
+				defer pool.Close()
+				conn, err := pool.Acquire(ctx)
+				require.Nil(t, err)
+				defer conn.Release()
+				_, err = conn.Exec(ctx, fmt.Sprintf("DROP TABLE cloudquery_%s_schema_migrations", providerName))
+				require.Nil(t, err)
+				for _, tab := range s.ResourceTables {
+					_, err := conn.Exec(ctx, fmt.Sprintf("DROP TABLE %s CASCADE", tab.Name))
+					require.Nil(t, err)
+					mr, err := runDriftModule(t, ctx, c, "empty.tfstate", s)
+					require.Nil(t, err)
+					if mr.Error != nil {
+						return
+					}
+				}
 
-						t.Errorf("deleted all tables, but still no error from drift")
-					},
-				},
-
-				{
-					"should fail with newly added table",
-					func(t *testing.T) {
-						t.Skip("currently drift module does not report required error")
-
-						require.Nil(t, c.BuildProviderTables(ctx, providerName))
-
-						altTables := make(map[string]*schema.Table, len(s.ResourceTables)+1)
-						pool := setupDatabase(t)
-						defer pool.Close()
-						conn, err := pool.Acquire(ctx)
-						require.Nil(t, err)
-						defer conn.Release()
-						// add extra copy of a resource to the new map
-						for k, tab := range s.ResourceTables {
-							t2 := *tab
-							t2.Name += "2"
-							t2.Relations = nil
-							require.Nil(t, c.TableCreator.CreateTable(ctx, conn, &t2, nil))
-							altTables[k+"2"] = &t2
-							defer func() {
-								_, err := conn.Exec(ctx, fmt.Sprintf("DROP TABLE %s CASCADE", t2.Name))
-								if err != nil {
-									t.Logf("error deleting a table: %v", err)
-								}
-							}()
-							break // one is enough
-						}
-
-						// run a drift module with altered schema
-						altS := *s
-						altS.ResourceTables = altTables
-						mr, err := runDriftModule(t, ctx, c, "empty.tfstate", &altS)
-						require.Nil(t, err)
-						require.NotNil(t, mr.Error)
-					},
-				},
-			}
-			for _, tt := range tests {
-				t.Run(tt.name, tt.test)
-			}
+				t.Errorf("deleted all tables, but still no error from drift")
+			})
 		})
 	}
 }
@@ -164,15 +112,15 @@ func TestDriftWithTheCloud(t *testing.T) {
 	skipIfEnvVarNotSet(t, envVarSwitch)
 
 	// ensure that required envnironment variables are set
-	knownResourcesPath := os.Getenv(envVarKnownResourcesPath)
-	require.NotEmptyf(t, knownResourcesPath, "%s is not set", envVarKnownResourcesPath)
 	tfStatePath := os.Getenv(envVarTFStatePath)
 	require.NotEmptyf(t, tfStatePath, "%s is not set", envVarTFStatePath)
 
-	knownResources := readExpectedResources(t, knownResourcesPath)
+	tfStatePath = possiblySaveFromS3(t, tfStatePath)
+	knownResources := loadKnownResources(t, tfStatePath)
 	logger := hclog.New(&hclog.LoggerOptions{})
 	ctx := context.Background()
 	tmpdir := t.TempDir()
+	tmpdir = "/tmp/cqtest"
 	for _, providerName := range providersToTestForDrift {
 		t.Run(providerName, func(t *testing.T) {
 			c := prepareClient(t, ctx, providerName, tmpdir, logger)
@@ -215,17 +163,6 @@ func TestDriftWithTheCloud(t *testing.T) {
 	}
 }
 
-func readExpectedResources(t *testing.T, fromPath string) map[string][]string {
-	var r map[string][]string
-	f, err := os.Open(fromPath)
-	require.Nil(t, err)
-	defer f.Close()
-	b, err := ioutil.ReadAll(f)
-	require.Nil(t, err)
-	require.Nil(t, yaml.Unmarshal(b, &r))
-	return r
-}
-
 func getProviderSchemaResponse(ctx context.Context, c *client.Client, providerName string) (*cqproto.GetProviderSchemaResponse, error) {
 	s, err := c.GetProviderSchema(ctx, providerName)
 	if err != nil {
@@ -238,7 +175,7 @@ func getProviderSchemaResponse(ctx context.Context, c *client.Client, providerNa
 		}
 		s.Version = d.Version
 	}
-	return s, nil
+	return s.GetProviderSchemaResponse, nil
 }
 
 func assertContained(t *testing.T, d *drift.Results, extractor func(*drift.Result) drift.ResourceList, known map[string][]string) {
@@ -257,13 +194,22 @@ func assertContained(t *testing.T, d *drift.Results, extractor func(*drift.Resul
 
 func runDriftModule(t *testing.T, ctx context.Context, c *client.Client, stateFilePath string, s *cqproto.GetProviderSchemaResponse) (*module.ExecutionResult, error) {
 	driftParams := drift.RunParams{
-		ListManaged: true,
-		TfMode:      "managed",
-		StateFiles:  []string{stateFilePath},
+		ListManaged:    true,
+		TfMode:         "managed",
+		StateFiles:     []string{stateFilePath},
+		DisableFilters: true,
 	}
 	return c.ExecuteModule(ctx, client.ModuleRunRequest{
 		Name:      "drift",
 		Params:    driftParams,
 		Providers: []*cqproto.GetProviderSchemaResponse{s},
 	})
+}
+
+func parseS3URI(uri string) (string, string, error) {
+	u, err := url.Parse(uri)
+	if err != nil {
+		return "", "", err
+	}
+	return u.Host, strings.TrimLeft(u.Path, "/"), nil
 }

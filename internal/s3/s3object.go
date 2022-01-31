@@ -1,8 +1,8 @@
-package drift
+package s3
 
 import (
 	"context"
-	"fmt"
+	"io"
 	"regexp"
 	"strings"
 
@@ -13,47 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 )
 
-func loadIACStatesFromS3(iacID, bucket string, keys []string, region, roleARN string) (interface{}, error) {
-	svc, err := s3session(bucket, region, roleARN)
-	if err != nil {
-		return nil, err
-	}
-
-	ret := make([]*terraform.Data, 0, len(keys))
-	for _, globKey := range keys {
-		matches, err := globS3(svc, bucket, globKey)
-		if err != nil {
-			return nil, err
-		}
-		for _, key := range matches {
-			obj, err := svc.GetObject(&s3.GetObjectInput{
-				Bucket: aws.String(bucket),
-				Key:    aws.String(key),
-			})
-			if err != nil {
-				return nil, err
-			}
-			data, err := terraform.LoadState(obj.Body)
-			_ = obj.Body.Close()
-			if err != nil {
-				return nil, fmt.Errorf("parse s3://%s/%s: %w", bucket, key, err)
-			}
-
-			ret = append(ret, data)
-		}
-	}
-
-	if len(ret) == 0 {
-		return nil, fmt.Errorf("no matches for specified %s state patterns", iacID)
-	}
-
-	return ret, nil
-}
-
-func s3session(bucket, region, roleARN string) (*s3.S3, error) {
+func Session(bucket, region, roleARN string) (*s3.S3, error) {
 	if region == "" {
 		if reg, err := s3manager.GetBucketRegion(
 			context.Background(),
@@ -90,9 +52,9 @@ func s3session(bucket, region, roleARN string) (*s3.S3, error) {
 	return s3.New(sess, awsCfg), nil
 }
 
-// globS3 will try to resolve a (star and double-star) glob expression given in pattern on the bucket and return results.
+// Glob will try to resolve a (star and double-star) glob expression given in pattern on the bucket and return results.
 // If the pattern doesn't contain any globs it will be returned as-is in an array, without checking for object existence
-func globS3(svc s3iface.S3API, bucket, pattern string) ([]string, error) {
+func Glob(svc s3iface.S3API, bucket, pattern string) ([]string, error) {
 	const (
 		star       = "*"
 		doubleStar = "**"
@@ -156,4 +118,15 @@ func globS3(svc s3iface.S3API, bucket, pattern string) ([]string, error) {
 	}
 
 	return ret, nil
+}
+
+func GetObject(svc *s3.S3, bucket, key string) (io.ReadCloser, error) {
+	out, err := svc.GetObject(&s3.GetObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return out.Body, nil
 }

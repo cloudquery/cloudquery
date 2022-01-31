@@ -1,0 +1,334 @@
+accessanalyzer.analyzers:
+{{- range .aws_accessanalyzer_analyzer}}
+  - {{.id}}{{end}}
+apigateway.api_keys:
+{{- range .aws_api_gateway_api_key}}
+  - {{.id}}{{end}}
+apigateway.client_certificates:
+{{- range .aws_api_gateway_client_certificate}}
+  - {{.id}}{{end}}
+apigateway.rest_apis:
+{{- range .aws_api_gateway_rest_api}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_authorizers:
+{{- range .aws_api_gateway_authorizer}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_deployments:
+{{- range .aws_api_gateway_deployment}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_documentation_parts:
+{{- range .aws_api_gateway_documentation_part}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_documentation_versions:
+{{- range .aws_api_gateway_documentation_version}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_models:
+{{- range .aws_api_gateway_model}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_request_validators:
+{{- range .aws_api_gateway_request_validator}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_resources:
+{{- range .aws_api_gateway_resource}}
+  - {{.id}}{{end}}
+aws_apigateway_rest_api_stages:
+{{- range .aws_api_gateway_stage}}
+  - {{.id}}{{end}}
+apigateway.usage_plans:
+{{- range .aws_api_gateway_usage_plan}}
+  - {{.id}}{{end}}
+aws_apigateway_usage_plan_api_stages:
+{{- range .aws_api_gateway_usage_plan}}
+  {{- $id := .id}}
+  {{- range .api_stages}}
+  - {{$id}}|{{.api_id}}|{{.stage}}{{end}}{{end}}
+aws_apigateway_usage_plan_keys:
+{{- range .aws_api_gateway_usage_plan_key}}
+  - {{.id}}{{end}}
+apigateway.vpc_links:
+{{- range .aws_api_gateway_vpc_link}}
+  - {{.id}}{{end}}
+apigatewayv2.apis:
+{{- range .aws_apigatewayv2_api}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_authorizers:
+{{- range .aws_apigatewayv2_authorizer}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_deployments:
+{{- range .aws_apigatewayv2_deployment}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_integrations:
+{{- range .aws_apigatewayv2_integration}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_integration_responses:
+{{- range .aws_apigatewayv2_integration_response}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_models:
+{{- range .aws_apigatewayv2_model}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_routes:
+{{- range .aws_apigatewayv2_route}}
+  - {{.id}}{{end}}
+aws_apigatewayv2_api_stages:
+{{- range .aws_apigatewayv2_stage}}
+  - {{.id}}{{end}}
+apigatewayv2.vpc_links:
+{{- range .aws_apigatewayv2_vpc_link}}
+  - {{.id}}{{end}}
+autoscaling.launch_configurations:
+{{- range .aws_launch_configuration}}
+  - {{.id}}{{end}}
+aws_autoscaling_launch_configuration_block_device_mappings:
+{{- range .aws_launch_configuration}}
+  {{- $id := .id}}
+  {{- range .ebs_block_device}}
+  - {{$id}}|{{.device_name}}{{end}}{{end}}
+cloudfront.cache_policies:
+{{- range .aws_cloudfront_cache_policy}}
+  - {{.id}}{{end}}
+cloudfront.distributions:
+{{- range .aws_cloudfront_distribution}}
+  - {{.id}}{{end}}
+aws_cloudfront_distribution_cache_behaviors:
+{{- range .aws_cloudfront_distribution}}
+  {{- $id := .id}}
+  {{- range .ordered_cache_behavior}}
+  - {{$id}}|{{.path_pattern}}|{{.target_origin_id}}|{{.viewer_protocol_policy}}{{end}}{{end}}
+aws_cloudfront_distribution_custom_error_responses:
+{{- range .aws_cloudfront_distribution}}
+  {{- $id := .id}}
+  {{- range .custom_error_response}}
+  - {{$id}}|{{.error_code}}|{{.response_code}}|{{.response_page_path}}{{end}}{{end}}
+aws_cloudfront_distribution_origins:
+{{- range .aws_cloudfront_origin_access_identity}}
+  - {{.id}}{{end}}
+cloudtrail.trails:
+{{- range .aws_cloudtrail}}
+  - {{.id}}{{end}}
+aws_cloudtrail_trail_event_selectors:
+{{- range .aws_cloudtrail}}
+  {{- $id := .id}}
+  {{- range .event_selector}}
+  - {{$id}}|{{.include_management_events}}|{{.read_write_type}}{{end}}{{end}}
+cloudwatch.alarms:
+{{- range .aws_cloudwatch_metric_alarm}}
+  - {{.id}}{{end}}
+aws_cloudwatch_alarm_metrics:
+{{- range .aws_cloudwatch_metric_alarm}}
+  {{- $id := .id}}
+  {{- range .metric_query}}
+  - {{$id}}|{{.id}}{{end}}{{end}}
+cloudwatchlogs.filters:
+{{- range .aws_cloudwatch_log_metric_filter}}
+  - {{.id}}|{{.log_group_name}}{{end}}
+aws_cloudwatchlogs_filter_metric_transformations:
+{{- range .aws_cloudwatch_log_metric_filter}}
+  {{- $id := .id}}
+  {{- range .metric_transformation}}
+  - {{$id}}|{{.namespace}}|{{.name}}{{end}}{{end}}
+cognito.identity_pools:
+{{- range .aws_cognito_identity_pool}}
+  - {{.id}}{{end}}
+config.configuration_recorders:
+{{- range .aws_config_configuration_recorder}}
+  - {{.id}}{{end}}
+config.conformance_packs:
+{{- range .aws_config_conformance_pack}}
+  - {{.id}}{{end}}
+directconnect.connections:
+{{- range .aws_dx_connection}}
+  - {{.id}}{{end}}
+directconnect.gateways:
+{{- range .aws_dx_gateway}}
+  - {{.id}}{{end}}
+aws_directconnect_gateway_associations:
+{{- range .aws_dx_gateway_association}}
+  - {{.id}}{{end}}
+directconnect.lags:
+{{- range .aws_dx_lag}}
+  - {{.id}}{{end}}
+directconnect.virtual_interfaces:
+{{- range .aws_dx_public_virtual_interface}}
+  - {{.id}}{{end}}
+ec2.customer_gateways:
+{{- range .aws_customer_gateway}}
+  - {{.id}}{{end}}
+ec2.ebs_volumes:
+{{- range .aws_ebs_volume}}
+  - {{.id}}{{end}}
+aws_ec2_ebs_volume_attachments:
+{{- range .aws_instance}}
+  {{- $id := .id}}
+  {{- range .root_block_device}}
+  - {{$id}}|{{.volume_id}}|{{.device_name}}{{end}}{{end}}
+ec2.flow_logs:
+{{- range .aws_flow_log}}
+  - {{.id}}{{end}}
+ec2.images:
+{{- range .aws_imagebuilder_image}}
+  - {{.id}}{{end}}
+ec2.instances:
+{{- range .aws_instance}}
+  - {{.id}}{{end}}
+ec2.internet_gateways:
+{{- range .aws_internet_gateway}}
+  - {{.id}}{{end}}
+ec2.nat_gateways:
+{{- range .aws_nat_gateway}}
+  - {{.id}}{{end}}
+ec2.network_acls:
+{{- range .aws_network_acl}}
+  - {{.id}}{{end}}
+ec2.route_tables:
+{{- range .aws_route_table}}
+  - {{.id}}{{end}}
+ec2.security_groups:
+{{- range .aws_security_group}}
+  - {{.id}}{{end}}
+ec2.subnets:
+{{- range .aws_subnet}}
+  - {{.id}}{{end}}
+ec2.transit_gateways:
+{{- range .aws_ec2_transit_gateway}}
+  - {{.id}}{{end}}
+ec2.vpc_endpoints:
+{{- range .aws_vpc_endpoint}}
+  - {{.id}}{{end}}
+ec2.vpc_peering_connections:
+{{- range .aws_vpc_peering_connection}}
+  - {{.id}}{{end}}
+ec2.vpcs:
+{{- range .aws_vpc}}
+  - {{.id}}{{end}}
+ec2.vpn_gateways:
+{{- range .aws_vpn_gateway}}
+  - {{.id}}{{end}}
+ecr.repositories:
+{{- range .aws_ecr_repository}}
+  - {{.id}}{{end}}
+ecs.clusters:
+{{- range .aws_ecs_cluster}}
+  - {{.id}}{{end}}
+efs.filesystems:
+{{- range .aws_efs_file_system}}
+  - {{.id}}{{end}}
+eks.clusters:
+{{- range .aws_eks_cluster}}
+  - {{.id}}{{end}}
+elasticbeanstalk.environments:
+{{- range .aws_elastic_beanstalk_environment}}
+  - {{.id}}{{end}}
+elasticsearch.domains:
+{{- range .aws_elasticsearch_domain}}
+  - {{.id}}{{end}}
+elbv1.load_balancers:
+{{- range .aws_elb}}
+  - {{.id}}{{end}}
+elbv2.load_balancers:
+{{- range .aws_lb}}
+  - {{.id}}{{end}}
+elbv2.target_groups:
+{{- range .aws_lb_target_group}}
+  - {{.id}}{{end}}
+emr.clusters:
+{{- range .aws_emr_cluster}}
+  - {{.id}}{{end}}
+fsx.backups:
+{{- range .aws_fsx_backup}}
+  - {{.id}}{{end}}
+iam.groups:
+{{- range .aws_iam_group}}
+  - {{.id}}{{end}}
+iam.openid_connect_identity_providers:
+{{- range .aws_iam_openid_connect_provider}}
+  - {{.id}}{{end}}
+iam.policies:
+{{- range .aws_iam_policy}}
+  - {{.id}}{{end}}
+iam.roles:
+{{- range .aws_iam_role}}
+  - {{.id}}{{end}}
+iam.saml_identity_providers:
+{{- range .aws_iam_saml_provider}}
+  - {{.id}}{{end}}
+iam.server_certificates:
+{{- range .aws_iam_server_certificate}}
+  - {{.id}}{{end}}
+iam.users:
+{{- range .aws_iam_user}}
+  - {{.id}}{{end}}
+aws_iam_user_groups:
+{{- range .aws_iam_group}}
+  - {{.id}}{{end}}
+aws_iam_user_access_keys:
+{{- range .aws_iam_access_key}}
+  - {{.id}}{{end}}
+aws_iam_user_attached_policies:
+{{- range .aws_iam_user_policy}}
+  - {{.id}}{{end}}
+aws_iam_user_policies:
+{{- range .aws_iam_user_policy}}
+  - {{.id}}{{end}}
+kms.keys:
+{{- range .aws_kms_key}}
+  - {{.id}}{{end}}
+lambda.functions:
+{{- range .aws_lambda_function}}
+  - {{.id}}{{end}}
+aws_lambda_layer_versions:
+{{- range .aws_lambda_layer_version}}
+  - {{.id}}{{end}}
+mq.brokers:
+{{- range .aws_mq_broker}}
+  - {{.id}}{{end}}
+rds.clusters:
+{{- range .aws_rds_cluster}}
+  - {{.id}}{{end}}
+rds.db_subnet_groups:
+{{- range .aws_db_subnet_group}}
+  - {{.id}}{{end}}
+rds.instances:
+{{- range .aws_rds_cluster_instance}}
+  - {{.id}}{{end}}
+redshift.clusters:
+{{- range .aws_redshift_cluster}}
+  - {{.id}}{{end}}
+redshift.subnet_groups:
+{{- range .aws_redshift_subnet_group}}
+  - {{.id}}{{end}}
+route53.health_checks:
+{{- range .aws_route53_health_check}}
+  - {{.id}}{{end}}
+route53.hosted_zones:
+{{- range .aws_route53_zone}}
+  - {{.id}}{{end}}
+route53.reusable_delegation_sets:
+{{- range .aws_route53_delegation_set}}
+  - {{.id}}{{end}}
+s3.buckets:
+{{- range .aws_s3_bucket}}
+  - {{.id}}{{end}}
+sns.subscriptions:
+{{- range .aws_sns_topic_subscription}}
+  - {{.id}}{{end}}
+sns.topics:
+{{- range .aws_sns_topic}}
+  - {{.id}}{{end}}
+sqs.queues:
+{{- range .aws_sqs_queue}}
+  - {{.id}}{{end}}
+waf.rule_groups:
+{{- range .aws_waf_rule_group}}
+  - {{.id}}{{end}}
+waf.rules:
+{{- range .aws_waf_rule}}
+  - {{.id}}{{end}}
+waf.web_acls:
+{{- range .aws_waf_web_acl}}
+  - {{.id}}{{end}}
+wafv2.rule_groups:
+{{- range .aws_wafv2_rule_group}}
+  - {{.id}}{{end}}
+wafv2.web_acls:
+{{- range .aws_wafv2_web_acl}}
+  - {{.id}}{{end}}

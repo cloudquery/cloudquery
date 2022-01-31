@@ -261,7 +261,9 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn schema.QueryE
 	{
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
 		q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
-		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
+		if !runParams.DisableFilters {
+			q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
+		}
 		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
 		if err != nil {
 			return nil, err

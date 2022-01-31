@@ -15,6 +15,9 @@ type RunParams struct {
 
 	IACName    string
 	StateFiles []string
+
+	// DisableFilters prevents filter application during processing of Extra items.
+	DisableFilters bool
 }
 
 type Resource struct {
