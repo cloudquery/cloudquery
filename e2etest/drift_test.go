@@ -37,7 +37,6 @@ func TestDriftWithoutTheCloud(t *testing.T) {
 	logger := hclog.New(&hclog.LoggerOptions{})
 	ctx := context.Background()
 	tmpdir := t.TempDir()
-	tmpdir = "/tmp/cqtest"
 	for _, providerName := range providersToTestForDrift {
 		t.Run(providerName, func(t *testing.T) {
 			c := prepareClient(t, ctx, providerName, tmpdir, logger)
@@ -120,7 +119,6 @@ func TestDriftWithTheCloud(t *testing.T) {
 	logger := hclog.New(&hclog.LoggerOptions{})
 	ctx := context.Background()
 	tmpdir := t.TempDir()
-	tmpdir = "/tmp/cqtest"
 	for _, providerName := range providersToTestForDrift {
 		t.Run(providerName, func(t *testing.T) {
 			c := prepareClient(t, ctx, providerName, tmpdir, logger)
