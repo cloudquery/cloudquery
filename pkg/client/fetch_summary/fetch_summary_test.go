@@ -7,9 +7,8 @@ import (
 	"time"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/hashicorp/go-hclog"
-
 	"github.com/google/uuid"
+	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -83,7 +82,7 @@ func TestFetchSummary(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	fetchSummaryClient := NewFetchSummaryClient(db)
+	fetchSummaryClient := NewClient(db)
 
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {
@@ -92,7 +91,7 @@ func TestFetchSummary(t *testing.T) {
 		}
 		start := time.Now()
 		f.summary.Start = &start
-		err := fetchSummaryClient.SaveFetchSummary(context.Background(), &f.summary)
+		err := fetchSummaryClient.Save(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())
 		} else {

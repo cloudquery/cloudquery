@@ -410,7 +410,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		return nil, err
 	}
 
-	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(c.db)
+	fetchSummaryClient := fetch_summary.NewClient(c.db)
 
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
@@ -423,7 +423,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
-			if err := fetchSummaryClient.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+			if err := fetchSummaryClient.Save(ctx, &fetchSummary); err != nil {
 				c.Logger.Error("failed to save fetch summary", "err", err)
 			}
 		}

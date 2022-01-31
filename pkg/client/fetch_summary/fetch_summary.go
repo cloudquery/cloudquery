@@ -17,12 +17,12 @@ import (
 	"github.com/google/uuid"
 )
 
-type FetchSummaryClient struct {
+type Client struct {
 	db schema.QueryExecer
 }
 
-func NewFetchSummaryClient(db schema.QueryExecer) *FetchSummaryClient {
-	return &FetchSummaryClient{
+func NewClient(db schema.QueryExecer) *Client {
+	return &Client{
 		db: db,
 	}
 }
@@ -75,8 +75,8 @@ type ResourceFetchSummary struct {
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
-// SaveFetchSummary saves fetch summary into fetches database
-func (c *FetchSummaryClient) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
+// Save saves fetch summary into fetches database
+func (c *Client) Save(ctx context.Context, fs *FetchSummary) error {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return err
@@ -90,8 +90,8 @@ func (c *FetchSummaryClient) SaveFetchSummary(ctx context.Context, fs *FetchSumm
 	return c.db.Exec(ctx, sql, args...)
 }
 
-// GetLatestFetchSummaryForProvider gets latest fetch summary for specific provider
-func (c *FetchSummaryClient) GetLatestFetchSummaryForProvider(ctx context.Context, provider string) (*FetchSummary, error) {
+// GetForProvider gets latest fetch summary for specific provider
+func (c *Client) GetForProvider(ctx context.Context, provider string) (*FetchSummary, error) {
 	q := goqu.Dialect("postgres").
 		Select("provider_version", "is_success").
 		From("cloudquery.fetches").

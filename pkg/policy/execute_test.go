@@ -345,8 +345,8 @@ func setupCheckFetchDatabase(db schema.QueryExecer, fetchSummary *fetch_summary.
 	fetchSummary.FetchId = uuid.New()
 	finish := time.Now().UTC()
 	fetchSummary.Finish = &finish
-	fetchSummaryClient := fetch_summary.NewFetchSummaryClient(db)
-	err := fetchSummaryClient.SaveFetchSummary(context.Background(), fetchSummary)
+	fetchSummaryClient := fetch_summary.NewClient(db)
+	err := fetchSummaryClient.Save(context.Background(), fetchSummary)
 	if err != nil {
 		return err, nil
 	}
