@@ -557,13 +557,21 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 	})
 }
 
-func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, selector, destination string) error {
+func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelector, destination string) error {
 	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
 	}
-	pol := p.Filter(strings.Split(selector, "//")[1])
+	if !p.HasChecks() {
+		return errors.New("no checks loaded")
+	}
+
+	selector := fullSelector
+	if strings.Contains(fullSelector, "//") {
+		selector = strings.Split(selector, "//")[1]
+	}
+	pol := p.Filter(selector)
 	if len(pol.Checks) != 1 && len(pol.Policies) == 0 {
 		return errors.New("selector must specify only a single control")
 	}
