@@ -791,7 +791,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
 			// this error means error in execution and not policy violation
-			// we should exit immeditly as this is a non-recoverable error
+			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			c.Logger.Error("policy execution finished with error", "err", err)
 			return results, err
@@ -1141,9 +1141,12 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	}
 
 	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
-		return fmt.Errorf("validate: %w", err)
+		if !ok {
+			return fmt.Errorf("validate: %w", err)
+		}
+		c.Logger.Warn("database validation warning", "message", err.Error())
 	} else if !ok {
-		c.Logger.Warn("postgres validation warning")
+		c.Logger.Warn("database validation warning")
 	}
 
 	// migrate cloudquery core tables to latest version

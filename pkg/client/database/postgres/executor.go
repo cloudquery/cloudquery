@@ -37,7 +37,7 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 	}
 
 	if err := ValidatePostgresVersion(ctx, pool, MinPostgresVersion); err != nil {
-		return false, err
+		return true, err
 	}
 
 	return true, nil
