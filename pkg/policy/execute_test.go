@@ -363,6 +363,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	executor := NewExecutor(db, hclog.Default(), nil)
 
+	finish := time.Now().UTC()
 	assert.NoError(t, err)
 	cases := []struct {
 		Name   string
@@ -377,7 +378,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test1", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &fetch_summary.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", IsSuccess: true},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
 			err: nil,
 		},
 		{
@@ -387,7 +388,16 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test2", Version: "~> v0.2.0"},
 				},
 			},
-			err: errors.New("there is no finished fetches for provider test2"),
+			err: errors.New("failed to get fetch summary for provider test2: no rows in result set"),
+		}, {
+			Name: "no finished fetches",
+			Config: Configuration{
+				Providers: []*Provider{
+					{Type: "no_finish", Version: "~> v0.2.0"},
+				},
+			},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
+			err: errors.New("failed to get fetch summary for provider no_finish: no rows in result set"),
 		},
 		{
 			Name: "no fetches",
@@ -396,7 +406,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test3", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &fetch_summary.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: false},
 			err: errors.New("last fetch for provider test3 wasn't successful"),
 		},
 		{
@@ -406,7 +416,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: "~> v0.3.0"},
 				},
 			},
-			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", IsSuccess: true},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
 			err: errors.New("the latest fetch for provider test4 does not satisfy version requirement ~> v0.3.0"),
 		},
 		{
@@ -416,7 +426,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: ""},
 				},
 			},
-			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", IsSuccess: true},
+			f:   &fetch_summary.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
 			err: errors.New("failed to parse version constraint for provider test4: Malformed constraint: "),
 		},
 	}
