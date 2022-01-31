@@ -32,7 +32,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: eu-central-1
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
@@ -47,4 +47,4 @@ jobs:
           go get -v -t -d ./...
 
       - name: Test
-        run: E2E_TESTS=1 TFSTATE_PATH="s3://cq-provider-aws-tf-state/tf-state2" go test -timeout 10m -v github.com/cloudquery/cloudquery/e2etest/..
+        run: E2E_TESTS=1 go test -timeout 10m -v github.com/cloudquery/cloudquery/e2etest/..
