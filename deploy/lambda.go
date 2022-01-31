@@ -32,6 +32,12 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	}
 	viper.Set("policy-dir", policyDir)
 
+	dataDir, present := os.LookupEnv("CQ_DATA_DIR")
+	if !present {
+		dataDir = ".cq"
+	}
+	viper.Set("data-dir", dataDir)
+
 	cfg, diags := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
 	).LoadConfigFromSource("config.hcl", []byte(req.HCL))

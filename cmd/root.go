@@ -108,6 +108,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
+	rootCmd.PersistentFlags().String("data-dir", "./.cq", "Directory to save and load CloudQuery persistent data to (env: CQ_DATA_DIR)")
 	rootCmd.PersistentFlags().String("plugin-dir", "./.cq/providers", "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	rootCmd.PersistentFlags().String("policy-dir", "./.cq/policies", "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
@@ -121,6 +122,7 @@ func init() {
 	_ = rootCmd.PersistentFlags().MarkHidden("telemetry-endpoint")
 	_ = rootCmd.PersistentFlags().MarkHidden("insecure-telemetry-endpoint")
 
+	_ = viper.BindPFlag("data-dir", rootCmd.PersistentFlags().Lookup("data-dir"))
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
 	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
