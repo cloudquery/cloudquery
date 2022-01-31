@@ -2,13 +2,14 @@ package elbv2
 
 import (
 	"context"
+	"errors"
 	"fmt"
-
-	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
+	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/mitchellh/mapstructure"
 
@@ -323,6 +324,13 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
 	response, err := client.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})
 	if err != nil {
+		var exc *wafv2types.WAFNonexistentItemException
+		if errors.As(err, &exc) {
+			if exc.ErrorCode() == "WAFNonexistentItemException" {
+				return nil
+			}
+		}
+
 		return err
 	}
 	if response.WebACL == nil {
