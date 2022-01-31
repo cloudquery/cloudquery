@@ -5,15 +5,15 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	"github.com/jackc/pgx/v4"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/georgysavva/scany/pgxscan"
+	"github.com/jackc/pgx/v4"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/doug-martin/goqu/v9"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/google/uuid"
 )
 
