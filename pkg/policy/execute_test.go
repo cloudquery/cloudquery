@@ -388,7 +388,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test2", Version: "~> v0.2.0"},
 				},
 			},
-			err: errors.New("failed to get fetch summary for provider test2: no rows in result set"),
+			err: errors.New("failed to get fetch summary for provider test2: there is no successful fetch for requested provider"),
 		}, {
 			Name: "no finished fetches",
 			Config: Configuration{
@@ -397,7 +397,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 				},
 			},
 			f:   &fetch_summary.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
-			err: errors.New("failed to get fetch summary for provider no_finish: no rows in result set"),
+			err: errors.New("failed to get fetch summary for provider no_finish: there is no successful fetch for requested provider"),
 		},
 		{
 			Name: "no fetches",

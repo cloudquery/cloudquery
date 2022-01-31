@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql/driver"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"github.com/jackc/pgx/v4"
 	"time"
 
@@ -105,8 +105,8 @@ func (c *FetchSummaryClient) GetLatestFetchSummaryForProvider(ctx context.Contex
 	var data FetchSummary
 	err = pgxscan.Get(ctx, c.db, &data, sql)
 	if err != nil {
-		if err == pgx.ErrNoRows {
-			return nil, fmt.Errorf("there is no successful fetch for provider %s: %w", provider, err)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errors.New("there is no successful fetch for requested provider")
 		}
 		return nil, err
 	}
