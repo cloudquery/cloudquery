@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
@@ -45,7 +45,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn schema.QueryExecer
+	conn execution.QueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -101,7 +101,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn schema.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn execution.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,

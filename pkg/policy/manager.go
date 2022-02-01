@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	uuid "github.com/satori/go.uuid"
@@ -25,7 +25,7 @@ type ManagerImpl struct {
 	policyDirectory string
 
 	// Instance of a database connection pool
-	pool schema.QueryExecer
+	pool execution.QueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -45,7 +45,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(policyDir string, pool schema.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(policyDir string, pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		policyDirectory: policyDir,
 		pool:            pool,

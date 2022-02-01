@@ -30,8 +30,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/google/uuid"
@@ -203,7 +204,7 @@ type FetchDoneResult struct {
 
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
-	CreateTable(context.Context, schema.QueryExecer, *schema.Table, *schema.Table) error
+	CreateTable(context.Context, execution.QueryExecer, *schema.Table, *schema.Table) error
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -1110,7 +1111,7 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 	)
 }
 
-func createCoreSchema(ctx context.Context, db schema.QueryExecer) error {
+func createCoreSchema(ctx context.Context, db execution.QueryExecer) error {
 	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
 }
 
