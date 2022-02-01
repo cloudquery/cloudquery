@@ -41,7 +41,6 @@ import (
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	otrace "go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -571,7 +570,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
 	}
 
-	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+	reportFetchSummaryErrors(trace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -628,7 +627,7 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -678,7 +677,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 }
 
 func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 
@@ -711,7 +710,7 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	if err != nil && err != migrate.ErrNilVersion {
 		return fmt.Errorf("failed to get provider version: %w", err)
 	}
-	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
+	trace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
 		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
@@ -720,13 +719,13 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 		return c.BuildProviderTables(ctx, providerName)
 	}
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
-	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
+	trace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
 
 	return m.UpgradeProvider(cfg.Version)
 }
 
 func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -752,7 +751,7 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 }
 
 func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -817,7 +816,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 		)
 	}
 
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(spanAttrs...))
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", trace.WithAttributes(spanAttrs...))
 	defer spanEnder(retErr)
 
 	c.Logger.Info("preparing to run policy")
@@ -868,7 +867,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *module.ExecutionResult, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", otrace.WithAttributes(attribute.String("module", req.Name)))
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", trace.WithAttributes(attribute.String("module", req.Name)))
 	defer spanEnder(retErr)
 
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
@@ -1067,7 +1066,7 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 }
 
 // reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
-func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
 	for _, ps := range fetchSummaries {
