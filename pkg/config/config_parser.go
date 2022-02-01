@@ -142,7 +142,7 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		} else {
 			cq.PluginDirectory = dir
 		}
-	} else {
+	} else if datadir != "" {
 		cq.PluginDirectory = filepath.Join(datadir, "providers")
 	}
 
@@ -154,7 +154,7 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		} else {
 			cq.PolicyDirectory = dir
 		}
-	} else {
+	} else if datadir != "" {
 		cq.PolicyDirectory = filepath.Join(datadir, "policies")
 	}
 
