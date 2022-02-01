@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
-	"github.com/jackc/pgx/v4/pgxpool"
 	uuid "github.com/satori/go.uuid"
 
 	"github.com/hashicorp/go-hclog"
@@ -66,18 +65,13 @@ func createPath(directory, queryName string) (string, error) {
 }
 
 func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error {
-	config, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return err
-	}
-
 	e := NewExecutor(m.pool, m.logger, nil)
-	clie := NewCliExecutor(e, config.ConnConfig)
-	if err := clie.exec.createViews(ctx, policy); err != nil {
+
+	if err := e.createViews(ctx, policy); err != nil {
 		return err
 	}
 
-	tableNames, err := clie.ExtractTableNames(ctx, policy.Checks[0].Query)
+	tableNames, err := e.ExtractTableNames(ctx, policy.Checks[0].Query)
 	if err != nil {
 		return err
 	}
@@ -85,12 +79,12 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination,
 	if err != nil {
 		return err
 	}
-	err = clie.StoreSnapshot(snapShotPath, tableNames, config)
+	err = e.StoreSnapshot(ctx, snapShotPath, tableNames)
 	if err != nil {
 		return err
 	}
 
-	return clie.StoreOutput(ctx, policy, snapShotPath, config)
+	return e.StoreOutput(ctx, policy, snapShotPath)
 }
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {
 	var err error
