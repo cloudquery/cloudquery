@@ -1,7 +1,6 @@
 package terraform
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,11 +21,12 @@ func ValidateStateVersion(s *Data) (bool, error) {
 	if s.State.Version == nil {
 		return true, errors.New("unspecified tfstate version, allowing")
 	}
-	if bytes.Equal(*s.State.Version, []byte{'4'}) {
+	switch v := string(*s.State.Version); v {
+	case "4":
 		return true, nil
+	case "2", "3":
+		return false, fmt.Errorf("unsupported tfstate version %s", v)
+	default:
+		return true, fmt.Errorf("unknown tfstate version %s, allowing", v)
 	}
-	if bytes.Equal(*s.State.Version, []byte{'2'}) || bytes.Equal(*s.State.Version, []byte{'3'}) {
-		return false, fmt.Errorf("unsupported tfstate version %s", string(*s.State.Version))
-	}
-	return true, fmt.Errorf("unknown tfstate version %s, allowing", string(*s.State.Version))
 }
