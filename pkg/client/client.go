@@ -315,14 +315,14 @@ func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateS
 			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
 			continue
 		}
-		if version == nil {
+		if version == "" {
 			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
-		if p.Version != *version {
-			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
-			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		if p.Version != version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
 		}
 	}
 	return summary, nil
