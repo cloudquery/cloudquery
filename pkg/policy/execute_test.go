@@ -354,7 +354,7 @@ func setupCheckFetchDatabase(db schema.QueryExecer, summary *fetch.Summary, c *f
 
 	// Return conn and tear down func
 	return nil, func(t *testing.T) {
-		err = db.Exec(context.Background(), fmt.Sprintf(`DELETE FROM "cloudquery"."fetches" WHERE "id" = '%summary';`, summary.FetchId.String()))
+		err = db.Exec(context.Background(), fmt.Sprintf(`DELETE FROM "cloudquery"."fetches" WHERE "id" = '%s';`, summary.FetchId.String()))
 		assert.NoError(t, err)
 	}
 }
