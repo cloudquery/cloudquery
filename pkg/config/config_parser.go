@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/creasty/defaults"
@@ -130,7 +131,10 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 	if dsn := viper.GetString("dsn"); dsn != "" {
 		cq.Connection.DSN = dsn
 	}
-	if dir := viper.GetString("plugin-dir"); dir != "." {
+
+	datadir := viper.GetString("data-dir")
+
+	if dir := viper.GetString("plugin-dir"); dir != "" {
 		if dir == "." {
 			if dir, err := os.Getwd(); err == nil {
 				cq.PluginDirectory = dir
@@ -138,7 +142,10 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		} else {
 			cq.PluginDirectory = dir
 		}
+	} else {
+		cq.PluginDirectory = filepath.Join(datadir, "providers")
 	}
+
 	if dir := viper.GetString("policy-dir"); dir != "" {
 		if dir == "." {
 			if dir, err := os.Getwd(); err == nil {
@@ -147,7 +154,10 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		} else {
 			cq.PolicyDirectory = dir
 		}
+	} else {
+		cq.PolicyDirectory = filepath.Join(datadir, "policies")
 	}
+
 	// validate provider versions
 	for _, cp := range cq.Providers {
 		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {

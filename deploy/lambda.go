@@ -21,6 +21,11 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 
 func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	dsn := os.Getenv("CQ_DSN")
+	dataDir, present := os.LookupEnv("CQ_DATA_DIR")
+	if !present {
+		dataDir = ".cq"
+	}
+	viper.Set("data-dir", dataDir)
 	pluginDir, present := os.LookupEnv("CQ_PLUGIN_DIR")
 	if !present {
 		pluginDir = "."
@@ -31,12 +36,6 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 		policyDir = "."
 	}
 	viper.Set("policy-dir", policyDir)
-
-	dataDir, present := os.LookupEnv("CQ_DATA_DIR")
-	if !present {
-		dataDir = ".cq"
-	}
-	viper.Set("data-dir", dataDir)
 
 	cfg, diags := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
