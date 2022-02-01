@@ -1,3 +1,4 @@
+// Package fetch interacts with core database and handles fetch summary routines.
 package fetch
 
 import (
