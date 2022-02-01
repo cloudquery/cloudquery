@@ -197,7 +197,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
-	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.config.Terraform, d.params.StateFiles)
+	iacProv, iacStates, err := readIACStates(d.logger, string(iacTerraform), d.config.Terraform, d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -412,7 +412,7 @@ func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
-func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
+func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
 	if iacProvider(iacID) != iacTerraform {
 		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
 	}
@@ -457,6 +457,14 @@ func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string)
 			_ = fh.Close()
 			if err != nil {
 				return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+			}
+			if ok, err := terraform.ValidateStateVersion(data); err != nil {
+				if !ok {
+					return "", nil, fmt.Errorf("validate %s: %w", fn, err)
+				}
+				logger.Warn("ValidateStateVersion", "warning", err.Error())
+			} else if !ok {
+				return "", nil, fmt.Errorf("validate %s: failed", fn)
 			}
 
 			ret = append(ret, data)
