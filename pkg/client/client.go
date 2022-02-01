@@ -232,7 +232,7 @@ type Client struct {
 	// Optional: Logger framework can use to log.
 	// default: global logger provided.
 	Logger hclog.Logger
-	// Optional: Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
+	// Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
 	// if not specified, default cloudquery registry is used.
 	Hub registry.Hub
 	// manager manages all plugins lifecycle
@@ -260,6 +260,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		HistoryCfg:         nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
+		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURl),
 	}
 	for _, o := range options {
 		o(c)
