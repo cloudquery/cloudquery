@@ -302,8 +302,8 @@ type ProviderUpdateSummary struct {
 }
 
 // CheckForProviderUpdates checks for provider updates
-func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
-	var summary []ProviderUpdateSummary
+func (c *Client) CheckForProviderUpdates(ctx context.Context) []ProviderUpdateSummary {
+	summary := make([]ProviderUpdateSummary, 0, len(c.Providers))
 	for _, p := range c.Providers {
 		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
 		if strings.Compare(p.Version, "latest") == 0 {
@@ -325,7 +325,7 @@ func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateS
 			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
 		}
 	}
-	return summary, nil
+	return summary
 }
 
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
