@@ -462,7 +462,7 @@ func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig,
 				if !ok {
 					return "", nil, fmt.Errorf("validate %s: %w", fn, err)
 				}
-				logger.Warn("ValidateStateVersion", "message", err)
+				logger.Warn("ValidateStateVersion", "warning", err.Error())
 			} else if !ok {
 				return "", nil, fmt.Errorf("validate %s: failed", fn)
 			}
