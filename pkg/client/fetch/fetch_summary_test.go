@@ -1,11 +1,14 @@
-package fetch_summary
+package fetch
 
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
@@ -15,22 +18,22 @@ import (
 const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
 type fetchSummaryTest struct {
-	summary     FetchSummary
+	summary     Summary
 	err         error
 	skipFetchId bool
 }
 
 var fetchSummaryTests = []fetchSummaryTest{
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName:    "test",
 			ProviderVersion: "v0.0.0",
 		},
 	},
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName: "test1",
-			Resources: []ResourceFetchSummary{
+			Resources: []ResourceSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -39,15 +42,15 @@ var fetchSummaryTests = []fetchSummaryTest{
 		},
 	},
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 	},
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName: "test4",
-			Resources: []ResourceFetchSummary{
+			Resources: []ResourceSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -60,14 +63,14 @@ var fetchSummaryTests = []fetchSummaryTest{
 		},
 	},
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 		err: errors.New("ERROR: duplicate key value violates unique constraint \"fetches_pk\" (SQLSTATE 23505)"),
 	},
 	{
-		summary: FetchSummary{
+		summary: Summary{
 			ProviderName:    "test3",
 			ProviderVersion: "v0.0.1",
 		},
@@ -76,13 +79,20 @@ var fetchSummaryTests = []fetchSummaryTest{
 	},
 }
 
-func TestFetchSummary(t *testing.T) {
-	// todo be sure that it is running after core migrations
+func TestFetchSaveSummary(t *testing.T) {
 	// create database connection
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	fetchSummaryClient := NewClient(db)
+	fetchSummaryClient := NewClient(db, hclog.NewNullLogger())
+
+	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	if err != nil {
+		t.Fatal(fmt.Errorf("getExecutor: %w", err))
+	}
+
+	err = fetchSummaryClient.MigrateCore(context.Background(), de)
+	assert.NoError(t, err)
 
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {

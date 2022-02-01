@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/client/fetch_summary"
+	"github.com/cloudquery/cloudquery/pkg/client/fetch"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
@@ -193,13 +193,13 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	fetchSummaryClient := fetch_summary.NewClient(e.conn)
+	fsClient := fetch.NewClient(e.conn, e.log)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {
 			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
 		}
-		fetchSummary, err := fetchSummaryClient.GetForProvider(ctx, p.Type)
+		fetchSummary, err := fsClient.GetForProvider(ctx, p.Type)
 		if err != nil {
 			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
 		}
