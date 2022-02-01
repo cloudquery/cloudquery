@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/client/fetch"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
