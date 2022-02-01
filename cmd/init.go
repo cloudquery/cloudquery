@@ -53,7 +53,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	for i, p := range providers {
 		organization, providerName, err := registry.ParseProviderName(p)
 		if err != nil {
-			return fmt.Errorf("cloud not parse requested provider")
+			return fmt.Errorf("colud not parse requested provider")
 		}
 		source := fmt.Sprintf("%s/%s", organization, providerName)
 		requiredProviders[i] = &config.RequiredProvider{

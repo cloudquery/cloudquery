@@ -146,13 +146,7 @@ func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, ver
 
 // CheckProviderUpdate - checks if there is an update for provider, returns nil if there is no update
 func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.RequiredProvider) (*string, error) {
-	var requestedSource string
-	if requestedProvider.Source == nil {
-		requestedSource = requestedProvider.Name
-	} else {
-		requestedSource = *requestedProvider.Source
-	}
-	organization, providerName, err := ParseProviderName(requestedSource)
+	organization, providerName, err := parseProviderSource(requestedProvider)
 	if err != nil {
 		return nil, err
 	}
@@ -178,14 +172,7 @@ func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.
 
 func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.RequiredProvider, noVerify bool) (ProviderDetails, error) {
 	providerVersion := requestedProvider.Version
-	var requestedSource string
-	if requestedProvider.Source == nil {
-		requestedSource = requestedProvider.Name
-	} else {
-		requestedSource = *requestedProvider.Source
-	}
-
-	organization, providerName, err := ParseProviderName(requestedSource)
+	organization, providerName, err := parseProviderSource(requestedProvider)
 	if err != nil {
 		return ProviderDetails{}, err
 	}
@@ -373,4 +360,14 @@ func GetBinarySuffix() string {
 		suffix = ".exe"
 	}
 	return fmt.Sprintf("%s_%s%s", runtime.GOOS, runtime.GOARCH, suffix)
+}
+
+func parseProviderSource(requestedProvider *config.RequiredProvider) (string, string, error) {
+	var requestedSource string
+	if requestedProvider.Source == nil {
+		requestedSource = requestedProvider.Name
+	} else {
+		requestedSource = *requestedProvider.Source
+	}
+	return ParseProviderName(requestedSource)
 }
