@@ -2,43 +2,25 @@ package testing
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/csv"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
-	"sync"
+	"sort"
+	"strings"
 	"testing"
+
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cq-provider-sdk/testlog"
-	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/go-hclog"
-	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/stretchr/testify/assert"
 )
-
-var (
-	dbConnOnce sync.Once
-	pool       *pgxpool.Pool
-	dbErr      error
-)
-
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
-
-func cleanDatabase(ctx context.Context, conn *pgxpool.Conn) error {
-	_, err := conn.Exec(ctx, `DROP SCHEMA public CASCADE;
-	CREATE SCHEMA public;
-	GRANT ALL ON SCHEMA public TO postgres;
-	GRANT ALL ON SCHEMA public TO public`)
-	return err
-}
 
 // pol policy.Policy
 func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
@@ -54,71 +36,52 @@ func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
 	l.SetLevel(hclog.Info)
 
 	ctx := context.Background()
-	// _, err = console.FilterPolicies(source, pols)
-	// if err != nil {
-	// 	t.Fatal(err)
-	// }
-	policyManager := policy.NewManager(uniqueTempDir, nil, l)
+	conn, err := sdkdb.New(ctx, hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	policyManager := policy.NewManager(uniqueTempDir, conn, l)
 	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: source})
 	if err != nil {
 		t.Fatal(err)
 	}
 	pol := p.Filter(selector)
 
-	pool, err := setupDatabase()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	e := policy.NewExecutor(nil, l, nil)
-	config, err := pgxpool.ParseConfig(pool.Config().ConnString())
-	if err != nil {
-		t.Fatalf("Error parsing config: %+v", err)
-	}
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer conn.Release()
-
-	clie := policy.NewCliExecutor(e, config.ConnConfig)
+	clie := policy.NewExecutor(conn, l, nil)
 
 	testPath := path.Join(snapshotDirectory, "query-"+pol.Checks[0].Name, "tests", "")
 	tests, _ := FindAllTestCases(testPath)
 	for _, test := range tests {
+		tables, _ := FindAllTables(path.Join(testPath, test))
+		sort.Sort(sort.Reverse(sort.StringSlice(tables)))
 
-		err = cleanDatabase(ctx, conn)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		fileP := path.Join(testPath, test, "pg-dump.sql")
-		err = clie.RestoreSnapshot(ctx, fileP, config)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if err != nil {
-			t.Fatalf("Error creating config: %+v", err)
+		for _, table := range tables {
+			l.Info("restoring table ", "table", table)
+			err = clie.RestoreSnapshot(ctx, table)
+			if err != nil {
+				t.Fatal(err)
+			}
 		}
 
 		if err != nil {
 			t.Fatalf("Error creating temp dir: %+v", err)
 		}
+
 		// 		c. Run query
-		err = clie.StoreOutput(ctx, &pol, uniqueTempDir, config)
+		err = clie.StoreOutput(ctx, &pol, uniqueTempDir)
 		if err != nil {
 			t.Fatalf("Error storing output: %+v", err)
 		}
-		f2, _ := OpenAndParse(path.Join(testPath, test, "data.json"))
-		f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.json"))
+		f2, _ := OpenAndParse(path.Join(testPath, test, "data.csv"))
+		f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.csv"))
 		compareArbitraryArrays(t, f1, f2)
 	}
 
 }
 
-func compareArbitraryArrays(t *testing.T, f1, f2 []map[string]interface{}) {
+func compareArbitraryArrays(t *testing.T, f1, f2 [][]string) {
 	assert.Equal(t, len(f1), len(f2), "Query results should have same number of items.")
-
 	for _, item1 := range f1 {
 		diffItemPresent := false
 		for _, item2 := range f2 {
@@ -145,21 +108,20 @@ func compareArbitraryArrays(t *testing.T, f1, f2 []map[string]interface{}) {
 	}
 
 }
-func OpenAndParse(filePath string) ([]map[string]interface{}, error) {
-	jsonFile, err := os.Open(filePath)
+func OpenAndParse(filePath string) ([][]string, error) {
+	csvFile, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	var result []map[string]interface{}
-	err = json.Unmarshal(byteValue, &result)
+	byteValue, _ := ioutil.ReadAll(csvFile)
+	csvFile.Close()
+	r := csv.NewReader(strings.NewReader(string(byteValue)))
+	records, err := r.ReadAll()
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
-	return result, err
+	return records, err
 
 }
 
@@ -174,18 +136,13 @@ func FindAllTestCases(root string) ([]string, error) {
 	return files, err
 }
 
-func setupDatabase() (*pgxpool.Pool, error) {
-	dbConnOnce.Do(func() {
-		var dbCfg *pgxpool.Config
-		dbCfg, dbErr = pgxpool.ParseConfig(getEnv("DATABASE_URL", "host=localhost user=postgres password=pass database=postgres port=5432"))
-		if dbErr != nil {
-			return
+func FindAllTables(root string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() && strings.HasPrefix(info.Name(), "table_") {
+			files = append(files, path)
 		}
-		ctx := context.Background()
-		dbCfg.MaxConns = 15
-		dbCfg.LazyConnect = true
-		pool, dbErr = pgxpool.ConnectConfig(ctx, dbCfg)
+		return nil
 	})
-	return pool, dbErr
-
+	return files, err
 }
