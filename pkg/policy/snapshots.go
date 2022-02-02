@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"regexp"
 	"strings"
 
@@ -26,7 +27,7 @@ func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []str
 		}
 		defer ef.Close()
 		query := fmt.Sprintf("COPY (select * from %s) TO STDOUT DELIMITER '|' CSV HEADER", table)
-		ce.log.Info("exporting", "table", table, "query", query)
+		ce.log.Debug("exporting", "table", table, "query", query)
 
 		err = ce.storeOutput(ctx, ef, query)
 		if err != nil {
@@ -47,11 +48,14 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 		return err
 	}
 	defer ef.Close()
-	fileName := strings.Split(source, "/")
-
-	source_name := strings.TrimPrefix(strings.TrimSuffix(fileName[len(fileName)-1], ".csv"), "table_")
+	fileName := path.Base(source)
+	if !strings.HasPrefix(fileName, "table_") || !strings.HasSuffix(fileName, ".csv") {
+		ce.log.Error("truncating", "source", source, "file", fileName)
+		return errors.New("invalid filename")
+	}
+	source_name := strings.TrimPrefix(strings.TrimSuffix(fileName, ".csv"), "table_")
 	truncQuery := fmt.Sprintf("TRUNCATE %s CASCADE", source_name)
-	ce.log.Info("truncating", "table", source_name, "query", truncQuery)
+	ce.log.Debug("truncating", "table", source_name, "query", truncQuery)
 	err = ce.conn.Exec(ctx, truncQuery)
 	if err != nil {
 		ce.log.Error("error importing data from file.", "error", err, "source", source)
@@ -59,7 +63,7 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 	}
 
 	query := fmt.Sprintf("copy \"%s\" from stdin DELIMITER '|' CSV HEADER;", source_name)
-	ce.log.Info("importing", "table", source_name, "query", query)
+	ce.log.Debug("importing", "table", source_name, "query", query)
 
 	err = ce.conn.RawCopyFrom(ctx, ef, query)
 	if err != nil {
@@ -70,6 +74,8 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 }
 
 func cleanQuery(query string) string {
+	// This removes comments from the query
+	// single line queries are not supported in pg_dump
 	var re = regexp.MustCompile(`(?s)\/\*.*?\*\/|--.*?\n`)
 	query = re.ReplaceAllString(query, "")
 	query = strings.TrimSuffix(query, ";")
@@ -78,11 +84,13 @@ func cleanQuery(query string) string {
 
 	return strings.TrimSpace(query)
 }
+
 func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
-	ce.log.Debug("extracting Table names-raw", "raw query", query)
 	cleanedQuery := cleanQuery(query)
-	ce.log.Debug("extracting Table names-cleaned", "cleaned query", cleanedQuery)
+
 	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", cleanedQuery)
+
+	ce.log.Debug("extracting Table names-cleaned", "explainQuery", explainQuery, "raw query", query)
 
 	rows, err := ce.conn.Query(ctx, explainQuery)
 	if err != nil {
@@ -90,11 +98,12 @@ func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableN
 	}
 	var s string
 	for rows.Next() {
-
 		if err := rows.Scan(&s); err != nil {
 			ce.log.Error("error scanning into variable", "error", err)
+			return nil, err
 		}
 	}
+
 	var arrayJsonMap []map[string](interface{})
 	err = json.Unmarshal([]byte(s), &arrayJsonMap)
 	if err != nil {
@@ -109,10 +118,12 @@ func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableN
 	}
 	for key, val := range flat {
 		if strings.HasSuffix(key, "Relation Name") {
-			ce.log.Info("Found relation Name", "Table", val)
+			ce.log.Debug("Found relation Name", "Table", val)
 			tableNames = append(tableNames, val.(string))
 		}
-		if strings.HasSuffix(key, "Alias") {
+		if strings.HasSuffix(key, "Alias") { // Aliases could be query aliases or table aliases (views)
+
+			// Check if query alias, if it is the table will not exist
 			viewQuery, err := ce.checkTableExistence(ctx, val.(string))
 			if err != nil && strings.Contains(err.Error(), "does not exist (SQLSTATE 42P01)") {
 				ce.log.Error("failed to grab query", "err", err, "resp", viewQuery)
@@ -120,6 +131,7 @@ func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableN
 			} else if err != nil {
 				return tableNames, err
 			}
+			// If the alias is a view name, then recursively extract the table names from the subquery
 			if viewQuery != "" {
 				viewTables, err := ce.ExtractTableNames(ctx, viewQuery)
 				if err != nil {
@@ -135,7 +147,7 @@ func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableN
 		ce.log.Error("Error fetching rows", "query", query, "error", err)
 		return tableNames, err
 	}
-
+	// It is possible that tables are used multiple times so need to dedupe prior to returning
 	return removeDuplicateValues(tableNames), err
 }
 
