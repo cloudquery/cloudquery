@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 func printFetchResponse(summary *client.FetchResponse) {

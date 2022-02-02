@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/hcl/v2"
 )
 
@@ -28,7 +28,7 @@ type ExecuteRequest struct {
 	// Providers is the list of providers to process
 	Providers []*cqproto.GetProviderSchemaResponse
 	// Conn is the db connection to use
-	Conn schema.QueryExecer
+	Conn execution.QueryExecer
 }
 
 type ExecutionResult struct {
