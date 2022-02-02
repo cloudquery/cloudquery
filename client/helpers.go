@@ -97,7 +97,7 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 		switch ae.ErrorCode() {
 		case "AWSOrganizationsNotInUseException":
 			return true
-		case "AuthorizationError", "AccessDenied", "AccessDeniedException", "UnauthorizedOperation":
+		case "AuthorizationError", "AccessDenied", "AccessDeniedException", "InsufficientPrivilegesException", "UnauthorizedOperation":
 			return true
 		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return true
