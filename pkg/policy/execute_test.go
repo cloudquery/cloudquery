@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupPolicyDatabase(t *testing.T, tableName string) (execution.QueryExecer, func(t *testing.T)) {
+func setupPolicyDatabase(t *testing.T, tableName string) (execution.LowLevelQueryExecer, func(t *testing.T)) {
 	conn, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 

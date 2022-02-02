@@ -25,7 +25,7 @@ type ManagerImpl struct {
 	policyDirectory string
 
 	// Instance of a database connection pool
-	pool execution.QueryExecer
+	pool execution.LowLevelQueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -45,7 +45,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(policyDir string, pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(policyDir string, pool execution.LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		policyDirectory: policyDir,
 		pool:            pool,

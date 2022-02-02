@@ -15,7 +15,7 @@ type ManagerImpl struct {
 	modOrder []string
 
 	// Instance of database
-	pool execution.QueryExecer
+	pool execution.LowLevelQueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -35,7 +35,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(pool execution.LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]Module),
 		pool:    pool,

@@ -45,7 +45,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn execution.QueryExecer
+	conn execution.LowLevelQueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -101,7 +101,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn execution.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn execution.LowLevelQueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,
