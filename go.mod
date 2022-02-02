@@ -2,12 +2,10 @@ module github.com/cloudquery/cloudquery
 
 go 1.17
 
-replace github.com/cloudquery/cq-provider-sdk => /Users/benbernays/Documents/GitHub/cq-provider-sdk
-
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.7.0
+	github.com/cloudquery/cq-provider-sdk v0.7.4
 	github.com/fatih/color v1.13.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/golang-migrate/migrate/v4 v4.15.0
