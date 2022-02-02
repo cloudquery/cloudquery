@@ -8,13 +8,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
-func printFetchResponse(summary *client.FetchResponse) {
+func printFetchResponse(summary *client.FetchResponse, redactDiags bool) {
 	if summary == nil {
 		return
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
 		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics(pfs.ProviderName, pfs.Diagnostics())
+			printDiagnostics(pfs.ProviderName, pfs.Diagnostics(), redactDiags)
 			continue
 		}
 		if len(pfs.PartialFetchErrors) == 0 {
@@ -40,11 +40,18 @@ func printFetchResponse(summary *client.FetchResponse) {
 	}
 }
 
-func printDiagnostics(providerName string, diags diag.Diagnostics) {
+func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags bool) {
 	// sort diagnostics by severity/type
 	sort.Sort(diags)
 	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
 	for _, d := range diags {
+		if redactDiags {
+			if rd, ok := d.(diag.Redactable); ok {
+				if r := rd.Redacted(); r != nil {
+					d = r
+				}
+			}
+		}
 		desc := d.Description()
 		switch d.Severity() {
 		case diag.IGNORE:
