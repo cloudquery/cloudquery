@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/google/uuid"
 )
