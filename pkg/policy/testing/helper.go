@@ -3,9 +3,7 @@ package testing
 import (
 	"context"
 	"encoding/csv"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -109,17 +107,15 @@ func compareArbitraryArrays(t *testing.T, f1, f2 [][]string) {
 
 }
 func OpenAndParse(filePath string) ([][]string, error) {
-	csvFile, err := os.Open(filePath)
+	csvFile, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
-	byteValue, _ := ioutil.ReadAll(csvFile)
-	csvFile.Close()
-	r := csv.NewReader(strings.NewReader(string(byteValue)))
+
+	r := csv.NewReader(strings.NewReader(string(csvFile)))
 	records, err := r.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return records, err
 

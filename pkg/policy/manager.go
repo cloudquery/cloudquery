@@ -19,13 +19,18 @@ const (
 	CloudQueryOrg = "cloudquery-policies"
 )
 
+type LowLevelQueryExecer interface {
+	execution.Copier
+	execution.QueryExecer
+}
+
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	// policyDirectory points to the local policy directory
 	policyDirectory string
 
 	// Instance of a database connection pool
-	pool execution.LowLevelQueryExecer
+	pool LowLevelQueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -45,7 +50,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(policyDir string, pool execution.LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(policyDir string, pool LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		policyDirectory: policyDir,
 		pool:            pool,

@@ -9,13 +9,18 @@ import (
 	"github.com/hashicorp/hcl/v2"
 )
 
+type LowLevelQueryExecer interface {
+	execution.Copier
+	execution.QueryExecer
+}
+
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	modules  map[string]Module
 	modOrder []string
 
 	// Instance of database
-	pool execution.LowLevelQueryExecer
+	pool LowLevelQueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -35,7 +40,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(pool execution.LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(pool LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]Module),
 		pool:    pool,
