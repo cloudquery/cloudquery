@@ -22,3 +22,8 @@ func ParseProviderName(name string) (string, string, error) {
 	}
 	return "", "", fmt.Errorf("invalid provider name %s", name)
 }
+
+// ProviderRepoName returns a repository name for a given provider name.
+func ProviderRepoName(name string) string {
+	return fmt.Sprintf("cq-provider-%s", name)
+}
