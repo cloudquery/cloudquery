@@ -12,6 +12,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
@@ -165,7 +166,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn schema.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
 		Different: nil,
 		Equal:     nil,
