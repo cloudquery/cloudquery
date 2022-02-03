@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/fatih/color"
 	"github.com/getsentry/sentry-go"
@@ -25,13 +25,12 @@ import (
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 )
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
@@ -551,13 +550,11 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
-	selector = strings.ReplaceAll(selector, "//", "/")
-	pol := p.Filter(selector)
-	if strings.Contains(selector, "/") {
-		selector = selector[:strings.LastIndexAny(selector, "/")]
-	}
 
-	buildDescribePolicyTable(t, policy.Policies{&pol}, selector)
+	policyName, subPath := getter.ParseSourceSubPolicy(selector)
+
+	pol := p.Filter(subPath)
+	buildDescribePolicyTable(t, policy.Policies{&pol}, policyName)
 	t.Render()
 	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
 	return nil
