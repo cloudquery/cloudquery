@@ -6,6 +6,7 @@ import (
 	"net"
 	"strings"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	"go.opentelemetry.io/otel/codes"
@@ -18,6 +19,12 @@ import (
 func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 	if err == nil {
 		return false
+	}
+
+	if rd, ok := err.(diag.Redactable); ok {
+		if r := rd.Redacted(); r != nil {
+			err = r
+		}
 	}
 
 	if cls := classifyError(err); cls != errNoClass {

@@ -1084,6 +1084,12 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
 		for _, e := range ps.Diagnostics() {
+			if rd, ok := e.(diag.Redactable); ok {
+				if r := rd.Redacted(); r != nil {
+					e = r
+				}
+			}
+
 			if e.Severity() == diag.IGNORE {
 				continue
 			}
@@ -1096,8 +1102,11 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 					"resource":         e.Description().Resource,
 				})
 				scope.SetExtra("detail", e.Description().Detail)
-				if e.Severity() == diag.WARNING {
+				switch e.Severity() {
+				case diag.WARNING:
 					scope.SetLevel(sentry.LevelWarning)
+				case diag.PANIC:
+					scope.SetLevel(sentry.LevelFatal)
 				}
 				sentry.CaptureException(e)
 			})
