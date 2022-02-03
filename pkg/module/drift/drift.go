@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -260,7 +260,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	return resList, nil
 }
 
-func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn schema.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
+func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build failed: %w", err)

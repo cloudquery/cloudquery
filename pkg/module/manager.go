@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -15,7 +15,7 @@ type ManagerImpl struct {
 	modOrder []string
 
 	// Instance of database
-	pool schema.QueryExecer
+	pool execution.QueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -35,7 +35,7 @@ type Manager interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(pool schema.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]Module),
 		pool:    pool,
