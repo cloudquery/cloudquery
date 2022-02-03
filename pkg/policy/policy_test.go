@@ -325,6 +325,34 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
+			path: "level-1/level-2/",
+			expectedPolicy: Policy{
+				Name: "level-2",
+				Policies: Policies{
+					&Policy{
+						Name: "level-3",
+					},
+				},
+			},
+		}, {
+			p: Policy{
+				Name: "aws",
+				Policies: Policies{
+					&Policy{
+						Name: "level-1",
+						Policies: Policies{
+							&Policy{
+								Name: "level-2",
+								Policies: Policies{
+									&Policy{
+										Name: "level-3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 			path: "level-1/level-2",
 			expectedPolicy: Policy{
 				Name: "level-2",
