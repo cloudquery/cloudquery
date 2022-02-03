@@ -63,7 +63,7 @@ func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client
 }
 
 func TestRedshiftClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, RedshiftClusters(), buildRedshiftClustersMock, client.TestOptions{SkipEmptyJsonB: true})
+	client.AwsMockTestHelper(t, RedshiftClusters(), buildRedshiftClustersMock, client.TestOptions{})
 }
 
 func TestRedshiftSubnetGroups(t *testing.T) {

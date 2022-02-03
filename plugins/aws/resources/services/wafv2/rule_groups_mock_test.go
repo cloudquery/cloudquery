@@ -89,5 +89,5 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestWafV2RuleGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, Wafv2RuleGroups(), buildWAFV2RuleGroupsMock, client.TestOptions{SkipEmptyJsonB: true})
+	client.AwsMockTestHelper(t, Wafv2RuleGroups(), buildWAFV2RuleGroupsMock, client.TestOptions{})
 }
