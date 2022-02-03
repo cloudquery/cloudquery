@@ -35,12 +35,10 @@ By default cloudquery will fetch all configurations from **all** resources in **
 
 ### Query Examples:
 
-#### Find all buckets that have public facing read permissions
+#### Find all buckets without uniform bucket-level access
 
 ```sql
-SELECT gcp_storage_buckets.name
+SELECT project_id, name, self_link AS link
 FROM gcp_storage_buckets
-         JOIN gcp_storage_bucket_policy_bindings ON gcp_storage_bucket_policy_bindings.bucket_id = gcp_storage_buckets.id
-         JOIN gcp_storage_bucket_policy_bindings_members ON gcp_storage_bucket_policy_bindings_members.bucket_policy_binding_id = gcp_storage_bucket_policy_bindings.id
-WHERE gcp_storage_bucket_policy_bindings_members.name = 'allUsers' AND gcp_storage_bucket_policy_bindings.role = 'roles/storage.objectViewer';
+WHERE iam_configuration_uniform_bucket_level_access_enabled = FALSE;
 ```
