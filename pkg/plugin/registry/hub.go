@@ -370,7 +370,7 @@ func GetBinarySuffix() string {
 
 func parseProviderSource(requestedProvider *config.RequiredProvider) (string, string, error) {
 	var requestedSource string
-	if requestedProvider.Source == nil {
+	if requestedProvider.Source == nil || *requestedProvider.Source == "" {
 		requestedSource = requestedProvider.Name
 	} else {
 		requestedSource = *requestedProvider.Source
