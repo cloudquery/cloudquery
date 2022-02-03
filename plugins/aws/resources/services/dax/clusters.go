@@ -258,7 +258,7 @@ func resolveDaxClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	cl := meta.(*client.Client)
 	svc := cl.Services().DAX
 	response, err := svc.ListTags(ctx, &dax.ListTagsInput{
-		ResourceName: cluster.ClusterName,
+		ResourceName: cluster.ClusterArn,
 	}, func(options *dax.Options) {
 		options.Region = cl.Region
 	})
