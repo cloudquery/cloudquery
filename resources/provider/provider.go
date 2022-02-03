@@ -4,7 +4,6 @@ import (
 	"embed"
 
 	"github.com/cloudquery/cq-provider-aws/resources/services/iot"
-
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
