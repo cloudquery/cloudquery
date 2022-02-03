@@ -541,6 +541,56 @@ func SQLServers() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "azure_sql_server_virtual_network_rules",
+				Description: "List of virtual network for a server",
+				Resolver:    fetchSqlServerVirtualNetworkRules,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "server_cq_id",
+						Description: "Unique ID of azure_sql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Name"),
+					},
+					{
+						Name:        "type",
+						Description: "The virtual network rule type",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Type"),
+					},
+					{
+						Name:        "subnet_id",
+						Description: "The ARM resource id of the virtual network subnet.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("VirtualNetworkSubnetID"),
+					},
+					{
+						Name:        "ignore_missing_vnet_service_endpoint",
+						Description: "Create firewall rule before the virtual network has vnet service endpoint enabled.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("IgnoreMissingVnetServiceEndpoint"),
+					},
+					{
+						Name:        "state",
+						Description: "Virtual Network Rule State",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("State"),
+					},
+				},
+			},
 		},
 	}
 }
@@ -570,6 +620,29 @@ func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.C
 	}
 	if server.PrivateEndpointConnections != nil {
 		res <- *server.PrivateEndpointConnections
+	}
+	return nil
+}
+
+func fetchSqlServerVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.VirtualNetworkRules
+	server, ok := parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
+	}
+	details, err := client.ParseResourceID(*server.ID)
+	if err != nil {
+		return err
+	}
+	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err := result.NextWithContext(ctx); err != nil {
+			return err
+		}
 	}
 	return nil
 }

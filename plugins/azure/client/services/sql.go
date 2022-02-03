@@ -20,6 +20,7 @@ type SQLClient struct {
 	ServerVulnerabilityAssessments   SQLServerVulnerabilityAssessmentsClient
 	TransparentDataEncryptions       TransparentDataEncryptionsClient
 	EncryptionProtectors             EncryptionProtectorsClient
+	VirtualNetworkRules              SQLVirtualNetworkRulesClient
 }
 
 func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
@@ -47,6 +48,8 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	enc.Authorizer = auth
 	ep := sql.NewEncryptionProtectorsClient(subscriptionId)
 	ep.Authorizer = auth
+	vnr := sql.NewVirtualNetworkRulesClient(subscriptionId)
+	vnr.Authorizer = auth
 	return SQLClient{
 		DatabaseBlobAuditingPolicies:     dbap,
 		Databases:                        databases,
@@ -60,6 +63,7 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 		ServerVulnerabilityAssessments:   sva,
 		TransparentDataEncryptions:       enc,
 		EncryptionProtectors:             ep,
+		VirtualNetworkRules:              vnr,
 	}
 }
 
@@ -108,4 +112,8 @@ type TransparentDataEncryptionsClient interface {
 
 type EncryptionProtectorsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
+}
+
+type SQLVirtualNetworkRulesClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultPage, err error)
 }

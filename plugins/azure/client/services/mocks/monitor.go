@@ -8,8 +8,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	insightso "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
-	insights "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
+	insights "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	insights0 "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -37,10 +37,10 @@ func (m *MockActivityLogAlertsClient) EXPECT() *MockActivityLogAlertsClientMockR
 }
 
 // ListBySubscriptionID mocks base method.
-func (m *MockActivityLogAlertsClient) ListBySubscriptionID(arg0 context.Context) (insightso.ActivityLogAlertList, error) {
+func (m *MockActivityLogAlertsClient) ListBySubscriptionID(arg0 context.Context) (insights.ActivityLogAlertList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListBySubscriptionID", arg0)
-	ret0, _ := ret[0].(insightso.ActivityLogAlertList)
+	ret0, _ := ret[0].(insights.ActivityLogAlertList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -75,10 +75,10 @@ func (m *MockLogProfilesClient) EXPECT() *MockLogProfilesClientMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockLogProfilesClient) List(arg0 context.Context) (insights.LogProfileCollection, error) {
+func (m *MockLogProfilesClient) List(arg0 context.Context) (insights0.LogProfileCollection, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", arg0)
-	ret0, _ := ret[0].(insights.LogProfileCollection)
+	ret0, _ := ret[0].(insights0.LogProfileCollection)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -113,10 +113,10 @@ func (m *MockDiagnosticSettingsClient) EXPECT() *MockDiagnosticSettingsClientMoc
 }
 
 // List mocks base method.
-func (m *MockDiagnosticSettingsClient) List(arg0 context.Context, arg1 string) (insights.DiagnosticSettingsResourceCollection, error) {
+func (m *MockDiagnosticSettingsClient) List(arg0 context.Context, arg1 string) (insights0.DiagnosticSettingsResourceCollection, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", arg0, arg1)
-	ret0, _ := ret[0].(insights.DiagnosticSettingsResourceCollection)
+	ret0, _ := ret[0].(insights0.DiagnosticSettingsResourceCollection)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -151,10 +151,10 @@ func (m *MockActivityLogClient) EXPECT() *MockActivityLogClientMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockActivityLogClient) List(arg0 context.Context, arg1, arg2 string) (insights.EventDataCollectionPage, error) {
+func (m *MockActivityLogClient) List(arg0 context.Context, arg1, arg2 string) (insights0.EventDataCollectionPage, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", arg0, arg1, arg2)
-	ret0, _ := ret[0].(insights.EventDataCollectionPage)
+	ret0, _ := ret[0].(insights0.EventDataCollectionPage)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

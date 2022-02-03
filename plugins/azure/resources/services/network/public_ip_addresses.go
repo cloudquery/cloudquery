@@ -27,14 +27,14 @@ func NetworkPublicIPAddresses() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
-				Name:          "extended_location_name.",
+				Name:          "extended_location_name",
 				Description:   "The name of the extended location",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("ExtendedLocation.Name"),
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "extended_location_type.",
+				Name:          "extended_location_type",
 				Description:   "The type of the extended location",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("ExtendedLocation.Type"),

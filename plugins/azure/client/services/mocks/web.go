@@ -50,6 +50,21 @@ func (mr *MockAppsClientMockRecorder) GetAuthSettings(arg0, arg1, arg2 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAuthSettings", reflect.TypeOf((*MockAppsClient)(nil).GetAuthSettings), arg0, arg1, arg2)
 }
 
+// GetVnetConnection mocks base method.
+func (m *MockAppsClient) GetVnetConnection(arg0 context.Context, arg1, arg2, arg3 string) (web.VnetInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVnetConnection", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(web.VnetInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVnetConnection indicates an expected call of GetVnetConnection.
+func (mr *MockAppsClientMockRecorder) GetVnetConnection(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVnetConnection", reflect.TypeOf((*MockAppsClient)(nil).GetVnetConnection), arg0, arg1, arg2, arg3)
+}
+
 // List mocks base method.
 func (m *MockAppsClient) List(arg0 context.Context) (web.AppCollectionPage, error) {
 	m.ctrl.T.Helper()
