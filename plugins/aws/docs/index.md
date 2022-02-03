@@ -20,7 +20,7 @@ To authenticate CloudQuery with your AWS account you can use any of the followin
   - SDK defaults to `credentials` file under `.aws` folder that is placed in the home folder on your computer.
   - SDK defaults to `config` file under `.aws` folder that is placed in the home folder on your computer.
   - SDK is able to use SSO credentials stored in the `~/.aws/` directory
-- The SDK is able to use the IAM role associated with AWS Compute resources including (EC2 instances, Fargate and ECS containers, and Lambda Functions)
+- The SDK is able to use the IAM role associated with AWS Compute resources including (EC2 instances, Fargate and ECS containers).
 
 ## Configuration
 
