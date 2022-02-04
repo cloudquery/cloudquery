@@ -20,12 +20,9 @@ var (
   cloudquery policy test path/to/policy.hcl path/to/snapshot/dir selector
 	`,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			if len(args) == 3 {
-				return c.TestPolicies(ctx, args[0], args[1], args[2])
-			}
-			return c.TestPolicies(ctx, args[0], args[1], "")
+			return c.TestPolicies(ctx, args[0], args[1])
 		}),
-		Args: cobra.RangeArgs(2, 3),
+		Args: cobra.ExactArgs(2),
 	}
 )
 

@@ -20,7 +20,7 @@ import (
 
 // pol policy.Policy
 
-func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory, selector string) error {
+func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory string) error {
 	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 	if err != nil {
 		l.Error("failed to create tempDirectory", "err", err)
@@ -43,7 +43,9 @@ func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory, 
 	e := NewExecutor(conn, l, nil)
 	tests, _ := FindAllTestCases(snapshotDirectory)
 	for _, test := range tests {
-		selector = strings.Split(strings.TrimPrefix(test, snapshotDirectory+"/"), "/tests")[0]
+
+		selector := strings.TrimPrefix(test, snapshotDirectory+"/")
+		selector = strings.Split(selector, "/tests")[0]
 		pol := p.Filter(selector)
 		tables, _ := FindAllTables(test)
 		sort.Sort(sort.Reverse(sort.StringSlice(tables)))

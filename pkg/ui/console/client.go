@@ -236,10 +236,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	return nil
 }
 
-func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestination, selector string) error {
+func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestination string) error {
 
 	// return policy.TestPolicy(ctx, c.c.Logger, ".cq/policies/github.com/cloudquery-policies/aws", "./dest", "foundational_security/ec2/EC2.18")
-	return policy.TestPolicy(ctx, c.c.Logger, policySource, snapshotDestination, selector)
+	return policy.TestPolicy(ctx, c.c.Logger, policySource, snapshotDestination)
 
 }
 
