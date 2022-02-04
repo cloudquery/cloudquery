@@ -1083,7 +1083,7 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
-		for _, e := range ps.Diagnostics() {
+		for _, e := range ps.Diagnostics().Squash() {
 			if rd, ok := e.(diag.Redactable); ok {
 				if r := rd.Redacted(); r != nil {
 					e = r
