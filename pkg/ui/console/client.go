@@ -543,7 +543,7 @@ func (c Client) filterProvidersResources(list []string) error {
 		}
 	}
 
-	requiredProviders := make(map[string]struct{}, 0)
+	requiredProviders := make(map[string]struct{})
 	for i, p := range c.cfg.Providers {
 		var (
 			resList []string
