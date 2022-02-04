@@ -18,8 +18,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
-// pol policy.Policy
-
 func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory string) error {
 	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 	if err != nil {
