@@ -20,7 +20,7 @@ type ManagerImpl struct {
 	modOrder []string
 
 	// Instance of database
-	pool LowLevelQueryExecer
+	pool execution.QueryExecer
 
 	// Logger instance
 	logger hclog.Logger
