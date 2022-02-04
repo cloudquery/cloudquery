@@ -60,7 +60,7 @@ func NewManager(policyDir string, pool LowLevelQueryExecer, logger hclog.Logger)
 
 func createPath(directory, queryName string) (string, error) {
 	path := strings.TrimSuffix(directory, "/")
-	cleanedPath := filepath.Join(path, "/query"+"-"+queryName+"/", "tests", uuid.NewV4().String())
+	cleanedPath := filepath.Join(path, queryName, "tests", uuid.NewV4().String())
 
 	err := os.MkdirAll(cleanedPath, os.ModePerm)
 	if err != nil {
@@ -69,7 +69,7 @@ func createPath(directory, queryName string) (string, error) {
 	return cleanedPath, nil
 }
 
-func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error {
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, selector string) error {
 	e := NewExecutor(m.pool, m.logger, nil)
 
 	if err := e.createViews(ctx, policy); err != nil {
@@ -80,7 +80,7 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination,
 	if err != nil {
 		return err
 	}
-	snapShotPath, err := createPath(destination, policy.Checks[0].Name)
+	snapShotPath, err := createPath(destination, selector)
 	if err != nil {
 		return err
 	}
