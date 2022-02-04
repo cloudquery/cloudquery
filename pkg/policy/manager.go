@@ -46,7 +46,7 @@ type Manager interface {
 	Load(ctx context.Context, policy *Policy) (*Policy, error)
 
 	// Take a Snapshot of a policy
-	Snapshot(ctx context.Context, policy *Policy, destination, dsn string) error
+	Snapshot(ctx context.Context, policy *Policy, destination, selector string) error
 }
 
 // NewManager returns a new manager instance.
@@ -58,7 +58,8 @@ func NewManager(policyDir string, pool LowLevelQueryExecer, logger hclog.Logger)
 	}
 }
 
-func createPath(directory, queryName string) (string, error) {
+//
+func createSnapshotPath(directory, queryName string) (string, error) {
 	path := strings.TrimSuffix(directory, "/")
 	cleanedPath := filepath.Join(path, queryName, "tests", uuid.NewV4().String())
 
@@ -80,7 +81,7 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination,
 	if err != nil {
 		return err
 	}
-	snapShotPath, err := createPath(destination, selector)
+	snapShotPath, err := createSnapshotPath(destination, selector)
 	if err != nil {
 		return err
 	}
