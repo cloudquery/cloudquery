@@ -8,30 +8,40 @@ import (
 	"io"
 	"os"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
 	"github.com/jeremywohl/flatten"
 )
 
+func (ce *Executor) persistSnapshot(ctx context.Context, path string, table string) error {
+	ef, err := os.OpenFile(filepath.Join("%s/", path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
+	if err != nil {
+		ce.log.Error("error opening file.", "error", err)
+		return err
+	}
+	defer ef.Close()
+	query := fmt.Sprintf("COPY (select * from %s) TO STDOUT DELIMITER '|' CSV HEADER", table)
+	ce.log.Debug("exporting", "table", table, "query", query)
+
+	err = ce.storeOutput(ctx, ef, query)
+	if err != nil {
+		return fmt.Errorf("error exporting file: %w", err)
+	}
+	return nil
+
+}
 func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []string) error {
 	if len(tables) == 0 {
 		return errors.New("no tables to snapshot")
 	}
 
 	for _, table := range tables {
-		ef, err := os.OpenFile(fmt.Sprintf("%s/table_%s.csv", path, table), os.O_CREATE|os.O_WRONLY, 0777)
-		if err != nil {
-			ce.log.Error("error opening file.", "error", err)
-			return err
-		}
-		defer ef.Close()
-		query := fmt.Sprintf("COPY (select * from %s) TO STDOUT DELIMITER '|' CSV HEADER", table)
-		ce.log.Debug("exporting", "table", table, "query", query)
 
-		err = ce.storeOutput(ctx, ef, query)
+		err := ce.persistSnapshot(ctx, path, table)
 		if err != nil {
-			return fmt.Errorf("error exporting file: %+v", err)
+			return err
 		}
 
 	}
