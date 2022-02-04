@@ -12,34 +12,15 @@ import (
 	"sort"
 	"strings"
 
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/go-cmp/cmp"
-
-	"github.com/hashicorp/go-hclog"
 )
 
-func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory string) error {
-	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
+func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirectory, tempDirectory string) error {
+
+	tests, err := FindAllTestCases(snapshotDirectory)
 	if err != nil {
-		l.Error("failed to create tempDirectory", "err", err)
 		return err
 	}
-
-	conn, err := sdkdb.New(ctx, hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
-	if err != nil {
-		l.Error("failed to connect to new database", "err", err)
-		return err
-	}
-
-	policyManager := NewManager(uniqueTempDir, conn, l)
-	p, err := policyManager.Load(ctx, &Policy{Name: "test-policy", Source: source})
-	if err != nil {
-		l.Error("failed to create policy manager", "err", err)
-		return err
-	}
-
-	e := NewExecutor(conn, l, nil)
-	tests, _ := FindAllTestCases(snapshotDirectory)
 	for _, test := range tests {
 
 		selector := strings.TrimPrefix(test, snapshotDirectory+"/")
@@ -49,25 +30,25 @@ func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory s
 		sort.Sort(sort.Reverse(sort.StringSlice(tables)))
 
 		for _, table := range tables {
-			l.Info("restoring table ", "table", table)
+			e.log.Info("restoring table ", "table", table)
 			err = e.RestoreSnapshot(ctx, table)
 			if err != nil {
-				l.Error("failed to restore snapshot", "err", err)
+				e.log.Error("failed to restore snapshot", "err", err)
 				return err
 			}
 		}
 
 		// 		c. Run query
-		err = e.StoreOutput(ctx, &pol, uniqueTempDir)
+		err = e.StoreOutput(ctx, &pol, tempDirectory)
 		if err != nil {
-			l.Error("failed to StoreOutput", "err", err)
+			e.log.Error("failed to StoreOutput", "err", err)
 			return err
 		}
 		f2, _ := OpenAndParse(path.Join(test, "data.csv"))
-		f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.csv"))
+		f1, _ := OpenAndParse(path.Join(tempDirectory, "data.csv"))
 		if err := compareArbitraryArrays(f1, f2); err != nil {
 
-			l.Error("Failed test case", "case", test, "got", f1, "expected", f2)
+			e.log.Error("Failed test case", "case", test, "got", f1, "expected", f2)
 			return err
 		}
 	}

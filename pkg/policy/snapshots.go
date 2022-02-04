@@ -31,7 +31,6 @@ func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []str
 
 		err = ce.storeOutput(ctx, ef, query)
 		if err != nil {
-			ce.log.Error("error exporting file.", "error", err)
 			return fmt.Errorf("error exporting file: %+v", err)
 		}
 
@@ -51,15 +50,14 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 	fileName := path.Base(source)
 	if !strings.HasPrefix(fileName, "table_") || !strings.HasSuffix(fileName, ".csv") {
 		ce.log.Error("truncating", "source", source, "file", fileName)
-		return errors.New("invalid filename")
+		return fmt.Errorf("invalid filename: %q", fileName)
 	}
 	source_name := strings.TrimPrefix(strings.TrimSuffix(fileName, ".csv"), "table_")
 	truncQuery := fmt.Sprintf("TRUNCATE %s CASCADE", source_name)
 	ce.log.Debug("truncating", "table", source_name, "query", truncQuery)
 	err = ce.conn.Exec(ctx, truncQuery)
 	if err != nil {
-		ce.log.Error("error importing data from file.", "error", err, "source", source)
-		return fmt.Errorf("error importing file: %+v", err)
+		return fmt.Errorf("error importing file %q: %w", fileName, err)
 	}
 
 	query := fmt.Sprintf("copy \"%s\" from stdin DELIMITER '|' CSV HEADER;", source_name)
@@ -67,7 +65,7 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 
 	err = ce.conn.RawCopyFrom(ctx, ef, query)
 	if err != nil {
-		return fmt.Errorf("error importing file: %+v", err)
+		return fmt.Errorf("error importing file: %w", err)
 	}
 
 	return nil
@@ -85,7 +83,8 @@ func cleanQuery(query string) string {
 	return strings.TrimSpace(query)
 }
 
-func (ce *Executor) ExtractTableNames(ctx context.Context, query string) (tableNames []string, err error) {
+func (ce *Executor) ExtractTableNames(ctx context.Context, query string) ([]string, error) {
+	tableNames := make([]string, 0)
 	cleanedQuery := cleanQuery(query)
 
 	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", cleanedQuery)
@@ -169,8 +168,7 @@ func (ce *Executor) StoreOutput(ctx context.Context, pol *Policy, destination st
 	}
 	err = ce.createViews(ctx, pol)
 	if err != nil {
-		ce.log.Error("error creating views:", err)
-		return err
+		return fmt.Errorf("failed to create views: %w", err)
 	}
 
 	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
@@ -192,7 +190,7 @@ func (ce *Executor) storeOutput(ctx context.Context, w io.Writer, sql string) er
 	ce.log.Debug("Copying output to writer", "query", sql)
 	err := ce.conn.RawCopyTo(ctx, w, sql)
 	if err != nil {
-		return fmt.Errorf("error exporting file: %+v", err)
+		return fmt.Errorf("error exporting file: %w", err)
 	}
 	return nil
 }
