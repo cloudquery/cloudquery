@@ -10,6 +10,7 @@
 //go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
 //go:generate mockgen -destination=./mocks/network.go -package=mocks . VirtualNetworksClient,SecurityGroupsClient,WatchersClient,PublicIPAddressesClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
+//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisClient
 //go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient,AssignmentsClient
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient
 //go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,TransparentDataEncryptionsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient
@@ -30,6 +31,7 @@ type Services struct {
 	MySQL         MySQL
 	Network       NetworksClient
 	PostgreSQL    PostgreSQL
+	Redis         RedisClient
 	Resources     ResourcesClient
 	Security      SecurityClient
 	SQL           SQLClient
@@ -49,6 +51,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		MySQL:         NewMySQLClient(subscriptionId, auth),
 		Network:       NewNetworksClient(subscriptionId, auth),
 		PostgreSQL:    NewPostgresClient(subscriptionId, auth),
+		Redis:         NewRedisClient(subscriptionId, auth),
 		Resources:     NewResourcesClient(subscriptionId, auth),
 		Security:      NewSecurityClient(subscriptionId, auth),
 		SQL:           NewSQLClient(subscriptionId, auth),

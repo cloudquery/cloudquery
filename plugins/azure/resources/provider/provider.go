@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/mysql"
 	"github.com/cloudquery/cq-provider-azure/resources/services/network"
 	"github.com/cloudquery/cq-provider-azure/resources/services/postgresql"
+	"github.com/cloudquery/cq-provider-azure/resources/services/redis"
 	resources2 "github.com/cloudquery/cq-provider-azure/resources/services/resources"
 	"github.com/cloudquery/cq-provider-azure/resources/services/security"
 	"github.com/cloudquery/cq-provider-azure/resources/services/sql"
@@ -56,6 +57,7 @@ func Provider() *provider.Provider {
 			"network.public_ip_addresses":         network.NetworkPublicIPAddresses(),
 			"network.watchers":                    network.NetworkWatchers(),
 			"postgresql.servers":                  postgresql.PostgresqlServers(),
+			"redis.services":                      redis.RedisServices(),
 			"resources.groups":                    resources2.ResourcesGroups(),
 			"resources.policy_assignments":        resources2.ResourcesPolicyAssignments(),
 			"security.auto_provisioning_settings": security.SecurityAutoProvisioningSettings(),

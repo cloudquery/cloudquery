@@ -5,8 +5,8 @@ PublicIPAddress public IP address resource.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |subscription_id|text|Azure subscription id|
-|extended_location_name|text|The name of the extended location|
-|extended_location_type|text|The type of the extended location|
+|extended_location_name|text|The name of the extended location.|
+|extended_location_type|text|The type of the extended location.|
 |sku_name|text|Name of a public IP address SKU|
 |sku_tier|text|Tier of a public IP address SKU|
 |public_ip_allocation_method|text|The public IP address allocation method|

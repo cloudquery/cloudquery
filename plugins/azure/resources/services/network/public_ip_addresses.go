@@ -28,14 +28,14 @@ func NetworkPublicIPAddresses() *schema.Table {
 			},
 			{
 				Name:          "extended_location_name",
-				Description:   "The name of the extended location",
+				Description:   "The name of the extended location.",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("ExtendedLocation.Name"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "extended_location_type",
-				Description:   "The type of the extended location",
+				Description:   "The type of the extended location.",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("ExtendedLocation.Type"),
 				IgnoreInTests: true,
