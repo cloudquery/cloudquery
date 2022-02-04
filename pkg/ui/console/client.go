@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
@@ -41,12 +40,18 @@ type Client struct {
 	updater *Progress
 }
 
-func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, configFilter func(*config.Config) error, opts ...client.Option) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		// No explicit error string needed, user information is in diags
 		return nil, &ExitCodeError{ExitCode: 1}
 	}
+	if configFilter != nil {
+		if err := configFilter(cfg); err != nil {
+			return nil, err
+		}
+	}
+
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
 
@@ -98,11 +103,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) Fetch(ctx context.Context, providersAndResources []string, failOnError bool) error {
-	if err := c.filterProvidersResources(providersAndResources); err != nil {
-		return err
-	}
-
+func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if viper.GetBool("skip-schema-upgrade") {
 		// only download providers and verify, no upgrade
 		if err := c.DownloadProviders(ctx); err != nil {
@@ -517,86 +518,6 @@ func (c Client) checkForUpdate(ctx context.Context) {
 	} else {
 		c.c.Logger.Debug("update check succeeded, no new version")
 	}
-}
-
-// filterProvidersResources gets a list of "providerAlias:resource1,resource2" items and updates in-memory config and core client, removing non-matching providers
-// valid usages:
-// "aws" or "aws:*" (all resources)
-// "aws:ec2.instances,s3.buckets" (only ec2.instances and s3.buckets)
-func (c Client) filterProvidersResources(list []string) error {
-	if len(list) == 0 || len(c.cfg.Providers) == 0 || len(c.c.Providers) == 0 {
-		return nil
-	}
-
-	pMap := make(map[string][]string, len(list)) // provider vs resources
-	for _, item := range list {
-		parts := strings.SplitN(item, ":", 2)
-		prov := parts[0]
-		if len(parts) == 2 && parts[1] != "*" {
-			resources := strings.Split(parts[1], ",")
-			pMap[prov] = make([]string, len(resources))
-			for i, res := range resources {
-				pMap[prov][i] = res
-			}
-		} else {
-			pMap[prov] = nil
-		}
-	}
-
-	requiredProviders := make(map[string]struct{})
-	for i, p := range c.cfg.Providers {
-		var (
-			resList []string
-			ok      bool
-		)
-
-		if p.Alias != "" {
-			resList, ok = pMap[p.Alias]
-		} else {
-			resList, ok = pMap[p.Name]
-		}
-		if !ok {
-			c.cfg.Providers[i] = nil
-			continue
-		}
-
-		requiredProviders[p.Name] = struct{}{}
-
-		if len(resList) > 0 {
-			c.cfg.Providers[i].Resources = resList
-		}
-	}
-
-	// Remove non-required providers and zero unused pointers afterwards
-	{
-		i := 0
-		for _, p := range c.c.Providers {
-			if _, ok := requiredProviders[p.Name]; ok {
-				c.c.Providers[i] = p
-				i++
-			}
-		}
-		for j := i; j < len(c.c.Providers); j++ {
-			c.c.Providers[j] = nil
-		}
-		c.c.Providers = c.c.Providers[:i]
-	}
-	{
-		i := 0
-		for _, p := range c.cfg.Providers {
-			if p != nil {
-				c.cfg.Providers[i] = p
-				i++
-			}
-		}
-		c.cfg.Providers = c.cfg.Providers[:i]
-	}
-
-	if len(c.c.Providers) == 0 || len(c.cfg.Providers) == 0 {
-		return fmt.Errorf("nothing to fetch")
-	}
-
-	return nil
 }
 
 func (c Client) setTelemetryAttributes(span trace.Span) {

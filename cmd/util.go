@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -78,15 +79,20 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 
 	delayMessage := ui.IsTerminal()
 
+	var configFilter func(*config.Config) error
+
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":
 		delayMessage = false
 	case "init":
 		// No console client created here
+	case "fetch":
+		configFilter = filterConfigProviders(args)
+		fallthrough
 	default:
 		var err error
-		c, err = console.CreateClient(ctx, configPath)
+		c, err = console.CreateClient(ctx, configPath, configFilter)
 		if err != nil {
 			return err
 		}
