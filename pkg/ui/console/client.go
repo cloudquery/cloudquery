@@ -244,13 +244,13 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 }
 
 func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
-	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
+	policiesToSnapshot, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
 	}
-	c.c.Logger.Debug("policies to describe", "policies", policiesToDescribe.All())
-	for _, p := range policiesToDescribe {
+	c.c.Logger.Debug("policies to snapshot", "policies", policiesToSnapshot.All())
+	for _, p := range policiesToSnapshot {
 		if err := c.snapshotControl(ctx, p, policySource, snapshotDestination); err != nil {
 			return err
 		}
