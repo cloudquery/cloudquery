@@ -173,7 +173,7 @@ func (ce *Executor) StoreOutput(ctx context.Context, pol *Policy, destination st
 		return err
 	}
 
-	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_CREATE|os.O_WRONLY, 0777)
+	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		ce.log.Error("error opening file:", err)
 		return err
