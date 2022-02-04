@@ -20,7 +20,7 @@ var fetchCmd = &cobra.Command{
   cloudquery fetch`,
 	Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 		failOnError := viper.GetBool("fail-on-error")
-		return c.Fetch(ctx, failOnError)
+		return c.Fetch(ctx, args, failOnError)
 	}),
 }
 
