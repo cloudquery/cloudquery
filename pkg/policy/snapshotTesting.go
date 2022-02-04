@@ -1,85 +1,85 @@
-package testing
+package policy
 
 import (
 	"context"
 	"encoding/csv"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"sort"
 	"strings"
-	"testing"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/go-cmp/cmp"
-	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudquery/cloudquery/pkg/policy"
-	"github.com/cloudquery/cq-provider-sdk/testlog"
 	"github.com/hashicorp/go-hclog"
 )
 
 // pol policy.Policy
-func TestPolicy(t *testing.T, source, selector, snapshotDirectory string) {
-	// var pols policy.Policies
-	// pols = append(pols, &policy.Policy{Name: "aws", Source: source})
-	// Setup dependencies
-	t.Helper()
+
+func TestPolicy(ctx context.Context, l hclog.Logger, source, snapshotDirectory, selector string) error {
 	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 	if err != nil {
-		t.Fatal(err)
+		l.Error("failed to create tempDirectory", "err", err)
+		return err
 	}
-	l := testlog.New(t)
-	l.SetLevel(hclog.Info)
 
-	ctx := context.Background()
 	conn, err := sdkdb.New(ctx, hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
 	if err != nil {
-		t.Fatal(err)
+		l.Error("failed to connect to new database", "err", err)
+		return err
 	}
 
-	policyManager := policy.NewManager(uniqueTempDir, conn, l)
-	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: source})
+	policyManager := NewManager(uniqueTempDir, conn, l)
+	p, err := policyManager.Load(ctx, &Policy{Name: "test-policy", Source: source})
 	if err != nil {
-		t.Fatal(err)
+		l.Error("failed to create policy manager", "err", err)
+		return err
 	}
-	pol := p.Filter(selector)
 
-	clie := policy.NewExecutor(conn, l, nil)
-
-	testPath := path.Join(snapshotDirectory, "query-"+pol.Checks[0].Name, "tests", "")
-	tests, _ := FindAllTestCases(testPath)
+	e := NewExecutor(conn, l, nil)
+	tests, _ := FindAllTestCases(snapshotDirectory)
 	for _, test := range tests {
-		tables, _ := FindAllTables(path.Join(testPath, test))
+		selector = strings.Split(strings.TrimPrefix(test, snapshotDirectory+"/"), "/tests")[0]
+		pol := p.Filter(selector)
+		tables, _ := FindAllTables(test)
 		sort.Sort(sort.Reverse(sort.StringSlice(tables)))
 
 		for _, table := range tables {
 			l.Info("restoring table ", "table", table)
-			err = clie.RestoreSnapshot(ctx, table)
+			err = e.RestoreSnapshot(ctx, table)
 			if err != nil {
-				t.Fatal(err)
+				l.Error("failed to restore snapshot", "err", err)
+				return err
 			}
 		}
 
-		if err != nil {
-			t.Fatalf("Error creating temp dir: %+v", err)
-		}
-
 		// 		c. Run query
-		err = clie.StoreOutput(ctx, &pol, uniqueTempDir)
+		err = e.StoreOutput(ctx, &pol, uniqueTempDir)
 		if err != nil {
-			t.Fatalf("Error storing output: %+v", err)
+			l.Error("failed to StoreOutput", "err", err)
+			return err
 		}
-		f2, _ := OpenAndParse(path.Join(testPath, test, "data.csv"))
+		f2, _ := OpenAndParse(path.Join(test, "data.csv"))
 		f1, _ := OpenAndParse(path.Join(uniqueTempDir, "data.csv"))
-		compareArbitraryArrays(t, f1, f2)
+		if err := compareArbitraryArrays(f1, f2); err != nil {
+
+			l.Error("Failed test case", "case", test, "got", f1, "expected", f2)
+			return err
+		}
 	}
 
+	return nil
 }
 
-func compareArbitraryArrays(t *testing.T, f1, f2 [][]string) {
-	assert.Equal(t, len(f1), len(f2), "Query results should have same number of items.")
+func compareArbitraryArrays(f1, f2 [][]string) error {
+
+	if len(f1) != len(f2) {
+		return errors.New("query results should have same number of items")
+	}
 	for _, item1 := range f1 {
 		diffItemPresent := false
 		for _, item2 := range f2 {
@@ -89,7 +89,7 @@ func compareArbitraryArrays(t *testing.T, f1, f2 [][]string) {
 			}
 		}
 		if !diffItemPresent {
-			t.Fatalf("Item %+v, not found", item1)
+			return fmt.Errorf("item %+v, not found", item1)
 		}
 	}
 	for item1 := range f2 {
@@ -101,9 +101,10 @@ func compareArbitraryArrays(t *testing.T, f1, f2 [][]string) {
 			}
 		}
 		if !diffItemPresent {
-			t.Fatalf("Item %+v, not found", item1)
+			return fmt.Errorf("item %+v, not found", item1)
 		}
 	}
+	return nil
 
 }
 func OpenAndParse(filePath string) ([][]string, error) {
@@ -124,8 +125,8 @@ func OpenAndParse(filePath string) ([][]string, error) {
 func FindAllTestCases(root string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && path != root {
-			files = append(files, info.Name())
+		if !info.IsDir() && info.Name() == "data.csv" {
+			files = append(files, strings.TrimSuffix(path, "/data.csv"))
 		}
 		return nil
 	})
