@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.7.1
+	github.com/cloudquery/cq-provider-sdk v0.7.6
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/googleapis/gax-go/v2 v2.0.5
 	github.com/hashicorp/go-hclog v1.0.0
@@ -14,6 +14,8 @@ require (
 	google.golang.org/api v0.51.0
 	google.golang.org/grpc v1.42.0
 )
+
+require github.com/stretchr/testify v1.7.0
 
 require (
 	cloud.google.com/go v0.90.0 // indirect
@@ -64,7 +66,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xo/dburl v0.8.4 // indirect
