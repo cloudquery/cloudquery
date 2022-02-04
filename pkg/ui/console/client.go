@@ -236,6 +236,13 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	return nil
 }
 
+func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestination, selector string) error {
+
+	// return policy.TestPolicy(ctx, c.c.Logger, ".cq/policies/github.com/cloudquery-policies/aws", "./dest", "foundational_security/ec2/EC2.18")
+	return policy.TestPolicy(ctx, c.c.Logger, policySource, snapshotDestination, selector)
+
+}
+
 func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
 	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
@@ -566,15 +573,12 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelec
 		return errors.New("no checks loaded")
 	}
 
-	selector := fullSelector
-	if strings.Contains(fullSelector, "//") {
-		selector = strings.Split(selector, "//")[1]
-	}
-	pol := p.Filter(selector)
-	if len(pol.Checks) != 1 && len(pol.Policies) == 0 {
+	_, subPath := getter.ParseSourceSubPolicy(fullSelector)
+	pol := p.Filter(subPath)
+	if pol.TotalQueries() != 1 {
 		return errors.New("selector must specify only a single control")
 	}
-	return c.c.PolicyManager.Snapshot(ctx, &pol, destination, c.c.DSN)
+	return c.c.PolicyManager.Snapshot(ctx, &pol, destination, subPath)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
@@ -588,7 +592,9 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	t.SetHeaders("Path", "Description")
 
 	policyName, subPath := getter.ParseSourceSubPolicy(selector)
-
+	if subPath == "" {
+		policyName = ""
+	}
 	pol := p.Filter(subPath)
 	buildDescribePolicyTable(t, policy.Policies{&pol}, policyName)
 	t.Render()
