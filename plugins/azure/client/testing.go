@@ -48,9 +48,7 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 				return &Config{}
 			},
 		},
-		Table:          table,
-		Config:         cfg,
-		SkipEmptyJsonB: options.SkipEmptyJsonB,
+		Config: cfg,
 	})
 }
 
@@ -69,7 +67,6 @@ func AzureTestHelper(t *testing.T, table *schema.Table) {
 				"test_resource": table,
 			},
 		},
-		Table:  table,
 		Config: "",
 	})
 }

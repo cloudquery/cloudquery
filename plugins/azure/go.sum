@@ -164,6 +164,7 @@ github.com/aws/aws-sdk-go-v2/service/sso v1.2.1/go.mod h1:VimPFPltQ/920i1X0Sb0VJ
 github.com/aws/aws-sdk-go-v2/service/sts v1.2.2/go.mod h1:ssRzzJ2RZOVuKj2Vx1YE7ypfil/BIlgmQnCSW4DistU=
 github.com/aws/aws-sdk-go-v2/service/sts v1.4.1/go.mod h1:G9osDWA52WQ38BDcj65VY1cNmcAQXAXTsE8IWH8j81w=
 github.com/aws/smithy-go v1.3.1/go.mod h1:SObp3lf9smib00L/v3U2eAKG8FyQ7iLrJnQiAmR5n+E=
+github.com/aws/smithy-go v1.4.0 h1:3rsQpgRe+OoQgJhEwGNpIkosl0fJLdmQqF4gSFRjg+4=
 github.com/aws/smithy-go v1.4.0/go.mod h1:SObp3lf9smib00L/v3U2eAKG8FyQ7iLrJnQiAmR5n+E=
 github.com/beorn7/perks v0.0.0-20160804104726-4c0e84591b9a/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
@@ -199,8 +200,8 @@ github.com/cilium/ebpf v0.4.0/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJ
 github.com/cilium/ebpf v0.6.2/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJXRs=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
-github.com/cloudquery/cq-provider-sdk v0.7.0 h1:PWERMQi7oUW0rHn/qKvf7cVcOhMB9xgx/i0W3hvoXOc=
-github.com/cloudquery/cq-provider-sdk v0.7.0/go.mod h1:T+ngRXzcjJ6otKDGkWnPrHTsZuHUe3KZKtyhSLcvHCs=
+github.com/cloudquery/cq-provider-sdk v0.7.6 h1:w1Nk4D+su9foh9nNaaszqg1enW9pm9CwIpkXVUNOuH4=
+github.com/cloudquery/cq-provider-sdk v0.7.6/go.mod h1:3XIx9D1zpx/IS2MQcbyBTxpvpUDI0xyBwPT3reKo/4k=
 github.com/cloudquery/faker/v3 v3.7.4/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cloudquery/faker/v3 v3.7.5 h1:G7ANdEEcm8TvAAjIwNWSLrYK36CFCiSlrCqOTGCccL0=
 github.com/cloudquery/faker/v3 v3.7.5/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
