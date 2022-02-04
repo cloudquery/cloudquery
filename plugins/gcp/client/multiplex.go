@@ -1,12 +1,19 @@
 package client
 
-import "github.com/cloudquery/cq-provider-sdk/provider/schema"
+import (
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+)
 
 func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
-	for _, projectId := range client.projects {
-		l = append(l, client.withProject(projectId))
+
+	if len(client.projects) == 0 {
+		return []schema.ClientMeta{meta}
+	}
+
+	l := make([]schema.ClientMeta, len(client.projects))
+	for i, projectId := range client.projects {
+		l[i] = client.withProject(projectId)
 	}
 	return l
 }
