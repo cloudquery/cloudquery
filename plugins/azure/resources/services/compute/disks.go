@@ -10,12 +10,13 @@ import (
 
 func ComputeDisks() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_compute_disks",
-		Description:  "Azure compute disk",
-		Resolver:     fetchComputeDisks,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_compute_disks",
+		Description:   "Azure compute disk",
+		Resolver:      fetchComputeDisks,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -275,9 +276,10 @@ func ComputeDisks() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_compute_disk_encryption_settings",
-				Description: "Azure compute disk encryption setting",
-				Resolver:    fetchComputeDiskEncryptionSettings,
+				Name:          "azure_compute_disk_encryption_settings",
+				Description:   "Azure compute disk encryption setting",
+				Resolver:      fetchComputeDiskEncryptionSettings,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "disk_cq_id",

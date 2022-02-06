@@ -4,13 +4,13 @@ module "postgresql" {
   resource_group_name = azurerm_resource_group.cq_int_tests.name
   location            = azurerm_resource_group.cq_int_tests.location
 
-  server_name                  = "postgresql-cq-int-tests"
-  sku_name                     = "GP_Gen5_4"
+  server_name                  = "cq-provider-azure-pgsql"
+  sku_name                     = "GP_Gen5_2"
   storage_mb                   = 5120
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
   administrator_login          = "psqladminun"
-  administrator_password       = "mf3OOwOYcW"
+  administrator_password       = random_password.password.result
   server_version               = "11"
   ssl_enforcement_enabled      = true
   db_names                     = ["my_db1", "my_db2"]

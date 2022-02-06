@@ -24,11 +24,3 @@ resource "azurerm_public_ip" "public_ips_ip" {
   }
 }
 
-resource "azurerm_network_watcher" "network_watcher" {
-  name                = "nw-cq-int-tests"
-  location            = azurerm_resource_group.cq_int_tests.location
-  resource_group_name = azurerm_resource_group.cq_int_tests.name
-  tags = {
-    test = "test"
-  }
-}

@@ -174,10 +174,11 @@ func SQLServers() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_sql_server_firewall_rules",
-				Description: "The list of server firewall rules.",
-				Resolver:    fetchSqlServerFirewallRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Name:          "azure_sql_server_firewall_rules",
+				Description:   "The list of server firewall rules.",
+				Resolver:      fetchSqlServerFirewallRules,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",

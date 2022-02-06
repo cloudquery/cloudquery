@@ -138,10 +138,11 @@ func ComputeVirtualMachines() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "linux_configuration_disable_password_authentication",
-				Description: "Specifies whether password authentication should be disabled",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("VirtualMachineProperties.OsProfile.LinuxConfiguration.DisablePasswordAuthentication"),
+				Name:          "linux_configuration_disable_password_authentication",
+				Description:   "Specifies whether password authentication should be disabled",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("VirtualMachineProperties.OsProfile.LinuxConfiguration.DisablePasswordAuthentication"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "linux_configuration_ssh_public_keys",
@@ -151,10 +152,11 @@ func ComputeVirtualMachines() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "linux_configuration_provision_vm_agent",
-				Description: "Indicates whether virtual machine agent should be provisioned on the virtual machine <br><br> When this property is not specified in the request body, default behavior is to set it to true  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("VirtualMachineProperties.OsProfile.LinuxConfiguration.ProvisionVMAgent"),
+				Name:          "linux_configuration_provision_vm_agent",
+				Description:   "Indicates whether virtual machine agent should be provisioned on the virtual machine <br><br> When this property is not specified in the request body, default behavior is to set it to true  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("VirtualMachineProperties.OsProfile.LinuxConfiguration.ProvisionVMAgent"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "linux_configuration_patch_settings_patch_mode",
@@ -300,10 +302,11 @@ func ComputeVirtualMachines() *schema.Table {
 				Resolver:    schema.PathResolver("VirtualMachineProperties.VMID"),
 			},
 			{
-				Name:        "extensions_time_budget",
-				Description: "Specifies the time alloted for all extensions to start The time duration should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format The default value is 90 minutes (PT1H30M) <br><br> Minimum api-version: 2020-06-01",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VirtualMachineProperties.ExtensionsTimeBudget"),
+				Name:          "extensions_time_budget",
+				Description:   "Specifies the time alloted for all extensions to start The time duration should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format The default value is 90 minutes (PT1H30M) <br><br> Minimum api-version: 2020-06-01",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("VirtualMachineProperties.ExtensionsTimeBudget"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "platform_fault_domain",
@@ -380,16 +383,18 @@ func ComputeVirtualMachines() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "tags",
-				Description: "Resource tags",
-				Type:        schema.TypeJSON,
+				Name:          "tags",
+				Description:   "Resource tags",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_compute_virtual_machine_win_config_rm_listeners",
-				Description: "WinRMListener describes Protocol and thumbprint of Windows Remote Management listener",
-				Resolver:    fetchComputeVirtualMachineWinConfigRmListeners,
+				Name:          "azure_compute_virtual_machine_win_config_rm_listeners",
+				Description:   "WinRMListener describes Protocol and thumbprint of Windows Remote Management listener",
+				Resolver:      fetchComputeVirtualMachineWinConfigRmListeners,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
@@ -418,10 +423,11 @@ func ComputeVirtualMachines() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_compute_virtual_machine_secrets",
-				Description: "VaultSecretGroup describes a set of certificates which are all in the same Key Vault",
-				Resolver:    fetchComputeVirtualMachineSecrets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_machine_cq_id", "source_vault_id"}},
+				Name:          "azure_compute_virtual_machine_secrets",
+				Description:   "VaultSecretGroup describes a set of certificates which are all in the same Key Vault",
+				Resolver:      fetchComputeVirtualMachineSecrets,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_machine_cq_id", "source_vault_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",
@@ -516,9 +522,10 @@ func ComputeVirtualMachines() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "tags",
-						Description: "Resource tags",
-						Type:        schema.TypeJSON,
+						Name:          "tags",
+						Description:   "Resource tags",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -541,10 +548,11 @@ func ComputeVirtualMachines() *schema.Table {
 						Resolver:    schema.ParentResourceFieldResolver("id"),
 					},
 					{
-						Name:        "network_interface_reference_properties_primary",
-						Description: "Specifies the primary network interface in case the virtual machine has more than 1 network interface",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("NetworkInterfaceReferenceProperties.Primary"),
+						Name:          "network_interface_reference_properties_primary",
+						Description:   "Specifies the primary network interface in case the virtual machine has more than 1 network interface",
+						Type:          schema.TypeBool,
+						Resolver:      schema.PathResolver("NetworkInterfaceReferenceProperties.Primary"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "id",

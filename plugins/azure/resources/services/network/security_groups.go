@@ -12,12 +12,13 @@ import (
 
 func NetworkSecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_network_security_groups",
-		Description:  "Azure network security group",
-		Resolver:     fetchNetworkSecurityGroups,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_network_security_groups",
+		Description:   "Azure network security group",
+		Resolver:      fetchNetworkSecurityGroups,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

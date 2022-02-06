@@ -164,9 +164,10 @@ func StorageBlobServices() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_storage_blob_service_cors_rules",
-				Description: "CorsRule specifies a CORS rule for the Blob service",
-				Resolver:    fetchStorageBlobServiceCorsRules,
+				Name:          "azure_storage_blob_service_cors_rules",
+				Description:   "CorsRule specifies a CORS rule for the Blob service",
+				Resolver:      fetchStorageBlobServiceCorsRules,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "blob_service_cq_id",

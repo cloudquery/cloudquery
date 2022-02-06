@@ -46,10 +46,11 @@ func NetworkVirtualNetworks() *schema.Table {
 				Resolver:    schema.PathResolver("VirtualNetworkPropertiesFormat.AddressSpace.AddressPrefixes"),
 			},
 			{
-				Name:        "dhcp_options_dns_servers",
-				Description: "The list of DNS servers IP addresses.",
-				Type:        schema.TypeInetArray,
-				Resolver:    resolveNetworkVirtualNetworksDhcpOptionsDnsServers,
+				Name:          "dhcp_options_dns_servers",
+				Description:   "The list of DNS servers IP addresses.",
+				Type:          schema.TypeInetArray,
+				Resolver:      resolveNetworkVirtualNetworksDhcpOptionsDnsServers,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "resource_guid",
@@ -98,10 +99,11 @@ func NetworkVirtualNetworks() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "ip_allocations",
-				Description: "Array of IpAllocation which reference this VNET.",
-				Type:        schema.TypeStringArray,
-				Resolver:    resolveNetworkVirtualNetworksIpAllocations,
+				Name:          "ip_allocations",
+				Description:   "Array of IpAllocation which reference this VNET.",
+				Type:          schema.TypeStringArray,
+				Resolver:      resolveNetworkVirtualNetworksIpAllocations,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "etag",
@@ -328,10 +330,11 @@ func NetworkVirtualNetworks() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_network_virtual_network_peerings",
-				Description: "Azure virtual network peering",
-				Resolver:    fetchNetworksVirtualNetworkPeerings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
+				Name:          "azure_network_virtual_network_peerings",
+				Description:   "Azure virtual network peering",
+				Resolver:      fetchNetworksVirtualNetworkPeerings,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_network_cq_id",

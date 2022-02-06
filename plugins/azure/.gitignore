@@ -32,3 +32,4 @@ terraform/infra/.terraform
 terraform/infra/.terraform.lock.hcl
 terraform/infra/terraform-override.tf
 terraform/infra/tmp/
+auth.json

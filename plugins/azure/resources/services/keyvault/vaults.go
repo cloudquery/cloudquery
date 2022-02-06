@@ -119,10 +119,11 @@ func KeyvaultVaults() *schema.Table {
 				Resolver:    schema.PathResolver("Properties.CreateMode"),
 			},
 			{
-				Name:        "enable_purge_protection",
-				Description: "Property specifying whether protection against purge is enabled for this vault Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion The setting is effective only if soft delete is also enabled Enabling this functionality is irreversible - that is, the property does not accept false as its value",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Properties.EnablePurgeProtection"),
+				Name:          "enable_purge_protection",
+				Description:   "Property specifying whether protection against purge is enabled for this vault Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion The setting is effective only if soft delete is also enabled Enabling this functionality is irreversible - that is, the property does not accept false as its value",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("Properties.EnablePurgeProtection"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "network_acls_bypass",
@@ -137,23 +138,26 @@ func KeyvaultVaults() *schema.Table {
 				Resolver:    schema.PathResolver("Properties.NetworkAcls.DefaultAction"),
 			},
 			{
-				Name:        "network_acls_ip_rules",
-				Description: "The list of IP address rules",
-				Type:        schema.TypeStringArray,
-				Resolver:    resolveKeyvaultVaultNetworkAclsIPRules,
+				Name:          "network_acls_ip_rules",
+				Description:   "The list of IP address rules",
+				Type:          schema.TypeStringArray,
+				Resolver:      resolveKeyvaultVaultNetworkAclsIPRules,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "network_acls_virtual_network_rules",
-				Description: "The list of virtual network rules",
-				Type:        schema.TypeStringArray,
-				Resolver:    resolveKeyvaultVaultNetworkAclsVirtualNetworkRules,
+				Name:          "network_acls_virtual_network_rules",
+				Description:   "The list of virtual network rules",
+				Type:          schema.TypeStringArray,
+				Resolver:      resolveKeyvaultVaultNetworkAclsVirtualNetworkRules,
+				IgnoreInTests: true,
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_keyvault_vault_access_policies",
-				Description: "AccessPolicyEntry an identity that have access to the key vault All identities in the array must use the same tenant ID as the key vault's tenant ID",
-				Resolver:    fetchKeyvaultVaultAccessPolicies,
+				Name:          "azure_keyvault_vault_access_policies",
+				Description:   "AccessPolicyEntry an identity that have access to the key vault All identities in the array must use the same tenant ID as the key vault's tenant ID",
+				Resolver:      fetchKeyvaultVaultAccessPolicies,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
@@ -206,10 +210,11 @@ func KeyvaultVaults() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_keyvault_vault_private_endpoint_connections",
-				Description: "Azure ketvault vault endpoint connection",
-				Resolver:    fetchKeyvaultVaultPrivateEndpointConnections,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
+				Name:          "azure_keyvault_vault_private_endpoint_connections",
+				Description:   "Azure ketvault vault endpoint connection",
+				Resolver:      fetchKeyvaultVaultPrivateEndpointConnections,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
@@ -250,9 +255,10 @@ func KeyvaultVaults() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_keyvault_vault_keys",
-				Description: "KeyItem the key item containing key metadata",
-				Resolver:    fetchKeyvaultVaultKeys,
+				Name:          "azure_keyvault_vault_keys",
+				Description:   "KeyItem the key item containing key metadata",
+				Resolver:      fetchKeyvaultVaultKeys,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",
@@ -320,10 +326,11 @@ func KeyvaultVaults() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_keyvault_vault_secrets",
-				Description: "SecretItem the secret item containing secret metadata",
-				Resolver:    fetchKeyvaultVaultSecrets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
+				Name:          "azure_keyvault_vault_secrets",
+				Description:   "SecretItem the secret item containing secret metadata",
+				Resolver:      fetchKeyvaultVaultSecrets,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "vault_cq_id",

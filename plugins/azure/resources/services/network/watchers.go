@@ -9,11 +9,12 @@ import (
 
 func NetworkWatchers() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_network_watchers",
-		Description:  "Azure network watcher",
-		Resolver:     fetchNetworkWatchers,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
+		Name:          "azure_network_watchers",
+		Description:   "Azure network watcher",
+		Resolver:      fetchNetworkWatchers,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

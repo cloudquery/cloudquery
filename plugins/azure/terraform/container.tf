@@ -8,8 +8,8 @@ resource "azurerm_kubernetes_cluster" "managed_clusters_cluster" {
     name                = "default"
     enable_auto_scaling = true
     max_count           = 2
-    node_count          = 2
-    min_count           = 2
+    node_count          = 1
+    min_count           = 1
     vm_size             = "Standard_B2s"
     node_labels         = { "node-type" = "system" }
     vnet_subnet_id      = module.test_vnet.vnet_subnets[0]
@@ -41,7 +41,7 @@ resource "azurerm_kubernetes_cluster" "managed_clusters_cluster" {
 }
 
 resource "azurerm_container_registry" "managed_clusters_registry" {
-  name                = "acrcqtest"
+  name                = "acrcqinttest"
   resource_group_name = azurerm_resource_group.cq_int_tests.name
   location            = azurerm_resource_group.cq_int_tests.location
   sku                 = "Standard"

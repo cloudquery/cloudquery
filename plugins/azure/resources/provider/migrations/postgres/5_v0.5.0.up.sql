@@ -32,3 +32,19 @@ CREATE TABLE IF NOT EXISTS "azure_redis_services" (
 	CONSTRAINT azure_redis_services_pk PRIMARY KEY(subscription_id,id),
 	UNIQUE(cq_id)
 );
+
+-- Resource: sql.servers
+CREATE TABLE IF NOT EXISTS "azure_sql_server_virtual_network_rules" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"subnet_id" text,
+	"ignore_missing_vnet_service_endpoint" boolean,
+	"state" text,
+	CONSTRAINT azure_sql_server_virtual_network_rules_pk PRIMARY KEY(server_cq_id,id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (server_cq_id) REFERENCES azure_sql_servers(cq_id) ON DELETE CASCADE
+);

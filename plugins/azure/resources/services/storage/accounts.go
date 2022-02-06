@@ -195,10 +195,11 @@ func StorageAccounts() *schema.Table {
 				Resolver:    schema.PathResolver("AccountProperties.LastGeoFailoverTime.Time"),
 			},
 			{
-				Name:        "secondary_location",
-				Description: "Gets the location of the geo-replicated secondary for the storage account Only available if the accountType is Standard_GRS or Standard_RAGRS",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AccountProperties.SecondaryLocation"),
+				Name:          "secondary_location",
+				Description:   "Gets the location of the geo-replicated secondary for the storage account Only available if the accountType is Standard_GRS or Standard_RAGRS",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("AccountProperties.SecondaryLocation"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "status_of_secondary",
@@ -532,10 +533,11 @@ func StorageAccounts() *schema.Table {
 				Resolver:    schema.PathResolver("AccountProperties.NetworkRuleSet.DefaultAction"),
 			},
 			{
-				Name:        "is_hns_enabled",
-				Description: "Account HierarchicalNamespace enabled if sets to true",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("AccountProperties.IsHnsEnabled"),
+				Name:          "is_hns_enabled",
+				Description:   "Account HierarchicalNamespace enabled if sets to true",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("AccountProperties.IsHnsEnabled"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "geo_replication_stats_status",
@@ -675,10 +677,11 @@ func StorageAccounts() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_storage_account_network_rule_set_virtual_network_rules",
-				Description: "VirtualNetworkRule virtual Network rule. ",
-				Resolver:    fetchStorageAccountNetworkRuleSetVirtualNetworkRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "virtual_network_resource_id"}},
+				Name:          "azure_storage_account_network_rule_set_virtual_network_rules",
+				Description:   "VirtualNetworkRule virtual Network rule. ",
+				Resolver:      fetchStorageAccountNetworkRuleSetVirtualNetworkRules,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "virtual_network_resource_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "account_cq_id",
@@ -705,10 +708,11 @@ func StorageAccounts() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_storage_account_network_rule_set_ip_rules",
-				Description: "IPRule IP rule with specific IP or IP range in CIDR format. ",
-				Resolver:    fetchStorageAccountNetworkRuleSetIpRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "ip_address_or_range"}},
+				Name:          "azure_storage_account_network_rule_set_ip_rules",
+				Description:   "IPRule IP rule with specific IP or IP range in CIDR format. ",
+				Resolver:      fetchStorageAccountNetworkRuleSetIpRules,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "ip_address_or_range"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "account_cq_id",
@@ -730,10 +734,11 @@ func StorageAccounts() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_storage_account_private_endpoint_connections",
-				Description: "Azure storage account private endpoint connection",
-				Resolver:    fetchStorageAccountPrivateEndpointConnections,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
+				Name:          "azure_storage_account_private_endpoint_connections",
+				Description:   "Azure storage account private endpoint connection",
+				Resolver:      fetchStorageAccountPrivateEndpointConnections,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "account_cq_id",

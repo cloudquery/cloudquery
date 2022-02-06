@@ -206,10 +206,11 @@ func PostgresqlServers() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_postgresql_server_private_endpoint_connections",
-				Description: "Azure postgresql server private endpoint connection",
-				Resolver:    fetchPostgresqlServerPrivateEndpointConnections,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Name:          "azure_postgresql_server_private_endpoint_connections",
+				Description:   "Azure postgresql server private endpoint connection",
+				Resolver:      fetchPostgresqlServerPrivateEndpointConnections,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",

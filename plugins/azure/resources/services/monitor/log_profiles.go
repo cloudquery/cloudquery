@@ -9,12 +9,13 @@ import (
 
 func MonitorLogProfiles() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_monitor_log_profiles",
-		Description:  "LogProfileResource the log profile resource",
-		Resolver:     fetchMonitorLogProfiles,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_monitor_log_profiles",
+		Description:   "LogProfileResource the log profile resource",
+		Resolver:      fetchMonitorLogProfiles,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

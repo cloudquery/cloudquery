@@ -34,3 +34,22 @@ CREATE TABLE IF NOT EXISTS "azure_redis_services" (
 	UNIQUE(cq_fetch_date,cq_id)
 );
 SELECT setup_tsdb_parent('azure_redis_services');
+
+
+-- Resource: sql.servers
+CREATE TABLE IF NOT EXISTS "azure_sql_server_virtual_network_rules" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"subnet_id" text,
+	"ignore_missing_vnet_service_endpoint" boolean,
+	"state" text,
+	CONSTRAINT azure_sql_server_virtual_network_rules_pk PRIMARY KEY(cq_fetch_date,server_cq_id,id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON azure_sql_server_virtual_network_rules (cq_fetch_date, server_cq_id);
+SELECT setup_tsdb_child('azure_sql_server_virtual_network_rules', 'server_cq_id', 'azure_sql_servers', 'cq_id');

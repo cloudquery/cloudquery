@@ -15,12 +15,13 @@ import (
 
 func MonitorDiagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_monitor_diagnostic_settings",
-		Description:  "DiagnosticSettingsResource the diagnostic setting resource",
-		Resolver:     fetchMonitorDiagnosticSettings,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_monitor_diagnostic_settings",
+		Description:   "DiagnosticSettingsResource the diagnostic setting resource",
+		Resolver:      fetchMonitorDiagnosticSettings,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
