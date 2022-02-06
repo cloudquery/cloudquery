@@ -23,7 +23,6 @@ type Services struct {
 	Storage         *storage.Service
 	Sql             *sql.Service
 	Iam             *iam.Service
-	Crm             *cloudresourcemanager.Service
 	CloudFunctions  *cloudfunctions.Service
 	Domain          *domains.Service
 	Compute         *compute.Service
@@ -55,10 +54,6 @@ func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services,
 		return nil, err
 	}
 	iamSvc, err := iam.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-	crmSvc, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +95,6 @@ func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services,
 		Storage:         storageSvc,
 		Sql:             sqlSvc,
 		Iam:             iamSvc,
-		Crm:             crmSvc,
 		CloudFunctions:  cfSvc,
 		Domain:          domainSvc,
 		Compute:         computeSvc,
