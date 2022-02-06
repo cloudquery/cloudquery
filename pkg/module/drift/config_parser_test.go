@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,7 +12,7 @@ func TestEnvVars(t *testing.T) {
 		varName = "TEST_VARIABLE"
 		val     = "VALUE"
 	)
-	_ = os.Setenv(config.EnvVarPrefix+varName, val)
+	_ = os.Setenv(varName, val)
 
 	p := NewParser("")
 

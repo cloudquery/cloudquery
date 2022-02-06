@@ -18,9 +18,6 @@ const (
 	SourceHCL = "hcl"
 )
 
-// EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
-const EnvVarPrefix = "CQ_VAR_"
-
 // Parser is the main interface to read configuration files and other related
 // files from disk.
 //
@@ -43,9 +40,9 @@ func WithFS(fs afero.Fs) Option {
 // WithEnvironmentVariables fills hcl.Context with values of environment variables given in vars.
 // Only variables that start with given prefix are considered. Prefix is removed from the name and
 // the name is lower cased then.
-func WithEnvironmentVariables(prefix string, vars []string) Option {
+func WithEnvironmentVariables(vars []string) Option {
 	return func(p *Parser) {
-		EnvToHCLContext(&p.HCLContext, prefix, vars)
+		EnvToHCLContext(&p.HCLContext, vars)
 	}
 }
 
@@ -107,11 +104,9 @@ func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, hcl.Diagnos
 	return file.Body, diags
 }
 
-func EnvToHCLContext(evalContext *hcl.EvalContext, prefix string, vars []string) {
+func EnvToHCLContext(evalContext *hcl.EvalContext, vars []string) {
 	for _, e := range vars {
 		pair := strings.SplitN(e, "=", 2)
-		if strings.HasPrefix(pair[0], prefix) {
-			evalContext.Variables[strings.TrimPrefix(pair[0], prefix)] = cty.StringVal(pair[1])
-		}
+		evalContext.Variables[pair[0]] = cty.StringVal(pair[1])
 	}
 }

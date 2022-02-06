@@ -74,7 +74,7 @@ func Initialize(ctx context.Context, providers []string) error {
 
 	rootBody.AppendBlock(cqBlock)
 	cfg, diags := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+		config.WithEnvironmentVariables(os.Environ()),
 	).LoadConfigFromSource("init.hcl", f.Bytes())
 	if diags.HasErrors() {
 		return diags

@@ -238,15 +238,14 @@ func TestProviderLoadConfiguration(t *testing.T) {
 }
 
 func TestWithEnvironmentVariables(t *testing.T) {
-	const prefix = "PREFIX_"
-	p := NewParser(WithEnvironmentVariables(prefix, []string{prefix + "VAR1=value1", prefix + "Var2=value 2"}))
-	assert.Equal(t, "value1", p.HCLContext.Variables["VAR1"].AsString())
-	assert.Equal(t, "value 2", p.HCLContext.Variables["Var2"].AsString())
+	p := NewParser(WithEnvironmentVariables([]string{"CQ_VAR1=value1", "CQ_Var2=value 2"}))
+	assert.Equal(t, "value1", p.HCLContext.Variables["CQ_VAR1"].AsString())
+	assert.Equal(t, "value 2", p.HCLContext.Variables["CQ_Var2"].AsString())
 }
 
 const testEnvVarConfig = `cloudquery {
   connection {
-    dsn =  "${DSN}"
+    dsn =  "${CQ_DSN}"
   }
   provider "test" {
     source = "cloudquery"
@@ -257,7 +256,7 @@ const testEnvVarConfig = `cloudquery {
 provider "aws" {
   configuration {
 	account "dev" {
-		role_arn ="${ROLE_ARN}"
+		role_arn ="${CQ_ROLE_ARN}"
 	}
 	account "ron" {}
   }
@@ -265,9 +264,9 @@ provider "aws" {
 }`
 
 func TestConfigEnvVariableSubstitution(t *testing.T) {
-	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
-		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
-		"CQ_VAR_ROLE_ARN=12312312",
+	p := NewParser(WithEnvironmentVariables([]string{
+		"CQ_DSN=postgres://postgres:pass@localhost:5432/postgres",
+		"CQ_ROLE_ARN=12312312",
 	}))
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testEnvVarConfig))
 	if diags != nil {

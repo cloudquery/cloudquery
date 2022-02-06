@@ -40,7 +40,7 @@ func NewParser(basePath string) *Parser {
 		},
 	})
 
-	config.EnvToHCLContext(ctx, config.EnvVarPrefix, os.Environ())
+	config.EnvToHCLContext(ctx, os.Environ())
 
 	return &Parser{
 		p:          hclparse.NewParser(),

@@ -38,7 +38,7 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	viper.Set("policy-dir", policyDir)
 
 	cfg, diags := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+		config.WithEnvironmentVariables(os.Environ()),
 	).LoadConfigFromSource("config.hcl", []byte(req.HCL))
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)

@@ -652,7 +652,7 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 
 func loadConfig(path string) (*config.Config, bool) {
 	parser := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+		config.WithEnvironmentVariables(os.Environ()),
 	)
 	cfg, diags := parser.LoadConfigFile(path)
 	if diags != nil {
