@@ -470,6 +470,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					Resources:              providerConfig.Resources,
 					PartialFetchingEnabled: providerConfig.EnablePartialFetch,
 					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
+					MaxGoroutines:          providerConfig.MaxGoroutines,
 				})
 			if err != nil {
 				return err
