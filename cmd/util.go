@@ -72,14 +72,14 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 }
 
 func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Command, args []string, f func(context.Context, *console.Client, *cobra.Command, []string) error) error {
-	configPath := viper.GetString("configPath")
+	cfgPath := viper.GetString("configPath")
 
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 	var c *console.Client
 
 	delayMessage := ui.IsTerminal()
 
-	var configFilter func(*config.Config) error
+	var cfgMutator func(*config.Config) error
 
 	switch cmd.Name() {
 	// Don't init console client with these commands
@@ -88,11 +88,11 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 	case "init":
 		// No console client created here
 	case "fetch":
-		configFilter = filterConfigProviders(args)
+		cfgMutator = filterConfigProviders(args)
 		fallthrough
 	default:
 		var err error
-		c, err = console.CreateClient(ctx, configPath, configFilter)
+		c, err = console.CreateClient(ctx, cfgPath, cfgMutator)
 		if err != nil {
 			return err
 		}

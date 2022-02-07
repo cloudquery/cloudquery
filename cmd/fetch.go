@@ -41,7 +41,7 @@ func init() {
 
 // filterConfigProviders gets a list of "providerAlias:resource1,resource2" items and updates the given config, removing non-matching providers
 // valid usages:
-// "aws" or "aws:*" (all resources)
+// "aws" or "aws:*" (all resources specified in the config)
 // "aws:ec2.instances,s3.buckets" (only ec2.instances and s3.buckets)
 func filterConfigProviders(list []string) func(*config.Config) error {
 	return func(cfg *config.Config) error {
