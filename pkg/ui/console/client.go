@@ -40,12 +40,18 @@ type Client struct {
 	updater *Progress
 }
 
-func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		// No explicit error string needed, user information is in diags
 		return nil, &ExitCodeError{ExitCode: 1}
 	}
+	if configMutator != nil {
+		if err := configMutator(cfg); err != nil {
+			return nil, err
+		}
+	}
+
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
 
