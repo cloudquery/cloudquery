@@ -4,10 +4,6 @@ import (
 	"encoding/json"
 )
 
-const (
-	StateVersion = 4
-)
-
 // Hashicorp terraform state v4
 // https://github.com/hashicorp/terraform/blob/main/internal/states/statefile/version4.go
 
@@ -16,7 +12,7 @@ type Data struct {
 }
 
 type State struct {
-	Version          uint64                 `json:"version"`
+	Version          *json.RawMessage       `json:"version"`
 	TerraformVersion string                 `json:"terraform_version"`
 	Serial           uint64                 `json:"serial"`
 	Lineage          string                 `json:"lineage"`

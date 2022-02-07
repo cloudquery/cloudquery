@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -197,7 +197,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
-	iacProv, iacStates, err := readIACStates(string(iacTerraform), d.config.Terraform, d.params.StateFiles)
+	iacProv, iacStates, err := readIACStates(d.logger, string(iacTerraform), d.config.Terraform, d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +260,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	return resList, nil
 }
 
-func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn schema.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
+func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build failed: %w", err)
@@ -412,7 +412,7 @@ func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
-func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
+func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
 	if iacProvider(iacID) != iacTerraform {
 		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
 	}
@@ -457,6 +457,14 @@ func readIACStates(iacID string, tf *TerraformSourceConfig, stateFiles []string)
 			_ = fh.Close()
 			if err != nil {
 				return "", nil, fmt.Errorf("parse %s: %w", fn, err)
+			}
+			if ok, err := terraform.ValidateStateVersion(data); err != nil {
+				if !ok {
+					return "", nil, fmt.Errorf("validate %s: %w", fn, err)
+				}
+				logger.Warn("ValidateStateVersion", "warning", err.Error())
+			} else if !ok {
+				return "", nil, fmt.Errorf("validate %s: failed", fn)
 			}
 
 			ret = append(ret, data)

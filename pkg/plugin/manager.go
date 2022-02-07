@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sort"
 
@@ -67,13 +66,9 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 	m.logger.Debug("Downloading required providers", "providers", providers)
 	traceData := make([]string, len(providers))
 	for i, rp := range providers {
-		_, providerName, err := registry.ParseProviderName(rp.Name)
-		if err != nil {
-			return err
-		}
-		if _, ok := m.clients[providerName]; ok {
+		if _, ok := m.clients[rp.Name]; ok {
 			m.logger.Debug("Skipping provider download, using reattach instead", "name", rp.Name, "version", rp.Version)
-			traceData[i] = providerName + "@debug"
+			traceData[i] = rp.Name + "@debug"
 			continue
 		}
 		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
@@ -81,15 +76,13 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 		if err != nil {
 			return err
 		}
-		m.providers[providerName] = details
-		traceData[i] = providerName + "@" + details.Version
+		m.providers[rp.Name] = details
+		traceData[i] = rp.Name + "@" + details.Version
 	}
 
 	sort.Strings(traceData)
-	b, _ := json.Marshal(traceData)
 	trace.SpanFromContext(ctx).SetAttributes(
 		attribute.StringSlice("providers", traceData),
-		attribute.String("provider_list", string(b)),
 	)
 
 	return nil

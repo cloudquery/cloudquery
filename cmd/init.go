@@ -3,9 +3,11 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/hashicorp/hcl/v2/gohcl"
@@ -49,8 +51,14 @@ func Initialize(ctx context.Context, providers []string) error {
 	rootBody := f.Body()
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
+		organization, providerName, err := registry.ParseProviderName(p)
+		if err != nil {
+			return fmt.Errorf("colud not parse requested provider")
+		}
+		source := fmt.Sprintf("%s/%s", organization, providerName)
 		requiredProviders[i] = &config.RequiredProvider{
-			Name:    p,
+			Name:    providerName,
+			Source:  &source,
 			Version: "latest",
 		}
 	}
@@ -72,6 +80,7 @@ func Initialize(ctx context.Context, providers []string) error {
 		return diags
 	}
 
+	cfg.CloudQuery.Connection.DSN = "" // Don't connect
 	c, err := console.CreateClientFromConfig(ctx, cfg)
 	if err != nil {
 		return err

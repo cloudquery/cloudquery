@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupPolicyDatabase(t *testing.T, tableName string) (schema.QueryExecer, func(t *testing.T)) {
+func setupPolicyDatabase(t *testing.T, tableName string) (execution.QueryExecer, func(t *testing.T)) {
 	conn, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
 	assert.NoError(t, err)
 
@@ -44,7 +44,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 		ShouldBeEmpty bool
 	}{
 		{
-			Name:          "nooutput",
+			Name:          "no output",
 			Query:         fmt.Sprintf("SELECT * FROM %s WHERE name LIKE 'peter'", t.Name()),
 			ExpectOutput:  false,
 			ShouldBeEmpty: true,
@@ -138,10 +138,16 @@ func TestExecutor_executePolicy(t *testing.T) {
 			Views: []*View{
 				{
 					Name:  "brokenview",
-					Query: "TCELES * MOFR *",
+					Query: "INVALID * MOFR *",
 				},
 			},
-			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"TCELES\" (SQLSTATE 42601)",
+			Queries: []*Check{
+				{
+					Name:  "broken-query",
+					Query: "SECT * OM testview",
+				},
+			},
+			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -166,7 +172,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.Execute(context.Background(), execReq, p, nil)
+			res, err := executor.Execute(context.Background(), execReq, p)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {
@@ -236,7 +242,7 @@ func TestExecutor_Execute(t *testing.T) {
 	cases := []struct {
 		Name                 string
 		Policy               *Policy
-		Selector             []string
+		Selector             string
 		ShouldBeEmpty        bool
 		Pass                 bool
 		ErrorOutput          string
@@ -265,23 +271,23 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "multilayer policies \\w selector",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"subpolicy"},
+			Selector:             "subpolicy",
 			Pass:                 true,
 			TotalExpectedResults: 2,
 		},
 		{
 			Name:                 "multilayer policies \\w invalid selector",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"invalidselector"},
+			Selector:             "invalidselector",
 			Pass:                 true,
 			ShouldBeEmpty:        true,
 			TotalExpectedResults: 0,
-			ErrorOutput:          "test//invalidselector: selected policy/query is not found",
+			ErrorOutput:          "no checks or policies to execute",
 		},
 		{
 			Name:                 "multilayer policies \\w selector on query",
 			Policy:               multiLayerPolicy,
-			Selector:             []string{"subpolicy", "sub-query"},
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 		},
@@ -301,7 +307,7 @@ func TestExecutor_Execute(t *testing.T) {
 		{
 			Name:                 "failing policy \\w selector",
 			Policy:               failingPolicy,
-			Selector:             []string{"subpolicy", "sub-query"},
+			Selector:             "subpolicy/sub-query",
 			Pass:                 true,
 			TotalExpectedResults: 1,
 			StopOnFailure:        true,
@@ -319,8 +325,8 @@ func TestExecutor_Execute(t *testing.T) {
 				UpdateCallback: nil,
 				StopOnFailure:  tc.StopOnFailure,
 			}
-
-			res, err := executor.Execute(context.Background(), execReq, tc.Policy, tc.Selector)
+			filtered := tc.Policy.Filter(tc.Selector)
+			res, err := executor.Execute(context.Background(), execReq, &filtered)
 			if tc.ErrorOutput != "" {
 				assert.EqualError(t, err, tc.ErrorOutput)
 			} else {

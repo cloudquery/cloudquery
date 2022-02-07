@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/afero"
+	"github.com/spf13/viper"
 )
 
-const dirname = ".cq"
 const defaultPermissions = 0644
 
 type Value struct {
@@ -45,7 +45,7 @@ func New(fs afero.Afero, fn string, gen func() string) *Client {
 func (c *Client) Get() (v Value, err error) {
 	v.fs = c.fs
 	for _, prefix := range readOrder() {
-		v.Path = filepath.Join(prefix, dirname, c.fn)
+		v.Path = filepath.Join(prefix, c.fn)
 		v.Content, err = c.read(v.Path)
 		if err == nil && v.Content != "" {
 			return v, nil
@@ -65,7 +65,7 @@ func (c *Client) Get() (v Value, err error) {
 	}
 
 	for _, prefix := range writeOrder() {
-		v.Path = filepath.Join(prefix, dirname, c.fn)
+		v.Path = filepath.Join(prefix, c.fn)
 		if err = os.MkdirAll(path.Dir(v.Path), fs.ModePerm); err != nil {
 			continue
 		}
@@ -110,11 +110,15 @@ func (c *Client) write(path, payload string) error {
 func readOrder() []string {
 	order := make([]string, 0, 2)
 	if home, err := os.UserHomeDir(); err == nil {
-		order = append(order, home)
+		order = append(order, filepath.Join(home, ".cq"))
 	}
-	return append(order, ".")
+	order = append(order, viper.GetString("data-dir"))
+
+	return order
 }
 
 func writeOrder() []string {
-	return []string{"."}
+	return []string{
+		viper.GetString("data-dir"),
+	}
 }

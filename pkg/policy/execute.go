@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client/fetch"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -16,7 +16,7 @@ import (
 	"github.com/spf13/afero"
 )
 
-var ErrPolicyOrQueryNotFound = errors.New("selected policy/query is not found")
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
 
 const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
@@ -48,7 +48,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn schema.QueryExecer
+	conn execution.QueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -71,6 +71,9 @@ type QueryResult struct {
 type ExecutionResult struct {
 	// PolicyName is the running policy name
 	PolicyName string
+
+	// ExecutionTime is when the policy has been started
+	ExecutionTime time.Time
 
 	// True if all policies have passed
 	Passed bool
@@ -101,7 +104,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn schema.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn execution.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,
@@ -122,7 +125,10 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 }
 
 // Execute executes given policy and the related sub queries/views.
-func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy, selector []string) (*ExecutionResult, error) {
+func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
+	if !policy.HasChecks() {
+		return nil, fmt.Errorf("no checks or policies to execute")
+	}
 	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
@@ -133,56 +139,40 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
-	var rest []string
-	if len(selector) > 0 {
-		rest = selector[1:]
-	}
-	var found bool
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
 	for _, p := range policy.Policies {
-		if len(selector) == 0 || p.Name == selector[0] {
-			found = true
-			executor := e.with(p.Name)
-			executor.log.Info("starting policy execution")
-			r, err := executor.Execute(ctx, req, p, rest)
-			if err != nil {
-				executor.log.Error("failed to execute policy", "err", err)
-				return nil, fmt.Errorf("%s/%w", policy.Name, err)
-			}
-			total.Passed = total.Passed && r.Passed
-			total.Results = append(total.Results, r.Results...)
-			if !total.Passed && req.StopOnFailure {
-				return &total, nil
-			}
-
+		executor := e.with(p.Name)
+		executor.log.Info("starting policy execution")
+		r, err := executor.Execute(ctx, req, p)
+		if err != nil {
+			executor.log.Error("failed to execute policy", "err", err)
+			return nil, fmt.Errorf("%s/%w", policy.Name, err)
+		}
+		total.Passed = total.Passed && r.Passed
+		total.Results = append(total.Results, r.Results...)
+		if !total.Passed && req.StopOnFailure {
+			return &total, nil
 		}
 	}
 
 	for _, q := range policy.Checks {
-		if len(selector) == 0 || q.Name == selector[0] {
-			found = true
-			e.log = e.log.With("query", q.Name)
-			qr, err := e.executeQuery(ctx, q)
-			if err != nil {
-				e.log.Error("failed to execute query", "err", err)
-				return nil, fmt.Errorf("%s/%w", policy.Name, err)
-			}
-			total.Passed = total.Passed && qr.Passed
-			total.Results = append(total.Results, qr)
-			e.log.Info("Check finished with result", "passed", qr.Passed)
-			if e.progressUpdate != nil {
-				e.progressUpdate(Update{
-					FinishedQueries: 1,
-				})
-			}
-			if !total.Passed && req.StopOnFailure {
-				return &total, nil
-			}
+		e.log = e.log.With("query", q.Name)
+		qr, err := e.executeQuery(ctx, q)
+		if err != nil {
+			e.log.Error("failed to execute query", "err", err)
+			return nil, fmt.Errorf("%s/%w", policy.Name, err)
 		}
-	}
-	if !found && len(selector) > 0 {
-		e.log.Error("policy/query not found with provided sub-policy selector", "selector", selector, "available_policies", policy.Policies.All())
-		return nil, fmt.Errorf("%s//%s: %w", policy.Name, path.Join(selector...), ErrPolicyOrQueryNotFound)
+		total.Passed = total.Passed && qr.Passed
+		total.Results = append(total.Results, qr)
+		e.log.Info("Check finished with result", "passed", qr.Passed)
+		if e.progressUpdate != nil {
+			e.progressUpdate(Update{
+				FinishedQueries: 1,
+			})
+		}
+		if !total.Passed && req.StopOnFailure {
+			return &total, nil
+		}
 	}
 	return &total, nil
 }

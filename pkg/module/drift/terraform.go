@@ -2,13 +2,17 @@ package drift
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
@@ -83,6 +87,8 @@ func (r TFInstances) AsResourceList(identifiers []string, alist AttrList, path s
 }
 
 func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist AttrList, path string) ResourceList {
+	registerGJsonHelpers()
+
 	var elems []gjson.Result
 
 	root := gjson.ParseBytes(ins.AttributesRaw)
@@ -160,7 +166,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn schema.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
+func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	res := &Result{
 		Different: nil,
 		Equal:     nil,
@@ -387,6 +393,22 @@ func efaceToString(a interface{}) string {
 }
 
 func equals(a, b interface{}) bool {
+	// case of assume_role_policy fields: string and map[string]interface{} needs to be compared
+	if _, ok := b.(map[string]interface{}); ok {
+		if aMap, ok := isStringAMap(a); ok {
+			a = aMap
+		}
+	} else if _, ok := a.(map[string]interface{}); ok {
+		if bMap, ok := isStringAMap(b); ok {
+			b = bMap
+		}
+	}
+
+	// nil and empty strings, slices or maps are considered equal for our comparisons
+	if isEmptyStringSliceOrMap(a) && isEmptyStringSliceOrMap(b) {
+		return true
+	}
+
 	as := efaceToString(a)
 	bs := efaceToString(b)
 	if as == bs {
@@ -412,5 +434,54 @@ func equals(a, b interface{}) bool {
 		return aa.String() == ba.String()
 	}
 
-	return false
+	return cmp.Equal(a, b, cmpopts.EquateEmpty())
+}
+
+func isStringAMap(a interface{}) (map[string]interface{}, bool) {
+	if astr, ok := a.(string); ok {
+		var newA map[string]interface{}
+		if json.Unmarshal([]byte(astr), &newA) == nil {
+			return newA, true
+		}
+	}
+	return nil, false
+}
+
+func isEmptyStringSliceOrMap(val interface{}) bool {
+	if val == nil {
+		return true
+	}
+	v := reflect.ValueOf(val)
+	switch v.Kind() {
+	case reflect.String, reflect.Slice, reflect.Array, reflect.Map:
+		return v.Len() == 0
+	default:
+		return false
+	}
+}
+
+func registerGJsonHelpers() {
+	if !gjson.ModifierExists("inverse", nil) {
+		// inverse a boolean
+		gjson.AddModifier("inverse", func(body, arg string) string {
+			if body == "false" {
+				return "true"
+			}
+			return "false"
+		})
+	}
+	if !gjson.ModifierExists("iftrue", nil) {
+		// if given statement is true, return the arg. otherwise return nil.
+		gjson.AddModifier("iftrue", func(body, arg string) string {
+			b, err := strconv.ParseBool(body)
+			if err != nil {
+				uq, _ := strconv.Unquote(body)
+				b, _ = strconv.ParseBool(uq)
+			}
+			if b {
+				return strconv.Quote(arg)
+			}
+			return ""
+		})
+	}
 }

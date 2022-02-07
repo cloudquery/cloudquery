@@ -3,14 +3,16 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
+
+	"github.com/creasty/defaults"
+	"github.com/hashicorp/hcl/v2/gohcl"
+	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
-	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
-	"github.com/spf13/viper"
 )
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
@@ -47,42 +49,9 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "cloudquery":
-			contentDiags = gohcl.DecodeBody(block.Body, &p.HCLContext, &config.CloudQuery)
-			diags = append(diags, contentDiags...)
-			// TODO: decode in a more generic way
-
-			if config.CloudQuery.Connection == nil {
-				config.CloudQuery.Connection = &Connection{
-					DSN: "",
-				}
-			}
-			if config.CloudQuery.History != nil {
-				if err := defaults.Set(config.CloudQuery.History); err != nil {
-					diags = append(diags, &hcl.Diagnostic{Severity: hcl.DiagError, Summary: "failed to set defaults in history"})
-				}
-			}
-
-			if dsn := viper.GetString("dsn"); dsn != "" {
-				config.CloudQuery.Connection.DSN = dsn
-			}
-			if dir := viper.GetString("plugin-dir"); dir != "." {
-				if dir == "." {
-					if dir, err := os.Getwd(); err == nil {
-						config.CloudQuery.PluginDirectory = dir
-					}
-				} else {
-					config.CloudQuery.PluginDirectory = dir
-				}
-			}
-			if dir := viper.GetString("policy-dir"); dir != "" {
-				if dir == "." {
-					if dir, err := os.Getwd(); err != nil {
-						config.CloudQuery.PolicyDirectory = dir
-					}
-				} else {
-					config.CloudQuery.PolicyDirectory = dir
-				}
-			}
+			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
+			diags = diags.Extend(cqDiags)
+			config.CloudQuery = cqBlock
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block, &p.HCLContext, existingProviders)
 			diags = append(diags, cfgDiags...)
@@ -141,4 +110,64 @@ func ReadModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Bod
 		ret[content.Blocks[i].Labels[0]] = content.Blocks[i].Body
 	}
 	return ret, nil
+}
+
+func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
+	var cq CloudQuery
+	var diags hcl.Diagnostics
+	diags = diags.Extend(gohcl.DecodeBody(block.Body, ctx, &cq))
+
+	// TODO: decode in a more generic way
+	if cq.Connection == nil {
+		cq.Connection = &Connection{
+			DSN: "",
+		}
+	}
+	if cq.History != nil {
+		if err := defaults.Set(cq.History); err != nil {
+			diags = append(diags, &hcl.Diagnostic{Severity: hcl.DiagError, Summary: "failed to set defaults in history"})
+		}
+	}
+	if dsn := viper.GetString("dsn"); dsn != "" {
+		cq.Connection.DSN = dsn
+	}
+
+	datadir := viper.GetString("data-dir")
+
+	if dir := viper.GetString("plugin-dir"); dir != "" {
+		if dir == "." {
+			if dir, err := os.Getwd(); err == nil {
+				cq.PluginDirectory = dir
+			}
+		} else {
+			cq.PluginDirectory = dir
+		}
+	} else if datadir != "" {
+		cq.PluginDirectory = filepath.Join(datadir, "providers")
+	}
+
+	if dir := viper.GetString("policy-dir"); dir != "" {
+		if dir == "." {
+			if dir, err := os.Getwd(); err == nil {
+				cq.PolicyDirectory = dir
+			}
+		} else {
+			cq.PolicyDirectory = dir
+		}
+	} else if datadir != "" {
+		cq.PolicyDirectory = filepath.Join(datadir, "policies")
+	}
+
+	// validate provider versions
+	for _, cp := range cq.Providers {
+		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  fmt.Sprintf("Provider %s version %s is invalid", cp.Name, cp.Version),
+				Detail:   "Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z",
+				Subject:  &block.DefRange,
+			})
+		}
+	}
+	return cq, diags
 }

@@ -16,7 +16,7 @@ type DialectExecutor interface {
 	// Setup is called on the dialect on initialization, returns the DSN (modified if necessary) to use for migrations
 	Setup(context.Context) (string, error)
 
-	// Validate is called before startup to check that the dialect can execute properly
+	// Validate is called before startup to check that the dialect can execute properly. If returns true and error is set, the error is merely logged.
 	Validate(context.Context) (bool, error)
 
 	// Finalize is called after migrations and upgrades are run

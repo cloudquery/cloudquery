@@ -9,12 +9,15 @@ import (
 	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMaybeCheckForUpdate(t *testing.T) {
 	ctx := context.Background()
 	const lastUpdateCheckPath = ".cq/last-update-check"
+	viper.Set("data-dir", "./.cq")
+
 	tests := []struct {
 		name           string
 		init           func(t *testing.T, fs afero.Afero)

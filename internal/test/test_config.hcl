@@ -4,7 +4,6 @@ cloudquery {
     dsn = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
   }
   provider "test" {
-    source = "cloudquery"
     version = "latest"
   }
 

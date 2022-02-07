@@ -30,8 +30,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/google/uuid"
@@ -40,7 +41,7 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	zerolog "github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
-	otrace "go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -200,7 +201,7 @@ type FetchDoneResult struct {
 
 // TableCreator creates tables based on schema received from providers
 type TableCreator interface {
-	CreateTable(context.Context, schema.QueryExecer, *schema.Table, *schema.Table) error
+	CreateTable(context.Context, execution.QueryExecer, *schema.Table, *schema.Table) error
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -230,7 +231,7 @@ type Client struct {
 	// Optional: Logger framework can use to log.
 	// default: global logger provided.
 	Logger hclog.Logger
-	// Optional: Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
+	// Hub client to use to download plugins, the Hub is used to download and pluginManager providers binaries
 	// if not specified, default cloudquery registry is used.
 	Hub registry.Hub
 	// manager manages all plugins lifecycle
@@ -260,6 +261,7 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		HistoryCfg:         nil,
 		RegistryURL:        registry.CloudQueryRegistryURl,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
+		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURl),
 	}
 	for _, o := range options {
 		o(c)
@@ -301,8 +303,8 @@ type ProviderUpdateSummary struct {
 }
 
 // CheckForProviderUpdates checks for provider updates
-func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateSummary, error) {
-	var summary []ProviderUpdateSummary
+func (c *Client) CheckForProviderUpdates(ctx context.Context) []ProviderUpdateSummary {
+	summary := make([]ProviderUpdateSummary, 0, len(c.Providers))
 	for _, p := range c.Providers {
 		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
 		if strings.Compare(p.Version, "latest") == 0 {
@@ -314,17 +316,17 @@ func (c *Client) CheckForProviderUpdates(ctx context.Context) ([]ProviderUpdateS
 			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
 			continue
 		}
-		if version == nil {
+		if version == "" {
 			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
-		if p.Version != *version {
-			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, *version})
-			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", *version)
+		if p.Version != version {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, version})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
 		}
 	}
-	return summary, nil
+	return summary
 }
 
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
@@ -382,6 +384,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
+
+	reportNumProviders(ctx, request.Providers)
 
 	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
 
@@ -568,7 +572,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
 	}
 
-	reportFetchSummaryErrors(otrace.SpanFromContext(ctx), response.ProviderFetchSummary)
+	reportFetchSummaryErrors(trace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
 	return response, nil
 }
@@ -625,7 +629,7 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -653,7 +657,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 		}
 
 		c.Logger.Error("BuildProviderTables failed", "error", retErr)
-		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}()
 
 	// create migration table and set it to version based on latest create table
@@ -675,7 +679,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 }
 
 func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 
@@ -708,22 +712,22 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	if err != nil && err != migrate.ErrNilVersion {
 		return fmt.Errorf("failed to get provider version: %w", err)
 	}
-	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
+	trace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
 
 	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cq provider drop %s`", providerName)
+		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
 	}
 	if pVersion == "v0.0.0" {
 		return c.BuildProviderTables(ctx, providerName)
 	}
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
-	otrace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
+	trace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
 
 	return m.UpgradeProvider(cfg.Version)
 }
 
 func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -749,7 +753,7 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 }
 
 func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", otrace.WithAttributes(
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
 	))
 	defer spanEnder(retErr)
@@ -788,7 +792,7 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 		c.Logger.Info("policy execution finished", "err", err)
 		if err != nil {
 			// this error means error in execution and not policy violation
-			// we should exit immeditly as this is a non-recoverable error
+			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			c.Logger.Error("policy execution finished with error", "err", err)
 			return results, err
@@ -801,6 +805,8 @@ func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*p
 }
 
 func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
+	executionTime := time.Now()
+
 	spanAttrs := []attribute.KeyValue{
 		attribute.String("policy_name", p.Name),
 	}
@@ -812,10 +818,15 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 		)
 	}
 
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", otrace.WithAttributes(spanAttrs...))
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", trace.WithAttributes(spanAttrs...))
 	defer spanEnder(retErr)
 
 	c.Logger.Info("preparing to run policy")
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
+
 	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
 		d, err := c.Manager.GetPluginDetails(name)
 		return d.Version, err
@@ -842,6 +853,7 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 	if err != nil {
 		return nil, err
 	}
+	result.ExecutionTime = executionTime
 
 	// Store output in file if requested
 	if req.OutputDir != "" {
@@ -857,10 +869,14 @@ func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesR
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *module.ExecutionResult, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", otrace.WithAttributes(attribute.String("module", req.Name)))
+	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "ExecuteModule", trace.WithAttributes(attribute.String("module", req.Name)))
 	defer spanEnder(retErr)
 
 	c.Logger.Info("Executing module", "module", req.Name, "params", req.Params)
+
+	if err := c.ensureConnection(); err != nil {
+		return nil, err
+	}
 
 	modReq := &module.ExecuteRequest{
 		Providers: req.Providers,
@@ -910,7 +926,18 @@ func (c *Client) initModules() {
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
+func (c *Client) ensureConnection() error {
+	if c.dialectExecutor != nil {
+		return nil
+	}
+	return fmt.Errorf("missing connection info in config.hcl")
+}
+
 func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
+	if err := c.ensureConnection(); err != nil {
+		return nil, nil, err
+	}
+
 	providerConfig, err := c.getProviderConfig(providerName)
 	if err != nil {
 		return nil, nil, err
@@ -1005,7 +1032,7 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 }
 
 // reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
-func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]ProviderFetchSummary) {
+func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
 	for _, ps := range fetchSummaries {
@@ -1020,7 +1047,13 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
-		for _, e := range ps.Diagnostics() {
+		for _, e := range ps.Diagnostics().Squash() {
+			if rd, ok := e.(diag.Redactable); ok {
+				if r := rd.Redacted(); r != nil {
+					e = r
+				}
+			}
+
 			if e.Severity() == diag.IGNORE {
 				continue
 			}
@@ -1033,8 +1066,11 @@ func reportFetchSummaryErrors(span otrace.Span, fetchSummaries map[string]Provid
 					"resource":         e.Description().Resource,
 				})
 				scope.SetExtra("detail", e.Description().Detail)
-				if e.Severity() == diag.WARNING {
+				switch e.Severity() {
+				case diag.WARNING:
 					scope.SetLevel(sentry.LevelWarning)
+				case diag.PANIC:
+					scope.SetLevel(sentry.LevelFatal)
 				}
 				sentry.CaptureException(e)
 			})
@@ -1075,9 +1111,12 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	}
 
 	if ok, err := c.dialectExecutor.Validate(ctx); err != nil {
-		return fmt.Errorf("validate: %w", err)
+		if !ok {
+			return fmt.Errorf("validate: %w", err)
+		}
+		c.Logger.Warn("database validation warning", "message", err.Error())
 	} else if !ok {
-		c.Logger.Warn("postgres validation warning")
+		c.Logger.Warn("database validation warning")
 	}
 
 	c.fetchSummaryClient = fetch.NewClient(c.db, c.Logger)
@@ -1093,4 +1132,31 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 
 	return nil
+}
+
+// reportNumProviders counts multiple (aliased) providers and sets tracing and sentry specific attributes
+func reportNumProviders(ctx context.Context, provs []*config.Provider) {
+	numProviders := make(map[string]int, len(provs))
+	for _, p := range provs {
+		numProviders[p.Name]++
+	}
+	var multiProviders []string
+	for k, v := range numProviders {
+		if v > 1 {
+			multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
+		}
+	}
+	if len(multiProviders) == 0 {
+		return
+	}
+
+	sort.Strings(multiProviders)
+	trace.SpanFromContext(ctx).SetAttributes(
+		attribute.StringSlice("multi_providers", multiProviders),
+	)
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTags(map[string]string{
+			"multi_providers": strings.Join(multiProviders, ","),
+		})
+	})
 }

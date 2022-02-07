@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -144,6 +143,16 @@ provider "aws" {
 `
 const expectedDuplicateAliasProviderError = "test.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
 
+const testBadVersion = `cloudquery {
+  connection {
+    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
+  }
+  provider "test" {
+    source = "cloudquery"
+    version = "0.0.0"
+  }
+}`
+
 type Account struct {
 	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`
@@ -183,6 +192,13 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 			},
 		},
 	}, cfg)
+}
+
+func TestParser_BadVersion(t *testing.T) {
+	p := NewParser()
+	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testBadVersion))
+	assert.NotNil(t, diags)
+	assert.Equal(t, "test.hcl:1,1-11: Provider test version 0.0.0 is invalid; Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z", diags[0].Error())
 }
 
 func TestParser_DuplicateProviderNaming(t *testing.T) {
