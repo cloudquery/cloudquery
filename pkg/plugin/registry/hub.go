@@ -275,8 +275,20 @@ func (h Hub) getRelease(ctx context.Context, organization, providerName, version
 		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, ProviderRepoName(providerName), version)
 		return release, err
 	}
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, ProviderRepoName(providerName))
-	return release, err
+	releases, _, err := client.Repositories.ListReleases(ctx, organization, ProviderRepoName(providerName), &github.ListOptions{
+		Page:    0,
+		PerPage: 2,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(releases) == 1 {
+		return releases[0], nil
+	}
+	if len(releases[0].Assets) < len(releases[1].Assets) {
+		return releases[1], nil
+	}
+	return releases[0], nil
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
