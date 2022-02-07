@@ -60,6 +60,97 @@ By default, CloudQuery will fetch all configuration from **all** supported resou
 - `max_backoff` **(Optional)** - The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 60 seconds.
 - `aws_debug` **(Optional)** - This will print very verbose/debug output from AWS SDK. Defaults to false.
 
+
+### Multi Account Configuration- AWS Organizations:
+
+CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
+
+Prerequisites for using AWS Org functionality:
+1. Have a role (or user) in an Admin account with the following access 
+  `organizations:ListAccounts`
+  `organizations:ListAccountsForParent`
+  `organizations:ListChildren`
+
+2. Have a role in each child account that has a trust policy with the admin accounts. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account
+
+
+Using AWS Organization:
+1. Specify member role name:
+
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+    }
+```
+
+
+
+2. Getting credentials in an admin account:
+    1. Sourcing Credentials from the default credential tool chain:
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+    }
+```
+
+    2. Sourcing credentials from a named profile in the shared configuration or credentials file
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+      admin_account "admin" {
+        local_profile = "<Named-Profile>"
+      }
+    }
+```
+    3. Assuming a role in admin account using credentials in the shared configuration or credentials file: 
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+      admin_account "admin" {
+        local_profile = "<Named-Profile>"
+        
+        role_arn      = "arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>"
+        
+        // Optional. Specify the name of the session 
+        // role_session_name = ""
+
+        // Optional. Specify the ExternalID if required for trust policy 
+      	// external_id = "
+
+      }
+    }
+```
+
+3. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
+
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+      admin_account "admin" {
+        local_profile = "<Named-Profile>"
+      }
+      organization_units = ["ou-<ID-1>","ou-<ID-2>"]
+    }
+```
+
+***note: If you specify an OU, CloudQuery will not child OUs***
+
+
+
+
+#### Arguments for Org block:
+
+- `organization_units`  **(Optional)** - List of Organizational Units that CloudQuery should use to source accounts from
+- `admin_account`  **(Optional)** - Configuration on how to grab credentials from an Admin account
+- `member_role_name`  **(Required)** - Role name that CloudQuery should use to assume a role in the member account from the admin account. Note: This is not a full ARN, it is just the name
+- `member_role_session_name`    **(Optional)** - Override the default Session name.
+- `member_external_id`  **(Optional)** - Specify an ExternalID for use in the trust policy
+- `member_regions`  **(Optional)** - Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array 
+
+
+
+
+
 ### Multi Account Configuration
 
 CloudQuery can fetch from multiple accounts in parallel by using AssumeRole (You will need to use credentials that can AssumeRole to all other specified account. Following is an example configuration:
@@ -74,7 +165,7 @@ provider "aws" {
       // Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
       local_profile = "<NAMED_PROFILE>
       // Optional. Specify the Role Session name
-      role_session_name = 
+      role_session_name = ""
     }
     accounts "<AccountID_Alias_2>" {
       // Optional. Role ARN we want to assume when accessing this account
@@ -91,6 +182,7 @@ provider "aws" {
 - `role_arn`  **(Optional)** - The role that CloudQuery will use to perform the fetch
 - `local_profile`  **(Optional)** - Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for the account
 - `external_id`    **(Optional)** - The unique identifier used to by non aws entities to assume a role in an AWS account
+- `role_session_name`    **(Optional)** - Override the default Session name.
 - `regions`  **(Optional)** - Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
 
 

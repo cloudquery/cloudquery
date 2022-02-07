@@ -333,6 +333,7 @@ type MQClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_organizations.go . OrganizationsClient
 type OrganizationsClient interface {
+	ListAccountsForParent(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
 	ListAccounts(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
 }
 
