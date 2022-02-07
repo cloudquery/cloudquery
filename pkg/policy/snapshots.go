@@ -49,7 +49,6 @@ func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []str
 }
 
 func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
-
 	ef, err := os.OpenFile(source, os.O_RDONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file for restore: %w", err)
