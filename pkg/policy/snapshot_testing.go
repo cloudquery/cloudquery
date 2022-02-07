@@ -89,18 +89,19 @@ func compareArbitraryArrays(f1, f2 [][]string) error {
 
 }
 func OpenAndParse(filePath string) ([][]string, error) {
-	csvFile, err := ioutil.ReadFile(filePath)
+	csvFile, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
+	defer csvFile.Close()
 
-	r := csv.NewReader(strings.NewReader(string(csvFile)))
+	byteValue, _ := ioutil.ReadAll(csvFile)
+	r := csv.NewReader(strings.NewReader(string(byteValue)))
 	records, err := r.ReadAll()
 	if err != nil {
 		return nil, err
 	}
 	return records, err
-
 }
 
 func FindAllTestCases(root string) ([]string, error) {
