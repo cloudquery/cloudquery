@@ -6,6 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -592,6 +593,87 @@ func SQLServers() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:          "azure_sql_server_security_alert_policy",
+				Description:   "List the server's threat detection policies",
+				Resolver:      fetchSqlServerSecurityAlertPolicies,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				IgnoreInTests: false,
+				Columns: []schema.Column{
+					{
+						Name:        "server_cq_id",
+						Description: "Unique ID of azure_sql_servers table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "id",
+						Description: "Resource ID",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ID"),
+					},
+					{
+						Name:        "name",
+						Description: "Resource name",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Name"),
+					},
+					{
+						Name:        "type",
+						Description: "The virtual network rule type",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Type"),
+					},
+					{
+						Name:        "state",
+						Description: "Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("State"),
+					},
+					{
+						Name:        "disabled_alerts",
+						Description: "Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action",
+						Type:        schema.TypeStringArray,
+						Resolver:    schema.PathResolver("DisabledAlerts"),
+					},
+					{
+						Name:        "email_addresses",
+						Description: "Specifies an array of e-mail addresses to which the alert is sent.",
+						Type:        schema.TypeStringArray,
+						Resolver:    schema.PathResolver("EmailAddresses"),
+					},
+					{
+						Name:        "email_account_admins",
+						Description: "Specifies that the alert is sent to the account administrators.",
+						Type:        schema.TypeBool,
+						Resolver:    schema.PathResolver("EmailAccountAdmins"),
+					},
+					{
+						Name:        "storage_endpoint",
+						Description: "Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("StorageEndpoint"),
+					},
+					{
+						Name:        "storage_account_access_key",
+						Description: "Specifies the identifier key of the Threat Detection audit storage account.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("StorageAccountAccessKey"),
+					},
+					{
+						Name:        "retention_days",
+						Description: "Specifies the number of days to keep in the Threat Detection audit logs.",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("RetentionDays"),
+					},
+					{
+						Name:        "creation_time",
+						Description: "Specifies the UTC creation time of the policy.",
+						Type:        schema.TypeTimestamp,
+						Resolver:    schema.PathResolver("CreationTime.Time"),
+					},
+				},
+			},
 		},
 	}
 }
@@ -745,6 +827,29 @@ func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.Cli
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func fetchSqlServerSecurityAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().SQL.ServerSecurityAlertPolicies
+	server, ok := parent.Item.(sql.Server)
+	if !ok {
+		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
+	}
+	details, err := client.ParseResourceID(*server.ID)
+	if err != nil {
+		return err
+	}
+	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
+	if err != nil {
+		return err
+	}
+	for result.NotDone() {
+		res <- result.Values()
+		if err = result.NextWithContext(ctx); err != nil {
 			return err
 		}
 	}

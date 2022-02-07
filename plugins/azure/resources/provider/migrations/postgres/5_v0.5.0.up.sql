@@ -48,3 +48,22 @@ CREATE TABLE IF NOT EXISTS "azure_sql_server_virtual_network_rules" (
 	UNIQUE(cq_id),
 	FOREIGN KEY (server_cq_id) REFERENCES azure_sql_servers(cq_id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS "azure_sql_server_security_alert_policy" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"state" text,
+	"disabled_alerts" text[],
+	"email_addresses" text[],
+	"email_account_admins" boolean,
+	"storage_endpoint" text,
+	"storage_account_access_key" text,
+	"retention_days" integer,
+	"creation_time" timestamp without time zone,
+	CONSTRAINT azure_sql_server_security_alert_policy_pk PRIMARY KEY(server_cq_id,id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (server_cq_id) REFERENCES azure_sql_servers(cq_id) ON DELETE CASCADE
+);

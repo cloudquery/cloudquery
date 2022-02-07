@@ -27,6 +27,7 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	encSvc := mocks.NewMockTransparentDataEncryptionsClient(ctrl)
 	epSvc := mocks.NewMockEncryptionProtectorsClient(ctrl)
 	vnrSvc := mocks.NewMockSQLVirtualNetworkRulesClient(ctrl)
+	ssapSvc := mocks.NewMockServerSecurityAlertPoliciesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
 			DatabaseBlobAuditingPolicies:     databaseBlobSvc,
@@ -42,6 +43,7 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			TransparentDataEncryptions:       encSvc,
 			EncryptionProtectors:             epSvc,
 			VirtualNetworkRules:              vnrSvc,
+			ServerSecurityAlertPolicies:      ssapSvc,
 		},
 	}
 	server := sql.Server{}
@@ -192,6 +194,19 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			sql.VirtualNetworkRuleListResult{Value: &[]sql.VirtualNetworkRule{vnr}},
 			func(context.Context, sql.VirtualNetworkRuleListResult) (sql.VirtualNetworkRuleListResult, error) {
 				return sql.VirtualNetworkRuleListResult{}, nil
+			},
+		), nil,
+	)
+
+	var ssap sql.ServerSecurityAlertPolicy
+	if err := faker.FakeData(&ssap); err != nil {
+		t.Fatal(err)
+	}
+	ssapSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(
+		sql.NewLogicalServerSecurityAlertPolicyListResultPage(
+			sql.LogicalServerSecurityAlertPolicyListResult{Value: &[]sql.ServerSecurityAlertPolicy{ssap}},
+			func(ctx context.Context, result sql.LogicalServerSecurityAlertPolicyListResult) (sql.LogicalServerSecurityAlertPolicyListResult, error) {
+				return sql.LogicalServerSecurityAlertPolicyListResult{}, nil
 			},
 		), nil,
 	)

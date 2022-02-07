@@ -53,3 +53,24 @@ CREATE TABLE IF NOT EXISTS "azure_sql_server_virtual_network_rules" (
 );
 CREATE INDEX ON azure_sql_server_virtual_network_rules (cq_fetch_date, server_cq_id);
 SELECT setup_tsdb_child('azure_sql_server_virtual_network_rules', 'server_cq_id', 'azure_sql_servers', 'cq_id');
+CREATE TABLE IF NOT EXISTS "azure_sql_server_security_alert_policy" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"state" text,
+	"disabled_alerts" text[],
+	"email_addresses" text[],
+	"email_account_admins" boolean,
+	"storage_endpoint" text,
+	"storage_account_access_key" text,
+	"retention_days" integer,
+	"creation_time" timestamp without time zone,
+	CONSTRAINT azure_sql_server_security_alert_policy_pk PRIMARY KEY(cq_fetch_date,server_cq_id,id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON azure_sql_server_security_alert_policy (cq_fetch_date, server_cq_id);
+SELECT setup_tsdb_child('azure_sql_server_security_alert_policy', 'server_cq_id', 'azure_sql_servers', 'cq_id');
