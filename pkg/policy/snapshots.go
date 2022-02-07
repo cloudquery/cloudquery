@@ -18,8 +18,7 @@ import (
 func (ce *Executor) persistSnapshot(ctx context.Context, path string, table string) error {
 	ef, err := os.OpenFile(filepath.Join("%s/", path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
-		ce.log.Error("error opening file.", "error", err)
-		return err
+		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
 	defer ef.Close()
 	query := fmt.Sprintf("COPY (select * from %s) TO STDOUT DELIMITER '|' CSV HEADER", table)
@@ -53,8 +52,7 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 
 	ef, err := os.OpenFile(source, os.O_RDONLY, 0777)
 	if err != nil {
-		ce.log.Error("error opening file.", "error", err)
-		return err
+		return fmt.Errorf("error opening file for restore: %w", err)
 	}
 	defer ef.Close()
 	fileName := path.Base(source)
