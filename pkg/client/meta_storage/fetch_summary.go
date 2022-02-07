@@ -1,51 +1,22 @@
-// Package fetch interacts with core database and handles fetch summary routines.
-package fetch
+package meta_storage
 
 import (
 	"context"
 	"database/sql/driver"
-	"embed"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
-
-	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/database/dsn"
-	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/google/uuid"
-	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4"
 )
 
-var (
-	//go:embed migrations/*/*.sql
-	coreMigrations embed.FS
-)
-
-type Client struct {
-	db     execution.QueryExecer
-	Logger hclog.Logger
-}
-
-func NewClient(db execution.QueryExecer, logger hclog.Logger) *Client {
-	return &Client{
-		db:     db,
-		Logger: logger,
-	}
-}
-
-// Summary includes a summarized report of fetch, such as fetch id, fetch start and finish,
-// resources fetch results
-type Summary struct {
+// FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish, resources fetch results
+type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
 	FetchId            uuid.UUID              `db:"fetch_id"`
@@ -62,7 +33,7 @@ type Summary struct {
 	Resources          ResourceFetchSummaries `db:"results"`
 }
 
-type ResourceFetchSummaries []ResourceSummary
+type ResourceFetchSummaries []ResourceFetchSummary
 
 // Value implements Valuer interface required by goqu
 func (r ResourceFetchSummaries) Value() (driver.Value, error) {
@@ -72,8 +43,8 @@ func (r ResourceFetchSummaries) Value() (driver.Value, error) {
 	return json.Marshal(r)
 }
 
-// ResourceSummary includes a data about fetching specific resource
-type ResourceSummary struct {
+// ResourceFetchSummary includes a data about fetching specific resource
+type ResourceFetchSummary struct {
 	ResourceName string `json:"resource_name"`
 	// map of resources that have finished fetching
 	FinishedResources map[string]bool `json:"finished_resources"`
@@ -91,8 +62,8 @@ type ResourceSummary struct {
 	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
-// Save saves fetch summary into fetches database
-func (c *Client) Save(ctx context.Context, fs *Summary) error {
+// SaveFetchSummary saves fetch summary into fetches database
+func (c *Client) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		return err
@@ -106,8 +77,8 @@ func (c *Client) Save(ctx context.Context, fs *Summary) error {
 	return c.db.Exec(ctx, sql, args...)
 }
 
-// GetForProvider gets latest fetch summary for specific provider
-func (c *Client) GetForProvider(ctx context.Context, provider string) (*Summary, error) {
+// GetFetchSummaryForProvider gets latest fetch summary for specific provider
+func (c *Client) GetFetchSummaryForProvider(ctx context.Context, provider string) (*FetchSummary, error) {
 	q := goqu.Dialect("postgres").
 		Select("provider_version", "is_success").
 		From("cloudquery.fetches").
@@ -118,7 +89,7 @@ func (c *Client) GetForProvider(ctx context.Context, provider string) (*Summary,
 	if err != nil {
 		return nil, err
 	}
-	var data Summary
+	var data FetchSummary
 	err = pgxscan.Get(ctx, c.db, &data, sql)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -127,40 +98,4 @@ func (c *Client) GetForProvider(ctx context.Context, provider string) (*Summary,
 		return nil, err
 	}
 	return &data, nil
-}
-
-func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
-	err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-	if err != nil {
-		return err
-	}
-
-	newDSN, err := de.Setup(ctx)
-	if err != nil {
-		return err
-	}
-
-	migrations, err := migrator.ReadMigrationFiles(c.Logger, coreMigrations)
-	if err != nil {
-		return err
-	}
-	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
-	if err != nil {
-		return err
-	}
-	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core", nil)
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-
-	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
-		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
-	}
-	return nil
 }

@@ -1,4 +1,4 @@
-package fetch
+package meta_storage
 
 import (
 	"context"
@@ -18,22 +18,22 @@ import (
 const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
 type fetchSummaryTest struct {
-	summary     Summary
+	summary     FetchSummary
 	err         error
 	skipFetchId bool
 }
 
 var fetchSummaryTests = []fetchSummaryTest{
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test",
 			ProviderVersion: "v0.0.0",
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName: "test1",
-			Resources: []ResourceSummary{
+			Resources: []ResourceFetchSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -42,15 +42,15 @@ var fetchSummaryTests = []fetchSummaryTest{
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName: "test4",
-			Resources: []ResourceSummary{
+			Resources: []ResourceFetchSummary{
 				{
 					ResourceName:  "test",
 					ResourceCount: 99,
@@ -63,14 +63,14 @@ var fetchSummaryTests = []fetchSummaryTest{
 		},
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test2",
 			ProviderVersion: "v0.0.1",
 		},
 		err: errors.New("ERROR: duplicate key value violates unique constraint \"fetches_pk\" (SQLSTATE 23505)"),
 	},
 	{
-		summary: Summary{
+		summary: FetchSummary{
 			ProviderName:    "test3",
 			ProviderVersion: "v0.0.1",
 		},
@@ -101,7 +101,7 @@ func TestFetchSaveSummary(t *testing.T) {
 		}
 		start := time.Now()
 		f.summary.Start = &start
-		err := fetchSummaryClient.Save(context.Background(), &f.summary)
+		err := fetchSummaryClient.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())
 		} else {

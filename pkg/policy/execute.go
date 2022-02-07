@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/fetch"
+	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -182,13 +182,13 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	fsClient := fetch.NewClient(e.conn, e.log)
+	metaStorage := meta_storage.NewClient(e.conn, e.log)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {
 			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
 		}
-		fetchSummary, err := fsClient.GetForProvider(ctx, p.Type)
+		fetchSummary, err := metaStorage.GetFetchSummaryForProvider(ctx, p.Type)
 		if err != nil {
 			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
 		}

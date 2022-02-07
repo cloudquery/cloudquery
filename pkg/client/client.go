@@ -16,8 +16,8 @@ import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
-	"github.com/cloudquery/cloudquery/pkg/client/fetch"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -245,10 +245,10 @@ type Client struct {
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 
-	// fetchSummaryClient interacts with cloudquery core resources
-	fetchSummaryClient *fetch.Client
-	db                 *sdkdb.DB
-	dialectExecutor    database.DialectExecutor
+	// metaStorage interacts with cloudquery core resources
+	metaStorage     *meta_storage.Client
+	db              *sdkdb.DB
+	dialectExecutor database.DialectExecutor
 }
 
 func New(ctx context.Context, options ...Option) (*Client, error) {
@@ -416,7 +416,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	for _, providerConfig := range request.Providers {
 		providerConfig := providerConfig
 		createdAt := time.Now().UTC()
-		fetchSummary := fetch.Summary{
+		fetchSummary := meta_storage.FetchSummary{
 			FetchId:       fetchId,
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
@@ -424,7 +424,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
-			if err := c.fetchSummaryClient.Save(ctx, &fetchSummary); err != nil {
+			if err := c.metaStorage.SaveFetchSummary(ctx, &fetchSummary); err != nil {
 				c.Logger.Error("failed to save fetch summary", "err", err)
 			}
 		}
@@ -547,7 +547,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fetchSummary.Resources = append(fetchSummary.Resources, fetch.ResourceSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, meta_storage.ResourceFetchSummary{
 					ResourceName:                resp.ResourceName,
 					FinishedResources:           resp.FinishedResources,
 					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
@@ -1119,9 +1119,9 @@ func (c *Client) initDatabase(ctx context.Context) error {
 		c.Logger.Warn("database validation warning")
 	}
 
-	c.fetchSummaryClient = fetch.NewClient(c.db, c.Logger)
+	c.metaStorage = meta_storage.NewClient(c.db, c.Logger)
 	// migrate cloudquery core tables to latest version
-	if err := c.fetchSummaryClient.MigrateCore(ctx, c.dialectExecutor); err != nil {
+	if err := c.metaStorage.MigrateCore(ctx, c.dialectExecutor); err != nil {
 		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
 
