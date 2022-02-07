@@ -2,11 +2,9 @@ package iam
 
 import (
 	"context"
-	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -96,18 +94,18 @@ func IamPasswordPolicies() *schema.Table {
 // ====================================================================================================================
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
-	svc := meta.(*client.Client).Services().IAM
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
-		var ae smithy.APIError
-		if !errors.As(err, &ae) && ae.ErrorCode() != "NoSuchEntity" {
-			return err
+		if c.IsNotFoundError(err) {
+			res <- PasswordPolicy{types.PasswordPolicy{}, false}
+			return nil
 		}
-		res <- PasswordPolicy{types.PasswordPolicy{}, false}
+		return err
 	} else {
 		res <- PasswordPolicy{*response.PasswordPolicy, true}
 	}
-
 	return nil
 }
 

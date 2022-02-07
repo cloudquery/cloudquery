@@ -3,12 +3,10 @@ package s3
 import (
 	"context"
 	"encoding/json"
-	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -461,19 +459,17 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	return nil
 }
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	var ae smithy.APIError
 	log := meta.Logger()
 	r := resource.Item.(*WrappedBucket)
 	log.Debug("fetching bucket attributes", "bucket", aws.ToString(r.Name))
-	mgr := meta.(*client.Client).Services().S3Manager
+	c := meta.(*client.Client)
+	mgr := c.Services().S3Manager
 	output, err := mgr.GetBucketRegion(ctx, *r.Name)
 	if err != nil {
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchBucket" {
-			// https://aws.amazon.com/premiumsupport/knowledge-center/s3-listing-deleted-bucket/
-			// deleted buckets may show up
-			log.Debug("Skipping bucket (already deleted)", "bucket", *r.Name)
+		if c.IsNotFoundError(err) {
 			return nil
 		}
+		return err
 	}
 	bucketRegion := "us-east-1"
 	if output != "" {
@@ -484,11 +480,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		return err
 	}
 	if err := resolveBucketLogging(ctx, meta, resource, *r.Name, bucketRegion); err != nil {
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchBucket" {
-			// Not sure why happens here and not earlier in GetBucketRegion. Maybe it's being deleted
-			// while fetching. In that case we might need to add this to global ignore but would like to
-			// add this here first.
-			log.Debug("resolveBucketLogging: Skipping bucket (already deleted)", "bucket", *r.Name)
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -528,13 +520,16 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	CORSOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
-	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "NoSuchCORSConfiguration") {
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return err
 	}
 	if CORSOutput != nil {
@@ -543,14 +538,14 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	return nil
 }
 func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	aclOutput, err := svc.GetBucketEncryption(ctx, &s3.GetBucketEncryptionInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
 	if err != nil {
-		if errors.As(err, &ae) && ae.ErrorCode() == "ServerSideEncryptionConfigurationNotFoundError" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -577,14 +572,14 @@ func resolveS3BucketReplicationRuleFilter(ctx context.Context, meta schema.Clien
 	return resource.Set("filter", data)
 }
 func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	lifecycleOutput, err := svc.GetBucketLifecycleConfiguration(ctx, &s3.GetBucketLifecycleConfigurationInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
 	if err != nil {
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchLifecycleConfiguration" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -661,15 +656,15 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 }
 
 func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
 		// if we got an error and its not a NoSuchBucketError, return err
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchBucketPolicy" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -685,7 +680,8 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 }
 
 func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
@@ -706,14 +702,14 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 }
 
 func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	publicAccessOutput, err := svc.GetPublicAccessBlock(ctx, &s3.GetPublicAccessBlockInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
 	if err != nil {
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchPublicAccessBlockConfiguration" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -738,15 +734,15 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 }
 
 func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
 
 	if err != nil {
 		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "ReplicationConfigurationNotFoundError" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -767,13 +763,13 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 }
 
 func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
-	svc := meta.(*client.Client).Services().S3
+	c := meta.(*client.Client)
+	svc := c.Services().S3
 	taggingOutput, err := svc.GetBucketTagging(ctx, &s3.GetBucketTaggingInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchTagSet" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {

@@ -2,10 +2,7 @@ package iam
 
 import (
 	"context"
-	"errors"
 	"net/url"
-
-	"github.com/aws/smithy-go"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -140,9 +137,10 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
-func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(types.Role)
-	svc := meta.(*client.Client).Services().IAM
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
 	input := iam.ListAttachedRolePoliciesInput{
 		RoleName: r.RoleName,
 	}
@@ -150,8 +148,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 	for {
 		response, err := svc.ListAttachedRolePolicies(ctx, &input)
 		if err != nil {
-			var ae smithy.APIError
-			if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
+			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err

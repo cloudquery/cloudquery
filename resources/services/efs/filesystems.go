@@ -2,10 +2,7 @@ package efs
 
 import (
 	"context"
-	"errors"
 	"fmt"
-
-	"github.com/aws/smithy-go"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
@@ -185,14 +182,13 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	config := efs.DescribeBackupPolicyInput{
 		FileSystemId: p.FileSystemId,
 	}
-	client := meta.(*client.Client)
-	svc := client.Services().EFS
+	cl := meta.(*client.Client)
+	svc := cl.Services().EFS
 	response, err := svc.DescribeBackupPolicy(ctx, &config, func(options *efs.Options) {
-		options.Region = client.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		var ae smithy.APIError
-		if errors.As(err, &ae) && ae.ErrorCode() == "PolicyNotFound" {
+		if cl.IsNotFoundError(err) {
 			return resource.Set(c.Name, types.StatusDisabled)
 		}
 		return err

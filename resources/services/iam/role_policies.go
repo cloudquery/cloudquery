@@ -3,14 +3,12 @@ package iam
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -65,8 +63,8 @@ func IamRolePolicies() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var ae smithy.APIError
-	svc := meta.(*client.Client).Services().IAM
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
 	role := parent.Item.(types.Role)
 	config := iam.ListRolePoliciesInput{
 		RoleName: role.RoleName,
@@ -74,7 +72,7 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.ListRolePolicies(ctx, &config)
 		if err != nil {
-			if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
+			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err

@@ -2,13 +2,11 @@ package lambda
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -225,7 +223,8 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 	if !ok {
 		return fmt.Errorf("wrong type assertion: got %T instead of LayersListItem", p)
 	}
-	svc := meta.(*client.Client).Services().Lambda
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
 
 	config := lambda.GetLayerVersionPolicyInput{
 		LayerName:     pp.LayerName,
@@ -233,9 +232,8 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 	}
 
 	output, err := svc.GetLayerVersionPolicy(ctx, &config)
-	var ae smithy.APIError
 	if err != nil {
-		if errors.As(err, &ae) && ae.ErrorCode() == "ResourceNotFoundException" {
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return err

@@ -3,14 +3,12 @@ package lambda
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -994,11 +992,11 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			funcResponse, err := svc.GetFunction(ctx, &getFunctionInput, func(options *lambda.Options) {
 				options.Region = c.Region
 			})
-			var ae smithy.APIError
 			if err != nil {
-				if !errors.As(err, &ae) || ae.ErrorCode() != "ResourceNotFoundException" {
-					return err
+				if c.IsNotFoundError(err) {
+					return nil
 				}
+				return err
 			}
 			res <- funcResponse
 		}
@@ -1027,11 +1025,11 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	}, func(options *lambda.Options) {
 		options.Region = c.Region
 	})
-	var ae smithy.APIError
 	if err != nil {
-		if !errors.As(err, &ae) || ae.ErrorCode() != "ResourceNotFoundException" {
-			return err
+		if c.IsNotFoundError(err) {
+			return nil
 		}
+		return err
 	}
 
 	if response != nil {
@@ -1141,7 +1139,8 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 		return nil
 	}
 
-	svc := meta.(*client.Client).Services().Lambda
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
@@ -1151,11 +1150,11 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 		if err != nil {
 			return err
 		}
-		var ae smithy.APIError
 		if err != nil {
-			if !errors.As(err, &ae) || ae.ErrorCode() != "ResourceNotFoundException" {
-				return err
+			if c.IsNotFoundError(err) {
+				return nil
 			}
+			return err
 		}
 		res <- output.Aliases
 		if output.NextMarker == nil {
