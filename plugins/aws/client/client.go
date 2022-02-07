@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -313,6 +314,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	awsCfg, err = config.LoadDefaultConfig(ctx, configFns...)
 
 	if err != nil {
+		logger.Error("error loading default config", "err", err)
 		return awsCfg, fmt.Errorf(awsFailedToConfigureErrMsg, account.AccountName, err, checkEnvVariables())
 	}
 
@@ -343,6 +345,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
+		logger.Error("error retrieving credentials", "err", err)
 		return awsCfg, fmt.Errorf(awsFailedToConfigureErrMsg, account.AccountName, err, checkEnvVariables())
 	}
 
@@ -353,6 +356,16 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	ctx := context.Background()
 	awsConfig := providerConfig.(*Config)
 	client := NewAwsClient(logger, awsConfig.Accounts)
+	var adminAccountSts AssumeRoleAPIClient
+
+	if awsConfig.Organization != nil {
+		var err error
+		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
+		if err != nil {
+			logger.Error("error getting child accounts", "err", err)
+			return nil, err
+		}
+	}
 
 	if len(awsConfig.Accounts) == 0 {
 		awsConfig.Accounts = append(awsConfig.Accounts, Account{
@@ -383,8 +396,13 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			logger.Info("All regions specified in config.yml. Assuming all regions")
 		}
 
-		awsCfg, err := configureAwsClient(ctx, logger, awsConfig, account, nil)
+		awsCfg, err := configureAwsClient(ctx, logger, awsConfig, account, adminAccountSts)
 		if err != nil {
+			if account.source == "org" {
+				logger.Warn("unable to assume role in account")
+				continue
+
+			}
 			return nil, err
 		}
 
@@ -421,7 +439,9 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))
 		}
 	}
-
+	if len(client.Accounts) == 0 {
+		return nil, errors.New("no accounts instantiated")
+	}
 	return &client, nil
 }
 
