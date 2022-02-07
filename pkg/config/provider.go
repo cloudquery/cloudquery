@@ -66,6 +66,11 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		diags = append(diags, valDiags...)
 	}
 
+	if attr, exists := content.Attributes["max_parallel_resource_fetch_limit"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.MaxParallelResourceFetchLimit)
+		diags = append(diags, valDiags...)
+	}
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
@@ -103,6 +108,9 @@ var providerBlockSchema = &hcl.BodySchema{
 		},
 		{
 			Name: "env",
+		},
+		{
+			Name: "max_parallel_resource_fetch_limit",
 		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{
