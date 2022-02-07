@@ -218,3 +218,27 @@ func ResolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
 	return resolveARN(service, resourceID, false, false)
 }
+
+var notFoundErrorPrefixes = []string{
+	"ResourceNotFoundException",
+	"WAFNonexistentItemException",
+	"NoSuch",
+	"NotFound",
+	"NotFoundError",
+}
+
+// IsNotFoundError checks if api error should be ignored
+func (c *Client) IsNotFoundError(err error) bool {
+	var ae smithy.APIError
+	if !errors.As(err, &ae) {
+		return false
+	}
+	errorCode := ae.ErrorCode()
+	for _, s := range notFoundErrorPrefixes {
+		if strings.Contains(errorCode, s) {
+			c.logger.Warn("API returned \"NotFound\" error ignoring it...", "error", err)
+			return true
+		}
+	}
+	return false
+}

@@ -3,14 +3,12 @@ package iam
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -67,8 +65,8 @@ func IamGroupPolicies() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var ae smithy.APIError
-	svc := meta.(*client.Client).Services().IAM
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
 	group := parent.Item.(types.Group)
 	config := iam.ListGroupPoliciesInput{
 		GroupName: group.GroupName,
@@ -76,11 +74,12 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		output, err := svc.ListGroupPolicies(ctx, &config)
 		if err != nil {
-			if errors.As(err, &ae) && ae.ErrorCode() == "NoSuchEntity" {
+			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
+
 		for _, p := range output.PolicyNames {
 			policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName})
 			if err != nil {

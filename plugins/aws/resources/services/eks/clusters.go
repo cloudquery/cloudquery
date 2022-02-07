@@ -217,6 +217,9 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 				options.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) {
+					continue
+				}
 				return err
 			}
 			res <- describeClusterOutput.Cluster
