@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client/fetch"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
@@ -345,7 +345,7 @@ func TestExecutor_Execute(t *testing.T) {
 	}
 }
 
-func setupCheckFetchDatabase(db schema.QueryExecer, summary *fetch.Summary, c *fetch.Client) (error, func(t *testing.T)) {
+func setupCheckFetchDatabase(db execution.QueryExecer, summary *fetch.Summary, c *fetch.Client) (error, func(t *testing.T)) {
 	if summary == nil {
 		return nil, func(t *testing.T) {}
 	}

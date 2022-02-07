@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client/fetch"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"

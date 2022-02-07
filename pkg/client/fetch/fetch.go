@@ -10,12 +10,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema/diag"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/golang-migrate/migrate/v4"
@@ -30,11 +32,11 @@ var (
 )
 
 type Client struct {
-	db     schema.QueryExecer
+	db     execution.QueryExecer
 	Logger hclog.Logger
 }
 
-func NewClient(db schema.QueryExecer, logger hclog.Logger) *Client {
+func NewClient(db execution.QueryExecer, logger hclog.Logger) *Client {
 	return &Client{
 		db:     db,
 		Logger: logger,
@@ -128,7 +130,7 @@ func (c *Client) GetForProvider(ctx context.Context, provider string) (*Summary,
 }
 
 func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
-	err := createCoreSchema(ctx, c.db)
+	err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
 	if err != nil {
 		return err
 	}
@@ -161,8 +163,4 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil
-}
-
-func createCoreSchema(ctx context.Context, db schema.QueryExecer) error {
-	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
 }
