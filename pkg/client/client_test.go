@@ -105,12 +105,11 @@ func TestClient_FailOnFetchWithPartialFetch(t *testing.T) {
 	result, err := c.Fetch(ctx, FetchRequest{
 		UpdateCallback: nil,
 		Providers: []*config.Provider{{
-			Name:               "test",
-			Alias:              "test_alias",
-			EnablePartialFetch: true,
-			Resources:          []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
-			Env:                nil,
-			Configuration:      nil,
+			Name:          "test",
+			Alias:         "test_alias",
+			Resources:     []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
+			Env:           nil,
+			Configuration: nil,
 		},
 		},
 	})
@@ -121,8 +120,7 @@ func TestClient_FailOnFetchWithPartialFetch(t *testing.T) {
 	testSummary, ok := result.ProviderFetchSummary["test(test_alias)"]
 	assert.True(t, ok)
 	assert.True(t, testSummary.HasErrors())
-	assert.Len(t, testSummary.PartialFetchErrors, 2)
-	assert.Len(t, testSummary.FetchErrors, 0)
+	assert.Len(t, testSummary.FetchErrors, 2)
 }
 
 func TestClient_FailOnFetch(t *testing.T) {
@@ -143,12 +141,11 @@ func TestClient_FailOnFetch(t *testing.T) {
 	result, err := c.Fetch(ctx, FetchRequest{
 		UpdateCallback: nil,
 		Providers: []*config.Provider{{
-			Name:               "test",
-			Alias:              "test_alias",
-			EnablePartialFetch: false,
-			Resources:          []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
-			Env:                nil,
-			Configuration:      nil,
+			Name:          "test",
+			Alias:         "test_alias",
+			Resources:     []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
+			Env:           nil,
+			Configuration: nil,
 		},
 		},
 	})
@@ -177,19 +174,18 @@ func TestClient_PartialFetch(t *testing.T) {
 	result, err := c.Fetch(ctx, FetchRequest{
 		UpdateCallback: nil,
 		Providers: []*config.Provider{{
-			Name:               "test",
-			Alias:              "test_alias",
-			EnablePartialFetch: true,
-			Resources:          []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
-			Env:                nil,
-			Configuration:      nil,
+			Name:          "test",
+			Alias:         "test_alias",
+			Resources:     []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
+			Env:           nil,
+			Configuration: nil,
 		},
 		},
 	})
 	assert.Nil(t, err)
 	testSummary, ok := result.ProviderFetchSummary["test(test_alias)"]
 	assert.True(t, ok)
-	assert.Len(t, testSummary.PartialFetchErrors, 2)
+	assert.Len(t, testSummary.FetchErrors, 2)
 }
 
 func TestClient_TestNoDownload(t *testing.T) {
