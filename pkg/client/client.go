@@ -1103,6 +1103,8 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 				})
 				scope.SetExtra("detail", e.Description().Detail)
 				switch e.Severity() {
+				case diag.IGNORE:
+					scope.SetLevel(sentry.LevelDebug)
 				case diag.WARNING:
 					scope.SetLevel(sentry.LevelWarning)
 				case diag.PANIC:
