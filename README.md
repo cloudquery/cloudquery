@@ -38,6 +38,7 @@ Please check out our 'Getting Started' guides:
 
 - [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws)
 - [Getting Started with GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp)
+- [Getting Started with Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
 For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
