@@ -193,7 +193,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
 		}
 		if fetchSummary == nil {
-			return fmt.Errorf("there is no finished fetches for provider %s", p.Type)
+			return fmt.Errorf("could not find finished fetches for provider %s", p.Type)
 		}
 		if !fetchSummary.IsSuccess {
 			return fmt.Errorf("last fetch for provider %s wasn't successful", p.Type)
