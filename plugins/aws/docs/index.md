@@ -13,14 +13,83 @@ cloudquery init aws
 
 ## Authentication
 
-To authenticate CloudQuery with your AWS account you can use any of the following options (see full documentation at [AWS SDK V2](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)):
+CloudQuery needs to be authenticated with your AWS account in order to fetch information about your cloud setup. 
+CloudQuery requires only *read* permissions (we will never make any changes to your cloud setup), 
+so, following the priniciple of least privilege, it's recommended to grant it read-only permissions.
 
-- Environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_PROFILE`
-- Shared configuration files (via `aws configure`).
-  - SDK defaults to `credentials` file under `.aws` folder that is placed in the home folder on your computer.
-  - SDK defaults to `config` file under `.aws` folder that is placed in the home folder on your computer.
-  - SDK is able to use SSO credentials stored in the `~/.aws/` directory
-- The SDK is able to use the IAM role associated with AWS Compute resources including (EC2 instances, Fargate and ECS containers).
+There are multiple ways to authenticate with AWS, and CloudQuery respects the AWS credential provider chain. This means that CloudQuery will follow the following priorities when attempting to authenticate:
+
+- The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` environment variables.
+- The `credentials` and `config` files in `~/.aws` (the `credentials` file takes priority).
+- IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
+
+You can read more about AWS authentication [here](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials) and [here](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html).
+
+### Environment Variables
+
+CloudQuery can use the credentials from the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and
+`AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information on obtaining credentials, see the 
+[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys). 
+
+To export the environment variables (On Linux/Mac - similar for Windows):
+
+```bash
+export AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
+export AWS_SECRET_ACCESS_KEY={Your AWS secret access key}
+export AWS_SESSION_TOKEN={Your AWS session token}
+```
+
+### Shared Configuration files
+
+CloudQuery can use credentials from your `credentials` and `config` files in the `.aws` directory in your home folder. 
+The contents of these files are practically interchangable, but CloudQuery will prioritize credentials in the `credentials` file.
+
+For information about obtaining credentials, see the 
+[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys). 
+
+Here are example contents for a `credentials` file:
+
+```toml title="~/.aws/credentials"
+[default]
+aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+```
+
+You can also specify credentials for a different profile, and instruct CloudQuery to use the credentials from this profile instead of the default one.
+
+For example:
+
+```toml title="~/.aws/credentials"
+[myprofile]
+aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+```
+
+Then, you can either export the `AWS_PROFILE` environment variable (On Linux/Mac, similar for Windows):
+
+```bash
+export AWS_PROFILE=myprofile
+```
+
+or, configure your desired profile in the `local_profile` field of your CloudQuery `config.hcl`:
+
+```hcl title="config.hcl"
+provider "aws" {
+  configuration {
+    accounts "<account_alias>" {
+      local_profile = "myprofile"
+    }
+    ...
+  }
+  ...
+}
+```
+
+### IAM Roles for AWS Compute Resources
+
+Cloudquery can use IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
+If you configured your AWS compute resources with IAM, cloudquery will use these roles automatically! You don't need to specify additional 
+credentials manually. For more information on configuring IAM, see the AWS docs [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html).
 
 ## Configuration
 
