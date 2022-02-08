@@ -407,7 +407,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test2", Version: "~> v0.2.0"},
 				},
 			},
-			err: errors.New("failed to get fetch summary for provider test2: there is no successful fetch for requested provider"),
+			err: errors.New("failed to get fetch summary for provider test2: could not find a completed fetch for requested provider"),
 		}, {
 			Name: "no finished fetches",
 			Config: Configuration{
@@ -416,7 +416,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 				},
 			},
 			f:   &meta_storage.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
-			err: errors.New("failed to get fetch summary for provider no_finish: there is no successful fetch for requested provider"),
+			err: errors.New("failed to get fetch summary for provider no_finish: could not find a completed fetch for requested provider"),
 		},
 		{
 			Name: "no fetches",
