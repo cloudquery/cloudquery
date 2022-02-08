@@ -93,7 +93,7 @@ func (c *Client) GetFetchSummaryForProvider(ctx context.Context, provider string
 	err = pgxscan.Get(ctx, c.db, &data, sql)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, errors.New("there is no successful fetch for requested provider")
+			return nil, errors.New("could not find a completed fetch for requested provider")
 		}
 		return nil, err
 	}
