@@ -12,16 +12,14 @@ import (
 
 // Parses org configuration and grabs the appropriate accounts
 func loadOrgAccounts(ctx context.Context, logger hclog.Logger, awsConfig *Config) ([]Account, AssumeRoleAPIClient, error) {
-
 	// If user doesn't specify any configs for admin account instantiate default values
-	adminAccount := Account{
-		AccountName:  "Default-Admin-Account",
-		LocalProfile: "",
+	if awsConfig.Organization.AdminAccount == nil {
+		awsConfig.Organization.AdminAccount = &Account{
+			AccountName:  "Default-Admin-Account",
+			LocalProfile: "",
+		}
 	}
-	if awsConfig.Organization.AdminAccount != nil {
-		adminAccount = *awsConfig.Organization.AdminAccount
-	}
-	awsCfg, err := configureAwsClient(ctx, logger, awsConfig, adminAccount, nil)
+	awsCfg, err := configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.AdminAccount, nil)
 	if err != nil {
 		return nil, nil, err
 	}
