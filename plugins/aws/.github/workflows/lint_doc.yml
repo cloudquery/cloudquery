@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  docs:
-    name: Provider Docs Validation
+  lint_doc:
+    name: Lint Provider Doc
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
