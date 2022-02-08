@@ -516,6 +516,9 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 				o.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) {
+					return nil
+				}
 				return err
 			}
 			res <- response.Table
@@ -543,6 +546,9 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		options.Region = cl.Region
 	})
 	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return err
 	}
 
@@ -674,6 +680,9 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 		o.Region = c.Region
 	})
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return err
 	}
 
@@ -730,6 +739,9 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 		o.Region = c.Region
 	})
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return err
 	}
 
