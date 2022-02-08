@@ -79,13 +79,6 @@ func initSentry() {
 				event.Exception[i].Stacktrace = nil
 			}
 
-			//if len(event.Exception) > 0 && hint != nil && hint.OriginalException != nil {
-			//	if d, ok := hint.OriginalException.(diag.Diagnostic); ok {
-			//		if d.Description().Summary != "" {
-			//			event.Exception[0].Type = d.Description().Summary
-			//		}
-			//	}
-			//}
 			if len(event.Exception) > 0 {
 				if event.Tags["provider"] != "" {
 					event.Exception[0].Type = "Diag:" + event.Tags["provider"] + "@" + event.Tags["provider_version"]

@@ -1090,9 +1090,9 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 				}
 			}
 
-			//if e.Severity() == diag.IGNORE {
-			//	continue
-			//}
+			if e.Severity() == diag.IGNORE {
+				continue
+			}
 
 			sentry.WithScope(func(scope *sentry.Scope) {
 				scope.SetTags(map[string]string{
