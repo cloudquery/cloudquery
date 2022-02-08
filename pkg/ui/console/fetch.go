@@ -2,6 +2,7 @@ package console
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -72,6 +73,9 @@ func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags b
 				ui.ColorProgressBold.Sprintf("%s", d.Type()),
 				ui.ColorErrorBold.Sprintf("Error"),
 				ui.ColorErrorBold.Sprintf("%s", desc.Summary))
+		}
+		if len(desc.ResourceID) > 0 {
+			ui.ColorizedOutput(ui.ColorInfo, "\tResource ID: %s\n", strings.Join(desc.ResourceID, ","))
 		}
 		if desc.Detail != "" {
 			ui.ColorizedOutput(ui.ColorInfo, "\tDetail: %s\n", desc.Detail)
