@@ -134,7 +134,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
 	if err := e.checkFetches(ctx, policy.Config); err != nil {
-		return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` berfore running policy", policy.Name, err)
+		return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` before running policy", policy.Name, err)
 	}
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
