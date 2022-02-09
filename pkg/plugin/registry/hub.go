@@ -2,17 +2,15 @@ package registry
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
-
-	"cloud.google.com/go/firestore"
-	"google.golang.org/api/option"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -267,19 +265,43 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 }
 
 func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
-	url := fmt.Sprintf(h.url, organization, providerName)
-	c, err := firestore.NewClient(ctx, "hub-cloudquery", option.WithoutAuthentication(), option.WithHTTPClient(http.DefaultClient))
+	versions, err := url.Parse(fmt.Sprintf(h.url+"/versions", organization, providerName))
 	if err != nil {
 		return "", err
 	}
-	docs, err := c.Collection(path.Join(url, "versions")).OrderBy("name", firestore.Desc).Limit(1).Documents(ctx).GetAll()
+	qv := versions.Query()
+	qv.Set("pageSize", "1")
+	qv.Set("orderBy", "v_major desc, v_minor desc, v_patch desc, published_at desc")
+	qv.Set("mask.fieldPaths", "tag")
+	versions.RawQuery = qv.Encode()
+
+	hc := &http.Client{Timeout: 15 * time.Second}
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, versions.String(), nil)
+	res, err := hc.Do(req)
 	if err != nil {
 		return "", err
 	}
-	if len(docs) == 0 {
+	defer res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("unexpected status code %d", res.StatusCode)
+	}
+
+	var doc struct {
+		Documents []struct {
+			Name   string `json:"name"`
+			Fields struct {
+				Tag string `json:"tag"`
+			} `json:"fields"`
+		} `json:"documents"`
+	}
+	if err := json.NewDecoder(res.Body).Decode(&doc); err != nil {
+		return "", err
+	}
+
+	if len(doc.Documents) == 0 {
 		return "", fmt.Errorf("failed to find provider %s latest version", providerName)
 	}
-	return "", nil
+	return doc.Documents[0].Fields.Tag, nil
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
