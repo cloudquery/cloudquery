@@ -3,7 +3,6 @@
 //go:generate mockgen -destination=./mocks/ad_service_principals.go -package=mocks . ADServicePrinicpals
 //go:generate mockgen -destination=./mocks/ad_users.go -package=mocks . ADUsersClient
 //go:generate mockgen -destination=./mocks/authorization.go -package=mocks . RoleAssignmentsClient,RoleDefinitionsClient
-//go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient,VirtualMachineExtensionsClient
 //go:generate mockgen -destination=./mocks/containerservice.go -package=mocks . ManagedClustersClient
 //go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogClient

@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient,VirtualMachineExtensionsClient
 package services
 
 import (
