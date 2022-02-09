@@ -46,13 +46,17 @@ type Hub struct {
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderDetails
+	// used in tests
+	getLatestReleaseFn LatestReleaseGetterFunc
 }
 
 type Option func(h *Hub)
 
-func WithLatestReleaseGetter(g func()) Option {
+type LatestReleaseGetterFunc func(ctx context.Context, org, provider string) (string, error)
+
+func WithLatestReleaseGetter(g LatestReleaseGetterFunc) Option {
 	return func(h *Hub) {
-		//h.getLatestRelease = g
+		h.getLatestReleaseFn = g
 	}
 }
 
@@ -265,6 +269,10 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 }
 
 func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
+	if h.getLatestReleaseFn != nil {
+		return h.getLatestReleaseFn(ctx, organization, providerName)
+	}
+
 	versions, err := url.Parse(fmt.Sprintf(h.url+"/versions", organization, providerName))
 	if err != nil {
 		return "", err
