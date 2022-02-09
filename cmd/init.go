@@ -68,7 +68,7 @@ func Initialize(ctx context.Context, providers []string) error {
 		PolicyDirectory: "./cq/policies",
 		Providers:       requiredProviders,
 		Connection: &config.Connection{
-			DSN: "host=localhost user=postgres password=pass database=postgres port=5432 sslmode=disable",
+			DSN: "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable",
 		},
 	}, "cloudquery")
 
