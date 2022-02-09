@@ -11,9 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"google.golang.org/api/option"
-
 	"cloud.google.com/go/firestore"
+	"google.golang.org/api/option"
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -25,7 +24,7 @@ import (
 )
 
 const (
-	CloudQueryRegistryURl = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
+	CloudQueryRegistryURL = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
 
 	// Timeout for http requests related to CloudQuery providers version check.
 	versionCheckHTTPTimeout = time.Second * 10

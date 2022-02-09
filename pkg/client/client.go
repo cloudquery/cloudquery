@@ -259,9 +259,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
 		HistoryCfg:         nil,
-		RegistryURL:        registry.CloudQueryRegistryURl,
+		RegistryURL:        registry.CloudQueryRegistryURL,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
-		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURl),
+		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURL),
 	}
 	for _, o := range options {
 		o(c)
