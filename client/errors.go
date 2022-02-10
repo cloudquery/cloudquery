@@ -2,7 +2,6 @@ package client
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strings"
 
@@ -15,47 +14,47 @@ import (
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
-	// Don't override if already a diagnostic, just redact
+	var ae smithy.APIError
+	if errors.As(err, &ae) {
+		switch ae.ErrorCode() {
+		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
+			return diag.Diagnostics{
+				RedactError(client.Accounts, diag.NewBaseError(err, diag.ACCESS, ParseSummaryMessage(err, ae),
+					diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]), diag.WithNoOverwrite(), diag.WithSeverity(diag.WARNING))),
+			}
+		case "InvalidAction":
+			return diag.Diagnostics{
+				RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithSeverity(diag.IGNORE), ParseSummaryMessage(err, ae),
+					diag.WithDetails("The action is invalid for the service."))),
+			}
+		}
+	}
+	if IsErrorThrottle(err) {
+		return diag.Diagnostics{
+			RedactError(client.Accounts, diag.NewBaseError(err, diag.THROTTLE, diag.WithSeverity(diag.WARNING), ParseSummaryMessage(err, ae),
+				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."))),
+		}
+	}
+
+	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
 			RedactError(client.Accounts, d),
 		}
 	}
 
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		switch ae.ErrorCode() {
-		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
-			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.WARNING, diag.ACCESS, resourceName, ParseSummaryMessage(err, ae), errorCodeDescriptions[ae.ErrorCode()])),
-			}
-		case "InvalidAction":
-			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.IGNORE, diag.RESOLVING, resourceName, ParseSummaryMessage(err, ae),
-					"The action is invalid for the service.")),
-			}
-		}
-	}
-	if IsErrorThrottle(err) {
-		return diag.Diagnostics{
-			RedactError(client.Accounts, diag.NewBaseError(err, diag.WARNING, diag.THROTTLE, resourceName, ParseSummaryMessage(err, ae),
-				"CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration.")),
-		}
-	}
-
-	// Take over from SDK and always return diagnostics, redacting PII
 	return diag.Diagnostics{
-		RedactError(client.Accounts, diag.NewBaseError(err, diag.ERROR, diag.RESOLVING, resourceName, err.Error(), "")),
+		RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithResourceName(resourceName))),
 	}
 }
 
-func ParseSummaryMessage(err error, apiErr smithy.APIError) string {
+func ParseSummaryMessage(err error, apiErr smithy.APIError) diag.BaseErrorOption {
 	for {
 		if op, ok := err.(*smithy.OperationError); ok {
-			return fmt.Sprintf("%s: %s - %s", op.Service(), op.Operation(), apiErr.ErrorMessage())
+			return diag.WithSummary("%s: %s - %s", op.Service(), op.Operation(), apiErr.ErrorMessage())
 		}
 		if err = errors.Unwrap(err); err == nil {
-			return apiErr.ErrorMessage()
+			return diag.WithSummary("%s", apiErr.ErrorMessage())
 		}
 	}
 }
@@ -64,11 +63,11 @@ func ParseSummaryMessage(err error, apiErr smithy.APIError) string {
 func RedactError(aa []Account, e diag.Diagnostic) diag.Diagnostic {
 	r := diag.NewBaseError(
 		errors.New(removePII(aa, e.Error())),
-		e.Severity(),
 		e.Type(),
-		e.Description().Resource,
-		removePII(aa, e.Description().Summary),
-		removePII(aa, e.Description().Detail),
+		diag.WithSeverity(e.Severity()),
+		diag.WithResourceName(e.Description().Resource),
+		diag.WithSummary("%s", removePII(aa, e.Description().Summary)),
+		diag.WithDetails("%s", removePII(aa, e.Description().Detail)),
 	)
 	return diag.NewRedactedDiagnostic(e, r)
 }
