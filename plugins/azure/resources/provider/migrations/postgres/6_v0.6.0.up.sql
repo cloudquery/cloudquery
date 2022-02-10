@@ -38,6 +38,49 @@ ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
 --it was duplicated as a json column of virtual machine
 DROP TABLE IF EXISTS "azure_compute_virtual_machine_network_interfaces";
 
+-- Resource: security.jit_network_access_policies
+CREATE TABLE IF NOT EXISTS "azure_security_jit_network_access_policies"
+(
+    "cq_id"              uuid NOT NULL,
+    "cq_meta"            jsonb,
+    "subscription_id"    text,
+    "id"                 text,
+    "name"               text,
+    "type"               text,
+    "kind"               text,
+    "location"           text,
+    "provisioning_state" text,
+    CONSTRAINT azure_security_jit_network_access_policies_pk PRIMARY KEY (subscription_id, id),
+    UNIQUE (cq_id)
+);
+CREATE TABLE IF NOT EXISTS "azure_security_jit_network_access_policy_virtual_machines"
+(
+    "cq_id"                           uuid NOT NULL,
+    "cq_meta"                         jsonb,
+    "jit_network_access_policy_cq_id" uuid,
+    "id"                              text,
+    "ports"                           jsonb,
+    "public_ip_address"               inet,
+    CONSTRAINT azure_security_jit_network_access_policy_virtual_machines_pk PRIMARY KEY (cq_id),
+    UNIQUE (cq_id),
+    FOREIGN KEY (jit_network_access_policy_cq_id) REFERENCES azure_security_jit_network_access_policies (cq_id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "azure_security_jit_network_access_policy_requests"
+(
+    "cq_id"                           uuid NOT NULL,
+    "cq_meta"                         jsonb,
+    "jit_network_access_policy_cq_id" uuid,
+    "virtual_machines"                text[],
+    "start_time_utc"                  timestamp without time zone,
+    "requestor"                       text,
+    "justification"                   text,
+    CONSTRAINT azure_security_jit_network_access_policy_requests_pk PRIMARY KEY (cq_id),
+    UNIQUE (cq_id),
+    FOREIGN KEY (jit_network_access_policy_cq_id) REFERENCES azure_security_jit_network_access_policies (cq_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS "azure_compute_virtual_machine_network_interfaces";
+
 CREATE TABLE IF NOT EXISTS "azure_resources_links" (
 	"cq_id" uuid NOT NULL,
 	"cq_meta" jsonb,

@@ -49,4 +49,9 @@ CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_network_interfaces"
     FOREIGN KEY (virtual_machine_cq_id) REFERENCES azure_compute_virtual_machines (cq_id) ON DELETE CASCADE
 );
 
+-- Resource: security.jit_network_access_policies
+DROP TABLE IF EXISTS azure_security_jit_network_access_policy_virtual_machines;
+DROP TABLE IF EXISTS azure_security_jit_network_access_policy_requests;
+DROP TABLE IF EXISTS azure_security_jit_network_access_policies;
+
 DROP TABLE IF EXISTS azure_resources_links;
