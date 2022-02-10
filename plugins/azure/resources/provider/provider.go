@@ -60,6 +60,7 @@ func Provider() *provider.Provider {
 			"redis.services":                      redis.RedisServices(),
 			"resources.groups":                    resources2.ResourcesGroups(),
 			"resources.policy_assignments":        resources2.ResourcesPolicyAssignments(),
+			"resources.links":                     resources2.ResourcesLinks(),
 			"security.auto_provisioning_settings": security.SecurityAutoProvisioningSettings(),
 			"security.contacts":                   security.SecurityContacts(),
 			"security.pricings":                   security.SecurityPricings(),

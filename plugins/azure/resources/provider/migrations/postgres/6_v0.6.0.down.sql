@@ -48,3 +48,5 @@ CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_network_interfaces"
     UNIQUE (cq_id),
     FOREIGN KEY (virtual_machine_cq_id) REFERENCES azure_compute_virtual_machines (cq_id) ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS azure_resources_links;

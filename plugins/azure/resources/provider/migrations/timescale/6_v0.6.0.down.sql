@@ -51,3 +51,5 @@ CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_network_interfaces"
 CREATE INDEX ON azure_compute_virtual_machine_network_interfaces (cq_fetch_date, virtual_machine_cq_id);
 SELECT setup_tsdb_child('azure_compute_virtual_machine_network_interfaces', 'virtual_machine_cq_id',
                         'azure_compute_virtual_machines', 'cq_id');
+
+DROP TABLE IF EXISTS azure_resources_links;
