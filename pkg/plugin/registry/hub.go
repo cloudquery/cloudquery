@@ -2,8 +2,10 @@ package registry
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -14,14 +16,13 @@ import (
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	zerolog "github.com/rs/zerolog/log"
 )
 
 const (
-	CloudQueryRegistryURl = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
+	CloudQueryRegistryURL = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/%s/providers/%s"
 
 	// Timeout for http requests related to CloudQuery providers version check.
 	versionCheckHTTPTimeout = time.Second * 10
@@ -45,26 +46,16 @@ type Hub struct {
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderDetails
-
-	// getLatestRelease is a function that will return latest release from Github repo given organization and repo name.
-	getLatestRelease LatestReleaseGetter
 }
 
 type Option func(h *Hub)
 
-func WithLatestReleaseGetter(g LatestReleaseGetter) Option {
-	return func(h *Hub) {
-		h.getLatestRelease = g
-	}
-}
-
 func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
-		PluginDirectory:  filepath.Join(".", ".cq", "providers"),
-		Logger:           logging.NewZHcLog(&zerolog.Logger, ""),
-		url:              url,
-		providers:        make(map[string]ProviderDetails),
-		getLatestRelease: getLatestRelease,
+		PluginDirectory: filepath.Join(".", ".cq", "providers"),
+		Logger:          logging.NewZHcLog(&zerolog.Logger, ""),
+		url:             url,
+		providers:       make(map[string]ProviderDetails),
 	}
 	// apply the list of options to hub
 	for _, opt := range opts {
@@ -170,11 +161,10 @@ func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.
 
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
-	release, err := h.getLatestRelease(ctx, organization, ProviderRepoName(providerName))
+	latestVersion, err := h.getLatestRelease(ctx, organization, ProviderRepoName(providerName))
 	if err != nil {
 		return "", err
 	}
-	latestVersion := release.GetTagName()
 	v, err := version.NewVersion(latestVersion)
 	if err != nil {
 		return "", fmt.Errorf("bad version received: provider %s, version %s", providerName, latestVersion)
@@ -193,11 +183,10 @@ func (h Hub) DownloadProvider(ctx context.Context, requestedProvider *config.Req
 	}
 
 	if providerVersion == "latest" {
-		release, err := h.getRelease(ctx, organization, providerName, providerVersion)
+		providerVersion, err = h.getLatestRelease(ctx, organization, providerName)
 		if err != nil {
 			return ProviderDetails{}, err
 		}
-		providerVersion = release.GetTagName()
 	}
 	p, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
 	if !ok {
@@ -269,14 +258,46 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 	return details, nil
 }
 
-func (h Hub) getRelease(ctx context.Context, organization, providerName, version string) (*github.RepositoryRelease, error) {
-	client := github.NewClient(nil)
-	if version != "latest" {
-		release, _, err := client.Repositories.GetReleaseByTag(ctx, organization, ProviderRepoName(providerName), version)
-		return release, err
+func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
+	versions, err := url.Parse(fmt.Sprintf(h.url+"/versions", organization, providerName))
+	if err != nil {
+		return "", err
 	}
-	release, _, err := client.Repositories.GetLatestRelease(ctx, organization, ProviderRepoName(providerName))
-	return release, err
+	qv := versions.Query()
+	qv.Set("pageSize", "1")
+	qv.Set("orderBy", "v_major desc, v_minor desc, v_patch desc, published_at desc")
+	qv.Set("mask.fieldPaths", "tag")
+	versions.RawQuery = qv.Encode()
+
+	hc := &http.Client{Timeout: 15 * time.Second}
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, versions.String(), nil)
+	res, err := hc.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("unexpected status code %d", res.StatusCode)
+	}
+
+	var doc struct {
+		Documents []struct {
+			Name   string `json:"name"`
+			Fields struct {
+				Tag struct {
+					Val string `json:"stringValue"`
+				} `json:"tag"`
+			} `json:"fields"`
+		} `json:"documents"`
+	}
+	if err := json.NewDecoder(res.Body).Decode(&doc); err != nil {
+		return "", err
+	}
+
+	if len(doc.Documents) == 0 || doc.Documents[0].Fields.Tag.Val == "" {
+		return "", fmt.Errorf("failed to find provider %s latest version", providerName)
+	}
+	return doc.Documents[0].Fields.Tag.Val, nil
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
@@ -376,12 +397,4 @@ func parseProviderSource(requestedProvider *config.RequiredProvider) (string, st
 		requestedSource = *requestedProvider.Source
 	}
 	return ParseProviderName(requestedSource)
-}
-
-type LatestReleaseGetter func(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error)
-
-func getLatestRelease(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error) {
-	gh := github.NewClient(nil)
-	r, _, err := gh.Repositories.GetLatestRelease(ctx, owner, repo)
-	return r, err
 }

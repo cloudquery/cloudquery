@@ -16,13 +16,10 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/test/provider"
 	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/google/go-github/v35/github"
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgx/v4"
@@ -703,103 +700,6 @@ func Test_collectProviderVersions(t *testing.T) {
 			got, err := collectProviderVersions(tt.providers, tt.getVersion)
 			require.Equal(t, tt.wantErr, err != nil, "collectProviderVersions() error = %v, wantErr %v", err, tt.wantErr)
 			assert.Equal(t, tt.want, got, "collectProviderVersions() = %v, want %v", got, tt.want)
-		})
-	}
-}
-
-func TestCheckForProviderUpdates(t *testing.T) {
-	type githubResult struct {
-		release *github.RepositoryRelease
-		err     error
-	}
-	version1 := "1.0.0"
-	version2 := "2.0.0"
-	tests := []struct {
-		name          string
-		providers     []*config.RequiredProvider
-		githubResults []githubResult
-		want          []ProviderUpdateSummary
-	}{
-		{
-			"empty list of providers",
-			nil,
-			nil,
-			[]ProviderUpdateSummary{},
-		},
-		{
-			"one provider, github error",
-			[]*config.RequiredProvider{{Name: "test", Version: version1}},
-			[]githubResult{{nil, errors.New("fake")}},
-			[]ProviderUpdateSummary{},
-		},
-		{
-			"one provider, no update",
-			[]*config.RequiredProvider{{Name: "test", Version: version1}},
-			[]githubResult{{&github.RepositoryRelease{TagName: &version1}, nil}},
-			[]ProviderUpdateSummary{},
-		},
-		{
-			"latest provider, no update",
-			[]*config.RequiredProvider{{Name: "test", Version: "latest"}},
-			[]githubResult{{&github.RepositoryRelease{TagName: &version1}, nil}},
-			[]ProviderUpdateSummary{},
-		},
-		{
-			"two providers, one update",
-			[]*config.RequiredProvider{
-				{Name: "test", Version: version1},
-				{Name: "other", Version: version1},
-			},
-			[]githubResult{
-				{&github.RepositoryRelease{TagName: &version1}, nil},
-				{&github.RepositoryRelease{TagName: &version2}, nil},
-			},
-			[]ProviderUpdateSummary{
-				{Name: "other", Version: version1, LatestVersion: version2},
-			},
-		},
-		{
-			"three providers, github error, one update",
-			[]*config.RequiredProvider{{Name: "test", Version: version1}, {Name: "other", Version: version1}, {Name: "third", Version: version1}},
-			[]githubResult{
-				{&github.RepositoryRelease{TagName: &version1}, nil},
-				{nil, errors.New("fake")},
-				{&github.RepositoryRelease{TagName: &version2}, nil},
-			},
-			[]ProviderUpdateSummary{
-				{Name: "third", Version: version1, LatestVersion: version2},
-			},
-		},
-		{
-			"three providers, three updates",
-			[]*config.RequiredProvider{{Name: "test", Version: version1}, {Name: "other", Version: version1}, {Name: "third", Version: version1}},
-			[]githubResult{
-				{&github.RepositoryRelease{TagName: &version2}, nil},
-				{&github.RepositoryRelease{TagName: &version2}, nil},
-				{&github.RepositoryRelease{TagName: &version2}, nil},
-			},
-			[]ProviderUpdateSummary{
-				{Name: "test", Version: version1, LatestVersion: version2},
-				{Name: "other", Version: version1, LatestVersion: version2},
-				{Name: "third", Version: version1, LatestVersion: version2},
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ctx := context.Background()
-			getReleaseCall := 0
-			c := Client{
-				Providers: tt.providers,
-				Logger:    hclog.Default(),
-				Hub: *registry.NewRegistryHub("", registry.WithLatestReleaseGetter(func(ctx context.Context, owner, repo string) (*github.RepositoryRelease, error) {
-					r := tt.githubResults[getReleaseCall]
-					getReleaseCall++
-					return r.release, r.err
-				})),
-			}
-			got := c.CheckForProviderUpdates(ctx)
-			assert.Equal(t, tt.want, got)
 		})
 	}
 }
