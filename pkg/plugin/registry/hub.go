@@ -46,19 +46,9 @@ type Hub struct {
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderDetails
-	// used in tests
-	getLatestReleaseFn LatestReleaseGetterFunc
 }
 
 type Option func(h *Hub)
-
-type LatestReleaseGetterFunc func(ctx context.Context, org, provider string) (string, error)
-
-func WithLatestReleaseGetter(g LatestReleaseGetterFunc) Option {
-	return func(h *Hub) {
-		h.getLatestReleaseFn = g
-	}
-}
 
 func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
@@ -269,10 +259,6 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 }
 
 func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
-	if h.getLatestReleaseFn != nil {
-		return h.getLatestReleaseFn(ctx, organization, providerName)
-	}
-
 	versions, err := url.Parse(fmt.Sprintf(h.url+"/versions", organization, providerName))
 	if err != nil {
 		return "", err
@@ -298,7 +284,9 @@ func (h Hub) getLatestRelease(ctx context.Context, organization, providerName st
 		Documents []struct {
 			Name   string `json:"name"`
 			Fields struct {
-				Tag string `json:"tag"`
+				Tag struct {
+					Val string `json:"stringValue"`
+				} `json:"tag"`
 			} `json:"fields"`
 		} `json:"documents"`
 	}
@@ -306,10 +294,10 @@ func (h Hub) getLatestRelease(ctx context.Context, organization, providerName st
 		return "", err
 	}
 
-	if len(doc.Documents) == 0 {
+	if len(doc.Documents) == 0 || doc.Documents[0].Fields.Tag.Val == "" {
 		return "", fmt.Errorf("failed to find provider %s latest version", providerName)
 	}
-	return doc.Documents[0].Fields.Tag, nil
+	return doc.Documents[0].Fields.Tag.Val, nil
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
