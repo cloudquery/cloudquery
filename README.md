@@ -49,9 +49,9 @@ go build .
 ./cloudquery # --help to see all options
 ```
 
-## Running on AWS (Lambda, Terraform)
+## Deployment
 
-Checkout [cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery)
+Checkout [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
 
 ## License
 
