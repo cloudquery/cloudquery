@@ -2,7 +2,6 @@ package client
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"regexp"
 	"strings"
@@ -21,44 +20,43 @@ var errorCodeDescriptions = map[interface{}]string{
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
-	// Don't override if already a diagnostic, just redact
+	var detailedError autorest.DetailedError
+	if errors.As(err, &detailedError) {
+		switch detailedError.StatusCode {
+		case http.StatusNotFound:
+			return diag.Diagnostics{
+				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithSeverity(diag.IGNORE), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+			}
+		case http.StatusBadRequest:
+			return diag.Diagnostics{
+				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+			}
+		case http.StatusForbidden:
+			return diag.Diagnostics{
+				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ACCESS, diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+			}
+		}
+	}
+
+	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
 			RedactError(client.SubscriptionId, d),
 		}
 	}
 
-	var detailedError autorest.DetailedError
-	if errors.As(err, &detailedError) {
-		switch detailedError.StatusCode {
-		case http.StatusNotFound:
-			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.IGNORE, diag.RESOLVING, resourceName, ParseSummaryMessage(client.SubscriptionId, err, detailedError), errorCodeDescriptions[detailedError.StatusCode])),
-			}
-		case http.StatusBadRequest:
-			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.WARNING, diag.RESOLVING, resourceName, ParseSummaryMessage(client.SubscriptionId, err, detailedError), errorCodeDescriptions[detailedError.StatusCode])),
-			}
-		case http.StatusForbidden:
-			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.WARNING, diag.ACCESS, resourceName, ParseSummaryMessage(client.SubscriptionId, err, detailedError), errorCodeDescriptions[detailedError.StatusCode])),
-			}
-		}
-	}
-
-	// Take over from SDK and always return diagnostics, redacting PII
 	return diag.Diagnostics{
-		RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ERROR, diag.RESOLVING, resourceName, err.Error(), "")),
+		RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithResourceName(resourceName))),
 	}
 }
 
-func ParseSummaryMessage(subscriptionId string, err error, detailedError autorest.DetailedError) string {
+func ParseSummaryMessage(subscriptionId string, err error, detailedError autorest.DetailedError) diag.BaseErrorOption {
 	for {
 		if de, ok := err.(autorest.DetailedError); ok {
-			return fmt.Sprintf("%s: %s - %s", de.Method, de.PackageType, detailedError.Error())
+			return diag.WithSummary("%s: %s - %s", de.Method, de.PackageType, detailedError.Error())
 		}
 		if err = errors.Unwrap(err); err == nil {
-			return detailedError.Error()
+			return diag.WithSummary("%s", detailedError.Error())
 		}
 	}
 }
@@ -67,11 +65,11 @@ func ParseSummaryMessage(subscriptionId string, err error, detailedError autores
 func RedactError(subId string, e diag.Diagnostic) diag.Diagnostic {
 	r := diag.NewBaseError(
 		errors.New(removePII(subId, e.Error())),
-		e.Severity(),
 		e.Type(),
-		e.Description().Resource,
-		removePII(subId, e.Description().Summary),
-		removePII(subId, e.Description().Detail),
+		diag.WithSeverity(e.Severity()),
+		diag.WithResourceName(e.Description().Resource),
+		diag.WithSummary("%s", removePII(subId, e.Description().Summary)),
+		diag.WithDetails("%s", removePII(subId, e.Description().Detail)),
 	)
 	return diag.NewRedactedDiagnostic(e, r)
 }
