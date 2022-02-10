@@ -47,24 +47,14 @@ var httpCodeToGRPCCode = map[int]codes.Code{
 }
 
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
-	// https://pkg.go.dev/cloud.google.com/go#hdr-Inspecting_errors:
-	// Most of the errors returned by the generated clients can be converted into a `grpc.Status`
-	if err == nil {
-		return nil
-	}
 	client := meta.(*Client)
 
-	// Don't override if already a diagnostic, just redact
-	if d, ok := err.(diag.Diagnostic); ok {
-		return diag.Diagnostics{
-			RedactError(client.projects, d),
-		}
-	}
-
+	// https://pkg.go.dev/cloud.google.com/go#hdr-Inspecting_errors:
+	// Most of the errors returned by the generated clients can be converted into a `grpc.Status`
 	if s, ok := status.FromError(err); ok {
 		if v, ok := grpcCodeToDiag[s.Code()]; ok {
 			return diag.Diagnostics{
-				RedactError(client.projects, diag.NewBaseError(err, v.severity, v.typ, resourceName, v.summary, s.Message())),
+				RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithSeverity(v.severity), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithDetails("%s", s.Message()))),
 			}
 		}
 	}
@@ -75,15 +65,21 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 		if grpcCode, ok := httpCodeToGRPCCode[gerr.Code]; ok {
 			if v, ok := grpcCodeToDiag[grpcCode]; ok {
 				return diag.Diagnostics{
-					RedactError(client.projects, diag.NewBaseError(err, v.severity, v.typ, resourceName, v.summary, "")),
+					RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithSeverity(v.severity), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary))),
 				}
 			}
 		}
 	}
 
 	// Take over from SDK and always return diagnostics, redacting PII
+	if d, ok := err.(diag.Diagnostic); ok {
+		return diag.Diagnostics{
+			RedactError(client.projects, d),
+		}
+	}
+
 	return diag.Diagnostics{
-		RedactError(client.projects, diag.NewBaseError(err, diag.ERROR, diag.RESOLVING, resourceName, err.Error(), "")),
+		RedactError(client.projects, diag.NewBaseError(err, diag.RESOLVING, diag.WithResourceName(resourceName))),
 	}
 }
 
@@ -91,11 +87,11 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 func RedactError(projects []string, e diag.Diagnostic) diag.Diagnostic {
 	r := diag.NewBaseError(
 		errors.New(removePII(projects, e.Error())),
-		e.Severity(),
 		e.Type(),
-		e.Description().Resource,
-		removePII(projects, e.Description().Summary),
-		removePII(projects, e.Description().Detail),
+		diag.WithSeverity(e.Severity()),
+		diag.WithResourceName(e.Description().Resource),
+		diag.WithSummary("%s", removePII(projects, e.Description().Summary)),
+		diag.WithDetails("%s", removePII(projects, e.Description().Detail)),
 	)
 	return diag.NewRedactedDiagnostic(e, r)
 }
