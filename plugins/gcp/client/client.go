@@ -106,16 +106,18 @@ func getProjects(serviceAccountKeyJSON []byte, logger hclog.Logger, filter strin
 	}
 
 	projects := make([]string, 0)
+	inactiveProjects := 0
 	for {
 		output, err := call.Do()
 		if err != nil {
-			return projects, err
+			return nil, err
 		}
 		for _, project := range output.Projects {
 			if project.LifecycleState == "ACTIVE" {
 				projects = append(projects, project.ProjectId)
 			} else {
 				logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId)
+				inactiveProjects++
 			}
 		}
 		if output.NextPageToken == "" {
@@ -123,5 +125,13 @@ func getProjects(serviceAccountKeyJSON []byte, logger hclog.Logger, filter strin
 		}
 		call.PageToken(output.NextPageToken)
 	}
+
+	if len(projects) == 0 {
+		if inactiveProjects > 0 {
+			return nil, fmt.Errorf("project listing failed: no active projects")
+		}
+		return nil, fmt.Errorf("project listing failed")
+	}
+
 	return projects, nil
 }
