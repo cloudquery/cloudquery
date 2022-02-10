@@ -33,7 +33,6 @@ require (
 )
 
 require (
-	cloud.google.com/go/firestore v1.1.0
 	github.com/ProtonMail/go-crypto v0.0.0-20211221144345-a4f6767435ab
 	github.com/aws/aws-sdk-go v1.42.1
 	github.com/creasty/defaults v1.5.2
@@ -56,7 +55,6 @@ require (
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.2.0
 	go.opentelemetry.io/otel/sdk v1.2.0
 	go.opentelemetry.io/otel/trace v1.2.0
-	google.golang.org/api v0.51.0
 	google.golang.org/grpc v1.42.0
 )
 
@@ -134,6 +132,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.5 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/api v0.51.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20211129164237-f09f9a12af12 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
