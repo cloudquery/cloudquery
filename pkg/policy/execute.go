@@ -123,9 +123,13 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 
 // Execute executes given policy and the related sub queries/views.
 func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
+	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+
 	if !policy.HasChecks() {
-		return nil, fmt.Errorf("no checks or policies to execute")
+		e.log.Warn("no checks or policies to execute")
+		return &total, nil
 	}
+
 	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
@@ -133,7 +137,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
-	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+
 	for _, p := range policy.Policies {
 		executor := e.with(p.Name)
 		executor.log.Info("starting policy execution")
