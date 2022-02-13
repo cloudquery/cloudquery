@@ -46,6 +46,7 @@ func Provider() *provider.Provider {
 			// This resource is currently not working
 			// https://github.com/cloudquery/cq-provider-azure/issues/107
 			"keyvault.vaults":      keyvault.KeyvaultVaults(),
+			"keyvault.managed_hsm": keyvault.KeyvaultManagedHSM(),
 			"monitor.log_profiles": monitor.MonitorLogProfiles(),
 			// This resource is currently not working
 			"monitor.diagnostic_settings":          monitor.MonitorDiagnosticSettings(),

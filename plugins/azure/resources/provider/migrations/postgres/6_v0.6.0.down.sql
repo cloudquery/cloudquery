@@ -55,3 +55,5 @@ DROP TABLE IF EXISTS azure_security_jit_network_access_policy_requests;
 DROP TABLE IF EXISTS azure_security_jit_network_access_policies;
 
 DROP TABLE IF EXISTS azure_resources_links;
+
+DROP TABLE IF EXISTS azure_keyvault_managed_hsm;
