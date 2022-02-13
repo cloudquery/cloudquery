@@ -549,13 +549,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				}
 
 				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
-					ResourceName:                resp.ResourceName,
-					FinishedResources:           resp.FinishedResources,
-					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
-					Error:                       resp.Error,
-					PartialFetchFailedResources: resp.PartialFetchFailedResources,
-					ResourceCount:               resp.ResourceCount,
-					Diagnostics:                 resp.Summary.Diagnostics,
+					ResourceName:      resp.ResourceName,
+					FinishedResources: resp.FinishedResources,
+					Status:            resp.Summary.Status.String(),
+					Error:             resp.Error,
+					ResourceCount:     resp.ResourceCount,
 				})
 			}
 		})
