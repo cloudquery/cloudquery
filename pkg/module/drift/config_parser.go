@@ -86,7 +86,7 @@ func replacePlaceholderInSlice(varName placeholder, value, subject []string) []s
 	return newSubj
 }
 
-func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
+func (p *Parser) Decode(body hcl.Body, allowedProvider *string, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
 	baseConfig := &BaseConfig{}
 	content, contentDiags := body.Content(baseSchema)
 	diags = append(diags, contentDiags...)
@@ -110,6 +110,16 @@ func (p *Parser) Decode(body hcl.Body, diags hcl.Diagnostics) (*BaseConfig, hcl.
 			prov, provDiags := p.decodeProviderBlock(block, &ctx)
 			diags = append(diags, provDiags...)
 			if prov != nil {
+				if allowedProvider != nil && prov.Name != *allowedProvider {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid label`,
+						Detail:   `Provider label should be ` + *allowedProvider,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+
 				if prov.Name == wildcard {
 					if baseConfig.WildProvider != nil {
 						diags = append(diags, &hcl.Diagnostic{

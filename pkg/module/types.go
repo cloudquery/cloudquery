@@ -11,12 +11,25 @@ import (
 type Module interface {
 	// ID returns the name of the module
 	ID() string
+	// Supported module protocol versions, in order of preference
+	ProtocolVersions() []uint32
 	// Configure configures the module to run
-	Configure(context.Context, hcl.Body, ModuleRunParams) error
+	Configure(context.Context, Info, ModuleRunParams) error
 	// Execute executes the module, using given args in ExecuteRequest
 	Execute(context.Context, *ExecuteRequest) *ExecutionResult
 	// ExampleConfig returns an example configuration to be put in config.hcl
 	ExampleConfig() string
+}
+
+// Info about user supplied configs and provider supplied module info
+type Info struct {
+	// UserConfig is the config supplied by the user in config.hcl
+	UserConfig hcl.Body
+
+	// ProtocolVersion of the provider supplied module info
+	ProtocolVersion uint32
+	// ProviderData is the provider supplied module info, one map[string][]byte per provider
+	ProviderData map[string]map[string][]byte
 }
 
 type ModuleRunParams interface{}

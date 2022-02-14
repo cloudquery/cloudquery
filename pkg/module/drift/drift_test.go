@@ -18,7 +18,7 @@ func TestReadBuiltinConfig(t *testing.T) {
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	val, err := d.readBuiltinConfig()
+	val, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.Nil(t, val.Terraform)
 	assert.NotNil(t, val.WildProvider)
@@ -33,7 +33,7 @@ func TestEmptyProfileConfig(t *testing.T) {
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	base, err := d.readBuiltinConfig()
+	base, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.NotNil(t, base)
 
@@ -48,7 +48,7 @@ func TestProfileConfig(t *testing.T) {
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	base, err := d.readBuiltinConfig()
+	base, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.NotNil(t, base)
 

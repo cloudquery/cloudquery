@@ -627,6 +627,25 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
+func (c *Client) GetProviderModule(ctx context.Context, providerName string, req *cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
+	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	if err != nil {
+		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
+		return nil, err
+	}
+	defer func() {
+		if providerPlugin.Version() == plugin.Unmanaged {
+			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
+			return
+		}
+		if err := c.Manager.KillProvider(providerName); err != nil {
+			c.Logger.Warn("failed to kill provider", "provider", providerName)
+		}
+	}()
+
+	return providerPlugin.Provider().GetModuleInfo(ctx, req)
+}
+
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
 		attribute.String("provider", providerName),
@@ -921,7 +940,7 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 }
 
 func (c *Client) initModules() {
-	c.ModuleManager = module.NewManager(c.db, c.Logger)
+	c.ModuleManager = module.NewManager(c.db, c.Logger, c)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 

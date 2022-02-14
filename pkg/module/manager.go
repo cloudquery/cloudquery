@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
@@ -19,6 +20,9 @@ type ManagerImpl struct {
 
 	// Logger instance
 	logger hclog.Logger
+
+	// Instance of client to query module info
+	querier moduleInfoQuerier
 }
 
 // Manager is the interface that describes the interaction with the module manager.
@@ -34,12 +38,17 @@ type Manager interface {
 	ExampleConfigs() []string
 }
 
+type moduleInfoQuerier interface {
+	GetProviderModule(ctx context.Context, providerName string, req *cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error)
+}
+
 // NewManager returns a new manager instance.
-func NewManager(pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(pool execution.QueryExecer, logger hclog.Logger, q moduleInfoQuerier) *ManagerImpl {
 	return &ManagerImpl{
 		modules: make(map[string]Module),
 		pool:    pool,
 		logger:  logger,
+		querier: q,
 	}
 }
 
@@ -60,7 +69,16 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl
 		return nil, fmt.Errorf("module not found %q", modName)
 	}
 
-	if err := mod.Configure(ctx, cfg, execReq.Params); err != nil {
+	protoVersion, modInfo, err := m.negotiateProtocolVersions(ctx, mod, execReq.Providers, 0)
+	if err != nil {
+		return nil, fmt.Errorf("protocol negotiation failed: %w", err)
+	}
+
+	if err := mod.Configure(ctx, Info{
+		UserConfig:      cfg,
+		ProtocolVersion: protoVersion,
+		ProviderData:    modInfo,
+	}, execReq.Params); err != nil {
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
 
@@ -78,6 +96,96 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 			continue
 		}
 		ret = append(ret, cfg)
+	}
+	return ret
+}
+
+var errNegotiationFailed = fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
+
+func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]map[string][]byte, error) {
+	var doVersions []uint32
+	if forceVersion > 0 {
+		doVersions = []uint32{forceVersion}
+	} else {
+		doVersions = mod.ProtocolVersions()
+	}
+
+	var (
+		ret               = make(map[string]map[string][]byte, len(provs))
+		supportedVersions = make(map[string][]uint32, len(provs))
+		foundUnsupported  bool
+	)
+
+	// Do initial requests
+	for _, p := range provs {
+		data, err := m.querier.GetProviderModule(ctx, p.Name, &cqproto.GetModuleRequest{
+			Module:            mod.ID(),
+			PreferredVersions: doVersions,
+		})
+		if err != nil {
+			return 0, nil, fmt.Errorf("GetProviderModule %s: %w", p.Name, err)
+		} else if data.Diagnostics.HasDiags() {
+			return 0, nil, data.Diagnostics
+		}
+		supportedVersions[p.Name] = data.SupportedVersions
+
+		if data.Version == 0 {
+			foundUnsupported = true
+			continue
+		}
+
+		ret[p.Name] = data.Info
+		doVersions = []uint32{data.Version}
+	}
+
+	if !foundUnsupported {
+		// happy path
+		return doVersions[0], ret, nil
+	}
+
+	if forceVersion > 0 {
+		return 0, nil, errNegotiationFailed
+	}
+
+	// negotiate: through each version supported by the module, in order of prefence, and try to find an entry which all providers can satisfy
+	availableVersions := compileAvailableVersions(supportedVersions)
+	for _, preferredVersion := range mod.ProtocolVersions() {
+		list := availableVersions[preferredVersion]
+		if len(list) < len(provs) {
+			m.logger.Debug("skipping preferred module protocol version %d, available providers %v", preferredVersion, list)
+			continue
+		}
+
+		// force that version
+		m.logger.Info("negotiating module protocol version %d", preferredVersion)
+		return m.negotiateProtocolVersions(ctx, mod, provs, preferredVersion)
+	}
+	return 0, nil, errNegotiationFailed
+}
+
+// compileAvailableVersions makes a matrix of all available versions by all providers
+// gets a map of supported versions per provider, returns list of providers per version
+func compileAvailableVersions(supportedVersions map[string][]uint32) map[uint32][]string {
+	vers := make(map[uint32]map[string]struct{})
+	for prov, versions := range supportedVersions {
+		for _, v := range versions {
+			mp, ok := vers[v]
+			if !ok {
+				mp = make(map[string]struct{})
+			}
+			mp[prov] = struct{}{}
+			vers[v] = mp
+		}
+	}
+
+	// convert from map[string]struct{} to []string
+	ret := make(map[uint32][]string, len(vers))
+	for k, v := range vers {
+		list := make([]string, 0, len(v))
+		for prov := range v {
+			list = append(list, prov)
+		}
+		ret[k] = list
 	}
 	return ret
 }
