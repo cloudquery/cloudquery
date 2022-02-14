@@ -10,8 +10,29 @@ import (
 	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
 )
+
+func fakeSubnet(t *testing.T) network.Subnet {
+	sb := network.Subnet{
+		SubnetPropertiesFormat: &network.SubnetPropertiesFormat{},
+	}
+	if err := faker.FakeDataSkipFields(&sb, []string{"ProvisioningState", "SubnetPropertiesFormat"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := faker.FakeDataSkipFields(sb.SubnetPropertiesFormat, []string{"ApplicationGatewayIPConfigurations",
+		"RouteTable",
+		"NetworkSecurityGroup",
+		"ServiceEndpointPolicies",
+		"PrivateEndpoints",
+		"IPConfigurations",
+		"IPConfigurationProfiles",
+		"ProvisioningState",
+		"PrivateEndpointNetworkPolicies",
+		"PrivateLinkServiceNetworkPolicies"}); err != nil {
+		t.Fatal(err)
+	}
+	return sb
+}
 
 func buildNetworkVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	n := mocks.NewMockVirtualNetworksClient(ctrl)
@@ -24,71 +45,16 @@ func buildNetworkVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) serv
 	vn := network.VirtualNetwork{
 		VirtualNetworkPropertiesFormat: &network.VirtualNetworkPropertiesFormat{
 			Subnets: &[]network.Subnet{
-				{
-					SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
-						NetworkSecurityGroup: &network.SecurityGroup{
-							SecurityGroupPropertiesFormat: &network.SecurityGroupPropertiesFormat{},
-						},
-						RouteTable: &network.RouteTable{
-							RouteTablePropertiesFormat: &network.RouteTablePropertiesFormat{},
-						},
-					},
-				},
+				fakeSubnet(t),
 			},
 		},
 	}
-
-	require.Nil(t, faker.FakeData(&vn.ID))
-	require.Nil(t, faker.FakeData(&vn.Etag))
-	require.Nil(t, faker.FakeData(&vn.Name))
-	require.Nil(t, faker.FakeData(&vn.Tags))
-	require.Nil(t, faker.FakeData(&vn.Type))
-	require.Nil(t, faker.FakeData(&vn.Location))
-	require.Nil(t, faker.FakeData(&vn.ExtendedLocation))
-	require.Nil(t, faker.FakeData(&vn.ResourceGUID))
-	require.Nil(t, faker.FakeData(&vn.ProvisioningState))
-	require.Nil(t, faker.FakeData(&vn.AddressSpace))
-	require.Nil(t, faker.FakeData(&vn.DhcpOptions))
-	require.Nil(t, faker.FakeData(&vn.DdosProtectionPlan))
-	require.Nil(t, faker.FakeData(&vn.EnableDdosProtection))
-	require.Nil(t, faker.FakeData(&vn.EnableVMProtection))
-	require.Nil(t, faker.FakeData(&vn.BgpCommunities))
-	require.Nil(t, faker.FakeData(&vn.IPAllocations))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ID))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].Name))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].Etag))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].AddressPrefix))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].AddressPrefixes))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NatGateway))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ServiceEndpoints))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].IPAllocations))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ResourceNavigationLinks))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ServiceAssociationLinks))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].Delegations))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].Purpose))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ProvisioningState))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].PrivateEndpointNetworkPolicies))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].PrivateLinkServiceNetworkPolicies))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].Etag))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].ID))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.ID))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.Name))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.Type))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.Tags))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.Etag))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.Location))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].NetworkSecurityGroup.ResourceGUID))
-
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.ID))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.Type))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.Tags))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.Etag))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.Location))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.Name))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.DisableBgpRoutePropagation))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.ProvisioningState))
-	require.Nil(t, faker.FakeData(&(*vn.Subnets)[0].RouteTable.ResourceGUID))
-	require.Nil(t, faker.FakeData(&vn.VirtualNetworkPeerings))
+	if err := faker.FakeDataSkipFields(&vn, []string{"VirtualNetworkPropertiesFormat"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := faker.FakeDataSkipFields(vn.VirtualNetworkPropertiesFormat, []string{"Subnets", "ProvisioningState"}); err != nil {
+		t.Fatal(err)
+	}
 
 	fakeId := client.FakeResourceGroup + "/" + *vn.ID
 	vn.ID = &fakeId

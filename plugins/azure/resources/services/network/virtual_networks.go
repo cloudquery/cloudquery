@@ -281,6 +281,20 @@ func NetworkVirtualNetworks() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
+						Name:          "ip_configurations",
+						Description:   "IPConfigurations - READ-ONLY; An array of references to the network interface IP configurations using subnet.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("SubnetPropertiesFormat.IPConfigurations"),
+						IgnoreInTests: true,
+					},
+					{
+						Name:          "private_endpoints",
+						Description:   "PrivateEndpoints - READ-ONLY; An array of references to private endpoints.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("SubnetPropertiesFormat.PrivateEndpoints"),
+						IgnoreInTests: true,
+					},
+					{
 						Name:          "nat_gateway_id",
 						Description:   "Resource ID.",
 						Type:          schema.TypeString,

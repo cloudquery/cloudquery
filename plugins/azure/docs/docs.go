@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/cloudquery/cq-provider-azure/resources/provider"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"

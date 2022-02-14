@@ -24,6 +24,8 @@ Azure virtual network subnet
 |route_table_type|text|Resource type.|
 |route_table_location|text|Resource location.|
 |route_table_tags|jsonb|Resource tags.|
+|ip_configurations|jsonb|IPConfigurations - READ-ONLY; An array of references to the network interface IP configurations using subnet.|
+|private_endpoints|jsonb|PrivateEndpoints - READ-ONLY; An array of references to private endpoints.|
 |nat_gateway_id|text|Resource ID.|
 |purpose|text|A read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties.|
 |provisioning_state|text|The provisioning state of the subnet resource|
