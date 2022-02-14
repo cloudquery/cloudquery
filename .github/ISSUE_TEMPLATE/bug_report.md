@@ -30,7 +30,7 @@ Output of `cloudquery version`
 
 ### Debug Output
 <!--
-Full debug output can be obtained by running `cloudquery --enable-console-log --debug`
+Full debug output can be obtained by running `cloudquery --enable-console-log --verbose`
 
 Debug logs may contain sensitive information. Please review and censor it before posting publicly.
 -->
