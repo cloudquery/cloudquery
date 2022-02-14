@@ -118,7 +118,7 @@ drift "drift-example" {
 }`
 }
 
-func (d *Drift) readBaseConfig(version uint32, providerData map[string]map[string][]byte) (*BaseConfig, error) {
+func (d *Drift) readBaseConfig(version uint32, providerData map[string]module.ProviderData) (*BaseConfig, error) {
 	if version != 1 {
 		return nil, fmt.Errorf("unsupported module protocol version %d", version)
 	}
@@ -144,10 +144,13 @@ func (d *Drift) readBaseConfig(version uint32, providerData map[string]map[strin
 
 	p := NewParser("")
 	cfg, diags := p.Decode(content.Blocks[0].Body, nil, nil)
+	if diags.HasErrors() {
+		return nil, diags
+	}
 
 	for provider, modInfo := range providerData {
-		raw, diags := hclparse.NewParser().ParseHCL(modInfo["info"], "")
-		provCfg, diags := p.Decode(raw.Body, &provider, diags)
+		hc, diags := modInfo.GetHCL("info")
+		provCfg, diags := p.Decode(hc, &provider, diags)
 		if diags.HasErrors() {
 			return nil, diags
 		}

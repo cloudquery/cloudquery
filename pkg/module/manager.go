@@ -102,7 +102,7 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 
 var errNegotiationFailed = fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
 
-func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]map[string][]byte, error) {
+func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]ProviderData, error) {
 	var doVersions []uint32
 	if forceVersion > 0 {
 		doVersions = []uint32{forceVersion}
@@ -111,7 +111,7 @@ func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module,
 	}
 
 	var (
-		ret               = make(map[string]map[string][]byte, len(provs))
+		ret               = make(map[string]ProviderData, len(provs)) // provider vs. info-key vs. files provided by provider under that key
 		supportedVersions = make(map[string][]uint32, len(provs))
 		foundUnsupported  bool
 	)
@@ -152,12 +152,12 @@ func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module,
 	for _, preferredVersion := range mod.ProtocolVersions() {
 		list := availableVersions[preferredVersion]
 		if len(list) < len(provs) {
-			m.logger.Debug("skipping preferred module protocol version %d, available providers %v", preferredVersion, list)
+			m.logger.Debug("skipping preferred module protocol version, available providers", "preferred_version", preferredVersion, "prov_versions", list)
 			continue
 		}
 
 		// force that version
-		m.logger.Info("negotiating module protocol version %d", preferredVersion)
+		m.logger.Info("negotiating module protocol version", "version", preferredVersion)
 		return m.negotiateProtocolVersions(ctx, mod, provs, preferredVersion)
 	}
 	return 0, nil, errNegotiationFailed
