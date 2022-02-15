@@ -5,4 +5,4 @@ updates:
     schedule:
       interval: "daily"
     allow:
-      - dependency-name: "cq-provider-sdk"
+      - dependency-name: "github.com/cloudquery/cq-provider-sdk"
