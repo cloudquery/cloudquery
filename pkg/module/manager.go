@@ -22,7 +22,7 @@ type ManagerImpl struct {
 	logger hclog.Logger
 
 	// Instance of client to query module info
-	querier moduleInfoQuerier
+	requester moduleInfoRequester
 }
 
 // Manager is the interface that describes the interaction with the module manager.
@@ -38,17 +38,19 @@ type Manager interface {
 	ExampleConfigs() []string
 }
 
-type moduleInfoQuerier interface {
+type moduleInfoRequester interface {
 	GetProviderModule(ctx context.Context, providerName string, req *cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error)
 }
 
+var errNegotiationFailed = fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
+
 // NewManager returns a new manager instance.
-func NewManager(pool execution.QueryExecer, logger hclog.Logger, q moduleInfoQuerier) *ManagerImpl {
+func NewManager(pool execution.QueryExecer, logger hclog.Logger, r moduleInfoRequester) *ManagerImpl {
 	return &ManagerImpl{
-		modules: make(map[string]Module),
-		pool:    pool,
-		logger:  logger,
-		querier: q,
+		modules:   make(map[string]Module),
+		pool:      pool,
+		logger:    logger,
+		requester: r,
 	}
 }
 
@@ -69,7 +71,7 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl
 		return nil, fmt.Errorf("module not found %q", modName)
 	}
 
-	protoVersion, modInfo, err := m.negotiateProtocolVersions(ctx, mod, execReq.Providers, 0)
+	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, execReq.Providers, 0)
 	if err != nil {
 		return nil, fmt.Errorf("protocol negotiation failed: %w", err)
 	}
@@ -100,9 +102,7 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 	return ret
 }
 
-var errNegotiationFailed = fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
-
-func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]ProviderData, error) {
+func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]ProviderData, error) {
 	var doVersions []uint32
 	if forceVersion > 0 {
 		doVersions = []uint32{forceVersion}
@@ -118,7 +118,7 @@ func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module,
 
 	// Do initial requests
 	for _, p := range provs {
-		data, err := m.querier.GetProviderModule(ctx, p.Name, &cqproto.GetModuleRequest{
+		data, err := m.requester.GetProviderModule(ctx, p.Name, &cqproto.GetModuleRequest{
 			Module:            mod.ID(),
 			PreferredVersions: doVersions,
 		})
@@ -158,7 +158,7 @@ func (m *ManagerImpl) negotiateProtocolVersions(ctx context.Context, mod Module,
 
 		// force that version
 		m.logger.Info("negotiating module protocol version", "version", preferredVersion)
-		return m.negotiateProtocolVersions(ctx, mod, provs, preferredVersion)
+		return m.collectProviderInfo(ctx, mod, provs, preferredVersion)
 	}
 	return 0, nil, errNegotiationFailed
 }

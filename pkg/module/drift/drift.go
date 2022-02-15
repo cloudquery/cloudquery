@@ -143,14 +143,14 @@ func (d *Drift) readBaseConfig(version uint32, providerData map[string]module.Pr
 	}
 
 	p := NewParser("")
-	cfg, diags := p.Decode(content.Blocks[0].Body, nil, nil)
+	cfg, diags := p.Decode(content.Blocks[0].Body, "", nil)
 	if diags.HasErrors() {
 		return nil, diags
 	}
 
 	for provider, modInfo := range providerData {
 		hc, diags := modInfo.GetHCL("info")
-		provCfg, diags := p.Decode(hc, &provider, diags)
+		provCfg, diags := p.Decode(hc, provider, diags)
 		if diags.HasErrors() {
 			return nil, diags
 		}
@@ -177,7 +177,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 		return base, nil
 	}
 
-	cfg, diags := p.Decode(body, nil, nil)
+	cfg, diags := p.Decode(body, "", nil)
 	if diags.HasErrors() {
 		return nil, diags
 	}

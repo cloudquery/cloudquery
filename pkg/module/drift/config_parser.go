@@ -86,7 +86,7 @@ func replacePlaceholderInSlice(varName placeholder, value, subject []string) []s
 	return newSubj
 }
 
-func (p *Parser) Decode(body hcl.Body, allowedProvider *string, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
+func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
 	baseConfig := &BaseConfig{}
 	content, contentDiags := body.Content(baseSchema)
 	diags = append(diags, contentDiags...)
@@ -109,66 +109,67 @@ func (p *Parser) Decode(body hcl.Body, allowedProvider *string, diags hcl.Diagno
 		case "provider":
 			prov, provDiags := p.decodeProviderBlock(block, &ctx)
 			diags = append(diags, provDiags...)
-			if prov != nil {
-				if allowedProvider != nil && prov.Name != *allowedProvider {
+			if prov == nil {
+				continue
+			}
+			if allowedProvider != "" && prov.Name != allowedProvider {
+				diags = append(diags, &hcl.Diagnostic{
+					Severity: hcl.DiagError,
+					Summary:  `Invalid label`,
+					Detail:   `Provider label should be ` + allowedProvider,
+					Subject:  &block.DefRange,
+				})
+				continue
+			}
+
+			if prov.Name == wildcard {
+				if baseConfig.WildProvider != nil {
 					diags = append(diags, &hcl.Diagnostic{
 						Severity: hcl.DiagError,
-						Summary:  `Invalid label`,
-						Detail:   `Provider label should be ` + *allowedProvider,
+						Summary:  `Duplicate block`,
+						Detail:   `There must be at most one block of "*" type provider`,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+				if prov.Version != "" {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid attribute`,
+						Detail:   `version attribute is only valid for non-"*" providers`,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+				if len(prov.AccountIDs) > 0 {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid attribute`,
+						Detail:   `account_ids attribute is only valid for non-"*" providers`,
 						Subject:  &block.DefRange,
 					})
 					continue
 				}
 
-				if prov.Name == wildcard {
-					if baseConfig.WildProvider != nil {
-						diags = append(diags, &hcl.Diagnostic{
-							Severity: hcl.DiagError,
-							Summary:  `Duplicate block`,
-							Detail:   `There must be at most one block of "*" type provider`,
-							Subject:  &block.DefRange,
-						})
-						continue
-					}
-					if prov.Version != "" {
-						diags = append(diags, &hcl.Diagnostic{
-							Severity: hcl.DiagError,
-							Summary:  `Invalid attribute`,
-							Detail:   `version attribute is only valid for non-"*" providers`,
-							Subject:  &block.DefRange,
-						})
-						continue
-					}
-					if len(prov.AccountIDs) > 0 {
-						diags = append(diags, &hcl.Diagnostic{
-							Severity: hcl.DiagError,
-							Summary:  `Invalid attribute`,
-							Detail:   `account_ids attribute is only valid for non-"*" providers`,
-							Subject:  &block.DefRange,
-						})
-						continue
-					}
+				baseConfig.WildProvider = prov
+				continue
+			}
 
-					baseConfig.WildProvider = prov
+			if prov.Version != "" {
+				var err error
+				prov.versionConstraints, err = version.NewConstraint(prov.Version)
+				if err != nil {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid attribute`,
+						Detail:   fmt.Sprintf(`version attribute is invalid: %v`, err),
+						Subject:  &block.DefRange,
+					})
 					continue
 				}
-
-				if prov.Version != "" {
-					var err error
-					prov.versionConstraints, err = version.NewConstraint(prov.Version)
-					if err != nil {
-						diags = append(diags, &hcl.Diagnostic{
-							Severity: hcl.DiagError,
-							Summary:  `Invalid attribute`,
-							Detail:   fmt.Sprintf(`version attribute is invalid: %v`, err),
-							Subject:  &block.DefRange,
-						})
-						continue
-					}
-				}
-
-				baseConfig.Providers = append(baseConfig.Providers, prov)
 			}
+
+			baseConfig.Providers = append(baseConfig.Providers, prov)
 		case "terraform":
 			ts, tsDiags := p.decodeTerraformBlock(block, &ctx)
 			diags = append(diags, tsDiags...)
