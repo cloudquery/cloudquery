@@ -643,7 +643,12 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 		}
 	}()
 
-	return providerPlugin.Provider().GetModuleInfo(ctx, &req)
+	inf, err := providerPlugin.Provider().GetModuleInfo(ctx, &req)
+	if err != nil && strings.Contains(err.Error(), `unknown method GetModuleInfo`) {
+		return &cqproto.GetModuleResponse{}, nil
+	}
+
+	return inf, err
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {

@@ -3,6 +3,7 @@ package module
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
@@ -142,5 +143,61 @@ func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs
 		return preferredVersion, list, nil
 	}
 
-	return 0, nil, fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
+	var (
+		unsupportingProviders []string
+		olderProviders        []string
+		newerProviders        []string
+
+		minRequired = minUint32(mod.ProtocolVersions())
+	)
+	for _, p := range provs {
+		if len(allVersions[p.Name]) == 0 {
+			unsupportingProviders = append(unsupportingProviders, p.Name)
+		}
+		if maxSupplied := maxUint32(allVersions[p.Name]); minRequired > maxSupplied {
+			olderProviders = append(olderProviders, p.Name)
+		} else if minRequired < maxSupplied {
+			newerProviders = append(newerProviders, p.Name)
+		}
+	}
+
+	if l := len(unsupportingProviders); l == 1 {
+		return 0, nil, fmt.Errorf("provider %s doesn't support %s yet", unsupportingProviders[0], mod.ID())
+	} else if l > 1 {
+		return 0, nil, fmt.Errorf("providers %s don't support %s yet", strings.Join(unsupportingProviders, ", "), mod.ID())
+	}
+
+	if l := len(olderProviders); l == 1 {
+		return 0, nil, fmt.Errorf("provider %s seems to support an older version of %s, which is incompatible with your cloudquery version", olderProviders[0], mod.ID())
+	} else if l > 1 {
+		return 0, nil, fmt.Errorf("providers %s seem to support an older version of %s, which is incompatible with your cloudquery version", strings.Join(olderProviders, ", "), mod.ID())
+	}
+
+	if l := len(newerProviders); l == 1 {
+		return 0, nil, fmt.Errorf("provider %s seems to support a newer version of %s, which is incompatible with your cloudquery version", newerProviders[0], mod.ID())
+	} else if l > 1 {
+		return 0, nil, fmt.Errorf("providers %s seem to support a newer version of %s, which is incompatible with your cloudquery version", strings.Join(newerProviders, ", "), mod.ID())
+	}
+
+	return 0, nil, fmt.Errorf("version mismatch between module and providers, please upgrade your providers and/or cloudquery")
+}
+
+func minUint32(v []uint32) uint32 {
+	var smallest uint32
+	for i := range v {
+		if smallest == 0 || v[i] < smallest {
+			smallest = v[i]
+		}
+	}
+	return smallest
+}
+
+func maxUint32(v []uint32) uint32 {
+	var biggest uint32
+	for i := range v {
+		if v[i] > biggest {
+			biggest = v[i]
+		}
+	}
+	return biggest
 }
