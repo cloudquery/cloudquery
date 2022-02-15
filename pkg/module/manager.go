@@ -143,43 +143,50 @@ func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs
 		return preferredVersion, list, nil
 	}
 
+	return 0, nil, versionError(mod.ID(), mod.ProtocolVersions(), allVersions)
+}
+
+func versionError(modName string, modVersions []uint32, provVersions map[string][]uint32) error {
 	var (
 		unsupportingProviders []string
 		olderProviders        []string
 		newerProviders        []string
 
-		minRequired = minUint32(mod.ProtocolVersions())
+		minRequired = minUint32(modVersions)
 	)
-	for _, p := range provs {
-		if len(allVersions[p.Name]) == 0 {
-			unsupportingProviders = append(unsupportingProviders, p.Name)
+
+	for p, versions := range provVersions {
+		if len(versions) == 0 {
+			unsupportingProviders = append(unsupportingProviders, p)
+			continue
 		}
-		if maxSupplied := maxUint32(allVersions[p.Name]); minRequired > maxSupplied {
-			olderProviders = append(olderProviders, p.Name)
+
+		if maxSupplied := maxUint32(versions); minRequired > maxSupplied {
+			olderProviders = append(olderProviders, p)
 		} else if minRequired < maxSupplied {
-			newerProviders = append(newerProviders, p.Name)
+			newerProviders = append(newerProviders, p)
 		}
 	}
 
 	if l := len(unsupportingProviders); l == 1 {
-		return 0, nil, fmt.Errorf("provider %s doesn't support %s yet", unsupportingProviders[0], mod.ID())
+		return fmt.Errorf("provider %s doesn't support %s yet", unsupportingProviders[0], modName)
 	} else if l > 1 {
-		return 0, nil, fmt.Errorf("providers %s don't support %s yet", strings.Join(unsupportingProviders, ", "), mod.ID())
+		return fmt.Errorf("providers %s don't support %s yet", strings.Join(unsupportingProviders, ", "), modName)
 	}
 
 	if l := len(olderProviders); l == 1 {
-		return 0, nil, fmt.Errorf("provider %s seems to support an older version of %s, which is incompatible with your cloudquery version", olderProviders[0], mod.ID())
+		return fmt.Errorf("provider %s seems to support an older version of %s, which is incompatible with your cloudquery version", olderProviders[0], modName)
 	} else if l > 1 {
-		return 0, nil, fmt.Errorf("providers %s seem to support an older version of %s, which is incompatible with your cloudquery version", strings.Join(olderProviders, ", "), mod.ID())
+		return fmt.Errorf("providers %s seem to support an older version of %s, which is incompatible with your cloudquery version", strings.Join(olderProviders, ", "), modName)
 	}
 
 	if l := len(newerProviders); l == 1 {
-		return 0, nil, fmt.Errorf("provider %s seems to support a newer version of %s, which is incompatible with your cloudquery version", newerProviders[0], mod.ID())
+		return fmt.Errorf("provider %s seems to support a newer version of %s, which is incompatible with your cloudquery version", newerProviders[0], modName)
 	} else if l > 1 {
-		return 0, nil, fmt.Errorf("providers %s seem to support a newer version of %s, which is incompatible with your cloudquery version", strings.Join(newerProviders, ", "), mod.ID())
+		return fmt.Errorf("providers %s seem to support a newer version of %s, which is incompatible with your cloudquery version", strings.Join(newerProviders, ", "), modName)
 	}
 
-	return 0, nil, fmt.Errorf("version mismatch between module and providers, please upgrade your providers and/or cloudquery")
+	return fmt.Errorf("version mismatch between module and providers, please upgrade your providers and/or cloudquery")
 }
 
 func minUint32(v []uint32) uint32 {
