@@ -627,7 +627,7 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
-func (c *Client) GetProviderModule(ctx context.Context, providerName string, req *cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
+func (c *Client) GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
@@ -643,7 +643,7 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 		}
 	}()
 
-	return providerPlugin.Provider().GetModuleInfo(ctx, req)
+	return providerPlugin.Provider().GetModuleInfo(ctx, &req)
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {

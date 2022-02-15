@@ -486,8 +486,14 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	if err := c.DownloadProviders(ctx); err != nil {
 		return nil, err
 	}
-	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
-	for i, p := range c.cfg.Providers {
+	list := make([]*cqproto.GetProviderSchemaResponse, 0, len(c.cfg.Providers))
+	dupes := make(map[string]struct{})
+	for _, p := range c.cfg.Providers {
+		if _, ok := dupes[p.Name]; ok {
+			continue
+		}
+		dupes[p.Name] = struct{}{}
+
 		s, err := c.c.GetProviderSchema(ctx, p.Name)
 		if err != nil {
 			return nil, err
@@ -500,7 +506,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 				s.Version = deets.Version
 			}
 		}
-		list[i] = s.GetProviderSchemaResponse
+		list = append(list, s.GetProviderSchemaResponse)
 	}
 
 	return list, nil

@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
@@ -18,9 +17,9 @@ func setupDrift(t *testing.T) (*Drift, *BaseConfig) {
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	val, err := d.readBaseConfig(1, map[string]module.ProviderData{
+	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
 		"aws": {
-			"info": []*cqproto.ModuleFile{
+			Files: []*cqproto.ModuleFile{
 				{
 					Name: "file.hcl",
 					Contents: []byte(`

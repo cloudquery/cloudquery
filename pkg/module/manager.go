@@ -39,10 +39,8 @@ type Manager interface {
 }
 
 type moduleInfoRequester interface {
-	GetProviderModule(ctx context.Context, providerName string, req *cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error)
+	GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error)
 }
-
-var errNegotiationFailed = fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
 
 // NewManager returns a new manager instance.
 func NewManager(pool execution.QueryExecer, logger hclog.Logger, r moduleInfoRequester) *ManagerImpl {
@@ -71,7 +69,7 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl
 		return nil, fmt.Errorf("module not found %q", modName)
 	}
 
-	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, execReq.Providers, 0)
+	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, execReq.Providers)
 	if err != nil {
 		return nil, fmt.Errorf("protocol negotiation failed: %w", err)
 	}
@@ -102,90 +100,48 @@ func (m *ManagerImpl) ExampleConfigs() []string {
 	return ret
 }
 
-func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse, forceVersion uint32) (uint32, map[string]ProviderData, error) {
-	var doVersions []uint32
-	if forceVersion > 0 {
-		doVersions = []uint32{forceVersion}
-	} else {
-		doVersions = mod.ProtocolVersions()
-	}
-
+func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse) (uint32, map[string]cqproto.ModuleInfo, error) {
 	var (
-		ret               = make(map[string]ProviderData, len(provs)) // provider vs. info-key vs. files provided by provider under that key
-		supportedVersions = make(map[string][]uint32, len(provs))
-		foundUnsupported  bool
+		providerVersionInfo = make(map[uint32]map[string]cqproto.ModuleInfo) // version vs provider vs info
+		allVersions         = make(map[string][]uint32, len(provs))          // used for debug info
 	)
 
-	// Do initial requests
+	rq := cqproto.GetModuleRequest{
+		Module:            mod.ID(),
+		PreferredVersions: mod.ProtocolVersions(),
+	}
+
 	for _, p := range provs {
-		data, err := m.requester.GetProviderModule(ctx, p.Name, &cqproto.GetModuleRequest{
-			Module:            mod.ID(),
-			PreferredVersions: doVersions,
-		})
+		data, err := m.requester.GetProviderModule(ctx, p.Name, rq)
 		if err != nil {
 			return 0, nil, fmt.Errorf("GetProviderModule %s: %w", p.Name, err)
 		} else if data.Diagnostics.HasDiags() {
 			return 0, nil, data.Diagnostics
 		}
-		supportedVersions[p.Name] = data.SupportedVersions
+		allVersions[p.Name] = data.AvailableVersions
 
-		if data.Version == 0 {
-			foundUnsupported = true
-			continue
-		}
-
-		ret[p.Name] = data.Info
-		doVersions = []uint32{data.Version}
-	}
-
-	if !foundUnsupported {
-		// happy path
-		return doVersions[0], ret, nil
-	}
-
-	if forceVersion > 0 {
-		return 0, nil, errNegotiationFailed
-	}
-
-	// negotiate: through each version supported by the module, in order of prefence, and try to find an entry which all providers can satisfy
-	availableVersions := compileAvailableVersions(supportedVersions)
-	for _, preferredVersion := range mod.ProtocolVersions() {
-		list := availableVersions[preferredVersion]
-		if len(list) < len(provs) {
-			m.logger.Debug("skipping preferred module protocol version, available providers", "preferred_version", preferredVersion, "prov_versions", list)
-			continue
-		}
-
-		// force that version
-		m.logger.Info("negotiating module protocol version", "version", preferredVersion)
-		return m.collectProviderInfo(ctx, mod, provs, preferredVersion)
-	}
-	return 0, nil, errNegotiationFailed
-}
-
-// compileAvailableVersions makes a matrix of all available versions by all providers
-// gets a map of supported versions per provider, returns list of providers per version
-func compileAvailableVersions(supportedVersions map[string][]uint32) map[uint32][]string {
-	vers := make(map[uint32]map[string]struct{})
-	for prov, versions := range supportedVersions {
-		for _, v := range versions {
-			mp, ok := vers[v]
+		for v := range data.Data {
+			inf, ok := providerVersionInfo[v]
 			if !ok {
-				mp = make(map[string]struct{})
+				inf = make(map[string]cqproto.ModuleInfo)
 			}
-			mp[prov] = struct{}{}
-			vers[v] = mp
+			inf[p.Name] = data.Data[v]
+			providerVersionInfo[v] = inf
 		}
 	}
 
-	// convert from map[string]struct{} to []string
-	ret := make(map[uint32][]string, len(vers))
-	for k, v := range vers {
-		list := make([]string, 0, len(v))
-		for prov := range v {
-			list = append(list, prov)
+	// negotiate: through each version supported by the module, in order of preference, and try to find an entry which all providers can satisfy
+	for _, preferredVersion := range mod.ProtocolVersions() {
+		list := providerVersionInfo[preferredVersion]
+		if len(list) < len(provs) {
+			m.logger.Debug("skipping preferred module protocol version", "preferred_version", preferredVersion)
+			continue
 		}
-		ret[k] = list
+
+		// use that version
+		m.logger.Info("negotiating module protocol version", "version", preferredVersion)
+		return preferredVersion, list, nil
 	}
-	return ret
+
+	return 0, nil, fmt.Errorf("version mismatch between module and providers, please upgrade your provider and/or cloudquery")
 }

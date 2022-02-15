@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
@@ -118,7 +119,7 @@ drift "drift-example" {
 }`
 }
 
-func (d *Drift) readBaseConfig(version uint32, providerData map[string]module.ProviderData) (*BaseConfig, error) {
+func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
 	if version != 1 {
 		return nil, fmt.Errorf("unsupported module protocol version %d", version)
 	}
@@ -149,7 +150,7 @@ func (d *Drift) readBaseConfig(version uint32, providerData map[string]module.Pr
 	}
 
 	for provider, modInfo := range providerData {
-		hc, diags := modInfo.GetHCL("info")
+		hc, diags := module.GetCombinedHCL(modInfo)
 		provCfg, diags := p.Decode(hc, provider, diags)
 		if diags.HasErrors() {
 			return nil, diags
