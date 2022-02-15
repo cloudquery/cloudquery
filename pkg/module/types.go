@@ -26,8 +26,7 @@ type Module interface {
 type Info struct {
 	// UserConfig is the config supplied by the user in config.hcl
 	UserConfig hcl.Body
-
-	// ProtocolVersion of the provider supplied module info
+	// ProtocolVersion of the provider supplied module info, negotiated/equalized for the module
 	ProtocolVersion uint32
 	// ProviderData is the provider supplied module info: Provider vs. data from the provider
 	ProviderData map[string]cqproto.ModuleInfo
@@ -36,6 +35,10 @@ type Info struct {
 type ModuleRunParams interface{}
 
 type ExecuteRequest struct {
+	// Module to execute
+	Module string
+	// ProfileConfig is the config from the user
+	ProfileConfig hcl.Body
 	// Params are the invocation parameters specific to the module
 	Params ModuleRunParams
 

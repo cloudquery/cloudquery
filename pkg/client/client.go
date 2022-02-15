@@ -897,11 +897,13 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 	}
 
 	modReq := &module.ExecuteRequest{
-		Providers: req.Providers,
-		Params:    req.Params,
+		Module:        req.Name,
+		ProfileConfig: req.Config,
+		Providers:     req.Providers,
+		Params:        req.Params,
 	}
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.Config, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
 	if err != nil {
 		return nil, err
 	}

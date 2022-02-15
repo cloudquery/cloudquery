@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/hcl/v2"
 )
 
 // ManagerImpl is the manager implementation struct.
@@ -32,7 +31,7 @@ type Manager interface {
 	RegisterModule(mod Module)
 
 	// ExecuteModule executes the given module, validating the given module name and config first.
-	ExecuteModule(ctx context.Context, modName string, profileConfig hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error)
+	ExecuteModule(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error)
 
 	// ExampleConfigs returns a list of example module configs from loaded modules
 	ExampleConfigs() []string
@@ -63,10 +62,10 @@ func (m *ManagerImpl) RegisterModule(mod Module) {
 }
 
 // ExecuteModule executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl.Body, execReq *ExecuteRequest) (*ExecutionResult, error) {
-	mod, ok := m.modules[modName]
+func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error) {
+	mod, ok := m.modules[execReq.Module]
 	if !ok {
-		return nil, fmt.Errorf("module not found %q", modName)
+		return nil, fmt.Errorf("module not found %q", execReq.Module)
 	}
 
 	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, execReq.Providers)
@@ -75,7 +74,7 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, modName string, cfg hcl
 	}
 
 	if err := mod.Configure(ctx, Info{
-		UserConfig:      cfg,
+		UserConfig:      execReq.ProfileConfig,
 		ProtocolVersion: protoVersion,
 		ProviderData:    modInfo,
 	}, execReq.Params); err != nil {
