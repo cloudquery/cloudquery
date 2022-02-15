@@ -189,3 +189,38 @@ func TestHandleIdentifiers(t *testing.T) {
 		})
 	}
 }
+
+func TestBadConfigFromProvider(t *testing.T) {
+	t.Parallel()
+
+	d := &Drift{
+		logger: hclog.NewNullLogger(),
+	}
+	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
+		"aws": {
+			Files: []*cqproto.ModuleFile{
+				{
+					Name: "file1.hcl",
+					Contents: []byte(`
+provider "aws" {
+  resource "*" {
+    ignore_attributes = [ "unknown_fields" ]
+  }
+}
+`),
+				},
+				{
+					Name: "file2.hcl",
+					Contents: []byte(`
+provider "aws" {
+  resource "abc" {
+  }
+}
+`),
+				},
+			},
+		},
+	})
+	assert.EqualError(t, err, `unexpected number of provider blocks (aws: 2)`)
+	assert.Nil(t, val)
+}
