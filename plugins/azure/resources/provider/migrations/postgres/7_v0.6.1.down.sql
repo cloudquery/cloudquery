@@ -19,3 +19,12 @@ DROP TABLE IF EXISTS azure_cosmosdb_sql_databases;
 -- Resource: eventhub.namespaces
 DROP TABLE IF EXISTS azure_eventhub_namespace_encryption_key_vault_properties;
 DROP TABLE IF EXISTS azure_eventhub_namespaces;
+
+-- Resource: sql.managed_instances
+DROP TABLE IF EXISTS azure_sql_managed_database_vulnerability_assessments;
+DROP TABLE IF EXISTS azure_sql_managed_database_vulnerability_assessment_scans;
+DROP TABLE IF EXISTS azure_sql_managed_databases;
+DROP TABLE IF EXISTS azure_sql_managed_instance_private_endpoint_connections;
+DROP TABLE IF EXISTS azure_sql_managed_instance_vulnerability_assessments;
+DROP TABLE IF EXISTS azure_sql_managed_instance_encryption_protectors;
+DROP TABLE IF EXISTS azure_sql_managed_instances;

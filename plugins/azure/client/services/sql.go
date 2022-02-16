@@ -1,3 +1,5 @@
+//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,TransparentDataEncryptionsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
+
 package services
 
 import (
@@ -8,20 +10,26 @@ import (
 )
 
 type SQLClient struct {
-	DatabaseBlobAuditingPolicies     SQLDatabaseBlobAuditingPoliciesClient
-	Databases                        SQLDatabaseClient
-	DatabaseThreatDetectionPolicies  SQLDatabaseThreatDetectionPoliciesClient
-	DatabaseVulnerabilityAssessments SQLDatabaseVulnerabilityAssessmentsClient
-	Firewall                         SQLFirewallClient
-	ServerAdmins                     SQLServerAdminClient
-	ServerBlobAuditingPolicies       SQLServerBlobAuditingPolicies
-	ServerDevOpsAuditSettings        SQLServerDevOpsAuditSettingsClient
-	Servers                          SQLServerClient
-	ServerVulnerabilityAssessments   SQLServerVulnerabilityAssessmentsClient
-	TransparentDataEncryptions       TransparentDataEncryptionsClient
-	EncryptionProtectors             EncryptionProtectorsClient
-	VirtualNetworkRules              SQLVirtualNetworkRulesClient
-	ServerSecurityAlertPolicies      ServerSecurityAlertPoliciesClient
+	DatabaseBlobAuditingPolicies                SQLDatabaseBlobAuditingPoliciesClient
+	Databases                                   SQLDatabaseClient
+	DatabaseThreatDetectionPolicies             SQLDatabaseThreatDetectionPoliciesClient
+	DatabaseVulnerabilityAssessments            SQLDatabaseVulnerabilityAssessmentsClient
+	Firewall                                    SQLFirewallClient
+	ServerAdmins                                SQLServerAdminClient
+	ServerBlobAuditingPolicies                  SQLServerBlobAuditingPolicies
+	ServerDevOpsAuditSettings                   SQLServerDevOpsAuditSettingsClient
+	Servers                                     SQLServerClient
+	ServerVulnerabilityAssessments              SQLServerVulnerabilityAssessmentsClient
+	TransparentDataEncryptions                  TransparentDataEncryptionsClient
+	EncryptionProtectors                        EncryptionProtectorsClient
+	ManagedInstances                            ManagedInstancesClient
+	ManagedInstanceVulnerabilityAssessments     ManagedInstanceVulnerabilityAssessmentsClient
+	ManagedDatabases                            ManagedDatabasesClient
+	ManagedDatabaseVulnerabilityAssessments     ManagedDatabaseVulnerabilityAssessmentsClient
+	ManagedDatabaseVulnerabilityAssessmentScans ManagedDatabaseVulnerabilityAssessmentScansClient
+	ManagedInstanceEncryptionProtectors         ManagedInstanceEncryptionProtectorsClient
+	VirtualNetworkRules                         SQLVirtualNetworkRulesClient
+	ServerSecurityAlertPolicies                 ServerSecurityAlertPoliciesClient
 }
 
 func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
@@ -49,25 +57,43 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	enc.Authorizer = auth
 	ep := sql.NewEncryptionProtectorsClient(subscriptionId)
 	ep.Authorizer = auth
+	mi := sql.NewManagedInstancesClient(subscriptionId)
+	mi.Authorizer = auth
+	miva := sql.NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionId)
+	miva.Authorizer = auth
+	miep := sql.NewManagedInstanceEncryptionProtectorsClient(subscriptionId)
+	miep.Authorizer = auth
+	md := sql.NewManagedDatabasesClient(subscriptionId)
+	md.Authorizer = auth
+	mdva := sql.NewManagedDatabaseVulnerabilityAssessmentsClient(subscriptionId)
+	mdva.Authorizer = auth
+	mdvas := sql.NewManagedDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
+	mdvas.Authorizer = auth
 	vnr := sql.NewVirtualNetworkRulesClient(subscriptionId)
 	vnr.Authorizer = auth
 	ssap := sql.NewServerSecurityAlertPoliciesClient(subscriptionId)
 	ssap.Authorizer = auth
 	return SQLClient{
-		DatabaseBlobAuditingPolicies:     dbap,
-		Databases:                        databases,
-		DatabaseThreatDetectionPolicies:  dtdp,
-		DatabaseVulnerabilityAssessments: dva,
-		Firewall:                         firewall,
-		ServerAdmins:                     serverAdmins,
-		ServerBlobAuditingPolicies:       sbap,
-		ServerDevOpsAuditSettings:        sdas,
-		Servers:                          servers,
-		ServerVulnerabilityAssessments:   sva,
-		TransparentDataEncryptions:       enc,
-		EncryptionProtectors:             ep,
-		VirtualNetworkRules:              vnr,
-		ServerSecurityAlertPolicies:      ssap,
+		DatabaseBlobAuditingPolicies:                dbap,
+		Databases:                                   databases,
+		DatabaseThreatDetectionPolicies:             dtdp,
+		DatabaseVulnerabilityAssessments:            dva,
+		Firewall:                                    firewall,
+		ServerAdmins:                                serverAdmins,
+		ServerBlobAuditingPolicies:                  sbap,
+		ServerDevOpsAuditSettings:                   sdas,
+		Servers:                                     servers,
+		ServerVulnerabilityAssessments:              sva,
+		TransparentDataEncryptions:                  enc,
+		EncryptionProtectors:                        ep,
+		ManagedInstances:                            mi,
+		ManagedInstanceVulnerabilityAssessments:     miva,
+		ManagedInstanceEncryptionProtectors:         miep,
+		ManagedDatabases:                            md,
+		ManagedDatabaseVulnerabilityAssessments:     mdva,
+		ManagedDatabaseVulnerabilityAssessmentScans: mdvas,
+		VirtualNetworkRules:                         vnr,
+		ServerSecurityAlertPolicies:                 ssap,
 	}
 }
 
@@ -116,6 +142,30 @@ type TransparentDataEncryptionsClient interface {
 
 type EncryptionProtectorsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
+}
+
+type ManagedInstancesClient interface {
+	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+}
+
+type ManagedInstanceVulnerabilityAssessmentsClient interface {
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultPage, err error)
+}
+
+type ManagedInstanceEncryptionProtectorsClient interface {
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultPage, err error)
+}
+
+type ManagedDatabasesClient interface {
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+}
+
+type ManagedDatabaseVulnerabilityAssessmentsClient interface {
+	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
+}
+
+type ManagedDatabaseVulnerabilityAssessmentScansClient interface {
+	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
 }
 
 type SQLVirtualNetworkRulesClient interface {

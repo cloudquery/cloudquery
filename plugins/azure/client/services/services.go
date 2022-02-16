@@ -13,7 +13,6 @@
 //go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisClient
 //go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient,AssignmentsClient,LinksClient
 //go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient,JitNetworkAccessPoliciesClient
-//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,TransparentDataEncryptionsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
 //go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainerClient,StorageQueueServicePropertiesClient
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
 //go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient

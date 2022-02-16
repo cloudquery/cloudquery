@@ -67,3 +67,4 @@ CREATE TABLE IF NOT EXISTS "azure_sql_server_security_alert_policy" (
 	UNIQUE(cq_id),
 	FOREIGN KEY (server_cq_id) REFERENCES azure_sql_servers(cq_id) ON DELETE CASCADE
 );
+
