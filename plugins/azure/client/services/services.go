@@ -17,6 +17,7 @@
 //go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainerClient,StorageQueueServicePropertiesClient
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
 //go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient
+//go:generate mockgen -destination=./mocks/cosmosdb.go -package=mocks . CosmosDBAccountClient,CosmosDBSQLClient,CosmosDBMongoDBClient
 package services
 
 import "github.com/Azure/go-autorest/autorest"
@@ -26,6 +27,7 @@ type Services struct {
 	Authorization AuthorizationClient
 	Compute       ComputeClient
 	Container     ContainerServiceClient
+	CosmosDb      CosmosDbClient
 	EventHub      EventHubClient
 	KeyVault      KeyVaultClient
 	Monitor       MonitorClient
@@ -47,6 +49,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		Authorization: NewAuthorizationClient(subscriptionId, auth),
 		Compute:       NewComputeClient(subscriptionId, auth),
 		Container:     NewContainerServiceClient(subscriptionId, auth),
+		CosmosDb:      NewCosmosDbClient(subscriptionId, auth),
 		EventHub:      NewEventHubClient(subscriptionId, auth),
 		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
 		Monitor:       NewMonitorClient(subscriptionId, auth),
