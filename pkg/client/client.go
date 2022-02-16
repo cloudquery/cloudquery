@@ -40,6 +40,7 @@ import (
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
@@ -1096,6 +1097,8 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
+	allowUnmanaged := Version == DevelopmentVersion && viper.GetBool("debug-sentry")
+
 	for _, ps := range fetchSummaries {
 		totalFetched += ps.TotalResourcesFetched
 		totalWarnings += ps.Diagnostics().Warnings()
@@ -1107,6 +1110,10 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 			attribute.Int64("fetch.errors."+ps.ProviderName, int64(ps.Diagnostics().Errors())),
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
+
+		if ps.Version == plugin.Unmanaged && !allowUnmanaged {
+			continue
+		}
 
 		for _, e := range ps.Diagnostics().Squash() {
 			if rd, ok := e.(diag.Redactable); ok {
