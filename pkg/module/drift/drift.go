@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
@@ -38,6 +39,8 @@ type iacProvider string
 const (
 	iacTerraform      iacProvider = "terraform"
 	iacCloudformation iacProvider = "cloudformation"
+
+	protoVersion = 1
 )
 
 func (i iacProvider) String() string {
@@ -61,15 +64,19 @@ func (d *Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) Configure(ctx context.Context, profileConfig hcl.Body, runParams module.ModuleRunParams) error {
+func (d *Drift) ProtocolVersions() []uint32 {
+	return []uint32{protoVersion}
+}
+
+func (d *Drift) Configure(ctx context.Context, info module.Info, runParams module.ModuleRunParams) error {
 	d.params = runParams.(RunParams)
 
-	builtin, err := d.readBuiltinConfig()
+	builtin, err := d.readBaseConfig(info.ProtocolVersion, info.ProviderData)
 	if err != nil {
 		return fmt.Errorf("builtin config failed: %w", err)
 	}
 
-	d.config, err = d.readProfileConfig(builtin, profileConfig)
+	d.config, err = d.readProfileConfig(builtin, info.UserConfig)
 	if err != nil {
 		return fmt.Errorf("read config failed: %w", err)
 	}
@@ -114,7 +121,11 @@ drift "drift-example" {
 }`
 }
 
-func (d *Drift) readBuiltinConfig() (*BaseConfig, error) {
+func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
+	if version != protoVersion {
+		return nil, fmt.Errorf("unsupported module protocol version %d", version)
+	}
+
 	configRaw, diags := hclparse.NewParser().ParseHCL(builtinConfig, "")
 	if diags.HasErrors() {
 		return nil, diags
@@ -130,15 +141,32 @@ func (d *Drift) readBuiltinConfig() (*BaseConfig, error) {
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	if len(content.Blocks) != 1 {
-		return nil, fmt.Errorf("unexpected number of blocks")
+	if l := len(content.Blocks); l != 1 {
+		return nil, fmt.Errorf("unexpected number of blocks (%d)", l)
 	}
 
 	p := NewParser("")
-	cfg, diags := p.Decode(content.Blocks[0].Body, nil)
+	cfg, diags := p.Decode(content.Blocks[0].Body, "", nil)
 	if diags.HasErrors() {
 		return nil, diags
 	}
+
+	for provider, modInfo := range providerData {
+		hc, diags := module.GetCombinedHCL(modInfo)
+		provCfg, diags := p.Decode(hc, provider, diags)
+		if diags.HasErrors() {
+			return nil, diags
+		}
+		if l := len(provCfg.Providers); l != 1 {
+			return nil, fmt.Errorf("unexpected number of provider blocks (%s: %d)", provider, l)
+		}
+		cfg.Providers = append(cfg.Providers, provCfg.Providers...)
+	}
+
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
 	return cfg, nil
 }
 
@@ -152,7 +180,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 		return base, nil
 	}
 
-	cfg, diags := p.Decode(body, nil)
+	cfg, diags := p.Decode(body, "", nil)
 	if diags.HasErrors() {
 		return nil, diags
 	}

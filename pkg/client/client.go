@@ -627,6 +627,30 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
+func (c *Client) GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
+	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	if err != nil {
+		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
+		return nil, err
+	}
+	defer func() {
+		if providerPlugin.Version() == plugin.Unmanaged {
+			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
+			return
+		}
+		if err := c.Manager.KillProvider(providerName); err != nil {
+			c.Logger.Warn("failed to kill provider", "provider", providerName)
+		}
+	}()
+
+	inf, err := providerPlugin.Provider().GetModuleInfo(ctx, &req)
+	if err != nil && strings.Contains(err.Error(), `unknown method GetModuleInfo`) {
+		return &cqproto.GetModuleResponse{}, nil
+	}
+
+	return inf, err
+}
+
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
 		attribute.String("provider", providerName),
@@ -878,11 +902,13 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 	}
 
 	modReq := &module.ExecuteRequest{
-		Providers: req.Providers,
-		Params:    req.Params,
+		Module:        req.Name,
+		ProfileConfig: req.Config,
+		Providers:     req.Providers,
+		Params:        req.Params,
 	}
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.Config, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
 	if err != nil {
 		return nil, err
 	}
@@ -921,7 +947,7 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 }
 
 func (c *Client) initModules() {
-	c.ModuleManager = module.NewManager(c.db, c.Logger)
+	c.ModuleManager = module.NewManager(c.db, c.Logger, c)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
