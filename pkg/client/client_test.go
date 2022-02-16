@@ -19,7 +19,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgx/v4"
@@ -415,10 +414,8 @@ func TestClient_ProviderMigrations(t *testing.T) {
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
 	assert.NoError(t, err)
-	err = c.BuildProviderTables(ctx, "test")
-	assert.NoError(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.ErrorIs(t, err, migrate.ErrNoChange)
+	assert.ErrorIs(t, err, nil)
 
 	conn, err := pgx.Connect(ctx, dbDSN)
 	if err != nil {
@@ -462,10 +459,8 @@ func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
 	ctx := context.Background()
 	err = c.DropProvider(ctx, "test")
 	assert.Nil(t, err)
-	err = c.BuildProviderTables(ctx, "test")
-	assert.Nil(t, err)
 	err = c.UpgradeProvider(ctx, "test")
-	assert.ErrorIs(t, err, migrate.ErrNoChange)
+	assert.ErrorIs(t, err, nil)
 
 	conn, err := pgx.Connect(ctx, dbDSN)
 	if err != nil {

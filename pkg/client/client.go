@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/fs"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -28,7 +27,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
-	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
@@ -202,11 +200,6 @@ type FetchDoneResult struct {
 	ResourceCount string
 }
 
-// TableCreator creates tables based on schema received from providers
-type TableCreator interface {
-	CreateTable(context.Context, execution.QueryExecer, *schema.Table, *schema.Table) error
-}
-
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -243,8 +236,6 @@ type Client struct {
 	ModuleManager module.Manager
 	// ModuleManager manages all modules lifecycle
 	PolicyManager policy.Manager
-	// TableCreator defines how tables are created in the database, only for plugin protocol < 4
-	TableCreator TableCreator
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 
@@ -268,9 +259,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		o(c)
 	}
 
-	var err error
-	c.Manager, err = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
-	if err != nil {
+	c.Manager = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
+	// TODO: remove this eventually
+	if err := c.Manager.LoadReattach(); err != nil {
 		return nil, err
 	}
 	c.Manager.LoadExisting(c.Providers)
@@ -375,14 +366,6 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchResponse, retErr error) {
-	if !c.SkipBuildTables {
-		for _, p := range request.Providers {
-			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
-				return nil, err
-			}
-		}
-	}
-
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
@@ -652,56 +635,6 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 	return inf, err
 }
 
-func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
-		attribute.String("provider", providerName),
-	))
-	defer spanEnder(retErr)
-
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-
-	if s.Migrations == nil {
-		// Keep the table creator if we don't have any migrations defined for this provider and hope that it works
-		for name, t := range s.ResourceTables {
-			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
-			if err := c.TableCreator.CreateTable(ctx, c.db, t, nil); err != nil {
-				return fmt.Errorf("CreateTable(%s) failed: %w", t.Name, err)
-			}
-		}
-
-		return nil
-	}
-
-	defer func() {
-		if retErr == nil || !errors.Is(retErr, fs.ErrNotExist) {
-			return
-		}
-
-		c.Logger.Error("BuildProviderTables failed", "error", retErr)
-		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
-	}()
-
-	// create migration table and set it to version based on latest create table
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-
-	c.Logger.Debug("setting provider schema migration version", "version", cfg.Version)
-	if err := m.UpgradeProvider(cfg.Version); err != nil && err != migrate.ErrNoChange {
-		return err
-	}
-	return nil
-}
-
 func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
@@ -740,9 +673,6 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 
 	if dirty {
 		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
-	}
-	if pVersion == "v0.0.0" {
-		return c.BuildProviderTables(ctx, providerName)
 	}
 	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
 	trace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
@@ -1197,13 +1127,6 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
 		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
-
-	dialect, err := schema.GetDialect(c.db.DialectType())
-	if err != nil {
-		return err
-	}
-	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
-
 	return nil
 }
 

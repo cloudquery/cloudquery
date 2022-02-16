@@ -15,10 +15,10 @@ const (
 func ParseProviderName(name string) (string, string, error) {
 	names := strings.Split(name, "/")
 	if len(names) == 2 {
-		return strings.ToLower(names[0]), names[1], nil
+		return strings.ToLower(names[0]), strings.ToLower(names[1]), nil
 	}
 	if len(names) == 1 {
-		return defaultOrganization, name, nil
+		return defaultOrganization, strings.ToLower(name), nil
 	}
 	return "", "", fmt.Errorf("invalid provider name %s", name)
 }

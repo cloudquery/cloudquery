@@ -4,17 +4,22 @@ import (
 	"context"
 	"fmt"
 	"sort"
-
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/trace"
+	"sync"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
+)
+
+var (
+	once     sync.Once
+	instance *Manager
 )
 
 // Manager handles lifecycle execution of CloudQuery providers
@@ -25,33 +30,39 @@ type Manager struct {
 	logger    hclog.Logger
 }
 
-func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string, updater ui.Progress) (*Manager, error) {
+func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string, updater ui.Progress) *Manager {
+	once.Do(func() {
+		instance = &Manager{
+			clients:   make(map[string]Plugin),
+			logger:    logger,
+			providers: make(map[string]registry.ProviderDetails),
+			hub: registry.NewRegistryHub(registryURL, func(h *registry.Hub) {
+				h.ProgressUpdater = updater
+				h.PluginDirectory = pluginDirectory
+			}),
+		}
+	})
+	return instance
+}
+
+func (m *Manager) LoadReattach() error {
 	// primarily by the SDK's acceptance testing framework.
 	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
 	if err != nil {
-		return nil, err
+		return err
 	}
-	clients := make(map[string]Plugin)
 	for name, cfg := range unmanagedProviders {
 		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("reattaching unmanaged plugin")
 		plugin, err := newUnmanagedPlugin(name, cfg)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		clients[name] = plugin
+		m.clients[name] = plugin
 	}
-	return &Manager{
-		clients:   clients,
-		logger:    logger,
-		providers: make(map[string]registry.ProviderDetails),
-		hub: registry.NewRegistryHub(registryURL, func(h *registry.Hub) {
-			h.ProgressUpdater = updater
-			h.PluginDirectory = pluginDirectory
-		}),
-	}, nil
+	return nil
 }
 
-// LoadExisting loads existing providers that are found by the hub in ProviderDirectory
+// LoadExisting loads existing providers that are found by the registry.Hub in ProviderDirectory
 func (m *Manager) LoadExisting(providers []*config.RequiredProvider) {
 	for _, p := range providers {
 		pd, err := m.hub.GetProvider(p.Name, p.Version)

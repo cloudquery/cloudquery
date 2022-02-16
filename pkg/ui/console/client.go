@@ -430,7 +430,7 @@ func (c Client) BuildAllProviderTables(ctx context.Context) error {
 
 func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
-	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+	if err := c.c.UpgradeProvider(ctx, providerName); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
