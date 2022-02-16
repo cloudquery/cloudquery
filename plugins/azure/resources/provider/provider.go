@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/services/container"
+	"github.com/cloudquery/cq-provider-azure/resources/services/eventhub"
 	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/services/monitor"
 	"github.com/cloudquery/cq-provider-azure/resources/services/mysql"
@@ -43,6 +44,7 @@ func Provider() *provider.Provider {
 			"compute.disks":                  compute.ComputeDisks(),
 			"compute.virtual_machines":       compute.ComputeVirtualMachines(),
 			"container.managed_clusters":     container.ContainerManagedClusters(),
+			"eventhub.namespaces":            eventhub.EventHubNamespaces(),
 			// This resource is currently not working
 			// https://github.com/cloudquery/cq-provider-azure/issues/107
 			"keyvault.vaults":      keyvault.KeyvaultVaults(),
