@@ -76,7 +76,7 @@ func TestFindAllTestCases(t *testing.T) {
 		{
 			err:        nil,
 			paths:      []string{"/path/to/actual/test/data.csv"},
-			foundPaths: []string{"/rand/asdfasdf/asdf"},
+			foundPaths: []string{"/path/to/actual/test"},
 		},
 		{
 			err:        nil,
