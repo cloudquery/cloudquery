@@ -46,3 +46,7 @@ DROP TABLE IF EXISTS azure_datalake_storage_account_firewall_rules;
 DROP TABLE IF EXISTS azure_datalake_storage_account_virtual_network_rules;
 DROP TABLE IF EXISTS azure_datalake_storage_account_trusted_id_providers;
 DROP TABLE IF EXISTS azure_datalake_storage_accounts;
+
+
+-- Resource: sql.servers
+DROP TABLE IF EXISTS azure_sql_database_db_vulnerability_assessment_scans;

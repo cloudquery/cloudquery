@@ -121,7 +121,7 @@ func SQLServers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			SQLDatabases(),
+			SqlDatabases(),
 			SQLServerEncryptionProtectors(),
 			{
 				Name:          "azure_sql_server_private_endpoint_connections",

@@ -1,5 +1,3 @@
-//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,TransparentDataEncryptionsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
-
 package services
 
 import (
@@ -12,6 +10,7 @@ import (
 type SQLClient struct {
 	DatabaseBlobAuditingPolicies                SQLDatabaseBlobAuditingPoliciesClient
 	Databases                                   SQLDatabaseClient
+	DatabaseVulnerabilityAssessmentScans        SQLDatabaseVulnerabilityAssessmentScansClient
 	DatabaseThreatDetectionPolicies             SQLDatabaseThreatDetectionPoliciesClient
 	DatabaseVulnerabilityAssessments            SQLDatabaseVulnerabilityAssessmentsClient
 	Firewall                                    SQLFirewallClient
@@ -41,6 +40,8 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	dtdp.Authorizer = auth
 	dva := sql.NewDatabaseVulnerabilityAssessmentsClient(subscriptionId)
 	dva.Authorizer = auth
+	dvas := sql.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
+	dvas.Authorizer = auth
 	firewall := sql.NewFirewallRulesClient(subscriptionId)
 	firewall.Authorizer = auth
 	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
@@ -78,6 +79,7 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 		Databases:                                   databases,
 		DatabaseThreatDetectionPolicies:             dtdp,
 		DatabaseVulnerabilityAssessments:            dva,
+		DatabaseVulnerabilityAssessmentScans:        dvas,
 		Firewall:                                    firewall,
 		ServerAdmins:                                serverAdmins,
 		ServerBlobAuditingPolicies:                  sbap,
@@ -97,6 +99,7 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	}
 }
 
+//go:generate mockgen -destination=./mocks/sql_server.go -package=mocks . SQLServerClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
 type SQLServerClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
 }
@@ -120,6 +123,20 @@ type SQLServerDevOpsAuditSettingsClient interface {
 type SQLServerVulnerabilityAssessmentsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultPage, err error)
 }
+
+type EncryptionProtectorsClient interface {
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
+}
+
+type SQLVirtualNetworkRulesClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultPage, err error)
+}
+
+type ServerSecurityAlertPoliciesClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
+}
+
+//go:generate mockgen -destination=./mocks/sql_database.go -package=mocks . SQLDatabaseClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,TransparentDataEncryptionsClient
 type SQLDatabaseClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
 }
@@ -136,14 +153,15 @@ type SQLDatabaseVulnerabilityAssessmentsClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
 }
 
+type SQLDatabaseVulnerabilityAssessmentScansClient interface {
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+}
+
 type TransparentDataEncryptionsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.TransparentDataEncryption, err error)
 }
 
-type EncryptionProtectorsClient interface {
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
-}
-
+//go:generate mockgen -destination=./mocks/sql_managed_instance.go -package=mocks . ManagedInstancesClient,ManagedInstanceVulnerabilityAssessmentsClient,ManagedInstanceEncryptionProtectorsClient
 type ManagedInstancesClient interface {
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
 }
@@ -156,6 +174,7 @@ type ManagedInstanceEncryptionProtectorsClient interface {
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultPage, err error)
 }
 
+//go:generate mockgen -destination=./mocks/sql_managed_database.go -package=mocks . ManagedDatabasesClient,ManagedDatabaseVulnerabilityAssessmentsClient,ManagedDatabaseVulnerabilityAssessmentScansClient
 type ManagedDatabasesClient interface {
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
 }
@@ -166,12 +185,4 @@ type ManagedDatabaseVulnerabilityAssessmentsClient interface {
 
 type ManagedDatabaseVulnerabilityAssessmentScansClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
-}
-
-type SQLVirtualNetworkRulesClient interface {
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultPage, err error)
-}
-
-type ServerSecurityAlertPoliciesClient interface {
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
 }
