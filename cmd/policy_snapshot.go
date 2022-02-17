@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const policySnapshotHelpMsg = `Generate snapshot of CloudQuery policy`
+const policySnapshotHelpMsg = `Take database snapshot of all tables included in a CloudQuery policy`
 
 var (
 	snapshotPolicyCmd = &cobra.Command{
