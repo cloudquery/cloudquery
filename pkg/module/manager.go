@@ -3,6 +3,7 @@ package module
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -167,6 +168,10 @@ func versionError(modName string, modVersions []uint32, provVersions map[string]
 			newerProviders = append(newerProviders, p)
 		}
 	}
+
+	sort.Strings(unsupportingProviders)
+	sort.Strings(olderProviders)
+	sort.Strings(newerProviders)
 
 	if l := len(unsupportingProviders); l == 1 {
 		return fmt.Errorf("provider %s doesn't support %s yet", unsupportingProviders[0], modName)
