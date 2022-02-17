@@ -29,10 +29,10 @@ func TestFindAllTables(t *testing.T) {
 		err    error
 	}{
 		{
-			paths:  []string{"asdf/asdf/asfd/fasdf/table_testTable.sql"},
-			tables: []string{"asdf/asdf/asfd/fasdf/table_testTable.sql"},
+			paths:  []string{"path/to/actual/table/table_testTable.sql"},
+			tables: []string{"path/to/actual/table/table_testTable.sql"},
 		}, {
-			paths:  []string{"asdf/asdf/asfd/fasdf/table1_testTable.sql"},
+			paths:  []string{"path/to/fake/table/table1_testTable.sql"},
 			tables: []string{},
 		},
 	}
@@ -75,17 +75,17 @@ func TestFindAllTestCases(t *testing.T) {
 	}{
 		{
 			err:        nil,
-			paths:      []string{"/rand/asdfasdf/asdf/data.csv"},
+			paths:      []string{"/path/to/actual/test/data.csv"},
 			foundPaths: []string{"/rand/asdfasdf/asdf"},
 		},
 		{
 			err:        nil,
-			paths:      []string{"/rand/asdfasdf/asdf/ddata.csv"},
+			paths:      []string{"/path/to/fake/test/ddata.csv"},
 			foundPaths: []string{},
 		},
 		{
 			err:        nil,
-			paths:      []string{"/rand/asdfasdf/asdf/data.sql"},
+			paths:      []string{"/path/to/invalid/test/data.sql"},
 			foundPaths: []string{},
 		},
 	}
