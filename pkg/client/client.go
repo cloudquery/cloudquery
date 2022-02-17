@@ -40,6 +40,7 @@ import (
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 	zerolog "github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/sync/errgroup"
@@ -259,9 +260,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
 		HistoryCfg:         nil,
-		RegistryURL:        registry.CloudQueryRegistryURl,
+		RegistryURL:        registry.CloudQueryRegistryURL,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
-		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURl),
+		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURL),
 	}
 	for _, o := range options {
 		o(c)
@@ -470,6 +471,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					Resources:              providerConfig.Resources,
 					PartialFetchingEnabled: providerConfig.EnablePartialFetch,
 					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
+					MaxGoroutines:          providerConfig.MaxGoroutines,
 				})
 			if err != nil {
 				return err
@@ -548,13 +550,11 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				}
 
 				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
-					ResourceName:                resp.ResourceName,
-					FinishedResources:           resp.FinishedResources,
-					Status:                      strconv.Itoa(int(resp.Summary.Status)), // todo use human readable representation of status
-					Error:                       resp.Error,
-					PartialFetchFailedResources: resp.PartialFetchFailedResources,
-					ResourceCount:               resp.ResourceCount,
-					Diagnostics:                 resp.Summary.Diagnostics,
+					ResourceName:      resp.ResourceName,
+					FinishedResources: resp.FinishedResources,
+					Status:            resp.Summary.Status.String(),
+					Error:             resp.Error,
+					ResourceCount:     resp.ResourceCount,
 				})
 			}
 		})
@@ -626,6 +626,30 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 		}
 	}()
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
+}
+
+func (c *Client) GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
+	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	if err != nil {
+		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
+		return nil, err
+	}
+	defer func() {
+		if providerPlugin.Version() == plugin.Unmanaged {
+			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
+			return
+		}
+		if err := c.Manager.KillProvider(providerName); err != nil {
+			c.Logger.Warn("failed to kill provider", "provider", providerName)
+		}
+	}()
+
+	inf, err := providerPlugin.Provider().GetModuleInfo(ctx, &req)
+	if err != nil && strings.Contains(err.Error(), `unknown method GetModuleInfo`) {
+		return &cqproto.GetModuleResponse{}, nil
+	}
+
+	return inf, err
 }
 
 func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
@@ -879,11 +903,13 @@ func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *
 	}
 
 	modReq := &module.ExecuteRequest{
-		Providers: req.Providers,
-		Params:    req.Params,
+		Module:        req.Name,
+		ProfileConfig: req.Config,
+		Providers:     req.Providers,
+		Params:        req.Params,
 	}
 
-	output, err := c.ModuleManager.ExecuteModule(ctx, req.Name, req.Config, modReq)
+	output, err := c.ModuleManager.ExecuteModule(ctx, modReq)
 	if err != nil {
 		return nil, err
 	}
@@ -922,7 +948,7 @@ func (c *Client) SetProviderVersion(ctx context.Context, providerName, version s
 }
 
 func (c *Client) initModules() {
-	c.ModuleManager = module.NewManager(c.db, c.Logger)
+	c.ModuleManager = module.NewManager(c.db, c.Logger, c)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
 }
 
@@ -1071,6 +1097,8 @@ func collectProviderVersions(providers []*config.RequiredProvider, getVersion fu
 func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]ProviderFetchSummary) {
 	var totalFetched, totalWarnings, totalErrors uint64
 
+	allowUnmanaged := Version == DevelopmentVersion && viper.GetBool("debug-sentry")
+
 	for _, ps := range fetchSummaries {
 		totalFetched += ps.TotalResourcesFetched
 		totalWarnings += ps.Diagnostics().Warnings()
@@ -1083,7 +1111,11 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 		)
 		span.SetAttributes(telemetry.MapToAttributes(ps.Metrics())...)
 
-		for _, e := range ps.Diagnostics() {
+		if ps.Version == plugin.Unmanaged && !allowUnmanaged {
+			continue
+		}
+
+		for _, e := range ps.Diagnostics().Squash() {
 			if rd, ok := e.(diag.Redactable); ok {
 				if r := rd.Redacted(); r != nil {
 					e = r
@@ -1103,6 +1135,8 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 				})
 				scope.SetExtra("detail", e.Description().Detail)
 				switch e.Severity() {
+				case diag.IGNORE:
+					scope.SetLevel(sentry.LevelDebug)
 				case diag.WARNING:
 					scope.SetLevel(sentry.LevelWarning)
 				case diag.PANIC:

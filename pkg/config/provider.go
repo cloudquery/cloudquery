@@ -18,6 +18,7 @@ type Provider struct {
 	Env                           []string `hcl:"env,optional"`
 	Configuration                 []byte
 	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
+	MaxGoroutines                 uint64 `hcl:"max_goroutines"`
 }
 
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
@@ -66,6 +67,15 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		diags = append(diags, valDiags...)
 	}
 
+	if attr, exists := content.Attributes["max_parallel_resource_fetch_limit"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.MaxParallelResourceFetchLimit)
+		diags = append(diags, valDiags...)
+	}
+	if attr, exists := content.Attributes["max_goroutines"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.MaxGoroutines)
+		diags = append(diags, valDiags...)
+	}
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "configuration":
@@ -103,6 +113,12 @@ var providerBlockSchema = &hcl.BodySchema{
 		},
 		{
 			Name: "env",
+		},
+		{
+			Name: "max_parallel_resource_fetch_limit",
+		},
+		{
+			Name: "max_goroutines",
 		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{

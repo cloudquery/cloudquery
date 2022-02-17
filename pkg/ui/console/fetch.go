@@ -2,6 +2,7 @@ package console
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -14,7 +15,7 @@ func printFetchResponse(summary *client.FetchResponse, redactDiags bool) {
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
 		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics(pfs.ProviderName, pfs.Diagnostics(), redactDiags)
+			printDiagnostics(pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags)
 			continue
 		}
 		if len(pfs.PartialFetchErrors) == 0 {
@@ -73,8 +74,11 @@ func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags b
 				ui.ColorErrorBold.Sprintf("Error"),
 				ui.ColorErrorBold.Sprintf("%s", desc.Summary))
 		}
+		if len(desc.ResourceID) > 0 {
+			ui.ColorizedOutput(ui.ColorInfo, "\tResource ID: %s\n", strings.Join(desc.ResourceID, ","))
+		}
 		if desc.Detail != "" {
-			ui.ColorizedOutput(ui.ColorInfo, "\tRemediation: %s\n", desc.Detail)
+			ui.ColorizedOutput(ui.ColorInfo, "\tDetail: %s\n", desc.Detail)
 		}
 	}
 	ui.ColorizedOutput(ui.ColorInfo, "\n")

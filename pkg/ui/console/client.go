@@ -42,12 +42,18 @@ type Client struct {
 	updater *Progress
 }
 
-func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		// No explicit error string needed, user information is in diags
 		return nil, &ExitCodeError{ExitCode: 1}
 	}
+	if configMutator != nil {
+		if err := configMutator(cfg); err != nil {
+			return nil, err
+		}
+	}
+
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
 
@@ -520,8 +526,14 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	if err := c.DownloadProviders(ctx); err != nil {
 		return nil, err
 	}
-	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
-	for i, p := range c.cfg.Providers {
+	list := make([]*cqproto.GetProviderSchemaResponse, 0, len(c.cfg.Providers))
+	dupes := make(map[string]struct{})
+	for _, p := range c.cfg.Providers {
+		if _, ok := dupes[p.Name]; ok {
+			continue
+		}
+		dupes[p.Name] = struct{}{}
+
 		s, err := c.c.GetProviderSchema(ctx, p.Name)
 		if err != nil {
 			return nil, err
@@ -534,7 +546,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 				s.Version = deets.Version
 			}
 		}
-		list[i] = s.GetProviderSchemaResponse
+		list = append(list, s.GetProviderSchemaResponse)
 	}
 
 	return list, nil

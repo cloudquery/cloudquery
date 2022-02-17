@@ -78,6 +78,13 @@ func initSentry() {
 			for i := range event.Exception {
 				event.Exception[i].Stacktrace = nil
 			}
+
+			if len(event.Exception) > 0 {
+				if event.Tags["provider"] != "" {
+					event.Exception[0].Type = "Diag:" + event.Tags["provider"] + "@" + event.Tags["provider_version"]
+				}
+			}
+
 			return event
 		},
 	}); err != nil {

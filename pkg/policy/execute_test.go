@@ -229,6 +229,19 @@ var (
 			ExpectOutput: true,
 		}},
 	}
+	multiLayerWithEmptySubPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name:   "subpolicy",
+				Checks: []*Check{},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
 )
 
 func TestExecutor_Execute(t *testing.T) {
@@ -269,15 +282,6 @@ func TestExecutor_Execute(t *testing.T) {
 			TotalExpectedResults: 2,
 		},
 		{
-			Name:                 "multilayer policies \\w invalid selector",
-			Policy:               multiLayerPolicy,
-			Selector:             "invalidselector",
-			Pass:                 true,
-			ShouldBeEmpty:        true,
-			TotalExpectedResults: 0,
-			ErrorOutput:          "no checks or policies to execute",
-		},
-		{
 			Name:                 "multilayer policies \\w selector on query",
 			Policy:               multiLayerPolicy,
 			Selector:             "subpolicy/sub-query",
@@ -304,6 +308,12 @@ func TestExecutor_Execute(t *testing.T) {
 			Pass:                 true,
 			TotalExpectedResults: 1,
 			StopOnFailure:        true,
+		},
+		{
+			Name:                 "multilayer policy w/ empty subpolicy",
+			Policy:               multiLayerWithEmptySubPolicy,
+			Pass:                 true,
+			TotalExpectedResults: 1,
 		},
 	}
 

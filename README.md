@@ -32,91 +32,15 @@ If you want us to add a new provider or resource please open an [Issue](https://
 
 See [docs](https://docs.cloudquery.io/docs/developers/developing-new-provider) for developing new provider.
 
-## Download & install
+## Getting Started
 
-You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
+Please check out our 'Getting Started' guides:
 
-```shell script
-export OS=Darwin # Possible values: Linux,Windows,Darwin
-curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
-chmod a+x cloudquery
-./cloudquery --help
+- [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws)
+- [Getting Started with GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp)
+- [Getting Started with Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
-# if you want to download a specific version and not latest use the following endpoint
-export VERSION= # specifiy a version
-curl -L https://github.com/cloudquery/cloudquery/releases/download/${VERSION}/cloudquery_${OS}_x86_64 -o cloudquery
-```
-
-Homebrew
-
-```shell script
-brew install cloudquery/tap/cloudquery
-# After initial install you can upgrade the version via:
-brew upgrade cloudquery
-```
-
-## Quick Start
-
-### Running
-
-First generate a `config.hcl` file that will describe which resources you want cloudquery to pull, normalize
-and transform to the specified SQL database by running the following command:
-
-```shell script
-cloudquery init aws # choose one or more from: [aws azure gcp okta]
-# cloudquery init gcp azure # This will generate a config containing gcp and azure providers
-# cloudquery init --help # Show all possible auto generated configs and flags
-```
-
-Once your `config.hcl` is generated run the following command to fetch the resources:
-
-```shell script
-# you can spawn a local postgresql with docker
-# docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-# cloudquery fetch --help # Show all possible fetch flags
-```
-
-Using `psql -h localhost -p 5432 -U postgres -d postgres`
-
-```shell script
-postgres=# \dt
-                                    List of relations
- Schema |                            Name                             | Type  |  Owner
---------+-------------------------------------------------------------+-------+----------
- public | aws_autoscaling_launch_configuration_block_device_mapping   | table | postgres
- public | aws_autoscaling_launch_configurations                       | table | postgres
-```
-
-Run the following example queries from `psql` shell
-
-List ec2_images
-
-```sql
-SELECT * FROM aws_ec2_images;
-```
-
-Find all public facing AWS load balancers
-
-```sql
-SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
-```
-
-#### Running CloudQuery Policies
-
-CloudQuery comes with out-of-the-box [policies](https://hub.cloudquery.io/policies) which you can use as is or modify to fit your use-case.
-
-For example, to run [AWS CIS](https://hub.cloudquery.io/policies/cloudquery/aws-cis-1.20/latest) policies enter the following commands (make sure you fetched all the resources beforehand by the `fetch` command):
-
-```shell script
-./cloudquery policy run aws-cis-1.2.0
-```
-
-Full Documentation, resources and SQL schema definitions are available [here](https://hub.cloudquery.io).
-
-### Providers Authentication
-
-See additional documentation for each provider at [https://hub.cloudquery.io](https://hub.cloudquery.io).
+For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
 ## Compile and run
 
@@ -125,9 +49,9 @@ go build .
 ./cloudquery # --help to see all options
 ```
 
-## Running on AWS (Lambda, Terraform)
+## Deployment
 
-Checkout [cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery)
+Checkout [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
 
 ## License
 

@@ -47,6 +47,17 @@ func NewDDLManager(l hclog.Logger, conn *pgxpool.Conn, cfg *history.Config, dt s
 	}, nil
 }
 
+// PrepareHistory is run before any migrations
+func (h DDLManager) PrepareHistory(ctx context.Context, conn *pgxpool.Conn) error {
+	if err := AddHistoryFunctions(ctx, conn); err != nil {
+		return fmt.Errorf("AddHistoryFunctions failed: %w", err)
+	}
+
+	// we need to drop the views before underlying tables can be modified
+	return h.dropViews(ctx, conn)
+}
+
+// SetupHistory is run after any migrations, finalizing history setup
 func (h DDLManager) SetupHistory(ctx context.Context, conn *pgxpool.Conn) error {
 	var tables []string
 	if err := pgxscan.Select(ctx, conn, &tables, listHyperTables, history.SchemaName); err != nil {
@@ -79,6 +90,25 @@ func (h DDLManager) configureHyperTable(ctx context.Context, conn *pgxpool.Conn,
 	}
 
 	h.log.Debug("created data retention policy", "table", tableName, "days", h.cfg.Retention)
+	return nil
+}
+
+func (h DDLManager) dropViews(ctx context.Context, conn *pgxpool.Conn) error {
+	var tables []string
+	if err := pgxscan.Select(ctx, conn, &tables, listHyperTables, history.SchemaName); err != nil {
+		return fmt.Errorf("failed to list hypertables: %w", err)
+	}
+
+	if err := conn.BeginTxFunc(ctx, pgx.TxOptions{}, func(tx pgx.Tx) error {
+		for _, table := range tables {
+			if _, err := tx.Exec(ctx, fmt.Sprintf(dropTableView, table)); err != nil {
+				return fmt.Errorf("failed to drop view for table: %w", err)
+			}
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
 	return nil
 }
 
