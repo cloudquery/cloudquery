@@ -223,11 +223,3 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 
 	return s, err
 }
-
-// func (ce *Executor) CleanDatabase(ctx context.Context) error {
-
-// 	return ce.conn.Exec(ctx, `DROP SCHEMA public CASCADE;
-// 	CREATE SCHEMA public;
-// 	GRANT ALL ON SCHEMA public TO postgres;
-// 	GRANT ALL ON SCHEMA public TO public`)
-// }
