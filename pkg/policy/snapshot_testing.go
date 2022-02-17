@@ -44,8 +44,8 @@ func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirector
 			e.log.Error("failed to StoreOutput", "err", err)
 			return err
 		}
-		f2, _ := OpenAndParse(path.Join(test, "data.csv"))
-		f1, _ := OpenAndParse(path.Join(tempDirectory, "data.csv"))
+		f2, _ := OpenAndParse(path.Join(test, "snapshot_data.csv"))
+		f1, _ := OpenAndParse(path.Join(tempDirectory, "snapshot_data.csv"))
 		if err := compareArbitraryArrays(f1, f2); err != nil {
 
 			e.log.Error("Failed test case", "case", test, "got", f1, "expected", f2)
