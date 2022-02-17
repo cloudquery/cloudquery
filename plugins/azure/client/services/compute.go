@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient,VirtualMachineExtensionsClient
+//go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient,VirtualMachineExtensionsClient,VirtualMachineScaleSetsClient
 package services
 
 import (
@@ -12,6 +12,7 @@ type ComputeClient struct {
 	Disks                    DisksClient
 	VirtualMachines          VirtualMachinesClient
 	VirtualMachineExtensions VirtualMachineExtensionsClient
+	VirtualMachineScaleSets  VirtualMachineScaleSetsClient
 }
 
 func NewComputeClient(subscriptionId string, auth autorest.Authorizer) ComputeClient {
@@ -23,10 +24,15 @@ func NewComputeClient(subscriptionId string, auth autorest.Authorizer) ComputeCl
 
 	vmsEx := compute.NewVirtualMachineExtensionsClient(subscriptionId)
 	vmsEx.Authorizer = auth
+
+	vmsScaleSets := compute.NewVirtualMachineScaleSetsClient(subscriptionId)
+	vmsScaleSets.Authorizer = auth
+
 	return ComputeClient{
 		Disks:                    disks,
 		VirtualMachines:          vmsSvc,
 		VirtualMachineExtensions: vmsEx,
+		VirtualMachineScaleSets:  vmsScaleSets,
 	}
 }
 
@@ -41,4 +47,8 @@ type VirtualMachinesClient interface {
 
 type VirtualMachineExtensionsClient interface {
 	List(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
+}
+
+type VirtualMachineScaleSetsClient interface {
+	ListAll(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultPage, err error)
 }

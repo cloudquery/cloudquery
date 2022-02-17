@@ -2,8 +2,10 @@
 -- CHANGEME: Verify or edit this file before proceeding
 
 -- Resource: network.virtual_networks
-ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets" ADD COLUMN IF NOT EXISTS "ip_configurations" jsonb;
-ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets" ADD COLUMN IF NOT EXISTS "private_endpoints" jsonb;
+ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets"
+    ADD COLUMN IF NOT EXISTS "ip_configurations" jsonb;
+ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets"
+    ADD COLUMN IF NOT EXISTS "private_endpoints" jsonb;
 
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
     ADD COLUMN "windows_configuration_patch_settings_assessment_mode" text;
@@ -96,44 +98,46 @@ SELECT setup_tsdb_child('azure_security_jit_network_access_policy_requests', 'ji
 
 
 
-CREATE TABLE IF NOT EXISTS "azure_resources_links" (
-	"cq_id" uuid NOT NULL,
-	"cq_meta" jsonb,
-	"cq_fetch_date" timestamp without time zone NOT NULL,
-	"subscription_id" text,
-	"id" text,
-	"name" text,
-	"type" text,
-	"source_id" text,
-	"target_id" text,
-	"notes" text,
-	CONSTRAINT azure_resources_links_pk PRIMARY KEY(cq_fetch_date,subscription_id,id),
-	UNIQUE(cq_fetch_date,cq_id)
+CREATE TABLE IF NOT EXISTS "azure_resources_links"
+(
+    "cq_id"           uuid                        NOT NULL,
+    "cq_meta"         jsonb,
+    "cq_fetch_date"   timestamp without time zone NOT NULL,
+    "subscription_id" text,
+    "id"              text,
+    "name"            text,
+    "type"            text,
+    "source_id"       text,
+    "target_id"       text,
+    "notes"           text,
+    CONSTRAINT azure_resources_links_pk PRIMARY KEY (cq_fetch_date, subscription_id, id),
+    UNIQUE (cq_fetch_date, cq_id)
 );
 SELECT setup_tsdb_parent('azure_resources_links');
 
-CREATE TABLE IF NOT EXISTS "azure_keyvault_managed_hsm" (
-	"cq_id" uuid NOT NULL,
-	"cq_meta" jsonb,
-	"cq_fetch_date" timestamp without time zone NOT NULL,
-	"subscription_id" text,
-	"tenant_id" uuid,
-	"initial_admin_object_ids" text[],
-	"hsm_uri" text,
-	"enable_soft_delete" boolean,
-	"soft_delete_retention_in_days" integer,
-	"enable_purge_protection" boolean,
-	"create_mode" text,
-	"status_message" text,
-	"provisioning_state" text,
-	"id" text,
-	"name" text,
-	"type" text,
-	"location" text,
-	"sku_family" text,
-	"sku_name" text,
-	"tags" jsonb,
-	CONSTRAINT azure_keyvault_managed_hsm_pk PRIMARY KEY(cq_fetch_date,subscription_id,id),
-	UNIQUE(cq_fetch_date,cq_id)
+CREATE TABLE IF NOT EXISTS "azure_keyvault_managed_hsm"
+(
+    "cq_id"                         uuid                        NOT NULL,
+    "cq_meta"                       jsonb,
+    "cq_fetch_date"                 timestamp without time zone NOT NULL,
+    "subscription_id"               text,
+    "tenant_id"                     uuid,
+    "initial_admin_object_ids"      text[],
+    "hsm_uri"                       text,
+    "enable_soft_delete"            boolean,
+    "soft_delete_retention_in_days" integer,
+    "enable_purge_protection"       boolean,
+    "create_mode"                   text,
+    "status_message"                text,
+    "provisioning_state"            text,
+    "id"                            text,
+    "name"                          text,
+    "type"                          text,
+    "location"                      text,
+    "sku_family"                    text,
+    "sku_name"                      text,
+    "tags"                          jsonb,
+    CONSTRAINT azure_keyvault_managed_hsm_pk PRIMARY KEY (cq_fetch_date, subscription_id, id),
+    UNIQUE (cq_fetch_date, cq_id)
 );
 SELECT setup_tsdb_parent('azure_keyvault_managed_hsm');

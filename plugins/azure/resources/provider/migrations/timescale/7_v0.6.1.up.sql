@@ -417,3 +417,105 @@ CREATE TABLE IF NOT EXISTS "azure_sql_managed_instance_encryption_protectors"
 CREATE INDEX ON azure_sql_managed_instance_encryption_protectors (cq_fetch_date, managed_instance_cq_id);
 SELECT setup_tsdb_child('azure_sql_managed_instance_encryption_protectors', 'managed_instance_cq_id',
                         'azure_sql_managed_instances', 'cq_id');
+
+-- Resource: compute.virtual_machine_scale_sets
+CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_scale_sets"
+(
+    "cq_id"                                         uuid                        NOT NULL,
+    "cq_meta"                                       jsonb,
+    "cq_fetch_date"                                 timestamp without time zone NOT NULL,
+    "subscription_id"                               text,
+    "sku_name"                                      text,
+    "sku_tier"                                      text,
+    "sku_capacity"                                  bigint,
+    "plan_name"                                     text,
+    "plan_publisher"                                text,
+    "plan_product"                                  text,
+    "plan_promotion_code"                           text,
+    "upgrade_policy"                                jsonb,
+    "automatic_repairs_policy_enabled"              boolean,
+    "automatic_repairs_policy_grace_period"         text,
+    "os_profile_computer_name_prefix"               text,
+    "os_profile_admin_username"                     text,
+    "os_profile_admin_password"                     text,
+    "os_profile_custom_data"                        text,
+    "os_profile_windows_configuration"              jsonb,
+    "os_profile_linux_configuration"                jsonb,
+    "storage_profile"                               jsonb,
+    "network_profile"                               jsonb,
+    "security_profile"                              jsonb,
+    "diagnostics_profile"                           jsonb,
+    "extension_profile_extensions_time_budget"      text,
+    "license_type"                                  text,
+    "priority"                                      text,
+    "eviction_policy"                               text,
+    "billing_profile_max_price"                     float,
+    "scheduled_events_profile"                      jsonb,
+    "user_data"                                     text,
+    "provisioning_state"                            text,
+    "overprovision"                                 boolean,
+    "do_not_run_extensions_on_overprovisioned_vms" boolean,
+    "unique_id"                                     text,
+    "single_placement_group"                        boolean,
+    "zone_balance"                                  boolean,
+    "platform_fault_domain_count"                   integer,
+    "proximity_placement_group_id"                  text,
+    "host_group_id"                                 text,
+    "additional_capabilities_ultra_ssd_enabled"   boolean,
+    "scale_in_policy_rules"                         text[],
+    "orchestration_mode"                            text,
+    "identity_principal_id"                         text,
+    "identity_tenant_id"                            text,
+    "identity_type"                                 text,
+    "identity_user_assigned_identities"             jsonb,
+    "zones"                                         text[],
+    "extended_location_name"                        text,
+    "extended_location_type"                        text,
+    "id"                                            text,
+    "name"                                          text,
+    "type"                                          text,
+    "location"                                      text,
+    "tags"                                          jsonb,
+    CONSTRAINT azure_compute_virtual_machine_scale_sets_pk PRIMARY KEY (cq_fetch_date, subscription_id, id),
+    UNIQUE (cq_fetch_date, cq_id)
+);
+SELECT setup_tsdb_parent('azure_compute_virtual_machine_scale_sets');
+CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_scale_set_os_profile_secrets"
+(
+    "cq_id"                           uuid                        NOT NULL,
+    "cq_meta"                         jsonb,
+    "cq_fetch_date"                   timestamp without time zone NOT NULL,
+    "virtual_machine_scale_set_cq_id" uuid,
+    "source_vault_id"                 text,
+    "vault_certificates"              jsonb,
+    CONSTRAINT azure_compute_virtual_machine_scale_set_os_profile_secrets_pk PRIMARY KEY (cq_fetch_date, cq_id),
+    UNIQUE (cq_fetch_date, cq_id)
+);
+CREATE INDEX ON azure_compute_virtual_machine_scale_set_os_profile_secrets (cq_fetch_date, virtual_machine_scale_set_cq_id);
+SELECT setup_tsdb_child('azure_compute_virtual_machine_scale_set_os_profile_secrets', 'virtual_machine_scale_set_cq_id',
+                        'azure_compute_virtual_machine_scale_sets', 'cq_id');
+CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_scale_set_extensions"
+(
+    "cq_id"                           uuid                        NOT NULL,
+    "cq_meta"                         jsonb,
+    "cq_fetch_date"                   timestamp without time zone NOT NULL,
+    "virtual_machine_scale_set_cq_id" uuid,
+    "type"                            text,
+    "extension_type"                  text,
+    "name"                            text,
+    "force_update_tag"                text,
+    "publisher"                       text,
+    "type_handler_version"            text,
+    "auto_upgrade_minor_version"      boolean,
+    "enable_automatic_upgrade"        boolean,
+    "settings"                        jsonb,
+    "protected_settings"              jsonb,
+    "provisioning_state"              text,
+    "provision_after_extensions"      text[],
+    "id"                              text,
+    CONSTRAINT azure_compute_virtual_machine_scale_set_extensions_pk PRIMARY KEY (cq_fetch_date, cq_id),
+    UNIQUE (cq_fetch_date, cq_id)
+);
+CREATE INDEX ON azure_compute_virtual_machine_scale_set_extensions (cq_fetch_date, virtual_machine_scale_set_cq_id);
+SELECT setup_tsdb_child('azure_compute_virtual_machine_scale_set_extensions', 'virtual_machine_scale_set_cq_id',
+                        'azure_compute_virtual_machine_scale_sets', 'cq_id');
