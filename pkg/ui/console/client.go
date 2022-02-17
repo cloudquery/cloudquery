@@ -622,6 +622,9 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	t.SetHeaders("Path", "Description")
 
 	policyName, subPath := getter.ParseSourceSubPolicy(selector)
+
+	// The `buildDescribePolicyTable` builds the output based on Policy Name and Path
+	// In the case of no path, the PolicyName is just the root policy
 	if subPath == "" {
 		policyName = ""
 	}
