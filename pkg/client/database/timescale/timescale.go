@@ -46,8 +46,12 @@ func (e Executor) Setup(ctx context.Context) (string, error) {
 	}
 	defer conn.Release()
 
-	if err := AddHistoryFunctions(ctx, conn); err != nil {
-		return e.dsn, fmt.Errorf("failed to create history functions: %w", err)
+	ddl, err := NewDDLManager(e.logger, conn, e.cfg, schema.TSDB)
+	if err != nil {
+		return e.dsn, err
+	}
+	if err := ddl.PrepareHistory(ctx, conn); err != nil {
+		return e.dsn, fmt.Errorf("failed to prepare history: %w", err)
 	}
 
 	return history.TransformDSN(e.dsn)
