@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
@@ -18,10 +20,6 @@ import (
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/spf13/afero"
-
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 type Drift struct {
