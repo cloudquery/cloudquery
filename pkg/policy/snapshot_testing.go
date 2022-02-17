@@ -107,8 +107,8 @@ func OpenAndParse(filePath string) ([][]string, error) {
 func FindAllTestCases(root string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() && info.Name() == "data.csv" {
-			files = append(files, strings.TrimSuffix(path, "/data.csv"))
+		if !info.IsDir() && info.Name() == "snapshot_data.csv" {
+			files = append(files, strings.TrimSuffix(path, "/snapshot_data.csv"))
 		}
 		return nil
 	})

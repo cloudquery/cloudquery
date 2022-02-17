@@ -75,17 +75,17 @@ func TestFindAllTestCases(t *testing.T) {
 	}{
 		{
 			err:        nil,
-			paths:      []string{"/path/to/actual/test/data.csv"},
+			paths:      []string{"/path/to/actual/test/snapshot_data.csv"},
 			foundPaths: []string{"/path/to/actual/test"},
 		},
 		{
 			err:        nil,
-			paths:      []string{"/path/to/fake/test/ddata.csv"},
+			paths:      []string{"/path/to/fake/test/ssnapshot_data.csv"},
 			foundPaths: []string{},
 		},
 		{
 			err:        nil,
-			paths:      []string{"/path/to/invalid/test/data.sql"},
+			paths:      []string{"/path/to/invalid/test/snapshot_data.sql"},
 			foundPaths: []string{},
 		},
 	}

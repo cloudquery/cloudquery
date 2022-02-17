@@ -70,18 +70,18 @@ func createSnapshotPath(directory, queryName string) (string, error) {
 	return cleanedPath, nil
 }
 
-func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, destination, selector string) error {
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, outputPath, subpath string) error {
 	e := NewExecutor(m.pool, m.logger, nil)
 
 	if err := e.createViews(ctx, policy); err != nil {
 		return err
 	}
 
-	tableNames, err := e.ExtractTableNames(ctx, policy.Checks[0].Query)
+	tableNames, err := e.extractTableNames(ctx, policy.Checks[0].Query)
 	if err != nil {
 		return err
 	}
-	snapShotPath, err := createSnapshotPath(destination, selector)
+	snapShotPath, err := createSnapshotPath(outputPath, subpath)
 	if err != nil {
 		return err
 	}

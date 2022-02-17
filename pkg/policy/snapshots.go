@@ -90,7 +90,7 @@ func cleanQuery(query string) string {
 	return strings.TrimSpace(query)
 }
 
-func (ce *Executor) ExtractTableNames(ctx context.Context, query string) ([]string, error) {
+func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]string, error) {
 	tableNames := make([]string, 0)
 	cleanedQuery := cleanQuery(query)
 
@@ -139,7 +139,7 @@ func (ce *Executor) ExtractTableNames(ctx context.Context, query string) ([]stri
 			}
 			// If the alias is a view name, then recursively extract the table names from the subquery
 			if viewQuery != "" {
-				viewTables, err := ce.ExtractTableNames(ctx, viewQuery)
+				viewTables, err := ce.extractTableNames(ctx, viewQuery)
 				if err != nil {
 					return []string{}, err
 				}
