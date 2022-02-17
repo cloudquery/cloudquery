@@ -33,3 +33,16 @@ DROP TABLE IF EXISTS azure_sql_managed_instances;
 DROP TABLE IF EXISTS azure_compute_virtual_machine_scale_set_os_profile_secrets;
 DROP TABLE IF EXISTS azure_compute_virtual_machine_scale_set_extensions;
 DROP TABLE IF EXISTS azure_compute_virtual_machine_scale_sets;
+
+-- Resource: datalake.analytics_accounts
+DROP TABLE IF EXISTS azure_datalake_analytics_account_data_lake_store_accounts;
+DROP TABLE IF EXISTS azure_datalake_analytics_account_storage_accounts;
+DROP TABLE IF EXISTS azure_datalake_analytics_account_compute_policies;
+DROP TABLE IF EXISTS azure_datalake_analytics_account_firewall_rules;
+DROP TABLE IF EXISTS azure_datalake_analytics_accounts;
+
+-- Resource: datalake.storage_accounts
+DROP TABLE IF EXISTS azure_datalake_storage_account_firewall_rules;
+DROP TABLE IF EXISTS azure_datalake_storage_account_virtual_network_rules;
+DROP TABLE IF EXISTS azure_datalake_storage_account_trusted_id_providers;
+DROP TABLE IF EXISTS azure_datalake_storage_accounts;

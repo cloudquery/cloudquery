@@ -27,6 +27,7 @@ type Services struct {
 	Compute       ComputeClient
 	Container     ContainerServiceClient
 	CosmosDb      CosmosDbClient
+	DataLake      DataLakeClient
 	EventHub      EventHubClient
 	KeyVault      KeyVaultClient
 	Monitor       MonitorClient
@@ -49,6 +50,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		Compute:       NewComputeClient(subscriptionId, auth),
 		Container:     NewContainerServiceClient(subscriptionId, auth),
 		CosmosDb:      NewCosmosDbClient(subscriptionId, auth),
+		DataLake:      NewDataLakeClient(subscriptionId, auth),
 		EventHub:      NewEventHubClient(subscriptionId, auth),
 		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
 		Monitor:       NewMonitorClient(subscriptionId, auth),

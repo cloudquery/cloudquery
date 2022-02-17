@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/services/container"
 	"github.com/cloudquery/cq-provider-azure/resources/services/cosmosdb"
+	"github.com/cloudquery/cq-provider-azure/resources/services/datalake"
 	"github.com/cloudquery/cq-provider-azure/resources/services/eventhub"
 	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/services/monitor"
@@ -48,6 +49,8 @@ func Provider() *provider.Provider {
 			"cosmosdb.accounts":                  cosmosdb.CosmosDBAccounts(),
 			"cosmosdb.sql_databases":             cosmosdb.CosmosDBSqlDatabases(),
 			"cosmosdb.mongodb_databases":         cosmosdb.CosmosDBMongoDBDatabases(),
+			"datalake.storage_accounts":          datalake.StorageAccounts(),
+			"datalake.analytics_accounts":        datalake.AnalyticsAccounts(),
 			"eventhub.namespaces":                eventhub.EventHubNamespaces(),
 			// This resource is currently not working
 			// https://github.com/cloudquery/cq-provider-azure/issues/107
