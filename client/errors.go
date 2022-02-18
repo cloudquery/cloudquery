@@ -19,19 +19,19 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 		switch ae.ErrorCode() {
 		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.ACCESS, ParseSummaryMessage(err, ae),
+				RedactError(client.Accounts, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), ParseSummaryMessage(err, ae),
 					diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]), diag.WithNoOverwrite(), diag.WithSeverity(diag.WARNING))),
 			}
 		case "InvalidAction":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithSeverity(diag.IGNORE), ParseSummaryMessage(err, ae),
+				RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.IGNORE), ParseSummaryMessage(err, ae),
 					diag.WithDetails("The action is invalid for the service."))),
 			}
 		}
 	}
 	if IsErrorThrottle(err) {
 		return diag.Diagnostics{
-			RedactError(client.Accounts, diag.NewBaseError(err, diag.THROTTLE, diag.WithSeverity(diag.WARNING), ParseSummaryMessage(err, ae),
+			RedactError(client.Accounts, diag.NewBaseError(err, diag.THROTTLE, diag.WithType(diag.THROTTLE), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(err, ae),
 				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."))),
 		}
 	}
