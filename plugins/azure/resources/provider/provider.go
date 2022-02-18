@@ -64,6 +64,7 @@ func Provider() *provider.Provider {
 			"monitor.activity_logs":                monitor.MonitorActivityLogs(),
 			"monitor.activity_log_alerts":          monitor.MonitorActivityLogAlerts(),
 			"mysql.servers":                        mysql.MySQLServers(),
+			"network.interfaces":                   network.NetworkInterfaces(),
 			"network.virtual_networks":             network.NetworkVirtualNetworks(),
 			"network.security_groups":              network.NetworkSecurityGroups(),
 			"network.public_ip_addresses":          network.NetworkPublicIPAddresses(),
