@@ -656,4 +656,64 @@ CREATE TABLE IF NOT EXISTS "azure_sql_database_db_vulnerability_assessment_scans
     FOREIGN KEY (database_cq_id) REFERENCES azure_sql_databases (cq_id) ON DELETE CASCADE
 );
 
-
+-- Resource: mariadb.servers
+CREATE TABLE IF NOT EXISTS "azure_mariadb_servers" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"subscription_id" text,
+	"sku_name" text,
+	"sku_tier" text,
+	"sku_capacity" integer,
+	"sku_size" text,
+	"sku_family" text,
+	"administrator_login" text,
+	"version" text,
+	"ssl_enforcement" text,
+	"user_visible_state" text,
+	"fully_qualified_domain_name" text,
+	"earliest_restore_date_time" timestamp without time zone,
+	"backup_retention_days" integer,
+	"geo_redundant_backup" text,
+	"storage_mb" integer,
+	"storage_autogrow" text,
+	"replication_role" text,
+	"master_server_id" text,
+	"replica_capacity" integer,
+	"public_network_access" text,
+	"tags" jsonb,
+	"location" text,
+	"id" text,
+	"name" text,
+	"type" text,
+	CONSTRAINT azure_mariadb_servers_pk PRIMARY KEY(subscription_id,id),
+	UNIQUE(cq_id)
+);
+CREATE TABLE IF NOT EXISTS "azure_mariadb_server_private_endpoint_connections" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"server_cq_id" uuid,
+	"id" text,
+	"status" text,
+	"status_description" text,
+	"provisioning_state" text,
+	CONSTRAINT azure_mariadb_server_private_endpoint_connections_pk PRIMARY KEY(cq_id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (server_cq_id) REFERENCES azure_mariadb_servers(cq_id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "azure_mariadb_server_configurations" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"value" text,
+	"description" text,
+	"default_value" text,
+	"data_type" text,
+	"allowed_values" text,
+	"source" text,
+	CONSTRAINT azure_mariadb_server_configurations_pk PRIMARY KEY(cq_id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (server_cq_id) REFERENCES azure_mariadb_servers(cq_id) ON DELETE CASCADE
+);

@@ -736,3 +736,71 @@ CREATE TABLE IF NOT EXISTS "azure_sql_database_db_vulnerability_assessment_scans
 CREATE INDEX ON azure_sql_database_db_vulnerability_assessment_scans (cq_fetch_date, database_cq_id);
 SELECT setup_tsdb_child('azure_sql_database_db_vulnerability_assessment_scans', 'database_cq_id', 'azure_sql_databases',
                         'cq_id');
+
+-- Resource: mariadb.servers
+CREATE TABLE IF NOT EXISTS "azure_mariadb_servers" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"subscription_id" text,
+	"sku_name" text,
+	"sku_tier" text,
+	"sku_capacity" integer,
+	"sku_size" text,
+	"sku_family" text,
+	"administrator_login" text,
+	"version" text,
+	"ssl_enforcement" text,
+	"user_visible_state" text,
+	"fully_qualified_domain_name" text,
+	"earliest_restore_date_time" timestamp without time zone,
+	"backup_retention_days" integer,
+	"geo_redundant_backup" text,
+	"storage_mb" integer,
+	"storage_autogrow" text,
+	"replication_role" text,
+	"master_server_id" text,
+	"replica_capacity" integer,
+	"public_network_access" text,
+	"tags" jsonb,
+	"location" text,
+	"id" text,
+	"name" text,
+	"type" text,
+	CONSTRAINT azure_mariadb_servers_pk PRIMARY KEY(cq_fetch_date,subscription_id,id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+SELECT setup_tsdb_parent('azure_mariadb_servers');
+CREATE TABLE IF NOT EXISTS "azure_mariadb_server_private_endpoint_connections" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"server_cq_id" uuid,
+	"id" text,
+	"status" text,
+	"status_description" text,
+	"provisioning_state" text,
+	CONSTRAINT azure_mariadb_server_private_endpoint_connections_pk PRIMARY KEY(cq_fetch_date,cq_id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON azure_mariadb_server_private_endpoint_connections (cq_fetch_date, server_cq_id);
+SELECT setup_tsdb_child('azure_mariadb_server_private_endpoint_connections', 'server_cq_id', 'azure_mariadb_servers', 'cq_id');
+CREATE TABLE IF NOT EXISTS "azure_mariadb_server_configurations" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"server_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"value" text,
+	"description" text,
+	"default_value" text,
+	"data_type" text,
+	"allowed_values" text,
+	"source" text,
+	CONSTRAINT azure_mariadb_server_configurations_pk PRIMARY KEY(cq_fetch_date,cq_id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON azure_mariadb_server_configurations (cq_fetch_date, server_cq_id);
+SELECT setup_tsdb_child('azure_mariadb_server_configurations', 'server_cq_id', 'azure_mariadb_servers', 'cq_id');

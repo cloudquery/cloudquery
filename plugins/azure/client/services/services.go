@@ -7,6 +7,7 @@
 //go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubClient
 //go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogClient
+//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
 //go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
 //go:generate mockgen -destination=./mocks/network.go -package=mocks . VirtualNetworksClient,SecurityGroupsClient,WatchersClient,PublicIPAddressesClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
@@ -30,6 +31,7 @@ type Services struct {
 	DataLake      DataLakeClient
 	EventHub      EventHubClient
 	KeyVault      KeyVaultClient
+	MariaDB       MariaDB
 	Monitor       MonitorClient
 	MySQL         MySQL
 	Network       NetworksClient
@@ -53,6 +55,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		DataLake:      NewDataLakeClient(subscriptionId, auth),
 		EventHub:      NewEventHubClient(subscriptionId, auth),
 		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
+		MariaDB:       NewMariaDBClient(subscriptionId, auth),
 		Monitor:       NewMonitorClient(subscriptionId, auth),
 		MySQL:         NewMySQLClient(subscriptionId, auth),
 		Network:       NewNetworksClient(subscriptionId, auth),
