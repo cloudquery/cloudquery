@@ -463,13 +463,13 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			}
 			pLog.Info("provider configured successfully")
 
-			pLog.Info("requesting provider fetch", "partial_fetch_enabled", providerConfig.EnablePartialFetch)
+			pLog.Info("requesting provider fetch")
 			fetchStart := time.Now()
 			fetchSummary.Start = &fetchStart
 			stream, err := providerPlugin.Provider().FetchResources(ctx,
 				&cqproto.FetchResourcesRequest{
 					Resources:              providerConfig.Resources,
-					PartialFetchingEnabled: providerConfig.EnablePartialFetch,
+					PartialFetchingEnabled: true,
 					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
 					MaxGoroutines:          providerConfig.MaxGoroutines,
 				})
@@ -664,14 +664,7 @@ func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (
 	}
 
 	if s.Migrations == nil {
-		// Keep the table creator if we don't have any migrations defined for this provider and hope that it works
-		for name, t := range s.ResourceTables {
-			c.Logger.Debug("creating tables for resource for provider", "resource_name", name, "provider", s.Name, "version", s.Version)
-			if err := c.TableCreator.CreateTable(ctx, c.db, t, nil); err != nil {
-				return fmt.Errorf("CreateTable(%s) failed: %w", t.Name, err)
-			}
-		}
-
+		c.Logger.Warn("provider did not define any migrations (here be dragons)", "provider", s.Name, "version", s.Version)
 		return nil
 	}
 
