@@ -28,7 +28,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
-	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
@@ -202,11 +201,6 @@ type FetchDoneResult struct {
 	ResourceCount string
 }
 
-// TableCreator creates tables based on schema received from providers
-type TableCreator interface {
-	CreateTable(context.Context, execution.QueryExecer, *schema.Table, *schema.Table) error
-}
-
 type FetchUpdateCallback func(update FetchUpdate)
 
 type Option func(options *Client)
@@ -243,8 +237,6 @@ type Client struct {
 	ModuleManager module.Manager
 	// ModuleManager manages all modules lifecycle
 	PolicyManager policy.Manager
-	// TableCreator defines how tables are created in the database, only for plugin protocol < 4
-	TableCreator TableCreator
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 
@@ -1190,12 +1182,6 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
 		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
-
-	dialect, err := schema.GetDialect(c.db.DialectType())
-	if err != nil {
-		return err
-	}
-	c.TableCreator = migration.NewTableCreator(c.Logger, dialect)
 
 	return nil
 }
