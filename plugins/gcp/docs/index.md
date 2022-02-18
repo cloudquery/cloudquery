@@ -10,7 +10,14 @@ cloudquery init gcp
 
 ### Authentication
 
-To [authenticate](https://cloud.google.com/docs/authentication/getting-started) cloudquery with your GCP account you need to set `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
+CloudQuery needs to be authenticated with your GCP account in order to `fetch` information about your cloud setup.
+You need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable - see [GCP documentation](https://cloud.google.com/docs/authentication/getting-started#command-line) for more details on where to get it.
+
+On Linux/MacOS (Similar for windows):
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
+```
 
 ### Configuration
 
