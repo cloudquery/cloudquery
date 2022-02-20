@@ -12,33 +12,33 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/jeremywohl/flatten"
 )
 
-func (ce *Executor) persistSnapshot(ctx context.Context, path string, table string) error {
+func persistSnapshot(ctx context.Context, e *Executor, path string, table string) error {
 	ef, err := os.OpenFile(filepath.Join("%s/", path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
 	defer ef.Close()
 	query := fmt.Sprintf("COPY (select * from %s) TO STDOUT DELIMITER '|' CSV HEADER", table)
-	ce.log.Debug("exporting", "table", table, "query", query)
+	e.log.Debug("exporting", "table", table, "query", query)
 
-	err = ce.storeOutput(ctx, ef, query)
+	err = storeOutput(ctx, e, ef, query)
 	if err != nil {
 		return fmt.Errorf("error exporting file: %w", err)
 	}
 	return nil
 
 }
-func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []string) error {
+func StoreSnapshot(ctx context.Context, e *Executor, path string, tables []string) error {
 	if len(tables) == 0 {
 		return errors.New("no tables to snapshot")
 	}
 
 	for _, table := range tables {
-
-		err := ce.persistSnapshot(ctx, path, table)
+		err := persistSnapshot(ctx, e, path, table)
 		if err != nil {
 			return err
 		}
@@ -48,7 +48,7 @@ func (ce *Executor) StoreSnapshot(ctx context.Context, path string, tables []str
 	return nil
 }
 
-func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
+func RestoreSnapshot(ctx context.Context, conn LowLevelQueryExecer, log hclog.Logger, source string) error {
 	ef, err := os.OpenFile(source, os.O_RDONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file for restore: %w", err)
@@ -56,21 +56,21 @@ func (ce *Executor) RestoreSnapshot(ctx context.Context, source string) error {
 	defer ef.Close()
 	fileName := path.Base(source)
 	if !strings.HasPrefix(fileName, "table_") || !strings.HasSuffix(fileName, ".csv") {
-		ce.log.Error("truncating", "source", source, "file", fileName)
+		log.Error("truncating", "source", source, "file", fileName)
 		return fmt.Errorf("invalid filename: %q", fileName)
 	}
 	source_name := strings.TrimPrefix(strings.TrimSuffix(fileName, ".csv"), "table_")
 	truncQuery := fmt.Sprintf("TRUNCATE %s CASCADE", source_name)
-	ce.log.Debug("truncating", "table", source_name, "query", truncQuery)
-	err = ce.conn.Exec(ctx, truncQuery)
+	log.Debug("truncating", "table", source_name, "query", truncQuery)
+	err = conn.Exec(ctx, truncQuery)
 	if err != nil {
 		return fmt.Errorf("error importing file %q: %w", fileName, err)
 	}
 
 	query := fmt.Sprintf("copy \"%s\" from stdin DELIMITER '|' CSV HEADER;", source_name)
-	ce.log.Debug("importing", "table", source_name, "query", query)
+	log.Debug("importing", "table", source_name, "query", query)
 
-	err = ce.conn.RawCopyFrom(ctx, ef, query)
+	err = conn.RawCopyFrom(ctx, ef, query)
 	if err != nil {
 		return fmt.Errorf("error importing file: %w", err)
 	}
@@ -169,33 +169,33 @@ func removeDuplicateValues(stringSlice []string) []string {
 	return list
 }
 
-func (ce *Executor) StoreOutput(ctx context.Context, pol *Policy, destination string) (err error) {
+func StoreOutput(ctx context.Context, e *Executor, pol *Policy, destination string) (err error) {
 	if !pol.HasChecks() {
 		return errors.New("no checks")
 	}
-	err = ce.createViews(ctx, pol)
+	err = e.createViews(ctx, pol)
 	if err != nil {
 		return fmt.Errorf("failed to create views: %w", err)
 	}
 
 	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
-		ce.log.Error("error opening file:", err)
+		e.log.Error("error opening file:", err)
 		return err
 	}
 	defer ef.Close()
 	query := fmt.Sprintf("COPY (%s)  TO STDOUT DELIMITER '|' CSV HEADER", cleanQuery(pol.Checks[0].Query))
-	err = ce.storeOutput(ctx, ef, query)
+	err = storeOutput(ctx, e, ef, query)
 	if err != nil {
-		ce.log.Error("Storing output error", "query", query, "error", err)
+		e.log.Error("Storing output error", "query", query, "error", err)
 		return err
 	}
 	return nil
 }
 
-func (ce *Executor) storeOutput(ctx context.Context, w io.Writer, sql string) error {
-	ce.log.Debug("Copying output to writer", "query", sql)
-	err := ce.conn.RawCopyTo(ctx, w, sql)
+func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) error {
+	e.log.Debug("Copying output to writer", "query", sql)
+	err := e.conn.RawCopyTo(ctx, w, sql)
 	if err != nil {
 		return fmt.Errorf("error exporting file: %w", err)
 	}

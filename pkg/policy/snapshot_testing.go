@@ -31,7 +31,7 @@ func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirector
 
 		for _, table := range tables {
 			e.log.Info("restoring table ", "table", table)
-			err = e.RestoreSnapshot(ctx, table)
+			err = RestoreSnapshot(ctx, e.conn, e.log, table)
 			if err != nil {
 				e.log.Error("failed to restore snapshot", "err", err)
 				return err
@@ -39,7 +39,7 @@ func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirector
 		}
 
 		// 		c. Run query
-		err = e.StoreOutput(ctx, &pol, tempDirectory)
+		err = StoreOutput(ctx, e, &pol, tempDirectory)
 		if err != nil {
 			e.log.Error("failed to StoreOutput", "err", err)
 			return err

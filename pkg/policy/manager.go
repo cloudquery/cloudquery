@@ -85,12 +85,12 @@ func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, outputPath, 
 	if err != nil {
 		return err
 	}
-	err = e.StoreSnapshot(ctx, snapShotPath, tableNames)
+	err = StoreSnapshot(ctx, e, snapShotPath, tableNames)
 	if err != nil {
 		return err
 	}
 
-	return e.StoreOutput(ctx, policy, snapShotPath)
+	return StoreOutput(ctx, e, policy, snapShotPath)
 }
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {
 	var err error
