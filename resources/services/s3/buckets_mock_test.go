@@ -70,6 +70,12 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+	bownershipcontrols := s3.GetBucketOwnershipControlsOutput{}
+	err = faker.FakeData(&bownershipcontrols)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any()).Return(
 		&s3.ListBucketsOutput{
 			Buckets: []s3Types.Bucket{b},
@@ -93,6 +99,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().GetPublicAccessBlock(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&bpba, nil)
+	m.EXPECT().GetBucketOwnershipControls(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bownershipcontrols, nil)
 
 	// bucket replication struct has interfaces and faker doesn't work well with it so we will build it manually
 	sourceSelectionCriteria := s3Types.SourceSelectionCriteria{}

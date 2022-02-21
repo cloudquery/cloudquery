@@ -20,3 +20,4 @@ An Amazon S3 bucket is a public cloud storage resource available in Amazon Web S
 |restrict_public_buckets|boolean|Specifies whether Amazon S3 should restrict public bucket policies for this bucket|
 |replication_role|text|The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that Amazon S3 assumes when replicating objects|
 |arn|text|The Amazon Resource Name (ARN) for the resource.|
+|ownership_controls|text[]|The OwnershipControls (BucketOwnerEnforced, BucketOwnerPreferred, or ObjectWriter) currently in effect for this Amazon S3 bucket.|
