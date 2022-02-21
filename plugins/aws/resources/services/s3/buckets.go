@@ -106,6 +106,11 @@ func S3Buckets() *schema.Table {
 					return []string{*resource.Item.(*WrappedBucket).Name}, nil
 				}),
 			},
+			{
+				Name:        "ownership_controls",
+				Description: "The OwnershipControls (BucketOwnerEnforced, BucketOwnerPreferred, or ObjectWriter) currently in effect for this Amazon S3 bucket.",
+				Type:        schema.TypeStringArray,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -505,8 +510,14 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	if err := resolveBucketTagging(ctx, meta, resource, *r.Name, bucketRegion); err != nil {
 		return err
 	}
+
+	if err := resolveBucketOwnershipControls(ctx, meta, resource, *r.Name, bucketRegion); err != nil {
+		return err
+	}
+
 	return nil
 }
+
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
@@ -786,4 +797,44 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set("tags", tags)
+}
+
+func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, bucketName, bucketRegion string) error {
+	c := meta.(*client.Client)
+	svc := c.Services().S3
+
+	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: aws.String(bucketName)}, func(options *s3.Options) {
+		options.Region = bucketRegion
+	})
+
+	if err != nil {
+		if c.IsNotFoundError(err) { // Not all buckets have ownership controls
+			return nil
+		}
+
+		if client.IgnoreAccessDeniedServiceDisabled(err) {
+			meta.Logger().Warn("received access denied on GetBucketTagging", "bucket", bucketName, "err", err)
+			return nil
+		}
+
+		return err
+	}
+
+	if getBucketOwnershipControlOutput == nil {
+		return nil
+	}
+
+	ownershipControlRules := getBucketOwnershipControlOutput.OwnershipControls.Rules
+
+	if len(ownershipControlRules) == 0 {
+		return nil
+	}
+
+	stringArray := make([]string, 0, len(ownershipControlRules))
+
+	for _, ownershipControlRule := range ownershipControlRules {
+		stringArray = append(stringArray, string(ownershipControlRule.ObjectOwnership))
+	}
+
+	return resource.Set("ownership_controls", stringArray)
 }
