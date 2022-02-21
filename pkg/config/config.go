@@ -68,9 +68,9 @@ type RequiredProvider struct {
 func (r RequiredProvider) String() string {
 	var source string
 	if r.Source != nil {
-		source = *r.Source
+		source = *r.Source + "/"
 	}
-	return fmt.Sprintf("%s/cq-provider-%s@%s", source, r.Name, r.Version)
+	return fmt.Sprintf("%scq-provider-%s@%s", source, r.Name, r.Version)
 }
 
 type RequiredProviders []*RequiredProvider
