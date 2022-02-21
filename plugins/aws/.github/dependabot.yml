@@ -4,5 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
     allow:
       - dependency-name: "github.com/cloudquery/cq-provider-sdk"
