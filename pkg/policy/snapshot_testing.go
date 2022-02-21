@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -38,7 +37,6 @@ func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirector
 			}
 		}
 
-		// 		c. Run query
 		err = StoreOutput(ctx, e, &pol, tempDirectory)
 		if err != nil {
 			e.log.Error("failed to StoreOutput", "err", err)
@@ -95,8 +93,7 @@ func OpenAndParse(filePath string) ([][]string, error) {
 	}
 	defer csvFile.Close()
 
-	byteValue, _ := ioutil.ReadAll(csvFile)
-	r := csv.NewReader(strings.NewReader(string(byteValue)))
+	r := csv.NewReader(csvFile)
 	records, err := r.ReadAll()
 	if err != nil {
 		return nil, err
