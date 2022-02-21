@@ -3,10 +3,14 @@ package policy
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
+	uuid "github.com/satori/go.uuid"
 
 	"github.com/hashicorp/go-hclog"
 )
@@ -15,13 +19,18 @@ const (
 	CloudQueryOrg = "cloudquery-policies"
 )
 
+type LowLevelQueryExecer interface {
+	execution.Copier
+	execution.QueryExecer
+}
+
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	// policyDirectory points to the local policy directory
 	policyDirectory string
 
 	// Instance of a database connection pool
-	pool execution.QueryExecer
+	pool LowLevelQueryExecer
 
 	// Logger instance
 	logger hclog.Logger
@@ -35,10 +44,13 @@ type Manager interface {
 
 	// Load the policy
 	Load(ctx context.Context, policy *Policy) (*Policy, error)
+
+	// Take a Snapshot of a policy
+	Snapshot(ctx context.Context, policy *Policy, destination, selector string) error
 }
 
 // NewManager returns a new manager instance.
-func NewManager(policyDir string, pool execution.QueryExecer, logger hclog.Logger) *ManagerImpl {
+func NewManager(policyDir string, pool LowLevelQueryExecer, logger hclog.Logger) *ManagerImpl {
 	return &ManagerImpl{
 		policyDirectory: policyDir,
 		pool:            pool,
@@ -46,6 +58,40 @@ func NewManager(policyDir string, pool execution.QueryExecer, logger hclog.Logge
 	}
 }
 
+//
+func createSnapshotPath(directory, queryName string) (string, error) {
+	path := strings.TrimSuffix(directory, "/")
+	cleanedPath := filepath.Join(path, queryName, "tests", uuid.NewV4().String())
+
+	err := os.MkdirAll(cleanedPath, os.ModePerm)
+	if err != nil {
+		return "", err
+	}
+	return cleanedPath, nil
+}
+
+func (m *ManagerImpl) Snapshot(ctx context.Context, policy *Policy, outputPath, subpath string) error {
+	e := NewExecutor(m.pool, m.logger, nil)
+
+	if err := e.createViews(ctx, policy); err != nil {
+		return err
+	}
+
+	tableNames, err := e.extractTableNames(ctx, policy.Checks[0].Query)
+	if err != nil {
+		return err
+	}
+	snapShotPath, err := createSnapshotPath(outputPath, subpath)
+	if err != nil {
+		return err
+	}
+	err = StoreSnapshot(ctx, e, snapShotPath, tableNames)
+	if err != nil {
+		return err
+	}
+
+	return StoreOutput(ctx, e, policy, snapShotPath)
+}
 func (m *ManagerImpl) Load(ctx context.Context, policy *Policy) (*Policy, error) {
 	var err error
 	// if policy is configured with source we load it first
@@ -106,7 +152,6 @@ func (m *ManagerImpl) Run(ctx context.Context, request *ExecuteRequest) (*Execut
 			})
 		}
 	}
-
 	// execute the queries
 	return NewExecutor(m.pool, m.logger, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }

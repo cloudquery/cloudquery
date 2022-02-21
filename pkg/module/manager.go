@@ -11,6 +11,11 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
+type LowLevelQueryExecer interface {
+	execution.Copier
+	execution.QueryExecer
+}
+
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	modules  map[string]Module
@@ -44,7 +49,7 @@ type moduleInfoRequester interface {
 }
 
 // NewManager returns a new manager instance.
-func NewManager(pool execution.QueryExecer, logger hclog.Logger, r moduleInfoRequester) *ManagerImpl {
+func NewManager(pool LowLevelQueryExecer, logger hclog.Logger, r moduleInfoRequester) *ManagerImpl {
 	return &ManagerImpl{
 		modules:   make(map[string]Module),
 		pool:      pool,

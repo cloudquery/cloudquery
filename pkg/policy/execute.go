@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
@@ -45,7 +44,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn execution.QueryExecer
+	conn LowLevelQueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -101,7 +100,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn execution.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn LowLevelQueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,
@@ -231,7 +230,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 // createViews creates temporary views for given config.Policy, and any views defined by sub-policies
 func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
-		e.log.Info("creating policy view", "view", v.Name)
+		e.log.Info("creating policy view", "view", v.Name, "query", v.Query)
 		if err := e.conn.Exec(ctx, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
 			return fmt.Errorf("failed to create view %s/%s: %w", policy.Name, v.Name, err)
 		}
