@@ -339,6 +339,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	return nil
 }
 
+//nolint:dupl
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
@@ -365,6 +366,7 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	return nil
 }
 
+//nolint:dupl
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
