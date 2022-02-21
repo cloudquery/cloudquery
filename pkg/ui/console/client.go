@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
@@ -346,27 +347,25 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
-	dupes := make(map[string]struct{}, len(providers))
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
-		if _, ok := dupes[p.Name]; ok {
-			continue
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil {
+			if err == migrate.ErrNoChange || errors.Is(err, client.ErrMigrationsNotSupported) {
+				ui.ColorizedOutput(ui.ColorWarning, "❌ Failed to upgrade provider %s: %s.\n\n", p.String(), err.Error())
+				continue
+			} else {
+				ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+				return err
+			}
 		}
 
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
-			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
-			return err
-		} else {
-			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-		}
-		dupes[p.Name] = struct{}{}
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
 	return nil
 }
 
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
@@ -374,14 +373,19 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
 		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
-			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
-			return err
-		} else {
-			ui.ColorizedOutput(ui.ColorSuccess, "✓ Downgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-			color.GreenString("✓")
+			if err == migrate.ErrNoChange || errors.Is(err, client.ErrMigrationsNotSupported) {
+				ui.ColorizedOutput(ui.ColorWarning, "❌ Failed to downgrade provider %s: %s.\n\n", p.String(), err.Error())
+				continue
+			} else {
+				ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
+				return err
+			}
 		}
+
+		ui.ColorizedOutput(ui.ColorSuccess, "✓ Downgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
 	return nil
@@ -397,7 +401,6 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 		return err
 	} else {
 		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
-		color.GreenString("✓")
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
 	return nil
@@ -466,12 +469,13 @@ func (c Client) selectProfile(profileName string, profiles map[string]hcl.Body) 
 	return nil, nil
 }
 
-func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {
+func (c Client) getRequiredProviders(providerNames []string) (config.RequiredProviders, error) {
 	if len(providerNames) == 0 {
 		// if no providers are given we will return all providers
-		return c.cfg.CloudQuery.Providers, nil
+		return c.cfg.CloudQuery.Providers.Distinct(), nil
 	}
-	providers := make([]*config.RequiredProvider, len(providerNames))
+
+	providers := make(config.RequiredProviders, len(providerNames))
 	for i, p := range providerNames {
 		pCfg, err := c.cfg.CloudQuery.GetRequiredProvider(p)
 		if err != nil {
