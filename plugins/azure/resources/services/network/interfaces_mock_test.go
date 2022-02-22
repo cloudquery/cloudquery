@@ -65,6 +65,7 @@ func buildNetworkInterfacesMock(t *testing.T, ctrl *gomock.Controller) services.
 	require.Nil(t, faker.FakeData(&i.Name))
 	require.Nil(t, faker.FakeData(&i.Tags))
 	require.Nil(t, faker.FakeData(&i.Type))
+	require.Nil(t, faker.FakeData(&i.PrivateEndpoint.ID))
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.DNSSettings))
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.DscpConfiguration))
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.HostedWorkloads))
@@ -76,6 +77,7 @@ func buildNetworkInterfacesMock(t *testing.T, ctrl *gomock.Controller) services.
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.EnableIPForwarding))
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.MigrationPhase))
 	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.NicType))
+	require.Nil(t, faker.FakeData(&i.InterfacePropertiesFormat.NetworkSecurityGroup.ID))
 	fakeId := client.FakeResourceGroup + "/" + *i.ID
 	i.ID = &fakeId
 

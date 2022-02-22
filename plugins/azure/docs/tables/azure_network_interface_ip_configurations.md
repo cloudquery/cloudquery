@@ -17,7 +17,7 @@ NetworkInterface IP Configurations.
 |private_ip_address|text|Private IP address of the IP configuration.|
 |private_ip_address_version|text|Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6|
 |private_ip_allocation_method|text|Private IP address allocation method.|
-|private_link_connection_properties|text|PrivateLinkConnection properties for the network interface.|
+|private_link_connection_properties|jsonb|PrivateLinkConnection properties for the network interface.|
 |provisioning_state|text|The provisioning state of the network interface IP configuration.|
 |public_ip_address|text|Public IP address bound to the IP configuration.|
 |subnet_id|text|subnet ID of network interface ip configuration|

@@ -128,8 +128,8 @@ func NetworkInterfaces() *schema.Table {
 			{
 				Name:        "network_security_group",
 				Description: "The reference to the NetworkSecurityGroup resource.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkInterfaceNetworkSecurityGroup,
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("InterfacePropertiesFormat.NetworkSecurityGroup.ID"),
 			},
 			{
 				Name:        "nic_type",
@@ -146,8 +146,8 @@ func NetworkInterfaces() *schema.Table {
 			{
 				Name:        "private_endpoint",
 				Description: "A reference to the private endpoint to which the network interface is linked.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkInterfacePrivateEndpoint,
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("InterfacePropertiesFormat.PrivateEndpoint.ID"),
 			},
 			{
 				Name:        "private_link_service",
@@ -276,8 +276,8 @@ func NetworkInterfaces() *schema.Table {
 					{
 						Name:        "private_link_connection_properties",
 						Description: "PrivateLinkConnection properties for the network interface.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PrivateLinkConnectionProperties"),
+						Type:        schema.TypeJSON,
+						Resolver:    resolveInterfaceIPConfigurationPrivateLinkConnectionProperties,
 					},
 					{
 						Name:        "provisioning_state",
@@ -289,7 +289,7 @@ func NetworkInterfaces() *schema.Table {
 						Name:        "public_ip_address",
 						Description: "Public IP address bound to the IP configuration.",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PublicIPAddress"),
+						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PublicIPAddress.ID"),
 					},
 					{
 						Name:        "subnet_id",
@@ -337,40 +337,6 @@ func fetchNetworkInterfaceIPConfigurations(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func resolveNetworkInterfaceNetworkSecurityGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.Interface)
-	if !ok {
-		return fmt.Errorf("expected to have network.Interface but got %T", resource.Item)
-	}
-
-	if p.InterfacePropertiesFormat == nil ||
-		p.InterfacePropertiesFormat.NetworkSecurityGroup == nil {
-		return nil
-	}
-
-	out, err := json.Marshal(p.InterfacePropertiesFormat.NetworkSecurityGroup)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, out)
-}
-func resolveNetworkInterfacePrivateEndpoint(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.Interface)
-	if !ok {
-		return fmt.Errorf("expected to have network.Interface but got %T", resource.Item)
-	}
-
-	if p.InterfacePropertiesFormat == nil ||
-		p.InterfacePropertiesFormat.PrivateEndpoint == nil {
-		return nil
-	}
-
-	out, err := json.Marshal(p.InterfacePropertiesFormat.PrivateEndpoint)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, out)
-}
 func resolveNetworkInterfacePrivateLinkService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p, ok := resource.Item.(network.Interface)
 	if !ok {
@@ -400,6 +366,26 @@ func resolveNetworkInterfaceTapConfigurations(ctx context.Context, meta schema.C
 	}
 
 	out, err := json.Marshal(p.InterfacePropertiesFormat.TapConfigurations)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, out)
+}
+
+func resolveInterfaceIPConfigurationPrivateLinkConnectionProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(network.InterfaceIPConfiguration)
+	if !ok {
+		return fmt.Errorf("expected to have network.InterfaceIPConfiguration but got %T", resource.Item)
+	}
+	if p.PrivateLinkConnectionProperties == nil {
+		return nil
+	}
+
+	out, err := json.Marshal(map[string]interface{}{
+		"fqdns":              p.PrivateLinkConnectionProperties.Fqdns,
+		"requiredMemberName": p.PrivateLinkConnectionProperties.RequiredMemberName,
+		"groupId":            p.PrivateLinkConnectionProperties.GroupID,
+	})
 	if err != nil {
 		return err
 	}

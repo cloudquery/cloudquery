@@ -22,10 +22,10 @@ Azure Network Interface
 |hosted_workloads|text[]|List of references to linked BareMetal resources.|
 |mac_address|text|The MAC address of the network interface.|
 |migration_phase|text|Migration phase of Network Interface resource.|
-|network_security_group|jsonb|The reference to the NetworkSecurityGroup resource.|
+|network_security_group|text|The reference to the NetworkSecurityGroup resource.|
 |nic_type|text|Type of Network Interface resource.|
 |primary|boolean|Whether this is a primary network interface on a virtual machine.|
-|private_endpoint|jsonb|A reference to the private endpoint to which the network interface is linked.|
+|private_endpoint|text|A reference to the private endpoint to which the network interface is linked.|
 |private_link_service|jsonb|Privatelinkservice of the network interface resource.|
 |provisioning_state|text|The provisioning state of the network interface resource.|
 |resource_guid|text|The provisioning state of the network interface resource.|
