@@ -19,6 +19,7 @@
 //go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionGetter
 //go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient
 //go:generate mockgen -destination=./mocks/cosmosdb.go -package=mocks . CosmosDBAccountClient,CosmosDBSQLClient,CosmosDBMongoDBClient
+//go:generate mockgen -destination=./mocks/iothub.go -package=mocks . IotHubClient
 package services
 
 import "github.com/Azure/go-autorest/autorest"
@@ -31,6 +32,7 @@ type Services struct {
 	CosmosDb      CosmosDbClient
 	DataLake      DataLakeClient
 	EventHub      EventHubClient
+	IotHub        IotHubClient
 	KeyVault      KeyVaultClient
 	MariaDB       MariaDB
 	Monitor       MonitorClient
@@ -56,6 +58,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		CosmosDb:      NewCosmosDbClient(subscriptionId, auth),
 		DataLake:      NewDataLakeClient(subscriptionId, auth),
 		EventHub:      NewEventHubClient(subscriptionId, auth),
+		IotHub:        NewIotHubClient(subscriptionId, auth),
 		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
 		MariaDB:       NewMariaDBClient(subscriptionId, auth),
 		Monitor:       NewMonitorClient(subscriptionId, auth),
