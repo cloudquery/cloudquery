@@ -178,7 +178,7 @@ func StoreOutput(ctx context.Context, e *Executor, pol *Policy, destination stri
 		return fmt.Errorf("failed to create views: %w", err)
 	}
 
-	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	ef, err := os.OpenFile(filepath.Join(destination, "snapshot_data.csv"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		e.log.Error("error opening file:", err)
 		return err
