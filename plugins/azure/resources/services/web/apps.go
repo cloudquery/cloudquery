@@ -148,13 +148,13 @@ func WebApps() *schema.Table {
 			},
 			{
 				Name:        "client_affinity_enabled",
-				Description: "<code>false</code> to stop sending session affinity cookies, which route client requests in the same session to the same instance Default is <code>true</code>",
+				Description: "Set to true to enable client affinity.",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("SiteProperties.ClientAffinityEnabled"),
 			},
 			{
 				Name:        "client_cert_enabled",
-				Description: "otherwise, <code>false</code> Default is <code>false</code>",
+				Description: "Set to true to enable client certificate authentication (TLS mutual authentication).",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("SiteProperties.ClientCertEnabled"),
 			},

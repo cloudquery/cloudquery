@@ -4,3 +4,7 @@
 -- Resource: network.interfaces
 DROP TABLE IF EXISTS azure_network_interface_ip_configurations;
 DROP TABLE IF EXISTS azure_network_interfaces;
+
+-- Resource: servicebus.namespaces
+DROP TABLE IF EXISTS azure_servicebus_namespace_private_endpoint_connections;
+DROP TABLE IF EXISTS azure_servicebus_namespaces;

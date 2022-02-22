@@ -62,3 +62,51 @@ CREATE TABLE IF NOT EXISTS "azure_network_interface_ip_configurations" (
 	UNIQUE(cq_id),
 	FOREIGN KEY (interface_cq_id) REFERENCES azure_network_interfaces(cq_id) ON DELETE CASCADE
 );
+
+-- Resource: servicebus.namespaces
+CREATE TABLE IF NOT EXISTS "azure_servicebus_namespaces" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"subscription_id" text,
+	"sku_name" text,
+	"sku_tier" text,
+	"sku_capacity" integer,
+	"identity_principal_id" text,
+	"identity_tenant_id" text,
+	"identity_type" text,
+	"user_assigned_identities" jsonb,
+	"system_data" jsonb,
+	"location" text,
+	"tags" jsonb,
+	"id" text,
+	"name" text,
+	"type" text,
+	"provisioning_state" text,
+	"status" text,
+	"created_at" timestamp without time zone,
+	"updated_at" timestamp without time zone,
+	"service_bus_endpoint" text,
+	"metric_id" text,
+	"zone_redundant" boolean,
+	"key_vault_properties" jsonb,
+	"key_source" text,
+	"require_infrastructure_encryption" boolean,
+	"disable_local_auth" boolean,
+	CONSTRAINT azure_servicebus_namespaces_pk PRIMARY KEY(subscription_id,id),
+	UNIQUE(cq_id)
+);
+CREATE TABLE IF NOT EXISTS "azure_servicebus_namespace_private_endpoint_connections" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"namespace_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"system_data" jsonb,
+	"status" text,
+	"status_description" text,
+	"provisioning_state" text,
+	CONSTRAINT azure_servicebus_namespace_private_endpoint_connections_pk PRIMARY KEY(cq_id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (namespace_cq_id) REFERENCES azure_servicebus_namespaces(cq_id) ON DELETE CASCADE
+);

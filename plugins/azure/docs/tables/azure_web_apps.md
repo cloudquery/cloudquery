@@ -24,8 +24,8 @@ Site a web app, a mobile app backend, or an API app
 |hosting_environment_profile_id|text|Resource ID of the App Service Environment|
 |hosting_environment_profile_name|text|Name of the App Service Environment|
 |hosting_environment_profile_type|text|Resource type of the App Service Environment|
-|client_affinity_enabled|boolean|<code>false</code> to stop sending session affinity cookies, which route client requests in the same session to the same instance Default is <code>true</code>|
-|client_cert_enabled|boolean|otherwise, <code>false</code> Default is <code>false</code>|
+|client_affinity_enabled|boolean|Set to true to enable client affinity.|
+|client_cert_enabled|boolean|Set to true to enable client certificate authentication (TLS mutual authentication).|
 |client_cert_mode|text|This composes with ClientCertEnabled setting - ClientCertEnabled: false means ClientCert is ignored - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted Possible values include: 'Required', 'Optional', 'OptionalInteractiveUser'|
 |client_cert_exclusion_paths|text|client certificate authentication comma-separated exclusion paths|
 |host_names_disabled|boolean|otherwise, <code>false</code>  If <code>true</code>, the app is only accessible via API management process|

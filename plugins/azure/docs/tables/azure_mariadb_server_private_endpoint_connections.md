@@ -4,7 +4,7 @@ List of private endpoint connections on a server
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|server_cq_id|uuid|Unique ID of azure_mysql_servers table (FK)|
+|server_cq_id|uuid|Unique ID of azure_mariadb_servers table (FK)|
 |id|text|Resource Id of the private endpoint connection.|
 |status|text|The private link service connection status.|
 |status_description|text|The private link service connection description.|

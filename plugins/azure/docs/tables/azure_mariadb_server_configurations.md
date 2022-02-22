@@ -4,7 +4,7 @@ MariaDB server configuration
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|server_cq_id|uuid|Unique ID of azure_mysql_servers table (FK)|
+|server_cq_id|uuid|Unique ID of azure_mariadb_servers table (FK)|
 |id|text|Fully qualified resource ID for the resource.|
 |name|text|The name of the resource.|
 |type|text|The type of the resource.|

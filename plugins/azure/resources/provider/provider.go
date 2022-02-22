@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/redis"
 	resources2 "github.com/cloudquery/cq-provider-azure/resources/services/resources"
 	"github.com/cloudquery/cq-provider-azure/resources/services/security"
+	"github.com/cloudquery/cq-provider-azure/resources/services/servicebus"
 	"github.com/cloudquery/cq-provider-azure/resources/services/sql"
 	"github.com/cloudquery/cq-provider-azure/resources/services/storage"
 	"github.com/cloudquery/cq-provider-azure/resources/services/subscription"
@@ -79,6 +80,7 @@ func Provider() *provider.Provider {
 			"security.pricings":                    security.SecurityPricings(),
 			"security.settings":                    security.SecuritySettings(),
 			"security.jit_network_access_policies": security.SecurityJitNetworkAccessPolicies(),
+			"servicebus.namespaces":                servicebus.ServicebusNamespaces(),
 			"sql.servers":                          sql.SQLServers(),
 			"sql.managed_instances":                sql.SqlManagedInstances(),
 			"storage.accounts":                     storage.StorageAccounts(),

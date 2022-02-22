@@ -66,3 +66,55 @@ CREATE TABLE IF NOT EXISTS "azure_network_interface_ip_configurations" (
 );
 CREATE INDEX ON azure_network_interface_ip_configurations (cq_fetch_date, interface_cq_id);
 SELECT setup_tsdb_child('azure_network_interface_ip_configurations', 'interface_cq_id', 'azure_network_interfaces', 'cq_id');
+
+-- Resource: servicebus.namespaces
+CREATE TABLE IF NOT EXISTS "azure_servicebus_namespaces" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"subscription_id" text,
+	"sku_name" text,
+	"sku_tier" text,
+	"sku_capacity" integer,
+	"identity_principal_id" text,
+	"identity_tenant_id" text,
+	"identity_type" text,
+	"user_assigned_identities" jsonb,
+	"system_data" jsonb,
+	"location" text,
+	"tags" jsonb,
+	"id" text,
+	"name" text,
+	"type" text,
+	"provisioning_state" text,
+	"status" text,
+	"created_at" timestamp without time zone,
+	"updated_at" timestamp without time zone,
+	"service_bus_endpoint" text,
+	"metric_id" text,
+	"zone_redundant" boolean,
+	"key_vault_properties" jsonb,
+	"key_source" text,
+	"require_infrastructure_encryption" boolean,
+	"disable_local_auth" boolean,
+	CONSTRAINT azure_servicebus_namespaces_pk PRIMARY KEY(cq_fetch_date,subscription_id,id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+SELECT setup_tsdb_parent('azure_servicebus_namespaces');
+CREATE TABLE IF NOT EXISTS "azure_servicebus_namespace_private_endpoint_connections" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"namespace_cq_id" uuid,
+	"id" text,
+	"name" text,
+	"type" text,
+	"system_data" jsonb,
+	"status" text,
+	"status_description" text,
+	"provisioning_state" text,
+	CONSTRAINT azure_servicebus_namespace_private_endpoint_connections_pk PRIMARY KEY(cq_fetch_date,cq_id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON azure_servicebus_namespace_private_endpoint_connections (cq_fetch_date, namespace_cq_id);
+SELECT setup_tsdb_child('azure_servicebus_namespace_private_endpoint_connections', 'namespace_cq_id', 'azure_servicebus_namespaces', 'cq_id');

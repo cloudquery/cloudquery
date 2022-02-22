@@ -171,7 +171,7 @@ func MariadbServers() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
-						Description: "Unique ID of azure_mysql_servers table (FK)",
+						Description: "Unique ID of azure_mariadb_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
@@ -208,7 +208,7 @@ func MariadbServers() *schema.Table {
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
-						Description: "Unique ID of azure_mysql_servers table (FK)",
+						Description: "Unique ID of azure_mariadb_servers table (FK)",
 						Type:        schema.TypeUUID,
 						Resolver:    schema.ParentIdResolver,
 					},
