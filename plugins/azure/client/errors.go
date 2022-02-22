@@ -35,6 +35,10 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 			return diag.Diagnostics{
 				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
 			}
+		default:
+			return diag.Diagnostics{
+				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, ParseSummaryMessage(client.SubscriptionId, err, detailedError))),
+			}
 		}
 	}
 
