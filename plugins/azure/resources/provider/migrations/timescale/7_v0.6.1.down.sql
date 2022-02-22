@@ -55,3 +55,9 @@ DROP TABLE IF EXISTS azure_sql_database_db_vulnerability_assessment_scans;
 DROP TABLE IF EXISTS azure_mariadb_server_private_endpoint_connections;
 DROP TABLE IF EXISTS azure_mariadb_server_configurations;
 DROP TABLE IF EXISTS azure_mariadb_servers;
+
+-- Resource: container.registies
+DROP TABLE IF EXISTS azure_container_registry_network_rule_set_virtual_network_rules;
+DROP TABLE IF EXISTS azure_container_registry_network_rule_set_ip_rules;
+DROP TABLE IF EXISTS azure_container_registry_replications;
+DROP TABLE IF EXISTS azure_container_registries;

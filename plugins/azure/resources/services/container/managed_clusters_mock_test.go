@@ -41,7 +41,7 @@ func buildContainerManagedClusters(t *testing.T, ctrl *gomock.Controller) servic
 		), nil,
 	)
 	return services.Services{
-		Container: services.ContainerServiceClient{ManagedClusters: m},
+		ContainerService: services.ContainerServiceClient{ManagedClusters: m},
 	}
 }
 

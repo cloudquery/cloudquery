@@ -25,53 +25,55 @@ package services
 import "github.com/Azure/go-autorest/autorest"
 
 type Services struct {
-	AD            AD
-	Authorization AuthorizationClient
-	Compute       ComputeClient
-	Container     ContainerServiceClient
-	CosmosDb      CosmosDbClient
-	DataLake      DataLakeClient
-	EventHub      EventHubClient
-	IotHub        IotHubClient
-	KeyVault      KeyVaultClient
-	MariaDB       MariaDB
-	Monitor       MonitorClient
-	MySQL         MySQL
-	Network       NetworksClient
-	PostgreSQL    PostgreSQL
-	Redis         RedisClient
-	Resources     ResourcesClient
-	Servicebus    ServicebusClient
-	Security      SecurityClient
-	SQL           SQLClient
-	Storage       StorageClient
-	Subscriptions SubscriptionsClient
-	Web           WebClient
+	AD                AD
+	Authorization     AuthorizationClient
+	Compute           ComputeClient
+	ContainerService  ContainerServiceClient
+	ContainerRegistry ContainerRegistryClient
+	CosmosDb          CosmosDbClient
+	DataLake          DataLakeClient
+	EventHub          EventHubClient
+	IotHub            IotHubClient
+	KeyVault          KeyVaultClient
+	MariaDB           MariaDB
+	Monitor           MonitorClient
+	MySQL             MySQL
+	Network           NetworksClient
+	PostgreSQL        PostgreSQL
+	Redis             RedisClient
+	Resources         ResourcesClient
+	Servicebus        ServicebusClient
+	Security          SecurityClient
+	SQL               SQLClient
+	Storage           StorageClient
+	Subscriptions     SubscriptionsClient
+	Web               WebClient
 }
 
 func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 	return Services{
-		AD:            NewADClient(subscriptionId, auth),
-		Authorization: NewAuthorizationClient(subscriptionId, auth),
-		Compute:       NewComputeClient(subscriptionId, auth),
-		Container:     NewContainerServiceClient(subscriptionId, auth),
-		CosmosDb:      NewCosmosDbClient(subscriptionId, auth),
-		DataLake:      NewDataLakeClient(subscriptionId, auth),
-		EventHub:      NewEventHubClient(subscriptionId, auth),
-		IotHub:        NewIotHubClient(subscriptionId, auth),
-		KeyVault:      NewKeyVaultClient(subscriptionId, auth),
-		MariaDB:       NewMariaDBClient(subscriptionId, auth),
-		Monitor:       NewMonitorClient(subscriptionId, auth),
-		MySQL:         NewMySQLClient(subscriptionId, auth),
-		Network:       NewNetworksClient(subscriptionId, auth),
-		PostgreSQL:    NewPostgresClient(subscriptionId, auth),
-		Redis:         NewRedisClient(subscriptionId, auth),
-		Resources:     NewResourcesClient(subscriptionId, auth),
-		Servicebus:    NewServicebusClient(subscriptionId, auth),
-		Security:      NewSecurityClient(subscriptionId, auth),
-		SQL:           NewSQLClient(subscriptionId, auth),
-		Storage:       NewStorageClient(subscriptionId, auth),
-		Subscriptions: NewSubscriptionsClient(subscriptionId, auth),
-		Web:           NewWebClient(subscriptionId, auth),
+		AD:                NewADClient(subscriptionId, auth),
+		Authorization:     NewAuthorizationClient(subscriptionId, auth),
+		Compute:           NewComputeClient(subscriptionId, auth),
+		ContainerService:  NewContainerServiceClient(subscriptionId, auth),
+		ContainerRegistry: NewContainerRegistryClient(subscriptionId, auth),
+		CosmosDb:          NewCosmosDbClient(subscriptionId, auth),
+		DataLake:          NewDataLakeClient(subscriptionId, auth),
+		EventHub:          NewEventHubClient(subscriptionId, auth),
+		IotHub:            NewIotHubClient(subscriptionId, auth),
+		KeyVault:          NewKeyVaultClient(subscriptionId, auth),
+		MariaDB:           NewMariaDBClient(subscriptionId, auth),
+		Monitor:           NewMonitorClient(subscriptionId, auth),
+		MySQL:             NewMySQLClient(subscriptionId, auth),
+		Network:           NewNetworksClient(subscriptionId, auth),
+		PostgreSQL:        NewPostgresClient(subscriptionId, auth),
+		Redis:             NewRedisClient(subscriptionId, auth),
+		Resources:         NewResourcesClient(subscriptionId, auth),
+		Security:          NewSecurityClient(subscriptionId, auth),
+		Servicebus:        NewServicebusClient(subscriptionId, auth),
+		SQL:               NewSQLClient(subscriptionId, auth),
+		Storage:           NewStorageClient(subscriptionId, auth),
+		Subscriptions:     NewSubscriptionsClient(subscriptionId, auth),
+		Web:               NewWebClient(subscriptionId, auth),
 	}
 }
