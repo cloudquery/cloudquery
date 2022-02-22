@@ -20,7 +20,8 @@ func NewContainerRegistryClient(subscriptionID string, auth autorest.Authorizer)
 	rep := containerregistry.NewReplicationsClient(subscriptionID)
 	rep.Authorizer = auth
 	return ContainerRegistryClient{
-		Registries: reg,
+		Registries:   reg,
+		Replications: rep,
 	}
 }
 
