@@ -7,7 +7,7 @@
 # CloudQuery Provider Plugin for Okta
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery)
-provider transforms Okta resource to relational and graph databases.
+provider transforms Okta resource to relational database.
 
 ## What is CloudQuery
 
