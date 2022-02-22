@@ -17,7 +17,7 @@ import (
 )
 
 func persistSnapshot(ctx context.Context, e *Executor, path string, table string) error {
-	ef, err := os.OpenFile(filepath.Join("%s/", path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
+	ef, err := os.OpenFile(filepath.Join(path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
@@ -207,18 +207,20 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 	explainQuery := fmt.Sprintf("select pg_get_viewdef('%s'::regclass::oid) ", tableName)
 	rows, err := ce.conn.Query(ctx, explainQuery)
 	if err != nil {
+		ce.log.Error("error running explain", "tableName", tableName)
 		return "", err
 	}
+	if err := rows.Err(); err != nil {
+		ce.log.Error("Error fetching rows", "query", explainQuery, "error", err)
+		return "", err
+	}
+
 	var s string
 	for rows.Next() {
 
 		if err := rows.Scan(&s); err != nil {
 			ce.log.Error("error scanning into variable", "error", err)
 		}
-	}
-	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", explainQuery, "error", err)
-		return "", err
 	}
 
 	return s, err
