@@ -1,0 +1,21 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: lint_golang
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  golangci:
+    name: Lint with GolangCI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.42.1
+          args: --timeout 5m
