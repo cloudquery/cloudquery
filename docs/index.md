@@ -21,6 +21,7 @@ There are multiple ways to authenticate with AWS, and CloudQuery respects the AW
 
 - The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` environment variables.
 - The `credentials` and `config` files in `~/.aws` (the `credentials` file takes priority).
+  - You can also use `aws sso` to authenticate cloudquery - [you can read more about it here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html).
 - IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
 
 You can read more about AWS authentication [here](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials) and [here](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html).
