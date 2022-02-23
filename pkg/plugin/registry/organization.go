@@ -20,7 +20,7 @@ func ParseProviderName(name string) (string, string, error) {
 	if len(names) == 1 {
 		return DefaultOrganization, name, nil
 	}
-	return "", "", fmt.Errorf("invalid provider name %s", name)
+	return "", "", fmt.Errorf("invalid provider name %q", name)
 }
 
 // ProviderRepoName returns a repository name for a given provider name.

@@ -53,7 +53,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	for i, p := range providers {
 		organization, providerName, err := registry.ParseProviderName(p)
 		if err != nil {
-			return fmt.Errorf("could not parse requested provider")
+			return fmt.Errorf("could not parse requested provider: %w", err)
 		}
 		rp := config.RequiredProvider{
 			Name:    providerName,
