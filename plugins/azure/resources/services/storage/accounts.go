@@ -865,6 +865,10 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	}
 	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
+		if client.IgnoreAccessDenied(err) {
+			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			return nil
+		}
 		return err
 	}
 	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
@@ -904,7 +908,10 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	}
 	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
-		return err
+		if client.IgnoreAccessDenied(err) {
+			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			return nil
+		}
 	}
 	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
 		return nil

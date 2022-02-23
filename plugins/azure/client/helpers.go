@@ -1,10 +1,13 @@
 package client
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -51,4 +54,10 @@ func ParseResourceID(resourceID string) (ResourceDetails, error) {
 // ScopeSubscription returns a scope for the given subscription
 func ScopeSubscription(subscriptionID string) string {
 	return "subscriptions/" + subscriptionID
+}
+
+func IgnoreAccessDenied(err error) bool {
+	var detailedError autorest.DetailedError
+
+	return errors.As(err, &detailedError) && detailedError.StatusCode == http.StatusForbidden
 }
