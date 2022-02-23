@@ -207,7 +207,7 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
 	rows, err := ce.conn.Query(ctx, explainQuery)
 	if err != nil {
-		ce.log.Error("error running explain", "tableName", tableName)
+		ce.log.Error("error running explain", "tableName", tableName, "err", err)
 		return "", err
 	}
 
