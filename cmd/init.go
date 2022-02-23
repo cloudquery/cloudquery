@@ -53,14 +53,17 @@ func Initialize(ctx context.Context, providers []string) error {
 	for i, p := range providers {
 		organization, providerName, err := registry.ParseProviderName(p)
 		if err != nil {
-			return fmt.Errorf("colud not parse requested provider")
+			return fmt.Errorf("could not parse requested provider")
 		}
-		source := fmt.Sprintf("%s/%s", organization, providerName)
-		requiredProviders[i] = &config.RequiredProvider{
+		rp := config.RequiredProvider{
 			Name:    providerName,
-			Source:  &source,
 			Version: "latest",
 		}
+		if organization != registry.DefaultOrganization {
+			source := fmt.Sprintf("%s/%s", organization, providerName)
+			rp.Source = &source
+		}
+		requiredProviders[i] = &rp
 	}
 	// TODO: build this manually with block and add comments as well
 	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
@@ -111,7 +114,7 @@ func Initialize(ctx context.Context, providers []string) error {
 		buffer.WriteString("\n")
 	}
 
-	if mex := c.Client().ModuleManager.ExampleConfigs(); len(mex) > 0 {
+	if mex := c.Client().ModuleManager.ExampleConfigs(providers); len(mex) > 0 {
 		buffer.WriteString("\n// Module Configurations\nmodules {\n")
 		for _, c := range mex {
 			buffer.WriteString(c)

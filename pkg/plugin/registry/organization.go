@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	defaultOrganization = "cloudquery"
+	DefaultOrganization = "cloudquery"
 )
 
 // ParseProviderName parses a name of a provider which can be just a name or a name + organization
@@ -18,7 +18,7 @@ func ParseProviderName(name string) (string, string, error) {
 		return strings.ToLower(names[0]), names[1], nil
 	}
 	if len(names) == 1 {
-		return defaultOrganization, name, nil
+		return DefaultOrganization, name, nil
 	}
 	return "", "", fmt.Errorf("invalid provider name %s", name)
 }

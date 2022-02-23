@@ -94,7 +94,7 @@ func (h Hub) GetProvider(providerName, providerVersion string) (ProviderDetails,
 
 func (h Hub) VerifyProvider(ctx context.Context, organization, providerName, version string) bool {
 
-	if organization != defaultOrganization {
+	if organization != DefaultOrganization {
 		if h.ProgressUpdater != nil {
 			h.ProgressUpdater.Update(providerName, ui.StatusWarn, "skipped community provider verification...", 2)
 		}
