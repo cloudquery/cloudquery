@@ -20,6 +20,7 @@ func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirector
 	if err != nil {
 		return err
 	}
+	e.log.Debug("Found tests", "tests", tests)
 	for _, test := range tests {
 
 		selector := strings.TrimPrefix(test, snapshotDirectory+"/")

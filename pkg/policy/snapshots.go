@@ -17,7 +17,7 @@ import (
 )
 
 func persistSnapshot(ctx context.Context, e *Executor, path string, table string) error {
-	ef, err := os.OpenFile(filepath.Join("%s/", path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
+	ef, err := os.OpenFile(filepath.Join(path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
@@ -109,6 +109,10 @@ func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]stri
 			return nil, err
 		}
 	}
+	if err := rows.Err(); err != nil {
+		ce.log.Error("Error fetching rows", "query", query, "error", err)
+		return tableNames, err
+	}
 
 	var arrayJsonMap []map[string](interface{})
 	err = json.Unmarshal([]byte(s), &arrayJsonMap)
@@ -149,10 +153,6 @@ func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]stri
 		}
 	}
 
-	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", query, "error", err)
-		return tableNames, err
-	}
 	// It is possible that tables are used multiple times so need to dedupe prior to returning
 	return removeDuplicateValues(tableNames), err
 }
@@ -178,7 +178,7 @@ func StoreOutput(ctx context.Context, e *Executor, pol *Policy, destination stri
 		return fmt.Errorf("failed to create views: %w", err)
 	}
 
-	ef, err := os.OpenFile(fmt.Sprintf("%s/data.csv", destination), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	ef, err := os.OpenFile(filepath.Join(destination, "snapshot_data.csv"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		e.log.Error("error opening file:", err)
 		return err
@@ -204,11 +204,13 @@ func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) erro
 
 func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
 
-	explainQuery := fmt.Sprintf("select pg_get_viewdef('%s'::regclass::oid) ", tableName)
+	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
 	rows, err := ce.conn.Query(ctx, explainQuery)
 	if err != nil {
+		ce.log.Error("error running explain", "tableName", tableName, "err", err)
 		return "", err
 	}
+
 	var s string
 	for rows.Next() {
 
