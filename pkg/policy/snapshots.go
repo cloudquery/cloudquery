@@ -109,6 +109,10 @@ func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]stri
 			return nil, err
 		}
 	}
+	if err := rows.Err(); err != nil {
+		ce.log.Error("Error fetching rows", "query", query, "error", err)
+		return tableNames, err
+	}
 
 	var arrayJsonMap []map[string](interface{})
 	err = json.Unmarshal([]byte(s), &arrayJsonMap)
@@ -149,10 +153,6 @@ func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]stri
 		}
 	}
 
-	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", query, "error", err)
-		return tableNames, err
-	}
 	// It is possible that tables are used multiple times so need to dedupe prior to returning
 	return removeDuplicateValues(tableNames), err
 }
@@ -204,14 +204,10 @@ func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) erro
 
 func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
 
-	explainQuery := fmt.Sprintf("select pg_get_viewdef('%s'::regclass::oid) ", tableName)
+	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
 	rows, err := ce.conn.Query(ctx, explainQuery)
 	if err != nil {
 		ce.log.Error("error running explain", "tableName", tableName)
-		return "", err
-	}
-	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", explainQuery, "error", err)
 		return "", err
 	}
 
@@ -221,6 +217,10 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 		if err := rows.Scan(&s); err != nil {
 			ce.log.Error("error scanning into variable", "error", err)
 		}
+	}
+	if err := rows.Err(); err != nil {
+		ce.log.Error("Error fetching rows", "query", explainQuery, "error", err)
+		return "", err
 	}
 
 	return s, err
