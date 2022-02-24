@@ -316,6 +316,33 @@
             "us-west-2-fips": {}
           }
         },
+        "api.tunneling.iot": {
+          "regions": {
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "fips-ca-central-1": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
         "apigateway": {
           "regions": {
             "af-south-1": {},
@@ -1220,6 +1247,7 @@
         },
         "connect": {
           "regions": {
+            "af-south-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
             "ap-southeast-1": {},
@@ -1770,6 +1798,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -1785,6 +1814,7 @@
             "fips-ap-south-1": {},
             "fips-ap-southeast-1": {},
             "fips-ap-southeast-2": {},
+            "fips-ap-southeast-3": {},
             "fips-ca-central-1": {},
             "fips-eu-central-1": {},
             "fips-eu-north-1": {},
@@ -2311,6 +2341,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -3240,6 +3271,7 @@
         },
         "mq": {
           "regions": {
+            "af-south-1": {},
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
@@ -4039,6 +4071,7 @@
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
+            "ca-central-1-fips": {},
             "eu-central-1": {},
             "eu-north-1": {},
             "eu-south-1": {},
@@ -4580,6 +4613,32 @@
             "us-west-2": {}
           }
         },
+        "synthetics": {
+          "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ap-southeast-3": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
         "tagging": {
           "regions": {
             "af-south-1": {},
@@ -4685,6 +4744,7 @@
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -4914,6 +4974,12 @@
             "cn-northwest-1": {}
           }
         },
+        "api.tunneling.iot": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "apigateway": {
           "regions": {
             "cn-north-1": {},
@@ -5020,6 +5086,12 @@
           }
         },
         "codedeploy": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
+        "codepipeline": {
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {}
@@ -5506,6 +5578,12 @@
             "cn-northwest-1": {}
           }
         },
+        "synthetics": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "tagging": {
           "regions": {
             "cn-north-1": {},
@@ -5863,6 +5941,11 @@
             "us-iso-west-1": {}
           }
         },
+        "synthetics": {
+          "regions": {
+            "us-iso-east-1": {}
+          }
+        },
         "transcribe": {
           "regions": {
             "us-iso-east-1": {}
@@ -6099,6 +6182,11 @@
             "us-isob-east-1": {}
           }
         },
+        "synthetics": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
         "tagging": {
           "regions": {
             "us-isob-east-1": {}
@@ -6156,6 +6244,14 @@
             "us-gov-west-1-fips": {},
             "us-gov-west-1-fips-secondary": {},
             "us-gov-west-1-secondary": {}
+          }
+        },
+        "api.tunneling.iot": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
           }
         },
         "apigateway": {
@@ -6974,6 +7070,12 @@
           }
         },
         "swf": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "synthetics": {
           "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}
