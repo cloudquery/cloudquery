@@ -124,7 +124,7 @@ By default, CloudQuery will fetch all configuration from **all** supported resou
 
 #### Arguments for AWS Provider block
 
-- `accounts` **(Optional)** - Specify multiple accounts to fetch data from them concurrently and then query across accounts. The default configured account should be able [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to the specified accounts.
+- `accounts` **(Optional, Repeated)** - Specify multiple accounts to fetch data from them concurrently and then query across accounts. The default configured account should be able [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to the specified accounts. You can have multiple `accounts` blocks.
 - `regions` **(Optional)** - limit fetching to specific regions. You can specify all regions by using the `*` character as the only argument in the array
 - `max_retries` **(Optional)** - The maximum number of times that a request will be retried for failures. Defaults to 5 retry attempts.
 - `max_backoff` **(Optional)** - The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 60 seconds.

@@ -32,7 +32,7 @@ type Config struct {
 
 func (c Config) Example() string {
 	return ` configuration {
-  // Optional. if you want to assume role to multiple account and fetch data from them
+  // Optional, Repeated. Add an 'accounts' block for every account you want to assume-role into and fetch data from.
   // accounts "<UNIQUE ACCOUNT IDENTIFIER>" {
     // Optional. Role ARN we want to assume when accessing this account
     // role_arn = < YOUR_ROLE_ARN >
