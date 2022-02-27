@@ -4,10 +4,10 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: 💥 Breaking Changes
+    - title: Breaking Changes
       labels:
         - breaking
-    - title: 🚀 Added
+    - title: Added
       labels:
         - enhancement
         - docs
