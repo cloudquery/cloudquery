@@ -19,7 +19,7 @@ type Module interface {
 	// Execute executes the module, using given args in ExecuteRequest
 	Execute(context.Context, *ExecuteRequest) *ExecutionResult
 	// ExampleConfig returns an example configuration to be put in config.hcl
-	ExampleConfig() string
+	ExampleConfig(providers []string) string
 }
 
 // Info about user supplied configs and provider supplied module info

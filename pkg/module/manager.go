@@ -41,7 +41,7 @@ type Manager interface {
 	ExecuteModule(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error)
 
 	// ExampleConfigs returns a list of example module configs from loaded modules
-	ExampleConfigs() []string
+	ExampleConfigs(providers []string) []string
 }
 
 type moduleInfoRequester interface {
@@ -94,10 +94,10 @@ func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *ExecuteRequest
 }
 
 // ExampleConfigs returns a list of example module configs from loaded modules
-func (m *ManagerImpl) ExampleConfigs() []string {
+func (m *ManagerImpl) ExampleConfigs(providers []string) []string {
 	ret := make([]string, 0, len(m.modules))
 	for _, i := range m.modOrder {
-		cfg := m.modules[i].ExampleConfig()
+		cfg := m.modules[i].ExampleConfig(providers)
 		if cfg == "" {
 			continue
 		}

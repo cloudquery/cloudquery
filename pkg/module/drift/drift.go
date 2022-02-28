@@ -93,7 +93,18 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
-func (d *Drift) ExampleConfig() string {
+func (d *Drift) ExampleConfig(providers []string) string {
+	hasAws := false
+	for i := range providers {
+		if providers[i] == "aws" {
+			hasAws = true
+			break
+		}
+	}
+	if !hasAws {
+		return ""
+	}
+
 	return `// drift configuration block
 drift "drift-example" {
   // state block defines from where to access the state
