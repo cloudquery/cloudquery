@@ -320,6 +320,9 @@ provider "aws" {
 
   resource "aws_cloudfront_distribution_origins" {
     identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
+    filters = [
+      "c.s3_origin_config_origin_access_identity IS NOT NULL AND c.s3_origin_config_origin_access_identity!=''"
+    ]
 
     iac {
       terraform {
