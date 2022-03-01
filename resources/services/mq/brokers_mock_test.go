@@ -34,6 +34,7 @@ func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeData(&cfgID); err != nil {
 		t.Fatal(err)
 	}
+	bo.Configurations.Current = &cfgID
 	bo.Configurations.History = []types.ConfigurationId{cfgID}
 	m.EXPECT().DescribeBroker(gomock.Any(), &mq.DescribeBrokerInput{BrokerId: bs.BrokerId}, gomock.Any()).Return(&bo, nil)
 

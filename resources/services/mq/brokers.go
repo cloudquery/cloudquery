@@ -427,7 +427,24 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 	if broker.Configurations == nil {
 		return nil
 	}
-	for _, cfg := range broker.Configurations.History {
+
+	list := broker.Configurations.History
+	if broker.Configurations.Current != nil {
+		list = append(list, *broker.Configurations.Current)
+	}
+
+	// History might contain same Id multiple times (maybe with different revisions) but we're only interested in the latest revision of each
+	dupes := make(map[string]struct{}, len(list))
+	for _, cfg := range list {
+		if cfg.Id == nil {
+			continue
+		}
+
+		if _, ok := dupes[*cfg.Id]; ok {
+			continue
+		}
+		dupes[*cfg.Id] = struct{}{}
+
 		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
 		output, err := svc.DescribeConfiguration(ctx, &input, func(options *mq.Options) {
 			options.Region = c.Region
