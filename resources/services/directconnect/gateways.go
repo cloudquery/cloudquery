@@ -16,10 +16,10 @@ func DirectconnectGateways() *schema.Table {
 		Name:          "aws_directconnect_gateways",
 		Description:   "Information about a Direct Connect gateway, which enables you to connect virtual interfaces and virtual private gateway or transit gateways.",
 		Resolver:      fetchDirectconnectGateways,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
+		Multiplex:     client.AccountMultiplex,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		DeleteFilter:  client.DeleteAccountFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -27,12 +27,6 @@ func DirectconnectGateways() *schema.Table {
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:        "arn",
@@ -226,9 +220,7 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
 	for {
-		output, err := svc.DescribeDirectConnectGateways(ctx, &config, func(options *directconnect.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeDirectConnectGateways(ctx, &config)
 		if err != nil {
 			return err
 		}
@@ -247,9 +239,7 @@ func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.Clie
 	svc := c.Services().Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAssociationsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	for {
-		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config, func(options *directconnect.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config)
 		if err != nil {
 			return err
 		}
