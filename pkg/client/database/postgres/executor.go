@@ -43,8 +43,12 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (e Executor) Finalize(ctx context.Context) error {
+func (e Executor) Prepare(_ context.Context) error {
 	return nil
+}
+
+func (e Executor) Finalize(_ context.Context, err error) error {
+	return err
 }
 
 // queryRower helps with unit tests

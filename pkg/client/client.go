@@ -963,7 +963,7 @@ func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[strin
 		return nil, nil, fmt.Errorf("dialectExecutor.Setup: %w", err)
 	}
 
-	m, err := migrator.New(c.Logger, c.db.DialectType(), migrations, dsn, fmt.Sprintf("%s_%s", org, name), c.dialectExecutor.Finalize)
+	m, err := migrator.New(c.Logger, c.db.DialectType(), migrations, dsn, fmt.Sprintf("%s_%s", org, name), migrator.WithPreHook(c.dialectExecutor.Prepare), migrator.WithPostHook(c.dialectExecutor.Finalize))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -989,7 +989,7 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 	if err != nil {
 		return err
 	}
-	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core", nil)
+	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core")
 	if err != nil {
 		return err
 	}

@@ -70,6 +70,9 @@ func TestSetupHistory(t *testing.T) {
 	migrationDSN, err := ts.Setup(ctx)
 	assert.NoError(t, err)
 
+	err = ts.Prepare(ctx)
+	assert.NoError(t, err)
+
 	{
 		pool, err := pgsdk.Connect(ctx, migrationDSN)
 		assert.NoError(t, err)
@@ -103,12 +106,15 @@ func TestSetupHistory(t *testing.T) {
 		}
 	}
 
-	err = ts.Finalize(ctx)
+	err = ts.Finalize(ctx, err)
 	assert.NoError(t, err)
 
 	t.Run("FinalizeSecondTime", func(t *testing.T) {
-		// Finalize() again shouldn't create any errors
-		err := ts.Finalize(ctx)
+		// Finalize() again (after setup, to connect) shouldn't create any errors
+		_, err := ts.Setup(ctx)
+		assert.NoError(t, err)
+
+		err = ts.Finalize(ctx, nil)
 		assert.NoError(t, err)
 	})
 
