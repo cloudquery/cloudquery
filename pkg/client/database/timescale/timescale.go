@@ -21,6 +21,7 @@ type Executor struct {
 	logger hclog.Logger
 	dsn    string
 	cfg    *history.Config
+	ddl    *DDLManager
 }
 
 func New(logger hclog.Logger, dsn string, cfg *history.Config) (*Executor, error) {
@@ -40,9 +41,13 @@ func (e *Executor) Setup(ctx context.Context) (string, error) {
 	if err != nil {
 		return e.dsn, err
 	}
-	defer pool.Close()
 
-	if err := AddHistoryFunctions(ctx, pool); err != nil {
+	e.ddl, err = NewDDLManager(e.logger, pool, e.cfg, schema.TSDB)
+	if err != nil {
+		return e.dsn, err
+	}
+
+	if err := e.ddl.AddHistoryFunctions(ctx); err != nil {
 		return e.dsn, fmt.Errorf("failed to create history functions: %w", err)
 	}
 
@@ -72,31 +77,17 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 }
 
 func (e Executor) Prepare(ctx context.Context) error {
-	pool, err := pgsdk.Connect(ctx, e.dsn)
-	if err != nil {
-		return err
-	}
-	defer pool.Close()
-
-	return DropViews(ctx, pool)
+	return e.ddl.DropViews(ctx)
 }
 
 func (e Executor) Finalize(ctx context.Context, retErr error) error {
+	defer e.ddl.Close()
+
 	if retErr != nil && retErr != migrate.ErrNoChange {
 		return retErr
 	}
 
-	pool, err := pgsdk.Connect(ctx, e.dsn)
-	if err != nil {
-		return err
-	}
-	defer pool.Close()
-
-	ddl, err := NewDDLManager(e.logger, pool, e.cfg, schema.TSDB)
-	if err != nil {
-		return err
-	}
-	if err := ddl.SetupHistory(ctx); err != nil {
+	if err := e.ddl.SetupHistory(ctx); err != nil {
 		return err
 	}
 
