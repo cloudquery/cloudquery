@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -51,10 +52,10 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 func ParseSummaryMessage(err error, apiErr smithy.APIError) diag.BaseErrorOption {
 	for {
 		if op, ok := err.(*smithy.OperationError); ok {
-			return diag.WithSummary("%s: %s - %s", op.Service(), op.Operation(), apiErr.ErrorMessage())
+			return diag.WithError(fmt.Errorf("%s: %s - %s", op.Service(), op.Operation(), apiErr.ErrorMessage()))
 		}
 		if err = errors.Unwrap(err); err == nil {
-			return diag.WithSummary("%s", apiErr.ErrorMessage())
+			return diag.WithError(errors.New(apiErr.ErrorMessage()))
 		}
 	}
 }
