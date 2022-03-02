@@ -49,7 +49,7 @@ func Provider() *provider.Provider {
 			"compute.virtual_machines":           compute.ComputeVirtualMachines(),
 			"compute.virtual_machine_scale_sets": compute.VirtualMachineScaleSets(),
 			"container.managed_clusters":         container.ContainerManagedClusters(),
-			"container.registies":                container.ContainerRegistries(),
+			"container.registries":               container.ContainerRegistries(),
 			"cosmosdb.accounts":                  cosmosdb.CosmosDBAccounts(),
 			"cosmosdb.sql_databases":             cosmosdb.CosmosDBSqlDatabases(),
 			"cosmosdb.mongodb_databases":         cosmosdb.CosmosDBMongoDBDatabases(),
