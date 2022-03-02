@@ -51,15 +51,21 @@ func (c Client) withProject(project string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
-	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
 
+	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
 	if len(serviceAccountKeyJSON) == 0 {
 		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
 	}
 
+	// Add a fake request reason because it is not possible to pass nil options
+	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
+	if len(serviceAccountKeyJSON) != 0 {
+		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
+	}
+
 	var err error
 	if len(providerConfig.ProjectIDs) == 0 {
-		projects, err = getProjects(serviceAccountKeyJSON, logger, providerConfig.ProjectFilter)
+		projects, err = getProjects(logger, providerConfig.ProjectFilter, options...)
 		if err != nil {
 			return nil, err
 		}
@@ -68,10 +74,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	if err := validateProjects(projects); err != nil {
 		return nil, err
 	}
-	services, err := initServices(context.Background(), serviceAccountKeyJSON)
+	services, err := initServices(context.Background(), options)
 	if err != nil {
 		return nil, err
 	}
+
 	client := NewGcpClient(logger, projects, services)
 	return client, nil
 }
@@ -85,15 +92,9 @@ func validateProjects(projects []string) error {
 	return nil
 }
 
-func getProjects(serviceAccountKeyJSON []byte, logger hclog.Logger, filter string) ([]string, error) {
+func getProjects(logger hclog.Logger, filter string, options ...option.ClientOption) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
-
-	// Add a fake request reason because it is not possible to pass nil options
-	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
-	if len(serviceAccountKeyJSON) != 0 {
-		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
-	}
 
 	service, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {

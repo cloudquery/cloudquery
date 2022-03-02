@@ -54,7 +54,7 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 	if s, ok := status.FromError(err); ok {
 		if v, ok := grpcCodeToDiag[s.Code()]; ok {
 			return diag.Diagnostics{
-				RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithSeverity(v.severity), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithDetails("%s", s.Message()))),
+				RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithType(v.typ), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithDetails("%s", s.Message()), diag.WithNoOverwrite(), diag.WithSeverity(v.severity))),
 			}
 		}
 	}
@@ -62,10 +62,16 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 	// as a fallback, try to convert the error to *googleapi.Error
 	var gerr *googleapi.Error
 	if ok := errors.As(err, &gerr); ok {
+		if len(gerr.Errors) > 0 && gerr.Errors[0].Reason == "rateLimitExceeded" {
+			return diag.Diagnostics{
+				RedactError(client.projects, diag.NewBaseError(err, diag.THROTTLE, diag.WithType(diag.THROTTLE), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), diag.WithError(errors.New(gerr.Message)))),
+			}
+		}
+
 		if grpcCode, ok := httpCodeToGRPCCode[gerr.Code]; ok {
 			if v, ok := grpcCodeToDiag[grpcCode]; ok {
 				return diag.Diagnostics{
-					RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithSeverity(v.severity), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary))),
+					RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithType(v.typ), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithError(errors.New(gerr.Message)), diag.WithNoOverwrite(), diag.WithSeverity(v.severity))),
 				}
 			}
 		}

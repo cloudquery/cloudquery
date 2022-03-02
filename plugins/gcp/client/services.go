@@ -33,14 +33,7 @@ type Services struct {
 	ResourceManager *cloudresourcemanager.Service
 }
 
-func initServices(ctx context.Context, serviceAccountKeyJSON []byte) (*Services, error) {
-
-	// Add a fake request reason because it is not possible to pass nil options
-	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
-	if len(serviceAccountKeyJSON) != 0 {
-		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
-	}
-
+func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
 	kmsSvc, err := kms.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
