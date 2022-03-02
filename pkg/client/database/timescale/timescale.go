@@ -61,6 +61,10 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 	}
 	defer pool.Close()
 
+	if err := postgres.ValidatePostgresConnection(ctx, pool); err != nil {
+		return false, err
+	}
+
 	if err := postgres.ValidatePostgresVersion(ctx, pool, postgres.MinPostgresVersion); err != nil {
 		return false, err
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/hashicorp/go-hclog"
@@ -36,6 +37,10 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
+	if err := ValidatePostgresConnection(ctx, pool); err != nil {
+		return false, err
+	}
+
 	if err := ValidatePostgresVersion(ctx, pool, MinPostgresVersion); err != nil {
 		return true, err
 	}
@@ -49,6 +54,14 @@ func (e Executor) Prepare(_ context.Context) error {
 
 func (e Executor) Finalize(_ context.Context, err error) error {
 	return err
+}
+
+// ValidatePostgresConnection validates that we can actually connect to the postgres database.
+func ValidatePostgresConnection(ctx context.Context, pool *pgxpool.Pool) error {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+	defer cancel()
+
+	return pool.Ping(ctx)
 }
 
 // queryRower helps with unit tests
