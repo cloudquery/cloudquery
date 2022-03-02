@@ -202,7 +202,7 @@ func ResolveARNWithAccount(service AWSService, resourceID func(resource *schema.
 // based on provided AWS service and resource id value returned by resourceID function.
 // Region is set to the value of the client and account id is left empty.
 func ResolveARNWithRegion(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
-	return resolveARN(service, resourceID, false, true)
+	return resolveARN(service, resourceID, true, false)
 }
 
 // ResolveARN returns a column resolver that will set a field value to a proper ARN
