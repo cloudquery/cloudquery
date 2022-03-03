@@ -48,5 +48,4 @@ jobs:
       - name: Terraform Apply
         id: plan
         run: terraform apply -no-color
-        continue-on-error: true
 

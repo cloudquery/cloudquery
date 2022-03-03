@@ -50,8 +50,11 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -out tfplan.binary
         continue-on-error: true
+      
+      - name: Terraform show
+        run: terraform show -json tfplan.binary > plan.json
 
       - uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
@@ -81,3 +84,29 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+        # Install the Infracost CLI, see https://github.com/infracost/actions/tree/master/setup
+        # for other inputs such as version, and pricing-api-endpoint (for self-hosted users).
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v1
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+
+      # Generate Infracost JSON output, the following docs might be useful:
+      # Multi-project/workspaces: https://www.infracost.io/docs/features/config_file
+      # Combine Infracost JSON files: https://www.infracost.io/docs/features/cli_commands/#combined-output-formats
+      - name: Generate Infracost JSON
+        run: infracost breakdown --path plan.json --format json --out-file /tmp/infracost.json
+        # Env vars can be set using the usual GitHub Actions syntax
+        # See the list of supported Infracost env vars here: https://www.infracost.io/docs/integrations/environment_variables/
+        # env:
+        #   MY_ENV: ${{ secrets.MY_ENV }}
+
+      # See https://github.com/infracost/actions/tree/master/comment
+      # for other inputs such as target-type.
+      - name: Post Infracost comment
+        uses: infracost/actions/comment@v1
+        with:
+          path: /tmp/infracost.json
+          # Choose the commenting behavior, 'update' is a good default:
+          behavior: update # Create a single comment and update it. The "quietest" option.
