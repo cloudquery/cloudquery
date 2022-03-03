@@ -3,7 +3,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Type   = "cq-provider-aws-test"
+      Type = "cq-provider-aws-test"
     }
   }
 }

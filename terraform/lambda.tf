@@ -1,7 +1,7 @@
 # TF Module https://github.com/terraform-aws-modules/terraform-aws-lambda/blob/master/examples/complete/main.tf
 
 module "lambda_function" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.34"
 
   function_name = "cq-provider-aws-lambda"
@@ -42,7 +42,7 @@ module "lambda_function" {
 #################################
 
 module "lambda_layer_local" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.34"
 
   create_layer = true

@@ -8,7 +8,7 @@ resource "aws_kms_key" "ec2_kms_key" {
 }
 
 module "ec2_instance" {
-  source = "terraform-aws-modules/ec2-instance/aws"
+  source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.4"
 
   name = "cq-provider-aws-ec2-instance"
@@ -16,12 +16,12 @@ module "ec2_instance" {
   // spot_price           = "0.60"
   // spot_type            = "persistent"
 
-  ami                         = "ami-05d34d340fb1d89e5"
-  instance_type               = "t2.micro"
-  availability_zone           = element(module.vpc.azs, 0)
-  subnet_id                   = element(module.vpc.private_subnets, 0)
-  vpc_security_group_ids      = [module.deny_all_sg.security_group_id]
-//   placement_group             = aws_placement_group.web.id
+  ami                    = "ami-05d34d340fb1d89e5"
+  instance_type          = "t2.micro"
+  availability_zone      = element(module.vpc.azs, 0)
+  subnet_id              = element(module.vpc.private_subnets, 0)
+  vpc_security_group_ids = [module.deny_all_sg.security_group_id]
+  //   placement_group             = aws_placement_group.web.id
   associate_public_ip_address = true
 
   # only one of these can be enabled at a time

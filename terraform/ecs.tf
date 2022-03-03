@@ -1,5 +1,5 @@
 module "ecs" {
-  source = "terraform-aws-modules/ecs/aws"
+  source  = "terraform-aws-modules/ecs/aws"
   version = "~> 3.4"
 
   name = "cq-provider-aws-ecs"
