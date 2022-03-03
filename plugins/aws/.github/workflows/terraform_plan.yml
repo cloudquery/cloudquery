@@ -53,7 +53,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -out tfplan.binary
+        run: terraform plan -lock=false -no-color -out tfplan.binary
       
       - name: Terraform show
         run: terraform show -json tfplan.binary > plan.json
