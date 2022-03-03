@@ -288,10 +288,16 @@ SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
 ```
 
-### Find all unencrypted buckets
+### Find all s3 buckets that are able to be public
 
 ```sql
-SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
+SELECT arn, region
+FROM aws_s3_buckets
+WHERE block_public_acls IS NOT TRUE
+    OR block_public_policy IS NOT TRUE
+    OR ignore_public_acls IS NOT TRUE
+    OR restrict_public_buckets IS NOT TRUE
+
 ```
 
 ## Building the Provider:
