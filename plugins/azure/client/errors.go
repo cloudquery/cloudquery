@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"regexp"
 	"strings"
@@ -57,10 +58,10 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 func ParseSummaryMessage(subscriptionId string, err error, detailedError autorest.DetailedError) diag.BaseErrorOption {
 	for {
 		if de, ok := err.(autorest.DetailedError); ok {
-			return diag.WithSummary("%s: %s - %s", de.Method, de.PackageType, detailedError.Error())
+			return diag.WithError(fmt.Errorf("%s: %s - %s", de.Method, de.PackageType, detailedError.Error()))
 		}
 		if err = errors.Unwrap(err); err == nil {
-			return diag.WithSummary("%s", detailedError.Error())
+			return diag.WithError(errors.New(detailedError.Error()))
 		}
 	}
 }
