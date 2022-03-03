@@ -432,12 +432,18 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 	}
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListResourceRecordSetsInput{HostedZoneId: r.Id}
+	for {
+		response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {})
+		if err != nil {
+			return err
+		}
 
-	response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {})
-	if err != nil {
-		return err
+		res <- response.ResourceRecordSets
+		if aws.ToString(response.NextRecordIdentifier) == "" {
+			break
+		}
+		config.StartRecordIdentifier = response.NextRecordIdentifier
 	}
-	res <- response.ResourceRecordSets
 
 	return nil
 }
