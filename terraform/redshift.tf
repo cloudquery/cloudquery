@@ -11,6 +11,7 @@ resource "random_password" "redshift_password" {
 ###########
 module "redshift" {
   source  = "terraform-aws-modules/redshift/aws"
+  version = "~> 3.4"
 
   cluster_identifier      = "cq-provider-aws"
   cluster_node_type       = "dc2.large"

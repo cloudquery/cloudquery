@@ -6,7 +6,7 @@
 
 module "rds_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4.8"
 
   name        = "cq-provider-aws-rds-sg"
   description = "cq-provider-aws RDS Security Group"
@@ -21,6 +21,7 @@ module "rds_sg" {
 
 module "rds" {
   source  = "terraform-aws-modules/rds/aws"
+  version = "~> 3.4"
 
   identifier = "cq-provider-aws-test"
 

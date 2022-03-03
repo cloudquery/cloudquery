@@ -1,6 +1,6 @@
 module "deny_all_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4.8"
 
   name        = "cq-provider-aws-deny-all-sg"
   description = "cq-provider-aws deny all sg"
