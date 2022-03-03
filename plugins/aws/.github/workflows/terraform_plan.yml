@@ -1,3 +1,4 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 name: terraform_plan
 on:
   workflow_dispatch:
@@ -51,7 +52,6 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -out tfplan.binary
-        continue-on-error: true
       
       - name: Terraform show
         run: terraform show -json tfplan.binary > plan.json
@@ -63,10 +63,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const output = `#### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization \`${{ steps.init.outcome }}\`
+            #### Terraform Validation \`${{ steps.validate.outputs.stdout }}\`
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
             
             <details><summary>Show Plan</summary>
             
