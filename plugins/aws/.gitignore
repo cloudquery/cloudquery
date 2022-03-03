@@ -36,3 +36,4 @@ __debug_bin
 .env
 terraform/downloaded*
 config.hcl
+terraform/tfplan.binary
