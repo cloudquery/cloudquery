@@ -8,7 +8,7 @@ locals {
 ###################
 
 module "api_gateway" {
-  source = "terraform-aws-modules/apigateway-v2/aws"
+  source  = "terraform-aws-modules/apigateway-v2/aws"
   version = "~> 1.5.0"
 
   name          = "cq-provider-awsapigatewayv2-http"
@@ -246,6 +246,7 @@ resource "aws_s3_bucket" "truststore" {
   bucket = "cq-provider-aws-truststore"
   acl    = "private"
 }
+
 
 resource "aws_s3_bucket_object" "truststore" {
   bucket                 = aws_s3_bucket.truststore.bucket

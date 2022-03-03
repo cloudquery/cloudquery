@@ -5,7 +5,7 @@ resource "aws_iot_thing_type" "integration_test_thing_types" {
 resource "aws_iot_thing" "integration_test_thing" {
   name = "integration_test_thing"
 
-  attributes      = {
+  attributes = {
     First = "examplevalue"
   }
   thing_type_name = aws_iot_thing_type.integration_test_thing_types.name
@@ -48,10 +48,10 @@ resource "aws_iot_policy" "iot_policy" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
-        Action   = [
+        Action = [
           "iot:*",
         ]
         Effect   = "Allow"
