@@ -462,9 +462,9 @@ func isEmptyStringSliceOrMap(val interface{}) bool {
 
 func registerGJsonHelpers() {
 	if !gjson.ModifierExists("inverse", nil) {
-		// inverse a boolean
+		// inverse a boolean (null input returns true)
 		gjson.AddModifier("inverse", func(body, arg string) string {
-			if body == "false" {
+			if body == "false" || body == "" {
 				return "true"
 			}
 			return "false"
@@ -482,6 +482,28 @@ func registerGJsonHelpers() {
 				return strconv.Quote(arg)
 			}
 			return ""
+		})
+	}
+	if !gjson.ModifierExists("getbool", nil) {
+		// extract the given arg as key from the given object and expect it to be a boolean. returns false if doesn't exist. returns nil if not an object.
+		gjson.AddModifier("getbool", func(body, arg string) string {
+			if body == "" { // nil input
+				return "false"
+			}
+			var v map[string]interface{}
+			if err := json.Unmarshal([]byte(body), &v); err != nil {
+				return "" // invalid input
+			}
+			b, ok := v[arg]
+			if !ok {
+				return "false" // key not in map
+			}
+
+			var bb bool
+			if bb, ok = b.(bool); !ok {
+				bb, _ = strconv.ParseBool(fmt.Sprintf("%v", b))
+			}
+			return strconv.FormatBool(bb)
 		})
 	}
 }
