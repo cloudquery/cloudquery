@@ -9,6 +9,8 @@ on:
   pull_request_target:
     branches:
       - main
+    paths-ignore:
+      - 'terraform/**'
 
 jobs:
   is_organization_member:
