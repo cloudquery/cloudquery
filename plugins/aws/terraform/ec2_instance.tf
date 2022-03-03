@@ -9,6 +9,7 @@ resource "aws_kms_key" "ec2_kms_key" {
 
 module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.4"
 
   name = "cq-provider-aws-ec2-instance"
   // create_spot_instance = true
