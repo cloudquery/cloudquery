@@ -10,6 +10,9 @@ on:
 
 jobs:
   terrafrom_plan:
+    permissions:
+        id-token: write
+        contents: read    # This is required for actions/checkout@v2
     name: Terrafrom Plan
     runs-on: ubuntu-latest
     defaults:
@@ -29,8 +32,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::707066037989:role/cq-provider-aws-github-action
           aws-region: us-east-1
 
       - name: Setup Terraform
