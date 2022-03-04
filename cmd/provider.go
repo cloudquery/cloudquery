@@ -18,19 +18,19 @@ var (
 		Long:  providerHelpMsg,
 		Example: `
   # Downloads all providers specified in config.hcl:
-  ./cloudquery provider download
+  cloudquery provider download
   # Upgrades all providers specified in config.hcl
-  ./cloudquery provider upgrade 
+  cloudquery provider upgrade 
   # Upgrade one or more providers
-  ./cloudquery provider upgrade aws
+  cloudquery provider upgrade aws
   # Downgrades all providers specified in config.hcl
-  ./cloudquery provider downgrade 
+  cloudquery provider downgrade 
   # Downgrades one or more providers
-  ./cloudquery provider downgrade aws, gcp
+  cloudquery provider downgrade aws, gcp
   # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
-  ./cloudquery provider drop aws
+  cloudquery provider drop aws
   # build provider schema
-  ./cloudquery provider build-schema aws
+  cloudquery provider build-schema aws
 `,
 		Version: client.Version,
 	}
