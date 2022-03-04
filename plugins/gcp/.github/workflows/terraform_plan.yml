@@ -10,6 +10,9 @@ on:
 
 jobs:
   terrafrom_plan:
+    permissions:
+        id-token: write
+        contents: read    # This is required for actions/checkout@v2
     name: Terrafrom Plan
     runs-on: ubuntu-latest
     defaults:
@@ -26,12 +29,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v0'
         with:
-          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          export_default_credentials: true
+          token_format: 'id_token'
+          workload_identity_provider: 'projects/163549298763/locations/global/workloadIdentityPools/cq-provider-gcp-github-action/providers/github-action-provider'
+          service_account: 'cq-provider-gcp-github@cq-provider-gcp.iam.gserviceaccount.com'
+
+      # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@master'
+        export_default_credentials: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -51,7 +59,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -out tfplan.binary
+        run: terraform plan -lock=false -no-color -out tfplan.binary
       
       - name: Terraform show
         run: terraform show -json tfplan.binary > plan.json
