@@ -56,3 +56,4 @@ Azure sql database
 |id|text|Resource ID|
 |name|text|Resource name|
 |type|text|Resource type|
+|backup_long_term_retention_policy|jsonb|Long term retention policy.|

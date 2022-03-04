@@ -28,8 +28,10 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	epSvc := mocks.NewMockEncryptionProtectorsClient(ctrl)
 	vnrSvc := mocks.NewMockSQLVirtualNetworkRulesClient(ctrl)
 	ssapSvc := mocks.NewMockServerSecurityAlertPoliciesClient(ctrl)
+	bltrpSvc := mocks.NewMockBackupLongTermRetentionPoliciesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
+			BackupLongTermRetentionPolicies:      bltrpSvc,
 			DatabaseBlobAuditingPolicies:         databaseBlobSvc,
 			Databases:                            databaseSvc,
 			DatabaseThreatDetectionPolicies:      databaseThreatsSvc,
@@ -224,6 +226,12 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 			},
 		), nil,
 	)
+
+	var p sql.BackupLongTermRetentionPolicy
+	if err := faker.FakeData(&p); err != nil {
+		t.Fatal(err)
+	}
+	bltrpSvc.EXPECT().ListByDatabase(gomock.Any(), "test", *server.Name, *database.Name).Return(p, nil)
 
 	return s
 }

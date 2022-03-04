@@ -8,6 +8,7 @@ import (
 )
 
 type SQLClient struct {
+	BackupLongTermRetentionPolicies             BackupLongTermRetentionPoliciesClient
 	DatabaseBlobAuditingPolicies                SQLDatabaseBlobAuditingPoliciesClient
 	Databases                                   SQLDatabaseClient
 	DatabaseVulnerabilityAssessmentScans        SQLDatabaseVulnerabilityAssessmentScansClient
@@ -74,7 +75,10 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 	vnr.Authorizer = auth
 	ssap := sql.NewServerSecurityAlertPoliciesClient(subscriptionId)
 	ssap.Authorizer = auth
+	bltrp := sql.NewBackupLongTermRetentionPoliciesClient(subscriptionId)
+	bltrp.Authorizer = auth
 	return SQLClient{
+		BackupLongTermRetentionPolicies:             bltrp,
 		DatabaseBlobAuditingPolicies:                dbap,
 		Databases:                                   databases,
 		DatabaseThreatDetectionPolicies:             dtdp,
@@ -136,7 +140,7 @@ type ServerSecurityAlertPoliciesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
 }
 
-//go:generate mockgen -destination=./mocks/sql_database.go -package=mocks . SQLDatabaseClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,TransparentDataEncryptionsClient
+//go:generate mockgen -destination=./mocks/sql_database.go -package=mocks . SQLDatabaseClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,TransparentDataEncryptionsClient,BackupLongTermRetentionPoliciesClient
 type SQLDatabaseClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
 }
@@ -159,6 +163,10 @@ type SQLDatabaseVulnerabilityAssessmentScansClient interface {
 
 type TransparentDataEncryptionsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.TransparentDataEncryption, err error)
+}
+
+type BackupLongTermRetentionPoliciesClient interface {
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicy, err error)
 }
 
 //go:generate mockgen -destination=./mocks/sql_managed_instance.go -package=mocks . ManagedInstancesClient,ManagedInstanceVulnerabilityAssessmentsClient,ManagedInstanceEncryptionProtectorsClient

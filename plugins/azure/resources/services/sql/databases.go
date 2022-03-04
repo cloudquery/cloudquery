@@ -317,6 +317,12 @@ func SqlDatabases() *schema.Table {
 				Description: "Resource type",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "backup_long_term_retention_policy",
+				Description: "Long term retention policy.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveSQLDatabaseBackupLongTermRetentionPolicy,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -799,4 +805,23 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	}
 	res <- result
 	return nil
+}
+
+func resolveSQLDatabaseBackupLongTermRetentionPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().SQL.BackupLongTermRetentionPolicies
+	database := resource.Item.(sql.Database)
+	server := resource.Parent.Item.(sql.Server)
+	details, err := client.ParseResourceID(*database.ID)
+	if err != nil {
+		return err
+	}
+	p, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
+	if err != nil {
+		return err
+	}
+	b, err := json.Marshal(p)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, b)
 }
