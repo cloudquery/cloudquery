@@ -238,6 +238,36 @@ func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	return nil
 }
 
+// deleteViews creates temporary views for given config.Policy, and any views defined by sub-policies
+func (e *Executor) deleteViews(ctx context.Context, policy *Policy) error {
+	for _, v := range policy.Views {
+
+		// Validate that the view is actually a temp view
+		data, err := e.conn.Query(ctx, fmt.Sprintf("SELECT table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '%s' TABLE_SCHEMA LIKE 'pg_temp%%'", v.Name))
+		if err != nil {
+			return fmt.Errorf("failed to drop view %s/%s: %w", policy.Name, v.Name, err)
+		}
+		count := 0
+		for data.Next() {
+			count += 1
+		}
+		if data.Err() != nil {
+			return fmt.Errorf("failed to drop view %s/%s: %w", policy.Name, v.Name, data.Err())
+		}
+		// If count is 0 then that means that no temp views with the correct name were found
+		if count == 0 {
+			continue
+		}
+
+		e.log.Info("deleting policy view", "view", v.Name, "query", v.Query)
+
+		if err := e.conn.Exec(ctx, fmt.Sprintf("DROP VIEW %s", v.Name)); err != nil {
+			return fmt.Errorf("failed to drop view %s/%s: %w", policy.Name, v.Name, err)
+		}
+	}
+	return nil
+}
+
 func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
 	fs := afero.NewOsFs()
 
