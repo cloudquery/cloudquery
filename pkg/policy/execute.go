@@ -247,7 +247,7 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
 
 		// Validate that the view is actually a temp view
-		data, err := e.conn.Query(ctx, fmt.Sprintf("SELECT table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '%s' TABLE_SCHEMA LIKE 'pg_temp%%'", v.Name))
+		data, err := e.conn.Query(ctx, fmt.Sprintf("SELECT table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '%s' and TABLE_SCHEMA LIKE 'pg_temp%%'", v.Name))
 		if err != nil {
 			return fmt.Errorf("failed to drop view %s/%s: %w", policy.Name, v.Name, err)
 		}
