@@ -325,17 +325,34 @@ provider "aws" {
   }
 
   resource "aws_cloudfront_distribution_origins" {
-    identifiers = [ sql("SPLIT_PART(c.s3_origin_config_origin_access_identity,'/', 3)") ]
+    identifiers = [ "domain_name", "id", "s3_origin_config_origin_access_identity" ]
     filters = [
       "c.s3_origin_config_origin_access_identity IS NOT NULL AND c.s3_origin_config_origin_access_identity!=''"
     ]
 
     iac {
       terraform {
-        type = "aws_cloudfront_origin_access_identity"
+        type = "aws_cloudfront_distribution"
+        path = "origin"
+        identifiers = [ "domain_name", "origin_id", "s3_origin_config.0.origin_access_identity" ]
+        attribute_map = [
+          "id=origin_id",
+          "s3_origin_config_origin_access_identity=s3_origin_config.0.origin_access_identity",
+          "custom_origin_config_http_port=s3_origin_config.0.http_port",
+          "custom_origin_config_https_port=s3_origin_config.0.https_port",
+          "custom_origin_config_protocol_policy=s3_origin_config.0.origin_protocol_policy",
+          "custom_origin_config_ssl_protocols=s3_origin_config.0.origin_ssl_protocols",
+          "custom_origin_config_keepalive_timeout=s3_origin_config.0.origin_keepalive_timeout",
+          "custom_origin_config_read_timeout=s3_origin_config.0.origin_read_timeout",
+          "origin_shield_enabled=origin_shield.0|@getbool:enabled",
+          "origin_shield_region=origin_shield.0.origin_shield_region",
+          "custom_headers=custom_header"
+        ]
       }
     }
   }
+
+  # Unmatched: aws_cloudfront_origin_access_identity (contained in aws_cloudfront_distribution_origins)
 
   # Unmatched: aws_cloudfront_distribution_alias_icp_recordals (no data in tests)
 
