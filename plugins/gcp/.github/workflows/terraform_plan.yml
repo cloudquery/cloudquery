@@ -62,7 +62,7 @@ jobs:
       - name: Terraform show
         run: terraform show -json tfplan.binary > plan.json
 
-      - uses: actions/github-script@0.9.0
+      - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
