@@ -150,9 +150,15 @@ provider "aws" {
   }
 
   resource "aws_apigateway_usage_plan_keys" {
+    identifiers = [ "usage_plan_id", "id" ]
+    ignore_attributes = [ "arn" ]
     iac {
       terraform {
         type = "aws_api_gateway_usage_plan_key"
+        identifiers = [ "usage_plan_id", "id" ]
+        attribute_map = [
+          "type=key_type"
+        ]
       }
     }
   }
