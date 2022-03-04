@@ -136,22 +136,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
-
-	for _, p := range policy.Policies {
-		executor := e.with(p.Name)
-		executor.log.Info("starting policy execution")
-		r, err := executor.Execute(ctx, req, p)
-		if err != nil {
-			executor.log.Error("failed to execute policy", "err", err)
-			return nil, fmt.Errorf("%s/%w", policy.Name, err)
-		}
-		total.Passed = total.Passed && r.Passed
-		total.Results = append(total.Results, r.Results...)
-		if !total.Passed && req.StopOnFailure {
-			return &total, nil
-		}
-	}
-
 	for _, q := range policy.Checks {
 		e.log = e.log.With("query", q.Name)
 		qr, err := e.executeQuery(ctx, q)
@@ -171,6 +155,26 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 			return &total, nil
 		}
 	}
+
+	if err := e.deleteViews(ctx, policy); err != nil {
+		return nil, err
+	}
+
+	for _, p := range policy.Policies {
+		executor := e.with(p.Name)
+		executor.log.Info("starting policy execution")
+		r, err := executor.Execute(ctx, req, p)
+		if err != nil {
+			executor.log.Error("failed to execute policy", "err", err)
+			return nil, fmt.Errorf("%s/%w", policy.Name, err)
+		}
+		total.Passed = total.Passed && r.Passed
+		total.Results = append(total.Results, r.Results...)
+		if !total.Passed && req.StopOnFailure {
+			return &total, nil
+		}
+	}
+
 	return &total, nil
 }
 
