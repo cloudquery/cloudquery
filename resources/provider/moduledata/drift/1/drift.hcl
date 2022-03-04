@@ -1136,11 +1136,26 @@ provider "aws" {
   }
 
   resource "rds.instances" {
-    identifiers = [ "db_name" ]
+    identifiers = [ "arn" ]
+    ignore_attributes = [
+      "allocated_storage", "backup_retention_period", "customer_owned_ip_enabled", "user_instance_id", "db_instance_status", "db_name",
+      "subnet_group_description", "subnet_group_subnet_group_status", "subnet_group_vpc_id", "instance_port", "deletion_protection",
+      "endpoint_hosted_zone_id", "iam_database_authentication_enabled", "instance_create_time", "license_model", "listener_endpoint_port",
+      "master_username", "multi_az", "performance_insights_retention_period", "storage_type"
+    ]
 
     iac {
       terraform {
+        identifiers = [ "arn" ]
         type = "aws_rds_cluster_instance"
+        attribute_map = [
+          "id=dbi_resource_id",
+          "ca_certificate_identifier=ca_cert_identifier",
+          "endpoint_address=endpoint",
+          "endpoint_port=port",
+          "db_instance_class=instance_class",
+          "subnet_group_name=db_subnet_group_name"
+        ]
       }
     }
   }
