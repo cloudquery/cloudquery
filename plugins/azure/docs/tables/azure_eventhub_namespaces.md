@@ -27,3 +27,4 @@ Azure EventHub namespace
 |id|text|Resource ID.|
 |name|text|Resource name.|
 |type|text|Resource type.|
+|network_rule_set|jsonb|Network rule set for a namespace.|

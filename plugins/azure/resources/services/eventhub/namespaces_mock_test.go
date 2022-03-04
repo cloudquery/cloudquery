@@ -18,7 +18,8 @@ func buildEventHubNamespacesServices(t *testing.T, ctrl *gomock.Controller) serv
 	if err := faker.FakeData(&namespace); err != nil {
 		t.Fatal(err)
 	}
-
+	id := client.FakeResourceGroup + "/" + *namespace.ID
+	namespace.ID = &id
 	m.EXPECT().List(gomock.Any()).Return(
 		eventhub.NewEHNamespaceListResultPage(
 			eventhub.EHNamespaceListResult{Value: &[]eventhub.EHNamespace{namespace}},
@@ -28,9 +29,17 @@ func buildEventHubNamespacesServices(t *testing.T, ctrl *gomock.Controller) serv
 		),
 		nil,
 	)
+
+	var rs eventhub.NetworkRuleSet
+	if err := faker.FakeData(&rs); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetNetworkRuleSet(gomock.Any(), "test", *namespace.Name).Return(rs, nil)
 	return services.Services{EventHub: m}
 }
 
 func TestEventHubNamespacesServices(t *testing.T) {
-	client.AzureMockTestHelper(t, EventHubNamespaces(), buildEventHubNamespacesServices, client.TestOptions{})
+	table := EventHubNamespaces()
+	table.IgnoreInTests = false
+	client.AzureMockTestHelper(t, table, buildEventHubNamespacesServices, client.TestOptions{})
 }

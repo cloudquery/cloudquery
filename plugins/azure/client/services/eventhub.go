@@ -8,6 +8,7 @@ import (
 )
 
 type EventHubClient interface {
+	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
 	List(ctx context.Context) (result eventhub.EHNamespaceListResultPage, err error)
 }
 

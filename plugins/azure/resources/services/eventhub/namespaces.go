@@ -2,6 +2,7 @@ package eventhub
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
@@ -151,6 +152,12 @@ func EventHubNamespaces() *schema.Table {
 				Description: "Resource type.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "network_rule_set",
+				Description: "Network rule set for a namespace.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveNamespaceNetworkRuleSet,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -214,4 +221,22 @@ func fetchEventhubNamespaceEncryptionKeyVaultProperties(_ context.Context, _ sch
 	}
 	res <- *namespace.Encryption.KeyVaultProperties
 	return nil
+}
+
+func resolveNamespaceNetworkRuleSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().EventHub
+	namespace := resource.Item.(eventhub.EHNamespace)
+	details, err := client.ParseResourceID(*namespace.ID)
+	if err != nil {
+		return err
+	}
+	rs, err := svc.GetNetworkRuleSet(ctx, details.ResourceGroup, *namespace.Name)
+	if err != nil {
+		return err
+	}
+	b, err := json.Marshal(rs)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, b)
 }
