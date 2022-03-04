@@ -212,14 +212,15 @@ var (
 		Policies: Policies{
 			{
 				Name: "subpolicy",
-				Checks: []*Check{{
-					Name:         "sub-query",
-					Query:        "SELECT 1 as result;",
-					ExpectOutput: true,
-				},
+				Checks: []*Check{
 					{
 						Name:  "other-query",
 						Query: "SELECT 1 as result;",
+					},
+					{
+						Name:         "sub-query",
+						Query:        "SELECT 1 as result;",
+						ExpectOutput: true,
 					},
 				},
 			},
