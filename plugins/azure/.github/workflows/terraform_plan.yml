@@ -10,6 +10,8 @@ on:
 
 jobs:
   terrafrom_plan:
+    env:
+      ARM_USE_MSI: true
     permissions:
         id-token: write
         contents: read    # This is required for actions/checkout@v2
