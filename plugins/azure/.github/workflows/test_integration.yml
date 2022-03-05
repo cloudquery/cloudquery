@@ -9,6 +9,8 @@ on:
   pull_request_target:
     branches:
       - main
+    paths-ignore:
+      - 'terraform/**'
 
 jobs:
   is_organization_member:
@@ -30,6 +32,9 @@ jobs:
             echo "and paste the output in the PR"
 
   test_integration:
+    permissions:
+        id-token: write
+        contents: read    # This is required for actions/checkout@v2
     needs: is_organization_member
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     strategy:
