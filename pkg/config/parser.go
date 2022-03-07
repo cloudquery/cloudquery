@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"strings"
@@ -83,7 +84,11 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 
 	if err != nil {
 		if e, ok := err.(*fs.PathError); ok {
-			err = fmt.Errorf(e.Err.Error())
+			if errors.Is(err, fs.ErrNotExist) {
+				err = fmt.Errorf("%s. Hint: Try `cloudquery init <provider>`.", e.Err.Error())
+			} else {
+				err = fmt.Errorf(e.Err.Error())
+			}
 		}
 		return nil, hcl.Diagnostics{
 			{

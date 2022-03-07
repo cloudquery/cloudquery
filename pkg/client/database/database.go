@@ -19,8 +19,11 @@ type DialectExecutor interface {
 	// Validate is called before startup to check that the dialect can execute properly. If returns true and error is set, the error is merely logged.
 	Validate(context.Context) (bool, error)
 
-	// Finalize is called after migrations and upgrades are run
-	Finalize(context.Context) error
+	// Prepare is called before migrations and upgrades are run
+	Prepare(context.Context) error
+
+	// Finalize is called after migrations and upgrades are run, with the resulting error. This function can modify the returning error from the migrator.
+	Finalize(context.Context, error) error
 }
 
 var (

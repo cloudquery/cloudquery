@@ -48,7 +48,7 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn execution.QueryExecer
+	conn LowLevelQueryExecer
 	log  hclog.Logger
 
 	PolicyPath []string
@@ -104,7 +104,7 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn execution.QueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn LowLevelQueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
 		log:            log,
@@ -126,9 +126,13 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 
 // Execute executes given policy and the related sub queries/views.
 func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
+	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+
 	if !policy.HasChecks() {
-		return nil, fmt.Errorf("no checks or policies to execute")
+		e.log.Warn("no checks or policies to execute")
+		return &total, nil
 	}
+
 	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
@@ -139,7 +143,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.createViews(ctx, policy); err != nil {
 		return nil, err
 	}
-	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+
 	for _, p := range policy.Policies {
 		executor := e.with(p.Name)
 		executor.log.Info("starting policy execution")
@@ -265,7 +269,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 // createViews creates temporary views for given config.Policy, and any views defined by sub-policies
 func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 	for _, v := range policy.Views {
-		e.log.Info("creating policy view", "view", v.Name)
+		e.log.Info("creating policy view", "view", v.Name, "query", v.Query)
 		if err := e.conn.Exec(ctx, fmt.Sprintf("CREATE OR REPLACE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
 			return fmt.Errorf("failed to create view %s/%s: %w", policy.Name, v.Name, err)
 		}

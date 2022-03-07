@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/hashicorp/go-hclog"
@@ -12,14 +13,65 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setupDrift(t *testing.T) (*Drift, *BaseConfig) {
+	d := &Drift{
+		logger: hclog.NewNullLogger(),
+	}
+	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
+		"aws": {
+			Files: []*cqproto.ModuleFile{
+				{
+					Name: "file.hcl",
+					Contents: []byte(`
+provider "aws" {
+  resource "*" {
+    ignore_attributes = [ "unknown_fields" ]
+  }
+
+  resource "accessanalyzer.analyzers" {
+    iac {
+      terraform {
+        type = "aws_accessanalyzer_analyzer"
+      }
+    }
+  }
+
+  resource "ec2.instances" {
+    ignore_attributes = ["launch_time"]
+
+    iac {
+      terraform {
+        type = "aws_instance"
+      }
+    }
+  }
+}
+`),
+				},
+			},
+		},
+	})
+	assert.NoError(t, err)
+	return d, val
+}
+
 func TestReadBuiltinConfig(t *testing.T) {
 	t.Parallel()
 
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	val, err := d.readBuiltinConfig()
+	val, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
+	assert.Nil(t, val.Terraform)
+	assert.NotNil(t, val.WildProvider)
+	assert.Equal(t, 0, len(val.Providers))
+}
+
+func TestReadBuiltinConfigWithSuppliedProviderData(t *testing.T) {
+	t.Parallel()
+
+	_, val := setupDrift(t)
 	assert.Nil(t, val.Terraform)
 	assert.NotNil(t, val.WildProvider)
 	assert.Equal(t, 1, len(val.Providers))
@@ -33,7 +85,7 @@ func TestEmptyProfileConfig(t *testing.T) {
 	d := &Drift{
 		logger: hclog.NewNullLogger(),
 	}
-	base, err := d.readBuiltinConfig()
+	base, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.NotNil(t, base)
 
@@ -45,11 +97,7 @@ func TestEmptyProfileConfig(t *testing.T) {
 func TestProfileConfig(t *testing.T) {
 	t.Parallel()
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
-	base, err := d.readBuiltinConfig()
-	assert.NoError(t, err)
+	d, base := setupDrift(t)
 	assert.NotNil(t, base)
 
 	configRaw, diags := hclparse.NewParser().ParseHCL([]byte(`
@@ -75,7 +123,7 @@ provider "aws" {
 	assert.NotNil(t, a)
 
 	{
-		r := a.Resources["kms.keys"]
+		r := a.Resources["accessanalyzer.analyzers"]
 		assert.NotNil(t, r)
 		assert.EqualValues(t, aws.Bool(true), r.Deep)
 	}
@@ -140,4 +188,39 @@ func TestHandleIdentifiers(t *testing.T) {
 			assert.EqualValues(t, table[i].ExpectedExp, out)
 		})
 	}
+}
+
+func TestBadConfigFromProvider(t *testing.T) {
+	t.Parallel()
+
+	d := &Drift{
+		logger: hclog.NewNullLogger(),
+	}
+	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
+		"aws": {
+			Files: []*cqproto.ModuleFile{
+				{
+					Name: "file1.hcl",
+					Contents: []byte(`
+provider "aws" {
+  resource "*" {
+    ignore_attributes = [ "unknown_fields" ]
+  }
+}
+`),
+				},
+				{
+					Name: "file2.hcl",
+					Contents: []byte(`
+provider "aws" {
+  resource "abc" {
+  }
+}
+`),
+				},
+			},
+		},
+	})
+	assert.EqualError(t, err, `unexpected number of provider blocks (aws: 2)`)
+	assert.Nil(t, val)
 }

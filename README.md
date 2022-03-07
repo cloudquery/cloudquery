@@ -38,6 +38,7 @@ Please check out our 'Getting Started' guides:
 
 - [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws)
 - [Getting Started with GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp)
+- [Getting Started with Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
 For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
@@ -48,9 +49,9 @@ go build .
 ./cloudquery # --help to see all options
 ```
 
-## Running on AWS (Lambda, Terraform)
+## Deployment
 
-Checkout [cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery)
+Checkout [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
 
 ## License
 

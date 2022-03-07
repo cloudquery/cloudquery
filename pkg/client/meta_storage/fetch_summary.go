@@ -7,8 +7,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/google/uuid"
@@ -48,18 +46,12 @@ type ResourceFetchSummary struct {
 	ResourceName string `json:"resource_name"`
 	// map of resources that have finished fetching
 	FinishedResources map[string]bool `json:"finished_resources"`
-	// Amount of resources collected so far
 	// Error value if any, if returned the stream will be canceled
 	Error string `json:"error"`
-	// list of resources where the fetching failed
-	PartialFetchFailedResources []*cqproto.FailedResourceFetch `json:"partial_fetch_failed_resources"`
 	// Execution status of resource
 	Status string `json:"status"`
 	// Total Amount of resources collected by this resource
 	ResourceCount uint64 `json:"resource_count"`
-	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
-	// details on how to solve this issue
-	Diagnostics diag.Diagnostics `json:"diagnostics"`
 }
 
 // SaveFetchSummary saves fetch summary into fetches database

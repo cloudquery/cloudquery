@@ -13,11 +13,11 @@ import (
 type Provider struct {
 	Name                          string   `hcl:"name,label"`
 	Alias                         string   `hcl:"alias,optional"`
-	EnablePartialFetch            bool     `hcl:"enable_partial_fetch,optional"`
 	Resources                     []string `hcl:"resources,optional"`
 	Env                           []string `hcl:"env,optional"`
 	Configuration                 []byte
 	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
+	MaxGoroutines                 uint64 `hcl:"max_goroutines"`
 }
 
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
@@ -54,8 +54,17 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 	}
 
 	if attr, exists := content.Attributes["enable_partial_fetch"]; exists {
-		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.EnablePartialFetch)
+		var boolVar bool
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &boolVar)
 		diags = append(diags, valDiags...)
+		if !valDiags.HasErrors() && !boolVar {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  "enable_partial_fetch must be true",
+				Detail:   "non-partial fetch isn't supported, remove the line or set it to true",
+				Subject:  block.DefRange.Ptr(),
+			})
+		}
 	}
 	if attr, exists := content.Attributes["resources"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Resources)
@@ -68,6 +77,10 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 
 	if attr, exists := content.Attributes["max_parallel_resource_fetch_limit"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.MaxParallelResourceFetchLimit)
+		diags = append(diags, valDiags...)
+	}
+	if attr, exists := content.Attributes["max_goroutines"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.MaxGoroutines)
 		diags = append(diags, valDiags...)
 	}
 
@@ -111,6 +124,9 @@ var providerBlockSchema = &hcl.BodySchema{
 		},
 		{
 			Name: "max_parallel_resource_fetch_limit",
+		},
+		{
+			Name: "max_goroutines",
 		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{

@@ -310,5 +310,5 @@ func TestParser_LoadConfigNoSourceField(t *testing.T) {
 			},
 		},
 	}, cfg)
-	assert.Equal(t, cfg.CloudQuery.Providers[0].String(), "/cq-provider-test@v0.0.0")
+	assert.Equal(t, cfg.CloudQuery.Providers[0].String(), "cq-provider-test@v0.0.0")
 }

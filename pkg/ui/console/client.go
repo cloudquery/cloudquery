@@ -8,13 +8,16 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/fatih/color"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/afero"
@@ -40,12 +43,18 @@ type Client struct {
 	updater *Progress
 }
 
-func CreateClient(ctx context.Context, configPath string, opts ...client.Option) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		// No explicit error string needed, user information is in diags
 		return nil, &ExitCodeError{ExitCode: 1}
 	}
+	if configMutator != nil {
+		if err := configMutator(cfg); err != nil {
+			return nil, err
+		}
+	}
+
 	return CreateClientFromConfig(ctx, cfg, opts...)
 }
 
@@ -236,6 +245,44 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	return nil
 }
 
+func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestination string) error {
+	conn, err := sdkdb.New(ctx, hclog.NewNullLogger(), c.c.DSN)
+	if err != nil {
+		c.c.Logger.Error("failed to connect to new database", "err", err)
+		return err
+	}
+	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
+	if err != nil {
+		return err
+	}
+
+	policyManager := policy.NewManager(uniqueTempDir, conn, c.c.Logger)
+	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: policySource})
+	if err != nil {
+		c.c.Logger.Error("failed to create policy manager", "err", err)
+		return err
+	}
+
+	e := policy.NewExecutor(conn, c.c.Logger, nil)
+	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
+
+}
+
+func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
+	policiesToSnapshot, err := FilterPolicies(policySource, c.cfg.Policies)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return err
+	}
+	c.c.Logger.Debug("policies to snapshot", "policies", policiesToSnapshot.All())
+	for _, p := range policiesToSnapshot {
+		if err := c.snapshotControl(ctx, p, policySource, snapshotDestination); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
 	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
@@ -332,6 +379,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	return nil
 }
 
+//nolint:dupl
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
@@ -340,27 +388,26 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", args)
-	dupes := make(map[string]struct{}, len(providers))
+	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
-		if _, ok := dupes[p.Name]; ok {
-			continue
+		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+			if errors.Is(err, client.ErrMigrationsNotSupported) {
+				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
+				continue
+			} else {
+				ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
+				return err
+			}
 		}
 
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange && !errors.Is(err, client.ErrMigrationsNotSupported) {
-			ui.ColorizedOutput(ui.ColorError, "❌ Failed to upgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
-			return err
-		} else {
-			ui.ColorizedOutput(ui.ColorSuccess, "✓ Upgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-		}
-		dupes[p.Name] = struct{}{}
+		ui.ColorizedOutput(ui.ColorSuccess, "%s Upgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished upgrading providers...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "\nFinished upgrading providers...\n\n")
 	return nil
 }
 
+//nolint:dupl
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
-	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", args)
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
@@ -368,16 +415,21 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
-		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil {
-			ui.ColorizedOutput(ui.ColorError, "❌ Failed to downgrade provider %s. Error: %s.\n\n", p.String(), err.Error())
-			return err
-		} else {
-			ui.ColorizedOutput(ui.ColorSuccess, "✓ Downgraded provider %s to %s successfully.\n\n", p.Name, p.Version)
-			color.GreenString("✓")
+		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+			if errors.Is(err, client.ErrMigrationsNotSupported) {
+				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to downgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
+				continue
+			} else {
+				ui.ColorizedOutput(ui.ColorError, "%s Failed to downgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
+				return err
+			}
 		}
+
+		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, "\nFinished downgrading providers...\n\n")
 	return nil
 }
 
@@ -387,11 +439,10 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 		return err
 	}
 	if err := c.c.DropProvider(ctx, providerName); err != nil {
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to drop provider %s schema. Error: %s.\n\n", providerName, err.Error())
+		ui.ColorizedOutput(ui.ColorError, "%s Failed to drop provider %s schema. Error: %s.\n\n", emojiStatus[ui.StatusError], providerName, err.Error())
 		return err
 	} else {
-		ui.ColorizedOutput(ui.ColorSuccess, "✓ provider %s schema dropped successfully.\n\n", providerName)
-		color.GreenString("✓")
+		ui.ColorizedOutput(ui.ColorSuccess, "%s provider %s schema dropped successfully.\n\n", emojiStatus[ui.StatusOK], providerName)
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downgrading providers...\n\n")
 	return nil
@@ -460,12 +511,13 @@ func (c Client) selectProfile(profileName string, profiles map[string]hcl.Body) 
 	return nil, nil
 }
 
-func (c Client) getRequiredProviders(providerNames []string) ([]*config.RequiredProvider, error) {
+func (c Client) getRequiredProviders(providerNames []string) (config.RequiredProviders, error) {
 	if len(providerNames) == 0 {
 		// if no providers are given we will return all providers
-		return c.cfg.CloudQuery.Providers, nil
+		return c.cfg.CloudQuery.Providers.Distinct(), nil
 	}
-	providers := make([]*config.RequiredProvider, len(providerNames))
+
+	providers := make(config.RequiredProviders, len(providerNames))
 	for i, p := range providerNames {
 		pCfg, err := c.cfg.CloudQuery.GetRequiredProvider(p)
 		if err != nil {
@@ -480,8 +532,14 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 	if err := c.DownloadProviders(ctx); err != nil {
 		return nil, err
 	}
-	list := make([]*cqproto.GetProviderSchemaResponse, len(c.cfg.Providers))
-	for i, p := range c.cfg.Providers {
+	list := make([]*cqproto.GetProviderSchemaResponse, 0, len(c.cfg.Providers))
+	dupes := make(map[string]struct{})
+	for _, p := range c.cfg.Providers {
+		if _, ok := dupes[p.Name]; ok {
+			continue
+		}
+		dupes[p.Name] = struct{}{}
+
 		s, err := c.c.GetProviderSchema(ctx, p.Name)
 		if err != nil {
 			return nil, err
@@ -494,7 +552,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 				s.Version = deets.Version
 			}
 		}
-		list[i] = s.GetProviderSchemaResponse
+		list = append(list, s.GetProviderSchemaResponse)
 	}
 
 	return list, nil
@@ -541,6 +599,24 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 	})
 }
 
+func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelector, destination string) error {
+	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return fmt.Errorf("failed to load policies: %w", err)
+	}
+	if !p.HasChecks() {
+		return errors.New("no checks loaded")
+	}
+
+	_, subPath := getter.ParseSourceSubPolicy(fullSelector)
+	pol := p.Filter(subPath)
+	if pol.TotalQueries() != 1 {
+		return errors.New("selector must specify only a single control")
+	}
+	return c.c.PolicyManager.Snapshot(ctx, &pol, destination, subPath)
+}
+
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
 	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
 	if err != nil {
@@ -553,6 +629,11 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 
 	policyName, subPath := getter.ParseSourceSubPolicy(selector)
 
+	// The `buildDescribePolicyTable` builds the output based on Policy Name and Path
+	// In the case of no path, the PolicyName is just the root policy
+	if subPath == "" {
+		policyName = ""
+	}
 	pol := p.Filter(subPath)
 	buildDescribePolicyTable(t, policy.Policies{&pol}, policyName)
 	t.Render()
@@ -658,7 +739,12 @@ func loadConfig(path string) (*config.Config, bool) {
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
-			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
+			if d.Subject == nil {
+				ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
+				continue
+			}
+
+			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s [%s]\n", d.Summary, d.Detail, d.Subject.String())
 		}
 		return nil, false
 	}

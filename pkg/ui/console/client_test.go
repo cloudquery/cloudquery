@@ -33,7 +33,7 @@ func TestCreateClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if _, err := CreateClient(context.Background(), tt.configPath); (err != nil) != tt.wantErr {
+			if _, err := CreateClient(context.Background(), tt.configPath, nil); (err != nil) != tt.wantErr {
 				t.Errorf("CreateClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}

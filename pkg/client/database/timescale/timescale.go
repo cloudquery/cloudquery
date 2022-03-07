@@ -9,6 +9,7 @@ import (
 	pgsdk "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
 )
 
@@ -20,6 +21,7 @@ type Executor struct {
 	logger hclog.Logger
 	dsn    string
 	cfg    *history.Config
+	ddl    *DDLManager
 }
 
 func New(logger hclog.Logger, dsn string, cfg *history.Config) (*Executor, error) {
@@ -34,30 +36,34 @@ func New(logger hclog.Logger, dsn string, cfg *history.Config) (*Executor, error
 }
 
 // Setup sets all required history functions and validation checks that it can run cleanly.
-func (e Executor) Setup(ctx context.Context) (string, error) {
+func (e *Executor) Setup(ctx context.Context) (string, error) {
 	pool, err := pgsdk.Connect(ctx, e.dsn)
 	if err != nil {
 		return e.dsn, err
 	}
-	defer pool.Close()
-	conn, err := pool.Acquire(ctx)
+
+	e.ddl, err = NewDDLManager(e.logger, pool, e.cfg, schema.TSDB)
 	if err != nil {
 		return e.dsn, err
 	}
-	defer conn.Release()
 
-	if err := AddHistoryFunctions(ctx, conn); err != nil {
+	if err := e.ddl.AddHistoryFunctions(ctx); err != nil {
 		return e.dsn, fmt.Errorf("failed to create history functions: %w", err)
 	}
 
 	return history.TransformDSN(e.dsn)
 }
+
 func (e Executor) Validate(ctx context.Context) (bool, error) {
 	pool, err := pgsdk.Connect(ctx, e.dsn)
 	if err != nil {
 		return false, err
 	}
 	defer pool.Close()
+
+	if err := postgres.ValidatePostgresConnection(ctx, pool); err != nil {
+		return false, err
+	}
 
 	if err := postgres.ValidatePostgresVersion(ctx, pool, postgres.MinPostgresVersion); err != nil {
 		return false, err
@@ -74,21 +80,20 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (e Executor) Finalize(ctx context.Context) error {
-	pool, err := pgsdk.Connect(ctx, e.dsn)
-	if err != nil {
-		return err
-	}
-	defer pool.Close()
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
+func (e Executor) Prepare(ctx context.Context) error {
+	return e.ddl.DropViews(ctx)
+}
 
-	ddl, err := NewDDLManager(e.logger, conn, e.cfg, schema.TSDB)
-	if err != nil {
+func (e Executor) Finalize(ctx context.Context, retErr error) error {
+	defer e.ddl.Close()
+
+	if retErr != nil && retErr != migrate.ErrNoChange {
+		return retErr
+	}
+
+	if err := e.ddl.SetupHistory(ctx); err != nil {
 		return err
 	}
-	return ddl.SetupHistory(ctx, conn)
+
+	return retErr // keep migrate.ErrNoChange
 }
