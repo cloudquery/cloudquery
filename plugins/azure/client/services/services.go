@@ -46,7 +46,7 @@ type Services struct {
 	Security          SecurityClient
 	SQL               SQLClient
 	Storage           StorageClient
-	Subscriptions     SubscriptionsClient
+	Subscriptions     Subscriptions
 	Web               WebClient
 }
 

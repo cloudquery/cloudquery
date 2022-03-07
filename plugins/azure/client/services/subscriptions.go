@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionsClient
 package services
 
 import (
@@ -7,20 +8,21 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type SubscriptionsClient struct {
+type Subscriptions struct {
 	SubscriptionID string
-	Subscriptions  SubscriptionGetter
+	Subscriptions  SubscriptionsClient
 }
 
-func NewSubscriptionsClient(subscriptionId string, auth autorest.Authorizer) SubscriptionsClient {
+func NewSubscriptionsClient(subscriptionId string, auth autorest.Authorizer) Subscriptions {
 	s := subscription.NewSubscriptionsClient()
 	s.Authorizer = auth
-	return SubscriptionsClient{
+	return Subscriptions{
 		SubscriptionID: subscriptionId,
 		Subscriptions:  s,
 	}
 }
 
-type SubscriptionGetter interface {
+type SubscriptionsClient interface {
 	Get(ctx context.Context, subscriptionID string) (result subscription.Model, err error)
+	ListLocations(ctx context.Context, subscriptionID string) (result subscription.LocationListResult, err error)
 }
