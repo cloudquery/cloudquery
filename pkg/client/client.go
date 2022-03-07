@@ -30,7 +30,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
@@ -541,7 +540,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, meta_storage.ResourceFetchSummary{
 					ResourceName:      resp.ResourceName,
 					FinishedResources: resp.FinishedResources,
 					Status:            resp.Summary.Status.String(),

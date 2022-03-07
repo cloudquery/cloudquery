@@ -51,7 +51,7 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 	if err != nil {
 		return err
 	}
-	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core", nil)
+	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core")
 	if err != nil {
 		return err
 	}
