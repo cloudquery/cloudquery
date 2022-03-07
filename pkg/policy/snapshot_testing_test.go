@@ -69,40 +69,57 @@ func TestFindAllTables(t *testing.T) {
 func TestFindAllTestCases(t *testing.T) {
 
 	tests := []struct {
+		createPath bool
 		paths      []string
 		foundPaths []string
 		err        error
 	}{
 		{
+			createPath: true,
 			err:        nil,
 			paths:      []string{"/path/to/actual/test/snapshot_data.csv"},
 			foundPaths: []string{"/path/to/actual/test"},
 		},
 		{
+			createPath: true,
 			err:        nil,
 			paths:      []string{"/path/to/fake/test/ssnapshot_data.csv"},
 			foundPaths: []string{},
 		},
 		{
+			createPath: true,
 			err:        nil,
 			paths:      []string{"/path/to/invalid/test/snapshot_data.sql"},
+			foundPaths: []string{},
+		}, {
+			createPath: true,
+			err:        nil,
+			paths:      []string{"/path/to/invalid/test/snapshot_data.sql"},
+			foundPaths: []string{},
+		}, {
+			createPath: false,
+			err:        os.ErrNotExist,
+			paths:      []string{"/path/to/other-invalid/test/snapshot_data.sql"},
 			foundPaths: []string{},
 		},
 	}
 	for _, test := range tests {
-		uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		for _, testPath := range test.paths {
-			err = testHelperCreatePaths(uniqueTempDir, testPath)
+		var err error
+		uniqueTempDir := "test-directory"
+		if test.createPath {
+			uniqueTempDir, err = os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 			if err != nil {
 				t.Fatal(err)
 			}
 
-		}
+			for _, testPath := range test.paths {
+				err = testHelperCreatePaths(uniqueTempDir, testPath)
+				if err != nil {
+					t.Fatal(err)
+				}
 
+			}
+		}
 		resp, err := FindAllTestCases(uniqueTempDir)
 		errDiff := cmp.Diff(err, test.err, cmpopts.EquateErrors())
 		if errDiff != "" {
