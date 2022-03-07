@@ -443,6 +443,9 @@ func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Contex
 	if action.ForwardConfig == nil {
 		return nil
 	}
+	if action.ForwardConfig.TargetGroups == nil {
+		return nil
+	}
 	res <- action.ForwardConfig.TargetGroups
 	return nil
 }
