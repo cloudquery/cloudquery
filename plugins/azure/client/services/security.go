@@ -27,7 +27,12 @@ type JitNetworkAccessPoliciesClient interface {
 	List(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
 }
 
+type AssessmentsClient interface {
+	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
+}
+
 type SecurityClient struct {
+	Assessments              AssessmentsClient
 	AutoProvisioningSettings SecurityAutoProvisioningSettingsClient
 	Contacts                 SecurityContactsClient
 	Pricings                 SecurityPricingsClient
@@ -49,7 +54,10 @@ func NewSecurityClient(subscriptionId string, auth autorest.Authorizer) Security
 	settings.Authorizer = auth
 	jitNetworkAccessPolicies := security.NewJitNetworkAccessPoliciesClient(subscriptionId, "")
 	jitNetworkAccessPolicies.Authorizer = auth
+	assessments := security.NewAssessmentsClient(subscriptionId, "")
+	assessments.Authorizer = auth
 	return SecurityClient{
+		Assessments:              assessments,
 		AutoProvisioningSettings: aps,
 		Contacts:                 contacts,
 		Pricings:                 pricings,

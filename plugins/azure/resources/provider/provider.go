@@ -80,6 +80,7 @@ func Provider() *provider.Provider {
 			"resources.groups":                     resources2.ResourcesGroups(),
 			"resources.policy_assignments":         resources2.ResourcesPolicyAssignments(),
 			"resources.links":                      resources2.ResourcesLinks(),
+			"security.assessments":                 security.SecurityAssessments(),
 			"security.auto_provisioning_settings":  security.SecurityAutoProvisioningSettings(),
 			"security.contacts":                    security.SecurityContacts(),
 			"security.pricings":                    security.SecurityPricings(),
