@@ -7,6 +7,7 @@
 //go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubClient
 //go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogClient
+//go:generate mockgen -destination=./mocks/logic.go -package=mocks . MonitorDiagnosticSettingsClient,WorkflowsClient
 //go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
 //go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
 //go:generate mockgen -destination=./mocks/network.go -package=mocks . InterfacesClient,VirtualNetworksClient,SecurityGroupsClient,WatchersClient,PublicIPAddressesClient
@@ -36,6 +37,7 @@ type Services struct {
 	EventHub          EventHubClient
 	IotHub            IotHubClient
 	KeyVault          KeyVaultClient
+	Logic             LogicClient
 	MariaDB           MariaDB
 	Monitor           MonitorClient
 	MySQL             MySQL
@@ -64,6 +66,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		EventHub:          NewEventHubClient(subscriptionId, auth),
 		IotHub:            NewIotHubClient(subscriptionId, auth),
 		KeyVault:          NewKeyVaultClient(subscriptionId, auth),
+		Logic:             NewLogicClient(subscriptionId, auth),
 		MariaDB:           NewMariaDBClient(subscriptionId, auth),
 		Monitor:           NewMonitorClient(subscriptionId, auth),
 		MySQL:             NewMySQLClient(subscriptionId, auth),
