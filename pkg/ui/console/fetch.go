@@ -42,17 +42,14 @@ func printFetchResponse(summary *client.FetchResponse, redactDiags bool) {
 }
 
 func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags bool) {
+	if redactDiags {
+		diags = diags.Redacted()
+	}
 	// sort diagnostics by severity/type
 	sort.Sort(diags)
+
 	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
 	for _, d := range diags {
-		if redactDiags {
-			if rd, ok := d.(diag.Redactable); ok {
-				if r := rd.Redacted(); r != nil {
-					d = r
-				}
-			}
-		}
 		desc := d.Description()
 		switch d.Severity() {
 		case diag.IGNORE:

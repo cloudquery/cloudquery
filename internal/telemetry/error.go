@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net"
+	"regexp"
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -81,14 +82,8 @@ func classifyError(err error) errClass {
 		} else if errors.As(err, &pge) {
 			pgCode = pge.Code
 		}
-		if len(pgCode) >= 2 {
-			switch pgCode[0:2] {
-			// Class 28 - Invalid Authorization Specification
-			// Class 3D - Invalid Catalog Name
-			// Class 57 - Operator Intervention
-			case "28", "3D", "57":
-				return errDatabase
-			}
+		if shouldIgnorePgCode(pgCode) {
+			return errDatabase
 		}
 	}
 
@@ -98,4 +93,33 @@ func classifyError(err error) errClass {
 	}
 
 	return errNoClass
+}
+
+var sqlStateClassRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
+
+func ShouldIgnoreDiag(d diag.Diagnostic) bool {
+	err := d.Error()
+
+	switch d.Type() {
+	case diag.DATABASE:
+		ret := sqlStateClassRegex.FindStringSubmatch(err)
+		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func shouldIgnorePgCode(code string) bool {
+	if len(code) >= 2 {
+		switch code[0:2] {
+		// Class 28 - Invalid Authorization Specification
+		// Class 3D - Invalid Catalog Name
+		// Class 57 - Operator Intervention
+		case "28", "3D", "57":
+			return true
+		}
+	}
+	return false
 }
