@@ -175,12 +175,13 @@ func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, parent *s
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
-		call := c.Services.Compute.Networks.List(c.ProjectId).Context(ctx)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.Networks.List(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.NetworkList)
+
 		res <- output.Items
 		if output.NextPageToken == "" {
 			break

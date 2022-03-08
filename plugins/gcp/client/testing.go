@@ -28,7 +28,7 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 				}
 				c := NewGcpClient(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
-				}), []string{"testProject"}, svc)
+				}), BackoffSettings{}, []string{"testProject"}, svc)
 				return c, nil
 			},
 			ResourceMap: map[string]*schema.Table{

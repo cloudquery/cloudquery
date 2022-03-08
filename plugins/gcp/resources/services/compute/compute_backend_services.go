@@ -560,11 +560,12 @@ func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, pa
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
-		call := c.Services.Compute.BackendServices.AggregatedList(c.ProjectId).Context(ctx).PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.BackendServices.AggregatedList(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.BackendServiceAggregatedList)
 
 		var backendServices []*compute.BackendService
 		for _, backendServicesScopedList := range output.Items {

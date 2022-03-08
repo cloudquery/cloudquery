@@ -193,12 +193,12 @@ func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.Subnetworks.AggregatedList(c.ProjectId).Context(ctx)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.Subnetworks.AggregatedList(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.SubnetworkAggregatedList)
 
 		var subnetworks []*compute.Subnetwork
 		for _, scopedNetworkList := range output.Items {

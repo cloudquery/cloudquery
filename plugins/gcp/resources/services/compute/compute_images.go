@@ -302,12 +302,12 @@ func fetchComputeImages(ctx context.Context, meta schema.ClientMeta, parent *sch
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.Images.List(c.ProjectId)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.Images.List(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.ImageList)
 
 		res <- output.Items
 		if output.NextPageToken == "" {

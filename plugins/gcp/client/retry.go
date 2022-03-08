@@ -2,87 +2,112 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"time"
+	"errors"
+	"reflect"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/googleapis/gax-go/v2"
+	"github.com/hashicorp/go-hclog"
 	"google.golang.org/api/googleapi"
-	"google.golang.org/grpc/status"
 )
 
-// https://github.com/googleapis/google-api-go-client/issues/142
-// https://github.com/googleapis/google-cloud-go/blob/1063c601a4c4a99217b45be0b25caa460e7157a1/internal/retry.go#L34
-// Currently there is no easy way of configuring a custom retrier in the SDK (maybe will be in future clients)
-// So we have to implement a wrapper
-
-// Annotate prepends msg to the error message in err, attempting
-// to preserve other information in err, like an error code.
-//
-// Annotate panics if err is nil.
-//
-// Annotate knows about these error types:
-// - "google.golang.org/grpc/status".Status
-// - "google.golang.org/api/googleapi".Error
-// If the error is not one of these types, Annotate behaves
-// like
-//   fmt.Errorf("%s: %v", msg, err)
-func annotate(err error, msg string) error {
-	if err == nil {
-		panic("Annotate called with nil")
-	}
-	if s, ok := status.FromError(err); ok {
-		p := s.Proto()
-		p.Message = msg + ": " + p.Message
-		return status.ErrorProto(p)
-	}
-	if g, ok := err.(*googleapi.Error); ok {
-		g.Message = msg + ": " + g.Message
-		return g
-	}
-	return fmt.Errorf("%s: %v", msg, err)
-}
-
-// Annotatef uses format and args to format a string, then calls Annotate.
-func annotatef(err error, format string, args ...interface{}) error {
-	return annotate(err, fmt.Sprintf(format, args...))
-}
-
-func (c Client) RetryWithDefaultBackoffIgnoreErrors(ctx context.Context, f func() (stop bool, err error), ignoreCodes map[int]bool) error {
-	return c.RetryWithDefaultBackoff(ctx, func() (stop bool, err error) {
-		stop, err = f()
-		if g, ok := err.(*googleapi.Error); ok && ignoreCodes[g.Code] {
-			c.Logger().Debug(fmt.Sprintf("Retrying... Got %s", err))
-			return false, err
-		}
-		return stop, err
-	})
-}
-
-func (c Client) RetryWithDefaultBackoff(ctx context.Context, f func() (stop bool, err error)) error {
-	return c.Retry(ctx, gax.Backoff{
-		Initial: 60 * time.Second,
-		Max:     5 * time.Minute,
-	}, f)
-}
-
-//nolint:interfacer
-func (c Client) Retry(ctx context.Context, bo gax.Backoff, f func() (stop bool, err error)) error {
-	var lastErr error
-	for {
-		stop, err := f()
-		if stop {
-			return err
-		}
-		// Remember the last "real" error from f.
-		if err != nil && err != context.Canceled && err != context.DeadlineExceeded {
-			lastErr = err
-		}
-		p := bo.Pause()
-		if cerr := gax.Sleep(ctx, p); cerr != nil {
-			if lastErr != nil {
-				return annotatef(lastErr, "retry failed with %v; last error", cerr)
+func shouldRetryFunc(log hclog.Logger) func(err error) bool {
+	return func(err error) bool {
+		if IgnoreErrorHandler(err) {
+			reason := ""
+			var gerr *googleapi.Error
+			if errors.As(err, &gerr) && len(gerr.Errors) > 0 {
+				reason = gerr.Errors[0].Reason
 			}
-			return cerr
+
+			log.Debug("retrier not retrying: ignore error", "err", err, "err_reason", reason)
+			return false
 		}
+
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			log.Debug("retrier not retrying", "err", err)
+			return false
+		}
+
+		log.Debug("retrying error", "err", err)
+		return true
 	}
+}
+
+// RetryingResolver runs the TableResolver with retry. Not very good as it could cause multiple resources with multi-page retries (retrying after fetching some resources)
+func RetryingResolver(f schema.TableResolver) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+		cl := meta.(*Client)
+		return gax.Invoke(ctx, func(ctx context.Context, _ gax.CallSettings) error {
+			return f(ctx, meta, parent, res)
+		}, gax.WithRetry(func() gax.Retryer {
+			return gax.OnErrorFunc(cl.backoff.Gax, shouldRetryFunc(cl.logger))
+		}))
+	}
+}
+
+// RetryingDo runs the given doerIface with retry
+// doerIface needs to have two methods: `Call(...googleapi.CallOption) (T, error)` and `Context(ctx.Context) T`
+func (c *Client) RetryingDo(ctx context.Context, doerIface interface{}, opts ...googleapi.CallOption) (interface{}, error) {
+	var val interface{}
+	err := gax.Invoke(ctx, func(ctx context.Context, _ gax.CallSettings) error {
+		doer := makeDoer(doerIface)
+
+		var err error
+		_ = doer.Context(ctx)
+		val, err = doer.Do(opts...)
+		return err
+	}, gax.WithRetry(func() gax.Retryer {
+		return gax.OnErrorFunc(c.backoff.Gax, shouldRetryFunc(c.logger))
+	}))
+	return val, err
+}
+
+type doer interface {
+	Do(...googleapi.CallOption) (interface{}, error)
+	Context(context.Context) interface{}
+}
+
+func makeDoer(x interface{}) doer {
+	return &doerWrapper{doer: x}
+}
+
+type doerWrapper struct {
+	doer interface{}
+}
+
+func (d *doerWrapper) Do(opts ...googleapi.CallOption) (interface{}, error) {
+	do, ok := reflect.TypeOf(d.doer).MethodByName("Do")
+	if !ok {
+		panic("passed struct doesn't have a Do method")
+	}
+	if do.Type.NumOut() != 2 {
+		panic("passed struct's Do method doesn't return 2 values")
+	}
+
+	ret := do.Func.CallSlice([]reflect.Value{
+		reflect.ValueOf(d.doer),
+		reflect.ValueOf(opts),
+	})
+	if ret[1].IsNil() {
+		return ret[0].Interface(), nil
+	}
+
+	return ret[0].Interface(), ret[1].Interface().(error)
+}
+
+func (d *doerWrapper) Context(ctx context.Context) interface{} {
+	c, ok := reflect.TypeOf(d.doer).MethodByName("Context")
+	if !ok {
+		panic("passed struct doesn't have a Context method")
+	}
+	if c.Type.NumOut() != 1 {
+		panic("passed struct's Context method doesn't return 1 value")
+	}
+
+	ret := c.Func.Call([]reflect.Value{
+		reflect.ValueOf(d.doer),
+		reflect.ValueOf(ctx),
+	})
+	return ret[0].Interface()
 }

@@ -124,12 +124,12 @@ func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.VpnGateways.AggregatedList(c.ProjectId).Context(ctx)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.VpnGateways.AggregatedList(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.VpnGatewayAggregatedList)
 
 		var vpnGateways []*compute.VpnGateway
 		for _, items := range output.Items {

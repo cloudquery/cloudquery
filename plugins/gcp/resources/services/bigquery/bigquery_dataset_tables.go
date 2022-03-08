@@ -419,19 +419,19 @@ func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, par
 	nextPageToken := ""
 	for {
 		call := c.Services.BigQuery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*bigquery.TableList)
 
 		for _, t := range output.Tables {
 			call := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId)
-			table, err := call.Do()
+			item, err := c.RetryingDo(ctx, call)
 			if err != nil {
 				return err
 			}
-			res <- table
+			res <- item.(*bigquery.Table)
 		}
 
 		if output.NextPageToken == "" {

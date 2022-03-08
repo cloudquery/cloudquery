@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"google.golang.org/api/bigquery/v2"
 )
 
 func BigqueryDatasets() *schema.Table {
@@ -113,22 +114,21 @@ func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		call := c.Services.BigQuery.Datasets.
 			List(c.ProjectId).
-			Context(ctx).
 			PageToken(nextPageToken)
-		output, err := call.Do()
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*bigquery.DatasetList)
 
 		for _, d := range output.Datasets {
 			call := c.Services.BigQuery.Datasets.
-				Get(c.ProjectId, d.DatasetReference.DatasetId).
-				Context(ctx)
-			dataset, err := call.Do()
+				Get(c.ProjectId, d.DatasetReference.DatasetId)
+			dataset, err := c.RetryingDo(ctx, call)
 			if err != nil {
 				return err
 			}
-			res <- dataset
+			res <- dataset.(*bigquery.Dataset)
 		}
 
 		if output.NextPageToken == "" {

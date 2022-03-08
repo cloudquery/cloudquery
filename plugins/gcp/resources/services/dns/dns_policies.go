@@ -136,15 +136,12 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Dns.Policies.
-			List(c.ProjectId).
-			Context(ctx).
-			PageToken(nextPageToken)
-
-		output, err := call.Do()
+		call := c.Services.Dns.Policies.List(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*dns.PoliciesListResponse)
 
 		res <- output.Policies
 

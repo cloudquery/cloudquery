@@ -232,11 +232,12 @@ func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.Interconnects.List(c.ProjectId).Context(ctx).PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.Interconnects.List(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.InterconnectList)
 
 		res <- output.Items
 		if output.NextPageToken == "" {

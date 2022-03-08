@@ -174,12 +174,12 @@ func fetchComputeForwardingRules(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.ForwardingRules.AggregatedList(c.ProjectId).Context(ctx)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.ForwardingRules.AggregatedList(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.ForwardingRuleAggregatedList)
 
 		var forwardingRules []*compute.ForwardingRule
 		for _, item := range output.Items {

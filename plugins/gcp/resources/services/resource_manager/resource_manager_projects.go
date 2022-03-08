@@ -90,29 +90,31 @@ func ResourceManagerProjects() *schema.Table {
 func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	call := c.Services.ResourceManager.Projects.
-		Get("projects/" + c.ProjectId).
-		Context(ctx)
-	output, err := call.Do()
+		Get("projects/" + c.ProjectId)
+	list, err := c.RetryingDo(ctx, call)
 	if err != nil {
 		return err
 	}
+	output := list.(*cloudresourcemanager.Project)
+
 	res <- output
 	return nil
 }
 func resolveResourceManagerProjectPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	client := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	p, ok := resource.Item.(*cloudresourcemanager.Project)
 	if !ok {
 		return fmt.Errorf("expected *cloudresourcemanager.Project but got %T", p)
 	}
 
-	call := client.Services.ResourceManager.Projects.
-		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{}).
-		Context(ctx)
-	output, err := call.Do()
+	call := cl.Services.ResourceManager.Projects.
+		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{})
+	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
 		return err
 	}
+	output := list.(*cloudresourcemanager.Policy)
+
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {

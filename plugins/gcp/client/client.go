@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"google.golang.org/api/option"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 )
 
 const defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
@@ -20,16 +20,19 @@ const serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
 type Client struct {
 	projects []string
 	logger   hclog.Logger
+	backoff  BackoffSettings
+
 	// All gcp services initialized by client
 	Services *Services
 	// this is set by table client multiplexer
 	ProjectId string
 }
 
-func NewGcpClient(log hclog.Logger, projects []string, services *Services) *Client {
+func NewGcpClient(log hclog.Logger, bo BackoffSettings, projects []string, services *Services) *Client {
 	return &Client{
-		logger:   log,
 		projects: projects,
+		logger:   log,
+		backoff:  bo,
 		Services: services,
 	}
 }
@@ -58,7 +61,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	}
 
 	// Add a fake request reason because it is not possible to pass nil options
-	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
+	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, providerConfig.ClientOptions()...)
 	if len(serviceAccountKeyJSON) != 0 {
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
@@ -79,7 +82,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		return nil, err
 	}
 
-	client := NewGcpClient(logger, projects, services)
+	client := NewGcpClient(logger, providerConfig.Backoff(), projects, services)
 	return client, nil
 }
 

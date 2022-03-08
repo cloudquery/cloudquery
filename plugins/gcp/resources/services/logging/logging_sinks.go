@@ -146,12 +146,12 @@ func fetchLoggingSinks(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		call := c.Services.Logging.Sinks.
 			List(fmt.Sprintf("projects/%s", c.ProjectId)).
-			Context(ctx).
 			PageToken(nextPageToken)
-		output, err := call.Do()
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*logging.ListSinksResponse)
 
 		res <- output.Sinks
 		if output.NextPageToken == "" {

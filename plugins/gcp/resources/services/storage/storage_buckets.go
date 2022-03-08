@@ -535,12 +535,13 @@ func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Storage.Buckets.List(c.ProjectId).Context(ctx).PageToken(nextPageToken)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Storage.Buckets.List(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*storage.Buckets)
+
 		res <- output.Items
 		if output.NextPageToken == "" {
 			break
@@ -576,9 +577,9 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	if !ok {
 		return fmt.Errorf("expected *storage.Bucket but got %T", p)
 	}
-	svc := meta.(*client.Client)
-	call := svc.Services.Storage.Buckets.GetIamPolicy(p.Name).Context(ctx)
-	output, err := call.Do()
+	cl := meta.(*client.Client)
+	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name)
+	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
 		if client.IgnoreErrorHandler(err) {
 			meta.Logger().Warn("bucket get IAM policy permission denied", "error", err)
@@ -586,6 +587,8 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 		}
 		return err
 	}
+	output := list.(*storage.Policy)
+
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {

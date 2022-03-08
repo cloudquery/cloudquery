@@ -86,13 +86,13 @@ func ResourceManagerFolders() *schema.Table {
 func fetchResourceManagerFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	//Todo service account needs specific permissions to list folders https://cloud.google.com/resource-manager/docs/creating-managing-folders#folder-permissions
-	call := c.Services.ResourceManager.Folders.
-		List().
-		Context(ctx)
-	output, err := call.Do()
+	call := c.Services.ResourceManager.Folders.List()
+	list, err := c.RetryingDo(ctx, call)
 	if err != nil {
 		return err
 	}
+	output := list.(*cloudresourcemanager.ListFoldersResponse)
+
 	res <- output.Folders
 	return nil
 }
@@ -104,12 +104,13 @@ func resolveResourceManagerFolderPolicy(ctx context.Context, meta schema.ClientM
 	}
 
 	call := cl.Services.ResourceManager.Projects.
-		GetIamPolicy("folders/"+p.Name, &cloudresourcemanager.GetIamPolicyRequest{}).
-		Context(ctx)
-	output, err := call.Do()
+		GetIamPolicy("folders/"+p.Name, &cloudresourcemanager.GetIamPolicyRequest{})
+	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
 		return err
 	}
+	output := list.(*cloudresourcemanager.Policy)
+
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {

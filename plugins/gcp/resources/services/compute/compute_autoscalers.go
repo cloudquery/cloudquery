@@ -222,12 +222,12 @@ func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, parent
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
-		call := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).Context(ctx)
-		call.PageToken(nextPageToken)
-		output, err := call.Do()
+		call := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken)
+		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
 			return err
 		}
+		output := list.(*compute.AutoscalerAggregatedList)
 
 		var autoscalers []*compute.Autoscaler
 		for _, items := range output.Items {
