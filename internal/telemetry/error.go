@@ -95,14 +95,11 @@ func classifyError(err error) errClass {
 	return errNoClass
 }
 
-var sqlStateClassRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
+var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
-	err := d.Error()
-
-	switch d.Type() {
-	case diag.DATABASE:
-		ret := sqlStateClassRegex.FindStringSubmatch(err)
+	if d.Type() == diag.DATABASE {
+		ret := sqlStateRegex.FindStringSubmatch(d.Error())
 		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
 			return true
 		}
