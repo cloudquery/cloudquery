@@ -16,6 +16,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
+
 // RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
 func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 	if err == nil {
@@ -38,6 +40,18 @@ func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 	return true
 }
 
+// ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
+func ShouldIgnoreDiag(d diag.Diagnostic) bool {
+	if d.Type() == diag.DATABASE {
+		ret := sqlStateRegex.FindStringSubmatch(d.Error())
+		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
+			return true
+		}
+	}
+
+	return false
+}
+
 type errClass string
 
 const (
@@ -48,6 +62,7 @@ const (
 	errDatabase     = errClass("database")
 )
 
+// classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
 	if st, ok := status.FromError(err); ok {
 		if st.Code() == gcodes.Canceled {
@@ -93,19 +108,6 @@ func classifyError(err error) errClass {
 	}
 
 	return errNoClass
-}
-
-var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
-
-func ShouldIgnoreDiag(d diag.Diagnostic) bool {
-	if d.Type() == diag.DATABASE {
-		ret := sqlStateRegex.FindStringSubmatch(d.Error())
-		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
-			return true
-		}
-	}
-
-	return false
 }
 
 func shouldIgnorePgCode(code string) bool {
