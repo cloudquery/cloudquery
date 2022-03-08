@@ -1101,6 +1101,10 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 		}
 
 		for _, e := range ps.Diagnostics().Squash() {
+			if telemetry.ShouldIgnoreDiag(e) {
+				continue
+			}
+
 			if rd, ok := e.(diag.Redactable); ok {
 				if r := rd.Redacted(); r != nil {
 					e = r
