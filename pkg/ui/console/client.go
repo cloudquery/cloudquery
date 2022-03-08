@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -731,11 +732,12 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 	return policyRunProgress, policyRunCallback
 }
 
-func loadConfig(path string) (*config.Config, bool) {
+func loadConfig(file string) (*config.Config, bool) {
 	parser := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+		config.WithFileFunc(filepath.Dir(file)),
 	)
-	cfg, diags := parser.LoadConfigFile(path)
+	cfg, diags := parser.LoadConfigFile(file)
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
