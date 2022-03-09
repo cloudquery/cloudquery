@@ -648,10 +648,14 @@ provider "aws" {
   }
 
   resource "ec2.images" {
-    identifiers = [ sql("tags->>'Ec2ImageBuilderArn'") ]
+    identifiers = [ "id", "region" ]
     iac {
       terraform {
         type = "aws_imagebuilder_image"
+        identifiers = [
+          "output_resources.#.amis.#.image|@flatten|0",
+          "output_resources.#.amis.#.region|@flatten|0",
+        ]
       }
     }
   }
