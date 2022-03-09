@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/resources/services/account"
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
+	"github.com/cloudquery/cq-provider-azure/resources/services/batch"
 	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
 	"github.com/cloudquery/cq-provider-azure/resources/services/container"
 	"github.com/cloudquery/cq-provider-azure/resources/services/cosmosdb"
@@ -51,6 +52,7 @@ func Provider() *provider.Provider {
 			"account.locations":                  account.AccountLocations(),
 			"authorization.role_assignments":     authorization.AuthorizationRoleAssignments(),
 			"authorization.role_definitions":     authorization.AuthorizationRoleDefinitions(),
+			"batch.accounts":                     batch.BatchAccounts(),
 			"compute.disks":                      compute.ComputeDisks(),
 			"compute.virtual_machines":           compute.ComputeVirtualMachines(),
 			"compute.virtual_machine_scale_sets": compute.VirtualMachineScaleSets(),
