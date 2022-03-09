@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	_ "github.com/Azure/go-autorest/autorest"
@@ -82,6 +83,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		client.subscriptions = subscriptions
 		logger.Info("No subscriptions specified going to using all available ones", "subscriptions", subscriptions)
 	}
+
+	if len(client.subscriptions) == 0 {
+		return nil, fmt.Errorf("could not find any subscription")
+	}
+
 	for _, sub := range client.subscriptions {
 		client.SetSubscriptionServices(sub, services.InitServices(sub, azureAuth))
 	}

@@ -21,6 +21,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/postgresql"
 	"github.com/cloudquery/cq-provider-azure/resources/services/redis"
 	resources2 "github.com/cloudquery/cq-provider-azure/resources/services/resources"
+	"github.com/cloudquery/cq-provider-azure/resources/services/search"
 	"github.com/cloudquery/cq-provider-azure/resources/services/security"
 	"github.com/cloudquery/cq-provider-azure/resources/services/servicebus"
 	"github.com/cloudquery/cq-provider-azure/resources/services/sql"
@@ -85,6 +86,7 @@ func Provider() *provider.Provider {
 			"resources.policy_assignments":         resources2.ResourcesPolicyAssignments(),
 			"resources.links":                      resources2.ResourcesLinks(),
 			"security.assessments":                 security.SecurityAssessments(),
+			"search.services":                      search.SearchServices(),
 			"security.auto_provisioning_settings":  security.SecurityAutoProvisioningSettings(),
 			"security.contacts":                    security.SecurityContacts(),
 			"security.pricings":                    security.SecurityPricings(),
