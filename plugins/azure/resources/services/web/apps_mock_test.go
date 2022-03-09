@@ -37,6 +37,7 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return web.AppCollection{}, nil
 	})
 	apps.EXPECT().List(gomock.Any()).Return(page, nil)
+	apps.EXPECT().GetVnetConnection(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(web.VnetInfo{}, nil)
 
 	pp := PublishData{
 		PublishData: []PublishProfile{

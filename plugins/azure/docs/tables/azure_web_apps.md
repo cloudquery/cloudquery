@@ -62,6 +62,7 @@ Site a web app, a mobile app backend, or an API app
 |identity_tenant_id|text|Tenant of managed service identity|
 |identity_principal_id|text|Principal Id of managed service identity|
 |identity_user_assigned_identities|jsonb|The list of user assigned identities associated with the resource The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MicrosoftManagedIdentity/userAssignedIdentities/{identityName}|
+|vnet_connection|jsonb|Describes the virtual network connection for the web app.|
 |id|text|Resource Id|
 |name|text|Resource Name|
 |kind|text|Kind of resource|
