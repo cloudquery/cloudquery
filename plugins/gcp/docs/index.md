@@ -32,6 +32,12 @@ provider "gcp" {
     // project_ids = [<CHANGE_THIS_TO_YOUR_PROJECT_ID>]
     // Optional. ServiceAccountKeyJSON passed as value instead of a file path, can be passed also via env: CQ_SERVICE_ACCOUNT_KEY_JSON
     // service_account_key_json = <YOUR_JSON_SERVICE_ACCOUNT_KEY_DATA>
+    // Optional. GRPC Retry/backoff configuration, time units in seconds. Documented in https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md
+    // backoff_base_delay = 1
+    // backoff_multiplier = 1.6
+    // backoff_max_delay = 120
+    // backoff_jitter = 0.2
+    // backoff_min_connect_timeout = 0
   }
 }
 ```
