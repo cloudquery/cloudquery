@@ -18,7 +18,7 @@ func Ec2Eips() *schema.Table {
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "public_ip"}},
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "allocation_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
