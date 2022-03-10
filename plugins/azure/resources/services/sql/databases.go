@@ -327,8 +327,9 @@ func SqlDatabases() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "azure_sql_database_db_blob_auditing_policies",
-				Description: "DatabaseBlobAuditingPolicy a database blob auditing policy",
+				Description: "A database blob auditing policy",
 				Resolver:    fetchSqlDatabaseDbBlobAuditingPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "database_cq_id",
@@ -417,6 +418,7 @@ func SqlDatabases() *schema.Table {
 				Name:        "azure_sql_database_db_vulnerability_assessments",
 				Description: "DatabaseVulnerabilityAssessment a database vulnerability assessment",
 				Resolver:    fetchSqlDatabaseDbVulnerabilityAssessments,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "database_cq_id",
@@ -557,6 +559,7 @@ func SqlDatabases() *schema.Table {
 				Name:        "azure_sql_database_db_threat_detection_policies",
 				Description: "DatabaseSecurityAlertPolicy contains information about a database Threat Detection policy",
 				Resolver:    fetchSqlDatabaseDbThreatDetectionPolicies,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"database_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "database_cq_id",

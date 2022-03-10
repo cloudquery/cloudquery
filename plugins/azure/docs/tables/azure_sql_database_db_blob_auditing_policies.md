@@ -1,6 +1,6 @@
 
 # Table: azure_sql_database_db_blob_auditing_policies
-DatabaseBlobAuditingPolicy a database blob auditing policy
+A database blob auditing policy
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
