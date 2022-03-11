@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -332,7 +333,7 @@ func fetchMySQLServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 	svc := meta.(*client.Client).Services().MySQL.Servers
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if response.Value == nil {
 		return nil
@@ -354,11 +355,11 @@ func fetchMySQLServerConfigurations(ctx context.Context, meta schema.ClientMeta,
 
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	configurations, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if configurations.Value == nil {
 		return nil

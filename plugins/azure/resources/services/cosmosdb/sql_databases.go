@@ -4,17 +4,19 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func CosmosDBSqlDatabases() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_cosmosdb_sql_databases",
-		Description:  "Azure Cosmos DB SQL database.",
-		Resolver:     fetchCosmosdbSqlDatabases,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_cosmosdb_sql_databases",
+		Description:   "Azure Cosmos DB SQL database.",
+		Resolver:      fetchCosmosdbSqlDatabases,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -111,7 +113,7 @@ func fetchCosmosdbSqlDatabases(ctx context.Context, meta schema.ClientMeta, _ *s
 
 	response, err := accSvc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if response.Value == nil {
 		return nil
@@ -129,9 +131,8 @@ func fetchCosmosdbSqlDatabases(ctx context.Context, meta schema.ClientMeta, _ *s
 		}
 
 		response, err := sqlSvc.ListSQLDatabases(ctx, details.ResourceGroup, *account.Name)
-
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if response.Value == nil {
 			continue

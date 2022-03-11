@@ -7,17 +7,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func IothubHubs() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_iothub_hubs",
-		Description:  "Azure IoT hub.",
-		Resolver:     fetchIothubHubs,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_iothub_hubs",
+		Description:   "Azure IoT hub.",
+		Resolver:      fetchIothubHubs,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -784,12 +786,12 @@ func fetchIothubHubs(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 	svc := meta.(*client.Client).Services().IotHub
 	response, err := svc.ListBySubscription(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -804,7 +806,7 @@ func resolveIothubHubsRoutingEnrichments(_ context.Context, _ schema.ClientMeta,
 	}
 	b, err := json.Marshal(iothub.Properties.Routing.Enrichments)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -818,7 +820,7 @@ func resolveIothubHubsLocations(_ context.Context, _ schema.ClientMeta, resource
 	}
 	b, err := json.Marshal(iothub.Properties.Locations)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

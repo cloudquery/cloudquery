@@ -6,6 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -37,22 +38,25 @@ func ServicebusNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Tier"),
 			},
 			{
-				Name:        "sku_capacity",
-				Description: "The specified messaging units for the tier.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Sku.Capacity"),
+				Name:          "sku_capacity",
+				Description:   "The specified messaging units for the tier.",
+				Type:          schema.TypeInt,
+				Resolver:      schema.PathResolver("Sku.Capacity"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "ObjectId from the KeyVault.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "ObjectId from the KeyVault.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "TenantId from the KeyVault.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "TenantId from the KeyVault.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -61,16 +65,18 @@ func ServicebusNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
 			{
-				Name:        "user_assigned_identities",
-				Description: "Properties for User Assigned Identities.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("Identity.UserAssignedIdentities"),
+				Name:          "user_assigned_identities",
+				Description:   "Properties for User Assigned Identities.",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("Identity.UserAssignedIdentities"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "system_data",
-				Description: "The system meta data relating to this resource.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveServicebusNamespacesSystemData,
+				Name:          "system_data",
+				Description:   "The system meta data relating to this resource.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveServicebusNamespacesSystemData,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "location",
@@ -142,10 +148,11 @@ func ServicebusNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("SBNamespaceProperties.ZoneRedundant"),
 			},
 			{
-				Name:        "key_vault_properties",
-				Description: "Properties of KeyVault (BYOK Encryption).",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveServicebusNamespacesKeyVaultProperties,
+				Name:          "key_vault_properties",
+				Description:   "Properties of KeyVault (BYOK Encryption).",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveServicebusNamespacesKeyVaultProperties,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "key_source",
@@ -154,10 +161,11 @@ func ServicebusNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("SBNamespaceProperties.Encryption.KeySource"),
 			},
 			{
-				Name:        "require_infrastructure_encryption",
-				Description: "Enable Infrastructure Encryption (Double Encryption).",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("SBNamespaceProperties.Encryption.RequireInfrastructureEncryption"),
+				Name:          "require_infrastructure_encryption",
+				Description:   "Enable Infrastructure Encryption (Double Encryption).",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("SBNamespaceProperties.Encryption.RequireInfrastructureEncryption"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "disable_local_auth",
@@ -168,9 +176,10 @@ func ServicebusNamespaces() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_servicebus_namespace_private_endpoint_connections",
-				Description: "List of private endpoint connections.",
-				Resolver:    fetchServicebusNamespacesPrivateEndpointConnections,
+				Name:          "azure_servicebus_namespace_private_endpoint_connections",
+				Description:   "List of private endpoint connections.",
+				Resolver:      fetchServicebusNamespacesPrivateEndpointConnections,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "namespace_cq_id",
@@ -232,12 +241,12 @@ func fetchServicebusNamespaces(ctx context.Context, meta schema.ClientMeta, pare
 	svc := meta.(*client.Client).Services().Servicebus.Namespaces
 	r, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for r.NotDone() {
 		res <- r.Values()
 		if err := r.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

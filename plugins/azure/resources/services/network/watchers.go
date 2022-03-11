@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -70,7 +71,7 @@ func fetchNetworkWatchers(ctx context.Context, meta schema.ClientMeta, parent *s
 	svc := meta.(*client.Client).Services().Network.Watchers
 	result, err := svc.ListAll(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if result.Value == nil {
 		return nil

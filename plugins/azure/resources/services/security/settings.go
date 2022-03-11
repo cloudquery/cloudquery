@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -62,7 +63,7 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := meta.(*client.Client).Services().Security.Settings
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		for _, item := range response.Values() {
@@ -77,7 +78,7 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 			}
 		}
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -72,7 +73,7 @@ func fetchSubscriptionSubscriptions(ctx context.Context, meta schema.ClientMeta,
 	svc := meta.(*client.Client).Services().Subscriptions
 	m, err := svc.Subscriptions.Get(ctx, svc.SubscriptionID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- m
 	return nil

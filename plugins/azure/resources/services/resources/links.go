@@ -6,17 +6,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func ResourcesLinks() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_resources_links",
-		Description:  "Azure resource links",
-		Resolver:     fetchResourcesLinks,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_resources_links",
+		Description:   "Azure resource links",
+		Resolver:      fetchResourcesLinks,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -67,12 +69,12 @@ func fetchResourcesLinks(ctx context.Context, meta schema.ClientMeta, _ *schema.
 	svc := meta.(*client.Client).Services().Resources.Links
 	response, err := svc.ListAtSubscription(ctx, "")
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

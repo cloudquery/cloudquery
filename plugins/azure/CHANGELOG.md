@@ -1,3 +1,7 @@
+# Deprecated
+
+Changelog is now under GitHub Releases page
+
 # Changelog
 
 All notable changes to this provider will be documented in this file.

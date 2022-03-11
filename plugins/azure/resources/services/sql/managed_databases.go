@@ -6,14 +6,16 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func sqlManagedDatabases() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_managed_databases",
-		Description: "ManagedDatabase a managed database resource.",
-		Resolver:    fetchSqlManagedDatabases,
+		Name:          "azure_sql_managed_databases",
+		Description:   "ManagedDatabase a managed database resource.",
+		Resolver:      fetchSqlManagedDatabases,
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "collation",
@@ -297,16 +299,16 @@ func fetchSqlManagedDatabases(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	databases, err := svc.ListByInstance(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for databases.NotDone() {
 		res <- databases.Values()
 		if err := databases.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -319,7 +321,7 @@ func fetchSqlManagedDatabaseVulnerabilityAssessments(ctx context.Context, meta s
 	}
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.ManagedInstance)
 	if !ok {
@@ -327,12 +329,12 @@ func fetchSqlManagedDatabaseVulnerabilityAssessments(ctx context.Context, meta s
 	}
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -345,7 +347,7 @@ func fetchSqlManagedDatabaseVulnerabilityAssessmentScans(ctx context.Context, me
 	}
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.ManagedInstance)
 	if !ok {
@@ -353,12 +355,12 @@ func fetchSqlManagedDatabaseVulnerabilityAssessmentScans(ctx context.Context, me
 	}
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

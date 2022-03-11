@@ -7,15 +7,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func SqlDatabases() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_databases",
-		Description: "Azure sql database",
-		Resolver:    fetchSqlDatabases,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+		Name:          "azure_sql_databases",
+		Description:   "Azure sql database",
+		Resolver:      fetchSqlDatabases,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "server_cq_id",
@@ -656,16 +658,16 @@ func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *sche
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	databases, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for databases.NotDone() {
 		res <- databases.Values()
 		if err := databases.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -678,7 +680,7 @@ func ResolveSqlDatabaseTransparentDataEncryption(ctx context.Context, meta schem
 	}
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := resource.Parent.Item.(sql.Server)
 	if !ok {
@@ -686,12 +688,12 @@ func ResolveSqlDatabaseTransparentDataEncryption(ctx context.Context, meta schem
 	}
 	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	data, err := json.Marshal(result)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	return resource.Set(c.Name, data)
@@ -701,7 +703,7 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.Server)
 	if !ok {
@@ -709,12 +711,12 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 	}
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -724,7 +726,7 @@ func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.Server)
 	if !ok {
@@ -732,12 +734,12 @@ func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema
 	}
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -747,7 +749,7 @@ func fetchSqlDatabaseDbVulnerabilityAssessmentScans(ctx context.Context, meta sc
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.Server)
 	if !ok {
@@ -755,12 +757,12 @@ func fetchSqlDatabaseDbVulnerabilityAssessmentScans(ctx context.Context, meta sc
 	}
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -786,7 +788,7 @@ func resolveSqlDatabaseDbVulnerabilityAssessmentScansErrors(ctx context.Context,
 
 	data, err := json.Marshal(parsed)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	return resource.Set(c.Name, data)
@@ -796,7 +798,7 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	database := parent.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	server, ok := parent.Parent.Item.(sql.Server)
 	if !ok {
@@ -804,7 +806,7 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	}
 	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- result
 	return nil
@@ -816,15 +818,15 @@ func resolveSQLDatabaseBackupLongTermRetentionPolicy(ctx context.Context, meta s
 	server := resource.Parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	p, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	b, err := json.Marshal(p)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

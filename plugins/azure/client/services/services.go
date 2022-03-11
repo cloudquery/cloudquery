@@ -5,7 +5,7 @@
 //go:generate mockgen -destination=./mocks/authorization.go -package=mocks . RoleAssignmentsClient,RoleDefinitionsClient
 //go:generate mockgen -destination=./mocks/containerservice.go -package=mocks . ManagedClustersClient
 //go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubClient
-//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient,KeysClient
 //go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogClient
 //go:generate mockgen -destination=./mocks/logic.go -package=mocks . MonitorDiagnosticSettingsClient,WorkflowsClient
 //go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
@@ -58,7 +58,11 @@ type Services struct {
 	Web               WebClient
 }
 
-func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
+func InitServices(subscriptionId string, auth autorest.Authorizer) (Services, error) {
+	keyVault, err := NewKeyVaultClient(subscriptionId, auth)
+	if err != nil {
+		return Services{}, err
+	}
 	return Services{
 		AD:                NewADClient(subscriptionId, auth),
 		Authorization:     NewAuthorizationClient(subscriptionId, auth),
@@ -70,8 +74,8 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		DataLake:          NewDataLakeClient(subscriptionId, auth),
 		EventHub:          NewEventHubClient(subscriptionId, auth),
 		IotHub:            NewIotHubClient(subscriptionId, auth),
-		KeyVault:          NewKeyVaultClient(subscriptionId, auth),
 		Logic:             NewLogicClient(subscriptionId, auth),
+		KeyVault:          keyVault,
 		MariaDB:           NewMariaDBClient(subscriptionId, auth),
 		Monitor:           NewMonitorClient(subscriptionId, auth),
 		MySQL:             NewMySQLClient(subscriptionId, auth),
@@ -87,5 +91,5 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) Services {
 		StreamAnalytics:   NewStreamAnalyticsClient(subscriptionId, auth),
 		Subscriptions:     NewSubscriptionsClient(subscriptionId, auth),
 		Web:               NewWebClient(subscriptionId, auth),
-	}
+	}, nil
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -82,10 +83,11 @@ func SQLServers() *schema.Table {
 				Resolver:    schema.PathResolver("ServerProperties.FullyQualifiedDomainName"),
 			},
 			{
-				Name:        "minimal_tls_version",
-				Description: "Minimal TLS version Allowed values: '10', '11', '12'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ServerProperties.MinimalTLSVersion"),
+				Name:          "minimal_tls_version",
+				Description:   "Minimal TLS version Allowed values: '10', '11', '12'",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ServerProperties.MinimalTLSVersion"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "public_network_access",
@@ -544,10 +546,11 @@ func SQLServers() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_sql_server_virtual_network_rules",
-				Description: "List of virtual network for a server",
-				Resolver:    fetchSqlServerVirtualNetworkRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				Name:          "azure_sql_server_virtual_network_rules",
+				Description:   "List of virtual network for a server",
+				Resolver:      fetchSqlServerVirtualNetworkRules,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -685,12 +688,12 @@ func fetchSqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	svc := meta.(*client.Client).Services().SQL.Servers
 	servers, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for servers.NotDone() {
 		res <- servers.Values()
 		if err := servers.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -715,16 +718,16 @@ func fetchSqlServerVirtualNetworkRules(ctx context.Context, meta schema.ClientMe
 	}
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -738,11 +741,11 @@ func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if result.Value != nil {
 		res <- *result.Value
@@ -758,16 +761,16 @@ func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -798,16 +801,16 @@ func fetchSqlServerDevopsAuditSettings(ctx context.Context, meta schema.ClientMe
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -818,16 +821,16 @@ func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.Cli
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -841,16 +844,16 @@ func fetchSqlServerSecurityAlertPolicies(ctx context.Context, meta schema.Client
 	}
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err = result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

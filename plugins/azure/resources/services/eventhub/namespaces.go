@@ -7,18 +7,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func EventHubNamespaces() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_eventhub_namespaces",
-		Description:   "Azure EventHub namespace",
-		Resolver:      fetchEventhubNamespaces,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		IgnoreInTests: true,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:         "azure_eventhub_namespaces",
+		Description:  "Azure EventHub namespace",
+		Resolver:     fetchEventhubNamespaces,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -45,16 +45,18 @@ func EventHubNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Capacity"),
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "ObjectId from the KeyVault",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "ObjectId from the KeyVault",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "TenantId from the KeyVault",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "TenantId from the KeyVault",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -85,10 +87,11 @@ func EventHubNamespaces() *schema.Table {
 				Resolver:    schema.PathResolver("EHNamespaceProperties.ServiceBusEndpoint"),
 			},
 			{
-				Name:        "cluster_arm_id",
-				Description: "Cluster ARM ID of the Namespace.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EHNamespaceProperties.ClusterArmID"),
+				Name:          "cluster_arm_id",
+				Description:   "Cluster ARM ID of the Namespace.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("EHNamespaceProperties.ClusterArmID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "metric_id",
@@ -161,9 +164,10 @@ func EventHubNamespaces() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_eventhub_namespace_encryption_key_vault_properties",
-				Description: "KeyVaultProperties properties to configure keyVault Properties",
-				Resolver:    fetchEventhubNamespaceEncryptionKeyVaultProperties,
+				Name:          "azure_eventhub_namespace_encryption_key_vault_properties",
+				Description:   "KeyVaultProperties properties to configure keyVault Properties",
+				Resolver:      fetchEventhubNamespaceEncryptionKeyVaultProperties,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "namespace_cq_id",
@@ -201,12 +205,12 @@ func fetchEventhubNamespaces(ctx context.Context, meta schema.ClientMeta, _ *sch
 	svc := meta.(*client.Client).Services().EventHub
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -228,15 +232,15 @@ func resolveNamespaceNetworkRuleSet(ctx context.Context, meta schema.ClientMeta,
 	namespace := resource.Item.(eventhub.EHNamespace)
 	details, err := client.ParseResourceID(*namespace.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	rs, err := svc.GetNetworkRuleSet(ctx, details.ResourceGroup, *namespace.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	b, err := json.Marshal(rs)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

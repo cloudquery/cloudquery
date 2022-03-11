@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -159,9 +160,10 @@ func ContainerRegistries() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_container_registry_network_rule_set_virtual_network_rules",
-				Description: "VirtualNetworkRule virtual network rule",
-				Resolver:    fetchContainerRegistryNetworkRuleSetVirtualNetworkRules,
+				Name:          "azure_container_registry_network_rule_set_virtual_network_rules",
+				Description:   "VirtualNetworkRule virtual network rule",
+				Resolver:      fetchContainerRegistryNetworkRuleSetVirtualNetworkRules,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "registry_cq_id",
@@ -183,9 +185,10 @@ func ContainerRegistries() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_container_registry_network_rule_set_ip_rules",
-				Description: "IPRule IP rule with specific IP or IP range in CIDR format",
-				Resolver:    fetchContainerRegistryNetworkRuleSetIpRules,
+				Name:          "azure_container_registry_network_rule_set_ip_rules",
+				Description:   "IPRule IP rule with specific IP or IP range in CIDR format",
+				Resolver:      fetchContainerRegistryNetworkRuleSetIpRules,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "registry_cq_id",
@@ -207,9 +210,10 @@ func ContainerRegistries() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_container_registry_replications",
-				Description: "Replication an object that represents a replication for a container registry",
-				Resolver:    fetchContainerRegistryReplications,
+				Name:          "azure_container_registry_replications",
+				Description:   "Replication an object that represents a replication for a container registry",
+				Resolver:      fetchContainerRegistryReplications,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "registry_cq_id",
@@ -281,12 +285,12 @@ func fetchContainerRegistries(ctx context.Context, meta schema.ClientMeta, paren
 	svc := meta.(*client.Client).Services().ContainerRegistry.Registries
 	result, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -334,16 +338,16 @@ func fetchContainerRegistryReplications(ctx context.Context, meta schema.ClientM
 	svc := meta.(*client.Client).Services().ContainerRegistry.Replications
 	resource, err := client.ParseResourceID(*r.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.List(ctx, resource.ResourceGroup, *r.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

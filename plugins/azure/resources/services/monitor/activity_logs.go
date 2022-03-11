@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -244,7 +245,7 @@ func fetchMonitorActivityLogs(ctx context.Context, meta schema.ClientMeta, paren
 	filter := fmt.Sprintf("eventTimestamp ge '%s' and eventTimestamp le '%s'", past.Format(time.RFC3339Nano), now.Format(time.RFC3339Nano))
 	response, err := svc.List(ctx, filter, "")
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// azure returns same events sometimes so we have to filter out the duplicates
 	seen := make(map[string]struct{})
@@ -257,9 +258,11 @@ func fetchMonitorActivityLogs(ctx context.Context, meta schema.ClientMeta, paren
 			res <- v
 		}
 		// this seems to fail with the filter - https://github.com/Azure/azure-sdk-for-go/issues/15108
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
+		// TODO: follow this issue and change
+		break
+		// if err := response.NextWithContext(ctx); err != nil {
+		// 	return diag.WrapError(err)
+		// }
 	}
 	return nil
 }

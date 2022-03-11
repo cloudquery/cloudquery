@@ -5,18 +5,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func ComputeDisks() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_compute_disks",
-		Description:   "Azure compute disk",
-		Resolver:      fetchComputeDisks,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_compute_disks",
+		Description:  "Azure compute disk",
+		Resolver:     fetchComputeDisks,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -158,16 +158,18 @@ func ComputeDisks() *schema.Table {
 				Resolver:    schema.PathResolver("DiskProperties.UniqueID"),
 			},
 			{
-				Name:        "encryption_settings_collection_enabled",
-				Description: "Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption If EncryptionSettings is null in the request object, the existing settings remain unchanged",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("DiskProperties.EncryptionSettingsCollection.Enabled"),
+				Name:          "encryption_settings_collection_enabled",
+				Description:   "Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption If EncryptionSettings is null in the request object, the existing settings remain unchanged",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("DiskProperties.EncryptionSettingsCollection.Enabled"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "encryption_settings_collection_encryption_settings_version",
-				Description: "Describes what type of encryption is used for the disks Once this field is set, it cannot be overwritten '10' corresponds to Azure Disk Encryption with AAD app'11' corresponds to Azure Disk Encryption",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DiskProperties.EncryptionSettingsCollection.EncryptionSettingsVersion"),
+				Name:          "encryption_settings_collection_encryption_settings_version",
+				Description:   "Describes what type of encryption is used for the disks Once this field is set, it cannot be overwritten '10' corresponds to Azure Disk Encryption with AAD app'11' corresponds to Azure Disk Encryption",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DiskProperties.EncryptionSettingsCollection.EncryptionSettingsVersion"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "provisioning_state",
@@ -326,12 +328,12 @@ func fetchComputeDisks(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 	svc := meta.(*client.Client).Services().Compute.Disks
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

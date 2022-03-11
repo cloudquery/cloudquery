@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -220,12 +221,12 @@ func fetchRedisServices(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := meta.(*client.Client).Services().Redis
 	response, err := svc.ListBySubscription(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -250,7 +251,7 @@ func resolveServiceJSONField(getter func(s redis.ResourceType) interface{}) sche
 		s := resource.Item.(redis.ResourceType)
 		b, err := json.Marshal(getter(s))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(c.Name, b)
 	}

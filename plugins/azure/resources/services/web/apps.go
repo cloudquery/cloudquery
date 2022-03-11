@@ -9,7 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 	"github.com/cloudquery/cq-provider-azure/client"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -515,12 +515,12 @@ func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	svc := meta.(*client.Client).Services().Web.Apps
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -537,7 +537,7 @@ func resolveWebAppSiteConfig(ctx context.Context, meta schema.ClientMeta, resour
 
 	data, err := json.Marshal(r.SiteConfig)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -563,16 +563,16 @@ func fetchWebAppPublishingProfiles(ctx context.Context, meta schema.ClientMeta, 
 	svc := meta.(*client.Client).Services().Web.Apps
 	response, err := svc.ListPublishingProfileXMLWithSecrets(ctx, *p.ResourceGroup, *p.Name, web.CsmPublishingProfileOptions{})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	buf := new(bytes.Buffer)
 	if _, err = buf.ReadFrom(response.Body); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	var profileData PublishData
 	if err = xml.Unmarshal(buf.Bytes(), &profileData); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	res <- profileData.PublishData

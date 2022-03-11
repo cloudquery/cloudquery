@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/analytics/mgmt/account"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -181,6 +182,9 @@ func AnalyticsAccounts() *schema.Table {
 						Description: "The resource identifier",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
+						// This looks like a deprecated field, always returns nil
+						// we might want to delete it in the future
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "name",
@@ -191,13 +195,17 @@ func AnalyticsAccounts() *schema.Table {
 						Name:        "type",
 						Description: "The resource type",
 						Type:        schema.TypeString,
+						// This looks like a deprecated field, always returns nil
+						// we might want to delete it in the future
+						IgnoreInTests: true,
 					},
 				},
 			},
 			{
-				Name:        "azure_datalake_analytics_account_storage_accounts",
-				Description: "StorageAccountInformation azure Storage account information",
-				Resolver:    fetchDatalakeAnalyticsAccountStorageAccounts,
+				Name:          "azure_datalake_analytics_account_storage_accounts",
+				Description:   "StorageAccountInformation azure Storage account information",
+				Resolver:      fetchDatalakeAnalyticsAccountStorageAccounts,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "analytics_account_cq_id",
@@ -209,7 +217,6 @@ func AnalyticsAccounts() *schema.Table {
 						Name:        "suffix",
 						Description: "The optional suffix for the storage account",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StorageAccountInformationProperties.Suffix"),
 					},
 					{
 						Name:        "id",
@@ -233,6 +240,9 @@ func AnalyticsAccounts() *schema.Table {
 				Name:        "azure_datalake_analytics_account_compute_policies",
 				Description: "ComputePolicy data Lake Analytics compute policy information",
 				Resolver:    fetchDatalakeAnalyticsAccountComputePolicies,
+				// Not sure if it's possible to create those via terraform
+				// https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_lake_analytics_account
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "analytics_account_cq_id",
@@ -269,6 +279,9 @@ func AnalyticsAccounts() *schema.Table {
 						Description: "The resource identifier",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
+						// This looks like a deprecated field, always returns nil
+						// we might want to delete it in the future
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "name",
@@ -279,6 +292,9 @@ func AnalyticsAccounts() *schema.Table {
 						Name:        "type",
 						Description: "The resource type",
 						Type:        schema.TypeString,
+						// This looks like a deprecated field, always returns nil
+						// we might want to delete it in the future
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -310,6 +326,8 @@ func AnalyticsAccounts() *schema.Table {
 						Description: "The resource identifier",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
+						// This column is deprecated and empty
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "name",
@@ -320,6 +338,8 @@ func AnalyticsAccounts() *schema.Table {
 						Name:        "type",
 						Description: "The resource type",
 						Type:        schema.TypeString,
+						// This column is deprecated and empty
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -335,24 +355,24 @@ func fetchDatalakeAnalyticsAccounts(ctx context.Context, meta schema.ClientMeta,
 	svc := meta.(*client.Client).Services().DataLake.DataLakeAnalyticsAccounts
 	result, err := svc.List(ctx, "", nil, nil, "", "", nil)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		accounts := result.Values()
 		for _, a := range accounts {
 			resourceDetails, err := client.ParseResourceID(*a.ID)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			result, err := svc.Get(ctx, resourceDetails.ResourceGroup, *a.Name)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- result
 		}
 
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

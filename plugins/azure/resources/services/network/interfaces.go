@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -31,16 +32,18 @@ func NetworkInterfaces() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "extended_location_name",
-				Description: "The name of the extended location",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ExtendedLocation.Name"),
+				Name:          "extended_location_name",
+				Description:   "The name of the extended location",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ExtendedLocation.Name"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "extended_location_type",
-				Description: "The type of the extended location",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ExtendedLocation.Type"),
+				Name:          "extended_location_type",
+				Description:   "The type of the extended location",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ExtendedLocation.Type"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "id",
@@ -71,10 +74,11 @@ func NetworkInterfaces() *schema.Table {
 				Resolver:    schema.PathResolver("InterfacePropertiesFormat.DNSSettings.DNSServers"),
 			},
 			{
-				Name:        "dns_settings_internal_dns_name_label",
-				Description: "The internal dns name label.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InterfacePropertiesFormat.DNSSettings.InternalDNSNameLabel"),
+				Name:          "dns_settings_internal_dns_name_label",
+				Description:   "The internal dns name label.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("InterfacePropertiesFormat.DNSSettings.InternalDNSNameLabel"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "dns_settings_internal_domain_name_suffix",
@@ -83,17 +87,19 @@ func NetworkInterfaces() *schema.Table {
 				Resolver:    schema.PathResolver("InterfacePropertiesFormat.DNSSettings.InternalDomainNameSuffix"),
 			},
 			{
-				Name:        "dns_settings_internal_fqdn",
-				Description: "Fully qualified DNS name supporting internal communications between VMs in the same virtual network.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InterfacePropertiesFormat.DNSSettings.InternalFqdn"),
+				Name:          "dns_settings_internal_fqdn",
+				Description:   "Fully qualified DNS name supporting internal communications between VMs in the same virtual network.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("InterfacePropertiesFormat.DNSSettings.InternalFqdn"),
+				IgnoreInTests: true,
 			},
 
 			{
-				Name:        "dscp_configuration_id",
-				Description: "A reference to the dscp configuration to which the network interface is linked.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InterfacePropertiesFormat.DscpConfiguration.ID"),
+				Name:          "dscp_configuration_id",
+				Description:   "A reference to the dscp configuration to which the network interface is linked.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("InterfacePropertiesFormat.DscpConfiguration.ID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "enable_accelerated_networking",
@@ -126,10 +132,11 @@ func NetworkInterfaces() *schema.Table {
 				Resolver:    schema.PathResolver("InterfacePropertiesFormat.MigrationPhase"),
 			},
 			{
-				Name:        "network_security_group",
-				Description: "The reference to the NetworkSecurityGroup resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InterfacePropertiesFormat.NetworkSecurityGroup.ID"),
+				Name:          "network_security_group",
+				Description:   "The reference to the NetworkSecurityGroup resource.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("InterfacePropertiesFormat.NetworkSecurityGroup.ID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "nic_type",
@@ -150,10 +157,11 @@ func NetworkInterfaces() *schema.Table {
 				Resolver:    schema.PathResolver("InterfacePropertiesFormat.PrivateEndpoint.ID"),
 			},
 			{
-				Name:        "private_link_service",
-				Description: "Privatelinkservice of the network interface resource.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkInterfacePrivateLinkService,
+				Name:          "private_link_service",
+				Description:   "Privatelinkservice of the network interface resource.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveNetworkInterfacePrivateLinkService,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "provisioning_state",
@@ -192,11 +200,10 @@ func NetworkInterfaces() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "azure_network_interface_ip_configurations",
-				Description:   "NetworkInterface IP Configurations. ",
-				Resolver:      fetchNetworkInterfaceIPConfigurations,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"interface_cq_id", "id"}},
-				IgnoreInTests: true,
+				Name:        "azure_network_interface_ip_configurations",
+				Description: "NetworkInterface IP Configurations. ",
+				Resolver:    fetchNetworkInterfaceIPConfigurations,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"interface_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "interface_cq_id",
@@ -232,34 +239,39 @@ func NetworkInterfaces() *schema.Table {
 						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.Primary"),
 					},
 					{
-						Name:        "application_gateway_backend_address_pools",
-						Description: "The reference to ApplicationGatewayBackendAddressPool resource.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.ApplicationGatewayBackendAddressPools"),
+						Name:          "application_gateway_backend_address_pools",
+						Description:   "The reference to ApplicationGatewayBackendAddressPool resource.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.ApplicationGatewayBackendAddressPools"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "application_security_groups",
-						Description: "Application security groups in which the IP configuration is included.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.ApplicationSecurityGroups"),
+						Name:          "application_security_groups",
+						Description:   "Application security groups in which the IP configuration is included.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.ApplicationSecurityGroups"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "load_balancer_backend_address_pools",
-						Description: "The reference to LoadBalancerBackendAddressPool resource.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools"),
+						Name:          "load_balancer_backend_address_pools",
+						Description:   "The reference to LoadBalancerBackendAddressPool resource.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "load_balancer_inbound_nat_rules",
-						Description: "A list of references of LoadBalancerInboundNatRules.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.LoadBalancerInboundNatRules"),
+						Name:          "load_balancer_inbound_nat_rules",
+						Description:   "A list of references of LoadBalancerInboundNatRules.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.LoadBalancerInboundNatRules"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "private_ip_address",
-						Description: "Private IP address of the IP configuration.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PrivateIPAddress"),
+						Name:          "private_ip_address",
+						Description:   "Private IP address of the IP configuration.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PrivateIPAddress"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "private_ip_address_version",
@@ -274,10 +286,11 @@ func NetworkInterfaces() *schema.Table {
 						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PrivateIPAllocationMethod"),
 					},
 					{
-						Name:        "private_link_connection_properties",
-						Description: "PrivateLinkConnection properties for the network interface.",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveInterfaceIPConfigurationPrivateLinkConnectionProperties,
+						Name:          "private_link_connection_properties",
+						Description:   "PrivateLinkConnection properties for the network interface.",
+						Type:          schema.TypeJSON,
+						Resolver:      resolveInterfaceIPConfigurationPrivateLinkConnectionProperties,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "provisioning_state",
@@ -286,22 +299,25 @@ func NetworkInterfaces() *schema.Table {
 						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.ProvisioningState"),
 					},
 					{
-						Name:        "public_ip_address",
-						Description: "Public IP address bound to the IP configuration.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PublicIPAddress.ID"),
+						Name:          "public_ip_address",
+						Description:   "Public IP address bound to the IP configuration.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.PublicIPAddress.ID"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "subnet_id",
-						Description: "subnet ID of network interface ip configuration",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.Subnet.ID"),
+						Name:          "subnet_id",
+						Description:   "subnet ID of network interface ip configuration",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.Subnet.ID"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "virtual_network_taps",
-						Description: "The reference to Virtual Network Taps.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.VirtualNetworkTaps"),
+						Name:          "virtual_network_taps",
+						Description:   "The reference to Virtual Network Taps.",
+						Type:          schema.TypeJSON,
+						Resolver:      schema.PathResolver("InterfaceIPConfigurationPropertiesFormat.VirtualNetworkTaps"),
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -317,12 +333,12 @@ func fetchNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, _ *sche
 	svc := meta.(*client.Client).Services().Network.Interfaces
 	response, err := svc.ListAll(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -350,7 +366,7 @@ func resolveNetworkInterfacePrivateLinkService(ctx context.Context, meta schema.
 
 	out, err := json.Marshal(p.InterfacePropertiesFormat.PrivateLinkService)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, out)
 }
@@ -367,7 +383,7 @@ func resolveNetworkInterfaceTapConfigurations(ctx context.Context, meta schema.C
 
 	out, err := json.Marshal(p.InterfacePropertiesFormat.TapConfigurations)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, out)
 }

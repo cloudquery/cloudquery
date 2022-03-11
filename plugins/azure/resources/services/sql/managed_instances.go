@@ -6,6 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -25,10 +26,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "The Azure Active Directory principal id",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "The Azure Active Directory principal id",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -37,10 +39,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "The Azure Active Directory tenant id",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "The Azure Active Directory tenant id",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "sku_name",
@@ -55,10 +58,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Tier"),
 			},
 			{
-				Name:        "sku_size",
-				Description: "Size of the particular SKU",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Size"),
+				Name:          "sku_size",
+				Description:   "Size of the particular SKU",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Sku.Size"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "sku_family",
@@ -139,10 +143,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ManagedInstanceProperties.DNSZone"),
 			},
 			{
-				Name:        "dns_zone_partner",
-				Description: "The resource id of another managed instance whose DNS zone this managed instance will share after creation",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedInstanceProperties.DNSZonePartner"),
+				Name:          "dns_zone_partner",
+				Description:   "The resource id of another managed instance whose DNS zone this managed instance will share after creation",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ManagedInstanceProperties.DNSZonePartner"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "public_data_endpoint_enabled",
@@ -151,10 +156,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ManagedInstanceProperties.PublicDataEndpointEnabled"),
 			},
 			{
-				Name:        "source_managed_instance_id",
-				Description: "The resource identifier of the source managed instance associated with create operation of this instance",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedInstanceProperties.SourceManagedInstanceID"),
+				Name:          "source_managed_instance_id",
+				Description:   "The resource identifier of the source managed instance associated with create operation of this instance",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ManagedInstanceProperties.SourceManagedInstanceID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "restore_point_in_time",
@@ -174,10 +180,11 @@ func SqlManagedInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ManagedInstanceProperties.TimezoneID"),
 			},
 			{
-				Name:        "instance_pool_id",
-				Description: "The Id of the instance pool this managed server belongs to",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedInstanceProperties.InstancePoolID"),
+				Name:          "instance_pool_id",
+				Description:   "The Id of the instance pool this managed server belongs to",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ManagedInstanceProperties.InstancePoolID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "maintenance_configuration_id",
@@ -233,9 +240,10 @@ func SqlManagedInstances() *schema.Table {
 		Relations: []*schema.Table{
 			sqlManagedDatabases(),
 			{
-				Name:        "azure_sql_managed_instance_private_endpoint_connections",
-				Description: "ManagedInstancePecProperty a private endpoint connection under a managed instance",
-				Resolver:    fetchSqlManagedInstancePrivateEndpointConnections,
+				Name:          "azure_sql_managed_instance_private_endpoint_connections",
+				Description:   "ManagedInstancePecProperty a private endpoint connection under a managed instance",
+				Resolver:      fetchSqlManagedInstancePrivateEndpointConnections,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "managed_instance_cq_id",
@@ -293,22 +301,25 @@ func SqlManagedInstances() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "storage_container_path",
-						Description: "A blob storage container path to hold the scan results (eg",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageContainerPath"),
+						Name:          "storage_container_path",
+						Description:   "A blob storage container path to hold the scan results (eg",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageContainerPath"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "storage_container_sas_key",
-						Description: "A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath' parameter",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageContainerSasKey"),
+						Name:          "storage_container_sas_key",
+						Description:   "A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath' parameter",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageContainerSasKey"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "storage_account_access_key",
-						Description: "Specifies the identifier key of the storage account for vulnerability assessment scan results",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageAccountAccessKey"),
+						Name:          "storage_account_access_key",
+						Description:   "Specifies the identifier key of the storage account for vulnerability assessment scan results",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.StorageAccountAccessKey"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "recurring_scans_is_enabled",
@@ -323,10 +334,11 @@ func SqlManagedInstances() *schema.Table {
 						Resolver:    schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.RecurringScans.EmailSubscriptionAdmins"),
 					},
 					{
-						Name:        "recurring_scans_emails",
-						Description: "Specifies an array of e-mail addresses to which the scan notification is sent",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.RecurringScans.Emails"),
+						Name:          "recurring_scans_emails",
+						Description:   "Specifies an array of e-mail addresses to which the scan notification is sent",
+						Type:          schema.TypeStringArray,
+						Resolver:      schema.PathResolver("ManagedInstanceVulnerabilityAssessmentProperties.RecurringScans.Emails"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "id",
@@ -418,12 +430,12 @@ func fetchSqlManagedInstances(ctx context.Context, meta schema.ClientMeta, paren
 	svc := meta.(*client.Client).Services().SQL.ManagedInstances
 	servers, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for servers.NotDone() {
 		res <- servers.Values()
 		if err := servers.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -446,16 +458,16 @@ func fetchSqlManagedInstanceVulnerabilityAssessments(ctx context.Context, meta s
 	}
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByInstance(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -468,16 +480,16 @@ func fetchSqlManagedInstanceEncryptionProtectors(ctx context.Context, meta schem
 	}
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByInstance(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

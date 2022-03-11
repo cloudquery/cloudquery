@@ -16,6 +16,7 @@ require (
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
+
 require (
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
 	github.com/Azure/go-autorest/autorest/adal v0.9.14 // indirect

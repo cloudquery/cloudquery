@@ -4,17 +4,19 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func SecurityContacts() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_security_contacts",
-		Description:  "Contact contact details for security issues",
-		Resolver:     fetchSecurityContacts,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_security_contacts",
+		Description:   "Contact contact details for security issues",
+		Resolver:      fetchSecurityContacts,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -74,12 +76,12 @@ func fetchSecurityContacts(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := meta.(*client.Client).Services().Security.Contacts
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 	}

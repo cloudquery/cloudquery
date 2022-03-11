@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -44,10 +45,11 @@ func ResourcesPolicyAssignments() *schema.Table {
 				Resolver:    schema.PathResolver("AssignmentProperties.Scope"),
 			},
 			{
-				Name:        "not_scopes",
-				Description: "The policy's excluded scopes",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("AssignmentProperties.NotScopes"),
+				Name:          "not_scopes",
+				Description:   "The policy's excluded scopes",
+				Type:          schema.TypeStringArray,
+				Resolver:      schema.PathResolver("AssignmentProperties.NotScopes"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "parameters",
@@ -138,12 +140,12 @@ func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta
 	svc := meta.(*client.Client).Services().Resources.Assignments
 	response, err := svc.List(ctx, meta.(*client.Client).SubscriptionId, "", nil)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -159,7 +161,7 @@ func resolveResourcesPolicyAssignmentMetadata(ctx context.Context, meta schema.C
 
 	out, err := json.Marshal(a.Metadata)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, out)
 }

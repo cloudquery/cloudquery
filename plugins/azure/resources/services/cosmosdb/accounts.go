@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -97,10 +98,11 @@ func CosmosDBAccounts() *schema.Table {
 				Resolver:    schema.PathResolver("DatabaseAccountGetProperties.EnableMultipleWriteLocations"),
 			},
 			{
-				Name:        "enable_cassandra_connector",
-				Description: "Enables the cassandra connector on the Cosmos DB C* account",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("DatabaseAccountGetProperties.EnableCassandraConnector"),
+				Name:          "enable_cassandra_connector",
+				Description:   "Enables the cassandra connector on the Cosmos DB C* account",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("DatabaseAccountGetProperties.EnableCassandraConnector"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "connector_offer",
@@ -115,10 +117,11 @@ func CosmosDBAccounts() *schema.Table {
 				Resolver:    schema.PathResolver("DatabaseAccountGetProperties.DisableKeyBasedMetadataWriteAccess"),
 			},
 			{
-				Name:        "key_vault_key_uri",
-				Description: "The URI of the key vault",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DatabaseAccountGetProperties.KeyVaultKeyURI"),
+				Name:          "key_vault_key_uri",
+				Description:   "The URI of the key vault",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("DatabaseAccountGetProperties.KeyVaultKeyURI"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "public_network_access",
@@ -360,22 +363,25 @@ func CosmosDBAccounts() *schema.Table {
 						Resolver:    schema.PathResolver("PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.ActionsRequired"),
 					},
 					{
-						Name:        "description",
-						Description: "The private link service connection description.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.Description"),
+						Name:          "description",
+						Description:   "The private link service connection description.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.Description"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "group_id",
-						Description: "Group id of the private endpoint.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PrivateEndpointConnectionProperties.GroupID"),
+						Name:          "group_id",
+						Description:   "Group id of the private endpoint.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("PrivateEndpointConnectionProperties.GroupID"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "provisioning_state",
-						Description: "Provisioning state of the private endpoint.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PrivateEndpointConnectionProperties.ProvisioningState"),
+						Name:          "provisioning_state",
+						Description:   "Provisioning state of the private endpoint.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("PrivateEndpointConnectionProperties.ProvisioningState"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "id",
@@ -384,14 +390,16 @@ func CosmosDBAccounts() *schema.Table {
 						Resolver:    schema.PathResolver("ID"),
 					},
 					{
-						Name:        "name",
-						Description: "The name of the resource",
-						Type:        schema.TypeString,
+						Name:          "name",
+						Description:   "The name of the resource",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "type",
-						Description: "The type of the resource",
-						Type:        schema.TypeString,
+						Name:          "type",
+						Description:   "The type of the resource",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 				},
 			},
@@ -445,7 +453,7 @@ func fetchCosmosdbAccounts(ctx context.Context, meta schema.ClientMeta, _ *schem
 	svc := meta.(*client.Client).Services().CosmosDb.Accounts
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if response.Value == nil {
 		return nil
@@ -477,7 +485,7 @@ func resolveCosmosdbAccountsVirtualNetworkRules(_ context.Context, _ schema.Clie
 	}
 	b, err := json.Marshal(account.VirtualNetworkRules)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	keyvault71 "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -415,12 +416,12 @@ func fetchKeyvaultVaults(ctx context.Context, meta schema.ClientMeta, parent *sc
 	maxResults := int32(1000)
 	response, err := svc.ListBySubscription(ctx, &maxResults)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -469,12 +470,12 @@ func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	maxResults := int32(25)
 	response, err := svc.GetKeys(ctx, *vault.Properties.VaultURI, &maxResults)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -536,12 +537,12 @@ func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, pare
 	maxResults := int32(25)
 	result, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, &maxResults)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

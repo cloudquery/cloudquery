@@ -55,11 +55,16 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
 	providerConfig := config.(*Config)
 
-	azureAuth, err := auth.NewAuthorizerFromEnvironment()
-
+	logger.Info("Trying to authenticate via CLI")
+	azureAuth, err := auth.NewAuthorizerFromCLI()
 	if err != nil {
-		return nil, err
+		logger.Info("Trying to authenticate via environment variables")
+		azureAuth, err = auth.NewAuthorizerFromEnvironment()
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	client := NewAzureClient(logger, providerConfig.Subscriptions)
 
 	if len(providerConfig.Subscriptions) == 0 {
@@ -89,7 +94,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	}
 
 	for _, sub := range client.subscriptions {
-		client.SetSubscriptionServices(sub, services.InitServices(sub, azureAuth))
+		svcs, err := services.InitServices(sub, azureAuth)
+		if err != nil {
+			return nil, err
+		}
+		client.SetSubscriptionServices(sub, svcs)
 	}
 
 	// Return the initialized client and it will be passed to your resources

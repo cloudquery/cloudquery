@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -375,7 +376,7 @@ func fetchPostgresqlServers(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := meta.(*client.Client).Services().PostgreSQL.Servers
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if response.Value == nil {
 		return nil
@@ -397,11 +398,11 @@ func fetchPostgresqlServerConfigurations(ctx context.Context, meta schema.Client
 
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	configurations, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if configurations.Value == nil {
 		return nil
@@ -416,11 +417,11 @@ func fetchPostgresqlServerFirewallRules(ctx context.Context, meta schema.ClientM
 
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	firewallRules, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if firewallRules.Value == nil {
 		return nil

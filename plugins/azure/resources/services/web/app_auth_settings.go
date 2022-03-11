@@ -2,10 +2,10 @@ package web
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -316,15 +316,12 @@ func WebAppAuthSettings() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchWebAppAuthSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(web.Site)
-	if !ok {
-		return fmt.Errorf("expected web.Site but got %T", parent.Item)
-	}
+	p := parent.Item.(web.Site)
 
 	svc := meta.(*client.Client).Services().Web.Apps
 	response, err := svc.GetAuthSettings(ctx, *p.ResourceGroup, *p.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- response
 	return nil

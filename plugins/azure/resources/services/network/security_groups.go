@@ -7,18 +7,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func NetworkSecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_security_groups",
-		Description:   "Azure network security group",
-		Resolver:      fetchNetworkSecurityGroups,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_network_security_groups",
+		Description:  "Azure network security group",
+		Resolver:     fetchNetworkSecurityGroups,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -192,10 +192,11 @@ func NetworkSecurityGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_network_security_group_flow_logs",
-				Description: "FlowLog a flow log resource",
-				Resolver:    fetchNetworkSecurityGroupFlowLogs,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "id"}},
+				Name:          "azure_network_security_group_flow_logs",
+				Description:   "FlowLog a flow log resource",
+				Resolver:      fetchNetworkSecurityGroupFlowLogs,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
@@ -454,12 +455,12 @@ func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, par
 	svc := meta.(*client.Client).Services().Network.SecurityGroups
 	response, err := svc.ListAll(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -496,7 +497,7 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 		//there is no API to get network.FlowLog directly so we fetch network.FlowLogInformation and fill network.FlowLog structure
 		result, err := svc.GetFlowLogStatus(ctx, resourceGroup, networkWatcherName, network.FlowLogStatusParameters{TargetResourceID: p.ID})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		client, ok := svc.(network.WatchersClient)
 		if !ok {
@@ -504,7 +505,7 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 		}
 		properties, err := result.Result(client)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		fl.Name = &name

@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
 )
@@ -807,12 +808,12 @@ func fetchStorageAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema
 	svc := meta.(*client.Client).Services().Storage.Accounts
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -824,7 +825,7 @@ func resolveStorageAccountBlobRestoreStatusParametersBlobRanges(_ context.Contex
 	}
 	data, err := json.Marshal(account.BlobRestoreStatus.Parameters.BlobRanges)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("blob_restore_status_parameters_blob_ranges", data)
 }
@@ -861,7 +862,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	storage := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
@@ -869,7 +870,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
 		return nil
@@ -878,12 +879,12 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	// use account key to create a new authorizer and then fetch service properties
 	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	blobProps := storage.NewBlobServiceProperties(auth)
 	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	var logging *accounts.Logging
 	if result.StorageServiceProperties != nil {
@@ -891,7 +892,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	}
 	data, err := json.Marshal(logging)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -904,7 +905,7 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	storage := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
@@ -920,16 +921,16 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	// use account key to create a new authorizer and then fetch service properties
 	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	blobProps := storage.NewQueueServiceProperties(auth)
 	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	data, err := json.Marshal(result.Logging)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
