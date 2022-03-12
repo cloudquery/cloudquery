@@ -34,5 +34,5 @@ jobs:
 
       - name: Terraform Apply
         id: apply
-        run: ./scripts/terraform-apply-all.sh
+        run: ./scripts/terraform-apply-changes-only.sh
 

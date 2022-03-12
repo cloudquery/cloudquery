@@ -6,7 +6,7 @@ for f in terraform/*; do
     if [ -d $f ]; then
         cd $f/prod
         echo "Running terraform init,apply in $f"
-        terraform init
+        terraform init -no-color
         terraform apply -no-color
         cd -
     fi

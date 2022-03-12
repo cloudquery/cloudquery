@@ -9,7 +9,7 @@ for f in terraform/*; do
         # if there are any changes run terraform apply
         if [ "$CHANGES" != "" ]; then
             echo "detected changes in $f. Running terraform fmt..."
-            terraform fmt
+            terraform fmt -no-color
         fi
         cd -
     fi
