@@ -520,10 +520,11 @@ func ComputeVirtualMachines() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_compute_virtual_machine_resources",
-				Description: "VirtualMachineExtension describes a Virtual Machine Extension.",
-				Resolver:    fetchComputeVirtualMachineResources,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_machine_cq_id", "id"}},
+				Name:          "azure_compute_virtual_machine_resources",
+				Description:   "VirtualMachineExtension describes a Virtual Machine Extension.",
+				Resolver:      fetchComputeVirtualMachineResources,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_machine_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_machine_cq_id",

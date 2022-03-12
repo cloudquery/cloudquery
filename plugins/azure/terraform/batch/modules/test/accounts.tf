@@ -1,8 +1,3 @@
-resource "random_password" "mariadb" {
-  length           = 16
-  special          = true
-}
-
 resource "azurerm_resource_group" "batch" {
   name     = "${var.prefix}-batch"
   location = "East US"

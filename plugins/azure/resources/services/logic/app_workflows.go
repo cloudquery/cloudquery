@@ -68,10 +68,11 @@ func LogicAppWorkflows() *schema.Table {
 				Resolver:    endpointsConfigurationResolver,
 			},
 			{
-				Name:        "access_control",
-				Description: "The access control configuration.",
-				Type:        schema.TypeJSON,
-				Resolver:    accessControlResolver,
+				Name:          "access_control",
+				Description:   "The access control configuration.",
+				Type:          schema.TypeJSON,
+				Resolver:      accessControlResolver,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "sku_name",
@@ -80,58 +81,67 @@ func LogicAppWorkflows() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Name"),
 			},
 			{
-				Name:        "sku_plan_id",
-				Description: "The reference to plan resource id.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Plan.ID"),
+				Name:          "sku_plan_id",
+				Description:   "The reference to plan resource id.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Sku.Plan.ID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "sku_plan_name",
-				Description: "The reference to plan resource name.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Plan.Name"),
+				Name:          "sku_plan_name",
+				Description:   "The reference to plan resource name.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Sku.Plan.Name"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "sku_plan_type",
-				Description: "The reference to plan resource type.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Plan.Type"),
+				Name:          "sku_plan_type",
+				Description:   "The reference to plan resource type.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Sku.Plan.Type"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_account_id",
-				Description: "The integration account id.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationAccount.ID"),
+				Name:          "integration_account_id",
+				Description:   "The integration account id.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationAccount.ID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_account_name",
-				Description: "The integration account name.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationAccount.Name"),
+				Name:          "integration_account_name",
+				Description:   "The integration account name.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationAccount.Name"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_account_type",
-				Description: "The integration account type.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationAccount.Type"),
+				Name:          "integration_account_type",
+				Description:   "The integration account type.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationAccount.Type"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_service_environment_id",
-				Description: "The integration service environment id.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationServiceEnvironment.ID"),
+				Name:          "integration_service_environment_id",
+				Description:   "The integration service environment id.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationServiceEnvironment.ID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_service_environment_name",
-				Description: "The integration service environment name.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationServiceEnvironment.Name"),
+				Name:          "integration_service_environment_name",
+				Description:   "The integration service environment name.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationServiceEnvironment.Name"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "integration_service_environment_type",
-				Description: "The integration service environment type.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IntegrationServiceEnvironment.Type"),
+				Name:          "integration_service_environment_type",
+				Description:   "The integration service environment type.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("IntegrationServiceEnvironment.Type"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "definition",
@@ -152,22 +162,25 @@ func LogicAppWorkflows() *schema.Table {
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "Tenant of managed service identity.",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "Tenant of managed service identity.",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "Principal Id of managed service identity.",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "Principal Id of managed service identity.",
+				Type:          schema.TypeUUID,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_user_assigned_identities",
-				Description: "The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
-				Type:        schema.TypeJSON,
-				Resolver:    identityUserAssignedIdentitiesResolver,
+				Name:          "identity_user_assigned_identities",
+				Description:   "The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
+				Type:          schema.TypeJSON,
+				Resolver:      identityUserAssignedIdentitiesResolver,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "id",
@@ -229,16 +242,22 @@ func fetchLogicAppWorkflows(ctx context.Context, meta schema.ClientMeta, parent 
 }
 
 func endpointsConfigurationResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	endpointsConfiguration := *resource.Item.(logic.Workflow).EndpointsConfiguration
-	b, err := json.Marshal(endpointsConfiguration)
+	workflow := resource.Item.(logic.Workflow)
+	if workflow.EndpointsConfiguration == nil {
+		return nil
+	}
+	b, err := json.Marshal(*workflow.EndpointsConfiguration)
 	if err != nil {
 		return err
 	}
 	return resource.Set(c.Name, b)
 }
 func accessControlResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	accessControl := *resource.Item.(logic.Workflow).AccessControl
-	b, err := json.Marshal(accessControl)
+	workflow := resource.Item.(logic.Workflow)
+	if workflow.AccessControl == nil {
+		return nil
+	}
+	b, err := json.Marshal(*workflow.AccessControl)
 	if err != nil {
 		return err
 	}
@@ -257,11 +276,11 @@ func definitionResolver(ctx context.Context, meta schema.ClientMeta, resource *s
 	return resource.Set(c.Name, b)
 }
 func parametersResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	parameters := resource.Item.(logic.Workflow).Parameters
-	if parameters == nil {
-		parameters = make(map[string]*logic.WorkflowParameter)
+	workflow := resource.Item.(logic.Workflow)
+	if workflow.Parameters == nil {
+		return nil
 	}
-	b, err := json.Marshal(parameters)
+	b, err := json.Marshal(workflow.Parameters)
 	if err != nil {
 		return err
 	}
@@ -269,9 +288,11 @@ func parametersResolver(ctx context.Context, meta schema.ClientMeta, resource *s
 }
 
 func identityUserAssignedIdentitiesResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	identity := *resource.Item.(logic.Workflow).Identity
-	userAssignedIdentities := identity.UserAssignedIdentities
-	b, err := json.Marshal(userAssignedIdentities)
+	workflow := resource.Item.(logic.Workflow)
+	if workflow.Identity == nil || workflow.Identity.UserAssignedIdentities == nil {
+		return nil
+	}
+	b, err := json.Marshal(workflow.Identity.UserAssignedIdentities)
 	if err != nil {
 		return err
 	}

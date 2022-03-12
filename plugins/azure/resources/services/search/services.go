@@ -80,16 +80,18 @@ func SearchServices() *schema.Table {
 				Resolver:    schema.PathResolver("Sku.Name"),
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "The principal ID of resource identity.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "The principal ID of resource identity.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "The tenant ID of resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "The tenant ID of resource.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -179,9 +181,10 @@ func SearchServices() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_search_service_shared_private_link_resources",
-				Description: "SharedPrivateLinkResource describes a Shared Private Link Resource managed by the Azure Cognitive Search service.",
-				Resolver:    fetchSearchServiceSharedPrivateLinkResources,
+				Name:          "azure_search_service_shared_private_link_resources",
+				Description:   "SharedPrivateLinkResource describes a Shared Private Link Resource managed by the Azure Cognitive Search service.",
+				Resolver:      fetchSearchServiceSharedPrivateLinkResources,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "service_cq_id",

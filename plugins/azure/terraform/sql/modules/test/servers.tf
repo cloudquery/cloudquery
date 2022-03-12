@@ -19,16 +19,16 @@ resource "azurerm_sql_server" "example" {
   }
 }
 
-resource "azurerm_private_endpoint" "sqlserver-private-endpoint" {
-  name                = "${var.prefix}-sql-private-endpoint"
-  location            = azurerm_resource_group.sql.location
-  resource_group_name = azurerm_resource_group.sql.name
-  subnet_id           = azurerm_subnet.sql-managed.id
+// resource "azurerm_private_endpoint" "sqlserver-private-endpoint" {
+//   name                = "${var.prefix}-sql-private-endpoint"
+//   location            = azurerm_resource_group.sql.location
+//   resource_group_name = azurerm_resource_group.sql.name
+//   subnet_id           = azurerm_subnet.sql-managed.id
 
-  private_service_connection {
-    name                           = "sql-server-connection"
-    is_manual_connection           = false
-    private_connection_resource_id = azurerm_sql_server.example.id
-    subresource_names              = ["sqlServer"]
-  }
-}
+//   private_service_connection {
+//     name                           = "sql-server-connection"
+//     is_manual_connection           = false
+//     private_connection_resource_id = azurerm_sql_server.example.id
+//     subresource_names              = ["sqlServer"]
+//   }
+// }

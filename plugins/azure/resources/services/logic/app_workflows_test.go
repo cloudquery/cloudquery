@@ -32,7 +32,7 @@ func buildLogicAppWorkflowMock(t *testing.T, ctrl *gomock.Controller) services.S
 	workflowProperties.State = logic.WorkflowStateCompleted
 	// workflow.Definition = nil
 	workflow.WorkflowProperties = &workflowProperties
-	// workflow.Parameters = make(map[string]*logic.WorkflowParameter)
+	workflow.Parameters = make(map[string]*logic.WorkflowParameter)
 	diagnosticSettings.EXPECT().List(gomock.Any(), gomock.Any()).Return(
 		insights.DiagnosticSettingsResourceCollection{
 			Value: &[]insights.DiagnosticSettingsResource{diagnosticSettingsResource},
