@@ -11,7 +11,7 @@ for f in terraform/*; do
         if [ "$CHANGES" != "" ]; then
             echo "detected changes in $f. Running terraform apply..."
             terraform init -no-color
-            terraform apply -no-color
+            terraform apply -no-color -auto-approve
         fi
         cd -
     fi

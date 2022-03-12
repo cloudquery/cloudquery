@@ -10,7 +10,7 @@ for f in terraform/*; do
         if [ "$CHANGES" != "" ]; then
             echo "detected changes in $f. Running terraform plan..."
             terraform init -no-color
-            terraform plan -no-color
+            terraform plan -lock=false -no-color
         fi
         cd -
     fi
