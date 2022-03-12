@@ -25,12 +25,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      # In this scenario we are not using OIDC yet because we are waiting for
+      # https://github.com/hashicorp/go-azure-helpers/issues/91
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
