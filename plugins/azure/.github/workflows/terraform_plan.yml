@@ -17,9 +17,6 @@ jobs:
         contents: read    # This is required for actions/checkout@v2
     name: Terrafrom Plan
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./terraform
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
