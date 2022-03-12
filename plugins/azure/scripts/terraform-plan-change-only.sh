@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 for f in terraform/*; do
     if [ -d $f ]; then
@@ -9,7 +8,7 @@ for f in terraform/*; do
         CHANGES=$(git diff --name-only HEAD..origin/main ../)
         # if there are any changes run terraform apply
         if [ "$CHANGES" != "" ]; then
-            echo "detected changes in $f. Running terraform apply..."
+            echo "detected changes in $f. Running terraform plan..."
             terraform init
             terraform plan
         fi

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 for f in terraform/*; do
     if [ -d $f ]; then

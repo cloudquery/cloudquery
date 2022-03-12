@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 for f in terraform/*; do
     if [ -d $f ]; then
         cd $f/prod
+        echo "Running terraform init,apply in $f"
         terraform init
         terraform apply -no-color
         cd -

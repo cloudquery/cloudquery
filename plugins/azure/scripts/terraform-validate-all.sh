@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 for f in terraform/*; do
     if [ -d $f ]; then
         cd $f/prod
+        echo "Running terraform init,validate in $f"
         terraform init
         terraform validate
         cd -
