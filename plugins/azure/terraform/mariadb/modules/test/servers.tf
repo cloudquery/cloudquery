@@ -9,21 +9,23 @@ resource "azurerm_resource_group" "mariadb" {
 }
 
 resource "azurerm_mariadb_server" "example" {
-  name                = "${var.prefix}cqmariaserver"
+  name                = "${var.prefix}-maria"
   location            = azurerm_resource_group.mariadb.location
   resource_group_name = azurerm_resource_group.mariadb.name
 
-  sku_name = "GP_Gen5_2"
-
-  storage_mb                   = 51200
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-
-  administrator_login          = "acctestun"
+  administrator_login          = "mariadbadmin"
   administrator_login_password = random_password.mariadb.result
-  version                      = "10.2"
-  ssl_enforcement_enabled      = true
-  create_mode = "Replica"
+
+  sku_name   = "GP_Gen5_2"
+  storage_mb = 5120
+  version    = "10.2"
+
+  auto_grow_enabled             = false
+  backup_retention_days         = 7
+  geo_redundant_backup_enabled  = false
+  public_network_access_enabled = false
+  ssl_enforcement_enabled       = true
+
 }
 
 resource "azurerm_mariadb_database" "example" {
