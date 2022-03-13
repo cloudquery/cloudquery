@@ -9,7 +9,7 @@ for f in terraform/*; do
         # if there are any changes run terraform apply
         if [ "$CHANGES" != "" ]; then
             echo "detected changes in $f. Running terraform apply..."
-            terraform validate -no-color
+            terraform init -no-color
         fi
         cd -
     fi

@@ -3,6 +3,7 @@ resource "azurerm_resource_group" "batch" {
   location = "East US"
 }
 
+
 resource "azurerm_storage_account" "example" {
   name                     = "cq${var.prefix}batch"
   resource_group_name      = azurerm_resource_group.batch.name
