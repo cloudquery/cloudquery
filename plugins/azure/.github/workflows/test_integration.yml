@@ -12,6 +12,7 @@ on:
     paths-ignore:
       - 'terraform/**'
       - '.github/**'
+      - 'scripts/**'
 
 jobs:
   is_organization_member:

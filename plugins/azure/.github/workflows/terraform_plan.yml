@@ -87,3 +87,18 @@ jobs:
               body: output
             })
 
+      # Install the Infracost CLI, see https://github.com/infracost/actions/tree/master/setup
+      # for other inputs such as version, and pricing-api-endpoint (for self-hosted users).
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v1
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+
+      - name: Run Infracost
+        run: infracost breakdown --config-file=/tmp/infracost.yml --format=json --out-file=/tmp/infracost.json
+
+      - name: Post the comment
+        uses: infracost/actions/comment@v1
+        with:
+          path: /tmp/infracost.json
+          behavior: update

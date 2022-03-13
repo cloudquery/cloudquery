@@ -11,6 +11,7 @@ on:
     paths-ignore:
       - 'terraform/**'
       - '.github/**'
+      - 'scripts/**'
 
 jobs:
   test_unit:
