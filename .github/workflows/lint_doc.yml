@@ -9,6 +9,8 @@ on:
       - main
     paths-ignore:
       - 'terraform/**'
+      - '.github/**'
+      - 'scripts/**'
 
 jobs:
   lint_doc:
