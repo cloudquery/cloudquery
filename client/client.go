@@ -8,10 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
-
-	"github.com/aws/smithy-go/logging"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -23,6 +19,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
@@ -68,9 +65,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
-	"github.com/hashicorp/go-hclog"
-
+	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/hashicorp/go-hclog"
 )
 
 var envVarsToCheck = []string{
@@ -94,55 +91,55 @@ var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as fi
 type Services struct {
 	ACM                    ACMClient
 	Analyzer               AnalyzerClient
+	Apigateway             ApigatewayClient
+	Apigatewayv2           Apigatewayv2Client
 	ApplicationAutoscaling ApplicationAutoscalingClient
 	Autoscaling            AutoscalingClient
+	Cloudformation         CloudFormationClient
 	Cloudfront             CloudfrontClient
 	Cloudtrail             CloudtrailClient
 	Cloudwatch             CloudwatchClient
 	CloudwatchLogs         CloudwatchLogsClient
+	Codebuild              CodebuildClient
 	CognitoIdentityPools   CognitoIdentityPoolsClient
 	CognitoUserPools       CognitoUserPoolsClient
+	ConfigService          ConfigServiceClient
 	DAX                    DAXClient
+	DMS                    DatabasemigrationserviceClient
 	Directconnect          DirectconnectClient
 	DynamoDB               DynamoDBClient
-	DMS                    DatabasemigrationserviceClient
+	EC2                    Ec2Client
 	ECR                    EcrClient
 	ECS                    EcsClient
-	EC2                    Ec2Client
 	EFS                    EfsClient
+	ELBv1                  ElbV1Client
+	ELBv2                  ElbV2Client
+	EMR                    EmrClient
 	Eks                    EksClient
 	ElasticBeanstalk       ElasticbeanstalkClient
 	ElasticSearch          ElasticSearch
-	EMR                    EmrClient
-	SNS                    SnsClient
-	ELBv1                  ElbV1Client
-	ELBv2                  ElbV2Client
 	FSX                    FsxClient
+	GuardDuty              GuardDutyClient
 	IAM                    IamClient
+	IOT                    IOTClient
 	KMS                    KmsClient
+	Lambda                 LambdaClient
 	MQ                     MQClient
 	Organizations          OrganizationsClient
+	RDS                    RdsClient
 	Redshift               RedshiftClient
 	Route53                Route53Client
 	Route53Domains         Route53DomainsClient
-	RDS                    RdsClient
 	S3                     S3Client
 	S3Control              S3ControlClient
 	S3Manager              S3ManagerClient
+	SNS                    SnsClient
+	SQS                    SQSClient
 	SSM                    SSMClient
 	SageMaker              SageMakerClient
 	SecretsManager         SecretsManagerClient
-	SQS                    SQSClient
-	Apigateway             ApigatewayClient
-	Apigatewayv2           Apigatewayv2Client
-	Lambda                 LambdaClient
-	ConfigService          ConfigServiceClient
 	Waf                    WafClient
 	WafV2                  WafV2Client
-	Codebuild              CodebuildClient
-	GuardDuty              GuardDutyClient
-	IOT                    IOTClient
-	Cloudformation         CloudFormationClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
