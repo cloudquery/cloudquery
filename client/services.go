@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
@@ -142,6 +143,12 @@ type CloudwatchClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_cloudwatchlogs.go . CloudwatchLogsClient
 type CloudwatchLogsClient interface {
 	DescribeMetricFilters(ctx context.Context, params *cloudwatchlogs.DescribeMetricFiltersInput, optFns ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeMetricFiltersOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudformation.go . CloudFormationClient
+type CloudFormationClient interface {
+	cloudformation.DescribeStacksAPIClient
+	cloudformation.ListStackResourcesAPIClient
 }
 
 //go:generate mockgen -destination=./mocks/mock_cognitoidentitypools.go -package=mocks . CognitoIdentityPoolsClient
