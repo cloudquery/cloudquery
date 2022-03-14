@@ -1,3 +1,4 @@
+
 resource "aws_iot_thing_type" "example" {
   name = "${var.prefix}-iot"
   tags = var.tags
