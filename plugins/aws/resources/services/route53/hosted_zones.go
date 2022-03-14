@@ -439,10 +439,13 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 		}
 
 		res <- response.ResourceRecordSets
-		if aws.ToString(response.NextRecordIdentifier) == "" {
+		if !response.IsTruncated {
 			break
 		}
+
 		config.StartRecordIdentifier = response.NextRecordIdentifier
+		config.StartRecordType = response.NextRecordType
+		config.StartRecordName = response.NextRecordName
 	}
 
 	return nil
