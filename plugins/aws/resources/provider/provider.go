@@ -3,6 +3,8 @@ package provider
 import (
 	"embed"
 
+	"github.com/cloudquery/cq-provider-aws/resources/services/cloudformation"
+
 	"github.com/cloudquery/cq-provider-aws/resources/services/iot"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/module"
@@ -90,6 +92,7 @@ func Provider() *provider.Provider {
 			"autoscaling.groups":                    autoscaling.AutoscalingGroups(),
 			"autoscaling.launch_configurations":     autoscaling.AutoscalingLaunchConfigurations(),
 			"aws.regions":                           ec2.AwsRegions(),
+			"cloudformation.stacks":                 cloudformation.Stacks(),
 			"cloudfront.cache_policies":             cloudfront.CloudfrontCachePolicies(),
 			"cloudfront.distributions":              cloudfront.CloudfrontDistributions(),
 			"cloudtrail.trails":                     cloudtrail.CloudtrailTrails(),

@@ -4,8 +4,7 @@
 
 
 
-resource "aws_kms_key" "ec2_kms_key" {
-}
+resource "aws_kms_key" "ec2_kms_key" {}
 
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"

@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
+
 	"github.com/aws/smithy-go/logging"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -140,6 +142,7 @@ type Services struct {
 	Codebuild              CodebuildClient
 	GuardDuty              GuardDutyClient
 	IOT                    IOTClient
+	Cloudformation         CloudFormationClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -459,6 +462,7 @@ func initServices(region string, c aws.Config) Services {
 		Cloudtrail:             cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:             cloudwatch.NewFromConfig(awsCfg),
 		CloudwatchLogs:         cloudwatchlogs.NewFromConfig(awsCfg),
+		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
 		CognitoIdentityPools:   cognitoidentity.NewFromConfig(awsCfg),
 		CognitoUserPools:       cognitoidentityprovider.NewFromConfig(awsCfg),
 		ConfigService:          configservice.NewFromConfig(awsCfg),

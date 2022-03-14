@@ -1385,4 +1385,14 @@ provider "aws" {
     }
   }
 
+
+  resource "cloudformation.stacks" {
+    identifiers = [ "id" ]
+    iac {
+      terraform {
+        type = "aws_cloudformation_stacks"
+      }
+    }
+  }
+
 }
