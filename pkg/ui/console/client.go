@@ -2,7 +2,7 @@ package console
 
 import (
 	"context"
-	"crypto/sha1"
+	"crypto/sha512"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -575,7 +575,7 @@ func (c Client) checkForUpdate(ctx context.Context) {
 
 func (c Client) setTelemetryAttributes(span trace.Span) {
 	cfgJSON, _ := json.Marshal(c.cfg)
-	s := sha1.New()
+	s := sha512.New()
 	_, _ = s.Write(cfgJSON)
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	attrs := []attribute.KeyValue{
