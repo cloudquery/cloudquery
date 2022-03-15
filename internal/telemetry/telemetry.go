@@ -2,7 +2,7 @@ package telemetry
 
 import (
 	"context"
-	"crypto/sha1"
+	"crypto/sha512"
 	"fmt"
 	"io"
 	"net"
@@ -344,7 +344,7 @@ func IsFaaS() bool {
 
 // HashAttribute creates a one-way hash from an attribute
 func HashAttribute(value string) string {
-	s := sha1.New()
+	s := sha512.New()
 	_, _ = s.Write([]byte(value))
 	return fmt.Sprintf("%0x", s.Sum(nil))
 }
