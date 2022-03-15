@@ -681,10 +681,6 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			}
 			return
 		}
-		if update.AllDone() && len(update.FinishedResources) == 0 {
-			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("No resources configured to fetch"), 0)
-			return
-		}
 		if update.AllDone() && bar.Status != ui.StatusWarn {
 			fetchProgress.Update(update.Provider, ui.StatusOK, "fetch complete", 0)
 			return
