@@ -14,7 +14,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/plugin"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/fatih/color"
@@ -414,25 +413,41 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 
-	ui.ColorizedOutput(ui.ColorProgress, "Will upgrade providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
-
-	provVersions := make(map[string]string, len(providers))
-	for _, p := range providers {
-		provVersions[p.Name] = p.Version
-	}
-
-	cqWithLatest, err := upgradeProvidersOverride(ctx, c.c, providers, migrator.Latest)
-	if err != nil {
-		return err
-	}
-
 	// download requested versions
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
 
+	ui.ColorizedOutput(ui.ColorProgress, "Will upgrade providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
+
+	provVersions := make(map[string]string, len(providers))
+	for _, p := range providers {
+		provVersions[p.Name] = p.Version
+		p.Version = migrator.Latest
+	}
+
+	newCfg := *c.cfg
+	newCfg.CloudQuery.Providers = providers
+	conWithLatest, err := CreateClientFromConfig(ctx, &newCfg)
+	if err != nil {
+		return err
+	}
+	cqWithLatest := conWithLatest.Client()
+	defer cqWithLatest.Close()
+
 	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
-	for _, p := range cqWithLatest.Providers {
+
+	for _, p := range providers {
+		if err := cqWithLatest.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+			if errors.Is(err, client.ErrMigrationsNotSupported) {
+				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s to latest: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
+				continue
+			} else {
+				ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s to latest. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
+				return err
+			}
+		}
+
 		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgrading provider %s to %s...\n", emojiStatus[ui.StatusInProgress], p.Name, provVersions[p.Name])
 
 		if err := cqWithLatest.DowngradeProvider(ctx, p.Name, provVersions[p.Name]); err != nil && err != migrate.ErrNoChange {
@@ -506,50 +521,6 @@ func (c Client) buildProviderTables(ctx context.Context, providerName string) er
 
 func (c Client) Client() *client.Client {
 	return c.c
-}
-
-// upgradeProvidersOverride internally downloads and upgrades given providers to the given overriding version. This is done on the copy of the given CQ client, not affecting the client itself.
-// The cloned client is returned for further uses.
-func upgradeProvidersOverride(ctx context.Context, c *client.Client, providers config.RequiredProviders, version string) (*client.Client, error) {
-	var cqCopy *client.Client
-	{
-		cq := *c
-		cqCopy = &cq
-	}
-
-	providers = providers.Distinct().Clone()
-	for i := range providers {
-		providers[i].Version = version
-	}
-
-	cqCopy.Providers = providers
-
-	var err error
-	cqCopy.Manager, err = plugin.NewManager(cqCopy.Logger, cqCopy.PluginDirectory, cqCopy.RegistryURL, cqCopy.HubProgressUpdater)
-	if err != nil {
-		return nil, err
-	}
-	cqCopy.Manager.LoadExisting(providers)
-
-	if err := cqCopy.DownloadProviders(ctx); err != nil {
-		return nil, fmt.Errorf("DownloadProviders(%s) failed: %w", version, err)
-	}
-
-	for _, p := range providers {
-		if err := cqCopy.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
-			if errors.Is(err, client.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
-				continue
-			} else {
-				ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
-				return nil, err
-			}
-		}
-
-		ui.ColorizedOutput(ui.ColorSuccess, "%s Upgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
-	}
-
-	return cqCopy, nil
 }
 
 func (c Client) selectProfile(profileName string, profiles map[string]hcl.Body) (hcl.Body, error) {
