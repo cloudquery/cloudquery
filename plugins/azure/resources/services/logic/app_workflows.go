@@ -228,7 +228,8 @@ func LogicAppWorkflows() *schema.Table {
 
 func fetchLogicAppWorkflows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Logic.Workflows
-	response, err := svc.ListBySubscription(ctx, nil, "")
+	var top int32 = 100
+	response, err := svc.ListBySubscription(ctx, &top, "")
 	if err != nil {
 		return err
 	}
