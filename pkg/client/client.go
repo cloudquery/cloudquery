@@ -745,9 +745,10 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	return m.UpgradeProvider(cfg.Version)
 }
 
-func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (retErr error) {
+func (c *Client) DowngradeProvider(ctx context.Context, providerName, version string) (retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
+		attribute.String("provider_version", version),
 	))
 	defer spanEnder(retErr)
 
@@ -758,6 +759,7 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 	if s.Migrations == nil {
 		return fmt.Errorf("provider doesn't support migrations")
 	}
+
 	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
@@ -767,8 +769,8 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
-	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
-	return m.DowngradeProvider(cfg.Version)
+	c.Logger.Info("downgrading provider version", "current_version", cfg.Version, "version", version, "provider", cfg.Name)
+	return m.DowngradeProvider(version)
 }
 
 func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {

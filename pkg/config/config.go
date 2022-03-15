@@ -105,6 +105,15 @@ func (r RequiredProviders) Names() []string {
 	return ret
 }
 
+func (r RequiredProviders) Clone() RequiredProviders {
+	ret := make(RequiredProviders, len(r))
+	for i := range r {
+		p := *r[i]
+		ret[i] = &p
+	}
+	return ret
+}
+
 // configFileSchema is the schema for the top-level of a config file. We use
 // the low-level HCL API for this level so we can easily deal with each
 // block type separately with its own decoding logic.
