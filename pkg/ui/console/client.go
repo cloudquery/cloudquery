@@ -95,9 +95,9 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
+	// sleep some extra 500 milliseconds for progress refresh
 	if ui.IsTerminal() {
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(500 * time.Millisecond)
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
@@ -674,6 +674,11 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	})
 
 	for _, p := range providers {
+		if len(p.Resources) == 0 {
+			ui.ColorizedOutput(ui.ColorWarning, "%s Skipping provider %s[%s] configured with no resource to fetch\n", emojiStatus[ui.StatusWarn], p.Name, p.Alias)
+			continue
+		}
+
 		if p.Alias != p.Name {
 			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s@%s-%s", p.Name, "latest", p.Alias), "fetching", int64(len(p.Resources)))
 		} else {

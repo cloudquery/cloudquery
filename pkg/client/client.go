@@ -407,6 +407,10 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	}
 
 	for _, providerConfig := range request.Providers {
+		if len(providerConfig.Resources) == 0 {
+			c.Logger.Warn("skipping provider which configured with 0 resources to fetch", "provider", providerConfig.Name, "alias", providerConfig.Alias)
+			continue
+		}
 		providerConfig := providerConfig
 		createdAt := time.Now().UTC()
 		fetchSummary := FetchSummary{
