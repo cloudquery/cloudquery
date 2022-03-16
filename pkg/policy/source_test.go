@@ -34,7 +34,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "local_directory",
 			Source:       "tests/local",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "local", Version: "", subPolicy: "", Directory: "tests/output/local"},
+			ExpectedMeta: &Meta{Type: "file", Version: "", subPolicy: "", Directory: "tests/output/local"},
 		},
 
 		{
