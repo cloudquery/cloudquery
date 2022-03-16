@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/getter"
+	"github.com/cloudquery/cloudquery/internal/getmodules"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
@@ -636,7 +636,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelec
 		return errors.New("no checks loaded")
 	}
 
-	_, subPath := getter.ParseSourceSubPolicy(fullSelector)
+	_, subPath := getmodules.ParseSourceSubPolicy(fullSelector)
 	pol := p.Filter(subPath)
 	if pol.TotalQueries() != 1 {
 		return errors.New("selector must specify only a single control")
@@ -654,7 +654,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
 	t.SetHeaders("Path", "Description")
 
-	policyName, subPath := getter.ParseSourceSubPolicy(selector)
+	policyName, subPath := getmodules.ParseSourceSubPolicy(selector)
 
 	// The `buildDescribePolicyTable` builds the output based on Policy Name and Path
 	// In the case of no path, the PolicyName is just the root policy

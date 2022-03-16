@@ -1,4 +1,4 @@
-package getter
+package getmodules
 
 import (
 	"net/url"

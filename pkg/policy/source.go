@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/internal/getter"
+	"github.com/cloudquery/cloudquery/internal/getmodules"
 	"github.com/spf13/afero"
 )
 
 const defaultPolicyFileName = "policy.hcl"
 
 func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
-	t, _, found, err := getter.DetectType(name)
+	t, _, found, err := getmodules.DetectType(name)
 
 	if err != nil {
 		return nil, false, fmt.Errorf("failed to detect policy in hub: %w", err)
@@ -35,7 +35,7 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 }
 
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
-	source, subPolicy := getter.ParseSourceSubPolicy(source)
+	source, subPolicy := getmodules.ParseSourceSubPolicy(source)
 	// parse syntactic URL holding @ instead of ?ref for params
 	source, version := parseSyntacticUrl(source)
 	if version == "" {
@@ -45,15 +45,15 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		}
 	}
 
-	detectorType, source, _, err := getter.DetectType(source)
+	detectorType, source, _, err := getmodules.DetectType(source)
 	if err != nil {
 		return nil, nil, err
 	}
-	policyDir := filepath.Join(installDir, getter.NormalizePath(source))
-	if detectorType == "file" {
-		policyDir = filepath.Join(installDir, filepath.Base(getter.NormalizePath(source)))
+	policyDir := filepath.Join(installDir, getmodules.NormalizePath(source))
+	if detectorType == "local" {
+		policyDir = filepath.Join(installDir, filepath.Base(getmodules.NormalizePath(source)))
 	}
-	if err := getter.Get(ctx, policyDir, source); err != nil {
+	if err := getmodules.Get(ctx, policyDir, source); err != nil {
 		return nil, nil, fmt.Errorf("failed to get source %s: %w", source, err)
 	}
 
