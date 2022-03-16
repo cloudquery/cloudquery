@@ -418,8 +418,6 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 		return err
 	}
 
-	ui.ColorizedOutput(ui.ColorProgress, "Will upgrade providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
-
 	provVersions := make(map[string]string, len(providers))
 	for _, p := range providers {
 		provVersions[p.Name] = p.Version
@@ -435,19 +433,15 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 	cqWithLatest := conWithLatest.Client()
 	defer cqWithLatest.Close()
 
+	ui.ColorizedOutput(ui.ColorProgress, "Will fetch latest providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
+
+	if err := cqWithLatest.DownloadProviders(ctx); err != nil {
+		return err
+	}
+
 	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 
 	for _, p := range providers {
-		if err := cqWithLatest.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
-			if errors.Is(err, client.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s to latest: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
-				continue
-			} else {
-				ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s to latest. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
-				return err
-			}
-		}
-
 		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgrading provider %s to %s...\n", emojiStatus[ui.StatusInProgress], p.Name, provVersions[p.Name])
 
 		if err := cqWithLatest.DowngradeProvider(ctx, p.Name, provVersions[p.Name]); err != nil && err != migrate.ErrNoChange {
