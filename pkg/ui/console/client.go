@@ -94,7 +94,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
+	// sleep some extra 500 milliseconds for progress refresh
 	if ui.IsTerminal() {
 		time.Sleep(500 * time.Millisecond)
 		c.updater.Wait()
