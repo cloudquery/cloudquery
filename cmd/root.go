@@ -66,7 +66,7 @@ Use "{{.Root.Use}} options" for a list of global CLI options.
 var (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 	Commit = "development"
-	Date   = "1970-01-01"
+	Date   = "unknown"
 
 	loggerConfig logging.Config
 
