@@ -4,7 +4,6 @@ import (
 	stdlog "log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 
@@ -64,11 +63,10 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 Use "{{.Root.Use}} options" for a list of global CLI options.
 `
 
-// Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
-
 var (
+	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 	Commit = "development"
-	Date   = time.Now().String()
+	Date   = "unknown"
 
 	loggerConfig logging.Config
 
