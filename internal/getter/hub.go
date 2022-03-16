@@ -10,8 +10,12 @@ import (
 type HubDetector struct {
 }
 
-func (h HubDetector) Detect(src, _ string) (string, bool, error) {
+func (h HubDetector) Detect(src, pwd string) (string, bool, error) {
 	if len(src) == 0 {
+		return "", false, nil
+	}
+	fileDetector := fileDetector{}
+	if _, ok, _ := fileDetector.Detect(src, pwd); ok {
 		return "", false, nil
 	}
 	return h.detectHTTP(fmt.Sprintf("github.com/cloudquery-policies/%s", src))
