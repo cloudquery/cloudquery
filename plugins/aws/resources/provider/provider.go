@@ -118,6 +118,7 @@ func Provider() *provider.Provider {
 			"ec2.eips":                              ec2.Ec2Eips(),
 			"ec2.flow_logs":                         ec2.Ec2FlowLogs(),
 			"ec2.images":                            ec2.Ec2Images(),
+			"ec2.instance_statuses":                 ec2.Ec2InstanceStatuses(),
 			"ec2.instances":                         ec2.Ec2Instances(),
 			"ec2.internet_gateways":                 ec2.Ec2InternetGateways(),
 			"ec2.nat_gateways":                      ec2.Ec2NatGateways(),
