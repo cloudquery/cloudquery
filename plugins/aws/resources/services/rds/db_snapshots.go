@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -253,7 +254,7 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 		},
 	)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if out.DBSnapshotAttributesResult == nil {
 		return nil
@@ -261,7 +262,7 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 
 	b, err := json.Marshal(out.DBSnapshotAttributesResult.DBSnapshotAttributes)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(column.Name, b)
 }
@@ -274,7 +275,7 @@ func resolveRDSDBSnapshotProcessorFeatures(ctx context.Context, meta schema.Clie
 
 	b, err := json.Marshal(s.ProcessorFeatures)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(column.Name, b)
 }

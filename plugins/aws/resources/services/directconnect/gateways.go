@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -222,7 +223,7 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		output, err := svc.DescribeDirectConnectGateways(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.DirectConnectGateways
 		if aws.ToString(output.NextToken) == "" {
@@ -241,7 +242,7 @@ func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.Clie
 	for {
 		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.DirectConnectGatewayAssociations
 		if aws.ToString(output.NextToken) == "" {
@@ -262,7 +263,7 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.DirectConnectGatewayAttachments
 		if aws.ToString(output.NextToken) == "" {

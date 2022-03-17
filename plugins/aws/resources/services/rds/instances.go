@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -766,7 +767,7 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.DBInstances
 		if aws.ToString(response.Marker) == "" {
@@ -863,7 +864,7 @@ func resolveRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, 
 	}
 	data, err := json.Marshal(instance.StatusInfos)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }

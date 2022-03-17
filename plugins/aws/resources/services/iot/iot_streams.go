@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -130,7 +131,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, s := range response.Streams {
 			stream, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{
@@ -139,7 +140,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- stream.StreamInfo
 		}

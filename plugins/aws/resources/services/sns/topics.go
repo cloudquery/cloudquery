@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/spf13/cast"
 )
@@ -113,7 +114,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.Topics
 
@@ -139,7 +140,7 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 		o.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// Set all attributes
 	if err := resource.Set("subscriptions_confirmed", cast.ToInt(output.Attributes["SubscriptionsConfirmed"])); err != nil {

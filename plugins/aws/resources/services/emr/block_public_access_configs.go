@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -110,7 +111,7 @@ func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMet
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- out
 	return nil
@@ -126,7 +127,7 @@ func resolveEmrBlockPublicAccessConfigConfigurations(ctx context.Context, meta s
 	}
 	b, err := json.Marshal(out.BlockPublicAccessConfiguration.Configurations)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

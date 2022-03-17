@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/spf13/cast"
 )
@@ -96,7 +97,7 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 			options.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.ManagedRuleGroups
 
@@ -133,7 +134,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		options.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	// Available labels
@@ -164,7 +165,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 	if len(descrManagedRuleGroup.Rules) > 0 {
 		data, err := json.Marshal(descrManagedRuleGroup.Rules)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("rules", data); err != nil {
 			return err

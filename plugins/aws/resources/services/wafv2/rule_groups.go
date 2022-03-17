@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -145,7 +146,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 			options.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		// Get RuleGroup object
@@ -156,7 +157,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 				Scope: scope,
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- ruleGroup.RuleGroup
 		}
@@ -185,7 +186,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value
@@ -231,7 +232,7 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	}
 	data, err := json.Marshal(ruleGroup.Rules)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }

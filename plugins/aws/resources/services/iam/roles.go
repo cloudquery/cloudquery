@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -127,7 +128,7 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		response, err := svc.ListRoles(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Roles
 		if aws.ToString(response.Marker) == "" {
@@ -169,7 +170,7 @@ func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.Cli
 	if r.AssumeRolePolicyDocument != nil {
 		decodedDocument, err := url.QueryUnescape(*r.AssumeRolePolicyDocument)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set("assume_role_policy_document", decodedDocument)
 	}
@@ -180,7 +181,7 @@ func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.ListRoleTags(ctx, &iam.ListRoleTagsInput{RoleName: r.RoleName})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := map[string]*string{}
 	for _, t := range response.Tags {

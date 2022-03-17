@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -198,7 +199,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, s := range response.SecurityProfileIdentifiers {
@@ -208,7 +209,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 				options.Region = client.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- profile
 		}
@@ -238,7 +239,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, t := range response.SecurityProfileTargets {
@@ -270,7 +271,7 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		})
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range response.Tags {
 			tags[*t.Key] = t.Value
@@ -294,7 +295,7 @@ func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, 
 
 	b, err := json.Marshal(i.AdditionalMetricsToRetainV2)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -321,7 +322,7 @@ func resolveIotSecurityProfileBehaviorsCriteriaValue(ctx context.Context, meta s
 
 	data, err := json.Marshal(i.Criteria.Value)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	return resource.Set(c.Name, data)

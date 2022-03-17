@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -571,7 +572,7 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		// get more details about the notebook instance
@@ -584,7 +585,7 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 			res <- response
@@ -628,7 +629,7 @@ func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ conte
 	}
 	b, err := json.Marshal(metricDefinitions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -663,7 +664,7 @@ func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ conte
 	}
 	b, err := json.Marshal(collectionConfigurations)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -862,7 +863,7 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	tags := make(map[string]*string, len(response.Tags))
@@ -893,7 +894,7 @@ func resolveSagemakerTrainingJobSecondaryStatusTransitions(_ context.Context, _ 
 	}
 	b, err := json.Marshal(secondaryStatusTransitions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -916,7 +917,7 @@ func resolveSagemakerTrainingJobFinalMetricDataList(_ context.Context, _ schema.
 	}
 	b, err := json.Marshal(finalMetricDataList)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

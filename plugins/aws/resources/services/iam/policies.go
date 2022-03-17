@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -143,7 +144,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		response, err := svc.GetAccountAuthorizationDetails(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Policies
 		if aws.ToString(response.Marker) == "" {
@@ -163,7 +164,7 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 	if r.Document != nil {
 		decodedDocument, err := url.QueryUnescape(*r.Document)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		data := make(map[string]interface{})
 		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {

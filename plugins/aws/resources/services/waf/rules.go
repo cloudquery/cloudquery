@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -102,14 +103,14 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, ruleSum := range output.Rules {
 			rule, err := service.GetRule(ctx, &waf.GetRuleInput{RuleId: ruleSum.RuleId}, func(options *waf.Options) {
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- rule.Rule
 		}
@@ -164,7 +165,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 			options.Region = "us-east-1"
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value

@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -51,7 +52,7 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
@@ -59,7 +60,7 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if ebsResp.EbsEncryptionByDefault != nil {

@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/mitchellh/mapstructure"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -301,7 +302,7 @@ func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.LoadBalancers
 		if aws.ToString(response.NextMarker) == "" {
@@ -354,7 +355,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		o.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil
@@ -409,7 +410,7 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	m := make(map[string]interface{})
 	for _, a := range result.Attributes {
@@ -418,7 +419,7 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 	var attrs lbAttributes
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &attrs})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := dec.Decode(m); err != nil {
 		return err

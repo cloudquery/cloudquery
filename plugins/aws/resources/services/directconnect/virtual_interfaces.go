@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -237,7 +238,7 @@ func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.Client
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- output.VirtualInterfaces
 	return nil

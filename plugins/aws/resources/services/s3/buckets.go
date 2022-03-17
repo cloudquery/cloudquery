@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -453,7 +454,7 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := meta.(*client.Client).Services().S3
 	response, err := svc.ListBuckets(ctx, nil)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	wb := make([]*WrappedBucket, len(response.Buckets))
 	for i, b := range response.Buckets {
@@ -525,7 +526,7 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 		options.Region = parent.Get("region").(string)
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- aclOutput.Grants
 	return nil
@@ -578,7 +579,7 @@ func resolveS3BucketReplicationRuleFilter(ctx context.Context, meta schema.Clien
 	}
 	data, err := json.Marshal(rule.Filter)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("filter", data)
 }
@@ -605,7 +606,7 @@ func resolveS3BucketLifecycleFilter(ctx context.Context, meta schema.ClientMeta,
 	}
 	data, err := json.Marshal(lc.Filter)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("filter", data)
 }
@@ -616,7 +617,7 @@ func resolveS3BucketLifecycleNoncurrentVersionTransitions(ctx context.Context, m
 	}
 	data, err := json.Marshal(lc.Transitions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("noncurrent_version_transitions", data)
 }
@@ -627,7 +628,7 @@ func resolveS3BucketLifecycleTransitions(ctx context.Context, meta schema.Client
 	}
 	data, err := json.Marshal(lc.Transitions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("transitions", data)
 }

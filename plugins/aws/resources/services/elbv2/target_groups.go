@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -150,7 +151,7 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.TargetGroups
 		if aws.ToString(response.NextMarker) == "" {
@@ -175,7 +176,7 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 		o.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil

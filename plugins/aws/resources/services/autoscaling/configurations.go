@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -237,7 +238,7 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.LaunchConfigurations
 

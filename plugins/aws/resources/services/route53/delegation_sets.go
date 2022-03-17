@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -62,7 +63,7 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListReusableDelegationSets(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.DelegationSets
 		if aws.ToString(response.Marker) == "" {

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -364,7 +365,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Listeners
 		if aws.ToString(response.NextMarker) == "" {
@@ -389,7 +390,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 		o.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil
@@ -416,7 +417,7 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 			options.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Certificates
 		if aws.ToString(response.NextMarker) == "" {

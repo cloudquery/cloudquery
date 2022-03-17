@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -279,7 +280,7 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 		})
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.MetricAlarms
 		if aws.ToString(response.NextToken) == "" {

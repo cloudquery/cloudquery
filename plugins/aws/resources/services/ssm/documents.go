@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -229,13 +230,13 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := svc.ListDocuments(ctx, &params, optsFn)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, d := range output.DocumentIdentifiers {
 			dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name}, optsFn)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- dd.Document
 		}
@@ -255,7 +256,7 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 		}
 		b, err := json.Marshal(getter(d))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(c.Name, b)
 	}
@@ -292,7 +293,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	for {
 		output, err := svc.DescribeDocumentPermission(ctx, &input, optsFn)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		accountIDs = append(accountIDs, output.AccountIds...)
 		infoList = append(infoList, output.AccountSharingInfoList...)
@@ -306,7 +307,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	b, err := json.Marshal(infoList)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set("account_sharing_info_list", b)
 }

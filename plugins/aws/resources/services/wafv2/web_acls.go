@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -321,7 +322,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 			options.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, webAcl := range output.WebACLs {
 			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: scope}
@@ -329,7 +330,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 				options.Region = region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- webAclOutput.WebACL
 		}
@@ -355,7 +356,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 		options.Region = client.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, resourceArns.ResourceArns)
 }
@@ -376,7 +377,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value
@@ -398,7 +399,7 @@ func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta
 	}
 	data, err := json.Marshal(webACL.DefaultAction)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -420,7 +421,7 @@ func resolveWafv2webACLRuleStatement(ctx context.Context, meta schema.ClientMeta
 	}
 	data, err := json.Marshal(rule.Statement)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -434,7 +435,7 @@ func resolveWafv2webACLRuleAction(ctx context.Context, meta schema.ClientMeta, r
 	}
 	data, err := json.Marshal(rule.Action)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -448,7 +449,7 @@ func resolveWafv2webACLRuleOverrideAction(ctx context.Context, meta schema.Clien
 	}
 	data, err := json.Marshal(rule.OverrideAction)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -481,7 +482,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupStatement(ctx context.
 	}
 	data, err := json.Marshal(firewallManagerRuleGroup.FirewallManagerStatement)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -495,7 +496,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx con
 	}
 	data, err := json.Marshal(firewallManagerRuleGroup.OverrideAction)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -517,7 +518,7 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupStatement(ctx context.C
 	}
 	data, err := json.Marshal(firewallManagerRuleGroup.FirewallManagerStatement)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -531,7 +532,7 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx cont
 	}
 	data, err := json.Marshal(firewallManagerRuleGroup.OverrideAction)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }

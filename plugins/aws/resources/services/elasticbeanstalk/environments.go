@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -404,7 +405,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Environments
 		if aws.ToString(response.NextToken) == "" {
@@ -438,7 +439,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 		ResourceArn: p.EnvironmentArn,
 	}, func(o *elasticbeanstalk.Options) {})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(tagsOutput.ResourceTags) == 0 {
 		return nil
@@ -473,7 +474,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	for _, option := range output.Options {
@@ -506,7 +507,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	for _, option := range output.ConfigurationSettings {

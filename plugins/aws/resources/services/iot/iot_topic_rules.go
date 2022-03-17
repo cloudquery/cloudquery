@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -1315,7 +1316,7 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, s := range response.Rules {
@@ -1325,7 +1326,7 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 				options.Region = client.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- rule
 		}
@@ -1355,7 +1356,7 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 		})
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range response.Tags {
 			tags[*t.Key] = t.Value
@@ -1391,7 +1392,7 @@ func resolveIotTopicRulesErrorActionIotSiteWise(ctx context.Context, meta schema
 	}
 	b, err := json.Marshal(i.Rule.ErrorAction.IotSiteWise)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }
@@ -1444,7 +1445,7 @@ func resolveIotTopicRuleActionsIotSiteWise(ctx context.Context, meta schema.Clie
 	}
 	b, err := json.Marshal(i.IotSiteWise)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, b)
 }

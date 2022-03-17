@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/aws/smithy-go"
@@ -100,7 +101,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 		}
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- resp.ConformancePackDetails
 		if resp.NextToken == nil {

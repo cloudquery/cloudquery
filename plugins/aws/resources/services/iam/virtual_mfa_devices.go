@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -120,7 +121,7 @@ func fetchIamVirtualMfaDevices(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		response, err := svc.ListVirtualMFADevices(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.VirtualMFADevices
 		if aws.ToString(response.Marker) == "" {

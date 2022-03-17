@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -152,7 +153,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Keys
 		if aws.ToString(response.NextMarker) == "" {
@@ -173,7 +174,7 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if output.KeyMetadata != nil {
 		if err := resource.Set("cloud_hsm_cluster_id", output.KeyMetadata.CloudHsmClusterId); err != nil {
@@ -237,7 +238,7 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("rotation_enabled", output.KeyRotationEnabled); err != nil {
 			return err
@@ -249,7 +250,7 @@ func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		tags := make(map[string]interface{})

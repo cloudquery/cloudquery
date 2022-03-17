@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -106,7 +107,7 @@ func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, par
 			o.Region = cl.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- out.EventSubscriptionsList
 		if aws.ToString(out.Marker) == "" {
@@ -128,7 +129,7 @@ func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta
 		o.Region = cl.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := make(map[string]string, len(out.TagList))
 	for _, t := range out.TagList {
