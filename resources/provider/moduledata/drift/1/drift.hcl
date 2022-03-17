@@ -684,9 +684,20 @@ provider "aws" {
   }
 
   resource "ec2.nat_gateways" {
+    ignore_attributes = [ "arn", "create_time", "state", "vpc_id" ]
     iac {
       terraform {
         type = "aws_nat_gateway"
+      }
+    }
+  }
+
+  resource "aws_ec2_nat_gateway_addresses" {
+    identifiers = [ "parent.id", "c.network_interface_id" ]
+    iac {
+      terraform {
+        type = "aws_nat_gateway"
+        identifiers = [ "id", "network_interface_id" ]
       }
     }
   }
