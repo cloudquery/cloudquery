@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -351,12 +352,12 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, h := range hostedZones {
 			gotHostedZone, err := svc.GetHostedZone(ctx, &route53.GetHostedZoneInput{Id: h.Id})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			tags := getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)
 
@@ -382,7 +383,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.ListHostedZones(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for i := 0; i < len(response.HostedZones); i += 10 {
@@ -394,7 +395,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			zones := response.HostedZones[i:end]
 			err := processHostedZonesBundle(zones)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 		}
 
@@ -415,7 +416,7 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	for {
 		response, err := svc.ListQueryLoggingConfigs(ctx, &config, func(options *route53.Options) {})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.QueryLoggingConfigs
 		if aws.ToString(response.NextToken) == "" {
@@ -435,7 +436,7 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 	for {
 		response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		res <- response.ResourceRecordSets
@@ -471,7 +472,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	for {
 		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.TrafficPolicyInstances
 		if aws.ToString(response.TrafficPolicyInstanceNameMarker) == "" {

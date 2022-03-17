@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -96,7 +97,7 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 			o.Region = cl.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.DBSecurityGroups
 		if aws.ToString(output.Marker) == "" {
@@ -112,7 +113,7 @@ func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) int
 		g := resource.Item.(types.DBSecurityGroup)
 		b, err := json.Marshal(getter(g))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(c.Name, b)
 	}
@@ -126,7 +127,7 @@ func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, 
 		o.Region = cl.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := make(map[string]string, len(out.TagList))
 	for _, t := range out.TagList {

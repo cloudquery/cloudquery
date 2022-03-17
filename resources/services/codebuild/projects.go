@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -696,7 +697,7 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if len(response.Projects) == 0 {
 			break
@@ -705,7 +706,7 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		res <- projectsOutput.Projects
@@ -748,7 +749,7 @@ func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schem
 	}
 	data, err := json.Marshal(p.Webhook.FilterGroups)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }

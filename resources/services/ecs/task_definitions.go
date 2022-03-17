@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -601,7 +602,7 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if len(listClustersOutput.TaskDefinitionArns) == 0 {
 			return nil
@@ -611,7 +612,7 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 				o.Region = region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			if describeClusterOutput.TaskDefinition == nil {
 				continue
@@ -669,7 +670,7 @@ func resolveEcsTaskDefinitionsRequiresAttributes(ctx context.Context, meta schem
 	}
 	data, err := json.Marshal(r.RequiresAttributes)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -736,7 +737,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsLinuxParametersDevices(ctx cont
 
 	data, err := json.Marshal(r.LinuxParameters.Devices)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -751,7 +752,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsLinuxParametersTmpfs(ctx contex
 
 	data, err := json.Marshal(r.LinuxParameters.Tmpfs)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -777,7 +778,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsMountPoints(ctx context.Context
 
 	data, err := json.Marshal(r.MountPoints)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -788,7 +789,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsPortMappings(ctx context.Contex
 	}
 	data, err := json.Marshal(r.PortMappings)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -842,7 +843,7 @@ func resolveEcsTaskDefinitionContainerDefinitionsUlimits(ctx context.Context, me
 
 	data, err := json.Marshal(r.Ulimits)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -884,7 +885,7 @@ func resolveEcsTaskDefinitionTags(ctx context.Context, meta schema.ClientMeta, r
 		options.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	j := map[string]interface{}{}

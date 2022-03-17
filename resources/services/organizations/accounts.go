@@ -10,6 +10,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -91,7 +92,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, par
 			}
 		}
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Accounts
 		if aws.ToString(response.NextToken) == "" {

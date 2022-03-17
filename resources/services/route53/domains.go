@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -416,13 +417,13 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		output, err := svc.ListDomains(ctx, &input, optsFunc)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, v := range output.Domains {
 			d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, optsFunc)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- d
 		}
@@ -456,7 +457,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 		options.Region = "us-east-1"
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := make(map[string]string, len(out.TagList))
 	for _, v := range out.TagList {
@@ -485,7 +486,7 @@ func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.Ge
 		}
 		b, err := json.Marshal(m)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(col.Name, b)
 	}

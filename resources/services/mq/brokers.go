@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -339,14 +340,14 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, bs := range response.BrokerSummaries {
 			output, err := svc.DescribeBroker(ctx, &mq.DescribeBrokerInput{BrokerId: bs.BrokerId}, func(options *mq.Options) {
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- output
 		}
@@ -365,7 +366,7 @@ func resolveMqBrokerBrokerInstances(ctx context.Context, meta schema.ClientMeta,
 	}
 	data, err := json.Marshal(broker.BrokerInstances)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -377,7 +378,7 @@ func resolveMqBrokerLdapServerMetadata(ctx context.Context, meta schema.ClientMe
 	}
 	data, err := json.Marshal(broker.LdapServerMetadata)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -389,7 +390,7 @@ func resolveMqBrokerLogs(ctx context.Context, meta schema.ClientMeta, resource *
 	}
 	data, err := json.Marshal(broker.Logs)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -401,7 +402,7 @@ func resolveMqBrokerMaintenanceWindowStartTime(ctx context.Context, meta schema.
 	}
 	data, err := json.Marshal(broker.MaintenanceWindowStartTime)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -413,7 +414,7 @@ func resolveMqBrokerPendingLdapServerMetadata(ctx context.Context, meta schema.C
 	}
 	data, err := json.Marshal(broker.PendingLdapServerMetadata)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -450,7 +451,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output
 	}
@@ -470,7 +471,7 @@ func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *sch
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output
 	}
@@ -484,7 +485,7 @@ func resolveMqBrokerUserPending(ctx context.Context, meta schema.ClientMeta, res
 	}
 	data, err := json.Marshal(user.Pending)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }

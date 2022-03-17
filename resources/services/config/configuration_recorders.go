@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -120,7 +121,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(resp.ConfigurationRecorders) == 0 {
 		return nil
@@ -133,7 +134,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 		ConfigurationRecorderNames: names,
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for _, configurationRecorder := range resp.ConfigurationRecorders {
 		if configurationRecorder.Name == nil {

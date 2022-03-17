@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -80,7 +81,7 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 		for _, p := range output.PolicyNames {
 			policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- policyResult
 		}
@@ -99,13 +100,13 @@ func resolveIamRolePolicyPolicyDocument(ctx context.Context, meta schema.ClientM
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	var document map[string]interface{}
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, document)
 }

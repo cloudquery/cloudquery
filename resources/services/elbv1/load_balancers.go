@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -405,7 +406,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		tagsResponse, err := svc.DescribeTags(ctx, tagsCfg)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, lb := range loadBalancers {
 			tags := getTagsByLoadBalancerName(*lb.LoadBalancerName, tagsResponse.TagDescriptions)
@@ -437,7 +438,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for i := 0; i < len(response.LoadBalancerDescriptions); i += 20 {
@@ -618,7 +619,7 @@ func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta,
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- response.PolicyDescriptions
 	return nil

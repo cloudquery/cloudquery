@@ -9,6 +9,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -142,7 +143,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		// get more details about the notebook instance
@@ -155,7 +156,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 			res <- response
@@ -192,7 +193,7 @@ func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	tags := make(map[string]*string, len(response.Tags))

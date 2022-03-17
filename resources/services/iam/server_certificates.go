@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -72,7 +73,7 @@ func fetchIamServerCertificates(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListServerCertificates(ctx, &config)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.ServerCertificateMetadataList
 		if aws.ToString(response.Marker) == "" {

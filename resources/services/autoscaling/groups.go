@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -548,7 +549,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 				o.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			configurations = append(configurations, output.NotificationConfigurations...)
 			if aws.ToString(output.NextToken) == "" {
@@ -572,7 +573,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		groups := output.AutoScalingGroups
 		for i := 0; i < len(groups); i += 255 {
@@ -584,7 +585,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 			t := groups[i:end]
 			err := processGroupsBundle(t)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 		}
 
@@ -611,7 +612,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 			o.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, lb := range output.LoadBalancers {
 			j[*lb.LoadBalancerName] = *lb.State
@@ -638,7 +639,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 			o.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, lb := range output.LoadBalancerTargetGroups {
 			j[*lb.LoadBalancerTargetGroupARN] = *lb.State
@@ -716,7 +717,7 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 			o.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.ScalingPolicies
 
@@ -745,7 +746,7 @@ func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, 
 	}
 	data, err := json.Marshal(p.StepAdjustments)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -776,7 +777,7 @@ func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.Client
 		o.Region = client.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- output.LifecycleHooks
 	return nil

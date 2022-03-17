@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -232,7 +233,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	})
 
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	getBundledTrailsWithTags := func(trails []types.Trail, region string) ([]CloudTrailWrapper, error) {
@@ -292,7 +293,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	// since api returns all the cloudtrails despite region we aggregate trails by region to get tags.
 	aggregatedTrails, err := aggregateCloudTrails(response.TrailList)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for region, trails := range aggregatedTrails {
 		for i := 0; i < len(trails); i += 20 {
@@ -304,7 +305,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			t := trails[i:end]
 			processed, err := getBundledTrailsWithTags(t, region)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- processed
 		}
@@ -325,7 +326,7 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 			o.Region = *r.HomeRegion
 		})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := resource.Set("is_logging", response.IsLogging); err != nil {
 		return err
@@ -395,7 +396,7 @@ func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientM
 		options.Region = *r.HomeRegion
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- response.EventSelectors
 	return nil

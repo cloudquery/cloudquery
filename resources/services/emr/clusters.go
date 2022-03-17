@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -340,12 +341,12 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, c := range response.Clusters {
 			out, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: c.Id})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- out.Cluster
 		}
@@ -365,7 +366,7 @@ func resolveEMRClusterJSONField(getter func(c *types.Cluster) interface{}) func(
 		}
 		b, err := json.Marshal(getter(cl))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(c.Name, b)
 	}

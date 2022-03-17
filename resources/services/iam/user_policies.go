@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -83,7 +84,7 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 			policyCfg := &iam.GetUserPolicyInput{PolicyName: &p, UserName: user.UserName}
 			policyResult, err := svc.GetUserPolicy(ctx, policyCfg)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- policyResult
 		}
@@ -102,13 +103,13 @@ func resolveIamUserPolicyPolicyDocument(ctx context.Context, meta schema.ClientM
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	var document map[string]interface{}
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, document)
 }

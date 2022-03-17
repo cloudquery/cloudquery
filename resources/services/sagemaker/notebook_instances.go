@@ -9,6 +9,7 @@ import (
 	sagemakertypes "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -153,7 +154,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		// get more details about the notebook instance
@@ -166,7 +167,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 			notebook := WrappedSageMakerNotebookInstance{
@@ -202,7 +203,7 @@ func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.Clien
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	tags := make(map[string]*string, len(response.Tags))

@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -63,13 +64,13 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	for _, p := range response.SAMLProviderList {
 		providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- IamSamlIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
 	}

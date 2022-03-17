@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -269,7 +270,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(describeReplicationInstancesOutput.ReplicationInstances) == 0 {
 		return nil
@@ -284,7 +285,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 		options.Region = c.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	replicationInstanceTags := make(map[string]map[string]interface{})
 	for _, tag := range listTagsForResourceOutput.TagList {

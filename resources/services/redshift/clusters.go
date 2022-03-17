@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -803,7 +804,7 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Clusters
 		if aws.ToString(response.Marker) == "" {
@@ -839,7 +840,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 		o.Region = cl.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	return resource.Set(c.Name, response)
@@ -875,7 +876,7 @@ func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, 
 			o.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- response.Parameters
 		if aws.ToString(response.Marker) == "" {

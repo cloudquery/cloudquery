@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -1056,7 +1057,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if len(listClustersOutput.ClusterArns) == 0 {
 			return nil
@@ -1065,7 +1066,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- describeClusterOutput.Clusters
 
@@ -1080,7 +1081,7 @@ func resolveEcsClustersDefaultCapacityProviderStrategy(ctx context.Context, meta
 	cluster := resource.Item.(types.Cluster)
 	data, err := json.Marshal(cluster.DefaultCapacityProviderStrategy)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -1113,7 +1114,7 @@ func resolveEcsClustersTags(ctx context.Context, meta schema.ClientMeta, resourc
 		o.Region = region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := make(map[string]*string)
 	for _, s := range listTagsForResourceOutput.Tags {
@@ -1146,7 +1147,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if len(listServicesOutput.ServiceArns) == 0 {
 			return nil
@@ -1159,7 +1160,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		res <- describeServicesOutput.Services
@@ -1175,7 +1176,7 @@ func resolveEcsClusterServicesCapacityProviderStrategy(ctx context.Context, meta
 	service := resource.Item.(types.Service)
 	data, err := json.Marshal(service.CapacityProviderStrategy)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -1215,7 +1216,7 @@ func resolveEcsClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Con
 	service := resource.Item.(types.Deployment)
 	data, err := json.Marshal(service.CapacityProviderStrategy)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -1243,7 +1244,7 @@ func resolveEcsClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Contex
 	service := resource.Item.(types.TaskSet)
 	data, err := json.Marshal(service.CapacityProviderStrategy)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
@@ -1277,7 +1278,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if len(listContainerInstances.ContainerInstanceArns) == 0 {
 			return nil
@@ -1290,7 +1291,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 			o.Region = region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		res <- describeContainerInstances.ContainerInstances

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -96,7 +97,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		for _, s := range response.Policies {
@@ -106,7 +107,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 				options.Region = client.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- profile
 		}
@@ -136,7 +137,7 @@ func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		})
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range response.Tags {
 			tags[*t.Key] = t.Value

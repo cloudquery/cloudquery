@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -147,12 +148,12 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		out, err := svc.ListIdentityPools(ctx, &params, optsFunc)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, item := range out.IdentityPools {
 			ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, optsFunc)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- ipo
 		}

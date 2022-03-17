@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -769,7 +770,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, d := range response.DistributionList.Items {
 			distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
@@ -778,7 +779,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- *distribution.Distribution
 		}
@@ -804,7 +805,7 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 		options.Region = client.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	tags := make(map[string]interface{})

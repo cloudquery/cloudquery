@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -100,7 +101,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 			options.Region = c.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, g := range response.BillingGroups {
 			group, err := svc.DescribeBillingGroup(ctx, &iot.DescribeBillingGroupInput{
@@ -109,7 +110,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 				options.Region = c.Region
 			})
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- group
 		}
@@ -139,7 +140,7 @@ func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 			options.Region = client.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		things = append(things, response.Things...)
@@ -169,7 +170,7 @@ func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 		})
 
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, t := range response.Tags {
 			tags[*t.Key] = t.Value

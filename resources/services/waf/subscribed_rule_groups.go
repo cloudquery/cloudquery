@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -58,7 +59,7 @@ func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, p
 			options.Region = "us-east-1"
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.RuleGroups
 

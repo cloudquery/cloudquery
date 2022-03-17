@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -217,12 +218,12 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.ListCertificates(ctx, &input, optsFn)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		for _, item := range output.CertificateSummaryList {
 			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{CertificateArn: item.CertificateArn}, optsFn)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- do.Certificate
 		}
@@ -254,7 +255,7 @@ func resolveACMCertificateJSONField(getter func(*types.CertificateDetail) interf
 		}
 		b, err := json.Marshal(getter(cert))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		return resource.Set(c.Name, b)
 	}
@@ -269,7 +270,7 @@ func resolveACMCertificateTags(ctx context.Context, meta schema.ClientMeta, reso
 	svc := client.Services().ACM
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	tags := make(map[string]interface{}, len(out.Tags))
 	for _, t := range out.Tags {
