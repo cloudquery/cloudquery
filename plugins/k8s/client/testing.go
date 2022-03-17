@@ -24,10 +24,7 @@ func K8sTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
 				"test_resource": table,
 			},
 		},
-		Table:           table,
-		Config:          cfg,
-		SkipEmptyRows:   false,
-		SkipEmptyColumn: true,
+		Config: cfg,
 	})
 }
 
@@ -60,8 +57,6 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 				return &Config{}
 			},
 		},
-		Table:          table,
-		Config:         cfg,
-		SkipEmptyJsonB: options.SkipEmptyJsonB,
+		Config: cfg,
 	})
 }
