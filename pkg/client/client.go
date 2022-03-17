@@ -477,6 +477,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					PartialFetchingEnabled: true,
 					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
 					MaxGoroutines:          providerConfig.MaxGoroutines,
+					Timeout:                time.Duration(providerConfig.Timeout) * time.Second,
 					Metadata:               metadata,
 				})
 			if err != nil {
