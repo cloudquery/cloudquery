@@ -20,8 +20,9 @@ import (
 const (
 	validateTimescaleInstalled = `SELECT EXISTS(SELECT 1 FROM pg_extension where extname = 'timescaledb')`
 	timescaleVersionQuery      = `SELECT extversion FROM pg_catalog.pg_extension WHERE extname='timescaledb';`
-	MinTimescaleVersion        = version.Must(version.NewVersion("2.0"))
 )
+
+var MinTimescaleVersion = version.Must(version.NewVersion("2.0"))
 
 // queryRower helps with unit tests
 type queryRower interface {
