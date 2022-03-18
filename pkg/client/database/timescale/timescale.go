@@ -89,7 +89,7 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("timescaledb extension not installed, `CREATE EXTENSION IF NOT EXISTS timescaledb;`")
 	}
 
-	if err := ValidateTimescaleVersion(ctx, pool, MinTimescaleVersion); err != nil {
+	if err := ValidateTimescaleVersion(ctx, pool); err != nil {
 		return false, err
 	}
 
@@ -130,13 +130,13 @@ func runningTimescaleVersion(ctx context.Context, q queryRower) (*version.Versio
 // ValidateTimescaleVersion checks that Timescale plugin version available through pool is not lower than wanted version.
 // In this case it returns nil. Otherwise returns error describing current and desired version or any other error encountered
 // during the check.
-func ValidateTimescaleVersion(ctx context.Context, pool *pgxpool.Pool, want *version.Version) error {
+func ValidateTimescaleVersion(ctx context.Context, pool *pgxpool.Pool) error {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		return err
 	}
 	defer conn.Release()
-	return doValidateTimescaleVersion(ctx, conn, want)
+	return doValidateTimescaleVersion(ctx, conn, MinTimescaleVersion)
 }
 
 func doValidateTimescaleVersion(ctx context.Context, q queryRower, want *version.Version) error {
