@@ -1,5 +1,3 @@
-//go:build history
-
 package timescale
 
 import (

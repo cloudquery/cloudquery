@@ -1,4 +1,5 @@
 //go:build history
+// +build history
 
 package timescale
 
