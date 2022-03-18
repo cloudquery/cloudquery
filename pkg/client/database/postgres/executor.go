@@ -100,7 +100,7 @@ func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.
 		return fmt.Errorf("error getting PostgreSQL version: %w", err)
 	}
 	if got.LessThan(want) {
-		return fmt.Errorf("unsupported PostgreSQL version: %v. (should be >= %v)", got, want)
+		return fmt.Errorf("unsupported PostgreSQL version: %s. (should be >= %s)", got.String(), want.String())
 	}
 	return nil
 }
