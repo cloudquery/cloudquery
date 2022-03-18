@@ -5,6 +5,7 @@ package timescale
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -16,8 +17,36 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/jackc/pgx/v4"
 	"github.com/stretchr/testify/assert"
 )
+
+type mockConn struct {
+	row pgx.Row
+}
+
+func (m mockConn) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
+	return m.row
+}
+
+type mockScanner struct {
+	t   *testing.T
+	val string
+	err error
+}
+
+func (m mockScanner) Scan(dst ...interface{}) error {
+	if len(dst) != 1 {
+		m.t.Fatalf("called with %d args, want exactly one", len(dst))
+	}
+	ptr, ok := dst[0].(*string)
+	if !ok {
+		m.t.Fatalf("received %T, expected *string", dst[0])
+	}
+	*ptr = m.val
+	return m.err
+}
 
 var testTable = &schema.Table{
 	Name: "test_table",
@@ -166,4 +195,44 @@ func TestSetupHistory(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, res.RowsAffected(), int64(0))
 	})
+}
+
+func Test_doValidateTimescaleVersion(t *testing.T) {
+	tests := []struct {
+		name       string
+		q          mockConn
+		minVersion string
+		wantErr    error
+	}{
+		{
+			"lower than needed",
+			mockConn{row: mockScanner{t, "1.7.5", nil}},
+			"2.0",
+			errors.New("unsupported Timescale version: 1.7.5. (should be >= 2.0.0)"),
+		},
+		{
+			"equal",
+			mockConn{row: mockScanner{t, "2.0.0", nil}},
+			"2.0",
+			nil,
+		},
+		{
+			"greater than needed",
+			mockConn{row: mockScanner{t, "2.6.0", nil}},
+			"2.0",
+			nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			want := version.Must(version.NewVersion(tt.minVersion))
+			err := doValidateTimescaleVersion(context.Background(), tt.q, want)
+			if (tt.wantErr == nil) != (err == nil) {
+				t.Errorf("wantErr is %v, returned error is %v", tt.wantErr, err)
+			}
+			if tt.wantErr != nil {
+				assert.Equal(t, tt.wantErr.Error(), err.Error())
+			}
+		})
+	}
 }
