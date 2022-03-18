@@ -34,5 +34,6 @@ func TestIntegration(t *testing.T) {
 		Config:                cfg,
 		NotParallel:           true,
 		ParallelFetchingLimit: 10000,
+		SkipIgnoreInTest:      false,
 	})
 }
