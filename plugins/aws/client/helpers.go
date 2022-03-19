@@ -243,10 +243,23 @@ func (c *Client) IsNotFoundError(err error) bool {
 	return false
 }
 
-func IsAWSErr(err error, code string) bool {
+func IsAWSError(err error, code string) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
 		return false
 	}
 	return strings.Contains(ae.ErrorCode(), code)
+}
+
+func IsAWSErrors(err error, code []string) bool {
+	var ae smithy.APIError
+	if !errors.As(err, &ae) {
+		return false
+	}
+	for _, c := range code {
+		if strings.Contains(ae.ErrorCode(), c) {
+			return true
+		}
+	}
+	return false
 }

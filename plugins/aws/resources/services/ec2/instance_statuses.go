@@ -78,9 +78,10 @@ func Ec2InstanceStatuses() *schema.Table {
 				Resolver:    schema.PathResolver("InstanceStatus.Status"),
 			},
 			{
-				Name:        "outpost_arn",
-				Description: "The Amazon Resource Name (ARN) of the Outpost.",
-				Type:        schema.TypeString,
+				Name:          "outpost_arn",
+				Description:   "The Amazon Resource Name (ARN) of the Outpost.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "system_status",
@@ -97,10 +98,11 @@ func Ec2InstanceStatuses() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_instance_status_events",
-				Description: "Any scheduled events associated with the instance.",
-				Resolver:    fetchEc2InstanceStatusEvents,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_status_cq_id", "id"}},
+				Name:          "aws_ec2_instance_status_events",
+				Description:   "Any scheduled events associated with the instance.",
+				Resolver:      fetchEc2InstanceStatusEvents,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_status_cq_id", "id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "instance_status_cq_id",

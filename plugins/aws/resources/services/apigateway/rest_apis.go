@@ -914,8 +914,12 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	if !ok {
 		return fmt.Errorf("expected RestApi but got %T", r)
 	}
-	client := meta.(*client.Client)
-	svc := client.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
+
+	if api.Id == nil || r.Name == nil {
+		return nil
+	}
 
 	config := apigateway.GetModelTemplateInput{
 		RestApiId: api.Id,
@@ -923,9 +927,16 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	}
 
 	response, err := svc.GetModelTemplate(ctx, &config, func(options *apigateway.Options) {
-		options.Region = client.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
+		if client.IsAWSError(err, "BadRequestException") {
+			// This is an application level error and the user has nothing to do with that.
+			// https://github.com/cloudquery/cq-provider-aws/pull/567#discussion_r827095787
+			// The suer will be able to find incorrect configured models via
+			// select * from aws_apigateway_rest_api_models where model_template is nil
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, response.Value)

@@ -169,10 +169,11 @@ func Apigatewayv2Apis() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_apigatewayv2_api_authorizers",
-				Description: "Represents an authorizer.",
-				Resolver:    fetchApigatewayv2ApiAuthorizers,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"api_cq_id", "authorizer_id"}},
+				Name:          "aws_apigatewayv2_api_authorizers",
+				Description:   "Represents an authorizer.",
+				Resolver:      fetchApigatewayv2ApiAuthorizers,
+				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"api_cq_id", "authorizer_id"}},
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "api_cq_id",
@@ -375,9 +376,10 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "credentials_arn",
-						Description: "Specifies the credentials required for the integration, if any. For AWS integrations, three options are available. To specify an IAM Role for API Gateway to assume, use the role's Amazon Resource Name (ARN). To require that the caller's identity be passed through from the request, specify the string arn:aws:iam::*:user/*. To use resource-based permissions on supported AWS services, specify null.",
-						Type:        schema.TypeString,
+						Name:          "credentials_arn",
+						Description:   "Specifies the credentials required for the integration, if any. For AWS integrations, three options are available. To specify an IAM Role for API Gateway to assume, use the role's Amazon Resource Name (ARN). To require that the caller's identity be passed through from the request, specify the string arn:aws:iam::*:user/*. To use resource-based permissions on supported AWS services, specify null.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "description",
@@ -402,9 +404,10 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "integration_subtype",
-						Description: "Supported only for HTTP API AWS_PROXY integrations. Specifies the AWS service action to invoke. To learn more, see Integration subtype reference (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services-reference.html).",
-						Type:        schema.TypeString,
+						Name:          "integration_subtype",
+						Description:   "Supported only for HTTP API AWS_PROXY integrations. Specifies the AWS service action to invoke. To learn more, see Integration subtype reference (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services-reference.html).",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "integration_type",
@@ -427,9 +430,10 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "request_parameters",
-						Description: "For WebSocket APIs, a key-value map specifying request parameters that are passed from the method request to the backend. The key is an integration request parameter name and the associated value is a method request parameter value or static value that must be enclosed within single quotes and pre-encoded as required by the backend. The method request parameter value must match the pattern of method.request.{location}.{name} , where {location} is querystring, path, or header; and {name} must be a valid and unique method request parameter name. For HTTP API integrations with a specified integrationSubtype, request parameters are a key-value map specifying parameters that are passed to AWS_PROXY integrations. You can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see Working with AWS service integrations for HTTP APIs (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services.html). For HTTP API itegrations, without a specified integrationSubtype request parameters are a key-value map specifying how to transform HTTP requests before sending them to backend integrations. The key should follow the pattern <action>:<header|querystring|path>.<location>. The action can be append, overwrite or remove. For values, you can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see Transforming API requests and responses (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html).",
-						Type:        schema.TypeJSON,
+						Name:          "request_parameters",
+						Description:   "For WebSocket APIs, a key-value map specifying request parameters that are passed from the method request to the backend. The key is an integration request parameter name and the associated value is a method request parameter value or static value that must be enclosed within single quotes and pre-encoded as required by the backend. The method request parameter value must match the pattern of method.request.{location}.{name} , where {location} is querystring, path, or header; and {name} must be a valid and unique method request parameter name. For HTTP API integrations with a specified integrationSubtype, request parameters are a key-value map specifying parameters that are passed to AWS_PROXY integrations. You can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see Working with AWS service integrations for HTTP APIs (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services.html). For HTTP API itegrations, without a specified integrationSubtype request parameters are a key-value map specifying how to transform HTTP requests before sending them to backend integrations. The key should follow the pattern <action>:<header|querystring|path>.<location>. The action can be append, overwrite or remove. For values, you can provide static values, or map request data, stage variables, or context variables that are evaluated at runtime. To learn more, see Transforming API requests and responses (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html).",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "request_templates",
@@ -438,9 +442,10 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "response_parameters",
-						Description: "Supported only for HTTP APIs. You use response parameters to transform the HTTP response from a backend integration before returning the response to clients. Specify a key-value map from a selection key to response parameters. The selection key must be a valid HTTP status code within the range of 200-599. Response parameters are a key-value map. The key must match pattern <action>:<header>.<location> or overwrite.statuscode. The action can be append, overwrite or remove. The value can be a static value, or map to response data, stage variables, or context variables that are evaluated at runtime. To learn more, see Transforming API requests and responses (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html).",
-						Type:        schema.TypeJSON,
+						Name:          "response_parameters",
+						Description:   "Supported only for HTTP APIs. You use response parameters to transform the HTTP response from a backend integration before returning the response to clients. Specify a key-value map from a selection key to response parameters. The selection key must be a valid HTTP status code within the range of 200-599. Response parameters are a key-value map. The key must match pattern <action>:<header>.<location> or overwrite.statuscode. The action can be append, overwrite or remove. The value can be a static value, or map to response data, stage variables, or context variables that are evaluated at runtime. To learn more, see Transforming API requests and responses (https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html).",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "template_selection_expression",
@@ -631,9 +636,10 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "authorization_scopes",
-						Description: "A list of authorization scopes configured on a route. The scopes are used with a JWT authorizer to authorize the method invocation. The authorization works by matching the route scopes against the scopes parsed from the access token in the incoming request. The method invocation is authorized if any route scope matches a claimed scope in the access token. Otherwise, the invocation is not authorized. When the route scope is configured, the client must provide an access token instead of an identity token for authorization purposes.",
-						Type:        schema.TypeStringArray,
+						Name:          "authorization_scopes",
+						Description:   "A list of authorization scopes configured on a route. The scopes are used with a JWT authorizer to authorize the method invocation. The authorization works by matching the route scopes against the scopes parsed from the access token in the incoming request. The method invocation is authorized if any route scope matches a claimed scope in the access token. Otherwise, the invocation is not authorized. When the route scope is configured, the client must provide an access token instead of an identity token for authorization purposes.",
+						Type:          schema.TypeStringArray,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "authorization_type",
@@ -641,9 +647,10 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "authorizer_id",
-						Description: "The identifier of the Authorizer resource to be associated with this route. The authorizer identifier is generated by API Gateway when you created the authorizer.",
-						Type:        schema.TypeString,
+						Name:          "authorizer_id",
+						Description:   "The identifier of the Authorizer resource to be associated with this route. The authorizer identifier is generated by API Gateway when you created the authorizer.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "model_selection_expression",
@@ -652,9 +659,10 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "operation_name",
-						Description: "The operation name for the route.",
-						Type:        schema.TypeString,
+						Name:          "operation_name",
+						Description:   "The operation name for the route.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "request_models",
@@ -663,9 +671,10 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "request_parameters",
-						Description: "The request parameters for the route. Supported only for WebSocket APIs.",
-						Type:        schema.TypeJSON,
+						Name:          "request_parameters",
+						Description:   "The request parameters for the route. Supported only for WebSocket APIs.",
+						Type:          schema.TypeJSON,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "route_id",
@@ -778,16 +787,18 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "access_log_settings_destination_arn",
-						Description: "The ARN of the CloudWatch Logs log group to receive access logs.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AccessLogSettings.DestinationArn"),
+						Name:          "access_log_settings_destination_arn",
+						Description:   "The ARN of the CloudWatch Logs log group to receive access logs.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("AccessLogSettings.DestinationArn"),
+						IgnoreInTests: true,
 					},
 					{
-						Name:        "access_log_settings_format",
-						Description: "A single line format of the access logs of data, as specified by selected $context variables. The format must include at least $context.requestId.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AccessLogSettings.Format"),
+						Name:          "access_log_settings_format",
+						Description:   "A single line format of the access logs of data, as specified by selected $context variables. The format must include at least $context.requestId.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("AccessLogSettings.Format"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "api_gateway_managed",

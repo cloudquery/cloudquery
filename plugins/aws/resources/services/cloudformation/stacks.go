@@ -57,24 +57,28 @@ func Stacks() *schema.Table {
 				Resolver:    schema.PathResolver("StackStatus"),
 			},
 			{
-				Name:        "capabilities",
-				Description: "The capabilities allowed in the stack.",
-				Type:        schema.TypeStringArray,
+				Name:          "capabilities",
+				Description:   "The capabilities allowed in the stack.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "change_set_id",
-				Description: "The unique ID of the change set.",
-				Type:        schema.TypeString,
+				Name:          "change_set_id",
+				Description:   "The unique ID of the change set.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "deletion_time",
-				Description: "The time the stack was deleted.",
-				Type:        schema.TypeTimestamp,
+				Name:          "deletion_time",
+				Description:   "The time the stack was deleted.",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "description",
-				Description: "A user-defined description associated with the stack.",
-				Type:        schema.TypeString,
+				Name:          "description",
+				Description:   "A user-defined description associated with the stack.",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "disable_rollback",
@@ -101,9 +105,10 @@ func Stacks() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "last_updated_time",
-				Description: "The time the stack was last updated",
-				Type:        schema.TypeTimestamp,
+				Name:          "last_updated_time",
+				Description:   "The time the stack was last updated",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "notification_arns",
@@ -117,9 +122,10 @@ func Stacks() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "parent_id",
-				Description: "For nested stacks--stacks created as resources for another stack--the stack ID of the direct parent of this stack",
-				Type:        schema.TypeString,
+				Name:          "parent_id",
+				Description:   "For nested stacks--stacks created as resources for another stack--the stack ID of the direct parent of this stack",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "role_arn",
@@ -142,9 +148,10 @@ func Stacks() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "root_id",
-				Description: "For nested stacks--stacks created as resources for another stack--the stack ID of the top-level stack to which the nested stack ultimately belongs",
-				Type:        schema.TypeString,
+				Name:          "root_id",
+				Description:   "For nested stacks--stacks created as resources for another stack--the stack ID of the top-level stack to which the nested stack ultimately belongs",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "id",
@@ -172,9 +179,10 @@ func Stacks() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cloudformation_stack_outputs",
-				Description: "The Output data type.",
-				Resolver:    fetchCloudformationStackOutputs,
+				Name:          "aws_cloudformation_stack_outputs",
+				Description:   "The Output data type.",
+				Resolver:      fetchCloudformationStackOutputs,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "stack_cq_id",

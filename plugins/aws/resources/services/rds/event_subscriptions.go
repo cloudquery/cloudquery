@@ -66,9 +66,10 @@ func RdsEventSubscriptions() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "source_ids_list",
-				Description: "A list of source IDs for the RDS event notification subscription.",
-				Type:        schema.TypeStringArray,
+				Name:          "source_ids_list",
+				Description:   "A list of source IDs for the RDS event notification subscription.",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "source_type",

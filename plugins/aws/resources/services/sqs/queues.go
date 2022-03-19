@@ -152,9 +152,10 @@ func SQSQueues() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "tags",
-				Description: "Queue tags.",
-				Type:        schema.TypeJSON,
+				Name:          "tags",
+				Description:   "Queue tags.",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "unknown_fields",
