@@ -17,7 +17,11 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
+    permissions:
+        id-token: write # This required for OIDC
+        contents: read    # This is required for actions/checkout@v2
+        issues: write
+        pull-requests: write
     name: Terrafrom Plan
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +34,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
@@ -68,7 +73,7 @@ jobs:
 
             </details>
 
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
             
             <details><summary>Show Plan</summary>
             

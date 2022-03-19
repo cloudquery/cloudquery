@@ -20,7 +20,7 @@ jobs:
     outputs:
       status: ${{ steps.is_organization_member.outputs.result }}
     steps:
-      - uses: yevgenypats/is-organization-member@e02c0c02d780c65e9981fe8777409e94cfdd2eda
+      - uses: yevgenypats/is-organization-member@646ee210c04d55d8b7f3a591722d06eb16310236
         if: github.event_name == 'pull_request_target'
         id: is_organization_member
         with:
@@ -84,7 +84,7 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
+
       - name: Integration Test
         run: |
           go test -run=TestIntegration -tags=integration ./...
