@@ -11,6 +11,8 @@ on:
       - main
     paths-ignore:
       - 'terraform/**'
+      - '.github/**'
+      - 'scripts/**'
 
 jobs:
   is_organization_member:
@@ -24,12 +26,11 @@ jobs:
         with:
           organization: cloudquery
           username: ${{ github.event.pull_request.user.login }}
-          token: ${{ secrets.GH_PAT }}  
+          token: ${{ secrets.GH_PAT }}
       - name: Skip if not member and event is pull_request_target
         if: github.event_name != 'pull_request_target' || steps.is_organization_member.outputs.result == 'false'
         run: |
-            echo ${{ steps.is_organization_member.outputs }}
-            echo "user ${{ github.event.pull_request.user.login }} is not part of org. Please run 'go test -run=TestIntegration -tags=integration ./..'"
+            echo "user is not part of org. Please run 'go test -run=TestIntegration -tags=integration ./..'"
             echo "and paste the output in the PR"
 
   test_integration:
