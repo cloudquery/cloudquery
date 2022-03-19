@@ -26,7 +26,7 @@ jobs:
         with:
           organization: cloudquery
           username: ${{ github.event.pull_request.user.login }}
-          token: ${{ secrets.GITHUB_TOKEN }}  
+          token: ${{ secrets.GH_PAT }}
       - name: Skip if not member and event is pull_request_target
         if: github.event_name != 'pull_request_target' || steps.is_organization_member.outputs.result == 'false'
         run: |
