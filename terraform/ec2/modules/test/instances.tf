@@ -6,6 +6,16 @@
 
 resource "aws_kms_key" "ec2_kms_key" {}
 
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.4"
@@ -15,7 +25,7 @@ module "ec2_instance" {
   // spot_price           = "0.60"
   // spot_type            = "persistent"
 
-  ami                    = "ami-05d34d340fb1d89e5"
+  ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
   subnet_id              = element(module.vpc.private_subnets, 0)

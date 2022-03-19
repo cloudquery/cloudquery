@@ -66,8 +66,9 @@ func Ec2EbsVolumes() *schema.Table {
 				Type: schema.TypeInt,
 			},
 			{
-				Name: "kms_key_id",
-				Type: schema.TypeString,
+				Name:          "kms_key_id",
+				Type:          schema.TypeString,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "multi_attach_enabled",
@@ -96,8 +97,9 @@ func Ec2EbsVolumes() *schema.Table {
 				Resolver: resolveEc2EbsVolumeTags,
 			},
 			{
-				Name: "throughput",
-				Type: schema.TypeInt,
+				Name:          "throughput",
+				Type:          schema.TypeInt,
+				IgnoreInTests: true,
 			},
 			{
 				Name: "volume_type",

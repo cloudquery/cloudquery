@@ -16,13 +16,14 @@ import (
 
 func CognitoUserPools() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cognito_user_pools",
-		Description:  "A container for information about the user pool.",
-		Resolver:     fetchCognitoUserPools,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("cognito-idp"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_cognito_user_pools",
+		Description:   "A container for information about the user pool.",
+		Resolver:      fetchCognitoUserPools,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-idp"),
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter:  client.DeleteAccountRegionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

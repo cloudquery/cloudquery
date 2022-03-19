@@ -155,10 +155,11 @@ func Route53HostedZones() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "dns_name",
-						Description: "Alias resource record sets only: The value that you specify depends on where you want to route queries: Amazon API Gateway custom regional APIs and edge-optimized APIs Specify the applicable domain name for your API.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AliasTarget.DNSName"),
+						Name:          "dns_name",
+						Description:   "Alias resource record sets only: The value that you specify depends on where you want to route queries: Amazon API Gateway custom regional APIs and edge-optimized APIs Specify the applicable domain name for your API.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("AliasTarget.DNSName"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "evaluate_target_health",
