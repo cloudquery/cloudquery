@@ -3,7 +3,6 @@ package rds
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -228,10 +227,7 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 
 func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s, ok := resource.Item.(types.DBSnapshot)
-	if !ok {
-		return fmt.Errorf("not a types.DBSnapshot: %T", resource.Item)
-	}
+	s := resource.Item.(types.DBSnapshot)
 	tags := map[string]*string{}
 	for _, t := range s.TagList {
 		tags[*t.Key] = t.Value
@@ -240,10 +236,7 @@ func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resou
 }
 
 func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	s, ok := resource.Item.(types.DBSnapshot)
-	if !ok {
-		return fmt.Errorf("not a types.DBSnapshot: %T", resource.Item)
-	}
+	s := resource.Item.(types.DBSnapshot)
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	out, err := svc.DescribeDBSnapshotAttributes(
@@ -268,10 +261,7 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 }
 
 func resolveRDSDBSnapshotProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	s, ok := resource.Item.(types.DBSnapshot)
-	if !ok {
-		return fmt.Errorf("not a types.DBSnapshot: %T", resource.Item)
-	}
+	s := resource.Item.(types.DBSnapshot)
 
 	b, err := json.Marshal(s.ProcessorFeatures)
 	if err != nil {

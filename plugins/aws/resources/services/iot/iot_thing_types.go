@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -118,10 +117,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	return nil
 }
 func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(types.ThingTypeDefinition)
-	if !ok {
-		return fmt.Errorf("expected types.ThingTypeDefinition but got %T", resource.Item)
-	}
+	i := resource.Item.(types.ThingTypeDefinition)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{

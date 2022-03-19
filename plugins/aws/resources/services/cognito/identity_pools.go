@@ -2,7 +2,6 @@ package cognito
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
@@ -166,10 +165,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func fetchCognitoIdentityPoolCognitoIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pool, ok := parent.Item.(*cognitoidentity.DescribeIdentityPoolOutput)
-	if !ok {
-		return fmt.Errorf("not a DescribeIdentityPoolOutput instance: %#v", parent.Item)
-	}
+	pool := parent.Item.(*cognitoidentity.DescribeIdentityPoolOutput)
 	res <- pool.CognitoIdentityProviders
 	return nil
 }

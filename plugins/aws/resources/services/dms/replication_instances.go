@@ -2,7 +2,6 @@ package dms
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
@@ -306,19 +305,13 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 }
 
 func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	replicationInstance, ok := parent.Item.(DmsReplicationInstanceWrapper)
-	if !ok {
-		return fmt.Errorf("not dms replication instance")
-	}
+	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
 	res <- replicationInstance.ReplicationSubnetGroup.Subnets
 	return nil
 }
 
 func fetchDmsReplicationInstanceVpcSecurityGroups(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	replicationInstance, ok := parent.Item.(DmsReplicationInstanceWrapper)
-	if !ok {
-		return fmt.Errorf("not dms replication instance")
-	}
+	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
 	res <- replicationInstance.VpcSecurityGroups
 	return nil
 }

@@ -2,7 +2,6 @@ package lambda
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -192,10 +191,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(types.LayersListItem)
-	if !ok {
-		return fmt.Errorf("wrong type assertion: got %T instead of LayersListItem", p)
-	}
+	p := parent.Item.(types.LayersListItem)
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListLayerVersionsInput{
 		LayerName: p.LayerName,
@@ -215,15 +211,9 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(types.LayerVersionsListItem)
-	if !ok {
-		return fmt.Errorf("wrong type assertion: got %T instead of LayerVersionsListItem", p)
-	}
+	p := parent.Item.(types.LayerVersionsListItem)
 
-	pp, ok := parent.Parent.Item.(types.LayersListItem)
-	if !ok {
-		return fmt.Errorf("wrong type assertion: got %T instead of LayersListItem", p)
-	}
+	pp := parent.Parent.Item.(types.LayersListItem)
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
 

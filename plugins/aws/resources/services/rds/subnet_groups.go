@@ -2,7 +2,6 @@ package rds
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -129,10 +128,7 @@ func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func fetchRdsSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	subnetGroup, ok := parent.Item.(types.DBSubnetGroup)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	subnetGroup := parent.Item.(types.DBSubnetGroup)
 	res <- subnetGroup.Subnets
 	return nil
 }

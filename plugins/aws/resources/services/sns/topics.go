@@ -2,7 +2,6 @@ package sns
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -126,10 +125,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	return nil
 }
 func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	topic, ok := resource.Item.(types.Topic)
-	if !ok {
-		return fmt.Errorf("%T is not topic", resource.Item)
-	}
+	topic := resource.Item.(types.Topic)
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	// All topic attributes are returned as a string; we have to handle type conversion

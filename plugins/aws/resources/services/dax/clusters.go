@@ -2,7 +2,6 @@ package dax
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
@@ -251,10 +250,7 @@ func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 func resolveDaxClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return fmt.Errorf("expected types.Cluster but got %T", resource.Item)
-	}
+	cluster := resource.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().DAX

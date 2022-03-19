@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"fmt"
 	"regexp"
 	"time"
 
@@ -852,10 +851,7 @@ func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := resource.Item.(types.Instance)
 	if instance.StateTransitionReason == nil {
 		return nil
 	}
@@ -874,10 +870,7 @@ func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schem
 	return resource.Set(c.Name, tm)
 }
 func resolveEc2InstancesLicenses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := resource.Item.(types.Instance)
 	licenses := make([]string, len(instance.Licenses))
 	for i, l := range instance.Licenses {
 		licenses[i] = *l.LicenseConfigurationArn
@@ -893,42 +886,27 @@ func resolveEc2InstancesTags(ctx context.Context, meta schema.ClientMeta, resour
 	return resource.Set("tags", tags)
 }
 func fetchEc2InstanceBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.BlockDeviceMappings
 	return nil
 }
 func fetchEc2InstanceElasticGpuAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.ElasticGpuAssociations
 	return nil
 }
 func fetchEc2InstanceElasticInferenceAcceleratorAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.ElasticInferenceAcceleratorAssociations
 	return nil
 }
 func fetchEc2InstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.NetworkInterfaces
 	return nil
 }
 func resolveEc2InstanceNetworkInterfacesIpv4Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instanceNetworkInterface, ok := resource.Item.(types.InstanceNetworkInterface)
-	if !ok {
-		return fmt.Errorf("not ec2 instance network interface")
-	}
+	instanceNetworkInterface := resource.Item.(types.InstanceNetworkInterface)
 	ips := make([]string, 0, len(instanceNetworkInterface.Ipv4Prefixes))
 	for _, p := range instanceNetworkInterface.Ipv4Prefixes {
 		ips = append(ips, *p.Ipv4Prefix)
@@ -936,10 +914,7 @@ func resolveEc2InstanceNetworkInterfacesIpv4Prefixes(ctx context.Context, meta s
 	return resource.Set(c.Name, ips)
 }
 func resolveEc2InstanceNetworkInterfacesIpv6Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instanceNetworkInterface, ok := resource.Item.(types.InstanceNetworkInterface)
-	if !ok {
-		return fmt.Errorf("not ec2 instance network interface")
-	}
+	instanceNetworkInterface := resource.Item.(types.InstanceNetworkInterface)
 	ips := make([]string, 0, len(instanceNetworkInterface.Ipv6Prefixes))
 	for _, p := range instanceNetworkInterface.Ipv6Prefixes {
 		ips = append(ips, *p.Ipv6Prefix)
@@ -947,42 +922,27 @@ func resolveEc2InstanceNetworkInterfacesIpv6Prefixes(ctx context.Context, meta s
 	return resource.Set(c.Name, ips)
 }
 func fetchEc2InstanceNetworkInterfaceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
-	if !ok {
-		return fmt.Errorf("not ec2 instance network interface")
-	}
+	instanceNetworkInterface := parent.Item.(types.InstanceNetworkInterface)
 	res <- instanceNetworkInterface.Groups
 	return nil
 }
 func fetchEc2InstanceNetworkInterfaceIpv6Addresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
-	if !ok {
-		return fmt.Errorf("not ec2 instance network interface")
-	}
+	instanceNetworkInterface := parent.Item.(types.InstanceNetworkInterface)
 	res <- instanceNetworkInterface.Ipv6Addresses
 	return nil
 }
 func fetchEc2InstanceNetworkInterfacePrivateIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instanceNetworkInterface, ok := parent.Item.(types.InstanceNetworkInterface)
-	if !ok {
-		return fmt.Errorf("not ec2 instance network interface")
-	}
+	instanceNetworkInterface := parent.Item.(types.InstanceNetworkInterface)
 	res <- instanceNetworkInterface.PrivateIpAddresses
 	return nil
 }
 func fetchEc2InstanceProductCodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.ProductCodes
 	return nil
 }
 func fetchEc2InstanceSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.Instance)
-	if !ok {
-		return fmt.Errorf("not ec2 instance")
-	}
+	instance := parent.Item.(types.Instance)
 	res <- instance.SecurityGroups
 	return nil
 }

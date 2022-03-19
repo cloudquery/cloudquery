@@ -2,7 +2,6 @@ package elbv2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
@@ -351,10 +350,7 @@ func Elbv2Listeners() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	lb, ok := parent.Item.(types.LoadBalancer)
-	if !ok {
-		return fmt.Errorf("expected to have types.LoadBalancer but got %T", parent.Item)
-	}
+	lb := parent.Item.(types.LoadBalancer)
 	config := elbv2.DescribeListenersInput{
 		LoadBalancerArn: lb.LoadBalancerArn,
 	}
@@ -378,10 +374,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ELBv2
-	listener, ok := resource.Item.(types.Listener)
-	if !ok {
-		return fmt.Errorf("expected to have types.Listener but got %T", resource.Item)
-	}
+	listener := resource.Item.(types.Listener)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
 			*listener.ListenerArn,
@@ -407,10 +400,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ELBv2
-	listener, ok := parent.Item.(types.Listener)
-	if !ok {
-		return fmt.Errorf("expected to have types.Listener but got %T", parent.Item)
-	}
+	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
 	for {
 		response, err := svc.DescribeListenerCertificates(ctx, &config, func(options *elbv2.Options) {
@@ -429,18 +419,12 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 }
 
 func fetchElbv2ListenerDefaultActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	listener, ok := parent.Item.(types.Listener)
-	if !ok {
-		return fmt.Errorf("expected to have types.Listener but got %T", parent.Item)
-	}
+	listener := parent.Item.(types.Listener)
 	res <- listener.DefaultActions
 	return nil
 }
 func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	action, ok := parent.Item.(types.Action)
-	if !ok {
-		return fmt.Errorf("expected to have types.Action but got %T", parent.Item)
-	}
+	action := parent.Item.(types.Action)
 	if action.ForwardConfig == nil {
 		return nil
 	}

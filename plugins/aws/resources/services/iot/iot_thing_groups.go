@@ -3,7 +3,6 @@ package iot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -177,10 +176,7 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeThingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeThingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListThingsInThingGroupInput{
@@ -207,10 +203,7 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	return resource.Set(c.Name, things)
 }
 func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeThingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeThingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListAttachedPoliciesInput{
@@ -239,10 +232,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	return resource.Set(c.Name, policies)
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeThingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeThingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{
@@ -269,10 +259,7 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 	return resource.Set(c.Name, tags)
 }
 func resolveIotThingGroupsRootToParentThingGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeThingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeThingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	if i.ThingGroupMetadata == nil {
 		return nil
 	}

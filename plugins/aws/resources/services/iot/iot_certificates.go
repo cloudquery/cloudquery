@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -196,10 +195,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*types.CertificateDescription)
-	if !ok {
-		return fmt.Errorf("expected *types.CertificateDescription but got %T", resource.Item)
-	}
+	i := resource.Item.(*types.CertificateDescription)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListAttachedPoliciesInput{

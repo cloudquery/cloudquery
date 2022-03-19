@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -152,10 +151,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 	return nil
 }
 func fetchIotStreamFiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i, ok := parent.Item.(*types.StreamInfo)
-	if !ok {
-		return fmt.Errorf("expected types.StreamSummary but got %T", parent.Item)
-	}
+	i := parent.Item.(*types.StreamInfo)
 
 	res <- i.Files
 	return nil

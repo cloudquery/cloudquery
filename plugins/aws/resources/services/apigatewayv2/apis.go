@@ -2,7 +2,6 @@ package apigatewayv2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -917,10 +916,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetAuthorizersInput{
 		ApiId: r.ApiId,
 	}
@@ -943,10 +939,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetDeploymentsInput{
 		ApiId: r.ApiId,
 	}
@@ -969,10 +962,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetIntegrationsInput{
 		ApiId: r.ApiId,
 	}
@@ -995,14 +985,8 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Integration)
-	if !ok {
-		return fmt.Errorf("expected Integration but got %T", r)
-	}
-	p, ok := parent.Parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Integration)
+	p := parent.Parent.Item.(types.Api)
 	config := apigatewayv2.GetIntegrationResponsesInput{
 		ApiId:         p.ApiId,
 		IntegrationId: r.IntegrationId,
@@ -1026,10 +1010,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	return nil
 }
 func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetModelsInput{
 		ApiId: r.ApiId,
 	}
@@ -1052,14 +1033,8 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(types.Model)
-	if !ok {
-		return fmt.Errorf("expected Model but got %T", r)
-	}
-	p, ok := resource.Parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := resource.Item.(types.Model)
+	p := resource.Parent.Item.(types.Api)
 	config := apigatewayv2.GetModelTemplateInput{
 		ApiId:   p.ApiId,
 		ModelId: r.ModelId,
@@ -1076,10 +1051,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	return resource.Set(c.Name, response.Value)
 }
 func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetRoutesInput{
 		ApiId: r.ApiId,
 	}
@@ -1102,14 +1074,8 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Route)
-	if !ok {
-		return fmt.Errorf("expected Route but got %T", r)
-	}
-	p, ok := parent.Parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Route)
+	p := parent.Parent.Item.(types.Api)
 	config := apigatewayv2.GetRouteResponsesInput{
 		ApiId:   p.ApiId,
 		RouteId: r.RouteId,
@@ -1133,10 +1099,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 	return nil
 }
 func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Api)
-	if !ok {
-		return fmt.Errorf("expected Api but got %T", r)
-	}
+	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetStagesInput{
 		ApiId: r.ApiId,
 	}

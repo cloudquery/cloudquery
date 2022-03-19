@@ -2,7 +2,6 @@ package rds
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -522,26 +521,17 @@ func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	return resource.Set("tags", tags)
 }
 func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster, ok := parent.Item.(types.DBCluster)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	cluster := parent.Item.(types.DBCluster)
 	res <- cluster.AssociatedRoles
 	return nil
 }
 func fetchRdsClusterDbClusterMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster, ok := parent.Item.(types.DBCluster)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	cluster := parent.Item.(types.DBCluster)
 	res <- cluster.DBClusterMembers
 	return nil
 }
 func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster, ok := resource.Item.(types.DBCluster)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	cluster := resource.Item.(types.DBCluster)
 	if cluster.DBClusterOptionGroupMemberships == nil {
 		return nil
 	}
@@ -553,18 +543,12 @@ func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta 
 }
 
 func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster, ok := parent.Item.(types.DBCluster)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	cluster := parent.Item.(types.DBCluster)
 	res <- cluster.DomainMemberships
 	return nil
 }
 func fetchRdsClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster, ok := parent.Item.(types.DBCluster)
-	if !ok {
-		return fmt.Errorf("not db cluster")
-	}
+	cluster := parent.Item.(types.DBCluster)
 	res <- cluster.VpcSecurityGroups
 	return nil
 }

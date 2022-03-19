@@ -416,10 +416,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.EnvironmentDescription)
-	if !ok {
-		return fmt.Errorf("expected types.EnvironmentDescription but got %T", resource.Item)
-	}
+	p := resource.Item.(types.EnvironmentDescription)
 	if p.Resources == nil || p.Resources.LoadBalancer == nil {
 		return nil
 	}
@@ -430,10 +427,7 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	return resource.Set(c.Name, listeners)
 }
 func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.EnvironmentDescription)
-	if !ok {
-		return fmt.Errorf("expected types.EnvironmentDescription but got %T", resource.Item)
-	}
+	p := resource.Item.(types.EnvironmentDescription)
 	svc := meta.(*client.Client).Services().ElasticBeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
@@ -451,19 +445,13 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	return resource.Set(c.Name, tags)
 }
 func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(types.EnvironmentDescription)
-	if !ok {
-		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
-	}
+	p := parent.Item.(types.EnvironmentDescription)
 	res <- p.EnvironmentLinks
 	return nil
 }
 
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(types.EnvironmentDescription)
-	if !ok {
-		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
-	}
+	p := parent.Item.(types.EnvironmentDescription)
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
 	configOptionsIn := elasticbeanstalk.DescribeConfigurationOptionsInput{
@@ -492,10 +480,7 @@ type ConfigOptions struct {
 }
 
 func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(types.EnvironmentDescription)
-	if !ok {
-		return fmt.Errorf("expected types.EnvironmentDescription but got %T", parent.Item)
-	}
+	p := parent.Item.(types.EnvironmentDescription)
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
 

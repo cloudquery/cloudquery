@@ -3,7 +3,6 @@ package autoscaling
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -599,10 +598,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	// return nil
 }
 func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", resource.Item)
-	}
+	p := resource.Item.(autoscalingGroupWrapper)
 	client := meta.(*client.Client)
 	svc := client.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancersInput{AutoScalingGroupName: p.AutoScalingGroupName}
@@ -626,10 +622,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", resource.Item)
-	}
+	p := resource.Item.(autoscalingGroupWrapper)
 	client := meta.(*client.Client)
 	svc := client.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancerTargetGroupsInput{AutoScalingGroupName: p.AutoScalingGroupName}
@@ -653,10 +646,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", resource.Item)
-	}
+	p := resource.Item.(autoscalingGroupWrapper)
 	j := map[string]interface{}{}
 	for _, n := range p.NotificationConfigurations {
 		j[*n.NotificationType] = *n.TopicARN
@@ -664,10 +654,7 @@ func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, met
 	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", resource.Item)
-	}
+	p := resource.Item.(autoscalingGroupWrapper)
 	j := map[string]interface{}{}
 	for _, em := range p.EnabledMetrics {
 		j[*em.Metric] = *em.Granularity
@@ -676,10 +663,7 @@ func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.Cli
 	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", resource.Item)
-	}
+	p := resource.Item.(autoscalingGroupWrapper)
 	j := map[string]interface{}{}
 	for _, sp := range p.SuspendedProcesses {
 		j[*sp.ProcessName] = *sp.SuspensionReason
@@ -688,26 +672,17 @@ func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema
 	return resource.Set(c.Name, j)
 }
 func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
-	}
+	p := parent.Item.(autoscalingGroupWrapper)
 	res <- p.Instances
 	return nil
 }
 func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
-	}
+	p := parent.Item.(autoscalingGroupWrapper)
 	res <- p.Tags
 	return nil
 }
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
-	}
+	p := parent.Item.(autoscalingGroupWrapper)
 	client := meta.(*client.Client)
 	svc := client.Services().Autoscaling
 	config := autoscaling.DescribePoliciesInput{AutoScalingGroupName: p.AutoScalingGroupName}
@@ -729,10 +704,7 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 	return nil
 }
 func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.ScalingPolicy)
-	if !ok {
-		return fmt.Errorf("expected to have types.ScalingPolicy but got %T", resource.Item)
-	}
+	p := resource.Item.(types.ScalingPolicy)
 	j := map[string]interface{}{}
 	for _, a := range p.Alarms {
 		j[*a.AlarmName] = *a.AlarmARN
@@ -740,10 +712,7 @@ func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta sche
 	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.ScalingPolicy)
-	if !ok {
-		return fmt.Errorf("expected to have types.ScalingPolicy but got %T", resource.Item)
-	}
+	p := resource.Item.(types.ScalingPolicy)
 	data, err := json.Marshal(p.StepAdjustments)
 	if err != nil {
 		return diag.WrapError(err)
@@ -751,10 +720,7 @@ func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, 
 	return resource.Set(c.Name, data)
 }
 func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.ScalingPolicy)
-	if !ok {
-		return fmt.Errorf("expected to have types.ScalingPolicy but got %T", resource.Item)
-	}
+	p := resource.Item.(types.ScalingPolicy)
 	if p.TargetTrackingConfiguration == nil || p.TargetTrackingConfiguration.CustomizedMetricSpecification == nil {
 		return nil
 	}
@@ -765,10 +731,7 @@ func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomized
 	return resource.Set(c.Name, j)
 }
 func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(autoscalingGroupWrapper)
-	if !ok {
-		return fmt.Errorf("expected to have autoscalingGroupWrapper but got %T", parent.Item)
-	}
+	p := parent.Item.(autoscalingGroupWrapper)
 	client := meta.(*client.Client)
 	svc := client.Services().Autoscaling
 	config := autoscaling.DescribeLifecycleHooksInput{AutoScalingGroupName: p.AutoScalingGroupName}

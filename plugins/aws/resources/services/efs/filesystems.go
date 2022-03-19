@@ -2,7 +2,6 @@ package efs
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
@@ -176,10 +175,7 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.FileSystemDescription)
-	if !ok {
-		return fmt.Errorf("expected types.FileSystemDescription but got %T", resource.Item)
-	}
+	p := resource.Item.(types.FileSystemDescription)
 	config := efs.DescribeBackupPolicyInput{
 		FileSystemId: p.FileSystemId,
 	}

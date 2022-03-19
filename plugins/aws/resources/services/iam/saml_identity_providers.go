@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -77,10 +76,7 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 func resolveIamSamlIdentityProviderTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(IamSamlIdentityProviderWrapper)
-	if !ok {
-		return fmt.Errorf("not iam identity provider")
-	}
+	r := resource.Item.(IamSamlIdentityProviderWrapper)
 	response := make(map[string]interface{}, len(r.Tags))
 	for _, t := range r.Tags {
 		response[*t.Key] = t.Value

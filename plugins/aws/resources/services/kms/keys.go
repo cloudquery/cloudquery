@@ -2,7 +2,6 @@ package kms
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -164,10 +163,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 func resolveKmsKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	r, ok := resource.Item.(types.KeyListEntry)
-	if !ok {
-		return fmt.Errorf("expected types.KeyListEntry but got %T", resource.Item)
-	}
+	r := resource.Item.(types.KeyListEntry)
 	c := meta.(*client.Client)
 	svc := c.Services().KMS
 	output, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: r.KeyId}, func(options *kms.Options) {

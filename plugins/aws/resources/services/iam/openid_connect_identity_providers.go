@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -84,10 +83,7 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 	return nil
 }
 func resolveIamOpenidConnectIdentityProviderTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(IamOpenIdIdentityProviderWrapper)
-	if !ok {
-		return fmt.Errorf("not iam IamOpenIdIdentityProviderWrapper")
-	}
+	r := resource.Item.(IamOpenIdIdentityProviderWrapper)
 	response := make(map[string]interface{}, len(r.Tags))
 	for _, t := range r.Tags {
 		response[*t.Key] = t.Value

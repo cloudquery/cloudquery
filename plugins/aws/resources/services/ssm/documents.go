@@ -3,7 +3,6 @@ package ssm
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -250,10 +249,7 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) interface{}) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
 	return func(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		d, ok := resource.Item.(*types.DocumentDescription)
-		if !ok {
-			return fmt.Errorf("not a %T instance: %T", d, resource.Item)
-		}
+		d := resource.Item.(*types.DocumentDescription)
 		b, err := json.Marshal(getter(d))
 		if err != nil {
 			return diag.WrapError(err)
@@ -263,10 +259,7 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 }
 
 func resolveSSMDocumentTags(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	d, ok := resource.Item.(*types.DocumentDescription)
-	if !ok {
-		return fmt.Errorf("not a %T instance: %T", d, resource.Item)
-	}
+	d := resource.Item.(*types.DocumentDescription)
 	tags := make(map[string]string)
 	for _, t := range d.Tags {
 		tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
@@ -275,10 +268,7 @@ func resolveSSMDocumentTags(_ context.Context, meta schema.ClientMeta, resource 
 }
 
 func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) (exitErr error) {
-	d, ok := resource.Item.(*types.DocumentDescription)
-	if !ok {
-		return fmt.Errorf("not a %T instance: %T", d, resource.Item)
-	}
+	d := resource.Item.(*types.DocumentDescription)
 	client := meta.(*client.Client)
 	svc := client.Services().SSM
 	optsFn := func(o *ssm.Options) {
@@ -313,10 +303,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 }
 
 func resolveSSMDocumentARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	d, ok := resource.Item.(*types.DocumentDescription)
-	if !ok {
-		return fmt.Errorf("not a %T instance: %T", d, resource.Item)
-	}
+	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, client.GenerateResourceARN("ssm", "document", *d.Name, cl.Region, cl.AccountID))
 }

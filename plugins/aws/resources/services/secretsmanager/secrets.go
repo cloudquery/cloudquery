@@ -210,10 +210,7 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 }
 
 func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(WrappedSecret)
-	if !ok {
-		return fmt.Errorf("expected WrappedSecret but got %T", r)
-	}
+	r := resource.Item.(WrappedSecret)
 	var replicationStatus = make([]map[string]interface{}, len(r.ReplicationStatus))
 
 	for i, replication := range r.ReplicationStatus {
@@ -233,10 +230,7 @@ func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.Cl
 }
 
 func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(WrappedSecret)
-	if !ok {
-		return fmt.Errorf("expected SecretListEntry but got %T", r)
-	}
+	r := resource.Item.(WrappedSecret)
 	tags := map[string]*string{}
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value

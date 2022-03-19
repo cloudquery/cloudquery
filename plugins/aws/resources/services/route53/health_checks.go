@@ -2,7 +2,6 @@ package route53
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -293,10 +292,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(Route53HealthCheckWrapper)
-	if !ok {
-		return fmt.Errorf("not route53 healch check")
-	}
+	r := resource.Item.(Route53HealthCheckWrapper)
 
 	if r.CloudWatchAlarmConfiguration == nil {
 		return nil

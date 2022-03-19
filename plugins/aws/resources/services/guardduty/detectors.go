@@ -2,7 +2,6 @@ package guardduty
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
@@ -192,10 +191,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	detector, ok := parent.Item.(Detector)
-	if !ok {
-		return fmt.Errorf("expected type *guardduty.GetDetectorOutput got %T", parent.Item)
-	}
+	detector := parent.Item.(Detector)
 	c := meta.(*client.Client)
 	svc := c.Services().GuardDuty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}

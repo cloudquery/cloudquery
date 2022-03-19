@@ -245,19 +245,13 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 }
 
 func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(WrappedSageMakerModel)
-	if !ok {
-		return fmt.Errorf("expected WrappedModel but got %T", r)
-	}
+	r := parent.Item.(WrappedSageMakerModel)
 	res <- r.Containers
 	return nil
 }
 
 func fetchSagemakerModelVpcConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(WrappedSageMakerModel)
-	if !ok {
-		return fmt.Errorf("expected WrappedModel but got %T", r)
-	}
+	r := parent.Item.(WrappedSageMakerModel)
 	res <- r.VpcConfig
 	return nil
 }

@@ -2,7 +2,6 @@ package cloudfront
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
@@ -792,10 +791,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	distribution, ok := resource.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("expected types.Distribution but got %T", resource.Item)
-	}
+	distribution := resource.Item.(types.Distribution)
 
 	client := meta.(*client.Client)
 	svc := client.Services().Cloudfront
@@ -815,10 +811,7 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 	return resource.Set(c.Name, tags)
 }
 func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	distribution, ok := resource.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := resource.Item.(types.Distribution)
 	if distribution.ActiveTrustedKeyGroups == nil {
 		return nil
 	}
@@ -829,10 +822,7 @@ func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, m
 	return resource.Set(c.Name, j)
 }
 func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	distribution, ok := resource.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := resource.Item.(types.Distribution)
 	if distribution.ActiveTrustedSigners == nil {
 		return nil
 	}
@@ -843,10 +833,7 @@ func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, met
 	return resource.Set(c.Name, j)
 }
 func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	distribution, ok := resource.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := resource.Item.(types.Distribution)
 	j := map[string]interface{}{}
 	for _, a := range distribution.AliasICPRecordals {
 		j[*a.CNAME] = a.ICPRecordalStatus
@@ -854,18 +841,12 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 	return resource.Set(c.Name, j)
 }
 func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("types.Distribution")
-	}
+	r := parent.Item.(types.Distribution)
 	res <- r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations.Items
 	return nil
 }
 func fetchCloudfrontDistributionOrigins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution, ok := parent.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := parent.Item.(types.Distribution)
 	if distribution.DistributionConfig.Origins == nil {
 		return nil
 	}
@@ -884,20 +865,14 @@ func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta
 	return resource.Set(c.Name, tags)
 }
 func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution, ok := parent.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := parent.Item.(types.Distribution)
 	if distribution.DistributionConfig.CacheBehaviors != nil {
 		res <- distribution.DistributionConfig.CacheBehaviors.Items
 	}
 	return nil
 }
 func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cacheBehavior, ok := parent.Item.(types.CacheBehavior)
-	if !ok {
-		return fmt.Errorf("not types.CacheBehavior")
-	}
+	cacheBehavior := parent.Item.(types.CacheBehavior)
 	if cacheBehavior.LambdaFunctionAssociations == nil {
 		return nil
 	}
@@ -905,30 +880,21 @@ func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context
 	return nil
 }
 func fetchCloudfrontDistributionCustomErrorResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution, ok := parent.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := parent.Item.(types.Distribution)
 	if distribution.DistributionConfig.CustomErrorResponses != nil {
 		res <- distribution.DistributionConfig.CustomErrorResponses.Items
 	}
 	return nil
 }
 func fetchCloudfrontDistributionOriginGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution, ok := parent.Item.(types.Distribution)
-	if !ok {
-		return fmt.Errorf("not types.Distribution")
-	}
+	distribution := parent.Item.(types.Distribution)
 	if distribution.DistributionConfig.OriginGroups != nil {
 		res <- distribution.DistributionConfig.OriginGroups.Items
 	}
 	return nil
 }
 func resolveCloudfrontDistributionOriginGroupsFailoverCriteriaStatusCodes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	origin, ok := resource.Item.(types.OriginGroup)
-	if !ok {
-		return fmt.Errorf("not types.OriginGroup")
-	}
+	origin := resource.Item.(types.OriginGroup)
 	if origin.FailoverCriteria == nil || origin.FailoverCriteria.StatusCodes == nil {
 		return nil
 	}

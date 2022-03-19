@@ -3,7 +3,6 @@ package ecs
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
@@ -1104,10 +1103,7 @@ func resolveEcsClustersStatistics(ctx context.Context, meta schema.ClientMeta, r
 func resolveEcsClustersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
-	}
+	cluster := resource.Item.(types.Cluster)
 	listTagsForResourceOutput, err := svc.ListTagsForResource(ctx, &ecs.ListTagsForResourceInput{
 		ResourceArn: cluster.ClusterArn,
 	}, func(o *ecs.Options) {

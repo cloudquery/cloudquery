@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -93,10 +92,7 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func resolveIamRolePolicyPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(*iam.GetRolePolicyOutput)
-	if !ok {
-		return fmt.Errorf("not role policy")
-	}
+	r := resource.Item.(*iam.GetRolePolicyOutput)
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {

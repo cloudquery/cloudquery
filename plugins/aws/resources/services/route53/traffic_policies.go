@@ -3,7 +3,6 @@ package route53
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -139,10 +138,7 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.TrafficPolicySummary)
-	if !ok {
-		return fmt.Errorf("not route53 traffic policy")
-	}
+	r := parent.Item.(types.TrafficPolicySummary)
 	config := route53.ListTrafficPolicyVersionsInput{Id: r.Id}
 	svc := meta.(*client.Client).Services().Route53
 	for {
@@ -159,10 +155,7 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(types.TrafficPolicy)
-	if !ok {
-		return fmt.Errorf("not route53 traffic policy")
-	}
+	r := resource.Item.(types.TrafficPolicy)
 	var value interface{}
 	err := json.Unmarshal([]byte(*r.Document), &value)
 	if err != nil {

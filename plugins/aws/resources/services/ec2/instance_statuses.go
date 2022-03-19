@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -171,10 +170,7 @@ func fetchEc2InstanceStatuses(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func fetchEc2InstanceStatusEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.InstanceStatus)
-	if !ok {
-		return fmt.Errorf("not ec2 instance status")
-	}
+	r := parent.Item.(types.InstanceStatus)
 	res <- r.Events
 	return nil
 }

@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -297,10 +296,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*types.Job)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*types.Job)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{
@@ -327,10 +323,7 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	return resource.Set(c.Name, tags)
 }
 func fetchIotJobAbortConfigCriteriaLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i, ok := parent.Item.(*types.Job)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", parent.Item)
-	}
+	i := parent.Item.(*types.Job)
 	if i.AbortConfig == nil {
 		return nil
 	}

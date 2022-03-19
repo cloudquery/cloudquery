@@ -2,7 +2,6 @@ package apigateway
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -218,10 +217,7 @@ func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.DomainName)
-	if !ok {
-		return fmt.Errorf("expected DomainName but got %T", r)
-	}
+	r := parent.Item.(types.DomainName)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName}
