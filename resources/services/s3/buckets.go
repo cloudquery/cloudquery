@@ -754,7 +754,7 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 
 	if err != nil {
 		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
-		if c.IsNotFoundError(err) {
+		if client.IsAWSErr(err, "ReplicationConfigurationNotFoundError") {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -781,7 +781,8 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		// If buckets tags are not set it will return an error instead of empty result
+		if client.IsAWSErr(err, "NoSuchTagSet") {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -809,12 +810,13 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 	})
 
 	if err != nil {
-		if c.IsNotFoundError(err) { // Not all buckets have ownership controls
+		// If buckets ownership controls are not set it will return an error instead of empty result
+		if client.IsAWSErr(err, "OwnershipControlsNotFoundError") {
 			return nil
 		}
 
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketTagging", "bucket", bucketName, "err", err)
+			meta.Logger().Warn("received access denied on GetBucketOwnershipControls", "bucket", bucketName, "err", err)
 			return nil
 		}
 
