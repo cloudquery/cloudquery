@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -170,10 +169,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
+	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	client := meta.(*client.Client)
 	service := client.Services().WafV2
@@ -199,10 +195,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 	return resource.Set(c.Name, outputTags)
 }
 func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
+	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
 	service := cl.Services().WafV2
@@ -223,10 +216,7 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set(c.Name, policy.Policy)
 }
 func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
+	ruleGroup := resource.Item.(*types.RuleGroup)
 	if len(ruleGroup.Rules) == 0 {
 		return nil
 	}
@@ -237,10 +227,7 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	return resource.Set(c.Name, data)
 }
 func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
+	ruleGroup := resource.Item.(*types.RuleGroup)
 	labels := make([]string, len(ruleGroup.AvailableLabels))
 	for i, l := range ruleGroup.AvailableLabels {
 		labels[i] = *l.Name
@@ -248,10 +235,7 @@ func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set(c.Name, labels)
 }
 func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ruleGroup, ok := resource.Item.(*types.RuleGroup)
-	if !ok {
-		return fmt.Errorf("not a RuleGroup instance: %#v", resource.Item)
-	}
+	ruleGroup := resource.Item.(*types.RuleGroup)
 	labels := make([]string, len(ruleGroup.ConsumedLabels))
 	for i, l := range ruleGroup.ConsumedLabels {
 		labels[i] = *l.Name

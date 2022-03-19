@@ -3,7 +3,6 @@ package cognito
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -619,10 +618,7 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func resolveCognitoUserPoolAccountRecoverySetting(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pool, ok := resource.Item.(*types.UserPoolType)
-	if !ok {
-		return fmt.Errorf("not a UserPoolType instance: %#v", resource.Item)
-	}
+	pool := resource.Item.(*types.UserPoolType)
 	data, err := json.Marshal(pool.AccountRecoverySetting)
 	if err != nil {
 		return diag.WrapError(err)
@@ -631,19 +627,13 @@ func resolveCognitoUserPoolAccountRecoverySetting(ctx context.Context, meta sche
 }
 
 func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pool, ok := parent.Item.(*types.UserPoolType)
-	if !ok {
-		return fmt.Errorf("not a UserPoolType instance: %#v", parent.Item)
-	}
+	pool := parent.Item.(*types.UserPoolType)
 	res <- pool.SchemaAttributes
 	return nil
 }
 
 func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pool, ok := parent.Item.(*types.UserPoolType)
-	if !ok {
-		return fmt.Errorf("not a UserPoolType instance: %#v", parent.Item)
-	}
+	pool := parent.Item.(*types.UserPoolType)
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoUserPools
 	optsFunc := func(options *cognitoidentityprovider.Options) { options.Region = c.Region }

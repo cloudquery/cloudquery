@@ -3,7 +3,6 @@ package rds
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -187,10 +186,7 @@ func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, paren
 }
 
 func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s, ok := resource.Item.(types.DBClusterSnapshot)
-	if !ok {
-		return fmt.Errorf("not a types.DBClusterSnapshot: %T", resource.Item)
-	}
+	s := resource.Item.(types.DBClusterSnapshot)
 	tags := map[string]*string{}
 	for _, t := range s.TagList {
 		tags[*t.Key] = t.Value
@@ -199,10 +195,7 @@ func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	s, ok := resource.Item.(types.DBClusterSnapshot)
-	if !ok {
-		return fmt.Errorf("not a types.DBClusterSnapshot: %T", resource.Item)
-	}
+	s := resource.Item.(types.DBClusterSnapshot)
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	out, err := svc.DescribeDBClusterSnapshotAttributes(

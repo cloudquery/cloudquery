@@ -317,10 +317,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
-	r, ok := resource.Item.(CloudTrailWrapper)
-	if !ok {
-		return fmt.Errorf("expected CloudTrailWrapper but got %T", resource.Item)
-	}
+	r := resource.Item.(CloudTrailWrapper)
 	response, err := svc.GetTrailStatus(ctx,
 		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {
 			o.Region = *r.HomeRegion
@@ -367,10 +364,7 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	groupName := ""
 	log := meta.(*client.Client).Logger()
-	r, ok := resource.Item.(CloudTrailWrapper)
-	if !ok {
-		return fmt.Errorf("expected CloudTrailWrapper but got %T", resource.Item)
-	}
+	r := resource.Item.(CloudTrailWrapper)
 	if r.CloudWatchLogsLogGroupArn != nil {
 		matches := client.GroupNameRegex.FindStringSubmatch(*r.CloudWatchLogsLogGroupArn)
 		if len(matches) < 2 {
@@ -386,10 +380,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 }
 
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(CloudTrailWrapper)
-	if !ok {
-		return fmt.Errorf("expected CloudTrailWrapper but got %T", parent.Item)
-	}
+	r := parent.Item.(CloudTrailWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: r.TrailARN}, func(options *cloudtrail.Options) {

@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -120,10 +119,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.GetPolicyOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.GetPolicyOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{

@@ -3,7 +3,6 @@ package dynamodb
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -534,10 +533,7 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	table, ok := resource.Item.(*types.TableDescription)
-	if !ok {
-		return fmt.Errorf("expected *types.TableDescription but got %T", resource.Item)
-	}
+	table := resource.Item.(*types.TableDescription)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().DynamoDB
@@ -662,10 +658,7 @@ func resolveDynamodbTableReplicaGlobalSecondaryIndexes(ctx context.Context, meta
 	return resource.Set(c.Name, val)
 }
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	par, ok := parent.Item.(*types.TableDescription)
-	if !ok {
-		return fmt.Errorf("expected *types.TableDescription but got %T", parent.Item)
-	}
+	par := parent.Item.(*types.TableDescription)
 
 	if aws.ToString(par.GlobalTableVersion) == "" {
 		// "This operation only applies to Version 2019.11.21 of global tables"
@@ -726,10 +719,7 @@ func resolveDynamodbTableReplicaAutoScalingWriteCapacity(ctx context.Context, me
 	return resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedWriteCapacityAutoScalingSettings))
 }
 func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	par, ok := parent.Item.(*types.TableDescription)
-	if !ok {
-		return fmt.Errorf("expected *types.TableDescription but got %T", parent.Item)
-	}
+	par := parent.Item.(*types.TableDescription)
 
 	c := meta.(*client.Client)
 	svc := c.Services().DynamoDB

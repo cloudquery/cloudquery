@@ -170,10 +170,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 	return nil
 }
 func fetchSagemakerEndpointConfigurationProductionVariants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(*sagemaker.DescribeEndpointConfigOutput)
-	if !ok {
-		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)
-	}
+	r := parent.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	res <- r.ProductionVariants
 	return nil
 }

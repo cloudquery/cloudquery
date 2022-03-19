@@ -2,7 +2,6 @@ package elbv2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
@@ -164,10 +163,7 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ELBv2
-	targetGroup, ok := resource.Item.(types.TargetGroup)
-	if !ok {
-		return fmt.Errorf("expected to have types.TargetGroup but got %T", resource.Item)
-	}
+	targetGroup := resource.Item.(types.TargetGroup)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
 			*targetGroup.TargetGroupArn,

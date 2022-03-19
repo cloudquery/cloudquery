@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -113,9 +112,6 @@ func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 
 func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	cg, ok := resource.Item.(types.CustomerGateway)
-	if !ok {
-		return fmt.Errorf("not ec2 customer-gateway")
-	}
+	cg := resource.Item.(types.CustomerGateway)
 	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "customer-gateway", *cg.CustomerGatewayId, cl.Region, cl.AccountID))
 }

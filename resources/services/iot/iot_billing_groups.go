@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -123,10 +122,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeBillingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeBillingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListThingsInBillingGroupInput{
@@ -153,10 +149,7 @@ func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 	return resource.Set(c.Name, things)
 }
 func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeBillingGroupOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeBillingGroupOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{

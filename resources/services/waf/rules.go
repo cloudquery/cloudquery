@@ -2,7 +2,6 @@ package waf
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -123,10 +122,7 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	return nil
 }
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule, ok := resource.Item.(*types.Rule)
-	if !ok {
-		return fmt.Errorf("not a Rule instance: %#v", resource.Item)
-	}
+	rule := resource.Item.(*types.Rule)
 	usedClient := meta.(*client.Client)
 
 	// Generate arn
@@ -140,10 +136,7 @@ func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *sc
 	return resource.Set(c.Name, arnStr)
 }
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule, ok := resource.Item.(*types.Rule)
-	if !ok {
-		return fmt.Errorf("not a Rule instance: %#v", resource.Item)
-	}
+	rule := resource.Item.(*types.Rule)
 
 	// Resolve tags for resource
 	usedClient := meta.(*client.Client)
@@ -178,10 +171,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	return resource.Set("tags", outputTags)
 }
 func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rule, ok := parent.Item.(*types.Rule)
-	if !ok {
-		return fmt.Errorf("not an Rule instance: %#v", rule)
-	}
+	rule := parent.Item.(*types.Rule)
 	res <- rule.Predicates
 	return nil
 }

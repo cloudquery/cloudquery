@@ -3,7 +3,6 @@ package iot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -222,10 +221,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTargetsForSecurityProfileInput{
@@ -254,10 +250,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	return resource.Set(c.Name, targets)
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	client := meta.(*client.Client)
 	svc := client.Services().IOT
 	input := iot.ListTagsForResourceInput{
@@ -284,10 +277,7 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 	return resource.Set(c.Name, tags)
 }
 func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", resource.Item)
-	}
+	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 
 	if i.AdditionalMetricsToRetainV2 == nil {
 		return nil
@@ -300,10 +290,7 @@ func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, 
 	return resource.Set(c.Name, b)
 }
 func fetchIotSecurityProfileBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i, ok := parent.Item.(*iot.DescribeSecurityProfileOutput)
-	if !ok {
-		return fmt.Errorf("expected *iot.DescribeSecurityProfileOutput but got %T", parent.Item)
-	}
+	i := parent.Item.(*iot.DescribeSecurityProfileOutput)
 	if i.Behaviors == nil {
 		return nil
 	}
@@ -312,10 +299,7 @@ func fetchIotSecurityProfileBehaviors(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 func resolveIotSecurityProfileBehaviorsCriteriaValue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i, ok := resource.Item.(types.Behavior)
-	if !ok {
-		return fmt.Errorf("expected types.Behavior but got %T", resource.Item)
-	}
+	i := resource.Item.(types.Behavior)
 	if i.Criteria == nil || i.Criteria.Value == nil {
 		return nil
 	}

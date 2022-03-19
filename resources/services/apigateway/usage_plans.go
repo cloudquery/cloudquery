@@ -2,7 +2,6 @@ package apigateway
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -219,18 +218,12 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	return nil
 }
 func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.UsagePlan)
-	if !ok {
-		return fmt.Errorf("expected UsagePlan but got %T", r)
-	}
+	r := parent.Item.(types.UsagePlan)
 	res <- r.ApiStages
 	return nil
 }
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(types.UsagePlan)
-	if !ok {
-		return fmt.Errorf("expected UsagePlan but got %T", r)
-	}
+	r := parent.Item.(types.UsagePlan)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id}

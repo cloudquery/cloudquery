@@ -2,7 +2,6 @@ package ssm
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -248,10 +247,7 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance, ok := parent.Item.(types.InstanceInformation)
-	if !ok {
-		return fmt.Errorf("not a %T instance: %T", instance, parent.Item)
-	}
+	instance := parent.Item.(types.InstanceInformation)
 	client := meta.(*client.Client)
 	svc := client.Services().SSM
 	optsFn := func(o *ssm.Options) {
@@ -275,10 +271,7 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 }
 
 func resolveSSMInstanceARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(types.InstanceInformation)
-	if !ok {
-		return fmt.Errorf("not a %T instance: %T", instance, resource.Item)
-	}
+	instance := resource.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, client.GenerateResourceARN("ssm", "managed-instance", *instance.InstanceId, cl.Region, cl.AccountID))
 }

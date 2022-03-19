@@ -3,7 +3,6 @@ package wafv2
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -109,10 +108,7 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	managedRuleGroupSum, ok := resource.Item.(types.ManagedRuleGroupSummary)
-	if !ok {
-		return fmt.Errorf("not a ManagedRuleGroupSummary instance: %#v", resource.Item)
-	}
+	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 
 	c := meta.(*client.Client)
 	service := c.Services().WafV2

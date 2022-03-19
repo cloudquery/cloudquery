@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -70,10 +69,7 @@ func fetchRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 }
 func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 
-	region, ok := resource.Item.(types.Region)
-	if !ok {
-		return fmt.Errorf("expected types.Region got %T", resource.Item)
-	}
+	region := resource.Item.(types.Region)
 	switch *region.OptInStatus {
 	case "opt-in-not-required", "opted-in":
 		return resource.Set(c.Name, true)

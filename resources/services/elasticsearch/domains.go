@@ -2,7 +2,6 @@ package elasticsearch
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
@@ -456,10 +455,7 @@ func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, pare
 func resolveElasticsearchDomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ElasticSearch
-	domain, ok := resource.Item.(*types.ElasticsearchDomainStatus)
-	if !ok {
-		return fmt.Errorf("expected to have *types.ElasticsearchDomainStatus but got %T", resource.Item)
-	}
+	domain := resource.Item.(*types.ElasticsearchDomainStatus)
 	tagsOutput, err := svc.ListTags(ctx, &elasticsearchservice.ListTagsInput{
 		ARN: domain.ARN,
 	}, func(o *elasticsearchservice.Options) {

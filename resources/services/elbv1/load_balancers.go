@@ -2,7 +2,6 @@ package elbv1
 
 import (
 	"context"
-	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
@@ -462,50 +461,35 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 func resolveElbv1loadBalancerAttributesAccessLogEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.AccessLog == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.AccessLog.Enabled)
 }
 func resolveElbv1loadBalancerAttributesAccessLogS3BucketName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.AccessLog == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.AccessLog.S3BucketName)
 }
 func resolveElbv1loadBalancerAttributesAccessLogS3BucketPrefix(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.AccessLog == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.AccessLog.S3BucketPrefix)
 }
 func resolveElbv1loadBalancerAttributesAccessLogEmitInterval(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.AccessLog == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.AccessLog.EmitInterval)
 }
 func resolveElbv1loadBalancerAttributesConnectionSettingsIdleTimeout(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.ConnectionSettings == nil {
 		return nil
 	}
@@ -513,40 +497,28 @@ func resolveElbv1loadBalancerAttributesConnectionSettingsIdleTimeout(ctx context
 	return resource.Set(c.Name, r.Attributes.ConnectionSettings.IdleTimeout)
 }
 func resolveElbv1loadBalancerAttributesCrossZoneLoadBalancingEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.CrossZoneLoadBalancing == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.CrossZoneLoadBalancing.Enabled)
 }
 func resolveElbv1loadBalancerAttributesConnectionDrainingEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.ConnectionDraining == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.ConnectionDraining.Enabled)
 }
 func resolveElbv1loadBalancerAttributesConnectionDrainingTimeout(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil && r.Attributes.ConnectionDraining == nil {
 		return nil
 	}
 	return resource.Set(c.Name, r.Attributes.ConnectionDraining.Timeout)
 }
 func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil {
 		return nil
 	}
@@ -558,10 +530,7 @@ func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context,
 	return resource.Set(c.Name, response)
 }
 func resolveElbv1loadBalancerInstances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	response := make([]string, 0, len(r.Instances))
 	for _, i := range r.Instances {
 		response = append(response, *i.InstanceId)
@@ -569,26 +538,17 @@ func resolveElbv1loadBalancerInstances(ctx context.Context, meta schema.ClientMe
 	return resource.Set(c.Name, response)
 }
 func fetchElbv1LoadBalancerBackendServerDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := parent.Item.(ELBv1LoadBalancerWrapper)
 	res <- r.BackendServerDescriptions
 	return nil
 }
 func fetchElbv1LoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := parent.Item.(ELBv1LoadBalancerWrapper)
 	res <- r.ListenerDescriptions
 	return nil
 }
 func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := parent.Item.(ELBv1LoadBalancerWrapper)
 
 	if r.Policies == nil {
 		return nil
@@ -597,10 +557,7 @@ func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Conte
 	return nil
 }
 func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := parent.Item.(ELBv1LoadBalancerWrapper)
 
 	if r.Policies == nil {
 		return nil
@@ -609,10 +566,7 @@ func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Contex
 	return nil
 }
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(ELBv1LoadBalancerWrapper)
-	if !ok {
-		return errors.New("not load balancer")
-	}
+	r := parent.Item.(ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv1
 	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName}, func(options *elbv1.Options) {
@@ -625,10 +579,7 @@ func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 func resolveElbv1loadBalancerPolicyPolicyAttributeDescriptions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(types.PolicyDescription)
-	if !ok {
-		return errors.New("not policy description")
-	}
+	r := resource.Item.(types.PolicyDescription)
 
 	response := make(map[string]interface{}, len(r.PolicyAttributeDescriptions))
 	for _, a := range r.PolicyAttributeDescriptions {

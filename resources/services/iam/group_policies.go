@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -96,10 +95,7 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func resolveIamGroupPolicyPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(*iam.GetGroupPolicyOutput)
-	if !ok {
-		return fmt.Errorf("not group policy")
-	}
+	r := resource.Item.(*iam.GetGroupPolicyOutput)
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
