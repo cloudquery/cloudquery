@@ -28,7 +28,7 @@ jobs:
             echo "and paste the output in the PR"
 
   terrafrom_plan:
-    
+
     needs: is_organization_member
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     permissions:
@@ -44,9 +44,18 @@ jobs:
         with:
           go-version: ^1.17
 
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Check out code into the Go module directory
+        if: github.event_name != 'pull_request_target'
+        uses: actions/checkout@v3
         with:
+          fetch-depth: 0
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
 
       - name: Configure AWS credentials
