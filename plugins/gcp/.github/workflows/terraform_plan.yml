@@ -24,10 +24,11 @@ jobs:
       - name: Skip if not member and event is pull_request_target
         if: github.event_name != 'pull_request_target' || steps.is_organization_member.outputs.result == 'false'
         run: |
-            echo "user is not part of org. Please run 'cd terraform/SERVICE_NAME/local && terraform init && terraform plan'"
+            echo "user is not part of org. Please run 'cd terraform/YOUR_SERVICE/local && terraform init && terraform apply"
             echo "and paste the output in the PR"
 
   terrafrom_plan:
+
     needs: is_organization_member
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     permissions:
