@@ -477,6 +477,7 @@ type LambdaClient interface {
 type AnalyzerClient interface {
 	accessanalyzer.ListAnalyzersAPIClient
 	accessanalyzer.ListFindingsAPIClient
+	accessanalyzer.ListArchiveRulesAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_waf.go . WafClient

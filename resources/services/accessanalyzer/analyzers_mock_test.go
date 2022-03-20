@@ -32,11 +32,20 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 			Findings: []types.FindingSummary{f},
 		}, nil)
 
+	arch := types.ArchiveRuleSummary{}
+	if err := faker.FakeData(&arch); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListArchiveRules(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&accessanalyzer.ListArchiveRulesOutput{
+			ArchiveRules: []types.ArchiveRuleSummary{arch},
+		}, nil)
+
 	return client.Services{
 		Analyzer: m,
 	}
 }
 
 func TestAccessAnalyzerAnalyzer(t *testing.T) {
-	client.AwsMockTestHelper(t, AccessAnalyzerAnalyzer(), buildAccessAnalyzer, client.TestOptions{})
+	client.AwsMockTestHelper(t, AccessAnalyzerAnalyzers(), buildAccessAnalyzer, client.TestOptions{})
 }
