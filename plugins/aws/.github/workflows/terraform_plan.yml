@@ -28,6 +28,7 @@ jobs:
             echo "and paste the output in the PR"
 
   terrafrom_plan:
+    
     needs: is_organization_member
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     permissions:
