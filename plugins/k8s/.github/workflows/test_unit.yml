@@ -8,6 +8,11 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'terraform/**'
+      - '.github/**'
+      - 'scripts/**'
+
 jobs:
   test_unit:
     strategy:
