@@ -21,6 +21,8 @@ tmp/
 # .tfstate files
 *.tfstate
 *.tfstate.*
+tfplan.binary
+plan.json
 
 #test directories
 **/.test/*

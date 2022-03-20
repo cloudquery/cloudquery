@@ -2,35 +2,14 @@
 name: terraform_plan
 on:
   workflow_dispatch:
-  pull_request_target:
+  pull_request:
     branches:
       - main
     paths:
       - 'terraform/**'
 
 jobs:
-  is_organization_member:
-    runs-on: ubuntu-latest
-    outputs:
-      status: ${{ steps.is_organization_member.outputs.result }}
-    steps:
-      - uses: yevgenypats/is-organization-member@646ee210c04d55d8b7f3a591722d06eb16310236
-        if: github.event_name == 'pull_request_target'
-        id: is_organization_member
-        with:
-          organization: cloudquery
-          username: ${{ github.event.pull_request.user.login }}
-          token: ${{ secrets.GH_PAT }}
-      - name: Skip if not member and event is pull_request_target
-        if: github.event_name != 'pull_request_target' || steps.is_organization_member.outputs.result == 'false'
-        run: |
-            echo "user is not part of org. Please run 'cd terraform/YOUR_SERVICE/local && terraform init && terraform apply"
-            echo "and paste the output in the PR"
-
   terrafrom_plan:
-
-    needs: is_organization_member
-    if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
     permissions:
         id-token: write # This required for OIDC
         contents: read    # This is required for actions/checkout@v2
@@ -45,15 +24,7 @@ jobs:
           go-version: ^1.17
 
       - name: Check out code into the Go module directory
-        if: github.event_name != 'pull_request_target'
         uses: actions/checkout@v2
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        if: ${{ github.event_name == 'pull_request_target' }}
-        with:
-          ref: ${{github.event.pull_request.head.ref}}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
 
       - name: Authenticate to Google Cloud
         uses: 'google-github-actions/auth@v0'

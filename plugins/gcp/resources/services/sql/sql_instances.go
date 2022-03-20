@@ -251,9 +251,10 @@ func SQLInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate"),
 			},
 			{
-				Name:        "replica_names",
-				Description: "The replicas of the instance",
-				Type:        schema.TypeStringArray,
+				Name:          "replica_names",
+				Description:   "The replicas of the instance",
+				Type:          schema.TypeStringArray,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "root_password",
@@ -602,10 +603,11 @@ func SQLInstances() *schema.Table {
 				Resolver:    schema.PathResolver("Settings.Tier"),
 			},
 			{
-				Name:        "settings_user_labels",
-				Description: "User-provided labels, represented as a dictionary where each label is a single key value pair",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("Settings.UserLabels"),
+				Name:          "settings_user_labels",
+				Description:   "User-provided labels, represented as a dictionary where each label is a single key value pair",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("Settings.UserLabels"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "state",

@@ -53,6 +53,19 @@ func (c Client) withProject(project string) *Client {
 	}
 }
 
+func isValidJson(content []byte) error {
+	var v map[string]interface{}
+	err := json.Unmarshal(content, &v)
+	if err != nil {
+		var syntaxError *json.SyntaxError
+		if errors.As(err, &syntaxError) {
+			return fmt.Errorf("the environment variable %s should contain valid JSON object. %w", serviceAccountEnvKey, err)
+		}
+		return err
+	}
+	return nil
+}
+
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
@@ -60,21 +73,14 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
 	if len(serviceAccountKeyJSON) == 0 {
 		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
-		var v map[string]interface{}
-		err := json.Unmarshal(serviceAccountKeyJSON, &v)
-		if err != nil {
-			var syntaxError *json.SyntaxError
-			if errors.As(err, &syntaxError) {
-				return nil, fmt.Errorf("the environment variable %v should contain valid JSON object", serviceAccountEnvKey)
-			}
-			return nil, err
-		}
-
 	}
 
 	// Add a fake request reason because it is not possible to pass nil options
 	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, providerConfig.ClientOptions()...)
 	if len(serviceAccountKeyJSON) != 0 {
+		if err := isValidJson(serviceAccountKeyJSON); err != nil {
+			return nil, err
+		}
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
@@ -101,7 +107,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 func validateProjects(projects []string) error {
 	for _, project := range projects {
 		if project == defaultProjectIdName {
-			return fmt.Errorf("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
+			return fmt.Errorf("please specify a valid project_id in config.hcl instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
 		}
 	}
 	return nil
