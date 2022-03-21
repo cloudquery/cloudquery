@@ -144,7 +144,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
-		printFetchResponse(response, viper.GetBool("redact-diags"))
+		printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	}
 
 	if response == nil {
