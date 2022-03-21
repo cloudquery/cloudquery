@@ -15,6 +15,7 @@ type Account struct {
 type AwsOrg struct {
 	OrganizationUnits           []string `hcl:"organization_units,optional"`
 	AdminAccount                *Account `hcl:"admin_account,block"`
+	MemberCredentials           *Account `hcl:"member_trusted_principal,block"`
 	ChildAccountRoleName        string   `hcl:"member_role_name,optional"`
 	ChildAccountRoleSessionName string   `hcl:"member_role_session_name,optional"`
 	ChildAccountExternalID      string   `hcl:"member_external_id,optional"`

@@ -141,7 +141,7 @@ Prerequisites for using AWS Org functionality:
   `organizations:ListAccountsForParent`
   `organizations:ListChildren`
 
-2. Have a role in each child account that has a trust policy with the admin accounts. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account
+2. Have a role in each child account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account.
 
 
 Using AWS Organization:
@@ -155,7 +155,7 @@ Using AWS Organization:
 
 
 
-2. Getting credentials in an admin account:
+2. Getting credentials that have  the necessary `organizations` permissions:
     1. Sourcing Credentials from the default credential tool chain:
 ```hcl
     org {
@@ -191,7 +191,23 @@ Using AWS Organization:
     }
 ```
 
-3. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
+3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block 
+
+```hcl
+    org {
+      member_role_name = "OrganizationAccountAccessRole"
+      admin_account "admin" {
+        local_profile = "<Named-Profile>"
+      }
+      member_trusted_principal "trusted" {
+
+      }
+
+      organization_units = ["ou-<ID-1>","ou-<ID-2>"]
+    }
+```
+
+4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
 
 ```hcl
     org {
@@ -203,7 +219,10 @@ Using AWS Organization:
     }
 ```
 
-***note: If you specify an OU, CloudQuery will not child OUs***
+
+
+
+***note: If you specify an OU, CloudQuery will not traverse child OUs***
 
 
 
@@ -211,7 +230,8 @@ Using AWS Organization:
 #### Arguments for Org block:
 
 - `organization_units`  **(Optional)** - List of Organizational Units that CloudQuery should use to source accounts from
-- `admin_account`  **(Optional)** - Configuration on how to grab credentials from an Admin account
+- `admin_account`  **(Optional)** - Configuration on how to grab credentials from an Admin account 
+- `member_trusted_principal`  **(Optional)** - Configuration on how to specify the principle to use in order to assume a role in the member accounts
 - `member_role_name`  **(Required)** - Role name that CloudQuery should use to assume a role in the member account from the admin account. Note: This is not a full ARN, it is just the name
 - `member_role_session_name`    **(Optional)** - Override the default Session name.
 - `member_external_id`  **(Optional)** - Specify an ExternalID for use in the trust policy
