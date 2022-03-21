@@ -87,6 +87,9 @@ const (
 )
 
 var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
+var errUnknownRegion = func(region string) error {
+	return fmt.Errorf("unknown region: %q", region)
+}
 
 type Services struct {
 	ACM                    ACMClient
@@ -256,6 +259,11 @@ func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace st
 }
 
 func verifyRegions(regions []string) error {
+	availableRegions, err := getAvailableRegions()
+	if err != nil {
+		return err
+	}
+
 	// validate regions values
 	var hasWildcard bool
 	for i, region := range regions {
@@ -267,6 +275,10 @@ func verifyRegions(regions []string) error {
 		}
 		if i > 0 && hasWildcard {
 			return errInvalidRegion
+		}
+		regionExist := availableRegions[region]
+		if !hasWildcard && !regionExist {
+			return errUnknownRegion(region)
 		}
 	}
 	return nil

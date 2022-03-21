@@ -91,6 +91,32 @@ func isSupportedServiceForRegion(service string, region string) bool {
 	return true
 }
 
+func getAvailableRegions() (map[string]bool, error) {
+	readOnce.Do(func() {
+		supportedServiceRegion = readSupportedServiceRegions()
+	})
+
+	regionsSet := make(map[string]bool)
+
+	if supportedServiceRegion == nil {
+		return nil, fmt.Errorf("could not get AWS regions/services data")
+	}
+
+	if supportedServiceRegion.Partitions == nil {
+		return nil, fmt.Errorf("could not found any AWS partitions")
+	}
+
+	currentPartition := supportedServiceRegion.Partitions[defaultPartition]
+
+	for _, service := range currentPartition.Services {
+		for region := range service.Regions {
+			regionsSet[region] = true
+		}
+	}
+
+	return regionsSet, nil
+}
+
 func IgnoreAccessDeniedServiceDisabled(err error) bool {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {

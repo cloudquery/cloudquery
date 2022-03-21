@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 
@@ -137,12 +136,23 @@ func Test_isValidRegions(t *testing.T) {
 			regions: []string{"*", "us-east-1"},
 			want:    errInvalidRegion,
 		},
+		{
+			regions: []string{"us-easta-1"},
+			want:    errUnknownRegion("us-easta-1"),
+		},
+		{
+			regions: []string{"*", "us-easta-1"},
+			want:    errInvalidRegion,
+		},
+		{
+			regions: []string{"us-easta-1", "*"},
+			want:    errUnknownRegion("us-easta-1"),
+		},
 	}
 	for i, tt := range tests {
 		err := verifyRegions(tt.regions)
-		results := cmp.Diff(err, tt.want, cmpopts.EquateErrors())
-		if results != "" {
-			t.Errorf("Case-%d failed: %s", i, results)
+		if err != nil {
+			assert.EqualErrorf(t, err, tt.want.Error(), "Case-%d: Error should be: %v, got: %v", i, tt.want.Error(), err)
 		}
 	}
 }
