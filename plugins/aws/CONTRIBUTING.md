@@ -1,5 +1,4 @@
-
-# Contributing to CloudQuery
+# Contributing to CloudQuery Provider
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
@@ -13,7 +12,7 @@ The following is a set of guidelines for contributing to this repository.
 * [Adding a new Resource](./docs/contributing/adding_a_new_resource.md)
 
 ## Process
-* [Code of Conduct](./CODE_OF_CONDUCT.md)
+* [Code of Conduct](https://github.com/cloudquery/.github/blob/main/CODE_OF_CONDUCT.md)
 * [Issue Reporting](./docs/contributing/issue_reporting.md)
 
 
@@ -21,9 +20,11 @@ The following is a set of guidelines for contributing to this repository.
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to CloudQuery? You can start by looking through these `beginner` and `help-wanted` issues:
+Unsure where to begin contributing to CloudQuery? There are few key labels that you can take a look in the issue
 
-* [Beginner issues][beginner] - issues which should only require a few lines of code, and a test or two
-* [Help wanted issues][help-wanted] - issues which should be a bit more involved than `beginner` issues
+* `bug` - Can be a small issue of missing column, incorrect primary key which are good for begineers. Or more involved one.
+* `documentation` - Those are great for begineers as it gives the opportunity to both learn and put it in writing for everyone else.
+* `resource` - This is usually support for a new resource that was requested.
 
-If you don't see any issues that you think you can help with reach out to the community on Discord and we would be happy to work with you!
+
+If you don't see any issues that you think you can help with reach out to the community on [Discord](https://cloudquery.io/discord) and we would be happy to work with you!
