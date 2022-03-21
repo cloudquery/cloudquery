@@ -28,6 +28,12 @@ func loadOrgAccounts(ctx context.Context, logger hclog.Logger, awsConfig *Config
 	if err != nil {
 		return nil, nil, err
 	}
+	if awsConfig.Organization.MemberCredentials != nil {
+		awsCfg, err = configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.MemberCredentials, nil)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
 	return accounts, sts.NewFromConfig(awsCfg), err
 
 }
