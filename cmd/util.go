@@ -89,7 +89,7 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		// No console client created here
 	case "describe":
 		var err error
-		c, err = console.CreateNullClient(ctx)
+		c, err = console.ClientFactory(ctx, nil, nil)
 		if err != nil {
 			return err
 		}

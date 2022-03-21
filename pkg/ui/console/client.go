@@ -107,6 +107,16 @@ func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, erro
 	return cClient, err
 }
 
+func ClientFactory(ctx context.Context, configPath *string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
+	if configPath == nil {
+		return CreateNullClient(ctx)
+	}
+	if _, err := os.Stat(*configPath); errors.Is(err, os.ErrNotExist) {
+		return CreateNullClient(ctx)
+	}
+	return CreateClient(ctx, *configPath, configMutator, opts...)
+}
+
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.DownloadProviders(ctx)

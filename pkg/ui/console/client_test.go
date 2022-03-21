@@ -155,14 +155,24 @@ func TestDescribePolicies(t *testing.T) {
 	var tests = []struct {
 		name         string
 		policySource string
-		wantErr      error
+		configPath   string
 	}{
 		{
-			name:         "remote policy",
+			name:         "remote policy with config.hcl",
+			policySource: "aws",
+			configPath:   filepath.Join(fixtures, "config.yml"),
+		},
+		{
+			name:         "local policy with config.hcl",
+			policySource: fmt.Sprintf("file::%s", filepath.Join(fixtures, "example-policy")),
+			configPath:   filepath.Join(fixtures, "config.yml"),
+		},
+		{
+			name:         "remote policy without config.hcl",
 			policySource: "aws",
 		},
 		{
-			name:         "local policy",
+			name:         "local policy without config.hcl",
 			policySource: fmt.Sprintf("file::%s", filepath.Join(fixtures, "example-policy")),
 		},
 	}
