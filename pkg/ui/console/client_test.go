@@ -162,7 +162,7 @@ func TestDescribePolicies(t *testing.T) {
 			policySource: "aws",
 		},
 		{
-			name:         "local without",
+			name:         "local policy",
 			policySource: fmt.Sprintf("file::%s", filepath.Join(fixtures, "example-policy")),
 		},
 	}

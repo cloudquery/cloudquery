@@ -94,6 +94,8 @@ func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, erro
 	opts = append(opts, func(c *client.Client) {
 		if ui.IsTerminal() {
 			c.HubProgressUpdater = progressUpdater
+			c.PluginDirectory = "./.cq/providers"
+			c.PolicyDirectory = "./.cq/policies"
 		}
 	})
 	c, err := client.New(ctx, opts...)
