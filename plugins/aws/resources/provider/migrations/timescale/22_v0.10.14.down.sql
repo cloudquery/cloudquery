@@ -1,7 +1,6 @@
 -- Resource: ec2.instance_statuses
 DROP TABLE IF EXISTS aws_ec2_instance_status_events;
 DROP TABLE IF EXISTS aws_ec2_instance_statuses;
-
 -- Resource: ec2.nat_gateways
 ALTER TABLE aws_ec2_nat_gateway_addresses
     ALTER COLUMN allocation_id SET NOT NULL;
