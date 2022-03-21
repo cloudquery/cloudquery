@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go v61.6.0+incompatible
 	github.com/Azure/go-autorest/autorest v0.11.21
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.7
-	github.com/cloudquery/cq-provider-sdk v0.8.7
+	github.com/cloudquery/cq-provider-sdk v0.8.12
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/mock v1.6.0
@@ -15,7 +15,6 @@ require (
 	github.com/tombuildsstuff/giovanni v0.16.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
-
 
 require (
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
