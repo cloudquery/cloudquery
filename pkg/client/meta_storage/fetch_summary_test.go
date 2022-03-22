@@ -1,12 +1,17 @@
-package client
+package meta_storage
 
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/client/history"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
+	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -74,10 +79,19 @@ var fetchSummaryTests = []fetchSummaryTest{
 	},
 }
 
-func TestFetchSummary(t *testing.T) {
-	c, err := New(context.Background(), func(c *Client) {
-		c.DSN = testDBConnection
-	})
+func TestFetchSaveSummary(t *testing.T) {
+	// create database connection
+	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
+	assert.NoError(t, err)
+
+	fetchSummaryClient := NewClient(db, hclog.NewNullLogger())
+
+	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	if err != nil {
+		t.Fatal(fmt.Errorf("getExecutor: %w", err))
+	}
+
+	err = fetchSummaryClient.MigrateCore(context.Background(), de)
 	assert.NoError(t, err)
 
 	fetchId := uuid.New()
@@ -87,7 +101,7 @@ func TestFetchSummary(t *testing.T) {
 		}
 		start := time.Now()
 		f.summary.Start = &start
-		err := c.SaveFetchSummary(context.Background(), &f.summary)
+		err := fetchSummaryClient.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())
 		} else {

@@ -1,17 +1,19 @@
-package client
+package meta_storage
 
 import (
 	"context"
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/doug-martin/goqu/v9"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4"
 )
 
-// FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish,
-// resources fetch results
+// FetchSummary includes a summarized report of fetch, such as fetch id, fetch start and finish, resources fetch results
 type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
@@ -64,6 +66,28 @@ func (c *Client) SaveFetchSummary(ctx context.Context, fs *FetchSummary) error {
 	if err != nil {
 		return err
 	}
-
 	return c.db.Exec(ctx, sql, args...)
+}
+
+// GetFetchSummaryForProvider gets latest fetch summary for specific provider
+func (c *Client) GetFetchSummaryForProvider(ctx context.Context, provider string) (*FetchSummary, error) {
+	q := goqu.Dialect("postgres").
+		Select("provider_version", "is_success").
+		From("cloudquery.fetches").
+		Where(goqu.Ex{"provider_name": provider, "finish": goqu.Op{"isNot": nil}}).
+		Limit(1).
+		Order(goqu.I("finish").Desc())
+	sql, _, err := q.ToSQL()
+	if err != nil {
+		return nil, err
+	}
+	var data FetchSummary
+	err = pgxscan.Get(ctx, c.db, &data, sql)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errors.New("could not find a completed fetch for requested provider")
+		}
+		return nil, err
+	}
+	return &data, nil
 }
