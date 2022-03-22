@@ -48,7 +48,7 @@ var (
 	getters = map[string]getter.Getter{
 		"file": new(getter.FileGetter),
 		"gcs":  new(getter.GCSGetter),
-		"git":  new(getter.GitGetter),
+		"git":  new(GitGetter),
 		"hg":   new(getter.HgGetter),
 		"s3":   new(getter.S3Getter),
 	}

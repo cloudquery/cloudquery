@@ -95,7 +95,11 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
+<<<<<<< HEAD
 	// sleep some extra 500 milliseconds for progress refresh
+=======
+	// sleep some extra 3b v00 milliseconds for progress refresh
+>>>>>>> 6862b36 (feat: Support go native git as fallback for git binary)
 	if ui.IsTerminal() {
 		time.Sleep(500 * time.Millisecond)
 		c.updater.Wait()
