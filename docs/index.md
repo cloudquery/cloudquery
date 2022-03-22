@@ -153,43 +153,42 @@ Using AWS Organization:
     }
 ```
 
-
-
 2. Getting credentials that have  the necessary `organizations` permissions:
     1. Sourcing Credentials from the default credential tool chain:
-```hcl
-    org {
-      member_role_name = "OrganizationAccountAccessRole"
-    }
-```
+    ```hcl
+        org {
+          member_role_name = "OrganizationAccountAccessRole"
+        }
+    ```
 
     2. Sourcing credentials from a named profile in the shared configuration or credentials file
-```hcl
-    org {
-      member_role_name = "OrganizationAccountAccessRole"
-      admin_account "admin" {
-        local_profile = "<Named-Profile>"
-      }
-    }
-```
+      
+    ```hcl
+        org {
+          member_role_name = "OrganizationAccountAccessRole"
+          admin_account "admin" {
+            local_profile = "<Named-Profile>"
+          }
+        }
+    ```
     3. Assuming a role in admin account using credentials in the shared configuration or credentials file: 
-```hcl
-    org {
-      member_role_name = "OrganizationAccountAccessRole"
-      admin_account "admin" {
-        local_profile = "<Named-Profile>"
-        
-        role_arn      = "arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>"
-        
-        // Optional. Specify the name of the session 
-        // role_session_name = ""
+    ```hcl
+        org {
+          member_role_name = "OrganizationAccountAccessRole"
+          admin_account "admin" {
+            local_profile = "<Named-Profile>"
+            
+            role_arn      = "arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>"
+            
+            // Optional. Specify the name of the session 
+            // role_session_name = ""
 
-        // Optional. Specify the ExternalID if required for trust policy 
-      	// external_id = "
+            // Optional. Specify the ExternalID if required for trust policy 
+            // external_id = "
 
-      }
-    }
-```
+          }
+        }
+    ```
 
 3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block 
 
