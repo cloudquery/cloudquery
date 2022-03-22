@@ -20,6 +20,7 @@ func createDiskTypeServer() (*client.Services, error) {
 	if err := faker.FakeData(&diskType); err != nil {
 		return nil, err
 	}
+	diskType.SelfLink = "https://www.googleapis.com/compute/v1/projects/project-id/zones/zone-id/disks/disk-id"
 	mux := httprouter.New()
 	mux.GET("/projects/testProject/aggregated/diskTypes", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &compute.DiskTypeAggregatedList{
