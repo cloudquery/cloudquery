@@ -50,3 +50,38 @@ A few important things to note when adding functions that call the AWS API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
 - Take pagination into account. Ensure you fetch **all** of the resources
+
+### Integration Tests
+
+To Run Integration tests please run
+
+```bash
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:13.3
+gcloud auth application-default login
+# login with AWS. See all options at https://hub.cloudquery.io/providers/cloudquery/aws/latest
+go test -run=TestIntegration -tags=integration ./...
+```
+
+To Run integration test for specific table:
+
+```bash
+go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
+# For example
+go test -run="TestIntegration/azure_sql_managed_instances" -tags=integration ./...
+```
+
+#### Adding new Terraform File Guidelines
+
+There a few good rule of thumb to follow when creating new terraform resources that will be served as testing infrastructure:
+* If possible make all resources private.
+* Make sure to replace built-in plain text passwords with `random_password` generator
+* For every compute/db try to use the smallest size to keep the cost low
+* If autoscaling option is present, always turn it off
+
+If you want to apply the terraform locally first before pushing it to CI and applying there use:
+
+```
+cd terraform/YOUR_SERVICE_NAME/local
+# Use AB as your initial so you can have multiple team members working on the same account without conflicting resources
+terraform apply -var="prefix=AB"
+go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
