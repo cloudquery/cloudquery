@@ -39,6 +39,8 @@ provider "gcp" {
     // backoff_jitter = 0.2
     // backoff_min_connect_timeout = 0
   }
+
+  resources = ["*"]
 }
 ```
 
