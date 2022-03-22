@@ -54,7 +54,7 @@ To Run Integration tests please run
 
 ```bash
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:13.3
-cloud auth application-default login
+gcloud auth application-default login
 # To run against our test environment (same as in the CI), run: gcloud config set project cq-provider-gcp
 # team members have write access to cq-playground (to apply new terraform files) gcloud config set project cq-playground
 # Otherwise just use your development project via gcloud config set project YOUR_PROJECT
