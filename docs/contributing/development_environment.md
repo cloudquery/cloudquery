@@ -44,31 +44,3 @@ Unit Tests don't require any credentials or internet access
 ```bash
 make test-unit # This runs go test ./...
 ```
-
-#### Integration Tests
-
-Theses tests will test the provider against real AWS resources defined with terraform under `terraform/service_name`.
-
-If you are a team-member and you have read-access to our test environment
-
-```bash
-// Authenticate with AWS
-make test-integration
-```
-
-If you are developing a new resource and want to setup a test environment it is advised only to setup the needed subset of the test account.
-
-```
-// Authenticate with AWS account
-cd terraform/service/local
-# Change AZ to two character prefix (For example, John Doe: JD)
-terraform apply -var="prefix=AZ"
-cd ../../..
-
-# TABLE_NAME will be the root table you are working on so it won't run all other tests (as you don't wont to spin-up the whole environment)
-make tableName=TABLE_NAME test-integration
-
-# Don't forget to destroy your test resources
-cd terraform/service/local
-terraform destroy
-```
