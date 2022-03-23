@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
@@ -47,6 +48,13 @@ func WithFS(fs afero.Fs) Option {
 func WithEnvironmentVariables(prefix string, vars []string) Option {
 	return func(p *Parser) {
 		EnvToHCLContext(&p.HCLContext, prefix, vars)
+	}
+}
+
+// WithFileFunc adds the file() function to the parser.
+func WithFileFunc(basePath string) Option {
+	return func(p *Parser) {
+		p.HCLContext.Functions["file"] = convert.MakeFileFunc(basePath)
 	}
 }
 

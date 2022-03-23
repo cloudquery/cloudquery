@@ -60,6 +60,10 @@ func RestoreSnapshot(ctx context.Context, conn LowLevelQueryExecer, log hclog.Lo
 		return fmt.Errorf("invalid filename: %q", fileName)
 	}
 	source_name := strings.TrimPrefix(strings.TrimSuffix(fileName, ".csv"), "table_")
+	err = deleteFKs(ctx, conn, log, source_name)
+	if err != nil {
+		return fmt.Errorf("error removing fks from %q: %w", source_name, err)
+	}
 	truncQuery := fmt.Sprintf("TRUNCATE %s CASCADE", source_name)
 	log.Debug("truncating", "table", source_name, "query", truncQuery)
 	err = conn.Exec(ctx, truncQuery)
@@ -224,4 +228,37 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 	}
 
 	return s, err
+}
+
+func deleteFKs(ctx context.Context, conn LowLevelQueryExecer, log hclog.Logger, tableName string) error {
+	fkQuery := fmt.Sprintf(`SELECT conname AS foreign_key
+FROM   pg_constraint 
+WHERE  contype = 'f' 
+AND    connamespace = 'public'::regnamespace
+AND conrelid::regclass = '%s'::regclass;`, tableName)
+	rows, err := conn.Query(ctx, fkQuery)
+	if err != nil {
+		log.Error("error finding fks for table", "query", fkQuery, "err", err)
+		return err
+	}
+
+	for rows.Next() {
+		var fkName string
+		if err := rows.Scan(&fkName); err != nil {
+			log.Error("error scanning into variable", "error", err)
+		}
+		deletionQuery := fmt.Sprintf("ALTER TABLE %s DROP CONSTRAINT  IF EXISTS %s;", tableName, fkName)
+		err = conn.Exec(ctx, deletionQuery)
+		if err != nil {
+			log.Error("error deleting fks for table", "query", deletionQuery, "err", err)
+			return err
+		}
+
+	}
+	if err := rows.Err(); err != nil {
+		log.Error("Error fetching rows", "query", fkQuery, "error", err)
+		return err
+	}
+
+	return nil
 }

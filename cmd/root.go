@@ -4,7 +4,6 @@ import (
 	stdlog "log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 
@@ -64,11 +63,10 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 Use "{{.Root.Use}} options" for a list of global CLI options.
 `
 
-// Injected with at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
-
 var (
+	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 	Commit = "development"
-	Date   = time.Now().String()
+	Date   = "unknown"
 
 	loggerConfig logging.Config
 
@@ -99,6 +97,7 @@ func init() {
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 	// Logging Flags
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
+	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enable-console-log", false, "Enable console logging")
 	_ = viper.BindPFlag("enable-console-log", rootCmd.PersistentFlags().Lookup("enable-console-log"))
 	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encode-json", false, "EncodeLogsAsJson makes the logging framework logging JSON instead of KV")

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -14,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/fatih/color"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
@@ -93,9 +95,9 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
+	// sleep some extra 500 milliseconds for progress refresh
 	if ui.IsTerminal() {
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(500 * time.Millisecond)
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
@@ -142,7 +144,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if ui.IsTerminal() && fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
-		printFetchResponse(response, viper.GetBool("redact-diags"))
+		printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	}
 
 	if response == nil {
@@ -379,7 +381,6 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	return nil
 }
 
-//nolint:dupl
 func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
@@ -406,28 +407,54 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	return nil
 }
 
-//nolint:dupl
 func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 	providers, err := c.getRequiredProviders(args)
 	if err != nil {
 		return err
 	}
+
+	// download requested versions
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
+
+	provVersions := make(map[string]string, len(providers))
 	for _, p := range providers {
-		if err := c.c.DowngradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+		provVersions[p.Name] = p.Version
+		p.Version = migrator.Latest
+	}
+
+	newCfg := *c.cfg
+	newCfg.CloudQuery.Providers = providers
+	conWithLatest, err := CreateClientFromConfig(ctx, &newCfg)
+	if err != nil {
+		return err
+	}
+	cqWithLatest := conWithLatest.Client()
+	defer cqWithLatest.Close()
+
+	ui.ColorizedOutput(ui.ColorProgress, "Will fetch latest providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
+
+	if err := cqWithLatest.DownloadProviders(ctx); err != nil {
+		return err
+	}
+
+	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
+
+	for _, p := range providers {
+		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgrading provider %s to %s...\n", emojiStatus[ui.StatusInProgress], p.Name, provVersions[p.Name])
+
+		if err := cqWithLatest.DowngradeProvider(ctx, p.Name, provVersions[p.Name]); err != nil && err != migrate.ErrNoChange {
 			if errors.Is(err, client.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to downgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
+				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to downgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.Name, err.Error())
 				continue
 			} else {
-				ui.ColorizedOutput(ui.ColorError, "%s Failed to downgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
+				ui.ColorizedOutput(ui.ColorError, "%s Failed to downgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.Name, err.Error())
 				return err
 			}
 		}
 
-		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
+		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, provVersions[p.Name])
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "\nFinished downgrading providers...\n\n")
 	return nil
@@ -647,6 +674,11 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 	})
 
 	for _, p := range providers {
+		if len(p.Resources) == 0 {
+			ui.ColorizedOutput(ui.ColorWarning, "%s Skipping provider %s[%s] configured with no resource to fetch\n", emojiStatus[ui.StatusWarn], p.Name, p.Alias)
+			continue
+		}
+
 		if p.Alias != p.Name {
 			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s@%s-%s", p.Name, "latest", p.Alias), "fetching", int64(len(p.Resources)))
 		} else {
@@ -731,11 +763,12 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 	return policyRunProgress, policyRunCallback
 }
 
-func loadConfig(path string) (*config.Config, bool) {
+func loadConfig(file string) (*config.Config, bool) {
 	parser := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+		config.WithFileFunc(filepath.Dir(file)),
 	)
-	cfg, diags := parser.LoadConfigFile(path)
+	cfg, diags := parser.LoadConfigFile(file)
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {

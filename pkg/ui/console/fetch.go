@@ -9,13 +9,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
-func printFetchResponse(summary *client.FetchResponse, redactDiags bool) {
+func printFetchResponse(summary *client.FetchResponse, redactDiags, verbose bool) {
 	if summary == nil {
 		return
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
 		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics(pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags)
+			printDiagnostics(pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags, verbose)
 			continue
 		}
 		if len(pfs.PartialFetchErrors) == 0 {
@@ -41,21 +41,35 @@ func printFetchResponse(summary *client.FetchResponse, redactDiags bool) {
 	}
 }
 
-func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags bool) {
-	// sort diagnostics by severity/type
-	sort.Sort(diags)
-	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
-	for _, d := range diags {
-		if redactDiags {
-			if rd, ok := d.(diag.Redactable); ok {
-				if r := rd.Redacted(); r != nil {
-					d = r
-				}
+func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags, verbose bool) {
+	if redactDiags {
+		diags = diags.Redacted()
+	}
+
+	if !verbose {
+		var hasPrintableDiag bool
+		for _, d := range diags {
+			if d.Severity() != diag.IGNORE {
+				hasPrintableDiag = true
+				break
 			}
 		}
+		if !hasPrintableDiag {
+			return
+		}
+	}
+
+	// sort diagnostics by severity/type
+	sort.Sort(diags)
+
+	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
+	for _, d := range diags {
 		desc := d.Description()
 		switch d.Severity() {
 		case diag.IGNORE:
+			if !verbose {
+				continue
+			}
 			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
 				ui.ColorProgress.Sprintf("%s", desc.Resource),
 				ui.ColorProgressBold.Sprintf("%s", d.Type()),

@@ -41,7 +41,7 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	if err := ValidatePostgresVersion(ctx, pool, MinPostgresVersion); err != nil {
+	if err := ValidatePostgresVersion(ctx, pool); err != nil {
 		return true, err
 	}
 
@@ -85,13 +85,13 @@ func runningPostgresVersion(ctx context.Context, q queryRower) (*version.Version
 // ValidatePostgresVersion checks that PostgreSQL instance version available through pool is not lower than wanted version.
 // In this case it returns nil. Otherwise returns error describing current and desired version or any other error encountered
 // during the check.
-func ValidatePostgresVersion(ctx context.Context, pool *pgxpool.Pool, want *version.Version) error {
+func ValidatePostgresVersion(ctx context.Context, pool *pgxpool.Pool) error {
 	conn, err := pool.Acquire(ctx)
 	if err != nil {
 		return err
 	}
 	defer conn.Release()
-	return doValidatePostgresVersion(ctx, conn, want)
+	return doValidatePostgresVersion(ctx, conn, MinPostgresVersion)
 }
 
 func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.Version) error {
@@ -100,7 +100,7 @@ func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.
 		return fmt.Errorf("error getting PostgreSQL version: %w", err)
 	}
 	if got.LessThan(want) {
-		return fmt.Errorf("unsupported PostgreSQL version: %v. (should be >= %v)", got, want)
+		return fmt.Errorf("unsupported PostgreSQL version: %s. (should be >= %s)", got.String(), want.String())
 	}
 	return nil
 }

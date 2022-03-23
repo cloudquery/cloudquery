@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"embed"
 	"errors"
 	"fmt"
 	"io"
@@ -18,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -30,7 +30,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
@@ -49,8 +48,6 @@ import (
 
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
-	//go:embed migrations/*/*.sql
-	coreMigrations embed.FS
 )
 
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
@@ -240,6 +237,8 @@ type Client struct {
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 
+	// metaStorage interacts with cloudquery core resources
+	metaStorage     *meta_storage.Client
 	db              *sdkdb.DB
 	dialectExecutor database.DialectExecutor
 }
@@ -407,9 +406,13 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	}
 
 	for _, providerConfig := range request.Providers {
+		if len(providerConfig.Resources) == 0 {
+			c.Logger.Warn("skipping provider which configured with 0 resources to fetch", "provider", providerConfig.Name, "alias", providerConfig.Alias)
+			continue
+		}
 		providerConfig := providerConfig
 		createdAt := time.Now().UTC()
-		fetchSummary := FetchSummary{
+		fetchSummary := meta_storage.FetchSummary{
 			FetchId:       fetchId,
 			ProviderName:  providerConfig.Name,
 			ProviderAlias: providerConfig.Alias,
@@ -417,7 +420,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			CoreVersion:   Version,
 		}
 		saveFetchSummary := func() {
-			if err := c.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+			if err := c.metaStorage.SaveFetchSummary(ctx, &fetchSummary); err != nil {
 				c.Logger.Error("failed to save fetch summary", "err", err)
 			}
 		}
@@ -433,9 +436,18 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			defer saveFetchSummary()
 			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
 			pLog.Info("requesting provider to configure")
+
+			metadata := map[string]interface{}{
+				"cq_fetch_id": fetchId.String(),
+			}
+
 			if c.HistoryCfg != nil {
 				fd := c.HistoryCfg.FetchDate()
 				pLog.Info("history enabled adding fetch date", "fetch_date", fd.Format(time.RFC3339))
+				metadata["cq_fetch_date"] = fd
+
+				// TODO Remove(Compatibility): Code below is for providers using the old SDK version, where metadata isn't available in FetchRequest
+				// Removing this without updating provider will set cq_fetch_date to the time of execution start, which HistoryCfg.TimeTruncation doesn't apply
 				if request.ExtraFields == nil {
 					request.ExtraFields = make(map[string]interface{})
 				}
@@ -464,6 +476,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					PartialFetchingEnabled: true,
 					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
 					MaxGoroutines:          providerConfig.MaxGoroutines,
+					Timeout:                time.Duration(providerConfig.ResourceTimeout) * time.Second,
+					Metadata:               metadata,
 				})
 			if err != nil {
 				return err
@@ -541,7 +555,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 					request.UpdateCallback(update)
 				}
 
-				fetchSummary.Resources = append(fetchSummary.Resources, ResourceFetchSummary{
+				fetchSummary.Resources = append(fetchSummary.Resources, meta_storage.ResourceFetchSummary{
 					ResourceName:      resp.ResourceName,
 					FinishedResources: resp.FinishedResources,
 					Status:            resp.Summary.Status.String(),
@@ -735,9 +749,10 @@ func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retE
 	return m.UpgradeProvider(cfg.Version)
 }
 
-func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (retErr error) {
+func (c *Client) DowngradeProvider(ctx context.Context, providerName, version string) (retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", trace.WithAttributes(
 		attribute.String("provider", providerName),
+		attribute.String("provider_version", version),
 	))
 	defer spanEnder(retErr)
 
@@ -748,6 +763,7 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 	if s.Migrations == nil {
 		return fmt.Errorf("provider doesn't support migrations")
 	}
+
 	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
 	if err != nil {
 		return err
@@ -757,8 +773,8 @@ func (c *Client) DowngradeProvider(ctx context.Context, providerName string) (re
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
-	c.Logger.Info("downgrading provider version", "version", cfg.Version, "provider", cfg.Name)
-	return m.DowngradeProvider(cfg.Version)
+	c.Logger.Info("downgrading provider version", "current_version", cfg.Version, "version", version, "provider", cfg.Name)
+	return m.DowngradeProvider(version)
 }
 
 func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {
@@ -970,42 +986,6 @@ func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[strin
 	return m, providerConfig, err
 }
 
-func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
-	err := createCoreSchema(ctx, c.db)
-	if err != nil {
-		return err
-	}
-
-	newDSN, err := de.Setup(ctx)
-	if err != nil {
-		return err
-	}
-
-	migrations, err := migrator.ReadMigrationFiles(c.Logger, coreMigrations)
-	if err != nil {
-		return err
-	}
-	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
-	if err != nil {
-		return err
-	}
-	m, err := migrator.New(c.Logger, schema.Postgres, migrations, newDSN, "cloudquery_core")
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-
-	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
-		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
-	}
-	return nil
-}
-
 func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
 	var providerConfig *config.RequiredProvider
 	for _, p := range c.Providers {
@@ -1101,6 +1081,10 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 		}
 
 		for _, e := range ps.Diagnostics().Squash() {
+			if telemetry.ShouldIgnoreDiag(e) {
+				continue
+			}
+
 			if rd, ok := e.(diag.Redactable); ok {
 				if r := rd.Redacted(); r != nil {
 					e = r
@@ -1139,10 +1123,6 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 	)
 }
 
-func createCoreSchema(ctx context.Context, db execution.QueryExecer) error {
-	return db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-}
-
 func (c *Client) initDatabase(ctx context.Context) error {
 	var err error
 	c.db, err = sdkdb.New(ctx, c.Logger, c.DSN)
@@ -1178,8 +1158,9 @@ func (c *Client) initDatabase(ctx context.Context) error {
 		c.Logger.Warn("database validation warning")
 	}
 
+	c.metaStorage = meta_storage.NewClient(c.db, c.Logger)
 	// migrate cloudquery core tables to latest version
-	if err := c.MigrateCore(ctx, c.dialectExecutor); err != nil {
+	if err := c.metaStorage.MigrateCore(ctx, c.dialectExecutor); err != nil {
 		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
 
