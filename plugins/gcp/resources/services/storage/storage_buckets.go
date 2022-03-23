@@ -578,13 +578,9 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 		return fmt.Errorf("expected *storage.Bucket but got %T", p)
 	}
 	cl := meta.(*client.Client)
-	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name)
+	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name).OptionsRequestedPolicyVersion(3)
 	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
-		if client.IgnoreErrorHandler(err) {
-			meta.Logger().Warn("bucket get IAM policy permission denied", "error", err)
-			return nil
-		}
 		return err
 	}
 	output := list.(*storage.Policy)

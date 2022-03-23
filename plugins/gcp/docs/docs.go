@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-gcp/resources/provider"
 	"log"
+
+	"github.com/cloudquery/cq-provider-gcp/resources/provider"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )

@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
 	"google.golang.org/api/googleapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -51,10 +52,15 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 
 	// https://pkg.go.dev/cloud.google.com/go#hdr-Inspecting_errors:
 	// Most of the errors returned by the generated clients can be converted into a `grpc.Status`
-	if s, ok := status.FromError(err); ok {
+	if s, ok := statusFromError(err); ok {
 		if v, ok := grpcCodeToDiag[s.Code()]; ok {
 			return diag.Diagnostics{
-				RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithType(v.typ), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithDetails("%s", s.Message()), diag.WithNoOverwrite(), diag.WithSeverity(v.severity))),
+				RedactError(client.projects,
+					diag.NewBaseError(err, v.typ, diag.WithType(v.typ),
+						diag.WithResourceName(resourceName),
+						diag.WithSummary("%s", v.summary),
+						diag.WithDetails("%s", s.Message()),
+						diag.WithSeverity(v.severity))),
 			}
 		}
 	}
@@ -71,7 +77,14 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 		if grpcCode, ok := httpCodeToGRPCCode[gerr.Code]; ok {
 			if v, ok := grpcCodeToDiag[grpcCode]; ok {
 				return diag.Diagnostics{
-					RedactError(client.projects, diag.NewBaseError(err, v.typ, diag.WithType(v.typ), diag.WithResourceName(resourceName), diag.WithSummary("%s", v.summary), diag.WithError(errors.New(gerr.Message)), diag.WithNoOverwrite(), diag.WithSeverity(v.severity))),
+					RedactError(client.projects,
+						diag.NewBaseError(err, v.typ,
+							diag.WithType(v.typ),
+							diag.WithResourceName(resourceName),
+							diag.WithSummary("%s", v.summary),
+							diag.WithError(errors.New(gerr.Message)),
+							diag.WithSeverity(v.severity),
+						)),
 				}
 			}
 		}
@@ -119,4 +132,17 @@ func removePII(projects []string, msg string) string {
 	msg = codeRegex.ReplaceAllLiteralString(msg, `(Code: 'xxxx')`)
 	msg = projectIdRegex.ReplaceAllString(msg, `project${1}${2}xxxx${3}`)
 	return msg
+}
+
+func statusFromError(err error) (*status.Status, bool) {
+	if err == nil {
+		return nil, false
+	}
+	var se interface {
+		GRPCStatus() *status.Status
+	}
+	if errors.As(err, &se) {
+		return se.GRPCStatus(), true
+	}
+	return nil, false
 }
