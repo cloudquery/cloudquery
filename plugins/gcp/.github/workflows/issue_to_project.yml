@@ -1,0 +1,25 @@
+name: Add issue to project
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+
+# map fields with customized labels
+env:
+  todo: Triage
+
+jobs:
+  issue_opened_or_reopened:
+    name: issue_opened_or_reopened
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened')
+    steps:
+      - name: Move issue to ${{ env.todo }}
+        uses: leonsteinhaeuser/project-beta-automations@v1.2.1
+        with:
+          gh_token: ${{ secrets.GH_CQ_BOT }}
+          organization: cloudquery
+          project_id: 2
+          resource_node_id: ${{ github.event.issue.node_id }}
+          status_value: ${{ env.todo }} # Target status
