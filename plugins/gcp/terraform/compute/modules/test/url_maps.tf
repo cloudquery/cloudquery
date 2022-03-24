@@ -1,22 +1,22 @@
-################################################################################
-# Compute Module - Url Maps
-################################################################################
+#################################################################################
+## Compute Module - Url Maps
+#################################################################################
 
 resource "google_compute_url_map" "url_map" {
-  name        = "${local.prefix}-urlmap"
+  name        = "${var.prefix}-urlmap"
 
   default_service = google_compute_backend_service.internal-backend-service.id
 
   host_rule {
     hosts = [
-      local.domain
+      var.domain
     ]
     path_matcher = "root"
   }
 
   host_rule {
     hosts = [
-      "beta.${local.domain}",
+      "beta.${var.domain}",
     ]
     path_matcher = "secondary"
   }
@@ -73,7 +73,7 @@ resource "google_compute_url_map" "url_map" {
 
   test {
     service = google_compute_backend_service.internal-backend-service.id
-    host    = "beta.${local.domain}"
+    host    = "beta.${var.domain}"
     path    = "/healthcheck"
   }
 
@@ -83,26 +83,26 @@ resource "google_compute_url_map" "url_map" {
 }
 
 resource "google_compute_url_map" "external_url_map" {
-  name        = "${local.prefix}-external-urlmap"
+  name        = "${var.prefix}-external-urlmap"
 
-  default_service = google_compute_backend_service.backend-service.id
+  default_service = google_compute_backend_service.internal-backend-service.id
 
   host_rule {
     hosts = [
-      "ex.${local.domain}",
+      "ex.${var.domain}",
     ]
     path_matcher = "external-1"
   }
 
   path_matcher {
     name            = "external-1"
-    default_service = google_compute_backend_service.backend-service.id
+    default_service = google_compute_backend_service.internal-backend-service.id
 
     path_rule {
       paths = [
         "/home"
       ]
-      service = google_compute_backend_service.backend-service.id
+      service = google_compute_backend_service.internal-backend-service.id
     }
   }
 

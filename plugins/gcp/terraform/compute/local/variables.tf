@@ -10,20 +10,3 @@ variable "prefix" {
 variable "project_id" {
   description = "Project where test resources will be deployed."
 }
-
-variable "region" {
-  description = "Region where test resources will be deployed."
-  default    = "us-east1"
-}
-
-variable "labels" {
-  type = map
-  default = {
-    "environment" = "cq-provider-gcp"
-  }
-}
-
-variable "domain" {
-  description = "Domain name."
-  default    = "cloudquery.dev"
-}

@@ -56,6 +56,7 @@ func Provider() *provider.Provider {
 			"compute.projects":             compute.ComputeProjects(),
 			"compute.target_ssl_proxies":   compute.ComputeTargetSslProxies(),
 			"compute.target_https_proxies": compute.ComputeTargetHTTPSProxies(),
+			"compute.target_http_proxies":  compute.ComputeTargetHTTPProxies(),
 			"compute.ssl_policies":         compute.ComputeSslPolicies(),
 			"compute.url_maps":             compute.ComputeURLMaps(),
 			"cloudfunctions.functions":     cloudfunctions.CloudfunctionsFunction(),
