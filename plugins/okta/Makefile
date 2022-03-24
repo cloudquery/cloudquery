@@ -1,30 +1,52 @@
-PACKAGE_NAME          := github.com/cloudquery/cq-provider-okta
+## install the latest version of CQ
+.PHONY: install-cq
+install-cq:
+	@if [[ "$(OS)" != "Darwin" && "$(OS)" != "Linux" && "$(OS)" != "Windows" ]]; then echo "\n Invalid OS set. Valid Options are Darwin, Linux and Windows. Example invocation is:\n make OS=Linux ARCH=arm64 install-cq \n For more information go to  https://docs.cloudquery.io/docs/getting-started \n"; exit 1; fi
+	@if [[ "$(ARCH)" != "x86_64" && "$(ARCH)" != "arm64" ]]; then echo "\n Invalid ARCH set. Valid options are x86_64 and arm64. Example invocation is:\n make OS=Linux ARCH=arm64 install-cq \n For more information go to  https://docs.cloudquery.io/docs/getting-started \n"; exit 1; fi
+	curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_${ARCH} -o cloudquery
+	chmod a+x cloudquery
 
-.PHONY: release-dry-run
-release-dry-run:
-	@docker run \
-		--privileged \
-		-e CGO_ENABLED=1 \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v `pwd`:/go/src/$(PACKAGE_NAME) \
-		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/cloudquery/golang-cross:latest \
-		--rm-dist --skip-validate --skip-publish --skip-sign
+# start a running docker container
+.PHONY: start-pg
+start-pg:
+	docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 
-.PHONY: release
-release:
-	@if [ ! -f ".release-env" ]; then \
-		echo "\033[91m.release-env is required for release\033[0m";\
-		exit 1;\
-	fi
-	docker run \
-		--rm \
-		--privileged \
-		-e CGO_ENABLED=1 \
-		--env-file .release-env \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v ~/.docker:/root/.docker \
-		-v `pwd`:/go/src/$(PACKAGE_NAME) \
-		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/cloudquery/golang-cross:latest \
-		release --rm-dist
+# stop a running docker container
+.PHONY: stop-pg
+stop-pg:
+	docker stop $$(docker ps -q --filter ancestor=postgres:latest)
+
+# connect to pg via cli
+.PHONY: pg-connect
+pg-connect:
+	psql -h localhost -p 5432 -U postgres -d postgres
+
+# build the cq aws provider
+.PHONY: build
+build:
+	go build -o cq-provider
+
+# build and run the cq aws provider
+.PHONY: run
+run: build
+	CQ_REATTACH_PROVIDERS=.cq_reattach ./cq-provider
+
+# Run a fetch command
+.PHONY: fetch
+fetch:
+	CQ_PROVIDER_DEBUG=1 ./cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" -v
+
+# Generate mocks for mock/unit testing 
+.PHONY: generate-mocks
+generate-mocks:
+	go generate ./client/services/...
+
+# Test unit
+.PHONY: test-unit
+test-unit:
+	go test -timeout 3m ./...
+
+# Run an integration tests
+.PHONY: test-integration
+test-integration:
+	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
