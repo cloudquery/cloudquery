@@ -1187,10 +1187,20 @@ provider "aws" {
   }
 
   resource "lambda.functions" {
-    identifiers = [ "name" ]
+    identifiers = [ "arn" ]
+    ignore_attributes =  [ "code_location", "code_repository_type", "last_update_status", "revision_id", "state" ]
     iac {
       terraform {
         type = "aws_lambda_function"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "name=id",
+          "code_size=source_code_size",
+          "code_sha256=source_code_hash",
+          "dead_letter_config_target_arn=dead_letter_config.#.target_arn|@flatten|0",
+          "environment_variables=environment.#.variables|0",
+          "tracing_config_mode=tracing_config.#.mode|@flatten|0"
+        ]
       }
     }
   }
