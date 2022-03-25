@@ -410,25 +410,29 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			c.Logger.Warn("skipping provider which configured with 0 resources to fetch", "provider", providerConfig.Name, "alias", providerConfig.Alias)
 			continue
 		}
-		providerConfig := providerConfig
-		createdAt := time.Now().UTC()
-		fetchSummary := meta_storage.FetchSummary{
-			FetchId:       fetchId,
-			ProviderName:  providerConfig.Name,
-			ProviderAlias: providerConfig.Alias,
-			CreatedAt:     &createdAt,
-			CoreVersion:   Version,
-		}
-		saveFetchSummary := func() {
-			if err := c.metaStorage.SaveFetchSummary(ctx, &fetchSummary); err != nil {
-				c.Logger.Error("failed to save fetch summary", "err", err)
-			}
-		}
+
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
 		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
+		}
+
+		providerConfig := providerConfig
+		createdAt := time.Now().UTC()
+		fetchSummary := meta_storage.FetchSummary{
+			FetchId:         fetchId,
+			ProviderName:    providerConfig.Name,
+			ProviderAlias:   providerConfig.Alias,
+			ProviderVersion: providerPlugin.Version(),
+			CreatedAt:       &createdAt,
+			CoreVersion:     Version,
+		}
+
+		saveFetchSummary := func() {
+			if err := c.metaStorage.SaveFetchSummary(ctx, &fetchSummary); err != nil {
+				c.Logger.Error("failed to save fetch summary", "err", err)
+			}
 		}
 
 		// TODO: move this into an outer function
