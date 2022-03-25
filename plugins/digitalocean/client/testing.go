@@ -22,9 +22,6 @@ func DOTestHelper(t *testing.T, table *schema.Table) {
 				"test_resource": table,
 			},
 		},
-		Table:           table,
-		Config:          cfg,
-		SkipEmptyRows:   false,
-		SkipEmptyColumn: true,
+		Config: cfg,
 	})
 }

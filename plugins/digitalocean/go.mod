@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.15.0
 	github.com/aws/smithy-go v1.8.0
-	github.com/cloudquery/cq-provider-sdk v0.7.0
+	github.com/cloudquery/cq-provider-sdk v0.8.14
 	github.com/digitalocean/godo v1.65.0
 	github.com/hashicorp/go-hclog v1.0.0
 	github.com/pkg/errors v0.9.1
@@ -68,6 +68,7 @@ require (
 	github.com/mitchellh/hashstructure v1.1.0 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/oklog/run v1.1.0 // indirect
+	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
