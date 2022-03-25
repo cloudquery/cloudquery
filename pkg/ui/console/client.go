@@ -16,6 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/fatih/color"
 	"github.com/getsentry/sentry-go"
 	"github.com/golang-migrate/migrate/v4"
@@ -162,9 +163,14 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if summary.ProviderName != summary.ProviderAlias {
 			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
 		}
-		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %d\t ❌ Errors: %d\n",
-			key, status, summary.TotalResourcesFetched,
-			summary.Diagnostics().Warnings(), summary.Diagnostics().Errors())
+		diags := summary.Diagnostics()
+		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n",
+			key,
+			status,
+			summary.TotalResourcesFetched,
+			countSeverity(diags, diag.WARNING),
+			countSeverity(diags, diag.ERROR),
+		)
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
 		}
@@ -782,4 +788,19 @@ func loadConfig(file string) (*config.Config, bool) {
 		return nil, false
 	}
 	return cfg, true
+}
+
+func countSeverity(d diag.Diagnostics, sev diag.Severity) string {
+	basicCount := d.CountBySeverity(sev, false)
+
+	if !viper.GetBool("verbose") {
+		return fmt.Sprintf("%d", basicCount)
+	}
+
+	deepCount := d.CountBySeverity(sev, true)
+	if basicCount == deepCount {
+		return fmt.Sprintf("%d", basicCount)
+	}
+
+	return fmt.Sprintf("%d(%d)", basicCount, deepCount)
 }
