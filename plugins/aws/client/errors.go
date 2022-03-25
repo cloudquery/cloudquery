@@ -21,32 +21,53 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 		switch ae.ErrorCode() {
 		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), ParseSummaryMessage(err),
-					diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]), diag.WithNoOverwrite(), diag.WithSeverity(diag.WARNING))),
+				RedactError(client.Accounts, diag.NewBaseError(err,
+					diag.ACCESS,
+					diag.WithType(diag.ACCESS),
+					diag.WithSeverity(diag.WARNING),
+					ParseSummaryMessage(err),
+					diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]),
+					includeResourceIdWithAccount(client, err),
+				)),
 			}
 		case "InvalidAction":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.IGNORE), ParseSummaryMessage(err),
-					diag.WithDetails("The action is invalid for the service."))),
+				RedactError(client.Accounts, diag.NewBaseError(err,
+					diag.RESOLVING,
+					diag.WithType(diag.RESOLVING),
+					diag.WithSeverity(diag.IGNORE),
+					ParseSummaryMessage(err),
+					diag.WithDetails("The action is invalid for the service."),
+					includeResourceIdWithAccount(client, err),
+				)),
 			}
 		}
 	}
 	if IsErrorThrottle(err) {
 		return diag.Diagnostics{
-			RedactError(client.Accounts, diag.NewBaseError(err, diag.THROTTLE, diag.WithType(diag.THROTTLE), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(err),
-				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."))),
+			RedactError(client.Accounts, diag.NewBaseError(err,
+				diag.THROTTLE,
+				diag.WithType(diag.THROTTLE),
+				diag.WithSeverity(diag.WARNING),
+				ParseSummaryMessage(err),
+				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."),
+				includeResourceIdWithAccount(client, err),
+			)),
 		}
 	}
 
 	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
-			RedactError(client.Accounts, d),
+			RedactError(client.Accounts, diag.NewBaseError(d, d.Type(), includeResourceIdWithAccount(client, err))),
 		}
 	}
 
 	return diag.Diagnostics{
-		RedactError(client.Accounts, diag.NewBaseError(err, diag.RESOLVING, diag.WithResourceName(resourceName))),
+		RedactError(client.Accounts, diag.NewBaseError(err,
+			diag.RESOLVING,
+			diag.WithResourceName(resourceName),
+		)),
 	}
 }
 
@@ -150,4 +171,25 @@ func removePII(aa []Account, msg string) string {
 	msg = accountObfusactor(aa, msg)
 
 	return msg
+}
+
+func includeResourceIdWithAccount(client *Client, err error) diag.BaseErrorOption {
+	d, ok := err.(diag.Diagnostic)
+	if !ok || len(d.Description().ResourceID) == 0 {
+		return func(_ *diag.BaseError) {} // no-op option
+	}
+
+	resIdList := []string{
+		client.AccountID,
+		client.Region,
+	}
+
+	// remove accountID and region from PK list as we always prepend them
+	for _, val := range d.Description().ResourceID {
+		if val != client.AccountID && val != client.Region {
+			resIdList = append(resIdList, val)
+		}
+	}
+
+	return diag.WithResourceId(resIdList)
 }
