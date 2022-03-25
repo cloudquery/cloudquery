@@ -163,7 +163,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if summary.ProviderName != summary.ProviderAlias {
 			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
 		}
-		diags := summary.Diagnostics()
+		diags := summary.Diagnostics().Squash()
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n",
 			key,
 			status,
