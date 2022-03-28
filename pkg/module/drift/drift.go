@@ -5,12 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+	cqschema "github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
@@ -257,6 +259,9 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 		d.logger.Debug("Processing for provider", "provider", schema.Name, "config", cfg)
 
 		resources := cfg.interpolatedResourceMap(iacProv, d.logger)
+		if d.params.Debug {
+			listUnimplementedResources(d.logger, resources, schema)
+		}
 
 		// Always process in the same order so both results and error messages are consistent
 		for _, resName := range cfg.resourceKeys() {
@@ -296,6 +301,35 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	resList.process()
 
 	return resList, nil
+}
+
+func listUnimplementedResources(logger hclog.Logger, resources map[string]*ResourceConfig, provSchema *cqproto.GetProviderSchemaResponse) {
+	var (
+		res, subRes []string
+	)
+	for nm, tabl := range provSchema.ResourceTables {
+		if _, found := resources[nm]; !found {
+			res = append(res, nm)
+		}
+		for _, rel := range tabl.Relations {
+			subRes = append(subRes, listUnimplementedResourcesInner(resources, nm+":", rel)...)
+		}
+	}
+	sort.Strings(res)
+	sort.Strings(subRes)
+	logger.Debug("Not implemented resources", "list", res)
+	logger.Debug("Not implemented subresources", "list", subRes)
+}
+
+func listUnimplementedResourcesInner(resources map[string]*ResourceConfig, upper string, t *cqschema.Table) []string {
+	var ret []string
+	if _, found := resources[t.Name]; !found {
+		ret = append(ret, upper+t.Name)
+	}
+	for _, rel := range t.Relations {
+		ret = append(ret, listUnimplementedResourcesInner(resources, upper+t.Name+":", rel)...)
+	}
+	return ret
 }
 
 func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
