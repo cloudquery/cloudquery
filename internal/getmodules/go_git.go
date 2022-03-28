@@ -215,7 +215,7 @@ func findDefaultBranch(r *git.Repository) plumbing.ReferenceName {
 			return plumbing.Master
 		}
 		if b.Name() == plumbing.HEAD {
-			return b.Target()
+			return b.Name()
 		}
 	}
 }
