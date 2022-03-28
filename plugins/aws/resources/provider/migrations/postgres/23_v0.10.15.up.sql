@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS "aws_access_analyzer_analyzer_archive_rules"
     UNIQUE (cq_id),
     FOREIGN KEY (analyzer_cq_id) REFERENCES aws_access_analyzer_analyzers (cq_id) ON DELETE CASCADE
 );
+
+-- Resource: ec2.images
+ALTER TABLE IF EXISTS "aws_ec2_images" ADD COLUMN IF NOT EXISTS "last_launched_time" timestamp without time zone;

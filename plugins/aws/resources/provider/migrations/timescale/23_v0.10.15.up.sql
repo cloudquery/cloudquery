@@ -14,3 +14,6 @@ CREATE TABLE IF NOT EXISTS "aws_access_analyzer_analyzer_archive_rules"
 CREATE INDEX ON aws_access_analyzer_analyzer_archive_rules (cq_fetch_date, analyzer_cq_id);
 SELECT setup_tsdb_child('aws_access_analyzer_analyzer_archive_rules', 'analyzer_cq_id', 'aws_access_analyzer_analyzers',
                         'cq_id');
+
+-- Resource: ec2.images
+ALTER TABLE IF EXISTS "aws_ec2_images" ADD COLUMN IF NOT EXISTS "last_launched_time" timestamp without time zone;
