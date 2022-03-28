@@ -33,3 +33,4 @@ Describes an image.
 |tags|jsonb|Any tags assigned to the image.|
 |usage_operation|text|The operation of the Amazon EC2 instance and the billing code that is associated with the AMI.|
 |virtualization_type|text|The type of virtualization of the AMI.|
+|last_launched_time|timestamp without time zone|The timestamp of the last time the AMI was used for an EC2 instance launch.|
