@@ -249,6 +249,28 @@ var (
 			ExpectOutput: true,
 		}},
 	}
+	// views cannot be inherited from parent policies.
+	multiLayerWithInheritedView = &Policy{
+		Name: "test",
+		Views: []*View{
+			{
+				Name:  "testview",
+				Query: "SELECT 'something'",
+			},
+		},
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{
+					{
+						Name:         "query-with-view",
+						ExpectOutput: true,
+						Query:        "SELECT * from testview",
+					},
+				},
+			},
+		},
+	}
 )
 
 func TestExecutor_Execute(t *testing.T) {
@@ -322,6 +344,11 @@ func TestExecutor_Execute(t *testing.T) {
 			Pass:                 true,
 			TotalExpectedResults: 1,
 		},
+		{
+			Name:        "multilayer policy w/ using view inherited from parent",
+			Policy:      multiLayerWithInheritedView,
+			ErrorOutput: "relation \"testview\" does not exist",
+		},
 	}
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
@@ -338,7 +365,10 @@ func TestExecutor_Execute(t *testing.T) {
 			filtered := tc.Policy.Filter(tc.Selector)
 			res, err := executor.Execute(context.Background(), execReq, &filtered)
 			if tc.ErrorOutput != "" {
-				assert.EqualError(t, err, tc.ErrorOutput)
+				if assert.Error(t, err) {
+					assert.Contains(t, err.Error(), tc.ErrorOutput)
+				}
+				return
 			} else {
 				assert.NoError(t, err)
 			}
