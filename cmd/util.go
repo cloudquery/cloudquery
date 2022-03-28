@@ -87,6 +87,13 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		delayMessage = false
 	case "init":
 		// No console client created here
+	case "describe":
+		var err error
+		c, err = console.ClientFactory(ctx, &cfgPath, cfgMutator)
+		if err != nil {
+			return err
+		}
+		defer c.Client().Close()
 	case "fetch":
 		cfgMutator = filterConfigProviders(args)
 		fallthrough

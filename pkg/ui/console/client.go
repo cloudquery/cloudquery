@@ -88,6 +88,36 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 	return cClient, err
 }
 
+func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, error) {
+	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
+		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+	})
+	opts = append(opts, func(c *client.Client) {
+		if ui.IsTerminal() {
+			c.HubProgressUpdater = progressUpdater
+			c.PluginDirectory = "./.cq/providers"
+			c.PolicyDirectory = "./.cq/policies"
+		}
+	})
+	c, err := client.New(ctx, opts...)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
+		return nil, err
+	}
+	cClient := &Client{c, nil, progressUpdater}
+	return cClient, err
+}
+
+func ClientFactory(ctx context.Context, configPath *string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
+	if configPath == nil {
+		return CreateNullClient(ctx)
+	}
+	if _, err := os.Stat(*configPath); errors.Is(err, os.ErrNotExist) {
+		return CreateNullClient(ctx)
+	}
+	return CreateClient(ctx, *configPath, configMutator, opts...)
+}
+
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.DownloadProviders(ctx)
@@ -292,7 +322,7 @@ func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestin
 }
 
 func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
-	policiesToDescribe, err := FilterPolicies(policySource, c.cfg.Policies)
+	policiesToDescribe, err := FilterPolicies(policySource, []*policy.Policy{})
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
