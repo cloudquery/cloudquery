@@ -2,6 +2,7 @@ package policy
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/hashicorp/hcl/v2"
@@ -84,7 +85,19 @@ func DecodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnos
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return decodePolicyContent(b.Labels, content, ctx, b.TypeRange.Ptr())
+
+	// check if there is a slash within policy name
+	if strings.Contains(b.Labels[0], "/") {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  "Slash character in policy label",
+			Detail:   "Policy label (name) should not contain forward slashes",
+			Subject:  &b.LabelRanges[0],
+		})
+	}
+
+	p, next := decodePolicyContent(b.Labels, content, ctx, b.TypeRange.Ptr())
+	return p, append(diags, next...)
 }
 
 func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.EvalContext, r *hcl.Range) (*Policy, hcl.Diagnostics) {
@@ -167,6 +180,16 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			diags = append(diags, innerDiags...)
 			p.Policies = append(p.Policies, inner)
 		case "check":
+			// check if there is a slash within check name
+			if strings.Contains(block.Labels[0], "/") {
+				diags = append(diags, &hcl.Diagnostic{
+					Severity: hcl.DiagError,
+					Summary:  "Slash character in check label",
+					Detail:   "Check label (name) should not contain forward slashes",
+					Subject:  &block.LabelRanges[0],
+				})
+			}
+
 			var query Check
 			query.Name = block.Labels[0]
 			diags = append(diags, gohcl.DecodeBody(block.Body, ctx, &query)...)
@@ -190,9 +213,6 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 			diags = append(diags, gohcl.DecodeBody(block.Body, ctx, &view)...)
 			p.Views = append(p.Views, &view)
 		}
-	}
-	if diags.HasErrors() {
-		return nil, diags
 	}
 	return p, diags
 }

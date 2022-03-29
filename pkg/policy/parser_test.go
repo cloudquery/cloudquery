@@ -96,6 +96,21 @@ const (
 				type = "manual"
 			}
 		}`
+
+	testInvalidPolicySlash = `
+		policy "po/licy" {
+			check "sub-level-query" {
+				query = "SELECT * from test.subquery"
+				type = "manual"
+			}
+		}`
+	testInvalidCheckSlash = `
+		policy "policy" {
+			check "sub/level-query" {
+				query = "SELECT * from test.subquery"
+				type = "manual"
+			}
+		}`
 )
 
 func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
@@ -142,6 +157,10 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			name:      "multiple configuration blocks",
 			policyHCL: testPolicyMultipleConfigurationBlocks,
+			expected: &Policy{
+				Name:   "test_policy",
+				Config: &Configuration{},
+			},
 			wantErr:   true,
 			errString: "Duplicate block",
 		},
@@ -172,6 +191,16 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			name:      "query with invalid type",
 			policyHCL: testPolicyInvalidQueryType,
+			expected: &Policy{
+				Name: "test_policy",
+				Checks: []*Check{
+					{
+						Name:  "first",
+						Type:  "invalid",
+						Query: "query1",
+					},
+				},
+			},
 			wantErr:   true,
 			errString: "Invalid query type",
 		},
@@ -220,6 +249,38 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 					},
 				},
 			},
+		},
+		{
+			name:      "policy with slash in the label",
+			policyHCL: testInvalidPolicySlash,
+			expected: &Policy{
+				Name: "po/licy",
+				Checks: []*Check{
+					{
+						Name:  "sub-level-query",
+						Query: "SELECT * from test.subquery",
+						Type:  "manual",
+					},
+				},
+			},
+			wantErr:   true,
+			errString: "Slash character in policy label",
+		},
+		{
+			name:      "check with slash in the label",
+			policyHCL: testInvalidCheckSlash,
+			expected: &Policy{
+				Name: "policy",
+				Checks: []*Check{
+					{
+						Name:  "sub/level-query",
+						Query: "SELECT * from test.subquery",
+						Type:  "manual",
+					},
+				},
+			},
+			wantErr:   true,
+			errString: "Slash character in check label",
 		},
 	}
 	for _, tt := range tests {

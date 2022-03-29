@@ -808,14 +808,22 @@ func loadConfig(file string) (*config.Config, bool) {
 	if diags != nil {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
+			c := ui.ColorInfo
+			switch d.Severity {
+			case hcl.DiagError:
+				c = ui.ColorError
+			case hcl.DiagWarning:
+				c = ui.ColorWarning
+			}
 			if d.Subject == nil {
-				ui.ColorizedOutput(ui.ColorError, "❌ %s; %s\n", d.Summary, d.Detail)
+				ui.ColorizedOutput(c, "❌ %s; %s\n", d.Summary, d.Detail)
 				continue
 			}
-
-			ui.ColorizedOutput(ui.ColorError, "❌ %s; %s [%s]\n", d.Summary, d.Detail, d.Subject.String())
+			ui.ColorizedOutput(c, "❌ %s; %s [%s]\n", d.Summary, d.Detail, d.Subject.String())
 		}
-		return nil, false
+		if diags.HasErrors() {
+			return nil, false
+		}
 	}
 	return cfg, true
 }
