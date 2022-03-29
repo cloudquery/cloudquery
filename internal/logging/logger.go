@@ -61,7 +61,7 @@ func Configure(config Config) zerolog.Logger {
 			if console == nil {
 				console = os.Stderr
 			}
-			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel, Out: console})
+			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel, Out: console, NoColor: config.ConsoleNoColor})
 		}
 	}
 
