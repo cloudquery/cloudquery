@@ -6,41 +6,41 @@ ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets" ADD COLUMN IF NOT 
 ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets" ADD COLUMN IF NOT EXISTS "private_endpoints" jsonb;
 
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "windows_configuration_patch_settings_assessment_mode" text;
+    ADD COLUMN IF NOT EXISTS "windows_configuration_patch_settings_assessment_mode" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "linux_configuration_patch_settings_assessment_mode" text;
+    ADD COLUMN IF NOT EXISTS "linux_configuration_patch_settings_assessment_mode" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "network_profile_network_api_version" text;
+    ADD COLUMN IF NOT EXISTS "network_profile_network_api_version" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "network_profile_network_interface_configurations" jsonb;
+    ADD COLUMN IF NOT EXISTS "network_profile_network_interface_configurations" jsonb;
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "scheduled_events_profile" jsonb;
+    ADD COLUMN IF NOT EXISTS "scheduled_events_profile" jsonb;
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    ADD COLUMN "user_data" text;
+    ADD COLUMN IF NOT EXISTS "user_data" text;
 
 
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "virtual_machine_extension_properties";
+    DROP COLUMN IF EXISTS "virtual_machine_extension_properties";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "force_update_tag" text;
+    ADD COLUMN IF NOT EXISTS "force_update_tag" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "publisher" text;
+    ADD COLUMN IF NOT EXISTS "publisher" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "type_handler_version" text;
+    ADD COLUMN IF NOT EXISTS "type_handler_version" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "auto_upgrade_minor_version" boolean;
+    ADD COLUMN IF NOT EXISTS "auto_upgrade_minor_version" boolean;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "enable_automatic_upgrade" boolean;
+    ADD COLUMN IF NOT EXISTS "enable_automatic_upgrade" boolean;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "settings" jsonb;
+    ADD COLUMN IF NOT EXISTS "settings" jsonb;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "protected_settings" jsonb;
+    ADD COLUMN IF NOT EXISTS "protected_settings" jsonb;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "provisioning_state" text;
+    ADD COLUMN IF NOT EXISTS "provisioning_state" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "extension_type" text;
+    ADD COLUMN IF NOT EXISTS "extension_type" text;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "instance_view" jsonb;
+    ADD COLUMN IF NOT EXISTS "instance_view" jsonb;
 
 --it was duplicated as a json column of virtual machine
 DROP TABLE IF EXISTS "azure_compute_virtual_machine_network_interfaces";

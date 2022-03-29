@@ -7,41 +7,41 @@ ALTER TABLE IF EXISTS "azure_network_virtual_network_subnets" DROP COLUMN IF EXI
 
 
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "windows_configuration_patch_settings_assessment_mode";
+    DROP COLUMN IF EXISTS "windows_configuration_patch_settings_assessment_mode";
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "linux_configuration_patch_settings_assessment_mode";
+    DROP COLUMN IF EXISTS "linux_configuration_patch_settings_assessment_mode";
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "network_profile_network_api_version";
+    DROP COLUMN IF EXISTS "network_profile_network_api_version";
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "network_profile_network_interface_configurations";
+    DROP COLUMN IF EXISTS "network_profile_network_interface_configurations";
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "scheduled_events_profile";
+    DROP COLUMN IF EXISTS "scheduled_events_profile";
 ALTER TABLE IF EXISTS azure_compute_virtual_machines
-    DROP COLUMN "user_data";
+    DROP COLUMN IF EXISTS "user_data";
 
 
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    ADD COLUMN "virtual_machine_extension_properties" jsonb;
+    ADD COLUMN IF NOT EXISTS "virtual_machine_extension_properties" jsonb;
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "force_update_tag";
+    DROP COLUMN IF EXISTS "force_update_tag";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "publisher";
+    DROP COLUMN IF EXISTS "publisher";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "type_handler_version";
+    DROP COLUMN IF EXISTS "type_handler_version";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "auto_upgrade_minor_version";
+    DROP COLUMN IF EXISTS "auto_upgrade_minor_version";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "enable_automatic_upgrade";
+    DROP COLUMN IF EXISTS "enable_automatic_upgrade";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "settings";
+    DROP COLUMN IF EXISTS "settings";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "protected_settings";
+    DROP COLUMN IF EXISTS "protected_settings";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "provisioning_state";
+    DROP COLUMN IF EXISTS "provisioning_state";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "extension_type";
+    DROP COLUMN IF EXISTS "extension_type";
 ALTER TABLE IF EXISTS azure_compute_virtual_machine_resources
-    DROP COLUMN "instance_view";
+    DROP COLUMN IF EXISTS "instance_view";
 
 
 CREATE TABLE IF NOT EXISTS "azure_compute_virtual_machine_network_interfaces"
