@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -29,7 +30,15 @@ func IsTerminal() bool {
 	return isatty.IsTerminal(os.Stdout.Fd()) && term.IsTerminal(int(os.Stdout.Fd()))
 }
 
+func Colorize(c *color.Color, noColor bool, msg string, values ...interface{}) string {
+	if noColor {
+		return fmt.Sprintf(msg, values...)
+	}
+	return c.Sprintf(msg, values...)
+}
+
 var (
+	ColorTrace        = color.New(color.FgMagenta, color.Bold)
 	ColorDebug        = color.New(color.FgWhite, color.Faint)
 	ColorHeader       = color.New(color.Bold)
 	ColorInfo         = color.New()
