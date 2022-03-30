@@ -15,7 +15,7 @@ cloudquery init aws
 
 CloudQuery needs to be authenticated with your AWS account in order to fetch information about your cloud setup. 
 CloudQuery requires only *read* permissions (we will never make any changes to your cloud setup), 
-so, following the priniciple of least privilege, it's recommended to grant it read-only permissions.
+so, following the principle of least privilege, it's recommended to grant it read-only permissions.
 
 There are multiple ways to authenticate with AWS, and CloudQuery respects the AWS credential provider chain. This means that CloudQuery will follow the following priorities when attempting to authenticate:
 
@@ -43,7 +43,7 @@ export AWS_SESSION_TOKEN={Your AWS session token}
 ### Shared Configuration files
 
 CloudQuery can use credentials from your `credentials` and `config` files in the `.aws` directory in your home folder. 
-The contents of these files are practically interchangable, but CloudQuery will prioritize credentials in the `credentials` file.
+The contents of these files are practically interchangeable, but CloudQuery will prioritize credentials in the `credentials` file.
 
 For information about obtaining credentials, see the 
 [AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys). 
