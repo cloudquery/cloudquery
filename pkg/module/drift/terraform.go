@@ -103,9 +103,9 @@ func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist 
 		elems = append(elems, root)
 	}
 
-	ret := make([]*Resource, len(elems))
+	ret := make([]*Resource, 0, len(elems))
 
-	for elIdx, el := range elems {
+	for _, el := range elems {
 		if !el.IsObject() {
 			panic("invalid array element: not an object: " + el.Type.String())
 		}
@@ -123,24 +123,44 @@ func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist 
 			return v.Value(), v.Exists()
 		}
 
-		idVals := make([]string, len(identifiers))
+		idVals := make([][]string, len(identifiers)) // identifiers -> [list of possible values]
+		numResources := 1
 		for i, idName := range identifiers {
 			v, _ := getAttributes(idName)
-			v = parseTerraformAttribute(v, alist.TypeOf(idName))
-			idVals[i] = efaceToString(v)
+			var (
+				vv []interface{}
+				ok bool
+			)
+			if vv, ok = v.([]interface{}); !ok {
+				vv = []interface{}{v}
+			}
+			for j := range vv {
+				v := parseTerraformAttribute(vv[j], alist.TypeOf(idName))
+				idVals[i] = append(idVals[i], efaceToString(v))
+			}
+			numResources *= len(vv)
 		}
 
-		res := &Resource{
-			ID: strings.Join(idVals, idSeparator),
-		}
-		res.Attributes = make([]interface{}, len(alist))
+		attributes := make([]interface{}, len(alist))
 		for i := range alist {
 			if val, ok := getAttributes(alist[i].TFName); ok {
-				res.Attributes[i] = parseTerraformAttribute(val, alist[i].Type)
+				attributes[i] = parseTerraformAttribute(val, alist[i].Type)
 			}
 		}
 
-		ret[elIdx] = res
+		combinations := make([][]string, 0, numResources)
+		for i := range idVals { // iterate each identifier, pick one from each element (which is the array of possible values) and repeat
+			combinations = MatrixProduct(combinations, idVals[i])
+		}
+
+		for _, idVals := range combinations {
+			res := &Resource{
+				ID:         strings.Join(idVals, idSeparator),
+				Attributes: attributes,
+			}
+			ret = append(ret, res)
+		}
+
 	}
 
 	return ret
