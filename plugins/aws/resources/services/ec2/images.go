@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -282,7 +281,6 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := c.Services().EC2
 	response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}}, func(options *ec2.Options) {
 		options.Region = c.Region
-		options.EndpointResolver = ec2.EndpointResolverFromURL(fmt.Sprintf("https://ec2.%s.amazonaws.com", c.Region))
 	})
 	if err != nil {
 		return diag.WrapError(err)
@@ -322,7 +320,6 @@ func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta
 	}
 	result, err := svc.DescribeImageAttribute(ctx, &opts, func(options *ec2.Options) {
 		options.Region = cl.Region
-		options.EndpointResolver = ec2.EndpointResolverFromURL(fmt.Sprintf("https://ec2.%s.amazonaws.com", cl.Region))
 	})
 	if err != nil {
 		return diag.WrapError(err)
