@@ -506,4 +506,14 @@ func registerGJsonHelpers() {
 			return strconv.FormatBool(bb)
 		})
 	}
+	if !gjson.ModifierExists("if", nil) {
+		// if given statement equals something, return the arg. otherwise return the statement.
+		gjson.AddModifier("if", func(body, arg string) string {
+			argParts := strings.SplitN(arg, ",", 2)
+			if body != strconv.Quote(argParts[0]) {
+				return body
+			}
+			return strconv.Quote(argParts[1])
+		})
+	}
 }
