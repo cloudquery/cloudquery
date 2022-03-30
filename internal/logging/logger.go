@@ -55,13 +55,13 @@ func Configure(config Config) zerolog.Logger {
 
 	if config.ConsoleLoggingEnabled || !ui.IsTerminal() {
 		if config.EncodeLogsAsJson {
-			writers = append(writers, os.Stdout)
+			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel(config.ConsoleNoColor), Out: os.Stdout, NoColor: config.ConsoleNoColor})
 		} else {
 			console := config.console
 			if console == nil {
 				console = os.Stderr
 			}
-			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel, Out: console})
+			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel(config.ConsoleNoColor), Out: console, NoColor: config.ConsoleNoColor})
 		}
 	}
 
@@ -113,30 +113,32 @@ func newRollingFile(config Config) io.Writer {
 	}
 }
 
-// formatLevel is zerolog.Formatter that turns a level value into a string.
-func formatLevel(i interface{}) string {
-	if level, ok := i.(string); ok {
-		switch level {
-		case "trace":
-			return ui.ColorDebug.Sprint("TRC")
-		case "debug":
-			return ui.ColorDebug.Sprint("DBG")
-		case "info":
-			return ui.ColorInfo.Sprint("INF")
-		case "warn":
-			return ui.ColorWarning.Sprint("WRN")
-		case "error":
-			return ui.ColorError.Sprint("ERR")
-		case "fatal":
-			return ui.ColorError.Sprint("FTL")
-		case "panic":
-			return ui.ColorError.Sprint("PNC")
-		default:
-			return ui.ColorInfo.Sprint("???")
+func formatLevel(noColor bool) func(i interface{}) string {
+	// formatLevel is zerolog.Formatter that turns a level value into a string.
+	return func(i interface{}) string {
+		if level, ok := i.(string); ok {
+			switch level {
+			case "trace":
+				return ui.Colorize(ui.ColorTrace, noColor, "TRC")
+			case "debug":
+				return ui.Colorize(ui.ColorDebug, noColor, "DBG")
+			case "info":
+				return ui.Colorize(ui.ColorInfo, noColor, "INF")
+			case "warn":
+				return ui.Colorize(ui.ColorWarning, noColor, "WRN")
+			case "error":
+				return ui.Colorize(ui.ColorError, noColor, "ERR")
+			case "fatal":
+				return ui.Colorize(ui.ColorError, noColor, "FTL")
+			case "panic":
+				return ui.Colorize(ui.ColorErrorBold, noColor, "PNC")
+			default:
+				return ui.Colorize(ui.ColorInfo, noColor, "???")
+			}
 		}
+		if i == nil {
+			return ui.Colorize(ui.ColorInfo, noColor, "???")
+		}
+		return strings.ToUpper(fmt.Sprintf("%s", i))[0:3]
 	}
-	if i == nil {
-		return ui.ColorInfo.Sprint("???")
-	}
-	return strings.ToUpper(fmt.Sprintf("%s", i))[0:3]
 }
