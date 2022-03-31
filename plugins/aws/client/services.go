@@ -53,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 )
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_acm.go . ACMClient
@@ -588,4 +589,10 @@ type IOTClient interface {
 	DescribeJob(ctx context.Context, params *iot.DescribeJobInput, optFns ...func(*iot.Options)) (*iot.DescribeJobOutput, error)
 	GetTopicRule(ctx context.Context, params *iot.GetTopicRuleInput, optFns ...func(*iot.Options)) (*iot.GetTopicRuleOutput, error)
 	ListTopicRules(ctx context.Context, params *iot.ListTopicRulesInput, optFns ...func(*iot.Options)) (*iot.ListTopicRulesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_workspaces.go . WorkspacesClient
+type WorkspacesClient interface {
+	DescribeWorkspaces(ctx context.Context, params *workspaces.DescribeWorkspacesInput, optFns ...func(*workspaces.Options)) (*workspaces.DescribeWorkspacesOutput, error)
+	DescribeWorkspaceDirectories(ctx context.Context, params *workspaces.DescribeWorkspaceDirectoriesInput, optFns ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceDirectoriesOutput, error)
 }
