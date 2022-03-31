@@ -52,3 +52,24 @@ module "redshift" {
   wlm_json_configuration = "[]"
   #  redshift_subnet_group_name = module.vpc.redshift_subnet_group
 }
+
+resource "aws_sns_topic" "sns_redshift" {
+  name = "${var.prefix}-redshift-events"
+}
+
+resource "aws_redshift_event_subscription" "default" {
+  name          = "${var.prefix}-redshift-event-sub"
+  sns_topic_arn = aws_sns_topic.sns_redshift.arn
+
+  source_type = "cluster"
+  source_ids  = [module.redshift.redshift_cluster_id]
+
+  severity = "INFO"
+
+  event_categories = [
+    "configuration",
+    "management",
+    "monitoring",
+    "security",
+  ]
+}
