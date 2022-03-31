@@ -191,6 +191,7 @@ const (
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"
+	WorkspacesService           AWSService = "workspaces"
 )
 
 func resolveARN(service AWSService, resourceID func(resource *schema.Resource) ([]string, error), useRegion, useAccountID bool) schema.ColumnResolver {

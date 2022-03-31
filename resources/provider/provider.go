@@ -55,6 +55,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/ssm"
 	"github.com/cloudquery/cq-provider-aws/resources/services/waf"
 	"github.com/cloudquery/cq-provider-aws/resources/services/wafv2"
+	"github.com/cloudquery/cq-provider-aws/resources/services/workspaces"
 )
 
 var (
@@ -207,6 +208,8 @@ func Provider() *provider.Provider {
 			"wafv2.managed_rule_groups":             wafv2.Wafv2ManagedRuleGroups(),
 			"wafv2.rule_groups":                     wafv2.Wafv2RuleGroups(),
 			"wafv2.web_acls":                        wafv2.Wafv2WebAcls(),
+			"workspaces.workspaces":                 workspaces.Workspaces(),
+			"workspaces.directories":                workspaces.Directories(),
 			//"iot.security_profiles": 				 iot.IotSecurityProfiles(), //TODO disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
 		},
 		Config: func() provider.Config {

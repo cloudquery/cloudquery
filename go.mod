@@ -58,6 +58,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.4.1
 	github.com/aws/aws-sdk-go-v2/service/waf v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
+	github.com/aws/aws-sdk-go-v2/service/workspaces v1.16.0
 	github.com/aws/smithy-go v1.11.1
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/cq-gen v0.0.3
