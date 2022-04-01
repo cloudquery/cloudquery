@@ -819,7 +819,7 @@ func resolveRedshiftClusterTags(ctx context.Context, meta schema.ClientMeta, res
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Cluster)
@@ -836,7 +836,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, response)
+	return diag.WrapError(resource.Set(c.Name, response))
 }
 func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)

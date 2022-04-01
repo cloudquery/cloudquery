@@ -182,6 +182,7 @@ func Provider() *provider.Provider {
 			"rds.db_subnet_groups":                  rds.RdsSubnetGroups(),
 			"rds.event_subscriptions":               rds.RdsEventSubscriptions(),
 			"rds.instances":                         rds.RdsInstances(),
+			"redshift.event_subscriptions":          redshift.EventSubscriptions(),
 			"redshift.clusters":                     redshift.RedshiftClusters(),
 			"redshift.subnet_groups":                redshift.RedshiftSubnetGroups(),
 			"route53.domains":                       route53.Route53Domains(),
