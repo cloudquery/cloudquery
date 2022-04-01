@@ -26,7 +26,7 @@ type Manager struct {
 }
 
 func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string, updater ui.Progress) (*Manager, error) {
-	// primarily by the SDK's acceptance testing framework.
+	// primarily used by the SDK's acceptance testing framework.
 	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
 	if err != nil {
 		return nil, err
@@ -148,4 +148,14 @@ func (m *Manager) createProvider(details *registry.ProviderDetails, alias string
 	}
 	m.clients[mPlugin.Name()] = mPlugin
 	return mPlugin, nil
+}
+
+func (m *Manager) ClosePlugin(p Plugin) {
+	if p.Version() == Unmanaged {
+		log.Warn().Str("provider", p.Name()).Msg("not closing unmanaged provider")
+		return
+	}
+	if err := m.KillProvider(p.Name()); err != nil {
+		log.Warn().Str("provider", p.Name()).Msg("failed to kill provider")
+	}
 }

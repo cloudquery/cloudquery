@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
@@ -96,9 +97,21 @@ var (
 			return c.DownloadProviders(ctx)
 		}),
 	}
+
+	providerRemoveStaleHelpMsg = "Remove stale resources from one or more providers in database"
+	providerRemoveStaleCmd     = &cobra.Command{
+		Use:   "purge [provider]",
+		Short: providerRemoveStaleHelpMsg,
+		Long:  providerRemoveStaleHelpMsg,
+		Args:  cobra.MaximumNArgs(1),
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+			return c.RemoveStaleData(ctx, time.Hour*24, args)
+		}),
+	}
 )
 
 func init() {
-	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd)
+	providerRemoveStaleCmd.Flags().Duration("last-update", time.Hour*24, "")
+	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
 	rootCmd.AddCommand(providerCmd)
 }

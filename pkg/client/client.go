@@ -587,12 +587,6 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	return response, nil
 }
 
-type ProviderSchema struct {
-	*cqproto.GetProviderSchemaResponse
-
-	ProtocolVersion int
-}
-
 func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
@@ -609,13 +603,12 @@ func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*P
 		}
 	}()
 
-	schema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	providerSchema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
 		return nil, err
 	}
-
 	return &ProviderSchema{
-		GetProviderSchemaResponse: schema,
+		GetProviderSchemaResponse: providerSchema,
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),
 	}, nil
 }

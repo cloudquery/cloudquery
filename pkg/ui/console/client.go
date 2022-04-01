@@ -539,6 +539,16 @@ func (c Client) BuildAllProviderTables(ctx context.Context) error {
 	return nil
 }
 
+func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, providers []string) error {
+
+	_, diags := client.RemoveStaleData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.RemoveStaleDataOptions{})
+
+	if diags != nil {
+		printDiagnostics("", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	}
+	return diags
+}
+
 func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
