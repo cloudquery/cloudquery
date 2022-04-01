@@ -41,7 +41,8 @@ const (
 	iacTerraform      iacProvider = "terraform"
 	iacCloudformation iacProvider = "cloudformation"
 
-	protoVersion = 1
+	compatibleProtoVersion = 1
+	protoVersion           = 2
 )
 
 func (i iacProvider) String() string {
@@ -66,7 +67,7 @@ func (d *Drift) ID() string {
 }
 
 func (d *Drift) ProtocolVersions() []uint32 {
-	return []uint32{protoVersion}
+	return []uint32{protoVersion, compatibleProtoVersion}
 }
 
 func (d *Drift) Configure(ctx context.Context, info module.Info, runParams module.ModuleRunParams) error {
@@ -134,7 +135,7 @@ drift "drift-example" {
 }
 
 func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
-	if version != protoVersion {
+	if version != protoVersion && version != compatibleProtoVersion {
 		return nil, fmt.Errorf("unsupported module protocol version %d", version)
 	}
 

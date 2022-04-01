@@ -50,6 +50,8 @@ type Attribute struct {
 	Type      schema.ValueType // Type in DB as reported by provider
 	TFName    string           // TF attribute name
 	Unordered bool             // True if unordered slice
+
+	CloudMod func(interface{}) interface{} // Modifier function after fetching the SQL
 }
 
 type AttrList []Attribute
@@ -187,6 +189,8 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 }
 
 func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
+	registerGJsonHelpers()
+
 	res := &Result{
 		Different: nil,
 		Equal:     nil,
@@ -207,14 +211,13 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 	var tagExp exp.LiteralExpression
 
 	for i, a := range resData.Attributes {
-		alist[i] = Attribute{
-			ID:     resData.Attributes[i],
-			Type:   cloudTable.Column(a).Type,
-			TFName: a,
-		}
+		tfName, cloudMod := getTFNameFromMap(a, iacData.attributeMap)
 
-		if mapped := iacData.attributeMap[a]; mapped != "" {
-			alist[i].TFName = mapped
+		alist[i] = Attribute{
+			ID:       resData.Attributes[i],
+			Type:     cloudTable.Column(a).Type,
+			TFName:   tfName,
+			CloudMod: cloudMod,
 		}
 
 		switch alist[i].Type {
@@ -309,7 +312,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 			if !ok {
 				return
 			}
-			if EqualAttributes(tfAttr, r.Attributes, alist) {
+			if EqualAttributes(r.Attributes, tfAttr, alist) {
 				res.DeepEqual = append(res.DeepEqual, r)
 			} else {
 				res.Different = append(res.Different, r)
@@ -334,6 +337,14 @@ func RenderDriftTable(resName string, resources map[string]*ResourceConfig, clou
 		table.SetHeader([]string{strings.ToUpper(cloudName) + " EXPR", strings.ToUpper(cloudName) + " VAL", "TERRAFORM VAL", "TERRAFORM EXPR"})
 		table.SetBorder(true)
 		return table
+	}
+
+	for i := range differentIDs {
+		for j := range differentIDs[i].Attributes {
+			if alist[j].CloudMod != nil {
+				differentIDs[i].Attributes[j] = alist[j].CloudMod(differentIDs[i].Attributes[j])
+			}
+		}
 	}
 
 	tfMap, cloudMap := tfRes.Map(), differentIDs.Map()
@@ -382,20 +393,32 @@ func RenderDriftTable(resName string, resources map[string]*ResourceConfig, clou
 	return nil
 }
 
+// EqualAttributes compares a and b slice values according to given attribute list. For a, alist.CloudMod is called (if non-nil) before proceeding with the comparison.
 func EqualAttributes(a []interface{}, b []interface{}, alist AttrList) bool {
 	if len(a) != len(b) {
 		return false
 	}
 
 	for i := range a {
+		aval := a[i]
+		if alist[i].CloudMod != nil {
+			aval = alist[i].CloudMod(aval)
+		}
+
 		if alist[i].Unordered {
-			if !EqualSets(a[i].([]interface{}), b[i].([]interface{})) {
+			aSlc, ok1 := aval.([]interface{})
+			bSlc, ok2 := b[i].([]interface{})
+			if !ok1 || !ok2 {
+				// not slices
+				return false
+			}
+			if !EqualSets(aSlc, bSlc) {
 				return false
 			}
 			continue
 		}
 
-		if !equals(a[i], b[i]) {
+		if !equals(aval, b[i]) {
 			return false
 		}
 	}
@@ -536,4 +559,37 @@ func registerGJsonHelpers() {
 			return strconv.Quote(argParts[1])
 		})
 	}
+	if !gjson.ModifierExists("split", nil) {
+		// split given string into an array using the given separator
+		gjson.AddModifier("split", func(body, arg string) string {
+			var v string
+			if err := json.Unmarshal([]byte(body), &v); err != nil {
+				return "" // invalid input
+			}
+			vSplit := strings.Split(v, arg)
+			b, _ := json.Marshal(vSplit)
+			return string(b)
+		})
+	}
+}
+
+// getTFNameFromMap returns the terraform attribute name for the given provider attr, by looking up the attributeMap. If not found, returns the given attr itself.
+func getTFNameFromMap(attr string, attributeMap map[string]string) (string, func(interface{}) interface{}) {
+	if mapped := attributeMap[attr]; mapped != "" {
+		return mapped, nil
+	}
+	for k, tfAttr := range attributeMap {
+		if strings.HasPrefix(k, attr+"|") {
+			return tfAttr, func(input interface{}) interface{} {
+				j, _ := json.Marshal(map[string]interface{}{
+					attr: input,
+				})
+				gj := gjson.ParseBytes(j)
+				res := gj.Get(k)
+				return res.Value()
+			}
+		}
+	}
+
+	return attr, nil
 }
