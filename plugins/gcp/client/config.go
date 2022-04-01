@@ -20,6 +20,7 @@ type Config struct {
 	MaxDelay          int     `hcl:"backoff_max_delay,optional"`
 	Jitter            float64 `hcl:"backoff_jitter,optional"`
 	MinConnectTimeout int     `hcl:"backoff_min_connect_timeout,optional"`
+	MaxRetries        int     `hcl:"max_retries,optional" default:"3"`
 }
 
 func (c Config) Example() string {
@@ -36,6 +37,8 @@ func (c Config) Example() string {
 				// backoff_max_delay = 120
 				// backoff_jitter = 0.2
 				// backoff_min_connect_timeout = 0
+				// Optional. Max amount of retries for retrier, defaults to max 3 retries.
+				// max_retries = 3
 			}`
 }
 
@@ -52,13 +55,15 @@ func (c Config) ClientOptions() []option.ClientOption {
 }
 
 type BackoffSettings struct {
-	Gax     gax.Backoff
-	Backoff backoff.Config
+	Gax        gax.Backoff
+	Backoff    backoff.Config
+	MaxRetries int
 }
 
 func (c Config) Backoff() BackoffSettings {
 	b := BackoffSettings{
-		Backoff: backoff.DefaultConfig,
+		Backoff:    backoff.DefaultConfig,
+		MaxRetries: 3,
 	}
 	if c.BaseDelay >= 0 {
 		b.Backoff.BaseDelay = time.Duration(c.BaseDelay) * time.Second
@@ -71,6 +76,9 @@ func (c Config) Backoff() BackoffSettings {
 	}
 	if c.Jitter != 0 {
 		b.Backoff.Jitter = c.Jitter
+	}
+	if c.MaxRetries != 0 {
+		b.MaxRetries = c.MaxRetries
 	}
 
 	b.Gax.Initial = b.Backoff.BaseDelay

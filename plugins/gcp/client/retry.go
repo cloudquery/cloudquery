@@ -3,46 +3,41 @@ package client
 import (
 	"context"
 	"errors"
+	"net/http"
 	"reflect"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/googleapis/gax-go/v2"
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/api/googleapi"
 )
 
-func shouldRetryFunc(log hclog.Logger) func(err error) bool {
+func shouldRetryFunc(log hclog.Logger, maxRetries int) func(err error) bool {
+	totalRetries := 0
 	return func(err error) bool {
-		if IgnoreErrorHandler(err) {
-			reason := ""
-			var gerr *googleapi.Error
-			if errors.As(err, &gerr) && len(gerr.Errors) > 0 {
-				reason = gerr.Errors[0].Reason
-			}
-
-			log.Debug("retrier not retrying: ignore error", "err", err, "err_reason", reason)
+		totalRetries += 1
+		if totalRetries > maxRetries {
+			log.Debug("retrier not retrying, reached max retries", "err", err, "max_retries", maxRetries)
 			return false
+		}
+		var gerr *googleapi.Error
+		if ok := errors.As(err, &gerr); ok {
+			if gerr.Code == http.StatusForbidden {
+				var reason string
+				if len(gerr.Errors) > 0 {
+					reason = gerr.Errors[0].Reason
+				}
+				log.Debug("retrier not retrying: ignore error", "err", err, "err_reason", reason, "total_retries", totalRetries, "max_retries", maxRetries)
+				return false
+			}
 		}
 
 		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-			log.Debug("retrier not retrying", "err", err)
+			log.Debug("retrier not retrying", "err", err, "total_retries", totalRetries, "max_retries", maxRetries)
 			return false
 		}
 
-		log.Debug("retrying error", "err", err)
+		log.Debug("retrying api call", "err", err, "total_retries", totalRetries, "max_retries", maxRetries)
 		return true
-	}
-}
-
-// RetryingResolver runs the TableResolver with retry. Not very good as it could cause multiple resources with multi-page retries (retrying after fetching some resources)
-func RetryingResolver(f schema.TableResolver) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-		cl := meta.(*Client)
-		return gax.Invoke(ctx, func(ctx context.Context, _ gax.CallSettings) error {
-			return f(ctx, meta, parent, res)
-		}, gax.WithRetry(func() gax.Retryer {
-			return gax.OnErrorFunc(cl.backoff.Gax, shouldRetryFunc(cl.logger))
-		}))
 	}
 }
 
@@ -58,7 +53,7 @@ func (c *Client) RetryingDo(ctx context.Context, doerIface interface{}, opts ...
 		val, err = doer.Do(opts...)
 		return err
 	}, gax.WithRetry(func() gax.Retryer {
-		return gax.OnErrorFunc(c.backoff.Gax, shouldRetryFunc(c.logger))
+		return gax.OnErrorFunc(c.backoff.Gax, shouldRetryFunc(c.logger, c.backoff.MaxRetries))
 	}))
 	return val, err
 }
