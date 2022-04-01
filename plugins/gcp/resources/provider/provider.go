@@ -70,6 +70,7 @@ func Provider() *provider.Provider {
 			"resource_manager.projects":    resource_manager.ResourceManagerProjects(),
 			"resource_manager.folders":     resource_manager.ResourceManagerFolders(),
 			"storage.buckets":              storage.StorageBuckets(),
+			"storage.metrics":              storage.Metrics(),
 			"sql.instances":                sql.SQLInstances(),
 			"domains.registrations":        domains.DomainsRegistration(),
 			"bigquery.datasets":            bigquery.BigqueryDatasets(),
