@@ -147,8 +147,16 @@ func (rs *Results) process() {
 		if len(ids) == 0 {
 			return
 		}
+		typeParts := strings.SplitN(r.ResourceType, "#", 2)
+		for i, c := range *dst {
+			if c.Provider == r.Provider && c.ResourceType == typeParts[0] {
+				(*dst)[i].ResourceIDs = append((*dst)[i].ResourceIDs, ids...)
+				return
+			}
+		}
+
 		*dst = append(*dst, combined{
-			ResourceType: r.ResourceType,
+			ResourceType: typeParts[0],
 			Provider:     r.Provider,
 			ResourceIDs:  ids,
 		})
@@ -216,15 +224,14 @@ func (rs *Results) process() {
 		resLines := make([]string, 0, l)
 		resTotal := 0
 		for _, res := range data.list {
-			resTotal += len(res.ResourceIDs)
+			ids := UniqueSort(res.ResourceIDs)
+			resTotal += len(ids)
 			if data.hideListing {
 				continue
 			}
 
-			sort.Strings(res.ResourceIDs)
-
 			resLines = append(resLines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
-			for _, id := range res.ResourceIDs {
+			for _, id := range ids {
 				resLines = append(resLines, fmt.Sprintf("    - %s", id))
 			}
 		}
@@ -250,7 +257,7 @@ func (rs *Results) process() {
 	// one of Equal and DeepEqual is supposed to be 0 depending on deep flag
 	for _, l := range [][]combined{combo.Equal, combo.DeepEqual, combo.Different} {
 		for _, z := range l {
-			rs.Covered += len(z.ResourceIDs)
+			rs.Covered += len(UniqueSort(z.ResourceIDs))
 		}
 	}
 
@@ -284,4 +291,28 @@ func (rs *Results) process() {
 	}
 
 	rs.Text = strings.Join(lines, "\n")
+}
+
+// UniqueSort sorts input alphabetically and returns only non-duplicate entries
+func UniqueSort(input []string) []string {
+	if input == nil {
+		return nil
+	}
+
+	sort.Strings(input)
+	ret := make([]string, 0, len(input))
+	for i := range input {
+		if i == len(input)-1 { // always append last element
+			ret = append(ret, input[i])
+			continue
+		}
+
+		if input[i] == input[i+1] { // skip if it's the same as the next one
+			continue
+		}
+
+		ret = append(ret, input[i])
+	}
+
+	return ret
 }

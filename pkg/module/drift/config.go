@@ -451,17 +451,19 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	checkEnabled := len(cfg.CheckResources) > 0
 
 	for resName, res := range cfg.Resources {
+		resNameParts := strings.SplitN(resName, "#", 2)
+
 		// CheckResources / IgnoreResources broad strokes...
 		if checkEnabled {
 			res.acl.AllowEnabled = true
-			res.acl.Allow = append(cfg.CheckResources.ByType(resName), allChecks...)
+			res.acl.Allow = append(cfg.CheckResources.ByType(resNameParts[0]), allChecks...)
 			if !res.acl.Allow.AllInstances() && !res.acl.Allow.HasTags() {
 				delete(cfg.Resources, resName)
 				continue
 			}
 		}
 
-		res.acl.Ignore = append(cfg.IgnoreResources.ByType(resName), allIgs...)
+		res.acl.Ignore = append(cfg.IgnoreResources.ByType(resNameParts[0]), allIgs...)
 		if res.acl.Ignore.AllInstances() {
 			delete(cfg.Resources, resName)
 			continue
@@ -472,14 +474,14 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  `Specified resource not in provider`,
-				Detail:   fmt.Sprintf("resource %q is not defined by the provider", resName),
+				Detail:   fmt.Sprintf("resource %q is not defined by the provider", resNameParts[0]),
 				Subject:  res.defRange,
 			})
 			continue
 		}
 
 		for k, v := range map[placeholder][]string{
-			placeholderResourceKey:             {resName},
+			placeholderResourceKey:             {resNameParts[0]},
 			placeholderResourceName:            {tbl.Name},
 			placeholderResourceColumnNames:     tbl.NonCQColumns(),
 			placeholderResourceOptsPrimaryKeys: tbl.NonCQPrimaryKeys(),
@@ -506,5 +508,6 @@ func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaRe
 		d.tableMap[prov.Name] = traverseResourceTable(prov.ResourceTables)
 	}
 
-	return d.tableMap[prov.Name][resName]
+	resNameParts := strings.SplitN(resName, "#", 2)
+	return d.tableMap[prov.Name][resNameParts[0]]
 }
