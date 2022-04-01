@@ -385,9 +385,9 @@ func TestExecutor_Execute(t *testing.T) {
 	}
 }
 
-func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.FetchSummary, c *meta_storage.Client) (error, func(t *testing.T)) {
+func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.FetchSummary, c *meta_storage.Client) (func(t *testing.T), error) {
 	if summary == nil {
-		return nil, func(t *testing.T) {}
+		return func(t *testing.T) {}, nil
 	}
 	summary.CqId = uuid.New()
 	summary.FetchId = uuid.New()
@@ -395,14 +395,14 @@ func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.Fet
 	summary.Finish = &finish
 	err := c.SaveFetchSummary(context.Background(), summary)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 
 	// Return conn and tear down func
-	return nil, func(t *testing.T) {
+	return func(t *testing.T) {
 		err = db.Exec(context.Background(), fmt.Sprintf(`DELETE FROM "cloudquery"."fetches" WHERE "id" = '%s';`, summary.FetchId.String()))
 		assert.NoError(t, err)
-	}
+	}, nil
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
@@ -492,7 +492,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			err, clear := setupCheckFetchDatabase(db, tc.f, metaStorage)
+			clear, err := setupCheckFetchDatabase(db, tc.f, metaStorage)
 			assert.NoError(t, err)
 
 			err = executor.checkFetches(context.Background(), &tc.Config)
