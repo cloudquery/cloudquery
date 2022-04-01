@@ -425,6 +425,7 @@ type EksClient interface {
 type RedshiftClient interface {
 	DescribeClusterParameters(ctx context.Context, params *redshift.DescribeClusterParametersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterParametersOutput, error)
 	DescribeClusters(ctx context.Context, params *redshift.DescribeClustersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClustersOutput, error)
+	DescribeClusterSnapshots(ctx context.Context, params *redshift.DescribeClusterSnapshotsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterSnapshotsOutput, error)
 	DescribeClusterSubnetGroups(ctx context.Context, params *redshift.DescribeClusterSubnetGroupsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterSubnetGroupsOutput, error)
 	DescribeEventSubscriptions(ctx context.Context, params *redshift.DescribeEventSubscriptionsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeEventSubscriptionsOutput, error)
 	DescribeLoggingStatus(ctx context.Context, params *redshift.DescribeLoggingStatusInput, optFns ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error)

@@ -787,6 +787,7 @@ func RedshiftClusters() *schema.Table {
 					},
 				},
 			},
+			Snapshots(),
 		},
 	}
 }
