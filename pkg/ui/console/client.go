@@ -65,6 +65,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
 	})
+	if cfg.CloudQuery.Connection == nil {
+		return nil, errors.New("connection configuration is not set")
+	}
 	opts = append(opts, func(c *client.Client) {
 		if ui.IsTerminal() {
 			c.HubProgressUpdater = progressUpdater
