@@ -18,3 +18,54 @@ CREATE TABLE IF NOT EXISTS "aws_redshift_event_subscriptions" (
 	CONSTRAINT aws_redshift_event_subscriptions_pk PRIMARY KEY(account_id,id),
 	UNIQUE(cq_id)
 );
+
+-- Resource: redshift.clusters
+CREATE TABLE IF NOT EXISTS "aws_redshift_snapshots" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"actual_incremental_backup_size" float,
+	"availability_zone" text,
+	"backup_progress" float,
+	"cluster_create_time" timestamp without time zone,
+	"cluster_identifier" text,
+	"cluster_version" text,
+	"current_backup_rate" float,
+	"db_name" text,
+	"elapsed_time" bigint,
+	"encrypted" boolean,
+	"encrypted_with_hsm" boolean,
+	"engine_full_version" text,
+	"enhanced_vpc_routing" boolean,
+	"estimated_seconds_to_completion" bigint,
+	"kms_key_id" text,
+	"maintenance_track_name" text,
+	"manual_snapshot_remaining_days" integer,
+	"manual_snapshot_retention_period" integer,
+	"master_username" text,
+	"node_type" text,
+	"number_of_nodes" integer,
+	"owner_account" text,
+	"port" integer,
+	"restorable_node_types" text[],
+	"snapshot_create_time" timestamp without time zone,
+	"snapshot_identifier" text,
+	"snapshot_retention_start_time" timestamp without time zone,
+	"snapshot_type" text,
+	"source_region" text,
+	"status" text,
+	"total_backup_size_in_mega_bytes" float,
+	"vpc_id" text,
+	"tags" jsonb,
+	CONSTRAINT aws_redshift_snapshots_pk PRIMARY KEY(cluster_identifier,cluster_create_time),
+	UNIQUE(cq_id)
+);
+CREATE TABLE IF NOT EXISTS "aws_redshift_snapshot_accounts_with_restore_access" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"snapshot_cq_id" uuid,
+	"account_alias" text,
+	"account_id" text,
+	CONSTRAINT aws_redshift_snapshot_accounts_with_restore_access_pk PRIMARY KEY(cq_id),
+	UNIQUE(cq_id),
+	FOREIGN KEY (snapshot_cq_id) REFERENCES aws_redshift_snapshots(cq_id) ON DELETE CASCADE
+);
