@@ -423,9 +423,10 @@ type EksClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_redshift.go . RedshiftClient
 type RedshiftClient interface {
+	DescribeClusterParameters(ctx context.Context, params *redshift.DescribeClusterParametersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterParametersOutput, error)
 	DescribeClusters(ctx context.Context, params *redshift.DescribeClustersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClustersOutput, error)
 	DescribeClusterSubnetGroups(ctx context.Context, params *redshift.DescribeClusterSubnetGroupsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterSubnetGroupsOutput, error)
-	DescribeClusterParameters(ctx context.Context, params *redshift.DescribeClusterParametersInput, optFns ...func(*redshift.Options)) (*redshift.DescribeClusterParametersOutput, error)
+	DescribeEventSubscriptions(ctx context.Context, params *redshift.DescribeEventSubscriptionsInput, optFns ...func(*redshift.Options)) (*redshift.DescribeEventSubscriptionsOutput, error)
 	DescribeLoggingStatus(ctx context.Context, params *redshift.DescribeLoggingStatusInput, optFns ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error)
 }
 

@@ -95,6 +95,26 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusters(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusters", reflect.TypeOf((*MockRedshiftClient)(nil).DescribeClusters), varargs...)
 }
 
+// DescribeEventSubscriptions mocks base method.
+func (m *MockRedshiftClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *redshift.DescribeEventSubscriptionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEventSubscriptionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeEventSubscriptions", varargs...)
+	ret0, _ := ret[0].(*redshift.DescribeEventSubscriptionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeEventSubscriptions indicates an expected call of DescribeEventSubscriptions.
+func (mr *MockRedshiftClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEventSubscriptions", reflect.TypeOf((*MockRedshiftClient)(nil).DescribeEventSubscriptions), varargs...)
+}
+
 // DescribeLoggingStatus mocks base method.
 func (m *MockRedshiftClient) DescribeLoggingStatus(arg0 context.Context, arg1 *redshift.DescribeLoggingStatusInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error) {
 	m.ctrl.T.Helper()
