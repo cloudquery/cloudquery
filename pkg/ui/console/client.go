@@ -539,14 +539,31 @@ func (c Client) BuildAllProviderTables(ctx context.Context) error {
 	return nil
 }
 
-func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, providers []string) error {
-
-	_, diags := client.RemoveStaleData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.RemoveStaleDataOptions{})
-
-	if diags != nil {
-		printDiagnostics("", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, dryRun bool, providers []string) error {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
 	}
-	return diags
+	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
+	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.PurgeProviderDataOptions{
+		Providers:  providers,
+		LastUpdate: lastUpdate,
+		DryRun:     dryRun,
+	})
+
+	if dryRun {
+		ui.ColorizedOutput(ui.ColorWarning, "Expected resources to be purged: %d. Use --dry-run=false to purge these resources.\n", result.TotalAffected)
+		for r, t := range result.AffectedResources {
+			ui.ColorizedOutput(ui.ColorWarning, "\t%s: %d resources\n\n", r, t)
+		}
+	}
+
+	if len(diags) > 0 {
+		printDiagnostics("", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+		return diags
+	} else {
+		ui.ColorizedOutput(ui.ColorProgress, "Purge for providers %s was successful\n\n", providers)
+	}
+	return nil
 }
 
 func (c Client) buildProviderTables(ctx context.Context, providerName string) error {

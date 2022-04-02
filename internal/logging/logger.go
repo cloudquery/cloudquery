@@ -77,7 +77,8 @@ func Configure(config Config) zerolog.Logger {
 	}
 
 	logger := zerolog.New(mw).With().Timestamp().Logger()
-
+	// override global logger
+	log.Logger = logger
 	// Default level is info, unless verbose flag is on
 	logger.Level(zerolog.InfoLevel)
 	if config.Verbose {

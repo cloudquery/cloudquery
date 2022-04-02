@@ -98,6 +98,8 @@ var (
 		}),
 	}
 
+	lastUpdate                 time.Duration
+	dryRun                     bool
 	providerRemoveStaleHelpMsg = "Remove stale resources from one or more providers in database"
 	providerRemoveStaleCmd     = &cobra.Command{
 		Use:   "purge [provider]",
@@ -105,13 +107,14 @@ var (
 		Long:  providerRemoveStaleHelpMsg,
 		Args:  cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.RemoveStaleData(ctx, time.Hour*24, args)
+			return c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
 		}),
 	}
 )
 
 func init() {
-	providerRemoveStaleCmd.Flags().Duration("last-update", time.Hour*24, "")
+	providerRemoveStaleCmd.Flags().DurationVar(&lastUpdate, "last-update", time.Hour*1, "")
+	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
 	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
 	rootCmd.AddCommand(providerCmd)
 }
