@@ -540,6 +540,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
@@ -1307,6 +1308,33 @@
         "cur": {
           "regions": {
             "us-east-1": {}
+          }
+        },
+        "data-ats.iot": {
+          "regions": {
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "fips-ca-central-1": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
           }
         },
         "data.iot": {
@@ -4286,6 +4314,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -5103,6 +5132,12 @@
             "aws-cn-global": {}
           }
         },
+        "cloudcontrolapi": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "cloudformation": {
           "regions": {
             "cn-north-1": {},
@@ -5163,6 +5198,12 @@
         },
         "cur": {
           "regions": {
+            "cn-northwest-1": {}
+          }
+        },
+        "data-ats.iot": {
+          "regions": {
+            "cn-north-1": {},
             "cn-northwest-1": {}
           }
         },
@@ -6474,6 +6515,14 @@
         },
         "connect": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "data-ats.iot": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
