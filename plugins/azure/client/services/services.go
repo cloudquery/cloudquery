@@ -10,7 +10,7 @@
 //go:generate mockgen -destination=./mocks/logic.go -package=mocks . MonitorDiagnosticSettingsClient,WorkflowsClient
 //go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
 //go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
-//go:generate mockgen -destination=./mocks/network.go -package=mocks . InterfacesClient,VirtualNetworksClient,SecurityGroupsClient,WatchersClient,PublicIPAddressesClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . ExpressRouteCircuitsClient,ExpressRouteGatewaysClient,ExpressRoutePortsClient,InterfacesClient,PublicIPAddressesClient,RouteFiltersClient,SecurityGroupsClient,VirtualNetworksClient,WatchersClient
 //go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
 //go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisClient
 //go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient,AssignmentsClient,LinksClient
