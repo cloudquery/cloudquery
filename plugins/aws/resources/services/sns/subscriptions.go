@@ -18,7 +18,7 @@ func SnsSubscriptions() *schema.Table {
 		Multiplex:     client.ServiceAccountRegionMultiplexer("sns"),
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"endpoint", "owner", "protocol", "arn", "topic_arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
