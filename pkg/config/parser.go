@@ -3,10 +3,15 @@ package config
 import (
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
+	"net/url"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
+	"github.com/hairyhenderson/go-fsimpl"
+	"github.com/hairyhenderson/go-fsimpl/blobfs"
+	"github.com/hairyhenderson/go-fsimpl/filefs"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
@@ -75,6 +80,26 @@ func NewParser(options ...Option) *Parser {
 	return &p
 }
 
+func loadRemoteFile(path string) ([]byte, error) {
+	mux := fsimpl.NewMux()
+	mux.Add(filefs.FS)
+	mux.Add(blobfs.FS)
+	// HACKY!!!!!
+	fsys, err := mux.Lookup(path[:strings.LastIndex(path, "/")])
+	if err != nil {
+		return nil, err
+	}
+
+	fName := path[strings.LastIndex(path, "/")+1:]
+	f, err := fsys.Open(fName)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	contents, err := io.ReadAll(f)
+	return contents, err
+}
+
 // LoadHCLFile is a low-level method that reads the file at the given path,
 // parses it, and returns the hcl.Body representing its root. In many cases
 // it is better to use one of the other Load*File methods on this type,
@@ -88,7 +113,25 @@ func NewParser(options ...Option) *Parser {
 //
 // The file will be parsed using the HCL native syntax
 func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
-	src, err := p.fs.ReadFile(path)
+
+	var contents []byte
+
+	sanitizedPath, err := url.Parse(path)
+	if err != nil {
+		return nil, hcl.Diagnostics{
+			{
+				Severity: hcl.DiagError,
+				Summary:  "Failed to read file",
+				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
+			},
+		}
+	}
+
+	if sanitizedPath.Scheme == "" {
+		contents, err = p.fs.ReadFile(path)
+	} else {
+		contents, err = loadRemoteFile(path)
+	}
 
 	if err != nil {
 		if e, ok := err.(*fs.PathError); ok {
@@ -106,7 +149,9 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 			},
 		}
 	}
-	return p.LoadFromSource(path, src)
+	// src, err := p.fs.ReadFile
+
+	return p.LoadFromSource(path, contents)
 }
 
 func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, hcl.Diagnostics) {
