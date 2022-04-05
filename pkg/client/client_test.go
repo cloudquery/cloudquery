@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/test/provider"
+	"github.com/cloudquery/cloudquery/internal/test/providertest"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
@@ -561,7 +561,7 @@ func setupTestPlugin(t *testing.T) context.CancelFunc {
 	}
 	defer watcher.Close()
 
-	go provider.ServeTestPlugin(debugCtx)
+	go providertest.ServeTestPlugin(debugCtx)
 	_ = os.Setenv("CQ_REATTACH_PROVIDERS", filepath.Join(dir, ".cq_reattach"))
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")

@@ -82,7 +82,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, plu
 		if dryRun {
 			affected, err := dryRunPurge(ctx, storage, t, lastUpdate)
 			if err != nil {
-				return nil, 0, diags.Add(affected)
+				return nil, 0, diags.Add(err)
 			}
 			if affected > 0 {
 				logger.Info().Str("table", t.Name).Int("affected", affected).Msgf("%d resources will removed from table", affected)
@@ -103,7 +103,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, plu
 func dryRunPurge(ctx context.Context, storage execution.Storage, t *schema.Table, lastUpdate time.Duration) (int, error) {
 	q := goqu.Select(goqu.COUNT(goqu.Star())).From(t.Name).
 		WithDialect("postgres").Prepared(true).
-		Where(goqu.L(`extract(epoch from (cq_meta->>'last_updated')::timestamp)`).Lt(time.Now().Add(-lastUpdate).Unix()))
+		Where(goqu.L(`extract(epoch from (cq_meta->>'last_updated')::timestamp)`).Lt(time.Now().Add(-lastUpdate).UnixMilli()))
 	sql, args, _ := q.ToSQL()
 	result, err := storage.Query(ctx, sql, args...)
 	if err != nil {
