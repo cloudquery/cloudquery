@@ -15,7 +15,7 @@
 |engine_version|text|The version of the broker engine.|
 |id|text|The unique ID that Amazon MQ generates for the configuration.|
 |latest_revision_created|timestamp without time zone|The date and time of the configuration revision.|
-|latest_revision_description|text|The description of the configuration revision.|
 |latest_revision|integer|The revision number of the configuration.|
+|latest_revision_description|text|The description of the configuration revision.|
 |name|text|The name of the configuration.|
 |tags|jsonb|The list of all tags associated with this configuration.|

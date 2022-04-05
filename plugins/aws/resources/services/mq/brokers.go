@@ -1,25 +1,30 @@
 package mq
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
+	"fmt"
+	"strconv"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	xj "github.com/basgys/goxml2json"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func MqBrokers() *schema.Table {
+func Brokers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_mq_brokers",
 		Resolver:     fetchMqBrokers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("mq"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "broker_id"}},
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -35,7 +40,7 @@ func MqBrokers() *schema.Table {
 			},
 			{
 				Name:        "authentication_strategy",
-				Description: "The authentication strategy used to secure the broker.",
+				Description: "The authentication strategy used to secure the broker",
 				Type:        schema.TypeString,
 			},
 			{
@@ -45,29 +50,30 @@ func MqBrokers() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the broker.",
+				Description: "The broker's Amazon Resource Name (ARN).",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("BrokerArn"),
 			},
 			{
-				Name:        "broker_id",
+				Name:        "id",
 				Description: "The unique ID that Amazon MQ generates for the broker.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("BrokerId"),
 			},
 			{
 				Name:        "broker_instances",
 				Description: "A list of information about allocated brokers.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveMqBrokerBrokerInstances,
+				Resolver:    resolveBrokersBrokerInstances,
 			},
 			{
 				Name:        "broker_name",
-				Description: "The name of the broker",
+				Description: "The broker's name",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "broker_state",
-				Description: "The status of the broker.",
+				Description: "The broker's status.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -100,7 +106,7 @@ func MqBrokers() *schema.Table {
 			},
 			{
 				Name:        "engine_version",
-				Description: "The version of the broker engine",
+				Description: "The broker engine's version",
 				Type:        schema.TypeString,
 			},
 			{
@@ -112,41 +118,41 @@ func MqBrokers() *schema.Table {
 				Name:          "ldap_server_metadata",
 				Description:   "The metadata of the LDAP server used to authenticate and authorize connections to the broker.",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveMqBrokerLdapServerMetadata,
+				Resolver:      resolveBrokersLdapServerMetadata,
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "logs",
 				Description: "The list of information about logs currently enabled and pending to be deployed for the specified broker.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveMqBrokerLogs,
+				Resolver:    resolveBrokersLogs,
 			},
 			{
 				Name:        "maintenance_window_start_time",
 				Description: "The parameters that determine the WeeklyStartTime.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveMqBrokerMaintenanceWindowStartTime,
+				Resolver:    resolveBrokersMaintenanceWindowStartTime,
 			},
 			{
 				Name:        "pending_authentication_strategy",
-				Description: "The authentication strategy that will be applied when the broker is rebooted.",
+				Description: "The authentication strategy that will be applied when the broker is rebooted. The default is SIMPLE.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:          "pending_engine_version",
-				Description:   "The version of the broker engine to upgrade to",
+				Description:   "The broker engine version to upgrade to",
 				Type:          schema.TypeString,
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "pending_host_instance_type",
-				Description:   "The host instance type of the broker to upgrade to",
+				Description:   "The broker's host instance type to upgrade to",
 				Type:          schema.TypeString,
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "pending_ldap_server_metadata",
-				Description:   "The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker once it is rebooted.",
+				Description:   "The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker after it is rebooted.",
 				Type:          schema.TypeJSON,
 				Resolver:      resolveMqBrokerPendingLdapServerMetadata,
 				IgnoreInTests: true,
@@ -164,7 +170,7 @@ func MqBrokers() *schema.Table {
 			},
 			{
 				Name:        "security_groups",
-				Description: "The list of security groups (1 minimum, 5 maximum) that authorizes connections to brokers.",
+				Description: "The list of rules (1 minimum, 125 maximum) that authorize connections to brokers.",
 				Type:        schema.TypeStringArray,
 			},
 			{
@@ -174,7 +180,7 @@ func MqBrokers() *schema.Table {
 			},
 			{
 				Name:        "subnet_ids",
-				Description: "The list of groups that define which subnets and IP ranges the broker can use from different Availability Zones",
+				Description: "The list of groups that define which subnets and IP ranges the broker can use from different Availability Zones.",
 				Type:        schema.TypeStringArray,
 			},
 			{
@@ -187,8 +193,6 @@ func MqBrokers() *schema.Table {
 			{
 				Name:          "aws_mq_broker_configurations",
 				Resolver:      fetchMqBrokerConfigurations,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -243,7 +247,6 @@ func MqBrokers() *schema.Table {
 						Name:        "id",
 						Description: "The unique ID that Amazon MQ generates for the configuration.",
 						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Id"),
 					},
 					{
 						Name:        "latest_revision_created",
@@ -252,16 +255,16 @@ func MqBrokers() *schema.Table {
 						Resolver:    schema.PathResolver("LatestRevision.Created"),
 					},
 					{
-						Name:        "latest_revision_description",
-						Description: "The description of the configuration revision.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LatestRevision.Description"),
-					},
-					{
 						Name:        "latest_revision",
 						Description: "The revision number of the configuration.",
 						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("LatestRevision.Revision"),
+					},
+					{
+						Name:        "latest_revision_description",
+						Description: "The description of the configuration revision.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("LatestRevision.Description"),
 					},
 					{
 						Name:        "name",
@@ -274,12 +277,45 @@ func MqBrokers() *schema.Table {
 						Type:        schema.TypeJSON,
 					},
 				},
+				Relations: []*schema.Table{
+					{
+						Name:     "aws_mq_broker_configuration_revisions",
+						Resolver: fetchMqBrokerConfigurationRevisions,
+						Columns: []schema.Column{
+							{
+								Name:        "broker_configuration_cq_id",
+								Description: "Unique CloudQuery ID of aws_mq_broker_configurations table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "configuration_id",
+								Description: "Required",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "created",
+								Description: "Required",
+								Type:        schema.TypeTimestamp,
+							},
+							{
+								Name:        "data",
+								Description: "Required",
+								Type:        schema.TypeJSON,
+								Resolver:    resolveBrokerConfigurationRevisionsData,
+							},
+							{
+								Name:        "description",
+								Description: "The description of the configuration.",
+								Type:        schema.TypeString,
+							},
+						},
+					},
+				},
 			},
 			{
-				Name:        "aws_mq_broker_users",
-				Resolver:    fetchMqBrokerUsers,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"broker_cq_id", "username"}},
+				Name:     "aws_mq_broker_users",
+				Resolver: fetchMqBrokerUsers,
 				Columns: []schema.Column{
 					{
 						Name:        "broker_cq_id",
@@ -313,7 +349,7 @@ func MqBrokers() *schema.Table {
 						Name:          "pending",
 						Description:   "The status of the changes pending for the ActiveMQ user.",
 						Type:          schema.TypeJSON,
-						Resolver:      resolveMqBrokerUserPending,
+						Resolver:      resolveBrokerUsersPending,
 						IgnoreInTests: true,
 					},
 					{
@@ -330,6 +366,7 @@ func MqBrokers() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config mq.ListBrokersInput
 	c := meta.(*client.Client)
@@ -357,36 +394,44 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
-
-func resolveMqBrokerBrokerInstances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
+func resolveBrokersBrokerInstances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(broker.BrokerInstances)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-
-func resolveMqBrokerLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
+func resolveBrokersLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(broker.LdapServerMetadata)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-
-func resolveMqBrokerLogs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
+func resolveBrokersLogs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(broker.Logs)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-
-func resolveMqBrokerMaintenanceWindowStartTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
+func resolveBrokersMaintenanceWindowStartTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(broker.MaintenanceWindowStartTime)
 	if err != nil {
 		return diag.WrapError(err)
@@ -395,14 +440,16 @@ func resolveMqBrokerMaintenanceWindowStartTime(ctx context.Context, meta schema.
 }
 
 func resolveMqBrokerPendingLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
+	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(broker.PendingLdapServerMetadata)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-
 func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	c := meta.(*client.Client)
@@ -420,6 +467,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 
 	// History might contain same Id multiple times (maybe with different revisions) but we're only interested in the latest revision of each
 	dupes := make(map[string]struct{}, len(list))
+	configurations := make([]mq.DescribeConfigurationOutput, 0, len(list))
 	for _, cfg := range list {
 		if cfg.Id == nil {
 			continue
@@ -437,9 +485,61 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		res <- output
+		configurations = append(configurations, *output)
+	}
+	res <- configurations
+	return nil
+}
+func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	cfg, ok := parent.Item.(mq.DescribeConfigurationOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeConfigurationOutput instance: %T", parent.Item)
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().MQ
+
+	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
+	for {
+		output, err := svc.ListConfigurationRevisions(ctx, &input, func(options *mq.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, rev := range output.Revisions {
+			revId := strconv.Itoa(int(rev.Revision))
+			output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId}, func(options *mq.Options) {
+				options.Region = c.Region
+			})
+			if err != nil {
+				return diag.WrapError(err)
+			}
+			res <- output
+		}
+		if aws.ToString(output.NextToken) == "" {
+			break
+		}
+		input.NextToken = output.NextToken
 	}
 	return nil
+}
+
+func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	revision, ok := resource.Item.(*mq.DescribeConfigurationRevisionOutput)
+	if !ok {
+		return fmt.Errorf("not a *mq.DescribeConfigurationRevisionOutput instance: %T", resource.Item)
+	}
+	rawDecodedText, err := base64.StdEncoding.DecodeString(*revision.Data)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	xml := bytes.NewReader(rawDecodedText)
+	json, err := xj.Convert(xml)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+
+	return resource.Set(c.Name, json.Bytes())
 }
 
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -461,9 +561,11 @@ func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-
-func resolveMqBrokerUserPending(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	user := resource.Item.(*mq.DescribeUserOutput)
+func resolveBrokerUsersPending(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	user, ok := resource.Item.(*mq.DescribeUserOutput)
+	if !ok {
+		return fmt.Errorf("not a DescribeUserOutput instance: %#v", resource.Item)
+	}
 	data, err := json.Marshal(user.Pending)
 	if err != nil {
 		return diag.WrapError(err)
