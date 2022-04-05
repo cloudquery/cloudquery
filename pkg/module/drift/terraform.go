@@ -244,12 +244,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 		}
 	}
 
-	tfMode := terraform.Mode(runParams.TfMode)
-	if !tfMode.Valid() {
-		return nil, fmt.Errorf("invalid tf mode %q", runParams.TfMode)
-	}
-
-	tfResources := states.FindType(iacData.Type, tfMode).AsResourceList(iacData.Identifiers, alist, iacData.Path)
+	tfResources := states.FindType(iacData.Type, terraform.ModeManaged).AsResourceList(iacData.Identifiers, alist, iacData.Path)
 
 	var cloudAttrQuery exp.LiteralExpression
 
