@@ -3,6 +3,8 @@ package mq
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -52,9 +54,26 @@ func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	co.Id = cfgID.Id
 	m.EXPECT().DescribeConfiguration(gomock.Any(), &mq.DescribeConfigurationInput{ConfigurationId: cfgID.Id}, gomock.Any()).Return(&co, nil)
+
+	revisions := mq.ListConfigurationRevisionsOutput{}
+	if err := faker.FakeData(&revisions); err != nil {
+		t.Fatal(err)
+	}
+	revisions.NextToken = nil
+	m.EXPECT().ListConfigurationRevisions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&revisions, nil)
+
+	revision := mq.DescribeConfigurationRevisionOutput{}
+	if err := faker.FakeData(&revision); err != nil {
+		t.Fatal(err)
+	}
+	revision.Data = aws.String("PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aGVsbG8+d29ybGQ8L2hlbGxvPg==")
+	m.EXPECT().DescribeConfigurationRevision(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&revision, nil)
+
 	return client.Services{MQ: m}
 }
 
 func TestMqBrokers(t *testing.T) {
-	client.AwsMockTestHelper(t, MqBrokers(), buildMqBrokers, client.TestOptions{})
+	client.AwsMockTestHelper(t, Brokers(), buildMqBrokers, client.TestOptions{})
 }

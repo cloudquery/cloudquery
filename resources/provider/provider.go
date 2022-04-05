@@ -170,7 +170,7 @@ func Provider() *provider.Provider {
 			"lambda.functions":                      lambda.LambdaFunctions(),
 			"lambda.layers":                         lambda.LambdaLayers(),
 			"lambda.runtimes":                       lambda.LambdaRuntimes(),
-			"mq.brokers":                            mq.MqBrokers(),
+			"mq.brokers":                            mq.Brokers(),
 			"organizations.accounts":                organizations.OrganizationsAccounts(),
 			"rds.certificates":                      rds.RdsCertificates(),
 			"rds.cluster_parameter_groups":          rds.RdsClusterParameterGroups(),

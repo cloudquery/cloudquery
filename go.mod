@@ -60,6 +60,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.5.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.16.0
 	github.com/aws/smithy-go v1.11.1
+	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/cq-gen v0.0.3
 	github.com/cloudquery/cq-provider-sdk v0.8.15
