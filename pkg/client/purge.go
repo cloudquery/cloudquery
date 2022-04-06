@@ -46,6 +46,7 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 	if err != nil {
 		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL)}
 	}
+	defer db.Close()
 	var (
 		diags  diag.Diagnostics
 		result = PurgeProviderDataResult{
@@ -53,9 +54,11 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 			AffectedResources: make(map[string]int),
 		}
 	)
+
+	lastUpdateTime := time.Now().UTC().Add(-opts.LastUpdate)
 	for _, p := range opts.Providers {
-		log.Debug().Str("provider", p).TimeDiff("since", time.Now().Add(-opts.LastUpdate), time.Now()).Msg("cleaning stale data for provider")
-		affectedResources, affected, err := removeProviderStaleData(ctx, db, plugin, p, opts.LastUpdate, opts.DryRun)
+		log.Debug().Str("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
+		affectedResources, affected, err := removeProviderStaleData(ctx, db, plugin, p, lastUpdateTime, opts.DryRun)
 		diags = diags.Add(err)
 		result.TotalAffected += affected
 		for k, v := range affectedResources {
@@ -65,7 +68,7 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 	return &result, diags
 }
 
-func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider string, lastUpdate time.Duration, dryRun bool) (map[string]int, int, error) {
+func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider string, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
 	providerSchema, err := GetProviderSchema(ctx, plugin, &GetProviderSchemaOptions{Provider: provider})
 	if err != nil {
 		return nil, 0, err
@@ -80,7 +83,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, plu
 	for r, t := range providerSchema.ResourceTables {
 		logger.Debug().Str("table", t.Name).Msg("purging data from table")
 		if dryRun {
-			affected, err := dryRunPurge(ctx, storage, t, lastUpdate)
+			affected, err := dryRunPurge(ctx, storage, t, lastUpdateTime)
 			if err != nil {
 				return nil, 0, diags.Add(err)
 			}
@@ -91,7 +94,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, plu
 			}
 			continue
 		}
-		if err := storage.RemoveStaleData(ctx, t, time.Now().Add(-lastUpdate), nil); err != nil {
+		if err := storage.RemoveStaleData(ctx, t, lastUpdateTime, nil); err != nil {
 			diags = diags.Add(diag.NewBaseError(err, diag.DATABASE, diag.WithSeverity(diag.WARNING),
 				diag.WithSummary("failed to remove stale data from %s", t.Name),
 				diag.WithDetails("table might not exist, is your provider schema version the same as the provider configured?")))
@@ -100,10 +103,10 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, plu
 	return affectedResources, totalAffected, diags
 }
 
-func dryRunPurge(ctx context.Context, storage execution.Storage, t *schema.Table, lastUpdate time.Duration) (int, error) {
+func dryRunPurge(ctx context.Context, storage execution.Storage, t *schema.Table, lastUpdateTime time.Time) (int, error) {
 	q := goqu.Select(goqu.COUNT(goqu.Star())).From(t.Name).
 		WithDialect("postgres").Prepared(true).
-		Where(goqu.L(`extract(epoch from (cq_meta->>'last_updated')::timestamp)`).Lt(time.Now().Add(-lastUpdate).UnixMilli()))
+		Where(goqu.L(`extract(epoch from (cq_meta->>'last_updated')::timestamp)`).Lt(lastUpdateTime.Unix()))
 	sql, args, _ := q.ToSQL()
 	result, err := storage.Query(ctx, sql, args...)
 	if err != nil {

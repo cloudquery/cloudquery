@@ -29,10 +29,22 @@ var (
 func TestPurgeProviderData(t *testing.T) {
 
 	testCases := []struct {
-		Name           string
-		Options        *PurgeProviderDataOptions
-		ExpectedResult *PurgeProviderDataResult
-		ExpectedDiags  []diag.FlatDiag
+		Name    string
+		Options *PurgeProviderDataOptions
+
+		// Expected results and diags from first dry run
+		ExpectedDryRunResult *PurgeProviderDataResult
+		ExpectedDryRunDiags  []diag.FlatDiag
+
+		// Expected results diags from normal run, if RunResults is nil, normal purge is not called.
+		ExpectedRunResults *PurgeProviderDataResult
+		ExpectedRunDiags   []diag.FlatDiag
+
+		// Expected results and diags from secondary dry run
+		SecondaryDryRunUpdate          time.Duration
+		ExpectedSecondaryDryRunResults *PurgeProviderDataResult
+		ExpectedSecondaryRunDiags      []diag.FlatDiag
+
 		// Override plugin manager option
 		PluginManagerCreator func() plugin.Manager
 		Setup                func(t *testing.T, dsn string) func(t *testing.T)
@@ -44,7 +56,7 @@ func TestPurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 				DryRun:     true,
 			},
-			ExpectedDiags: []diag.FlatDiag{
+			ExpectedDryRunDiags: []diag.FlatDiag{
 				{
 					Err:      "no providers were given",
 					Type:     diag.INTERNAL,
@@ -60,7 +72,7 @@ func TestPurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 				DryRun:     true,
 			},
-			ExpectedDiags: []diag.FlatDiag{
+			ExpectedDryRunDiags: []diag.FlatDiag{
 				{
 					Err:      "no such provider bad-plugin. plugin might be missing from directory or wasn't downloaded",
 					Type:     diag.INTERNAL,
@@ -76,28 +88,25 @@ func TestPurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 				DryRun:     true,
 			},
-			ExpectedResult: &PurgeProviderDataResult{
+			ExpectedDryRunResult: &PurgeProviderDataResult{
 				TotalAffected:     0,
 				AffectedResources: make(map[string]int),
 			},
 		},
-
 		{
-			Name: "dry-run-basic-data",
+			Name: "basic-data-purge",
 			Options: &PurgeProviderDataOptions{
 				Providers:  []string{"test"},
 				LastUpdate: 0,
-				DryRun:     true,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
 				tbl := providertest.Provider().ResourceMap["slow_resource"]
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
-				r.Set("cq_id", uuid.New())
-				r.Set("cq_meta", schema.Meta{
-					LastUpdate: time.Now().Add(time.Hour - 5),
+				_ = r.Set("cq_id", uuid.New())
+				_ = r.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().Add(-time.Hour * 5),
 					FetchId:    "",
 				})
-
 				insertData(t, dsn, tbl, schema.Resources{
 					r,
 				})
@@ -105,11 +114,151 @@ func TestPurgeProviderData(t *testing.T) {
 					truncateTable(t, dsn, tbl.Name)
 				}
 			},
-			ExpectedResult: &PurgeProviderDataResult{
+			ExpectedDryRunResult: &PurgeProviderDataResult{
 				TotalAffected: 1,
 				AffectedResources: map[string]int{
 					"slow_resource": 1,
 				},
+			},
+			ExpectedRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+			ExpectedSecondaryDryRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+		},
+		{
+			Name: "no-data-purge",
+			Options: &PurgeProviderDataOptions{
+				Providers:  []string{"test"},
+				LastUpdate: time.Hour * 10,
+			},
+			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
+				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
+				_ = r.Set("cq_id", uuid.New())
+				_ = r.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().Add(-time.Hour * 5),
+					FetchId:    "",
+				})
+				insertData(t, dsn, tbl, schema.Resources{
+					r,
+				})
+				return func(t *testing.T) {
+					truncateTable(t, dsn, tbl.Name)
+				}
+			},
+			ExpectedDryRunResult: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+			ExpectedRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+			// We update time to verify data is still there and wasn't purged
+			SecondaryDryRunUpdate: 1,
+			ExpectedSecondaryDryRunResults: &PurgeProviderDataResult{
+				TotalAffected: 1,
+				AffectedResources: map[string]int{
+					"slow_resource": 1,
+				},
+			},
+		},
+		{
+			Name: "single-data-purge",
+			Options: &PurgeProviderDataOptions{
+				Providers:  []string{"test"},
+				LastUpdate: time.Hour * 6,
+			},
+			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
+				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
+				_ = r.Set("cq_id", uuid.New())
+				_ = r.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().UTC().Add(-time.Hour * 5),
+					FetchId:    "",
+				})
+				r2 := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
+				_ = r2.Set("cq_id", uuid.New())
+				_ = r2.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().UTC().Add(-time.Hour * 15),
+					FetchId:    "",
+				})
+
+				insertData(t, dsn, tbl, schema.Resources{
+					r,
+					r2,
+				})
+				return func(t *testing.T) {
+					truncateTable(t, dsn, tbl.Name)
+				}
+			},
+			ExpectedDryRunResult: &PurgeProviderDataResult{
+				TotalAffected: 1,
+				AffectedResources: map[string]int{
+					"slow_resource": 1,
+				},
+			},
+			ExpectedRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+			// We update time to verify data is still there and wasn't purged
+			SecondaryDryRunUpdate: time.Hour * 4,
+			ExpectedSecondaryDryRunResults: &PurgeProviderDataResult{
+				TotalAffected: 1,
+				AffectedResources: map[string]int{
+					"slow_resource": 1,
+				},
+			},
+		},
+		{
+			Name: "data-purge-different-times",
+			Options: &PurgeProviderDataOptions{
+				Providers:  []string{"test"},
+				LastUpdate: time.Hour * 4,
+			},
+			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
+				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
+				_ = r.Set("cq_id", uuid.New())
+				_ = r.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().UTC().Add(-time.Hour * 5),
+					FetchId:    "",
+				})
+				r2 := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
+				_ = r2.Set("cq_id", uuid.New())
+				_ = r2.Set("cq_meta", schema.Meta{
+					LastUpdate: time.Now().UTC().Add(-time.Hour * 15),
+					FetchId:    "",
+				})
+
+				insertData(t, dsn, tbl, schema.Resources{
+					r,
+					r2,
+				})
+				return func(t *testing.T) {
+					truncateTable(t, dsn, tbl.Name)
+				}
+			},
+			ExpectedDryRunResult: &PurgeProviderDataResult{
+				TotalAffected: 2,
+				AffectedResources: map[string]int{
+					"slow_resource": 2,
+				},
+			},
+			ExpectedRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
+			},
+			// We update time to verify data is still there and wasn't purged
+			SecondaryDryRunUpdate: 0,
+			ExpectedSecondaryDryRunResults: &PurgeProviderDataResult{
+				TotalAffected:     0,
+				AffectedResources: make(map[string]int),
 			},
 		},
 	}
@@ -128,25 +277,42 @@ func TestPurgeProviderData(t *testing.T) {
 				defer teardown(t)
 			}
 
-			result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
-			if len(tc.ExpectedDiags) > 0 {
-				assert.NotNil(t, diags)
-				assert.Equal(t, tc.ExpectedDiags, diag.FlattenDiags(diags, true))
-
-			} else {
-				assert.Nil(t, diags)
+			if len(tc.ExpectedDryRunDiags) > 0 || tc.ExpectedDryRunResult != nil {
+				tc.Options.DryRun = true
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				checkPurgeOutput(t, tc.ExpectedDryRunResult, result, tc.ExpectedDryRunDiags, diag.FlattenDiags(diags, true))
 			}
-			if tc.ExpectedResult != nil {
-				assert.Equal(t, tc.ExpectedResult, result)
+
+			if len(tc.ExpectedRunDiags) > 0 || tc.ExpectedRunResults != nil {
+				tc.Options.DryRun = false
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				checkPurgeOutput(t, tc.ExpectedRunResults, result, tc.ExpectedRunDiags, diag.FlattenDiags(diags, true))
+			}
+
+			if len(tc.ExpectedSecondaryRunDiags) > 0 || tc.ExpectedSecondaryDryRunResults != nil {
+				tc.Options.DryRun = true
+				if tc.SecondaryDryRunUpdate > 0 {
+					tc.Options.LastUpdate = tc.SecondaryDryRunUpdate
+				}
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				checkPurgeOutput(t, tc.ExpectedSecondaryDryRunResults, result, tc.ExpectedSecondaryRunDiags, diag.FlattenDiags(diags, true))
 			}
 
 		})
 	}
 }
 
-// INSERT INTO public.slow_resource(
-//	cq_id, cq_meta, some_bool, upgrade_column, upgrade_column_2)
-//	VALUES ('f6385024-e8d8-5961-823b-9feea81b34d9', '{"last_update": "2022-04-01T09:04:34.7637611Z"}', false, 1, 2);
+func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags []diag.FlatDiag) {
+	if len(expectedDiags) > 0 {
+		assert.Equal(t, expectedDiags, actualDiags)
+	} else {
+		assert.Len(t, actualDiags, 0)
+	}
+	if expectedResult != nil {
+		assert.Equal(t, expectedResult, actualResult)
+	}
+
+}
 
 func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Resources) {
 	db, err := database.New(context.TODO(), hclog.Default(), dsn)
