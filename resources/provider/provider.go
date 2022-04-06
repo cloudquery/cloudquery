@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cq-provider-aws/resources/services/cloudwatchlogs"
 	"github.com/cloudquery/cq-provider-aws/resources/services/codebuild"
+	"github.com/cloudquery/cq-provider-aws/resources/services/codepipeline"
 	"github.com/cloudquery/cq-provider-aws/resources/services/cognito"
 	"github.com/cloudquery/cq-provider-aws/resources/services/config"
 	"github.com/cloudquery/cq-provider-aws/resources/services/dax"
@@ -99,6 +100,7 @@ func Provider() *provider.Provider {
 			"cloudwatch.alarms":                     cloudwatch.CloudwatchAlarms(),
 			"cloudwatchlogs.filters":                cloudwatchlogs.CloudwatchlogsFilters(),
 			"codebuild.projects":                    codebuild.CodebuildProjects(),
+			"codepipeline.pipelines":                codepipeline.Pipelines(),
 			"cognito.identity_pools":                cognito.CognitoIdentityPools(),
 			"cognito.user_pools":                    cognito.CognitoUserPools(),
 			"config.configuration_recorders":        config.ConfigConfigurationRecorders(),

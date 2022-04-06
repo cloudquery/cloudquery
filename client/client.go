@@ -25,6 +25,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
@@ -105,6 +106,7 @@ type Services struct {
 	Cloudwatch             CloudwatchClient
 	CloudwatchLogs         CloudwatchLogsClient
 	Codebuild              CodebuildClient
+	CodePipeline           CodePipelineClient
 	CognitoIdentityPools   CognitoIdentityPoolsClient
 	CognitoUserPools       CognitoUserPoolsClient
 	ConfigService          ConfigServiceClient
@@ -476,6 +478,8 @@ func initServices(region string, c aws.Config) Services {
 		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
 		CognitoIdentityPools:   cognitoidentity.NewFromConfig(awsCfg),
 		CognitoUserPools:       cognitoidentityprovider.NewFromConfig(awsCfg),
+		Codebuild:              codebuild.NewFromConfig(awsCfg),
+		CodePipeline:           codepipeline.NewFromConfig(awsCfg),
 		ConfigService:          configservice.NewFromConfig(awsCfg),
 		DAX:                    dax.NewFromConfig(awsCfg),
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
@@ -513,7 +517,6 @@ func initServices(region string, c aws.Config) Services {
 		Waf:                    waf.NewFromConfig(awsCfg),
 		WafV2:                  wafv2.NewFromConfig(awsCfg),
 		Workspaces:             workspaces.NewFromConfig(awsCfg),
-		Codebuild:              codebuild.NewFromConfig(awsCfg),
 		IOT:                    iot.NewFromConfig(awsCfg),
 	}
 }
