@@ -334,6 +334,7 @@ func RenderDriftTable(resName string, resources map[string]*ResourceConfig, clou
 		return table
 	}
 
+	// If there are any cloud modifiers in the columns, process them before comparing/printing
 	for i := range differentIDs {
 		for j := range differentIDs[i].Attributes {
 			if alist[j].CloudMod != nil {
