@@ -44,6 +44,12 @@ func StorageBuckets() *schema.Table {
 				Resolver:    schema.PathResolver("Encryption.DefaultKmsKeyName"),
 			},
 			{
+				Name:        "encryption_type",
+				Description: "A Cloud KMS key type. Possible values: \"CMKE\" - Customer-managed key   \"GMKE\" - Google-managed key",
+				Type:        schema.TypeString,
+				Resolver:    resolveBucketEncryptionType,
+			},
+			{
 				Name:        "etag",
 				Description: "HTTP 11 Entity tag for the bucket",
 				Type:        schema.TypeString,
@@ -595,4 +601,11 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	}
 
 	return resource.Set(c.Name, policy)
+}
+func resolveBucketEncryptionType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p := resource.Item.(*storage.Bucket)
+	if p.Encryption == nil {
+		return resource.Set(c.Name, "GMKE")
+	}
+	return resource.Set(c.Name, "CMKE")
 }

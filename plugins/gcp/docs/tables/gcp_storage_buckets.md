@@ -8,6 +8,7 @@ The Buckets resource represents a bucket in Cloud Storage
 |billing_requester_pays|boolean|When set to true, Requester Pays is enabled for this bucket|
 |default_event_based_hold|boolean|The default value for event-based hold on newly created objects in this bucket Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold's release After being released, such objects will be subject to bucket-level retention|
 |encryption_default_kms_key_name|text|A Cloud KMS key that will be used to encrypt objects inserted into this bucket, if no encryption method is specified|
+|encryption_type|text|A Cloud KMS key type. Possible values: "CMKE" - Customer-managed key   "GMKE" - Google-managed key|
 |etag|text|HTTP 11 Entity tag for the bucket|
 |iam_configuration_bucket_policy_only_enabled|boolean|If set, access is controlled only by bucket-level or above IAM policies|
 |iam_configuration_bucket_policy_only_locked_time|text|The deadline for changing iamConfigurationbucketPolicyOnlyenabled from true to false in RFC 3339 format iamConfigurationbucketPolicyOnlyenabled may be changed from true to false until the locked time, after which the field is immutable|
