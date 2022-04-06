@@ -14,6 +14,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-version"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -403,6 +405,80 @@ func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.Fet
 		err = db.Exec(context.Background(), fmt.Sprintf(`DELETE FROM "cloudquery"."fetches" WHERE "id" = '%s';`, summary.FetchId.String()))
 		assert.NoError(t, err)
 	}, nil
+}
+
+func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
+	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
+	assert.NoError(t, err)
+
+	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
+
+	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	if err != nil {
+		t.Fatal(fmt.Errorf("getExecutor: %w", err))
+	}
+
+	err = metaStorage.MigrateCore(context.Background(), de)
+	assert.NoError(t, err)
+
+	executor := NewExecutor(db, hclog.Default(), nil)
+
+	policy := &Policy{
+		Name:     "test",
+		Policies: nil,
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+		Config: &Configuration{
+			Providers: []*Provider{
+				{
+					Type:    "testProvider",
+					Version: ">0.0.0",
+				},
+			},
+		},
+	}
+
+	testCases := []struct {
+		Name              string
+		DisableFetchCheck bool
+		ExpectedError     error
+	}{{
+		Name:              "fetch_check_enabled",
+		DisableFetchCheck: false,
+		ExpectedError:     errors.New("could not find a completed fetch for requested provider"),
+	},
+		{
+			Name:              "fetch_check_disabled",
+			DisableFetchCheck: true,
+			ExpectedError:     nil,
+		},
+	}
+
+	testProviderVersion, err := version.NewVersion("0.1.0")
+	assert.NoError(t, err)
+
+	executeRequest := &ExecuteRequest{
+		Policy:           policy,
+		ProviderVersions: map[string]*version.Version{"testProvider": testProviderVersion},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			defer viper.Reset()
+			viper.Set("disable-fetch-check", tc.DisableFetchCheck)
+
+			_, err = executor.Execute(context.Background(), executeRequest, policy)
+
+			if tc.ExpectedError == nil {
+				assert.NoError(t, err)
+			} else {
+				assert.Contains(t, err.Error(), tc.ExpectedError.Error())
+			}
+		})
+	}
+
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
