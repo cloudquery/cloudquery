@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+
+	cqsort "github.com/cloudquery/cloudquery/internal/sort"
 )
 
 type RunParams struct {
@@ -142,14 +144,24 @@ func (rs *Results) process() {
 		DeepEqual []combined
 		Missing   []combined
 	}
-	transform := func(r *Result, l ResourceList, dst *[]combined) {
-		ids := l.IDs()
+
+	// transform appends the given resource id list of type provName and resType into the given slice of combined type, an item per provider and resource type.
+	transform := func(ids []string, provName, resType string, dst *[]combined) {
 		if len(ids) == 0 {
 			return
 		}
+
+		// check if we already have the given resType in []combined somewhere, if so, append to that
+		for i, c := range *dst {
+			if c.Provider == provName && c.ResourceType == resType {
+				(*dst)[i].ResourceIDs = append((*dst)[i].ResourceIDs, ids...)
+				return
+			}
+		}
+
 		*dst = append(*dst, combined{
-			ResourceType: r.ResourceType,
-			Provider:     r.Provider,
+			ResourceType: resType,
+			Provider:     provName,
 			ResourceIDs:  ids,
 		})
 	}
@@ -158,11 +170,12 @@ func (rs *Results) process() {
 		if r == nil {
 			continue
 		}
-		transform(r, r.Different, &combo.Different)
-		transform(r, r.Extra, &combo.Extra)
-		transform(r, r.Equal, &combo.Equal)
-		transform(r, r.DeepEqual, &combo.DeepEqual)
-		transform(r, r.Missing, &combo.Missing)
+		cleanRes, _ := SplitHashedResource(r.ResourceType)
+		transform(r.Different.IDs(), r.Provider, cleanRes, &combo.Different)
+		transform(r.Extra.IDs(), r.Provider, cleanRes, &combo.Extra)
+		transform(r.Equal.IDs(), r.Provider, cleanRes, &combo.Equal)
+		transform(r.DeepEqual.IDs(), r.Provider, cleanRes, &combo.DeepEqual)
+		transform(r.Missing.IDs(), r.Provider, cleanRes, &combo.Missing)
 	}
 
 	var ( // nolint: prealloc
@@ -216,15 +229,14 @@ func (rs *Results) process() {
 		resLines := make([]string, 0, l)
 		resTotal := 0
 		for _, res := range data.list {
-			resTotal += len(res.ResourceIDs)
+			ids := cqsort.Unique(res.ResourceIDs)
+			resTotal += len(ids)
 			if data.hideListing {
 				continue
 			}
 
-			sort.Strings(res.ResourceIDs)
-
 			resLines = append(resLines, fmt.Sprintf("  %s:%s:", res.Provider, res.ResourceType))
-			for _, id := range res.ResourceIDs {
+			for _, id := range ids {
 				resLines = append(resLines, fmt.Sprintf("    - %s", id))
 			}
 		}
@@ -250,7 +262,7 @@ func (rs *Results) process() {
 	// one of Equal and DeepEqual is supposed to be 0 depending on deep flag
 	for _, l := range [][]combined{combo.Equal, combo.DeepEqual, combo.Different} {
 		for _, z := range l {
-			rs.Covered += len(z.ResourceIDs)
+			rs.Covered += len(cqsort.Unique(z.ResourceIDs))
 		}
 	}
 

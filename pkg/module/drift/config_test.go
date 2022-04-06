@@ -496,6 +496,47 @@ func TestApplyProvider(t *testing.T) {
 			expectedResources: []string{"test2"},
 		},
 		{
+			name: "Allow some resources with hash",
+			cfg: modify(prov, func(p *ProviderConfig) {
+				p.Resources["test3#hash1"] = &ResourceConfig{
+					IAC: map[iacProvider]*IACConfig{
+						iacTerraform: {
+							Type: "tf_test3a",
+						},
+					},
+				}
+				p.Resources["test3#hash2"] = &ResourceConfig{
+					IAC: map[iacProvider]*IACConfig{
+						iacTerraform: {
+							Type: "tf_test3b",
+						},
+					},
+				}
+				p.CheckResources = ResourceSelectors{
+					{
+						Type: "test3",
+						ID:   aws.String("*"),
+					},
+				}
+			}),
+			schema: &cqproto.GetProviderSchemaResponse{
+				Name:    "aws",
+				Version: "1.6.0",
+				ResourceTables: map[string]*schema.Table{
+					"test1": {
+						Name: "aws_test1",
+					},
+					"test3": {
+						Name: "aws_test3",
+					},
+				},
+			},
+			expectedResult:    true,
+			expectedError:     false,
+			checkResourceList: true,
+			expectedResources: []string{"test3#hash1", "test3#hash2"},
+		},
+		{
 			name: "Tag filter (all resources)",
 			cfg: modify(prov, func(p *ProviderConfig) {
 				tags := map[string]string{"key": "value"}
@@ -528,7 +569,10 @@ func TestApplyProvider(t *testing.T) {
 	for i := range table {
 		t.Run(table[i].name, func(t *testing.T) {
 			p := table[i].cfg
+
+			d.tableMap = nil // reinit every time
 			res, diags := d.applyProvider(&p, table[i].schema)
+
 			assert.Equal(t, table[i].expectedError, diags.HasErrors(), "diags: %s", diags.Error())
 			assert.Equal(t, table[i].expectedResult, res, "unexpected result")
 			if table[i].checkResourceList {

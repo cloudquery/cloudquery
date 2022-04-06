@@ -57,9 +57,4 @@ type Mode string
 
 const (
 	ModeManaged Mode = "managed"
-	ModeData    Mode = "data"
 )
-
-func (m Mode) Valid() bool {
-	return m == ModeManaged || m == ModeData
-}

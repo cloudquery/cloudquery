@@ -451,17 +451,19 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	checkEnabled := len(cfg.CheckResources) > 0
 
 	for resName, res := range cfg.Resources {
+		cleanRes, _ := SplitHashedResource(resName)
+
 		// CheckResources / IgnoreResources broad strokes...
 		if checkEnabled {
 			res.acl.AllowEnabled = true
-			res.acl.Allow = append(cfg.CheckResources.ByType(resName), allChecks...)
+			res.acl.Allow = append(cfg.CheckResources.ByType(cleanRes), allChecks...)
 			if !res.acl.Allow.AllInstances() && !res.acl.Allow.HasTags() {
 				delete(cfg.Resources, resName)
 				continue
 			}
 		}
 
-		res.acl.Ignore = append(cfg.IgnoreResources.ByType(resName), allIgs...)
+		res.acl.Ignore = append(cfg.IgnoreResources.ByType(cleanRes), allIgs...)
 		if res.acl.Ignore.AllInstances() {
 			delete(cfg.Resources, resName)
 			continue
@@ -472,14 +474,14 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 			diags = append(diags, &hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  `Specified resource not in provider`,
-				Detail:   fmt.Sprintf("resource %q is not defined by the provider", resName),
+				Detail:   fmt.Sprintf("resource %q is not defined by the provider", cleanRes),
 				Subject:  res.defRange,
 			})
 			continue
 		}
 
 		for k, v := range map[placeholder][]string{
-			placeholderResourceKey:             {resName},
+			placeholderResourceKey:             {cleanRes},
 			placeholderResourceName:            {tbl.Name},
 			placeholderResourceColumnNames:     tbl.NonCQColumns(),
 			placeholderResourceOptsPrimaryKeys: tbl.NonCQPrimaryKeys(),
@@ -506,5 +508,15 @@ func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaRe
 		d.tableMap[prov.Name] = traverseResourceTable(prov.ResourceTables)
 	}
 
-	return d.tableMap[prov.Name][resName]
+	res, _ := SplitHashedResource(resName)
+	return d.tableMap[prov.Name][res]
+}
+
+// SplitHashedResource splits a given resource name and returns the resource and hash elements separately.
+func SplitHashedResource(configResName string) (string, string) {
+	resParts := strings.SplitN(configResName, "#", 2)
+	if len(resParts) == 1 {
+		return resParts[0], ""
+	}
+	return resParts[0], resParts[1]
 }
