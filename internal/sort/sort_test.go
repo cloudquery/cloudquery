@@ -1,4 +1,4 @@
-package drift
+package sort
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUniqueSort(t *testing.T) {
+func TestUnique(t *testing.T) {
 	for _, tc := range []struct {
 		Input    []string
 		Expected []string
@@ -44,7 +44,7 @@ func TestUniqueSort(t *testing.T) {
 			Expected: []string{"a", "b", "c", "d", "e"},
 		},
 	} {
-		ret := UniqueSort(tc.Input)
+		ret := Unique(tc.Input)
 		assert.EqualValues(t, tc.Expected, ret)
 	}
 }
