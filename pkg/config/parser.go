@@ -115,7 +115,10 @@ func loadRemoteFile(path string) ([]byte, error) {
 func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 
 	var contents []byte
-
+	// Example of path supported paths:
+	// `./local/relative/path/to/config.hcl`
+	// `/absolute/path/to/config.hcl`
+	// `s3://object/in/remote/location/absolute/path/to/config.hcl`
 	sanitizedPath, err := url.Parse(path)
 	if err != nil {
 		return nil, hcl.Diagnostics{
