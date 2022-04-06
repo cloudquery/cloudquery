@@ -515,5 +515,8 @@ func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaRe
 // SplitHashedResource splits a given resource name and returns the resource and hash elements separately.
 func SplitHashedResource(configResName string) (string, string) {
 	resParts := strings.SplitN(configResName, "#", 2)
+	if len(resParts) == 1 {
+		return resParts[0], ""
+	}
 	return resParts[0], resParts[1]
 }
