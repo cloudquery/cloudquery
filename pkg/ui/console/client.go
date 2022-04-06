@@ -550,15 +550,15 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 		DryRun:     dryRun,
 	})
 
-	if dryRun {
+	if dryRun && !diags.HasErrors() {
 		ui.ColorizedOutput(ui.ColorWarning, "Expected resources to be purged: %d. Use --dry-run=false to purge these resources.\n", result.TotalAffected)
-		for r, t := range result.AffectedResources {
-			ui.ColorizedOutput(ui.ColorWarning, "\t%s: %d resources\n\n", r, t)
+		for _, r := range result.Resources() {
+			ui.ColorizedOutput(ui.ColorWarning, "\t%s: %d resources\n\n", r, result.AffectedResources[r])
 		}
 	}
 
 	if len(diags) > 0 {
-		printDiagnostics("", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+		printDiagnostics("Purge", "", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 		return diags
 	} else {
 		ui.ColorizedOutput(ui.ColorProgress, "Purge for providers %s was successful\n\n", providers)

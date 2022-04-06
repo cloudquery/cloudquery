@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -34,6 +35,15 @@ type PurgeProviderDataResult struct {
 	TotalAffected int
 	// AffectedResources is all tables that have one or more resources affected
 	AffectedResources map[string]int
+}
+
+func (p PurgeProviderDataResult) Resources() []string {
+	r := make([]string, 0, len(p.AffectedResources))
+	for rn := range p.AffectedResources {
+		r = append(r, rn)
+	}
+	sort.Strings(r)
+	return r
 }
 
 // PurgeProviderData purges resources that were not updated recently, if dry run is set to true, no resources will be removed.

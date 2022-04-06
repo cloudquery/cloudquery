@@ -15,7 +15,7 @@ func printFetchResponse(summary *client.FetchResponse, redactDiags, verbose bool
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
 		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics(pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags, verbose)
+			printDiagnostics("Fetch", pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags, verbose)
 			continue
 		}
 		if len(pfs.PartialFetchErrors) == 0 {
@@ -41,7 +41,7 @@ func printFetchResponse(summary *client.FetchResponse, redactDiags, verbose bool
 	}
 }
 
-func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags, verbose bool) {
+func printDiagnostics(header, providerName string, diags diag.Diagnostics, redactDiags, verbose bool) {
 	if redactDiags {
 		diags = diags.Redacted()
 	}
@@ -62,7 +62,7 @@ func printDiagnostics(providerName string, diags diag.Diagnostics, redactDiags, 
 	// sort diagnostics by severity/type
 	sort.Sort(diags)
 
-	ui.ColorizedOutput(ui.ColorHeader, "Fetch Diagnostics for provider %s:\n\n", providerName)
+	ui.ColorizedOutput(ui.ColorHeader, "%s Diagnostics for provider %s:\n\n", header, providerName)
 	for _, d := range diags {
 		desc := d.Description()
 		switch d.Severity() {
