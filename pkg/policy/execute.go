@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
+	"github.com/spf13/viper"
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
@@ -136,8 +137,11 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
-	if err := e.checkFetches(ctx, policy.Config); err != nil {
-		return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` before running policy", policy.Name, err)
+
+	if !viper.GetBool("disable-fetch-check") {
+		if err := e.checkFetches(ctx, policy.Config); err != nil {
+			return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` before running policy", policy.Name, err)
+		}
 	}
 
 	for _, p := range policy.Policies {

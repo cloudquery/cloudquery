@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const policyRunHelpMsg = "Executes a policy on CloudQuery database"
@@ -47,6 +48,10 @@ func init() {
 	flags := policyRunCmd.Flags()
 	flags.StringVar(&outputDir, "output-dir", "", "Generates a new file for each policy at the given dir with the output")
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
+	flags.Bool("disable-fetch-check", false, "Disable checking if a respective fetch happened before running policies")
+
+	_ = viper.BindPFlag("disable-fetch-check", flags.Lookup("disable-fetch-check"))
+
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyRunCmd)
 }
