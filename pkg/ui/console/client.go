@@ -43,7 +43,7 @@ import (
 type Client struct {
 	c       *client.Client
 	cfg     *config.Config
-	updater *Progress
+	updater ui.Progress
 }
 
 func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
@@ -62,7 +62,7 @@ func CreateClient(ctx context.Context, configPath string, configMutator func(*co
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
-	var progressUpdater *Progress
+	var progressUpdater ui.Progress
 	if ui.DoProgress() {
 		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
@@ -93,7 +93,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 }
 
 func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, error) {
-	var progressUpdater *Progress
+	var progressUpdater ui.Progress
 	if ui.DoProgress() {
 		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
@@ -156,7 +156,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		return err
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
-	var fetchProgress *Progress
+	var fetchProgress ui.Progress
 	var fetchCallback client.FetchUpdateCallback
 
 	if ui.DoProgress() {
@@ -249,7 +249,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
-	var policyRunProgress *Progress
+	var policyRunProgress ui.Progress
 	var policyRunCallback policy.UpdateCallback
 
 	// if we are running in a terminal, build the progress bar
