@@ -72,8 +72,9 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 }
 
 func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Command, args []string, f func(context.Context, *console.Client, *cobra.Command, []string) error) error {
-	cfgPath := viper.GetString("configPath")
+	logInvocationParams(cmd, args)
 
+	cfgPath := viper.GetString("configPath")
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 	var c *console.Client
 

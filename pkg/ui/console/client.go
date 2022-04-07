@@ -43,7 +43,7 @@ import (
 type Client struct {
 	c       *client.Client
 	cfg     *config.Config
-	updater *Progress
+	updater ui.Progress
 }
 
 func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
@@ -62,16 +62,17 @@ func CreateClient(ctx context.Context, configPath string, configMutator func(*co
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
-	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-	})
+	var progressUpdater ui.Progress
+	if ui.DoProgress() {
+		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
+			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+		})
+	}
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
 	opts = append(opts, func(c *client.Client) {
-		if ui.IsTerminal() {
-			c.HubProgressUpdater = progressUpdater
-		}
+		c.HubProgressUpdater = progressUpdater
 		c.Providers = cfg.CloudQuery.Providers
 		c.NoVerify = viper.GetBool("no-verify")
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
@@ -92,15 +93,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 }
 
 func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, error) {
-	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-	})
+	var progressUpdater ui.Progress
+	if ui.DoProgress() {
+		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
+			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+		})
+	}
 	opts = append(opts, func(c *client.Client) {
-		if ui.IsTerminal() {
-			c.HubProgressUpdater = progressUpdater
-			c.PluginDirectory = "./.cq/providers"
-			c.PolicyDirectory = "./.cq/policies"
-		}
+		c.HubProgressUpdater = progressUpdater
+		c.PluginDirectory = "./.cq/providers"
+		c.PolicyDirectory = "./.cq/policies"
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -125,13 +127,11 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.DownloadProviders(ctx)
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 500 milliseconds for progress refresh
-	if ui.IsTerminal() {
-		time.Sleep(500 * time.Millisecond)
+	if c.updater != nil {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
@@ -156,10 +156,10 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		return err
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
-	var fetchProgress *Progress
+	var fetchProgress ui.Progress
 	var fetchCallback client.FetchUpdateCallback
 
-	if ui.IsTerminal() {
+	if ui.DoProgress() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
@@ -175,11 +175,11 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		}
 	}
 
-	if ui.IsTerminal() && fetchProgress != nil {
+	if fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
-		printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	}
+	printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 
 	if response == nil {
 		ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
@@ -215,13 +215,11 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
 	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
-	if ui.IsTerminal() {
-		time.Sleep(300 * time.Millisecond)
+	if c.updater != nil {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
@@ -251,11 +249,11 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
-	var policyRunProgress *Progress
+	var policyRunProgress ui.Progress
 	var policyRunCallback policy.UpdateCallback
 
 	// if we are running in a terminal, build the progress bar
-	if ui.IsTerminal() {
+	if ui.DoProgress() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
@@ -266,18 +264,16 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	results, err := c.c.RunPolicies(ctx, req)
 
-	if ui.IsTerminal() && policyRunProgress != nil {
+	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
-		// sleep some extra 500 milliseconds for progress refresh
-		time.Sleep(500 * time.Millisecond)
 		policyRunProgress.Wait()
-		if !noResults {
-			printPolicyResponse(results)
-		}
+	}
+	if !noResults {
+		printPolicyResponse(results)
 	}
 
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
 		return err
 	}
@@ -365,7 +361,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
 		return err
 	} else if out == nil {

@@ -5,15 +5,15 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
-
-	"github.com/thoas/go-funk"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 // This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
@@ -163,5 +163,26 @@ func initLogging() {
 	if funk.ContainsString(os.Args, "completion") {
 		return
 	}
+	if !ui.IsTerminal() {
+		loggerConfig.ConsoleLoggingEnabled = true // always true when no terminal
+	}
+
 	zerolog.Logger = logging.Configure(loggerConfig)
+}
+
+func logInvocationParams(cmd *cobra.Command, args []string) {
+	l := zerolog.Info().Str("core_version", client.Version)
+	rootCmd.Flags().Visit(func(f *pflag.Flag) {
+		if f.Name == "dsn" {
+			l = l.Str("pflag:"+f.Name, "(redacted)")
+			return
+		}
+
+		l = l.Str("pflag:"+f.Name, f.Value.String())
+	})
+	cmd.Flags().Visit(func(f *pflag.Flag) {
+		l = l.Str("flag:"+f.Name, f.Value.String())
+	})
+
+	l.Str("command", cmd.CommandPath()).Strs("args", args).Msg("Invocation parameters")
 }

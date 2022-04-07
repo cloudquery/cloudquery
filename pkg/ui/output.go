@@ -1,9 +1,11 @@
 package ui
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
@@ -15,19 +17,33 @@ import (
 // ColorizedOutput outputs a colored message directly to the terminal.
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
-	if !IsTerminal() {
+	if viper.GetBool("enable-console-log") {
 		// Print output to log
-		log.Info().Msgf(strings.ReplaceAll(msg, "\n", ""), values...)
+		if logMsg := strings.ReplaceAll(msg, "\n", ""); logMsg != "" {
+			log.Info().Msgf(logMsg, values...)
+		}
 		return
 	}
 	_, _ = c.Printf(msg, values...)
 }
 
 func IsTerminal() bool {
-	if viper.GetBool("enable-console-log") {
-		return false
-	}
 	return isatty.IsTerminal(os.Stdout.Fd()) && term.IsTerminal(int(os.Stdout.Fd()))
+}
+
+func DoProgress() bool {
+	return IsTerminal() && !viper.GetBool("enable-console-log")
+}
+
+func SleepBeforeError(ctx context.Context) {
+	if !IsTerminal() {
+		return
+	}
+
+	select {
+	case <-ctx.Done():
+	case <-time.After(100 * time.Millisecond):
+	}
 }
 
 func Colorize(c *color.Color, noColor bool, msg string, values ...interface{}) string {

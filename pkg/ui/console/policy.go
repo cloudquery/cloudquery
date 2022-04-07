@@ -69,7 +69,7 @@ func getNestedPolicyExample(p *policy.Policy, policyPath string) string {
 }
 
 func printPolicyResponse(results []*policy.ExecutionResult) {
-	if results == nil {
+	if len(results) == 0 {
 		return
 	}
 	for _, execResult := range results {
