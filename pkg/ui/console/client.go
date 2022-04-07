@@ -125,13 +125,11 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	err := c.c.DownloadProviders(ctx)
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 500 milliseconds for progress refresh
-	if ui.IsTerminal() {
-		time.Sleep(500 * time.Millisecond)
+	if c.updater != nil {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
@@ -175,11 +173,11 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		}
 	}
 
-	if ui.IsTerminal() && fetchProgress != nil {
+	if fetchProgress != nil {
 		fetchProgress.MarkAllDone()
 		fetchProgress.Wait()
-		printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	}
+	printFetchResponse(response, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 
 	if response == nil {
 		ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
@@ -215,13 +213,11 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
 	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
 		return err
 	}
-	// sleep some extra 300 milliseconds for progress refresh
-	if ui.IsTerminal() {
-		time.Sleep(300 * time.Millisecond)
+	if c.updater != nil {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
@@ -266,18 +262,16 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	results, err := c.c.RunPolicies(ctx, req)
 
-	if ui.IsTerminal() && policyRunProgress != nil {
+	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
-		// sleep some extra 500 milliseconds for progress refresh
-		time.Sleep(500 * time.Millisecond)
 		policyRunProgress.Wait()
-		if !noResults {
-			printPolicyResponse(results)
-		}
+	}
+	if !noResults {
+		printPolicyResponse(results)
 	}
 
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
 		return err
 	}
@@ -365,7 +359,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	}
 	out, err := c.c.ExecuteModule(ctx, runReq)
 	if err != nil {
-		time.Sleep(100 * time.Millisecond)
+		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
 		return err
 	} else if out == nil {

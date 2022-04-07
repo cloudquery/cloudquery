@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/thoas/go-funk"
 
@@ -163,5 +164,9 @@ func initLogging() {
 	if funk.ContainsString(os.Args, "completion") {
 		return
 	}
+	if !ui.IsTerminal() {
+		loggerConfig.ConsoleLoggingEnabled = true // always true when no terminal
+	}
+
 	zerolog.Logger = logging.Configure(loggerConfig)
 }

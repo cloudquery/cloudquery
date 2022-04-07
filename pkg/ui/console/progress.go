@@ -147,7 +147,7 @@ func (u *Progress) AttachReader(name string, data io.Reader) io.Reader {
 }
 
 func (u *Progress) Wait() {
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(600 * time.Millisecond)
 	u.p.Wait()
 	fmt.Println()
 }
@@ -168,7 +168,9 @@ func (u *Progress) AbortAll() {
 	for _, b := range u.bars {
 		b.b.Abort(true)
 	}
-	u.Wait()
+	time.Sleep(100 * time.Millisecond)
+	u.p.Wait()
+	fmt.Println()
 }
 
 func (u *Progress) MarkAllDone() {
