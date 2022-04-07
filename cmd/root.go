@@ -171,7 +171,7 @@ func initLogging() {
 }
 
 func logInvocationParams(cmd *cobra.Command, args []string) {
-	l := zerolog.Info()
+	l := zerolog.Info().Str("core_version", client.Version)
 	rootCmd.Flags().Visit(func(f *pflag.Flag) {
 		if f.Name == "dsn" {
 			l = l.Str("pflag:"+f.Name, "(redacted)")
