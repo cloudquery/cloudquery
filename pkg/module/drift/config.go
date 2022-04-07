@@ -8,7 +8,6 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 )
 
@@ -26,12 +25,9 @@ type ProviderConfig struct {
 
 	Name            string                     `hcl:"name,label"`
 	Resources       map[string]*ResourceConfig `hcl:"resource,block"`
-	Version         string                     `hcl:"version,optional"`
 	IgnoreResources ResourceSelectors          `hcl:"ignore_resources,optional"`
 	CheckResources  ResourceSelectors          `hcl:"check_resources,optional"`
 	AccountIDs      []string                   `hcl:"account_ids,optional"`
-
-	versionConstraints version.Constraints
 }
 
 type ResourceConfig struct {
@@ -413,35 +409,11 @@ func removeIgnored(list []string, ignored []string) []string {
 	return list[:idx]
 }
 
-// applyProvider tries to apply the given config for the given provider, trying to match provider name and version constraints.
+// applyProvider tries to apply the given config for the given provider.
 // Returns true if the given config is valid for the given provider and cfg is changed to resolve macros and acl processing
 func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
-	}
-
-	if len(cfg.versionConstraints) > 0 {
-		pver, err := version.NewSemver(p.Version)
-		if err == nil {
-			if pr := pver.Prerelease(); pr != "" && strings.HasPrefix(pr, "SNAPSHOT") {
-				// re-parse without prerelease info
-				v := strings.SplitN(p.Version, "-", 2)
-				pver, err = version.NewVersion(v[0])
-			}
-		}
-		if err != nil {
-			return false, []*hcl.Diagnostic{
-				{
-					Severity: hcl.DiagError,
-					Summary:  `Invalid provider version`,
-					Detail:   fmt.Sprintf("could not parse provider version %q: %v", p.Version, err),
-				},
-			}
-		}
-		if !cfg.versionConstraints.Check(pver) {
-			d.logger.Warn("provider is blocked by constraint", "provider", p.Name+"@"+p.Version, "constraint", cfg.Version)
-			return false, nil // not the correct provider: versions don't match
-		}
 	}
 
 	var diags hcl.Diagnostics

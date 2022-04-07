@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclparse"
@@ -132,15 +131,6 @@ func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnos
 					})
 					continue
 				}
-				if prov.Version != "" {
-					diags = append(diags, &hcl.Diagnostic{
-						Severity: hcl.DiagError,
-						Summary:  `Invalid attribute`,
-						Detail:   `version attribute is only valid for non-"*" providers`,
-						Subject:  &block.DefRange,
-					})
-					continue
-				}
 				if len(prov.AccountIDs) > 0 {
 					diags = append(diags, &hcl.Diagnostic{
 						Severity: hcl.DiagError,
@@ -153,20 +143,6 @@ func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnos
 
 				baseConfig.WildProvider = prov
 				continue
-			}
-
-			if prov.Version != "" {
-				var err error
-				prov.versionConstraints, err = version.NewConstraint(prov.Version)
-				if err != nil {
-					diags = append(diags, &hcl.Diagnostic{
-						Severity: hcl.DiagError,
-						Summary:  `Invalid attribute`,
-						Detail:   fmt.Sprintf(`version attribute is invalid: %v`, err),
-						Subject:  &block.DefRange,
-					})
-					continue
-				}
 			}
 
 			baseConfig.Providers = append(baseConfig.Providers, prov)
@@ -211,10 +187,6 @@ var (
 			},
 		},
 		Attributes: []hcl.AttributeSchema{
-			{
-				Name:     "version", // only valid for non-"*" providers
-				Required: false,
-			},
 			{
 				Name:     "ignore_resources",
 				Required: false,
@@ -320,9 +292,6 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	prov := &ProviderConfig{
 		Name:      b.Labels[0],
 		Resources: make(map[string]*ResourceConfig),
-	}
-	if versionAttr, ok := content.Attributes["version"]; ok {
-		diags = append(diags, gohcl.DecodeExpression(versionAttr.Expr, ctx, &prov.Version)...)
 	}
 	if attr, ok := content.Attributes["ignore_resources"]; ok {
 		var (
