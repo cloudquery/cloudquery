@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -357,8 +356,7 @@ func copyMap(in, out interface{}) {
 
 func TestApplyProvider(t *testing.T) {
 	prov := ProviderConfig{
-		Name:    "aws",
-		Version: ">=1.5.0",
+		Name: "aws",
 		Resources: map[string]*ResourceConfig{
 			"test1": {
 				IAC: map[iacProvider]*IACConfig{
@@ -376,9 +374,6 @@ func TestApplyProvider(t *testing.T) {
 			},
 		},
 	}
-	var err error
-	prov.versionConstraints, err = version.NewConstraint(prov.Version)
-	assert.NoError(t, err)
 
 	modify := func(p ProviderConfig, fn func(*ProviderConfig)) ProviderConfig {
 		var resCopy map[string]*ResourceConfig
@@ -414,17 +409,7 @@ func TestApplyProvider(t *testing.T) {
 			expectedError:  false,
 		},
 		{
-			name: "Old version",
-			cfg:  prov,
-			schema: &cqproto.GetProviderSchemaResponse{
-				Name:    "aws",
-				Version: "1.0.0",
-			},
-			expectedResult: false,
-			expectedError:  false,
-		},
-		{
-			name: "New version",
+			name: "Matching name",
 			cfg:  prov,
 			schema: &cqproto.GetProviderSchemaResponse{
 				Name:    "aws",
@@ -585,8 +570,7 @@ func TestApplyProvider(t *testing.T) {
 
 func TestSubResourceLookup(t *testing.T) {
 	prov := ProviderConfig{
-		Name:    "aws",
-		Version: ">=1.5.0",
+		Name: "aws",
 		Resources: map[string]*ResourceConfig{
 			"test1": {
 				IAC: map[iacProvider]*IACConfig{
@@ -621,9 +605,6 @@ func TestSubResourceLookup(t *testing.T) {
 			},
 		},
 	}
-	var err error
-	prov.versionConstraints, err = version.NewConstraint(prov.Version)
-	assert.NoError(t, err)
 
 	d := &Drift{
 		logger: hclog.NewNullLogger(),

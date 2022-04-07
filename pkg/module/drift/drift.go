@@ -401,14 +401,7 @@ func handleSubresource(logger hclog.Logger, sel *goqu.SelectDataset, pr *travers
 	parentCounter := 0
 	parentTableName := "parent"
 	childTableName := "c"
-	var res *ResourceConfig
 	for pr.Parent != nil {
-		res = resources[pr.Name]
-		if res == nil {
-			logger.Warn("Found parent but no resourceConfig", "table", pr.Table.Name)
-			return sel // FIXME we're skipping the account_id filter here by returning
-		}
-
 		if parentCounter > 0 {
 			parentTableName = fmt.Sprintf("parent%d", parentCounter)
 		}
