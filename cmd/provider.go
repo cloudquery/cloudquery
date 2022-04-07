@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
@@ -96,9 +97,26 @@ var (
 			return c.DownloadProviders(ctx)
 		}),
 	}
+
+	lastUpdate                 time.Duration
+	dryRun                     bool
+	providerRemoveStaleHelpMsg = "Remove stale resources from one or more providers in database"
+	providerRemoveStaleCmd     = &cobra.Command{
+		Use:   "purge [provider]",
+		Short: providerRemoveStaleHelpMsg,
+		Long:  providerRemoveStaleHelpMsg,
+		Args:  cobra.MaximumNArgs(1),
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+			return c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+		}),
+	}
 )
 
 func init() {
-	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd)
+	providerRemoveStaleCmd.Flags().DurationVar(&lastUpdate, "last-update", time.Hour*1,
+		"last-update is the duration from current time we want to remove resources from the database. "+
+			"For example 24h will remove all resources that were not update in last 24 hours. Duration is a string with optional unit suffix such as \"2h45m\" or \"7d\"")
+	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
+	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
 	rootCmd.AddCommand(providerCmd)
 }

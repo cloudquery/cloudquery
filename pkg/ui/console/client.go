@@ -539,6 +539,33 @@ func (c Client) BuildAllProviderTables(ctx context.Context) error {
 	return nil
 }
 
+func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, dryRun bool, providers []string) error {
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
+	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.PurgeProviderDataOptions{
+		Providers:  providers,
+		LastUpdate: lastUpdate,
+		DryRun:     dryRun,
+	})
+
+	if dryRun && !diags.HasErrors() {
+		ui.ColorizedOutput(ui.ColorWarning, "Expected resources to be purged: %d. Use --dry-run=false to purge these resources.\n", result.TotalAffected)
+		for _, r := range result.Resources() {
+			ui.ColorizedOutput(ui.ColorWarning, "\t%s: %d resources\n\n", r, result.AffectedResources[r])
+		}
+	}
+
+	if len(diags) > 0 {
+		printDiagnostics("Purge", "", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+		return diags
+	} else {
+		ui.ColorizedOutput(ui.ColorProgress, "Purge for providers %s was successful\n\n", providers)
+	}
+	return nil
+}
+
 func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
 	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {

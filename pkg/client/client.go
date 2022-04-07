@@ -587,35 +587,20 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 	return response, nil
 }
 
-type ProviderSchema struct {
-	*cqproto.GetProviderSchemaResponse
-
-	ProtocolVersion int
-}
-
 func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
 	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
 	}
-	defer func() {
-		if providerPlugin.Version() == plugin.Unmanaged {
-			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
-			return
-		}
-		if err := c.Manager.KillProvider(providerName); err != nil {
-			c.Logger.Warn("failed to kill provider", "provider", providerName)
-		}
-	}()
+	defer c.Manager.ClosePlugin(providerPlugin)
 
-	schema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	providerSchema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
 		return nil, err
 	}
-
 	return &ProviderSchema{
-		GetProviderSchemaResponse: schema,
+		GetProviderSchemaResponse: providerSchema,
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),
 	}, nil
 }
@@ -626,15 +611,7 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
 	}
-	defer func() {
-		if providerPlugin.Version() == plugin.Unmanaged {
-			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
-			return
-		}
-		if err := c.Manager.KillProvider(providerName); err != nil {
-			c.Logger.Warn("failed to close provider", "provider", providerName)
-		}
-	}()
+	defer c.Manager.ClosePlugin(providerPlugin)
 	return providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 }
 
@@ -644,16 +621,7 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
 	}
-	defer func() {
-		if providerPlugin.Version() == plugin.Unmanaged {
-			c.Logger.Warn("Not closing unmanaged provider", "provider", providerName)
-			return
-		}
-		if err := c.Manager.KillProvider(providerName); err != nil {
-			c.Logger.Warn("failed to kill provider", "provider", providerName)
-		}
-	}()
-
+	defer c.Manager.ClosePlugin(providerPlugin)
 	inf, err := providerPlugin.Provider().GetModuleInfo(ctx, &req)
 	if err != nil && strings.Contains(err.Error(), `unknown method GetModuleInfo`) {
 		return &cqproto.GetModuleResponse{}, nil
