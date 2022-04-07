@@ -22,12 +22,17 @@ func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 		if logMsg := strings.ReplaceAll(msg, "\n", ""); logMsg != "" {
 			log.Info().Msgf(logMsg, values...)
 		}
+		return
 	}
 	_, _ = c.Printf(msg, values...)
 }
 
 func IsTerminal() bool {
 	return isatty.IsTerminal(os.Stdout.Fd()) && term.IsTerminal(int(os.Stdout.Fd()))
+}
+
+func DoProgress() bool {
+	return IsTerminal() && !viper.GetBool("enable-console-log")
 }
 
 func SleepBeforeError(ctx context.Context) {

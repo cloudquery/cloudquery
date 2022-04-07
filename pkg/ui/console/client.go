@@ -62,16 +62,17 @@ func CreateClient(ctx context.Context, configPath string, configMutator func(*co
 }
 
 func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...client.Option) (*Client, error) {
-	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-	})
+	var progressUpdater *Progress
+	if ui.DoProgress() {
+		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
+			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+		})
+	}
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
 	opts = append(opts, func(c *client.Client) {
-		if ui.IsTerminal() {
-			c.HubProgressUpdater = progressUpdater
-		}
+		c.HubProgressUpdater = progressUpdater
 		c.Providers = cfg.CloudQuery.Providers
 		c.NoVerify = viper.GetBool("no-verify")
 		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
@@ -92,15 +93,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 }
 
 func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, error) {
-	progressUpdater := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-	})
+	var progressUpdater *Progress
+	if ui.DoProgress() {
+		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
+			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+		})
+	}
 	opts = append(opts, func(c *client.Client) {
-		if ui.IsTerminal() {
-			c.HubProgressUpdater = progressUpdater
-			c.PluginDirectory = "./.cq/providers"
-			c.PolicyDirectory = "./.cq/policies"
-		}
+		c.HubProgressUpdater = progressUpdater
+		c.PluginDirectory = "./.cq/providers"
+		c.PolicyDirectory = "./.cq/policies"
 	})
 	c, err := client.New(ctx, opts...)
 	if err != nil {
@@ -157,7 +159,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	var fetchProgress *Progress
 	var fetchCallback client.FetchUpdateCallback
 
-	if ui.IsTerminal() {
+	if ui.DoProgress() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
 	request := client.FetchRequest{
@@ -251,7 +253,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	var policyRunCallback policy.UpdateCallback
 
 	// if we are running in a terminal, build the progress bar
-	if ui.IsTerminal() {
+	if ui.DoProgress() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
