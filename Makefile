@@ -6,6 +6,16 @@ install-cq:
 	curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_${ARCH} -o cloudquery
 	chmod a+x cloudquery
 
+# start a timescale db running in a local container
+.PHONY: ts-start
+ts-start:
+	docker run -p 5433:5432 -e POSTGRES_PASSWORD=pass -d timescale/timescaledb:latest-pg14
+
+# stop the timescale db running in a local container
+.PHONY: ts-stop
+ts-stop:
+	docker stop $(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
+
 # start a running docker container
 .PHONY: start-pg
 start-pg:
