@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cq-provider-aws/resources/services/applicationautoscaling"
 	"github.com/cloudquery/cq-provider-aws/resources/services/autoscaling"
+	"github.com/cloudquery/cq-provider-aws/resources/services/backup"
 	"github.com/cloudquery/cq-provider-aws/resources/services/cloudformation"
 	"github.com/cloudquery/cq-provider-aws/resources/services/cloudfront"
 	"github.com/cloudquery/cq-provider-aws/resources/services/cloudtrail"
@@ -93,6 +94,8 @@ func Provider() *provider.Provider {
 			"autoscaling.groups":                    autoscaling.AutoscalingGroups(),
 			"autoscaling.launch_configurations":     autoscaling.AutoscalingLaunchConfigurations(),
 			"aws.regions":                           ec2.AwsRegions(),
+			"backup.plans":                          backup.Plans(),
+			"backup.vaults":                         backup.Vaults(),
 			"cloudformation.stacks":                 cloudformation.Stacks(),
 			"cloudfront.cache_policies":             cloudfront.CloudfrontCachePolicies(),
 			"cloudfront.distributions":              cloudfront.CloudfrontDistributions(),
