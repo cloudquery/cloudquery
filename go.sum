@@ -179,6 +179,8 @@ github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2 h1:GJsq/y3pe
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2/go.mod h1:JRrNjpM1qIFI25ikEvad6g8Q5qw0B1S8G0di/9kU7DY=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0 h1:7dqTi+BP80MdTWZdnYDJwkl7t/4fD51+uuTPXZ0LhE0=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0/go.mod h1:F9sOgLk8RCWpkJ9DgH5LQCDqHnJzW1e28ShymxCM7Cw=
+github.com/aws/aws-sdk-go-v2/service/backup v1.15.4 h1:PVlUfQeHFHPRuOvhLzUZtN87pW+PS3nEN26HafySdmU=
+github.com/aws/aws-sdk-go-v2/service/backup v1.15.4/go.mod h1:DWsfYG0l7yjp5J93bZgX0/CfAgq8flHHtaVlgZL1z4w=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.20.0 h1:3FtUNwTg7GSvSwuZzLqOwGaCB1+cARw+Q00bwolCC60=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.20.0/go.mod h1:ap2TY1qPxT8TlKoBgG+FYAr/JYJrYuDMmTyZfajTsX8=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.3.0 h1:8fOeCj6bb2JtkWvxP6McS4RR/CV20IG4JzZWYz4Z12E=
