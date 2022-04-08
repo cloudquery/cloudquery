@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS aws_codepipeline_pipeline_stage_actions;
 DROP TABLE IF EXISTS aws_codepipeline_pipeline_stages;
 DROP TABLE IF EXISTS aws_codepipeline_pipelines;
 
--- Resource: sns.subscriptions
-ALTER TABLE IF EXISTS aws_sns_subscriptions DROP CONSTRAINT aws_sns_subscriptions_pk;
-ALTER TABLE IF EXISTS aws_sns_subscriptions ADD CONSTRAINT aws_sns_subscriptions_pk PRIMARY KEY (cq_fetch_date,arn);
+-- Resource: iam.virtual_mfa_devices
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (cq_fetch_date,cq_id);
 
 -- Resource: mq.brokers
 ALTER TABLE IF EXISTS aws_mq_brokers DROP CONSTRAINT aws_mq_brokers_pk;
@@ -19,3 +19,7 @@ ALTER TABLE IF EXISTS aws_mq_broker_configurations ADD CONSTRAINT aws_mq_broker_
 DROP TABLE IF EXISTS aws_mq_broker_configuration_revisions;
 ALTER TABLE IF EXISTS aws_mq_broker_users DROP CONSTRAINT aws_mq_broker_users_pk;
 ALTER TABLE IF EXISTS aws_mq_broker_users ADD CONSTRAINT aws_mq_broker_users_pk PRIMARY KEY (broker_cq_id,username);
+
+-- Resource: sns.subscriptions
+ALTER TABLE IF EXISTS aws_sns_subscriptions DROP CONSTRAINT aws_sns_subscriptions_pk;
+ALTER TABLE IF EXISTS aws_sns_subscriptions ADD CONSTRAINT aws_sns_subscriptions_pk PRIMARY KEY (cq_fetch_date,arn);

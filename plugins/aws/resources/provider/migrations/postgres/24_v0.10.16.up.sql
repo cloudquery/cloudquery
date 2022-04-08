@@ -87,3 +87,6 @@ ALTER TABLE IF EXISTS aws_mq_broker_users
 ALTER TABLE IF EXISTS aws_mq_broker_users
     ADD CONSTRAINT aws_mq_broker_users_pk PRIMARY KEY (cq_id);
 
+-- Resource: iam.virtual_mfa_devices
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (serial_number,enable_date);

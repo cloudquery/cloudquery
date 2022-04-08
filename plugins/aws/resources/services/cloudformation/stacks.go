@@ -145,6 +145,7 @@ func Stacks() *schema.Table {
 				Name:          "rollback_configuration_rollback_triggers",
 				Description:   "The triggers to monitor during stack creation or update actions",
 				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("RollbackConfiguration.RollbackTriggers"),
 				IgnoreInTests: true,
 			},
 			{
