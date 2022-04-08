@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS "aws_codepipeline_pipeline_stage_actions" (
 CREATE INDEX ON aws_codepipeline_pipeline_stage_actions (cq_fetch_date, pipeline_stage_cq_id);
 SELECT setup_tsdb_child('aws_codepipeline_pipeline_stage_actions', 'pipeline_stage_cq_id', 'aws_codepipeline_pipeline_stages', 'cq_id');
 
--- Resource: sns.subscriptions
-ALTER TABLE IF EXISTS aws_sns_subscriptions DROP CONSTRAINT aws_sns_subscriptions_pk;
-ALTER TABLE IF EXISTS aws_sns_subscriptions ADD CONSTRAINT aws_sns_subscriptions_pk PRIMARY KEY (cq_fetch_date,endpoint,owner,protocol,arn,topic_arn);
+-- Resource: iam.virtual_mfa_devices
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (cq_fetch_date,serial_number,enable_date);
 
 -- Resource: mq.brokers
 ALTER TABLE IF EXISTS aws_mq_brokers
@@ -96,4 +96,6 @@ ALTER TABLE IF EXISTS aws_mq_broker_users
 ALTER TABLE IF EXISTS aws_mq_broker_users
     ADD CONSTRAINT aws_mq_broker_users_pk PRIMARY KEY (cq_fetch_date, cq_id);
 
-
+-- Resource: sns.subscriptions
+ALTER TABLE IF EXISTS aws_sns_subscriptions DROP CONSTRAINT aws_sns_subscriptions_pk;
+ALTER TABLE IF EXISTS aws_sns_subscriptions ADD CONSTRAINT aws_sns_subscriptions_pk PRIMARY KEY (cq_fetch_date,endpoint,owner,protocol,arn,topic_arn);
