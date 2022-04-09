@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+	"github.com/google/uuid"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
-	uuid "github.com/satori/go.uuid"
 
 	"github.com/hashicorp/go-hclog"
 )
@@ -61,7 +61,7 @@ func NewManager(policyDir string, pool LowLevelQueryExecer, logger hclog.Logger)
 //
 func createSnapshotPath(directory, queryName string) (string, error) {
 	path := strings.TrimSuffix(directory, "/")
-	cleanedPath := filepath.Join(path, queryName, "tests", uuid.NewV4().String())
+	cleanedPath := filepath.Join(path, queryName, "tests", uuid.NewString())
 
 	err := os.MkdirAll(cleanedPath, os.ModePerm)
 	if err != nil {
