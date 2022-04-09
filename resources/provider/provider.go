@@ -138,7 +138,7 @@ func Provider() *provider.Provider {
 			"ec2.vpcs":                              ec2.Ec2Vpcs(),
 			"ec2.vpn_gateways":                      ec2.Ec2VpnGateways(),
 			"ecr.repositories":                      ecr.EcrRepositories(),
-			"ecs.clusters":                          ecs.EcsClusters(),
+			"ecs.clusters":                          ecs.Clusters(),
 			"ecs.task_definitions":                  ecs.EcsTaskDefinitions(),
 			"efs.filesystems":                       efs.EfsFilesystems(),
 			"eks.clusters":                          eks.EksClusters(),

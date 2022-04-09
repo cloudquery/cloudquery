@@ -115,6 +115,26 @@ func (mr *MockEcsClientMockRecorder) DescribeTaskDefinition(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTaskDefinition", reflect.TypeOf((*MockEcsClient)(nil).DescribeTaskDefinition), varargs...)
 }
 
+// DescribeTasks mocks base method.
+func (m *MockEcsClient) DescribeTasks(arg0 context.Context, arg1 *ecs.DescribeTasksInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeTasksOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTasks", varargs...)
+	ret0, _ := ret[0].(*ecs.DescribeTasksOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTasks indicates an expected call of DescribeTasks.
+func (mr *MockEcsClientMockRecorder) DescribeTasks(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTasks", reflect.TypeOf((*MockEcsClient)(nil).DescribeTasks), varargs...)
+}
+
 // ListClusters mocks base method.
 func (m *MockEcsClient) ListClusters(arg0 context.Context, arg1 *ecs.ListClustersInput, arg2 ...func(*ecs.Options)) (*ecs.ListClustersOutput, error) {
 	m.ctrl.T.Helper()
@@ -213,4 +233,24 @@ func (mr *MockEcsClientMockRecorder) ListTaskDefinitions(arg0, arg1 interface{},
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTaskDefinitions", reflect.TypeOf((*MockEcsClient)(nil).ListTaskDefinitions), varargs...)
+}
+
+// ListTasks mocks base method.
+func (m *MockEcsClient) ListTasks(arg0 context.Context, arg1 *ecs.ListTasksInput, arg2 ...func(*ecs.Options)) (*ecs.ListTasksOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTasks", varargs...)
+	ret0, _ := ret[0].(*ecs.ListTasksOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTasks indicates an expected call of ListTasks.
+func (mr *MockEcsClientMockRecorder) ListTasks(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTasks", reflect.TypeOf((*MockEcsClient)(nil).ListTasks), varargs...)
 }

@@ -3,19 +3,19 @@ package ecs
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func EcsClusters() *schema.Table {
+func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ecs_clusters",
-		Description:  "A regional grouping of one or more container instances on which you can run task requests",
+		Description:  "A regional grouping of one or more container instances where you can run task requests",
 		Resolver:     fetchEcsClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ecs"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
@@ -64,14 +64,14 @@ func EcsClusters() *schema.Table {
 			},
 			{
 				Name:          "execute_config_kms_key_id",
-				Description:   "Specify an AWS Key Management Service key ID to encrypt the data between the local client and the container.",
+				Description:   "Specify an Key Management Service key ID to encrypt the data between the local client and the container.",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("Configuration.ExecuteCommandConfiguration.KmsKeyId"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "execute_config_logs_cloud_watch_encryption_enabled",
-				Description: "Whether or not to enable encryption on the CloudWatch logs",
+				Description: "Determines whether to use encryption on the CloudWatch logs",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.CloudWatchEncryptionEnabled"),
 			},
@@ -91,7 +91,7 @@ func EcsClusters() *schema.Table {
 			},
 			{
 				Name:        "execute_config_log_s3_encryption_enabled",
-				Description: "Whether or not to enable encryption on the CloudWatch logs",
+				Description: "Determines whether to use encryption on the S3 logs",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("Configuration.ExecuteCommandConfiguration.LogConfiguration.S3EncryptionEnabled"),
 			},
@@ -112,7 +112,7 @@ func EcsClusters() *schema.Table {
 				Name:        "default_capacity_provider_strategy",
 				Description: "The default capacity provider strategy for the cluster",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEcsClustersDefaultCapacityProviderStrategy,
+				Resolver:    resolveClustersDefaultCapacityProviderStrategy,
 			},
 			{
 				Name:        "pending_tasks_count",
@@ -133,13 +133,13 @@ func EcsClusters() *schema.Table {
 				Name:        "settings",
 				Description: "The settings for the cluster",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEcsClustersSettings,
+				Resolver:    resolveClustersSettings,
 			},
 			{
 				Name:        "statistics",
-				Description: "Additional information about your clusters that are separated by launch type, including:  * runningEC2TasksCount  * RunningFargateTasksCount  * pendingEC2TasksCount  * pendingFargateTasksCount  * activeEC2ServiceCount  * activeFargateServiceCount  * drainingEC2ServiceCount  * drainingFargateServiceCount",
+				Description: "Additional information about your clusters that are separated by launch type. They include the following:  * runningEC2TasksCount  * RunningFargateTasksCount  * pendingEC2TasksCount  * pendingFargateTasksCount  * activeEC2ServiceCount  * activeFargateServiceCount  * drainingEC2ServiceCount  * drainingFargateServiceCount",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEcsClustersStatistics,
+				Resolver:    resolveClustersStatistics,
 			},
 			{
 				Name:        "status",
@@ -150,7 +150,7 @@ func EcsClusters() *schema.Table {
 				Name:        "tags",
 				Description: "The metadata that you apply to the cluster to help you categorize and organize them",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEcsClustersTags,
+				Resolver:    resolveClustersTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -171,7 +171,7 @@ func EcsClusters() *schema.Table {
 						Name:        "details",
 						Description: "Details of the attachment",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEcsClusterAttachmentsDetails,
+						Resolver:    resolveClusterAttachmentsDetails,
 					},
 					{
 						Name:        "id",
@@ -191,6 +191,333 @@ func EcsClusters() *schema.Table {
 				},
 			},
 			{
+				Name:          "aws_ecs_cluster_tasks",
+				Description:   "Details on a task in a cluster.",
+				Resolver:      fetchEcsClusterTasks,
+				IgnoreInTests: true,
+				Columns: []schema.Column{
+					{
+						Name:        "cluster_cq_id",
+						Description: "Unique CloudQuery ID of aws_ecs_clusters table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "attributes",
+						Description: "The attributes of the task",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveClusterTasksAttributes,
+					},
+					{
+						Name:        "availability_zone",
+						Description: "The Availability Zone for the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "capacity_provider_name",
+						Description: "The capacity provider that's associated with the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "cluster_arn",
+						Description: "The ARN of the cluster that hosts the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "connectivity",
+						Description: "The connectivity status of a task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "connectivity_at",
+						Description: "The Unix timestamp for the time when the task last went into CONNECTED status.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "container_instance_arn",
+						Description: "The ARN of the container instances that host the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "cpu",
+						Description: "The number of CPU units used by the task as expressed in a task definition",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "created_at",
+						Description: "The Unix timestamp for the time when the task was created",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "desired_status",
+						Description: "The desired status of the task",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "enable_execute_command",
+						Description: "Determines whether execute command functionality is enabled for this task",
+						Type:        schema.TypeBool,
+					},
+					{
+						Name:        "ephemeral_storage_size_in_gib",
+						Description: "The total amount, in GiB, of ephemeral storage to set for the task",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("EphemeralStorage.SizeInGiB"),
+					},
+					{
+						Name:        "execution_stopped_at",
+						Description: "The Unix timestamp for the time when the task execution stopped.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "group",
+						Description: "The name of the task group that's associated with the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "health_status",
+						Description: "The health status for the task",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "inference_accelerators",
+						Description: "The Elastic Inference accelerator that's associated with the task.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveClusterTasksInferenceAccelerators,
+					},
+					{
+						Name:        "last_status",
+						Description: "The last known status for the task",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "launch_type",
+						Description: "The infrastructure where your task runs on",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "memory",
+						Description: "The amount of memory (in MiB) that the task uses as expressed in a task definition",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "overrides",
+						Description: "One or more container overrides.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveClusterTasksOverrides,
+					},
+					{
+						Name:        "platform_family",
+						Description: "The operating system that your tasks are running on",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "platform_version",
+						Description: "The platform version where your task runs on",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "pull_started_at",
+						Description: "The Unix timestamp for the time when the container image pull began.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "pull_stopped_at",
+						Description: "The Unix timestamp for the time when the container image pull completed.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "started_at",
+						Description: "The Unix timestamp for the time when the task started",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "started_by",
+						Description: "The tag specified when a task is started",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "stop_code",
+						Description: "The stop code indicating why a task was stopped",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "stopped_at",
+						Description: "The Unix timestamp for the time when the task was stopped",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "stopped_reason",
+						Description: "The reason that the task was stopped.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "stopping_at",
+						Description: "The Unix timestamp for the time when the task stops",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "tags",
+						Description: "The metadata that you apply to the task to help you categorize and organize the task",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveClusterTasksTags,
+					},
+					{
+						Name:        "arn",
+						Description: "The Amazon Resource Name (ARN) of the task.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("TaskArn"),
+					},
+					{
+						Name:        "task_definition_arn",
+						Description: "The ARN of the task definition that creates the task.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "version",
+						Description: "The version counter for the task",
+						Type:        schema.TypeBigInt,
+					},
+				},
+				Relations: []*schema.Table{
+					{
+						Name:        "aws_ecs_cluster_task_attachments",
+						Description: "An object representing a container instance or task attachment.",
+						Resolver:    fetchEcsClusterTaskAttachments,
+						Columns: []schema.Column{
+							{
+								Name:        "cluster_task_cq_id",
+								Description: "Unique CloudQuery ID of aws_ecs_cluster_tasks table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "details",
+								Description: "Details of the attachment",
+								Type:        schema.TypeJSON,
+								Resolver:    resolveClusterTaskAttachmentsDetails,
+							},
+							{
+								Name:        "id",
+								Description: "The unique identifier for the attachment.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "status",
+								Description: "The status of the attachment",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "type",
+								Description: "The type of the attachment, such as ElasticNetworkInterface.",
+								Type:        schema.TypeString,
+							},
+						},
+					},
+					{
+						Name:        "aws_ecs_cluster_task_containers",
+						Description: "A Docker container that's part of a task.",
+						Resolver:    fetchEcsClusterTaskContainers,
+						Columns: []schema.Column{
+							{
+								Name:        "cluster_task_cq_id",
+								Description: "Unique CloudQuery ID of aws_ecs_cluster_tasks table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "container_arn",
+								Description: "The Amazon Resource Name (ARN) of the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "cpu",
+								Description: "The number of CPU units set for the container",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "exit_code",
+								Description: "The exit code returned from the container.",
+								Type:        schema.TypeInt,
+							},
+							{
+								Name:        "gpu_ids",
+								Description: "The IDs of each GPU assigned to the container.",
+								Type:        schema.TypeStringArray,
+							},
+							{
+								Name:        "health_status",
+								Description: "The health status of the container",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "image",
+								Description: "The image used for the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "image_digest",
+								Description: "The container image manifest digest",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "last_status",
+								Description: "The last known status of the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "managed_agents",
+								Description: "The details of any Amazon ECS managed agents associated with the container.",
+								Type:        schema.TypeJSON,
+								Resolver:    resolveClusterTaskContainersManagedAgents,
+							},
+							{
+								Name:        "memory",
+								Description: "The hard limit (in MiB) of memory set for the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "memory_reservation",
+								Description: "The soft limit (in MiB) of memory set for the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "name",
+								Description: "The name of the container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "network_bindings",
+								Description: "The network bindings associated with the container.",
+								Type:        schema.TypeJSON,
+								Resolver:    resolveClusterTaskContainersNetworkBindings,
+							},
+							{
+								Name:        "network_interfaces",
+								Description: "The network interfaces associated with the container.",
+								Type:        schema.TypeJSON,
+								Resolver:    resolveClusterTaskContainersNetworkInterfaces,
+							},
+							{
+								Name:        "reason",
+								Description: "A short (255 max characters) human-readable string to provide additional details about a running or stopped container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "runtime_id",
+								Description: "The ID of the Docker container.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "task_arn",
+								Description: "The ARN of the task.",
+								Type:        schema.TypeString,
+							},
+						},
+					},
+				},
+			},
+			{
 				Name:        "aws_ecs_cluster_services",
 				Description: "Details on a service within a cluster",
 				Resolver:    fetchEcsClusterServices,
@@ -203,9 +530,9 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:          "capacity_provider_strategy",
-						Description:   "The capacity provider strategy associated with the service.",
+						Description:   "The capacity provider strategy the service uses",
 						Type:          schema.TypeJSON,
-						Resolver:      resolveEcsClusterServicesCapacityProviderStrategy,
+						Resolver:      resolveClusterServicesCapacityProviderStrategy,
 						IgnoreInTests: true,
 					},
 					{
@@ -215,7 +542,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "created_at",
-						Description: "The Unix timestamp for when the service was created.",
+						Description: "The Unix timestamp for the time when the service was created.",
 						Type:        schema.TypeTimestamp,
 					},
 					{
@@ -225,13 +552,13 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "deployment_configuration_deployment_circuit_breaker_enable",
-						Description: "Whether to enable the deployment circuit breaker logic for the service. ",
+						Description: "Determines whether to use the deployment circuit breaker logic for the service.  This member is required.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("DeploymentConfiguration.DeploymentCircuitBreaker.Enable"),
 					},
 					{
 						Name:        "deployment_configuration_deployment_circuit_breaker_rollback",
-						Description: "Whether to enable Amazon ECS to roll back the service if a service deployment fails",
+						Description: "Determines whether to configure Amazon ECS to roll back the service if a service deployment fails",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("DeploymentConfiguration.DeploymentCircuitBreaker.Rollback"),
 					},
@@ -260,23 +587,24 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "enable_ecs_managed_tags",
-						Description: "Specifies whether to enable Amazon ECS managed tags for the tasks in the service",
+						Description: "Determines whether to use Amazon ECS managed tags for the tasks in the service. For more information, see Tagging Your Amazon ECS Resources (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-using-tags.html) in the Amazon Elastic Container Service Developer Guide.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("EnableECSManagedTags"),
 					},
 					{
 						Name:        "enable_execute_command",
-						Description: "Whether or not the execute command functionality is enabled for the service",
+						Description: "Determines whether the execute command functionality is enabled for the service. If true, the execute command functionality is enabled for all containers in tasks as part of the service.",
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "health_check_grace_period_seconds",
-						Description: "The period of time, in seconds, that the Amazon ECS service scheduler ignores unhealthy Elastic Load Balancing target health checks after a task has first started.",
-						Type:        schema.TypeInt,
+						Name:          "health_check_grace_period_seconds",
+						Description:   "The period of time, in seconds, that the Amazon ECS service scheduler ignores unhealthy Elastic Load Balancing target health checks after a task has first started.",
+						Type:          schema.TypeInt,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "launch_type",
-						Description: "The launch type on which your service is running",
+						Description: "The launch type the service is using",
 						Type:        schema.TypeString,
 					},
 					{
@@ -306,28 +634,34 @@ func EcsClusters() *schema.Table {
 						Name:        "placement_constraints",
 						Description: "The placement constraints for the tasks in the service.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEcsClusterServicesPlacementConstraints,
+						Resolver:    resolveClusterServicesPlacementConstraints,
 					},
 					{
 						Name:        "placement_strategy",
 						Description: "The placement strategy that determines how tasks for the service are placed.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEcsClusterServicesPlacementStrategy,
+						Resolver:    resolveClusterServicesPlacementStrategy,
+					},
+					{
+						Name:          "platform_family",
+						Description:   "The operating system that your tasks in the service run on",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:          "platform_version",
-						Description:   "The platform version on which to run your service",
+						Description:   "The platform version to run your service on",
 						Type:          schema.TypeString,
 						IgnoreInTests: true,
 					},
 					{
 						Name:        "propagate_tags",
-						Description: "Specifies whether to propagate the tags from the task definition or the service to the task",
+						Description: "Determines whether to propagate the tags from the task definition or the service to the task",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "role_arn",
-						Description: "The ARN of the IAM role associated with the service that allows the Amazon ECS container agent to register container instances with an Elastic Load Balancing load balancer.",
+						Description: "The ARN of the IAM role that's associated with the service",
 						Type:        schema.TypeString,
 					},
 					{
@@ -361,7 +695,7 @@ func EcsClusters() *schema.Table {
 						Name:        "tags",
 						Description: "The metadata that you apply to the service to help you categorize and organize them",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEcsClusterServicesTags,
+						Resolver:    resolveClusterServicesTags,
 					},
 					{
 						Name:        "task_definition",
@@ -385,12 +719,12 @@ func EcsClusters() *schema.Table {
 								Name:          "capacity_provider_strategy",
 								Description:   "The capacity provider strategy that the deployment is using.",
 								Type:          schema.TypeJSON,
-								Resolver:      resolveEcsClusterServiceDeploymentsCapacityProviderStrategy,
+								Resolver:      resolveClusterServiceDeploymentsCapacityProviderStrategy,
 								IgnoreInTests: true,
 							},
 							{
 								Name:        "created_at",
-								Description: "The Unix timestamp for when the service deployment was created.",
+								Description: "The Unix timestamp for the time when the service deployment was created.",
 								Type:        schema.TypeTimestamp,
 							},
 							{
@@ -437,14 +771,20 @@ func EcsClusters() *schema.Table {
 								Type:        schema.TypeInt,
 							},
 							{
+								Name:          "platform_family",
+								Description:   "The operating system that your tasks in the service, or tasks are running on",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
+							},
+							{
 								Name:          "platform_version",
-								Description:   "The platform version on which your tasks in the service are running",
+								Description:   "The platform version that your tasks in the service run on",
 								Type:          schema.TypeString,
 								IgnoreInTests: true,
 							},
 							{
 								Name:        "rollout_state",
-								Description: "The rolloutState of a service is only returned for services that use the rolling update (ECS) deployment type that are not behind a Classic Load Balancer",
+								Description: "The rolloutState of a service is only returned for services that use the rolling update (ECS) deployment type that aren't behind a Classic Load Balancer",
 								Type:        schema.TypeString,
 							},
 							{
@@ -469,14 +809,14 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "updated_at",
-								Description: "The Unix timestamp for when the service deployment was last updated.",
+								Description: "The Unix timestamp for the time when the service deployment was last updated.",
 								Type:        schema.TypeTimestamp,
 							},
 						},
 					},
 					{
 						Name:        "aws_ecs_cluster_service_events",
-						Description: "Details on an event associated with a service.",
+						Description: "The details for an event that's associated with a service.",
 						Resolver:    fetchEcsClusterServiceEvents,
 						Columns: []schema.Column{
 							{
@@ -487,12 +827,12 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "created_at",
-								Description: "The Unix timestamp for when the event was triggered.",
+								Description: "The Unix timestamp for the time when the event was triggered.",
 								Type:        schema.TypeTimestamp,
 							},
 							{
 								Name:        "id",
-								Description: "The ID string of the event.",
+								Description: "The ID string for the event.",
 								Type:        schema.TypeString,
 							},
 							{
@@ -503,9 +843,10 @@ func EcsClusters() *schema.Table {
 						},
 					},
 					{
-						Name:        "aws_ecs_cluster_service_load_balancers",
-						Description: "The load balancer configuration to use with a service or task set",
-						Resolver:    fetchEcsClusterServiceLoadBalancers,
+						Name:          "aws_ecs_cluster_service_load_balancers",
+						Description:   "The load balancer configuration to use with a service or task set",
+						Resolver:      fetchEcsClusterServiceLoadBalancers,
+						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_service_cq_id",
@@ -538,7 +879,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:          "aws_ecs_cluster_service_service_registries",
-						Description:   "Details of the service registry.",
+						Description:   "The details for the service registry",
 						Resolver:      fetchEcsClusterServiceServiceRegistries,
 						IgnoreInTests: true,
 						Columns: []schema.Column{
@@ -550,17 +891,17 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "container_name",
-								Description: "The container name value, already specified in the task definition, to be used for your service discovery service",
+								Description: "The container name value to be used for your service discovery service",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "container_port",
-								Description: "The port value, already specified in the task definition, to be used for your service discovery service",
+								Description: "The port value to be used for your service discovery service",
 								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "port",
-								Description: "The port value used if your service discovery service specified an SRV record. This field may be used if both the awsvpc network mode and SRV records are used.",
+								Description: "The port value used if your service discovery service specified an SRV record. This field might be used if both the awsvpc network mode and SRV records are used.",
 								Type:        schema.TypeInt,
 							},
 							{
@@ -572,7 +913,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:          "aws_ecs_cluster_service_task_sets",
-						Description:   "Information about a set of Amazon ECS tasks in either an AWS CodeDeploy or an EXTERNAL deployment",
+						Description:   "Information about a set of Amazon ECS tasks in either an CodeDeploy or an EXTERNAL deployment",
 						Resolver:      fetchEcsClusterServiceTaskSets,
 						IgnoreInTests: true,
 						Columns: []schema.Column{
@@ -584,9 +925,9 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:          "capacity_provider_strategy",
-								Description:   "The capacity provider strategy associated with the task set.",
+								Description:   "The capacity provider strategy that are associated with the task set.",
 								Type:          schema.TypeJSON,
-								Resolver:      resolveEcsClusterServiceTaskSetsCapacityProviderStrategy,
+								Resolver:      resolveClusterServiceTaskSetsCapacityProviderStrategy,
 								IgnoreInTests: true,
 							},
 							{
@@ -601,7 +942,7 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "created_at",
-								Description: "The Unix timestamp for when the task set was created.",
+								Description: "The Unix timestamp for the time when the task set was created.",
 								Type:        schema.TypeTimestamp,
 							},
 							{
@@ -643,8 +984,14 @@ func EcsClusters() *schema.Table {
 								Type:        schema.TypeInt,
 							},
 							{
+								Name:          "platform_family",
+								Description:   "The operating system that your tasks in the set are running on",
+								Type:          schema.TypeString,
+								IgnoreInTests: true,
+							},
+							{
 								Name:          "platform_version",
-								Description:   "The AWS Fargate platform version on which the tasks in the task set are running. A platform version is only specified for tasks run on AWS Fargate",
+								Description:   "The Fargate platform version where the tasks in the task set are running",
 								Type:          schema.TypeString,
 								IgnoreInTests: true,
 							},
@@ -672,12 +1019,12 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "stability_status",
-								Description: "The stability status, which indicates whether the task set has reached a steady state",
+								Description: "The stability status",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "stability_status_at",
-								Description: "The Unix timestamp for when the task set stability status was retrieved.",
+								Description: "The Unix timestamp for the time when the task set stability status was retrieved.",
 								Type:        schema.TypeTimestamp,
 							},
 							{
@@ -694,11 +1041,11 @@ func EcsClusters() *schema.Table {
 								Name:        "tags",
 								Description: "The metadata that you apply to the task set to help you categorize and organize them",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveEcsClusterServiceTaskSetsTags,
+								Resolver:    resolveClusterServiceTaskSetsTags,
 							},
 							{
 								Name:        "task_definition",
-								Description: "The task definition the task set is using.",
+								Description: "The task definition that the task set is using.",
 								Type:        schema.TypeString,
 							},
 							{
@@ -709,7 +1056,7 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "updated_at",
-								Description: "The Unix timestamp for when the task set was last updated.",
+								Description: "The Unix timestamp for the time when the task set was last updated.",
 								Type:        schema.TypeTimestamp,
 							},
 						},
@@ -750,7 +1097,7 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:          "aws_ecs_cluster_service_task_set_service_registries",
-								Description:   "Details of the service registry.",
+								Description:   "The details for the service registry",
 								Resolver:      fetchEcsClusterServiceTaskSetServiceRegistries,
 								IgnoreInTests: true,
 								Columns: []schema.Column{
@@ -762,17 +1109,17 @@ func EcsClusters() *schema.Table {
 									},
 									{
 										Name:        "container_name",
-										Description: "The container name value, already specified in the task definition, to be used for your service discovery service",
+										Description: "The container name value to be used for your service discovery service",
 										Type:        schema.TypeString,
 									},
 									{
 										Name:        "container_port",
-										Description: "The port value, already specified in the task definition, to be used for your service discovery service",
+										Description: "The port value to be used for your service discovery service",
 										Type:        schema.TypeInt,
 									},
 									{
 										Name:        "port",
-										Description: "The port value used if your service discovery service specified an SRV record. This field may be used if both the awsvpc network mode and SRV records are used.",
+										Description: "The port value used if your service discovery service specified an SRV record. This field might be used if both the awsvpc network mode and SRV records are used.",
 										Type:        schema.TypeInt,
 									},
 									{
@@ -789,7 +1136,7 @@ func EcsClusters() *schema.Table {
 			},
 			{
 				Name:          "aws_ecs_cluster_container_instances",
-				Description:   "An EC2 instance that is running the Amazon ECS agent and has been registered with a cluster.",
+				Description:   "An EC2 instance that's running the Amazon ECS agent and has been registered with a cluster.",
 				Resolver:      fetchEcsClusterContainerInstances,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
@@ -811,7 +1158,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "capacity_provider_name",
-						Description: "The capacity provider associated with the container instance.",
+						Description: "The capacity provider that's associated with the container instance.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -821,8 +1168,14 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "ec2_instance_id",
-						Description: "The EC2 instance ID of the container instance.",
+						Description: "The ID of the container instance",
 						Type:        schema.TypeString,
+					},
+					{
+						Name:        "health_status_overall_status",
+						Description: "The overall health status of the container instance",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("HealthStatus.OverallStatus"),
 					},
 					{
 						Name:        "pending_tasks_count",
@@ -831,7 +1184,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "registered_at",
-						Description: "The Unix timestamp for when the container instance was registered.",
+						Description: "The Unix timestamp for the time when the container instance was registered.",
 						Type:        schema.TypeTimestamp,
 					},
 					{
@@ -853,7 +1206,7 @@ func EcsClusters() *schema.Table {
 						Name:        "tags",
 						Description: "The metadata that you apply to the container instance to help you categorize and organize them",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEcsClusterContainerInstancesTags,
+						Resolver:    resolveClusterContainerInstancesTags,
 					},
 					{
 						Name:        "version",
@@ -874,7 +1227,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:        "version_info_docker_version",
-						Description: "The Docker version running on the container instance.",
+						Description: "The Docker version that's running on the container instance.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("VersionInfo.DockerVersion"),
 					},
@@ -896,7 +1249,7 @@ func EcsClusters() *schema.Table {
 								Name:        "details",
 								Description: "Details of the attachment",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveEcsClusterContainerInstanceAttachmentsDetails,
+								Resolver:    resolveClusterContainerInstanceAttachmentsDetails,
 							},
 							{
 								Name:        "id",
@@ -917,7 +1270,7 @@ func EcsClusters() *schema.Table {
 					},
 					{
 						Name:          "aws_ecs_cluster_container_instance_attributes",
-						Description:   "An attribute is a name-value pair associated with an Amazon ECS object. Attributes enable you to extend the Amazon ECS data model by adding custom metadata to your resources",
+						Description:   "An attribute is a name-value pair that's associated with an Amazon ECS object. Use attributes to extend the Amazon ECS data model by adding custom metadata to your resources",
 						Resolver:      fetchEcsClusterContainerInstanceAttributes,
 						IgnoreInTests: true,
 						Columns: []schema.Column{
@@ -939,12 +1292,45 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "target_type",
-								Description: "The type of the target with which to attach the attribute",
+								Description: "The type of the target to attach the attribute with",
 								Type:        schema.TypeString,
 							},
 							{
 								Name:        "value",
 								Description: "The value of the attribute",
+								Type:        schema.TypeString,
+							},
+						},
+					},
+					{
+						Name:        "aws_ecs_cluster_container_instance_health_status_details",
+						Description: "An object representing the result of a container instance health status check.",
+						Resolver:    fetchEcsClusterContainerInstanceHealthStatusDetails,
+						Columns: []schema.Column{
+							{
+								Name:        "cluster_container_instance_cq_id",
+								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
+								Type:        schema.TypeUUID,
+								Resolver:    schema.ParentIdResolver,
+							},
+							{
+								Name:        "last_status_change",
+								Description: "The Unix timestamp for when the container instance health status last changed.",
+								Type:        schema.TypeTimestamp,
+							},
+							{
+								Name:        "last_updated",
+								Description: "The Unix timestamp for when the container instance health status was last updated.",
+								Type:        schema.TypeTimestamp,
+							},
+							{
+								Name:        "status",
+								Description: "The container instance health status.",
+								Type:        schema.TypeString,
+							},
+							{
+								Name:        "type",
+								Description: "The type of container instance health status that was verified.",
 								Type:        schema.TypeString,
 							},
 						},
@@ -988,7 +1374,7 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "type",
-								Description: "The type of the resource, such as INTEGER, DOUBLE, LONG, or STRINGSET.",
+								Description: "The type of the resource",
 								Type:        schema.TypeString,
 							},
 						},
@@ -1032,7 +1418,7 @@ func EcsClusters() *schema.Table {
 							},
 							{
 								Name:        "type",
-								Description: "The type of the resource, such as INTEGER, DOUBLE, LONG, or STRINGSET.",
+								Description: "The type of the resource",
 								Type:        schema.TypeString,
 							},
 						},
@@ -1076,34 +1462,46 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func resolveEcsClustersDefaultCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster := resource.Item.(types.Cluster)
+func resolveClustersDefaultCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cluster, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+	}
 	data, err := json.Marshal(cluster.DefaultCapacityProviderStrategy)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveEcsClustersSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster := resource.Item.(types.Cluster)
+func resolveClustersSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cluster, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+	}
 	settings := make(map[string]*string)
 	for _, s := range cluster.Settings {
 		settings[string(s.Name)] = s.Value
 	}
 	return resource.Set(c.Name, settings)
 }
-func resolveEcsClustersStatistics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster := resource.Item.(types.Cluster)
+func resolveClustersStatistics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cluster, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+	}
 	stats := make(map[string]*string)
 	for _, s := range cluster.Statistics {
 		stats[*s.Name] = s.Value
 	}
 	return resource.Set(c.Name, stats)
 }
-func resolveEcsClustersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveClustersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
-	cluster := resource.Item.(types.Cluster)
+	cluster, ok := resource.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+	}
 	listTagsForResourceOutput, err := svc.ListTagsForResource(ctx, &ecs.ListTagsForResourceInput{
 		ResourceArn: cluster.ClusterArn,
 	}, func(o *ecs.Options) {
@@ -1119,20 +1517,178 @@ func resolveEcsClustersTags(ctx context.Context, meta schema.ClientMeta, resourc
 	return resource.Set(c.Name, tags)
 }
 func fetchEcsClusterAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
+	cluster, ok := parent.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
+	}
 	res <- cluster.Attachments
 	return nil
 }
-func resolveEcsClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment := resource.Item.(types.Attachment)
+func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	attachment, ok := resource.Item.(types.Attachment)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Attachment but got %T", resource.Item))
+	}
 	details := make(map[string]*string)
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
 	}
 	return resource.Set(c.Name, details)
 }
+func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	cluster, ok := parent.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
+	}
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().ECS
+	config := ecs.ListTasksInput{
+		Cluster: cluster.ClusterArn,
+	}
+	for {
+		listTasks, err := svc.ListTasks(ctx, &config, func(o *ecs.Options) {
+			o.Region = region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		if len(listTasks.TaskArns) == 0 {
+			return nil
+		}
+		describeServicesInput := ecs.DescribeTasksInput{
+			Cluster: cluster.ClusterArn,
+			Tasks:   listTasks.TaskArns,
+		}
+		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(o *ecs.Options) {
+			o.Region = region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+
+		res <- describeTasks.Tasks
+
+		if listTasks.NextToken == nil {
+			break
+		}
+		config.NextToken = listTasks.NextToken
+	}
+	return nil
+}
+func resolveClusterTasksAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", resource.Item))
+	}
+	data, err := json.Marshal(p.Attributes)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveClusterTasksInferenceAccelerators(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", resource.Item))
+	}
+	data, err := json.Marshal(p.InferenceAccelerators)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveClusterTasksOverrides(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", resource.Item))
+	}
+	if p.Overrides == nil {
+		return nil
+	}
+	data, err := json.Marshal(p.Overrides)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveClusterTasksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", resource.Item))
+	}
+	j := make(map[string]interface{})
+	for _, i := range p.Tags {
+		j[*i.Key] = *i.Value
+	}
+
+	return resource.Set(c.Name, j)
+}
+func fetchEcsClusterTaskAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	p, ok := parent.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", parent.Item))
+	}
+	res <- p.Attachments
+	return nil
+}
+func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Attachment)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Attachment but got %T", resource.Item))
+	}
+	j := make(map[string]interface{})
+	for _, i := range p.Details {
+		j[*i.Name] = *i.Value
+	}
+
+	return resource.Set(c.Name, j)
+}
+func fetchEcsClusterTaskContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	p, ok := parent.Item.(types.Task)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", parent.Item))
+	}
+	res <- p.Containers
+	return nil
+}
+func resolveClusterTaskContainersManagedAgents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Container)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Container but got %T", resource.Item))
+	}
+	data, err := json.Marshal(p.ManagedAgents)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveClusterTaskContainersNetworkBindings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Container)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Container but got %T", resource.Item))
+	}
+	data, err := json.Marshal(p.NetworkBindings)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
+func resolveClusterTaskContainersNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p, ok := resource.Item.(types.Container)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Container but got %T", resource.Item))
+	}
+	data, err := json.Marshal(p.NetworkInterfaces)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, data)
+}
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
+	cluster, ok := parent.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
+	}
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
 	config := ecs.ListServicesInput{
@@ -1168,16 +1724,22 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func resolveEcsClusterServicesCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
+func resolveClusterServicesCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", resource.Item))
+	}
 	data, err := json.Marshal(service.CapacityProviderStrategy)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveEcsClusterServicesPlacementConstraints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
+func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", resource.Item))
+	}
 	j := make(map[string]interface{})
 	for _, i := range service.PlacementConstraints {
 		j[string(i.Type)] = *i.Expression
@@ -1185,8 +1747,11 @@ func resolveEcsClusterServicesPlacementConstraints(ctx context.Context, meta sch
 
 	return resource.Set(c.Name, j)
 }
-func resolveEcsClusterServicesPlacementStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
+func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", resource.Item))
+	}
 	j := make(map[string]interface{})
 	for _, i := range service.PlacementStrategy {
 		j[string(i.Type)] = *i.Field
@@ -1194,8 +1759,11 @@ func resolveEcsClusterServicesPlacementStrategy(ctx context.Context, meta schema
 
 	return resource.Set(c.Name, j)
 }
-func resolveEcsClusterServicesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
+func resolveClusterServicesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	service, ok := resource.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", resource.Item))
+	}
 	j := make(map[string]interface{})
 	for _, i := range service.Tags {
 		j[*i.Key] = *i.Value
@@ -1204,48 +1772,72 @@ func resolveEcsClusterServicesTags(ctx context.Context, meta schema.ClientMeta, 
 	return resource.Set(c.Name, j)
 }
 func fetchEcsClusterServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
+	service, ok := parent.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", parent.Item))
+	}
 	res <- service.Deployments
 	return nil
 }
-func resolveEcsClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Deployment)
-	data, err := json.Marshal(service.CapacityProviderStrategy)
+func resolveClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	deployment, ok := resource.Item.(types.Deployment)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Deployment but got %T", resource.Item))
+	}
+	data, err := json.Marshal(deployment.CapacityProviderStrategy)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
 func fetchEcsClusterServiceEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
+	service, ok := parent.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", parent.Item))
+	}
 	res <- service.Events
 	return nil
 }
 func fetchEcsClusterServiceLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
+	service, ok := parent.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", parent.Item))
+	}
 	res <- service.LoadBalancers
 	return nil
 }
 func fetchEcsClusterServiceServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
+	service, ok := parent.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", parent.Item))
+	}
 	res <- service.ServiceRegistries
 	return nil
 }
 func fetchEcsClusterServiceTaskSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
+	service, ok := parent.Item.(types.Service)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", parent.Item))
+	}
 	res <- service.TaskSets
 	return nil
 }
-func resolveEcsClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.TaskSet)
-	data, err := json.Marshal(service.CapacityProviderStrategy)
+func resolveClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	taskSet, ok := resource.Item.(types.TaskSet)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.TaskSet but got %T", resource.Item))
+	}
+	data, err := json.Marshal(taskSet.CapacityProviderStrategy)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveEcsClusterServiceTaskSetsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	taskSet := resource.Item.(types.TaskSet)
+func resolveClusterServiceTaskSetsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	taskSet, ok := resource.Item.(types.TaskSet)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.TaskSet but got %T", resource.Item))
+	}
 	j := make(map[string]interface{})
 	for _, i := range taskSet.Tags {
 		j[*i.Key] = *i.Value
@@ -1253,17 +1845,26 @@ func resolveEcsClusterServiceTaskSetsTags(ctx context.Context, meta schema.Clien
 	return resource.Set(c.Name, j)
 }
 func fetchEcsClusterServiceTaskSetLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	taskSet := parent.Item.(types.TaskSet)
+	taskSet, ok := parent.Item.(types.TaskSet)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.TaskSet but got %T", parent.Item))
+	}
 	res <- taskSet.LoadBalancers
 	return nil
 }
 func fetchEcsClusterServiceTaskSetServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	taskSet := parent.Item.(types.TaskSet)
+	taskSet, ok := parent.Item.(types.TaskSet)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.TaskSet but got %T", parent.Item))
+	}
 	res <- taskSet.ServiceRegistries
 	return nil
 }
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
+	cluster, ok := parent.Item.(types.Cluster)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
+	}
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
 	config := ecs.ListContainerInstancesInput{
@@ -1299,8 +1900,11 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func resolveEcsClusterContainerInstancesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance := resource.Item.(types.ContainerInstance)
+func resolveClusterContainerInstancesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instance, ok := resource.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", resource.Item))
+	}
 	j := make(map[string]interface{})
 	for _, i := range instance.Tags {
 		j[*i.Key] = *i.Value
@@ -1308,12 +1912,18 @@ func resolveEcsClusterContainerInstancesTags(ctx context.Context, meta schema.Cl
 	return resource.Set(c.Name, j)
 }
 func fetchEcsClusterContainerInstanceAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
+	instance, ok := parent.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", parent.Item))
+	}
 	res <- instance.Attachments
 	return nil
 }
-func resolveEcsClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment := resource.Item.(types.Attachment)
+func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	attachment, ok := resource.Item.(types.Attachment)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", resource.Item))
+	}
 	details := make(map[string]*string)
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
@@ -1321,17 +1931,37 @@ func resolveEcsClusterContainerInstanceAttachmentsDetails(ctx context.Context, m
 	return resource.Set(c.Name, details)
 }
 func fetchEcsClusterContainerInstanceAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
+	instance, ok := parent.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", parent.Item))
+	}
 	res <- instance.Attributes
 	return nil
 }
+func fetchEcsClusterContainerInstanceHealthStatusDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	instance, ok := parent.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", parent.Item))
+	}
+	if instance.HealthStatus == nil || instance.HealthStatus.Details == nil {
+		return nil
+	}
+	res <- instance.HealthStatus.Details
+	return nil
+}
 func fetchEcsClusterContainerInstanceRegisteredResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
+	instance, ok := parent.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", parent.Item))
+	}
 	res <- instance.RegisteredResources
 	return nil
 }
 func fetchEcsClusterContainerInstanceRemainingResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
+	instance, ok := parent.Item.(types.ContainerInstance)
+	if !ok {
+		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", parent.Item))
+	}
 	res <- instance.RemainingResources
 	return nil
 }

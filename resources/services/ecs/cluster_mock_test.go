@@ -61,9 +61,25 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().DescribeContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instances, nil)
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
+
+	listTasks := ecs.ListTasksOutput{}
+	err = faker.FakeData(&listTasks)
+	if err != nil {
+		t.Fatal(err)
+	}
+	listTasks.NextToken = nil
+	m.EXPECT().ListTasks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&listTasks, nil)
+
+	tasks := ecs.DescribeTasksOutput{}
+	err = faker.FakeData(&tasks)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeTasks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tasks, nil)
+
 	return services
 }
 
 func TestEcsClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, EcsClusters(), buildEcsClusterMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildEcsClusterMock, client.TestOptions{})
 }
