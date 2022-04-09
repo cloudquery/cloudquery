@@ -9,8 +9,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
-	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -373,5 +373,5 @@ func (e *errorHandler) Handle(err error) {
 }
 
 func genRandomId() string {
-	return uuid.NewV4().String()
+	return uuid.NewString()
 }
