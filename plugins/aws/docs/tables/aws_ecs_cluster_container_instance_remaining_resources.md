@@ -10,4 +10,4 @@ Describes the resources available for a container instance.
 |long_value|bigint|When the longValue type is set, the value of the resource must be an extended precision floating-point type.|
 |name|text|The name of the resource, such as CPU, MEMORY, PORTS, PORTS_UDP, or a user-defined resource.|
 |string_set_value|text[]|When the stringSetValue type is set, the value of the resource must be a string type.|
-|type|text|The type of the resource, such as INTEGER, DOUBLE, LONG, or STRINGSET.|
+|type|text|The type of the resource|
