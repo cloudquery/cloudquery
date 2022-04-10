@@ -105,6 +105,15 @@ func (r RequiredProviders) Names() []string {
 	return ret
 }
 
+func (r RequiredProviders) Get(name string) *RequiredProvider {
+	for _, p := range r {
+		if p.Name == name {
+			return p
+		}
+	}
+	return nil
+}
+
 // configFileSchema is the schema for the top-level of a config file. We use
 // the low-level HCL API for this level so we can easily deal with each
 // block type separately with its own decoding logic.

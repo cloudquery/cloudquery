@@ -35,10 +35,12 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20211221144345-a4f6767435ab
 	github.com/aws/aws-sdk-go v1.42.1
+	github.com/cloudquery/cq-provider-test v0.0.11
 	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.12.0
+	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.7
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-getter v1.5.10
@@ -49,6 +51,7 @@ require (
 	github.com/lib/pq v1.10.3
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/spf13/cast v1.4.1
+	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.11.0
 	go.opentelemetry.io/otel v1.2.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.2.0
@@ -114,7 +117,6 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
