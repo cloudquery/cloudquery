@@ -48,15 +48,29 @@ resource "aws_codepipeline" "codepipeline" {
     }
   }
 
+  tags = merge(
+    {Name = "${var.prefix}-codepipeline-pipeline"},
+    var.tags
+  )
 }
 
 resource "aws_codestarconnections_connection" "codestar_connection" {
   name          = "${var.prefix}-codestar-connection"
   provider_type = "GitHub"
+
+  tags = merge(
+    {Name = "${var.prefix}-codestar-connection"},
+    var.tags
+  )
 }
 
 resource "aws_s3_bucket" "codepipeline_artifact_bucket" {
   bucket = "${var.prefix}-codepipeline-artifact-bucket"
+
+  tags = merge(
+    {Name = "${var.prefix}-codepipeline-artifact-bucket"},
+    var.tags
+  )
 }
 
 resource "aws_s3_bucket_acl" "codepipeline_artifact_bucket_acl" {
@@ -81,6 +95,11 @@ resource "aws_iam_role" "codepipeline_role" {
   ]
 }
 EOF
+
+  tags = merge(
+    {Name = "${var.prefix}-codepipeline-role"},
+    var.tags
+  )
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
@@ -128,6 +147,11 @@ EOF
 resource "aws_kms_key" "codepipeline_key" {
   description             = "Codepipeline KMS key"
   deletion_window_in_days = 10
+
+  tags = merge(
+    {Name = "Codepipeline KMS key"},
+    var.tags
+  )
 }
 
 resource "aws_iam_role" "codebuild_role" {
@@ -147,6 +171,11 @@ resource "aws_iam_role" "codebuild_role" {
   ]
 }
 EOF
+
+  tags = merge(
+    {Name = "${var.prefix}-codebuild"},
+    var.tags
+  )
 }
 
 resource "aws_codebuild_project" "codebuild_project" {
@@ -169,4 +198,8 @@ resource "aws_codebuild_project" "codebuild_project" {
     type = "CODEPIPELINE"
   }
 
+  tags = merge(
+    {Name = "${var.prefix}-codebuild-project"},
+    var.tags
+  )
 }
