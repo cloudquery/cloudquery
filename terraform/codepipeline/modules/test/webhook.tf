@@ -8,4 +8,9 @@ resource "aws_codepipeline_webhook" "codepipeline_webhook" {
     json_path    = "$.ref"
     match_equals = "refs/heads/{Branch}"
   }
+
+  tags = merge(
+    {Name = "${var.prefix}-codepipeline-webhook"},
+    var.tags
+  )
 }
