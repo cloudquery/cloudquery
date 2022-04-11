@@ -3,15 +3,11 @@ package config
 import (
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"net/url"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
-	"github.com/hairyhenderson/go-fsimpl"
-	"github.com/hairyhenderson/go-fsimpl/blobfs"
-	"github.com/hairyhenderson/go-fsimpl/filefs"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
@@ -78,26 +74,6 @@ func NewParser(options ...Option) *Parser {
 		opt(&p)
 	}
 	return &p
-}
-
-func loadRemoteFile(path string) ([]byte, error) {
-	mux := fsimpl.NewMux()
-	mux.Add(filefs.FS)
-	mux.Add(blobfs.FS)
-	// HACKY!!!!!
-	fsys, err := mux.Lookup(path[:strings.LastIndex(path, "/")])
-	if err != nil {
-		return nil, err
-	}
-
-	fName := path[strings.LastIndex(path, "/")+1:]
-	f, err := fsys.Open(fName)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	contents, err := io.ReadAll(f)
-	return contents, err
 }
 
 // LoadHCLFile is a low-level method that reads the file at the given path,
