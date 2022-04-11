@@ -410,11 +410,8 @@ provider "aws" {
 
   resource "autoscaling.groups" {
     identifiers = [ "arn" ]
-    ignore_attributes = [
-      "created_time", "load_balancers", "notifications_configurations", "metrics", "status",
-      "load_balancer_target_groups", "suspended_processes", "vpc_zone_identifier" # These are supported in v2
-    ]
-    sets = [ "availability_zones" ]
+    ignore_attributes = [ "created_time", "load_balancers", "notifications_configurations", "metrics", "status" ]
+    sets = [ "availability_zones", "load_balancer_target_groups", "suspended_processes", "vpc_zone_identifier" ]
 
     iac {
       terraform {
@@ -422,6 +419,9 @@ provider "aws" {
         identifiers = [ "arn" ]
 
         attribute_map = [
+          "load_balancer_target_groups|@keys=target_group_arns", # object keys to array
+          "suspended_processes|@keys=suspended_processes", # object keys to array
+          "vpc_zone_identifier|@split:,=vpc_zone_identifier", # comma-separated string to array
           "load_balancer_names=load_balancers",
           "launch_configuration_name=launch_configuration",
           "launch_template_id=launch_template.0.id",
@@ -452,6 +452,88 @@ provider "aws" {
         type = "aws_launch_configuration"
         path = "ebs_block_device"
         identifiers = [ "root.id", "device_name" ]
+      }
+    }
+  }
+
+  resource "backup.plans" {
+    ignore_attributes = [ "creation_date", "creator_request_id", "last_execution_date" ]
+    iac {
+      terraform {
+        type = "aws_backup_plan"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "advanced_backup_settings=advanced_backup_setting|0",
+          "version_id=version"
+        ]
+      }
+    }
+  }
+
+  resource "aws_backup_plan_rules" {
+    identifiers = [ "parent.arn", "c.name" ]
+    ignore_attributes = [ "id", "name" ]
+    iac {
+      terraform {
+        type = "aws_backup_plan"
+        path = "rule"
+        identifiers = [ "root.arn", "rule_name" ]
+        attribute_map = [
+          "completion_window_minutes=completion_window",
+          "schedule_expression=schedule",
+          "start_window_minutes=start_window",
+          "target_backup_vault_name=target_vault_name"
+        ]
+      }
+    }
+  }
+
+  resource "aws_backup_plan_selections" {
+    identifiers = [ "parent.id", "c.selection_id" ]
+    ignore_attributes = [ "creation_date", "creator_request_id", "conditions", "list_of_tags" ]
+#    sets = [ "conditions", "list_of_tags" ] # TODO CamelCase vs snake_case in keys of map
+    iac {
+      terraform {
+        type = "aws_backup_selection"
+        identifiers = [ "plan_id", "id" ]
+        attribute_map = [
+          "selection_id=id",
+          "selection_name=name"
+#          "conditions=condition",
+#          "list_of_tags=selection_tag"
+        ]
+      }
+    }
+  }
+
+  resource "backup.vaults" {
+    ignore_attributes = [ "creation_date", "creator_request_id", "locked", "notification_events", "notification_sns_topic_arn", "lock_date", "max_retention_days", "min_retention_days", "access_policy" ]
+    iac {
+      terraform {
+        type = "aws_backup_vault"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "encryption_key_arn=kms_key_arn",
+          "number_of_recovery_points=recovery_points"
+        ]
+      }
+    }
+  }
+
+  resource "backup.vaults#notif" {
+    identifiers = [ "arn" ]
+    ignore_attributes = [ "creation_date", "creator_request_id", "locked", "encryption_key_arn", "number_of_recovery_points", "lock_date", "max_retention_days", "min_retention_days", "tags", "access_policy" ]
+    sets = [ "notification_events" ]
+    iac {
+      terraform {
+        type = "aws_backup_vault_notifications"
+        identifiers = [ "backup_vault_arn" ]
+        attribute_map = [
+          "arn=backup_vault_arn",
+          "name=backup_vault_name",
+          "notification_events=backup_vault_events",
+          "notification_sns_topic_arn=sns_topic_arn"
+        ]
       }
     }
   }
@@ -540,6 +622,8 @@ provider "aws" {
       }
     }
   }
+
+  # TODO: aws_cloudfront_distribution_origin_groups (tf res type: "aws_cloudfront_distribution".attributes->"origin_group")
 
   resource "cloudtrail.trails" {
     identifiers = [ "name" ]
@@ -657,6 +741,31 @@ provider "aws" {
     }
   }
 
+  resource "aws_codepipeline_pipeline_stage_actions" {
+    identifiers = [ "parent1.arn", "parent.name", "c.name" ]
+    ignore_attributes = [ "run_order" ]
+
+    iac {
+      terraform {
+        type = "aws_codepipeline"
+        path = "stage"
+        identifiers = [ "root.arn", "name", "action.#.name" ]
+        attribute_map = [
+          "category=action.#.category|0",
+          "configuration=action.#.configuration|0",
+          "provider=action.#.provider|0",
+          "version=action.#.version|0",
+          "owner=action.#.owner|0",
+          "region=action.#.region|0",
+          "role_arn=action.#.role_arn|0",
+          "namespace=action.#.namespace|0",
+          "input_artifacts=action.#.input_artifacts|0",
+          "output_artifacts=action.#.output_artifacts|0"
+        ]
+      }
+    }
+  }
+
   resource "cognito.identity_pools" {
     iac {
       terraform {
@@ -766,6 +875,21 @@ provider "aws" {
       terraform {
         type = "aws_dynamodb_table"
         identifiers = [ "name", "region" ]
+      }
+    }
+  }
+
+  resource "dynamodb.tables#globalv1" {
+    identifiers = [ "name" ]
+    ignore_attributes = [ "creation_date_time" ]
+    filters = [
+      "c.global_table_version='2017.11.29'"
+    ]
+
+    iac {
+      terraform {
+        type = "aws_dynamodb_global_table"
+        identifiers = [ "replication_instance_arn" ]
       }
     }
   }
@@ -890,6 +1014,40 @@ provider "aws" {
     iac {
       terraform {
         type = "aws_network_acl"
+      }
+    }
+  }
+
+  #        resource "aws_ec2_network_acl_entries" {
+  #            # TODO: no CRC32 function, no data in tests to verify
+  #            identifiers = [ sql("CONCAT('nacl-',CRC32(CONCAT(parent.id,'-',c.rule_number,'-',CASE WHEN c.egress THEN 'true' ELSE 'false' END,'-',c.protocol,'-')))") ]
+  #            filters = [ "((c.cidr_block='0.0.0.0/0' AND c.rule_number=32767) OR (c.ipv6_cidr_block=':/0' AND c.rule_number=32768)) AND c.rule_action='deny' AND c.protocol='-1'" ]
+  #
+  #            iac {
+  #                terraform {
+  #                    type = "aws_network_acl_rule"
+  #                }
+  #            }
+  #        }
+
+  resource "ec2.regional_config#key" { # TODO: add account/region support
+    identifiers = [ "ebs_default_kms_key_id" ]
+    ignore_attributes = [ "ebs_encryption_enabled_by_default" ]
+    iac {
+      terraform {
+        type = "aws_ebs_default_kms_key"
+        identifiers = [ "key_arn" ]
+      }
+    }
+  }
+
+  resource "ec2.regional_config#ebs" { # TODO: add account/region support
+    identifiers = [ sql("ebs_encryption_enabled_by_default::varchar") ]
+    ignore_attributes = [ "ebs_default_kms_key_id" ]
+    iac {
+      terraform {
+        type = "aws_ebs_default_kms_key"
+        identifiers = [ "enabled" ]
       }
     }
   }
@@ -1105,15 +1263,32 @@ provider "aws" {
     }
   }
 
-#  resource "iam.accounts" {
-#    identifiers = [ "aliases" ]
-#    iac {
-#      terraform {
-#        type = "aws_iam_account_alias"
-#        identifiers = [ "aliases" ]
-#      }
-#    }
-#  }
+  resource "iam.accounts#aliases" {
+    identifiers = [ sql("array_to_string(aliases,',')") ]
+    ignore_attributes = [
+      "users", "users_quota",
+      "groups", "groups_quota",
+      "server_certificates", "server_certificates_quota",
+      "user_policy_size_quota", "group_policy_size_quota", "groups_per_user_quota",
+      "signing_certificates_per_user_quota", "access_keys_per_user_quota",
+      "mfa_devices", "mfa_devices_in_use", "account_mfa_enabled",
+      "account_access_keys_present", "account_signing_certificates_present",
+      "attached_policies_per_group_quota", "policies", "policies_quota", "policy_size_quota", "policy_versions_in_use", "policy_versions_in_use_quota",
+      "versions_per_policy_quota", "global_endpoint_token_version"
+    ]
+    filters = [
+      "aliases IS NOT NULL"
+    ]
+    iac {
+      terraform {
+        type = "aws_iam_account_alias"
+        identifiers = [ "account_alias" ]
+        attribute_map = [
+          "aliases|0=account_alias"
+        ]
+      }
+    }
+  }
 
   resource "iam.groups" {
     identifiers = [ "name" ]
@@ -1220,6 +1395,18 @@ provider "aws" {
     iac {
       terraform {
         type = "aws_iam_user_policy"
+      }
+    }
+  }
+
+  resource "iam.virtual_mfa_devices" {
+    identifiers = [ "serial_number" ]
+    ignore_attributes = [ "enable_date" ]
+
+    iac {
+      terraform {
+        type = "aws_iam_virtual_mfa_device"
+        identifiers = [ "arn" ]
       }
     }
   }
@@ -1431,13 +1618,13 @@ provider "aws" {
   }
 
   resource "organizations.accounts" {
-#    identifiers = [ "account_id", "id" ]
+    #    identifiers = [ "account_id", "id" ]
     identifiers = [ "arn" ]
     ignore_attributes = [ "joined_timestamp", "joined_method" ]
     iac {
       terraform {
         type = "aws_organizations_account"
-#        identifiers = [ "parent_id", "id" ]
+        #        identifiers = [ "parent_id", "id" ]
         identifiers = [ "arn" ]
       }
     }
@@ -1606,6 +1793,7 @@ provider "aws" {
   resource "redshift.event_subscriptions" {
     identifiers = [ "id" ]
     ignore_attributes = [ "subscription_creation_time", "status" ]
+    sets = [ "source_ids_list", "event_categories_list" ]
     iac {
       terraform {
         type = "aws_redshift_event_subscription"
