@@ -94,3 +94,23 @@ func (mr *MockCodePipelineClientMockRecorder) ListTagsForResource(arg0, arg1 int
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockCodePipelineClient)(nil).ListTagsForResource), varargs...)
 }
+
+// ListWebhooks mocks base method.
+func (m *MockCodePipelineClient) ListWebhooks(arg0 context.Context, arg1 *codepipeline.ListWebhooksInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListWebhooksOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListWebhooks", varargs...)
+	ret0, _ := ret[0].(*codepipeline.ListWebhooksOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWebhooks indicates an expected call of ListWebhooks.
+func (mr *MockCodePipelineClientMockRecorder) ListWebhooks(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWebhooks", reflect.TypeOf((*MockCodePipelineClient)(nil).ListWebhooks), varargs...)
+}

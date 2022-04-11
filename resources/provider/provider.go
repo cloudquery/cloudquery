@@ -104,6 +104,7 @@ func Provider() *provider.Provider {
 			"cloudwatchlogs.filters":                cloudwatchlogs.CloudwatchlogsFilters(),
 			"codebuild.projects":                    codebuild.CodebuildProjects(),
 			"codepipeline.pipelines":                codepipeline.Pipelines(),
+			"codepipeline.webhooks":                 codepipeline.Webhooks(),
 			"cognito.identity_pools":                cognito.CognitoIdentityPools(),
 			"cognito.user_pools":                    cognito.CognitoUserPools(),
 			"config.configuration_recorders":        config.ConfigConfigurationRecorders(),
