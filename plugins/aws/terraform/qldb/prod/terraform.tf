@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "cq-provider-aws-tf"
-    key            = "codepipeline"
+    key            = "qldb"
     region         = "us-east-1"
   }
 }
