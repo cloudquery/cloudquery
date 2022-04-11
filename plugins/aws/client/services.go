@@ -610,6 +610,7 @@ type CodePipelineClient interface {
 	ListPipelines(ctx context.Context, params *codepipeline.ListPipelinesInput, optFns ...func(*codepipeline.Options)) (*codepipeline.ListPipelinesOutput, error)
 	GetPipeline(ctx context.Context, params *codepipeline.GetPipelineInput, optFns ...func(*codepipeline.Options)) (*codepipeline.GetPipelineOutput, error)
 	ListTagsForResource(ctx context.Context, params *codepipeline.ListTagsForResourceInput, optFns ...func(*codepipeline.Options)) (*codepipeline.ListTagsForResourceOutput, error)
+	ListWebhooks(ctx context.Context, params *codepipeline.ListWebhooksInput, optFns ...func(*codepipeline.Options)) (*codepipeline.ListWebhooksOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/backup.go . BackupClient
