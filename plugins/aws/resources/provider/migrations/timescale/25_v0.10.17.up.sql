@@ -36,3 +36,7 @@ CREATE TABLE IF NOT EXISTS "aws_wafv2_regex_pattern_sets" (
 	UNIQUE(cq_fetch_date,cq_id)
 );
 SELECT setup_tsdb_parent('aws_wafv2_regex_pattern_sets');
+
+-- Resource: iam.virtual_mfa_devices
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (cq_fetch_date,serial_number);
