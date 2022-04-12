@@ -129,6 +129,8 @@ func (p ProviderFetchSummary) Metrics() map[string]int64 {
 			sevName = "warning"
 		case diag.ERROR:
 			sevName = "error"
+		case diag.PANIC:
+			sevName = "panic"
 		default:
 			sevName = "unknown"
 		}
