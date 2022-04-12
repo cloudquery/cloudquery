@@ -43,8 +43,6 @@ func setupTestS3Bucket(t *testing.T) (*url.URL, *s3mem.Backend) {
 	t.Cleanup(srv.Close)
 
 	assert.NoError(t, backend.CreateBucket(bucketName))
-	// assert.NoError(t, putFile(backend, "config.hcl", "application/hcl", testConfig))
-
 	u, err := url.Parse(srv.URL)
 	assert.NoError(t, err)
 	return u, backend
