@@ -766,6 +766,30 @@ provider "aws" {
     }
   }
 
+  resource "aws_codepipeline_webhooks" {
+    identifiers = [ "arn" ]
+    ignore_attributes = [ "last_triggered" ]
+
+    iac {
+      terraform {
+        type = "aws_codepipeline_webhook"
+        identifiers = [ "arn" ]
+      }
+    }
+  }
+
+  resource "aws_codepipeline_webhook_filters" {
+    identifiers = [ "parent.arn", "c.json_path", "c.match_equals" ]
+
+    iac {
+      terraform {
+        type = "aws_codepipeline_webhook"
+        identifiers = [ "root.arn", "json_path", "match_equals" ]
+        path = "filter"
+      }
+    }
+  }
+
   resource "cognito.identity_pools" {
     iac {
       terraform {
