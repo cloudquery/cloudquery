@@ -67,6 +67,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -185,6 +186,7 @@ type Client struct {
 	AccountID            string
 	Region               string
 	AutoscalingNamespace string
+	WAFScope             wafv2types.Scope
 }
 
 // S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
@@ -247,6 +249,7 @@ func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
+		WAFScope:             c.WAFScope,
 	}
 }
 
@@ -261,6 +264,22 @@ func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace st
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: namespace,
+		WAFScope:             c.WAFScope,
+	}
+}
+
+func (c *Client) withAccountIDRegionAndScope(accountID, region string, scope wafv2types.Scope) *Client {
+	return &Client{
+		Accounts:             c.Accounts,
+		logLevel:             c.logLevel,
+		maxRetries:           c.maxRetries,
+		maxBackoff:           c.maxBackoff,
+		ServicesManager:      c.ServicesManager,
+		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region, "Scope", scope),
+		AccountID:            accountID,
+		Region:               region,
+		AutoscalingNamespace: c.AutoscalingNamespace,
+		WAFScope:             scope,
 	}
 }
 
