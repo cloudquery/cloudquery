@@ -81,7 +81,7 @@ func printDiagnostics(header, providerName string, diags diag.Diagnostics, redac
 				ui.ColorProgressBold.Sprintf("%s", d.Type()),
 				ui.ColorWarning.Sprintf("Warning"),
 				ui.ColorWarning.Sprintf("%s", desc.Summary))
-		case diag.ERROR:
+		case diag.ERROR, diag.PANIC:
 			ui.ColorizedOutput(ui.ColorHeader, "Resource: %-10s Type: %-10s Severity: %s\n\tSummary: %s\n",
 				ui.ColorProgress.Sprintf("%s", desc.Resource),
 				ui.ColorProgressBold.Sprintf("%s", d.Type()),

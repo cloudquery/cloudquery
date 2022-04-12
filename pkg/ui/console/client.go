@@ -202,7 +202,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 			status,
 			summary.TotalResourcesFetched,
 			countSeverity(diags, diag.WARNING),
-			countSeverity(diags, diag.ERROR),
+			countSeverity(diags, diag.ERROR, diag.PANIC),
 		)
 		if failOnError && summary.HasErrors() {
 			err = fmt.Errorf("provider fetch has one or more errors")
@@ -854,14 +854,20 @@ func loadConfig(file string) (*config.Config, bool) {
 	return cfg, true
 }
 
-func countSeverity(d diag.Diagnostics, sev diag.Severity) string {
-	basicCount := d.CountBySeverity(sev, false)
+func countSeverity(d diag.Diagnostics, sevs ...diag.Severity) string {
+	var basicCount uint64
+	for _, sev := range sevs {
+		basicCount += d.CountBySeverity(sev, false)
+	}
 
 	if !viper.GetBool("verbose") {
 		return fmt.Sprintf("%d", basicCount)
 	}
 
-	deepCount := d.CountBySeverity(sev, true)
+	var deepCount uint64
+	for _, sev := range sevs {
+		deepCount += d.CountBySeverity(sev, true)
+	}
 	if basicCount == deepCount {
 		return fmt.Sprintf("%d", basicCount)
 	}
