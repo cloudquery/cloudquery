@@ -100,7 +100,7 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 		return nil, hcl.Diagnostics{
 			{
 				Severity: hcl.DiagError,
-				Summary:  "Failed to read file",
+				Summary:  "Failed to load config file: invalid path",
 				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
 			},
 		}
