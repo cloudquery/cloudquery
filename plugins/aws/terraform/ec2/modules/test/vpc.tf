@@ -20,5 +20,5 @@ module "vpc" {
   //   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
   enable_ipv6            = true
   enable_nat_gateway     = false
-  create_egress_only_igw = false
+  create_egress_only_igw = true
 }
