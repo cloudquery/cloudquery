@@ -8,7 +8,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/ratelimit"
 	"github.com/aws/smithy-go"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -158,6 +157,7 @@ var (
 	hostIdRegex    = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
 	arnIdRegex     = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
 	urlRegex       = regexp.MustCompile(`(\s)http(s?):\/\/[a-z0-9_\-\./]+(\s?)`)
+	encAuthRegex   = regexp.MustCompile(`(\s)(Encoded authorization failure message:)\s[A-Za-z0-9_-]+`)
 )
 
 func removePII(aa []Account, msg string) string {
@@ -168,6 +168,7 @@ func removePII(aa []Account, msg string) string {
 	msg = hostIdRegex.ReplaceAllString(msg, " HostID: xxxx")
 	msg = arnIdRegex.ReplaceAllString(msg, "${1}${2}xxxx${3}")
 	msg = urlRegex.ReplaceAllString(msg, "${1}http${2}://xxxx${3}")
+	msg = encAuthRegex.ReplaceAllString(msg, "${1}${2} xxxx")
 	msg = accountObfusactor(aa, msg)
 
 	return msg
