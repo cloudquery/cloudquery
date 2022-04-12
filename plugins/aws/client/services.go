@@ -517,6 +517,10 @@ type WafV2Client interface {
 	GetPermissionPolicy(ctx context.Context, params *wafv2.GetPermissionPolicyInput, optFns ...func(*wafv2.Options)) (*wafv2.GetPermissionPolicyOutput, error)
 	GetWebACLForResource(ctx context.Context, params *wafv2.GetWebACLForResourceInput, optFns ...func(*wafv2.Options)) (*wafv2.GetWebACLForResourceOutput, error)
 	GetLoggingConfiguration(ctx context.Context, params *wafv2.GetLoggingConfigurationInput, optFns ...func(*wafv2.Options)) (*wafv2.GetLoggingConfigurationOutput, error)
+	GetIPSet(ctx context.Context, params *wafv2.GetIPSetInput, optFns ...func(*wafv2.Options)) (*wafv2.GetIPSetOutput, error)
+	GetRegexPatternSet(ctx context.Context, params *wafv2.GetRegexPatternSetInput, optFns ...func(*wafv2.Options)) (*wafv2.GetRegexPatternSetOutput, error)
+	ListIPSets(ctx context.Context, params *wafv2.ListIPSetsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListIPSetsOutput, error)
+	ListRegexPatternSets(ctx context.Context, params *wafv2.ListRegexPatternSetsInput, optFns ...func(*wafv2.Options)) (*wafv2.ListRegexPatternSetsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_sqs.go . SQSClient

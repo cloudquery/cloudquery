@@ -55,6 +55,26 @@ func (mr *MockWafV2ClientMockRecorder) DescribeManagedRuleGroup(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeManagedRuleGroup", reflect.TypeOf((*MockWafV2Client)(nil).DescribeManagedRuleGroup), varargs...)
 }
 
+// GetIPSet mocks base method.
+func (m *MockWafV2Client) GetIPSet(arg0 context.Context, arg1 *wafv2.GetIPSetInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetIPSetOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetIPSet", varargs...)
+	ret0, _ := ret[0].(*wafv2.GetIPSetOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIPSet indicates an expected call of GetIPSet.
+func (mr *MockWafV2ClientMockRecorder) GetIPSet(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIPSet", reflect.TypeOf((*MockWafV2Client)(nil).GetIPSet), varargs...)
+}
+
 // GetLoggingConfiguration mocks base method.
 func (m *MockWafV2Client) GetLoggingConfiguration(arg0 context.Context, arg1 *wafv2.GetLoggingConfigurationInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetLoggingConfigurationOutput, error) {
 	m.ctrl.T.Helper()
@@ -93,6 +113,26 @@ func (mr *MockWafV2ClientMockRecorder) GetPermissionPolicy(arg0, arg1 interface{
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPermissionPolicy", reflect.TypeOf((*MockWafV2Client)(nil).GetPermissionPolicy), varargs...)
+}
+
+// GetRegexPatternSet mocks base method.
+func (m *MockWafV2Client) GetRegexPatternSet(arg0 context.Context, arg1 *wafv2.GetRegexPatternSetInput, arg2 ...func(*wafv2.Options)) (*wafv2.GetRegexPatternSetOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRegexPatternSet", varargs...)
+	ret0, _ := ret[0].(*wafv2.GetRegexPatternSetOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRegexPatternSet indicates an expected call of GetRegexPatternSet.
+func (mr *MockWafV2ClientMockRecorder) GetRegexPatternSet(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRegexPatternSet", reflect.TypeOf((*MockWafV2Client)(nil).GetRegexPatternSet), varargs...)
 }
 
 // GetRuleGroup mocks base method.
@@ -173,6 +213,46 @@ func (mr *MockWafV2ClientMockRecorder) ListAvailableManagedRuleGroups(arg0, arg1
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAvailableManagedRuleGroups", reflect.TypeOf((*MockWafV2Client)(nil).ListAvailableManagedRuleGroups), varargs...)
+}
+
+// ListIPSets mocks base method.
+func (m *MockWafV2Client) ListIPSets(arg0 context.Context, arg1 *wafv2.ListIPSetsInput, arg2 ...func(*wafv2.Options)) (*wafv2.ListIPSetsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListIPSets", varargs...)
+	ret0, _ := ret[0].(*wafv2.ListIPSetsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListIPSets indicates an expected call of ListIPSets.
+func (mr *MockWafV2ClientMockRecorder) ListIPSets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIPSets", reflect.TypeOf((*MockWafV2Client)(nil).ListIPSets), varargs...)
+}
+
+// ListRegexPatternSets mocks base method.
+func (m *MockWafV2Client) ListRegexPatternSets(arg0 context.Context, arg1 *wafv2.ListRegexPatternSetsInput, arg2 ...func(*wafv2.Options)) (*wafv2.ListRegexPatternSetsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRegexPatternSets", varargs...)
+	ret0, _ := ret[0].(*wafv2.ListRegexPatternSetsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRegexPatternSets indicates an expected call of ListRegexPatternSets.
+func (mr *MockWafV2ClientMockRecorder) ListRegexPatternSets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRegexPatternSets", reflect.TypeOf((*MockWafV2Client)(nil).ListRegexPatternSets), varargs...)
 }
 
 // ListResourcesForWebACL mocks base method.
