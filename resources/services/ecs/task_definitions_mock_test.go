@@ -29,13 +29,6 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 	m.EXPECT().DescribeTaskDefinition(gomock.Any(), gomock.Any(), gomock.Any()).Return(taskDefinition, nil)
 
-	tags := &ecs.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(tags, nil)
-
 	return client.Services{
 		ECS: m,
 	}
