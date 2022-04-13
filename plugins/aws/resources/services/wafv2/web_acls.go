@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -20,7 +20,7 @@ func Wafv2WebAcls() *schema.Table {
 		Name:          "aws_wafv2_web_acls",
 		Description:   "A Web ACL defines a collection of rules to use to inspect and control web requests",
 		Resolver:      fetchWafv2WebAcls,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Multiplex:     client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
@@ -308,25 +308,21 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
-	// Dependent on the region select the right scope
-	scope := types.ScopeRegional
-	region := c.Region
-	if region == strings.ToLower("global") {
-		region = "us-east-1"
-		scope = types.ScopeCloudfront
+	config := wafv2.ListWebACLsInput{
+		Scope: c.WAFScope,
+		Limit: aws.Int32(100),
 	}
-	config := wafv2.ListWebACLsInput{Scope: scope}
 	for {
 		output, err := service.ListWebACLs(ctx, &config, func(options *wafv2.Options) {
-			options.Region = region
+			options.Region = c.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		for _, webAcl := range output.WebACLs {
-			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: scope}
+			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
 			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
-				options.Region = region
+				options.Region = c.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)
@@ -347,14 +343,38 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 	client := meta.(*client.Client)
 	service := client.Services().WafV2
 
-	// Resolve resources that are associated with the given web ACL
-	resourceArns, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN}, func(options *wafv2.Options) {
-		options.Region = client.Region
-	})
-	if err != nil {
-		return diag.WrapError(err)
+	resourceArns := []string{}
+	if client.WAFScope == types.ScopeCloudfront {
+		cloudfrontService := client.Services().Cloudfront
+		params := &cloudfront.ListDistributionsByWebACLIdInput{
+			WebACLId: webACL.Id,
+			MaxItems: aws.Int32(100),
+		}
+		for {
+			output, err := cloudfrontService.ListDistributionsByWebACLId(ctx, params, func(options *cloudfront.Options) {
+				options.Region = client.Region
+			})
+			if err != nil {
+				return diag.WrapError(err)
+			}
+			for _, item := range output.DistributionList.Items {
+				resourceArns = append(resourceArns, *item.ARN)
+			}
+			if aws.ToString(output.DistributionList.NextMarker) == "" {
+				break
+			}
+			params.Marker = output.DistributionList.NextMarker
+		}
+	} else {
+		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN}, func(options *wafv2.Options) {
+			options.Region = client.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		resourceArns = output.ResourceArns
 	}
-	return resource.Set(c.Name, resourceArns.ResourceArns)
+	return resource.Set(c.Name, resourceArns)
 }
 func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*types.WebACL)

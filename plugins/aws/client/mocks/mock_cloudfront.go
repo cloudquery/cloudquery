@@ -95,6 +95,26 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributions(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDistributions", reflect.TypeOf((*MockCloudfrontClient)(nil).ListDistributions), varargs...)
 }
 
+// ListDistributionsByWebACLId mocks base method.
+func (m *MockCloudfrontClient) ListDistributionsByWebACLId(arg0 context.Context, arg1 *cloudfront.ListDistributionsByWebACLIdInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByWebACLIdOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListDistributionsByWebACLId", varargs...)
+	ret0, _ := ret[0].(*cloudfront.ListDistributionsByWebACLIdOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListDistributionsByWebACLId indicates an expected call of ListDistributionsByWebACLId.
+func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByWebACLId(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDistributionsByWebACLId", reflect.TypeOf((*MockCloudfrontClient)(nil).ListDistributionsByWebACLId), varargs...)
+}
+
 // ListTagsForResource mocks base method.
 func (m *MockCloudfrontClient) ListTagsForResource(arg0 context.Context, arg1 *cloudfront.ListTagsForResourceInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListTagsForResourceOutput, error) {
 	m.ctrl.T.Helper()
