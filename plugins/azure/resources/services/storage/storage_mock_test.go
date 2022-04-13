@@ -45,6 +45,16 @@ func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	account.Name = &name
 	rg := client.FakeResourceGroup
 	account.ID = &rg
+
+	// Not all storage account kinds and sku_tiers have 'blob_logging_settings' and 'queue_logging_settings'.
+	// Because we want all columns to have values, we set the sku_tier to 'Standard' and account kind to 'Storagev2'.
+	sku := storage.Sku{
+		Name: storage.StandardRAGRS,
+		Tier: storage.Standard,
+	}
+	account.Sku = &sku
+	account.Kind = storage.StorageV2
+
 	page := storage.NewAccountListResultPage(storage.AccountListResult{Value: &[]storage.Account{account}}, func(ctx context.Context, result storage.AccountListResult) (storage.AccountListResult, error) {
 		return storage.AccountListResult{}, nil
 	})

@@ -222,6 +222,11 @@ func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, paren
 	if !ok {
 		return fmt.Errorf("not a storage.Account: %T", parent.Item)
 	}
+
+	if !isBlobSupported(&account) {
+		return nil
+	}
+
 	resource, err := client.ParseResourceID(*account.ID)
 	if err != nil {
 		return diag.WrapError(err)

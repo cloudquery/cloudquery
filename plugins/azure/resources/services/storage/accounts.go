@@ -666,13 +666,13 @@ func StorageAccounts() *schema.Table {
 			{
 				Name:        "blob_logging_settings",
 				Type:        schema.TypeJSON,
-				Description: "BLOB service loggging settings",
+				Description: "BLOB service loggging settings (only for storage account types that support blobs)",
 				Resolver:    fetchStorageAccountBlobLoggingSettings,
 			},
 			{
 				Name:        "queue_logging_settings",
 				Type:        schema.TypeJSON,
-				Description: "Queue service loggging settings",
+				Description: "Queue service loggging settings (only for storage account types that support queues)",
 				Resolver:    fetchStorageAccountQueueLoggingSettings,
 			},
 		},
@@ -853,11 +853,17 @@ func fetchStorageAccountPrivateEndpointConnections(_ context.Context, _ schema.C
 	res <- *account.PrivateEndpointConnections
 	return nil
 }
+
 func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	acc, ok := resource.Item.(storage.Account)
 	if !ok {
 		return fmt.Errorf("not a storage.Account: %T", resource.Item)
 	}
+
+	if !isBlobSupported(&acc) {
+		return nil
+	}
+
 	// fetch storage account keys for Shared Key authentication
 	storage := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
@@ -884,6 +890,12 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	blobProps := storage.NewBlobServiceProperties(auth)
 	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
 	if err != nil {
+		// For premium 'page blob' storage accounts, we sometimes get "authorization error", not sure why.
+		// In any case, we can probably ignore this since it only happens for premium 'page blob' storage accounts.
+		if client.IgnoreAccessDenied(err) {
+			meta.Logger().Warn("received access denied on GetServiceProperties", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	var logging *accounts.Logging
@@ -896,11 +908,17 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	}
 	return resource.Set(c.Name, data)
 }
+
 func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	acc, ok := resource.Item.(storage.Account)
 	if !ok {
 		return fmt.Errorf("not a storage.Account: %T", resource.Item)
 	}
+
+	if !isQueueSupported(&acc) {
+		return nil
+	}
+
 	// fetch storage account keys for Shared Key authentication
 	storage := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
@@ -933,4 +951,16 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, data)
+}
+
+// isQueueSupported checks whether queues are supported for a storage account.
+// Premium storage accounts don't support queues.
+func isQueueSupported(account *storage.Account) bool {
+	return account.Sku.Tier == storage.Standard && account.Kind == storage.StorageV2
+}
+
+// isBlobSupported checks whether blobs are supported for a storage account.
+func isBlobSupported(account *storage.Account) bool {
+	return (account.Kind == storage.Storage) || (account.Kind == storage.StorageV2) ||
+		(account.Kind == storage.BlockBlobStorage) || (account.Kind == storage.BlobStorage)
 }

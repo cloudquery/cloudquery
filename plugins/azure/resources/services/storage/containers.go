@@ -165,6 +165,12 @@ func StorageContainers() *schema.Table {
 func fetchStorageContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Storage.Containers
 	acc := parent.Item.(storage.Account)
+
+	// Not all storage-account kinds support containers.
+	if !isBlobSupported(&acc) {
+		return nil
+	}
+
 	resourceDetails, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
 		return diag.WrapError(err)

@@ -103,5 +103,5 @@ Azure storage account
 |id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
 |name|text|The name of the resource|
 |type|text|The type of the resource Eg "MicrosoftCompute/virtualMachines" or "MicrosoftStorage/storageAccounts"|
-|blob_logging_settings|jsonb|BLOB service loggging settings|
-|queue_logging_settings|jsonb|Queue service loggging settings|
+|blob_logging_settings|jsonb|BLOB service loggging settings (only for storage account types that support blobs)|
+|queue_logging_settings|jsonb|Queue service loggging settings (only for storage account types that support queues)|
