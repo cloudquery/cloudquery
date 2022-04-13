@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"path/filepath"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
@@ -13,8 +12,7 @@ import (
 func Test_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL,
-		registry.WithPluginDirectory(filepath.Join(".", ".cq", "providers"))), plugin.WithAllowReattach())
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}

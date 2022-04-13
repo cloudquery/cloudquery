@@ -69,7 +69,9 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			} else {
 				assert.Len(t, tc.ExpectedDiags, 0)
 			}
-			assert.Equal(t, tc.ExpectedAvailableUpdates, updates)
+			if tc.ExpectedAvailableUpdates != nil {
+				assert.Equal(t, tc.ExpectedAvailableUpdates, updates)
+			}
 		})
 	}
 }

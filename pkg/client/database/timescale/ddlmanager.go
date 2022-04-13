@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
@@ -121,14 +123,14 @@ func (d *DDLManager) configureHyperTable(ctx context.Context, tableName string) 
 	if _, err := d.pool.Exec(ctx, fmt.Sprintf(setChunkTimeInterval, d.cfg.TimeInterval), tName); err != nil {
 		return err
 	}
-	d.log.Debug("updated chunk_time_interval for table", "table", tableName, "interval", d.cfg.TimeInterval)
+	log.Debug().Str("table", tableName).Int("interval", d.cfg.TimeInterval).Msg("updated chunk_time_interval for table")
 
 	// Below call is only needed for "parent" tables. dataRetentionPolicy function takes care of that by updating retention ONLY IF a previous retention policy is set.
 	if _, err := d.pool.Exec(ctx, fmt.Sprintf(dataRetentionPolicy, d.cfg.Retention), tName); err != nil {
 		return err
 	}
 
-	d.log.Debug("created data retention policy", "table", tableName, "days", d.cfg.Retention)
+	log.Debug().Str("table", tableName).Int("days", d.cfg.Retention).Msg("created data retention policy")
 	return nil
 }
 

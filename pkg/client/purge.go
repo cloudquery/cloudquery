@@ -5,6 +5,15 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
+	"github.com/doug-martin/goqu/v9"
+	"github.com/georgysavva/scany/pgxscan"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -75,8 +84,8 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 	return &result, diags
 }
 
-func removeProviderStaleData(ctx context.Context, storage execution.Storage, pm *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
-	providerSchema, err := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
+func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
+	providerSchema, err := GetProviderSchema(ctx, plugin, &GetProviderSchemaOptions{Provider: provider})
 	if err != nil {
 		return nil, 0, err
 	}

@@ -31,7 +31,6 @@ func TestHub_CheckUpdate(t *testing.T) {
 				Version: LatestVersion,
 				Source:  DefaultOrganization,
 			},
-			ExpectedError: errors.New("bad version: test@latest"),
 		},
 		{
 			Name: "bad-provider-name",

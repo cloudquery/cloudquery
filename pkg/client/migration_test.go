@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"path/filepath"
 	"testing"
 
 	"github.com/jackc/pgx/v4"
@@ -17,8 +16,7 @@ import (
 
 func Test_Sync(t *testing.T) {
 	dsn := setupDB(t)
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL,
-		registry.WithPluginDirectory(filepath.Join(".", ".cq", "providers"))), plugin.WithAllowReattach())
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -80,8 +78,7 @@ func Test_Sync(t *testing.T) {
 
 func Test_Drop(t *testing.T) {
 	dsn := setupDB(t)
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL,
-		registry.WithPluginDirectory(filepath.Join(".", ".cq", "providers"))), plugin.WithAllowReattach())
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}

@@ -334,6 +334,29 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchResponse, retErr error) {
+	if !c.SkipBuildTables {
+		for _, p := range request.Providers {
+			rp := c.Providers.Get(p.Name)
+			if rp == nil {
+				return nil, fmt.Errorf("failed to find provider in config %s", rp.Name)
+			}
+			src, _, err := ParseProviderSource(rp)
+			if err != nil {
+				return nil, fmt.Errorf("failed to find provider in config %s", rp.Name)
+			}
+			if _, diags := Sync(ctx, NewStorage(c.DSN, c.dialectExecutor), c.Manager, &SyncOptions{
+				Provider: registry.Provider{
+					Name:    rp.Name,
+					Version: rp.Version,
+					Source:  src,
+				},
+				DownloadLatest: false,
+			}); diags.HasErrors() {
+				return nil, err
+			}
+		}
+	}
+
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 

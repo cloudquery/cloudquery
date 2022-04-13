@@ -222,7 +222,6 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	if err := osFs.MkdirAll(pluginDir, os.ModePerm); err != nil {
 		return ProviderBinary{}, err
 	}
-
 	// Create a new progress updater callback func
 	var progressCB ui.ProgressUpdateFunc
 	if h.ProgressUpdater != nil {

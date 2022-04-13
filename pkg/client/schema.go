@@ -3,14 +3,17 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/rs/zerolog/log"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/rs/zerolog/log"
 )
 
 type GetProviderSchemaOptions struct {

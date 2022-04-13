@@ -71,10 +71,6 @@ func Sync(ctx context.Context, storage Storage, pm *plugin.Manager, opts *SyncOp
 		}
 	}()
 
-	providerVersion, err := version.NewVersion(opts.Provider.Version)
-	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
-	}
 	// get version from current schema
 	ver, dirty, err := m.Version()
 	if err != nil && err != migrate.ErrNilVersion {
@@ -85,11 +81,19 @@ func Sync(ctx context.Context, storage Storage, pm *plugin.Manager, opts *SyncOp
 	}
 	currentVersion, err := version.NewVersion(ver)
 
+	var providerVersion *version.Version
+	if opts.Provider.Version != registry.LatestVersion {
+		providerVersion, err = version.NewVersion(opts.Provider.Version)
+		if err != nil {
+			return nil, diag.FromError(err, diag.INTERNAL)
+		}
+	}
+
 	state := NoChange
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	if providerVersion.GreaterThan(currentVersion) {
+	if opts.Provider.Version == registry.LatestVersion || providerVersion.GreaterThan(currentVersion) {
 		if err := m.UpgradeProvider(opts.Provider.Version); err != nil {
 			return nil, diag.FromError(err, diag.DATABASE)
 		}

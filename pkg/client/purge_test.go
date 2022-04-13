@@ -6,17 +6,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
-
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-test/resources"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -262,7 +260,7 @@ func TestPurgeProviderData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(".")), plugin.WithAllowReattach())
+			pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
 			if !assert.Nil(t, err) {
 				t.FailNow()
 			}
@@ -327,21 +325,20 @@ func truncateTable(t *testing.T, dsn, table string) {
 }
 
 func setupTestProvider(t *testing.T, dsn string) {
-
 	provider := registry.Provider{
 		Name:    "test",
 		Source:  "cloudquery",
 		Version: "v0.0.11",
 	}
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(".")), plugin.WithAllowReattach())
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	assert.Nil(t, err)
 	_, diags := Download(context.TODO(), pm, &DownloadOptions{
 		Providers: []registry.Provider{provider},
 		NoVerify:  false,
 	})
-	assert.Nil(t, diags)
+	assert.False(t, diags.HasErrors())
 
-	if _, err := Sync(context.TODO(), NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); !assert.Nil(t, err) {
+	if _, diags := Sync(context.TODO(), NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); diags.HasErrors() {
 		t.FailNow()
 	}
 }

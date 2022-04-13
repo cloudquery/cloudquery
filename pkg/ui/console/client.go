@@ -97,10 +97,14 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	_, dialect, err := database.GetExecutor(c.DSN, cfg.CloudQuery.History)
-	if err != nil {
-		return nil, err
+	var dialect database.DialectExecutor
+	if c.DSN != "" {
+		_, dialect, err = database.GetExecutor(c.DSN, cfg.CloudQuery.History)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	storage := client.NewStorage(c.DSN, dialect)
 	cClient := &Client{c, progressUpdater, cfg, c.Hub, c.Manager, storage}
 	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
@@ -141,7 +145,7 @@ func ClientFactory(ctx context.Context, configPath *string, configMutator func(*
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-	pp := make([]registry.Provider, len(c.cfg.Providers))
+	pp := make([]registry.Provider, len(c.cfg.CloudQuery.Providers))
 	for i, rp := range c.cfg.CloudQuery.Providers {
 		src, name, err := client.ParseProviderSource(rp)
 		if err != nil {
