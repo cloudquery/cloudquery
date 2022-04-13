@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -190,11 +191,7 @@ func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta,
 		o.Region = cl.Region
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	tags := make(map[string]string, len(out.TagList))
-	for _, t := range out.TagList {
-		tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
 }

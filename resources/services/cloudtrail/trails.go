@@ -246,7 +246,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 		for i, h := range trails {
 			processed[i] = CloudTrailWrapper{
 				Trail: h,
-				Tags:  make(map[string]interface{}),
+				Tags:  make(map[string]string),
 			}
 
 			// Before fetching trail tags we have to check if the trail is organization trail
@@ -276,10 +276,8 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			if err != nil {
 				return nil, err
 			}
-			for _, tr := range processed {
-				for _, t := range getCloudTrailTagsByResourceID(*tr.TrailARN, response.ResourceTagList) {
-					tr.Tags[*t.Key] = t.Value
-				}
+			for i, tr := range processed {
+				client.TagsIntoMap(getCloudTrailTagsByResourceID(*tr.TrailARN, response.ResourceTagList), processed[i].Tags)
 			}
 			if aws.ToString(response.NextToken) == "" {
 				break
@@ -415,5 +413,5 @@ func aggregateCloudTrails(trails []types.Trail) (map[string][]types.Trail, error
 
 type CloudTrailWrapper struct {
 	types.Trail
-	Tags map[string]interface{}
+	Tags map[string]string
 }

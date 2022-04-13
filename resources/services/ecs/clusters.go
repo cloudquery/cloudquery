@@ -360,7 +360,7 @@ func Clusters() *schema.Table {
 						Name:        "tags",
 						Description: "The metadata that you apply to the task to help you categorize and organize the task",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterTasksTags,
+						Resolver:    client.ResolveTags,
 					},
 					{
 						Name:        "arn",
@@ -695,7 +695,7 @@ func Clusters() *schema.Table {
 						Name:        "tags",
 						Description: "The metadata that you apply to the service to help you categorize and organize them",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterServicesTags,
+						Resolver:    client.ResolveTags,
 					},
 					{
 						Name:        "task_definition",
@@ -1041,7 +1041,7 @@ func Clusters() *schema.Table {
 								Name:        "tags",
 								Description: "The metadata that you apply to the task set to help you categorize and organize them",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterServiceTaskSetsTags,
+								Resolver:    client.ResolveTags,
 							},
 							{
 								Name:        "task_definition",
@@ -1206,7 +1206,7 @@ func Clusters() *schema.Table {
 						Name:        "tags",
 						Description: "The metadata that you apply to the container instance to help you categorize and organize them",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterContainerInstancesTags,
+						Resolver:    client.ResolveTags,
 					},
 					{
 						Name:        "version",
@@ -1611,18 +1611,6 @@ func resolveClusterTasksOverrides(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveClusterTasksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(types.Task)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Task but got %T", resource.Item))
-	}
-	j := make(map[string]interface{})
-	for _, i := range p.Tags {
-		j[*i.Key] = *i.Value
-	}
-
-	return resource.Set(c.Name, j)
-}
 func fetchEcsClusterTaskAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p, ok := parent.Item.(types.Task)
 	if !ok {
@@ -1759,18 +1747,6 @@ func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.Cl
 
 	return resource.Set(c.Name, j)
 }
-func resolveClusterServicesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(types.Service)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Service but got %T", resource.Item))
-	}
-	j := make(map[string]interface{})
-	for _, i := range service.Tags {
-		j[*i.Key] = *i.Value
-	}
-
-	return resource.Set(c.Name, j)
-}
 func fetchEcsClusterServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	service, ok := parent.Item.(types.Service)
 	if !ok {
@@ -1833,17 +1809,6 @@ func resolveClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, 
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveClusterServiceTaskSetsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	taskSet, ok := resource.Item.(types.TaskSet)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.TaskSet but got %T", resource.Item))
-	}
-	j := make(map[string]interface{})
-	for _, i := range taskSet.Tags {
-		j[*i.Key] = *i.Value
-	}
-	return resource.Set(c.Name, j)
-}
 func fetchEcsClusterServiceTaskSetLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	taskSet, ok := parent.Item.(types.TaskSet)
 	if !ok {
@@ -1899,17 +1864,6 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 		config.NextToken = listContainerInstances.NextToken
 	}
 	return nil
-}
-func resolveClusterContainerInstancesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(types.ContainerInstance)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.ContainerInstance but got %T", resource.Item))
-	}
-	j := make(map[string]interface{})
-	for _, i := range instance.Tags {
-		j[*i.Key] = *i.Value
-	}
-	return resource.Set(c.Name, j)
 }
 func fetchEcsClusterContainerInstanceAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, ok := parent.Item.(types.ContainerInstance)

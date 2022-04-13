@@ -128,9 +128,5 @@ func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	tags := make(map[string]string, len(out.TagList))
-	for _, t := range out.TagList {
-		tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
 }

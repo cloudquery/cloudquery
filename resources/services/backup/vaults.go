@@ -374,12 +374,15 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 		if err != nil {
 			return diag.WrapError(err)
 		}
+
 		if result == nil {
 			break
 		}
+
 		for k, v := range result.Tags {
 			tags[k] = v
 		}
+
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}

@@ -452,15 +452,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	tags := make(map[string]string, len(out.TagList))
-	for _, v := range out.TagList {
-		key := aws.ToString(v.Key)
-		if key == "" {
-			continue
-		}
-		tags[key] = aws.ToString(v.Value)
-	}
-	return resource.Set(col.Name, tags)
+	return diag.WrapError(resource.Set(col.Name, client.TagsToMap(out.TagList)))
 }
 
 func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.GetDomainDetailOutput) *types.ContactDetail) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {

@@ -307,13 +307,7 @@ func EmrClusters() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags associated with a cluster.",
 				Type:        schema.TypeJSON,
-				Resolver: resolveEMRClusterJSONField(func(c *types.Cluster) interface{} {
-					tags := make(map[string]string, len(c.Tags))
-					for _, t := range c.Tags {
-						tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-					}
-					return tags
-				}),
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "termination_protected",

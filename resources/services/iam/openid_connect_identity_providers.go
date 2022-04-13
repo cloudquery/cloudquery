@@ -47,7 +47,7 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags that are attached to the specified IAM OIDC provider. The returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIamOpenidConnectIdentityProviderTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "thumbprint_list",
@@ -81,15 +81,6 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 		res <- IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
 	}
 	return nil
-}
-func resolveIamOpenidConnectIdentityProviderTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(IamOpenIdIdentityProviderWrapper)
-	response := make(map[string]interface{}, len(r.Tags))
-	for _, t := range r.Tags {
-		response[*t.Key] = t.Value
-	}
-
-	return resource.Set(c.Name, response)
 }
 
 type IamOpenIdIdentityProviderWrapper struct {

@@ -2,7 +2,6 @@ package redshift
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -191,7 +190,7 @@ func Snapshots() *schema.Table {
 				Name:        "tags",
 				Description: "Tags consisting of a name/value pair for a resource.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveSnapshotTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -255,17 +254,4 @@ func fetchRedshiftSnapshotAccountsWithRestoreAccesses(ctx context.Context, meta 
 	s := parent.Item.(types.Snapshot)
 	res <- s.AccountsWithRestoreAccess
 	return nil
-}
-
-func resolveSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(types.Snapshot)
-	tags := make(map[string]string, len(s.Tags))
-	for _, v := range s.Tags {
-		tags[aws.ToString(v.Key)] = aws.ToString(v.Value)
-	}
-	b, err := json.Marshal(tags)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
 }

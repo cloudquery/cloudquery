@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
 	"regexp"
 	"strings"
 	"sync"
@@ -270,15 +271,7 @@ func (c *Client) IsNotFoundError(err error) bool {
 	return false
 }
 
-func IsAWSError(err error, code string) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	return strings.Contains(ae.ErrorCode(), code)
-}
-
-func IsAWSErrors(err error, code []string) bool {
+func IsAWSError(err error, code ...string) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
 		return false
@@ -289,4 +282,54 @@ func IsAWSErrors(err error, code []string) bool {
 		}
 	}
 	return false
+}
+
+// TagsIntoMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and writes them into the given map
+func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
+	stringify := func(v reflect.Value) string {
+		vt := v.Type()
+		if vt.Kind() == reflect.String {
+			return v.String()
+		}
+		if vt.Kind() != reflect.Pointer || vt.Elem().Kind() != reflect.String {
+			panic("field is not string or *string")
+		}
+
+		return v.Elem().String()
+	}
+
+	if k := reflect.TypeOf(tagSlice).Kind(); k != reflect.Slice {
+		panic("invalid usage: Only slices are supported as input: " + k.String())
+	}
+	slc := reflect.ValueOf(tagSlice)
+
+	for i := 0; i < slc.Len(); i++ {
+		val := slc.Index(i)
+		if k := val.Kind(); k != reflect.Struct {
+			panic("slice member is not struct: " + k.String())
+		}
+
+		keyField, valField := val.FieldByName("Key"), val.FieldByName("Value")
+		if (keyField.Type().Kind() == reflect.Pointer && keyField.IsNil()) || (valField.Type().Kind() == reflect.Pointer && valField.IsNil()) {
+			continue
+		}
+
+		if keyField.IsZero() || valField.IsZero() {
+			panic("slice member is missing Key or Value fields")
+		}
+
+		dst[stringify(keyField)] = stringify(valField)
+	}
+}
+
+// TagsToMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and returns a map
+func TagsToMap(tagSlice interface{}) map[string]string {
+	if k := reflect.TypeOf(tagSlice).Kind(); k != reflect.Slice {
+		panic("invalid usage: Only slices are supported as input: " + k.String())
+	}
+	slc := reflect.ValueOf(tagSlice)
+
+	ret := make(map[string]string, slc.Len())
+	TagsIntoMap(tagSlice, ret)
+	return ret
 }

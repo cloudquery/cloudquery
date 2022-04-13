@@ -248,17 +248,9 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 			return diag.WrapError(err)
 		}
 		for _, h := range healthChecks {
-			tags := getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)
-			if len(tags) == 0 {
-				continue
-			}
 			wrapper := Route53HealthCheckWrapper{
 				HealthCheck: h,
-				Tags:        make(map[string]interface{}, len(tags)),
-			}
-
-			for _, t := range tags {
-				wrapper.Tags[*t.Key] = t.Value
+				Tags:        client.TagsToMap(getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)),
 			}
 			res <- wrapper
 		}
@@ -306,5 +298,5 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 
 type Route53HealthCheckWrapper struct {
 	types.HealthCheck
-	Tags map[string]interface{}
+	Tags map[string]string
 }

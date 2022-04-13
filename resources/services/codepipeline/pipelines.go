@@ -271,22 +271,18 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 func ResolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
-	client := meta.(*client.Client)
-	svc := client.Services().CodePipeline
+	cl := meta.(*client.Client)
+	svc := cl.Services().CodePipeline
 	response, err := svc.ListTagsForResource(ctx, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	}, func(options *codepipeline.Options) {
-		options.Region = client.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	tags := make(map[string]interface{})
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
 }
 func fetchCodepipelinePipelineStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*codepipeline.GetPipelineOutput)

@@ -548,12 +548,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		return err
 	}
-
-	tags := make(map[string]interface{})
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
 }
 func resolveDynamodbTableArchivalSummary(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
