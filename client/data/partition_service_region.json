@@ -5832,6 +5832,11 @@
             "us-iso-west-1": {}
           }
         },
+        "eks": {
+          "regions": {
+            "us-iso-east-1": {}
+          }
+        },
         "elasticache": {
           "regions": {
             "us-iso-east-1": {},
@@ -6139,6 +6144,11 @@
           }
         },
         "ecs": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
+        "eks": {
           "regions": {
             "us-isob-east-1": {}
           }
