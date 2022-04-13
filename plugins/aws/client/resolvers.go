@@ -35,7 +35,7 @@ func resolveTagField(fieldName string) func(context.Context, schema.ClientMeta, 
 	return func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		var val reflect.Value
 
-		if reflect.TypeOf(r.Item).Kind() == reflect.Pointer {
+		if reflect.TypeOf(r.Item).Kind() == reflect.Ptr {
 			val = reflect.ValueOf(r.Item).Elem()
 		} else {
 			val = reflect.ValueOf(r.Item)
