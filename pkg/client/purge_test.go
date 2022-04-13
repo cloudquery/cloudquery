@@ -3,16 +3,17 @@ package client
 import (
 	"context"
 	"fmt"
-	"path/filepath"
+	"os"
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/cloudquery/cloudquery/pkg/config"
 
-	"github.com/cloudquery/cloudquery/internal/test/providertest"
+	"github.com/google/uuid"
 
 	"github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/cq-provider-test/resources"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -20,10 +21,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 
 	"github.com/stretchr/testify/assert"
-)
-
-var (
-	defaultProviderPath = filepath.Join(".", ".cq", "providers")
 )
 
 func TestPurgeProviderData(t *testing.T) {
@@ -52,7 +49,7 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "no-providers-given",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{},
+				Providers:  []registry.Provider{},
 				LastUpdate: 0,
 				DryRun:     true,
 			},
@@ -68,7 +65,7 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "bad-plugin-name",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"bad-plugin"},
+				Providers:  []registry.Provider{{Name: "bad-plugin", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 				DryRun:     true,
 			},
@@ -84,7 +81,7 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "dry-run-no-data",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"test"},
+				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 				DryRun:     true,
 			},
@@ -96,11 +93,11 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "basic-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"test"},
+				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				tbl := resources.Provider().ResourceMap["slow_resource"]
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -132,11 +129,11 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "no-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"test"},
+				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 10,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				tbl := resources.Provider().ResourceMap["slow_resource"]
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -170,11 +167,11 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "single-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"test"},
+				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 6,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				tbl := resources.Provider().ResourceMap["slow_resource"]
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -218,11 +215,11 @@ func TestPurgeProviderData(t *testing.T) {
 		{
 			Name: "data-purge-different-times",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []string{"test"},
+				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 4,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := providertest.Provider().ResourceMap["slow_resource"]
+				tbl := resources.Provider().ResourceMap["slow_resource"]
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -268,7 +265,7 @@ func TestPurgeProviderData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, registry.CloudQueryRegistryURL, nil)
+			pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(".")), plugin.WithAllowReattach())
 			if !assert.Nil(t, err) {
 				t.FailNow()
 			}
@@ -333,15 +330,23 @@ func truncateTable(t *testing.T, dsn, table string) {
 }
 
 func setupTestProvider(t *testing.T, dsn string) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
 	// TODO: we set up client for now as not all commands are refactored
 	c, err := New(context.TODO(), func(options *Client) {
 		options.DSN = dsn
-		options.Providers = requiredTestProviders()
+		src := registry.DefaultOrganization
+		options.Providers = []*config.RequiredProvider{
+			{
+				Name:    "test",
+				Source:  &src,
+				Version: "v0.0.11",
+			}}
 	})
+
+	_ = c.DownloadProviders(context.TODO())
 	assert.Nil(t, err)
 	t.Cleanup(c.Close)
+
+	_ = os.Setenv("CQ_PROVIDER_REATTACH", "")
 
 	if err := c.BuildProviderTables(context.TODO(), "test"); !assert.Nil(t, err) {
 		t.FailNow()

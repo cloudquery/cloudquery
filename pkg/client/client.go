@@ -207,7 +207,7 @@ type Option func(options *Client)
 // Client is the client for executing providers, fetching data and running queries and polices
 type Client struct {
 	// Required: List of providers that are required, these providers will be downloaded if DownloadProviders is called.
-	Providers []*config.RequiredProvider
+	Providers config.RequiredProviders
 	// Optional: Registry url to verify plugins from, defaults to CloudQuery hub
 	RegistryURL string
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
@@ -262,11 +262,11 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 	}
 
 	var err error
-	c.Manager, err = plugin.NewManager(c.Logger, c.PluginDirectory, c.RegistryURL, c.HubProgressUpdater)
+	c.Manager, err = plugin.NewManager(registry.NewRegistryHub(c.RegistryURL,
+		registry.WithPluginDirectory(c.PluginDirectory), registry.WithProgress(c.HubProgressUpdater)), plugin.WithAllowReattach())
 	if err != nil {
 		return nil, err
 	}
-	c.Manager.LoadExisting(c.Providers)
 
 	if c.DSN == "" {
 		c.Logger.Warn("missing DSN, some commands won't work")
@@ -287,7 +287,19 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 	defer spanEnder(retErr)
 
 	c.Logger.Info("Downloading required providers")
-	return c.Manager.DownloadProviders(ctx, c.Providers, c.NoVerify)
+	pp := make([]registry.Provider, len(c.Providers))
+	for i, rp := range c.Providers {
+		src, name, err := ParseProviderSource(rp)
+		if err != nil {
+			return err
+		}
+		pp[i] = registry.Provider{
+			Name:    name,
+			Version: rp.Version,
+			Source:  src,
+		}
+	}
+	return c.Manager.DownloadProviders(ctx, pp, c.NoVerify)
 }
 
 type ProviderUpdateSummary struct {
@@ -300,31 +312,40 @@ type ProviderUpdateSummary struct {
 func (c *Client) CheckForProviderUpdates(ctx context.Context) []ProviderUpdateSummary {
 	summary := make([]ProviderUpdateSummary, 0, len(c.Providers))
 	for _, p := range c.Providers {
-		// if version is latest it means there is no update as DownloadProvider will download the latest version automatically
+		// if version is latest it means there is no update as Download will download the latest version automatically
 		if strings.Compare(p.Version, "latest") == 0 {
 			c.Logger.Debug("version is latest", "provider", p.Name, "version", p.Version)
 			continue
 		}
-		version, err := c.Hub.CheckProviderUpdate(ctx, p)
+		// TODO: check this
+		src, name, err := ParseProviderSource(p)
+		if err != nil {
+			continue
+		}
+		ver, err := c.Hub.CheckUpdate(ctx, registry.Provider{
+			Name:    name,
+			Version: p.Version,
+			Source:  src,
+		})
 		if err != nil {
 			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
 			continue
 		}
-		if version == "" {
+		if ver == "" {
 			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
 			continue
 		}
 
-		if p.Version != version {
-			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, version})
-			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", version)
+		if p.Version != ver {
+			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, ver})
+			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", ver)
 		}
 	}
 	return summary
 }
 
 func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
-	providerPlugin, err := c.Manager.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
+	providerPlugin, err := c.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerCfg.Name, "error", err)
 		return err
@@ -414,7 +435,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 		}
 
 		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
-		providerPlugin, err := c.Manager.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
+		providerPlugin, err := c.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
 		if err != nil {
 			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
 			return nil, err
@@ -590,7 +611,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 }
 
 func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
-	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	providerPlugin, err := c.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -608,7 +629,7 @@ func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*P
 }
 
 func (c *Client) GetProviderConfiguration(ctx context.Context, providerName string) (*cqproto.GetProviderConfigResponse, error) {
-	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	providerPlugin, err := c.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -618,7 +639,7 @@ func (c *Client) GetProviderConfiguration(ctx context.Context, providerName stri
 }
 
 func (c *Client) GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error) {
-	providerPlugin, err := c.Manager.CreatePlugin(providerName, "", nil)
+	providerPlugin, err := c.CreatePlugin(providerName, "", nil)
 	if err != nil {
 		c.Logger.Error("failed to create provider plugin", "provider", providerName, "error", err)
 		return nil, err
@@ -974,6 +995,21 @@ func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvide
 	return providerConfig, nil
 }
 
+func (c *Client) CreatePlugin(providerName, alias string, env []string) (plugin.Plugin, error) {
+	rp := c.Providers.Get(providerName)
+	if rp == nil {
+		return nil, fmt.Errorf("failed to find provider in configuration %s", providerName)
+	}
+	return c.Manager.CreatePlugin(&plugin.CreationOptions{
+		Provider: registry.Provider{
+			Name:    providerName,
+			Version: rp.Version,
+		},
+		Alias: alias,
+		Env:   env,
+	})
+}
+
 func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
 	kv := []interface{}{"table", r.TableName, "err", r.Error}
 	if r.RootTableName != "" {
@@ -1170,4 +1206,14 @@ func reportNumProviders(ctx context.Context, provs []*config.Provider) {
 			"multi_providers": strings.Join(multiProviders, ","),
 		})
 	})
+}
+
+func ParseProviderSource(requestedProvider *config.RequiredProvider) (string, string, error) {
+	var requestedSource string
+	if requestedProvider.Source == nil || *requestedProvider.Source == "" {
+		requestedSource = requestedProvider.Name
+	} else {
+		requestedSource = *requestedProvider.Source
+	}
+	return registry.ParseProviderName(requestedSource)
 }
