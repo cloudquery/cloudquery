@@ -5,6 +5,8 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/doug-martin/goqu/v9"
@@ -23,7 +25,7 @@ import (
 
 type PurgeProviderDataOptions struct {
 	// Providers to purge data from, the provider name should be the plugin name
-	Providers []string
+	Providers []registry.Provider
 	// LastUpdate defines how long from time.Now() should the resources be removed from the database.
 	LastUpdate time.Duration
 	// DryRun whether to run the purge in "dry" mode and only report the amount of affected resources that will be purged, if executed.
@@ -51,7 +53,7 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 	if len(opts.Providers) == 0 {
 		return nil, diag.Diagnostics{diag.NewBaseError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("no providers were given"))}
 	}
-	log.Info().Strs("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
+	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
 	db, err := database.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
 	if err != nil {
 		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL)}
@@ -67,7 +69,7 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 
 	lastUpdateTime := time.Now().UTC().Add(-opts.LastUpdate)
 	for _, p := range opts.Providers {
-		log.Debug().Str("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
+		log.Debug().Stringer("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
 		affectedResources, affected, err := removeProviderStaleData(ctx, db, plugin, p, lastUpdateTime, opts.DryRun)
 		diags = diags.Add(err)
 		result.TotalAffected += affected
@@ -78,14 +80,14 @@ func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Mana
 	return &result, diags
 }
 
-func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider string, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
+func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
 	providerSchema, err := GetProviderSchema(ctx, plugin, &GetProviderSchemaOptions{Provider: provider})
 	if err != nil {
 		return nil, 0, err
 	}
 	var (
 		diags             diag.Diagnostics
-		logger            = log.With().Bool("dry-run", dryRun).Str("provider", provider).Logger()
+		logger            = log.With().Bool("dry-run", dryRun).Stringer("provider", provider).Logger()
 		totalAffected     int
 		affectedResources = make(map[string]int)
 	)

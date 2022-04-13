@@ -12,6 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
@@ -538,9 +540,27 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
+	// TODO: remove this
+	pp := make([]registry.Provider, len(providers))
+	for i, p := range providers {
+		rp := c.c.Providers.Get(p)
+		if rp == nil {
+			continue
+		}
+		src, name, err := client.ParseProviderSource(rp)
+		if err != nil {
+			return err
+		}
+		pp[i] = registry.Provider{
+			Name:    name,
+			Version: rp.Version,
+			Source:  src,
+		}
+	}
+
 	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
 	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.PurgeProviderDataOptions{
-		Providers:  providers,
+		Providers:  pp,
 		LastUpdate: lastUpdate,
 		DryRun:     dryRun,
 	})

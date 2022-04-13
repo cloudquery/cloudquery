@@ -5,78 +5,79 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog/log"
+	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/spf13/viper"
+
+	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cq-provider-sdk/serve"
 )
+
+type CreationOptions struct {
+	Provider registry.Provider
+	// Alias to name plugin on creation
+	Alias string
+	// Environment variables to pass to plugin binary on creation
+	Env []string
+}
 
 // Manager handles lifecycle execution of CloudQuery providers
 type Manager struct {
-	hub       *registry.Hub
-	clients   map[string]Plugin
-	providers map[string]registry.ProviderDetails
-	logger    hclog.Logger
+	// whether manager allows executing plugins in reattach mode or not, by default reattach is disabled.
+	allowReattach bool
+	// registry allows access to download of providers from a remote source
+	registry registry.Registry
+	// clients is a map of all plugins created and managed by the manager
+	clients Plugins
 }
 
-func NewManager(logger hclog.Logger, pluginDirectory string, registryURL string, updater ui.Progress) (*Manager, error) {
-	// used primarily by the SDK's acceptance testing framework.
-	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
-	if err != nil {
-		return nil, err
+type ManagerOption func(m *Manager)
+
+// WithAllowReattach allows plugin reattach to be supported by Manager
+func WithAllowReattach() ManagerOption {
+	return func(m *Manager) {
+		m.allowReattach = true
 	}
-	clients := make(map[string]Plugin)
-	for name, cfg := range unmanagedProviders {
-		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("reattaching unmanaged plugin")
-		plugin, err := newUnmanagedPlugin(name, cfg)
-		if err != nil {
+}
+
+func NewManager(r registry.Registry, opts ...ManagerOption) (*Manager, error) {
+	m := &Manager{
+		clients:       make(map[string]Plugin),
+		registry:      r,
+		allowReattach: false,
+	}
+	// apply options
+	for _, o := range opts {
+		o(m)
+	}
+
+	if m.allowReattach {
+		if err := m.reattachProviders(); err != nil {
 			return nil, err
 		}
-		clients[name] = plugin
 	}
-	return &Manager{
-		clients:   clients,
-		logger:    logger,
-		providers: make(map[string]registry.ProviderDetails),
-		hub: registry.NewRegistryHub(registryURL, func(h *registry.Hub) {
-			h.ProgressUpdater = updater
-			h.PluginDirectory = pluginDirectory
-		}),
-	}, nil
+
+	return m, nil
 }
 
-// LoadExisting loads existing providers that are found by the hub in ProviderDirectory
-func (m *Manager) LoadExisting(providers []*config.RequiredProvider) {
-	for _, p := range providers {
-		pd, err := m.hub.GetProvider(p.Name, p.Version)
-		if err != nil {
-			continue
-		}
-		m.providers[pd.Name] = pd
-	}
-}
-
-func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.RequiredProvider, noVerify bool) error {
-	m.logger.Debug("Downloading required providers", "providers", providers)
+// DownloadProviders downloads one or more registry.Provider from the registry.Registry, if we want to skip
+// provider verification when downloading pass true on `noVerify`
+func (m *Manager) DownloadProviders(ctx context.Context, providers []registry.Provider, noVerify bool) error {
+	log.Debug().Interface("providers", providers).Msg("Downloading required providers")
 	traceData := make([]string, len(providers))
 	for i, rp := range providers {
-		if _, ok := m.clients[rp.Name]; ok {
-			m.logger.Debug("Skipping provider download, using reattach instead", "name", rp.Name, "version", rp.Version)
+		if _, ok := m.clients[rp.String()]; ok {
+			log.Debug().Str("name", rp.Name).Str("version", rp.Version).Msg("Skipping provider download, using reattach instead")
 			traceData[i] = rp.Name + "@debug"
 			continue
 		}
-		m.logger.Info("Downloading provider", "name", rp.Name, "version", rp.Version)
-		details, err := m.hub.DownloadProvider(ctx, rp, noVerify)
+		log.Info().Str("name", rp.Name).Str("version", rp.Version).Msg("Downloading provider")
+		details, err := m.registry.Download(ctx, rp, noVerify)
 		if err != nil {
 			return err
 		}
-		m.providers[rp.Name] = details
 		traceData[i] = rp.Name + "@" + details.Version
 	}
 
@@ -88,31 +89,36 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []*config.Req
 	return nil
 }
 
-func (m *Manager) CreatePlugin(providerName, alias string, env []string) (Plugin, error) {
-	_, providerName, err := registry.ParseProviderName(providerName)
+// CreatePlugin creates a plugin based on CreationOptions
+func (m *Manager) CreatePlugin(opts *CreationOptions) (Plugin, error) {
+	_, providerName, err := registry.ParseProviderName(opts.Provider.Name)
 	if err != nil {
 		return nil, err
 	}
-	p, ok := m.clients[providerName]
-	if ok {
+
+	p := m.clients.Get(opts.Provider, opts.Alias)
+	if p != nil {
+		log.Debug().Stringer("provider", opts.Provider).Str("alias", opts.Alias).Msg("using existing plugin")
 		return p, nil
 	}
-	m.logger.Info("plugin doesn't exist, creating...", "provider", providerName, "alias", alias)
-	details, ok := m.providers[providerName]
-	if !ok {
+	log.Info().Str("provider", providerName).Str("alias", opts.Alias).Msg("plugin doesn't exist, creating...")
+	details, err := m.registry.Get(opts.Provider.Name, opts.Provider.Version)
+	if err != nil {
 		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)
 	}
-	p, err = m.createProvider(&details, alias, env)
+	p, err = m.createProvider(&details, opts.Alias, opts.Env)
 	if err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderDetails, error) {
-	details, ok := m.providers[providerName]
-	if !ok {
-		return registry.ProviderDetails{}, fmt.Errorf("provider %s doesn't exist", providerName)
+// GetPluginDetails returns plugin details based on provider name
+// TODO: depercate this method
+func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderBinary, error) {
+	details, err := m.registry.Get(providerName, registry.LatestVersion)
+	if err != nil {
+		return registry.ProviderBinary{}, fmt.Errorf("provider %s doesn't exist", providerName)
 	}
 	return details, nil
 }
@@ -120,10 +126,38 @@ func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderDetail
 // Shutdown closes all clients and cleans the managed clients
 func (m *Manager) Shutdown() {
 	for _, c := range m.clients {
-		c.Close()
+		m.ClosePlugin(c)
 	}
 	// create fresh map
 	m.clients = make(map[string]Plugin)
+}
+
+// ClosePlugin kills a plugin instance and removes it from the managed plugins.
+func (m *Manager) ClosePlugin(p Plugin) {
+	if p.Version() == Unmanaged {
+		log.Warn().Str("provider", p.Name()).Msg("not closing unmanaged provider")
+		return
+	}
+	if err := m.killProvider(p.Name()); err != nil {
+		log.Warn().Str("provider", p.Name()).Msg("failed to kill provider")
+	}
+}
+
+func (m *Manager) reattachProviders() error {
+	// used primarily by the SDK's acceptance testing framework.
+	unmanagedProviders, err := serve.ParseReattachProviders(viper.GetString("reattach-providers"))
+	if err != nil {
+		return err
+	}
+	for name, cfg := range unmanagedProviders {
+		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("reattaching unmanaged plugin")
+		plugin, err := newUnmanagedPlugin(name, cfg)
+		if err != nil {
+			return err
+		}
+		m.clients[name] = plugin
+	}
+	return nil
 }
 
 func (m *Manager) killProvider(providerName string) error {
@@ -141,21 +175,11 @@ func (m *Manager) killProvider(providerName string) error {
 	return nil
 }
 
-func (m *Manager) createProvider(details *registry.ProviderDetails, alias string, env []string) (Plugin, error) {
+func (m *Manager) createProvider(details *registry.ProviderBinary, alias string, env []string) (Plugin, error) {
 	mPlugin, err := newRemotePlugin(details, alias, env)
 	if err != nil {
 		return nil, err
 	}
 	m.clients[mPlugin.Name()] = mPlugin
 	return mPlugin, nil
-}
-
-func (m *Manager) ClosePlugin(p Plugin) {
-	if p.Version() == Unmanaged {
-		log.Warn().Str("provider", p.Name()).Msg("not closing unmanaged provider")
-		return
-	}
-	if err := m.killProvider(p.Name()); err != nil {
-		log.Warn().Str("provider", p.Name()).Msg("failed to kill provider")
-	}
 }
