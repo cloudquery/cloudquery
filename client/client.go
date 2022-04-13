@@ -70,8 +70,9 @@ import (
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 var envVarsToCheck = []string{
@@ -596,7 +597,7 @@ func obfuscateAccountId(accountId string) string {
 	return accountId[:4] + "xxxxxxxx"
 }
 
-//checkEnvVariables checks which aws environment variables are set
+// checkEnvVariables checks which aws environment variables are set
 func checkEnvVariables() string {
 	var result []string
 	for _, v := range envVarsToCheck {

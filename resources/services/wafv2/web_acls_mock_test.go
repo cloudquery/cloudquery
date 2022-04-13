@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	cftypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -15,6 +17,8 @@ import (
 
 func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafV2Client(ctrl)
+	cfm := mocks.NewMockCloudfrontClient(ctrl)
+
 	tempWebACLSum := types.WebACLSummary{}
 	if err := faker.FakeData(&tempWebACLSum); err != nil {
 		t.Fatal(err)
@@ -73,38 +77,56 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		OverrideAction:   &overrideAction,
 		RuleLabels:       labels,
 	}
-	tempWebACL := types.WebACL{
-		ARN:                                  aws.String(faker.UUIDHyphenated()),
-		DefaultAction:                        &defaultAction,
-		Id:                                   aws.String(faker.UUIDDigit()),
-		Name:                                 aws.String(faker.Word()),
-		VisibilityConfig:                     &visibilityConfig,
-		Capacity:                             rand.Int63(),
-		CustomResponseBodies:                 customRespBody,
-		Description:                          aws.String(faker.Word()),
-		LabelNamespace:                       aws.String(faker.Word()),
-		ManagedByFirewallManager:             true,
-		PostProcessFirewallManagerRuleGroups: []types.FirewallManagerRuleGroup{processRuleGroups},
-		PreProcessFirewallManagerRuleGroups:  []types.FirewallManagerRuleGroup{processRuleGroups},
-		Rules:                                []types.Rule{rule},
+	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
+		tempWebACL := types.WebACL{
+			ARN:                                  aws.String(faker.UUIDHyphenated()),
+			DefaultAction:                        &defaultAction,
+			Id:                                   aws.String(faker.UUIDDigit()),
+			Name:                                 aws.String(faker.Word()),
+			VisibilityConfig:                     &visibilityConfig,
+			Capacity:                             rand.Int63(),
+			CustomResponseBodies:                 customRespBody,
+			Description:                          aws.String(faker.Word()),
+			LabelNamespace:                       aws.String(faker.Word()),
+			ManagedByFirewallManager:             true,
+			PostProcessFirewallManagerRuleGroups: []types.FirewallManagerRuleGroup{processRuleGroups},
+			PreProcessFirewallManagerRuleGroups:  []types.FirewallManagerRuleGroup{processRuleGroups},
+			Rules:                                []types.Rule{rule},
+		}
+		m.EXPECT().ListWebACLs(gomock.Any(), &wafv2.ListWebACLsInput{
+			Scope: scope,
+			Limit: aws.Int32(100),
+		}, gomock.Any()).Return(&wafv2.ListWebACLsOutput{
+			WebACLs: []types.WebACLSummary{tempWebACLSum},
+		}, nil)
+		m.EXPECT().GetWebACL(gomock.Any(), &wafv2.GetWebACLInput{
+			Id:    tempWebACLSum.Id,
+			Name:  tempWebACLSum.Name,
+			Scope: scope,
+		}, gomock.Any()).Return(&wafv2.GetWebACLOutput{
+			WebACL: &tempWebACL,
+		}, nil)
+		m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListTagsForResourceOutput{
+			TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
+		}, nil)
+		m.EXPECT().GetLoggingConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetLoggingConfigurationOutput{
+			LoggingConfiguration: &loggingConfiguration,
+		}, nil)
 	}
-	m.EXPECT().ListWebACLs(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListWebACLsOutput{
-		WebACLs: []types.WebACLSummary{tempWebACLSum},
-	}, nil)
-	m.EXPECT().GetWebACL(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetWebACLOutput{
-		WebACL: &tempWebACL,
-	}, nil)
 	m.EXPECT().ListResourcesForWebACL(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListResourcesForWebACLOutput{
 		ResourceArns: tempResourceArns,
 	}, nil)
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListTagsForResourceOutput{
-		TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
-	}, nil)
-	m.EXPECT().GetLoggingConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetLoggingConfigurationOutput{
-		LoggingConfiguration: &loggingConfiguration,
+
+	distributionList := cftypes.DistributionList{}
+	if err := faker.FakeData(&distributionList); err != nil {
+		t.Fatal(err)
+	}
+	distributionList.NextMarker = nil
+	cfm.EXPECT().ListDistributionsByWebACLId(gomock.Any(), gomock.Any(), gomock.Any()).Return(&cloudfront.ListDistributionsByWebACLIdOutput{
+		DistributionList: &distributionList,
 	}, nil)
 
-	return client.Services{WafV2: m}
+	return client.Services{WafV2: m, Cloudfront: cfm}
 }
 
 func TestWafV2WebACL(t *testing.T) {
