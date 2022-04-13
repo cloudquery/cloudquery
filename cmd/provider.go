@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
 	"github.com/spf13/cobra"
@@ -56,14 +56,19 @@ var (
 		}),
 	}
 
+	providerForce       bool
 	providerDropHelpMsg = "Drops provider schema from database"
 	providerDropCmd     = &cobra.Command{
 		Use:   "drop [provider]",
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
+		Args:  cobra.ExactArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			if len(args) != 1 {
-				return fmt.Errorf("missing provider name")
+			if !providerForce {
+				ui.ColorizedOutput(ui.ColorWarning, "WARNING! This will drop all tables for the given provider. If you wish to continue, use the --force flag.\n")
+				return &console.ExitCodeError{
+					ExitCode: 1,
+				}
 			}
 			_ = c.DropProvider(ctx, args[0])
 			return nil
@@ -117,6 +122,7 @@ func init() {
 		"last-update is the duration from current time we want to remove resources from the database. "+
 			"For example 24h will remove all resources that were not update in last 24 hours. Duration is a string with optional unit suffix such as \"2h45m\" or \"7d\"")
 	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
+	providerDropCmd.Flags().BoolVar(&providerForce, "force", false, "Really drop tables for the provider")
 	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
 	rootCmd.AddCommand(providerCmd)
 }
