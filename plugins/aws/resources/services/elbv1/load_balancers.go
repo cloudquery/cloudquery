@@ -408,7 +408,6 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 			return diag.WrapError(err)
 		}
 		for _, lb := range loadBalancers {
-			tags := getTagsByLoadBalancerName(*lb.LoadBalancerName, tagsResponse.TagDescriptions)
 			loadBalancerAttributes, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv1.DescribeLoadBalancerAttributesInput{LoadBalancerName: lb.LoadBalancerName})
 			if err != nil {
 				if c.IsNotFoundError(err) {
@@ -419,13 +418,10 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 
 			wrapper := ELBv1LoadBalancerWrapper{
 				LoadBalancerDescription: lb,
-				Tags:                    make(map[string]interface{}, len(tags)),
+				Tags:                    client.TagsToMap(getTagsByLoadBalancerName(*lb.LoadBalancerName, tagsResponse.TagDescriptions)),
 				Attributes:              loadBalancerAttributes.LoadBalancerAttributes,
 			}
 
-			for _, t := range tags {
-				wrapper.Tags[*t.Key] = t.Value
-			}
 			res <- wrapper
 		}
 		return nil
@@ -594,7 +590,7 @@ func resolveElbv1loadBalancerPolicyPolicyAttributeDescriptions(ctx context.Conte
 
 type ELBv1LoadBalancerWrapper struct {
 	types.LoadBalancerDescription
-	Tags       map[string]interface{}
+	Tags       map[string]string
 	Attributes *types.LoadBalancerAttributes
 }
 

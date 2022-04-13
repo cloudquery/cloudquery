@@ -104,7 +104,7 @@ func Webhooks() *schema.Table {
 				Name:        "tags",
 				Description: "The tags associated with the webhook.",
 				Type:        schema.TypeJSON,
-				Resolver:    ResolveCodepipelineWebhookTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -163,13 +163,4 @@ func fetchCodepipelineWebhookFilters(ctx context.Context, meta schema.ClientMeta
 	r := parent.Item.(types.ListWebhookItem)
 	res <- r.Definition.Filters
 	return nil
-}
-func ResolveCodepipelineWebhookTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pipeline := resource.Item.(types.ListWebhookItem)
-
-	tags := make(map[string]interface{})
-	for _, t := range pipeline.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return resource.Set(c.Name, tags)
 }

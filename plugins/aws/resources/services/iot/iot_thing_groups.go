@@ -233,30 +233,30 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.ThingGroupArn,
 	}
-	tags := make(map[string]interface{})
+	tags := make(map[string]string)
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		for _, t := range response.Tags {
-			tags[*t.Key] = t.Value
-		}
+
+		client.TagsIntoMap(response.Tags, tags)
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func resolveIotThingGroupsRootToParentThingGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)

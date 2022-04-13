@@ -793,22 +793,17 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
 
-	client := meta.(*client.Client)
-	svc := client.Services().Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudfront
 	response, err := svc.ListTagsForResource(ctx, &cloudfront.ListTagsForResourceInput{
 		Resource: distribution.ARN,
 	}, func(options *cloudfront.Options) {
-		options.Region = client.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)
 	}
-
-	tags := make(map[string]interface{})
-	for _, t := range response.Tags.Items {
-		tags[*t.Key] = t.Value
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags.Items)))
 }
 func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)

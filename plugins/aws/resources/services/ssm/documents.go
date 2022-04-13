@@ -196,7 +196,7 @@ func SsmDocuments() *schema.Table {
 				Name:        "tags",
 				Description: "The tags, or metadata, that have been applied to the document.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveSSMDocumentTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:          "account_ids",
@@ -256,15 +256,6 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 		}
 		return resource.Set(c.Name, b)
 	}
-}
-
-func resolveSSMDocumentTags(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	d := resource.Item.(*types.DocumentDescription)
-	tags := make(map[string]string)
-	for _, t := range d.Tags {
-		tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-	}
-	return resource.Set(c.Name, tags)
 }
 
 func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) (exitErr error) {

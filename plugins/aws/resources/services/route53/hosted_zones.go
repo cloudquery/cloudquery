@@ -360,21 +360,15 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			if err != nil {
 				return diag.WrapError(err)
 			}
-			tags := getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)
-
 			var delegationSetId *string
 			if gotHostedZone.DelegationSet != nil {
 				delegationSetId = gotHostedZone.DelegationSet.Id
 			}
 			wrapper := Route53HostedZoneWrapper{
 				HostedZone:      h,
-				Tags:            make(map[string]interface{}, len(tags)),
+				Tags:            client.TagsToMap(getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)),
 				DelegationSetId: delegationSetId,
 				VPCs:            gotHostedZone.VPCs,
-			}
-
-			for _, t := range tags {
-				wrapper.Tags[*t.Key] = t.Value
 			}
 			res <- wrapper
 		}
@@ -479,7 +473,7 @@ func fetchRoute53HostedZoneVpcAssociationAuthorizations(ctx context.Context, met
 
 type Route53HostedZoneWrapper struct {
 	types.HostedZone
-	Tags            map[string]interface{}
+	Tags            map[string]string
 	DelegationSetId *string
 	VPCs            []types.VPC
 }

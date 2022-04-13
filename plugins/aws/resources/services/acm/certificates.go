@@ -266,15 +266,11 @@ func resolveACMCertificateTags(ctx context.Context, meta schema.ClientMeta, reso
 	if !ok {
 		return fmt.Errorf("not a %T instance: %T", c, resource.Item)
 	}
-	client := meta.(*client.Client)
-	svc := client.Services().ACM
+	cl := meta.(*client.Client)
+	svc := cl.Services().ACM
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	tags := make(map[string]interface{}, len(out.Tags))
-	for _, t := range out.Tags {
-		tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }

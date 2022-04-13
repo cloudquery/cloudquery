@@ -1339,30 +1339,30 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.RuleArn,
 	}
-	tags := make(map[string]interface{})
+	tags := make(map[string]string)
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		for _, t := range response.Tags {
-			tags[*t.Key] = t.Value
-		}
+
+		client.TagsIntoMap(response.Tags, tags)
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
