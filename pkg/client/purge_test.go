@@ -6,9 +6,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/database"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-test/resources"
@@ -271,13 +273,13 @@ func TestPurgeProviderData(t *testing.T) {
 
 			if len(tc.ExpectedDryRunDiags) > 0 || tc.ExpectedDryRunResult != nil {
 				tc.Options.DryRun = true
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), database.NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedDryRunResult, result, tc.ExpectedDryRunDiags, diag.FlattenDiags(diags, true))
 			}
 
 			if len(tc.ExpectedRunDiags) > 0 || tc.ExpectedRunResults != nil {
 				tc.Options.DryRun = false
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), database.NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedRunResults, result, tc.ExpectedRunDiags, diag.FlattenDiags(diags, true))
 			}
 
@@ -286,7 +288,7 @@ func TestPurgeProviderData(t *testing.T) {
 				if tc.SecondaryDryRunUpdate > 0 {
 					tc.Options.LastUpdate = tc.SecondaryDryRunUpdate
 				}
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), database.NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedSecondaryDryRunResults, result, tc.ExpectedSecondaryRunDiags, diag.FlattenDiags(diags, true))
 			}
 
@@ -307,7 +309,7 @@ func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderD
 }
 
 func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Resources) {
-	db, err := database.New(context.TODO(), hclog.Default(), dsn)
+	db, err := sdkdb.New(context.TODO(), hclog.Default(), dsn)
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
@@ -316,7 +318,7 @@ func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Re
 }
 
 func truncateTable(t *testing.T, dsn, table string) {
-	db, err := database.New(context.TODO(), hclog.Default(), dsn)
+	db, err := sdkdb.New(context.TODO(), hclog.Default(), dsn)
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
@@ -338,7 +340,7 @@ func setupTestProvider(t *testing.T, dsn string) {
 	})
 	assert.False(t, diags.HasErrors())
 
-	if _, diags := Sync(context.TODO(), NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); diags.HasErrors() {
+	if _, diags := Sync(context.TODO(), database.NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); diags.HasErrors() {
 		t.FailNow()
 	}
 }

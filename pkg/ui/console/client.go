@@ -51,10 +51,11 @@ type Client struct {
 	updater ui.Progress
 
 	//
-	cfg           *config.Config
-	Registry      registry.Registry
-	PluginManager *plugin.Manager
-	Storage       client.Storage
+	PolicyDirectory string
+	cfg             *config.Config
+	Registry        registry.Registry
+	PluginManager   *plugin.Manager
+	Storage         database.Storage
 }
 
 func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
@@ -104,9 +105,12 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 			return nil, err
 		}
 	}
-
-	storage := client.NewStorage(c.DSN, dialect)
-	cClient := &Client{c, progressUpdater, cfg, c.Hub, c.Manager, storage}
+	policyDirectory := "./.cq/policies"
+	if cfg != nil {
+		policyDirectory = cfg.CloudQuery.PolicyDirectory
+	}
+	storage := database.NewStorage(c.DSN, dialect)
+	cClient := &Client{c, progressUpdater, policyDirectory, cfg, c.Hub, c.Manager, storage}
 	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
 	cClient.checkForUpdate(ctx)
 	return cClient, err
@@ -129,7 +133,7 @@ func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, erro
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	cClient := &Client{c, progressUpdater, nil, nil, nil, nil}
+	cClient := &Client{c, progressUpdater, "./.cq/policies", nil, nil, nil, nil}
 	return cClient, err
 }
 
@@ -248,7 +252,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-	p, err := c.c.LoadPolicy(ctx, "policy", args[0])
+	p, err := policy.Load(ctx, c.PolicyDirectory, &policy.Policy{Name: "policy", Source: args[0]})
 	if err != nil {
 		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
@@ -292,12 +296,13 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	req := &client.PoliciesRunRequest{
+	req := &policy.RunRequest{
 		Policies:    policiesToRun,
+		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	}
-	results, err := c.c.RunPolicies(ctx, req)
+	results, err := policy.Run(ctx, c.Storage, req)
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
@@ -328,14 +333,13 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		return err
 	}
 
-	policyManager := policy.NewManager(uniqueTempDir, conn, c.c.Logger)
-	p, err := policyManager.Load(ctx, &policy.Policy{Name: "test-policy", Source: policySource})
+	p, err := policy.Load(ctx, c.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
 	if err != nil {
 		c.c.Logger.Error("failed to create policy manager", "err", err)
 		return err
 	}
 
-	e := policy.NewExecutor(conn, c.c.Logger, nil)
+	e := policy.NewExecutor(conn, nil)
 	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
 
 }
@@ -579,7 +583,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 	}
 
 	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
-	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN, nil), c.c.Manager, &client.PurgeProviderDataOptions{
+	result, diags := client.PurgeProviderData(ctx, c.Storage, c.c.Manager, &client.PurgeProviderDataOptions{
 		Providers:  pp,
 		LastUpdate: lastUpdate,
 		DryRun:     dryRun,
@@ -728,7 +732,7 @@ func (c Client) setTelemetryAttributes(span trace.Span) {
 }
 
 func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelector, destination string) error {
-	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
+	p, err := policy.Load(ctx, c.PolicyDirectory, &policy.Policy{Name: p.Name, Source: p.Source})
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)
@@ -742,11 +746,11 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelec
 	if pol.TotalQueries() != 1 {
 		return errors.New("selector must specify only a single control")
 	}
-	return c.c.PolicyManager.Snapshot(ctx, &pol, destination, subPath)
+	return policy.Snapshot(ctx, c.Storage, &pol, destination, subPath)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
-	p, err := c.c.LoadPolicy(ctx, p.Name, p.Source)
+	p, err := policy.Load(ctx, c.PolicyDirectory, &policy.Policy{Name: p.Name, Source: p.Source})
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return fmt.Errorf("failed to load policies: %w", err)

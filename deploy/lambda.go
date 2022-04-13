@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/policy"
+
 	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/spf13/viper"
@@ -71,9 +74,10 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 		return fmt.Errorf("unable to create client: %w", err)
 	}
 	defer c.Close()
-	if err := c.DownloadProviders(ctx); err != nil {
-		return err
-	}
+	// TODO: fix this
+	// if err := c.DownloadProviders(ctx); err != nil {
+	//	return err
+	// }
 	if err := c.NormalizeResources(ctx, cfg.Providers); err != nil {
 		return err
 	}
@@ -89,16 +93,10 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 // Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) error {
 	outputPath := "/tmp/"
-	c, err := client.New(ctx, func(c *client.Client) {
-		c.PluginDirectory = cfg.CloudQuery.PluginDirectory
-		c.DSN = cfg.CloudQuery.Connection.DSN
-		c.PolicyDirectory = cfg.CloudQuery.PolicyDirectory
-	})
-	if err != nil {
-		return fmt.Errorf("unable to create client: %w", err)
-	}
-	_, err = c.RunPolicies(ctx, &client.PoliciesRunRequest{
+	storage := database.NewStorage(cfg.CloudQuery.Connection.DSN, nil)
+	_, err := policy.Run(ctx, storage, &policy.RunRequest{
 		Policies:  cfg.Policies,
+		Directory: cfg.CloudQuery.PolicyDirectory,
 		OutputDir: outputPath,
 	})
 	if err != nil {

@@ -230,7 +230,6 @@ type Client struct {
 	// ModuleManager manages all modules lifecycle
 	ModuleManager module.Manager
 	// ModuleManager manages all modules lifecycle
-	PolicyManager policy.Manager
 	// HistoryConfig defines configuration for CloudQuery history mode
 	HistoryCfg *history.Config
 
@@ -271,9 +270,13 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 
 	c.initModules()
 
-	c.PolicyManager = policy.NewManager(c.PolicyDirectory, c.db, c.Logger)
-
 	return c, nil
+}
+
+type ProviderUpdateSummary struct {
+	Name          string
+	Version       string
+	LatestVersion string
 }
 
 // DownloadProviders downloads all provider binaries
@@ -302,12 +305,6 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 		return diags
 	}
 	return nil
-}
-
-type ProviderUpdateSummary struct {
-	Name          string
-	Version       string
-	LatestVersion string
 }
 
 // NormalizeResources walks over all given providers and in place normalizes their resources list:
@@ -344,7 +341,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 			if err != nil {
 				return nil, fmt.Errorf("failed to find provider in config %s", rp.Name)
 			}
-			if _, diags := Sync(ctx, NewStorage(c.DSN, c.dialectExecutor), c.Manager, &SyncOptions{
+			if _, diags := Sync(ctx, database.NewStorage(c.DSN, c.dialectExecutor), c.Manager, &SyncOptions{
 				Provider: registry.Provider{
 					Name:    rp.Name,
 					Version: rp.Version,
@@ -611,99 +608,6 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 	}
 
 	return inf, err
-}
-
-func (c *Client) LoadPolicy(ctx context.Context, name, source string) (pol *policy.Policy, retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "LoadPolicy")
-	defer spanEnder(retErr)
-	c.Logger.Info("Downloading policy from remote source", "name", name, "source", source)
-	return c.PolicyManager.Load(ctx, &policy.Policy{Name: name, Source: source})
-}
-
-func (c *Client) RunPolicies(ctx context.Context, req *PoliciesRunRequest) ([]*policy.ExecutionResult, error) {
-	results := make([]*policy.ExecutionResult, 0)
-
-	for _, p := range req.Policies {
-		c.Logger = c.Logger.With("policy", p.Name, "version", p.Version(), "subPath", p.SubPolicy())
-		result, err := c.runPolicy(ctx, p, req)
-
-		c.Logger.Info("policy execution finished", "err", err)
-		if err != nil {
-			// this error means error in execution and not policy violation
-			// we should exit immediately as this is a non-recoverable error
-			// might mean schema is incorrect, provider version
-			c.Logger.Error("policy execution finished with error", "err", err)
-			return results, err
-		}
-
-		results = append(results, result)
-	}
-
-	return results, nil
-}
-
-func (c *Client) runPolicy(ctx context.Context, p *policy.Policy, req *PoliciesRunRequest) (res *policy.ExecutionResult, retErr error) {
-	executionTime := time.Now()
-
-	spanAttrs := []attribute.KeyValue{
-		attribute.String("policy_name", p.Name),
-	}
-
-	if strings.HasPrefix(p.Name, policy.CloudQueryOrg) {
-		spanAttrs = append(spanAttrs,
-			attribute.String("policy_version", p.Version()),
-			attribute.String("policy_subpath", p.SubPolicy()),
-		)
-	}
-
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "runPolicy", trace.WithAttributes(spanAttrs...))
-	defer spanEnder(retErr)
-
-	c.Logger.Info("preparing to run policy")
-
-	if err := c.ensureConnection(); err != nil {
-		return nil, err
-	}
-
-	versions, err := collectProviderVersions(c.Providers, func(name string) (string, error) {
-		d, err := c.Manager.GetPluginDetails(name)
-		return d.Version, err
-	})
-	c.Logger.Debug("collected policy versions", "versions", versions)
-
-	if err != nil {
-		return nil, err
-	}
-
-	execReq := &policy.ExecuteRequest{
-		Policy:           p,
-		ProviderVersions: versions,
-		UpdateCallback:   req.RunCallback,
-	}
-
-	execReq.Policy, err = c.PolicyManager.Load(ctx, p)
-	if err != nil {
-		return nil, err
-	}
-
-	c.Logger.Info("running the policy")
-	result, err := c.PolicyManager.Run(ctx, execReq)
-	if err != nil {
-		return nil, err
-	}
-	result.ExecutionTime = executionTime
-
-	// Store output in file if requested
-	if req.OutputDir != "" {
-		c.Logger.Info("writing policy to output directory")
-		err = policy.GenerateExecutionResultFile(result, req.OutputDir)
-
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return result, nil
 }
 
 func (c *Client) ExecuteModule(ctx context.Context, req ModuleRunRequest) (res *module.ExecutionResult, retErr error) {

@@ -61,7 +61,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -157,7 +157,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -355,7 +355,7 @@ func TestExecutor_Execute(t *testing.T) {
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -421,7 +421,7 @@ func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
 	err = metaStorage.MigrateCore(context.Background(), de)
 	assert.NoError(t, err)
 
-	executor := NewExecutor(db, hclog.Default(), nil)
+	executor := NewExecutor(db, nil)
 
 	policy := &Policy{
 		Name:     "test",
@@ -496,7 +496,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	err = metaStorage.MigrateCore(context.Background(), de)
 	assert.NoError(t, err)
 
-	executor := NewExecutor(db, hclog.Default(), nil)
+	executor := NewExecutor(db, nil)
 
 	finish := time.Now().UTC()
 	assert.NoError(t, err)

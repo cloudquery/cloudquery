@@ -85,7 +85,7 @@ func getDSN() string {
 
 func TestSetupHistory(t *testing.T) {
 	ctx := context.TODO()
-	ts, err := New(hclog.L(), getDSN(), &history.Config{
+	ts, err := New(getDSN(), &history.Config{
 		Retention:      1,
 		TimeInterval:   1,
 		TimeTruncation: 24,

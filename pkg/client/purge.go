@@ -5,19 +5,12 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
-	"github.com/doug-martin/goqu/v9"
-	"github.com/georgysavva/scany/pgxscan"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+	"github.com/cloudquery/cloudquery/pkg/client/database"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/database"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -53,12 +46,12 @@ func (p PurgeProviderDataResult) Resources() []string {
 }
 
 // PurgeProviderData purges resources that were not updated recently, if dry run is set to true, no resources will be removed.
-func PurgeProviderData(ctx context.Context, storage Storage, plugin *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, diag.Diagnostics) {
+func PurgeProviderData(ctx context.Context, storage database.Storage, plugin *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, diag.Diagnostics) {
 	if len(opts.Providers) == 0 {
 		return nil, diag.Diagnostics{diag.NewBaseError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("no providers were given"))}
 	}
 	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
-	db, err := database.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
+	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
 	if err != nil {
 		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL)}
 	}

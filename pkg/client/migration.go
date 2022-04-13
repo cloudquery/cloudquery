@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"
 	"github.com/rs/zerolog/log"
@@ -11,7 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/database"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
@@ -36,7 +38,7 @@ type SyncResult struct {
 	NewVersion string
 }
 
-func Sync(ctx context.Context, storage Storage, pm *plugin.Manager, opts *SyncOptions) (*SyncResult, diag.Diagnostics) {
+func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *SyncOptions) (*SyncResult, diag.Diagnostics) {
 	if opts.DownloadLatest {
 		if _, diags := Download(ctx, pm, &DownloadOptions{
 			[]registry.Provider{{
@@ -111,7 +113,7 @@ func Sync(ctx context.Context, storage Storage, pm *plugin.Manager, opts *SyncOp
 	}, nil
 }
 
-func Drop(ctx context.Context, storage Storage, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
+func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if len(diags) > 0 {
 		return diags
@@ -133,13 +135,13 @@ func Drop(ctx context.Context, storage Storage, pm *plugin.Manager, provider reg
 	return nil
 }
 
-func newMigrator(ctx context.Context, storage Storage, migrations map[string]map[string][]byte, provider registry.Provider) (*migrator.Migrator, error) {
+func newMigrator(ctx context.Context, storage database.Storage, migrations map[string]map[string][]byte, provider registry.Provider) (*migrator.Migrator, error) {
 	dsn, err := storage.DialectExecutor().Setup(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("dialectExecutor.Setup: %w", err)
 	}
 
-	dType, _, err := database.ParseDialectDSN(storage.DSN())
+	dType, _, err := sdkdb.ParseDialectDSN(storage.DSN())
 	if err != nil {
 		return nil, err
 	}

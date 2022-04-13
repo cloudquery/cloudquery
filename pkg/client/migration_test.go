@@ -24,7 +24,7 @@ func Test_Sync(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	storage := NewStorage(dsn, dialect)
+	storage := database.NewStorage(dsn, dialect)
 
 	// Download plugin before sync call
 	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}, {Name: "test", Version: "latest", Source: "cloudquery"}}, false})
@@ -86,7 +86,7 @@ func Test_Drop(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	storage := NewStorage(dsn, dialect)
+	storage := database.NewStorage(dsn, dialect)
 	// Download plugin before sync call
 	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())

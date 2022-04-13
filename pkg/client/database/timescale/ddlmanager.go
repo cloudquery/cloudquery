@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
-	"github.com/hashicorp/go-hclog"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -25,7 +24,6 @@ const (
 )
 
 type DDLManager struct {
-	log     hclog.Logger
 	pool    *pgxpool.Pool
 	cfg     *history.Config
 	dialect schema.Dialect

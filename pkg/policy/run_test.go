@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hashicorp/go-hclog"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -59,10 +57,9 @@ func TestManager_Load(t *testing.T) {
 	}
 
 	_ = os.RemoveAll("./test")
-	m := NewManager("./test", nil, hclog.Default())
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			p, err := m.Load(context.Background(), tc.Policy)
+			p, err := Load(context.Background(), "./test", tc.Policy)
 			assert.NoError(t, err)
 			assert.NotNil(t, p)
 			if p.meta != nil {
