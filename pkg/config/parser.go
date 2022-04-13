@@ -128,7 +128,6 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 			},
 		}
 	}
-	// src, err := p.fs.ReadFile
 
 	return p.LoadFromSource(path, contents)
 }
