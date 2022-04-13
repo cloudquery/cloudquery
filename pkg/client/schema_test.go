@@ -19,7 +19,11 @@ func Test_GetProviderSchema(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	s, err := GetProviderSchema(context.Background(), pManager, &GetProviderSchemaOptions{"test"})
+	s, err := GetProviderSchema(context.Background(), pManager, &GetProviderSchemaOptions{Provider: registry.Provider{
+		Name:    "test",
+		Version: "latest",
+		Source:  registry.DefaultOrganization,
+	}})
 	if s == nil {
 		t.FailNow()
 	}
