@@ -7,23 +7,20 @@ import (
 	"time"
 
 	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type Executor struct {
-	logger hclog.Logger
-	dsn    string
+	dsn string
 }
 
 var MinPostgresVersion = version.Must(version.NewVersion("11.0"))
 
-func New(logger hclog.Logger, dsn string) Executor {
+func New(dsn string) Executor {
 	return Executor{
-		logger: logger,
-		dsn:    dsn,
+		dsn: dsn,
 	}
 }
 

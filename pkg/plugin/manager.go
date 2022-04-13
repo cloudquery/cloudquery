@@ -132,6 +132,8 @@ func (m *Manager) Shutdown() {
 	m.clients = make(map[string]Plugin)
 }
 
+// TODO: support Closer from plugin rather then calling manager
+
 // ClosePlugin kills a plugin instance and removes it from the managed plugins.
 func (m *Manager) ClosePlugin(p Plugin) {
 	if p.Version() == Unmanaged {

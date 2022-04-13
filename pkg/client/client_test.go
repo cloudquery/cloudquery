@@ -19,7 +19,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/fsnotify/fsnotify"
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgx/v4"
@@ -319,33 +318,6 @@ func TestClient_Fetch(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestClient_GetProviderSchema(t *testing.T) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
-
-	dbDSN := setupDB(t)
-
-	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = dbDSN
-		options.Providers = requiredTestProviders()
-	})
-	assert.Nil(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-		return
-	}
-	t.Cleanup(c.Close)
-	ctx := context.Background()
-	s, err := c.GetProviderSchema(ctx, "test")
-	if s == nil {
-		t.FailNow()
-	}
-	assert.Equal(t, "test", s.Name)
-	assert.Equal(t, "v0.0.0", s.Version)
-	assert.Equal(t, 3, len(s.ResourceTables))
-	assert.Nil(t, err)
-}
-
 func TestClient_GetProviderConfig(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
@@ -372,141 +344,6 @@ func TestClient_GetProviderConfig(t *testing.T) {
 	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
 	_, diags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, diags)
-}
-
-// TestClient_ProviderUpgradeNoBuild tests doing an upgrade but without
-func TestClient_ProviderUpgradeNoBuild(t *testing.T) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
-
-	dbDSN := setupDB(t)
-
-	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = dbDSN
-		options.Providers = requiredTestProviders()
-	})
-	assert.NoError(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-	}
-	t.Cleanup(c.Close)
-	ctx := context.Background()
-	err = c.DropProvider(ctx, "test")
-	assert.NoError(t, err)
-	err = c.UpgradeProvider(ctx, "test")
-	assert.NoError(t, err)
-}
-
-func TestClient_ProviderMigrations(t *testing.T) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
-
-	dbDSN := setupDB(t)
-
-	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = dbDSN
-		options.Providers = requiredTestProviders()
-	})
-	assert.NoError(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-	}
-	t.Cleanup(c.Close)
-	ctx := context.Background()
-	err = c.DropProvider(ctx, "test")
-	assert.NoError(t, err)
-	err = c.BuildProviderTables(ctx, "test")
-	assert.NoError(t, err)
-	err = c.UpgradeProvider(ctx, "test")
-	assert.ErrorIs(t, err, migrate.ErrNoChange)
-
-	conn, err := pgx.Connect(ctx, dbDSN)
-	if err != nil {
-		assert.FailNow(t, "failed to create connection")
-		return
-	}
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.NoError(t, err)
-
-	c.Providers[0].Version = "v0.0.1"
-	err = c.DowngradeProvider(ctx, "test", "v0.0.1")
-	assert.NoError(t, err)
-	_, err = conn.Exec(ctx, "select some_bool from slow_resource")
-	assert.NoError(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Error(t, err)
-
-	c.Providers[0].Version = "v0.0.2"
-	err = c.UpgradeProvider(ctx, "test")
-	assert.NoError(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column from slow_resource")
-	assert.NoError(t, err)
-
-}
-
-func TestClient_ProviderSkipVersionMigrations(t *testing.T) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
-
-	dbDSN := setupDB(t)
-
-	c, err := New(context.Background(), func(options *Client) {
-		options.DSN = dbDSN
-		options.Providers = requiredTestProviders()
-	})
-	assert.Nil(t, err)
-	if c == nil {
-		assert.FailNow(t, "failed to create client")
-	}
-	t.Cleanup(c.Close)
-	ctx := context.Background()
-	err = c.DropProvider(ctx, "test")
-	assert.Nil(t, err)
-	err = c.BuildProviderTables(ctx, "test")
-	assert.Nil(t, err)
-	err = c.UpgradeProvider(ctx, "test")
-	assert.ErrorIs(t, err, migrate.ErrNoChange)
-
-	conn, err := pgx.Connect(ctx, dbDSN)
-	if err != nil {
-		assert.FailNow(t, "failed to create connection")
-		return
-	}
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Nil(t, err)
-
-	c.Providers[0].Version = "v0.0.1"
-	err = c.DowngradeProvider(ctx, "test", "v0.0.1")
-	assert.Nil(t, err)
-	_, err = conn.Exec(ctx, "select some_bool from slow_resource")
-	assert.Nil(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Error(t, err)
-
-	c.Providers[0].Version = "v0.0.5"
-	// latest migration should be to v0.0.3
-	err = c.UpgradeProvider(ctx, "test")
-	assert.Nil(t, err)
-	_, err = conn.Exec(ctx, "select some_bool, upgrade_column, upgrade_column_2 from slow_resource")
-	assert.Nil(t, err)
-
-	// insert dummy migration files like test provider just for version number return
-	m, _, err := c.buildProviderMigrator(ctx, map[string]map[string][]byte{
-		"postgres": {
-			"1_v0.0.1.up.sql":   []byte(""),
-			"1_v0.0.1.down.sql": []byte(""),
-			"2_v0.0.2.up.sql":   []byte(""),
-			"2_v0.0.2.down.sql": []byte(""),
-			"3_v0.0.3.up.sql":   []byte(""),
-			"3_v0.0.3.down.sql": []byte(""),
-		},
-	}, "test")
-	assert.NoError(t, err)
-
-	// migrations should be in 3 i.e v0.0.3
-	v, dirty, err := m.Version()
-	assert.Equal(t, []interface{}{"v0.0.3", false, nil}, []interface{}{v, dirty, err})
-
 }
 
 const testConfig = `cloudquery {

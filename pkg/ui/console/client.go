@@ -12,6 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+
+	"github.com/cloudquery/cloudquery/pkg/client/database"
+
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
@@ -21,7 +25,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/fatih/color"
 	"github.com/getsentry/sentry-go"
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
@@ -43,9 +46,15 @@ import (
 
 // Client console client is a wrapper around client.Client for console execution of CloudQuery
 type Client struct {
-	c       *client.Client
-	cfg     *config.Config
+	c *client.Client
+
 	updater ui.Progress
+
+	//
+	cfg           *config.Config
+	Registry      registry.Registry
+	PluginManager *plugin.Manager
+	Storage       client.Storage
 }
 
 func CreateClient(ctx context.Context, configPath string, configMutator func(*config.Config) error, opts ...client.Option) (*Client, error) {
@@ -88,7 +97,12 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, opts ...cli
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	cClient := &Client{c, cfg, progressUpdater}
+	_, dialect, err := database.GetExecutor(c.DSN, cfg.CloudQuery.History)
+	if err != nil {
+		return nil, err
+	}
+	storage := client.NewStorage(c.DSN, dialect)
+	cClient := &Client{c, progressUpdater, cfg, c.Hub, c.Manager, storage}
 	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
 	cClient.checkForUpdate(ctx)
 	return cClient, err
@@ -111,7 +125,7 @@ func CreateNullClient(ctx context.Context, opts ...client.Option) (*Client, erro
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize client. Error: %s\n\n", err)
 		return nil, err
 	}
-	cClient := &Client{c, nil, progressUpdater}
+	cClient := &Client{c, progressUpdater, nil, nil, nil, nil}
 	return cClient, err
 }
 
@@ -127,19 +141,34 @@ func ClientFactory(ctx context.Context, configPath *string, configMutator func(*
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-	err := c.c.DownloadProviders(ctx)
-	if err != nil {
+	pp := make([]registry.Provider, len(c.cfg.Providers))
+	for i, rp := range c.cfg.CloudQuery.Providers {
+		src, name, err := client.ParseProviderSource(rp)
+		if err != nil {
+			return err
+		}
+		pp[i] = registry.Provider{
+			Name:    name,
+			Version: rp.Version,
+			Source:  src,
+		}
+	}
+	_, diags := client.Download(ctx, c.PluginManager, &client.DownloadOptions{Providers: pp, NoVerify: viper.GetBool("no-verify")})
+	if diags.HasErrors() {
 		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to initialize provider: %s.\n\n", err.Error())
-		return err
+		ui.ColorizedOutput(ui.ColorError, "❌ failed to initialize provider: %s.\n\n", diags.Error())
+		return diags
 	}
 	if c.updater != nil {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
-	updates := c.c.CheckForProviderUpdates(ctx)
+	updates, diags := client.CheckAvailableUpdates(ctx, c.Registry, &client.CheckUpdatesOptions{Providers: pp})
+	if diags.HasErrors() {
+		printDiagnostics("Diagnostics", "", diags, true, false)
+	}
 	for _, u := range updates {
-		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.Version, u.LatestVersion))
+		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.CurrentVersion, u.AvailableVersion))
 	}
 	return nil
 }
@@ -428,7 +457,7 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
-		if err := c.c.UpgradeProvider(ctx, p.Name); err != nil && err != migrate.ErrNoChange {
+		if _, diags := client.Sync(ctx, c.Storage, c.PluginManager, &client.SyncOptions{Provider: c.convertRequiredToRegistry(p.Name), DownloadLatest: false}); diags.HasErrors() {
 			if errors.Is(err, client.ErrMigrationsNotSupported) {
 				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
 				continue
@@ -461,27 +490,12 @@ func (c Client) DowngradeProviders(ctx context.Context, args []string) error {
 		p.Version = migrator.Latest
 	}
 
-	newCfg := *c.cfg
-	newCfg.CloudQuery.Providers = providers
-	conWithLatest, err := CreateClientFromConfig(ctx, &newCfg)
-	if err != nil {
-		return err
-	}
-	cqWithLatest := conWithLatest.Client()
-	defer cqWithLatest.Close()
-
-	ui.ColorizedOutput(ui.ColorProgress, "Will fetch latest providers first, before downgrade... %s\n\n", strings.Join(providers.Names(), ", "))
-
-	if err := cqWithLatest.DownloadProviders(ctx); err != nil {
-		return err
-	}
-
 	ui.ColorizedOutput(ui.ColorProgress, "Downgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 
 	for _, p := range providers {
 		ui.ColorizedOutput(ui.ColorSuccess, "%s Downgrading provider %s to %s...\n", emojiStatus[ui.StatusInProgress], p.Name, provVersions[p.Name])
 
-		if err := cqWithLatest.DowngradeProvider(ctx, p.Name, provVersions[p.Name]); err != nil && err != migrate.ErrNoChange {
+		if _, diags := client.Sync(ctx, c.Storage, c.PluginManager, &client.SyncOptions{Provider: c.convertRequiredToRegistry(p.Name), DownloadLatest: true}); diags.HasErrors() {
 			if errors.Is(err, client.ErrMigrationsNotSupported) {
 				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to downgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.Name, err.Error())
 				continue
@@ -502,7 +516,8 @@ func (c Client) DropProvider(ctx context.Context, providerName string) error {
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-	if err := c.c.DropProvider(ctx, providerName); err != nil {
+
+	if err := client.Drop(ctx, c.Storage, c.PluginManager, c.convertRequiredToRegistry(providerName)); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "%s Failed to drop provider %s schema. Error: %s.\n\n", emojiStatus[ui.StatusError], providerName, err.Error())
 		return err
 	} else {
@@ -560,7 +575,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 	}
 
 	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
-	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN), c.c.Manager, &client.PurgeProviderDataOptions{
+	result, diags := client.PurgeProviderData(ctx, client.NewStorage(c.c.DSN, nil), c.c.Manager, &client.PurgeProviderDataOptions{
 		Providers:  pp,
 		LastUpdate: lastUpdate,
 		DryRun:     dryRun,
@@ -584,7 +599,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 
 func (c Client) buildProviderTables(ctx context.Context, providerName string) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Building CloudQuery provider %s schema...\n\n", providerName)
-	if err := c.c.BuildProviderTables(ctx, providerName); err != nil {
+	if err := c.UpgradeProviders(ctx, []string{providerName}); err != nil {
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to build provider %s schema. Error: %s.\n\n", providerName, err.Error())
 		return err
 	} else {
@@ -887,4 +902,10 @@ func countSeverity(d diag.Diagnostics, sev diag.Severity) string {
 	}
 
 	return fmt.Sprintf("%d(%d)", basicCount, deepCount)
+}
+
+func (c Client) convertRequiredToRegistry(providerName string) registry.Provider {
+	rp := c.cfg.CloudQuery.Providers.Get(providerName)
+	src, name, _ := client.ParseProviderSource(rp)
+	return registry.Provider{Name: name, Version: rp.Version, Source: src}
 }

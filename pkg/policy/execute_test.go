@@ -413,7 +413,7 @@ func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
 
 	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}
@@ -488,7 +488,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 
 	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}

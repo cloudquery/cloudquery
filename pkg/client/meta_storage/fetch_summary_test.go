@@ -86,7 +86,7 @@ func TestFetchSaveSummary(t *testing.T) {
 
 	fetchSummaryClient := NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}

@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -30,20 +29,18 @@ type queryRower interface {
 }
 
 type Executor struct {
-	logger hclog.Logger
-	dsn    string
-	cfg    *history.Config
-	ddl    *DDLManager
+	dsn string
+	cfg *history.Config
+	ddl *DDLManager
 }
 
-func New(logger hclog.Logger, dsn string, cfg *history.Config) (*Executor, error) {
+func New(dsn string, cfg *history.Config) (*Executor, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("missing history config")
 	}
 	return &Executor{
-		logger: logger,
-		dsn:    dsn,
-		cfg:    cfg,
+		dsn: dsn,
+		cfg: cfg,
 	}, nil
 }
 
@@ -54,7 +51,7 @@ func (e *Executor) Setup(ctx context.Context) (string, error) {
 		return e.dsn, err
 	}
 
-	e.ddl, err = NewDDLManager(e.logger, pool, e.cfg, schema.TSDB)
+	e.ddl, err = NewDDLManager(pool, e.cfg, schema.TSDB)
 	if err != nil {
 		return e.dsn, err
 	}

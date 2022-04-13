@@ -3,11 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
-	"os"
 	"testing"
 	"time"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/google/uuid"
 
@@ -276,13 +273,13 @@ func TestPurgeProviderData(t *testing.T) {
 
 			if len(tc.ExpectedDryRunDiags) > 0 || tc.ExpectedDryRunResult != nil {
 				tc.Options.DryRun = true
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedDryRunResult, result, tc.ExpectedDryRunDiags, diag.FlattenDiags(diags, true))
 			}
 
 			if len(tc.ExpectedRunDiags) > 0 || tc.ExpectedRunResults != nil {
 				tc.Options.DryRun = false
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedRunResults, result, tc.ExpectedRunDiags, diag.FlattenDiags(diags, true))
 			}
 
@@ -291,7 +288,7 @@ func TestPurgeProviderData(t *testing.T) {
 				if tc.SecondaryDryRunUpdate > 0 {
 					tc.Options.LastUpdate = tc.SecondaryDryRunUpdate
 				}
-				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN), pm, tc.Options)
+				result, diags := PurgeProviderData(context.TODO(), NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedSecondaryDryRunResults, result, tc.ExpectedSecondaryRunDiags, diag.FlattenDiags(diags, true))
 			}
 
@@ -330,25 +327,21 @@ func truncateTable(t *testing.T, dsn, table string) {
 }
 
 func setupTestProvider(t *testing.T, dsn string) {
-	// TODO: we set up client for now as not all commands are refactored
-	c, err := New(context.TODO(), func(options *Client) {
-		options.DSN = dsn
-		src := registry.DefaultOrganization
-		options.Providers = []*config.RequiredProvider{
-			{
-				Name:    "test",
-				Source:  &src,
-				Version: "v0.0.11",
-			}}
-	})
 
-	_ = c.DownloadProviders(context.TODO())
+	provider := registry.Provider{
+		Name:    "test",
+		Source:  "cloudquery",
+		Version: "v0.0.11",
+	}
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(".")), plugin.WithAllowReattach())
 	assert.Nil(t, err)
-	t.Cleanup(c.Close)
+	_, diags := Download(context.TODO(), pm, &DownloadOptions{
+		Providers: []registry.Provider{provider},
+		NoVerify:  false,
+	})
+	assert.Nil(t, diags)
 
-	_ = os.Setenv("CQ_PROVIDER_REATTACH", "")
-
-	if err := c.BuildProviderTables(context.TODO(), "test"); !assert.Nil(t, err) {
+	if _, err := Sync(context.TODO(), NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); !assert.Nil(t, err) {
 		t.FailNow()
 	}
 }

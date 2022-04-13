@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/fs"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -28,11 +27,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
-	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/getsentry/sentry-go"
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
@@ -297,70 +294,20 @@ func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
 			Source:  src,
 		}
 	}
-	return c.Manager.DownloadProviders(ctx, pp, c.NoVerify)
+	_, diags := Download(ctx, c.Manager, &DownloadOptions{
+		Providers: pp,
+		NoVerify:  c.NoVerify,
+	})
+	if diags.HasErrors() {
+		return diags
+	}
+	return nil
 }
 
 type ProviderUpdateSummary struct {
 	Name          string
 	Version       string
 	LatestVersion string
-}
-
-// CheckForProviderUpdates checks for provider updates
-func (c *Client) CheckForProviderUpdates(ctx context.Context) []ProviderUpdateSummary {
-	summary := make([]ProviderUpdateSummary, 0, len(c.Providers))
-	for _, p := range c.Providers {
-		// if version is latest it means there is no update as Download will download the latest version automatically
-		if strings.Compare(p.Version, "latest") == 0 {
-			c.Logger.Debug("version is latest", "provider", p.Name, "version", p.Version)
-			continue
-		}
-		// TODO: check this
-		src, name, err := ParseProviderSource(p)
-		if err != nil {
-			continue
-		}
-		ver, err := c.Hub.CheckUpdate(ctx, registry.Provider{
-			Name:    name,
-			Version: p.Version,
-			Source:  src,
-		})
-		if err != nil {
-			c.Logger.Warn("Failed check provider update", "provider", p.Name, "error", err)
-			continue
-		}
-		if ver == "" {
-			c.Logger.Debug("already at latest version", "provider", p.Name, "version", p.Version)
-			continue
-		}
-
-		if p.Version != ver {
-			summary = append(summary, ProviderUpdateSummary{p.Name, p.Version, ver})
-			c.Logger.Info("Update available", "provider", p.Name, "version", p.Version, "latestVersion", ver)
-		}
-	}
-	return summary
-}
-
-func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider) error {
-	providerPlugin, err := c.CreatePlugin(providerCfg.Name, providerCfg.Alias, providerCfg.Env)
-	if err != nil {
-		c.Logger.Error("failed to create provider plugin", "provider", providerCfg.Name, "error", err)
-		return err
-	}
-	defer providerPlugin.Close()
-	c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-	_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
-		CloudQueryVersion: Version,
-		Connection: cqproto.ConnectionDetails{
-			DSN: c.DSN,
-		},
-		Config: providerCfg.Configuration,
-	})
-	if err != nil {
-		return fmt.Errorf("provider test connection failed. Reason: %w", err)
-	}
-	return nil
 }
 
 // NormalizeResources walks over all given providers and in place normalizes their resources list:
@@ -387,14 +334,6 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 }
 
 func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchResponse, retErr error) {
-	if !c.SkipBuildTables {
-		for _, p := range request.Providers {
-			if err := c.BuildProviderTables(ctx, p.Name); err != nil {
-				return nil, err
-			}
-		}
-	}
-
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
 	defer spanEnder(retErr)
 
@@ -651,148 +590,6 @@ func (c *Client) GetProviderModule(ctx context.Context, providerName string, req
 	return inf, err
 }
 
-func (c *Client) BuildProviderTables(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "BuildProviderTables", trace.WithAttributes(
-		attribute.String("provider", providerName),
-	))
-	defer spanEnder(retErr)
-
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-
-	if s.Migrations == nil {
-		c.Logger.Warn("provider did not define any migrations (here be dragons)", "provider", s.Name, "version", s.Version)
-		return nil
-	}
-
-	defer func() {
-		if retErr == nil || !errors.Is(retErr, fs.ErrNotExist) {
-			return
-		}
-
-		c.Logger.Error("BuildProviderTables failed", "error", retErr)
-		retErr = fmt.Errorf("Incompatible provider schema: Please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
-	}()
-
-	// create migration table and set it to version based on latest create table
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-
-	c.Logger.Debug("setting provider schema migration version", "version", cfg.Version)
-	if err := m.UpgradeProvider(cfg.Version); err != nil && err != migrate.ErrNoChange {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) UpgradeProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "UpgradeProvider", trace.WithAttributes(
-		attribute.String("provider", providerName),
-	))
-
-	defer func() {
-		if retErr != nil && (retErr == migrate.ErrNoChange || errors.Is(retErr, ErrMigrationsNotSupported)) {
-			spanEnder(nil)
-		} else {
-			spanEnder(retErr)
-		}
-	}()
-
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-	if s.Migrations == nil {
-		return ErrMigrationsNotSupported
-	}
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-
-	pVersion, dirty, err := m.Version()
-	if err != nil && err != migrate.ErrNilVersion {
-		return fmt.Errorf("failed to get provider version: %w", err)
-	}
-	trace.SpanFromContext(ctx).SetAttributes(attribute.String("old_version", pVersion))
-
-	if dirty {
-		return fmt.Errorf("provider schema is dirty, please drop provider tables and recreate, alternatively execute `cloudquery provider drop %s`", providerName)
-	}
-	if pVersion == "v0.0.0" {
-		return c.BuildProviderTables(ctx, providerName)
-	}
-	c.Logger.Info("upgrading provider version", "version", cfg.Version, "provider", cfg.Name)
-	trace.SpanFromContext(ctx).SetAttributes(attribute.String("new_version", cfg.Version))
-
-	return m.UpgradeProvider(cfg.Version)
-}
-
-func (c *Client) DowngradeProvider(ctx context.Context, providerName, version string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DowngradeProvider", trace.WithAttributes(
-		attribute.String("provider", providerName),
-		attribute.String("provider_version", version),
-	))
-	defer spanEnder(retErr)
-
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-	if s.Migrations == nil {
-		return fmt.Errorf("provider doesn't support migrations")
-	}
-
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-	c.Logger.Info("downgrading provider version", "current_version", cfg.Version, "version", version, "provider", cfg.Name)
-	return m.DowngradeProvider(version)
-}
-
-func (c *Client) DropProvider(ctx context.Context, providerName string) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DropProvider", trace.WithAttributes(
-		attribute.String("provider", providerName),
-	))
-	defer spanEnder(retErr)
-
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			c.Logger.Error("failed to close migrator connection", "error", err)
-		}
-	}()
-	c.Logger.Info("dropping provider tables", "version", cfg.Version, "provider", cfg.Name)
-	return m.DropProvider(ctx, s.ResourceTables)
-}
-
 func (c *Client) LoadPolicy(ctx context.Context, name, source string) (pol *policy.Policy, retErr error) {
 	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "LoadPolicy")
 	defer spanEnder(retErr)
@@ -925,22 +722,6 @@ func (c *Client) Close() {
 	}
 }
 
-func (c *Client) SetProviderVersion(ctx context.Context, providerName, version string) error {
-	s, err := c.GetProviderSchema(ctx, providerName)
-	if err != nil {
-		return err
-	}
-	if s.Migrations == nil {
-		return fmt.Errorf("provider doesn't support migrations")
-	}
-	m, cfg, err := c.buildProviderMigrator(ctx, s.Migrations, providerName)
-	if err != nil {
-		return err
-	}
-	c.Logger.Info("set provider version", "version", version, "provider", cfg.Name)
-	return m.SetVersion(version)
-}
-
 func (c *Client) initModules() {
 	c.ModuleManager = module.NewManager(c.db, c.Logger, c)
 	c.ModuleManager.RegisterModule(drift.New(c.Logger))
@@ -951,32 +732,6 @@ func (c *Client) ensureConnection() error {
 		return nil
 	}
 	return fmt.Errorf("missing connection info in config.hcl")
-}
-
-func (c *Client) buildProviderMigrator(ctx context.Context, migrations map[string]map[string][]byte, providerName string) (*migrator.Migrator, *config.RequiredProvider, error) {
-	if err := c.ensureConnection(); err != nil {
-		return nil, nil, err
-	}
-
-	providerConfig, err := c.getProviderConfig(providerName)
-	if err != nil {
-		return nil, nil, err
-	}
-	org, name, err := registry.ParseProviderName(providerConfig.Name)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	dsn, err := c.dialectExecutor.Setup(ctx)
-	if err != nil {
-		return nil, nil, fmt.Errorf("dialectExecutor.Setup: %w", err)
-	}
-
-	m, err := migrator.New(c.Logger, c.db.DialectType(), migrations, dsn, fmt.Sprintf("%s_%s", org, name), migrator.WithPreHook(c.dialectExecutor.Prepare), migrator.WithPostHook(c.dialectExecutor.Finalize))
-	if err != nil {
-		return nil, nil, err
-	}
-	return m, providerConfig, err
 }
 
 func (c *Client) getProviderConfig(providerName string) (*config.RequiredProvider, error) {
@@ -1139,14 +894,14 @@ func (c *Client) initDatabase(ctx context.Context) error {
 	}
 
 	var dt schema.DialectType
-	dt, c.dialectExecutor, err = database.GetExecutor(c.Logger, c.DSN, c.HistoryCfg)
+	dt, c.dialectExecutor, err = database.GetExecutor(c.DSN, c.HistoryCfg)
 	if err != nil {
 		return fmt.Errorf("getExecutor: %w", err)
 	}
 
 	if c.HistoryCfg != nil && dt != schema.TSDB {
 		// check if we're already on TSDB but the dsn is wrong
-		ts, err := timescale.New(c.Logger, c.DSN, c.HistoryCfg)
+		ts, err := timescale.New(c.DSN, c.HistoryCfg)
 		if err != nil {
 			return err
 		}

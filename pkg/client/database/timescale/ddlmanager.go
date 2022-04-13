@@ -29,7 +29,7 @@ type DDLManager struct {
 	dialect schema.Dialect
 }
 
-func NewDDLManager(l hclog.Logger, pool *pgxpool.Pool, cfg *history.Config, dt schema.DialectType) (*DDLManager, error) {
+func NewDDLManager(pool *pgxpool.Pool, cfg *history.Config, dt schema.DialectType) (*DDLManager, error) {
 	if dt != schema.TSDB {
 		return nil, fmt.Errorf("history is only supported on timescaledb")
 	}
@@ -40,7 +40,6 @@ func NewDDLManager(l hclog.Logger, pool *pgxpool.Pool, cfg *history.Config, dt s
 	}
 
 	return &DDLManager{
-		log:     l,
 		pool:    pool,
 		cfg:     cfg,
 		dialect: dialect,

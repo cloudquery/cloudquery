@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/client/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
 )
 
 type DialectExecutor interface {
@@ -31,7 +30,7 @@ var (
 	_ DialectExecutor = (*timescale.Executor)(nil)
 )
 
-func GetExecutor(logger hclog.Logger, dsn string, c *history.Config) (schema.DialectType, DialectExecutor, error) {
+func GetExecutor(dsn string, c *history.Config) (schema.DialectType, DialectExecutor, error) {
 	if dsn == "" {
 		return schema.Postgres, nil, fmt.Errorf("missing DSN")
 	}
@@ -43,9 +42,9 @@ func GetExecutor(logger hclog.Logger, dsn string, c *history.Config) (schema.Dia
 
 	switch dType {
 	case schema.Postgres:
-		return dType, postgres.New(logger, dsn), nil
+		return dType, postgres.New(dsn), nil
 	case schema.TSDB:
-		ts, err := timescale.New(logger, dsn, c)
+		ts, err := timescale.New(dsn, c)
 		if err != nil {
 			return dType, nil, err
 		}
