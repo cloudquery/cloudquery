@@ -95,6 +95,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeCustomerGateways(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCustomerGateways", reflect.TypeOf((*MockEc2Client)(nil).DescribeCustomerGateways), varargs...)
 }
 
+// DescribeEgressOnlyInternetGateways mocks base method.
+func (m *MockEc2Client) DescribeEgressOnlyInternetGateways(arg0 context.Context, arg1 *ec2.DescribeEgressOnlyInternetGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeEgressOnlyInternetGatewaysOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeEgressOnlyInternetGateways", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeEgressOnlyInternetGatewaysOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeEgressOnlyInternetGateways indicates an expected call of DescribeEgressOnlyInternetGateways.
+func (mr *MockEc2ClientMockRecorder) DescribeEgressOnlyInternetGateways(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEgressOnlyInternetGateways", reflect.TypeOf((*MockEc2Client)(nil).DescribeEgressOnlyInternetGateways), varargs...)
+}
+
 // DescribeFlowLogs mocks base method.
 func (m *MockEc2Client) DescribeFlowLogs(arg0 context.Context, arg1 *ec2.DescribeFlowLogsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFlowLogsOutput, error) {
 	m.ctrl.T.Helper()

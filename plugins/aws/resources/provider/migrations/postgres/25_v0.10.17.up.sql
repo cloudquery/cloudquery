@@ -36,3 +36,17 @@ CREATE TABLE IF NOT EXISTS "aws_wafv2_regex_pattern_sets" (
 -- Resource: iam.virtual_mfa_devices
 ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
 ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (serial_number);
+
+-- Resource: ec2.egress_only_internet_gateways
+CREATE TABLE IF NOT EXISTS "aws_ec2_egress_only_internet_gateways" (
+    "cq_id" uuid NOT NULL,
+    "cq_meta" jsonb,
+    "account_id" text,
+    "region" text,
+    "arn" text,
+    "attachments" jsonb,
+    "id" text,
+    "tags" jsonb,
+    CONSTRAINT aws_ec2_egress_only_internet_gateways_pk PRIMARY KEY(arn),
+    UNIQUE(cq_id)
+    );
