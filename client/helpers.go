@@ -291,7 +291,7 @@ func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
 		if vt.Kind() == reflect.String {
 			return v.String()
 		}
-		if vt.Kind() != reflect.Pointer || vt.Elem().Kind() != reflect.String {
+		if vt.Kind() != reflect.Ptr || vt.Elem().Kind() != reflect.String {
 			panic("field is not string or *string")
 		}
 
@@ -310,7 +310,7 @@ func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
 		}
 
 		keyField, valField := val.FieldByName("Key"), val.FieldByName("Value")
-		if (keyField.Type().Kind() == reflect.Pointer && keyField.IsNil()) || (valField.Type().Kind() == reflect.Pointer && valField.IsNil()) {
+		if (keyField.Type().Kind() == reflect.Ptr && keyField.IsNil()) || (valField.Type().Kind() == reflect.Ptr && valField.IsNil()) {
 			continue
 		}
 
