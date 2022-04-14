@@ -28,10 +28,10 @@ func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resour
 }
 
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	return resolveTagField("Tags")(ctx, meta, r, c)
+	return ResolveTagField("Tags")(ctx, meta, r, c)
 }
 
-func resolveTagField(fieldName string) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
+func ResolveTagField(fieldName string) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
 	return func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		var val reflect.Value
 

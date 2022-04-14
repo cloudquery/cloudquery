@@ -130,6 +130,7 @@ func Provider() *provider.Provider {
 			"ec2.instance_statuses":                 ec2.Ec2InstanceStatuses(),
 			"ec2.instances":                         ec2.Ec2Instances(),
 			"ec2.internet_gateways":                 ec2.Ec2InternetGateways(),
+			"ec2.network_interfaces":                ec2.NetworkInterfaces(),
 			"ec2.nat_gateways":                      ec2.Ec2NatGateways(),
 			"ec2.network_acls":                      ec2.Ec2NetworkAcls(),
 			"ec2.regional_config":                   ec2.Ec2RegionalConfig(),
