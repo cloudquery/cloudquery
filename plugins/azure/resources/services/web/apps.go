@@ -582,6 +582,11 @@ func fetchWebAppPublishingProfiles(ctx context.Context, meta schema.ClientMeta, 
 func fetchVnetConnections(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	site := resource.Item.(web.Site)
 	svc := meta.(*client.Client).Services().Web.Apps
+
+	if site.SiteConfig == nil || site.SiteConfig.VnetName == nil {
+		return nil
+	}
+
 	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *site.SiteConfig.VnetName)
 	if err != nil {
 		return err
