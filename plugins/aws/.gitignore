@@ -37,3 +37,4 @@ __debug_bin
 terraform/downloaded*
 config.hcl
 terraform/tfplan.binary
+cq-provider

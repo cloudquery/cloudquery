@@ -8,10 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+const MAX_GOROUTINES = 10
 
 func EcsTaskDefinitions() *schema.Table {
 	return &schema.Table{
@@ -620,7 +624,7 @@ func fetchEcsTaskDefinition(ctx context.Context, res chan<- interface{}, svc cli
 
 func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ecs.ListTaskDefinitionsInput
-
+	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
 	for {
@@ -633,12 +637,22 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent 
 		if len(listClustersOutput.TaskDefinitionArns) == 0 {
 			return nil
 		}
-
+		errs, ctx := errgroup.WithContext(ctx)
 		for _, t := range listClustersOutput.TaskDefinitionArns {
-			err := fetchEcsTaskDefinition(ctx, res, svc, region, t)
-			if err != nil {
-				return err
+			if err := sem.Acquire(ctx, 1); err != nil {
+				return diag.WrapError(err)
 			}
+			func(arn string) {
+				errs.Go(func() error {
+					defer sem.Release(1)
+					return fetchEcsTaskDefinition(ctx, res, svc, region, arn)
+				})
+			}(t)
+
+		}
+		err = errs.Wait()
+		if err != nil {
+			return diag.WrapError(err)
 		}
 
 		if listClustersOutput.NextToken == nil {
