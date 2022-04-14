@@ -161,7 +161,7 @@ func (h Hub) CheckProviderUpdate(ctx context.Context, requestedProvider *config.
 
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
-	latestVersion, err := h.getLatestRelease(ctx, organization, ProviderRepoName(providerName))
+	latestVersion, err := h.getLatestRelease(ctx, organization, providerName)
 	if err != nil {
 		return "", err
 	}
