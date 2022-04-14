@@ -94,6 +94,7 @@ func Provider() *provider.Provider {
 			"applicationautoscaling.policies":       applicationautoscaling.ApplicationautoscalingPolicies(),
 			"autoscaling.groups":                    autoscaling.AutoscalingGroups(),
 			"autoscaling.launch_configurations":     autoscaling.AutoscalingLaunchConfigurations(),
+			"autoscaling.scheduled_actions":         autoscaling.AutoscalingScheduledActions(),
 			"aws.regions":                           ec2.AwsRegions(),
 			"backup.plans":                          backup.Plans(),
 			"backup.vaults":                         backup.Vaults(),
@@ -222,7 +223,7 @@ func Provider() *provider.Provider {
 			"wafv2.web_acls":                        wafv2.Wafv2WebAcls(),
 			"workspaces.workspaces":                 workspaces.Workspaces(),
 			"workspaces.directories":                workspaces.Directories(),
-			//"iot.security_profiles": 				 iot.IotSecurityProfiles(), //TODO disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
+			// "iot.security_profiles": 				 iot.IotSecurityProfiles(), //TODO disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

@@ -175,6 +175,26 @@ func (mr *MockAutoscalingClientMockRecorder) DescribePolicies(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePolicies", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribePolicies), varargs...)
 }
 
+// DescribeScheduledActions mocks base method.
+func (m *MockAutoscalingClient) DescribeScheduledActions(arg0 context.Context, arg1 *autoscaling.DescribeScheduledActionsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeScheduledActionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeScheduledActions", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeScheduledActionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeScheduledActions indicates an expected call of DescribeScheduledActions.
+func (mr *MockAutoscalingClientMockRecorder) DescribeScheduledActions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeScheduledActions", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeScheduledActions), varargs...)
+}
+
 // DescribeTags mocks base method.
 func (m *MockAutoscalingClient) DescribeTags(arg0 context.Context, arg1 *autoscaling.DescribeTagsInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeTagsOutput, error) {
 	m.ctrl.T.Helper()
