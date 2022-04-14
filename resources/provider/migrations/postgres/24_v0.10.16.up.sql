@@ -333,3 +333,4 @@ CREATE TABLE IF NOT EXISTS "aws_codepipeline_webhook_filters" (
     UNIQUE(cq_id),
     FOREIGN KEY (webhook_cq_id) REFERENCES aws_codepipeline_webhooks(cq_id) ON DELETE CASCADE
 );
+

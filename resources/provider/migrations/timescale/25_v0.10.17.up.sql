@@ -56,3 +56,70 @@ CREATE TABLE IF NOT EXISTS "aws_ec2_egress_only_internet_gateways" (
     UNIQUE(cq_fetch_date,cq_id)
 );
 SELECT setup_tsdb_parent('aws_ec2_egress_only_internet_gateways');
+
+
+-- Resource: qldb.ledgers
+CREATE TABLE IF NOT EXISTS "aws_qldb_ledgers" (
+    "cq_id" uuid NOT NULL,
+    "cq_meta" jsonb,
+    "cq_fetch_date" timestamp without time zone NOT NULL,
+    "account_id" text,
+    "region" text,
+    "tags" jsonb,
+    "arn" text,
+    "creation_date_time" timestamp without time zone,
+    "deletion_protection" boolean,
+    "encryption_status" text,
+    "kms_key_arn" text,
+    "inaccessible_kms_key_date_time" timestamp without time zone,
+    "name" text,
+    "permissions_mode" text,
+    "state" text,
+    CONSTRAINT aws_qldb_ledgers_pk PRIMARY KEY(cq_fetch_date,arn),
+    UNIQUE(cq_fetch_date,cq_id)
+    );
+SELECT setup_tsdb_parent('aws_qldb_ledgers');
+CREATE TABLE IF NOT EXISTS "aws_qldb_ledger_journal_kinesis_streams" (
+    "cq_id" uuid NOT NULL,
+    "cq_meta" jsonb,
+    "cq_fetch_date" timestamp without time zone NOT NULL,
+    "ledger_cq_id" uuid,
+    "stream_arn" text,
+    "aggregation_enabled" boolean,
+    "ledger_name" text,
+    "role_arn" text,
+    "status" text,
+    "stream_id" text,
+    "stream_name" text,
+    "arn" text,
+    "creation_time" timestamp without time zone,
+    "error_cause" text,
+    "exclusive_end_time" timestamp without time zone,
+    "inclusive_start_time" timestamp without time zone,
+    CONSTRAINT aws_qldb_ledger_journal_kinesis_streams_pk PRIMARY KEY(cq_fetch_date,cq_id),
+    UNIQUE(cq_fetch_date,cq_id)
+    );
+CREATE INDEX ON aws_qldb_ledger_journal_kinesis_streams (cq_fetch_date, ledger_cq_id);
+SELECT setup_tsdb_child('aws_qldb_ledger_journal_kinesis_streams', 'ledger_cq_id', 'aws_qldb_ledgers', 'cq_id');
+CREATE TABLE IF NOT EXISTS "aws_qldb_ledger_journal_s3_exports" (
+    "cq_id" uuid NOT NULL,
+    "cq_meta" jsonb,
+    "cq_fetch_date" timestamp without time zone NOT NULL,
+    "ledger_cq_id" uuid,
+    "exclusive_end_time" timestamp without time zone,
+    "export_creation_time" timestamp without time zone,
+    "export_id" text,
+    "inclusive_start_time" timestamp without time zone,
+    "ledger_name" text,
+    "role_arn" text,
+    "bucket" text,
+    "object_encryption_type" text,
+    "kms_key_arn" text,
+    "prefix" text,
+    "status" text,
+    "output_format" text,
+    CONSTRAINT aws_qldb_ledger_journal_s3_exports_pk PRIMARY KEY(cq_fetch_date,cq_id),
+    UNIQUE(cq_fetch_date,cq_id)
+    );
+CREATE INDEX ON aws_qldb_ledger_journal_s3_exports (cq_fetch_date, ledger_cq_id);
+SELECT setup_tsdb_child('aws_qldb_ledger_journal_s3_exports', 'ledger_cq_id', 'aws_qldb_ledgers', 'cq_id');

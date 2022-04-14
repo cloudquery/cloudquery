@@ -46,6 +46,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/lambda"
 	"github.com/cloudquery/cq-provider-aws/resources/services/mq"
 	"github.com/cloudquery/cq-provider-aws/resources/services/organizations"
+	"github.com/cloudquery/cq-provider-aws/resources/services/qldb"
 	"github.com/cloudquery/cq-provider-aws/resources/services/rds"
 	"github.com/cloudquery/cq-provider-aws/resources/services/redshift"
 	"github.com/cloudquery/cq-provider-aws/resources/services/route53"
@@ -179,6 +180,7 @@ func Provider() *provider.Provider {
 			"lambda.runtimes":                       lambda.LambdaRuntimes(),
 			"mq.brokers":                            mq.Brokers(),
 			"organizations.accounts":                organizations.OrganizationsAccounts(),
+			"qldb.ledgers":                          qldb.Ledgers(),
 			"rds.certificates":                      rds.RdsCertificates(),
 			"rds.cluster_parameter_groups":          rds.RdsClusterParameterGroups(),
 			"rds.cluster_snapshots":                 rds.RdsClusterSnapshots(),

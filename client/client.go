@@ -53,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
+	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -136,6 +137,7 @@ type Services struct {
 	Lambda                 LambdaClient
 	MQ                     MQClient
 	Organizations          OrganizationsClient
+	QLDB                   QLDBClient
 	RDS                    RdsClient
 	Redshift               RedshiftClient
 	Route53                Route53Client
@@ -525,6 +527,7 @@ func initServices(region string, c aws.Config) Services {
 		Lambda:                 lambda.NewFromConfig(awsCfg),
 		MQ:                     mq.NewFromConfig(awsCfg),
 		Organizations:          organizations.NewFromConfig(awsCfg),
+		QLDB:                   qldb.NewFromConfig(awsCfg),
 		RDS:                    rds.NewFromConfig(awsCfg),
 		Redshift:               redshift.NewFromConfig(awsCfg),
 		Route53:                route53.NewFromConfig(awsCfg),
