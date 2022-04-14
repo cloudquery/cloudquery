@@ -10,3 +10,8 @@ ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual
 
 -- Resource: ec2.egress_only_internet_gateways
 DROP TABLE IF EXISTS aws_ec2_egress_only_internet_gateways;
+
+-- Resource: qldb.ledgers
+DROP TABLE IF EXISTS aws_qldb_ledger_journal_kinesis_streams;
+DROP TABLE IF EXISTS aws_qldb_ledger_journal_s3_exports;
+DROP TABLE IF EXISTS aws_qldb_ledgers;
