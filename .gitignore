@@ -23,4 +23,3 @@ config_old.hcl
 /pkg/policy/cq/*
 database-data/*
 dest/*
-outfile
