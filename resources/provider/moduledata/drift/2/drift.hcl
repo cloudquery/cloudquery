@@ -456,6 +456,20 @@ provider "aws" {
     }
   }
 
+  resource "autoscaling.scheduled_actions" {
+    ignore_attributes = [ "time" ]
+    iac {
+      terraform {
+        type = "aws_autoscaling_schedule"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "auto_scaling_group_name=autoscaling_group_name",
+          "name=scheduled_action_name"
+        ]
+      }
+    }
+  }
+
   resource "backup.plans" {
     ignore_attributes = [ "creation_date", "creator_request_id", "last_execution_date" ]
     iac {
@@ -766,7 +780,7 @@ provider "aws" {
     }
   }
 
-  resource "aws_codepipeline_webhooks" {
+  resource "codepipeline.webhooks" {
     identifiers = [ "arn" ]
     ignore_attributes = [ "last_triggered" ]
 
@@ -955,6 +969,27 @@ provider "aws" {
     }
   }
 
+  resource "ec2.egress_only_internet_gateways" {
+    identifiers = [ "id" ]
+    ignore_attributes = [ "arn", "attachments" ]
+    iac {
+      terraform {
+        type = "aws_egress_only_internet_gateway"
+      }
+    }
+  }
+
+  resource "ec2.egress_only_internet_gateways#attachments" {
+    identifiers = [ "id", sql("(attachments->>0)::jsonb->>'VpcId'") ] // attachments.0.VpcId
+    ignore_attributes = [ "arn", "attachments" ]
+    iac {
+      terraform {
+        type = "aws_egress_only_internet_gateway"
+        identifiers = [ "id", "vpc_id" ]
+      }
+    }
+  }
+
   resource "ec2.eips" {
     ignore_attributes = [ "network_interface_owner_id" ]
     iac {
@@ -1053,6 +1088,15 @@ provider "aws" {
   #                }
   #            }
   #        }
+
+  resource "ec2.network_interfaces" {
+    iac {
+      terraform {
+        type = "aws_network_interface"
+        identifiers = [ "arn" ]
+      }
+    }
+  }
 
   resource "ec2.regional_config#key" { # TODO: add account/region support
     identifiers = [ "ebs_default_kms_key_id" ]
@@ -1654,6 +1698,19 @@ provider "aws" {
     }
   }
 
+  resource "qldb.ledgers" {
+    ignore_attributes = [ "creation_date_time", "state", "inaccessible_kms_key_date_time" ]
+    iac {
+      terraform {
+        type = "aws_qldb_ledger"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "kms_key_arn=kms_key"
+        ]
+      }
+    }
+  }
+
   resource "rds.clusters" {
     identifiers = [ "db_cluster_identifier" ]
     iac {
@@ -2012,6 +2069,68 @@ provider "aws" {
     iac {
       terraform {
         type = "aws_waf_web_acl"
+      }
+    }
+  }
+
+
+  resource "wafregional.rule_groups" {
+    sets = [ "rule_ids" ]
+    iac {
+      terraform {
+        type = "aws_wafregional_rule_group"
+        attribute_map = [
+          "rule_ids=activated_rule.#.rule_id"
+        ]
+      }
+    }
+  }
+
+  resource "wafregional.rules" {
+    iac {
+      terraform {
+        type = "aws_wafregional_rule"
+      }
+    }
+  }
+
+  resource "wafregional.rate_based_rules" {
+    iac {
+      terraform {
+        type = "aws_wafregional_rate_based_rule"
+      }
+    }
+  }
+
+  resource "wafregional.web_acls" {
+    iac {
+      terraform {
+        type = "aws_wafregional_web_acl"
+        attribute_map = [
+          "default_action=default_action.0.type"
+        ]
+      }
+    }
+  }
+
+  resource "wafv2.ipsets" {
+    iac {
+      terraform {
+        type = "aws_wafv2_ip_set"
+        identifiers = [ "arn" ]
+      }
+    }
+  }
+
+  resource "wafv2.regex_pattern_sets" {
+    sets = [ "regular_expression_list" ]
+    iac {
+      terraform {
+        type = "aws_wafv2_regex_pattern_set"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "regular_expression_list=regular_expression.#.regex_string"
+        ]
       }
     }
   }
