@@ -56,6 +56,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
+	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 )
@@ -643,4 +644,17 @@ type QLDBClient interface {
 	qldb.ListJournalS3ExportsForLedgerAPIClient
 	DescribeLedger(ctx context.Context, params *qldb.DescribeLedgerInput, optFns ...func(*qldb.Options)) (*qldb.DescribeLedgerOutput, error)
 	ListTagsForResource(ctx context.Context, params *qldb.ListTagsForResourceInput, optFns ...func(*qldb.Options)) (*qldb.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/wafregional.go . WafRegionalClient
+type WafRegionalClient interface {
+	GetRateBasedRule(ctx context.Context, params *wafregional.GetRateBasedRuleInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRateBasedRuleOutput, error)
+	GetRule(ctx context.Context, params *wafregional.GetRuleInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRuleOutput, error)
+	GetRuleGroup(ctx context.Context, params *wafregional.GetRuleGroupInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRuleGroupOutput, error)
+	GetWebACL(ctx context.Context, params *wafregional.GetWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.GetWebACLOutput, error)
+	ListRateBasedRules(ctx context.Context, params *wafregional.ListRateBasedRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRateBasedRulesOutput, error)
+	ListRuleGroups(ctx context.Context, params *wafregional.ListRuleGroupsInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRuleGroupsOutput, error)
+	ListRules(ctx context.Context, params *wafregional.ListRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRulesOutput, error)
+	ListTagsForResource(ctx context.Context, params *wafregional.ListTagsForResourceInput, optFns ...func(*wafregional.Options)) (*wafregional.ListTagsForResourceOutput, error)
+	ListWebACLs(ctx context.Context, params *wafregional.ListWebACLsInput, optFns ...func(*wafregional.Options)) (*wafregional.ListWebACLsOutput, error)
 }

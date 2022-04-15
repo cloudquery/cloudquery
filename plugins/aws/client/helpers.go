@@ -192,8 +192,21 @@ const (
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"
+	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
 )
+
+// MakeARN creates an ARN using supplied service name, account id, region name and resource id parts.
+// Resource id parts are concatenated using forward slash (/).
+func MakeARN(service AWSService, accountID, region string, idParts ...string) string {
+	return arn.ARN{
+		Partition: "aws",
+		Service:   string(service),
+		Region:    region,
+		AccountID: accountID,
+		Resource:  strings.Join(idParts, "/"),
+	}.String()
+}
 
 func resolveARN(service AWSService, resourceID func(resource *schema.Resource) ([]string, error), useRegion, useAccountID bool) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -209,13 +222,7 @@ func resolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 		if useRegion {
 			region = cl.Region
 		}
-		return resource.Set(c.Name, arn.ARN{
-			Partition: "aws",
-			Service:   string(service),
-			Region:    region,
-			AccountID: accountID,
-			Resource:  strings.Join(idParts, "/"),
-		}.String())
+		return resource.Set(c.Name, MakeARN(service, accountID, region, idParts...))
 	}
 }
 
