@@ -67,6 +67,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
+	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
@@ -152,6 +153,7 @@ type Services struct {
 	SecretsManager         SecretsManagerClient
 	Waf                    WafClient
 	WafV2                  WafV2Client
+	WafRegional            WafRegionalClient
 	Workspaces             WorkspacesClient
 }
 
@@ -542,6 +544,7 @@ func initServices(region string, c aws.Config) Services {
 		SQS:                    sqs.NewFromConfig(awsCfg),
 		Waf:                    waf.NewFromConfig(awsCfg),
 		WafV2:                  wafv2.NewFromConfig(awsCfg),
+		WafRegional:            wafregional.NewFromConfig(awsCfg),
 		Workspaces:             workspaces.NewFromConfig(awsCfg),
 		IOT:                    iot.NewFromConfig(awsCfg),
 	}
