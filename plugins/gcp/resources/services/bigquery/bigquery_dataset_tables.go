@@ -5,16 +5,21 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/bigquery/v2"
 )
+
+const MAX_GOROUTINES = 10
 
 func BigqueryDatasetTables() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_bigquery_dataset_tables",
 		Description: "Model options used for the first training run These options are immutable for subsequent training runs Default values are used for any options not specified in the input query",
 		IgnoreError: client.IgnoreErrorHandler,
-		Resolver:    fetchBigqueryDatasetTables,
+		Resolver:    listBigqueryDatasetTables,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -410,7 +415,8 @@ func BigqueryDatasetTables() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	p, ok := parent.Item.(*bigquery.Dataset)
 	if !ok {
 		return fmt.Errorf("expected *bigquery.Dataset but got %T", p)
@@ -424,14 +430,22 @@ func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, par
 			return err
 		}
 		output := list.(*bigquery.TableList)
-
+		errs, ctx := errgroup.WithContext(ctx)
 		for _, t := range output.Tables {
-			call := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId)
-			item, err := c.RetryingDo(ctx, call)
-			if err != nil {
-				return err
+			if err := sem.Acquire(ctx, 1); err != nil {
+				return diag.WrapError(err)
 			}
-			res <- item.(*bigquery.Table)
+			func(t *bigquery.TableListTables) {
+				errs.Go(func() error {
+					defer sem.Release(1)
+					return fetchBigqueryDatasetTables(ctx, c, p, t, res)
+				})
+			}(t)
+
+		}
+		err = errs.Wait()
+		if err != nil {
+			return err
 		}
 
 		if output.NextPageToken == "" {
@@ -441,6 +455,18 @@ func fetchBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
+
+func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigquery.Dataset, t *bigquery.TableListTables, res chan<- interface{}) error {
+	call := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId)
+	item, err := c.RetryingDo(ctx, call)
+	if err != nil {
+		return err
+	}
+	res <- item.(*bigquery.Table)
+	return nil
+
+}
+
 func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p, ok := resource.Item.(*bigquery.Table)
 	if !ok {
