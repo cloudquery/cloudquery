@@ -78,7 +78,14 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		subscriptions := make([]string, 0)
 		for res.NotDone() {
 			for _, sub := range res.Values() {
-				subscriptions = append(subscriptions, *sub.SubscriptionID)
+				switch sub.State {
+				case subscription.Disabled:
+					logger.Info("Not fetching from subscription because it is disabled", "subscription", *sub.SubscriptionID)
+				case subscription.Deleted:
+					logger.Info("Not fetching from subscription because it is deleted", "subscription", *sub.SubscriptionID)
+				default:
+					subscriptions = append(subscriptions, *sub.SubscriptionID)
+				}
 			}
 			err := res.NextWithContext(ctx)
 			if err != nil {
