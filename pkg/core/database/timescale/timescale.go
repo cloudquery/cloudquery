@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database/postgres"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/database/postgres"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	pgsdk "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"

@@ -47,7 +47,7 @@ var getLatestRelease = doGetLatestRelease
 // in a so called "last update check" file. If there is an error then returned version is nil. To be specific,
 // error is returned if:
 //
-// * client.Version is not a valid semantic version
+// * core.Version is not a valid semantic version
 // * if "last update check" file does not exist and we fail to write to it
 // * if "last update check" file has a single word "disable" in it
 // * Github reports an error

@@ -4,12 +4,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
-func printFetchResponse(summary *client.FetchResponse, redactDiags, verbose bool) {
+func printFetchResponse(summary *core.FetchResponse, redactDiags, verbose bool) {
 	if summary == nil {
 		return
 	}

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"

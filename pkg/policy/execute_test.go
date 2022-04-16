@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/state"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"

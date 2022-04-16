@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 
 	"github.com/rs/zerolog/log"
 

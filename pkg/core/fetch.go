@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/client/state"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 
 	"github.com/rs/zerolog"
@@ -26,14 +26,48 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/google/uuid"
 	"go.opentelemetry.io/otel/trace"
 )
+
+type FetchUpdateCallback func(update FetchUpdate)
+
+type FetchUpdate struct {
+	Provider string
+	Version  string
+	// Map of resources that have finished fetching
+	FinishedResources map[string]bool
+	// Amount of resources collected so far
+	ResourceCount uint64
+	// Error if any returned by the provider
+	Error string
+	// PartialFetchResults contains the partial fetch results for this update
+	PartialFetchResults []*cqproto.FailedResourceFetch
+}
+
+func (f FetchUpdate) AllDone() bool {
+	for _, v := range f.FinishedResources {
+		if !v {
+			return false
+		}
+	}
+	return true
+}
+
+func (f FetchUpdate) DoneCount() int {
+	count := 0
+	for _, v := range f.FinishedResources {
+		if v {
+			count += 1
+		}
+	}
+	return count
+}
 
 type ProviderInfo struct {
 	Provider registry.Provider
@@ -82,7 +116,7 @@ func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
 	return history.TransformDSN(storage.DSN())
 }
 
-func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
+func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
 	fetchId, err := uuid.NewUUID()
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
@@ -173,7 +207,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	return response, diags
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts FetchOptions) (ProviderFetchSummary, diag.Diagnostics) {
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts *FetchOptions) (ProviderFetchSummary, diag.Diagnostics) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 

@@ -85,18 +85,21 @@ provider "test" {
 
   configuration {
     account "1" {
+      id        = "testid"
       regions   = ["asdas"]
       resources = ["ab", "c"]
     }
-
-    regions = ["adsa"]
   }
   // list of resources to fetch
   resources = [
     "error_resource",
+    "migrate_resource",
+    "panic_resource",
     "slow_resource",
     "very_slow_resource"
   ]
+  // enables partial fetching, allowing for any failures to not stop full resource pull
+  enable_partial_fetch = true
 }`
 
 func Test_GetProviderConfig(t *testing.T) {
@@ -120,7 +123,7 @@ func Test_GetProviderConfig(t *testing.T) {
 		t.FailNow()
 	}
 	assert.NotNil(t, pConfig)
-	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
+	assert.Equal(t, expectedProviderConfig, string(pConfig.Config))
 	_, hdiags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, hdiags)
 }

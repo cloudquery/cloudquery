@@ -6,7 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"

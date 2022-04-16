@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/hashicorp/go-hclog"
 
@@ -94,7 +95,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	if err != nil {
 		return err
 	}
-	defer c.Client().Close()
+	defer c.Close()
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -112,9 +113,12 @@ func Initialize(ctx context.Context, providers []string) error {
 		return err
 	}
 	for _, p := range providers {
-		pCfg, err := c.Client().GetProviderConfiguration(ctx, p)
-		if err != nil {
-			return err
+		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
+			Provider: c.ConvertRequiredToRegistry(p),
+		})
+
+		if diags.HasErrors() {
+			return diags
 		}
 		buffer.Write(pCfg.Config)
 		buffer.WriteString("\n")

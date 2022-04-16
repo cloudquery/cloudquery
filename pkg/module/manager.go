@@ -12,7 +12,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 
 	"github.com/rs/zerolog/log"

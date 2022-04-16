@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
 	"github.com/spf13/cobra"
@@ -33,7 +33,7 @@ var (
   # build provider schema
   cloudquery provider build-schema aws
 `,
-		Version: client.Version,
+		Version: core.Version,
 	}
 
 	providerUpgradeHelpMsg = "Upgrades one or more providers schema version based on config.hcl"

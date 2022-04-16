@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
@@ -15,38 +16,6 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
-
-type FetchUpdate struct {
-	Provider string
-	Version  string
-	// Map of resources that have finished fetching
-	FinishedResources map[string]bool
-	// Amount of resources collected so far
-	ResourceCount uint64
-	// Error if any returned by the provider
-	Error string
-	// PartialFetchResults contains the partial fetch results for this update
-	PartialFetchResults []*cqproto.FailedResourceFetch
-}
-
-func (f FetchUpdate) AllDone() bool {
-	for _, v := range f.FinishedResources {
-		if !v {
-			return false
-		}
-	}
-	return true
-}
-
-func (f FetchUpdate) DoneCount() int {
-	count := 0
-	for _, v := range f.FinishedResources {
-		if v {
-			count += 1
-		}
-	}
-	return count
-}
 
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
@@ -121,15 +90,6 @@ func (p ProviderFetchSummary) Metrics() map[string]int64 {
 
 	return ret
 }
-
-type FetchDoneResult struct {
-	// Map of providers and resources that have finished fetching
-	DoneResources map[string]map[string]bool
-	// Amount of resources collected so far
-	ResourceCount string
-}
-
-type FetchUpdateCallback func(update FetchUpdate)
 
 // reportFetchSummaryErrors reads provided fetch summaries, persists statistics into the span and sends the errors to sentry
 func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]ProviderFetchSummary) {

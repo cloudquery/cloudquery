@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database/postgres"
-	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/database/postgres"
+	"github.com/cloudquery/cloudquery/pkg/core/database/timescale"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

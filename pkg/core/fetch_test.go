@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/stretchr/testify/assert"
 
@@ -201,7 +201,7 @@ func Test_Fetch(t *testing.T) {
 				ctx, cancel = context.WithTimeout(context.Background(), tc.Timeout)
 				defer cancel()
 			}
-			resp, diags := Fetch(ctx, storage, pManager, tc.Options)
+			resp, diags := Fetch(ctx, storage, pManager, &tc.Options)
 			if tc.ExpectedDiags != nil {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {

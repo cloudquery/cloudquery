@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/hashicorp/go-hclog"
@@ -12,7 +12,7 @@ import (
 
 func telemetryOpts() []telemetry.Option {
 	opts := []telemetry.Option{
-		telemetry.WithVersionInfo(client.Version, Commit, Date),
+		telemetry.WithVersionInfo(core.Version, Commit, Date),
 		telemetry.WithLogger(hclog.Default()),
 		telemetry.WithEndpoint(viper.GetString("telemetry-endpoint"), viper.GetBool("insecure-telemetry-endpoint")),
 	}

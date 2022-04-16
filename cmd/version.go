@@ -3,8 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
-
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +15,7 @@ var versionCmd = &cobra.Command{
 	Long:                  versionHelpMsg,
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Version: %s\n", client.Version)
+		fmt.Printf("Version: %s\n", core.Version)
 		fmt.Printf("Commit: %s\n", Commit)
 		fmt.Printf("Date: %s\n", Date)
 	},

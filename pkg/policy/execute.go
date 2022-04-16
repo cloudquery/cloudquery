@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/state"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/rs/zerolog/log"
