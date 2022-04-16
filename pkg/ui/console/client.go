@@ -12,12 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin"
-
-	"github.com/cloudquery/cloudquery/pkg/client/database"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
@@ -37,8 +31,11 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"

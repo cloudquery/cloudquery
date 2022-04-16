@@ -6,6 +6,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
+	"github.com/hashicorp/go-hclog"
+
+	"github.com/cloudquery/cloudquery/pkg/module"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -114,8 +119,9 @@ func Initialize(ctx context.Context, providers []string) error {
 		buffer.Write(pCfg.Config)
 		buffer.WriteString("\n")
 	}
-
-	if mex := c.Client().ModuleManager.ExampleConfigs(providers); len(mex) > 0 {
+	mm := module.NewManager(nil, nil)
+	mm.Register(drift.New(hclog.NewNullLogger()))
+	if mex := mm.ExampleConfigs(providers); len(mex) > 0 {
 		buffer.WriteString("\n// Module Configurations\nmodules {\n")
 		for _, c := range mex {
 			buffer.WriteString(c)

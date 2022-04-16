@@ -1,4 +1,4 @@
-package client
+package core
 
 import (
 	"context"
@@ -69,7 +69,7 @@ func Test_Fetch(t *testing.T) {
 				ProviderAlias:         "test_alias",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "finished",
+				Status:                "Finished",
 			}}},
 		},
 		{
@@ -97,7 +97,7 @@ func Test_Fetch(t *testing.T) {
 				ProviderAlias:         "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "finished",
+				Status:                "Finished",
 			}}},
 		},
 		{
@@ -133,7 +133,7 @@ func Test_Fetch(t *testing.T) {
 				ProviderAlias:         "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "failed",
+				Status:                "Failed",
 			}}},
 		},
 		{
@@ -158,7 +158,7 @@ func Test_Fetch(t *testing.T) {
 				ProviderAlias:         "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "finished",
+				Status:                "Finished",
 			}}},
 		},
 	}

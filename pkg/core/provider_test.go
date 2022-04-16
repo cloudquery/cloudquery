@@ -1,4 +1,4 @@
-package client
+package core
 
 import (
 	"context"
@@ -100,15 +100,12 @@ provider "test" {
 }`
 
 func Test_GetProviderConfig(t *testing.T) {
-	cancelServe := setupTestPlugin(t)
-	defer cancelServe()
-
 	provider := registry.Provider{
 		Name:    "test",
 		Source:  "cloudquery",
 		Version: "v0.0.11",
 	}
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
 	assert.Nil(t, err)
 	_, diags := Download(context.TODO(), pm, &DownloadOptions{
 		Providers: []registry.Provider{provider},

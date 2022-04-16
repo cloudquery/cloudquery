@@ -1,21 +1,15 @@
-package client
+package core
 
 import (
 	"context"
 	"math/rand"
-	"net"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/test/providertest"
-	"github.com/cloudquery/cq-provider-sdk/serve"
-	"github.com/fsnotify/fsnotify"
 	"github.com/jackc/pgx/v4"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -54,37 +48,4 @@ func setupDB(t *testing.T) (dsn string) {
 	})
 
 	return strings.Replace(baseDSN, "/postgres?", "/"+newDB+"?", 1)
-}
-
-func setupTestPlugin(t *testing.T) context.CancelFunc {
-	debugCtx, cancelServe := context.WithCancel(context.Background())
-	dir, _ := os.Getwd()
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := watcher.Add(dir); err != nil {
-		t.Fatal(err)
-	}
-	defer watcher.Close()
-
-	go providertest.ServeTestPlugin(debugCtx)
-	_ = os.Setenv("CQ_REATTACH_PROVIDERS", filepath.Join(dir, ".cq_reattach"))
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("CQ")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-	<-watcher.Events
-
-	unmanaged, err := serve.ParseReattachProviders(os.Getenv("CQ_REATTACH_PROVIDERS"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, u := range unmanaged {
-		_, err := net.DialTimeout(u.Addr.Network(), u.Addr.String(), time.Second*5)
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	return cancelServe
 }

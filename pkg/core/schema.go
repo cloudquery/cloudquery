@@ -1,12 +1,7 @@
-package client
+package core
 
 import (
 	"context"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
-	"github.com/rs/zerolog/log"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
