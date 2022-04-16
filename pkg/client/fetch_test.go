@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"reflect"
 	"testing"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 )
@@ -216,6 +218,64 @@ func Test_Fetch(t *testing.T) {
 					assert.Equal(t, p.Status, fetchSummary.Status)
 					assert.Equal(t, p.TotalResourcesFetched, fetchSummary.TotalResourcesFetched)
 				}
+			}
+		})
+	}
+}
+
+func Test_doNormalizeResources(t *testing.T) {
+	tests := []struct {
+		name      string
+		requested []string
+		all       map[string]*schema.Table
+		want      []string
+		wantErr   bool
+	}{
+		{
+			"wilcard",
+			[]string{"*"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"1", "2", "3"},
+			false,
+		},
+		{
+			"wilcard with explicit",
+			[]string{"*", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"unknown resource",
+			[]string{"1", "2", "x"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"duplicate resource",
+			[]string{"1", "2", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			nil,
+			true,
+		},
+		{
+			"ok, all explicit",
+			[]string{"2", "1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"1", "2"},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := doNormalizeResources(tt.requested, tt.all)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("doInterpolate() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("doInterpolate() = %v, want %v", got, tt.want)
 			}
 		})
 	}

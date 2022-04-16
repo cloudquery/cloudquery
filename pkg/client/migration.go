@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/client/database"
@@ -24,6 +25,10 @@ const (
 	Upgraded SyncState = iota + 1
 	Downgraded
 	NoChange
+)
+
+var (
+	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
 )
 
 type SyncOptions struct {

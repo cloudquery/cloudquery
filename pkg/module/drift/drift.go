@@ -70,7 +70,7 @@ func (d *Drift) ProtocolVersions() []uint32 {
 	return []uint32{protoVersion, compatibleProtoVersion}
 }
 
-func (d *Drift) Configure(ctx context.Context, info module.Info, runParams module.ModuleRunParams) error {
+func (d *Drift) Configure(ctx context.Context, info module.Info, runParams module.RunParams) error {
 	d.params = runParams.(RunParams)
 
 	builtin, err := d.readBaseConfig(info.ProtocolVersion, info.ProviderData)

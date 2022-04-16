@@ -187,9 +187,6 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		return err
 	}
 
-	if err := c.c.NormalizeResources(ctx, c.cfg.Providers); err != nil {
-		return err
-	}
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var fetchProgress ui.Progress
 	var fetchCallback client.FetchUpdateCallback
@@ -330,6 +327,7 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		c.c.Logger.Error("failed to connect to new database", "err", err)
 		return err
 	}
+	defer conn.Close()
 	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
 	if err != nil {
 		return err
@@ -377,6 +375,8 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 }
 
 func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
+
+	// TODO: move this in module package
 	provs, err := c.getModuleProviders(ctx)
 	if err != nil {
 		return err
@@ -391,16 +391,15 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	if err != nil {
 		return err
 	}
-
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 
-	runReq := client.ModuleRunRequest{
-		Name:      req.Name,
-		Params:    req.Params,
-		Providers: provs,
-		Config:    cfg,
-	}
-	out, err := c.c.ExecuteModule(ctx, runReq)
+	m := module.NewManager(c.Storage, c.PluginManager)
+	out, err := m.Execute(ctx, &module.ExecuteRequest{
+		Module:        req.Name,
+		ProfileConfig: cfg,
+		Params:        req.Params,
+		Providers:     provs,
+	})
 	if err != nil {
 		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
@@ -673,7 +672,7 @@ func (c Client) getModuleProviders(ctx context.Context) ([]*cqproto.GetProviderS
 		}
 		dupes[p.Name] = struct{}{}
 
-		s, err := c.c.GetProviderSchema(ctx, p.Name)
+		s, err := client.GetProviderSchema(ctx, c.PluginManager, &client.GetProviderSchemaOptions{Provider: c.convertRequiredToRegistry(p.Name)})
 		if err != nil {
 			return nil, err
 		}

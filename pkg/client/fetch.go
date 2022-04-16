@@ -3,9 +3,13 @@ package client
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
+	"sort"
 	"sync"
 	"time"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/client/state"
@@ -211,22 +215,28 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			ProviderAlias:         info.Config.Alias,
 			Version:               info.Provider.Version,
 			FetchResources:        make(map[string]cqproto.ResourceFetchSummary),
-			Status:                "finished",
+			Status:                "Finished",
 			TotalResourcesFetched: 0,
 		}
 		diags diag.Diagnostics
 	)
+	resources, err := normalizeResources(ctx, plugin, info.Config.Resources)
+	if err != nil {
+		summary.Status = "Failed"
+		return summary, diag.FromError(err, diag.INTERNAL)
+	}
+
 	pLog.Info().Msg("provider started fetching resources")
 	stream, err := plugin.Provider().FetchResources(ctx,
 		&cqproto.FetchResourcesRequest{
-			Resources:             info.Config.Resources,
+			Resources:             resources,
 			ParallelFetchingLimit: info.Config.MaxParallelResourceFetchLimit,
 			MaxGoroutines:         info.Config.MaxGoroutines,
 			Timeout:               time.Duration(info.Config.ResourceTimeout) * time.Second,
 			Metadata:              metadata,
 		})
 	if err != nil {
-		summary.Status = "failed"
+		summary.Status = "Failed"
 		return summary, diag.FromError(err, diag.INTERNAL)
 	}
 
@@ -265,11 +275,11 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
 			if st, ok := status.FromError(err); ok && st.Code() == gcodes.Canceled {
 				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
-				summary.Status = "canceled"
+				summary.Status = "Canceled"
 				return summary, diags
 			}
 			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
-			summary.Status = "failed"
+			summary.Status = "Failed"
 			return summary, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 	}
@@ -286,4 +296,49 @@ func parseFetchedResources(resources map[string]cqproto.ResourceFetchSummary) []
 		})
 	}
 	return rfs
+}
+
+// NormalizeResources walks over all given providers and in place normalizes their resources list:
+//
+// * wildcard expansion
+// * verify no unknown resources
+// * verify no duplicate resources
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, error) {
+	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
+	if err != nil {
+		return nil, err
+	}
+	return doNormalizeResources(resources, s.ResourceTables)
+}
+
+// doNormalizeResources returns a canonical list of resources given a list of requested and all known resources.
+// It replaces wildcard resource with all resources. Error is returned if:
+//
+// * wildcard is present and other explicit resource is requested;
+// * one of explicitly requested resources is not present in all known;
+// * some resource is specified more than once (duplicate).
+func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, error) {
+	if len(requested) == 1 && requested[0] == "*" {
+		requested = make([]string, 0, len(all))
+		for k := range all {
+			requested = append(requested, k)
+		}
+	}
+	result := make([]string, 0, len(requested))
+	seen := make(map[string]struct{})
+	for _, r := range requested {
+		if _, ok := seen[r]; ok {
+			return nil, fmt.Errorf("resource %s is duplicate", r)
+		}
+		seen[r] = struct{}{}
+		if _, ok := all[r]; !ok {
+			if r == "*" {
+				return nil, fmt.Errorf("wildcard resource must be the only one in the list")
+			}
+			return nil, fmt.Errorf("resource %s does not exist", r)
+		}
+		result = append(result, r)
+	}
+	sort.Strings(result)
+	return result, nil
 }
