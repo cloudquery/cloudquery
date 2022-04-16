@@ -9,10 +9,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client/state"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/rs/zerolog/log"
 
-	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
@@ -197,7 +198,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	metaStorage := meta_storage.NewClient(e.conn, e.log)
+	metaStorage := state.NewClient(e.conn, e.log)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {

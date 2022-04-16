@@ -1,4 +1,4 @@
-package meta_storage
+package state
 
 import (
 	"context"
@@ -18,9 +18,9 @@ type FetchSummary struct {
 	CqId uuid.UUID `db:"id"`
 	//  Unique Id of fetch session
 	FetchId            uuid.UUID              `db:"fetch_id"`
-	CreatedAt          *time.Time             `db:"created_at"`
-	Start              *time.Time             `db:"start"`
-	Finish             *time.Time             `db:"finish"`
+	CreatedAt          time.Time              `db:"created_at"`
+	Start              time.Time              `db:"start"`
+	Finish             time.Time              `db:"finish"`
 	IsSuccess          bool                   `db:"is_success"`
 	TotalResourceCount uint64                 `db:"total_resource_count"`
 	TotalErrorsCount   uint64                 `db:"total_errors_count"`

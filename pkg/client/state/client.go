@@ -1,5 +1,5 @@
 // Package meta_storage interacts with core database schema and stores cloudquery metadata such as fetch summaries
-package meta_storage
+package state
 
 import (
 	"context"

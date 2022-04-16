@@ -7,9 +7,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/client/state"
+
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
-	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
@@ -387,14 +388,14 @@ func TestExecutor_Execute(t *testing.T) {
 	}
 }
 
-func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.FetchSummary, c *meta_storage.Client) (func(t *testing.T), error) {
+func setupCheckFetchDatabase(db execution.QueryExecer, summary *state.FetchSummary, c *state.Client) (func(t *testing.T), error) {
 	if summary == nil {
 		return func(t *testing.T) {}, nil
 	}
 	summary.CqId = uuid.New()
 	summary.FetchId = uuid.New()
 	finish := time.Now().UTC()
-	summary.Finish = &finish
+	summary.Finish = finish
 	err := c.SaveFetchSummary(context.Background(), summary)
 	if err != nil {
 		return nil, err
@@ -407,11 +408,11 @@ func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.Fet
 	}, nil
 }
 
-func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
+func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
+	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
 	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
@@ -486,7 +487,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
+	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
 	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
@@ -503,7 +504,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	cases := []struct {
 		Name   string
 		Config Configuration
-		f      *meta_storage.FetchSummary
+		f      *state.FetchSummary
 		err    error
 	}{
 		{
@@ -513,25 +514,17 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test1", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: nil,
 		},
 		{
-			Name: "no fetches",
-			Config: Configuration{
-				Providers: []*Provider{
-					{Type: "test2", Version: "~> v0.2.0"},
-				},
-			},
-			err: errors.New("failed to get fetch summary for provider test2: could not find a completed fetch for requested provider"),
-		}, {
 			Name: "no finished fetches",
 			Config: Configuration{
 				Providers: []*Provider{
 					{Type: "no_finish", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
+			f:   &state.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
 			err: errors.New("failed to get fetch summary for provider no_finish: could not find a completed fetch for requested provider"),
 		},
 		{
@@ -541,7 +534,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test3", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: false},
+			f:   &state.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: false},
 			err: errors.New("last fetch for provider test3 wasn't successful"),
 		},
 		{
@@ -551,7 +544,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: "~> v0.3.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: errors.New("the latest fetch for provider test4 does not satisfy version requirement ~> v0.3.0"),
 		},
 		{
@@ -561,7 +554,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: ""},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: errors.New("failed to parse version constraint for provider test4: Malformed constraint: "),
 		},
 	}

@@ -1,4 +1,4 @@
-package meta_storage
+package state
 
 import (
 	"context"
@@ -100,7 +100,7 @@ func TestFetchSaveSummary(t *testing.T) {
 			f.summary.FetchId = fetchId
 		}
 		start := time.Now()
-		f.summary.Start = &start
+		f.summary.Start = start
 		err := fetchSummaryClient.SaveFetchSummary(context.Background(), &f.summary)
 		if f.err != nil {
 			assert.EqualError(t, err, f.err.Error())

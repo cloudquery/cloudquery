@@ -32,6 +32,7 @@ require (
 )
 
 require (
+	cloud.google.com/go/storage v1.14.0
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20211221144345-a4f6767435ab
 	github.com/aws/aws-sdk-go v1.42.1
@@ -64,7 +65,6 @@ require (
 
 require (
 	cloud.google.com/go v0.88.0 // indirect
-	cloud.google.com/go/storage v1.14.0 // indirect
 	github.com/Masterminds/squirrel v1.5.0 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect

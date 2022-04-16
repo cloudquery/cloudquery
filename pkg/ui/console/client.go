@@ -182,12 +182,8 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c Client) Fetch(ctx context.Context, failOnError bool) error {
-	if viper.GetBool("skip-schema-upgrade") {
-		// only download providers and verify, no upgrade
-		if err := c.DownloadProviders(ctx); err != nil {
-			return err
-		}
-	} else if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
+
+	if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
 		return err
 	}
 
@@ -201,16 +197,21 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 	if ui.DoProgress() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
-	request := client.FetchRequest{
-		Providers:      c.cfg.Providers,
-		UpdateCallback: fetchCallback,
-	}
-	response, err := c.c.Fetch(ctx, request)
-	if err != nil {
-		// Ignore context cancelled error
 
-		if st, ok := status.FromError(err); !ok || st.Code() != gcodes.Canceled {
-			return err
+	providers := make([]client.ProviderInfo, len(c.cfg.Providers))
+	for i, p := range c.cfg.Providers {
+		providers[i] = client.ProviderInfo{Provider: c.convertRequiredToRegistry(p.Name), Config: p}
+	}
+
+	response, diags := client.Fetch(ctx, c.Storage, c.PluginManager, client.FetchOptions{
+		UpdateCallback: fetchCallback,
+		ProvidersInfo:  providers,
+		History:        c.cfg.CloudQuery.History,
+	})
+	if diags.HasErrors() {
+		// Ignore context cancelled error
+		if st, ok := status.FromError(diags); !ok || st.Code() != gcodes.Canceled {
+			return diags
 		}
 	}
 
@@ -243,11 +244,12 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 			countSeverity(diags, diag.WARNING),
 			countSeverity(diags, diag.ERROR),
 		)
-		if failOnError && summary.HasErrors() {
-			err = fmt.Errorf("provider fetch has one or more errors")
-		}
 	}
-	return err
+	if failOnError && response.HasErrors() {
+		return fmt.Errorf("provider fetch has one or more errors")
+	}
+
+	return nil
 }
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) error {
@@ -465,14 +467,13 @@ func (c Client) UpgradeProviders(ctx context.Context, args []string) error {
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Upgrading CloudQuery providers %s\n\n", strings.Join(providers.Names(), ", "))
 	for _, p := range providers {
-		if _, diags := client.Sync(ctx, c.Storage, c.PluginManager, &client.SyncOptions{Provider: c.convertRequiredToRegistry(p.Name), DownloadLatest: false}); diags.HasErrors() {
-			if errors.Is(err, client.ErrMigrationsNotSupported) {
+		if sync, diags := client.Sync(ctx, c.Storage, c.PluginManager, &client.SyncOptions{Provider: c.convertRequiredToRegistry(p.Name), DownloadLatest: false}); diags.HasErrors() && sync.State != client.NoChange {
+			if errors.Is(diags, client.ErrMigrationsNotSupported) {
 				ui.ColorizedOutput(ui.ColorWarning, "%s Failed to upgrade provider %s: %s.\n", emojiStatus[ui.StatusWarn], p.String(), err.Error())
 				continue
-			} else {
-				ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
-				return err
 			}
+			ui.ColorizedOutput(ui.ColorError, "%s Failed to upgrade provider %s. Error: %s.\n", emojiStatus[ui.StatusError], p.String(), err.Error())
+			return err
 		}
 
 		ui.ColorizedOutput(ui.ColorSuccess, "%s Upgraded provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)

@@ -4,6 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+
+	"github.com/hashicorp/hcl/v2/hclparse"
+
 	"github.com/stretchr/testify/assert"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -74,4 +78,52 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			}
 		})
 	}
+}
+
+const expectedProviderConfig = `
+provider "test" {
+
+  configuration {
+    account "1" {
+      regions   = ["asdas"]
+      resources = ["ab", "c"]
+    }
+
+    regions = ["adsa"]
+  }
+  // list of resources to fetch
+  resources = [
+    "error_resource",
+    "slow_resource",
+    "very_slow_resource"
+  ]
+}`
+
+func Test_GetProviderConfig(t *testing.T) {
+	cancelServe := setupTestPlugin(t)
+	defer cancelServe()
+
+	provider := registry.Provider{
+		Name:    "test",
+		Source:  "cloudquery",
+		Version: "v0.0.11",
+	}
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
+	assert.Nil(t, err)
+	_, diags := Download(context.TODO(), pm, &DownloadOptions{
+		Providers: []registry.Provider{provider},
+		NoVerify:  false,
+	})
+	assert.False(t, diags.HasErrors())
+	defer pm.Shutdown()
+
+	ctx := context.Background()
+	pConfig, diags := GetProviderConfiguration(ctx, pm, &GetProviderConfigOptions{provider})
+	if diags.HasErrors() {
+		t.FailNow()
+	}
+	assert.NotNil(t, pConfig)
+	assert.Equal(t, string(pConfig.Config), expectedProviderConfig)
+	_, hdiags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
+	assert.Nil(t, hdiags)
 }

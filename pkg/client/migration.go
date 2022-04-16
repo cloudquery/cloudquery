@@ -96,12 +96,12 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	if opts.Provider.Version == registry.LatestVersion || providerVersion.GreaterThan(currentVersion) {
-		if err := m.UpgradeProvider(opts.Provider.Version); err != nil {
+		if err := m.UpgradeProvider(opts.Provider.Version); err != nil && err != migrate.ErrNoChange {
 			return nil, diag.FromError(err, diag.DATABASE)
 		}
 		state = Upgraded
 	} else if providerVersion.LessThan(currentVersion) {
-		if err := m.DowngradeProvider(opts.Provider.Version); err != nil {
+		if err := m.DowngradeProvider(opts.Provider.Version); err != nil && err != migrate.ErrNoChange {
 			return nil, diag.FromError(err, diag.DATABASE)
 		}
 		state = Downgraded

@@ -78,12 +78,12 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 	// if err := c.DownloadProviders(ctx); err != nil {
 	//	return err
 	// }
-	if err := c.NormalizeResources(ctx, cfg.Providers); err != nil {
-		return err
-	}
-	_, err = c.Fetch(ctx, client.FetchRequest{
-		Providers: cfg.Providers,
-	})
+	// if err := c.NormalizeResources(ctx, cfg.Providers); err != nil {
+	//	return err
+	// }
+	// _, err = client.Fetch(ctx, client.FetchRequest{
+	//	Providers: cfg.Providers,
+	// })
 	if err != nil {
 		return fmt.Errorf("error fetching resources: %w", err)
 	}

@@ -4,19 +4,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
-	"time"
+
+	"github.com/cloudquery/cloudquery/pkg/client/state"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client/database"
 	"github.com/cloudquery/cloudquery/pkg/client/database/timescale"
 	"github.com/cloudquery/cloudquery/pkg/client/history"
-	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -26,11 +24,9 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/getsentry/sentry-go"
-	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
@@ -38,9 +34,6 @@ import (
 	"github.com/spf13/viper"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"golang.org/x/sync/errgroup"
-	gcodes "google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 var (
@@ -55,11 +48,6 @@ type FetchRequest struct {
 	Providers []*config.Provider
 	// Optional: Adds extra fields to the provider, this is used for history mode and testing purposes.
 	ExtraFields map[string]interface{}
-}
-
-// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
-type FetchResponse struct {
-	ProviderFetchSummary map[string]ProviderFetchSummary
 }
 
 type FetchUpdate struct {
@@ -85,6 +73,13 @@ type ProviderFetchSummary struct {
 	TotalResourcesFetched uint64
 	FetchResources        map[string]cqproto.ResourceFetchSummary
 	Status                string
+}
+
+func (p ProviderFetchSummary) String() string {
+	if p.ProviderAlias != "" {
+		return fmt.Sprintf("%s(%s)", p.ProviderName, p.ProviderAlias)
+	}
+	return p.ProviderName
 }
 
 func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
@@ -234,7 +229,7 @@ type Client struct {
 	HistoryCfg *history.Config
 
 	// metaStorage interacts with cloudquery core resources
-	metaStorage     *meta_storage.Client
+	metaStorage     *state.Client
 	db              *sdkdb.DB
 	dialectExecutor database.DialectExecutor
 }
@@ -279,34 +274,6 @@ type ProviderUpdateSummary struct {
 	LatestVersion string
 }
 
-// DownloadProviders downloads all provider binaries
-func (c *Client) DownloadProviders(ctx context.Context) (retErr error) {
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "DownloadProviders")
-	defer spanEnder(retErr)
-
-	c.Logger.Info("Downloading required providers")
-	pp := make([]registry.Provider, len(c.Providers))
-	for i, rp := range c.Providers {
-		src, name, err := ParseProviderSource(rp)
-		if err != nil {
-			return err
-		}
-		pp[i] = registry.Provider{
-			Name:    name,
-			Version: rp.Version,
-			Source:  src,
-		}
-	}
-	_, diags := Download(ctx, c.Manager, &DownloadOptions{
-		Providers: pp,
-		NoVerify:  c.NoVerify,
-	})
-	if diags.HasErrors() {
-		return diags
-	}
-	return nil
-}
-
 // NormalizeResources walks over all given providers and in place normalizes their resources list:
 //
 // * wildcard expansion
@@ -328,243 +295,6 @@ func (c *Client) normalizeProvider(ctx context.Context, p *config.Provider) erro
 	}
 	p.Resources, err = normalizeResources(p.Resources, s.ResourceTables)
 	return err
-}
-
-func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchResponse, retErr error) {
-	if !c.SkipBuildTables {
-		for _, p := range request.Providers {
-			rp := c.Providers.Get(p.Name)
-			if rp == nil {
-				return nil, fmt.Errorf("failed to find provider in config %s", rp.Name)
-			}
-			src, _, err := ParseProviderSource(rp)
-			if err != nil {
-				return nil, fmt.Errorf("failed to find provider in config %s", rp.Name)
-			}
-			if _, diags := Sync(ctx, database.NewStorage(c.DSN, c.dialectExecutor), c.Manager, &SyncOptions{
-				Provider: registry.Provider{
-					Name:    rp.Name,
-					Version: rp.Version,
-					Source:  src,
-				},
-				DownloadLatest: false,
-			}); diags.HasErrors() {
-				return nil, err
-			}
-		}
-	}
-
-	ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "Fetch")
-	defer spanEnder(retErr)
-
-	reportNumProviders(ctx, request.Providers)
-
-	c.Logger.Info("received fetch request", "extra_fields", request.ExtraFields, "history_enabled", c.HistoryCfg != nil)
-
-	var dsnURI string
-	if c.HistoryCfg != nil {
-		var err error
-		dsnURI, err = history.TransformDSN(c.DSN)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		parsed, err := dsn.ParseConnectionString(c.DSN)
-		if err != nil {
-			return nil, err
-		}
-		dsnURI = parsed.String()
-	}
-
-	fetchSummaries := make(chan ProviderFetchSummary, len(request.Providers))
-	// Ignoring gctx since we don't want to stop other running providers if one provider fails with an error
-	// future refactor should probably use a something else rather than error group.
-	errGroup, _ := errgroup.WithContext(ctx)
-	fetchId, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	for _, providerConfig := range request.Providers {
-		if len(providerConfig.Resources) == 0 {
-			c.Logger.Warn("skipping provider which configured with 0 resources to fetch", "provider", providerConfig.Name, "alias", providerConfig.Alias)
-			continue
-		}
-
-		c.Logger.Debug("creating provider plugin", "provider", providerConfig.Name)
-		providerPlugin, err := c.CreatePlugin(providerConfig.Name, providerConfig.Alias, providerConfig.Env)
-		if err != nil {
-			c.Logger.Error("failed to create provider plugin", "provider", providerConfig.Name, "error", err)
-			return nil, err
-		}
-
-		providerConfig := providerConfig
-		createdAt := time.Now().UTC()
-		fetchSummary := meta_storage.FetchSummary{
-			FetchId:         fetchId,
-			ProviderName:    providerConfig.Name,
-			ProviderAlias:   providerConfig.Alias,
-			ProviderVersion: providerPlugin.Version(),
-			CreatedAt:       &createdAt,
-			CoreVersion:     Version,
-		}
-
-		saveFetchSummary := func() {
-			if err := c.metaStorage.SaveFetchSummary(ctx, &fetchSummary); err != nil {
-				c.Logger.Error("failed to save fetch summary", "err", err)
-			}
-		}
-
-		// TODO: move this into an outer function
-		errGroup.Go(func() error {
-			defer saveFetchSummary()
-			pLog := c.Logger.With("provider", providerConfig.Name, "alias", providerConfig.Alias, "version", providerPlugin.Version())
-			pLog.Info("requesting provider to configure")
-
-			metadata := map[string]interface{}{
-				"cq_fetch_id": fetchId.String(),
-			}
-
-			if c.HistoryCfg != nil {
-				fd := c.HistoryCfg.FetchDate()
-				pLog.Info("history enabled adding fetch date", "fetch_date", fd.Format(time.RFC3339))
-				metadata["cq_fetch_date"] = fd
-
-				// TODO Remove(Compatibility): Code below is for providers using the old SDK version, where metadata isn't available in FetchRequest
-				// Removing this without updating provider will set cq_fetch_date to the time of execution start, which HistoryCfg.TimeTruncation doesn't apply
-				if request.ExtraFields == nil {
-					request.ExtraFields = make(map[string]interface{})
-				}
-				request.ExtraFields["cq_fetch_date"] = fd
-			}
-			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
-				CloudQueryVersion: Version,
-				Connection: cqproto.ConnectionDetails{
-					DSN: dsnURI,
-				},
-				Config:      providerConfig.Configuration,
-				ExtraFields: request.ExtraFields,
-			})
-			if err != nil {
-				pLog.Error("failed to configure provider", "error", err)
-				return err
-			}
-			pLog.Info("provider configured successfully")
-
-			pLog.Info("requesting provider fetch")
-			fetchStart := time.Now()
-			fetchSummary.Start = &fetchStart
-			stream, err := providerPlugin.Provider().FetchResources(ctx,
-				&cqproto.FetchResourcesRequest{
-					Resources:              providerConfig.Resources,
-					PartialFetchingEnabled: true,
-					ParallelFetchingLimit:  providerConfig.MaxParallelResourceFetchLimit,
-					MaxGoroutines:          providerConfig.MaxGoroutines,
-					Timeout:                time.Duration(providerConfig.ResourceTimeout) * time.Second,
-					Metadata:               metadata,
-				})
-			if err != nil {
-				return err
-			}
-			pLog.Info("provider started fetching resources")
-			var (
-				fetchErrors         = make([]error, 0)
-				partialFetchResults []*cqproto.FailedResourceFetch
-				fetchedResources           = make(map[string]cqproto.ResourceFetchSummary, len(providerConfig.Resources))
-				totalResources      uint64 = 0
-				totalErrors         uint64 = 0
-			)
-			for {
-				resp, err := stream.Recv()
-
-				if err != nil {
-					st, ok := status.FromError(err)
-
-					if (ok && st.Code() == gcodes.Canceled) || err == io.EOF {
-						message := "provider finished fetch"
-						fetchStatus := "Finished"
-						if ok && st.Code() == gcodes.Canceled {
-							message = "provider fetch canceled"
-							fetchStatus = "Canceled"
-						}
-
-						pLog.Info(message, "execution", time.Since(fetchStart).String())
-						for _, fetchError := range partialFetchResults {
-							pLog.Warn("received partial fetch error", parsePartialFetchKV(fetchError)...)
-						}
-						fetchSummaries <- ProviderFetchSummary{
-							ProviderName:          providerConfig.Name,
-							ProviderAlias:         providerConfig.Alias,
-							Version:               providerPlugin.Version(),
-							TotalResourcesFetched: totalResources,
-							PartialFetchErrors:    partialFetchResults,
-							FetchErrors:           fetchErrors,
-							FetchResources:        fetchedResources,
-							Status:                fetchStatus,
-						}
-						t := time.Now().UTC()
-						fetchSummary.Finish = &t
-						fetchSummary.IsSuccess = true
-						fetchSummary.TotalErrorsCount = totalErrors
-						fetchSummary.TotalResourceCount = totalResources
-						return nil
-					}
-					pLog.Error("received provider fetch error", "error", err)
-					return err
-				}
-				update := FetchUpdate{
-					Provider:            providerPlugin.Name(),
-					Version:             providerPlugin.Version(),
-					FinishedResources:   resp.FinishedResources,
-					ResourceCount:       resp.ResourceCount,
-					Error:               resp.Error,
-					PartialFetchResults: partialFetchResults,
-				}
-
-				if len(resp.PartialFetchFailedResources) != 0 {
-					partialFetchResults = append(partialFetchResults, resp.PartialFetchFailedResources...)
-				}
-
-				totalResources += resp.ResourceCount
-				totalErrors += uint64(len(resp.PartialFetchFailedResources))
-				fetchedResources[resp.ResourceName] = resp.Summary
-
-				if resp.Error != "" {
-					fetchErrors = append(fetchErrors, fmt.Errorf("fetch error: %s", resp.Error))
-					pLog.Error("received provider fetch update error", "error", resp.Error)
-				}
-				pLog.Debug("received fetch update",
-					"resource", resp.ResourceName, "finishedCount", resp.ResourceCount, "finished", update.AllDone(), "finishCount", update.DoneCount())
-				if request.UpdateCallback != nil {
-					request.UpdateCallback(update)
-				}
-
-				fetchSummary.Resources = append(fetchSummary.Resources, meta_storage.ResourceFetchSummary{
-					ResourceName:      resp.ResourceName,
-					FinishedResources: resp.FinishedResources,
-					Status:            resp.Summary.Status.String(),
-					Error:             resp.Error,
-					ResourceCount:     resp.ResourceCount,
-				})
-			}
-		})
-	}
-
-	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(request.Providers))}
-	// TODO: kill all providers on end, add defer on top loop
-	if err := errGroup.Wait(); err != nil {
-		close(fetchSummaries)
-		return nil, err
-	}
-	close(fetchSummaries)
-
-	for ps := range fetchSummaries {
-		response.ProviderFetchSummary[fmt.Sprintf("%s(%s)", ps.ProviderName, ps.ProviderAlias)] = ps
-	}
-
-	reportFetchSummaryErrors(trace.SpanFromContext(ctx), response.ProviderFetchSummary)
-
-	return response, nil
 }
 
 func (c *Client) GetProviderSchema(ctx context.Context, providerName string) (*ProviderSchema, error) {
@@ -688,14 +418,6 @@ func (c *Client) CreatePlugin(providerName, alias string, env []string) (plugin.
 		Alias: alias,
 		Env:   env,
 	})
-}
-
-func parsePartialFetchKV(r *cqproto.FailedResourceFetch) []interface{} {
-	kv := []interface{}{"table", r.TableName, "err", r.Error}
-	if r.RootTableName != "" {
-		kv = append(kv, "root_table", r.RootTableName, "root_table_pks", r.RootPrimaryKeyValues)
-	}
-	return kv
 }
 
 // normalizeResources returns a canonical list of resources given a list of requested and all known resources.
@@ -848,40 +570,13 @@ func (c *Client) initDatabase(ctx context.Context) error {
 		c.Logger.Warn("database validation warning")
 	}
 
-	c.metaStorage = meta_storage.NewClient(c.db, c.Logger)
+	c.metaStorage = state.NewClient(c.db, c.Logger)
 	// migrate cloudquery core tables to latest version
 	if err := c.metaStorage.MigrateCore(ctx, c.dialectExecutor); err != nil {
 		return fmt.Errorf("failed to migrate cloudquery_core tables: %w", err)
 	}
 
 	return nil
-}
-
-// reportNumProviders counts multiple (aliased) providers and sets tracing and sentry specific attributes
-func reportNumProviders(ctx context.Context, provs []*config.Provider) {
-	numProviders := make(map[string]int, len(provs))
-	for _, p := range provs {
-		numProviders[p.Name]++
-	}
-	var multiProviders []string
-	for k, v := range numProviders {
-		if v > 1 {
-			multiProviders = append(multiProviders, k+":"+strconv.Itoa(v))
-		}
-	}
-	if len(multiProviders) == 0 {
-		return
-	}
-
-	sort.Strings(multiProviders)
-	trace.SpanFromContext(ctx).SetAttributes(
-		attribute.StringSlice("multi_providers", multiProviders),
-	)
-	sentry.ConfigureScope(func(scope *sentry.Scope) {
-		scope.SetTags(map[string]string{
-			"multi_providers": strings.Join(multiProviders, ","),
-		})
-	})
 }
 
 func ParseProviderSource(requestedProvider *config.RequiredProvider) (string, string, error) {

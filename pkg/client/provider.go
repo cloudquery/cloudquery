@@ -12,6 +12,24 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+type GetProviderConfigOptions struct {
+	Provider registry.Provider
+}
+
+func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, diag.Diagnostics) {
+	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{Provider: opts.Provider})
+	if err != nil {
+		log.Error().Err(err).Str("provider", opts.Provider.Name).Str("version", opts.Provider.Version).Msg("failed to create provider plugin")
+		return nil, diag.FromError(err, diag.INTERNAL)
+	}
+	defer pm.ClosePlugin(providerPlugin)
+	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
+	if err != nil {
+		return result, diag.FromError(err, diag.INTERNAL)
+	}
+	return result, nil
+}
+
 type TestOptions struct {
 	Connection   cqproto.ConnectionDetails
 	Config       []byte
