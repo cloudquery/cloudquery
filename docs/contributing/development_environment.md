@@ -32,10 +32,10 @@ See [docs](https://docs.cloudquery.io/docs/developers/debugging) for more detail
 
 ### Testing
 
-The provider has two types of test:
+The provider has two types of tests:
 
-1. *Unit Tests* - Those tests can run locally without any credentials and use mocking to return data from AWS APIs.
-1. *Integration Tests* - Those tests run against real AWS APIs and uses test environment defined with `terraform` under `terraform/service_name/`
+1. *Unit Tests* - run locally without any credentials and use mocking to return data from AWS APIs.
+1. *Integration Tests* - run against real AWS APIs and uses test environment defined with `terraform` under `terraform/service_name/`
 
 #### Unit Tests
 
