@@ -46,6 +46,7 @@ import (
 type Client struct {
 	updater       ui.Progress
 	cfg           *config.Config
+	Providers     []registry.Provider
 	Registry      registry.Registry
 	PluginManager *plugin.Manager
 	Storage       database.Storage
@@ -102,8 +103,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 		}
 		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
 	}
+	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
+	for i, rp := range cfg.CloudQuery.Providers {
+		src, name, err := core.ParseProviderSource(rp)
+		if err != nil {
+			return nil, err
+		}
+		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
+	}
 
-	cClient := &Client{progressUpdater, cfg, hub, pm, storage}
+	cClient := &Client{progressUpdater, cfg, pp, hub, pm, storage}
 	cClient.setTelemetryAttributes(trace.SpanFromContext(ctx))
 	cClient.checkForUpdate(ctx)
 	return cClient, err
@@ -115,19 +124,7 @@ func (c Client) Close() {
 
 func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
-	pp := make([]registry.Provider, len(c.cfg.CloudQuery.Providers))
-	for i, rp := range c.cfg.CloudQuery.Providers {
-		src, name, err := core.ParseProviderSource(rp)
-		if err != nil {
-			return err
-		}
-		pp[i] = registry.Provider{
-			Name:    name,
-			Version: rp.Version,
-			Source:  src,
-		}
-	}
-	_, diags := core.Download(ctx, c.PluginManager, &core.DownloadOptions{Providers: pp, NoVerify: viper.GetBool("no-verify")})
+	_, diags := core.Download(ctx, c.PluginManager, &core.DownloadOptions{Providers: c.Providers, NoVerify: viper.GetBool("no-verify")})
 	if diags.HasErrors() {
 		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ failed to initialize provider: %s.\n\n", diags.Error())
@@ -137,7 +134,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 		c.updater.Wait()
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
-	updates, diags := core.CheckAvailableUpdates(ctx, c.Registry, &core.CheckUpdatesOptions{Providers: pp})
+	updates, diags := core.CheckAvailableUpdates(ctx, c.Registry, &core.CheckUpdatesOptions{Providers: c.Providers})
 	if diags.HasErrors() {
 		printDiagnostics("Diagnostics", "", diags, true, false)
 	}

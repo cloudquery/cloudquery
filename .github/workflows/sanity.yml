@@ -1,5 +1,5 @@
 # DO NOT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: test
+name: sanity
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
     branches: [ main, dev]
 
 jobs:
-  unitests:
+  checks:
     strategy:
       matrix:
         dbversion: ['postgres:latest']
@@ -72,6 +72,30 @@ jobs:
         env:
           CQ_NO_TELEMETRY: 1
 
-      - name: Test
-        run: go test -v ./...
+      - name: Sanity Policy Describe
+        run: go run ./main.go policy describe k8s//nsa_cisa_v1/pod_security
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sanity Sync (upgrade)
+        run: go run ./main.go provider upgrade test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sanity Purge
+        run: go run ./main.go provider purge test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sanity Sync (downgrade)
+        run: go run ./main.go provider downgrade test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sanity Drop
+        run: go run ./main.go provider drop test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+
 

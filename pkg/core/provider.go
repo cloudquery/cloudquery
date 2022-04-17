@@ -63,9 +63,13 @@ type CheckUpdatesOptions struct {
 	Providers []registry.Provider
 }
 
+// AvailableUpdate notes a pending update available for provider from current version
 type AvailableUpdate struct {
-	Name             string
-	CurrentVersion   string
+	// Name of provider that has an update available
+	Name string
+	// CurrentVersion is the version the provider is currently at
+	CurrentVersion string
+	// AvailableVersion is the version available for downloading
 	AvailableVersion string
 }
 
@@ -83,7 +87,7 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 		if p.Version == registry.LatestVersion {
 			pb, err := reg.Get(p.Name, p.Version)
 			// This can happen, when we check for updates, but we don't have any providers downloaded, in this case
-			// the latest provider will should be downloaded via the Download command.
+			// the latest provider should be downloaded via the Download command.
 			if err != nil {
 				continue
 			}
@@ -95,7 +99,10 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 			log.Error().Err(err).Str("provider", p.Name).Str("version", version).Msg("failed to check provider update")
 			diags = diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
-		if updateVersion == "" {
+		// if we didn't receive an updateVersion or the updateVersion == the version we have installed on disk
+		// we will skip passing an available update
+		if updateVersion == "" || updateVersion == version {
+			log.Debug().Str("provider", p.Name).Str("version", version).Str("new_version", updateVersion).Msg("no update found for provider")
 			continue
 		}
 		log.Info().Str("provider", p.Name).Str("version", p.Version).Str("new_version", updateVersion).Msg("update available for provider")

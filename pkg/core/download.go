@@ -18,7 +18,9 @@ type DownloadOptions struct {
 	NoVerify bool
 }
 
+// DownloadResult output from Download command
 type DownloadResult struct {
+	// Downloaded is a list of downloaded providers
 	Downloaded []registry.ProviderBinary
 }
 
@@ -30,5 +32,6 @@ func Download(ctx context.Context, manager *plugin.Manager, opts *DownloadOption
 		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR), diag.WithSummary("failed to download providers"))}
 	}
 	log.Info().Interface("providers", opts.Providers).Dur("duration", time.Since(startTime)).Msg("providers download successfully")
+	// TODO: return registry.ProviderBinary
 	return nil, nil
 }

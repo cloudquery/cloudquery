@@ -63,6 +63,13 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			}},
 			ExpectedAvailableUpdates: nil,
 		},
+		{
+			Name: "check-up-to-date",
+			Options: &CheckUpdatesOptions{Providers: []registry.Provider{
+				{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization},
+			}},
+			ExpectedAvailableUpdates: []AvailableUpdate{},
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {

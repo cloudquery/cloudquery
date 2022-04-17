@@ -104,12 +104,12 @@ func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error)
 	if err != nil {
 		return "", err
 	}
+	if provider.Version == LatestVersion {
+		return latestVersion, nil
+	}
 	v, err := version.NewVersion(latestVersion)
 	if err != nil {
 		return "", fmt.Errorf("bad version received: provider %s, version %s", provider.Name, latestVersion)
-	}
-	if provider.Version == LatestVersion {
-		return latestVersion, nil
 	}
 	currentVersion, err := version.NewVersion(provider.Version)
 	if err != nil {
