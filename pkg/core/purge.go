@@ -9,11 +9,11 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/rs/zerolog/log"

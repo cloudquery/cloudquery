@@ -65,8 +65,8 @@ func Test_Fetch(t *testing.T) {
 				},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test(test_alias)": {
-				ProviderName:          "test",
-				ProviderAlias:         "test_alias",
+				Name:                  "test",
+				Alias:                 "test_alias",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
 				Status:                "Finished",
@@ -93,8 +93,8 @@ func Test_Fetch(t *testing.T) {
 			},
 			ExpectedDiags: nil,
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
-				ProviderName:          "test",
-				ProviderAlias:         "",
+				Name:                  "test",
+				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
 				Status:                "Finished",
@@ -129,8 +129,8 @@ func Test_Fetch(t *testing.T) {
 					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "rpc error: code = DeadlineExceeded desc = context deadline exceeded", Detail: ""}},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
-				ProviderName:          "test",
-				ProviderAlias:         "",
+				Name:                  "test",
+				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
 				Status:                "Failed",
@@ -154,8 +154,8 @@ func Test_Fetch(t *testing.T) {
 				},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
-				ProviderName:          "test",
-				ProviderAlias:         "",
+				Name:                  "test",
+				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
 				Status:                "Finished",
@@ -213,7 +213,7 @@ func Test_Fetch(t *testing.T) {
 				for k, p := range tc.ExpectedResponse.ProviderFetchSummary {
 					fetchSummary, ok := resp.ProviderFetchSummary[k]
 					require.True(t, ok)
-					assert.Equal(t, p.ProviderName, fetchSummary.ProviderName)
+					assert.Equal(t, p.Name, fetchSummary.Name)
 					assert.Equal(t, p.Version, fetchSummary.Version)
 					assert.Equal(t, p.Status, fetchSummary.Status)
 					assert.Equal(t, p.TotalResourcesFetched, fetchSummary.TotalResourcesFetched)

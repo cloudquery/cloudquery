@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
@@ -77,6 +79,8 @@ func TestDownloadExisting(t *testing.T) {
 	pm.ClosePlugin(p)
 }
 
+// TODO: latest + unverified provider won't work on download
+
 func TestDownloadUnverified(t *testing.T) {
 	tempDir := t.TempDir()
 	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
@@ -100,11 +104,30 @@ func TestDownloadUnverified(t *testing.T) {
 		Providers: []registry.Provider{
 			{
 				Name:    "unverified",
-				Version: "v0.0.11",
+				Version: "v0.0.3",
 				Source:  "cloudquery",
 			},
 		},
 		NoVerify: false,
 	})
 	assert.NotNil(t, diags)
+	assert.Equal(t, []diag.FlatDiag{{
+		Err:      "provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io",
+		Resource: "",
+		Type:     6,
+		Severity: 2,
+		Summary:  "failed to download providers: provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io"}},
+		diag.FlattenDiags(diags, true))
+
+	_, diags = Download(context.Background(), pm, &DownloadOptions{
+		Providers: []registry.Provider{
+			{
+				Name:    "unverified",
+				Version: "v0.0.3",
+				Source:  "cloudquery",
+			},
+		},
+		NoVerify: true,
+	})
+	assert.Nil(t, diags)
 }

@@ -15,27 +15,8 @@ func printFetchResponse(summary *core.FetchResponse, redactDiags, verbose bool) 
 	}
 	for _, pfs := range summary.ProviderFetchSummary {
 		if len(pfs.Diagnostics()) > 0 {
-			printDiagnostics("Fetch", pfs.ProviderName, pfs.Diagnostics().Squash(), redactDiags, verbose)
+			printDiagnostics("Fetch", pfs.Name, pfs.Diagnostics().Squash(), redactDiags, verbose)
 			continue
-		}
-		if len(pfs.PartialFetchErrors) == 0 {
-			continue
-		}
-		ui.ColorizedOutput(ui.ColorHeader, "Partial Fetch Errors for Provider %s:\n\n", pfs.ProviderName)
-		for _, r := range pfs.PartialFetchErrors {
-			if r.RootTableName != "" {
-				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Parent-Resource: %-64s Parent-Primary-Keys: %v, Table: %s, Error: %s\n",
-					r.RootTableName,
-					r.RootPrimaryKeyValues,
-					r.TableName,
-					r.Error)
-			} else {
-				ui.ColorizedOutput(ui.ColorErrorBold,
-					"Table: %-64s Error: %s\n",
-					r.TableName,
-					r.Error)
-			}
 		}
 		ui.ColorizedOutput(ui.ColorWarning, "\n")
 	}

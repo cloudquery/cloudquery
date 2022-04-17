@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -34,6 +35,74 @@ import (
 	"github.com/google/uuid"
 	"go.opentelemetry.io/otel/trace"
 )
+
+type ResourceFetchSummary struct {
+	cqproto.ResourceFetchSummary
+	Duration time.Duration
+}
+
+// ProviderFetchSummary represents a request for the FetchFinishCallback
+type ProviderFetchSummary struct {
+	Name                  string
+	Alias                 string
+	Version               string
+	TotalResourcesFetched uint64
+	FetchResources        map[string]ResourceFetchSummary
+	Status                string
+	Duration              time.Duration
+}
+
+func (p ProviderFetchSummary) String() string {
+	if p.Alias != "" {
+		return fmt.Sprintf("%s(%s)", p.Name, p.Alias)
+	}
+	return p.Name
+}
+
+func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
+	var allDiags diag.Diagnostics
+	for _, s := range p.FetchResources {
+		allDiags = append(allDiags, s.Diagnostics...)
+	}
+	return allDiags
+}
+
+func (p ProviderFetchSummary) Metrics() map[string]int64 {
+	type diagCount map[diag.DiagnosticType]int64
+	sevCounts := make(map[diag.Severity]diagCount)
+
+	for _, d := range p.Diagnostics() {
+		if _, ok := sevCounts[d.Severity()]; !ok {
+			tc := make(diagCount)
+			tc[d.Type()]++
+			sevCounts[d.Severity()] = tc
+		} else {
+			sevCounts[d.Severity()][d.Type()]++
+		}
+	}
+	ret := make(map[string]int64, len(sevCounts)+1)
+	for severity, typeCount := range sevCounts {
+		var sevName string
+		switch severity {
+		case diag.IGNORE:
+			sevName = "ignore"
+		case diag.WARNING:
+			sevName = "warning"
+		case diag.ERROR:
+			sevName = "error"
+		default:
+			sevName = "unknown"
+		}
+		prefix := "fetch.diag." + sevName + "."
+		var total int64
+		for typ, count := range typeCount {
+			ret[prefix+strings.ToLower(typ.String())+"."+p.Name] = count
+			total += count
+		}
+		ret[prefix+"total."+p.Name] = total
+	}
+	return ret
+}
 
 type FetchUpdateCallback func(update FetchUpdate)
 
@@ -69,6 +138,22 @@ func (f FetchUpdate) DoneCount() int {
 	return count
 }
 
+// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
+type FetchResponse struct {
+	ProviderFetchSummary map[string]ProviderFetchSummary
+	TotalFetched         uint64
+	Duration             time.Duration
+}
+
+func (fr FetchResponse) HasErrors() bool {
+	for _, p := range fr.ProviderFetchSummary {
+		if p.Diagnostics().HasErrors() {
+			return true
+		}
+	}
+	return false
+}
+
 type ProviderInfo struct {
 	Provider registry.Provider
 	Config   *config.Provider
@@ -82,38 +167,8 @@ type FetchOptions struct {
 	ProvidersInfo []ProviderInfo
 	// Optional: Adds extra fields to the provider, this is used for history mode and testing purposes.
 	ExtraFields map[string]interface{}
-
+	// Optional: whether fetch is executed in history mode or not
 	History *history.Config
-}
-
-// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
-type FetchResponse struct {
-	ProviderFetchSummary map[string]ProviderFetchSummary
-}
-
-func (fr FetchResponse) HasErrors() bool {
-	for _, p := range fr.ProviderFetchSummary {
-		if p.HasErrors() {
-			return true
-		}
-	}
-	return false
-}
-
-type fetchResult struct {
-	summary ProviderFetchSummary
-	diags   diag.Diagnostics
-}
-
-func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
-	if cfg == nil {
-		parsed, err := dsn.ParseConnectionString(storage.DSN())
-		if err != nil {
-			return "", err
-		}
-		return parsed.String(), nil
-	}
-	return history.TransformDSN(storage.DSN())
 }
 
 func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
@@ -152,6 +207,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 		diags          diag.Diagnostics
 		fetchSummaries = make(chan fetchResult, len(opts.ProvidersInfo))
 		wg             sync.WaitGroup
+		start          = time.Now()
 	)
 
 	dsnURI, err := parseDSN(storage, opts.History)
@@ -174,33 +230,21 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 				return
 			}
 			// TODO: if context deadline exceeds in fetch, do we still want to run the save?
-			if err := stateClient.SaveFetchSummary(ctx, &state.FetchSummary{
-				FetchId:            fetchId,
-				CreatedAt:          time.Now().UTC(),
-				Start:              start,
-				Finish:             time.Now().UTC(),
-				IsSuccess:          diags.HasErrors(),
-				TotalResourceCount: s.TotalResourcesFetched,
-				TotalErrorsCount:   diags.Errors(),
-				ProviderName:       info.Config.Name,
-				ProviderAlias:      info.Config.Alias,
-				ProviderVersion:    info.Provider.Version,
-				CoreVersion:        Version,
-				Resources:          parseFetchedResources(s.FetchResources),
-			}); err != nil {
+			if err := stateClient.SaveFetchSummary(ctx, createFetchSummary(fetchId, start, s)); err != nil {
 				d = d.Add(diag.FromError(err, diag.INTERNAL))
 			}
 			fetchSummaries <- fetchResult{s, d}
 		}(providerInfo)
 	}
 	wg.Wait()
-	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(opts.ProvidersInfo))}
+	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(opts.ProvidersInfo)), Duration: time.Since(start)}
 	close(fetchSummaries)
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.summary.String()] = ps.summary
 		if ps.diags.HasDiags() {
 			diags = diags.Add(ps.diags)
 		}
+		response.TotalFetched += ps.summary.TotalResourcesFetched
 	}
 	reportFetchSummaryErrors(trace.SpanFromContext(ctx), response.ProviderFetchSummary)
 
@@ -245,15 +289,20 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 	var (
 		start   = time.Now()
 		summary = ProviderFetchSummary{
-			ProviderName:          info.Provider.Name,
-			ProviderAlias:         info.Config.Alias,
+			Name:                  info.Provider.Name,
+			Alias:                 info.Config.Alias,
 			Version:               info.Provider.Version,
-			FetchResources:        make(map[string]cqproto.ResourceFetchSummary),
+			FetchResources:        make(map[string]ResourceFetchSummary),
 			Status:                "Finished",
 			TotalResourcesFetched: 0,
 		}
 		diags diag.Diagnostics
 	)
+	// Set fetch duration one function end
+	defer func() {
+		summary.Duration = time.Since(start)
+	}()
+
 	resources, err := normalizeResources(ctx, plugin, info.Config.Resources)
 	if err != nil {
 		summary.Status = "Failed"
@@ -291,7 +340,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
 			}
 			summary.TotalResourcesFetched += resp.ResourceCount
-			summary.FetchResources[resp.ResourceName] = resp.Summary
+			summary.FetchResources[resp.ResourceName] = ResourceFetchSummary{resp.Summary, time.Since(start)}
 			if resp.Error != "" {
 				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
 				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
@@ -317,19 +366,6 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			return summary, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 	}
-}
-
-func parseFetchedResources(resources map[string]cqproto.ResourceFetchSummary) []state.ResourceFetchSummary {
-	rfs := make([]state.ResourceFetchSummary, 0, len(resources))
-	for k, v := range resources {
-		rfs = append(rfs, state.ResourceFetchSummary{
-			ResourceName:  k,
-			Status:        v.Status.String(),
-			Error:         v.Diagnostics.Error(),
-			ResourceCount: v.ResourceCount,
-		})
-	}
-	return rfs
 }
 
 // NormalizeResources walks over all given providers and in place normalizes their resources list:
@@ -375,4 +411,50 @@ func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]s
 	}
 	sort.Strings(result)
 	return result, nil
+}
+
+func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
+	if cfg == nil {
+		parsed, err := dsn.ParseConnectionString(storage.DSN())
+		if err != nil {
+			return "", err
+		}
+		return parsed.String(), nil
+	}
+	return history.TransformDSN(storage.DSN())
+}
+
+type fetchResult struct {
+	summary ProviderFetchSummary
+	diags   diag.Diagnostics
+}
+
+func createFetchSummary(fetchId uuid.UUID, start time.Time, ps ProviderFetchSummary) *state.FetchSummary {
+	return &state.FetchSummary{
+		FetchId:            fetchId,
+		CreatedAt:          time.Now().UTC(),
+		Start:              start,
+		Finish:             time.Now().UTC(),
+		IsSuccess:          ps.Diagnostics().HasErrors(),
+		TotalResourceCount: ps.TotalResourcesFetched,
+		TotalErrorsCount:   ps.Diagnostics().Errors(),
+		ProviderName:       ps.Name,
+		ProviderAlias:      ps.Alias,
+		ProviderVersion:    ps.Version,
+		CoreVersion:        Version,
+		Resources:          parseFetchedResources(ps.FetchResources),
+	}
+}
+
+func parseFetchedResources(resources map[string]ResourceFetchSummary) []state.ResourceFetchSummary {
+	rfs := make([]state.ResourceFetchSummary, 0, len(resources))
+	for k, v := range resources {
+		rfs = append(rfs, state.ResourceFetchSummary{
+			ResourceName:  k,
+			Status:        v.Status.String(),
+			Error:         v.Diagnostics.Error(),
+			ResourceCount: v.ResourceCount,
+		})
+	}
+	return rfs
 }

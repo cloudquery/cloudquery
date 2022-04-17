@@ -5,18 +5,17 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-version"
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 )
 
 type SyncState int
@@ -46,21 +45,12 @@ type SyncResult struct {
 func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *SyncOptions) (*SyncResult, diag.Diagnostics) {
 	if opts.DownloadLatest {
 		if _, diags := Download(ctx, pm, &DownloadOptions{
-			[]registry.Provider{{
-				Name:    opts.Provider.Name,
-				Version: registry.LatestVersion,
-				Source:  opts.Provider.Source,
-			}}, false}); diags.HasErrors() {
+			[]registry.Provider{{Name: opts.Provider.Name, Version: registry.LatestVersion, Source: opts.Provider.Source}}, false}); diags.HasErrors() {
 			return nil, diags
 		}
 	}
-
 	// always use latest available provider available
-	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: registry.Provider{
-		Name:    opts.Provider.Name,
-		Version: registry.LatestVersion,
-		Source:  opts.Provider.Source,
-	}})
+	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: registry.Provider{Name: opts.Provider.Name, Version: registry.LatestVersion, Source: opts.Provider.Source}})
 	if len(diags) > 0 {
 		return nil, diags
 	}

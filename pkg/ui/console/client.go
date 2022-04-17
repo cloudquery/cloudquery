@@ -145,15 +145,14 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 }
 
 func (c Client) Fetch(ctx context.Context, failOnError bool) error {
-
 	if err := c.UpgradeProviders(ctx, c.cfg.Providers.Names()); err != nil {
 		return err
 	}
-
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
-	var fetchProgress ui.Progress
-	var fetchCallback core.FetchUpdateCallback
-
+	var (
+		fetchProgress ui.Progress
+		fetchCallback core.FetchUpdateCallback
+	)
 	if ui.DoProgress() {
 		fetchProgress, fetchCallback = buildFetchProgress(ctx, c.cfg.Providers)
 	}
@@ -192,9 +191,9 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		if summary.Status == "Canceled" {
 			s = emojiStatus[ui.StatusError] + " (canceled)"
 		}
-		key := summary.ProviderName
-		if summary.ProviderName != summary.ProviderAlias {
-			key = fmt.Sprintf("%s(%s)", summary.ProviderName, summary.ProviderAlias)
+		key := summary.Name
+		if summary.Name != summary.Alias {
+			key = fmt.Sprintf("%s(%s)", summary.Name, summary.Alias)
 		}
 		diags := summary.Diagnostics().Squash()
 		ui.ColorizedOutput(ui.ColorHeader, "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n",
@@ -250,21 +249,21 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
-	var policyRunProgress ui.Progress
-	var policyRunCallback policy.UpdateCallback
-
+	var (
+		policyRunProgress ui.Progress
+		policyRunCallback policy.UpdateCallback
+	)
 	// if we are running in a terminal, build the progress bar
 	if ui.DoProgress() {
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	req := &policy.RunRequest{
+	results, err := policy.Run(ctx, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
-	}
-	results, err := policy.Run(ctx, c.Storage, req)
+	})
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
@@ -502,11 +501,9 @@ func (c Client) BuildProviderTables(ctx context.Context, providerName string) er
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
-
 	if err := c.buildProviderTables(ctx, providerName); err != nil {
 		return err
 	}
-
 	return nil
 }
 

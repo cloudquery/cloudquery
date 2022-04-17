@@ -9,13 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/core/state"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/rs/zerolog/log"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )

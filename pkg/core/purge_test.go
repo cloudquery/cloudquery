@@ -9,18 +9,17 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-test/resources"
-
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPurgeProviderData(t *testing.T) {
-
 	testCases := []struct {
 		Name    string
 		Options *PurgeProviderDataOptions

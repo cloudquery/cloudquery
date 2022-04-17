@@ -118,5 +118,6 @@ func init() {
 			"For example 24h will remove all resources that were not update in last 24 hours. Duration is a string with optional unit suffix such as \"2h45m\" or \"7d\"")
 	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
 	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
+	providerCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(providerCmd)
 }
