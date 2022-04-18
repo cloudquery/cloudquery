@@ -110,7 +110,7 @@ var (
 		Use:   "purge [provider]",
 		Short: providerRemoveStaleHelpMsg,
 		Long:  providerRemoveStaleHelpMsg,
-		Args:  cobra.MaximumNArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			return c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
 		}),
