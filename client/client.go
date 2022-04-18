@@ -71,6 +71,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
+	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/smithy-go/logging"
 	"github.com/hashicorp/go-hclog"
 
@@ -155,6 +156,7 @@ type Services struct {
 	WafV2                  WafV2Client
 	WafRegional            WafRegionalClient
 	Workspaces             WorkspacesClient
+	Xray                   XrayClient
 }
 
 type ServicesAccountRegionMap map[string]map[string]*Services
@@ -547,6 +549,7 @@ func initServices(region string, c aws.Config) Services {
 		WafRegional:            wafregional.NewFromConfig(awsCfg),
 		Workspaces:             workspaces.NewFromConfig(awsCfg),
 		IOT:                    iot.NewFromConfig(awsCfg),
+		Xray:                   xray.NewFromConfig(awsCfg),
 	}
 }
 
