@@ -240,9 +240,22 @@ provider "aws" {
   }
 
   resource "apigatewayv2.apis" {
+    identifiers = [ "arn" ]
+    ignore_attributes = [ "created_date", "api_gateway_managed", "disable_schema_validation" ]
+    sets = [ "cors_configuration_allow_headers", "cors_configuration_allow_methods", "cors_configuration_allow_origins", "cors_configuration_expose_headers" ]
     iac {
       terraform {
         type = "aws_apigatewayv2_api"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "cors_configuration_allow_credentials=cors_configuration.0.allow_credentials",
+          "cors_configuration_allow_headers=cors_configuration.0.allow_headers",
+          "cors_configuration_allow_methods=cors_configuration.0.allow_methods",
+          "cors_configuration_allow_origins=cors_configuration.0.allow_origins",
+          "cors_configuration_allow_credentials=cors_configuration.0.allow_credentials",
+          "cors_configuration_expose_headers=cors_configuration.0.expose_headers",
+          "cors_configuration_max_age=cors_configuration.0.max_age"
+        ]
       }
     }
   }
@@ -356,7 +369,7 @@ provider "aws" {
 
   resource "aws_apigatewayv2_api_stages" {
     identifiers = [ "arn" ]
-    ignore_attributes = [ "api_gateway_managed", "created_date", "last_updated_date" ]
+    ignore_attributes = [ "api_gateway_managed", "created_date", "last_updated_date", "last_deployment_status_message" ]
 
     iac {
       terraform {
@@ -392,6 +405,8 @@ provider "aws" {
   }
 
   resource "apigatewayv2.vpc_links" {
+    ignore_attributes = [ "created_date", "vpc_link_status", "vpc_link_status_message", "vpc_link_version", "arn" ]
+    sets = [ "security_group_ids", "subnet_ids" ]
     iac {
       terraform {
         type = "aws_apigatewayv2_vpc_link"
@@ -436,10 +451,14 @@ provider "aws" {
 
   resource "autoscaling.launch_configurations" {
     identifiers = [ "launch_configuration_name" ]
+    ignore_attributes = [ "created_time" ]
 
     iac {
       terraform {
         type = "aws_launch_configuration"
+        attribute_map = [
+          "launch_configuration_name=name"
+        ]
       }
     }
   }
@@ -714,12 +733,32 @@ provider "aws" {
 
   resource "codebuild.projects" {
     identifiers = [ "arn" ]
-    ignore_attributes = [ "created" ]
+    ignore_attributes = [ "created", "last_modified" ]
 
     iac {
       terraform {
         type = "aws_codebuild_project"
         identifiers = [ "arn" ]
+        attribute_map = [
+          "artifacts_type=artifacts.0.type",
+          "artifacts_encryption_disabled=artifacts.0.encryption_disabled",
+          "artifacts_override_artifact_name=artifacts.0.override_artifact_name",
+          "artifacts_packaging=artifacts.0.packaging",
+          "artifacts_name=artifacts.0.name",
+          "cache_type=cache.0.type",
+          "environment_compute_type=environment.0.compute_type",
+          "environment_image=environment.0.image",
+          "environment_type=environment.0.type",
+          "environment_privileged_mode=environment.0.privileged_mode",
+          "environment_image_pull_credentials_type=environment.0.image_pull_credentials_type",
+          "logs_config_cloud_watch_logs_status=logs_config.0.cloudwatch_logs.0.status",
+          "logs_config_s3_logs_status=logs_config.0.s3_logs.0.status",
+          "logs_config_s3_logs_encryption_disabled=logs_config.0.s3_logs.0.encryption_disabled",
+          "queued_timeout_in_minutes=queued_timeout",
+          "source_type=source.0.type",
+          "source_insecure_ssl=source.0.insecure_ssl",
+          "timeout_in_minutes=build_timeout"
+        ]
       }
     }
   }
@@ -960,11 +999,16 @@ provider "aws" {
 
   resource "aws_ec2_ebs_volume_attachments" {
     identifiers = [ "instance_id", "volume_id", "device" ]
+    ignore_attributes = [ "attach_time", "state" ]
     iac {
       terraform {
         type = "aws_instance"
         path = "root_block_device"
         identifiers =  [ "root.id", "volume_id", "device_name" ]
+        attribute_map = [
+          "instance_id=root.id",
+          "device=device_name"
+        ]
       }
     }
   }
@@ -1012,6 +1056,15 @@ provider "aws" {
     }
   }
 
+  resource "ec2.hosts" {
+    iac {
+      terraform {
+        type = "aws_ec2_host"
+        identifiers = [ "arn" ]
+      }
+    }
+  }
+
   resource "ec2.images" {
     identifiers = [ "id", "region" ]
     iac {
@@ -1026,11 +1079,32 @@ provider "aws" {
   }
 
   resource "ec2.instances" {
-    ignore_attributes = ["launch_time"]
+    ignore_attributes = [ "launch_time", "ami_launch_index", "architecture", "client_token", "ena_support", "hypervisor",
+      "metadata_options_http_protocol_ipv6", "metadata_options_state", "placement_availability_zone", "root_device_type",
+      "state_code", "state_name", "virtualization_type", "vpc_id" ]
 
     iac {
       terraform {
         type = "aws_instance"
+        attribute_map = [
+          "cap_reservation_preference=capacity_reservation_specification.0.capacity_reservation_preference",
+          "cpu_options_core_count=cpu_core_count",
+          "cpu_options_threads_per_core=cpu_threads_per_core",
+          "enclave_options_enabled=enclave_options.0.enabled",
+          "hibernation_options_configured=hibernation",
+          "image_id=ami",
+          "metadata_options_http_endpoint=metadata_options.0.http_endpoint",
+          "metadata_options_http_protocol_ipv6=metadata_options.0.",
+          "metadata_options_http_put_response_hop_limit=metadata_options.0.http_put_response_hop_limit",
+          "metadata_options_http_tokens=metadata_options.0.http_tokens",
+          "monitoring_state=monitoring",
+          "placement_tenancy=tenancy",
+          "private_dns_name=private_dns",
+          "private_ip_address=private_ip",
+          "public_dns_name=public_dns",
+          "public_ip_address=public_ip",
+          "root_device_name=root_block_device.0.device_name"
+        ]
       }
     }
   }
@@ -1090,10 +1164,15 @@ provider "aws" {
   #        }
 
   resource "ec2.network_interfaces" {
+    ignore_attributes = [ "availability_zone", "requester_id", "requester_managed", "status", "vpc_id" ]
     iac {
       terraform {
         type = "aws_network_interface"
         identifiers = [ "arn" ]
+        attribute_map = [
+          "groups|#.GroupId=security_groups",
+          "private_ip_address=private_ip"
+        ]
       }
     }
   }
@@ -1139,11 +1218,15 @@ provider "aws" {
     iac {
       terraform {
         type = "aws_security_group"
+        attribute_map = [
+          "group_name=name"
+        ]
       }
     }
   }
 
   resource "ec2.subnets" {
+    ignore_attributes = [ "state", "default_for_az", "available_ip_address_count" ]
     filters = [ "c.default_for_az!=true" ]
 
     iac {
@@ -1178,6 +1261,7 @@ provider "aws" {
   }
 
   resource "ec2.vpcs" {
+    ignore_attributes = [ "is_default", "state" ]
     filters = [ "c.is_default!=true" ]
 
     iac {
@@ -1207,10 +1291,18 @@ provider "aws" {
 
   resource "ecs.clusters" {
     identifiers = [ "arn" ]
+    ignore_attributes = [ "active_services_count", "pending_tasks_count", "registered_container_instances_count", "running_tasks_count", "status" ]
 
     iac {
       terraform {
         type = "aws_ecs_cluster"
+        attribute_map = [
+#          "execute_config_logs_cloud_watch_encryption_enabled=configuration.0.execute_command_configuration.0.log_configuration.0|@getbool:cloud_watch_encryption_enabled",
+#          "execute_config_log_s3_encryption_enabled=configuration.0.execute_command_configuration.0.log_configuration.0|@getbool:s3_bucket_encryption_enabled",
+          "default_capacity_provider_strategy|0.Base=default_capacity_provider_strategy.0.base",
+          "default_capacity_provider_strategy|0.CapacityProvider=default_capacity_provider_strategy.0.capacity_provider",
+          "default_capacity_provider_strategy|0.Weight=default_capacity_provider_strategy.0.weight"
+        ]
       }
     }
   }
@@ -1287,17 +1379,33 @@ provider "aws" {
   }
 
   resource "elbv2.load_balancers" {
+    ignore_attributes = [ "created_time", "scheme", "state_code", "state_reason" ]
+    sets = [ "subnets", "security_groups" ]
     iac {
       terraform {
         type = "aws_lb"
+        attribute_map = [
+          "canonical_hosted_zone_id=zone_id",
+          "type=load_balancer_type"
+        ]
       }
     }
   }
 
   resource "elbv2.target_groups" {
+    ignore_attributes = [ "load_balancer_arns" ]
     iac {
       terraform {
         type = "aws_lb_target_group"
+        attribute_map = [
+          "health_check_enabled=health_check.0.enabled",
+          "health_check_interval_seconds=health_check.0.interval",
+          "health_check_path=health_check.0.path",
+          "health_check_timeout_seconds=health_check.0.timeout",
+          "healthy_threshold_count=health_check.0.healthy_threshold",
+          "matcher_http_code=health_check.0.matcher",
+          "unhealthy_threshold_count=health_check.0.unhealthy_threshold"
+        ]
       }
     }
   }
@@ -1377,10 +1485,14 @@ provider "aws" {
 
   resource "iam.policies" {
     identifiers = [ "arn" ]
+    ignore_attributes = [ "attachment_count", "create_date", "permissions_boundary_usage_count", "update_date", "is_attachable", "default_version_id" ]
 
     iac {
       terraform {
         type = "aws_iam_policy"
+        attribute_map = [
+          "id=policy_id"
+        ]
       }
     }
   }
@@ -1641,16 +1753,22 @@ provider "aws" {
 
   resource "kms.keys" {
     identifiers = [ "id" ]
+    ignore_attributes = [ "encryption_algorithms", "manager", "key_state", "origin", "deletion_date", "valid_to" ]
     iac {
       terraform {
         type = "aws_kms_key"
+        attribute_map = [
+          "rotation_enabled=enable_key_rotation",
+          "enabled=is_enabled"
+        ]
       }
     }
   }
 
   resource "lambda.functions" {
     identifiers = [ "arn" ]
-    ignore_attributes =  [ "code_location", "code_repository_type", "last_update_status", "revision_id", "state" ]
+    ignore_attributes =  [ "code_location", "code_repository_type", "last_update_status", "revision_id", "state", "policy_document", "policy_revision_id" ]
+    sets = [ "vpc_config_subnet_ids", "vpc_config_security_group_ids" ]
     iac {
       terraform {
         type = "aws_lambda_function"
@@ -1661,26 +1779,42 @@ provider "aws" {
           "code_sha256=source_code_hash",
           "dead_letter_config_target_arn=dead_letter_config.#.target_arn|@flatten|0",
           "environment_variables=environment.#.variables|0",
-          "tracing_config_mode=tracing_config.#.mode|@flatten|0"
+          "tracing_config_mode=tracing_config.#.mode|@flatten|0",
+          "vpc_config_security_group_ids=vpc_config.0.security_group_ids",
+          "vpc_config_subnet_ids=vpc_config.0.subnet_ids",
+          "vpc_config_vpc_id=vpc_config.0.vpc_id"
         ]
       }
     }
   }
 
   resource "aws_lambda_layer_versions" {
-    identifiers = [ sql("CONCAT(parent.arn, ':', c.version)") ]
+    identifiers = [ "layer_version_arn" ]
 
     iac {
       terraform {
         type = "aws_lambda_layer_version"
+        identifiers = [ "arn" ]
+        attribute_map = [
+          "layer_version_arn=arn"
+        ]
       }
     }
   }
 
   resource "mq.brokers" {
+    ignore_attributes = [ "created", "broker_state" ]
+    sets = [ "instances", "subnet_ids" ]
     iac {
       terraform {
         type = "aws_mq_broker"
+        attribute_map = [
+          "broker_instances=instances", # TODO CamelCase vs snake_case in keys of map
+          "encryption_options_use_aws_owned_key=encryption_options.0.use_aws_owned_key",
+          "logs|@getbool:Audit=logs.0|@getbool:audit",
+          "logs|@getbool:General=logs.0|@getbool:general",
+          "maintenance_window_start_time=maintenance_window_start_time.0" # TODO CamelCase vs snake_case in keys of map
+        ]
       }
     }
   }
@@ -1810,6 +1944,8 @@ provider "aws" {
 
   resource "rds.db_subnet_groups" {
     identifiers = [ "name" ]
+    ignore_attributes = [ "status", "vpc_id" ]
+    sets = [ "subnet_ids" ]
     filters = [
       "NOT EXISTS (SELECT 1 FROM aws_ec2_vpcs WHERE id=c.vpc_id AND is_default)",
     ]
@@ -1864,9 +2000,23 @@ provider "aws" {
   }
 
   resource "redshift.clusters" {
+    ignore_attributes = [ "cluster_create_time", "cluster_availability_status", "availability_zone_relocation_status", "availability_zone_relocation_status",
+      "cluster_namespace_arn", "cluster_snapshot_copy_status_manual_snapshot_retention_period", "cluster_snapshot_copy_status_retention_period",
+      "cluster_status", "data_transfer_progress_data_transferred_in_mega_bytes", "data_transfer_progress_total_data_in_mega_bytes", "maintenance_track_name",
+      "manual_snapshot_retention_period", "next_maintenance_window_start_time", "resize_info_allow_cancel_resize", "restore_status_current_restore_rate_in_mega_bytes_per_second",
+      "restore_status_elapsed_time_in_seconds", "restore_status_estimated_time_to_completion_in_seconds", "restore_status_progress_in_mega_bytes", "restore_status_snapshot_size_in_mega_bytes",
+      "total_storage_capacity_in_mega_bytes", "vpc_id" ]
     iac {
       terraform {
         type = "aws_redshift_cluster"
+        attribute_map = [
+          "db_name=database_name",
+          "endpoint_address=endpoint|@split::|0",
+          "endpoint_port=port",
+          "logging_status|BucketName=logging.0.bucket_name",
+          "logging_status|@getbool:LoggingEnabled=logging.0|@getbool:enable",
+          "logging_status|S3KeyPrefix=logging.0.s3_key_prefix",
+        ]
       }
     }
   }
@@ -1887,12 +2037,16 @@ provider "aws" {
   }
 
   resource "redshift.subnet_groups" {
+    ignore_attributes = [ "subnet_group_status", "vpc_id" ]
     filters = [
       "NOT EXISTS (SELECT 1 FROM aws_ec2_vpcs WHERE id=c.vpc_id AND is_default)",
     ]
     iac {
       terraform {
         type = "aws_redshift_subnet_group"
+        attribute_map = [
+          "cluster_subnet_group_name=name"
+        ]
       }
     }
   }
@@ -2026,10 +2180,21 @@ provider "aws" {
 
   resource "sqs.queues" {
     identifiers = [ "url" ]
-    ignore_attributes = [ "policy", "redrive_policy" ] # string type in TF, json type in CQ
+    ignore_attributes = [
+      "created_timestamp", "last_modified_timestamp",
+      "approximate_number_of_messages", "approximate_number_of_messages_not_visible", "approximate_number_of_messages_delayed",
+      "policy", "redrive_policy" # string type in TF, json type in CQ
+    ]
     iac {
       terraform {
         type = "aws_sqs_queue"
+        attribute_map = [
+          "maximum_message_size=max_message_size",
+          "message_retention_period=message_retention_seconds",
+          "receive_message_wait_time_seconds=receive_wait_time_seconds",
+          "kms_data_key_reuse_period_seconds=kms_data_key_reuse_period_seconds",
+          "visibility_timeout=visibility_timeout_seconds"
+        ]
       }
     }
   }
@@ -2200,6 +2365,16 @@ provider "aws" {
           "running_mode_auto_stop_timeout_in_minutes=workspace_properties.0.running_mode_auto_stop_timeout_in_minutes",
           "user_volume_size_gib=workspace_properties.0.user_volume_size_gib",
         ]
+      }
+    }
+  }
+
+  resource "xray.encryption_config" {
+    identifiers = [ "region" ]
+    ignore_attributes = [ "status" ]
+    iac {
+      terraform {
+        type = "aws_xray_encryption_config"
       }
     }
   }
