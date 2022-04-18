@@ -142,3 +142,78 @@ resource "aws" "ec2" "network_interfaces" {
   }
 
 }
+
+resource "aws" "ec2" "hosts" {
+  path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.Host"
+  ignoreError "IgnoreAccessDenied" {
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+  }
+  deleteFilter "AccountRegionFilter" {
+    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+  }
+  multiplex "AwsAccountRegion" {
+    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    params = ["ec2"]
+  }
+
+
+  options {
+    primary_keys = ["arn"]
+  }
+
+  userDefinedColumn "account_id" {
+    description = "The AWS Account ID of the resource."
+    type        = "string"
+    resolver "resolveAWSAccount" {
+      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+    }
+  }
+  userDefinedColumn "region" {
+    type        = "string"
+    description = "The AWS Region of the resource."
+    resolver "resolveAWSRegion" {
+      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+    }
+  }
+
+  column "host_id" {
+    rename = "id"
+  }
+
+  column "host_properties" {
+    skip_prefix = true
+  }
+
+  column "available_capacity_available_v_cpus" {
+    rename = "available_capacity_available_vcpus"
+  }
+
+  column "total_v_cpus" {
+    rename = "total_vcpus"
+  }
+
+  column "host_reservation_id" {
+    rename = "reservation_id"
+  }
+
+  column "tags" {
+    type              = "json"
+    generate_resolver = false
+    description       = "Any tags assigned to the Dedicated Host."
+  }
+
+  column "available_capacity" {
+    skip_prefix = true
+  }
+
+  column "available_v_cpus" {
+    rename = "available_vcpus"
+  }
+
+  userDefinedColumn "arn" {
+    type        = "string"
+    description = "The Amazon Resource Name (ARN) for the dedicated host."
+    generate_resolver = false
+  }
+
+}
