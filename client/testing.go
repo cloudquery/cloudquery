@@ -16,6 +16,7 @@ type TestOptions struct {
 }
 
 func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, _ TestOptions) {
+	table.IgnoreInTests = false
 	t.Helper()
 	ctrl := gomock.NewController(t)
 
