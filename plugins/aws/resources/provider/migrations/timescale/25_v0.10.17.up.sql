@@ -197,3 +197,19 @@ CREATE TABLE IF NOT EXISTS "aws_qldb_ledger_journal_s3_exports" (
     );
 CREATE INDEX ON aws_qldb_ledger_journal_s3_exports (cq_fetch_date, ledger_cq_id);
 SELECT setup_tsdb_child('aws_qldb_ledger_journal_s3_exports', 'ledger_cq_id', 'aws_qldb_ledgers', 'cq_id');
+
+-- Resource: xray.encryption_config
+CREATE TABLE IF NOT EXISTS "aws_xray_encryption_config" (
+    "cq_id" uuid NOT NULL,
+    "cq_meta" jsonb,
+    "cq_fetch_date" timestamp without time zone NOT NULL,
+    "account_id" text,
+    "region" text,
+    "key_id" text,
+    "status" text,
+    "type" text,
+    CONSTRAINT aws_xray_encryption_config_pk PRIMARY KEY(cq_fetch_date,account_id,region),
+    UNIQUE(cq_fetch_date,cq_id)
+);
+SELECT setup_tsdb_parent('aws_xray_encryption_config');
+
