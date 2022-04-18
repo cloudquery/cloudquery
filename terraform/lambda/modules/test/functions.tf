@@ -45,6 +45,7 @@ module "lambda_function" {
 
 module "s3_bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.0.1"
 
   bucket        = "cq-provider-${var.prefix}-lambda"
   force_destroy = true
