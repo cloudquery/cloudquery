@@ -28,10 +28,10 @@ type DownloadResult struct {
 func Download(ctx context.Context, manager *plugin.Manager, opts *DownloadOptions) (*DownloadResult, diag.Diagnostics) {
 	log.Info().Interface("providers", opts.Providers).Msg("downloading providers")
 	startTime := time.Now()
-	if err := manager.DownloadProviders(ctx, opts.Providers, opts.NoVerify); err != nil {
+	downloaded, err := manager.DownloadProviders(ctx, opts.Providers, opts.NoVerify)
+	if err != nil {
 		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR), diag.WithSummary("failed to download providers"))}
 	}
 	log.Info().Interface("providers", opts.Providers).Dur("duration", time.Since(startTime)).Msg("providers download successfully")
-	// TODO: return registry.ProviderBinary
-	return nil, nil
+	return &DownloadResult{downloaded}, nil
 }

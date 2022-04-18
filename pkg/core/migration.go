@@ -132,7 +132,7 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	}
 	m, err := newMigrator(ctx, storage, s.Migrations, provider)
 	if err != nil {
-		return nil // TODO: return err
+		return diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to create migrator"))
 	}
 	defer func() {
 		if err := m.Close(); err != nil {
@@ -142,7 +142,7 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 
 	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
 	if err := m.DropProvider(ctx, s.ResourceTables); err != nil {
-		return nil // TODO: return err
+		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to drop provider"))
 	}
 	return nil
 }
