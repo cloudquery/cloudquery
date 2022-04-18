@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/pkg/config"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
@@ -130,4 +132,52 @@ func TestDownloadUnverified(t *testing.T) {
 		NoVerify: true,
 	})
 	assert.Nil(t, diags)
+}
+
+func TestDownloadCommunity(t *testing.T) {
+	tempDir := t.TempDir()
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
+	if !assert.Nil(t, err) {
+		t.FailNow()
+	}
+
+	src, name, err := ParseProviderSource(&config.RequiredProvider{
+		Name:    "yandex-cloud/yandex",
+		Source:  nil,
+		Version: "v0.0.8",
+	})
+	assert.Nil(t, err)
+	// Download plugin for the first time
+	_, diags := Download(context.Background(), pm, &DownloadOptions{
+		Providers: []registry.Provider{
+			{
+				Name:    name,
+				Version: "v0.0.8",
+				Source:  src,
+			},
+		},
+		NoVerify: false,
+	})
+	assert.Nil(t, diags)
+
+	source := "yandex-cloud"
+	src, name, err = ParseProviderSource(&config.RequiredProvider{
+		Name:    "yandex",
+		Source:  &source,
+		Version: "v0.0.8",
+	})
+	assert.Nil(t, err)
+	// Download plugin for the first time
+	_, diags = Download(context.Background(), pm, &DownloadOptions{
+		Providers: []registry.Provider{
+			{
+				Name:    name,
+				Version: "v0.0.8",
+				Source:  src,
+			},
+		},
+		NoVerify: false,
+	})
+	assert.Nil(t, diags)
+
 }

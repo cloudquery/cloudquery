@@ -1,6 +1,8 @@
 package core
 
 import (
+	"strings"
+
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
@@ -83,6 +85,9 @@ func ParseProviderSource(requestedProvider *config.RequiredProvider) (string, st
 		requestedSource = requestedProvider.Name
 	} else {
 		requestedSource = *requestedProvider.Source
+		if !strings.Contains(requestedSource, "/") {
+			requestedSource = strings.Join([]string{requestedSource, requestedProvider.Name}, "/")
+		}
 	}
 	return registry.ParseProviderName(requestedSource)
 }
