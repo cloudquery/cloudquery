@@ -21,6 +21,7 @@ type ProviderSchema struct {
 }
 
 func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *GetProviderSchemaOptions) (*ProviderSchema, diag.Diagnostics) {
+	log.Info().Stringer("provider", request.Provider).Msg("requesting provider schema")
 	providerPlugin, err := manager.CreatePlugin(&plugin.CreationOptions{Provider: request.Provider})
 	if err != nil {
 		log.Error().Stringer("provider", request.Provider).Err(err).Msg("failed to create provider plugin")

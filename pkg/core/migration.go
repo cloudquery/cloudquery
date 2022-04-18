@@ -26,6 +26,18 @@ const (
 	NoChange
 )
 
+func (s SyncState) String() string {
+	switch s {
+	case Upgraded:
+		return "Upgraded"
+	case Downgraded:
+		return "Downgraded"
+	case NoChange:
+		return "NoChange"
+	}
+	return "Unknown"
+}
+
 var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
 )
@@ -43,6 +55,7 @@ type SyncResult struct {
 }
 
 func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *SyncOptions) (*SyncResult, diag.Diagnostics) {
+	log.Info().Stringer("provider", opts.Provider).Msg("syncing provider schema")
 	if opts.DownloadLatest {
 		if _, diags := Download(ctx, pm, &DownloadOptions{
 			[]registry.Provider{{Name: opts.Provider.Name, Version: registry.LatestVersion, Source: opts.Provider.Source}}, false}); diags.HasErrors() {
@@ -77,6 +90,9 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	currentVersion, err := version.NewVersion(ver)
+	if err != nil {
+		return nil, diag.FromError(err, diag.INTERNAL)
+	}
 
 	var providerVersion *version.Version
 	if opts.Provider.Version != registry.LatestVersion {
@@ -87,20 +103,20 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 	}
 
 	state := NoChange
-	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
-	}
 	if opts.Provider.Version == registry.LatestVersion || providerVersion.GreaterThan(currentVersion) {
+		log.Debug().Stringer("provider", opts.Provider).Str("version", opts.Provider.Version).Msg("upgrading provider schema")
 		if err := m.UpgradeProvider(opts.Provider.Version); err != nil && err != migrate.ErrNoChange {
 			return nil, diag.FromError(err, diag.DATABASE)
 		}
 		state = Upgraded
 	} else if providerVersion.LessThan(currentVersion) {
+		log.Debug().Stringer("provider", opts.Provider).Str("version", opts.Provider.Version).Msg("downgrading provider schema")
 		if err := m.DowngradeProvider(opts.Provider.Version); err != nil && err != migrate.ErrNoChange {
 			return nil, diag.FromError(err, diag.DATABASE)
 		}
 		state = Downgraded
 	}
+	log.Debug().Stringer("provider", opts.Provider).Stringer("state", state).Msg("provider sync complete")
 	return &SyncResult{
 		State:      state,
 		OldVersion: currentVersion.Original(),
@@ -109,6 +125,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 }
 
 func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
+	log.Warn().Stringer("provider", provider).Msg("dropping provider schema")
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if len(diags) > 0 {
 		return diags
