@@ -1069,6 +1069,10 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 				continue
 			}
 
+			if e.Severity() == diag.WARNING && e.Type() == diag.ACCESS {
+				continue
+			}
+
 			sentry.WithScope(func(scope *sentry.Scope) {
 				scope.SetTags(map[string]string{
 					"diag_type":        e.Type().String(),
