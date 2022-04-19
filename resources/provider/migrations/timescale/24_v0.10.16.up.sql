@@ -62,7 +62,7 @@ SELECT setup_tsdb_child('aws_codepipeline_pipeline_stage_actions', 'pipeline_sta
 
 -- Resource: iam.virtual_mfa_devices
 ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices DROP CONSTRAINT aws_iam_virtual_mfa_devices_pk;
-ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (cq_fetch_date,serial_number,enable_date);
+ALTER TABLE IF EXISTS aws_iam_virtual_mfa_devices ADD CONSTRAINT aws_iam_virtual_mfa_devices_pk PRIMARY KEY (cq_fetch_date,serial_number);
 
 -- Resource: mq.brokers
 ALTER TABLE IF EXISTS aws_mq_brokers
