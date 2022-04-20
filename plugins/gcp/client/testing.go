@@ -17,6 +17,8 @@ type TestOptions struct {
 func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
 	t.Helper()
 
+	table.IgnoreInTests = false
+
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
 			Name:    "gcp_mock_test_provider",
@@ -39,22 +41,5 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 			},
 		},
 		Config: "",
-	})
-}
-
-func GcpTestHelper(t *testing.T, table *schema.Table) {
-	t.Helper()
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:      "gcp_mock_test_provider",
-			Version:   "development",
-			Configure: Configure,
-			Config: func() provider.Config {
-				return &Config{}
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-		},
 	})
 }
