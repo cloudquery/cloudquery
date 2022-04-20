@@ -14,6 +14,9 @@ on:
       - '.github/**'
       - 'scripts/**'
 
+env:
+  CGO_ENABLED: 0
+
 jobs:
   is_organization_member:
     runs-on: ubuntu-latest
@@ -80,8 +83,7 @@ jobs:
 
 
       - name: Integration Test
-        run: |
-          go test -run=TestIntegration -tags=integration ./...
+        run: go test -run=TestIntegration -tags=integration ./...
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -89,6 +91,6 @@ jobs:
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: ' - E2E tests failed'
-          SLACK_TITLE:  - E2E tests failed
+          SLACK_MESSAGE: 'k8s - E2E tests failed'
+          SLACK_TITLE: k8s - E2E tests failed
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
