@@ -6,60 +6,50 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
-	"github.com/hashicorp/go-hclog"
-)
+	"github.com/cloudquery/cloudquery/internal/logging"
 
-type LowLevelQueryExecer interface {
-	execution.Copier
-	execution.QueryExecer
-}
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
+	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
+)
 
 // ManagerImpl is the manager implementation struct.
 type ManagerImpl struct {
 	modules  map[string]Module
 	modOrder []string
-
-	// Instance of database
-	pool execution.QueryExecer
-
-	// Logger instance
-	logger hclog.Logger
-
-	// Instance of client to query module info
-	requester moduleInfoRequester
+	storage  database.Storage
+	pm       *plugin.Manager
 }
 
 // Manager is the interface that describes the interaction with the module manager.
 // Implemented by ManagerImpl.
 type Manager interface {
-	// RegisterModule is used to register a module into the manager.
-	RegisterModule(mod Module)
-
-	// ExecuteModule executes the given module, validating the given module name and config first.
-	ExecuteModule(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error)
-
+	// Register is used to register a module into the manager.
+	Register(mod Module)
+	// Execute executes the given module, validating the given module name and config first.
+	Execute(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error)
 	// ExampleConfigs returns a list of example module configs from loaded modules
 	ExampleConfigs(providers []string) []string
 }
 
-type moduleInfoRequester interface {
-	GetProviderModule(ctx context.Context, providerName string, req cqproto.GetModuleRequest) (*cqproto.GetModuleResponse, error)
-}
-
 // NewManager returns a new manager instance.
-func NewManager(pool LowLevelQueryExecer, logger hclog.Logger, r moduleInfoRequester) *ManagerImpl {
+func NewManager(storage database.Storage, pm *plugin.Manager) *ManagerImpl {
 	return &ManagerImpl{
-		modules:   make(map[string]Module),
-		pool:      pool,
-		logger:    logger,
-		requester: r,
+		modules: make(map[string]Module),
+		storage: storage,
+		pm:      pm,
 	}
 }
 
-// RegisterModule is used to register a module into the manager.
-func (m *ManagerImpl) RegisterModule(mod Module) {
+// Register is used to register a module into the manager.
+func (m *ManagerImpl) Register(mod Module) {
 	id := mod.ID()
 	if _, ok := m.modules[id]; ok {
 		panic("module " + id + " already registered")
@@ -68,29 +58,43 @@ func (m *ManagerImpl) RegisterModule(mod Module) {
 	m.modOrder = append(m.modOrder, id)
 }
 
-// ExecuteModule executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) ExecuteModule(ctx context.Context, execReq *ExecuteRequest) (*ExecutionResult, error) {
-	mod, ok := m.modules[execReq.Module]
+// Execute executes the given module, validating the given module name and config first.
+func (m *ManagerImpl) Execute(ctx context.Context, req *ExecuteRequest) (*ExecutionResult, error) {
+	mod, ok := m.modules[req.Module]
 	if !ok {
-		return nil, fmt.Errorf("module not found %q", execReq.Module)
+		return nil, fmt.Errorf("module not found %q", req.Module)
 	}
 
-	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, execReq.Providers)
+	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, req.Providers)
 	if err != nil {
 		return nil, fmt.Errorf("protocol negotiation failed: %w", err)
 	}
 
 	if err := mod.Configure(ctx, Info{
-		UserConfig:      execReq.ProfileConfig,
+		UserConfig:      req.ProfileConfig,
 		ProtocolVersion: protoVersion,
 		ProviderData:    modInfo,
-	}, execReq.Params); err != nil {
+	}, req.Params); err != nil {
 		return nil, fmt.Errorf("module configuration failed: %w", err)
 	}
+	// TODO: this is still bad
+	conn, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "database-drift"), m.storage.DSN())
+	if err != nil {
+		log.Error().Err(err).Msg("failed to connect to new database")
+		return nil, err
+	}
+	defer conn.Close()
+	req.Conn = conn
 
-	execReq.Conn = m.pool
-
-	return mod.Execute(ctx, execReq), nil
+	// TODO: this is very weird behavior, execute should return an error
+	result := mod.Execute(ctx, req)
+	log.Info().Str("module", req.Module).Msg("module execution finished")
+	if result.Error != nil {
+		log.Error().Err(result.Error).Msg("module execution failed with error")
+	}
+	// TODO: print this nicely, not sure it makes sense in log
+	log.Debug().Str("module", req.Module).Interface("data", result.Result).Msg("module execution results")
+	return result, nil
 }
 
 // ExampleConfigs returns a list of example module configs from loaded modules
@@ -111,14 +115,17 @@ func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs
 		providerVersionInfo = make(map[uint32]map[string]cqproto.ModuleInfo) // version vs provider vs info
 		allVersions         = make(map[string][]uint32, len(provs))          // used for debug info
 	)
-
-	rq := cqproto.GetModuleRequest{
-		Module:            mod.ID(),
-		PreferredVersions: mod.ProtocolVersions(),
-	}
-
 	for _, p := range provs {
-		data, err := m.requester.GetProviderModule(ctx, p.Name, rq)
+		data, err := GetProviderModule(ctx, m.pm, &GetModuleOptions{
+			Provider: registry.Provider{
+				Name:    p.Name,
+				Version: p.Version,
+				Source:  registry.DefaultOrganization, // TODO: won't work with community providers
+			},
+			Request: cqproto.GetModuleRequest{
+				Module:            mod.ID(),
+				PreferredVersions: mod.ProtocolVersions(),
+			}})
 		if err != nil {
 			return 0, nil, fmt.Errorf("GetProviderModule %s: %w", p.Name, err)
 		} else if data.Diagnostics.HasDiags() {
@@ -140,12 +147,11 @@ func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs
 	for _, preferredVersion := range mod.ProtocolVersions() {
 		list := providerVersionInfo[preferredVersion]
 		if len(list) < len(provs) {
-			m.logger.Debug("skipping preferred module protocol version", "preferred_version", preferredVersion)
+			log.Debug().Uint32("preferred_version", preferredVersion).Msg("skipping preferred module protocol version")
 			continue
 		}
-
 		// use that version
-		m.logger.Info("negotiating module protocol version", "version", preferredVersion)
+		log.Info().Uint32("version", preferredVersion).Msg("negotiating module protocol version")
 		return preferredVersion, list, nil
 	}
 

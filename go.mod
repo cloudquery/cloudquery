@@ -7,7 +7,6 @@ require (
 	github.com/aws/aws-lambda-go v1.23.0
 	github.com/cloudquery/cq-provider-sdk v0.8.18
 	github.com/fatih/color v1.13.0
-	github.com/fsnotify/fsnotify v1.4.9
 	github.com/golang-migrate/migrate/v4 v4.15.0
 	github.com/google/go-github/v35 v35.2.0
 	github.com/hashicorp/go-hclog v1.0.0
@@ -26,7 +25,6 @@ require (
 	github.com/vbauerster/mpb/v6 v6.0.3
 	github.com/zclconf/go-cty v1.9.1
 	golang.org/x/crypto v0.0.0-20211108221036-ceb1ce70b4fa // indirect
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
@@ -59,6 +57,7 @@ require (
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.2.0
 	go.opentelemetry.io/otel/sdk v1.2.0
 	go.opentelemetry.io/otel/trace v1.2.0
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	google.golang.org/grpc v1.42.0
 )
 
@@ -72,6 +71,7 @@ require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

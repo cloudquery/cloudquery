@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
@@ -33,7 +33,7 @@ func initSentry() {
 	if viper.GetBool("no-telemetry") {
 		dsn = "" // "To drop all events, set the DSN to the empty string."
 	}
-	if client.Version == client.DevelopmentVersion && !viper.GetBool("debug-sentry") {
+	if core.Version == core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
 	}
 
@@ -42,12 +42,12 @@ func initSentry() {
 		Dsn:       dsn,
 		Transport: sentrySyncTransport,
 		Environment: func() string {
-			if client.Version == client.DevelopmentVersion {
+			if core.Version == core.DevelopmentVersion {
 				return "development"
 			}
 			return "release"
 		}(),
-		Release:          "cloudquery@" + client.Version,
+		Release:          "cloudquery@" + core.Version,
 		AttachStacktrace: true, // send stack trace with panic recovery
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))

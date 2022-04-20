@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func (p *Policy) Test(ctx context.Context, e *Executor, source, snapshotDirectory, tempDirectory string) error {
+func (p *Policy) Test(ctx context.Context, e *Executor, _, snapshotDirectory, tempDirectory string) error {
 
 	tests, err := FindAllTestCases(snapshotDirectory)
 	if err != nil {

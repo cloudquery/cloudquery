@@ -1,5 +1,0 @@
-queries:
-  - name: "Success Query"
-    query: >
-      SELECT id from slow_resource WHERE some_bool
-    invert: true
