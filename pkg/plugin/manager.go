@@ -3,14 +3,11 @@ package plugin
 import (
 	"context"
 	"fmt"
-	"sort"
 
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/spf13/viper"
 
 	"github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/trace"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 )
@@ -64,29 +61,22 @@ func NewManager(r registry.Registry, opts ...ManagerOption) (*Manager, error) {
 
 // DownloadProviders downloads one or more registry.Provider from the registry.Registry, if we want to skip
 // provider verification when downloading pass true on `noVerify`
-func (m *Manager) DownloadProviders(ctx context.Context, providers []registry.Provider, noVerify bool) error {
+func (m *Manager) DownloadProviders(ctx context.Context, providers []registry.Provider, noVerify bool) ([]registry.ProviderBinary, error) {
 	log.Debug().Interface("providers", providers).Msg("Downloading required providers")
-	traceData := make([]string, len(providers))
+	downloaded := make([]registry.ProviderBinary, len(providers))
 	for i, rp := range providers {
 		if _, ok := m.clients[rp.String()]; ok {
 			log.Debug().Str("name", rp.Name).Str("version", rp.Version).Msg("Skipping provider download, using reattach instead")
-			traceData[i] = rp.Name + "@debug"
 			continue
 		}
 		log.Info().Str("name", rp.Name).Str("version", rp.Version).Msg("Downloading provider")
 		details, err := m.registry.Download(ctx, rp, noVerify)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		traceData[i] = rp.Name + "@" + details.Version
+		downloaded[i] = details
 	}
-
-	sort.Strings(traceData)
-	trace.SpanFromContext(ctx).SetAttributes(
-		attribute.StringSlice("providers", traceData),
-	)
-
-	return nil
+	return downloaded, nil
 }
 
 // CreatePlugin creates a plugin based on CreationOptions
@@ -114,7 +104,7 @@ func (m *Manager) CreatePlugin(opts *CreationOptions) (Plugin, error) {
 }
 
 // GetPluginDetails returns plugin details based on provider name
-// TODO: depercate this method
+// TODO: deprecate this method
 func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderBinary, error) {
 	details, err := m.registry.Get(providerName, registry.LatestVersion)
 	if err != nil {
@@ -131,6 +121,8 @@ func (m *Manager) Shutdown() {
 	// create fresh map
 	m.clients = make(map[string]Plugin)
 }
+
+// TODO: support Closer from plugin rather then calling manager
 
 // ClosePlugin kills a plugin instance and removes it from the managed plugins.
 func (m *Manager) ClosePlugin(p Plugin) {

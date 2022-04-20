@@ -25,6 +25,17 @@ func (p Provider) String() string {
 	return fmt.Sprintf("%s@%s", p.Name, p.Version)
 }
 
+type Providers []Provider
+
+func (pp Providers) Get(name string) (Provider, bool) {
+	for _, p := range pp {
+		if p.Name == name {
+			return p, true
+		}
+	}
+	return Provider{}, false
+}
+
 //go:generate mockgen -package=registry -destination=./mock_registry.go . Registry
 type Registry interface {
 	// Get returns a loaded provider from the hub without downloading it again, returns an error if not found

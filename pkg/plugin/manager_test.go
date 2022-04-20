@@ -26,21 +26,14 @@ func TestManager_DownloadProvider(t *testing.T) {
 			},
 			FilePath: "some/file/path",
 		}, nil).Times(2)
-	assert.Nil(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Nil(t, err)
 
-	assert.Nil(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
-
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Nil(t, err)
 	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
-	assert.Error(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Error(t, err)
 }
 
 func TestManager_DownloadProviderWithReattach(t *testing.T) {
@@ -57,19 +50,13 @@ func TestManager_DownloadProviderWithReattach(t *testing.T) {
 			},
 			FilePath: "some/file/path",
 		}, nil).Times(2)
-	assert.Nil(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
 
-	assert.Nil(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Nil(t, err)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Nil(t, err)
 
 	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
-	assert.Error(t, manager.DownloadProviders(context.TODO(), []registry.Provider{{
-		Name:    "test",
-		Version: "latest",
-	}}, false))
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	assert.Error(t, err)
 }

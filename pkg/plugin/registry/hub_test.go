@@ -28,10 +28,10 @@ func TestHub_CheckUpdate(t *testing.T) {
 			Name: "bad-version",
 			Provider: Provider{
 				Name:    "test",
-				Version: LatestVersion,
+				Version: "va441.311.4123.444",
 				Source:  DefaultOrganization,
 			},
-			ExpectedError: errors.New("bad version: test@latest"),
+			ExpectedError: errors.New("bad version: test@va441.311.4123.444"),
 		},
 		{
 			Name: "bad-provider-name",

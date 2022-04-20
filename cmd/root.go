@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	zerolog "github.com/rs/zerolog/log"
@@ -77,7 +77,7 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 
 Find more information at:
 	https://docs.cloudquery.io`,
-		Version: client.Version,
+		Version: core.Version,
 	}
 )
 
@@ -169,7 +169,7 @@ func initLogging() {
 }
 
 func logInvocationParams(cmd *cobra.Command, args []string) {
-	l := zerolog.Info().Str("core_version", client.Version)
+	l := zerolog.Info().Str("core_version", core.Version)
 	rootCmd.Flags().Visit(func(f *pflag.Flag) {
 		if f.Name == "dsn" {
 			l = l.Str("pflag:"+f.Name, "(redacted)")

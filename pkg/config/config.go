@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/hashicorp/hcl/v2"
 )
 

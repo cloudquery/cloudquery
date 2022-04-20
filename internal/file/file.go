@@ -38,9 +38,20 @@ func NewOsFs() *OsFs {
 // write as it downloads and not load the whole file into memory. We pass an io.TeeReader
 // into Copy() to report progress on the download.
 func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
+	if err := o.downloadFile(ctx, filepath, url, progressUpdater); err != nil {
+		return err
+	}
+	if err := o.fs.Rename(filepath+".tmp", filepath); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := o.fs.Create(filepath + ".tmp")
+	defer func() { _ = out.Close() }()
 	if err != nil {
 		return err
 	}
@@ -51,7 +62,6 @@ func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressU
 	}
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		out.Close()
 		return err
 	}
 	defer resp.Body.Close()
@@ -66,13 +76,6 @@ func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressU
 	}
 	// Create our progress reporter and pass it to be used alongside our writer
 	if _, err = io.Copy(out, reader); err != nil {
-		out.Close()
-		return err
-	}
-	// Close the file without defer so it can happen before Rename()
-	out.Close()
-
-	if err = o.fs.Rename(filepath+".tmp", filepath); err != nil {
 		return err
 	}
 	return nil
