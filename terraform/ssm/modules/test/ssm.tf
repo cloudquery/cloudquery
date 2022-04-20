@@ -26,3 +26,15 @@ DOC
     Name = "docs"
   }
 }
+
+resource "aws_ssm_association" "test_associations" {
+  name = "AmazonCloudWatch-ManageAgent"
+  compliance_severity = "UNSPECIFIED"
+  max_concurrency = 1
+  max_errors = 10
+  association_name = "${var.prefix}-ssm-assoc"
+  targets {
+    key    = "tag:Environment"
+    values = ["Development"]
+  }
+}
