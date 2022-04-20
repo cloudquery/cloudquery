@@ -21,6 +21,8 @@ jobs:
         with:
           version: latest
           args: release --rm-dist --skip-validate --skip-publish --skip-sign
+        env:
+          CGO_ENABLED: 0
       - name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v3
@@ -34,3 +36,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          CGO_ENABLED: 0  
