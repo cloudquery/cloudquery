@@ -62,6 +62,12 @@ func EcsTaskDefinitions() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
+				Name:        "ephemeral_storage_size",
+				Description: "The total amount, in GiB, of ephemeral storage to set for the task.",
+				Type:        schema.TypeInt,
+				Resolver:    schema.PathResolver("EphemeralStorage.SizeInGiB"),
+			},
+			{
 				Name:        "execution_role_arn",
 				Description: "The Amazon Resource Name (ARN) of the task execution role that grants the Amazon ECS container agent permission to make AWS API calls on your behalf",
 				Type:        schema.TypeString,
@@ -146,6 +152,18 @@ func EcsTaskDefinitions() *schema.Table {
 				Name:        "revision",
 				Description: "The revision of the task in a particular family",
 				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "runtime_platform_cpu_architecture",
+				Description: "The CPU architecture.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RuntimePlatform.CpuArchitecture"),
+			},
+			{
+				Name:        "runtime_platform_os_family",
+				Description: "The operating system.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RuntimePlatform.OperatingSystemFamily"),
 			},
 			{
 				Name:        "status",

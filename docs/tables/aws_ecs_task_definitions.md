@@ -10,6 +10,7 @@ The details of a task definition which describes the container and volume defini
 |compatibilities|text[]|The task launch types the task definition validated against during task definition registration|
 |cpu|text|The number of cpu units used by the task|
 |deregistered_at|timestamp without time zone|The Unix timestamp for when the task definition was deregistered.|
+|ephemeral_storage_size|integer|The total amount, in GiB, of ephemeral storage to set for the task.|
 |execution_role_arn|text|The Amazon Resource Name (ARN) of the task execution role that grants the Amazon ECS container agent permission to make AWS API calls on your behalf|
 |family|text|The name of a family that this task definition is registered to|
 |inference_accelerators|jsonb|The Elastic Inference accelerator associated with the task.|
@@ -26,6 +27,8 @@ The details of a task definition which describes the container and volume defini
 |requires_attributes|jsonb|The container instance attributes required by your task|
 |requires_compatibilities|text[]|The task launch types the task definition was validated against|
 |revision|integer|The revision of the task in a particular family|
+|runtime_platform_cpu_architecture|text|The CPU architecture.|
+|runtime_platform_os_family|text|The operating system.|
 |status|text|The status of the task definition.|
 |arn|text|The full Amazon Resource Name (ARN) of the task definition.|
 |task_role_arn|text|The short name or full Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that grants containers in the task permission to call AWS APIs on your behalf|
