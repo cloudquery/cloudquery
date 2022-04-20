@@ -46,11 +46,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
+        run: go get -v -t -d ./...
+        env:
+          CGO_ENABLED: 0
 
       - name: Build
         run: go build -v .
+        env:
+          CGO_ENABLED: 0
 
       - name: Test
         run: go test ./...
+        env:
+          CGO_ENABLED: 0
