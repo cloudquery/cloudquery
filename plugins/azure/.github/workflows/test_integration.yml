@@ -86,8 +86,9 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Integration Test
-        run: |
-          go test -run=TestIntegration -tags=integration ./...
+        run: go test -run=TestIntegration -tags=integration ./...
+        env:
+          CGO_ENABLED: 0
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
