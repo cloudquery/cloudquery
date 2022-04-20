@@ -6,6 +6,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
+	"github.com/hashicorp/go-hclog"
+
+	"github.com/cloudquery/cloudquery/pkg/module"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -89,7 +95,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	if err != nil {
 		return err
 	}
-	defer c.Client().Close()
+	defer c.Close()
 	if err := c.DownloadProviders(ctx); err != nil {
 		return err
 	}
@@ -107,15 +113,19 @@ func Initialize(ctx context.Context, providers []string) error {
 		return err
 	}
 	for _, p := range providers {
-		pCfg, err := c.Client().GetProviderConfiguration(ctx, p)
-		if err != nil {
-			return err
+		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
+			Provider: c.ConvertRequiredToRegistry(p),
+		})
+
+		if diags.HasErrors() {
+			return diags
 		}
 		buffer.Write(pCfg.Config)
 		buffer.WriteString("\n")
 	}
-
-	if mex := c.Client().ModuleManager.ExampleConfigs(providers); len(mex) > 0 {
+	mm := module.NewManager(nil, nil)
+	mm.Register(drift.New(hclog.NewNullLogger()))
+	if mex := mm.ExampleConfigs(providers); len(mex) > 0 {
 		buffer.WriteString("\n// Module Configurations\nmodules {\n")
 		for _, c := range mex {
 			buffer.WriteString(c)

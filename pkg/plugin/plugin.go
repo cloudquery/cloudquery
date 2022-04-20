@@ -29,6 +29,10 @@ type Plugins map[string]Plugin
 // Get returns a Plugin instance from a registry.Provider creation info or it's created alias
 func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
 	for k, v := range pm {
+		if v.Version() == Unmanaged && k == p.Name {
+			return v
+		}
+
 		if alias == "" && (k == p.String() || v.Name() == fmt.Sprintf("%s_%s", p.Name, p.Name)) {
 			return v
 		}

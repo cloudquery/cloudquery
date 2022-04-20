@@ -97,21 +97,19 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		// No console client created here
 	case "describe":
 		var err error
-		c, err = console.ClientFactory(ctx, &cfgPath, cfgMutator)
+		c, err = console.CreateClient(ctx, cfgPath, true, cfgMutator)
 		if err != nil {
 			return err
 		}
-		defer c.Client().Close()
 	case "fetch":
 		cfgMutator = filterConfigProviders(args)
 		fallthrough
 	default:
 		var err error
-		c, err = console.CreateClient(ctx, cfgPath, cfgMutator)
+		c, err = console.CreateClient(ctx, cfgPath, false, cfgMutator)
 		if err != nil {
 			return err
 		}
-		defer c.Client().Close()
 	}
 
 	if tele.Enabled() && tele.NewRandomId() {

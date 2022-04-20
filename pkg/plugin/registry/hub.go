@@ -98,19 +98,22 @@ func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
 // Call will be cancelled either if ctx is cancelled or after a timeout set by versionCheckHTTPTimeout.
 // This function should not be called for a provider having Version set to "latest".
 func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error) {
-	currentVersion, err := version.NewVersion(provider.Version)
-	if err != nil {
-		return "", fmt.Errorf("bad version: %s", provider)
-	}
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
 	latestVersion, err := h.getLatestRelease(ctx, provider.Source, provider.Name)
 	if err != nil {
 		return "", err
 	}
+	if provider.Version == LatestVersion {
+		return latestVersion, nil
+	}
 	v, err := version.NewVersion(latestVersion)
 	if err != nil {
 		return "", fmt.Errorf("bad version received: provider %s, version %s", provider.Name, latestVersion)
+	}
+	currentVersion, err := version.NewVersion(provider.Version)
+	if err != nil {
+		return "", fmt.Errorf("bad version: %s", provider)
 	}
 	if currentVersion.LessThan(v) {
 		return latestVersion, nil
@@ -219,7 +222,6 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	if err := osFs.MkdirAll(pluginDir, os.ModePerm); err != nil {
 		return ProviderBinary{}, err
 	}
-
 	// Create a new progress updater callback func
 	var progressCB ui.ProgressUpdateFunc
 	if h.ProgressUpdater != nil {

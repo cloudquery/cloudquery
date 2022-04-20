@@ -9,9 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
+
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )
@@ -49,7 +52,8 @@ func (f Update) DoneCount() int {
 type Executor struct {
 	// Connection to the database
 	conn LowLevelQueryExecer
-	log  hclog.Logger
+
+	log hclog.Logger
 
 	PolicyPath []string
 
@@ -104,10 +108,10 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn LowLevelQueryExecer, log hclog.Logger, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn LowLevelQueryExecer, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
-		log:            log,
+		log:            logging.NewZHcLog(&log.Logger, "policy"),
 		progressUpdate: progressUpdate,
 		PolicyPath:     []string{},
 	}
@@ -126,7 +130,7 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 
 // Execute executes given policy and the related sub queries/views.
 func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
-	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0)}
+	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0), ExecutionTime: time.Now()}
 
 	if !policy.HasChecks() {
 		e.log.Warn("no checks or policies to execute")
@@ -193,7 +197,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	metaStorage := meta_storage.NewClient(e.conn, e.log)
+	metaStorage := state.NewClient(e.conn, e.log)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {
