@@ -18,6 +18,15 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - name: regenerate partition_service_region file
         run: |
           go run ./tools/endpoints/main.go
