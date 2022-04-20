@@ -302,7 +302,7 @@ func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
 	require.Nil(t, err)
 	_, diags := PurgeProviderData(context.Background(), storage, pm, &PurgeProviderDataOptions{
-		Providers:  []registry.Provider{{"test", registry.LatestVersion, registry.DefaultOrganization}},
+		Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
 		LastUpdate: 0,
 		DryRun:     false,
 	})
