@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"net/url"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
@@ -88,7 +89,28 @@ func NewParser(options ...Option) *Parser {
 //
 // The file will be parsed using the HCL native syntax
 func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
-	src, err := p.fs.ReadFile(path)
+
+	var contents []byte
+	// Example of path supported paths:
+	// `./local/relative/path/to/config.hcl`
+	// `/absolute/path/to/config.hcl`
+	// `s3://object/in/remote/location/absolute/path/to/config.hcl`
+	sanitizedPath, err := url.Parse(path)
+	if err != nil {
+		return nil, hcl.Diagnostics{
+			{
+				Severity: hcl.DiagError,
+				Summary:  "Failed to load config file: invalid path",
+				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
+			},
+		}
+	}
+
+	if sanitizedPath.Scheme == "" {
+		contents, err = p.fs.ReadFile(path)
+	} else {
+		contents, err = loadRemoteFile(path)
+	}
 
 	if err != nil {
 		if e, ok := err.(*fs.PathError); ok {
@@ -106,7 +128,8 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 			},
 		}
 	}
-	return p.LoadFromSource(path, src)
+
+	return p.LoadFromSource(path, contents)
 }
 
 func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, hcl.Diagnostics) {
