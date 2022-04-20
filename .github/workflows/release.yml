@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - '*'
+env:
+  CGO_ENABLED: 0
+
 jobs:
   release:
     runs-on: ubuntu-latest

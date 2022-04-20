@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
+
 jobs:
   unitests:
     strategy:
@@ -42,34 +46,24 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
+        run: go get -v -t -d ./...
 
       - name: Build
         run: go build -v .
 
       - name: Sanity Fetch with old version
         run: go run ./main.go fetch --config=internal/test/test_history_config_oldversion.hcl --enable-console-log
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Sanity Fetch
         run: go run ./main.go fetch --config=internal/test/test_history_config.hcl --enable-console-log
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Sanity Drop
         run: go run ./main.go provider drop test --config=internal/test/test_history_config.hcl --force
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Sanity Init
         run: go run ./main.go init test --config=test_init_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Test
         run: go test -v --tags=history ./...
-        env:
-          CQ_NO_TELEMETRY: 1
+          
 
