@@ -104,7 +104,7 @@ func (m *Manager) CreatePlugin(opts *CreationOptions) (Plugin, error) {
 }
 
 // GetPluginDetails returns plugin details based on provider name
-// TODO: depercate this method
+// TODO: deprecate this method
 func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderBinary, error) {
 	details, err := m.registry.Get(providerName, registry.LatestVersion)
 	if err != nil {

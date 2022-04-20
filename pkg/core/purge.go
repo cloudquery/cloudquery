@@ -52,7 +52,7 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, plugin *pl
 	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
 	if err != nil {
-		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL)}
+		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	defer db.Close()
 	var (

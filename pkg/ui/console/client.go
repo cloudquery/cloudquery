@@ -136,7 +136,7 @@ func (c Client) DownloadProviders(ctx context.Context) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
 	updates, diags := core.CheckAvailableUpdates(ctx, c.Registry, &core.CheckUpdatesOptions{Providers: c.Providers})
 	if diags.HasErrors() {
-		printDiagnostics("Diagnostics", "", diags, true, false)
+		printDiagnostics("download", diags, true, false)
 	}
 	for _, u := range updates {
 		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.CurrentVersion, u.AvailableVersion))
@@ -168,6 +168,7 @@ func (c Client) Fetch(ctx context.Context, failOnError bool) error {
 		History:        c.cfg.CloudQuery.History,
 	})
 	if diags.HasErrors() {
+		printDiagnostics("", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 		// Ignore context cancelled error
 		if st, ok := status.FromError(diags); !ok || st.Code() != gcodes.Canceled {
 			return diags
@@ -543,7 +544,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 	}
 
 	if len(diags) > 0 {
-		printDiagnostics("Purge", "", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+		printDiagnostics("Purge", diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 		return diags
 	} else {
 		ui.ColorizedOutput(ui.ColorProgress, "Purge for providers %s was successful\n\n", providers)
@@ -746,6 +747,10 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
 			return
 		}
+		if bar.Total < int64(len(update.FinishedResources)) {
+			bar.SetTotal(int64(len(update.FinishedResources)), false)
+		}
+
 		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
 		if bar.Status == ui.StatusError {

@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -19,7 +21,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPurgeProviderData(t *testing.T) {
+func Test_PurgeProviderData(t *testing.T) {
 	testCases := []struct {
 		Name    string
 		Options *PurgeProviderDataOptions
@@ -292,6 +294,20 @@ func TestPurgeProviderData(t *testing.T) {
 
 		})
 	}
+}
+
+func Test_PurgeProviderDataBadUserValues(t *testing.T) {
+
+	storage := database.NewStorage("host=localhost user=postgres password=pass database=no-db port=5432 sslmode=disable", nil)
+	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
+	require.Nil(t, err)
+	_, diags := PurgeProviderData(context.Background(), storage, pm, &PurgeProviderDataOptions{
+		Providers:  []registry.Provider{{"test", registry.LatestVersion, registry.DefaultOrganization}},
+		LastUpdate: 0,
+		DryRun:     false,
+	})
+	assert.NotNil(t, diags)
+
 }
 
 func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags []diag.FlatDiag) {
