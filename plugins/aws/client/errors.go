@@ -49,7 +49,7 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 				diag.WithType(diag.THROTTLE),
 				diag.WithSeverity(diag.WARNING),
 				ParseSummaryMessage(err),
-				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries/retry_timeout in provider configuration."),
+				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries in provider configuration."),
 				includeResourceIdWithAccount(client, err),
 			)),
 		}
