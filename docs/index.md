@@ -110,10 +110,10 @@ provider "aws" {
     }
     // Optional. Enable AWS SDK debug logging.
     // aws_debug = false
-    // The maximum number of times that a request will be retried for failures. Defaults to 5 retry attempts.
-    max_retries = 5
-    // The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 60 seconds.
-    // max_backoff = 30
+    // The maximum number of times that a request will be retried for failures. Defaults to 20 retry attempts.
+    max_retries = 20
+    // The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 90 seconds.
+    // max_backoff = 90
   }
 
   resources = ["*"]
