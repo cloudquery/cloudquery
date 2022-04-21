@@ -53,5 +53,5 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestKmsKeys(t *testing.T) {
-	client.AwsMockTestHelper(t, KmsKeys(), buildKmsKeys, client.TestOptions{})
+	client.AwsMockTestHelper(t, Keys(), buildKmsKeys, client.TestOptions{})
 }
