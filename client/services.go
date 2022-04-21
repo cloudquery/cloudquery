@@ -177,6 +177,8 @@ type CognitoUserPoolsClient interface {
 type ConfigServiceClient interface {
 	DescribeConfigurationRecorders(ctx context.Context, params *configservice.DescribeConfigurationRecordersInput, optFns ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecordersOutput, error)
 	DescribeConfigurationRecorderStatus(ctx context.Context, params *configservice.DescribeConfigurationRecorderStatusInput, optFns ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecorderStatusOutput, error)
+	GetConformancePackComplianceDetails(ctx context.Context, params *configservice.GetConformancePackComplianceDetailsInput, optFns ...func(*configservice.Options)) (*configservice.GetConformancePackComplianceDetailsOutput, error)
+	configservice.DescribeConformancePackComplianceAPIClient
 	configservice.DescribeConformancePacksAPIClient
 }
 

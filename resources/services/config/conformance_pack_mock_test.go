@@ -14,14 +14,30 @@ import (
 func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockConfigServiceClient(ctrl)
 
-	cp := types.ConformancePackDetail{}
-	err := faker.FakeData(&cp)
-	if err != nil {
+	var cpd types.ConformancePackDetail
+	if err := faker.FakeData(&cpd); err != nil {
 		t.Fatal(err)
 	}
+	var cprc types.ConformancePackRuleCompliance
+	if err := faker.FakeData(&cprc); err != nil {
+		t.Fatal(err)
+	}
+	var cpre types.ConformancePackEvaluationResult
+	if err := faker.FakeData(&cpre); err != nil {
+		t.Fatal(err)
+	}
+
 	m.EXPECT().DescribeConformancePacks(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&configservice.DescribeConformancePacksOutput{
-			ConformancePackDetails: []types.ConformancePackDetail{cp},
+			ConformancePackDetails: []types.ConformancePackDetail{cpd},
+		}, nil)
+	m.EXPECT().DescribeConformancePackCompliance(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&configservice.DescribeConformancePackComplianceOutput{
+			ConformancePackRuleComplianceList: []types.ConformancePackRuleCompliance{cprc},
+		}, nil)
+	m.EXPECT().GetConformancePackComplianceDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&configservice.GetConformancePackComplianceDetailsOutput{
+			ConformancePackRuleEvaluationResults: []types.ConformancePackEvaluationResult{cpre},
 		}, nil)
 
 	return client.Services{

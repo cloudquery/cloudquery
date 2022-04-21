@@ -75,6 +75,26 @@ func (mr *MockConfigServiceClientMockRecorder) DescribeConfigurationRecorders(ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeConfigurationRecorders", reflect.TypeOf((*MockConfigServiceClient)(nil).DescribeConfigurationRecorders), varargs...)
 }
 
+// DescribeConformancePackCompliance mocks base method.
+func (m *MockConfigServiceClient) DescribeConformancePackCompliance(arg0 context.Context, arg1 *configservice.DescribeConformancePackComplianceInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConformancePackComplianceOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeConformancePackCompliance", varargs...)
+	ret0, _ := ret[0].(*configservice.DescribeConformancePackComplianceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeConformancePackCompliance indicates an expected call of DescribeConformancePackCompliance.
+func (mr *MockConfigServiceClientMockRecorder) DescribeConformancePackCompliance(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeConformancePackCompliance", reflect.TypeOf((*MockConfigServiceClient)(nil).DescribeConformancePackCompliance), varargs...)
+}
+
 // DescribeConformancePacks mocks base method.
 func (m *MockConfigServiceClient) DescribeConformancePacks(arg0 context.Context, arg1 *configservice.DescribeConformancePacksInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConformancePacksOutput, error) {
 	m.ctrl.T.Helper()
@@ -93,4 +113,24 @@ func (mr *MockConfigServiceClientMockRecorder) DescribeConformancePacks(arg0, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeConformancePacks", reflect.TypeOf((*MockConfigServiceClient)(nil).DescribeConformancePacks), varargs...)
+}
+
+// GetConformancePackComplianceDetails mocks base method.
+func (m *MockConfigServiceClient) GetConformancePackComplianceDetails(arg0 context.Context, arg1 *configservice.GetConformancePackComplianceDetailsInput, arg2 ...func(*configservice.Options)) (*configservice.GetConformancePackComplianceDetailsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConformancePackComplianceDetails", varargs...)
+	ret0, _ := ret[0].(*configservice.GetConformancePackComplianceDetailsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConformancePackComplianceDetails indicates an expected call of GetConformancePackComplianceDetails.
+func (mr *MockConfigServiceClientMockRecorder) GetConformancePackComplianceDetails(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConformancePackComplianceDetails", reflect.TypeOf((*MockConfigServiceClient)(nil).GetConformancePackComplianceDetails), varargs...)
 }
