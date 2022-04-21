@@ -43,6 +43,10 @@ func TestRemovePII(t *testing.T) {
 			"operation error Elastic Beanstalk: DescribeConfigurationOptions, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error InvalidParameterValue: Access Denied: S3Bucket=some-bucket-1, S3Key=object_path/some_key.ext (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: 3PQRRTJ1BAB82DWH; Proxy: null)",
 			"operation error Elastic Beanstalk: DescribeConfigurationOptions, https response error StatusCode: 400, RequestID: xxxx, api error InvalidParameterValue: Access Denied: S3Bucket=xxxx, S3Key=xxxx (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: xxxx; Proxy: null)",
 		},
+		{
+			"operation error Direct Connect: DescribeVirtualInterfaces, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://logs.eu-central-1.amazonaws.com/\": dial tcp 177.72.244.112:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.",
+			"operation error Direct Connect: DescribeVirtualInterfaces, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://xxxx\": dial tcp xxxx: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.",
+		},
 	}
 	for i, tc := range cases {
 		res := removePII([]Account{{ID: "123456789"}}, tc.Input)
