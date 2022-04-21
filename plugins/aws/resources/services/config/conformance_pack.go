@@ -80,6 +80,74 @@ func ConfigConformancePack() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 		},
+		Relations: []*schema.Table{
+			{
+				Name:         "aws_config_conformance_pack_rule_compliances",
+				Description:  "Compliance information of one or more AWS Config rules within a conformance pack",
+				Resolver:     fetchConfigConformancePackRuleCompliances,
+				Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
+				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+				DeleteFilter: client.DeleteAccountRegionFilter,
+				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"conformance_pack_cq_id"}},
+				Columns: []schema.Column{
+					{
+						Name:        "conformance_pack_cq_id",
+						Description: "Unique CloudQuery ID of aws_config_conformance_packs table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "compliance_type",
+						Description: "Compliance of the AWS Config rule",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("ConformancePackRuleCompliance.ComplianceType"),
+					},
+					{
+						Name:        "config_rule_name",
+						Description: "Name of the config rule.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "controls",
+						Description: "Controls for the conformance pack",
+						Type:        schema.TypeStringArray,
+					},
+					{
+						Name:        "config_rule_invoked_time",
+						Description: "The time when AWS Config rule evaluated AWS resource.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "resource_id",
+						Description: "The ID of the evaluated AWS resource.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("EvaluationResultIdentifier.EvaluationResultQualifier.ResourceId"),
+					},
+					{
+						Name:        "resource_type",
+						Description: "The type of AWS resource that was evaluated.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("EvaluationResultIdentifier.EvaluationResultQualifier.ResourceType"),
+					},
+					{
+						Name:        "ordering_timestamp",
+						Description: "The time of the event that triggered the evaluation of your AWS resources.",
+						Type:        schema.TypeTimestamp,
+						Resolver:    schema.PathResolver("EvaluationResultIdentifier.OrderingTimestamp"),
+					},
+					{
+						Name:        "result_recorded_time",
+						Description: "The time when AWS Config recorded the evaluation result.",
+						Type:        schema.TypeTimestamp,
+					},
+					{
+						Name:        "annotation",
+						Description: "Supplementary information about how the evaluation determined the compliance.",
+						Type:        schema.TypeString,
+					},
+				},
+			},
+		},
 	}
 }
 
@@ -118,4 +186,54 @@ func resolveConfigConformancePackConformancePackInputParameters(ctx context.Cont
 		params[*p.ParameterName] = p.ParameterValue
 	}
 	return resource.Set(c.Name, params)
+}
+
+func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	conformancePackDetail := parent.Item.(types.ConformancePackDetail)
+	c := meta.(*client.Client)
+	cs := c.Services().ConfigService
+	params := configservice.DescribeConformancePackComplianceInput{
+		ConformancePackName: conformancePackDetail.ConformancePackName,
+	}
+	for {
+		resp, err := cs.DescribeConformancePackCompliance(ctx, &params, func(options *configservice.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, conformancePackRuleCompliance := range resp.ConformancePackRuleComplianceList {
+			detailParams := &configservice.GetConformancePackComplianceDetailsInput{
+				ConformancePackName: conformancePackDetail.ConformancePackName,
+			}
+			for {
+				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams, func(options *configservice.Options) {
+					options.Region = c.Region
+				})
+				if err != nil {
+					return diag.WrapError(err)
+				}
+				for _, conformancePackComplianceDetail := range output.ConformancePackRuleEvaluationResults {
+					res <- ConformancePackComplianceWrapper{
+						ConformancePackRuleCompliance:   conformancePackRuleCompliance,
+						ConformancePackEvaluationResult: conformancePackComplianceDetail,
+					}
+				}
+				if output.NextToken == nil {
+					break
+				}
+				detailParams.NextToken = output.NextToken
+			}
+		}
+		if resp.NextToken == nil {
+			break
+		}
+		params.NextToken = resp.NextToken
+	}
+	return nil
+}
+
+type ConformancePackComplianceWrapper struct {
+	types.ConformancePackRuleCompliance
+	types.ConformancePackEvaluationResult
 }
