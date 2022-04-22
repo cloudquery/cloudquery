@@ -1,6 +1,6 @@
 
 # Table: aws_lambda_function_version_layers
-An AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). 
+An Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
