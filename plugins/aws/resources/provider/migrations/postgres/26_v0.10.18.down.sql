@@ -1,3 +1,6 @@
+-- Resource: config.conformance_packs
+DROP TABLE IF EXISTS aws_config_conformance_pack_rule_compliances;
+
 -- Resource: ecs.task_definitions
 ALTER TABLE IF EXISTS "aws_ecs_task_definitions" DROP COLUMN IF EXISTS "ephemeral_storage_size";
 ALTER TABLE IF EXISTS "aws_ecs_task_definitions" DROP COLUMN IF EXISTS "runtime_platform_cpu_architecture";
