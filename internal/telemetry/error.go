@@ -17,6 +17,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const ConfigureProviderResource = "provider.configure"
+
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
 // RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
@@ -44,6 +46,9 @@ func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	if d.Severity() == diag.IGNORE || (d.Severity() == diag.WARNING && d.Type() == diag.ACCESS) || d.Type() == diag.USER {
+		return true
+	}
+	if d.Type() == diag.ACCESS && d.Description().Resource == ConfigureProviderResource {
 		return true
 	}
 

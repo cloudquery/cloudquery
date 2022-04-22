@@ -473,6 +473,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				pLog.Error("failed to configure provider", "error", err)
 				return err
 			}
+			resp.Diagnostics = diag.Mutate(resp.Diagnostics, diag.WithResourceName(telemetry.ConfigureProviderResource))
+
 			if resp.Diagnostics.HasErrors() {
 				pLog.Error("failed to configure provider", "error", resp.Diagnostics)
 				return resp.Diagnostics
