@@ -10,17 +10,79 @@ The CloudQuery Azure provider pulls configuration out of Azure resources, normal
 
 ### Authentication
 
-To authenticate cloudquery with your Azure account you can use any of the following options (see full documentation at [AZURE SDK V2](https://github.com/Azure/azure-sdk-for-go#authentication)):
+CloudQuery needs to be authenticated with your Azure account in order to fetch information about your cloud setup.
 
-- Client Credentials: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_SUBSCRIPTION_ID`
-- Client Certificate: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CERTIFICATE_PATH`, `AZURE_CERTIFICATE_PASSWORD`, `AZURE_SUBSCRIPTION_ID`
-- Resource Owner Password: `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_USERNAME`, `AZURE_PASSWORD`, `AZURE_SUBSCRIPTION_ID`
+You can either authenticate with az login (when running cloudquery locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
 
-To have access to ad(Active Directory) resources the `app registration/user` should be [added](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal) as Assignment to `Application administrator` role in Active Directory `Roles and administrators` section
+You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the golang sdk.
 
-To list keyvault's data each keyvault should have [access policy](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal) that allows a principal(app registration, user) to get the data. 
+#### Authentication with `az login`
 
+First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (`az`). Then, login with the Azure CLI:
 
+```bash
+az login
+```
+
+You are now authenticated with cloudquery!
+
+#### Authentication with Environment Variables
+
+You will need to create a service principal for CloudQuery to use:
+
+**Creating a service principal**
+
+First, install the Azure CLI (`az`).
+
+Then, login with the Azure CLI:
+
+```bash
+az login
+```
+
+Then, create the service principal cloudquery will use to access your cloud deployment. WARNING: The output of
+ `az ad sp create-for-rbac` contains credentials that you must protect - Make sure to handle with appropriate care.
+ This example uses bash - The commands for CMD and PowerShell are similar.
+
+```bash
+export SUBSCRIPTION_ID=<YOUR_SUBSCRIPTION_ID>
+az account set --subscription $SUBSCRIPTION_ID
+az provider register --namespace 'Microsoft.Security'
+
+# Create a service-principal for cloudquery
+az ad sp create-for-rbac --name cloudquery-sp --scopes /subscriptions/$SUBSCRIPTION_ID --role Reader
+```
+
+(you can, of course, choose any name you'd like for your service-principal, `cloudquery-sp` is just an example. 
+If the service principal doesn't exist it will create a new one, otherwise it will update an existing one)
+
+The output of `az ad sp create-for-rbac` should look like this:
+
+```
+{
+  "appId": <YOUR AZURE_CLIENT_ID>,
+  "displayName": "cloudquery-sp",
+  "password": <YOUR AZURE_CLIENT_SECRET>,
+  "tenant": <YOUR AZURE_TENANT_ID>
+}
+```
+
+**Exporting environment variables**
+
+Next, you need to export the environment variables that cloudquery will use to `fetch` your cloud configuration. 
+Copy them from the output of `az ad sp create-for-rbac` (or, take the opportunity to show off your jq-foo). 
+The example shows how to export environment variables for linux - exporting for CMD and PowerShell is similar.
+
+- `AZURE_TENANT_ID` is `tenant` in the json.
+- `AZURE_CLIENT_ID` is `appId` in the json.
+- `AZURE_CLIENT_SECRET` is `password` in the json.
+
+```bash
+export AZURE_TENANT_ID=<YOUR AZURE_TENANT_ID>
+export AZURE_CLIENT_ID=<YOUR AZURE_CLIENT_ID>
+export AZURE_CLIENT_SECRET=<YOUR AZURE_CLIENT_SECRET>
+export AZURE_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
+```
 
 ### Configuration
 
