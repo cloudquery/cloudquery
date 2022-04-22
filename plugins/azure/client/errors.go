@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -21,8 +22,17 @@ var errorCodeDescriptions = map[interface{}]string{
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
-	var detailedError autorest.DetailedError
+	var (
+		detailedError autorest.DetailedError
+		reqError      azure.RequestError
+	)
 	if errors.As(err, &detailedError) {
+		if errors.As(detailedError.Original, &reqError) && reqError.ServiceError != nil && reqError.ServiceError.Code == "DisallowedOperation" {
+			return diag.Diagnostics{
+				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+			}
+		}
+
 		switch detailedError.StatusCode {
 		case http.StatusNotFound:
 			return diag.Diagnostics{
