@@ -2858,7 +2858,7 @@ CREATE TABLE IF NOT EXISTS "aws_ec2_security_group_ip_permission_user_id_group_p
 	"user_id" text,
 	"vpc_id" text,
 	"vpc_peering_connection_id" text,
-	CONSTRAINT aws_ec2_security_group_ip_permission_user_id_group_pairs_pk PRIMARY KEY(cq_fetch_date,security_group_ip_permission_cq_id,group_id,user_id),
+	CONSTRAINT aws_ec2_security_group_ip_permission_user_id_group_pairs_pk PRIMARY KEY(cq_fetch_date,cq_id),
 	UNIQUE(cq_fetch_date,cq_id)
 );
 CREATE INDEX ON aws_ec2_security_group_ip_permission_user_id_group_pairs (cq_fetch_date, security_group_ip_permission_cq_id);
