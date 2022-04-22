@@ -82,9 +82,10 @@ func Keys() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "deletion_date",
-				Description: "The date and time after which KMS deletes this KMS key",
-				Type:        schema.TypeTimestamp,
+				Name:          "deletion_date",
+				Description:   "The date and time after which KMS deletes this KMS key",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "description",

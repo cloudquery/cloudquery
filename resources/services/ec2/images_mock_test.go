@@ -25,7 +25,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeImages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeImagesOutput{
 			Images: []types.Image{g},
-		}, nil)
+		}, nil).Times(2)
 
 	lastLaunched := "1994-11-05T08:15:30-05:00"
 	m.EXPECT().DescribeImageAttribute(
@@ -40,7 +40,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			LastLaunchedTime: &types.AttributeValue{Value: &lastLaunched},
 		},
 		nil,
-	)
+	).Times(2)
 	return services
 }
 
