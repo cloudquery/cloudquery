@@ -325,6 +325,9 @@ func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta
 	cl := meta.(*client.Client)
 	image := resource.Item.(types.Image)
 	svc := cl.Services().EC2
+	if *image.OwnerId != cl.AccountID {
+		return nil
+	}
 	opts := ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLastLaunchedTime,
 		ImageId:   image.ImageId,
