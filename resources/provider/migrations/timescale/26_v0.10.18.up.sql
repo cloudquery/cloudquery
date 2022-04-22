@@ -1,3 +1,24 @@
+-- Resource: config.conformance_packs
+CREATE TABLE IF NOT EXISTS "aws_config_conformance_pack_rule_compliances" (
+	"cq_id" uuid NOT NULL,
+	"cq_meta" jsonb,
+	"cq_fetch_date" timestamp without time zone NOT NULL,
+	"conformance_pack_cq_id" uuid,
+	"compliance_type" text,
+	"config_rule_name" text,
+	"controls" text[],
+	"config_rule_invoked_time" timestamp without time zone,
+	"resource_id" text,
+	"resource_type" text,
+	"ordering_timestamp" timestamp without time zone,
+	"result_recorded_time" timestamp without time zone,
+	"annotation" text,
+	CONSTRAINT aws_config_conformance_pack_rule_compliances_pk PRIMARY KEY(cq_fetch_date,conformance_pack_cq_id),
+	UNIQUE(cq_fetch_date,cq_id)
+);
+CREATE INDEX ON aws_config_conformance_pack_rule_compliances (cq_fetch_date, conformance_pack_cq_id);
+SELECT setup_tsdb_child('aws_config_conformance_pack_rule_compliances', 'conformance_pack_cq_id', 'aws_config_conformance_packs', 'cq_id');
+
 -- Resource: ecs.task_definitions
 ALTER TABLE IF EXISTS "aws_ecs_task_definitions" ADD COLUMN IF NOT EXISTS "ephemeral_storage_size" integer;
 ALTER TABLE IF EXISTS "aws_ecs_task_definitions" ADD COLUMN IF NOT EXISTS "runtime_platform_cpu_architecture" text;
