@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -20,7 +19,7 @@ func Wafv2RuleGroups() *schema.Table {
 		Name:          "aws_wafv2_rule_groups",
 		Description:   "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
 		Resolver:      fetchWafv2RuleGroups,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Multiplex:     client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
@@ -132,17 +131,10 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
-	// Dependent on the region select the right scope
-	scope := types.ScopeRegional
-	region := c.Region
-	if region == strings.ToLower("global") {
-		region = "us-east-1"
-		scope = types.ScopeCloudfront
-	}
-	config := wafv2.ListRuleGroupsInput{Scope: scope}
+	config := wafv2.ListRuleGroupsInput{Scope: c.WAFScope}
 	for {
 		output, err := service.ListRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = region
+			options.Region = c.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -153,7 +145,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 			ruleGroup, err := service.GetRuleGroup(ctx, &wafv2.GetRuleGroupInput{
 				Name:  ruleGroupOutput.Name,
 				Id:    ruleGroupOutput.Id,
-				Scope: scope,
+				Scope: c.WAFScope,
 			})
 			if err != nil {
 				return diag.WrapError(err)
