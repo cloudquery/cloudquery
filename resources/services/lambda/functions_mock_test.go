@@ -3,6 +3,8 @@ package lambda
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -107,11 +109,21 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			Versions: []types.FunctionConfiguration{fc},
 		}, nil)
 
+	urlConfig := lambda.GetFunctionUrlConfigOutput{}
+	err = faker.FakeData(&urlConfig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	urlConfig.CreationTime = aws.String("2012-07-14T01:00:00+01:00")
+	urlConfig.LastModifiedTime = aws.String("2012-07-14T01:00:00+01:00")
+	m.EXPECT().GetFunctionUrlConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&urlConfig, nil)
+
 	return client.Services{
 		Lambda: m,
 	}
 }
 
 func TestLambdaFunctions(t *testing.T) {
-	client.AwsMockTestHelper(t, LambdaFunctions(), buildLambdaFunctionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Functions(), buildLambdaFunctionsMock, client.TestOptions{})
 }

@@ -1,6 +1,6 @@
 
 # Table: aws_lambda_function_version_file_system_configs
-Details about the connection between a Lambda function and an Amazon EFS file system. 
+Details about the connection between a Lambda function and an Amazon EFS file system (https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html).
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

@@ -1,6 +1,6 @@
 
 # Table: aws_lambda_function_concurrency_configs
-Details about the provisioned concurrency configuration for a function alias or version. 
+Details about the provisioned concurrency configuration for a function alias or version.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

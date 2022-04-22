@@ -1,10 +1,11 @@
 
 # Table: aws_lambda_function_versions
-Details about a function's configuration. 
+Details about a function's configuration.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
+|architectures|text[]|The instruction set architecture that the function supports|
 |code_sha256|text|The SHA256 hash of the function's deployment package.|
 |code_size|bigint|The size of the function's deployment package, in bytes.|
 |dead_letter_config_target_arn|text|The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.|
@@ -12,6 +13,7 @@ Details about a function's configuration.
 |environment_error_error_code|text|The error code.|
 |environment_error_message|text|The error message.|
 |environment_variables|jsonb|Environment variable key-value pairs.|
+|ephemeral_storage_size|integer|The size of the function’s /tmp directory.|
 |function_arn|text|The function's Amazon Resource Name (ARN).|
 |function_name|text|The name of the function.|
 |handler|text|The function that Lambda calls to begin executing your function.|
@@ -25,7 +27,7 @@ Details about a function's configuration.
 |last_update_status|text|The status of the last update that was performed on the function|
 |last_update_status_reason|text|The reason for the last update that was performed on the function.|
 |last_update_status_reason_code|text|The reason code for the last update that was performed on the function.|
-|master_arn|text|For Lambda@Edge functions, the ARN of the master function.|
+|master_arn|text|For Lambda@Edge functions, the ARN of the main function.|
 |memory_size|integer|The amount of memory available to the function at runtime.|
 |package_type|text|The type of deployment package|
 |revision_id|text|The latest updated revision of the function or alias.|

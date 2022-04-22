@@ -42,7 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iam v1.3.0
 	github.com/aws/aws-sdk-go-v2/service/iot v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/kms v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.2.1
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.3
