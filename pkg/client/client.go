@@ -331,7 +331,7 @@ func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider)
 	}
 	defer providerPlugin.Close()
 	c.Logger.Info("requesting provider to configure", "provider", providerPlugin.Name(), "version", providerPlugin.Version())
-	_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
+	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
 			DSN: c.DSN,
@@ -340,6 +340,8 @@ func (c *Client) TestProvider(ctx context.Context, providerCfg *config.Provider)
 	})
 	if err != nil {
 		return fmt.Errorf("provider test connection failed. Reason: %w", err)
+	} else if resp.Diagnostics.HasErrors() {
+		return fmt.Errorf("provider test configuration failed. Reason: %w", resp.Diagnostics)
 	}
 	return nil
 }
@@ -459,7 +461,7 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				}
 				request.ExtraFields["cq_fetch_date"] = fd
 			}
-			_, err = providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
+			resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 				CloudQueryVersion: Version,
 				Connection: cqproto.ConnectionDetails{
 					DSN: dsnURI,
@@ -471,7 +473,12 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				pLog.Error("failed to configure provider", "error", err)
 				return err
 			}
-			pLog.Info("provider configured successfully")
+			if resp.Diagnostics.HasErrors() {
+				pLog.Error("failed to configure provider", "error", resp.Diagnostics)
+				return resp.Diagnostics
+			}
+
+			pLog.Info("provider configured successfully", "diags", resp.Diagnostics)
 
 			pLog.Info("requesting provider fetch")
 			fetchStart := time.Now()
@@ -1054,42 +1061,10 @@ func reportFetchSummaryErrors(span trace.Span, fetchSummaries map[string]Provide
 			continue
 		}
 
-		for _, e := range ps.Diagnostics().Squash() {
-			if telemetry.ShouldIgnoreDiag(e) {
-				continue
-			}
-
-			if rd, ok := e.(diag.Redactable); ok {
-				if r := rd.Redacted(); r != nil {
-					e = r
-				}
-			}
-
-			if e.Severity() == diag.IGNORE {
-				continue
-			}
-
-			if e.Severity() == diag.WARNING && e.Type() == diag.ACCESS {
-				continue
-			}
-
-			sentry.WithScope(func(scope *sentry.Scope) {
-				scope.SetTags(map[string]string{
-					"diag_type":        e.Type().String(),
-					"provider":         ps.ProviderName,
-					"provider_version": ps.Version,
-					"resource":         e.Description().Resource,
-				})
-				scope.SetExtra("detail", e.Description().Detail)
-				switch e.Severity() {
-				case diag.IGNORE:
-					scope.SetLevel(sentry.LevelDebug)
-				case diag.WARNING:
-					scope.SetLevel(sentry.LevelWarning)
-				case diag.PANIC:
-					scope.SetLevel(sentry.LevelFatal)
-				}
-				sentry.CaptureException(e)
+		for _, e := range ps.Diagnostics().Squash().Redacted() {
+			telemetry.SendDiagToSentry(e, map[string]string{
+				"provider":         ps.ProviderName,
+				"provider_version": ps.Version,
 			})
 		}
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 
 	"github.com/cloudquery/cq-provider-sdk/provider"
@@ -52,7 +53,7 @@ func Provider() *provider.Provider {
 		Name:       "test",
 		Version:    "v0.0.0",
 		Migrations: migrations,
-		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
+		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
 			return &TestClient{l: logger}, nil
 		},
 		ResourceMap: map[string]*schema.Table{

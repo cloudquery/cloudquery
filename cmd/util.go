@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -54,7 +55,13 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		var exitError error
 		defer func() {
 			if spanEnder(exitError, trace.WithStackTrace(false)) && exitError != nil {
-				sentry.CaptureException(exitError)
+				if exitDiags, ok := exitError.(diag.Diagnostics); !ok {
+					sentry.CaptureException(exitError)
+				} else {
+					for _, d := range exitDiags.Squash().Redacted() {
+						telemetry.SendDiagToSentry(d, nil)
+					}
+				}
 			}
 			tele.Shutdown(cmd.Context())
 		}()

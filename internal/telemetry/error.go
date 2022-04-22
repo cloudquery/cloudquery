@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/getsentry/sentry-go"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	"go.opentelemetry.io/otel/codes"
@@ -42,6 +43,10 @@ func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
 
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
+	if d.Severity() == diag.IGNORE || (d.Severity() == diag.WARNING && d.Type() == diag.ACCESS) || d.Type() == diag.USER {
+		return true
+	}
+
 	if d.Type() == diag.DATABASE {
 		ret := sqlStateRegex.FindStringSubmatch(d.Error())
 		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
@@ -50,6 +55,30 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	}
 
 	return false
+}
+
+// SendDiagToSentry sends the given diagnostic to Sentry, along with the provided tags. Default tags are extracted from the diagnostic and attached.
+func SendDiagToSentry(d diag.Diagnostic, extraTags map[string]string) {
+	if ShouldIgnoreDiag(d) {
+		return
+	}
+	sentry.WithScope(func(scope *sentry.Scope) {
+		scope.SetTags(extraTags)
+		scope.SetTags(map[string]string{
+			"diag_type": d.Type().String(),
+			"resource":  d.Description().Resource,
+		})
+		scope.SetExtra("detail", d.Description().Detail)
+		switch d.Severity() {
+		case diag.IGNORE:
+			scope.SetLevel(sentry.LevelDebug)
+		case diag.WARNING:
+			scope.SetLevel(sentry.LevelWarning)
+		case diag.PANIC:
+			scope.SetLevel(sentry.LevelFatal)
+		}
+		sentry.CaptureException(d)
+	})
 }
 
 type errClass string
