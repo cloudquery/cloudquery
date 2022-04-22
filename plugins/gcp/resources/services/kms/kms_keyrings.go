@@ -36,7 +36,7 @@ func KmsKeyrings() *schema.Table {
 				Name:        "create_time",
 				Description: "The time at which this KeyRing was created",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("CreateTime"),
+				Resolver:    schema.DateResolver("CreateTime"),
 			},
 			{
 				Name:        "name",
@@ -81,7 +81,7 @@ func KmsKeyrings() *schema.Table {
 						Name:        "create_time",
 						Description: "The time at which this CryptoKey was created",
 						Type:        schema.TypeTimestamp,
-						Resolver:    client.ISODateResolver("CreateTime"),
+						Resolver:    schema.DateResolver("CreateTime"),
 					},
 					{
 						Name:        "labels",
@@ -97,7 +97,7 @@ func KmsKeyrings() *schema.Table {
 						Name:        "next_rotation_time",
 						Description: "At next_rotation_time, the Key Management Service will automatically: 1 Create a new version of this CryptoKey 2 Mark the new version as primary Key rotations performed manually via CreateCryptoKeyVersion and UpdateCryptoKeyPrimaryVersion do not affect next_rotation_time Keys with purpose ENCRYPT_DECRYPT support automatic rotation For other keys, this field must be omitted",
 						Type:        schema.TypeTimestamp,
-						Resolver:    client.ISODateResolver("NextRotationTime"),
+						Resolver:    schema.DateResolver("NextRotationTime"),
 					},
 					{
 						Name:        "primary_algorithm",
@@ -142,21 +142,21 @@ func KmsKeyrings() *schema.Table {
 						Name:        "primary_create_time",
 						Description: "The time at which this CryptoKeyVersion was created",
 						Type:        schema.TypeTimestamp,
-						Resolver:    client.ISODateResolver("Primary.CreateTime"),
+						Resolver:    schema.DateResolver("Primary.CreateTime"),
 					},
 					{
 						Name:          "primary_destroy_event_time",
 						Description:   "The time this CryptoKeyVersion's key material was destroyed Only present if state is DESTROYED",
 						Type:          schema.TypeTimestamp,
 						IgnoreInTests: true,
-						Resolver:      client.ISODateResolver("Primary.DestroyEventTime"),
+						Resolver:      schema.DateResolver("Primary.DestroyEventTime"),
 					},
 					{
 						Name:          "primary_destroy_time",
 						Description:   "The time this CryptoKeyVersion's key material is scheduled for destruction Only present if state is DESTROY_SCHEDULED",
 						Type:          schema.TypeTimestamp,
 						IgnoreInTests: true,
-						Resolver:      client.ISODateResolver("Primary.DestroyTime"),
+						Resolver:      schema.DateResolver("Primary.DestroyTime"),
 					},
 					{
 						Name:        "primary_external_protection_level_options_external_key_uri",
@@ -168,7 +168,7 @@ func KmsKeyrings() *schema.Table {
 						Name:        "primary_generate_time",
 						Description: "The time this CryptoKeyVersion's key material was generated",
 						Type:        schema.TypeTimestamp,
-						Resolver:    client.ISODateResolver("Primary.GenerateTime"),
+						Resolver:    schema.DateResolver("Primary.GenerateTime"),
 					},
 					{
 						Name:        "primary_import_failure_reason",
@@ -187,7 +187,7 @@ func KmsKeyrings() *schema.Table {
 						Description:   "The time at which this CryptoKeyVersion's key material was imported",
 						Type:          schema.TypeTimestamp,
 						IgnoreInTests: true,
-						Resolver:      client.ISODateResolver("Primary.ImportTime"),
+						Resolver:      schema.DateResolver("Primary.ImportTime"),
 					},
 					{
 						Name:        "primary_name",

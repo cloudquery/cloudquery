@@ -47,7 +47,7 @@ func ComputeProjects() *schema.Table {
 				Name:        "creation_timestamp",
 				Description: "Creation timestamp in RFC3339 text format",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("CreationTimestamp"),
+				Resolver:    schema.DateResolver("CreationTimestamp"),
 			},
 			{
 				Name:        "default_network_tier",

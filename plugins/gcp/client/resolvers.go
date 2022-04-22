@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/thoas/go-funk"
 
@@ -48,33 +47,4 @@ func ResolveResourceId(_ context.Context, _ schema.ClientMeta, r *schema.Resourc
 		return err
 	}
 	return r.Set(c.Name, data)
-}
-
-func parseISODate(d string) (*time.Time, error) {
-	if d == "" {
-		return nil, nil
-	}
-	location, err := time.LoadLocation("UTC")
-	if err != nil {
-		return nil, err
-	}
-	date, err := time.ParseInLocation(time.RFC3339, d, location)
-	if err != nil {
-		return nil, err
-	}
-	return &date, err
-}
-
-func ISODateResolver(path string) schema.ColumnResolver {
-	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		data, err := cast.ToStringE(funk.Get(r.Item, path, funk.WithAllowZero()))
-		if err != nil {
-			return err
-		}
-		date, err := parseISODate(data)
-		if err != nil {
-			return err
-		}
-		return r.Set(c.Name, date)
-	}
 }

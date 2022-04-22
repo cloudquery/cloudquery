@@ -37,13 +37,13 @@ func ResourceManagerFolders() *schema.Table {
 				Name:        "create_time",
 				Description: "Timestamp when the folder was created",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("CreateTime"),
+				Resolver:    schema.DateResolver("CreateTime"),
 			},
 			{
 				Name:        "delete_time",
 				Description: "Timestamp when the folder was requested to be deleted",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("DeleteTime"),
+				Resolver:    schema.DateResolver("DeleteTime"),
 			},
 			{
 				Name:        "display_name",
@@ -74,7 +74,7 @@ func ResourceManagerFolders() *schema.Table {
 				Name:        "update_time",
 				Description: "Timestamp when the folder was last modified",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("UpdateTime"),
+				Resolver:    schema.DateResolver("UpdateTime"),
 			},
 		},
 	}

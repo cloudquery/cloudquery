@@ -30,14 +30,14 @@ func ResourceManagerProjects() *schema.Table {
 				Name:        "create_time",
 				Description: "Creation time",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("CreateTime"),
+				Resolver:    schema.DateResolver("CreateTime"),
 			},
 			{
 				Name:          "delete_time",
 				Description:   "The time at which this resource was requested for deletion",
 				Type:          schema.TypeTimestamp,
 				IgnoreInTests: true,
-				Resolver:      client.ISODateResolver("DeleteTime"),
+				Resolver:      schema.DateResolver("DeleteTime"),
 			},
 			{
 				Name:        "display_name",
@@ -78,7 +78,7 @@ func ResourceManagerProjects() *schema.Table {
 				Name:        "update_time",
 				Description: "The most recent time this resource was modified",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("UpdateTime"),
+				Resolver:    schema.DateResolver("UpdateTime"),
 			},
 		},
 	}

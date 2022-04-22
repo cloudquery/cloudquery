@@ -29,7 +29,7 @@ func ComputeSslPolicies() *schema.Table {
 				Name:        "creation_timestamp",
 				Description: "Creation timestamp in RFC3339 text format",
 				Type:        schema.TypeTimestamp,
-				Resolver:    client.ISODateResolver("CreationTimestamp"),
+				Resolver:    schema.DateResolver("CreationTimestamp"),
 			},
 			{
 				Name:          "custom_features",
