@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+//go:generate cq-gen --resource brokers --config gen.hcl --output .
 func Brokers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_mq_brokers",
@@ -154,7 +155,7 @@ func Brokers() *schema.Table {
 				Name:          "pending_ldap_server_metadata",
 				Description:   "The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker after it is rebooted.",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveMqBrokerPendingLdapServerMetadata,
+				Resolver:      resolveBrokersPendingLdapServerMetadata,
 				IgnoreInTests: true,
 			},
 			{
@@ -439,7 +440,7 @@ func resolveBrokersMaintenanceWindowStartTime(ctx context.Context, meta schema.C
 	return resource.Set(c.Name, data)
 }
 
-func resolveMqBrokerPendingLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveBrokersPendingLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	broker, ok := resource.Item.(*mq.DescribeBrokerOutput)
 	if !ok {
 		return fmt.Errorf("not a DescribeBrokerOutput instance: %#v", resource.Item)
