@@ -15,10 +15,6 @@ import (
 
 func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafV2Client(ctrl)
-	tempRuleGroupSum := types.RuleGroupSummary{}
-	if err := faker.FakeData(&tempRuleGroupSum); err != nil {
-		t.Fatal(err)
-	}
 	visibilityConfig := types.VisibilityConfig{}
 	if err := faker.FakeData(&visibilityConfig); err != nil {
 		t.Fatal(err)
@@ -52,19 +48,6 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		OverrideAction:   &overrideAction,
 		RuleLabels:       labels,
 	}
-	tempRuleGroup := types.RuleGroup{
-		ARN:                  aws.String(faker.Word()),
-		Capacity:             faker.RandomUnixTime(),
-		Id:                   aws.String(faker.Word()),
-		Name:                 aws.String(faker.Word()),
-		VisibilityConfig:     &visibilityConfig,
-		AvailableLabels:      labelSummaries,
-		ConsumedLabels:       labelSummaries,
-		CustomResponseBodies: customRespBody,
-		Description:          aws.String(faker.Word()),
-		LabelNamespace:       aws.String(faker.Word()),
-		Rules:                []types.Rule{rule},
-	}
 	var tempPolicyOutput wafv2.GetPermissionPolicyOutput
 	if err := faker.FakeData(&tempPolicyOutput); err != nil {
 		t.Fatal(err)
@@ -74,16 +57,35 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListRuleGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListRuleGroupsOutput{
-		RuleGroups: []types.RuleGroupSummary{tempRuleGroupSum},
-	}, nil)
-	m.EXPECT().GetRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetRuleGroupOutput{
-		RuleGroup: &tempRuleGroup,
-	}, nil)
-	m.EXPECT().GetPermissionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tempPolicyOutput, nil)
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListTagsForResourceOutput{
-		TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
-	}, nil)
+	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
+		tempRuleGroupSum := types.RuleGroupSummary{}
+		if err := faker.FakeData(&tempRuleGroupSum); err != nil {
+			t.Fatal(err)
+		}
+		m.EXPECT().ListRuleGroups(gomock.Any(), &wafv2.ListRuleGroupsInput{Scope: scope}, gomock.Any()).Return(&wafv2.ListRuleGroupsOutput{
+			RuleGroups: []types.RuleGroupSummary{tempRuleGroupSum},
+		}, nil)
+		tempRuleGroup := types.RuleGroup{
+			ARN:                  aws.String(faker.Word()),
+			Capacity:             faker.RandomUnixTime(),
+			Id:                   aws.String(faker.Word()),
+			Name:                 aws.String(faker.Word()),
+			VisibilityConfig:     &visibilityConfig,
+			AvailableLabels:      labelSummaries,
+			ConsumedLabels:       labelSummaries,
+			CustomResponseBodies: customRespBody,
+			Description:          aws.String(faker.Word()),
+			LabelNamespace:       aws.String(faker.Word()),
+			Rules:                []types.Rule{rule},
+		}
+		m.EXPECT().GetRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetRuleGroupOutput{
+			RuleGroup: &tempRuleGroup,
+		}, nil)
+		m.EXPECT().GetPermissionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tempPolicyOutput, nil)
+		m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListTagsForResourceOutput{
+			TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
+		}, nil)
+	}
 
 	return client.Services{WafV2: m}
 }

@@ -3,15 +3,15 @@ package wafv2
 import (
 	"context"
 	"encoding/json"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/spf13/cast"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/spf13/cast"
 )
 
 func Wafv2ManagedRuleGroups() *schema.Table {
@@ -19,7 +19,7 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 		Name:                 "aws_wafv2_managed_rule_groups",
 		Description:          "High-level information about a managed rule group, returned by ListAvailableManagedRuleGroups",
 		Resolver:             fetchWafv2ManagedRuleGroups,
-		Multiplex:            client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Multiplex:            client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: resolveDescribeManagedRuleGroup,
@@ -83,17 +83,10 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
-	// Dependent on the region select the right scope
-	scope := types.ScopeRegional
-	region := c.Region
-	if region == strings.ToLower("global") {
-		region = "us-east-1"
-		scope = types.ScopeCloudfront
-	}
-	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: scope}
+	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: c.WAFScope}
 	for {
 		output, err := service.ListAvailableManagedRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = region
+			options.Region = c.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -113,21 +106,13 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	service := c.Services().WafV2
 
-	// Dependent on the region select the right scope
-	scope := types.ScopeRegional
-	region := c.Region
-	if region == strings.ToLower("global") {
-		region = "us-east-1"
-		scope = types.ScopeCloudfront
-	}
-
 	// Resolve managed rule group via describe managed rule group
 	descrManagedRuleGroup, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{
 		Name:       managedRuleGroupSum.Name,
 		VendorName: managedRuleGroupSum.VendorName,
-		Scope:      scope,
+		Scope:      c.WAFScope,
 	}, func(options *wafv2.Options) {
-		options.Region = region
+		options.Region = c.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)

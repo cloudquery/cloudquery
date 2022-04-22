@@ -14,18 +14,22 @@ import (
 
 func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafV2Client(ctrl)
-	tempManagedRuleGroupSum := types.ManagedRuleGroupSummary{}
-	if err := faker.FakeData(&tempManagedRuleGroupSum); err != nil {
-		t.Fatal(err)
-	}
-	tempDescribeManagedRuleGroup := wafv2.DescribeManagedRuleGroupOutput{}
+	var tempDescribeManagedRuleGroup wafv2.DescribeManagedRuleGroupOutput
 	if err := faker.FakeData(&tempDescribeManagedRuleGroup); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListAvailableManagedRuleGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListAvailableManagedRuleGroupsOutput{
-		ManagedRuleGroups: []types.ManagedRuleGroupSummary{tempManagedRuleGroupSum},
-	}, nil)
-	m.EXPECT().DescribeManagedRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tempDescribeManagedRuleGroup, nil)
+	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
+		tempManagedRuleGroupSum := types.ManagedRuleGroupSummary{}
+		if err := faker.FakeData(&tempManagedRuleGroupSum); err != nil {
+			t.Fatal(err)
+		}
+		m.EXPECT().ListAvailableManagedRuleGroups(gomock.Any(), &wafv2.ListAvailableManagedRuleGroupsInput{
+			Scope: scope,
+		}, gomock.Any()).Return(&wafv2.ListAvailableManagedRuleGroupsOutput{
+			ManagedRuleGroups: []types.ManagedRuleGroupSummary{tempManagedRuleGroupSum},
+		}, nil)
+		m.EXPECT().DescribeManagedRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tempDescribeManagedRuleGroup, nil)
+	}
 
 	return client.Services{WafV2: m}
 }
