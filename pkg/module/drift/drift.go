@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
+
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -250,7 +252,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	}
 
 	for _, cfg := range d.config.Providers {
-		schema, err := d.findProvider(cfg, req.Providers)
+		schema, err := d.findProvider(cfg, req.Schemas)
 		if err != nil {
 			return nil, err
 		} else if schema == nil {
@@ -304,7 +306,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	return resList, nil
 }
 
-func listUnimplementedResources(logger hclog.Logger, resources map[string]*ResourceConfig, provSchema *cqproto.GetProviderSchemaResponse) {
+func listUnimplementedResources(logger hclog.Logger, resources map[string]*ResourceConfig, provSchema *core.ProviderSchema) {
 	var (
 		res, subRes []string
 	)

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"sort"
-	"strings"
 	"sync"
 	"time"
 
@@ -33,23 +32,25 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/google/uuid"
-	"go.opentelemetry.io/otel/trace"
 )
-
-type ResourceFetchSummary struct {
-	cqproto.ResourceFetchSummary
-	Duration time.Duration
-}
 
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
-	Name                  string
-	Alias                 string
-	Version               string
-	TotalResourcesFetched uint64
-	FetchResources        map[string]ResourceFetchSummary
-	Status                string
-	Duration              time.Duration
+	Name                  string                          `json:"name,omitempty"`
+	Alias                 string                          `json:"alias,omitempty"`
+	Version               string                          `json:"version,omitempty"`
+	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
+	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
+	Status                string                          `json:"status,omitempty"`
+	Duration              time.Duration                   `json:"duration,omitempty"`
+}
+
+func (p ProviderFetchSummary) Resources() []string {
+	rr := make([]string, 0, len(p.FetchedResources))
+	for r := range p.FetchedResources {
+		rr = append(rr, r)
+	}
+	return rr
 }
 
 func (p ProviderFetchSummary) String() string {
@@ -61,47 +62,22 @@ func (p ProviderFetchSummary) String() string {
 
 func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
 	var allDiags diag.Diagnostics
-	for _, s := range p.FetchResources {
+	for _, s := range p.FetchedResources {
 		allDiags = append(allDiags, s.Diagnostics...)
 	}
 	return allDiags
 }
 
-func (p ProviderFetchSummary) Metrics() map[string]int64 {
-	type diagCount map[diag.DiagnosticType]int64
-	sevCounts := make(map[diag.Severity]diagCount)
-
-	for _, d := range p.Diagnostics() {
-		if _, ok := sevCounts[d.Severity()]; !ok {
-			tc := make(diagCount)
-			tc[d.Type()]++
-			sevCounts[d.Severity()] = tc
-		} else {
-			sevCounts[d.Severity()][d.Type()]++
-		}
-	}
-	ret := make(map[string]int64, len(sevCounts)+1)
-	for severity, typeCount := range sevCounts {
-		var sevName string
-		switch severity {
-		case diag.IGNORE:
-			sevName = "ignore"
-		case diag.WARNING:
-			sevName = "warning"
-		case diag.ERROR:
-			sevName = "error"
-		default:
-			sevName = "unknown"
-		}
-		prefix := "fetch.diag." + sevName + "."
-		var total int64
-		for typ, count := range typeCount {
-			ret[prefix+strings.ToLower(typ.String())+"."+p.Name] = count
-			total += count
-		}
-		ret[prefix+"total."+p.Name] = total
-	}
-	return ret
+type ResourceFetchSummary struct {
+	// Execution status of resource
+	Status string `json:"status,omitempty"`
+	// Total Amount of resources collected by this resource
+	ResourceCount uint64 `json:"resource_count,omitempty"`
+	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
+	// details on how to solve this issue
+	Diagnostics diag.Diagnostics `json:"-"`
+	// Duration in seconds
+	Duration time.Duration `json:"duration,omitempty"`
 }
 
 type FetchUpdateCallback func(update FetchUpdate)
@@ -140,9 +116,32 @@ func (f FetchUpdate) DoneCount() int {
 
 // FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
 type FetchResponse struct {
-	ProviderFetchSummary map[string]ProviderFetchSummary
-	TotalFetched         uint64
-	Duration             time.Duration
+	FetchId              uuid.UUID                        `json:"fetch_id,omitempty"`
+	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
+	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
+	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
+}
+
+func (fr FetchResponse) Properties() map[string]interface{} {
+	properties := map[string]interface{}{
+		"fetchId":       fr.FetchId,
+		"totalFetched":  fr.TotalFetched,
+		"fetchDuration": fr.Duration.Seconds(),
+		"providerCount": len(fr.ProviderFetchSummary),
+	}
+	providers := make([]map[string]interface{}, 0, len(fr.ProviderFetchSummary))
+	for _, p := range fr.ProviderFetchSummary {
+		providers = append(providers, map[string]interface{}{
+			"alias":              fmt.Sprintf("%s#%d", p.Name, len(providers)),
+			"provider":           p.Name,
+			"resources":          p.Resources(),
+			"fetchCount":         p.TotalResourcesFetched,
+			"totalFetchDuration": p.Duration.Seconds(),
+			"diags":              SummarizeDiagnostics(p.Diagnostics()),
+		})
+	}
+	properties["providers"] = providers
+	return properties
 }
 
 func (fr FetchResponse) HasErrors() bool {
@@ -198,7 +197,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	}
 	defer db.Close()
 	stateClient := state.NewClient(db, logging.NewZHcLog(&log.Logger, "fetch"))
-	// migrate cloudquery core tables to latest version
+	// migrate CloudQuery core tables to latest version
 	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
@@ -237,7 +236,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 		}(providerInfo)
 	}
 	wg.Wait()
-	response := &FetchResponse{ProviderFetchSummary: make(map[string]ProviderFetchSummary, len(opts.ProvidersInfo)), Duration: time.Since(start)}
+	response := &FetchResponse{FetchId: fetchId, ProviderFetchSummary: make(map[string]*ProviderFetchSummary, len(opts.ProvidersInfo)), Duration: time.Since(start)}
 	close(fetchSummaries)
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.summary.String()] = ps.summary
@@ -246,12 +245,10 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 		}
 		response.TotalFetched += ps.summary.TotalResourcesFetched
 	}
-	reportFetchSummaryErrors(trace.SpanFromContext(ctx), response.ProviderFetchSummary)
-
 	return response, diags
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts *FetchOptions) (ProviderFetchSummary, diag.Diagnostics) {
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -263,7 +260,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to create provider plugin")
-		return ProviderFetchSummary{}, diag.FromError(err, diag.INTERNAL)
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer pm.ClosePlugin(providerPlugin)
 
@@ -278,21 +275,21 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to configure provider")
-		return ProviderFetchSummary{}, diag.FromError(err, diag.INTERNAL)
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
-	return summary, diags
+	return summary, convertToFetchDiags(diags, info.Provider.Name, info.Provider.Version)
 }
 
-func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (ProviderFetchSummary, diag.Diagnostics) {
+func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
 	var (
 		start   = time.Now()
-		summary = ProviderFetchSummary{
+		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
 			Version:               info.Provider.Version,
-			FetchResources:        make(map[string]ResourceFetchSummary),
+			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                "Finished",
 			TotalResourcesFetched: 0,
 		}
@@ -340,7 +337,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
 			}
 			summary.TotalResourcesFetched += resp.ResourceCount
-			summary.FetchResources[resp.ResourceName] = ResourceFetchSummary{resp.Summary, time.Since(start)}
+			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{resp.Summary.Status.String(), resp.Summary.ResourceCount, resp.Summary.Diagnostics, time.Since(start)}
 			if resp.Error != "" {
 				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
 				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
@@ -425,11 +422,11 @@ func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
 }
 
 type fetchResult struct {
-	summary ProviderFetchSummary
+	summary *ProviderFetchSummary
 	diags   diag.Diagnostics
 }
 
-func createFetchSummary(fetchId uuid.UUID, start time.Time, ps ProviderFetchSummary) *state.FetchSummary {
+func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSummary) *state.FetchSummary {
 	return &state.FetchSummary{
 		FetchId:            fetchId,
 		CreatedAt:          time.Now().UTC(),
@@ -442,7 +439,7 @@ func createFetchSummary(fetchId uuid.UUID, start time.Time, ps ProviderFetchSumm
 		ProviderAlias:      ps.Alias,
 		ProviderVersion:    ps.Version,
 		CoreVersion:        Version,
-		Resources:          parseFetchedResources(ps.FetchResources),
+		Resources:          parseFetchedResources(ps.FetchedResources),
 	}
 }
 
@@ -451,7 +448,7 @@ func parseFetchedResources(resources map[string]ResourceFetchSummary) []state.Re
 	for k, v := range resources {
 		rfs = append(rfs, state.ResourceFetchSummary{
 			ResourceName:  k,
-			Status:        v.Status.String(),
+			Status:        v.Status,
 			Error:         v.Diagnostics.Error(),
 			ResourceCount: v.ResourceCount,
 		})

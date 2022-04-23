@@ -3,6 +3,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 const LatestVersion = "latest"
@@ -34,6 +35,26 @@ func (pp Providers) Get(name string) (Provider, bool) {
 		}
 	}
 	return Provider{}, false
+}
+
+func (pp Providers) GetMany(names ...string) []Provider {
+	providers := make([]Provider, 0)
+	for _, n := range names {
+		p, ok := pp.Get(n)
+		if !ok {
+			continue
+		}
+		providers = append(providers, p)
+	}
+	return providers
+}
+
+func (pp Providers) String() string {
+	pps := make([]string, len(pp))
+	for i, p := range pp {
+		pps[i] = p.String()
+	}
+	return fmt.Sprintf("[%s]", strings.Join(pps, ","))
 }
 
 //go:generate mockgen -package=registry -destination=./mock_registry.go . Registry

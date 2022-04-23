@@ -2,13 +2,11 @@ package cmd
 
 import (
 	"os"
-	"strconv"
-	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/telemetry"
+	"github.com/cloudquery/cloudquery/internal/analytics"
+
 	"github.com/cloudquery/cloudquery/pkg/core"
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -66,7 +64,7 @@ func initSentry() {
 			if err != nil || hn == "" {
 				return "unknown" // Not returning empty string, otherwise Sentry auto-fill it
 			}
-			return telemetry.HashAttribute(hn)
+			return analytics.HashAttribute(hn)
 		}(),
 		BeforeSend: func(event *sentry.Event, hint *sentry.EventHint) *sentry.Event {
 			if hint != nil && hint.RecoveredException != nil {
@@ -90,26 +88,4 @@ func initSentry() {
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
-}
-
-func setSentryVars(traceID, randomID string) {
-	if strings.HasPrefix(randomID, telemetry.CQTeamID) && !viper.GetBool("debug-sentry") {
-		if err := sentry.Init(sentry.ClientOptions{
-			Dsn: "",
-		}); err != nil {
-			zerolog.Info().Err(err).Msg("sentry.Init to disable failed")
-		}
-	}
-
-	sentry.ConfigureScope(func(scope *sentry.Scope) {
-		scope.SetExtra("trace_id", traceID)
-		scope.SetUser(sentry.User{
-			ID: randomID,
-		})
-		scope.SetTags(map[string]string{
-			"terminal": strconv.FormatBool(ui.IsTerminal()),
-			"ci":       strconv.FormatBool(telemetry.IsCI()),
-			"faas":     strconv.FormatBool(telemetry.IsFaaS()),
-		})
-	})
 }

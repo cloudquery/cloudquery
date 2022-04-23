@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -65,6 +67,7 @@ Use "{{.Root.Use}} options" for a list of global CLI options.
 
 var (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
+
 	Commit = "development"
 	Date   = "unknown"
 
@@ -80,6 +83,13 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 Find more information at:
 	https://docs.cloudquery.io`,
 		Version: core.Version,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			logInvocationParams(cmd, args)
+			//analytics.Identify()
+		},
+		PersistentPostRun: func(cmd *cobra.Command, args []string) {
+			analytics.Close()
+		},
 	}
 )
 
@@ -95,6 +105,7 @@ func init() {
 	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
+
 	// Logging Flags
 	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
 	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
@@ -108,11 +119,13 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
 	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
+
 	rootCmd.PersistentFlags().String("data-dir", "./.cq", "Directory to save and load CloudQuery persistent data to (env: CQ_DATA_DIR)")
 	rootCmd.PersistentFlags().String("plugin-dir", "", "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	rootCmd.PersistentFlags().String("policy-dir", "", "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "Path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	rootCmd.PersistentFlags().Bool("skip-build-tables", false, "Skip building tables on run, this should only be true if tables already exist.")
+
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true to debug telemetry logging")
@@ -134,6 +147,8 @@ func init() {
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
+
+	// Telemetry specific options
 	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-telemetry"))
 	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
 	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
@@ -144,7 +159,7 @@ func init() {
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry)
+	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry, initAnalytics)
 }
 
 func initUlimit() {
@@ -170,9 +185,21 @@ func initLogging() {
 	zerolog.Logger = logging.Configure(loggerConfig)
 }
 
+func initAnalytics() {
+	opts := []analytics.Option{
+		analytics.WithVersionInfo(core.Version, Commit, Date),
+		analytics.WithEndpoint(viper.GetString("telemetry-endpoint"), viper.GetBool("insecure-telemetry-endpoint")),
+		analytics.WithTerminal(ui.IsTerminal()),
+	}
+	if viper.GetBool("no-telemetry") {
+		opts = append(opts, analytics.WithDisabled())
+	}
+	_ = analytics.Init(opts...)
+}
+
 func logInvocationParams(cmd *cobra.Command, args []string) {
 	l := zerolog.Info().Str("core_version", core.Version)
-	rootCmd.Flags().Visit(func(f *pflag.Flag) {
+	cmd.Flags().Visit(func(f *pflag.Flag) {
 		if f.Name == "dsn" {
 			l = l.Str("pflag:"+f.Name, "(redacted)")
 			return

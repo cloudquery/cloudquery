@@ -177,13 +177,13 @@ func TestMaybeCheckForUpdate(t *testing.T) {
 			if tt.init != nil {
 				tt.init(t, fs)
 			}
-			got, err := MaybeCheckForUpdate(ctx, fs, tt.nowUnix, tt.period)
+			got, err := CheckCoreUpdate(ctx, fs, tt.nowUnix, tt.period)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("MaybeCheckForUpdate() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("CheckCoreUpdate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !got.Equal(tt.want) {
-				t.Errorf("MaybeCheckForUpdate() = %v, want %v", got, tt.want)
+				t.Errorf("CheckCoreUpdate() = %v, want %v", got, tt.want)
 			}
 			if tt.post != nil {
 				tt.post(t, fs)

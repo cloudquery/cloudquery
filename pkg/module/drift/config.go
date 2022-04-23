@@ -6,7 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/cloudquery/cloudquery/pkg/core"
+
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 )
@@ -364,7 +365,7 @@ func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider, log
 	return ret
 }
 
-func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*cqproto.GetProviderSchemaResponse) (*cqproto.GetProviderSchemaResponse, error) {
+func (d *Drift) findProvider(cfg *ProviderConfig, schemas []*core.ProviderSchema) (*core.ProviderSchema, error) {
 	for _, schema := range schemas {
 		if ok, diags := d.applyProvider(cfg, schema); diags.HasErrors() {
 			return nil, diags
@@ -411,7 +412,7 @@ func removeIgnored(list []string, ignored []string) []string {
 
 // applyProvider tries to apply the given config for the given provider.
 // Returns true if the given config is valid for the given provider and cfg is changed to resolve macros and acl processing
-func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaResponse) (bool, hcl.Diagnostics) {
+func (d *Drift) applyProvider(cfg *ProviderConfig, p *core.ProviderSchema) (bool, hcl.Diagnostics) {
 	if p.Name != cfg.Name {
 		return false, nil // not the correct provider: names don't match
 	}
@@ -471,7 +472,7 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *cqproto.GetProviderSchemaR
 	return true, diags
 }
 
-func (d *Drift) lookupResource(resName string, prov *cqproto.GetProviderSchemaResponse) *traversedTable {
+func (d *Drift) lookupResource(resName string, prov *core.ProviderSchema) *traversedTable {
 	if d.tableMap == nil {
 		d.tableMap = make(map[string]resourceMap)
 	}

@@ -1,4 +1,4 @@
-package telemetry
+package errors
 
 import (
 	"context"
@@ -10,38 +10,18 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
-// RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
-func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
-	if err == nil {
-		return false
-	}
-
-	if rd, ok := err.(diag.Redactable); ok {
-		if r := rd.Redacted(); r != nil {
-			err = r
-		}
-	}
-
-	if cls := classifyError(err); cls != errNoClass {
-		span.SetStatus(codes.Error, string(cls))
-		return false
-	}
-
-	span.RecordError(err, opts...)
-	span.SetStatus(codes.Error, err.Error())
-	return true
-}
-
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
+	//d.Type() == diag.USER
+	if d.Severity() == diag.IGNORE || (d.Severity() == diag.WARNING && d.Type() == diag.ACCESS) {
+		return true
+	}
 	if d.Type() == diag.DATABASE {
 		ret := sqlStateRegex.FindStringSubmatch(d.Error())
 		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
@@ -62,13 +42,13 @@ const (
 	errDatabase     = errClass("database")
 )
 
+// TODO: decide what to do with this method
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
 	if st, ok := status.FromError(err); ok {
 		if st.Code() == gcodes.Canceled {
 			return errCancellation
 		}
-		// if strings.Contains(st.Message(), `AWS Error: operation error STS: GetCallerIdentity,`) {
 		if strings.HasPrefix(st.Message(), `failed to create aws client for`) ||
 			strings.HasPrefix(st.Message(), `failed to retrieve credentials for`) {
 			return errAuth

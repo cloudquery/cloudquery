@@ -6,6 +6,8 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -556,8 +558,7 @@ func TestApplyProvider(t *testing.T) {
 			p := table[i].cfg
 
 			d.tableMap = nil // reinit every time
-			res, diags := d.applyProvider(&p, table[i].schema)
-
+			res, diags := d.applyProvider(&p, &core.ProviderSchema{GetProviderSchemaResponse: table[i].schema})
 			assert.Equal(t, table[i].expectedError, diags.HasErrors(), "diags: %s", diags.Error())
 			assert.Equal(t, table[i].expectedResult, res, "unexpected result")
 			if table[i].checkResourceList {
@@ -671,7 +672,7 @@ func TestSubResourceLookup(t *testing.T) {
 		},
 	}
 
-	res, diags := d.applyProvider(&prov, sch)
+	res, diags := d.applyProvider(&prov, &core.ProviderSchema{GetProviderSchemaResponse: sch})
 	assert.False(t, diags.HasErrors(), "diags: %s", diags.Error())
 	assert.True(t, res, "unexpected result")
 
@@ -682,7 +683,7 @@ func TestSubResourceLookup(t *testing.T) {
 	assert.Equal(t, []string{"data1"}, ret["aws_test1_2"].Identifiers)
 	assert.Equal(t, []string{"data1", "data2"}, ret["aws_test1_2"].Attributes)
 
-	tbl := d.lookupResource("aws_test1_2", sch)
+	tbl := d.lookupResource("aws_test1_2", &core.ProviderSchema{GetProviderSchemaResponse: sch})
 	assert.NotNil(t, tbl)
 	assert.Equal(t, []string{"data1", "data2", "data3_ignored"}, tbl.NonCQColumns())
 	assert.Equal(t, []string{"data1"}, tbl.NonCQPrimaryKeys())

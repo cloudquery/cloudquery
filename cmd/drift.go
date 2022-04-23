@@ -3,6 +3,8 @@ package cmd
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/pkg/errors"
+
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
@@ -22,19 +24,20 @@ var (
 		Long:  "Scan for drifts between cloud provider and IaC",
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			driftParams.StateFiles = args
-
-			return c.CallModule(ctx, console.ModuleCallRequest{
+			err := c.CallModule(ctx, console.ModuleCallRequest{
 				Name:       "drift",
 				Params:     driftParams,
 				Profile:    driftProfile,
 				OutputPath: driftOutputPath,
 			})
+			errors.CaptureError(err, map[string]string{"command": "drift"})
+			return err
 		}),
 	}
 
-	driftParams drift.RunParams
-
-	driftProfile, driftOutputPath string
+	driftParams     drift.RunParams
+	driftProfile    string
+	driftOutputPath string
 )
 
 func init() {

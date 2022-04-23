@@ -3,20 +3,15 @@ package cmd
 import (
 	"context"
 	"os"
-	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/trace"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
@@ -40,52 +35,27 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 			panic(err)
 		}()
 
-		tele := telemetry.New(cmd.Context(), telemetryOpts()...)
-
-		ctx, _ := tele.Tracer(cmd.Context())
-		ctx, spanEnder := telemetry.StartSpanFromContext(ctx, "cli:"+cmd.CommandPath(),
-			trace.WithAttributes(
-				attribute.String("command", cmd.CommandPath()),
-			),
-			trace.WithSpanKind(trace.SpanKindServer),
-		)
-		setSentryVars(trace.SpanFromContext(ctx).SpanContext().TraceID().String(), tele.RandomId())
-
-		var exitError error
-		defer func() {
-			if spanEnder(exitError, trace.WithStackTrace(false)) && exitError != nil {
-				sentry.CaptureException(exitError)
-			}
-			tele.Shutdown(cmd.Context())
-		}()
-
-		if err := handleConsole(ctx, tele, cmd, args, f); err != nil {
+		if err := handleConsole(cmd.Context(), cmd, args, f); err != nil {
 			if ee, ok := err.(*console.ExitCodeError); ok {
 				exitWithCode = ee.ExitCode
 				return // exitError is not set
 			}
-
-			exitError, exitWithCode = err, 1
 			cmd.PrintErrln(err)
 		}
 	}
 }
 
-func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Command, args []string, f func(context.Context, *console.Client, *cobra.Command, []string) error) error {
-	logInvocationParams(cmd, args)
+func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f func(context.Context, *console.Client, *cobra.Command, []string) error) error {
 
 	cfgPath := viper.GetString("configPath")
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
-	var c *console.Client
-
-	delayMessage := ui.IsTerminal()
-
-	var cfgMutator func(*config.Config) error
-
+	var (
+		c          *console.Client
+		cfgMutator func(*config.Config) error
+	)
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":
-		delayMessage = false
 	case "init":
 		// No console client created here
 	case "describe":
@@ -102,17 +72,6 @@ func handleConsole(ctx context.Context, tele *telemetry.Client, cmd *cobra.Comma
 		c, err = console.CreateClient(ctx, cfgPath, false, cfgMutator)
 		if err != nil {
 			return err
-		}
-	}
-
-	if tele.Enabled() && tele.NewRandomId() {
-		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
-		if delayMessage {
-			select {
-			case <-time.After(2 * time.Second):
-			case <-ctx.Done():
-				return ctx.Err()
-			}
 		}
 	}
 

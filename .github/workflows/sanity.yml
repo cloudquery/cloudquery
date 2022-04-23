@@ -98,7 +98,7 @@ jobs:
           CQ_NO_TELEMETRY: 1
 
       - name: Drop
-        run: go run ./main.go provider drop test --config=internal/test/test_config.hcl
+        run: go run ./main.go provider drop test --config=internal/test/test_config.hcl --force
         env:
           CQ_NO_TELEMETRY: 1
 
