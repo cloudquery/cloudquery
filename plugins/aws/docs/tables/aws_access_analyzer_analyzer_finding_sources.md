@@ -1,6 +1,6 @@
 
 # Table: aws_access_analyzer_analyzer_finding_sources
-The source of the finding.
+The source of the finding
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
