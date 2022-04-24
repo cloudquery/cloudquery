@@ -255,8 +255,6 @@ github.com/aws/aws-sdk-go-v2/service/iot v1.20.0 h1:zI9c/p/9Pxt+NrgoFi4E2uYgRDv6
 github.com/aws/aws-sdk-go-v2/service/iot v1.20.0/go.mod h1:E8QH8uFrcjDqkJWrmTHS75XPm51tZcGUH+5LcqBkP2A=
 github.com/aws/aws-sdk-go-v2/service/kms v1.17.0 h1:Q5pU1J47AS4J8HTV5dgG51xNCfukc7JL4sr/8hNjXOY=
 github.com/aws/aws-sdk-go-v2/service/kms v1.17.0/go.mod h1:QuiHPBqlOFCi4LqdSskYYAWpQlx3PKmohy+rE2F+o5g=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0 h1:ChVmaOi+4HHvbmVrYlWzoj+4EmrrPCR8zvz2PRujlWM=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.3.0/go.mod h1:XDPNosc+4N9cdxyFr9iTaphCN1G3l2a4MLawIagr1Qk=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.22.0 h1:y4iAiwisIY1FKyaoYU6hHVjQ2N0/4aUWow0021/acXU=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.22.0/go.mod h1:1/klj5RfSVnRVLC6qnZYnJqL8RcKhi4KHDm5BwnilOY=
 github.com/aws/aws-sdk-go-v2/service/mq v1.2.1 h1:FyNL2nBj1Os8UnENb/hdwtlXRMitn+6OpOdXgnTeq0g=
@@ -354,8 +352,8 @@ github.com/cilium/ebpf v0.4.0/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJ
 github.com/cilium/ebpf v0.6.2/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJXRs=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
-github.com/cloudquery/cq-gen v0.0.3 h1:8SUghTX6M5z2LbUizn4WhzbRO6Mq1YDO++4wubC59xc=
-github.com/cloudquery/cq-gen v0.0.3/go.mod h1:1UY0w0cm8uC3DwCUO5GNClB6pOztnbBvbOQOkSm6X7Y=
+github.com/cloudquery/cq-gen v0.0.4 h1:VcVwtmv5d/XISCvXxWGxfe2ouaqXs1FBLmpb3ozpeUk=
+github.com/cloudquery/cq-gen v0.0.4/go.mod h1:1UY0w0cm8uC3DwCUO5GNClB6pOztnbBvbOQOkSm6X7Y=
 github.com/cloudquery/cq-provider-sdk v0.8.2/go.mod h1:IHxqY7TOttWhNQhMRqYl1vBo2JS2szLAf5Mhg78MwTQ=
 github.com/cloudquery/cq-provider-sdk v0.8.19 h1:Wl5vOz6kis/liKutXltn4OaXVi8lJKv6wmkTThnt9sg=
 github.com/cloudquery/cq-provider-sdk v0.8.19/go.mod h1:IHxqY7TOttWhNQhMRqYl1vBo2JS2szLAf5Mhg78MwTQ=

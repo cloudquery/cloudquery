@@ -9,12 +9,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func AccessAnalyzerAnalyzers() *schema.Table {
+//go:generate cq-gen --resource analyzers --config gen.hcl --output .
+func Analyzers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_access_analyzer_analyzers",
 		Description:  "Contains information about the analyzer",
@@ -38,7 +38,7 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The ARN of the analyzer.",
+				Description: "The ARN of the analyzer",
 				Type:        schema.TypeString,
 			},
 			{
@@ -53,7 +53,7 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 			},
 			{
 				Name:        "status",
-				Description: "The status of the analyzer. An Active analyzer successfully monitors supported resources and generates new findings. The analyzer is Disabled when a user action, such as removing trusted access for AWS IAM Access Analyzer from AWS Organizations, causes the analyzer to stop generating new findings. The status is Creating when the analyzer creation is in progress and Failed when the analyzer creation has failed.",
+				Description: "The status of the analyzer",
 				Type:        schema.TypeString,
 			},
 			{
@@ -87,8 +87,8 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 			{
 				Name:        "aws_access_analyzer_analyzer_findings",
 				Description: "Contains information about a finding",
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"analyzer_cq_id", "id"}},
 				Resolver:    fetchAccessAnalyzerAnalyzerFindings,
+				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"analyzer_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "analyzer_cq_id",
@@ -118,7 +118,7 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 					},
 					{
 						Name:        "resource_owner_account",
-						Description: "The AWS account ID that owns the resource",
+						Description: "The Amazon Web Services account ID that owns the resource",
 						Type:        schema.TypeString,
 					},
 					{
@@ -143,7 +143,7 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 					},
 					{
 						Name:          "error",
-						Description:   "The error that resulted in an Error finding.",
+						Description:   "The error that resulted in an Error finding",
 						Type:          schema.TypeString,
 						IgnoreInTests: true,
 					},
@@ -166,7 +166,7 @@ func AccessAnalyzerAnalyzers() *schema.Table {
 				Relations: []*schema.Table{
 					{
 						Name:          "aws_access_analyzer_analyzer_finding_sources",
-						Description:   "The source of the finding.",
+						Description:   "The source of the finding",
 						Resolver:      fetchAccessAnalyzerAnalyzerFindingSources,
 						IgnoreInTests: true,
 						Columns: []schema.Column{
