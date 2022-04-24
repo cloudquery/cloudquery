@@ -14,16 +14,16 @@ ts-start:
 # stop the timescale db running in a local container
 .PHONY: ts-stop
 ts-stop:
-	docker stop $(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
+	docker stop $$(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
 
 # start a running docker container
-.PHONY: start-pg
-start-pg:
+.PHONY: pg-start
+pg-start:
 	docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 
 # stop a running docker container
-.PHONY: stop-pg
-stop-pg:
+.PHONY: pg-start
+pg-start:
 	docker stop $$(docker ps -q --filter ancestor=postgres:latest)
 
 # connect to pg via cli
@@ -60,3 +60,10 @@ test-unit:
 .PHONY: test-integration
 test-integration:
 	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
+
+# Create a DB migration
+.PHONY: db-migration
+db-migration:
+	@if [[ "$(prefix)" == "" ]]; then echo "Invalid prefix, see example 'make db-migration prefix=26_v0.10.18'" && exit 1; fi;
+	go run tools/migrations/main.go -prefix "${prefix}" -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
+	go run tools/migrations/main.go -prefix "${prefix}" -fake-tsdb -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
