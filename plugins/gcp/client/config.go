@@ -11,8 +11,10 @@ import (
 
 // Config defines Provider Configuration
 type Config struct {
-	ProjectFilter         string   `hcl:"project_filter,optional"`
+	ProjectFilter         string   `hcl:"project_filter,optional"` // Deprecated
 	ProjectIDs            []string `hcl:"project_ids,optional"`
+	FolderIDs             []string `hcl:"folder_ids,optional"`
+	FolderMaxDepth        uint     `hcl:"folders_max_depth,optional"`
 	ServiceAccountKeyJSON string   `hcl:"service_account_key_json,optional"`
 
 	BaseDelay         int     `hcl:"backoff_base_delay,optional" default:"-1"`
@@ -25,8 +27,10 @@ type Config struct {
 
 func (c Config) Example() string {
 	return `configuration {
-				// Optional. Filter as described https://cloud.google.com/sdk/gcloud/reference/projects/list --filter
-				// project_filter = ""
+				// Optional. List of folders to get projects from. Required permission: resourcemanager.projects.list
+				// folder_ids = [ "organizations/<ORG_ID>", "folders/<FOLDER_ID>" ]
+				// Optional. Maximum level of folders to recurse into
+				// folders_max_depth = 5
 				// Optional. If not specified either using all projects accessible.
 				// project_ids = [<CHANGE_THIS_TO_YOUR_PROJECT_ID>]
 				// Optional. ServiceAccountKeyJSON passed as value instead of a file path, can be passed also via env: CQ_SERVICE_ACCOUNT_KEY_JSON

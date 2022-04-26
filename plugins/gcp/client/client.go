@@ -9,9 +9,10 @@ import (
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 
 	"github.com/hashicorp/go-hclog"
-	"google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/option"
 )
 
@@ -70,6 +71,9 @@ func isValidJson(content []byte) error {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
+	if providerConfig.FolderMaxDepth == 0 {
+		providerConfig.FolderMaxDepth = 5
+	}
 
 	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
 	if len(serviceAccountKeyJSON) == 0 {
@@ -85,19 +89,49 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	var err error
-	if len(providerConfig.ProjectIDs) == 0 {
-		projects, err = getProjects(logger, providerConfig.ProjectFilter, options...)
-		if err != nil {
-			return nil, err
-		}
-		logger.Info("No project_ids specified in config.yml assuming all active projects", "count", len(projects))
+	if providerConfig.ProjectFilter != "" && len(providerConfig.FolderIDs) > 0 {
+		logger.Warn("ProjectFilter config option is deprecated and will not work with the folder_ids feature")
 	}
-	if err := validateProjects(projects); err != nil {
-		return nil, err
-	}
+
 	services, err := initServices(context.Background(), options)
 	if err != nil {
+		return nil, err
+	}
+
+	if len(providerConfig.FolderIDs) > 0 {
+		logger.Debug("Listing folders", "folder_ids", providerConfig.FolderIDs)
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		var folderList []string
+		for _, f := range providerConfig.FolderIDs {
+			folderAndChildren, err := listFolders(ctx, logger, services.ResourceManager.Folders, f, int(providerConfig.FolderMaxDepth)-1)
+			if err != nil {
+				return nil, fmt.Errorf("folder listing failed: %w", err)
+			}
+			folderList = append(folderList, folderAndChildren...)
+		}
+		logger.Debug("Found folders", "folder_ids", folderList)
+
+		proj, err := getProjects(logger, services.ResourceManager, folderList)
+		if err != nil {
+			return nil, fmt.Errorf("get projects failed: %w", err)
+		}
+		appendWithoutDupes(&projects, proj)
+	}
+	if len(projects) == 0 {
+		logger.Info("No project_ids specified, assuming all active projects")
+		var err error
+		projects, err = getProjectsV1(logger, providerConfig.ProjectFilter, options...)
+		if err != nil {
+			return nil, fmt.Errorf("get projects(v1) failed: %w", err)
+		}
+	}
+
+	logger.Debug("Found projects", "projects", projects)
+
+	if err := validateProjects(projects); err != nil {
 		return nil, err
 	}
 
@@ -114,22 +148,72 @@ func validateProjects(projects []string) error {
 	return nil
 }
 
-func getProjects(logger hclog.Logger, filter string, options ...option.ClientOption) ([]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
+// getProjects requires the `resourcemanager.projects.list` permission, and at least one folder
+func getProjects(logger hclog.Logger, service *cloudresourcemanager.Service, folders []string) ([]string, error) {
+	if len(folders) == 0 {
+		return nil, fmt.Errorf("no folders specified")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	service, err := cloudresourcemanager.NewService(ctx, options...)
+	var (
+		projects []string
+		inactive int
+	)
+
+	for _, folder := range folders {
+		call := service.Projects.List().Context(ctx).Parent(folder)
+
+		for {
+			output, err := call.Do()
+			if err != nil {
+				return nil, err
+			}
+			for _, project := range output.Projects {
+				if project.State == "ACTIVE" {
+					projects = append(projects, project.ProjectId)
+				} else {
+					logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId, "project_state", project.State)
+					inactive++
+				}
+			}
+			if output.NextPageToken == "" {
+				break
+			}
+			call.PageToken(output.NextPageToken)
+		}
+	}
+
+	if len(projects) == 0 {
+		if inactive > 0 {
+			return nil, fmt.Errorf("project listing failed: no active projects")
+		}
+		return nil, fmt.Errorf("project listing failed")
+	}
+
+	return projects, nil
+}
+
+// getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
+func getProjectsV1(logger hclog.Logger, filter string, options ...option.ClientOption) ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
+	var (
+		projects []string
+		inactive int
+	)
 
-	call := service.Projects.List()
+	call := service.Projects.List().Context(ctx)
 	if filter != "" {
 		call.Filter(filter)
 	}
 
-	projects := make([]string, 0)
-	inactiveProjects := 0
 	for {
 		output, err := call.Do()
 		if err != nil {
@@ -139,8 +223,8 @@ func getProjects(logger hclog.Logger, filter string, options ...option.ClientOpt
 			if project.LifecycleState == "ACTIVE" {
 				projects = append(projects, project.ProjectId)
 			} else {
-				logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId)
-				inactiveProjects++
+				logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId, "project_state", project.LifecycleState)
+				inactive++
 			}
 		}
 		if output.NextPageToken == "" {
@@ -150,11 +234,59 @@ func getProjects(logger hclog.Logger, filter string, options ...option.ClientOpt
 	}
 
 	if len(projects) == 0 {
-		if inactiveProjects > 0 {
+		if inactive > 0 {
 			return nil, fmt.Errorf("project listing failed: no active projects")
 		}
 		return nil, fmt.Errorf("project listing failed")
 	}
 
 	return projects, nil
+}
+
+func listFolders(ctx context.Context, logger hclog.Logger, service *cloudresourcemanager.FoldersService, parent string, maxDepth int) ([]string, error) {
+	folders := []string{
+		parent,
+	}
+	if maxDepth <= 0 {
+		return folders, nil
+	}
+
+	call := service.List().Context(ctx).Parent(parent)
+	for {
+		output, err := call.Do()
+		if err != nil {
+			return nil, err
+		}
+		for _, folder := range output.Folders {
+			if folder.State != "ACTIVE" {
+				logger.Info("Folder state is not active. Folder will be ignored", "folder_id", folder.Name, "folder_name", folder.DisplayName, "folder_state", folder.State)
+				continue
+			}
+			fList, err := listFolders(ctx, logger, service, folder.Name, maxDepth-1)
+			if err != nil {
+				return nil, err
+			}
+			folders = append(folders, fList...)
+		}
+		if output.NextPageToken == "" {
+			break
+		}
+		call.PageToken(output.NextPageToken)
+	}
+
+	return folders, nil
+}
+
+func appendWithoutDupes(dst *[]string, src []string) {
+	dstMap := make(map[string]struct{}, len(*dst))
+	for i := range *dst {
+		dstMap[(*dst)[i]] = struct{}{}
+	}
+	for i := range src {
+		if _, ok := dstMap[src[i]]; ok {
+			continue
+		}
+		dstMap[src[i]] = struct{}{}
+		*dst = append(*dst, src[i])
+	}
 }
