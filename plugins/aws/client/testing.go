@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/golang/mock/gomock"
 	"github.com/hashicorp/go-hclog"
 
@@ -36,7 +37,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Provider: &provider.Provider{
 			Name:    "aws_mock_test_provider",
 			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
+			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
 				c := NewAwsClient(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
 				}), accounts)
