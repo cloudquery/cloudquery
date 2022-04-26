@@ -114,7 +114,7 @@ func (p ProviderFetchSummary) HasErrors() bool {
 }
 
 func (p ProviderFetchSummary) Metrics() map[string]int64 {
-	type diagCount map[diag.DiagnosticType]int64
+	type diagCount map[diag.Type]int64
 	sevCounts := make(map[diag.Severity]diagCount)
 
 	for _, d := range p.Diagnostics() {
@@ -129,19 +129,7 @@ func (p ProviderFetchSummary) Metrics() map[string]int64 {
 
 	ret := make(map[string]int64, len(sevCounts)+1)
 	for severity, typeCount := range sevCounts {
-		var sevName string
-		switch severity {
-		case diag.IGNORE:
-			sevName = "ignore"
-		case diag.WARNING:
-			sevName = "warning"
-		case diag.ERROR:
-			sevName = "error"
-		case diag.PANIC:
-			sevName = "panic"
-		default:
-			sevName = "unknown"
-		}
+		sevName := strings.ToLower(severity.String())
 
 		prefix := "fetch.diag." + sevName + "."
 		var total int64
