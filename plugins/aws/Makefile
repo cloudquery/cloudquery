@@ -22,8 +22,8 @@ pg-start:
 	docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 
 # stop a running docker container
-.PHONY: pg-start
-pg-start:
+.PHONY: pg-stop
+pg-stop:
 	docker stop $$(docker ps -q --filter ancestor=postgres:latest)
 
 # connect to pg via cli
