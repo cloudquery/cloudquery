@@ -73,6 +73,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-hclog"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -396,7 +397,9 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	return awsCfg, err
 }
 
-func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	ctx := context.Background()
 	awsConfig := providerConfig.(*Config)
 	client := NewAwsClient(logger, awsConfig.Accounts)
@@ -407,7 +410,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
 		if err != nil {
 			logger.Error("error getting child accounts", "err", err)
-			return nil, err
+			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
 		}
 	}
 
@@ -420,7 +423,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	for _, account := range awsConfig.Accounts {
 		logger.Debug("user defined account", "account", account)
 		if account.AccountID != "" {
-			return nil, fmt.Errorf("account_id is no longer supported. To specify a profile use `local_profile`. To specify an account alias use `account_name`")
+			return nil, diags.Add(diag.FromError(errors.New("account_id is no longer supported. To specify a profile use `local_profile`. To specify an account alias use `account_name`"), diag.USER))
 		}
 
 		if account.AccountName == "" {
@@ -433,7 +436,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err := verifyRegions(localRegions); err != nil {
-			return nil, err
+			return nil, diags.Add(diag.FromError(err, diag.USER))
 		}
 
 		if isAllRegions(localRegions) {
@@ -444,10 +447,10 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if err != nil {
 			if account.source == "org" {
 				logger.Warn("unable to assume role in account")
+				diags = diags.Add(diag.FromError(errors.New("unable to assume role in account"), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 				continue
-
 			}
-			return nil, err
+			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
 		}
 
 		// This is a work-around to skip disabled regions
@@ -461,17 +464,17 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				}
 			})
 		if err != nil {
-			return nil, fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err)
+			return nil, diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithDetails("DescribeRegions failed, need permissions")))
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
 		if len(account.Regions) == 0 {
-			return nil, fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName)
+			return nil, diags.Add(diag.FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.USER))
 		}
 
 		output, err := getAccountId(ctx, awsCfg)
 		if err != nil {
-			return nil, err
+			return nil, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 		if client.AccountID == "" {
 			// set default
@@ -484,9 +487,9 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 	}
 	if len(client.Accounts) == 0 {
-		return nil, errors.New("no accounts instantiated")
+		return nil, diags.Add(diag.FromError(errors.New("no accounts instantiated"), diag.INTERNAL))
 	}
-	return &client, nil
+	return &client, diags
 }
 
 func initServices(region string, c aws.Config) Services {
