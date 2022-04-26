@@ -52,6 +52,10 @@ func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, pare
 		o.Region = c.Region
 	})
 	if err != nil {
+		if client.IgnoreAccessDeniedServiceDisabled(err) {
+			meta.Logger().Debug("received access denied on DescribeGlobalSettings", "err", err)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- output
