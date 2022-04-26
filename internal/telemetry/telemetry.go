@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -269,7 +270,7 @@ func (c *Client) defaultResource(ctx context.Context) (*resource.Resource, error
 func (c *Client) randomId() (string, error) {
 	v, err := persistentdata.New(c.fs, "telemetry-random-id", genRandomId).Get()
 	c.newRandomId = v.Created
-	return v.Content, err
+	return strings.TrimRight(v.Content, "\r\n"), err
 }
 
 // NewRandomId returns true if we created a new random id in this session
