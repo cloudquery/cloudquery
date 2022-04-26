@@ -2,12 +2,15 @@
 package persistentdata
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 
+	"github.com/dimchansky/utfbom"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )
@@ -94,11 +97,15 @@ func (c *Client) read(path string) (string, error) {
 	if !exists {
 		return "", nil
 	}
-
 	b, err := c.fs.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
+	b, err = ioutil.ReadAll(utfbom.SkipOnly(bytes.NewReader(b)))
+	if err != nil {
+		return "", fmt.Errorf("bomread: %w", err)
+	}
+
 	return string(b), nil
 }
 

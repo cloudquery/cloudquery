@@ -36,6 +36,7 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f
 	github.com/aws/aws-sdk-go v1.43.41
 	github.com/creasty/defaults v1.5.2
+	github.com/dimchansky/utfbom v1.1.1
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.12.0
