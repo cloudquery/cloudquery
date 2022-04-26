@@ -35,6 +35,46 @@ func (m *MockBackupClient) EXPECT() *MockBackupClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeGlobalSettings mocks base method.
+func (m *MockBackupClient) DescribeGlobalSettings(arg0 context.Context, arg1 *backup.DescribeGlobalSettingsInput, arg2 ...func(*backup.Options)) (*backup.DescribeGlobalSettingsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeGlobalSettings", varargs...)
+	ret0, _ := ret[0].(*backup.DescribeGlobalSettingsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeGlobalSettings indicates an expected call of DescribeGlobalSettings.
+func (mr *MockBackupClientMockRecorder) DescribeGlobalSettings(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeGlobalSettings", reflect.TypeOf((*MockBackupClient)(nil).DescribeGlobalSettings), varargs...)
+}
+
+// DescribeRegionSettings mocks base method.
+func (m *MockBackupClient) DescribeRegionSettings(arg0 context.Context, arg1 *backup.DescribeRegionSettingsInput, arg2 ...func(*backup.Options)) (*backup.DescribeRegionSettingsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRegionSettings", varargs...)
+	ret0, _ := ret[0].(*backup.DescribeRegionSettingsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRegionSettings indicates an expected call of DescribeRegionSettings.
+func (mr *MockBackupClientMockRecorder) DescribeRegionSettings(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRegionSettings", reflect.TypeOf((*MockBackupClient)(nil).DescribeRegionSettings), varargs...)
+}
+
 // GetBackupPlan mocks base method.
 func (m *MockBackupClient) GetBackupPlan(arg0 context.Context, arg1 *backup.GetBackupPlanInput, arg2 ...func(*backup.Options)) (*backup.GetBackupPlanOutput, error) {
 	m.ctrl.T.Helper()

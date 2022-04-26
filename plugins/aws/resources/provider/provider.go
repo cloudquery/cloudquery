@@ -100,6 +100,8 @@ func Provider() *provider.Provider {
 			"aws.regions":                           ec2.AwsRegions(),
 			"backup.plans":                          backup.Plans(),
 			"backup.vaults":                         backup.Vaults(),
+			"backup.global_settings":                backup.GlobalSettings(),
+			"backup.region_settings":                backup.RegionSettings(),
 			"cloudformation.stacks":                 cloudformation.Stacks(),
 			"cloudfront.cache_policies":             cloudfront.CloudfrontCachePolicies(),
 			"cloudfront.distributions":              cloudfront.CloudfrontDistributions(),
