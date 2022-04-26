@@ -13,6 +13,8 @@ import (
 	"github.com/dimchansky/utfbom"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
 )
 
 const defaultPermissions = 0644
@@ -101,12 +103,29 @@ func (c *Client) read(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	b, err = ioutil.ReadAll(utfbom.SkipOnly(bytes.NewReader(b)))
+	bb, enc := utfbom.Skip(bytes.NewReader(b))
+	if err != nil {
+		return "", fmt.Errorf("bomdetect: %w", err)
+	}
+	b, err = ioutil.ReadAll(bb)
 	if err != nil {
 		return "", fmt.Errorf("bomread: %w", err)
 	}
 
-	return string(b), nil
+	switch enc {
+	case utfbom.UTF16BigEndian:
+		res, _, err := transform.String(unicode.BOMOverride(unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM).NewDecoder()), string(b))
+		return res, err
+	case utfbom.UTF16LittleEndian:
+		res, _, err := transform.String(unicode.BOMOverride(unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()), string(b))
+		return res, err
+	case utfbom.UTF32BigEndian, utfbom.UTF32LittleEndian:
+		return "", fmt.Errorf("unsupported utf32 encoding for file: %s", enc.String())
+	case utfbom.Unknown, utfbom.UTF8:
+		fallthrough
+	default:
+		return string(b), nil
+	}
 }
 
 // write the given payload into the file in the given fs and path
