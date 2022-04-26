@@ -50,6 +50,14 @@ var (
 	ErrMigrationsNotSupported = errors.New("provider doesn't support migrations")
 )
 
+type ConfigureDiagnostic struct {
+	diag.Diagnostic
+}
+
+func (d *ConfigureDiagnostic) IsConfigureDiagnostic() bool {
+	return true
+}
+
 // FetchRequest is provided to the Client to execute a fetch on one or more providers
 type FetchRequest struct {
 	// UpdateCallback allows gets called when the client receives updates on fetch.
@@ -473,8 +481,8 @@ func (c *Client) Fetch(ctx context.Context, request FetchRequest) (res *FetchRes
 				pLog.Error("failed to configure provider", "error", err)
 				return err
 			}
-			resp.Diagnostics = diag.Mutate(resp.Diagnostics, diag.WithResourceName(telemetry.ConfigureProviderResource))
 
+			resp.Diagnostics = convertToConfigureDiagnostics(resp.Diagnostics)
 			if resp.Diagnostics.HasErrors() {
 				pLog.Error("failed to configure provider", "error", resp.Diagnostics)
 				return resp.Diagnostics
@@ -1147,4 +1155,14 @@ func reportNumProviders(ctx context.Context, provs []*config.Provider) {
 			"multi_providers": strings.Join(multiProviders, ","),
 		})
 	})
+}
+
+func convertToConfigureDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
+	ret := make(diag.Diagnostics, len(dd))
+	for i := range dd {
+		ret[i] = &ConfigureDiagnostic{
+			Diagnostic: dd[i],
+		}
+	}
+	return ret
 }
