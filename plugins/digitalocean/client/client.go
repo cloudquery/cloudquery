@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 
@@ -9,6 +10,7 @@ import (
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 	"github.com/hashicorp/go-hclog"
@@ -69,13 +71,13 @@ func (s SpacesEndpointResolver) ResolveEndpoint(_, region string) (aws.Endpoint,
 	}, nil
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 	if providerConfig.Token == "" {
 		providerConfig.Token = getTokenFromEnv()
 	}
 	if providerConfig.Token == "" {
-		return nil, fmt.Errorf("missing API token")
+		return nil, diag.FromError(errors.New("missing API token"), diag.USER)
 	}
 
 	credStatus := DoCredentialStruct{
@@ -96,7 +98,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	)
 
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 
 	if providerConfig.SpacesDebugLogging {
