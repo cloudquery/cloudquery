@@ -2,9 +2,10 @@ package client
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"os"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 	"github.com/okta/okta-sdk-golang/v2/okta"
@@ -23,24 +24,24 @@ func (c *Client) Logger() hclog.Logger {
 	return c.logger
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 	oktaToken, ok := os.LookupEnv("OKTA_API_TOKEN")
 	if !ok {
 		if providerConfig.Token != "" {
 			oktaToken = providerConfig.Token
 		} else {
-			return nil, fmt.Errorf("missing OKTA_API_TOKEN, either set it as an environment variable or pass it in the configuration")
+			return nil, diag.FromError(errors.New("missing OKTA_API_TOKEN, either set it as an environment variable or pass it in the configuration"), diag.USER)
 		}
 	}
 
 	if providerConfig.Domain == "" || providerConfig.Domain == exampleDomain {
-		return nil, fmt.Errorf(`failed to configure provider, please set your okta "domain" in config.hcl`)
+		return nil, diag.FromError(errors.New(`failed to configure provider, please set your okta "domain" in config.hcl`), diag.USER)
 	}
 
 	_, c, err := okta.NewClient(context.Background(), okta.WithOrgUrl(providerConfig.Domain), okta.WithToken(oktaToken), okta.WithCache(true))
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	client := Client{
 		logger: logger,
