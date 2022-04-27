@@ -131,13 +131,20 @@ func (fr FetchResponse) Properties() map[string]interface{} {
 	}
 	providers := make([]map[string]interface{}, 0, len(fr.ProviderFetchSummary))
 	for _, p := range fr.ProviderFetchSummary {
+
+		rd := make(map[string]float64, len(p.FetchedResources))
+		for rn, r := range p.FetchedResources {
+			rd[rn] = r.Duration.Seconds()
+		}
+
 		providers = append(providers, map[string]interface{}{
-			"alias":              fmt.Sprintf("%s#%d", p.Name, len(providers)),
-			"provider":           p.Name,
-			"resources":          p.Resources(),
-			"fetchCount":         p.TotalResourcesFetched,
-			"totalFetchDuration": p.Duration.Seconds(),
-			"diags":              SummarizeDiagnostics(p.Diagnostics()),
+			"alias":                  fmt.Sprintf("%s#%d", p.Name, len(providers)),
+			"provider":               p.Name,
+			"resources":              p.Resources(),
+			"fetchCount":             p.TotalResourcesFetched,
+			"resourceFetchDurations": rd,
+			"totalFetchDuration":     p.Duration.Seconds(),
+			"diags":                  SummarizeDiagnostics(p.Diagnostics()),
 		})
 	}
 	properties["providers"] = providers

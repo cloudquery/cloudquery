@@ -18,7 +18,6 @@ var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
-	//d.Type() == diag.USER
 	if d.Severity() == diag.IGNORE || (d.Severity() == diag.WARNING && d.Type() == diag.ACCESS) {
 		return true
 	}
@@ -28,7 +27,6 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 			return true
 		}
 	}
-
 	return false
 }
 

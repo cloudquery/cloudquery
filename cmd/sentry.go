@@ -2,7 +2,10 @@ package cmd
 
 import (
 	"os"
+	"strconv"
 	"time"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 
@@ -33,6 +36,10 @@ func initSentry() {
 	}
 	if core.Version == core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
+	}
+	userId := analytics.GetUserId()
+	if analytics.CQTeamID == userId.String() && !viper.GetBool("debug-sentry") {
+		dsn = ""
 	}
 
 	if err := sentry.Init(sentry.ClientOptions{
@@ -88,4 +95,14 @@ func initSentry() {
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetUser(sentry.User{
+			ID: userId.String(),
+		})
+		scope.SetTags(map[string]string{
+			"terminal": strconv.FormatBool(ui.IsTerminal()),
+			"ci":       strconv.FormatBool(analytics.IsCI()),
+			"faas":     strconv.FormatBool(analytics.IsFaaS()),
+		})
+	})
 }

@@ -40,6 +40,7 @@ func CaptureDiagnostics(dd diag.Diagnostics, tags map[string]string) {
 			}
 			// set any extra tags to this scope
 			scope.SetTags(tags)
+			scope.SetTags(map[string]string{"diag_type": d.Type().String()})
 			scope.SetExtra("detail", d.Description().Detail)
 
 			switch d.Severity() {

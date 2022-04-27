@@ -2,13 +2,16 @@ package console
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
@@ -18,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/getsentry/sentry-go"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -74,6 +78,7 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			return nil, err
 		}
 	}
+	setConfigAnalytics(cfg, cfg.CloudQuery.History != nil)
 	return CreateClientFromConfig(ctx, cfg)
 }
 
@@ -114,9 +119,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
-	cClient := &Client{progressUpdater, cfg, pp, hub, pm, storage}
-	cClient.checkForUpdate(ctx)
-	return cClient, err
+	c := &Client{progressUpdater, cfg, pp, hub, pm, storage}
+	c.checkForUpdate(ctx)
+	return c, err
 }
 
 // =====================================================================================================================
@@ -726,26 +731,25 @@ func selectProfile(profileName string, profiles map[string]hcl.Body) (hcl.Body, 
 	return nil, nil
 }
 
-//func setConfigAnalytics(cfg *config.Config, history bool) {
-//	cfgJSON, _ := json.Marshal(cfg)
-//	s := sha256.New()
-//	_, _ = s.Write(cfgJSON)
-//	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
-//	//attrs := []attribute.KeyValue{
-//	//	attribute.String("cfghash", cfgHash),
-//	//}
-//
-//	sentry.ConfigureScope(func(scope *sentry.Scope) {
-//		if analytics.IsCI() {
-//			scope.SetUser(sentry.User{
-//				ID: cfgHash,
-//			})
-//		}
-//		scope.SetTags(map[string]string{
-//			"history": strconv.FormatBool(history),
-//		})
-//	})
-//}
+func setConfigAnalytics(cfg *config.Config, history bool) {
+	cfgJSON, _ := json.Marshal(cfg)
+	s := sha256.New()
+	_, _ = s.Write(cfgJSON)
+	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
+	analytics.SetGlobalProperty("cfghash", cfgHash)
+	analytics.SetGlobalProperty("history", history)
+
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		if analytics.IsCI() {
+			scope.SetUser(sentry.User{
+				ID: cfgHash,
+			})
+		}
+		scope.SetTags(map[string]string{
+			"history": strconv.FormatBool(history),
+		})
+	})
+}
 
 func (c Client) ConvertRequiredToRegistry(providerName string) registry.Provider {
 	rp := c.cfg.CloudQuery.Providers.Get(providerName)

@@ -85,7 +85,6 @@ Find more information at:
 		Version: core.Version,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			logInvocationParams(cmd, args)
-			//analytics.Identify()
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			analytics.Close()
