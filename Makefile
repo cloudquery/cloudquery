@@ -1,3 +1,5 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/misc/Makefile
+
 ## install the latest version of CQ
 .PHONY: install-cq
 install-cq:
@@ -64,6 +66,8 @@ test-integration:
 # Create a DB migration
 .PHONY: db-migration
 db-migration:
-	@if [[ "$(prefix)" == "" ]]; then echo "Invalid prefix, see example 'make db-migration prefix=26_v0.10.18'" && exit 1; fi;
+    # Get latest migration file, trim extention, increment patch and then order
+	$(eval prefixSuggestion:=$(shell ls -1 resources/provider/migrations/postgres/ | tail -1 | awk '{print substr($$0, 1, length($$0)-7)}' | awk -F. -v OFS=. '{$$NF += 1 ; print}' | awk -F_ -v OFS=_ '{$$1 += 1 ; print}'))
+	@if [[ "$(prefix)" == "" ]]; then echo "Invalid prefix, see example 'make db-migration prefix=$(prefixSuggestion)'" && exit 1; fi;
 	go run tools/migrations/main.go -prefix "${prefix}" -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
 	go run tools/migrations/main.go -prefix "${prefix}" -fake-tsdb -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
