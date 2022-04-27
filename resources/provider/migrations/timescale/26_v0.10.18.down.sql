@@ -29,9 +29,3 @@ ALTER TABLE IF EXISTS "aws_lambda_function_aliases" DROP COLUMN IF EXISTS "url_c
 ALTER TABLE IF EXISTS "aws_lambda_function_aliases" DROP COLUMN IF EXISTS "url_config_function_url";
 ALTER TABLE IF EXISTS "aws_lambda_function_aliases" DROP COLUMN IF EXISTS "url_config_last_modified_time";
 ALTER TABLE IF EXISTS "aws_lambda_function_aliases" DROP COLUMN IF EXISTS "url_config_cors";
-
--- Resource: backup.global_settings
-DROP TABLE IF EXISTS aws_backup_global_settings;
-
--- Resource: backup.region_settings
-DROP TABLE IF EXISTS aws_backup_region_settings;
