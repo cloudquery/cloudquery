@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/client/services"
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 	"github.com/golang/mock/gomock"
@@ -34,7 +35,7 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 		Provider: &provider.Provider{
 			Name:    "azure_mock_test_provider",
 			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, error) {
+			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
 				c := NewAzureClient(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
 				}), []string{TestSubscriptionID})

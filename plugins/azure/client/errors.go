@@ -21,7 +21,10 @@ var errorCodeDescriptions = map[interface{}]string{
 
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
+	return classifyError(err, diag.RESOLVING, client.SubscriptionId, diag.WithResourceName(resourceName))
+}
 
+func classifyError(err error, fallbackType diag.Type, subId string, opts ...diag.BaseErrorOption) diag.Diagnostics {
 	var (
 		detailedError autorest.DetailedError
 		reqError      azure.RequestError
@@ -29,26 +32,26 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 	if errors.As(err, &detailedError) {
 		if errors.As(detailedError.Original, &reqError) && reqError.ServiceError != nil && reqError.ServiceError.Code == "DisallowedOperation" {
 			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+				RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 			}
 		}
 
 		switch detailedError.StatusCode {
 		case http.StatusNotFound:
 			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.IGNORE), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+				RedactError(subId, diag.NewBaseError(err, diag.RESOLVING, append(opts, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.IGNORE), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 			}
 		case http.StatusBadRequest:
 			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+				RedactError(subId, diag.NewBaseError(err, diag.RESOLVING, append(opts, diag.WithType(diag.RESOLVING), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 			}
 		case http.StatusForbidden:
 			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.ACCESS, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), diag.WithResourceName(resourceName), ParseSummaryMessage(client.SubscriptionId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))),
+				RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 			}
 		default:
 			return diag.Diagnostics{
-				RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, ParseSummaryMessage(client.SubscriptionId, err, detailedError))),
+				RedactError(subId, diag.NewBaseError(err, fallbackType, append(opts, ParseSummaryMessage(subId, err, detailedError))...)),
 			}
 		}
 	}
@@ -56,12 +59,12 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
-			RedactError(client.SubscriptionId, d),
+			RedactError(subId, d),
 		}
 	}
 
 	return diag.Diagnostics{
-		RedactError(client.SubscriptionId, diag.NewBaseError(err, diag.RESOLVING, diag.WithResourceName(resourceName))),
+		RedactError(subId, diag.NewBaseError(err, fallbackType, opts...)),
 	}
 }
 
@@ -94,7 +97,9 @@ var (
 )
 
 func removePII(subId string, msg string) string {
-	msg = strings.ReplaceAll(msg, subId, "xxxx")
+	if subId != "" {
+		msg = strings.ReplaceAll(msg, subId, "xxxx")
+	}
 	msg = uuidRegex.ReplaceAllString(msg, "${1}xxxx${2}")
 	return msg
 }

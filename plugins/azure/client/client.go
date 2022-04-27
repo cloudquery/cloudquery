@@ -2,12 +2,13 @@ package client
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	_ "github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"github.com/cloudquery/cq-provider-azure/client/services"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
@@ -52,7 +53,7 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 	}
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 
 	logger.Info("Trying to authenticate via CLI")
@@ -61,7 +62,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		logger.Info("Trying to authenticate via environment variables")
 		azureAuth, err = auth.NewAuthorizerFromEnvironment()
 		if err != nil {
-			return nil, err
+			return nil, diag.FromError(err, diag.USER)
 		}
 	}
 
@@ -73,7 +74,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		svc.Authorizer = azureAuth
 		res, err := svc.List(ctx)
 		if err != nil {
-			return nil, err
+			return nil, classifyError(err, diag.USER, "")
 		}
 		subscriptions := make([]string, 0)
 		for res.NotDone() {
@@ -89,7 +90,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 			}
 			err := res.NextWithContext(ctx)
 			if err != nil {
-				return nil, err
+				return nil, classifyError(err, diag.INTERNAL, "")
 			}
 		}
 		client.subscriptions = subscriptions
@@ -97,13 +98,13 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	}
 
 	if len(client.subscriptions) == 0 {
-		return nil, fmt.Errorf("could not find any subscription")
+		return nil, diag.FromError(errors.New("could not find any subscription"), diag.USER)
 	}
 
 	for _, sub := range client.subscriptions {
 		svcs, err := services.InitServices(sub, azureAuth)
 		if err != nil {
-			return nil, err
+			return nil, classifyError(err, diag.INTERNAL, sub)
 		}
 		client.SetSubscriptionServices(sub, svcs)
 	}
