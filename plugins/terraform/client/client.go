@@ -1,10 +1,10 @@
 package client
 
 import (
+	"errors"
 	"fmt"
 
-	"errors"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
@@ -28,11 +28,11 @@ func (c *Client) Logger() hclog.Logger {
 	return c.logger
 }
 
-func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	terraformConfig := providerConfig.(*Config)
 
 	if terraformConfig.Config == nil || len(terraformConfig.Config) == 0 {
-		return nil, errors.New("no config were provided")
+		return nil, diag.FromError(errors.New("no config were provided"), diag.USER)
 	}
 
 	var backends = make(map[string]*TerraformBackend)
@@ -42,7 +42,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if b, err := NewBackend(&config); err == nil {
 			backends[b.BackendName] = b
 		} else {
-			return nil, fmt.Errorf("cannot initialize %s backend, %s", config.BackendType, err)
+			return nil, diag.FromError(fmt.Errorf("cannot initialize %s backend: %w", config.BackendType, err), diag.INTERNAL)
 		}
 	}
 
