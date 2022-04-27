@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 
@@ -68,7 +69,8 @@ func isValidJson(content []byte) error {
 	return nil
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
+	var diags diag.Diagnostics
 	providerConfig := config.(*Config)
 	projects := providerConfig.ProjectIDs
 	if providerConfig.FolderMaxDepth == 0 {
@@ -84,7 +86,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, providerConfig.ClientOptions()...)
 	if len(serviceAccountKeyJSON) != 0 {
 		if err := isValidJson(serviceAccountKeyJSON); err != nil {
-			return nil, err
+			return nil, diag.FromError(err, diag.USER)
 		}
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
@@ -95,7 +97,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 
 	services, err := initServices(context.Background(), options)
 	if err != nil {
-		return nil, err
+		return nil, diags.Add(classifyError(err, diag.INTERNAL, projects))
 	}
 
 	if len(providerConfig.FolderIDs) > 0 {
@@ -108,7 +110,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		for _, f := range providerConfig.FolderIDs {
 			folderAndChildren, err := listFolders(ctx, logger, services.ResourceManager.Folders, f, int(providerConfig.FolderMaxDepth)-1)
 			if err != nil {
-				return nil, fmt.Errorf("folder listing failed: %w", err)
+				return nil, diags.Add(classifyError(fmt.Errorf("folder listing failed: %w", err), diag.INTERNAL, projects))
 			}
 			folderList = append(folderList, folderAndChildren...)
 		}
@@ -116,7 +118,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 
 		proj, err := getProjects(logger, services.ResourceManager, folderList)
 		if err != nil {
-			return nil, fmt.Errorf("get projects failed: %w", err)
+			return nil, diags.Add(classifyError(fmt.Errorf("get projects failed: %w", err), diag.INTERNAL, projects))
 		}
 		appendWithoutDupes(&projects, proj)
 	}
@@ -125,24 +127,25 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		var err error
 		projects, err = getProjectsV1(logger, providerConfig.ProjectFilter, options...)
 		if err != nil {
-			return nil, fmt.Errorf("get projects(v1) failed: %w", err)
+			return nil, diags.Add(classifyError(fmt.Errorf("get projects(v1) failed: %w", err), diag.INTERNAL, projects))
 		}
 	}
 
 	logger.Debug("Found projects", "projects", projects)
 
-	if err := validateProjects(projects); err != nil {
-		return nil, err
+	diags = diags.Add(validateProjects(projects))
+	if diags.HasErrors() {
+		return nil, diags
 	}
 
 	client := NewGcpClient(logger, providerConfig.Backoff(), projects, services)
-	return client, nil
+	return client, diags
 }
 
-func validateProjects(projects []string) error {
+func validateProjects(projects []string) diag.Diagnostics {
 	for _, project := range projects {
 		if project == defaultProjectIdName {
-			return fmt.Errorf("please specify a valid project_id in config.hcl instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>")
+			return diag.FromError(errors.New("please specify a valid project_id in config.hcl instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>"), diag.USER)
 		}
 	}
 	return nil
