@@ -410,7 +410,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
 		if err != nil {
 			logger.Error("error getting child accounts", "err", err)
-			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
+			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
 		}
 	}
 
@@ -436,7 +436,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err := verifyRegions(localRegions); err != nil {
-			return nil, diags.Add(diag.FromError(err, diag.USER))
+			return nil, diags.Add(classifyError(err, diag.USER, nil))
 		}
 
 		if isAllRegions(localRegions) {
@@ -450,7 +450,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				diags = diags.Add(diag.FromError(errors.New("unable to assume role in account"), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 				continue
 			}
-			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
+			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
 		}
 
 		// This is a work-around to skip disabled regions
@@ -464,7 +464,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				}
 			})
 		if err != nil {
-			return nil, diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithDetails("DescribeRegions failed, need permissions")))
+			return nil, diags.Add(classifyError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.INTERNAL, nil))
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
@@ -474,7 +474,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 
 		output, err := getAccountId(ctx, awsCfg)
 		if err != nil {
-			return nil, diags.Add(diag.FromError(err, diag.INTERNAL))
+			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
 		}
 		if client.AccountID == "" {
 			// set default
