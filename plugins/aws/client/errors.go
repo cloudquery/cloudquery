@@ -15,58 +15,62 @@ import (
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
+	return classifyError(err, diag.RESOLVING, client.Accounts, diag.WithResourceName(resourceName), includeResourceIdWithAccount(client, err))
+}
+
+func classifyError(err error, fallbackType diag.Type, accounts []Account, opts ...diag.BaseErrorOption) diag.Diagnostics {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
 		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err,
+				RedactError(accounts, diag.NewBaseError(err,
 					diag.ACCESS,
-					diag.WithType(diag.ACCESS),
-					diag.WithSeverity(diag.WARNING),
-					ParseSummaryMessage(err),
-					diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]),
-					includeResourceIdWithAccount(client, err),
-				)),
+					append(opts,
+						diag.WithType(diag.ACCESS),
+						diag.WithSeverity(diag.WARNING),
+						ParseSummaryMessage(err),
+						diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]),
+					)...),
+				),
 			}
 		case "InvalidAction":
 			return diag.Diagnostics{
-				RedactError(client.Accounts, diag.NewBaseError(err,
+				RedactError(accounts, diag.NewBaseError(err,
 					diag.RESOLVING,
-					diag.WithType(diag.RESOLVING),
-					diag.WithSeverity(diag.IGNORE),
-					ParseSummaryMessage(err),
-					diag.WithDetails("The action is invalid for the service."),
-					includeResourceIdWithAccount(client, err),
-				)),
+					append(opts,
+						diag.WithType(diag.RESOLVING),
+						diag.WithSeverity(diag.IGNORE),
+						ParseSummaryMessage(err),
+						diag.WithDetails("The action is invalid for the service."),
+					)...),
+				),
 			}
 		}
 	}
 	if IsErrorThrottle(err) {
 		return diag.Diagnostics{
-			RedactError(client.Accounts, diag.NewBaseError(err,
+			RedactError(accounts, diag.NewBaseError(err,
 				diag.THROTTLE,
-				diag.WithType(diag.THROTTLE),
-				diag.WithSeverity(diag.WARNING),
-				ParseSummaryMessage(err),
-				diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries in provider configuration."),
-				includeResourceIdWithAccount(client, err),
-			)),
+				append(opts,
+					diag.WithType(diag.THROTTLE),
+					diag.WithSeverity(diag.WARNING),
+					ParseSummaryMessage(err),
+					diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries in provider configuration."),
+				)...),
+			),
 		}
 	}
 
 	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
-			RedactError(client.Accounts, diag.NewBaseError(d, d.Type(), includeResourceIdWithAccount(client, err))),
+			RedactError(accounts, diag.NewBaseError(d, d.Type(), opts...)),
 		}
 	}
 
 	return diag.Diagnostics{
-		RedactError(client.Accounts, diag.NewBaseError(err,
-			diag.RESOLVING,
-			diag.WithResourceName(resourceName),
-		)),
+		RedactError(accounts, diag.NewBaseError(err, fallbackType, opts...)),
 	}
 }
 
