@@ -1,3 +1,5 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/misc/Makefile
+
 ## install the latest version of CQ
 .PHONY: install-cq
 install-cq:
@@ -14,16 +16,16 @@ ts-start:
 # stop the timescale db running in a local container
 .PHONY: ts-stop
 ts-stop:
-	docker stop $(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
+	docker stop $$(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
 
 # start a running docker container
-.PHONY: start-pg
-start-pg:
+.PHONY: pg-start
+pg-start:
 	docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 
 # stop a running docker container
-.PHONY: stop-pg
-stop-pg:
+.PHONY: pg-stop
+pg-stop:
 	docker stop $$(docker ps -q --filter ancestor=postgres:latest)
 
 # connect to pg via cli
@@ -60,3 +62,12 @@ test-unit:
 .PHONY: test-integration
 test-integration:
 	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
+
+# Create a DB migration
+.PHONY: db-migration
+db-migration:
+    # Get latest migration file, trim extention, increment patch and then order
+	$(eval prefixSuggestion:=$(shell ls -1 resources/provider/migrations/postgres/ | tail -1 | awk '{print substr($$0, 1, length($$0)-7)}' | awk -F. -v OFS=. '{$$NF += 1 ; print}' | awk -F_ -v OFS=_ '{$$1 += 1 ; print}'))
+	@if [[ "$(prefix)" == "" ]]; then echo "Invalid prefix, see example 'make db-migration prefix=$(prefixSuggestion)'" && exit 1; fi;
+	go run tools/migrations/main.go -prefix "${prefix}" -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
+	go run tools/migrations/main.go -prefix "${prefix}" -fake-tsdb -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
