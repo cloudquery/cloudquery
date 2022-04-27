@@ -31,7 +31,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			ExpectedAvailableUpdates: []AvailableUpdate{{
 				Name:             "test",
 				CurrentVersion:   "v0.0.1",
-				AvailableVersion: "v0.0.11",
+				AvailableVersion: "v0.0.12",
 			}},
 		},
 		{
@@ -66,7 +66,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		{
 			Name: "check-up-to-date",
 			Options: &CheckUpdatesOptions{Providers: []registry.Provider{
-				{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization},
+				{Name: "test", Version: "v0.0.12", Source: registry.DefaultOrganization},
 			}},
 			ExpectedAvailableUpdates: []AvailableUpdate{},
 		},

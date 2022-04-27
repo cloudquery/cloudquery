@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"sort"
 	"sync"
 	"time"
@@ -134,7 +135,7 @@ func (fr FetchResponse) Properties() map[string]interface{} {
 
 		rd := make(map[string]float64, len(p.FetchedResources))
 		for rn, r := range p.FetchedResources {
-			rd[rn] = r.Duration.Seconds()
+			rd[rn] = math.Round(r.Duration.Seconds()*100) / 100
 		}
 
 		providers = append(providers, map[string]interface{}{
@@ -143,7 +144,7 @@ func (fr FetchResponse) Properties() map[string]interface{} {
 			"resources":              p.Resources(),
 			"fetchCount":             p.TotalResourcesFetched,
 			"resourceFetchDurations": rd,
-			"totalFetchDuration":     p.Duration.Seconds(),
+			"totalFetchDuration":     math.Round(p.Duration.Seconds()*100) / 100,
 			"diags":                  SummarizeDiagnostics(p.Diagnostics()),
 		})
 	}

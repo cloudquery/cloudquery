@@ -67,6 +67,12 @@ jobs:
         env:
           CQ_NO_TELEMETRY: 1
 
+
+      - name: Fetch Multiple Provider
+        run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log
+        env:
+          CQ_NO_TELEMETRY: 1
+
       - name: Init
         run: go run ./main.go init test --config=test_init_config.hcl
         env:
@@ -99,6 +105,11 @@ jobs:
 
       - name: Drop
         run: go run ./main.go provider drop test --config=internal/test/test_config.hcl --force
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Drift
+        run: go run ./main.go drift scan internal/test/tfstate.state --enable-console-log --config=internal/test/test_drift.hcl
         env:
           CQ_NO_TELEMETRY: 1
 

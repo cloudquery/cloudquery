@@ -6,9 +6,10 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/pkg/core"
 
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 )
 
@@ -336,7 +337,7 @@ func (prov *ProviderConfig) resourceKeys() []string {
 	return k
 }
 
-func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider, logger hclog.Logger) map[string]*ResourceConfig {
+func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider) map[string]*ResourceConfig {
 	resourceKeys := prov.resourceKeys()
 	ret := make(map[string]*ResourceConfig, len(resourceKeys))
 
@@ -347,7 +348,7 @@ func (prov *ProviderConfig) interpolatedResourceMap(iacProvider iacProvider, log
 		}
 		iacData := res.IAC[iacProvider]
 		if iacData == nil {
-			logger.Debug("Will skip resource, iac provider not configured", "provider", prov.Name, "resource", resName, "iac_provider", iacProvider)
+			log.Debug().Str("provider", prov.Name).Str("resource", resName).Stringer("iac_provider", iacProvider).Msg("Will skip resource, iac provider not configured")
 			continue
 		}
 

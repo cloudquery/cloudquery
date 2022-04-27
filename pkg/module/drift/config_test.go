@@ -11,7 +11,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -333,7 +332,7 @@ func TestInterpolatedResourceMap(t *testing.T) {
 		},
 	}
 
-	ret := prov.interpolatedResourceMap(iacTerraform, hclog.NewNullLogger())
+	ret := prov.interpolatedResourceMap(iacTerraform)
 
 	assert.EqualValues(t, map[string]*ResourceConfig{
 		"test": {
@@ -385,9 +384,7 @@ func TestApplyProvider(t *testing.T) {
 		return p
 	}
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 
 	table := []struct {
 		name              string
@@ -607,9 +604,7 @@ func TestSubResourceLookup(t *testing.T) {
 		},
 	}
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 
 	sch := &cqproto.GetProviderSchemaResponse{
 		Name:    "aws",
@@ -678,7 +673,7 @@ func TestSubResourceLookup(t *testing.T) {
 
 	assert.Equal(t, []string{"aws_test1_2", "aws_test1_3", "test1", "test2"}, prov.resourceKeys())
 
-	ret := prov.interpolatedResourceMap(iacTerraform, d.logger)
+	ret := prov.interpolatedResourceMap(iacTerraform)
 
 	assert.Equal(t, []string{"data1"}, ret["aws_test1_2"].Identifiers)
 	assert.Equal(t, []string{"data1", "data2"}, ret["aws_test1_2"].Attributes)

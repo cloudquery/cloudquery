@@ -119,7 +119,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			Timeout: time.Second * 2,
+			Timeout: time.Second * 4,
 			ExpectedDiags: []diag.FlatDiag{
 				{
 					Err:         "rpc error: code = DeadlineExceeded desc = context deadline exceeded",

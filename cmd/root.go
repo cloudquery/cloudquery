@@ -128,7 +128,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true to debug telemetry logging")
-	rootCmd.PersistentFlags().String("telemetry-endpoint", "telemetry.cloudquery.io:443", "Telemetry endpoint")
+	rootCmd.PersistentFlags().String("telemetry-endpoint", "", "Telemetry endpoint")
 	rootCmd.PersistentFlags().Bool("insecure-telemetry-endpoint", false, "Allow insecure connection to telemetry endpoint")
 
 	// Derived from data-dir if empty

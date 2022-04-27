@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
+
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
@@ -223,10 +225,12 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*core.SyncResult, diags diag.Diagnostics) {
 	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	ui.ColorizedOutput(ui.ColorProgress, "Syncing CloudQuery providers %s\n\n", pp)
-	providers := c.Providers.GetMany(pp...)
+	providers := c.Providers
+	if pp == nil {
+		providers = c.Providers.GetMany(pp...)
+	}
 	if len(providers) == 0 {
-		// TODO: change to user
-		return nil, diag.FromError(fmt.Errorf("one or more providers not found: %s", pp), diag.INTERNAL,
+		return nil, diag.FromError(fmt.Errorf("one or more providers not found: %s", pp), diag.USER,
 			diag.WithDetails("providers not found, are they defined in configuration?. Defined: %s", c.Providers))
 	}
 	diags = diags.Add(c.DownloadProviders(ctx))
@@ -236,7 +240,7 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 
 	for _, p := range providers {
 		sync, dd := core.Sync(ctx, c.Storage, c.PluginManager, &core.SyncOptions{Provider: p, DownloadLatest: false})
-		if dd.HasErrors() && sync.State != core.NoChange {
+		if dd.HasErrors() {
 			if errors.Is(dd, core.ErrMigrationsNotSupported) {
 				ui.ColorizedOutput(ui.ColorWarning, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusWarn], p.String())
 				continue
@@ -433,6 +437,10 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 // =====================================================================================================================
 
 func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
+	if _, diags := c.SyncProviders(ctx); diags.HasErrors() {
+		return diags
+	}
+
 	profiles, err := config.ReadModuleConfigProfiles(req.Name, c.cfg.Modules)
 	if err != nil {
 		return err
@@ -444,6 +452,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 
 	m := module.NewManager(c.Storage, c.PluginManager)
+	m.Register(drift.New())
 	out, err := m.Execute(ctx, &module.ExecutionOptions{
 		Module:        req.Name,
 		ProfileConfig: cfg,
