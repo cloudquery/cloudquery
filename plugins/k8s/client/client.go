@@ -3,6 +3,7 @@ package client
 import (
 	"fmt"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-hclog"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -51,14 +52,14 @@ func (c *Client) SetServices(s map[string]Services) {
 	c.contexts = contexts
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		clientcmd.NewDefaultClientConfigLoadingRules(),
 		&clientcmd.ConfigOverrides{},
 	)
 	kCfg, err := kubeConfig.RawConfig()
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.USER)
 	}
 
 	cfg := config.(*Config)
@@ -80,7 +81,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 	default:
 		for _, cName := range cfg.Contexts {
 			if _, ok := kCfg.Contexts[cName]; !ok {
-				return nil, fmt.Errorf("context %s doesn't in kube configuration", cName)
+				return nil, diag.FromError(fmt.Errorf("context %q doesn't exist in kube configuration", cName), diag.USER)
 			}
 			contexts = append(contexts, cName)
 		}
@@ -98,7 +99,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, erro
 		logger.Info("creating k8s client for context", "context", ctxName)
 		kClient, err := buildKubeClient(kCfg, kCfg.CurrentContext)
 		if err != nil {
-			return nil, fmt.Errorf("failed to build k8s client for context %s: %w", kCfg.CurrentContext, err)
+			return nil, diag.FromError(fmt.Errorf("failed to build k8s client for context %q: %w", kCfg.CurrentContext, err), diag.INTERNAL)
 		}
 		c.services[kCfg.CurrentContext] = initServices(kClient)
 	}

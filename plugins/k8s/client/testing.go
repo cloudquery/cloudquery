@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 	"github.com/golang/mock/gomock"
@@ -42,7 +43,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Provider: &provider.Provider{
 			Name:    "k8s_mock_test_provider",
 			Version: "development",
-			Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, error) {
+			Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, diag.Diagnostics) {
 				c := &Client{
 					Log:     logger,
 					Context: "testContext",
