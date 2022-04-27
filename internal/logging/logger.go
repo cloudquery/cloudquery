@@ -14,6 +14,9 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
+// GlobalConfig is the global alterable logging config
+var GlobalConfig Config
+
 // Config for logging
 type Config struct {
 	// Enable console logging
@@ -98,6 +101,26 @@ func Configure(config Config) zerolog.Logger {
 		Msg("logging configured")
 
 	return logger
+}
+
+// Reconfigure reconfigures the already initialized Logger with new values
+func Reconfigure(originalConfig, updatedConfig Config) {
+	if updatedConfig.Verbose {
+		originalConfig.Verbose = updatedConfig.Verbose
+	}
+	if updatedConfig.ConsoleLoggingEnabled {
+		originalConfig.ConsoleLoggingEnabled = updatedConfig.ConsoleLoggingEnabled
+	}
+	if updatedConfig.EncodeLogsAsJson {
+		originalConfig.EncodeLogsAsJson = updatedConfig.EncodeLogsAsJson
+	}
+	if !updatedConfig.FileLoggingEnabled {
+		originalConfig.FileLoggingEnabled = updatedConfig.FileLoggingEnabled
+	}
+	if updatedConfig.ConsoleNoColor {
+		originalConfig.ConsoleNoColor = updatedConfig.ConsoleNoColor
+	}
+	log.Logger = Configure(GlobalConfig)
 }
 
 func newRollingFile(config Config) io.Writer {
