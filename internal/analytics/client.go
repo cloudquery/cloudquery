@@ -4,6 +4,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
+
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -35,6 +39,7 @@ type Client struct {
 	disabled         bool
 	endpoint         string
 	insecureEndpoint bool
+	debug            bool
 
 	properties map[string]interface{}
 
@@ -54,6 +59,12 @@ func WithProperties(properties map[string]interface{}) Option {
 func WithDisabled() Option {
 	return func(c *Client) {
 		c.disabled = true
+	}
+}
+
+func WithDebug() Option {
+	return func(c *Client) {
+		c.debug = true
 	}
 }
 
@@ -91,14 +102,30 @@ func New(opts ...Option) *Client {
 		userId:     GetUserId(),
 		instanceId: uuid.New(),
 		properties: make(map[string]interface{}),
-		client:     analytics.New("NaEpIFd1mc3i6IT7Jas66hp170gNbHzE"),
+		debug:      false,
 	}
+
 	for _, o := range opts {
 		o(c)
 	}
 	if c.env == nil {
 		c.env = getEnvironmentAttributes(c.terminal)
 	}
+	cfg := analytics.Config{}
+	if c.endpoint != "" {
+		cfg.Endpoint = c.endpoint
+	}
+	if c.debug {
+		cfg.Verbose = true
+		cfg.Logger = logging.NewSimple(&log.Logger, "analytics")
+	}
+
+	ac, err := analytics.NewWithConfig("NaEpIFd1mc3i6IT7Jas66hp170gNbHzE", cfg)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
+		c.disabled = true
+	}
+	c.client = ac
 	return c
 }
 
@@ -157,6 +184,13 @@ func SetGlobalProperty(k string, v interface{}) {
 	c.properties[k] = v
 }
 
+func Enabled() bool {
+	return !currentHub.disabled
+}
+
 func Close() {
+	if currentHub.client == nil {
+		return
+	}
 	_ = currentHub.client.Close()
 }

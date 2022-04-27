@@ -3,6 +3,11 @@ package cmd
 import (
 	"context"
 	"os"
+	"time"
+
+	"github.com/cloudquery/cloudquery/internal/analytics"
+
+	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/getsentry/sentry-go"
@@ -50,12 +55,14 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 	cfgPath := viper.GetString("configPath")
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 	var (
-		c          *console.Client
-		cfgMutator func(*config.Config) error
+		c            *console.Client
+		cfgMutator   func(*config.Config) error
+		delayMessage = ui.IsTerminal()
 	)
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":
+		delayMessage = false
 	case "init":
 		// No console client created here
 	case "describe":
@@ -72,6 +79,17 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		c, err = console.CreateClient(ctx, cfgPath, false, cfgMutator)
 		if err != nil {
 			return err
+		}
+	}
+
+	if analytics.Enabled() {
+		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
+		if delayMessage {
+			select {
+			case <-time.After(2 * time.Second):
+			case <-ctx.Done():
+				return ctx.Err()
+			}
 		}
 	}
 

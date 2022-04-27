@@ -193,6 +193,10 @@ func initAnalytics() {
 	if viper.GetBool("no-telemetry") {
 		opts = append(opts, analytics.WithDisabled())
 	}
+	if viper.GetBool("debug-telemetry") {
+		opts = append(opts, analytics.WithDebug())
+	}
+
 	_ = analytics.Init(opts...)
 }
 
