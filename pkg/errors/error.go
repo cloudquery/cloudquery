@@ -1,4 +1,4 @@
-package telemetry
+package errors
 
 import (
 	"context"
@@ -8,38 +8,13 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/getsentry/sentry-go"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
-
-// RecordError should be called on a span to mark it as errored. Returns true if err was recorded.
-func RecordError(span trace.Span, err error, opts ...trace.EventOption) bool {
-	if err == nil {
-		return false
-	}
-
-	if rd, ok := err.(diag.Redactable); ok {
-		if r := rd.Redacted(); r != nil {
-			err = r
-		}
-	}
-
-	if cls := classifyError(err); cls != errNoClass {
-		span.SetStatus(codes.Error, string(cls))
-		return false
-	}
-
-	span.RecordError(err, opts...)
-	span.SetStatus(codes.Error, err.Error())
-	return true
-}
 
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
@@ -57,32 +32,7 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 			return true
 		}
 	}
-
 	return false
-}
-
-// SendDiagToSentry sends the given diagnostic to Sentry, along with the provided tags. Default tags are extracted from the diagnostic and attached.
-func SendDiagToSentry(d diag.Diagnostic, extraTags map[string]string) {
-	if ShouldIgnoreDiag(d) {
-		return
-	}
-	sentry.WithScope(func(scope *sentry.Scope) {
-		scope.SetTags(extraTags)
-		scope.SetTags(map[string]string{
-			"diag_type": d.Type().String(),
-			"resource":  d.Description().Resource,
-		})
-		scope.SetExtra("detail", d.Description().Detail)
-		switch d.Severity() {
-		case diag.IGNORE:
-			scope.SetLevel(sentry.LevelDebug)
-		case diag.WARNING:
-			scope.SetLevel(sentry.LevelWarning)
-		case diag.PANIC:
-			scope.SetLevel(sentry.LevelFatal)
-		}
-		sentry.CaptureException(d)
-	})
 }
 
 type errClass string
@@ -95,13 +45,13 @@ const (
 	errDatabase     = errClass("database")
 )
 
+// TODO: decide what to do with this method
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
 	if st, ok := status.FromError(err); ok {
 		if st.Code() == gcodes.Canceled {
 			return errCancellation
 		}
-		// if strings.Contains(st.Message(), `AWS Error: operation error STS: GetCallerIdentity,`) {
 		if strings.HasPrefix(st.Message(), `failed to create aws client for`) ||
 			strings.HasPrefix(st.Message(), `failed to retrieve credentials for`) {
 			return errAuth

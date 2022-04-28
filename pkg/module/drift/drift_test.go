@@ -8,15 +8,12 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/stretchr/testify/assert"
 )
 
 func setupDrift(t *testing.T) (*Drift, *BaseConfig) {
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
 		"aws": {
 			Files: []*cqproto.ModuleFile{
@@ -58,9 +55,7 @@ provider "aws" {
 func TestReadBuiltinConfig(t *testing.T) {
 	t.Parallel()
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 	val, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.Nil(t, val.Terraform)
@@ -82,9 +77,7 @@ func TestReadBuiltinConfigWithSuppliedProviderData(t *testing.T) {
 func TestEmptyProfileConfig(t *testing.T) {
 	t.Parallel()
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 	base, err := d.readBaseConfig(1, nil)
 	assert.NoError(t, err)
 	assert.NotNil(t, base)
@@ -193,9 +186,7 @@ func TestHandleIdentifiers(t *testing.T) {
 func TestBadConfigFromProvider(t *testing.T) {
 	t.Parallel()
 
-	d := &Drift{
-		logger: hclog.NewNullLogger(),
-	}
+	d := &Drift{}
 	val, err := d.readBaseConfig(1, map[string]cqproto.ModuleInfo{
 		"aws": {
 			Files: []*cqproto.ModuleFile{

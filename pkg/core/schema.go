@@ -2,6 +2,8 @@ package core
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -34,6 +36,13 @@ func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *Ge
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	log.Debug().Stringer("provider", request.Provider).Msg("retrieved provider schema successfully")
+	// set version if schema didn't return it.
+	if schema.Version == "" {
+		schema.Version = request.Provider.Version
+	} else if !strings.HasPrefix(schema.Version, "v") {
+		schema.Version = fmt.Sprintf("v%s", schema.Version)
+	}
+
 	return &ProviderSchema{
 		GetProviderSchemaResponse: schema,
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),

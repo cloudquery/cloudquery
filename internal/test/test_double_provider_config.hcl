@@ -17,3 +17,12 @@ provider "test" {
     "slow_resource"
   ]
 }
+
+provider "test" {
+  alias = "test2"
+  configuration {}
+
+  resources = [
+    "slow_resource"
+  ]
+}

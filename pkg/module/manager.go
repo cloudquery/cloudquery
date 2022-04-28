@@ -6,6 +6,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
@@ -59,13 +61,21 @@ func (m *ManagerImpl) Register(mod Module) {
 }
 
 // Execute executes the given module, validating the given module name and config first.
-func (m *ManagerImpl) Execute(ctx context.Context, req *ExecuteRequest) (*ExecutionResult, error) {
+func (m *ManagerImpl) Execute(ctx context.Context, req *ExecutionOptions) (*ExecutionResult, error) {
 	mod, ok := m.modules[req.Module]
 	if !ok {
 		return nil, fmt.Errorf("module not found %q", req.Module)
 	}
+	schemas := make([]*core.ProviderSchema, len(req.Providers))
+	for i, p := range req.Providers {
+		s, diags := core.GetProviderSchema(ctx, m.pm, &core.GetProviderSchemaOptions{Provider: p})
+		if diags.HasErrors() {
+			return nil, diags
+		}
+		schemas[i] = s
+	}
 
-	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, req.Providers)
+	protoVersion, modInfo, err := m.collectProviderInfo(ctx, mod, schemas)
 	if err != nil {
 		return nil, fmt.Errorf("protocol negotiation failed: %w", err)
 	}
@@ -84,10 +94,15 @@ func (m *ManagerImpl) Execute(ctx context.Context, req *ExecuteRequest) (*Execut
 		return nil, err
 	}
 	defer conn.Close()
-	req.Conn = conn
 
 	// TODO: this is very weird behavior, execute should return an error
-	result := mod.Execute(ctx, req)
+	result := mod.Execute(ctx, &ExecuteRequest{
+		Module:        req.Module,
+		ProfileConfig: req.ProfileConfig,
+		Params:        req.Params,
+		Schemas:       schemas,
+		Conn:          conn,
+	})
 	log.Info().Str("module", req.Module).Msg("module execution finished")
 	if result.Error != nil {
 		log.Error().Err(result.Error).Msg("module execution failed with error")
@@ -110,7 +125,7 @@ func (m *ManagerImpl) ExampleConfigs(providers []string) []string {
 	return ret
 }
 
-func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs []*cqproto.GetProviderSchemaResponse) (uint32, map[string]cqproto.ModuleInfo, error) {
+func (m *ManagerImpl) collectProviderInfo(ctx context.Context, mod Module, provs []*core.ProviderSchema) (uint32, map[string]cqproto.ModuleInfo, error) {
 	var (
 		providerVersionInfo = make(map[uint32]map[string]cqproto.ModuleInfo) // version vs provider vs info
 		allVersions         = make(map[string][]uint32, len(provs))          // used for debug info

@@ -1,7 +1,6 @@
 package console
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -11,22 +10,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
-func ClassifyDiagnostics(diags diag.Diagnostics) diag.Diagnostics {
-	var classified diag.Diagnostics
-	for _, d := range diags {
-		if errors.Is(d, errors.New("invalid dsn")) {
-			classified = classified.Add(diag.FromError(d, diag.DATABASE,
-				diag.WithSummary("received dsn is invalid"),
-				diag.WithDetails("received dsn is invalid, please check config/env it is correct")))
-			continue
-		}
-		classified = classified.Add(d)
+func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose bool) {
+	// Nothing to
+	if dd == nil || !dd.HasDiags() {
+		return
 	}
-	return classified
+	diags := *dd
 
-}
-
-func printDiagnostics(_ string, diags diag.Diagnostics, redactDiags, verbose bool) {
 	if redactDiags {
 		diags = diags.Redacted()
 	}
@@ -46,7 +36,12 @@ func printDiagnostics(_ string, diags diag.Diagnostics, redactDiags, verbose boo
 	// sort diagnostics by severity/type
 	sort.Sort(diags)
 
-	ui.ColorizedOutput(ui.ColorHeader, "Diagnostics:\n\n")
+	if header != "" {
+		ui.ColorizedOutput(ui.ColorHeader, "%s Diagnostics:\n\n", header)
+	} else {
+		ui.ColorizedOutput(ui.ColorHeader, "Diagnostics:\n\n")
+	}
+
 	for _, d := range diags {
 		if !verbose && d.Severity() == diag.IGNORE {
 			continue

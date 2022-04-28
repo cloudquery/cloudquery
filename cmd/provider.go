@@ -2,7 +2,10 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"time"
+
+	"github.com/cloudquery/cloudquery/pkg/errors"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
@@ -43,7 +46,12 @@ var (
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.UpgradeProviders(ctx, args)
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
+			}
+			return nil
 		}),
 	}
 
@@ -53,7 +61,12 @@ var (
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.DowngradeProviders(ctx, args)
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
+			}
+			return nil
 		}),
 	}
 
@@ -71,7 +84,11 @@ var (
 					ExitCode: 1,
 				}
 			}
-			_ = c.DropProvider(ctx, args[0])
+			diags := c.DropProvider(ctx, args[0])
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to drop provider %s", args[0])
+			}
 			return nil
 		}),
 	}
@@ -83,10 +100,12 @@ var (
 		Long:  providerBuildSchemaHelpMsg,
 		Args:  cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			if len(args) == 1 {
-				return c.BuildProviderTables(ctx, args[0])
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
 			}
-			return c.BuildAllProviderTables(ctx)
+			return nil
 		}),
 	}
 
@@ -100,7 +119,12 @@ var (
   ./cloudquery provider download
 `,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.DownloadProviders(ctx)
+			diags := c.DownloadProviders(ctx)
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to download providers")
+			}
+			return nil
 		}),
 	}
 
@@ -113,7 +137,12 @@ var (
 		Long:  providerRemoveStaleHelpMsg,
 		Args:  cobra.MinimumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+			diags := c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+			errors.CaptureDiagnostics(diags, nil)
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to remove stale data")
+			}
+			return nil
 		}),
 	}
 )
