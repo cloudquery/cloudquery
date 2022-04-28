@@ -21,9 +21,9 @@ import (
 const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
 
 type VersionInfo struct {
-	Version   string
-	BuildDate string
-	CommitId  string
+	Version   string `json:"version,omitempty"`
+	BuildDate string `json:"build_date,omitempty"`
+	CommitId  string `json:"commit_id,omitempty"`
 }
 
 // currentHub is the initial Hub with no Client bound and an empty Scope.

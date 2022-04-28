@@ -10,30 +10,52 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/core/state"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-
-	"github.com/rs/zerolog"
-	gcodes "google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/config"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin"
-
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
+	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	gcodes "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+type FetchStatus int
+
+const (
+	FetchFailed FetchStatus = iota + 1
+	FetchConfigureFailed
+	FetchCanceled
+	FetchFinished
+	FetchPartial
+)
+
+func (fs FetchStatus) String() string {
+	switch fs {
+	case FetchFailed:
+		return "failed"
+	case FetchCanceled:
+		return "canceled"
+	case FetchFinished:
+		return "successful"
+	case FetchPartial:
+		return "partial"
+	case FetchConfigureFailed:
+		return "configure_failed"
+	default:
+		return "unknown"
+	}
+}
 
 // ProviderFetchSummary represents a request for the FetchFinishCallback
 type ProviderFetchSummary struct {
@@ -42,7 +64,7 @@ type ProviderFetchSummary struct {
 	Version               string                          `json:"version,omitempty"`
 	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
 	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
-	Status                string                          `json:"status,omitempty"`
+	Status                FetchStatus                     `json:"status,omitempty"`
 	Duration              time.Duration                   `json:"duration,omitempty"`
 }
 
@@ -125,10 +147,10 @@ type FetchResponse struct {
 
 func (fr FetchResponse) Properties() map[string]interface{} {
 	properties := map[string]interface{}{
-		"fetchId":       fr.FetchId,
-		"totalFetched":  fr.TotalFetched,
-		"fetchDuration": fr.Duration.Seconds(),
-		"providerCount": len(fr.ProviderFetchSummary),
+		"fetch_id":       fr.FetchId,
+		"total_fetched":  fr.TotalFetched,
+		"fetch_duration": fr.Duration.Seconds(),
+		"provider_count": len(fr.ProviderFetchSummary),
 	}
 	providers := make([]map[string]interface{}, 0, len(fr.ProviderFetchSummary))
 	for _, p := range fr.ProviderFetchSummary {
@@ -139,13 +161,14 @@ func (fr FetchResponse) Properties() map[string]interface{} {
 		}
 
 		providers = append(providers, map[string]interface{}{
-			"alias":                  fmt.Sprintf("%s#%d", p.Name, len(providers)),
-			"provider":               p.Name,
-			"resources":              p.Resources(),
-			"fetchCount":             p.TotalResourcesFetched,
-			"resourceFetchDurations": rd,
-			"totalFetchDuration":     math.Round(p.Duration.Seconds()*100) / 100,
-			"diags":                  SummarizeDiagnostics(p.Diagnostics()),
+			"alias":                    fmt.Sprintf("%s#%d", p.Name, len(providers)),
+			"provider":                 p.Name,
+			"resources":                p.Resources(),
+			"fetch_count":              p.TotalResourcesFetched,
+			"resource_fetch_durations": rd,
+			"total_fetch_duration":     math.Round(p.Duration.Seconds()*100) / 100,
+			"diags":                    SummarizeDiagnostics(p.Diagnostics()),
+			"status":                   p.Status.String(),
 		})
 	}
 	properties["providers"] = providers
@@ -283,13 +306,24 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to configure provider")
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return &ProviderFetchSummary{
+			Name:             info.Provider.Name,
+			Alias:            info.Config.Alias,
+			Version:          info.Provider.Version,
+			FetchedResources: make(map[string]ResourceFetchSummary),
+			Status:           FetchConfigureFailed,
+		}, diag.FromError(err, diag.INTERNAL)
 	}
-	resp.Diagnostics = convertToConfigureDiagnostics(resp.Diagnostics)
 	if resp.Diagnostics.HasErrors() {
-		pLog.Error().Err(resp.Diagnostics).Msg("failed to configure provider")
-		return nil, resp.Diagnostics
+		return &ProviderFetchSummary{
+			Name:             info.Provider.Name,
+			Alias:            info.Config.Alias,
+			Version:          info.Provider.Version,
+			FetchedResources: make(map[string]ResourceFetchSummary),
+			Status:           FetchConfigureFailed,
+		}, convertToConfigureDiagnostics(resp.Diagnostics)
 	}
+
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
 	return summary, convertToFetchDiags(diags, info.Provider.Name, info.Provider.Version)
@@ -303,7 +337,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			Alias:                 info.Config.Alias,
 			Version:               info.Provider.Version,
 			FetchedResources:      make(map[string]ResourceFetchSummary),
-			Status:                "Finished",
+			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
 		}
 		diags diag.Diagnostics
@@ -315,7 +349,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 
 	resources, err := normalizeResources(ctx, plugin, info.Config.Resources)
 	if err != nil {
-		summary.Status = "Failed"
+		summary.Status = FetchFailed
 		return summary, diag.FromError(err, diag.INTERNAL)
 	}
 
@@ -329,7 +363,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			Metadata:              metadata,
 		})
 	if err != nil {
-		summary.Status = "Failed"
+		summary.Status = FetchFailed
 		return summary, diag.FromError(err, diag.INTERNAL)
 	}
 
@@ -365,14 +399,23 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			pLog.Info().TimeDiff("execution", time.Now(), start).Msg("provider finished fetch")
 			return summary, diags
 		default:
+			if callback != nil {
+				callback(FetchUpdate{
+					Provider:          plugin.Name(),
+					Version:           plugin.Version(),
+					FinishedResources: resp.FinishedResources,
+					ResourceCount:     resp.ResourceCount,
+					Error:             err.Error(),
+				})
+			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
-			if st, ok := status.FromError(err); ok && st.Code() == gcodes.Canceled {
+			if st, ok := status.FromError(err); ok && st.Code() == gcodes.Canceled || st.Code() == gcodes.DeadlineExceeded {
 				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
-				summary.Status = "Canceled"
-				return summary, diags
+				summary.Status = FetchCanceled
+				return summary, diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("provider fetch was canceled by user / fetch deadline exceeded")))
 			}
 			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
-			summary.Status = "Failed"
+			summary.Status = FetchFailed
 			return summary, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 	}

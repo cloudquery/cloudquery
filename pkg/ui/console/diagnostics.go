@@ -5,6 +5,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -37,9 +39,9 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose 
 	sort.Sort(diags)
 
 	if header != "" {
-		ui.ColorizedOutput(ui.ColorHeader, "%s Diagnostics:\n\n", header)
+		ui.ColorizedNoLogOutput(ui.ColorHeader, "%s Diagnostics:\n\n", header)
 	} else {
-		ui.ColorizedOutput(ui.ColorHeader, "Diagnostics:\n\n")
+		ui.ColorizedNoLogOutput(ui.ColorHeader, "Diagnostics:\n\n")
 	}
 
 	for _, d := range diags {
@@ -61,25 +63,28 @@ func printDiagnostic(d diag.Diagnostic) {
 	}
 	switch d.Severity() {
 	case diag.IGNORE:
-		ui.ColorizedOutput(ui.ColorHeader, diagFormat, resourceInfo,
+		ui.ColorizedNoLogOutput(ui.ColorHeader, diagFormat, resourceInfo,
 			ui.ColorProgressBold.Sprintf("%s", d.Type()),
 			ui.ColorDebug.Sprintf("Ignore"),
 			ui.ColorDebug.Sprintf("%s", desc.Summary))
+		log.Debug().Stringer("type", d.Type()).Strs("resource", desc.ResourceID).Str("details", desc.Detail).Msg(desc.Summary)
 	case diag.WARNING:
-		ui.ColorizedOutput(ui.ColorHeader, diagFormat, resourceInfo,
+		ui.ColorizedNoLogOutput(ui.ColorHeader, diagFormat, resourceInfo,
 			ui.ColorProgressBold.Sprintf("%s", d.Type()),
 			ui.ColorWarning.Sprintf("Warning"),
 			ui.ColorWarning.Sprintf("%s", desc.Summary))
-	case diag.ERROR:
-		ui.ColorizedOutput(ui.ColorHeader, diagFormat, resourceInfo,
+		log.Warn().Stringer("type", d.Type()).Strs("resource", desc.ResourceID).Str("details", desc.Detail).Msg(desc.Summary)
+	case diag.ERROR, diag.PANIC:
+		ui.ColorizedNoLogOutput(ui.ColorHeader, diagFormat, resourceInfo,
 			ui.ColorProgressBold.Sprintf("%s", d.Type()),
 			ui.ColorErrorBold.Sprintf("Error"),
 			ui.ColorErrorBold.Sprintf("%s", desc.Summary))
+		log.Error().Stringer("type", d.Type()).Strs("resource", desc.ResourceID).Str("details", desc.Detail).Msg(desc.Summary)
 	}
 	if len(desc.ResourceID) > 0 {
-		ui.ColorizedOutput(ui.ColorInfo, "\tResource ID: %s\n", strings.Join(desc.ResourceID, ","))
+		ui.ColorizedNoLogOutput(ui.ColorInfo, "\tResource ID: %s\n", strings.Join(desc.ResourceID, ","))
 	}
 	if desc.Detail != "" {
-		ui.ColorizedOutput(ui.ColorInfo, "\tDetail: %s\n", desc.Detail)
+		ui.ColorizedNoLogOutput(ui.ColorInfo, "\tDetail: %s\n", desc.Detail)
 	}
 }

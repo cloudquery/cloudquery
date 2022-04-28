@@ -27,6 +27,11 @@ func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	_, _ = c.Printf(msg, values...)
 }
 
+func ColorizedNoLogOutput(c *color.Color, msg string, values ...interface{}) {
+	// TODO: make zerolog not print this
+	_, _ = c.Printf(msg, values...)
+}
+
 func IsTerminal() bool {
 	return isatty.IsTerminal(os.Stdout.Fd()) && term.IsTerminal(int(os.Stdout.Fd()))
 }
