@@ -131,10 +131,10 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
 	)
-	filteredPolicy := request.Policy.Filter(request.Policy.meta.subPolicy)
+	filteredPolicy := request.Policy.Filter(request.Policy.meta.SubPolicy)
 	if !filteredPolicy.HasChecks() {
-		log.Error().Str("selector", request.Policy.meta.subPolicy).Strs("available_policies", filteredPolicy.Policies.All()).Msg("policy/query not found with provided sub-policy selector")
-		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.subPolicy, ErrPolicyOrQueryNotFound)
+		log.Error().Str("selector", request.Policy.meta.SubPolicy).Strs("available_policies", filteredPolicy.Policies.All()).Msg("policy/query not found with provided sub-policy selector")
+		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.SubPolicy, ErrPolicyOrQueryNotFound)
 	}
 	totalQueriesToRun = filteredPolicy.TotalQueries()
 	log.Info().Int("total", totalQueriesToRun).Msg("policy Checks count")
@@ -191,7 +191,7 @@ func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourc
 	}
 	policy.meta = meta
 	if subPolicy != "" {
-		policy.meta.subPolicy = subPolicy
+		policy.meta.SubPolicy = subPolicy
 	}
 	policy.Source = sourceURL
 	return policy, nil

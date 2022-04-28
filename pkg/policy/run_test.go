@@ -49,7 +49,7 @@ func TestManager_Load(t *testing.T) {
 				meta: &Meta{
 					Type:      "github",
 					Version:   "",
-					subPolicy: "",
+					SubPolicy: "",
 					Directory: "cq/policies/manager/github.com/cloudquery-policies/test_policy",
 				},
 			},

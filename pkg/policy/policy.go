@@ -15,6 +15,23 @@ func (pp Policies) All() []string {
 	return policyNames
 }
 
+func (pp Policies) Properties() map[string]interface{} {
+	usedCustom := 0
+	policies := make([]*Meta, 0)
+	for _, p := range pp {
+		if p.meta.Type != "hub" {
+			usedCustom++
+			// we don't add info about custom policies that were executed
+			continue
+		}
+		policies = append(policies, p.meta)
+	}
+	return map[string]interface{}{
+		"used_custom": usedCustom,
+		"policies":    policies,
+	}
+}
+
 type Policy struct {
 	// Name of the policy
 	Name string `hcl:"name,label"`
@@ -53,7 +70,7 @@ func (p Policy) SubPolicy() string {
 	if p.meta == nil {
 		return ""
 	}
-	return p.meta.subPolicy
+	return p.meta.SubPolicy
 }
 
 func (p Policy) HasChecks() bool {
@@ -109,10 +126,10 @@ func (p Policy) Filter(path string) Policy {
 }
 
 type Meta struct {
-	Type      string
-	Version   string
-	subPolicy string
-	Directory string
+	Type      string `json:"type,omitempty"`
+	Version   string `json:"version,omitempty"`
+	SubPolicy string `json:"sub_policy,omitempty"`
+	Directory string `json:"directory,omitempty"`
 }
 
 type View struct {

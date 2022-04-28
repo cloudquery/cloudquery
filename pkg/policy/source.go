@@ -29,7 +29,7 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 		meta: &Meta{
 			Type:      t,
 			Version:   "latest",
-			subPolicy: subPolicy,
+			SubPolicy: subPolicy,
 		},
 	}, true, nil
 }
@@ -66,7 +66,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 	return data, &Meta{
 		Type:      detectorType,
 		Version:   version,
-		subPolicy: subPolicy,
+		SubPolicy: subPolicy,
 		Directory: policyDir,
 	}, nil
 }
