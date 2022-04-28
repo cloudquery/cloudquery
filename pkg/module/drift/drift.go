@@ -8,28 +8,27 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	cqschema "github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/georgysavva/scany/pgxscan"
-	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 )
 
 type Drift struct {
-	logger hclog.Logger
-	config *BaseConfig
-
-	params RunParams
-
+	config   *BaseConfig
+	params   RunParams
 	tableMap map[string]resourceMap // one map per provider, initiated on first use
 }
 
@@ -56,10 +55,8 @@ func (i iacProvider) String() string {
 	}
 }
 
-func New(logger hclog.Logger) *Drift {
-	return &Drift{
-		logger: logger,
-	}
+func New() *Drift {
+	return &Drift{}
 }
 
 func (d *Drift) ID() string {
@@ -238,7 +235,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 }
 
 func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, error) {
-	iacProv, iacStates, err := readIACStates(d.logger, string(iacTerraform), d.config.Terraform, d.params.StateFiles)
+	iacProv, iacStates, err := readIACStates(iacTerraform, d.config.Terraform, d.params.StateFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -250,18 +247,18 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	}
 
 	for _, cfg := range d.config.Providers {
-		schema, err := d.findProvider(cfg, req.Providers)
+		schema, err := d.findProvider(cfg, req.Schemas)
 		if err != nil {
 			return nil, err
 		} else if schema == nil {
 			continue
 		}
 
-		d.logger.Debug("Processing for provider", "provider", schema.Name, "config", cfg)
+		log.Debug().Str("provider", schema.Name).Interface("config", cfg).Msg("Processing for provider")
 
-		resources := cfg.interpolatedResourceMap(iacProv, d.logger)
+		resources := cfg.interpolatedResourceMap(iacProv)
 		if d.params.Debug {
-			listUnimplementedResources(d.logger, resources, schema)
+			listUnimplementedResources(resources, schema)
 		}
 
 		// Always process in the same order so both results and error messages are consistent
@@ -272,11 +269,13 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 			}
 			pr := d.lookupResource(resName, schema)
 			if pr == nil {
-				d.logger.Warn("Skipping resource, lookup failed", "resource", resName)
+				log.Warn().Str("resoruce", resName).Msg("Skipping resource, lookup failed")
 				continue
 			}
 
-			d.logger.Debug("Running for provider and resource", "provider", schema.Name+":"+resName, "table", pr.Name, "ids", res.Identifiers, "attributes", res.Attributes, "iac_type", res.IAC[iacProv].Type)
+			log.Debug().Str("provider", schema.Name+":"+resName).Strs("ids", res.Identifiers).
+				Strs("attributes", res.Attributes).Str("iac_type", res.IAC[iacProv].Type).
+				Msg("Running for provider and resource")
 
 			// Drift per resource
 			var (
@@ -285,7 +284,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 			)
 			switch iacProv {
 			case iacTerraform:
-				dres, err = driftTerraform(ctx, d.logger, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params, cfg.AccountIDs)
+				dres, err = driftTerraform(ctx, req.Conn, schema.Name, pr, resName, resources, res.IAC[iacProv], iacStates.([]*terraform.Data), d.params, cfg.AccountIDs)
 			default:
 				err = fmt.Errorf("no suitable handler found for %q", iacProv)
 			}
@@ -304,7 +303,7 @@ func (d *Drift) run(ctx context.Context, req *module.ExecuteRequest) (*Results, 
 	return resList, nil
 }
 
-func listUnimplementedResources(logger hclog.Logger, resources map[string]*ResourceConfig, provSchema *cqproto.GetProviderSchemaResponse) {
+func listUnimplementedResources(resources map[string]*ResourceConfig, provSchema *core.ProviderSchema) {
 	var (
 		res, subRes []string
 	)
@@ -318,8 +317,7 @@ func listUnimplementedResources(logger hclog.Logger, resources map[string]*Resou
 	}
 	sort.Strings(res)
 	sort.Strings(subRes)
-	logger.Debug("Not implemented resources", "list", res)
-	logger.Debug("Not implemented subresources", "list", subRes)
+	log.Debug().Strs("resources", res).Strs("sub-resources", subRes).Msg("not implemented resources & subresources")
 }
 
 func listUnimplementedResourcesInner(resources map[string]*ResourceConfig, upper string, t *cqschema.Table) []string {
@@ -333,12 +331,12 @@ func listUnimplementedResourcesInner(resources map[string]*ResourceConfig, upper
 	return ret
 }
 
-func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
+func queryIntoResourceList(ctx context.Context, conn execution.QueryExecer, sel *goqu.SelectDataset) (ResourceList, error) {
 	query, args, err := sel.ToSQL()
 	if err != nil {
 		return nil, fmt.Errorf("goqu build failed: %w", err)
 	}
-	logger.Trace("generated query", "query", query, "args", args)
+	log.Trace().Str("query", query).Interface("args", args).Msg("generated query")
 
 	var list []struct {
 		ID      *string           `db:"id"`
@@ -352,7 +350,7 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execut
 			return nil, fmt.Errorf("cloud provider tables don't exist: Did you run `cloudquery fetch`? %w", pgErr)
 		}
 
-		logger.Warn("query failed with error", "query", query, "args", args, "error", err)
+		log.Warn().Err(err).Str("query", query).Interface("args", args).Msg("query failed with error")
 		return nil, fmt.Errorf("goqu select failed: %w", err)
 	}
 
@@ -373,12 +371,12 @@ func queryIntoResourceList(ctx context.Context, logger hclog.Logger, conn execut
 	return ret, nil
 }
 
-func handleSubresource(logger hclog.Logger, sel *goqu.SelectDataset, pr *traversedTable, resources map[string]*ResourceConfig, accountIDs []string) *goqu.SelectDataset {
+func handleSubresource(sel *goqu.SelectDataset, pr *traversedTable, _ map[string]*ResourceConfig, accountIDs []string) *goqu.SelectDataset {
 	parentColumn := pr.ParentIDColumn()
 
 	if parentColumn == "" {
 		if pr.Parent != nil {
-			logger.Error("parent set but no parentColumn for table", "table", pr.Table.Name)
+			log.Error().Str("table", pr.Table.Name).Msg("parent set but no parentColumn for table")
 		}
 
 		if len(accountIDs) > 0 {
@@ -392,7 +390,7 @@ func handleSubresource(logger hclog.Logger, sel *goqu.SelectDataset, pr *travers
 		return sel
 	}
 	if pr.Parent == nil {
-		logger.Warn("parentColumn set but no parent for table", "table", pr.Table.Name)
+		log.Error().Str("table", pr.Table.Name).Msg("parentColumn set but no parent for table")
 		return sel
 	}
 
@@ -478,8 +476,8 @@ func handleIdentifiers(identifiers []string) (exp.Expression, error) {
 	return goqu.L("CONCAT(" + strings.Join(concatArgs[:len(concatArgs)-1], ",") + ") AS id"), nil
 }
 
-func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
-	if iacProvider(iacID) != iacTerraform {
+func readIACStates(iacID iacProvider, tf *TerraformSourceConfig, stateFiles []string) (iacProvider, interface{}, error) {
+	if iacID != iacTerraform {
 		return "", nil, fmt.Errorf("unknown IAC %q", iacID)
 	}
 
@@ -492,7 +490,7 @@ func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig,
 		case TFLocal:
 			stateFiles = tf.Files
 		case TFS3:
-			states, err := loadIACStatesFromS3(iacID, tf.Bucket, tf.Keys, tf.Region, tf.RoleARN)
+			states, err := loadIACStatesFromS3(string(iacID), tf.Bucket, tf.Keys, tf.Region, tf.RoleARN)
 			if err != nil {
 				return "", nil, err
 			}
@@ -528,7 +526,7 @@ func readIACStates(logger hclog.Logger, iacID string, tf *TerraformSourceConfig,
 				if !ok {
 					return "", nil, fmt.Errorf("validate %s: %w", fn, err)
 				}
-				logger.Warn("ValidateStateVersion", "warning", err.Error())
+				log.Warn().Err(err).Msg("ValidateStateVersion")
 			} else if !ok {
 				return "", nil, fmt.Errorf("validate %s: failed", fn)
 			}

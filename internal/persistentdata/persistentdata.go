@@ -1,4 +1,4 @@
-// persistentdata will look for the given filename in two paths: ~/.cq/ and ./.cq/.
+// Package persistentdata will look for the given filename in two paths: ~/.cq/ and ./.cq/.
 package persistentdata
 
 import (

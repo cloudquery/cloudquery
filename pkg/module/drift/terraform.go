@@ -18,8 +18,8 @@ import (
 	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/hashicorp/go-hclog"
 	"github.com/olekukonko/tablewriter"
+	"github.com/rs/zerolog/log"
 	"github.com/tidwall/gjson"
 )
 
@@ -188,7 +188,7 @@ func parseTerraformAttribute(val interface{}, t schema.ValueType) interface{} {
 	}
 }
 
-func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
+func driftTerraform(ctx context.Context, conn execution.QueryExecer, cloudName string, cloudTable *traversedTable, resName string, resources map[string]*ResourceConfig, iacData *IACConfig, states TFStates, runParams RunParams, accountIDs []string) (*Result, error) {
 	registerGJsonHelpers()
 
 	res := &Result{
@@ -240,7 +240,7 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 		tagExp = goqu.L("NULL")
 
 		if resData.acl.HasTagFilters() {
-			logger.Warn("tag based filtering not possible on this resource type", "resource", resName)
+			log.Warn().Str("resource", resName).Msg("tag based filtering not possible on this resource type")
 		}
 	}
 
@@ -260,8 +260,8 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 	}
 
 	q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
-	q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
-	existing, err := queryIntoResourceList(ctx, logger, conn, q)
+	q = handleSubresource(q, cloudTable, resources, accountIDs)
+	existing, err := queryIntoResourceList(ctx, conn, q)
 	if err != nil {
 		return nil, err
 	}
@@ -279,9 +279,9 @@ func driftTerraform(ctx context.Context, logger hclog.Logger, conn execution.Que
 	// Get extra resources
 	{
 		q := goqu.Dialect("postgres").From(goqu.T(cloudTable.Name).As("c")).Select(idExp, cloudAttrQuery.As("attlist"), tagExp.As("tags"))
-		q = handleSubresource(logger, q, cloudTable, resources, accountIDs)
+		q = handleSubresource(q, cloudTable, resources, accountIDs)
 		q = handleFilters(q, resources[resName]) // This line (the application of filters) is the difference from "existing"
-		existingFiltered, err := queryIntoResourceList(ctx, logger, conn, q)
+		existingFiltered, err := queryIntoResourceList(ctx, conn, q)
 		if err != nil {
 			return nil, err
 		}

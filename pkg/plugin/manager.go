@@ -103,16 +103,6 @@ func (m *Manager) CreatePlugin(opts *CreationOptions) (Plugin, error) {
 	return p, nil
 }
 
-// GetPluginDetails returns plugin details based on provider name
-// TODO: deprecate this method
-func (m *Manager) GetPluginDetails(providerName string) (registry.ProviderBinary, error) {
-	details, err := m.registry.Get(providerName, registry.LatestVersion)
-	if err != nil {
-		return registry.ProviderBinary{}, fmt.Errorf("provider %s doesn't exist", providerName)
-	}
-	return details, nil
-}
-
 // Shutdown closes all clients and cleans the managed clients
 func (m *Manager) Shutdown() {
 	for _, c := range m.clients {

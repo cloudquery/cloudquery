@@ -64,7 +64,7 @@ func Test_Fetch(t *testing.T) {
 					Description: diag.Description{Resource: "panic_resource", ResourceID: []string(nil), Summary: "failed table panic_resource fetch. Error: resource with panic", Detail: ""},
 				},
 			},
-			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test(test_alias)": {
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test(test_alias)": {
 				Name:                  "test",
 				Alias:                 "test_alias",
 				Version:               registry.LatestVersion,
@@ -92,7 +92,7 @@ func Test_Fetch(t *testing.T) {
 				},
 			},
 			ExpectedDiags: nil,
-			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
 				Version:               registry.LatestVersion,
@@ -119,7 +119,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			Timeout: time.Second * 2,
+			Timeout: time.Second * 4,
 			ExpectedDiags: []diag.FlatDiag{
 				{
 					Err:         "rpc error: code = DeadlineExceeded desc = context deadline exceeded",
@@ -128,7 +128,7 @@ func Test_Fetch(t *testing.T) {
 					Summary:     "rpc error: code = DeadlineExceeded desc = context deadline exceeded",
 					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "rpc error: code = DeadlineExceeded desc = context deadline exceeded", Detail: ""}},
 			},
-			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
 				Version:               registry.LatestVersion,
@@ -153,7 +153,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]ProviderFetchSummary{"test": {
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
 				Version:               registry.LatestVersion,

@@ -3,6 +3,10 @@ package module
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/pkg/core"
+
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/hashicorp/hcl/v2"
@@ -42,8 +46,24 @@ type ExecuteRequest struct {
 	// Params are the invocation parameters specific to the module
 	Params RunParams
 	// Providers is the list of providers to process
-	// TODO: convert this to registry.Provider
-	Providers []*cqproto.GetProviderSchemaResponse
+	Schemas []*core.ProviderSchema
+	// Conn is the db connection to use
+	Conn execution.QueryExecer
+}
+
+type ExecutionOptions struct {
+	// Module to execute
+	Module string
+	// ProfileConfig is the config from the user
+	ProfileConfig hcl.Body
+	// Params are the invocation parameters specific to the module
+	Params RunParams
+	// Providers is the list of providers to process
+	Providers registry.Providers
+}
+
+type ModExecutionRequest struct {
+
 	// Conn is the db connection to use
 	Conn execution.QueryExecer
 }

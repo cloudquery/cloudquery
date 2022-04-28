@@ -19,10 +19,10 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-test/resources"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_PurgeProviderData(t *testing.T) {
@@ -98,7 +98,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := resources.Provider().ResourceMap["slow_resource"]
+				tbl := testTable()
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -134,7 +134,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: time.Hour * 10,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := resources.Provider().ResourceMap["slow_resource"]
+				tbl := testTable()
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -172,7 +172,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: time.Hour * 6,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := resources.Provider().ResourceMap["slow_resource"]
+				tbl := testTable()
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -220,7 +220,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: time.Hour * 4,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
-				tbl := resources.Provider().ResourceMap["slow_resource"]
+				tbl := testTable()
 				r := schema.NewResourceData(schema.PostgresDialect{}, tbl, nil, nil, nil, time.Now())
 				_ = r.Set("cq_id", uuid.New())
 				_ = r.Set("cq_meta", schema.Meta{
@@ -360,5 +360,26 @@ func setupTestProvider(t *testing.T, dsn string) {
 
 	if _, diags := Sync(context.TODO(), database.NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); diags.HasErrors() {
 		t.FailNow()
+	}
+}
+
+func testTable() *schema.Table {
+	return &schema.Table{
+		Name: "slow_resource",
+		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+			meta.Logger().Info("fetching")
+			select {
+			case <-ctx.Done():
+				return nil
+			case <-time.After(time.Second * 5):
+				return nil
+			}
+		},
+		Columns: []schema.Column{
+			{
+				Name: "some_bool",
+				Type: schema.TypeBool,
+			},
+		},
 	}
 }

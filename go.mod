@@ -38,7 +38,7 @@ require (
 	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
-	github.com/getsentry/sentry-go v0.12.0
+	github.com/getsentry/sentry-go v0.13.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.7
 	github.com/google/uuid v1.3.0
@@ -61,6 +61,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.2.0
 	go.opentelemetry.io/otel/trace v1.2.0
 	google.golang.org/grpc v1.45.0
+	gopkg.in/segmentio/analytics-go.v3 v3.1.0
 )
 
 require (
@@ -101,9 +102,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.3 // indirect
 	github.com/aws/smithy-go v1.11.2 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
-	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
@@ -113,7 +112,6 @@ require (
 	github.com/googleapis/gax-go/v2 v2.2.0 // indirect
 	github.com/googleapis/go-type-adapters v1.0.0 // indirect
 	github.com/googleapis/google-cloud-go-testing v0.0.0-20200911160855-bcd43fbb19e8 // indirect
-	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -150,6 +148,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/ryszard/goskiplist v0.0.0-20150312221310-2dfbae5fcf46 // indirect
+	github.com/segmentio/backo-go v1.0.0 // indirect
 	github.com/shabbyrobe/gocovmerge v0.0.0-20190829150210-3e036491d500 // indirect
 	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
@@ -161,6 +160,7 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xo/dburl v0.8.4 // indirect
+	github.com/xtgo/uuid v0.0.0-20140804021211-a0b114877d4c // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.2.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.10.0 // indirect

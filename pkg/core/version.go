@@ -42,22 +42,22 @@ func doGetLatestRelease(ctx context.Context, client *http.Client, owner, repo st
 // unit tests helper
 var getLatestRelease = doGetLatestRelease
 
-// MaybeCheckForUpdate checks if an update to CloudQuery core is available and returns its (new) version.
-// To avoid making those network requests on each CLI invocation it stores last time and version seen on Github
-// in a so called "last update check" file. If there is an error then returned version is nil. To be specific,
+// CheckCoreUpdate checks if an update to CloudQuery core is available and returns its (new) version.
+// To avoid making those network requests on each CLI invocation it stores last time and version seen on GitHub
+// in a so-called "last update check" file. If there is an error then returned version is nil. To be specific,
 // error is returned if:
 //
 // * core.Version is not a valid semantic version
-// * if "last update check" file does not exist and we fail to write to it
+// * if "last update check" file does not exist, and we fail to write to it
 // * if "last update check" file has a single word "disable" in it
-// * Github reports an error
-// * last release version on Github is not a valid semantic version
+// * GitHub reports an error
+// * last release version on GitHub is not a valid semantic version
 //
 // Otherwise, new available version is returned that is obtained from either:
 //
 // * "last update check" content and that version is newer than current
-// * Github latest release version and it's newer than current
-func MaybeCheckForUpdate(ctx context.Context, fs afero.Afero, nowUnix, period int64) (*version.Version, error) {
+// * GitHub the latest release version, and it's newer than current
+func CheckCoreUpdate(ctx context.Context, fs afero.Afero, nowUnix, period int64) (*version.Version, error) {
 	if Version == DevelopmentVersion {
 		// development version or something with local changes, skip update checks
 		return nil, nil
