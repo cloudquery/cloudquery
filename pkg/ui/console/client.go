@@ -192,20 +192,16 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	if diags.HasErrors() {
 		// Ignore context cancelled error
 		if st, ok := status.FromError(diags); ok && st.Code() == gcodes.Canceled {
+			printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
-			return nil, diags
+			return result, diags
 		}
 	}
-
-	if result == nil {
-		ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
-		return nil, diags
-	}
-
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
+	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	for _, summary := range result.ProviderFetchSummary {
 		s := emojiStatus[ui.StatusOK]
-		if summary.Status == "Canceled" {
+		if summary.Status == core.FetchCanceled {
 			s = emojiStatus[ui.StatusError] + " (canceled)"
 		}
 		key := summary.Name
@@ -242,12 +238,12 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 		sync, dd := core.Sync(ctx, c.Storage, c.PluginManager, &core.SyncOptions{Provider: p, DownloadLatest: false})
 		if dd.HasErrors() {
 			if errors.Is(dd, core.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusWarn], p.String())
+				ui.ColorizedOutput(ui.ColorWarning, "%s failed to sync provider, migrations not supported %s.\n", emojiStatus[ui.StatusWarn], p.String())
 				continue
 			}
 			ui.ColorizedOutput(ui.ColorError, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusError], p.String())
 			// TODO: should we just append diags and continue to sync others or stop syncing?
-			return nil, diags
+			return nil, dd
 		}
 		ui.ColorizedOutput(ui.ColorSuccess, "%s sync provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
 		diags = diags.Add(dd)
@@ -360,6 +356,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	})
+
+	if err := analytics.Capture("policy run", c.Providers, policiesToRun, diag.FromError(err, diag.INTERNAL)); err != nil {
+		log.Warn().Err(err).Msg("analytic send failed")
+	}
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()

@@ -51,15 +51,15 @@ func Test_Fetch(t *testing.T) {
 				{
 					Err:         "error from provider",
 					Resource:    "error_resource",
-					Type:        1,
-					Severity:    2,
+					Type:        diag.RESOLVING,
+					Severity:    diag.ERROR,
 					Summary:     "error from provider",
 					Description: diag.Description{Resource: "error_resource", ResourceID: []string(nil), Summary: "error from provider", Detail: ""}},
 				{
 					Err:         "failed table panic_resource fetch. Error: resource with panic",
 					Resource:    "panic_resource",
-					Type:        1,
-					Severity:    2,
+					Type:        diag.RESOLVING,
+					Severity:    diag.ERROR,
 					Summary:     "failed table panic_resource fetch. Error: resource with panic",
 					Description: diag.Description{Resource: "panic_resource", ResourceID: []string(nil), Summary: "failed table panic_resource fetch. Error: resource with panic", Detail: ""},
 				},
@@ -69,7 +69,7 @@ func Test_Fetch(t *testing.T) {
 				Alias:                 "test_alias",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "Finished",
+				Status:                FetchFinished,
 			}}},
 		},
 		{
@@ -97,7 +97,7 @@ func Test_Fetch(t *testing.T) {
 				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "Finished",
+				Status:                FetchFinished,
 			}}},
 		},
 		{
@@ -123,17 +123,17 @@ func Test_Fetch(t *testing.T) {
 			ExpectedDiags: []diag.FlatDiag{
 				{
 					Err:         "rpc error: code = DeadlineExceeded desc = context deadline exceeded",
-					Type:        6,
-					Severity:    2,
-					Summary:     "rpc error: code = DeadlineExceeded desc = context deadline exceeded",
-					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "rpc error: code = DeadlineExceeded desc = context deadline exceeded", Detail: ""}},
+					Type:        diag.USER,
+					Severity:    diag.ERROR,
+					Summary:     "provider fetch was canceled by user / fetch deadline exceeded: rpc error: code = DeadlineExceeded desc = context deadline exceeded",
+					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "provider fetch was canceled by user / fetch deadline exceeded: rpc error: code = DeadlineExceeded desc = context deadline exceeded", Detail: ""}},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "Failed",
+				Status:                FetchCanceled,
 			}}},
 		},
 		{
@@ -158,7 +158,35 @@ func Test_Fetch(t *testing.T) {
 				Alias:                 "",
 				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
-				Status:                "Finished",
+				Status:                FetchFinished,
+			}}},
+		},
+		{
+			Name: "fetch-duplicates",
+			Options: FetchOptions{
+				ProvidersInfo: []ProviderInfo{
+					{
+						Provider: registry.Provider{
+							Name:    "test",
+							Version: registry.LatestVersion,
+							Source:  registry.DefaultOrganization,
+						},
+						Config: &config.Provider{
+							Name:          "test",
+							Resources:     []string{"slow_resource", "slow_resource", "slow_resource"},
+							Env:           nil,
+							Configuration: nil,
+						},
+					},
+				},
+			},
+			ExpectedDiags: []diag.FlatDiag{{Err: "resource slow_resource is duplicate", Type: 6, Severity: 2, Summary: "resource slow_resource is duplicate", Description: diag.Description{Summary: "resource slow_resource is duplicate", Detail: ""}}},
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
+				Name:                  "test",
+				Alias:                 "",
+				Version:               registry.LatestVersion,
+				TotalResourcesFetched: 0,
+				Status:                FetchFailed,
 			}}},
 		},
 	}
