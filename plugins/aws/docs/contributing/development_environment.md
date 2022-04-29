@@ -35,7 +35,7 @@ See [docs](https://docs.cloudquery.io/docs/developers/debugging) for more detail
 The provider has two types of tests:
 
 1. *Unit Tests* - run locally without any credentials and use mocking to return data from AWS APIs.
-1. *Integration Tests* - run against real AWS APIs and uses test environment defined with `terraform` under `terraform/service_name/`
+2. *Integration Tests* - run against real AWS APIs and uses test environment defined with `terraform` under [`terraform/service_name/`](../../terraform)
 
 #### Unit Tests
 
@@ -44,3 +44,12 @@ Unit Tests don't require any credentials or internet access
 ```bash
 make test-unit # This runs go test ./...
 ```
+
+Unit tests include:
+- Specific resources tests. You can find those next to each resource, in the [`resources/services`](../../resources/services) folder.
+- DB migration tests. You can find the code for these tests [here](../../resources/provider/provider_test.go).
+- Client tests. You can find those in the [`client`](../../client) folder.
+
+#### Integration Tests
+
+These are documented in the Adding a new resource guide. See [here](./adding_a_new_resource.md#integration-tests) for more information.
