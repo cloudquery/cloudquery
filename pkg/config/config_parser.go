@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
 	"github.com/hashicorp/hcl/v2"
@@ -49,7 +50,9 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "cloudquery":
+			cliLoggingConfig := logging.GlobalConfig
 			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
+			logging.Reconfigure(*cqBlock.Logger, cliLoggingConfig)
 			diags = diags.Extend(cqDiags)
 			config.CloudQuery = cqBlock
 		case "provider":
@@ -114,6 +117,8 @@ func ReadModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Bod
 
 func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
 	var cq CloudQuery
+	// Pre-populate with existing values
+	cq.Logger = &logging.GlobalConfig
 	var diags hcl.Diagnostics
 	diags = diags.Extend(gohcl.DecodeBody(block.Body, ctx, &cq))
 

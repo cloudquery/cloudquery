@@ -3,6 +3,7 @@ package config
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 	"github.com/stretchr/testify/assert"
 )
@@ -182,6 +183,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 				Source:  &source,
 				Version: "v0.0.0",
 			}},
+			Logger: &logging.Config{},
 		},
 		Providers: []*Provider{
 			{
@@ -300,6 +302,7 @@ func TestParser_LoadConfigNoSourceField(t *testing.T) {
 				Source:  nil,
 				Version: "v0.0.0",
 			}},
+			Logger: &logging.Config{},
 		},
 		Providers: []*Provider{
 			{

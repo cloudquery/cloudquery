@@ -68,8 +68,6 @@ var (
 	Commit = "development"
 	Date   = "unknown"
 
-	loggerConfig logging.Config
-
 	rootCmd = &cobra.Command{
 		Use:   "cloudquery",
 		Short: "CloudQuery CLI",
@@ -96,18 +94,18 @@ func init() {
 	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 	// Logging Flags
-	rootCmd.PersistentFlags().BoolVarP(&loggerConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
+	rootCmd.PersistentFlags().BoolVarP(&logging.GlobalConfig.Verbose, "verbose", "v", false, "Enable Verbose logging")
 	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleLoggingEnabled, "enable-console-log", false, "Enable console logging")
+	rootCmd.PersistentFlags().BoolVar(&logging.GlobalConfig.ConsoleLoggingEnabled, "enable-console-log", false, "Enable console logging")
 	_ = viper.BindPFlag("enable-console-log", rootCmd.PersistentFlags().Lookup("enable-console-log"))
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.EncodeLogsAsJson, "encode-json", false, "EncodeLogsAsJson makes the logging framework logging JSON instead of KV")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.FileLoggingEnabled, "enable-file-logging", true, "enableFileLogging makes the framework logging to a file")
-	rootCmd.PersistentFlags().BoolVar(&loggerConfig.ConsoleNoColor, "disable-log-color", false, "disables color formatting in logging")
-	rootCmd.PersistentFlags().StringVar(&loggerConfig.Directory, "log-directory", ".", "Directory to logging to to when file logging is enabled")
-	rootCmd.PersistentFlags().StringVar(&loggerConfig.Filename, "log-file", "cloudquery.log", "Filename is the name of the logfile which will be placed inside the directory")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
-	rootCmd.PersistentFlags().IntVar(&loggerConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
+	rootCmd.PersistentFlags().BoolVar(&logging.GlobalConfig.EncodeLogsAsJson, "encode-json", false, "EncodeLogsAsJson makes the logging framework logging JSON instead of KV")
+	rootCmd.PersistentFlags().BoolVar(&logging.GlobalConfig.FileLoggingEnabled, "enable-file-logging", true, "enableFileLogging makes the framework logging to a file")
+	rootCmd.PersistentFlags().BoolVar(&logging.GlobalConfig.ConsoleNoColor, "disable-log-color", false, "disables color formatting in logging")
+	rootCmd.PersistentFlags().StringVar(&logging.GlobalConfig.Directory, "log-directory", ".", "Directory to logging to to when file logging is enabled")
+	rootCmd.PersistentFlags().StringVar(&logging.GlobalConfig.Filename, "log-file", "cloudquery.log", "Filename is the name of the logfile which will be placed inside the directory")
+	rootCmd.PersistentFlags().IntVar(&logging.GlobalConfig.MaxSize, "max-size", 30, "MaxSize the max size in MB of the logfile before it's rolled")
+	rootCmd.PersistentFlags().IntVar(&logging.GlobalConfig.MaxBackups, "max-backups", 3, "MaxBackups the max number of rolled files to keep")
+	rootCmd.PersistentFlags().IntVar(&logging.GlobalConfig.MaxAge, "max-age", 3, "MaxAge the max age in days to keep a logfile")
 	rootCmd.PersistentFlags().String("data-dir", "./.cq", "Directory to save and load CloudQuery persistent data to (env: CQ_DATA_DIR)")
 	rootCmd.PersistentFlags().String("plugin-dir", "", "Directory to save and load CloudQuery plugins from (env: CQ_PLUGIN_DIR)")
 	rootCmd.PersistentFlags().String("policy-dir", "", "Directory to save and load CloudQuery policies from (env: CQ_POLICY_DIR)")
@@ -164,10 +162,10 @@ func initLogging() {
 		return
 	}
 	if !ui.IsTerminal() {
-		loggerConfig.ConsoleLoggingEnabled = true // always true when no terminal
+		logging.GlobalConfig.ConsoleLoggingEnabled = true // always true when no terminal
 	}
 
-	zerolog.Logger = logging.Configure(loggerConfig)
+	zerolog.Logger = logging.Configure(logging.GlobalConfig)
 }
 
 func logInvocationParams(cmd *cobra.Command, args []string) {
