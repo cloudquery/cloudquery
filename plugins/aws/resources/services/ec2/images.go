@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"golang.org/x/sync/errgroup"
 )
 
 func Ec2Images() *schema.Table {
@@ -279,26 +280,37 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	c := meta.(*client.Client)
 
 	svc := c.Services().EC2
-	// fetch ec2.Images owned by this account
-	response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}}, func(options *ec2.Options) {
-		options.Region = c.Region
+	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		// fetch ec2.Images owned by this account
+		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}}, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- response.Images
+		return nil
 	})
-	if err != nil {
+
+	g.Go(func() error {
+		// fetch ec2.Images that are shared with this account
+		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}}, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- response.Images
+		return nil
+	})
+
+	if err := g.Wait(); err != nil {
 		return diag.WrapError(err)
 	}
-	res <- response.Images
-
-	// fetch ec2.Images that are shared with this account
-	response, err = svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}}, func(options *ec2.Options) {
-		options.Region = c.Region
-	})
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	res <- response.Images
-
 	return nil
 }
+
 func resolveEc2imageProductCodes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Image)
 	productCodes := map[string]string{}
