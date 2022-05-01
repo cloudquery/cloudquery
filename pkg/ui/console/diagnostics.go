@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
-func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose bool) {
+func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose, squash bool) {
 	// Nothing to
 	if dd == nil || !dd.HasDiags() {
 		return
@@ -22,6 +22,11 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose 
 	if redactDiags {
 		diags = diags.Redacted()
 	}
+
+	if squash {
+		diags = diags.Squash()
+	}
+
 	if !verbose {
 		var hasPrintableDiag bool
 		for _, d := range diags {

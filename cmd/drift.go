@@ -3,6 +3,10 @@ package cmd
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/pkg/errors"
 
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
@@ -30,6 +34,9 @@ var (
 				Profile:    driftProfile,
 				OutputPath: driftOutputPath,
 			})
+			if err := analytics.Capture("drift", c.Providers, nil, diag.FromError(err, diag.INTERNAL)); err != nil {
+				log.Warn().Err(err).Msg("analytics send failed")
+			}
 			errors.CaptureError(err, map[string]string{"command": "drift"})
 			return err
 		}),
