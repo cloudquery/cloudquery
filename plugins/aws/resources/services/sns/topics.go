@@ -97,6 +97,12 @@ func SnsTopics() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("TopicArn"),
 			},
+			{
+				Name:        "tags",
+				Description: "Topic tags.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveTopicTags,
+			},
 		},
 	}
 }
@@ -182,4 +188,20 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 
 	return nil
+}
+
+func resolveTopicTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	topic := resource.Item.(types.Topic)
+	c := meta.(*client.Client)
+	svc := c.Services().SNS
+	tagParams := sns.ListTagsForResourceInput{
+		ResourceArn: topic.TopicArn,
+	}
+	tags, err := svc.ListTagsForResource(ctx, &tagParams, func(o *sns.Options) {
+		o.Region = c.Region
+	})
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(col.Name, client.TagsToMap(tags.Tags)))
 }

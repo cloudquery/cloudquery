@@ -9,4 +9,8 @@ module "sns" {
   name_prefix       = "${var.prefix}-sns-cq-provider"
   display_name      = "${var.prefix}-sns-cq-provider"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
+  tags = {
+    tag1 = "foo"
+    tag2 = "bar"
+  }
 }
