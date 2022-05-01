@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS "aws_sns_topics" DROP COLUMN IF EXISTS "tags";

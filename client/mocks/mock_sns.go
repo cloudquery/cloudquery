@@ -75,6 +75,26 @@ func (mr *MockSnsClientMockRecorder) ListSubscriptions(arg0, arg1 interface{}, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSubscriptions", reflect.TypeOf((*MockSnsClient)(nil).ListSubscriptions), varargs...)
 }
 
+// ListTagsForResource mocks base method.
+func (m *MockSnsClient) ListTagsForResource(arg0 context.Context, arg1 *sns.ListTagsForResourceInput, arg2 ...func(*sns.Options)) (*sns.ListTagsForResourceOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsForResource", varargs...)
+	ret0, _ := ret[0].(*sns.ListTagsForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsForResource indicates an expected call of ListTagsForResource.
+func (mr *MockSnsClientMockRecorder) ListTagsForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockSnsClient)(nil).ListTagsForResource), varargs...)
+}
+
 // ListTopics mocks base method.
 func (m *MockSnsClient) ListTopics(arg0 context.Context, arg1 *sns.ListTopicsInput, arg2 ...func(*sns.Options)) (*sns.ListTopicsOutput, error) {
 	m.ctrl.T.Helper()

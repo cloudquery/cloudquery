@@ -5,6 +5,8 @@ crash.log
 cloudquery
 cloudquery.db
 cloudquery.zip
+# goenv
+.go-version
 /config.yml
 dist/
 vendor/

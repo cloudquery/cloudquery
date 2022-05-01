@@ -14,9 +14,14 @@ import (
 func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
+	tag := types.Tag{}
 	err := faker.FakeData(&topic)
 	if err != nil {
 		t.Fatal(err)
+	}
+	tagerr := faker.FakeData(&tag)
+	if tagerr != nil {
+		t.Fatal(tagerr)
 	}
 
 	m.EXPECT().ListTopics(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -38,6 +43,10 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 				"DeliveryPolicy":            `{"stuff": 3}`,
 				"EffectiveDeliveryPolicy":   `{"stuff": 3}`,
 			},
+		}, nil)
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&sns.ListTagsForResourceOutput{
+			Tags: []types.Tag{tag},
 		}, nil)
 	return client.Services{
 		SNS: m,

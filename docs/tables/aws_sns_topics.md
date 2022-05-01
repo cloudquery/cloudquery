@@ -18,3 +18,4 @@ AWS SNS topic
 |content_based_deduplication|boolean|Enables content-based deduplication for FIFO topics.|
 |kms_master_key_id|text|The ID of an AWS managed customer master key (CMK) for Amazon SNS or a custom CMK|
 |arn|text|The topic's ARN.|
+|tags|jsonb|Topic tags.|
