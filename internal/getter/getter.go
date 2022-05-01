@@ -46,11 +46,12 @@ var (
 	}
 
 	getters = map[string]getter.Getter{
-		"file": new(getter.FileGetter),
-		"gcs":  new(getter.GCSGetter),
-		"git":  new(getter.GitGetter),
-		"hg":   new(getter.HgGetter),
-		"s3":   new(getter.S3Getter),
+		"file":   new(getter.FileGetter),
+		"gcs":    new(getter.GCSGetter),
+		"github": new(getter.GitGetter),
+		"git":    new(getter.GitGetter),
+		"hg":     new(getter.HgGetter),
+		"s3":     new(getter.S3Getter),
 	}
 )
 
