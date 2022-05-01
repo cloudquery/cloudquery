@@ -16,6 +16,8 @@ cq-provider-*
 .cq_reattach
 # Local .terraform directories
 **/.terraform/*
+# Local .terraform.lock.hcl files
+**/terraform/**/local/.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate
