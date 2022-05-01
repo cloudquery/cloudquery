@@ -35,6 +35,26 @@ func (m *MockElasticbeanstalkClient) EXPECT() *MockElasticbeanstalkClientMockRec
 	return m.recorder
 }
 
+// DescribeApplicationVersions mocks base method.
+func (m *MockElasticbeanstalkClient) DescribeApplicationVersions(arg0 context.Context, arg1 *elasticbeanstalk.DescribeApplicationVersionsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeApplicationVersionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeApplicationVersions", varargs...)
+	ret0, _ := ret[0].(*elasticbeanstalk.DescribeApplicationVersionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeApplicationVersions indicates an expected call of DescribeApplicationVersions.
+func (mr *MockElasticbeanstalkClientMockRecorder) DescribeApplicationVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeApplicationVersions", reflect.TypeOf((*MockElasticbeanstalkClient)(nil).DescribeApplicationVersions), varargs...)
+}
+
 // DescribeApplications mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeApplications(arg0 context.Context, arg1 *elasticbeanstalk.DescribeApplicationsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeApplicationsOutput, error) {
 	m.ctrl.T.Helper()

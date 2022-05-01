@@ -428,11 +428,17 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 }
 func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
-	svc := meta.(*client.Client).Services().ElasticBeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().ElasticBeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
 	}, func(o *elasticbeanstalk.Options) {})
 	if err != nil {
+		// It takes a few minutes for an environment to be terminated
+		// This ensures we don't error while trying to fetch related resources for a terminated environment
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	if len(tagsOutput.ResourceTags) == 0 {
@@ -462,6 +468,12 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		options.Region = c.Region
 	})
 	if err != nil {
+		// It takes a few minutes for an environment to be terminated
+		// This ensures we don't error while trying to fetch related resources for a terminated environment
+		if client.IsInvalidParameterValueError(err) {
+			meta.Logger().Debug("Failed extracting configuration options for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 
@@ -492,6 +504,12 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		options.Region = c.Region
 	})
 	if err != nil {
+		// It takes a few minutes for an environment to be terminated
+		// This ensures we don't error while trying to fetch related resources for a terminated environment
+		if client.IsInvalidParameterValueError(err) {
+			meta.Logger().Debug("Failed extracting configuration settings for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 

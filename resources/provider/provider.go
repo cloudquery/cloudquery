@@ -153,6 +153,7 @@ func Provider() *provider.Provider {
 			"efs.filesystems":                       efs.EfsFilesystems(),
 			"eks.clusters":                          eks.EksClusters(),
 			"elasticbeanstalk.applications":         elasticbeanstalk.ElasticbeanstalkApplications(),
+			"elasticbeanstalk.application_versions": elasticbeanstalk.ApplicationVersions(),
 			"elasticbeanstalk.environments":         elasticbeanstalk.ElasticbeanstalkEnvironments(),
 			"elasticsearch.domains":                 elasticsearch.ElasticsearchDomains(),
 			"elbv1.load_balancers":                  elbv1.Elbv1LoadBalancers(),

@@ -278,6 +278,15 @@ func (c *Client) IsNotFoundError(err error) bool {
 	return false
 }
 
+func IsInvalidParameterValueError(err error) bool {
+	var apiErr smithy.APIError
+	if errors.As(err, &apiErr); apiErr.ErrorCode() == "InvalidParameterValue" {
+		return true
+	}
+
+	return false
+}
+
 func IsAWSError(err error, code ...string) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
