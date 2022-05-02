@@ -96,6 +96,14 @@ func classifyError(err error, fallbackType diag.Type, projects []string, opts ..
 		}
 	}
 
+	if es := err.Error(); strings.HasPrefix(es, "google: error getting credentials") || strings.HasPrefix(es, "google: could not find default credentials") {
+		return diag.Diagnostics{
+			RedactError(projects,
+				diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithDetails("Please see this document for GCP authentication: https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp#authenticate-with-gcp"))...),
+			),
+		}
+	}
+
 	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
 		return diag.Diagnostics{
