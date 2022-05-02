@@ -429,18 +429,19 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 // 													Module Commands
 // =====================================================================================================================
 
-func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
-	if _, diags := c.SyncProviders(ctx); diags.HasErrors() {
+func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) diag.Diagnostics {
+	_, diags := c.SyncProviders(ctx)
+	if diags.HasErrors() {
 		return diags
 	}
 
 	profiles, err := config.ReadModuleConfigProfiles(req.Name, c.cfg.Modules)
 	if err != nil {
-		return err
+		return diags.Add(diag.FromError(err, diag.USER))
 	}
 	cfg, err := selectProfile(req.Profile, profiles)
 	if err != nil {
-		return err
+		return diags.Add(diag.FromError(err, diag.USER))
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
 
@@ -455,15 +456,15 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	if err != nil {
 		ui.SleepBeforeError(ctx)
 		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
-		return err
+		return diags.Add(diag.FromError(err, diag.INTERNAL))
 	} else if out == nil {
 		ui.ColorizedOutput(ui.ColorSuccess, "Finished module, no results\n\n")
-		return nil
+		return diags
 	}
 
 	if out.ErrorMsg != "" {
 		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
-		return out.Error
+		return diags.Add(diag.FromError(out.Error, diag.USER))
 	}
 
 	if req.OutputPath != "" {
@@ -471,7 +472,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 		fs := afero.NewOsFs()
 		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			return err
+			return diags.Add(diag.FromError(err, diag.USER))
 		}
 		defer func() {
 			_ = f.Close()
@@ -479,10 +480,10 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 
 		data, err := json.MarshalIndent(out, "", "  ")
 		if err != nil {
-			return err
+			return diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 		if _, err := f.Write(data); err != nil {
-			return err
+			return diags.Add(diag.FromError(err, diag.USER))
 		}
 
 		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
@@ -497,10 +498,10 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) error {
 	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
 
 	if exitCoder, ok := out.Result.(module.ExitCoder); ok {
-		return &ExitCodeError{ExitCode: exitCoder.ExitCode()}
+		return diags.Add(diag.FromError(fmt.Errorf("exit code %d", exitCoder.ExitCode()), diag.USER))
 	}
 
-	return nil
+	return diags
 }
 
 func (c Client) Close() {
