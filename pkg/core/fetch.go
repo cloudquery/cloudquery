@@ -435,11 +435,7 @@ func normalizeResources(ctx context.Context, provider plugin.Plugin, resources [
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	ret, err := doNormalizeResources(resources, s.ResourceTables)
-	if err != nil {
-		return nil, diag.FromError(err, diag.USER)
-	}
-	return ret, nil
+	return doNormalizeResources(resources, s.ResourceTables)
 }
 
 // doNormalizeResources returns a canonical list of resources given a list of requested and all known resources.
@@ -448,7 +444,7 @@ func normalizeResources(ctx context.Context, provider plugin.Plugin, resources [
 // * wildcard is present and other explicit resource is requested;
 // * one of explicitly requested resources is not present in all known;
 // * some resource is specified more than once (duplicate).
-func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, error) {
+func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
 	if len(requested) == 1 && requested[0] == "*" {
 		requested = make([]string, 0, len(all))
 		for k := range all {
@@ -459,14 +455,14 @@ func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]s
 	seen := make(map[string]struct{})
 	for _, r := range requested {
 		if _, ok := seen[r]; ok {
-			return nil, fmt.Errorf("resource %s is duplicate", r)
+			return nil, diag.FromError(fmt.Errorf("resource %q is duplicate", r), diag.USER, diag.WithDetails("configuration has duplicate resources"))
 		}
 		seen[r] = struct{}{}
 		if _, ok := all[r]; !ok {
 			if r == "*" {
-				return nil, fmt.Errorf("wildcard resource must be the only one in the list")
+				return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
 			}
-			return nil, fmt.Errorf("resource %s does not exist", r)
+			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
 		}
 		result = append(result, r)
 	}
