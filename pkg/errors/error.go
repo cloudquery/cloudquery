@@ -18,7 +18,9 @@ var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
 func ShouldIgnoreDiag(d diag.Diagnostic) bool {
-	if d.Severity() == diag.IGNORE || (d.Severity() == diag.WARNING && d.Type() == diag.ACCESS) || d.Type() == diag.USER {
+	if d.Severity() == diag.IGNORE ||
+		(d.Severity() == diag.WARNING && (d.Type() == diag.ACCESS || d.Type() == diag.THROTTLE)) ||
+		d.Type() == diag.USER {
 		return true
 	}
 
@@ -29,6 +31,9 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	if d.Type() == diag.DATABASE {
 		ret := sqlStateRegex.FindStringSubmatch(d.Error())
 		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
+			return true
+		}
+		if classifyError(d) == errConn {
 			return true
 		}
 	}
@@ -45,7 +50,6 @@ const (
 	errDatabase     = errClass("database")
 )
 
-// TODO: decide what to do with this method
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
 	if st, ok := status.FromError(err); ok {
@@ -99,7 +103,8 @@ func shouldIgnorePgCode(code string) bool {
 		// Class 28 - Invalid Authorization Specification
 		// Class 3D - Invalid Catalog Name
 		// Class 57 - Operator Intervention
-		case "28", "3D", "57":
+		// Class 08 - Connection Exception
+		case "28", "3D", "57", "08":
 			return true
 		}
 	}

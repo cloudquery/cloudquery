@@ -1,8 +1,11 @@
 package cmd
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_Init(t *testing.T) {
+
 	testCases := []CommandTestCases{
 		{
 			Name:           "init-no-args",
