@@ -155,17 +155,22 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	if c.disabled {
 		return nil
 	}
+
 	eventProps := map[string]interface{}{
 		"version":     c.version.Version,
 		"commitId":    c.version.CommitId,
 		"buildDate":   c.version.BuildDate,
 		"env":         c.env,
-		"data":        data.Properties(),
 		"instanceId":  c.instanceId,
 		"success":     !diags.HasErrors(),
 		"providers":   providers,
 		"diagnostics": core.SummarizeDiagnostics(diags),
 	}
+
+	if data != nil {
+		eventProps["data"] = data.Properties()
+	}
+
 	// add any global properties
 	for k, v := range c.properties {
 		eventProps[k] = v
