@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
@@ -89,44 +91,43 @@ type RunRequest struct {
 	RunCallback UpdateCallback
 }
 
-func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*ExecutionResult, error) {
+func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*ExecutionResult, diag.Diagnostics) {
 	results := make([]*ExecutionResult, 0)
-
+	var diags diag.Diagnostics
 	for _, p := range req.Policies {
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("preparing to run policy")
 		loadedPolicy, err := Load(ctx, req.Directory, p)
 		if err != nil {
-			return nil, err
+			return nil, diag.FromError(err, diag.INTERNAL)
 		}
 		log.Debug().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("loaded policy successfully")
-		result, err := run(ctx, storage, &ExecuteRequest{
+		result, dd := run(ctx, storage, &ExecuteRequest{
 			Policy:         loadedPolicy,
 			UpdateCallback: req.RunCallback,
 		})
-
 		log.Info().Msg("policy execution finished")
-		if err != nil {
+		if dd.HasErrors() {
 			// this error means error in execution and not policy violation
 			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			log.Error().Err(err).Msg("policy execution finished with error")
-			return results, err
+			return results, diags.Add(dd)
 		}
 
+		diags = diags.Add(dd)
 		results = append(results, result)
 		if req.OutputDir == "" {
 			continue
 		}
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("writing policy to output directory")
 		if err := GenerateExecutionResultFile(result, req.OutputDir); err != nil {
-			return nil, err
+			return nil, diags
 		}
 	}
-
-	return results, nil
+	return results, diags
 }
 
-func run(ctx context.Context, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, error) {
+func run(ctx context.Context, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, diag.Diagnostics) {
 	var (
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
@@ -134,7 +135,8 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 	filteredPolicy := request.Policy.Filter(request.Policy.meta.SubPolicy)
 	if !filteredPolicy.HasChecks() {
 		log.Error().Str("selector", request.Policy.meta.SubPolicy).Strs("available_policies", filteredPolicy.Policies.All()).Msg("policy/query not found with provided sub-policy selector")
-		return nil, fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.SubPolicy, ErrPolicyOrQueryNotFound)
+		return nil, diag.FromError(fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.SubPolicy, ErrPolicyOrQueryNotFound),
+			diag.USER, diag.WithDetails("%s//%s not found, run `cloudquery policy describe %s` to find all available policies", request.Policy.Name, request.Policy.meta.SubPolicy, request.Policy.Name))
 	}
 	totalQueriesToRun = filteredPolicy.TotalQueries()
 	log.Info().Int("total", totalQueriesToRun).Msg("policy Checks count")
@@ -166,14 +168,10 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 	}
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "executor-database"), storage.DSN())
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	// execute the queries
-	result, err := NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy)
-	if err != nil {
-		return nil, err
-	}
-	return result, err
+	return NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy)
 }
 
 func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourceURL string) (*Policy, error) {

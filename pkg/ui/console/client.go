@@ -327,12 +327,13 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) error {
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Msg("run policy received params")
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return err
+		return diag.FromError(err, diag.RESOLVING)
 	}
 	log.Debug().Interface("policies", policiesToRun).Msg("policies to run")
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
@@ -345,7 +346,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	results, err := policy.Run(ctx, c.Storage, &policy.RunRequest{
+	results, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
@@ -364,10 +365,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		printPolicyResponse(results)
 	}
 
-	if err != nil {
+	if diags.HasErrors() {
 		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
-		return err
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies\n\n")
+		return diags
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")

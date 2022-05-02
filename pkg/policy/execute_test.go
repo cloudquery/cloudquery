@@ -7,6 +7,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
@@ -86,7 +88,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
-		ErrorOutput   string
+		ExpectedDiags []diag.FlatDiag
 	}{
 		{
 			Name: "multiple_queries",
@@ -131,7 +133,9 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+				Description: diag.Description{Summary: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -149,7 +153,9 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
+			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
+				Description: diag.Description{Summary: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -174,11 +180,11 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.Execute(context.Background(), execReq, p)
-			if tc.ErrorOutput != "" {
-				assert.EqualError(t, err, tc.ErrorOutput)
+			res, diags := executor.Execute(context.Background(), execReq, p)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.NoError(t, err)
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -282,7 +288,7 @@ func TestExecutor_Execute(t *testing.T) {
 		Selector             string
 		ShouldBeEmpty        bool
 		Pass                 bool
-		ErrorOutput          string
+		ExpectedDiags        []diag.FlatDiag
 		TotalExpectedResults int
 		StopOnFailure        bool
 	}{
@@ -347,9 +353,12 @@ func TestExecutor_Execute(t *testing.T) {
 			TotalExpectedResults: 1,
 		},
 		{
-			Name:        "multilayer policy w/ using view inherited from parent",
-			Policy:      multiLayerWithInheritedView,
-			ErrorOutput: "relation \"testview\" does not exist",
+			Name:          "multilayer policy w/ using view inherited from parent",
+			Policy:        multiLayerWithInheritedView,
+			ShouldBeEmpty: true,
+			ExpectedDiags: []diag.FlatDiag{{Err: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)",
+				Description: diag.Description{Summary: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Detail: ""}}},
 		},
 	}
 
@@ -365,14 +374,11 @@ func TestExecutor_Execute(t *testing.T) {
 				StopOnFailure:  tc.StopOnFailure,
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
-			res, err := executor.Execute(context.Background(), execReq, &filtered)
-			if tc.ErrorOutput != "" {
-				if assert.Error(t, err) {
-					assert.Contains(t, err.Error(), tc.ErrorOutput)
-				}
-				return
+			res, diags := executor.Execute(context.Background(), execReq, &filtered)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.NoError(t, err)
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -443,16 +449,16 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	testCases := []struct {
 		Name              string
 		DisableFetchCheck bool
-		ExpectedError     error
+		ExpectedDiags     []diag.FlatDiag
 	}{{
 		Name:              "fetch_check_enabled",
 		DisableFetchCheck: false,
-		ExpectedError:     errors.New("could not find a completed fetch for requested provider"),
+		ExpectedDiags: []diag.FlatDiag{{Err: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider",
+			Type: diag.USER, Severity: diag.ERROR, Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Detail: "test: please run `cloudquery fetch` before running policy"}}},
 	},
 		{
 			Name:              "fetch_check_disabled",
 			DisableFetchCheck: true,
-			ExpectedError:     nil,
 		},
 	}
 
@@ -465,12 +471,12 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 			defer viper.Reset()
 			viper.Set("disable-fetch-check", tc.DisableFetchCheck)
 
-			_, err = executor.Execute(context.Background(), executeRequest, policy)
+			_, diags := executor.Execute(context.Background(), executeRequest, policy)
 
-			if tc.ExpectedError == nil {
-				assert.NoError(t, err)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Contains(t, err.Error(), tc.ExpectedError.Error())
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 		})
 	}
