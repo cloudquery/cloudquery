@@ -256,7 +256,7 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 }
 
 func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
-	client := firebase.NewFirebaseClient(firebase.CloudQueryRegistryURL)
+	client := firebase.New(firebase.CloudQueryRegistryURL)
 	latest, err := client.GetLatestProviderRelease(ctx, organization, providerName)
 	return latest, err
 }

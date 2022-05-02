@@ -24,7 +24,7 @@ type FirebaseClient struct {
 	url string
 }
 
-func NewFirebaseClient(registryUrl string) *FirebaseClient {
+func New(registryUrl string) *FirebaseClient {
 	f := &FirebaseClient{
 		url: registryUrl,
 	}

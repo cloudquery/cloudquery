@@ -62,7 +62,7 @@ func (d *GitHubDetector) detectHTTP(src string) (string, bool, error) {
 }
 
 func addLatestTag(_url *url.URL, owner, repo string) error {
-	client := firebase.NewFirebaseClient(firebase.CloudQueryRegistryURL)
+	client := firebase.New(firebase.CloudQueryRegistryURL)
 	org, ok := repoToFirebasePath[owner]
 	if !ok {
 		org = owner
