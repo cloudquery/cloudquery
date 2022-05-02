@@ -59,6 +59,7 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		cfgMutator   func(*config.Config) error
 		delayMessage = ui.IsTerminal()
 	)
+
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":

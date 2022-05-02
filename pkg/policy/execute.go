@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
@@ -96,13 +98,8 @@ type ExecutionResult struct {
 type ExecuteRequest struct {
 	// Policy is the policy that should be executed.
 	Policy *Policy
-
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
-
-	// ProviderVersions describes current versions of providers in use.
-	ProviderVersions map[string]*version.Version
-
 	// UpdateCallback is the console ui update callback
 	UpdateCallback UpdateCallback
 }
@@ -129,7 +126,7 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 }
 
 // Execute executes given policy and the related sub queries/views.
-func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, error) {
+func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, diag.Diagnostics) {
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0), ExecutionTime: time.Now()}
 
 	if !policy.HasChecks() {
@@ -137,14 +134,9 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		return &total, nil
 	}
 
-	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
-	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
-		return nil, fmt.Errorf("%s: %w", policy.Name, err)
-	}
-
 	if !viper.GetBool("disable-fetch-check") {
 		if err := e.checkFetches(ctx, policy.Config); err != nil {
-			return nil, fmt.Errorf("%s: %w, please run `cloudquery fetch` before running policy", policy.Name, err)
+			return nil, diag.FromError(err, diag.USER, diag.WithDetails("%s: please run `cloudquery fetch` before running policy", policy.Name))
 		}
 	}
 
@@ -154,7 +146,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		r, err := executor.Execute(ctx, req, p)
 		if err != nil {
 			executor.log.Error("failed to execute policy", "err", err)
-			return nil, fmt.Errorf("%s/%w", policy.Name, err)
+			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
 		}
 		total.Passed = total.Passed && r.Passed
 		total.Results = append(total.Results, r.Results...)
@@ -166,7 +158,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	// TODO: A better idea here is to create a new session, create the views, run queries, and close the session.
 	//       This will remove the need for 'deleteViews'.
 	if err := e.createViews(ctx, policy); err != nil {
-		return nil, err
+		return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
 	}
 	defer e.deleteViews(ctx, policy)
 
@@ -175,7 +167,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		qr, err := e.executeQuery(ctx, q)
 		if err != nil {
 			e.log.Error("failed to execute query", "err", err)
-			return nil, fmt.Errorf("%s/%w", policy.Name, err)
+			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
 		}
 		total.Passed = total.Passed && qr.Passed
 		total.Results = append(total.Results, qr)
@@ -219,26 +211,6 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 		}
 		if !c.Check(v) {
 			return fmt.Errorf("the latest fetch for provider %s does not satisfy version requirement %s", p.Type, c)
-		}
-	}
-	return nil
-}
-
-func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*version.Version) error {
-	if policyConfig == nil {
-		return nil
-	}
-	for _, p := range policyConfig.Providers {
-		c, err := version.NewConstraint(p.Version)
-		if err != nil {
-			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
-		}
-		v, ok := actual[p.Type]
-		if !ok {
-			return fmt.Errorf("provider %s version %s is not defined in configuration", p.Type, p.Version)
-		}
-		if !c.Check(v) {
-			return fmt.Errorf("provider %s does not satisfy version requirement %s", p.Type, c)
 		}
 	}
 	return nil

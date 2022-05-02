@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -16,7 +17,7 @@ import (
 
 func Test_Sync(t *testing.T) {
 	dsn := setupDB(t)
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -78,7 +79,7 @@ func Test_Sync(t *testing.T) {
 
 func Test_Drop(t *testing.T) {
 	dsn := setupDB(t)
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}

@@ -6,19 +6,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/internal/test/providertest"
-
-	"github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-test/resources"
-
-	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
@@ -266,7 +262,7 @@ func Test_PurgeProviderData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, firebase.CloudQueryRegistryURLWithProviders, nil)
+			pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 			if !assert.Nil(t, err) {
 				t.FailNow()
 			}
@@ -303,7 +299,7 @@ func Test_PurgeProviderData(t *testing.T) {
 func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 
 	storage := database.NewStorage("host=localhost user=postgres password=pass database=no-db port=5432 sslmode=disable", nil)
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	require.Nil(t, err)
 	_, diags := PurgeProviderData(context.Background(), storage, pm, &PurgeProviderDataOptions{
 		Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
@@ -350,7 +346,7 @@ func setupTestProvider(t *testing.T, dsn string) {
 		Source:  "cloudquery",
 		Version: "v0.0.11",
 	}
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL), plugin.WithAllowReattach())
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	assert.Nil(t, err)
 	_, diags := Download(context.TODO(), pm, &DownloadOptions{
 		Providers: []registry.Provider{provider},

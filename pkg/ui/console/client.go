@@ -11,22 +11,22 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/getsentry/sentry-go"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/getsentry/sentry-go"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
@@ -98,7 +98,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
 		})
 	}
-	hub := registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory), registry.WithProgress(progressUpdater))
+	hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory), registry.WithProgress(progressUpdater))
 	pm, err := plugin.NewManager(hub, plugin.WithAllowReattach())
 	if err != nil {
 		return nil, err
@@ -132,7 +132,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 
 func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) {
 	// make sure to print diagnostics, if any exist
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	_, diags = core.Download(ctx, c.PluginManager, &core.DownloadOptions{Providers: c.Providers, NoVerify: viper.GetBool("no-verify")})
 	if c.downloadProgress != nil {
@@ -192,13 +192,13 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	if diags.HasErrors() {
 		// Ignore context cancelled error
 		if st, ok := status.FromError(diags); ok && st.Code() == gcodes.Canceled {
-			printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+			printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 			ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
 			return result, diags
 		}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
-	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	for _, summary := range result.ProviderFetchSummary {
 		s := emojiStatus[ui.StatusOK]
 		if summary.Status == core.FetchCanceled {
@@ -219,7 +219,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 // =====================================================================================================================
 
 func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*core.SyncResult, diags diag.Diagnostics) {
-	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	ui.ColorizedOutput(ui.ColorProgress, "Syncing CloudQuery providers %s\n\n", pp)
 	providers := c.Providers
 	if pp == nil {
@@ -256,7 +256,7 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 }
 
 func (c Client) DropProvider(ctx context.Context, providerName string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
 	if dd := c.DownloadProviders(ctx); dd.HasErrors() {
 		return dd
@@ -287,7 +287,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 		pp[i] = rp
 	}
 	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	result, diags := core.PurgeProviderData(ctx, c.Storage, c.PluginManager, &core.PurgeProviderDataOptions{
 		Providers:  pp,
 		LastUpdate: lastUpdate,
@@ -314,7 +314,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.Diagnostics) {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "policy", Source: args[0]})
 	if err != nil {
 		ui.SleepBeforeError(ctx)
@@ -327,20 +327,16 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) error {
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Msg("run policy received params")
-	if err := c.DownloadProviders(ctx); err != nil {
-		return err
-	}
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return err
+		return diag.FromError(err, diag.RESOLVING)
 	}
 	log.Debug().Interface("policies", policiesToRun).Msg("policies to run")
-
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
-
 	var (
 		policyRunProgress ui.Progress
 		policyRunCallback policy.UpdateCallback
@@ -350,16 +346,13 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	results, err := policy.Run(ctx, c.Storage, &policy.RunRequest{
+	results, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	})
-
-	if err := analytics.Capture("policy run", c.Providers, policiesToRun, diag.FromError(err, diag.INTERNAL)); err != nil {
-		log.Warn().Err(err).Msg("analytic send failed")
-	}
+	analytics.Capture("policy run", c.Providers, policiesToRun, diags)
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
@@ -369,10 +362,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		printPolicyResponse(results)
 	}
 
-	if err != nil {
+	if diags.HasErrors() {
 		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies: %s.\n\n", err.Error())
-		return err
+		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies\n\n")
+		return diags
 	}
 
 	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")
@@ -588,14 +581,14 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 		}
 	}
 	fetchCallback := func(update core.FetchUpdate) {
-		if update.Error != "" {
-			fetchProgress.Update(update.Provider, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
-			return
+		name := fmt.Sprintf("%s_%s", update.Name, update.Name)
+		if update.Alias != "" {
+			name = fmt.Sprintf("%s_%s", update.Name, update.Alias)
 		}
-		if len(update.PartialFetchResults) > 0 {
-			fetchProgress.Update(update.Provider, ui.StatusWarn, fmt.Sprintf("diagnostics: %d", len(update.PartialFetchResults)), 0)
+		if update.DiagnosticCount > 0 {
+			fetchProgress.Update(name, ui.StatusWarn, fmt.Sprintf("diagnostics: %d", update.DiagnosticCount), 0)
 		}
-		bar := fetchProgress.GetBar(update.Provider)
+		bar := fetchProgress.GetBar(name)
 		if bar == nil {
 			fetchProgress.AbortAll()
 			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
@@ -614,7 +607,7 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 			return
 		}
 		if update.AllDone() && bar.Status != ui.StatusWarn {
-			fetchProgress.Update(update.Provider, ui.StatusOK, "fetch complete", 0)
+			fetchProgress.Update(name, ui.StatusOK, "fetch complete", 0)
 			return
 		}
 	}

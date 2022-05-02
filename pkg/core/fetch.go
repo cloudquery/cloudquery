@@ -106,16 +106,17 @@ type ResourceFetchSummary struct {
 type FetchUpdateCallback func(update FetchUpdate)
 
 type FetchUpdate struct {
-	Provider string
-	Version  string
+	Name    string
+	Alias   string
+	Version string
 	// Map of resources that have finished fetching
 	FinishedResources map[string]bool
 	// Amount of resources collected so far
 	ResourceCount uint64
 	// Error if any returned by the provider
 	Error string
-	// PartialFetchResults contains the partial fetch results for this update
-	PartialFetchResults []*cqproto.FailedResourceFetch
+	// Diagnostic count
+	DiagnosticCount int
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -283,7 +284,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
-	pLog.Debug().Msg("creating provider plugin")
+	pLog.Debug().Str("name", info.Provider.String()).Str("alias", cfg.Alias).Msg("creating provider plugin")
 	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: info.Provider,
 		Alias:    cfg.Alias,
@@ -309,7 +310,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
-			Version:          info.Provider.Version,
+			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
 		}, diag.FromError(err, diag.INTERNAL)
@@ -318,7 +319,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
-			Version:          info.Provider.Version,
+			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
 		}, convertToConfigureDiagnostics(resp.Diagnostics)
@@ -326,7 +327,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
-	return summary, convertToFetchDiags(diags, info.Provider.Name, info.Provider.Version)
+	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
 }
 
 func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
@@ -335,7 +336,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
-			Version:               info.Provider.Version,
+			Version:               plugin.Version(),
 			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
@@ -375,10 +376,12 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			pLog.Debug().Str("resource", resp.ResourceName).Uint64("fetched", resp.ResourceCount).Msg("resource fetched successfully")
 			if callback != nil {
 				callback(FetchUpdate{
-					Provider:          plugin.Name(),
+					Name:              info.Provider.Name,
+					Alias:             info.Config.Alias,
 					Version:           plugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
+					DiagnosticCount:   diags.Len(),
 				})
 				// pLog.Debug().Str("resource", resp.ResourceName).Uint64("finishedCount", resp.ResourceCount).
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
@@ -401,11 +404,11 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		default:
 			if callback != nil {
 				callback(FetchUpdate{
-					Provider:          plugin.Name(),
-					Version:           plugin.Version(),
-					FinishedResources: resp.FinishedResources,
-					ResourceCount:     resp.ResourceCount,
-					Error:             err.Error(),
+					Name:            info.Provider.Name,
+					Alias:           info.Config.Alias,
+					Version:         plugin.Version(),
+					Error:           err.Error(),
+					DiagnosticCount: diags.Len(),
 				})
 			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
@@ -488,7 +491,7 @@ func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSum
 		CreatedAt:          time.Now().UTC(),
 		Start:              start,
 		Finish:             time.Now().UTC(),
-		IsSuccess:          ps.Diagnostics().HasErrors(),
+		IsSuccess:          !ps.Diagnostics().HasErrors(),
 		TotalResourceCount: ps.TotalResourcesFetched,
 		TotalErrorsCount:   ps.Diagnostics().Errors(),
 		ProviderName:       ps.Name,

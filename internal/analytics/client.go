@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/modern-go/reflect2"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 
 	"github.com/rs/zerolog/log"
@@ -150,33 +152,37 @@ type Message interface {
 	Properties() map[string]interface{}
 }
 
-func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) error {
+func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) {
 	c := currentHub
 	if c.disabled {
-		return nil
+		return
 	}
 	eventProps := map[string]interface{}{
 		"version":     c.version.Version,
 		"commitId":    c.version.CommitId,
 		"buildDate":   c.version.BuildDate,
 		"env":         c.env,
-		"data":        data.Properties(),
 		"instanceId":  c.instanceId,
 		"success":     !diags.HasErrors(),
 		"providers":   providers,
 		"diagnostics": core.SummarizeDiagnostics(diags),
 	}
+
+	if !reflect2.IsNil(data) {
+		eventProps["data"] = data.Properties()
+	}
+
 	// add any global properties
 	for k, v := range c.properties {
 		eventProps[k] = v
 	}
-	return c.client.Enqueue(analytics.Track{
-		UserId:     c.userId.String(),
-		Event:      eventType,
-		Timestamp:  time.Now().UTC(),
-		Context:    nil,
-		Properties: eventProps,
-	})
+
+	event := analytics.Track{UserId: c.userId.String(), Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
+	if err := c.client.Enqueue(event); err != nil {
+		if c.debug {
+			log.Error().Err(err).Msg("failed to send analytics")
+		}
+	}
 }
 
 func SetGlobalProperty(k string, v interface{}) {

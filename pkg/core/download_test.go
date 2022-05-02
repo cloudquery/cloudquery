@@ -4,6 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/config"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -15,7 +18,7 @@ import (
 
 func TestDownloadExisting(t *testing.T) {
 	tempDir := t.TempDir()
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
@@ -43,7 +46,7 @@ func TestDownloadExisting(t *testing.T) {
 		},
 		NoVerify: false,
 	})
-	assert.Nil(t, diags)
+	require.Nil(t, diags)
 
 	// Plugin is downloaded and should be created
 	p, err := pm.CreatePlugin(&plugin.CreationOptions{
@@ -61,7 +64,7 @@ func TestDownloadExisting(t *testing.T) {
 	pm.ClosePlugin(p)
 
 	// Create a new clean plugin.Manager, and check that it shouldn't download again
-	pm, err = plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
+	pm, err = plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
@@ -85,7 +88,7 @@ func TestDownloadExisting(t *testing.T) {
 
 func TestDownloadUnverified(t *testing.T) {
 	tempDir := t.TempDir()
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
@@ -136,7 +139,7 @@ func TestDownloadUnverified(t *testing.T) {
 
 func TestDownloadCommunity(t *testing.T) {
 	tempDir := t.TempDir()
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(tempDir)))
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}

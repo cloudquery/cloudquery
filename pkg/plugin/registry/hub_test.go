@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -52,7 +53,7 @@ func TestHub_CheckUpdate(t *testing.T) {
 			ExpectedError: errors.New("failed to find provider[test] latest version"),
 		},
 	}
-	hub := NewRegistryHub(CloudQueryRegistryURL)
+	hub := NewRegistryHub(firebase.CloudQueryRegistryURL)
 
 	latestVersion, err := hub.CheckUpdate(context.Background(), Provider{
 		Name:    "test",
@@ -138,7 +139,7 @@ func TestHub_Get(t *testing.T) {
 		},
 	}
 
-	hub := NewRegistryHub(CloudQueryRegistryURL, WithPluginDirectory("test/providers"))
+	hub := NewRegistryHub(firebase.CloudQueryRegistryURL, WithPluginDirectory("test/providers"))
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
 			result, err := hub.Get(tc.Provider.Name, tc.Provider.Version)
@@ -152,12 +153,12 @@ func TestHub_Get(t *testing.T) {
 
 func TestHub_Download(t *testing.T) {
 	t.Run("download-non-existing", func(t *testing.T) {
-		hub := NewRegistryHub(CloudQueryRegistryURL)
+		hub := NewRegistryHub(firebase.CloudQueryRegistryURL)
 		_, err := hub.Download(context.Background(), Provider{}, false)
 		assert.Error(t, err)
 	})
 	t.Run("download-bad-version", func(t *testing.T) {
-		hub := NewRegistryHub(CloudQueryRegistryURL, WithPluginDirectory(t.TempDir()))
+		hub := NewRegistryHub(firebase.CloudQueryRegistryURL, WithPluginDirectory(t.TempDir()))
 		_, err := hub.Download(context.Background(), Provider{
 			Name:    "test",
 			Version: "v9.9.9",
@@ -171,7 +172,7 @@ func TestHub_Download(t *testing.T) {
 
 	t.Run("download-test-provider", func(t *testing.T) {
 		tempDir := t.TempDir()
-		hub := NewRegistryHub(CloudQueryRegistryURL, WithPluginDirectory(tempDir))
+		hub := NewRegistryHub(firebase.CloudQueryRegistryURL, WithPluginDirectory(tempDir))
 
 		_, err := hub.Get("test", "v0.0.11")
 		assert.Error(t, err)

@@ -3,7 +3,6 @@ package registry
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -14,8 +13,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-version"
 )
@@ -274,24 +271,8 @@ func (h Hub) verifyRegistered(organization, providerName, version string, noVeri
 }
 
 func (h Hub) isProviderRegistered(org, provider string) bool {
-	u := fmt.Sprintf(h.url, org, provider)
-	res, err := http.Get(u)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to check if provider is registered")
-		return false
-	}
-	if res.StatusCode != http.StatusOK {
-		switch res.StatusCode {
-		case http.StatusNotFound:
-			return false
-		default:
-			return false
-		}
-	}
-	if res.Body != nil {
-		defer res.Body.Close()
-	}
-	return true
+	client := firebase.New(firebase.CloudQueryRegistryURL)
+	return client.IsProviderRegistered(org, provider)
 }
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin

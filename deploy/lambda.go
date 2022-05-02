@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/policy"
+
 	"github.com/spf13/viper"
 )
 
@@ -67,7 +68,7 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 // Fetch fetches resources from a cloud provider and saves them in the configured database
 func Fetch(ctx context.Context, cfg *config.Config) error {
 
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory)))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory)))
 	if err != nil {
 		return err
 	}

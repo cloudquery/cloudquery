@@ -8,6 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/stretchr/testify/assert"
@@ -20,6 +21,7 @@ import (
 )
 
 func Test_Fetch(t *testing.T) {
+	latestVersion := getLatestVersion(t, "test")
 	testCases := []struct {
 		Name             string
 		Options          FetchOptions
@@ -191,7 +193,7 @@ func Test_Fetch(t *testing.T) {
 		},
 	}
 
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -242,7 +244,11 @@ func Test_Fetch(t *testing.T) {
 					fetchSummary, ok := resp.ProviderFetchSummary[k]
 					require.True(t, ok)
 					assert.Equal(t, p.Name, fetchSummary.Name)
-					assert.Equal(t, p.Version, fetchSummary.Version)
+					if p.Version == registry.LatestVersion {
+						assert.Equal(t, latestVersion, fetchSummary.Version)
+					} else {
+						assert.Equal(t, p.Version, fetchSummary.Version)
+					}
 					assert.Equal(t, p.Status, fetchSummary.Status)
 					assert.Equal(t, p.TotalResourcesFetched, fetchSummary.TotalResourcesFetched)
 				}

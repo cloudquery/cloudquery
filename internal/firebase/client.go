@@ -10,14 +10,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/hashicorp/go-version"
 )
 
 const (
-	CloudQueryRegistryURL              = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/"
-	CloudQueryRegistryURLWithProviders = CloudQueryRegistryURL + "%s/providers/%s"
-	providersVersionsPath              = "%s/providers/%s/versions"
-	policiesVersionPath                = "%s/policies/%s/versions"
+	CloudQueryRegistryURL = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/"
+	providersVersionsPath = "%s/providers/%s/versions"
+	policiesVersionPath   = "%s/policies/%s/versions"
+	providerVerification  = "%s/providers/%s"
 )
 
 type FirebaseClient struct {
@@ -30,6 +32,27 @@ func New(registryUrl string) *FirebaseClient {
 	}
 
 	return f
+}
+
+func (f *FirebaseClient) IsProviderRegistered(organization, providerName string) bool {
+	u := fmt.Sprintf(f.url+providerVerification, organization, providerName)
+	res, err := http.Get(u)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to check if provider is registered")
+		return false
+	}
+	if res.StatusCode != http.StatusOK {
+		switch res.StatusCode {
+		case http.StatusNotFound:
+			return false
+		default:
+			return false
+		}
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+	return true
 }
 
 func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organization, providerName string) (string, error) {
@@ -69,7 +92,7 @@ func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organizat
 	}
 
 	if len(doc.Documents) == 0 || doc.Documents[0].Fields.Tag.Val == "" {
-		return "", fmt.Errorf("failed to find provider %s latest version", providerName)
+		return "", fmt.Errorf("failed to find provider[%s] latest version", providerName)
 	}
 	return doc.Documents[0].Fields.Tag.Val, nil
 }

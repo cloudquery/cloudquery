@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
@@ -17,7 +18,7 @@ func Test_GetProviderSchema(t *testing.T) {
 		Source:  registry.DefaultOrganization,
 		Version: "v0.0.11",
 	}
-	pm, err := plugin.NewManager(registry.NewRegistryHub(registry.CloudQueryRegistryURL))
+	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
