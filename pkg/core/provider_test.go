@@ -17,15 +17,7 @@ import (
 
 func Test_CheckAvailableUpdates(t *testing.T) {
 
-	reg := registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
-	latest, diags := CheckAvailableUpdates(context.Background(), reg, &CheckUpdatesOptions{Providers: []registry.Provider{
-		{Name: "test", Version: "v0.0.1", Source: registry.DefaultOrganization},
-	}})
-	assert.Nil(t, diags)
-	assert.NotNil(t, latest)
-	assert.Len(t, latest, 1)
-	// get latest version
-	latestVersion := latest[0].AvailableVersion
+	latestVersion := getLatestVersion(t, "test")
 
 	testCases := []struct {
 		Name    string
@@ -144,4 +136,16 @@ func Test_GetProviderConfig(t *testing.T) {
 	assert.Equal(t, expectedProviderConfig, string(pConfig.Config))
 	_, hdiags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
 	assert.Nil(t, hdiags)
+}
+
+func getLatestVersion(t *testing.T, name string) string {
+	reg := registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
+	latest, diags := CheckAvailableUpdates(context.Background(), reg, &CheckUpdatesOptions{Providers: []registry.Provider{
+		{Name: name, Version: "v0.0.0", Source: registry.DefaultOrganization},
+	}})
+	assert.Nil(t, diags)
+	assert.NotNil(t, latest)
+	assert.Len(t, latest, 1)
+	// get latest version
+	return latest[0].AvailableVersion
 }

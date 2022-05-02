@@ -15,7 +15,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -457,12 +456,8 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 		},
 	}
 
-	testProviderVersion, err := version.NewVersion("0.1.0")
-	assert.NoError(t, err)
-
 	executeRequest := &ExecuteRequest{
-		Policy:             policy,
-		InstalledProviders: map[string]*version.Version{"testProvider": testProviderVersion},
+		Policy: policy,
 	}
 
 	for _, tc := range testCases {

@@ -310,7 +310,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
-			Version:          info.Provider.Version,
+			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
 		}, diag.FromError(err, diag.INTERNAL)
@@ -319,7 +319,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
-			Version:          info.Provider.Version,
+			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
 		}, convertToConfigureDiagnostics(resp.Diagnostics)
@@ -327,7 +327,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
-	return summary, convertToFetchDiags(diags, info.Provider.Name, info.Provider.Version)
+	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
 }
 
 func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
@@ -336,7 +336,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
-			Version:               plugin.Version(), // use plugin version, so we won't use "latest"
+			Version:               plugin.Version(),
 			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,

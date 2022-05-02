@@ -98,8 +98,6 @@ type ExecuteRequest struct {
 	Policy *Policy
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
-	// InstalledProviders describes current versions of providers in use.
-	InstalledProviders map[string]*version.Version
 	// UpdateCallback is the console ui update callback
 	UpdateCallback UpdateCallback
 }
@@ -132,11 +130,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	if !policy.HasChecks() {
 		e.log.Warn("no checks or policies to execute")
 		return &total, nil
-	}
-
-	e.log.Debug("Check policy versions", "versions", req.InstalledProviders)
-	if err := e.checkVersions(policy.Config, req.InstalledProviders); err != nil {
-		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
 
 	if !viper.GetBool("disable-fetch-check") {
@@ -216,26 +209,6 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 		}
 		if !c.Check(v) {
 			return fmt.Errorf("the latest fetch for provider %s does not satisfy version requirement %s", p.Type, c)
-		}
-	}
-	return nil
-}
-
-func (*Executor) checkVersions(policyConfig *Configuration, actual map[string]*version.Version) error {
-	if policyConfig == nil {
-		return nil
-	}
-	for _, p := range policyConfig.Providers {
-		c, err := version.NewConstraint(p.Version)
-		if err != nil {
-			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
-		}
-		v, ok := actual[p.Type]
-		if !ok {
-			return fmt.Errorf("provider %s version %s is not defined in configuration", p.Type, p.Version)
-		}
-		if !c.Check(v) {
-			return fmt.Errorf("provider %s does not satisfy version requirement %s", p.Type, c)
 		}
 	}
 	return nil
