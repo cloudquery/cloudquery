@@ -348,10 +348,11 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		summary.Duration = time.Since(start)
 	}()
 
-	resources, err := normalizeResources(ctx, plugin, info.Config.Resources)
-	if err != nil {
+	var resources []string
+	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources)
+	if diags.HasErrors() {
 		summary.Status = FetchFailed
-		return summary, diag.FromError(err, diag.INTERNAL)
+		return summary, diags
 	}
 
 	pLog.Info().Msg("provider started fetching resources")
