@@ -336,7 +336,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
-			Version:               info.Provider.Version,
+			Version:               plugin.Version(), // use plugin version, so we won't use "latest"
 			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
@@ -491,7 +491,7 @@ func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSum
 		CreatedAt:          time.Now().UTC(),
 		Start:              start,
 		Finish:             time.Now().UTC(),
-		IsSuccess:          ps.Diagnostics().HasErrors(),
+		IsSuccess:          !ps.Diagnostics().HasErrors(),
 		TotalResourceCount: ps.TotalResourcesFetched,
 		TotalErrorsCount:   ps.Diagnostics().Errors(),
 		ProviderName:       ps.Name,
