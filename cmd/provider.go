@@ -47,7 +47,7 @@ var (
 		Long:  providerUpgradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			_, diags := c.SyncProviders(ctx, args...)
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_upgrade"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
@@ -62,7 +62,7 @@ var (
 		Long:  providerDowngradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			_, diags := c.SyncProviders(ctx, args...)
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_downgrade"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
@@ -85,7 +85,7 @@ var (
 				}
 			}
 			diags := c.DropProvider(ctx, args[0])
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_drop"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to drop provider %s", args[0])
 			}
@@ -101,7 +101,7 @@ var (
 		Args:  cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			_, diags := c.SyncProviders(ctx, args...)
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_build_schema"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
@@ -120,7 +120,7 @@ var (
 `,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			diags := c.DownloadProviders(ctx)
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_download"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to download providers")
 			}
@@ -138,7 +138,7 @@ var (
 		Args:  cobra.MinimumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			diags := c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
-			errors.CaptureDiagnostics(diags, nil)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_purge"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to remove stale data")
 			}
