@@ -6,7 +6,7 @@ on:
     branches:
       - main
   pull_request:
-    branches: [main]
+    branches: [main, test]
 
 jobs:
   checks:
@@ -84,11 +84,6 @@ jobs:
 
       - name: Policy Download
         run: go run ./main.go policy download github.com/roneli/aws//cis_v1.2.0 --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
-
-      - name: Policy Run
-        run: go run ./main.go policy run aws --config=internal/test/test_aws.hcl --disable-fetch-check
         env:
           CQ_NO_TELEMETRY: 1
 
