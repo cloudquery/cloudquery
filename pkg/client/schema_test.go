@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +15,7 @@ func Test_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
-	pManager, err := plugin.NewManager(hclog.Default(), filepath.Join(".", ".cq", "providers"), registry.CloudQueryRegistryURL, nil)
+	pManager, err := plugin.NewManager(hclog.Default(), filepath.Join(".", ".cq", "providers"), firebase.CloudQueryRegistryURLWithProviders, nil)
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}

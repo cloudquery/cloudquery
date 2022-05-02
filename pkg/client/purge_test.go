@@ -9,13 +9,13 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/test/providertest"
 
 	"github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-hclog"
 
@@ -268,7 +268,7 @@ func TestPurgeProviderData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, registry.CloudQueryRegistryURL, nil)
+			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, firebase.CloudQueryRegistryURLWithProviders, nil)
 			if !assert.Nil(t, err) {
 				t.FailNow()
 			}

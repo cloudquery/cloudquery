@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/telemetry"
 	"github.com/cloudquery/cloudquery/pkg/client/database"
@@ -249,9 +250,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
 		HistoryCfg:         nil,
-		RegistryURL:        registry.CloudQueryRegistryURL,
+		RegistryURL:        firebase.CloudQueryRegistryURLWithProviders,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
-		Hub:                *registry.NewRegistryHub(registry.CloudQueryRegistryURL),
+		Hub:                *registry.NewRegistryHub(firebase.CloudQueryRegistryURLWithProviders),
 	}
 	for _, o := range options {
 		o(c)
