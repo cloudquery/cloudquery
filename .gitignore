@@ -21,6 +21,8 @@ config.hcl
 config_old.hcl
 /pkg/policy/tests/output/
 /pkg/policy/cq/*
+/pkg/ui/console/.cq/*
 database-data/*
 dest/*
 outfile
+test_init_config.hcl
