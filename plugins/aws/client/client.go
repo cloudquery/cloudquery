@@ -195,6 +195,11 @@ type Client struct {
 	WAFScope             wafv2types.Scope
 }
 
+var (
+	_ schema.ClientMeta       = (*Client)(nil)
+	_ schema.ClientIdentifier = (*Client)(nil)
+)
+
 // S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
 // has different structure then all other services (i.e no service but just a function) and we need
 // the ability to mock it.
@@ -224,6 +229,16 @@ func NewAwsClient(logger hclog.Logger, accounts []Account) Client {
 }
 func (c *Client) Logger() hclog.Logger {
 	return &awsLogger{c.logger, c.Accounts}
+}
+
+// Identify the given client
+func (c *Client) Identify() string {
+	return strings.TrimRight(strings.Join([]string{
+		obfuscateAccountId(c.AccountID),
+		c.Region,
+		c.AutoscalingNamespace,
+		string(c.WAFScope),
+	}, ":"), ":")
 }
 
 func (c *Client) Services() *Services {
