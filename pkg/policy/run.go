@@ -105,23 +105,22 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 			Policy:         loadedPolicy,
 			UpdateCallback: req.RunCallback,
 		})
+		diags = diags.Add(dd)
 		log.Info().Msg("policy execution finished")
-		if dd.HasErrors() {
+		if diags.HasErrors() {
 			// this error means error in execution and not policy violation
 			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			log.Error().Err(err).Msg("policy execution finished with error")
-			return results, diags.Add(dd)
+			return results, diags
 		}
-
-		diags = diags.Add(dd)
 		results = append(results, result)
 		if req.OutputDir == "" {
 			continue
 		}
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("writing policy to output directory")
 		if err := GenerateExecutionResultFile(result, req.OutputDir); err != nil {
-			return nil, diags
+			return nil, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 	}
 	return results, diags

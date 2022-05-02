@@ -146,7 +146,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		r, err := executor.Execute(ctx, req, p)
 		if err != nil {
 			executor.log.Error("failed to execute policy", "err", err)
-			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
+			return nil, diag.FromError(fmt.Errorf("%s: %w", policy.Name, err), diag.DATABASE)
 		}
 		total.Passed = total.Passed && r.Passed
 		total.Results = append(total.Results, r.Results...)
@@ -167,7 +167,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		qr, err := e.executeQuery(ctx, q)
 		if err != nil {
 			e.log.Error("failed to execute query", "err", err)
-			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
+			return nil, diag.FromError(fmt.Errorf("%s: %w", policy.Name, err), diag.DATABASE)
 		}
 		total.Passed = total.Passed && qr.Passed
 		total.Results = append(total.Results, qr)

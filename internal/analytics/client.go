@@ -152,10 +152,10 @@ type Message interface {
 	Properties() map[string]interface{}
 }
 
-func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) error {
+func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) {
 	c := currentHub
 	if c.disabled {
-		return nil
+		return
 	}
 
 	eventProps := map[string]interface{}{
@@ -169,7 +169,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"diagnostics": core.SummarizeDiagnostics(diags),
 	}
 
-	if data != nil && !reflect2.IsNil(data) {
+	if !reflect2.IsNil(data) {
 		eventProps["data"] = data.Properties()
 	}
 
@@ -177,13 +177,16 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	for k, v := range c.properties {
 		eventProps[k] = v
 	}
-	return c.client.Enqueue(analytics.Track{
+	err := c.client.Enqueue(analytics.Track{
 		UserId:     c.userId.String(),
 		Event:      eventType,
 		Timestamp:  time.Now().UTC(),
 		Context:    nil,
 		Properties: eventProps,
 	})
+	if err != nil {
+		log.Error().Err(err).Msg("failed to send analytics")
+	}
 }
 
 func SetGlobalProperty(k string, v interface{}) {

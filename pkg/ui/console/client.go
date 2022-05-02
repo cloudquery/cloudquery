@@ -352,10 +352,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	})
-
-	if err := analytics.Capture("policy run", c.Providers, policiesToRun, diag.FromError(err, diag.INTERNAL)); err != nil {
-		log.Warn().Err(err).Msg("analytic send failed")
-	}
+	analytics.Capture("policy run", c.Providers, policiesToRun, diags)
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
