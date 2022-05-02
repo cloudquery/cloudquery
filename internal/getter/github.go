@@ -6,7 +6,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/google/go-github/v35/github"
+	"github.com/cloudquery/cloudquery/internal/firebase"
+)
+
+var (
+	repoToFirebasePath = map[string]string{
+		"cloudquery-policies": "cloudquery",
+	}
 )
 
 // GitHubDetector implements Detector to detect GitHub URLs and turn
@@ -56,20 +62,23 @@ func (d *GitHubDetector) detectHTTP(src string) (string, bool, error) {
 }
 
 func addLatestTag(_url *url.URL, owner, repo string) error {
-
-	client := github.NewClient(nil)
-	tags, _, err := client.Repositories.ListTags(context.Background(), owner, repo, &github.ListOptions{
-		Page:    0,
-		PerPage: 1,
-	})
-	if err != nil {
-		return fmt.Errorf("failed to find tags: %w", err)
+	client := firebase.NewFirebaseClient(firebase.CloudQueryRegistryURL)
+	org, ok := repoToFirebasePath[owner]
+	if !ok {
+		org = owner
 	}
-	if len(tags) == 0 {
+	latest, err := client.GetLatestPolicyRelease(context.Background(), org, repo)
+
+	if err != nil {
+		return fmt.Errorf("failed to find latest version: %w", err)
+	}
+
+	if latest == "" {
 		return nil
 	}
+
 	q := _url.Query()
-	q.Add("ref", tags[0].GetName())
+	q.Add("ref", latest)
 	_url.RawQuery = q.Encode()
 	return nil
 }
