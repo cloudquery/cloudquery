@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/hashicorp/go-version"
+
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
@@ -341,6 +343,18 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
 
+	installedVersions := make(map[string]*version.Version)
+	for _, p := range c.Providers {
+		pb, err := c.Registry.Get(p.Name, p.Version)
+		if err != nil {
+			return fmt.Errorf("failed to find provider plugin %s, check it exists in configuration", pb)
+		}
+		v, err := version.NewVersion(pb.Version)
+		if err != nil {
+			return fmt.Errorf("failed to to parse provider version %s, use a valid version in your configuration", pb)
+		}
+		installedVersions[pb.Name] = v
+	}
 	var (
 		policyRunProgress ui.Progress
 		policyRunCallback policy.UpdateCallback
@@ -351,10 +365,11 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	// Policies run request
 	results, err := policy.Run(ctx, c.Storage, &policy.RunRequest{
-		Policies:    policiesToRun,
-		Directory:   c.cfg.CloudQuery.PolicyDirectory,
-		OutputDir:   outputDir,
-		RunCallback: policyRunCallback,
+		Policies:           policiesToRun,
+		Directory:          c.cfg.CloudQuery.PolicyDirectory,
+		OutputDir:          outputDir,
+		RunCallback:        policyRunCallback,
+		InstalledProviders: installedVersions,
 	})
 
 	if err := analytics.Capture("policy run", c.Providers, policiesToRun, diag.FromError(err, diag.INTERNAL)); err != nil {

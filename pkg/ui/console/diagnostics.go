@@ -12,6 +12,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
+func classifyDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
+	// TODO: placeholder, every diagnostic we see that can be classified to diag.USER should be updated here
+	return dd
+}
+
 func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose, squash bool) {
 	// Nothing to
 	if dd == nil || !dd.HasDiags() {
@@ -26,6 +31,9 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose,
 	if squash {
 		diags = diags.Squash()
 	}
+
+	// classify diags to user diags + add details best on received error messages
+	diags = classifyDiagnostics(diags)
 
 	if !verbose {
 		var hasPrintableDiag bool

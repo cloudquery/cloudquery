@@ -461,8 +461,8 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	assert.NoError(t, err)
 
 	executeRequest := &ExecuteRequest{
-		Policy:           policy,
-		ProviderVersions: map[string]*version.Version{"testProvider": testProviderVersion},
+		Policy:             policy,
+		InstalledProviders: map[string]*version.Version{"testProvider": testProviderVersion},
 	}
 
 	for _, tc := range testCases {

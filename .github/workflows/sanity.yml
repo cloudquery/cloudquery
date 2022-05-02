@@ -88,6 +88,11 @@ jobs:
         env:
           CQ_NO_TELEMETRY: 1
 
+      - name: Policy Run
+        run: go run ./main.go policy run aws --config=internal/test/test_aws.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
       - name: Sync (upgrade)
         run: go run ./main.go provider upgrade test --config=internal/test/test_config.hcl
         env:

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/hashicorp/go-version"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
@@ -87,10 +89,13 @@ type RunRequest struct {
 	OutputDir string
 	// RunCallBack is the callback method that is called after every policy execution.
 	RunCallback UpdateCallback
+	// Installed versions
+	InstalledProviders map[string]*version.Version
 }
 
 func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*ExecutionResult, error) {
 	results := make([]*ExecutionResult, 0)
+
 	for _, p := range req.Policies {
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("preparing to run policy")
 		loadedPolicy, err := Load(ctx, req.Directory, p)
@@ -99,9 +104,9 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 		}
 		log.Debug().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("loaded policy successfully")
 		result, err := run(ctx, storage, &ExecuteRequest{
-			Policy:           loadedPolicy,
-			ProviderVersions: nil,
-			UpdateCallback:   req.RunCallback,
+			Policy:             loadedPolicy,
+			InstalledProviders: req.InstalledProviders,
+			UpdateCallback:     req.RunCallback,
 		})
 
 		log.Info().Msg("policy execution finished")

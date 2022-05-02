@@ -96,13 +96,10 @@ type ExecutionResult struct {
 type ExecuteRequest struct {
 	// Policy is the policy that should be executed.
 	Policy *Policy
-
 	// StopOnFailure if true policy execution will stop on first failure
 	StopOnFailure bool
-
-	// ProviderVersions describes current versions of providers in use.
-	ProviderVersions map[string]*version.Version
-
+	// InstalledProviders describes current versions of providers in use.
+	InstalledProviders map[string]*version.Version
 	// UpdateCallback is the console ui update callback
 	UpdateCallback UpdateCallback
 }
@@ -137,8 +134,8 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		return &total, nil
 	}
 
-	e.log.Debug("Check policy versions", "versions", req.ProviderVersions)
-	if err := e.checkVersions(policy.Config, req.ProviderVersions); err != nil {
+	e.log.Debug("Check policy versions", "versions", req.InstalledProviders)
+	if err := e.checkVersions(policy.Config, req.InstalledProviders); err != nil {
 		return nil, fmt.Errorf("%s: %w", policy.Name, err)
 	}
 
