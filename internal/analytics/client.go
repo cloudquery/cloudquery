@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/modern-go/reflect2"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 
 	"github.com/rs/zerolog/log"
@@ -167,7 +169,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"diagnostics": core.SummarizeDiagnostics(diags),
 	}
 
-	if data != nil {
+	if data != nil && !reflect2.IsNil(data) {
 		eventProps["data"] = data.Properties()
 	}
 
