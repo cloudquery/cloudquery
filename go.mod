@@ -52,6 +52,7 @@ require (
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.11.0
+	github.com/zenizh/go-capturer v0.0.0-20211219060012-52ea6c8fed04
 	google.golang.org/grpc v1.45.0
 	gopkg.in/segmentio/analytics-go.v3 v3.1.0
 )
