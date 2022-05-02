@@ -106,7 +106,6 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 			UpdateCallback: req.RunCallback,
 		})
 		diags = diags.Add(dd)
-		log.Info().Msg("policy execution finished")
 		if diags.HasErrors() {
 			// this error means error in execution and not policy violation
 			// we should exit immediately as this is a non-recoverable error
@@ -114,6 +113,7 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 			log.Error().Err(err).Msg("policy execution finished with error")
 			return results, diags
 		}
+		log.Info().Str("policy", p.Name).Msg("policy execution finished")
 		results = append(results, result)
 		if req.OutputDir == "" {
 			continue

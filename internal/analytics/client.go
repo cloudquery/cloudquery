@@ -157,7 +157,6 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	if c.disabled {
 		return
 	}
-
 	eventProps := map[string]interface{}{
 		"version":     c.version.Version,
 		"commitId":    c.version.CommitId,
@@ -177,14 +176,18 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	for k, v := range c.properties {
 		eventProps[k] = v
 	}
-	err := c.client.Enqueue(analytics.Track{
+
+	event := analytics.Track{
 		UserId:     c.userId.String(),
 		Event:      eventType,
 		Timestamp:  time.Now().UTC(),
 		Context:    nil,
 		Properties: eventProps,
-	})
-	if err != nil {
+	}
+	if c.debug {
+		log.Debug().Interface("event", event).Msg("debug analytics")
+	}
+	if err := c.client.Enqueue(event); err != nil {
 		log.Error().Err(err).Msg("failed to send analytics")
 	}
 }
