@@ -89,6 +89,7 @@ jobs:
 
       - name: Policy Run bad subpath
         run: go run ./main.go policy run aws//path/not/exist --config=internal/test/test_aws.hcl --disable-fetch-check
+        continue-on-error: true
         env:
           CQ_NO_TELEMETRY: 1
 
@@ -114,6 +115,7 @@ jobs:
 
       - name: Drift
         run: go run ./main.go drift scan internal/test/tfstate.state --enable-console-log --config=internal/test/test_drift.hcl
+        continue-on-error: true
         env:
           CQ_NO_TELEMETRY: 1
 
