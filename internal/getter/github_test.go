@@ -16,13 +16,6 @@ func TestGitHubDetector_Detect(t *testing.T) {
 	}{
 		{
 			Name:           "base",
-			Source:         "github.com/cloudquery-policies/test_policy",
-			ExpectedSource: "git::https://github.com/cloudquery-policies/test_policy.git?ref=v0.0.1",
-			ExpectedFound:  true,
-			ExpectedError:  nil,
-		},
-		{
-			Name:           "base",
 			Source:         "github.com/cloudquery-policies/aws?ref=v0.0.1",
 			ExpectedSource: "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
 			ExpectedFound:  true,
