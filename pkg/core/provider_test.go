@@ -16,6 +16,17 @@ import (
 )
 
 func Test_CheckAvailableUpdates(t *testing.T) {
+
+	reg := registry.NewRegistryHub(registry.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
+	latest, diags := CheckAvailableUpdates(context.Background(), reg, &CheckUpdatesOptions{Providers: []registry.Provider{
+		{Name: "test", Version: "v0.0.1", Source: registry.DefaultOrganization},
+	}})
+	assert.Nil(t, diags)
+	assert.NotNil(t, latest)
+	assert.Len(t, latest, 1)
+	// get latest version
+	latestVersion := latest[0].AvailableVersion
+
 	testCases := []struct {
 		Name    string
 		Options *CheckUpdatesOptions
@@ -31,7 +42,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			ExpectedAvailableUpdates: []AvailableUpdate{{
 				Name:             "test",
 				CurrentVersion:   "v0.0.1",
-				AvailableVersion: "v0.0.12",
+				AvailableVersion: latestVersion,
 			}},
 		},
 		{
@@ -66,7 +77,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		{
 			Name: "check-up-to-date",
 			Options: &CheckUpdatesOptions{Providers: []registry.Provider{
-				{Name: "test", Version: "v0.0.12", Source: registry.DefaultOrganization},
+				{Name: "test", Version: latestVersion, Source: registry.DefaultOrganization},
 			}},
 			ExpectedAvailableUpdates: []AvailableUpdate{},
 		},
