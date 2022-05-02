@@ -64,7 +64,7 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		if !allowDefaultConfig {
-			return nil, &ExitCodeError{ExitCode: 1}
+			return nil, diag.FromError(fmt.Errorf("config not read"), diag.USER)
 		}
 		cfg = &config.Config{
 			CloudQuery: config.CloudQuery{
@@ -498,7 +498,7 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) diag.Diag
 	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
 
 	if exitCoder, ok := out.Result.(module.ExitCoder); ok {
-		return diags.Add(diag.FromError(fmt.Errorf("exit code %d", exitCoder.ExitCode()), diag.USER))
+		return diags.Add(diag.FromError(fmt.Errorf("module exited with code %d", exitCoder.ExitCode()), diag.USER))
 	}
 
 	return diags

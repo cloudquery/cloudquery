@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
@@ -41,9 +42,8 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		}()
 
 		if err := handleConsole(cmd.Context(), cmd, args, f); err != nil {
-			if ee, ok := err.(*console.ExitCodeError); ok {
-				exitWithCode = ee.ExitCode
-				return // exitError is not set
+			if dd := diag.FromError(err, diag.INTERNAL); dd.HasErrors() { // Check if already diags
+				exitWithCode = 1
 			}
 			cmd.PrintErrln(err)
 		}
