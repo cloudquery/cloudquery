@@ -87,11 +87,6 @@ jobs:
         env:
           CQ_NO_TELEMETRY: 1
 
-      - name: Policy Run
-        run: go run ./main.go policy run aws --config=internal/test/test_aws.hcl --disable-fetch-check
-        env:
-          CQ_NO_TELEMETRY: 1
-
       - name: Policy Run bad subpath
         run: go run ./main.go policy run aws//path/not/exist --config=internal/test/test_aws.hcl --disable-fetch-check
         env:
