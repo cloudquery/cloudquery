@@ -250,9 +250,9 @@ func New(ctx context.Context, options ...Option) (*Client, error) {
 		SkipBuildTables:    false,
 		HubProgressUpdater: nil,
 		HistoryCfg:         nil,
-		RegistryURL:        firebase.CloudQueryRegistryURL,
+		RegistryURL:        firebase.CloudQueryRegistryURLWithProviders,
 		Logger:             logging.NewZHcLog(&zerolog.Logger, ""),
-		Hub:                *registry.NewRegistryHub(firebase.CloudQueryRegistryURL),
+		Hub:                *registry.NewRegistryHub(firebase.CloudQueryRegistryURLWithProviders),
 	}
 	for _, o := range options {
 		o(c)

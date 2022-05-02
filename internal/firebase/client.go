@@ -14,9 +14,10 @@ import (
 )
 
 const (
-	CloudQueryRegistryURL = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/"
-	providersPath         = "%s/providers/%s/versions"
-	policiesPath          = "%s/policies/%s/versions"
+	CloudQueryRegistryURL              = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/"
+	CloudQueryRegistryURLWithProviders = CloudQueryRegistryURL + "%s/providers/%s"
+	providersVersionsPath              = "%s/providers/%s/versions"
+	policiesVersionPath                = "%s/policies/%s/versions"
 )
 
 type FirebaseClient struct {
@@ -32,7 +33,7 @@ func NewFirebaseClient(registryUrl string) *FirebaseClient {
 }
 
 func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organization, providerName string) (string, error) {
-	versions, err := url.Parse(fmt.Sprintf(f.url+providersPath, organization, providerName))
+	versions, err := url.Parse(fmt.Sprintf(f.url+providersVersionsPath, organization, providerName))
 	if err != nil {
 		return "", err
 	}
@@ -74,7 +75,7 @@ func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organizat
 }
 
 func (f *FirebaseClient) GetLatestPolicyRelease(ctx context.Context, organization, policyName string) (string, error) {
-	versions, err := url.Parse(fmt.Sprintf(f.url+policiesPath, organization, policyName))
+	versions, err := url.Parse(fmt.Sprintf(f.url+policiesVersionPath, organization, policyName))
 	if err != nil {
 		return "", err
 	}

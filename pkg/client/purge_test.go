@@ -268,7 +268,7 @@ func TestPurgeProviderData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, firebase.CloudQueryRegistryURL, nil)
+			pm, err := plugin.NewManager(hclog.Default(), defaultProviderPath, firebase.CloudQueryRegistryURLWithProviders, nil)
 			if !assert.Nil(t, err) {
 				t.FailNow()
 			}

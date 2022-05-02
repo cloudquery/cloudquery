@@ -15,7 +15,7 @@ func Test_GetProviderSchema(t *testing.T) {
 	cancelServe := setupTestPlugin(t)
 	defer cancelServe()
 
-	pManager, err := plugin.NewManager(hclog.Default(), filepath.Join(".", ".cq", "providers"), firebase.CloudQueryRegistryURL, nil)
+	pManager, err := plugin.NewManager(hclog.Default(), filepath.Join(".", ".cq", "providers"), firebase.CloudQueryRegistryURLWithProviders, nil)
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
