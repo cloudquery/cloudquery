@@ -348,10 +348,11 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 		summary.Duration = time.Since(start)
 	}()
 
-	resources, err := normalizeResources(ctx, plugin, info.Config.Resources)
-	if err != nil {
+	var resources []string
+	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources)
+	if diags.HasErrors() {
 		summary.Status = FetchFailed
-		return summary, diag.FromError(err, diag.INTERNAL)
+		return summary, diags
 	}
 
 	pLog.Info().Msg("provider started fetching resources")
@@ -429,10 +430,10 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 // * wildcard expansion
 // * verify no unknown resources
 // * verify no duplicate resources
-func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, error) {
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, diag.Diagnostics) {
 	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	return doNormalizeResources(resources, s.ResourceTables)
 }
@@ -443,7 +444,7 @@ func normalizeResources(ctx context.Context, provider plugin.Plugin, resources [
 // * wildcard is present and other explicit resource is requested;
 // * one of explicitly requested resources is not present in all known;
 // * some resource is specified more than once (duplicate).
-func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, error) {
+func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
 	if len(requested) == 1 && requested[0] == "*" {
 		requested = make([]string, 0, len(all))
 		for k := range all {
@@ -454,14 +455,14 @@ func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]s
 	seen := make(map[string]struct{})
 	for _, r := range requested {
 		if _, ok := seen[r]; ok {
-			return nil, fmt.Errorf("resource %s is duplicate", r)
+			return nil, diag.FromError(fmt.Errorf("resource %q is duplicate", r), diag.USER, diag.WithDetails("configuration has duplicate resources"))
 		}
 		seen[r] = struct{}{}
 		if _, ok := all[r]; !ok {
 			if r == "*" {
-				return nil, fmt.Errorf("wildcard resource must be the only one in the list")
+				return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
 			}
-			return nil, fmt.Errorf("resource %s does not exist", r)
+			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
 		}
 		result = append(result, r)
 	}

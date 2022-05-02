@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/pkg/module"
 
@@ -50,7 +51,7 @@ func Initialize(ctx context.Context, providers []string) error {
 
 	if info, _ := fs.Stat(configPath); info != nil {
 		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
-		return &console.ExitCodeError{ExitCode: 1}
+		return diag.FromError(fmt.Errorf("config file %q already exists", configPath), diag.USER)
 	}
 	f := hclwrite.NewEmptyFile()
 	rootBody := f.Body()

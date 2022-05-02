@@ -6,18 +6,17 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
-
-	"github.com/cloudquery/cloudquery/pkg/ui"
-
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/internal/signalcontext"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/internal/signalcontext"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 // fileDescriptorF gets set trough system relevant files like ulimit_unix.go
@@ -41,9 +40,8 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 		}()
 
 		if err := handleConsole(cmd.Context(), cmd, args, f); err != nil {
-			if ee, ok := err.(*console.ExitCodeError); ok {
-				exitWithCode = ee.ExitCode
-				return // exitError is not set
+			if dd := diag.FromError(err, diag.INTERNAL); dd.HasErrors() { // Check if already diags
+				exitWithCode = 1
 			}
 			cmd.PrintErrln(err)
 		}

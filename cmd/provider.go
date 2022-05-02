@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
@@ -80,9 +81,7 @@ var (
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if !providerForce {
 				ui.ColorizedOutput(ui.ColorWarning, "WARNING! This will drop all tables for the given provider. If you wish to continue, use the --force flag.\n")
-				return &console.ExitCodeError{
-					ExitCode: 1,
-				}
+				return diag.FromError(fmt.Errorf("if you wish to continue, use the --force flag"), diag.USER)
 			}
 			diags := c.DropProvider(ctx, args[0])
 			errors.CaptureDiagnostics(diags, nil)

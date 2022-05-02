@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/cobra"
 )
 
@@ -25,15 +24,15 @@ var (
 		Long:  "Scan for drifts between cloud provider and IaC",
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			driftParams.StateFiles = args
-			err := c.CallModule(ctx, console.ModuleCallRequest{
+			diags := c.CallModule(ctx, console.ModuleCallRequest{
 				Name:       "drift",
 				Params:     driftParams,
 				Profile:    driftProfile,
 				OutputPath: driftOutputPath,
 			})
-			analytics.Capture("drift", c.Providers, nil, diag.FromError(err, diag.INTERNAL))
-			errors.CaptureError(err, map[string]string{"command": "drift"})
-			return err
+			analytics.Capture("drift", c.Providers, nil, diags)
+			errors.CaptureError(diags, map[string]string{"command": "drift"})
+			return diags
 		}),
 	}
 
