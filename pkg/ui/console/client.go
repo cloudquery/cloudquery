@@ -222,7 +222,7 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	ui.ColorizedOutput(ui.ColorProgress, "Syncing CloudQuery providers %s\n\n", pp)
 	providers := c.Providers
-	if pp == nil {
+	if pp != nil {
 		providers = c.Providers.GetMany(pp...)
 	}
 	if len(providers) == 0 {

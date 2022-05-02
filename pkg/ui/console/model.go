@@ -2,7 +2,6 @@ package console
 
 import (
 	"fmt"
-	"strconv"
 )
 
 // ModuleCallRequest is the request used to call a module.
@@ -26,5 +25,10 @@ type ExitCodeError struct {
 }
 
 func (e *ExitCodeError) Error() string {
-	return fmt.Sprintf("exit code %s. err: %s", strconv.Itoa(e.ExitCode), e.OriginalError.Error())
+	// BEWARE: uncommenting this to fix a panic means that we're reporting this error to sentry/telemetry when we probably shouldn't have
+	//if e.OriginalError == nil {
+	//	return fmt.Sprintf("exit code %d", e.ExitCode)
+	//}
+
+	return fmt.Sprintf("exit code %d. err: %s", e.ExitCode, e.OriginalError.Error())
 }

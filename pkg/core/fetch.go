@@ -429,12 +429,16 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 // * wildcard expansion
 // * verify no unknown resources
 // * verify no duplicate resources
-func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, error) {
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, diag.Diagnostics) {
 	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	return doNormalizeResources(resources, s.ResourceTables)
+	ret, err := doNormalizeResources(resources, s.ResourceTables)
+	if err != nil {
+		return nil, diag.FromError(err, diag.USER)
+	}
+	return ret, nil
 }
 
 // doNormalizeResources returns a canonical list of resources given a list of requested and all known resources.
