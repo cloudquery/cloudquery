@@ -34,7 +34,7 @@ func initSentry() {
 	if viper.GetBool("no-telemetry") {
 		dsn = "" // "To drop all events, set the DSN to the empty string."
 	}
-	if core.Version == core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
+	if core.Version != core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
 	}
 	userId := analytics.GetUserId()

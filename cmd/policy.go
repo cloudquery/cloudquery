@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
 
@@ -98,9 +99,9 @@ var (
 			if len(args) == 1 {
 				source = args[0]
 			}
-			err := c.RunPolicies(ctx, source, outputDir, noResults)
-			errors.CaptureError(err, map[string]string{"command": "policy_run"})
-			return err
+			diags := c.RunPolicies(ctx, source, outputDir, noResults)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
+			return fmt.Errorf("provider has one or more errors, check logs")
 		}),
 		Args: cobra.MaximumNArgs(1),
 	}
