@@ -177,18 +177,11 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		eventProps[k] = v
 	}
 
-	event := analytics.Track{
-		UserId:     c.userId.String(),
-		Event:      eventType,
-		Timestamp:  time.Now().UTC(),
-		Context:    nil,
-		Properties: eventProps,
-	}
-	if c.debug {
-		log.Debug().Interface("event", event).Msg("debug analytics")
-	}
+	event := analytics.Track{UserId: c.userId.String(), Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
 	if err := c.client.Enqueue(event); err != nil {
-		log.Error().Err(err).Msg("failed to send analytics")
+		if c.debug {
+			log.Error().Err(err).Msg("failed to send analytics")
+		}
 	}
 }
 
