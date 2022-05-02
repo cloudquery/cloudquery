@@ -68,7 +68,7 @@ func TestLoadSource(t *testing.T) {
 		},
 		{
 			Name:          "non-existing-github",
-			Source:        "github.com/cloudquery-policies/blabla",
+			Source:        "user:pass@github.com/cloudquery-policies/blabla",
 			ErrorExpected: true,
 		},
 		{
