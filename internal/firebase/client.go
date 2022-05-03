@@ -22,19 +22,19 @@ const (
 	providerVerification  = "%s/providers/%s"
 )
 
-type FirebaseClient struct {
+type Client struct {
 	url string
 }
 
-func New(registryUrl string) *FirebaseClient {
-	f := &FirebaseClient{
+func New(registryUrl string) *Client {
+	f := &Client{
 		url: registryUrl,
 	}
 
 	return f
 }
 
-func (f *FirebaseClient) IsProviderRegistered(organization, providerName string) bool {
+func (f *Client) IsProviderRegistered(organization, providerName string) bool {
 	u := fmt.Sprintf(f.url+providerVerification, organization, providerName)
 	res, err := http.Get(u)
 	if err != nil {
@@ -55,7 +55,7 @@ func (f *FirebaseClient) IsProviderRegistered(organization, providerName string)
 	return true
 }
 
-func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organization, providerName string) (string, error) {
+func (f *Client) GetLatestProviderRelease(ctx context.Context, organization, providerName string) (string, error) {
 	versions, err := url.Parse(fmt.Sprintf(f.url+providersVersionsPath, organization, providerName))
 	if err != nil {
 		return "", err
@@ -97,7 +97,7 @@ func (f *FirebaseClient) GetLatestProviderRelease(ctx context.Context, organizat
 	return doc.Documents[0].Fields.Tag.Val, nil
 }
 
-func (f *FirebaseClient) GetLatestPolicyRelease(ctx context.Context, organization, policyName string) (string, error) {
+func (f *Client) GetLatestPolicyRelease(ctx context.Context, organization, policyName string) (string, error) {
 	versions, err := url.Parse(fmt.Sprintf(f.url+policiesVersionPath, organization, policyName))
 	if err != nil {
 		return "", err
