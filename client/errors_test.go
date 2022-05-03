@@ -51,6 +51,10 @@ func TestRemovePII(t *testing.T) {
 			"operation error EC2: DescribeSnapshotAttribute, https response error StatusCode: 400, RequestID: xxxx, api error InvalidSnapshot.NotFound: The snapshot 'snap-11111111111111111' does not exist.",
 			"operation error EC2: DescribeSnapshotAttribute, https response error StatusCode: 400, RequestID: xxxx, api error InvalidSnapshot.NotFound: The snapshot 'xxxx' does not exist.",
 		},
+		{
+			"ResourceType name not found - Could not find example request type named 'resource-dev-1111'",
+			"ResourceType name not found - Could not find example request type named 'xxxx'",
+		},
 	}
 	for i, tc := range cases {
 		res := removePII([]Account{{ID: "123456789"}}, tc.Input)
