@@ -25,6 +25,8 @@ type Config struct {
 	Verbose bool `hcl:"verbose,optional"`
 	// EncodeLogsAsJson makes the logging framework logging JSON
 	EncodeLogsAsJson bool `hcl:"encode_logs_as_json,optional"`
+	// EncodeConsoleAsJson makes the logging framework logging JSON
+	EncodeConsoleAsJson bool `hcl:"encode_logs_as_json,optional"`
 	// FileLoggingEnabled makes the framework logging to a file
 	// the fields below can be skipped if this value is false!
 	FileLoggingEnabled bool `hcl:"file_logging_enabled,optional"`
@@ -58,7 +60,7 @@ func Configure(config Config) zerolog.Logger {
 
 	if config.ConsoleLoggingEnabled {
 		if config.EncodeLogsAsJson {
-			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel(config.ConsoleNoColor), Out: os.Stdout, NoColor: config.ConsoleNoColor})
+			writers = append(writers, os.Stdout)
 		} else {
 			console := config.console
 			if console == nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -14,13 +15,16 @@ import (
 	"golang.org/x/term"
 )
 
+var removeAnsi = regexp.MustCompile(`(?i)\\\\u00[1-9]b[[0-9;]*[mGKHF]`)
+var emojiStatus = []string{color.GreenString("✓"), "📋", color.RedString("❌"), "⚠️", "⌛"}
+
 // ColorizedOutput outputs a colored message directly to the terminal.
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if viper.GetBool("enable-console-log") {
 		// Print output to log
-		if logMsg := strings.ReplaceAll(msg, "\n", ""); logMsg != "" {
-			log.Info().Msgf(logMsg, values...)
+		if logMsg := strip(fmt.Sprintf(msg, values...)); logMsg != "" {
+			log.Info().Msg(logMsg)
 		}
 		return
 	}
@@ -28,6 +32,9 @@ func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 }
 
 func ColorizedNoLogOutput(c *color.Color, msg string, values ...interface{}) {
+	if viper.GetBool("enable-console-log") {
+		return
+	}
 	// TODO: make zerolog not print this
 	_, _ = c.Printf(msg, values...)
 }
@@ -73,3 +80,10 @@ var (
 	ColorWarningBold  = color.New(color.FgYellow, color.Bold)
 	ColorUnderline    = color.New(color.Underline)
 )
+
+func strip(str string) string {
+	for _, s := range emojiStatus {
+		str = strings.ReplaceAll(str, s, "")
+	}
+	return strings.TrimSuffix(strings.TrimSpace(removeAnsi.ReplaceAllString(str, "")), ".")
+}
