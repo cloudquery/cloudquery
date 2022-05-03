@@ -7,24 +7,26 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - 'scripts/**'
 
 jobs:
   lint_doc:
     name: Lint Provider Doc
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '!(terraform/**/*|scripts/**/*)'
       - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.17
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         with:
           path: |
             ~/.cache/go-build
@@ -33,11 +35,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: remove all docs
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: |
           rm -f ./docs/tables/*.md
       - name: build-docs
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: |
           go run ./docs/docs.go
       - name: Fail if docs are changed
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: |
           test "$(git status -s ./docs/tables | wc -l)" -eq 0
