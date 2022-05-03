@@ -21,7 +21,7 @@ jobs:
             src:
               - '!(terraform/**/*|scripts/**/*)'
       - name: golangci-lint
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.45.2

@@ -21,12 +21,12 @@ jobs:
             src:
               - '!(terraform/**/*|scripts/**/*)'
       - name: Set up Go 1.x
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
         with:
           go-version: ^1.17
       - uses: actions/cache@v3
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
           path: |
             ~/.cache/go-build
@@ -35,14 +35,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: remove all docs
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           rm -f ./docs/tables/*.md
       - name: build-docs
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           go run ./docs/docs.go
       - name: Fail if docs are changed
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           test "$(git status -s ./docs/tables | wc -l)" -eq 0
