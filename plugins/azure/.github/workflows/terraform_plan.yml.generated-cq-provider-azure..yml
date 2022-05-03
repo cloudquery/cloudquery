@@ -5,8 +5,6 @@ on:
   pull_request_target:
     branches:
       - main
-    paths:
-      - 'terraform/**'
 
 jobs:
   is_organization_member:
@@ -46,11 +44,6 @@ jobs:
     name: Terrafrom Plan
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.17
-
       - name: Check out code into the Go module directory
         if: github.event_name != 'pull_request_target'
         uses: actions/checkout@v3
@@ -59,34 +52,54 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        if: ${{ github.event_name == 'pull_request_target' }}
+        if: github.event_name == 'pull_request_target'
         with:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - 'terraform/**/*'
+              - 'scripts/**/*'
+
+      - name: Set up Go 1.x
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.17
+
 
       - name: Setup Terraform
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform fmt
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         id: fmt
         run: ./scripts/terraform-fmt-change-only.sh
         continue-on-error: true
 
       - name: Terraform Init
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         id: init
         run: ./scripts/terraform-init-change-only.sh
 
       - name: Terraform Validate
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         id: validate
         run: ./scripts/terraform-validate-change-only.sh
 
       - name: Terraform Plan
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         id: plan
         run: ./scripts/terraform-plan-change-only.sh
 
       - uses: actions/github-script@v6
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
@@ -125,14 +138,17 @@ jobs:
       # Install the Infracost CLI, see https://github.com/infracost/actions/tree/master/setup
       # for other inputs such as version, and pricing-api-endpoint (for self-hosted users).
       - name: Setup Infracost
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: infracost/actions/setup@v1
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
 
       - name: Run Infracost
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: infracost breakdown --config-file=/tmp/infracost.yml --format=json --out-file=/tmp/infracost.json
 
       - name: Post the comment
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: infracost/actions/comment@v1
         with:
           path: /tmp/infracost.json
