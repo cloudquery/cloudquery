@@ -25,8 +25,6 @@ type Config struct {
 	Verbose bool `hcl:"verbose,optional"`
 	// EncodeLogsAsJson makes the logging framework logging JSON
 	EncodeLogsAsJson bool `hcl:"encode_logs_as_json,optional"`
-	// EncodeConsoleAsJson makes the logging framework logging JSON
-	EncodeConsoleAsJson bool `hcl:"encode_logs_as_json,optional"`
 	// FileLoggingEnabled makes the framework logging to a file
 	// the fields below can be skipped if this value is false!
 	FileLoggingEnabled bool `hcl:"file_logging_enabled,optional"`
