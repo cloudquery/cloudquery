@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/aws/smithy-go"
@@ -365,6 +367,27 @@ func resolveVaultRecoveryPointCreatedBy(ctx context.Context, meta schema.ClientM
 
 func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rp := resource.Item.(types.RecoveryPointByBackupVault)
+	if rp.ResourceArn == nil || rp.RecoveryPointArn == nil {
+		return nil
+	}
+	resourceARN, err := arn.Parse(*rp.ResourceArn)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+
+	// decide if the backed up resource supports tags
+	switch client.AWSService(resourceARN.Service) {
+	case client.S3Service, client.EFSService, client.DynamoDBService:
+		// these services are ok
+	case client.EC2Service:
+		if !strings.HasPrefix(resourceARN.Resource, "instance/") {
+			return nil
+		}
+	default:
+		// full backup management not supported, so no tags
+		return nil
+	}
+
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: rp.RecoveryPointArn}
@@ -372,6 +395,10 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	for {
 		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) { o.Region = cl.Region })
 		if err != nil {
+			if resourceARN.Service == string(client.DynamoDBService) && client.IsAWSError(err, "ERROR_3930") {
+				// advanced backup features are not enabled for dynamodb
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 
