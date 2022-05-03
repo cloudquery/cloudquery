@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
-	github.com/cloudquery/cq-provider-sdk v0.9.1
+	github.com/cloudquery/cq-provider-sdk v0.9.2
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.0
 	github.com/google/go-github/v35 v35.2.0
@@ -33,7 +33,6 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f
 	github.com/aws/aws-sdk-go v1.43.41
-	github.com/cloudquery/cq-provider-test v0.0.12
 	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
 	github.com/georgysavva/scany v0.2.9
@@ -53,7 +52,6 @@ require (
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.11.0
-	github.com/zenizh/go-capturer v0.0.0-20211219060012-52ea6c8fed04
 	google.golang.org/grpc v1.45.0
 	gopkg.in/segmentio/analytics-go.v3 v3.1.0
 )
