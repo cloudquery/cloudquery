@@ -15,7 +15,7 @@ import (
 	"golang.org/x/term"
 )
 
-var removeAnsi = regexp.MustCompile(`(?i)\\\\u00[1-9]b[[0-9;]*[mGKHF]`)
+var removeAnsi = regexp.MustCompile(`(?i)\\u00[1-9]b[[0-9;]*[mGKHF]`)
 var emojiStatus = []string{color.GreenString("✓"), "📋", color.RedString("❌"), "⚠️", "⌛"}
 
 // ColorizedOutput outputs a colored message directly to the terminal.
