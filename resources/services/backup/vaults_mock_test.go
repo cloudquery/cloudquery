@@ -67,6 +67,8 @@ func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	if err := faker.FakeData(&rp); err != nil {
 		t.Fatal(err)
 	}
+	rp.ResourceArn = aws.String("arn:aws:s3:eu-central-1:testAccount:resource/id")
+
 	m.EXPECT().ListRecoveryPointsByBackupVault(
 		gomock.Any(),
 		&backup.ListRecoveryPointsByBackupVaultInput{BackupVaultName: vault.BackupVaultName, MaxResults: aws.Int32(100)},
