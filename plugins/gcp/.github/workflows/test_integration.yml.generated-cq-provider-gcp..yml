@@ -9,10 +9,6 @@ on:
   pull_request_target:
     branches:
       - main
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - 'scripts/**'
 
 env:
   CGO_ENABLED: 0
@@ -64,24 +60,32 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.16
-
-
       - name: Check out code into the Go module directory
         if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Checkout
-        uses: actions/checkout@v2
-        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: actions/checkout@v3
+        if: github.event_name == 'pull_request_target'
         with:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '!(terraform/**/*|scripts/**/*)'
+
+      - name: Set up Go 1.x
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.16
+
       - name: Authenticate to Google Cloud
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: 'projects/163549298763/locations/global/workloadIdentityPools/cq-provider-gcp-gh-oidc-pool/providers/cq-provider-gcp-gh-oidc-provider'
@@ -89,9 +93,11 @@ jobs:
 
       # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
       - name: 'Set up Cloud SDK'
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: 'google-github-actions/setup-gcloud@v0.6.0'
 
       - uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         with:
           path: |
             ~/.cache/go-build
@@ -101,6 +107,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Integration Test
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: go test -run=TestIntegration -tags=integration ./...
 
       - name: Slack Notification
