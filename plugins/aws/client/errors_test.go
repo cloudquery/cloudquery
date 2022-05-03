@@ -47,6 +47,10 @@ func TestRemovePII(t *testing.T) {
 			"operation error Direct Connect: DescribeVirtualInterfaces, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://logs.eu-central-1.amazonaws.com/\": dial tcp 177.72.244.112:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.",
 			"operation error Direct Connect: DescribeVirtualInterfaces, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://xxxx\": dial tcp xxxx: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.",
 		},
+		{
+			"operation error EC2: DescribeSnapshotAttribute, https response error StatusCode: 400, RequestID: xxxx, api error InvalidSnapshot.NotFound: The snapshot 'snap-11111111111111111' does not exist.",
+			"operation error EC2: DescribeSnapshotAttribute, https response error StatusCode: 400, RequestID: xxxx, api error InvalidSnapshot.NotFound: The snapshot 'xxxx' does not exist.",
+		},
 	}
 	for i, tc := range cases {
 		res := removePII([]Account{{ID: "123456789"}}, tc.Input)
