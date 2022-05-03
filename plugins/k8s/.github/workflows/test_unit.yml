@@ -8,10 +8,7 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - 'scripts/**'
+
 env:
   CGO_ENABLED: 0
 
@@ -39,15 +36,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '!(terraform/**/*|scripts/**/*)'
       - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.17
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-
       - uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
           path: |
             ~/.cache/go-build
@@ -57,10 +60,13 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Get dependencies
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: go get -v -t -d ./...
 
       - name: Build
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: go build -v .
 
       - name: Test
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: go test ./...

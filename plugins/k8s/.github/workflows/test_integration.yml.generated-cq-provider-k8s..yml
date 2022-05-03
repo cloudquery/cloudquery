@@ -9,10 +9,6 @@ on:
   pull_request_target:
     branches:
       - main
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - 'scripts/**'
 
 env:
   CGO_ENABLED: 0
@@ -64,25 +60,33 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.16
-
-
       - name: Check out code into the Go module directory
         if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Checkout
-        uses: actions/checkout@v2
-        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: actions/checkout@v3
+        if: github.event_name == 'pull_request_target'
         with:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '!(terraform/**/*|scripts/**/*)'
+
+      - name: Set up Go 1.x
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.16
+
 
       - uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         with:
           path: |
             ~/.cache/go-build
@@ -92,6 +96,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Integration Test
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: go test -run=TestIntegration -tags=integration ./...
 
       - name: Slack Notification
