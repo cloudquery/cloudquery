@@ -58,7 +58,7 @@ func Configure(config Config) zerolog.Logger {
 
 	if config.ConsoleLoggingEnabled {
 		if config.EncodeLogsAsJson {
-			writers = append(writers, zerolog.ConsoleWriter{FormatLevel: formatLevel(config.ConsoleNoColor), Out: os.Stdout, NoColor: config.ConsoleNoColor})
+			writers = append(writers, os.Stdout)
 		} else {
 			console := config.console
 			if console == nil {
