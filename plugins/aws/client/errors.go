@@ -157,16 +157,17 @@ func isCodeThrottle(code string) bool {
 }
 
 var (
-	requestIdRegex = regexp.MustCompile(`\s([Rr]equest[ _]{0,1}(ID|Id|id):)\s[A-Za-z0-9-]+`)
-	hostIdRegex    = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
-	arnIdRegex     = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
-	urlRegex       = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
-	lookupRegex    = regexp.MustCompile(`(\slookup\s)[-A-Za-z0-9\.]+\son\s([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})->([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.*)`)
-	dialRegex      = regexp.MustCompile(`(\sdial\s)(tcp|udp)(\s)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)`)
-	encAuthRegex   = regexp.MustCompile(`(\s)(Encoded authorization failure message:)\s[A-Za-z0-9_-]+`)
-	userRegex      = regexp.MustCompile(`(\s)(is not authorized to perform: .+ on resource:\s)(user)\s.+`)
-	s3Regex        = regexp.MustCompile(`(\s)(S3(Key|Bucket))=(.+?)([,;\s])`)
-	snapshotRegex  = regexp.MustCompile(`(\sThe )(.+ )'(.+?)'( does not exist)`)
+	requestIdRegex         = regexp.MustCompile(`\s([Rr]equest[ _]{0,1}(ID|Id|id):)\s[A-Za-z0-9-]+`)
+	hostIdRegex            = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
+	arnIdRegex             = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
+	urlRegex               = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
+	lookupRegex            = regexp.MustCompile(`(\slookup\s)[-A-Za-z0-9\.]+\son\s([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})->([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.*)`)
+	dialRegex              = regexp.MustCompile(`(\sdial\s)(tcp|udp)(\s)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)`)
+	encAuthRegex           = regexp.MustCompile(`(\s)(Encoded authorization failure message:)\s[A-Za-z0-9_-]+`)
+	userRegex              = regexp.MustCompile(`(\s)(is not authorized to perform: .+ on resource:\s)(user)\s.+`)
+	s3Regex                = regexp.MustCompile(`(\s)(S3(Key|Bucket))=(.+?)([,;\s])`)
+	resourceNotExistsRegex = regexp.MustCompile(`(\sThe )([A-Za-z0-9 -]+ )'([A-Za-z0-9-]+?)'( does not exist)`)
+	resourceNotFoundRegex  = regexp.MustCompile(`([A-Za-z0-9 -]+)( name not found - Could not find )([A-Za-z0-9 -]+)( named )'([A-Za-z0-9-]+?)'`)
 )
 
 func removePII(aa []Account, msg string) string {
@@ -182,7 +183,8 @@ func removePII(aa []Account, msg string) string {
 	msg = encAuthRegex.ReplaceAllString(msg, "${1}${2} xxxx")
 	msg = userRegex.ReplaceAllString(msg, "${1}${2}${3} xxxx")
 	msg = s3Regex.ReplaceAllString(msg, "${1}${2}=xxxx${5}")
-	msg = snapshotRegex.ReplaceAllString(msg, "${1}${2}'xxxx'${4}")
+	msg = resourceNotExistsRegex.ReplaceAllString(msg, "${1}${2}'xxxx'${4}")
+	msg = resourceNotFoundRegex.ReplaceAllString(msg, "${1}${2}${3}${4}'xxxx'")
 	msg = accountObfusactor(aa, msg)
 
 	return msg
