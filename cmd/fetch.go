@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/errors"
+
+	"github.com/cloudquery/cloudquery/internal/analytics"
+
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -22,8 +26,13 @@ var fetchCmd = &cobra.Command{
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
 	Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-		failOnError := viper.GetBool("fail-on-error")
-		return c.Fetch(ctx, failOnError)
+		result, diags := c.Fetch(ctx)
+		errors.CaptureDiagnostics(diags, nil)
+		analytics.Capture("fetch", c.Providers, result, diags)
+		if viper.GetBool("fail-on-error") && diags.HasErrors() {
+			return fmt.Errorf("provider has one or more errors, check logs")
+		}
+		return nil
 	}),
 }
 

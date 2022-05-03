@@ -2,10 +2,15 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client"
+	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/cloudquery/cloudquery/pkg/ui"
+
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 
 	"github.com/spf13/cobra"
@@ -33,7 +38,7 @@ var (
   # build provider schema
   cloudquery provider build-schema aws
 `,
-		Version: client.Version,
+		Version: core.Version,
 	}
 
 	providerUpgradeHelpMsg = "Upgrades one or more providers schema version based on config.hcl"
@@ -42,7 +47,12 @@ var (
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.UpgradeProviders(ctx, args)
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_upgrade"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
+			}
+			return nil
 		}),
 	}
 
@@ -52,7 +62,12 @@ var (
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.DowngradeProviders(ctx, args)
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_downgrade"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
+			}
+			return nil
 		}),
 	}
 
@@ -66,11 +81,13 @@ var (
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			if !providerForce {
 				ui.ColorizedOutput(ui.ColorWarning, "WARNING! This will drop all tables for the given provider. If you wish to continue, use the --force flag.\n")
-				return &console.ExitCodeError{
-					ExitCode: 1,
-				}
+				return diag.FromError(fmt.Errorf("if you wish to continue, use the --force flag"), diag.USER)
 			}
-			_ = c.DropProvider(ctx, args[0])
+			diags := c.DropProvider(ctx, args[0])
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_drop"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to drop provider %s", args[0])
+			}
 			return nil
 		}),
 	}
@@ -82,10 +99,12 @@ var (
 		Long:  providerBuildSchemaHelpMsg,
 		Args:  cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			if len(args) == 1 {
-				return c.BuildProviderTables(ctx, args[0])
+			_, diags := c.SyncProviders(ctx, args...)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_build_schema"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to sync providers")
 			}
-			return c.BuildAllProviderTables(ctx)
+			return nil
 		}),
 	}
 
@@ -99,7 +118,12 @@ var (
   ./cloudquery provider download
 `,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.DownloadProviders(ctx)
+			diags := c.DownloadProviders(ctx)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_download"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to download providers")
+			}
+			return nil
 		}),
 	}
 
@@ -112,7 +136,12 @@ var (
 		Long:  providerRemoveStaleHelpMsg,
 		Args:  cobra.MinimumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+			diags := c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_purge"})
+			if diags.HasErrors() {
+				return fmt.Errorf("failed to remove stale data")
+			}
+			return nil
 		}),
 	}
 )
@@ -124,5 +153,6 @@ func init() {
 	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
 	providerDropCmd.Flags().BoolVar(&providerForce, "force", false, "Really drop tables for the provider")
 	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
+	providerCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(providerCmd)
 }

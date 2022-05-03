@@ -24,6 +24,25 @@ var pluginMap = map[string]plugin.Plugin{
 	"provider": &cqproto.CQPlugin{},
 }
 
+type Plugins map[string]Plugin
+
+// Get returns a Plugin instance from a registry.Provider creation info or it's created alias
+func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
+	for k, v := range pm {
+		if v.Version() == Unmanaged && k == p.Name {
+			return v
+		}
+
+		if alias == "" && (k == p.String() || v.Name() == fmt.Sprintf("%s_%s", p.Name, p.Name)) {
+			return v
+		}
+		if v.Name() == fmt.Sprintf("%s_%s", p, alias) {
+			return v
+		}
+	}
+	return nil
+}
+
 type Plugin interface {
 	Name() string
 	Version() string
@@ -40,7 +59,7 @@ type managedPlugin struct {
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
-func newRemotePlugin(details *registry.ProviderDetails, alias string, env []string) (*managedPlugin, error) {
+func newRemotePlugin(details *registry.ProviderBinary, alias string, env []string) (*managedPlugin, error) {
 	cmd := exec.Command(details.FilePath)
 	cmd.Env = append(cmd.Env, env...)
 

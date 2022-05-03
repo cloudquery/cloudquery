@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/policy"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/hashicorp/hcl/v2"
 )
 
@@ -103,6 +103,15 @@ func (r RequiredProviders) Names() []string {
 	}
 	sort.Strings(ret)
 	return ret
+}
+
+func (r RequiredProviders) Get(name string) *RequiredProvider {
+	for _, p := range r {
+		if p.Name == name {
+			return p
+		}
+	}
+	return nil
 }
 
 // configFileSchema is the schema for the top-level of a config file. We use

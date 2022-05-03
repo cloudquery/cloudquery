@@ -34,7 +34,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "local_directory",
 			Source:       "tests/local",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "file", Version: "", subPolicy: "", Directory: "tests/output/local"},
+			ExpectedMeta: &Meta{Type: "file", Version: "", SubPolicy: "", Directory: "tests/output/local"},
 		},
 
 		{
@@ -46,25 +46,25 @@ func TestLoadSource(t *testing.T) {
 			Name:         "hub",
 			Source:       "aws",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:         "hub with ref",
 			Source:       "aws?ref=v0.1.0",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:         "hub with @",
 			Source:       "aws@v0.1.0",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "hub", Version: "", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "hub", Version: "", SubPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:         "github",
 			Source:       "github.com/cloudquery-policies/aws",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "", SubPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:          "non-existing-github",
@@ -75,7 +75,7 @@ func TestLoadSource(t *testing.T) {
 			Name:         "force github link",
 			Source:       "git::https://github.com/cloudquery-policies/aws.git?ref=v0.0.1",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "git", Version: "v0.0.1", subPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "git", Version: "v0.0.1", SubPolicy: "", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 		{
 			Name:          "https github link no force",
@@ -86,20 +86,20 @@ func TestLoadSource(t *testing.T) {
 			Name:         "github reference specific commit",
 			Source:       "github.com/roneli/aws?ref=96886a4",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", subPolicy: "", Directory: "tests/output/github.com/roneli/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", SubPolicy: "", Directory: "tests/output/github.com/roneli/aws"},
 		},
 
 		{
 			Name:         "subpolicy path",
 			Source:       "github.com/roneli/aws//subpolicy?ref=96886a4",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", subPolicy: "subpolicy", Directory: "tests/output/github.com/roneli/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "96886a4", SubPolicy: "subpolicy", Directory: "tests/output/github.com/roneli/aws"},
 		},
 		{
 			Name:         "subpolicy path with specific rev using @",
 			Source:       "github.com/cloudquery-policies/aws//cis_v1.2.0@v0.1.0",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "v0.1.0", subPolicy: "cis_v1.2.0", Directory: "tests/output/github.com/cloudquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "v0.1.0", SubPolicy: "cis_v1.2.0", Directory: "tests/output/github.com/cloudquery-policies/aws"},
 		},
 	}
 

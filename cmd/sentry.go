@@ -3,12 +3,13 @@ package cmd
 import (
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/telemetry"
-	"github.com/cloudquery/cloudquery/pkg/client"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+
+	"github.com/cloudquery/cloudquery/internal/analytics"
+
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -33,8 +34,12 @@ func initSentry() {
 	if viper.GetBool("no-telemetry") {
 		dsn = "" // "To drop all events, set the DSN to the empty string."
 	}
-	if client.Version == client.DevelopmentVersion && !viper.GetBool("debug-sentry") {
+	if core.Version == core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
+	}
+	userId := analytics.GetUserId()
+	if analytics.CQTeamID == userId.String() && !viper.GetBool("debug-sentry") {
+		dsn = ""
 	}
 
 	if err := sentry.Init(sentry.ClientOptions{
@@ -42,12 +47,12 @@ func initSentry() {
 		Dsn:       dsn,
 		Transport: sentrySyncTransport,
 		Environment: func() string {
-			if client.Version == client.DevelopmentVersion {
+			if core.Version == core.DevelopmentVersion {
 				return "development"
 			}
 			return "release"
 		}(),
-		Release:          "cloudquery@" + client.Version,
+		Release:          "cloudquery@" + core.Version,
 		AttachStacktrace: true, // send stack trace with panic recovery
 		Integrations: func(it []sentry.Integration) []sentry.Integration {
 			ret := make([]sentry.Integration, 0, len(it))
@@ -66,7 +71,7 @@ func initSentry() {
 			if err != nil || hn == "" {
 				return "unknown" // Not returning empty string, otherwise Sentry auto-fill it
 			}
-			return telemetry.HashAttribute(hn)
+			return analytics.HashAttribute(hn)
 		}(),
 		BeforeSend: func(event *sentry.Event, hint *sentry.EventHint) *sentry.Event {
 			if hint != nil && hint.RecoveredException != nil {
@@ -90,26 +95,14 @@ func initSentry() {
 	}); err != nil {
 		zerolog.Info().Err(err).Msg("sentry.Init failed")
 	}
-}
-
-func setSentryVars(traceID, randomID string) {
-	if strings.HasPrefix(randomID, telemetry.CQTeamID) && !viper.GetBool("debug-sentry") {
-		if err := sentry.Init(sentry.ClientOptions{
-			Dsn: "",
-		}); err != nil {
-			zerolog.Info().Err(err).Msg("sentry.Init to disable failed")
-		}
-	}
-
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
-		scope.SetExtra("trace_id", traceID)
 		scope.SetUser(sentry.User{
-			ID: randomID,
+			ID: userId.String(),
 		})
 		scope.SetTags(map[string]string{
 			"terminal": strconv.FormatBool(ui.IsTerminal()),
-			"ci":       strconv.FormatBool(telemetry.IsCI()),
-			"faas":     strconv.FormatBool(telemetry.IsFaaS()),
+			"ci":       strconv.FormatBool(analytics.IsCI()),
+			"faas":     strconv.FormatBool(analytics.IsFaaS()),
 		})
 	})
 }

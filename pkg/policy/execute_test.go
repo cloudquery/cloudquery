@@ -7,14 +7,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/client/database"
-	"github.com/cloudquery/cloudquery/pkg/client/history"
-	"github.com/cloudquery/cloudquery/pkg/client/meta_storage"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
+	"github.com/cloudquery/cloudquery/pkg/core/state"
+
+	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-version"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -61,7 +63,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -86,7 +88,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
-		ErrorOutput   string
+		ExpectedDiags []diag.FlatDiag
 	}{
 		{
 			Name: "multiple_queries",
@@ -131,7 +133,9 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
+				Description: diag.Description{Summary: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -149,7 +153,9 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ErrorOutput:   "failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
+			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
+				Description: diag.Description{Summary: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
 			Pass:          true,
 		},
@@ -157,7 +163,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -174,11 +180,11 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, err := executor.Execute(context.Background(), execReq, p)
-			if tc.ErrorOutput != "" {
-				assert.EqualError(t, err, tc.ErrorOutput)
+			res, diags := executor.Execute(context.Background(), execReq, p)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.NoError(t, err)
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -282,7 +288,7 @@ func TestExecutor_Execute(t *testing.T) {
 		Selector             string
 		ShouldBeEmpty        bool
 		Pass                 bool
-		ErrorOutput          string
+		ExpectedDiags        []diag.FlatDiag
 		TotalExpectedResults int
 		StopOnFailure        bool
 	}{
@@ -347,15 +353,18 @@ func TestExecutor_Execute(t *testing.T) {
 			TotalExpectedResults: 1,
 		},
 		{
-			Name:        "multilayer policy w/ using view inherited from parent",
-			Policy:      multiLayerWithInheritedView,
-			ErrorOutput: "relation \"testview\" does not exist",
+			Name:          "multilayer policy w/ using view inherited from parent",
+			Policy:        multiLayerWithInheritedView,
+			ShouldBeEmpty: true,
+			ExpectedDiags: []diag.FlatDiag{{Err: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Type: diag.DATABASE, Severity: diag.ERROR,
+				Summary:     "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)",
+				Description: diag.Description{Summary: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Detail: ""}}},
 		},
 	}
 
 	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, hclog.Default(), nil)
+	executor := NewExecutor(conn, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -365,14 +374,11 @@ func TestExecutor_Execute(t *testing.T) {
 				StopOnFailure:  tc.StopOnFailure,
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
-			res, err := executor.Execute(context.Background(), execReq, &filtered)
-			if tc.ErrorOutput != "" {
-				if assert.Error(t, err) {
-					assert.Contains(t, err.Error(), tc.ErrorOutput)
-				}
-				return
+			res, diags := executor.Execute(context.Background(), execReq, &filtered)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.NoError(t, err)
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -387,14 +393,14 @@ func TestExecutor_Execute(t *testing.T) {
 	}
 }
 
-func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.FetchSummary, c *meta_storage.Client) (func(t *testing.T), error) {
+func setupCheckFetchDatabase(db execution.QueryExecer, summary *state.FetchSummary, c *state.Client) (func(t *testing.T), error) {
 	if summary == nil {
 		return func(t *testing.T) {}, nil
 	}
 	summary.CqId = uuid.New()
 	summary.FetchId = uuid.New()
 	finish := time.Now().UTC()
-	summary.Finish = &finish
+	summary.Finish = finish
 	err := c.SaveFetchSummary(context.Background(), summary)
 	if err != nil {
 		return nil, err
@@ -407,13 +413,13 @@ func setupCheckFetchDatabase(db execution.QueryExecer, summary *meta_storage.Fet
 	}, nil
 }
 
-func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
+func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
+	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}
@@ -421,7 +427,7 @@ func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
 	err = metaStorage.MigrateCore(context.Background(), de)
 	assert.NoError(t, err)
 
-	executor := NewExecutor(db, hclog.Default(), nil)
+	executor := NewExecutor(db, nil)
 
 	policy := &Policy{
 		Name:     "test",
@@ -443,25 +449,21 @@ func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
 	testCases := []struct {
 		Name              string
 		DisableFetchCheck bool
-		ExpectedError     error
+		ExpectedDiags     []diag.FlatDiag
 	}{{
 		Name:              "fetch_check_enabled",
 		DisableFetchCheck: false,
-		ExpectedError:     errors.New("could not find a completed fetch for requested provider"),
+		ExpectedDiags: []diag.FlatDiag{{Err: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider",
+			Type: diag.USER, Severity: diag.ERROR, Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Detail: "test: please run `cloudquery fetch` before running policy"}}},
 	},
 		{
 			Name:              "fetch_check_disabled",
 			DisableFetchCheck: true,
-			ExpectedError:     nil,
 		},
 	}
 
-	testProviderVersion, err := version.NewVersion("0.1.0")
-	assert.NoError(t, err)
-
 	executeRequest := &ExecuteRequest{
-		Policy:           policy,
-		ProviderVersions: map[string]*version.Version{"testProvider": testProviderVersion},
+		Policy: policy,
 	}
 
 	for _, tc := range testCases {
@@ -469,12 +471,12 @@ func TestExecuter_DisbleFetchCheckFlag(t *testing.T) {
 			defer viper.Reset()
 			viper.Set("disable-fetch-check", tc.DisableFetchCheck)
 
-			_, err = executor.Execute(context.Background(), executeRequest, policy)
+			_, diags := executor.Execute(context.Background(), executeRequest, policy)
 
-			if tc.ExpectedError == nil {
-				assert.NoError(t, err)
+			if tc.ExpectedDiags != nil {
+				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Contains(t, err.Error(), tc.ExpectedError.Error())
+				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
 		})
 	}
@@ -486,9 +488,9 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := meta_storage.NewClient(db, hclog.NewNullLogger())
+	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(hclog.NewNullLogger(), testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}
@@ -496,14 +498,14 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	err = metaStorage.MigrateCore(context.Background(), de)
 	assert.NoError(t, err)
 
-	executor := NewExecutor(db, hclog.Default(), nil)
+	executor := NewExecutor(db, nil)
 
 	finish := time.Now().UTC()
 	assert.NoError(t, err)
 	cases := []struct {
 		Name   string
 		Config Configuration
-		f      *meta_storage.FetchSummary
+		f      *state.FetchSummary
 		err    error
 	}{
 		{
@@ -513,25 +515,17 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test1", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test1", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: nil,
 		},
 		{
-			Name: "no fetches",
-			Config: Configuration{
-				Providers: []*Provider{
-					{Type: "test2", Version: "~> v0.2.0"},
-				},
-			},
-			err: errors.New("failed to get fetch summary for provider test2: could not find a completed fetch for requested provider"),
-		}, {
 			Name: "no finished fetches",
 			Config: Configuration{
 				Providers: []*Provider{
 					{Type: "no_finish", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
+			f:   &state.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", IsSuccess: false},
 			err: errors.New("failed to get fetch summary for provider no_finish: could not find a completed fetch for requested provider"),
 		},
 		{
@@ -541,7 +535,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test3", Version: "~> v0.2.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: false},
+			f:   &state.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: false},
 			err: errors.New("last fetch for provider test3 wasn't successful"),
 		},
 		{
@@ -551,7 +545,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: "~> v0.3.0"},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: errors.New("the latest fetch for provider test4 does not satisfy version requirement ~> v0.3.0"),
 		},
 		{
@@ -561,7 +555,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 					{Type: "test4", Version: ""},
 				},
 			},
-			f:   &meta_storage.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: &finish, IsSuccess: true},
+			f:   &state.FetchSummary{ProviderName: "test4", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: true},
 			err: errors.New("failed to parse version constraint for provider test4: Malformed constraint: "),
 		},
 	}

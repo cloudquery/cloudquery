@@ -1,0 +1,123 @@
+# DO NOT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: sanity
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main, test]
+
+jobs:
+  checks:
+    strategy:
+      matrix:
+        dbversion: ['postgres:latest']
+        go: ['1.17']
+        platform: [ ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.17
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+      - uses: actions/cache@v2
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+
+      - name: Build
+        run: go build -v .
+
+      - name: Fetch
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log
+        env:
+          CQ_NO_TELEMETRY: 1
+
+
+      - name: Fetch Multiple Provider
+        run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Init
+        run: go run ./main.go init test --config=test_init_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Policy Describe
+        run: go run ./main.go policy describe k8s//nsa_cisa_v1/pod_security --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Policy Download
+        run: go run ./main.go policy download github.com/roneli/aws//cis_v1.2.0 --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Policy Run bad subpath
+        run: go run ./main.go policy run aws//path/not/exist --config=internal/test/test_aws.hcl --disable-fetch-check
+        continue-on-error: true
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sync (upgrade)
+        run: go run ./main.go provider upgrade test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Purge
+        run: go run ./main.go provider purge test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Sync (downgrade)
+        run: go run ./main.go provider downgrade test --config=internal/test/test_config.hcl
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Drop
+        run: go run ./main.go provider drop test --config=internal/test/test_config.hcl --force
+        env:
+          CQ_NO_TELEMETRY: 1
+
+      - name: Drift
+        run: go run ./main.go drift scan internal/test/tfstate.state --enable-console-log --config=internal/test/test_drift.hcl
+        continue-on-error: true
+        env:
+          CQ_NO_TELEMETRY: 1
+
+
+

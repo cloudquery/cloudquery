@@ -94,64 +94,64 @@ func cleanQuery(query string) string {
 	return strings.TrimSpace(query)
 }
 
-func (ce *Executor) extractTableNames(ctx context.Context, query string) ([]string, error) {
+func (e *Executor) extractTableNames(ctx context.Context, query string) ([]string, error) {
 	tableNames := make([]string, 0)
 	cleanedQuery := cleanQuery(query)
 
 	explainQuery := fmt.Sprintf("EXPLAIN (FORMAT JSON) %s", cleanedQuery)
 
-	ce.log.Debug("extracting Table names-cleaned", "explainQuery", explainQuery, "raw query", query)
+	e.log.Debug("extracting Table names-cleaned", "explainQuery", explainQuery, "raw query", query)
 
-	rows, err := ce.conn.Query(ctx, explainQuery)
+	rows, err := e.conn.Query(ctx, explainQuery)
 	if err != nil {
 		return tableNames, err
 	}
 	var s string
 	for rows.Next() {
 		if err := rows.Scan(&s); err != nil {
-			ce.log.Error("error scanning into variable", "error", err)
+			e.log.Error("error scanning into variable", "error", err)
 			return nil, err
 		}
 	}
 	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", query, "error", err)
+		e.log.Error("Error fetching rows", "query", query, "error", err)
 		return tableNames, err
 	}
 
 	var arrayJsonMap []map[string](interface{})
 	err = json.Unmarshal([]byte(s), &arrayJsonMap)
 	if err != nil {
-		ce.log.Error("failed to unmarshal json", "err", err)
+		e.log.Error("failed to unmarshal json", "err", err)
 		return tableNames, err
 	}
 
 	flat, err := flatten.Flatten(arrayJsonMap[0], "", flatten.DotStyle)
 	if err != nil {
-		ce.log.Error("failed to flatten json", "err", err)
+		e.log.Error("failed to flatten json", "err", err)
 		return tableNames, err
 	}
 	for key, val := range flat {
 		if strings.HasSuffix(key, "Relation Name") {
-			ce.log.Debug("Found relation Name", "Table", val)
+			e.log.Debug("Found relation Name", "Table", val)
 			tableNames = append(tableNames, val.(string))
 		}
 		if strings.HasSuffix(key, "Alias") { // Aliases could be query aliases or table aliases (views)
 
 			// Check if query alias, if it is the table will not exist
-			viewQuery, err := ce.checkTableExistence(ctx, val.(string))
+			viewQuery, err := e.checkTableExistence(ctx, val.(string))
 			if err != nil && strings.Contains(err.Error(), "does not exist (SQLSTATE 42P01)") {
-				ce.log.Error("failed to grab query", "err", err, "resp", viewQuery)
+				e.log.Error("failed to grab query", "err", err, "resp", viewQuery)
 				continue
 			} else if err != nil {
 				return tableNames, err
 			}
 			// If the alias is a view name, then recursively extract the table names from the subquery
 			if viewQuery != "" {
-				viewTables, err := ce.extractTableNames(ctx, viewQuery)
+				viewTables, err := e.extractTableNames(ctx, viewQuery)
 				if err != nil {
 					return []string{}, err
 				}
-				ce.log.Error("Added tables from view", "resp", viewTables)
+				e.log.Error("Added tables from view", "resp", viewTables)
 				tableNames = append(tableNames, viewTables...)
 			}
 		}
@@ -206,12 +206,12 @@ func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) erro
 	return nil
 }
 
-func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
+func (e *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
 
 	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
-	rows, err := ce.conn.Query(ctx, explainQuery)
+	rows, err := e.conn.Query(ctx, explainQuery)
 	if err != nil {
-		ce.log.Error("error running explain", "tableName", tableName, "err", err)
+		e.log.Error("error running explain", "tableName", tableName, "err", err)
 		return "", err
 	}
 
@@ -219,11 +219,11 @@ func (ce *Executor) checkTableExistence(ctx context.Context, tableName string) (
 	for rows.Next() {
 
 		if err := rows.Scan(&s); err != nil {
-			ce.log.Error("error scanning into variable", "error", err)
+			e.log.Error("error scanning into variable", "error", err)
 		}
 	}
 	if err := rows.Err(); err != nil {
-		ce.log.Error("Error fetching rows", "query", explainQuery, "error", err)
+		e.log.Error("Error fetching rows", "query", explainQuery, "error", err)
 		return "", err
 	}
 

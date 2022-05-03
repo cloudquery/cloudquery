@@ -6,7 +6,7 @@ on:
     branches:
       - main
   pull_request:
-    branches: [ main ]
+    branches: [main, dev]
 
 env:
   CGO_ENABLED: 0
@@ -37,21 +37,26 @@ jobs:
           --health-retries 5
     steps:
       - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.17
-
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-
-      - uses: actions/cache@v3
+        uses: actions/checkout@v3
+      - uses: actions/cache@v2
         with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
           path: |
-            ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
 
       - name: Get dependencies
         run: go get -v -t -d ./...
