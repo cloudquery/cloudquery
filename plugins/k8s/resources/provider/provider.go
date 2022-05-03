@@ -25,9 +25,10 @@ var (
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Version:   Version,
-		Name:      ProviderName,
-		Configure: client.Configure,
+		Version:         Version,
+		Name:            ProviderName,
+		Configure:       client.Configure,
+		ErrorClassifier: client.ErrorClassifier,
 		Config: func() provider.Config {
 			return &client.Config{}
 		},

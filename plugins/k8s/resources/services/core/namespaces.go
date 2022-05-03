@@ -17,6 +17,7 @@ func Namespaces() *schema.Table {
 		Multiplex:    client.ContextMultiplex,
 		DeleteFilter: client.DeleteContextFilter,
 		Resolver:     fetchCoreNamespaces,
+		IgnoreError:  client.IgnoreForbidden,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
 			client.CommonContextField,

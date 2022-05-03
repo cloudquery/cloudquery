@@ -9,3 +9,9 @@ Environment variables for running integration tests:
 
 Command to run them:
 `go test -v -tags=integration ./...`
+
+
+### Local Testing
+- Start a minikube
+- Start API server `kubectl proxy --port=80`
+- Terraform apply resources

@@ -20,6 +20,7 @@ func Endpoints() *schema.Table {
 		Resolver:     fetchCoreEndpoints,
 		Multiplex:    client.ContextMultiplex,
 		DeleteFilter: client.DeleteContextFilter,
+		IgnoreError:  client.IgnoreForbidden,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
 			client.CommonContextField,

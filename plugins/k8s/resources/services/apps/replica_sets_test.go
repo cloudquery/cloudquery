@@ -8,7 +8,6 @@ import (
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-k8s/client/mocks"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/testData"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	appsv1 "k8s.io/api/apps/v1"
@@ -33,8 +32,8 @@ func fakeReplicaSet(t *testing.T) appsv1.ReplicaSet {
 	if err := faker.FakeDataSkipFields(&rs.Spec, []string{"Template"}); err != nil {
 		t.Fatal(err)
 	}
-	rs.Spec.Template = testData.FakePodTemplateSpec(t)
-	rs.ManagedFields = []metav1.ManagedFieldsEntry{testData.FakeManagedFields(t)}
+	rs.Spec.Template = testing.FakePodTemplateSpec(t)
+	rs.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
 
 	return rs
 }

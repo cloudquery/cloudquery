@@ -1,4 +1,4 @@
-package testData
+package testing
 
 import (
 	"testing"

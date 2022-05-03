@@ -6,9 +6,9 @@ import (
 )
 
 func main() {
-	provider := provider.Provider()
+	p := provider.Provider()
 	serve.Serve(&serve.Options{
-		Name:     provider.Name,
-		Provider: provider,
+		Name:     p.Name,
+		Provider: p,
 	})
 }

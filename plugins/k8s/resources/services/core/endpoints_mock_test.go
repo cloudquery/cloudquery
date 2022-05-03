@@ -8,7 +8,6 @@ import (
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-k8s/client/mocks"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/testData"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
@@ -21,7 +20,7 @@ func createCoreEndpoints(t *testing.T, ctrl *gomock.Controller) client.Services 
 	if err := faker.FakeDataSkipFields(&e, []string{"Subsets"}); err != nil {
 		t.Fatal(err)
 	}
-	e.ManagedFields = []metav1.ManagedFieldsEntry{testData.FakeManagedFields(t)}
+	e.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
 	subset := corev1.EndpointSubset{}
 	if err := faker.FakeDataSkipFields(&subset, []string{"Addresses", "NotReadyAddresses"}); err != nil {
 		t.Fatal(err)

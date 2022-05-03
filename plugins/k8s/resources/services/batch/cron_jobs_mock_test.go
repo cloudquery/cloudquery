@@ -10,7 +10,6 @@ import (
 
 	"github.com/cloudquery/cq-provider-k8s/client"
 	"github.com/cloudquery/cq-provider-k8s/client/mocks"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/testData"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -41,9 +40,9 @@ func fakeCronJob(t *testing.T) batchv1.CronJob {
 	if err := faker.FakeData(&job.Spec.JobTemplate.ObjectMeta); err != nil {
 		t.Fatal(err)
 	}
-	job.ManagedFields = []metav1.ManagedFieldsEntry{testData.FakeManagedFields(t)}
-	job.Spec.JobTemplate.ManagedFields = []metav1.ManagedFieldsEntry{testData.FakeManagedFields(t)}
-	job.Spec.JobTemplate.Spec.Template = testData.FakePodTemplateSpec(t)
+	job.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	job.Spec.JobTemplate.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	job.Spec.JobTemplate.Spec.Template = testing.FakePodTemplateSpec(t)
 	return job
 }
 
