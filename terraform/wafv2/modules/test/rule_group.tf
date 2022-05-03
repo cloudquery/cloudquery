@@ -8,7 +8,12 @@ resource "aws_wafv2_rule_group" "wafv2_rule_group" {
     priority = 1
 
     action {
-      allow {}
+      block {
+        custom_response {
+          custom_response_body_key  = "blocked_request_custom_response"
+          response_code             = 429
+        }
+      }
     }
 
     statement {
@@ -29,6 +34,12 @@ resource "aws_wafv2_rule_group" "wafv2_rule_group" {
     cloudwatch_metrics_enabled = false
     metric_name                = "${var.prefix}-rule-group-metric-1"
     sampled_requests_enabled   = false
+  }
+
+  custom_response_body {
+    key           = "blocked_request_custom_response"
+    content       = "Rate Limit Exceeded"
+    content_type  = "TEXT_PLAIN"
   }
 
   tags = merge(

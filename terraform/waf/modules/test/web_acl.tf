@@ -49,6 +49,11 @@ resource "aws_waf_web_acl" "waf_acl" {
 
   logging_configuration {
     log_destination = aws_kinesis_firehose_delivery_stream.extended_s3_stream.arn
+    redacted_fields {
+      field_to_match {
+        type = "URI"
+      }
+    }
   }
 
   tags = merge(
@@ -63,6 +68,3 @@ resource "aws_waf_web_acl" "waf_acl" {
     aws_waf_rule.wafrule,
   ]
 }
-
-
-
