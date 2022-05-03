@@ -52,7 +52,7 @@ module "security_group" {
 
 module "rds" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "~> 4.1"
+  version = "4.1.3"
 
   identifier = "${var.prefix}-rds"
 
