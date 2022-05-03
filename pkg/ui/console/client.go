@@ -220,11 +220,11 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 
 func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*core.SyncResult, diags diag.Diagnostics) {
 	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
-	ui.ColorizedOutput(ui.ColorProgress, "Syncing CloudQuery providers %s\n\n", pp)
 	providers := c.Providers
-	if pp != nil {
+	if len(pp) > 0 {
 		providers = c.Providers.GetMany(pp...)
 	}
+	ui.ColorizedOutput(ui.ColorProgress, "Syncing CloudQuery providers %s\n\n", providers)
 	if len(providers) == 0 {
 		return nil, diag.FromError(fmt.Errorf("one or more providers not found: %s", pp), diag.USER,
 			diag.WithDetails("providers not found, are they defined in configuration?. Defined: %s", c.Providers))
