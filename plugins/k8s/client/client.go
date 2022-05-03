@@ -70,12 +70,15 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		logger.Debug("no context set in configuration using current default defined context", "context", kCfg.CurrentContext)
 		contexts = []string{kCfg.CurrentContext}
 	case 1:
-		if cfg.Contexts[0] != "*" {
+		if cfg.Contexts[0] == "*" {
 			logger.Debug("loading all available configuration")
 			for cName := range kCfg.Contexts {
 				contexts = append(contexts, cName)
 			}
 		} else {
+			if _, ok := kCfg.Contexts[cfg.Contexts[0]]; !ok {
+				return nil, diag.FromError(fmt.Errorf("context %q doesn't exist in kube configuration", cfg.Contexts[0]), diag.USER)
+			}
 			contexts = []string{cfg.Contexts[0]}
 		}
 	default:
