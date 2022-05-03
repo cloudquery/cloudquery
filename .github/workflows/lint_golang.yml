@@ -7,11 +7,6 @@ on:
   pull_request:
     branches:
       - main
-      - dev
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - 'scripts/**'
 
 jobs:
   golangci:
