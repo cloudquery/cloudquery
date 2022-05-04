@@ -181,8 +181,8 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		}
 	}
 
-	for k, v := range extra {
-		eventProps[cast.ToString(k)] = v
+	for i := 0; i < len(extra); i += 2 {
+		eventProps[cast.ToString(extra[i])] = extra[i+1]
 	}
 
 	// add any global properties

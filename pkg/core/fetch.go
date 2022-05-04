@@ -96,7 +96,6 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 	for rn, r := range p.FetchedResources {
 		rd[rn] = math.Round(r.Duration.Seconds()*100) / 100
 	}
-
 	return map[string]interface{}{
 		"fetch_provider":              p.Name,
 		"fetch_provider_version":      p.Version,

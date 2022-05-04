@@ -26,3 +26,4 @@ database-data/*
 dest/*
 outfile
 test_init_config.hcl
+telemetry-random-id
