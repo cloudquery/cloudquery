@@ -105,6 +105,6 @@ jobs:
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: ' - E2E tests failed'
-          SLACK_TITLE:  - E2E tests failed
+          SLACK_MESSAGE: 'terraform - E2E tests failed'
+          SLACK_TITLE: terraform - E2E tests failed
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
