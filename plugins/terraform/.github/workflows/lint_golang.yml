@@ -1,0 +1,28 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: lint_golang
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  golangci:
+    name: Lint with GolangCI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '!(terraform/**/*|scripts/**/*)'
+      - name: golangci-lint
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.45.2
+          args: --timeout 5m
