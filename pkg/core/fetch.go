@@ -91,6 +91,25 @@ func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
 	return allDiags
 }
 
+func (p ProviderFetchSummary) Properties() map[string]interface{} {
+	rd := make(map[string]float64, len(p.FetchedResources))
+	for rn, r := range p.FetchedResources {
+		rd[rn] = math.Round(r.Duration.Seconds()*100) / 100
+	}
+
+	return map[string]interface{}{
+		"fetch_provider":              p.Name,
+		"fetch_provider_version":      p.Version,
+		"fetch_resources":             p.Resources(),
+		"fetch_total_resources_count": p.TotalResourcesFetched,
+		"fetch_resources_durations":   rd,
+		"fetch_duration":              math.Round(p.Duration.Seconds()*100) / 100,
+		"fetch_diags":                 SummarizeDiagnostics(p.Diagnostics()),
+		"fetch_status":                p.Status.String(),
+	}
+
+}
+
 type ResourceFetchSummary struct {
 	// Execution status of resource
 	Status string `json:"status,omitempty"`
@@ -144,36 +163,6 @@ type FetchResponse struct {
 	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
 	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
 	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
-}
-
-func (fr FetchResponse) Properties() map[string]interface{} {
-	properties := map[string]interface{}{
-		"fetch_id":       fr.FetchId,
-		"total_fetched":  fr.TotalFetched,
-		"fetch_duration": fr.Duration.Seconds(),
-		"provider_count": len(fr.ProviderFetchSummary),
-	}
-	providers := make([]map[string]interface{}, 0, len(fr.ProviderFetchSummary))
-	for _, p := range fr.ProviderFetchSummary {
-
-		rd := make(map[string]float64, len(p.FetchedResources))
-		for rn, r := range p.FetchedResources {
-			rd[rn] = math.Round(r.Duration.Seconds()*100) / 100
-		}
-
-		providers = append(providers, map[string]interface{}{
-			"alias":                    fmt.Sprintf("%s#%d", p.Name, len(providers)),
-			"provider":                 p.Name,
-			"resources":                p.Resources(),
-			"fetch_count":              p.TotalResourcesFetched,
-			"resource_fetch_durations": rd,
-			"total_fetch_duration":     math.Round(p.Duration.Seconds()*100) / 100,
-			"diags":                    SummarizeDiagnostics(p.Diagnostics()),
-			"status":                   p.Status.String(),
-		})
-	}
-	properties["providers"] = providers
-	return properties
 }
 
 func (fr FetchResponse) HasErrors() bool {

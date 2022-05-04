@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/spf13/cast"
+
 	"github.com/modern-go/reflect2"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -16,8 +18,8 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
+	"github.com/rudderlabs/analytics-go"
 	"github.com/spf13/afero"
-	"gopkg.in/segmentio/analytics-go.v3"
 )
 
 const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
@@ -122,7 +124,7 @@ func New(opts ...Option) *Client {
 		cfg.Logger = logging.NewSimple(&log.Logger, "analytics")
 	}
 
-	ac, err := analytics.NewWithConfig("NaEpIFd1mc3i6IT7Jas66hp170gNbHzE", cfg)
+	ac, err := analytics.NewWithConfig("28gqMiozjM69W0Tr4wqA1CVPOXa", "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
 		c.disabled = true
@@ -152,24 +154,35 @@ type Message interface {
 	Properties() map[string]interface{}
 }
 
-func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) {
+func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics, extra ...interface{}) {
 	c := currentHub
 	if c.disabled {
 		return
 	}
+	pp := make([]string, len(providers))
+	for i, p := range providers {
+		pp[i] = p.String()
+	}
+
 	eventProps := map[string]interface{}{
-		"version":     c.version.Version,
-		"commitId":    c.version.CommitId,
-		"buildDate":   c.version.BuildDate,
-		"env":         c.env,
-		"instanceId":  c.instanceId,
-		"success":     !diags.HasErrors(),
-		"providers":   providers,
-		"diagnostics": core.SummarizeDiagnostics(diags),
+		"version":             c.version.Version,
+		"commit_id":           c.version.CommitId,
+		"build_date":          c.version.BuildDate,
+		"env":                 c.env,
+		"instance_id":         c.instanceId,
+		"success":             !diags.HasErrors(),
+		"installed_providers": pp,
+		"diagnostics":         core.SummarizeDiagnostics(diags),
 	}
 
 	if !reflect2.IsNil(data) {
-		eventProps["data"] = data.Properties()
+		for k, v := range data.Properties() {
+			eventProps[k] = v
+		}
+	}
+
+	for k, v := range extra {
+		eventProps[cast.ToString(k)] = v
 	}
 
 	// add any global properties
