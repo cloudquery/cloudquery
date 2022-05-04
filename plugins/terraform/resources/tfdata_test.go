@@ -16,7 +16,6 @@ func TestTfData(t *testing.T) {
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: Provider(),
-		Table:    TFData(),
 		Config:   cfg,
 	})
 
