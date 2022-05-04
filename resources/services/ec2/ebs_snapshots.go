@@ -156,6 +156,10 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 	})
 
 	if err != nil {
+		if client.IsAWSError(err, "InvalidSnapshot.NotFound") {
+			meta.Logger().Debug("Failed extracting snapshot volume permissions", "SnapshotId", r.SnapshotId, "error", err)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 
