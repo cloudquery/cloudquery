@@ -22,7 +22,10 @@ import (
 	"github.com/spf13/afero"
 )
 
-const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+const (
+	CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+	APIKey   = ""
+)
 
 type VersionInfo struct {
 	Version   string `json:"version,omitempty"`
@@ -40,14 +43,13 @@ type Client struct {
 	userId     uuid.UUID
 	instanceId uuid.UUID
 
-	disabled         bool
-	endpoint         string
-	insecureEndpoint bool
-	debug            bool
+	disabled bool
+	debug    bool
 
 	properties map[string]interface{}
 
 	client analytics.Client
+	apikey string
 }
 
 type Option func(c *Client)
@@ -57,6 +59,12 @@ func WithProperties(properties map[string]interface{}) Option {
 		for k, v := range properties {
 			c.properties[k] = v
 		}
+	}
+}
+
+func WithApiKey(apikey string) Option {
+	return func(c *Client) {
+		c.apikey = apikey
 	}
 }
 
@@ -77,13 +85,6 @@ func WithVersionInfo(version, commit, buildDate string) Option {
 		c.version.Version = version
 		c.version.CommitId = commit
 		c.version.BuildDate = buildDate
-	}
-}
-
-func WithEndpoint(endpoint string, insecure bool) Option {
-	return func(c *Client) {
-		c.endpoint = endpoint
-		c.insecureEndpoint = insecure
 	}
 }
 
@@ -116,15 +117,15 @@ func New(opts ...Option) *Client {
 		c.env = getEnvironmentAttributes(c.terminal)
 	}
 	cfg := analytics.Config{}
-	if c.endpoint != "" {
-		cfg.Endpoint = c.endpoint
-	}
 	if c.debug {
 		cfg.Verbose = true
 		cfg.Logger = logging.NewSimple(&log.Logger, "analytics")
 	}
-
-	ac, err := analytics.NewWithConfig("28gqMiozjM69W0Tr4wqA1CVPOXa", "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
+	apiKey := APIKey
+	if c.apikey != "" {
+		apiKey = c.apikey
+	}
+	ac, err := analytics.NewWithConfig(apiKey, "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
 		c.disabled = true

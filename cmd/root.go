@@ -125,15 +125,11 @@ func init() {
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true to debug telemetry logging")
-	rootCmd.PersistentFlags().String("telemetry-endpoint", "", "Telemetry endpoint")
-	rootCmd.PersistentFlags().Bool("insecure-telemetry-endpoint", false, "Allow insecure connection to telemetry endpoint")
+	rootCmd.PersistentFlags().String("telemetry-apikey", "", "Telemetry API Key")
 
 	// Derived from data-dir if empty
 	_ = rootCmd.PersistentFlags().MarkHidden("plugin-dir")
 	_ = rootCmd.PersistentFlags().MarkHidden("policy-dir")
-
-	_ = rootCmd.PersistentFlags().MarkHidden("telemetry-endpoint")
-	_ = rootCmd.PersistentFlags().MarkHidden("insecure-telemetry-endpoint")
 
 	_ = viper.BindPFlag("data-dir", rootCmd.PersistentFlags().Lookup("data-dir"))
 	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
@@ -146,10 +142,8 @@ func init() {
 
 	// Telemetry specific options
 	_ = viper.BindPFlag("no-telemetry", rootCmd.PersistentFlags().Lookup("no-telemetry"))
-	_ = viper.BindPFlag("inspect-telemetry", rootCmd.PersistentFlags().Lookup("inspect-telemetry"))
 	_ = viper.BindPFlag("debug-telemetry", rootCmd.PersistentFlags().Lookup("debug-telemetry"))
-	_ = viper.BindPFlag("telemetry-endpoint", rootCmd.PersistentFlags().Lookup("telemetry-endpoint"))
-	_ = viper.BindPFlag("insecure-telemetry-endpoint", rootCmd.PersistentFlags().Lookup("insecure-telemetry-endpoint"))
+	_ = viper.BindPFlag("telemetry-apikey", rootCmd.PersistentFlags().Lookup("telemetry-apikey"))
 
 	registerSentryFlags(rootCmd)
 
@@ -184,9 +178,10 @@ func initLogging() {
 func initAnalytics() {
 	opts := []analytics.Option{
 		analytics.WithVersionInfo(core.Version, Commit, Date),
-		analytics.WithEndpoint(viper.GetString("telemetry-endpoint"), viper.GetBool("insecure-telemetry-endpoint")),
 		analytics.WithTerminal(ui.IsTerminal()),
+		analytics.WithApiKey(viper.GetString("telemetry-apikey")),
 	}
+
 	if viper.GetBool("no-telemetry") {
 		opts = append(opts, analytics.WithDisabled())
 	}
