@@ -4,27 +4,22 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/cast"
-
-	"github.com/modern-go/reflect2"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
-
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
+	"github.com/modern-go/reflect2"
+	"github.com/rs/zerolog/log"
 	"github.com/rudderlabs/analytics-go"
 	"github.com/spf13/afero"
+	"github.com/spf13/cast"
 )
 
 const (
 	CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
-	APIKey   = ""
 )
 
 type VersionInfo struct {
@@ -121,11 +116,8 @@ func New(opts ...Option) *Client {
 		cfg.Verbose = true
 		cfg.Logger = logging.NewSimple(&log.Logger, "analytics")
 	}
-	apiKey := APIKey
-	if c.apikey != "" {
-		apiKey = c.apikey
-	}
-	ac, err := analytics.NewWithConfig(apiKey, "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
+
+	ac, err := analytics.NewWithConfig(c.apikey, "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
 		c.disabled = true
@@ -157,7 +149,7 @@ type Message interface {
 
 func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics, extra ...interface{}) {
 	c := currentHub
-	if c.disabled {
+	if c.disabled || c.apikey == "" {
 		return
 	}
 	pp := make([]string, len(providers))

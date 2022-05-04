@@ -70,6 +70,7 @@ var (
 
 	Commit = "development"
 	Date   = "unknown"
+	APIKey = ""
 
 	rootCmd = &cobra.Command{
 		Use:   "cloudquery",
@@ -125,7 +126,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("no-telemetry", false, "NoTelemetry is true telemetry collection will be disabled")
 	rootCmd.PersistentFlags().Bool("inspect-telemetry", false, "Enable telemetry inspection")
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "DebugTelemetry is true to debug telemetry logging")
-	rootCmd.PersistentFlags().String("telemetry-apikey", "", "Telemetry API Key")
+	rootCmd.PersistentFlags().String("telemetry-apikey", APIKey, "Telemetry API Key")
 
 	// Derived from data-dir if empty
 	_ = rootCmd.PersistentFlags().MarkHidden("plugin-dir")
