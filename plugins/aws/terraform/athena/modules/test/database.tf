@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "athenabucket" {
-  bucket        = "${var.prefix}athenabucket"
+  bucket        = "${var.prefix}athenabkt${var.prefix}"
   force_destroy = true
 }
 
