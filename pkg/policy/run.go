@@ -91,15 +91,27 @@ type RunRequest struct {
 	RunCallback UpdateCallback
 }
 
-func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*ExecutionResult, diag.Diagnostics) {
-	results := make([]*ExecutionResult, 0)
-	var diags diag.Diagnostics
+type RunResponse struct {
+	Policies   Policies
+	Executions []*ExecutionResult
+}
+
+func Run(ctx context.Context, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
+
+	var (
+		diags diag.Diagnostics
+		resp  = &RunResponse{
+			Policies:   make(Policies, 0),
+			Executions: make([]*ExecutionResult, 0),
+		}
+	)
 	for _, p := range req.Policies {
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("preparing to run policy")
 		loadedPolicy, err := Load(ctx, req.Directory, p)
 		if err != nil {
 			return nil, diag.FromError(err, diag.INTERNAL)
 		}
+		resp.Policies = append(resp.Policies, loadedPolicy)
 		log.Debug().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("loaded policy successfully")
 		result, dd := run(ctx, storage, &ExecuteRequest{
 			Policy:         loadedPolicy,
@@ -111,10 +123,10 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
 			log.Error().Err(err).Msg("policy execution finished with error")
-			return results, diags
+			return resp, diags
 		}
 		log.Info().Str("policy", p.Name).Msg("policy execution finished")
-		results = append(results, result)
+		resp.Executions = append(resp.Executions, result)
 		if req.OutputDir == "" {
 			continue
 		}
@@ -123,7 +135,7 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) ([]*Exe
 			return nil, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 	}
-	return results, diags
+	return resp, diags
 }
 
 func run(ctx context.Context, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, diag.Diagnostics) {
