@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -1730,7 +1731,7 @@ func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema
 	}
 	j := make(map[string]interface{})
 	for _, i := range service.PlacementConstraints {
-		j[string(i.Type)] = *i.Expression
+		j[string(i.Type)] = aws.ToString(i.Expression)
 	}
 
 	return resource.Set(c.Name, j)
@@ -1742,7 +1743,7 @@ func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.Cl
 	}
 	j := make(map[string]interface{})
 	for _, i := range service.PlacementStrategy {
-		j[string(i.Type)] = *i.Field
+		j[string(i.Type)] = aws.ToString(i.Field)
 	}
 
 	return resource.Set(c.Name, j)
