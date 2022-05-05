@@ -143,6 +143,16 @@ func IgnoreWithInvalidAction(err error) bool {
 	return false
 }
 
+func IgnoreNotAvailableRegion(err error) bool {
+	var ae smithy.APIError
+	if errors.As(err, &ae) {
+		if ae.ErrorCode() == "InvalidRequestException" && strings.Contains(ae.ErrorMessage(), "not available in the current Region") {
+			return true
+		}
+	}
+	return false
+}
+
 // GenerateResourceARN generates the arn for a resource.
 // Service: The service name e.g. waf or elb or s3
 // ResourceType: The sub resource type e.g. rule or instance (for an ec2 instance)
