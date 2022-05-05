@@ -12,6 +12,11 @@ func DeleteAccountRegionFilter(meta schema.ClientMeta, _ *schema.Resource) []int
 	return []interface{}{"account_id", client.AccountID, "region", client.Region}
 }
 
+func DeleteAccountRegionScopeFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
+	client := meta.(*Client)
+	return []interface{}{"account_id", client.AccountID, "region", client.Region, "scope", client.WAFScope}
+}
+
 func DeleteAllFilter(_ schema.ClientMeta, _ *schema.Resource) []interface{} {
 	return []interface{}{}
 }
