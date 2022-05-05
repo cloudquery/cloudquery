@@ -16,9 +16,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
-type FetchEvent struct {
-}
-
 var fetchCmd = &cobra.Command{
 	Use:   "fetch",
 	Short: "Fetch resources from configured providers",
