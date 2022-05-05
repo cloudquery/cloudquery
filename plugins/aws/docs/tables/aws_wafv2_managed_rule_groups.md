@@ -6,6 +6,7 @@ High-level information about a managed rule group, returned by ListAvailableMana
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|scope|text|The scope (Regional or Global) of the resource.|
 |available_labels|text[]||
 |consumed_labels|text[]||
 |capacity|bigint||

@@ -6,6 +6,7 @@ A Web ACL defines a collection of rules to use to inspect and control web reques
 | ------------- | ------------- | -----  |
 |account_id|text||
 |region|text||
+|scope|text|Specifies whether this is for an Amazon CloudFront distribution or for a regional application.|
 |resources_for_web_acl|text[]||
 |tags|jsonb||
 |arn|text|The Amazon Resource Name (ARN) of the Web ACL that you want to associate with the resource.  |

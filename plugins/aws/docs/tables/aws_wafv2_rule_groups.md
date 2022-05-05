@@ -6,6 +6,7 @@ A rule group defines a collection of rules to inspect and control web requests t
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|scope|text|Specifies whether this is for an Amazon CloudFront distribution or for a regional application.|
 |tags|jsonb||
 |policy|jsonb||
 |arn|text|The Amazon Resource Name (ARN) of the entity.  |
