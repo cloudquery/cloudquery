@@ -101,6 +101,14 @@ func TestTagsToMap(t *testing.T) {
 					Key:   aws.String("k"),
 					Value: aws.String("v"),
 				},
+				{
+					Key:   nil,
+					Value: aws.String("emptykey"),
+				},
+				{
+					Key:   aws.String("emptyvalue"),
+					Value: nil,
+				},
 			},
 			Expected: map[string]string{"k": "v"},
 		},
