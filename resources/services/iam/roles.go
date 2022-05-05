@@ -178,9 +178,14 @@ func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.Cli
 }
 func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Role)
-	svc := meta.(*client.Client).Services().IAM
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
 	response, err := svc.ListRoleTags(ctx, &iam.ListRoleTagsInput{RoleName: r.RoleName})
 	if err != nil {
+		if cl.IsNotFoundError(err) {
+			meta.Logger().Debug("ListRoleTags: role does not exist", "err", err)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	tags := map[string]*string{}
