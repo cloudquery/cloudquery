@@ -88,7 +88,6 @@ func ConfigConformancePack() *schema.Table {
 				Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
 				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 				DeleteFilter: client.DeleteAccountRegionFilter,
-				Options:      schema.TableCreationOptions{PrimaryKeys: []string{"conformance_pack_cq_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "conformance_pack_cq_id",
@@ -205,6 +204,9 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 		for _, conformancePackRuleCompliance := range resp.ConformancePackRuleComplianceList {
 			detailParams := &configservice.GetConformancePackComplianceDetailsInput{
 				ConformancePackName: conformancePackDetail.ConformancePackName,
+				Filters: &types.ConformancePackEvaluationFilters{
+					ConfigRuleNames: []string{*conformancePackRuleCompliance.ConfigRuleName},
+				},
 			}
 			for {
 				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams, func(options *configservice.Options) {
