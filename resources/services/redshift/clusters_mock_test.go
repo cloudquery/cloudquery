@@ -45,6 +45,8 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeData(&snap); err != nil {
 		t.Fatal(err)
 	}
+	snap.ClusterIdentifier = g.ClusterIdentifier
+	snap.ClusterCreateTime = g.ClusterCreateTime
 	m.EXPECT().DescribeClusterSnapshots(
 		gomock.Any(),
 		&redshift.DescribeClusterSnapshotsInput{

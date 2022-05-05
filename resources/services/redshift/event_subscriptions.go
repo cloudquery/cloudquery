@@ -2,9 +2,11 @@ package redshift
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,8 +20,14 @@ func EventSubscriptions() *schema.Table {
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
+			{
+				Name:        "arn",
+				Description: "ARN of the event subscription.",
+				Type:        schema.TypeString,
+				Resolver:    resolveEventSubscriptionARN,
+			},
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
@@ -116,4 +124,14 @@ func fetchRedshiftEventSubscriptions(ctx context.Context, meta schema.ClientMeta
 		params.Marker = result.Marker
 	}
 	return nil
+}
+
+func resolveEventSubscriptionARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	sub := resource.Item.(types.EventSubscription)
+	return diag.WrapError(resource.Set(c.Name, eventSubscriptionARN(cl, *sub.CustSubscriptionId)))
+}
+
+func eventSubscriptionARN(cl *client.Client, name string) string {
+	return client.MakeARN(client.RedshiftService, cl.AccountID, cl.Region, fmt.Sprintf("eventsubscription:%s", name))
 }
