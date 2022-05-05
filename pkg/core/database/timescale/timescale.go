@@ -29,9 +29,10 @@ type queryRower interface {
 }
 
 type Executor struct {
-	dsn string
-	cfg *history.Config
-	ddl *DDLManager
+	dsn  string
+	dbId string
+	cfg  *history.Config
+	ddl  *DDLManager
 }
 
 func New(dsn string, cfg *history.Config) (*Executor, error) {
@@ -63,7 +64,7 @@ func (e *Executor) Setup(ctx context.Context) (string, error) {
 	return history.TransformDSN(e.dsn)
 }
 
-func (e Executor) Validate(ctx context.Context) (bool, error) {
+func (e *Executor) Validate(ctx context.Context) (bool, error) {
 	pool, err := pgsdk.Connect(ctx, e.dsn)
 	if err != nil {
 		return false, err
@@ -90,7 +91,15 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	return true, nil
+	e.dbId, err = postgres.GetDatabaseId(ctx, pool)
+	return true, err
+}
+
+func (e Executor) Identifier(_ context.Context) (string, bool) {
+	if e.dbId == "" {
+		return "", false
+	}
+	return e.dbId, true
 }
 
 func (e Executor) Prepare(ctx context.Context) error {
