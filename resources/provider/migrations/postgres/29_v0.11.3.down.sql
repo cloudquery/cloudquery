@@ -37,3 +37,8 @@ ALTER TABLE IF EXISTS "aws_wafv2_rule_groups" DROP COLUMN IF EXISTS "scope";
 -- Resource: wafv2.web_acls
 TRUNCATE TABLE aws_wafv2_web_acls CASCADE;
 ALTER TABLE IF EXISTS "aws_wafv2_web_acls" DROP COLUMN IF EXISTS "scope";
+
+-- aws_config_conformance_pack_rule_compliances: PK change
+ALTER TABLE IF EXISTS "aws_config_conformance_pack_rule_compliances"
+  DROP CONSTRAINT aws_config_conformance_pack_rule_compliances_pk,
+  ADD CONSTRAINT aws_config_conformance_pack_rule_compliances_pk PRIMARY KEY (conformance_pack_cq_id);
