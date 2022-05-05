@@ -4,6 +4,8 @@ Describes a snapshot.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
+|cluster_cq_id|uuid|Unique CloudQuery ID of aws_redshift_clusters table (FK)|
+|arn|text|ARN of the snapshot.|
 |actual_incremental_backup_size|float|The size of the incremental backup in megabytes.|
 |availability_zone|text|The Availability Zone in which the cluster was created.|
 |backup_progress|float|The number of megabytes that have been transferred to the snapshot backup.|

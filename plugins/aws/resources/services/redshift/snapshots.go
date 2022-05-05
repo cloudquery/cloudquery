@@ -2,6 +2,7 @@ package redshift
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -17,9 +18,21 @@ func Snapshots() *schema.Table {
 		Description:   "Describes a snapshot.",
 		Resolver:      fetchRedshiftSnapshots,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"cluster_identifier", "cluster_create_time"}},
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
+			{
+				Name:        "cluster_cq_id",
+				Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
+			},
+			{
+				Name:        "arn",
+				Description: "ARN of the snapshot.",
+				Type:        schema.TypeString,
+				Resolver:    resolveSnapshotARN,
+			},
 			{
 				Name:        "actual_incremental_backup_size",
 				Description: "The size of the incremental backup in megabytes.",
@@ -254,4 +267,14 @@ func fetchRedshiftSnapshotAccountsWithRestoreAccesses(ctx context.Context, meta 
 	s := parent.Item.(types.Snapshot)
 	res <- s.AccountsWithRestoreAccess
 	return nil
+}
+
+func resolveSnapshotARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	snapshot := resource.Item.(types.Snapshot)
+	return diag.WrapError(resource.Set(c.Name, snapshotARN(cl, *snapshot.ClusterIdentifier, *snapshot.SnapshotIdentifier)))
+}
+
+func snapshotARN(cl *client.Client, clusterName, snapshotName string) string {
+	return client.MakeARN(client.RedshiftService, cl.AccountID, cl.Region, fmt.Sprintf("snapshot:%s", clusterName), snapshotName)
 }

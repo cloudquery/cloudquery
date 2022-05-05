@@ -4,6 +4,7 @@ Describes event subscriptions.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
+|arn|text|ARN of the event subscription.|
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |id|text|The name of the Amazon Redshift event notification subscription.|
