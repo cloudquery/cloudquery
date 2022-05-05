@@ -60,7 +60,7 @@ func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.Clien
 		client := meta.(*Client)
 		for accountID := range client.ServicesManager.services {
 			// always fetch cloudfront related resources
-			l = append(l, client.withAccountIDRegionAndScope(accountID, "us-east-1", wafv2types.ScopeCloudfront))
+			l = append(l, client.withAccountIDRegionAndScope(accountID, cloudfrontScopeRegion, wafv2types.ScopeCloudfront))
 			for region := range client.ServicesManager.services[accountID] {
 				if !isSupportedServiceForRegion(service, region) {
 					meta.Logger().Trace("region is not supported for service", "service", service, "region", region)

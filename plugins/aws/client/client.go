@@ -91,6 +91,7 @@ const (
 	defaultRegion              = "us-east-1"
 	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
 	defaultVar                 = "default"
+	cloudfrontScopeRegion      = defaultRegion
 )
 
 var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
@@ -162,7 +163,8 @@ type ServicesAccountRegionMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
 type ServicesManager struct {
-	services ServicesAccountRegionMap
+	services         ServicesAccountRegionMap
+	wafScopeServices map[string]*Services
 }
 
 func (s *ServicesManager) ServicesByAccountAndRegion(accountId string, region string) *Services {
@@ -172,11 +174,22 @@ func (s *ServicesManager) ServicesByAccountAndRegion(accountId string, region st
 	return s.services[accountId][region]
 }
 
+func (s *ServicesManager) ServicesByAccountForWAFScope(accountId string) *Services {
+	return s.wafScopeServices[accountId]
+}
+
 func (s *ServicesManager) InitServicesForAccountAndRegion(accountId string, region string, services Services) {
 	if s.services[accountId] == nil {
 		s.services[accountId] = make(map[string]*Services)
 	}
 	s.services[accountId][region] = &services
+}
+
+func (s *ServicesManager) InitServicesForAccountAndScope(accountId string, services Services) {
+	if s.wafScopeServices == nil {
+		s.wafScopeServices = make(map[string]*Services)
+	}
+	s.wafScopeServices[accountId] = &services
 }
 
 type Client struct {
@@ -242,7 +255,11 @@ func (c *Client) Identify() string {
 }
 
 func (c *Client) Services() *Services {
-	return c.ServicesManager.ServicesByAccountAndRegion(c.AccountID, c.Region)
+	s := c.ServicesManager.ServicesByAccountAndRegion(c.AccountID, c.Region)
+	if s == nil && c.WAFScope == wafv2types.ScopeCloudfront {
+		return c.ServicesManager.ServicesByAccountForWAFScope(c.AccountID)
+	}
+	return s
 }
 
 func (c *Client) withAccountID(accountID string) *Client {
@@ -498,6 +515,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		for _, region := range account.Regions {
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))
 		}
+		client.ServicesManager.InitServicesForAccountAndScope(*output.Account, initServices(cloudfrontScopeRegion, awsCfg))
 	}
 	if len(client.Accounts) == 0 {
 		return nil, diags.Add(diag.FromError(errors.New("no accounts instantiated"), diag.INTERNAL))
