@@ -4,23 +4,23 @@ import (
 	"strings"
 	"time"
 
-	"github.com/modern-go/reflect2"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
-
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
+	"github.com/modern-go/reflect2"
+	"github.com/rs/zerolog/log"
+	"github.com/rudderlabs/analytics-go"
 	"github.com/spf13/afero"
-	"gopkg.in/segmentio/analytics-go.v3"
+	"github.com/spf13/cast"
 )
 
-const CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+const (
+	CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+)
 
 type VersionInfo struct {
 	Version   string `json:"version,omitempty"`
@@ -38,14 +38,13 @@ type Client struct {
 	userId     uuid.UUID
 	instanceId uuid.UUID
 
-	disabled         bool
-	endpoint         string
-	insecureEndpoint bool
-	debug            bool
+	disabled bool
+	debug    bool
 
 	properties map[string]interface{}
 
 	client analytics.Client
+	apikey string
 }
 
 type Option func(c *Client)
@@ -55,6 +54,12 @@ func WithProperties(properties map[string]interface{}) Option {
 		for k, v := range properties {
 			c.properties[k] = v
 		}
+	}
+}
+
+func WithApiKey(apikey string) Option {
+	return func(c *Client) {
+		c.apikey = apikey
 	}
 }
 
@@ -75,13 +80,6 @@ func WithVersionInfo(version, commit, buildDate string) Option {
 		c.version.Version = version
 		c.version.CommitId = commit
 		c.version.BuildDate = buildDate
-	}
-}
-
-func WithEndpoint(endpoint string, insecure bool) Option {
-	return func(c *Client) {
-		c.endpoint = endpoint
-		c.insecureEndpoint = insecure
 	}
 }
 
@@ -114,15 +112,12 @@ func New(opts ...Option) *Client {
 		c.env = getEnvironmentAttributes(c.terminal)
 	}
 	cfg := analytics.Config{}
-	if c.endpoint != "" {
-		cfg.Endpoint = c.endpoint
-	}
 	if c.debug {
 		cfg.Verbose = true
 		cfg.Logger = logging.NewSimple(&log.Logger, "analytics")
 	}
 
-	ac, err := analytics.NewWithConfig("NaEpIFd1mc3i6IT7Jas66hp170gNbHzE", cfg)
+	ac, err := analytics.NewWithConfig(c.apikey, "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
 		c.disabled = true
@@ -152,24 +147,35 @@ type Message interface {
 	Properties() map[string]interface{}
 }
 
-func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics) {
+func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics, extra ...interface{}) {
 	c := currentHub
-	if c.disabled {
+	if c.disabled || c.apikey == "" {
 		return
 	}
+	pp := make([]string, len(providers))
+	for i, p := range providers {
+		pp[i] = p.String()
+	}
+
 	eventProps := map[string]interface{}{
-		"version":     c.version.Version,
-		"commitId":    c.version.CommitId,
-		"buildDate":   c.version.BuildDate,
-		"env":         c.env,
-		"instanceId":  c.instanceId,
-		"success":     !diags.HasErrors(),
-		"providers":   providers,
-		"diagnostics": core.SummarizeDiagnostics(diags),
+		"version":             c.version.Version,
+		"commit_id":           c.version.CommitId,
+		"build_date":          c.version.BuildDate,
+		"env":                 c.env,
+		"instance_id":         c.instanceId,
+		"success":             !diags.HasErrors(),
+		"installed_providers": pp,
+		"diagnostics":         core.SummarizeDiagnostics(diags),
 	}
 
 	if !reflect2.IsNil(data) {
-		eventProps["data"] = data.Properties()
+		for k, v := range data.Properties() {
+			eventProps[k] = v
+		}
+	}
+
+	for i := 0; i < len(extra); i += 2 {
+		eventProps[cast.ToString(extra[i])] = extra[i+1]
 	}
 
 	// add any global properties

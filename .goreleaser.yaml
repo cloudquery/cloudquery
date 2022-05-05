@@ -11,7 +11,7 @@ builds:
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
+      - -s -w -X github.com/cloudquery/cloudquery/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}} -X github.com/cloudquery/cloudquery/cmd.APIKey=${{secrets.RUDDER_API_KEY}}
     goos:
       - windows
       - linux
