@@ -346,20 +346,24 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	results, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
+	resp, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	})
-	analytics.Capture("policy run", c.Providers, policiesToRun, diags)
+	if resp != nil {
+		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
+	} else {
+		analytics.Capture("policy run", c.Providers, resp.Policies, diags)
+	}
 
 	if policyRunProgress != nil {
 		policyRunProgress.MarkAllDone()
 		policyRunProgress.Wait()
 	}
 	if !noResults {
-		printPolicyResponse(results)
+		printPolicyResponse(resp.Executions)
 	}
 
 	if diags.HasErrors() {

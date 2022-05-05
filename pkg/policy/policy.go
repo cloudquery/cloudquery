@@ -19,7 +19,7 @@ func (pp Policies) Properties() map[string]interface{} {
 	usedCustom := 0
 	policies := make([]*Meta, 0)
 	for _, p := range pp {
-		if p.meta.Type != "hub" {
+		if p.meta == nil || p.meta.Type != "hub" {
 			usedCustom++
 			// we don't add info about custom policies that were executed
 			continue
