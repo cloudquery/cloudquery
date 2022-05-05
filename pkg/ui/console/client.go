@@ -110,6 +110,15 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 		if err != nil {
 			return nil, err
 		}
+		if ok, err := dialect.Validate(ctx); err != nil {
+			if !ok {
+				return nil, fmt.Errorf("validate: %w", err)
+			}
+			log.Warn().Err(err).Msg("database validation warning")
+		} else if !ok {
+			log.Warn().Msg("database validation warning")
+		}
+
 		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
 	}
 	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
