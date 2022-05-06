@@ -52,7 +52,11 @@ func (m *mockScanner) CommandTag() pgconn.CommandTag {
 }
 
 func (m *mockScanner) FieldDescriptions() []pgproto3.FieldDescription {
-	return nil
+	return []pgproto3.FieldDescription{
+		{
+			Name: []byte("data"),
+		},
+	}
 }
 
 func (m *mockScanner) Next() bool {
@@ -61,11 +65,11 @@ func (m *mockScanner) Next() bool {
 }
 
 func (m *mockScanner) Values() ([]interface{}, error) {
-	return nil, nil
+	return []interface{}{m.val}, nil
 }
 
 func (m *mockScanner) RawValues() [][]byte {
-	return nil
+	return [][]byte{[]byte(m.val)}
 }
 
 func (m *mockScanner) Scan(dst ...interface{}) error {
