@@ -119,6 +119,10 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 			log.Warn().Msg("database validation warning")
 		}
 
+		if dbId, ok := dialect.Identifier(ctx); ok {
+			setAnalyticsProperties(map[string]interface{}{"database_id": dbId})
+		}
+
 		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
 	}
 	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
@@ -747,6 +751,17 @@ func selectProfile(profileName string, profiles map[string]hcl.Body) (hcl.Body, 
 	return nil, nil
 }
 
+func setAnalyticsProperties(props map[string]interface{}) {
+	sprops := make(map[string]string, len(props))
+	for k, v := range props {
+		analytics.SetGlobalProperty(k, v)
+		sprops[k] = fmt.Sprintf("%v", v)
+	}
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTags(sprops)
+	})
+}
+
 func setConfigAnalytics(cfg *config.Config, history bool) {
 	cfgJSON, _ := json.Marshal(cfg)
 	s := sha256.New()
@@ -762,6 +777,7 @@ func setConfigAnalytics(cfg *config.Config, history bool) {
 			})
 		}
 		scope.SetTags(map[string]string{
+			"cfghash": cfgHash,
 			"history": strconv.FormatBool(history),
 		})
 	})
