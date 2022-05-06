@@ -2459,6 +2459,7 @@
         },
         "identity-chime": {
           "regions": {
+            "eu-central-1": {},
             "us-east-1": {},
             "us-east-1-fips": {}
           }
@@ -3232,6 +3233,7 @@
         },
         "messaging-chime": {
           "regions": {
+            "eu-central-1": {},
             "us-east-1": {},
             "us-east-1-fips": {}
           }
