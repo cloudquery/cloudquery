@@ -218,6 +218,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 
 // executeQuery executes the given query and returns the result.
 func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, error) {
+	return nil, fmt.Errorf("123213213")
 	e.log.Trace("query", q.Query)
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
