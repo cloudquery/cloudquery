@@ -7,6 +7,7 @@ import (
 	"time"
 
 	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -82,19 +83,10 @@ func ValidatePostgresVersion(ctx context.Context, pool *pgxpool.Pool) error {
 	return doValidatePostgresVersion(ctx, conn, MinPostgresVersion)
 }
 
-func GetDatabaseId(ctx context.Context, pool *pgxpool.Pool) (string, error) {
-	conn, err := pool.Acquire(ctx)
-	if err != nil {
-		return "", err
-	}
-	defer conn.Release()
-
-	row := conn.QueryRow(ctx, `SELECT system_identifier::varchar FROM pg_control_system()`)
+func GetDatabaseId(ctx context.Context, q pgxscan.Querier) (string, error) {
 	var result string
-	if err := row.Scan(&result); err != nil {
-		return "", err
-	}
-	return result, nil
+	err := pgxscan.Get(ctx, q, &result, `SELECT system_identifier::varchar AS id FROM pg_control_system()`)
+	return result, err
 }
 
 // queryRower helps with unit tests
