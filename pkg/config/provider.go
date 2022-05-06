@@ -19,6 +19,7 @@ type Provider struct {
 	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
 	MaxGoroutines                 uint64 `hcl:"max_goroutines"`
 	ResourceTimeout               uint64 `hcl:"resource_timeout"`
+	KeepResourceOrder             bool   `hcl:"keep_order"`
 }
 
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
@@ -88,6 +89,10 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.ResourceTimeout)
 		diags = append(diags, valDiags...)
 	}
+	if attr, exists := content.Attributes["keep_order"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.KeepResourceOrder)
+		diags = append(diags, valDiags...)
+	}
 
 	for _, block := range content.Blocks {
 		switch block.Type {
@@ -135,6 +140,9 @@ var providerBlockSchema = &hcl.BodySchema{
 		},
 		{
 			Name: "resource_timeout",
+		},
+		{
+			Name: "keep_order",
 		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{

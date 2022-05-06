@@ -7,6 +7,7 @@ import (
 	"io"
 	"math"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -337,7 +338,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 	}()
 
 	var resources []string
-	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources)
+	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources, info.Config.KeepResourceOrder)
 	if diags.HasErrors() {
 		summary.Status = FetchFailed
 		return summary, diags
@@ -416,28 +417,33 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 // NormalizeResources walks over all given providers and in place normalizes their resources list:
 //
 // * wildcard expansion
+// * shuffle order based on resource "class"
 // * verify no unknown resources
 // * verify no duplicate resources
-func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, diag.Diagnostics) {
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string, keepOrder bool) ([]string, diag.Diagnostics) {
 	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	return doNormalizeResources(resources, s.ResourceTables)
+	return doNormalizeResources(resources, s.ResourceTables, keepOrder)
 }
 
-// doNormalizeResources returns a canonical list of resources given a list of requested and all known resources.
-// It replaces wildcard resource with all resources. Error is returned if:
+// doNormalizeResources returns a canonical list of (parent) resources given a list of requested and all known resources.
+// It replaces wildcard resource with all resources and attempts to shuffle order based on resource "class".
+// Error is returned if:
 //
 // * wildcard is present and other explicit resource is requested;
 // * one of explicitly requested resources is not present in all known;
 // * some resource is specified more than once (duplicate).
-func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+// * keep_order is specified but we're using a wildcard (resource order is always shuffled when using wildcards)
+func doNormalizeResources(requested []string, all map[string]*schema.Table, keepOrder bool) ([]string, diag.Diagnostics) {
+	wildcardUsed := false
 	if len(requested) == 1 && requested[0] == "*" {
 		requested = make([]string, 0, len(all))
 		for k := range all {
 			requested = append(requested, k)
 		}
+		wildcardUsed = true
 	}
 	result := make([]string, 0, len(requested))
 	seen := make(map[string]struct{})
@@ -454,8 +460,46 @@ func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]s
 		}
 		result = append(result, r)
 	}
-	sort.Strings(result)
-	return result, nil
+	if keepOrder {
+		if wildcardUsed {
+			return nil, diag.FromError(fmt.Errorf("keep_order is invalid if using wildcards"), diag.USER, diag.WithDetails("you need to specify an explicit list of resources to be able to set the keep_order flag"))
+		}
+		return result, nil
+	}
+
+	// divide resources into classes and get one from each, shuffling them in a predictable but non-threatening way
+	classes := make(map[string][]string)
+	var classList []string
+	for _, resName := range result {
+		var resClass string
+		if dotPos := strings.Index(resName, "."); dotPos > -1 {
+			resClass = resName[:dotPos]
+		}
+		if _, ok := classes[resClass]; !ok {
+			classList = append(classList, resClass)
+		}
+		classes[resClass] = append(classes[resClass], resName)
+	}
+
+	if _, ok := classes[""]; ok && len(classes) == 1 && wildcardUsed {
+		sort.Strings(classes[""]) // No dot in all resources, use sorted list to get rid of "map order"
+	}
+
+	sort.Strings(classList)
+	target := len(result)
+	randomized := make([]string, 0, target)
+	for len(randomized) < target {
+		for _, class := range classList {
+			resList := classes[class]
+			if len(resList) == 0 {
+				continue
+			}
+			randomized = append(randomized, resList[0])
+			classes[class] = classes[class][1:]
+		}
+	}
+
+	return randomized, nil
 }
 
 func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {

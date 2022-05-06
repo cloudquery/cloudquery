@@ -261,6 +261,7 @@ func Test_doNormalizeResources(t *testing.T) {
 	tests := []struct {
 		name      string
 		requested []string
+		keepOrder bool
 		all       map[string]*schema.Table
 		want      []string
 		wantErr   bool
@@ -268,6 +269,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"wilcard",
 			[]string{"*"},
+			false,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			[]string{"1", "2", "3"},
 			false,
@@ -275,6 +277,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"wilcard with explicit",
 			[]string{"*", "1"},
+			false,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
@@ -282,6 +285,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"unknown resource",
 			[]string{"1", "2", "x"},
+			false,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
@@ -289,23 +293,41 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"duplicate resource",
 			[]string{"1", "2", "1"},
+			false,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
 		},
 		{
-			"ok, all explicit",
+			"ok, all explicit, keep order",
 			[]string{"2", "1"},
+			true,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
-			[]string{"1", "2"},
+			[]string{"2", "1"},
+			false,
+		},
+		{
+			"ok, all explicit, shuffle but no dot",
+			[]string{"2", "1"},
+			false,
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"2", "1"},
+			false,
+		},
+		{
+			"ok, all explicit, shuffle",
+			[]string{"c1.a", "c1.b", "c2.c", "c3.d", "c3.f", "c3.g"},
+			false,
+			map[string]*schema.Table{"c1.a": nil, "c1.b": nil, "c2.c": nil, "c3.d": nil, "c3.e": nil, "c3.f": nil, "c3.g": nil},
+			[]string{"c1.a", "c2.c", "c3.d", "c1.b", "c3.f", "c3.g"},
 			false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := doNormalizeResources(tt.requested, tt.all)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("doInterpolate() error = %v, wantErr %v", err, tt.wantErr)
+			got, diags := doNormalizeResources(tt.requested, tt.all, tt.keepOrder)
+			if tt.wantErr != diags.HasErrors() {
+				t.Errorf("doInterpolate() error = %v, wantErr %v", diags, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
