@@ -9,7 +9,6 @@ import (
 	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -89,12 +88,7 @@ func GetDatabaseId(ctx context.Context, q pgxscan.Querier) (string, error) {
 	return result, err
 }
 
-// queryRower helps with unit tests
-type queryRower interface {
-	QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row
-}
-
-func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.Version) error {
+func doValidatePostgresVersion(ctx context.Context, q pgxscan.Querier, want *version.Version) error {
 	got, err := runningPostgresVersion(ctx, q)
 	if err != nil {
 		return fmt.Errorf("error getting PostgreSQL version: %w", err)
@@ -105,12 +99,12 @@ func doValidatePostgresVersion(ctx context.Context, q queryRower, want *version.
 	return nil
 }
 
-func runningPostgresVersion(ctx context.Context, q queryRower) (*version.Version, error) {
-	row := q.QueryRow(ctx, "SELECT version()")
+func runningPostgresVersion(ctx context.Context, q pgxscan.Querier) (*version.Version, error) {
 	var result string
-	if err := row.Scan(&result); err != nil {
+	if err := pgxscan.Get(ctx, q, &result, `SELECT version()`); err != nil {
 		return nil, err
 	}
+
 	fields := strings.Fields(result)
 	if len(fields) < 2 {
 		return nil, fmt.Errorf("failed to parse version: %s", result)
