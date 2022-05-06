@@ -12,7 +12,6 @@ import (
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-version"
-	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -23,15 +22,11 @@ const (
 
 var MinTimescaleVersion = version.Must(version.NewVersion("2.0"))
 
-// queryRower helps with unit tests
-type queryRower interface {
-	QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row
-}
-
 type Executor struct {
-	dsn string
-	cfg *history.Config
-	ddl *DDLManager
+	dsn  string
+	dbId string
+	cfg  *history.Config
+	ddl  *DDLManager
 }
 
 func New(dsn string, cfg *history.Config) (*Executor, error) {
@@ -63,7 +58,7 @@ func (e *Executor) Setup(ctx context.Context) (string, error) {
 	return history.TransformDSN(e.dsn)
 }
 
-func (e Executor) Validate(ctx context.Context) (bool, error) {
+func (e *Executor) Validate(ctx context.Context) (bool, error) {
 	pool, err := pgsdk.Connect(ctx, e.dsn)
 	if err != nil {
 		return false, err
@@ -90,7 +85,15 @@ func (e Executor) Validate(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	return true, nil
+	e.dbId, err = postgres.GetDatabaseId(ctx, pool)
+	return true, err
+}
+
+func (e Executor) Identifier(_ context.Context) (string, bool) {
+	if e.dbId == "" {
+		return "", false
+	}
+	return e.dbId, true
 }
 
 func (e Executor) Prepare(ctx context.Context) error {
@@ -111,10 +114,9 @@ func (e Executor) Finalize(ctx context.Context, retErr error) error {
 	return retErr // keep migrate.ErrNoChange
 }
 
-func runningTimescaleVersion(ctx context.Context, q queryRower) (*version.Version, error) {
-	row := q.QueryRow(ctx, timescaleVersionQuery)
+func runningTimescaleVersion(ctx context.Context, q pgxscan.Querier) (*version.Version, error) {
 	var result string
-	if err := row.Scan(&result); err != nil {
+	if err := pgxscan.Get(ctx, q, &result, timescaleVersionQuery); err != nil {
 		return nil, err
 	}
 	fields := strings.Fields(result)
@@ -136,7 +138,7 @@ func ValidateTimescaleVersion(ctx context.Context, pool *pgxpool.Pool) error {
 	return doValidateTimescaleVersion(ctx, conn, MinTimescaleVersion)
 }
 
-func doValidateTimescaleVersion(ctx context.Context, q queryRower, want *version.Version) error {
+func doValidateTimescaleVersion(ctx context.Context, q pgxscan.Querier, want *version.Version) error {
 	got, err := runningTimescaleVersion(ctx, q)
 	if err != nil {
 		return fmt.Errorf("error getting Timescale version: %w", err)

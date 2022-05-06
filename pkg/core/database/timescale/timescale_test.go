@@ -16,6 +16,8 @@ import (
 	pgsdk "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/driftprogramming/pgxpoolmock"
+	"github.com/golang/mock/gomock"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/jackc/pgx/v4"
@@ -198,35 +200,42 @@ func TestSetupHistory(t *testing.T) {
 }
 
 func Test_doValidateTimescaleVersion(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
 	tests := []struct {
 		name       string
-		q          mockConn
+		value      string
 		minVersion string
 		wantErr    error
 	}{
 		{
 			"lower than needed",
-			mockConn{row: mockScanner{t, "1.7.5", nil}},
+			"1.7.5",
 			"2.0",
 			errors.New("unsupported Timescale version: 1.7.5. (should be >= 2.0.0)"),
 		},
 		{
 			"equal",
-			mockConn{row: mockScanner{t, "2.0.0", nil}},
+			"2.0.0",
 			"2.0",
 			nil,
 		},
 		{
 			"greater than needed",
-			mockConn{row: mockScanner{t, "2.6.0", nil}},
+			"2.6.0",
 			"2.0",
 			nil,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			mockPool := pgxpoolmock.NewMockPgxPool(ctrl)
+			pgxRows := pgxpoolmock.NewRows([]string{"value"}).AddRow(tt.value).ToPgxRows()
+			mockPool.EXPECT().Query(gomock.Any(), gomock.Any(), gomock.Any()).Return(pgxRows, nil)
+
 			want := version.Must(version.NewVersion(tt.minVersion))
-			err := doValidateTimescaleVersion(context.Background(), tt.q, want)
+			err := doValidateTimescaleVersion(context.Background(), mockPool, want)
 			if (tt.wantErr == nil) != (err == nil) {
 				t.Errorf("wantErr is %v, returned error is %v", tt.wantErr, err)
 			}

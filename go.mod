@@ -13,7 +13,7 @@ require (
 	github.com/hashicorp/go-plugin v1.4.3
 	github.com/hashicorp/go-version v1.4.0
 	github.com/hashicorp/hcl/v2 v2.10.1
-	github.com/jackc/pgx/v4 v4.15.0
+	github.com/jackc/pgx/v4 v4.16.0
 	github.com/mattn/go-isatty v0.0.14
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/rs/zerolog v1.26.1
@@ -24,7 +24,7 @@ require (
 	github.com/thoas/go-funk v0.9.1
 	github.com/vbauerster/mpb/v6 v6.0.3
 	github.com/zclconf/go-cty v1.9.1
-	golang.org/x/crypto v0.0.0-20220331220935-ae2d96664a29 // indirect
+	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
@@ -35,6 +35,7 @@ require (
 	github.com/aws/aws-sdk-go v1.43.41
 	github.com/creasty/defaults v1.5.2
 	github.com/doug-martin/goqu/v9 v9.17.0
+	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/golang/mock v1.6.0
@@ -42,7 +43,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/hairyhenderson/go-fsimpl v0.0.0-20220419174024-16654461dc34
 	github.com/hashicorp/go-getter v1.5.10
-	github.com/jackc/pgconn v1.11.0
+	github.com/jackc/pgconn v1.12.0
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/jeremywohl/flatten v1.0.1
 	github.com/johannesboyne/gofakes3 v0.0.0-20220314170512-33c13122505e
@@ -116,9 +117,9 @@ require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.2.0 // indirect
+	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/pgtype v1.10.0 // indirect
+	github.com/jackc/pgtype v1.11.0 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.15.1 // indirect
