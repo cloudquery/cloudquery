@@ -1,3 +1,4 @@
+
 # Issue Reporting
 
 This section guides you through submitting a bug report for the AWS Provider for CloudQuery. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer: :cloud:, and find related reports :mag_right:.
