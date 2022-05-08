@@ -1,3 +1,4 @@
+
 before:
   hooks:
     - go mod download
@@ -38,3 +39,6 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
+
+release:
+  prerelease: auto
