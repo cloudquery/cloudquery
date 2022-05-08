@@ -61,6 +61,10 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+      
+release:
+  prerelease: auto
+
 brews:
   -
     ids:
