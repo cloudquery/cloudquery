@@ -1,3 +1,4 @@
+
 before:
   hooks:
     - go mod download
@@ -8,7 +9,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/cmd.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}}
+      - -s -w -X github.com/cloudquery/cq-provider-terraform/resources/provider.Version={{.Version}}
     goos:
       - windows
       - linux
@@ -38,3 +39,6 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
+
+release:
+  prerelease: auto
