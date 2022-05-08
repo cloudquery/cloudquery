@@ -1,7 +1,7 @@
+
 before:
   hooks:
     - go mod download
-    - go generate ./...
 builds:
   - flags:
       - -buildmode=exe
@@ -39,3 +39,6 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
+
+release:
+  prerelease: auto
