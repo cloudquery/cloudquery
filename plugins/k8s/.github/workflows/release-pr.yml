@@ -1,0 +1,20 @@
+# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
+name: release-please
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: go
+          package-name: cq-provider-k8s
+          token: ${{ secrets.GH_CQ_BOT }}
+          pull-request-title-pattern: "chore${scope}: Release${component} v${version}"
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: true
