@@ -122,6 +122,8 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
+		case "UnrecognizedClientException":
+			return strings.Contains(ae.Error(), "The security token included in the request is invalid")
 		case "AWSOrganizationsNotInUseException":
 			return true
 		case "AuthorizationError", "AccessDenied", "AccessDeniedException", "InsufficientPrivilegesException", "UnauthorizedOperation":
@@ -259,7 +261,7 @@ func ResolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 	return resolveARN(service, resourceID, true, true)
 }
 
-// ResolveARN returns a column resolver that will set a field value to a proper ARN
+// ResolveARNGlobal returns a column resolver that will set a field value to a proper ARN
 // based on provided AWS service and resource id value returned by resourceID function.
 // Region  and account id are left empty.
 func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {

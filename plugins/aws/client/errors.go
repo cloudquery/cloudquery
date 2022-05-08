@@ -30,9 +30,23 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 						diag.WithType(diag.ACCESS),
 						diag.WithSeverity(diag.WARNING),
 						ParseSummaryMessage(err),
-						diag.WithDetails("%s", errorCodeDescriptions[ae.ErrorCode()]),
+						diag.WithDetails(errorCodeDescriptions[ae.ErrorCode()]),
 					)...),
 				),
+			}
+		case "UnrecognizedClientException":
+			if strings.Contains(ae.Error(), "The security token included in the request is invalid") {
+				return diag.Diagnostics{
+					RedactError(accounts, diag.NewBaseError(err,
+						diag.ACCESS,
+						append(opts,
+							diag.WithType(diag.ACCESS),
+							diag.WithSeverity(diag.WARNING),
+							ParseSummaryMessage(err),
+							diag.WithDetails("Something is wrong with your credentials. Either the accessKeyId or secretAccessKey (or both) are wrong."),
+						)...),
+					),
+				}
 			}
 		case "InvalidAction":
 			return diag.Diagnostics{
