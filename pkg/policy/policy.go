@@ -48,6 +48,9 @@ type Policy struct {
 	// Link to policy in filesystem/hub/git etc' to use, if source flag is set, all other attributes aren't allowed.
 	Source string `hcl:"source,optional"`
 
+	// List of identifiers that all checks and sub-policies must have, unless sub-policy overrides.
+	Identifiers []string
+
 	// Meta is information added to the policy after it was loaded
 	meta *Meta
 }
@@ -161,4 +164,5 @@ type Check struct {
 	ExpectOutput bool      `hcl:"expect_output,optional"`
 	Type         QueryType `hcl:"type,optional"`
 	Query        string    `hcl:"query"`
+	Reason       string    `hcl:"reason,optional"`
 }

@@ -7,9 +7,13 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"text/template"
 	"time"
 
+	"github.com/thoas/go-funk"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/spf13/cast"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
@@ -69,8 +73,20 @@ type QueryResult struct {
 	Description string          `json:"description"`
 	Columns     []string        `json:"result_headers"`
 	Data        [][]interface{} `json:"result_rows"`
-	Type        QueryType       `json:"type"`
-	Passed      bool            `json:"check_passed"`
+	Rows        []Row
+	Type        QueryType `json:"type"`
+	Passed      bool      `json:"check_passed"`
+}
+
+type Row struct {
+	// AdditionalData is any extra information that was returned from the result set
+	AdditionalData []interface{}
+	// Identifiers are a list of identifiers as defined by the policy
+	Identifiers []interface{}
+	// Reason is a user readable explanation returned by the query, or interpolated from check defined reason.
+	Reason string
+	// Status is user defined status of the row i.e OK, ALERT etc'
+	Status string
 }
 
 // ExecutionResult contains all policy execution results.
@@ -126,7 +142,7 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 }
 
 // Execute executes given policy and the related sub queries/views.
-func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy) (*ExecutionResult, diag.Diagnostics) {
+func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy, identifiers []string) (*ExecutionResult, diag.Diagnostics) {
 	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0), ExecutionTime: time.Now()}
 
 	if !policy.HasChecks() {
@@ -139,11 +155,14 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 			return nil, diag.FromError(err, diag.USER, diag.WithDetails("%s: please run `cloudquery fetch` before running policy", policy.Name))
 		}
 	}
+	if len(policy.Identifiers) > 0 {
+		identifiers = policy.Identifiers
+	}
 
 	for _, p := range policy.Policies {
 		executor := e.with(p.Name)
 		executor.log.Info("starting policy execution")
-		r, err := executor.Execute(ctx, req, p)
+		r, err := executor.Execute(ctx, req, p, identifiers)
 		if err != nil {
 			executor.log.Error("failed to execute policy", "err", err)
 			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
@@ -164,7 +183,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 
 	for _, q := range policy.Checks {
 		e.log = e.log.With("query", q.Name)
-		qr, err := e.executeQuery(ctx, q)
+		qr, err := e.executeQuery(ctx, q, identifiers)
 		if err != nil {
 			e.log.Error("failed to execute query", "err", err)
 			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
@@ -217,7 +236,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 }
 
 // executeQuery executes the given query and returns the result.
-func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, error) {
+func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []string) (*QueryResult, error) {
 	e.log.Trace("query", q.Query)
 	data, err := e.conn.Query(ctx, q.Query)
 	if err != nil {
@@ -229,10 +248,19 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 		Description: q.Title,
 		Columns:     make([]string, 0),
 		Data:        make([][]interface{}, 0),
+		Rows:        make([]Row, 0),
 		Type:        q.Type,
 	}
 	for _, fd := range data.FieldDescriptions() {
 		result.Columns = append(result.Columns, string(fd.Name))
+	}
+
+	var rtpl *template.Template
+	if q.Reason != "" {
+		rtpl, err = template.New("query").Parse(q.Reason)
+		if err != nil {
+			log.Warn().Err(err).Msg("failed to to parse reason template")
+		}
 	}
 
 	for data.Next() {
@@ -240,7 +268,13 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check) (*QueryResult, er
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", q.Name, err)
 		}
+		// TODO: Keep data for backwards compatibility, might remove in end of PR
 		result.Data = append(result.Data, values)
+		row, err := parseRow(result.Columns, values, identifiers, rtpl)
+		if err != nil {
+			log.Warn().Err(err).Msg("failed to create reason for check")
+		}
+		result.Rows = append(result.Rows, row)
 	}
 	if data.Err() != nil {
 		return nil, fmt.Errorf("%s: %w", q.Name, data.Err())
@@ -316,4 +350,37 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 		return err
 	}
 	return nil
+}
+
+func parseRow(columns []string, values []interface{}, identifiers []string, reasonTpl *template.Template) (Row, error) {
+	r := Row{
+		AdditionalData: make([]interface{}, 0),
+		Identifiers:    make([]interface{}, len(identifiers)),
+		Reason:         "",
+		Status:         "Violation",
+	}
+
+	data := make(map[string]interface{}, len(values))
+	for i := 0; i < len(columns); i++ {
+		switch {
+		case columns[i] == "cq_reason":
+			r.Reason = cast.ToString(values[i])
+		case columns[i] == "cq_status":
+			r.Status = cast.ToString(values[i])
+		case funk.InStrings(identifiers, columns[i]):
+			r.Identifiers = append(r.Identifiers, values[i])
+		default:
+			r.AdditionalData = append(r.AdditionalData, values[i])
+		}
+		data[columns[i]] = values[i]
+	}
+
+	if r.Reason == "" && reasonTpl != nil {
+		var b strings.Builder
+		if err := reasonTpl.Execute(&b, data); err != nil {
+			return r, err
+		}
+		r.Reason = b.String()
+	}
+	return r, nil
 }

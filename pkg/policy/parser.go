@@ -30,6 +30,9 @@ var policySchema = &hcl.BodySchema{
 		{
 			Name: "doc",
 		},
+		{
+			Name: "identifiers",
+		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{
 		{
@@ -108,6 +111,10 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 	}
 	if descriptionAttr, ok := content.Attributes["doc"]; ok {
 		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Doc)...)
+	}
+
+	if descriptionAttr, ok := content.Attributes["identifiers"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Identifiers)...)
 	}
 
 	if sourceAttr, ok := content.Attributes["source"]; ok {

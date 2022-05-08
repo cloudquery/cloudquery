@@ -97,7 +97,6 @@ type RunResponse struct {
 }
 
 func Run(ctx context.Context, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
-
 	var (
 		diags diag.Diagnostics
 		resp  = &RunResponse{
@@ -182,7 +181,7 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	// execute the queries
-	return NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy)
+	return NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy, nil)
 }
 
 func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourceURL string) (*Policy, error) {

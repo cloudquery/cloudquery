@@ -126,11 +126,21 @@ var (
 		Use:   "snapshot",
 		Short: policySnapshotHelpMsg,
 		Long:  policySnapshotHelpMsg,
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			err := c.SnapshotPolicy(ctx, args[0], args[1])
 			errors.CaptureError(err, map[string]string{"command": "policy_snapshot"})
 			return err
+		}),
+	}
+
+	validatePolicyCmd = &cobra.Command{
+		Use:  "validate",
+		Args: cobra.ExactArgs(1),
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+			diags := c.ValidatePolicy(ctx, args[0])
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_validate"})
+			return fmt.Errorf("policy validate has one or more errors, check logs")
 		}),
 	}
 )
@@ -157,6 +167,8 @@ func init() {
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
 	policyCmd.AddCommand(policyTestCmd)
+
+	policyCmd.AddCommand(validatePolicyCmd)
 
 	policyCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(policyCmd)

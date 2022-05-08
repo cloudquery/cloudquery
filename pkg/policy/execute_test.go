@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
+	"text/template"
 	"time"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -70,7 +72,7 @@ func TestExecutor_executeQuery(t *testing.T) {
 			res, err := executor.executeQuery(context.Background(), &Check{
 				Query:        tc.Query,
 				ExpectOutput: tc.ExpectOutput,
-			})
+			}, nil)
 			assert.NoError(t, err)
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res.Data)
@@ -180,7 +182,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 				StopOnFailure:  false,
 			}
 
-			res, diags := executor.Execute(context.Background(), execReq, p)
+			res, diags := executor.Execute(context.Background(), execReq, p, nil)
 			if tc.ExpectedDiags != nil {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
@@ -374,7 +376,7 @@ func TestExecutor_Execute(t *testing.T) {
 				StopOnFailure:  tc.StopOnFailure,
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
-			res, diags := executor.Execute(context.Background(), execReq, &filtered)
+			res, diags := executor.Execute(context.Background(), execReq, &filtered, nil)
 			if tc.ExpectedDiags != nil {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
@@ -471,7 +473,7 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 			defer viper.Reset()
 			viper.Set("disable-fetch-check", tc.DisableFetchCheck)
 
-			_, diags := executor.Execute(context.Background(), executeRequest, policy)
+			_, diags := executor.Execute(context.Background(), executeRequest, policy, nil)
 
 			if tc.ExpectedDiags != nil {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
@@ -575,4 +577,14 @@ func TestExecutor_CheckFetches(t *testing.T) {
 		})
 
 	}
+}
+
+func TestInterpolate(t *testing.T) {
+	tpl, err := template.New("query").Parse("{{.test}} {{.key}}")
+	assert.Nil(t, err)
+	var b strings.Builder
+
+	err = tpl.Execute(&b, map[string]interface{}{"test": 1, "key": "lol"})
+	assert.Nil(t, err)
+	fmt.Print(b.String())
 }

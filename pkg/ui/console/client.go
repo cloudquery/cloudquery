@@ -442,6 +442,10 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 	return nil
 }
 
+func (c Client) ValidatePolicy(ctx context.Context, policySource string) diag.Diagnostics {
+	return nil
+}
+
 // =====================================================================================================================
 // 													Module Commands
 // =====================================================================================================================
