@@ -1,3 +1,4 @@
+
 before:
   hooks:
     - go mod download
@@ -17,8 +18,8 @@ builds:
       - amd64
       - arm64
     ignore:
-       - goos: windows
-         goarch: arm64
+      - goos: windows
+        goarch: arm64
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: binary
@@ -38,3 +39,6 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
+
+release:
+  prerelease: auto
