@@ -101,7 +101,10 @@ var (
 			}
 			diags := c.RunPolicies(ctx, source, outputDir, noResults)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
-			return fmt.Errorf("provider has one or more errors, check logs")
+			if diags.HasErrors() {
+				return fmt.Errorf("provider has one or more errors, check logs")
+			}
+			return nil
 		}),
 		Args: cobra.MaximumNArgs(1),
 	}
