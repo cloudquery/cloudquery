@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - '*'
+      - 'v*.*.*'
 env:
   CGO_ENABLED: 0
 
@@ -11,6 +11,13 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      # This fails for invalid semver strings
+      - 
+        name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@4f8784f912407f85ba53b686fe2cf85d4ee11a20
+        with:
+          input_string: ${{github.ref_name}}
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -34,10 +41,23 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | \
           docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
       -
-        name: Run GoReleaser
+        # Publish to GitHub and Homebrew
+        name: Run GoReleaser Release
+        if: steps.semver_parser.outputs.prerelease == ''
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
           args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+
+      - 
+        # Publish only to GitHub
+        name: Run GoReleaser PreRelease
+        if: steps.semver_parser.outputs.prerelease != ''
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --rm-dist --config .goreleaser.prerelease.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
