@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - "*"
+      - 'v*.*.*'
 env:
   CGO_ENABLED: 0
 
@@ -11,6 +11,12 @@ jobs:
   release-binary:
     runs-on: ubuntu-latest
     steps:
+      # This fails for invalid semver strings
+      - name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@4f8784f912407f85ba53b686fe2cf85d4ee11a20
+        with:
+          input_string: ${{github.ref_name}}
       - name: Checkout
         uses: actions/checkout@v2
         with:
