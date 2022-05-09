@@ -43,9 +43,12 @@ func validatePolicy(ctx context.Context, storage database.Storage, policy *Polic
 	if identifiers == nil {
 		diags = diags.Add(diag.FromError(fmt.Errorf("policy %s has no identifiers set", path.Join(policyPath, policy.Name)), diag.USER, diag.WithSeverity(diag.WARNING)))
 	}
+	if len(policy.Views) > 0 {
+
+	}
 
 	if len(policy.Checks) > 0 {
-		diags = diags.Add(validateChecks(ctx, storage, identifiers, policy.Checks, path.Join(policyPath, policy.Name)))
+		diags = diags.Add(validateChecks(ctx, storage, identifiers, policy.Views, policy.Checks, path.Join(policyPath, policy.Name)))
 	}
 	for _, p := range policy.Policies {
 		diags = diags.Add(validatePolicy(ctx, storage, p, identifiers, path.Join(policyPath, policy.Name)))
@@ -53,15 +56,20 @@ func validatePolicy(ctx context.Context, storage database.Storage, policy *Polic
 	return diags
 }
 
-func validateChecks(ctx context.Context, storage database.Storage, identifiers []string, checks []*Check, policyPath string) diag.Diagnostics {
+func validateChecks(ctx context.Context, storage database.Storage, identifiers []string, views []*View, checks []*Check, policyPath string) diag.Diagnostics {
 	conn, err := pgx.Connect(ctx, storage.DSN())
 	if err != nil {
 		return diag.FromError(err, diag.DATABASE)
 	}
+	defer conn.Close(ctx)
+
 	var diags diag.Diagnostics
+	if err := createViews(ctx, conn, policyPath, views); err != nil {
+		return diag.FromError(err, diag.DATABASE)
+	}
 
 	for _, c := range checks {
-		columns, dd := getQueryColumns(ctx, conn, c.Query)
+		columns, dd := getQueryColumns(ctx, conn, c.Name, c.Query)
 		if dd.HasErrors() {
 			return diags.Add(dd)
 		}
@@ -70,11 +78,12 @@ func validateChecks(ctx context.Context, storage database.Storage, identifiers [
 			if funk.InStrings(columns, id) {
 				continue
 			}
-			diags = diags.Add(diag.FromError(fmt.Errorf("check %s is missing identifier %s", path.Join(policyPath, c.Name), id), diag.USER, diag.WithSeverity(diag.WARNING)))
+			diags = diags.Add(diag.FromError(fmt.Errorf("check %s is missing identifier %s", path.Join(policyPath, c.Name), id),
+				diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Check")))
 		}
 		// Check for cq_meta columns
 		if c.Reason == "" {
-			if funk.InStrings(columns, "cq-reason") {
+			if !funk.InStrings(columns, "cq_reason") {
 				diags = diags.Add(diag.FromError(fmt.Errorf("check %s doesn't define reason in configuration or query", path.Join(policyPath, c.Name)), diag.USER, diag.WithSeverity(diag.WARNING)))
 			}
 		}
@@ -82,8 +91,8 @@ func validateChecks(ctx context.Context, storage database.Storage, identifiers [
 	return diags
 }
 
-func getQueryColumns(ctx context.Context, conn *pgx.Conn, query string) ([]string, diag.Diagnostics) {
-	pStmt, err := conn.Prepare(ctx, "query", query)
+func getQueryColumns(ctx context.Context, conn *pgx.Conn, name, query string) ([]string, diag.Diagnostics) {
+	pStmt, err := conn.Prepare(ctx, name, query)
 	if err != nil {
 		if pgErr, ok := err.(*pgconn.PgError); ok && pgerrcode.IsSyntaxErrororAccessRuleViolation(pgErr.Code) {
 			return nil, diag.FromError(err, diag.USER, diag.WithSeverity(diag.WARNING))
@@ -96,4 +105,15 @@ func getQueryColumns(ctx context.Context, conn *pgx.Conn, query string) ([]strin
 		columns[i] = string(f.Name)
 	}
 	return columns, nil
+}
+
+// TODO: this is duplicated~ from the execution code, the executor needs to be refactored to use more standard pgx connection, so it can also acquire/release
+func createViews(ctx context.Context, conn *pgx.Conn, policyName string, views []*View) error {
+	for _, v := range views {
+		log.Info().Str("view", v.Name).Str("query", v.Query).Msg("creating policy view")
+		if _, err := conn.Exec(ctx, fmt.Sprintf("CREATE TEMPORARY VIEW %s AS %s", v.Name, v.Query)); err != nil {
+			return fmt.Errorf("failed to create view %s/%s: %w", policyName, v.Name, err)
+		}
+	}
+	return nil
 }

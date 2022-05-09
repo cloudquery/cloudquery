@@ -74,20 +74,40 @@ type QueryResult struct {
 	QueryColumns []string        `json:"-"`
 	Columns      []string        `json:"result_header"`
 	Data         [][]interface{} `json:"-"`
-	Rows         []Row           `json:"result_rows"`
+	Rows         Rows            `json:"result_rows"`
 	Type         QueryType       `json:"type"`
 	Passed       bool            `json:"check_passed"`
 }
 
 type Row struct {
 	// AdditionalData is any extra information that was returned from the result set
-	AdditionalData []interface{}
+	AdditionalData []interface{} `json:"additional_data,omitempty"`
 	// Identifiers are a list of identifiers as defined by the policy
-	Identifiers []interface{}
+	Identifiers []interface{} `json:"identifiers,omitempty"`
 	// Reason is a user readable explanation returned by the query, or interpolated from check defined reason.
-	Reason string
+	Reason string `json:"reason,omitempty"`
 	// Status is user defined status of the row i.e OK, ALERT etc'
-	Status string
+	Status string `json:"status,omitempty"`
+}
+type Rows []Row
+
+func (r Rows) Len() int {
+	return len(r)
+}
+
+func (r Rows) Swap(i, j int) {
+	r[i], r[j] = r[j], r[i]
+}
+
+func (r Rows) Less(i, j int) bool {
+	r1 := r[i]
+	r2 := r[j]
+	for l := 0; l < len(r1.Identifiers); l++ {
+		if cast.ToString(r1.Identifiers[l]) > cast.ToString(r2.Identifiers[l]) {
+			return true
+		}
+	}
+	return false
 }
 
 // ExecutionResult contains all policy execution results.

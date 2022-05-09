@@ -27,7 +27,37 @@ func TestValidate(t *testing.T) {
 				Name:   "localPolicy",
 				Source: "tests/validate/simple",
 			},
-			ExpectedDiags: nil,
+		},
+		{
+			Name: "missing_identifiers",
+			Policy: &Policy{
+				Name:   "localPolicy",
+				Source: "tests/validate/missing_identifiers",
+			},
+			ExpectedDiags: []diag.FlatDiag{{Err: "check test_policy/1 is missing identifier id", Type: 7, Severity: 1,
+				Summary: "check test_policy/1 is missing identifier id", Description: diag.Description{Summary: "check test_policy/1 is missing identifier id", Detail: ""}}},
+		},
+		{
+			Name: "identifiers_from_parent",
+			Policy: &Policy{
+				Name:   "localPolicy",
+				Source: "tests/validate/identifiers_from_parent",
+			},
+		},
+		{
+			Name: "child_change_identifiers",
+			Policy: &Policy{
+				Name:   "localPolicy",
+				Source: "tests/validate/child_change_identifiers",
+			},
+		},
+		{
+			Name: "missing_reason",
+			Policy: &Policy{
+				Name:   "localPolicy",
+				Source: "tests/validate/no_reason",
+			},
+			ExpectedDiags: []diag.FlatDiag{{Err: "check test_policy/1 doesn't define reason in configuration or query", Type: 7, Severity: 1, Summary: "check test_policy/1 doesn't define reason in configuration or query", Description: diag.Description{Summary: "check test_policy/1 doesn't define reason in configuration or query", Detail: ""}}},
 		},
 	}
 	dsn := test.SetupDB(t)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -131,6 +132,7 @@ func createOutputTable(res *policy.QueryResult) {
 	table.SetRowLine(false)
 	table.SetBorder(false)
 	table.SetFooterAlignment(tablewriter.ALIGN_LEFT)
+	sort.Sort(res.Rows)
 	for _, row := range res.Rows {
 		data := make([]string, 0)
 		data = append(data, color.HiRedString(row.Status))
@@ -140,6 +142,7 @@ func createOutputTable(res *policy.QueryResult) {
 		data = append(data, row.Reason)
 		data = append(data, cast.ToStringSlice(row.AdditionalData)...)
 		table.Append(data)
+
 	}
 	table.Render()
 }
