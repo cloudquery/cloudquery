@@ -45,7 +45,7 @@ resource "google_compute_backend_service" "internal-backend-service" {
 }
 #
 resource "google_compute_https_health_check" "backend-service-health-check" {
-  name               = "health-check"
+  name               = "${var.prefix}-health-check"
   request_path       = "/"
   check_interval_sec = 60
   timeout_sec        = 1
