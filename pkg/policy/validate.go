@@ -28,7 +28,10 @@ func Validate(ctx context.Context, storage database.Storage, req *ValidateReques
 	if err != nil {
 		return diag.FromError(err, diag.INTERNAL)
 	}
-	return validatePolicy(ctx, storage, loadedPolicy, nil, "")
+	// filter policy based on sub-policy if given
+	filteredPolicy := loadedPolicy.Filter(loadedPolicy.SubPolicy())
+	// always pass root policy identifiers even if they don't exist.
+	return validatePolicy(ctx, storage, &filteredPolicy, loadedPolicy.Identifiers, "")
 }
 
 func validatePolicy(ctx context.Context, storage database.Storage, policy *Policy, identifiers []string, policyPath string) diag.Diagnostics {
@@ -38,11 +41,11 @@ func validatePolicy(ctx context.Context, storage database.Storage, policy *Polic
 		identifiers = policy.Identifiers
 	}
 	if identifiers == nil {
-		diags = diags.Add(diag.FromError(fmt.Errorf("policy %s has no identifiers set", policy.Name), diag.USER, diag.WithSeverity(diag.WARNING)))
+		diags = diags.Add(diag.FromError(fmt.Errorf("policy %s has no identifiers set", path.Join(policyPath, policy.Name)), diag.USER, diag.WithSeverity(diag.WARNING)))
 	}
 
 	if len(policy.Checks) > 0 {
-		diags = diags.Add(validateChecks(ctx, storage, policy.Identifiers, policy.Checks, path.Join(policyPath, policy.Name)))
+		diags = diags.Add(validateChecks(ctx, storage, identifiers, policy.Checks, path.Join(policyPath, policy.Name)))
 	}
 	for _, p := range policy.Policies {
 		diags = diags.Add(validatePolicy(ctx, storage, p, identifiers, path.Join(policyPath, policy.Name)))

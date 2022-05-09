@@ -3,14 +3,19 @@ package console
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path"
+	"strconv"
 	"strings"
+
+	"github.com/fatih/color"
+
+	"github.com/spf13/cast"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -91,94 +96,59 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
 			}
 		}
-		fmtString := defineResultColumnWidths(execResult.Results)
 		for _, res := range execResult.Results {
+			if res.Passed {
+				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.GreenString("Passed"), res.Name, res.Description)
+			} else {
+				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.RedString("Failed"), res.Name, res.Description)
+			}
 			switch {
-			case res.Passed:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusOK]+" ", res.Name, res.Description, color.GreenString("passed"))
-				ui.ColorizedOutput(ui.ColorInfo, "\n")
 			case res.Type == policy.ManualQuery:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusWarn], res.Name, res.Description, color.YellowString("manual"))
+				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.YellowString("Manual"), res.Name, res.Description)
 				ui.ColorizedOutput(ui.ColorInfo, "\n")
-				outputTable := createOutputTable(res)
-				for _, row := range strings.Split(outputTable, "\n") {
-					ui.ColorizedOutput(ui.ColorInfo, "\t\t  %-10s \n", row)
-				}
-
-			default:
-				ui.ColorizedOutput(ui.ColorInfo, fmtString, emojiStatus[ui.StatusError], res.Name, res.Description, color.RedString("failed"))
-				ui.ColorizedOutput(ui.ColorWarning, "\n")
-				queryOutput := findOutput(res.Columns, res.Data)
-				if len(queryOutput) > 0 {
-					for _, output := range queryOutput {
-						ui.ColorizedOutput(ui.ColorInfo, "\t\t%s  %-10s \n\n", emojiStatus[ui.StatusError], output)
-					}
-
-				}
-
+				fallthrough
+			case len(res.Rows) > 0:
+				createOutputTable(res)
+				ui.ColorizedOutput(ui.ColorInfo, "\n\n")
 			}
-			ui.ColorizedOutput(ui.ColorWarning, "\n")
+
 		}
 	}
 }
 
-func findOutput(columnNames []string, data [][]interface{}) []string {
-	outputKeys := []string{"id", "identifier", "resource_identifier", "uid", "uuid", "arn"}
-	outputKey := ""
-	outputResources := make([]string, 0)
-	for _, key := range outputKeys {
-		for _, column := range columnNames {
-			if key == column {
-				outputKey = key
-			}
-		}
-		if outputKey != "" {
-			break
-		}
-	}
-	if outputKey == "" {
-		return []string{}
-	}
-	for index, column := range columnNames {
-		if column != outputKey {
-			continue
-		}
-		for _, row := range data {
-			outputResources = append(outputResources, fmt.Sprintf("%v", row[index]))
-		}
-	}
-	return outputResources
-}
+func createOutputTable(res *policy.QueryResult) {
+	table := tablewriter.NewWriter(os.Stdout)
 
-func createOutputTable(res *policy.QueryResult) string {
-	data := make([][]string, 0)
-	for i := range res.Data {
-		rowData := make([]string, len(res.Data[i]))
-		for j, value := range res.Data[i] {
-			rowData[j] = fmt.Sprintf("%v", value)
-		}
-		data = append(data, rowData)
+	if len(res.Rows[0].Identifiers) == 0 {
+		table.SetHeader(append([]string{"status", "reason"}, res.QueryColumns...))
+		table.SetFooter(append(makeStringArrayOfLength(len(res.QueryColumns)), "Total:", strconv.Itoa(len(res.Rows))))
+	} else {
+		table.SetHeader(res.Columns)
+		table.SetFooter(append(makeStringArrayOfLength(len(res.Columns)-2), "Total:", strconv.Itoa(len(res.Rows))))
 	}
-	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	table.SetHeader(res.Columns)
-	table.SetRowLine(true)
-	table.SetAutoFormatHeaders(false)
-	table.AppendBulk(data)
+	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetRowLine(false)
+	table.SetBorder(false)
+	table.SetFooterAlignment(tablewriter.ALIGN_LEFT)
+	for _, row := range res.Rows {
+		data := make([]string, 0)
+		data = append(data, color.HiRedString(row.Status))
+		if len(row.Identifiers) > 0 {
+			data = append(data, cast.ToStringSlice(row.Identifiers)...)
+		}
+		data = append(data, row.Reason)
+		data = append(data, cast.ToStringSlice(row.AdditionalData)...)
+		table.Append(data)
+	}
+
 	table.Render()
-	return tableString.String()
 }
 
-func defineResultColumnWidths(execResult []*policy.QueryResult) string {
-	maxNameLength := 0
-	maxDescrLength := 0
-	for _, res := range execResult {
-		if len(res.Name) > maxNameLength {
-			maxNameLength = len(res.Name) + 1
-		}
-		if len(res.Description) > maxDescrLength {
-			maxDescrLength = len(res.Description) + 1
-		}
+func makeStringArrayOfLength(length int) []string {
+	s := make([]string, length)
+	for i := 0; i < length; i++ {
+		s[i] = ""
 	}
-	return fmt.Sprintf("\t%%s  %%-%ds %%-%ds %%%ds", maxNameLength, maxDescrLength, 10)
+	return s
 }

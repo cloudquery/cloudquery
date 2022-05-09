@@ -69,13 +69,14 @@ type Executor struct {
 
 // QueryResult contains the result information from an executed query.
 type QueryResult struct {
-	Name        string          `json:"name"`
-	Description string          `json:"description"`
-	Columns     []string        `json:"result_headers"`
-	Data        [][]interface{} `json:"result_rows"`
-	Rows        []Row
-	Type        QueryType `json:"type"`
-	Passed      bool      `json:"check_passed"`
+	Name         string          `json:"name"`
+	Description  string          `json:"description"`
+	QueryColumns []string        `json:"-"`
+	Columns      []string        `json:"result_header"`
+	Data         [][]interface{} `json:"-"`
+	Rows         []Row           `json:"result_rows"`
+	Type         QueryType       `json:"type"`
+	Passed       bool            `json:"check_passed"`
 }
 
 type Row struct {
@@ -244,15 +245,16 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 	}
 
 	result := &QueryResult{
-		Name:        q.Name,
-		Description: q.Title,
-		Columns:     make([]string, 0),
-		Data:        make([][]interface{}, 0),
-		Rows:        make([]Row, 0),
-		Type:        q.Type,
+		Name:         q.Name,
+		Description:  q.Title,
+		QueryColumns: make([]string, 0),
+		Columns:      []string{"status"},
+		Data:         make([][]interface{}, 0),
+		Rows:         make([]Row, 0),
+		Type:         q.Type,
 	}
 	for _, fd := range data.FieldDescriptions() {
-		result.Columns = append(result.Columns, string(fd.Name))
+		result.QueryColumns = append(result.QueryColumns, string(fd.Name))
 	}
 
 	var rtpl *template.Template
@@ -263,6 +265,12 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 		}
 	}
 
+	if len(identifiers) > 0 {
+		result.Columns = append(result.Columns, identifiers...)
+	}
+	result.Columns = append(result.Columns, "reason")
+	result.Columns = append(result.Columns, funk.SubtractString(result.QueryColumns, append([]string{"cq_status", "cq_reason"}, identifiers...))...)
+
 	for data.Next() {
 		values, err := data.Values()
 		if err != nil {
@@ -270,7 +278,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 		}
 		// TODO: Keep data for backwards compatibility, might remove in end of PR
 		result.Data = append(result.Data, values)
-		row, err := parseRow(result.Columns, values, identifiers, rtpl)
+		row, err := parseRow(result.QueryColumns, values, identifiers, rtpl)
 		if err != nil {
 			log.Warn().Err(err).Msg("failed to create reason for check")
 		}
@@ -368,7 +376,7 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 		case columns[i] == "cq_status":
 			r.Status = cast.ToString(values[i])
 		case funk.InStrings(identifiers, columns[i]):
-			r.Identifiers = append(r.Identifiers, values[i])
+			r.Identifiers[funk.IndexOfString(identifiers, columns[i])] = values[i]
 		default:
 			r.AdditionalData = append(r.AdditionalData, values[i])
 		}
