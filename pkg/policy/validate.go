@@ -43,14 +43,13 @@ func validatePolicy(ctx context.Context, storage database.Storage, policy *Polic
 	if identifiers == nil {
 		diags = diags.Add(diag.FromError(fmt.Errorf("policy %s has no identifiers set", path.Join(policyPath, policy.Name)), diag.USER, diag.WithSeverity(diag.WARNING)))
 	}
-	if len(policy.Views) > 0 {
-
-	}
 
 	if len(policy.Checks) > 0 {
+		log.Debug().Str("policy", policyPath).Msg("validating policy checks")
 		diags = diags.Add(validateChecks(ctx, storage, identifiers, policy.Views, policy.Checks, path.Join(policyPath, policy.Name)))
 	}
 	for _, p := range policy.Policies {
+		log.Debug().Str("sub-policy", path.Join(policyPath, policy.Name)).Msg("validating sub-policy")
 		diags = diags.Add(validatePolicy(ctx, storage, p, identifiers, path.Join(policyPath, policy.Name)))
 	}
 	return diags
@@ -79,12 +78,13 @@ func validateChecks(ctx context.Context, storage database.Storage, identifiers [
 				continue
 			}
 			diags = diags.Add(diag.FromError(fmt.Errorf("check %s is missing identifier %s", path.Join(policyPath, c.Name), id),
-				diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Check")))
+				diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Check that query returns the following identifier: %s", id)))
 		}
 		// Check for cq_meta columns
 		if c.Reason == "" {
 			if !funk.InStrings(columns, "cq_reason") {
-				diags = diags.Add(diag.FromError(fmt.Errorf("check %s doesn't define reason in configuration or query", path.Join(policyPath, c.Name)), diag.USER, diag.WithSeverity(diag.WARNING)))
+				diags = diags.Add(diag.FromError(fmt.Errorf("check %s doesn't define reason in configuration or query", path.Join(policyPath, c.Name)),
+					diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Either add cq_reason column to query or reason attribute to check block")))
 			}
 		}
 	}

@@ -92,7 +92,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			if execResult.Error != "" {
 				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy failed to run\nError: %s\n\n", emojiStatus[ui.StatusError], execResult.Error))
 			} else {
-				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with warnings\n\n", emojiStatus[ui.StatusWarn]))
+				ui.ColorizedOutput(ui.ColorHeader, ui.ColorErrorBold.Sprintf("%s Policy finished with violations\n\n", emojiStatus[ui.StatusWarn]))
 			}
 		}
 		for _, res := range execResult.Results {

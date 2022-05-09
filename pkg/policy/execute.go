@@ -126,9 +126,6 @@ type ExecutionResult struct {
 
 	// Error is the reason the execution failed
 	Error string
-
-	// List of loaded Policies
-	LoadedPolicies Policies
 }
 
 // ExecuteRequest is a request that triggers policy execution.
@@ -164,7 +161,7 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 
 // Execute executes given policy and the related sub queries/views.
 func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Policy, identifiers []string) (*ExecutionResult, diag.Diagnostics) {
-	total := ExecutionResult{PolicyName: req.Policy.Name, Passed: true, Results: make([]*QueryResult, 0), ExecutionTime: time.Now()}
+	total := ExecutionResult{PolicyName: req.Policy.String(), Passed: true, Results: make([]*QueryResult, 0), ExecutionTime: time.Now()}
 
 	if !policy.HasChecks() {
 		e.log.Warn("no checks or policies to execute")
