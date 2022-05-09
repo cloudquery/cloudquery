@@ -207,11 +207,12 @@ func handleConnectionBlock(c *Connection) error {
 
 	usingURLs := strings.HasPrefix(c.DSN, ds.OriginalScheme+"://")
 	if c.Username != nil {
-		if !usingURLs {
+		switch {
+		case !usingURLs:
 			return errors.New("`username` param specified but given DSN is of non-URL type")
-		} else if ds.User != nil && ds.User.Username() != "" {
+		case ds.User != nil && ds.User.Username() != "":
 			return errors.New("`username` param specified but given DSN already specifies username")
-		} else {
+		default:
 			setUser = c.Username
 		}
 	}
