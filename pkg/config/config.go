@@ -56,7 +56,10 @@ func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) 
 }
 
 type Connection struct {
-	DSN string `hcl:"dsn,attr"`
+	DSN      string  `hcl:"dsn,attr"`
+	Username *string `hcl:"username,attr"`
+	Password *string `hcl:"password,attr"`
+	Type     *string `hcl:"type,attr"`
 }
 
 type RequiredProvider struct {
