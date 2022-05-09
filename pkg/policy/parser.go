@@ -185,6 +185,9 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		case "policy":
 			inner, innerDiags := DecodePolicyBlock(block, ctx)
 			diags = append(diags, innerDiags...)
+			if inner.Identifiers == nil {
+				inner.Identifiers = p.Identifiers
+			}
 			p.Policies = append(p.Policies, inner)
 		case "check":
 			// check if there is a slash within check name

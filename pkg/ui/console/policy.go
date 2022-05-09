@@ -8,15 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fatih/color"
-
-	"github.com/spf13/cast"
-
 	"github.com/cloudquery/cloudquery/internal/getter"
-
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+
+	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cast"
 )
 
 func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policies, error) {
@@ -128,6 +126,8 @@ func createOutputTable(res *policy.QueryResult) {
 	}
 	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAutoWrapText(true)
+	table.SetReflowDuringAutoWrap(true)
 	table.SetRowLine(false)
 	table.SetBorder(false)
 	table.SetFooterAlignment(tablewriter.ALIGN_LEFT)
@@ -141,7 +141,6 @@ func createOutputTable(res *policy.QueryResult) {
 		data = append(data, cast.ToStringSlice(row.AdditionalData)...)
 		table.Append(data)
 	}
-
 	table.Render()
 }
 
