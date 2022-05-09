@@ -62,13 +62,13 @@ jobs:
         run: go build -v .
 
       - name: Fetch
-        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log --fail-on-error
         env:
           CQ_NO_TELEMETRY: 1
 
 
       - name: Fetch Multiple Provider
-        run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log
+        run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log --fail-on-error
         env:
           CQ_NO_TELEMETRY: 1
 

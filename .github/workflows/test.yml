@@ -69,7 +69,7 @@ jobs:
           CGO_ENABLED: 0
 
       - name: Sanity Fetch
-        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log --fail-on-error
         env:
           CGO_ENABLED: 0
           CQ_NO_TELEMETRY: 1

@@ -52,10 +52,10 @@ jobs:
         run: go build -v .
 
       - name: Sanity Fetch with old version
-        run: go run ./main.go fetch --config=internal/test/test_history_config_oldversion.hcl --enable-console-log
+        run: go run ./main.go fetch --config=internal/test/test_history_config_oldversion.hcl --enable-console-log --fail-on-error
 
       - name: Sanity Fetch
-        run: go run ./main.go fetch --config=internal/test/test_history_config.hcl --enable-console-log
+        run: go run ./main.go fetch --config=internal/test/test_history_config.hcl --enable-console-log --fail-on-error
 
       - name: Sanity Drop
         run: go run ./main.go provider drop test --config=internal/test/test_history_config.hcl --force
