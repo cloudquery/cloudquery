@@ -46,7 +46,7 @@ run: build
 # Run a fetch command
 .PHONY: fetch
 fetch:
-	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" -v
+	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" -v --fail-on-error
 
 # Generate mocks for mock/unit testing 
 .PHONY: generate-mocks
