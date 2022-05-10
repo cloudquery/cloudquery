@@ -73,13 +73,18 @@ func Initialize(ctx context.Context, providers []string) error {
 		providers[i] = providerName // overwrite "provider@version" with just "provider"
 	}
 	// TODO: build this manually with block and add comments as well
-	defaultDSN := "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+	defaultPort := 5432
 	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
 		PluginDirectory: "./cq/providers",
 		PolicyDirectory: "./cq/policies",
 		Providers:       requiredProviders,
 		Connection: &config.Connection{
-			DSN: &defaultDSN,
+			Username: ptr("postgres"),
+			Password: ptr("pass"),
+			Host:     ptr("localhost"),
+			Port:     &defaultPort,
+			Database: ptr("postgres"),
+			SSLMode:  ptr("disable"),
 		},
 	}, "cloudquery")
 
@@ -144,4 +149,8 @@ func Initialize(ctx context.Context, providers []string) error {
 func init() {
 	initCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(initCmd)
+}
+
+func ptr(s string) *string {
+	return &s
 }
