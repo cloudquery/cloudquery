@@ -60,28 +60,16 @@ jobs:
 
       - name: Get dependencies
         run: go get -v -t -d ./...
-        env:
-          CGO_ENABLED: 0
 
       - name: Build
         run: go build -v .
-        env:
-          CGO_ENABLED: 0
 
       - name: Sanity Fetch
         run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log --fail-on-error
-        env:
-          CGO_ENABLED: 0
-          CQ_NO_TELEMETRY: 1
 
       - name: Sanity Init
         run: go run ./main.go init test --config=test_init_config.hcl
-        env:
-          CGO_ENABLED: 0
-          CQ_NO_TELEMETRY: 1
 
       - name: Test
         run: go test -v ./...
-        env:
-          CGO_ENABLED: 0
 
