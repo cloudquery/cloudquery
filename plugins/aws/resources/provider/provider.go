@@ -53,6 +53,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/s3"
 	"github.com/cloudquery/cq-provider-aws/resources/services/sagemaker"
 	"github.com/cloudquery/cq-provider-aws/resources/services/secretsmanager"
+	"github.com/cloudquery/cq-provider-aws/resources/services/shield"
 	"github.com/cloudquery/cq-provider-aws/resources/services/sns"
 	"github.com/cloudquery/cq-provider-aws/resources/services/sqs"
 	"github.com/cloudquery/cq-provider-aws/resources/services/ssm"
@@ -214,6 +215,10 @@ func Provider() *provider.Provider {
 			"sagemaker.notebook_instances":          sagemaker.SagemakerNotebookInstances(),
 			"sagemaker.training_jobs":               sagemaker.SagemakerTrainingJobs(),
 			"secretsmanager.secrets":                secretsmanager.SecretsmanagerSecrets(),
+			"shield.attacks":                        shield.Attacks(),
+			"shield.subscriptions":                  shield.Subscriptions(),
+			"shield.protections_groups":             shield.ProtectionGroups(),
+			"shield.protections":                    shield.Protections(),
 			"sns.subscriptions":                     sns.SnsSubscriptions(),
 			"sns.topics":                            sns.SnsTopics(),
 			"sqs.queues":                            sqs.SQSQueues(),

@@ -60,6 +60,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -72,9 +73,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/hashicorp/go-hclog"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/hashicorp/go-hclog"
 )
 
 var envVarsToCheck = []string{
@@ -147,6 +147,7 @@ type Services struct {
 	S3                     S3Client
 	S3Control              S3ControlClient
 	S3Manager              S3ManagerClient
+	Shield                 ShieldClient
 	SNS                    SnsClient
 	SQS                    SQSClient
 	SSM                    SSMClient
@@ -575,6 +576,7 @@ func initServices(region string, c aws.Config) Services {
 		S3Manager:              newS3ManagerFromConfig(awsCfg),
 		SageMaker:              sagemaker.NewFromConfig(awsCfg),
 		SecretsManager:         secretsmanager.NewFromConfig(awsCfg),
+		Shield:                 shield.NewFromConfig(awsCfg),
 		SNS:                    sns.NewFromConfig(awsCfg),
 		SSM:                    ssm.NewFromConfig(awsCfg),
 		SQS:                    sqs.NewFromConfig(awsCfg),
