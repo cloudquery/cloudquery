@@ -40,6 +40,19 @@ func TestHandleConnectionBlock(t *testing.T) {
 			&Connection{
 				connParams: connParams{
 					Username: `user`,
+					Type:     `tsdb`,
+					Host:     `localhost`,
+					Port:     15432,
+					Database: `postgres`,
+				},
+			},
+			"tsdb://user@localhost:15432/postgres",
+			false,
+		},
+		{
+			&Connection{
+				connParams: connParams{
+					Username: `user`,
 					Password: `pass`,
 					Host:     `localhost`,
 					Database: `postdb`,
