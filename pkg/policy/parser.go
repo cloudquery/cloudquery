@@ -185,7 +185,7 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		case "policy":
 			inner, innerDiags := DecodePolicyBlock(block, ctx)
 			diags = append(diags, innerDiags...)
-			if inner.Identifiers == nil {
+			if len(inner.Identifiers) == 0 {
 				inner.Identifiers = p.Identifiers
 			}
 			p.Policies = append(p.Policies, inner)
