@@ -41,3 +41,4 @@ jobs:
           title: "chore: Update endpoints"
           commit-message: "fix: Update endpoints"
           body: This PR was created by a scheduled workflow to sync endpoint changes
+          labels: automerge
