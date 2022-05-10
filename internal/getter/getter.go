@@ -10,6 +10,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+type Detector struct {
+	Name     string
+	Detector getter.Detector
+}
+
 var (
 	detectors = []getter.Detector{
 		new(GitHubDetector),
@@ -18,6 +23,15 @@ var (
 		new(getter.GCSDetector),
 		new(HubDetector),
 		new(fileDetector),
+	}
+
+	detectorsWithNames = []Detector{
+		{Name: "github", Detector: new(GitHubDetector)},
+		{Name: "git", Detector: new(getter.GitDetector)},
+		{Name: "s3", Detector: new(getter.S3Detector)},
+		{Name: "gcs", Detector: new(getter.GCSDetector)},
+		{Name: "hub", Detector: new(HubDetector)},
+		{Name: "file", Detector: new(fileDetector)},
 	}
 
 	detectorsMap = map[string]getter.Detector{
@@ -89,13 +103,13 @@ func DetectType(src string) (string, string, bool, error) {
 	}
 
 	pwd, _ := os.Getwd()
-	for t, d := range detectorsMap {
-		source, found, err := d.Detect(src, pwd)
+	for _, d := range detectorsWithNames {
+		source, found, err := d.Detector.Detect(src, pwd)
 		if err != nil {
 			return "", source, false, fmt.Errorf("failed to detect url %s: %w", src, err)
 		}
 		if found {
-			return t, source, true, nil
+			return d.Name, source, true, nil
 		}
 	}
 	return "", src, false, nil
