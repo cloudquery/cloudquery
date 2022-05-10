@@ -3,10 +3,13 @@ package autoscaling
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -594,8 +597,6 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		config.NextToken = output.NextToken
 	}
 	return nil
-
-	// return nil
 }
 func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -608,6 +609,9 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 			o.Region = client.Region
 		})
 		if err != nil {
+			if isAutoScalingGroupNotExistsError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		for _, lb := range output.LoadBalancers {
@@ -632,6 +636,9 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 			o.Region = client.Region
 		})
 		if err != nil {
+			if isAutoScalingGroupNotExistsError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		for _, lb := range output.LoadBalancerTargetGroups {
@@ -763,4 +770,14 @@ func getNotificationConfigurationByGroupName(name string, set []types.Notificati
 type autoscalingGroupWrapper struct {
 	types.AutoScalingGroup
 	NotificationConfigurations []types.NotificationConfiguration
+}
+
+func isAutoScalingGroupNotExistsError(err error) bool {
+	var ae smithy.APIError
+	if errors.As(err, &ae) {
+		if ae.ErrorCode() == "ValidationError" && strings.Contains(ae.ErrorMessage(), "AutoScalingGroup name not found") {
+			return true
+		}
+	}
+	return false
 }
