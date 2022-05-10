@@ -1284,14 +1284,15 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 		}
 		aliases := make([]AliasWrapper, 0, len(output.Aliases))
 		for _, a := range output.Aliases {
+			alias := a
 			urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
 				FunctionName: p.Configuration.FunctionName,
-				Qualifier:    a.Name,
+				Qualifier:    alias.Name,
 			})
 			if err != nil && !c.IsNotFoundError(err) {
 				return diag.WrapError(err)
 			}
-			aliases = append(aliases, AliasWrapper{&a, urlConfig})
+			aliases = append(aliases, AliasWrapper{&alias, urlConfig})
 		}
 		res <- aliases
 		if output.NextMarker == nil {
