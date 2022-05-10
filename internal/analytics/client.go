@@ -40,6 +40,7 @@ type Client struct {
 
 	disabled bool
 	debug    bool
+	inspect  bool
 
 	properties map[string]interface{}
 
@@ -75,6 +76,12 @@ func WithDebug() Option {
 	}
 }
 
+func WithInspect() Option {
+	return func(c *Client) {
+		c.inspect = true
+	}
+}
+
 func WithVersionInfo(version, commit, buildDate string) Option {
 	return func(c *Client) {
 		c.version.Version = version
@@ -103,6 +110,7 @@ func New(opts ...Option) *Client {
 		instanceId: uuid.New(),
 		properties: make(map[string]interface{}),
 		debug:      false,
+		inspect:    false,
 	}
 
 	for _, o := range opts {
@@ -181,6 +189,11 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	// add any global properties
 	for k, v := range c.properties {
 		eventProps[k] = v
+	}
+	if c.inspect {
+		log.Info().Interface("data", eventProps).Str("event", eventType).Msg("inspect analytics event")
+		// if inspect is turned on we only return inspect messages
+		return
 	}
 
 	event := analytics.Track{UserId: c.userId.String(), Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
