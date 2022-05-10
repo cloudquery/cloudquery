@@ -8,6 +8,10 @@ on:
       - main
   pull_request:
 
+env: 
+  CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
+
 jobs:
   PolicyTest:
     strategy:
