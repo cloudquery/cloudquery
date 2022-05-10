@@ -278,7 +278,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 		}
 		return
 	}
-	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
+	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", *cfg.CloudQuery.Connection.DSN)
 
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
