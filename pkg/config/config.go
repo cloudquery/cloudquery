@@ -7,12 +7,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
-	"github.com/hashicorp/hcl/v2"
+	"github.com/cloudquery/cloudquery/pkg/policy"
 )
 
 type Providers []*Provider
