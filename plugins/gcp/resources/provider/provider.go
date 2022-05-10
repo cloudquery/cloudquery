@@ -46,6 +46,7 @@ func Provider() *provider.Provider {
 			"compute.disk_types":           compute.ComputeDiskTypes(),
 			"compute.images":               compute.ComputeImages(),
 			"compute.instances":            compute.ComputeInstances(),
+			"compute.instance_groups":      compute.InstanceGroups(),
 			"compute.interconnects":        compute.ComputeInterconnects(),
 			"compute.networks":             compute.ComputeNetworks(),
 			"compute.disks":                compute.ComputeDisks(),
