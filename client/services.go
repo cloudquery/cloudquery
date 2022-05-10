@@ -51,6 +51,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -670,4 +671,14 @@ type WafRegionalClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/xray.go . XrayClient
 type XrayClient interface {
 	GetEncryptionConfig(ctx context.Context, params *xray.GetEncryptionConfigInput, optFns ...func(*xray.Options)) (*xray.GetEncryptionConfigOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/shield.go . ShieldClient
+type ShieldClient interface {
+	ListProtections(ctx context.Context, params *shield.ListProtectionsInput, optFns ...func(*shield.Options)) (*shield.ListProtectionsOutput, error)
+	ListTagsForResource(ctx context.Context, params *shield.ListTagsForResourceInput, optFns ...func(*shield.Options)) (*shield.ListTagsForResourceOutput, error)
+	DescribeSubscription(ctx context.Context, params *shield.DescribeSubscriptionInput, optFns ...func(*shield.Options)) (*shield.DescribeSubscriptionOutput, error)
+	ListAttacks(ctx context.Context, params *shield.ListAttacksInput, optFns ...func(*shield.Options)) (*shield.ListAttacksOutput, error)
+	DescribeAttack(ctx context.Context, params *shield.DescribeAttackInput, optFns ...func(*shield.Options)) (*shield.DescribeAttackOutput, error)
+	ListProtectionGroups(ctx context.Context, params *shield.ListProtectionGroupsInput, optFns ...func(*shield.Options)) (*shield.ListProtectionGroupsOutput, error)
 }
