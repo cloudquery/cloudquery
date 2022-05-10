@@ -28,10 +28,11 @@ var fetchCmd = &cobra.Command{
 	Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 		result, diags := c.Fetch(ctx)
 		errors.CaptureDiagnostics(diags, nil)
-		for _, p := range result.ProviderFetchSummary {
-			analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
+		if result != nil {
+			for _, p := range result.ProviderFetchSummary {
+				analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
+			}
 		}
-
 		if viper.GetBool("fail-on-error") && diags.HasErrors() {
 			return fmt.Errorf("provider has one or more errors, check logs")
 		}
