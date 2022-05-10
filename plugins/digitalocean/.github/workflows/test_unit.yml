@@ -9,8 +9,9 @@ on:
     branches:
       - main
 
-env:
+env: 
   CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
 
 jobs:
   test_unit:
