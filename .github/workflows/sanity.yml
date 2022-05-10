@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: [main]
 
+env: 
+  CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
+
 jobs:
   checks:
     strategy:
@@ -63,61 +67,39 @@ jobs:
 
       - name: Fetch
         run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log --fail-on-error
-        env:
-          CQ_NO_TELEMETRY: 1
 
 
       - name: Fetch Multiple Provider
         run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log --fail-on-error
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Init
         run: go run ./main.go init test --config=test_init_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Policy Describe
         run: go run ./main.go policy describe k8s//nsa_cisa_v1/pod_security --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Policy Download
         run: go run ./main.go policy download github.com/roneli/aws//cis_v1.2.0 --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Policy Run bad subpath
         run: go run ./main.go policy run aws//path/not/exist --config=internal/test/test_aws.hcl --disable-fetch-check
         continue-on-error: true
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Sync (upgrade)
         run: go run ./main.go provider upgrade test --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Purge
         run: go run ./main.go provider purge test --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Sync (downgrade)
         run: go run ./main.go provider downgrade test --config=internal/test/test_config.hcl
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Drop
         run: go run ./main.go provider drop test --config=internal/test/test_config.hcl --force
-        env:
-          CQ_NO_TELEMETRY: 1
 
       - name: Drift
         run: go run ./main.go drift scan internal/test/tfstate.state --enable-console-log --config=internal/test/test_drift.hcl
         continue-on-error: true
-        env:
-          CQ_NO_TELEMETRY: 1
 
 
 
