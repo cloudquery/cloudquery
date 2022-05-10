@@ -74,15 +74,11 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 	}
 	defer pm.Shutdown()
 
-	var ds string
-	if cfg.CloudQuery.Connection.DSN != nil {
-		ds = *cfg.CloudQuery.Connection.DSN
-	}
-	_, dialect, err := database.GetExecutor(ds, cfg.CloudQuery.History)
+	_, dialect, err := database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
 	if err != nil {
 		return err
 	}
-	storage := database.NewStorage(*cfg.CloudQuery.Connection.DSN, dialect)
+	storage := database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
 
 	providers := make([]core.ProviderInfo, len(cfg.Providers))
 	for i, p := range cfg.Providers {
@@ -115,7 +111,7 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 // Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) error {
 	outputPath := "/tmp/"
-	storage := database.NewStorage(*cfg.CloudQuery.Connection.DSN, nil)
+	storage := database.NewStorage(cfg.CloudQuery.Connection.DSN, nil)
 	_, err := policy.Run(ctx, storage, &policy.RunRequest{
 		Policies:  cfg.Policies,
 		Directory: cfg.CloudQuery.PolicyDirectory,

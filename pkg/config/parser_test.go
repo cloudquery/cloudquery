@@ -177,7 +177,7 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	source := "cloudquery"
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
-			Connection: &Connection{DSN: ptr("postgres://postgres:pass@localhost:5432/postgres")},
+			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
 			Providers: []*RequiredProvider{{
 				Name:    "test",
 				Source:  &source,
@@ -278,7 +278,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 		}
 		return
 	}
-	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", *cfg.CloudQuery.Connection.DSN)
+	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
 
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
@@ -296,7 +296,7 @@ func TestParser_LoadConfigNoSourceField(t *testing.T) {
 	cfg.Providers[0].Configuration = nil
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
-			Connection: &Connection{DSN: ptr("postgres://postgres:pass@localhost:5432/postgres")},
+			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
 			Providers: []*RequiredProvider{{
 				Name:    "test",
 				Source:  nil,
