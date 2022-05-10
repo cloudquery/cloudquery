@@ -96,17 +96,18 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 			}
 		}
 		for _, res := range execResult.Results {
-			if res.Passed {
-				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.GreenString("Passed"), res.Name, res.Description)
-			} else {
-				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.RedString("Failed"), res.Name, res.Description)
-			}
-			switch {
-			case res.Type == policy.ManualQuery:
+			switch res.Type {
+			case policy.ManualQuery:
 				ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.YellowString("Manual"), res.Name, res.Description)
 				ui.ColorizedOutput(ui.ColorInfo, "\n")
-				fallthrough
-			case len(res.Rows) > 0:
+			case policy.AutomaticQuery:
+				if res.Passed {
+					ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.GreenString("Passed"), res.Name, res.Description)
+				} else {
+					ui.ColorizedOutput(ui.ColorInfo, "%s: Policy %s - %s\n\n", color.RedString("Failed"), res.Name, res.Description)
+				}
+			}
+			if len(res.Rows) > 0 {
 				createOutputTable(res)
 				ui.ColorizedOutput(ui.ColorInfo, "\n\n")
 			}
