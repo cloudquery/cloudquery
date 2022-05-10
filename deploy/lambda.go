@@ -26,7 +26,11 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 }
 
 func TaskExecutor(ctx context.Context, req Request) (string, error) {
-	dsn := os.Getenv("CQ_DSN")
+	// Override dsn env if set
+	if envDsn, present := os.LookupEnv("CQ_DSN"); present {
+		viper.Set("dsn", envDsn)
+	}
+
 	dataDir, present := os.LookupEnv("CQ_DATA_DIR")
 	if !present {
 		dataDir = ".cq"
@@ -49,10 +53,6 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
 	}
-	// Override dsn env if set
-	if dsn != "" {
-		cfg.CloudQuery.Connection.DSN = dsn
-	}
 
 	completedMsg := fmt.Sprintf("Completed task %s", req.TaskName)
 	switch req.TaskName {
@@ -74,11 +74,15 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 	}
 	defer pm.Shutdown()
 
-	_, dialect, err := database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
+	var ds string
+	if cfg.CloudQuery.Connection.DSN != nil {
+		ds = *cfg.CloudQuery.Connection.DSN
+	}
+	_, dialect, err := database.GetExecutor(ds, cfg.CloudQuery.History)
 	if err != nil {
 		return err
 	}
-	storage := database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+	storage := database.NewStorage(*cfg.CloudQuery.Connection.DSN, dialect)
 
 	providers := make([]core.ProviderInfo, len(cfg.Providers))
 	for i, p := range cfg.Providers {
@@ -111,7 +115,7 @@ func Fetch(ctx context.Context, cfg *config.Config) error {
 // Policy Runs a policy SQL statement and returns results
 func Policy(ctx context.Context, cfg *config.Config) error {
 	outputPath := "/tmp/"
-	storage := database.NewStorage(cfg.CloudQuery.Connection.DSN, nil)
+	storage := database.NewStorage(*cfg.CloudQuery.Connection.DSN, nil)
 	_, err := policy.Run(ctx, storage, &policy.RunRequest{
 		Policies:  cfg.Policies,
 		Directory: cfg.CloudQuery.PolicyDirectory,

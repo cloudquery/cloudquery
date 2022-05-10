@@ -124,9 +124,7 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 
 	// TODO: decode in a more generic way
 	if cq.Connection == nil {
-		cq.Connection = &Connection{
-			DSN: "",
-		}
+		cq.Connection = &Connection{}
 	}
 	if cq.History != nil {
 		if err := defaults.Set(cq.History); err != nil {
@@ -185,16 +183,20 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 
 func handleConnectionBlock(c *Connection) error {
 	if ds := viper.GetString("dsn"); ds != "" {
-		c.DSN = ds
+		c.DSN = &ds
 		return nil
 	}
-	if c.DSN != "" {
-		if c.connParams.IsSet() {
+	if isSet(c.DSN) {
+		if c.IsAnyConnParamsSet() {
 			return errors.New("DSN specified along with explicit attributes, only one type is supported")
 		}
 		return nil
 	}
 
-	c.DSN = c.connParams.Build().String()
+	s, err := c.BuildFromConnParams()
+	if err != nil {
+		return err
+	}
+	c.DSN = ptr(s.String())
 	return nil
 }

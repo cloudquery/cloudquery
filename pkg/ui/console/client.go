@@ -70,7 +70,7 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			CloudQuery: config.CloudQuery{
 				PluginDirectory: "./.cq/providers",
 				PolicyDirectory: "./.cq/policies",
-				Connection:      &config.Connection{DSN: ""},
+				Connection:      &config.Connection{},
 			},
 		}
 	}
@@ -105,8 +105,8 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 	}
 
 	var storage database.Storage
-	if cfg.CloudQuery.Connection.DSN != "" {
-		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
+	if cfg.CloudQuery.Connection.DSN != nil && *cfg.CloudQuery.Connection.DSN != "" {
+		_, dialect, err = database.GetExecutor(*cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
 		if err != nil {
 			return nil, err
 		}
@@ -123,7 +123,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 			setAnalyticsProperties(map[string]interface{}{"database_id": dbId})
 		}
 
-		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+		storage = database.NewStorage(*cfg.CloudQuery.Connection.DSN, dialect)
 	}
 	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
 	for i, rp := range cfg.CloudQuery.Providers {
