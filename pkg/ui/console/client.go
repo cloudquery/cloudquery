@@ -70,7 +70,7 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			CloudQuery: config.CloudQuery{
 				PluginDirectory: "./.cq/providers",
 				PolicyDirectory: "./.cq/policies",
-				Connection:      &config.Connection{DSN: ""},
+				Connection:      &config.Connection{},
 			},
 		}
 	}

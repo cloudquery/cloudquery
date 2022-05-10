@@ -26,7 +26,11 @@ func LambdaHandler(ctx context.Context, req Request) (string, error) {
 }
 
 func TaskExecutor(ctx context.Context, req Request) (string, error) {
-	dsn := os.Getenv("CQ_DSN")
+	// Override dsn env if set
+	if envDsn, present := os.LookupEnv("CQ_DSN"); present {
+		viper.Set("dsn", envDsn)
+	}
+
 	dataDir, present := os.LookupEnv("CQ_DATA_DIR")
 	if !present {
 		dataDir = ".cq"
@@ -48,10 +52,6 @@ func TaskExecutor(ctx context.Context, req Request) (string, error) {
 	).LoadConfigFromSource("config.hcl", []byte(req.HCL))
 	if diags != nil {
 		return "", fmt.Errorf("bad configuration: %s", diags)
-	}
-	// Override dsn env if set
-	if dsn != "" {
-		cfg.CloudQuery.Connection.DSN = dsn
 	}
 
 	completedMsg := fmt.Sprintf("Completed task %s", req.TaskName)

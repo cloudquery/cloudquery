@@ -1,19 +1,19 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/creasty/defaults"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/policy"
-
-	"github.com/hashicorp/hcl/v2"
 )
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
@@ -124,17 +124,21 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 
 	// TODO: decode in a more generic way
 	if cq.Connection == nil {
-		cq.Connection = &Connection{
-			DSN: "",
-		}
+		cq.Connection = &Connection{}
 	}
 	if cq.History != nil {
 		if err := defaults.Set(cq.History); err != nil {
 			diags = append(diags, &hcl.Diagnostic{Severity: hcl.DiagError, Summary: "failed to set defaults in history"})
 		}
 	}
-	if dsn := viper.GetString("dsn"); dsn != "" {
-		cq.Connection.DSN = dsn
+
+	if err := handleConnectionBlock(cq.Connection); err != nil {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  "Invalid DSN configuration",
+			Detail:   err.Error(),
+			Subject:  &block.DefRange,
+		})
 	}
 
 	datadir := viper.GetString("data-dir")
@@ -175,4 +179,24 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		}
 	}
 	return cq, diags
+}
+
+func handleConnectionBlock(c *Connection) error {
+	if ds := viper.GetString("dsn"); ds != "" {
+		c.DSN = ds
+		return nil
+	}
+	if c.DSN != "" {
+		if c.IsAnyConnParamsSet() {
+			return errors.New("DSN specified along with explicit attributes, only one type is supported")
+		}
+		return nil
+	}
+
+	s, err := c.BuildFromConnParams()
+	if err != nil {
+		return err
+	}
+	c.DSN = s.String()
+	return nil
 }

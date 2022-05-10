@@ -1,14 +1,18 @@
 package config
 
 import (
+	"errors"
 	"fmt"
+	"net/url"
 	"sort"
+	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
-	"github.com/hashicorp/hcl/v2"
+	"github.com/cloudquery/cloudquery/pkg/policy"
 )
 
 type Providers []*Provider
@@ -56,7 +60,68 @@ func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) 
 }
 
 type Connection struct {
-	DSN string `hcl:"dsn,attr"`
+	DSN string `hcl:"dsn,optional"`
+
+	// These params are mutually exclusive with DSN
+	Type     string   `hcl:"type,optional"`
+	Username string   `hcl:"username,optional"`
+	Password string   `hcl:"password,optional"`
+	Host     string   `hcl:"host,optional"`
+	Port     int      `hcl:"port,optional"`
+	Database string   `hcl:"database,optional"`
+	SSLMode  string   `hcl:"sslmode,optional"`
+	Extras   []string `hcl:"extras,optional"`
+}
+
+func (c Connection) IsAnyConnParamsSet() bool {
+	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || len(c.Extras) > 0
+}
+
+func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
+	if c.Port == 0 {
+		c.Port = 5432
+	}
+	if c.Type == "" {
+		c.Type = "postgres"
+	}
+	if c.Host == "" {
+		return nil, errors.New("missing host")
+	}
+	if c.Database == "" {
+		return nil, errors.New("missing database")
+	}
+
+	u := url.URL{
+		Scheme: c.Type,
+		Host:   fmt.Sprintf("%s:%d", c.Host, c.Port),
+		Path:   c.Database,
+	}
+	if c.Username != "" && c.Password != "" {
+		u.User = url.UserPassword(c.Username, c.Password)
+	} else if c.Username != "" {
+		u.User = url.User(c.Username)
+	}
+
+	v := url.Values{}
+	if c.Extras != nil {
+		for _, extra := range c.Extras {
+			parts := strings.SplitN(extra, "=", 2)
+			if len(parts) == 1 {
+				v.Add(parts[0], "")
+			} else {
+				v.Add(parts[0], parts[1])
+			}
+		}
+	}
+	if c.SSLMode != "" {
+		v.Set("sslmode", c.SSLMode)
+	}
+	u.RawQuery = v.Encode()
+
+	return &dburl.URL{
+		OriginalScheme: c.Type,
+		URL:            u,
+	}, nil
 }
 
 type RequiredProvider struct {
