@@ -3,18 +3,15 @@ package config
 import (
 	"errors"
 	"fmt"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/database/dsn"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/policy"
 
 	"github.com/hashicorp/hcl/v2"
 )
@@ -189,81 +186,15 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 func handleConnectionBlock(c *Connection) error {
 	if ds := viper.GetString("dsn"); ds != "" {
 		c.DSN = ds
-		c.Username = nil
-		c.Password = nil
-		c.Type = nil
+		return nil
+	}
+	if c.DSN != "" {
+		if c.connParams.IsSet() {
+			return errors.New("DSN specified along with explicit attributes, only one type is supported")
+		}
 		return nil
 	}
 
-	ds, err := dsn.ParseConnectionString(c.DSN)
-	if err != nil {
-		return err
-	}
-	if ds.User != nil && ds.User.String() == ":" {
-		ds.User = nil
-	}
-
-	var setUser, setPassword *string
-
-	usingURLs := strings.HasPrefix(c.DSN, ds.OriginalScheme+"://")
-	if c.Username != nil {
-		switch {
-		case !usingURLs:
-			return errors.New("`username` param specified but given DSN is of non-URL type")
-		case ds.User != nil && ds.User.Username() != "":
-			return errors.New("`username` param specified but given DSN already specifies username")
-		default:
-			setUser = c.Username
-		}
-	}
-
-	if c.Password != nil {
-		if !usingURLs {
-			return errors.New("`password` param specified but given DSN is of non-URL type")
-		} else if ds.User == nil {
-			setPassword = c.Password
-		} else if _, isSet := ds.User.Password(); isSet {
-			return errors.New("`password` param specified but given DSN already specifies password")
-		} else {
-			setPassword = c.Password
-		}
-	}
-
-	changed := false
-	defer func() {
-		if changed {
-			c.DSN = ds.String()
-		}
-	}()
-
-	if c.Type != nil {
-		// when used with non-URL DSNs, ds.OriginalScheme is always filled ("postgres") so we allow overriding in that case
-		if ds.OriginalScheme == "" || (ds.OriginalScheme == "postgres" && !usingURLs) {
-			ds.OriginalScheme = *c.Type
-			changed = true
-		} else {
-			return errors.New("`type` param specified but given DSN already specifies scheme")
-		}
-	}
-
-	if setUser == nil && setPassword == nil {
-		return nil
-	}
-
-	if setUser == nil {
-		v := ds.User.Username()
-		setUser = &v
-	}
-	if setPassword == nil {
-		v, _ := ds.User.Password()
-		setPassword = &v
-	}
-
-	if setPassword == nil {
-		ds.User = url.User(*setUser)
-	} else {
-		ds.User = url.UserPassword(*setUser, *setPassword)
-	}
-	changed = true
+	c.DSN = c.connParams.Build().String()
 	return nil
 }

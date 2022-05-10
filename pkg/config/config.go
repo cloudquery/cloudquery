@@ -2,9 +2,12 @@ package config
 
 import (
 	"fmt"
+	"net/url"
 	"sort"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/policy"
+	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
@@ -56,10 +59,63 @@ func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) 
 }
 
 type Connection struct {
-	DSN      string  `hcl:"dsn,attr"`
-	Username *string `hcl:"username,attr"`
-	Password *string `hcl:"password,attr"`
-	Type     *string `hcl:"type,attr"`
+	DSN string `hcl:"dsn,attr"`
+
+	// These params are mutually exclusive with DSN
+	connParams
+}
+
+type connParams struct {
+	Type     string   `hcl:"type,attr"`
+	Username string   `hcl:"username,attr"`
+	Password string   `hcl:"password,attr"`
+	Host     string   `hcl:"host,attr"`
+	Port     int      `hcl:"port,attr"`
+	Database string   `hcl:"host,attr"`
+	SSLMode  string   `hcl:"sslmode,attr"`
+	Extras   []string `hcl:"extras,attr"`
+}
+
+func (c connParams) IsSet() bool {
+	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || len(c.Extras) > 0
+}
+
+func (c connParams) Build() *dburl.URL {
+	if c.Port == 0 {
+		c.Port = 5432
+	}
+	if c.Type == "" {
+		c.Type = "postgres"
+	}
+	u := url.URL{
+		Scheme: c.Type,
+		Host:   fmt.Sprintf("%s:%d", c.Host, c.Port),
+		Path:   c.Database,
+	}
+	if c.Username != "" && c.Password != "" {
+		u.User = url.UserPassword(c.Username, c.Password)
+	} else if c.Username != "" {
+		u.User = url.User(c.Username)
+	}
+
+	v := url.Values{}
+	for _, extra := range c.Extras {
+		parts := strings.SplitN(extra, "=", 2)
+		if len(parts) == 1 {
+			v.Add(parts[0], "")
+		} else {
+			v.Add(parts[0], parts[1])
+		}
+	}
+	if c.SSLMode != "" {
+		v.Set("sslmode", c.SSLMode)
+	}
+	u.RawQuery = v.Encode()
+
+	return &dburl.URL{
+		OriginalScheme: c.Type,
+		URL:            u,
+	}
 }
 
 type RequiredProvider struct {

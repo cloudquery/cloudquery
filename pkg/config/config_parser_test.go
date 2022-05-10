@@ -8,10 +8,6 @@ import (
 )
 
 func TestHandleConnectionBlock(t *testing.T) {
-	s := func(s string) *string {
-		return &s
-	}
-
 	cases := []struct {
 		input          *Connection
 		expectedResult string
@@ -19,62 +15,39 @@ func TestHandleConnectionBlock(t *testing.T) {
 	}{
 		{
 			&Connection{
-				DSN:  `host=localhost database=somedb port=5432 sslmode=disable`,
-				Type: s(`tsdb`),
+				DSN: `host=localhost database=somedb port=5432 sslmode=disable`,
+				connParams: connParams{
+					Type: "tsdb",
+				},
 			},
-			"tsdb://localhost:5432/somedb?sslmode=disable",
+			"",
+			true,
+		},
+		{
+			&Connection{
+				connParams: connParams{
+					Username: `user`,
+					Password: `pass`,
+					Type:     `tsdb`,
+					Host:     `localhost`,
+					Database: `postgres`,
+				},
+			},
+			"tsdb://user:pass@localhost:5432/postgres",
 			false,
 		},
 		{
 			&Connection{
-				DSN:      `host=localhost database=somedb port=5432 sslmode=disable`,
-				Username: s(`user`),
+				connParams: connParams{
+					Username: `user`,
+					Password: `pass`,
+					Host:     `localhost`,
+					Database: `postdb`,
+					SSLMode:  `disable`,
+					Extras:   []string{"a=b", "c=d", "e", "sslmode=enable"},
+				},
 			},
-			"",
-			true,
-		},
-		{
-			&Connection{
-				DSN:      `host=localhost database=somedb port=5432 sslmode=disable`,
-				Password: s(`pass`),
-			},
-			"",
-			true,
-		},
-		{
-			&Connection{
-				DSN:      `host=localhost database=somedb port=5432 sslmode=disable`,
-				Username: s(`user`),
-				Password: s(`pass`),
-				Type:     s(`tsdb`),
-			},
-			"",
-			true,
-		},
-		{
-			&Connection{
-				DSN:  `host=localhost user=postgres password=pass database=somedb port=5432 sslmode=disable`,
-				Type: s(`tsdb`),
-			},
-			"tsdb://postgres:pass@localhost:5432/somedb?sslmode=disable",
-			false,
-		},
-		{
-			&Connection{
-				DSN:      `postgres://user:pass@localhost:5432/somedb?sslmode=disable`,
-				Username: s(`us3r`),
-				Password: s(`p4ss`),
-			},
-			"",
-			true,
-		},
-		{
-			&Connection{
-				DSN:      `postgres://localhost:5432/somedb?sslmode=disable`,
-				Username: s(`us3r`),
-				Password: s(`p4ss`),
-			},
-			"postgres://us3r:p4ss@localhost:5432/somedb?sslmode=disable",
+			"postgres://user:pass@localhost:5432/postdb?a=b&c=d&e=&sslmode=disable",
 			false,
 		},
 	}
