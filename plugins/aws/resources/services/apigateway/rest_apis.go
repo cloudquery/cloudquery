@@ -912,6 +912,9 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 			// select * from aws_apigateway_rest_api_models where model_template is nil
 			return nil
 		}
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	return resource.Set(c.Name, response.Value)
