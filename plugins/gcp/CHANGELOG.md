@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+### [0.7.2](https://github.com/cloudquery/cq-provider-gcp/compare/v0.7.1...v0.7.2) (2022-05-10)
+
+
+### Features
+
+* Billing resources ([#239](https://github.com/cloudquery/cq-provider-gcp/issues/239)) ([2ba023f](https://github.com/cloudquery/cq-provider-gcp/commit/2ba023fe5c5156e12994ad3e8d11bc7fd605caa8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.9.3 ([#232](https://github.com/cloudquery/cq-provider-gcp/issues/232)) ([9815dd6](https://github.com/cloudquery/cq-provider-gcp/commit/9815dd68d56892c09e4ab11bb689f244a2d17b6e))
+
 ## [v0.5.1] - 2022-01-03
 ###### SDK Version: 0.6.1
 ### :spider: Fixed
