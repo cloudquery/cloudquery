@@ -124,7 +124,9 @@ func TestDetectPolicy(t *testing.T) {
 	require.Nil(t, err)
 	assert.Equal(t, "aws", p.Source)
 	assert.True(t, found)
-	_, found, err = DetectPolicy("not-exist", "")
+	// Detected as a file getter
+	p, found, err = DetectPolicy("not:exist", "")
 	require.Nil(t, err)
-	assert.False(t, found)
+	assert.Equal(t, "not:exist", p.Source)
+	assert.True(t, found)
 }

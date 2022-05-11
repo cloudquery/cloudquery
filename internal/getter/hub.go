@@ -14,7 +14,7 @@ func (h HubDetector) Detect(src, pwd string) (string, bool, error) {
 	if len(src) == 0 {
 		return "", false, nil
 	}
-	fileDetector := fileDetector{}
+	fileDetector := NewFileDetector(false)
 	if _, ok, _ := fileDetector.Detect(src, pwd); ok {
 		return "", false, nil
 	}

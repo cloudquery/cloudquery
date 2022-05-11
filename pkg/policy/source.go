@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/afero"
 )
 
@@ -34,6 +35,13 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 	}, true, nil
 }
 
+func classifyError(detectorType string, err error) error {
+	if (detectorType == "file") && strings.Contains(err.Error(), "no such file or directory") {
+		return diag.FromError(err, diag.USER)
+	}
+	return err
+}
+
 func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, error) {
 	source, subPolicy := getter.ParseSourceSubPolicy(source)
 	// parse syntactic URL holding @ instead of ?ref for params
@@ -54,7 +62,7 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 		policyDir = filepath.Join(installDir, filepath.Base(getter.NormalizePath(source)))
 	}
 	if err := getter.Get(ctx, policyDir, source); err != nil {
-		return nil, nil, fmt.Errorf("failed to get source %s: %w", source, err)
+		return nil, nil, classifyError(detectorType, fmt.Errorf("failed to get source %s: %w", source, err))
 	}
 
 	data, err := afero.ReadFile(afero.NewOsFs(), filepath.Join(policyDir, defaultPolicyFileName))

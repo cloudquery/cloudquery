@@ -22,7 +22,7 @@ var (
 		new(getter.S3Detector),
 		new(getter.GCSDetector),
 		new(HubDetector),
-		new(fileDetector),
+		NewFileDetector(true),
 	}
 
 	detectorsWithNames = []Detector{
@@ -31,7 +31,7 @@ var (
 		{Name: "s3", Detector: new(getter.S3Detector)},
 		{Name: "gcs", Detector: new(getter.GCSDetector)},
 		{Name: "hub", Detector: new(HubDetector)},
-		{Name: "file", Detector: new(fileDetector)},
+		{Name: "file", Detector: NewFileDetector(true)},
 	}
 
 	detectorsMap = map[string]getter.Detector{
@@ -40,7 +40,7 @@ var (
 		"s3":     new(getter.S3Detector),
 		"gcs":    new(getter.GCSDetector),
 		"hub":    new(HubDetector),
-		"file":   new(fileDetector),
+		"file":   NewFileDetector(true),
 	}
 
 	decompressors = map[string]getter.Decompressor{
