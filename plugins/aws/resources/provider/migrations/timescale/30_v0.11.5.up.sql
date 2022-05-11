@@ -150,3 +150,21 @@ CREATE TABLE IF NOT EXISTS "aws_xray_sampling_rules" (
 	UNIQUE(cq_fetch_date,cq_id)
 );
 SELECT setup_tsdb_parent('aws_xray_sampling_rules');
+
+-- aws_redshift_snapshots
+ALTER TABLE IF EXISTS aws_redshift_snapshots DROP CONSTRAINT aws_redshift_snapshots_cluster_cq_id_fkey;
+ALTER TABLE IF EXISTS aws_redshift_snapshots
+    ADD CONSTRAINT aws_redshift_snapshots_cluster_cq_id_fkey
+        FOREIGN KEY (cq_fetch_date, cluster_cq_id)
+            REFERENCES aws_redshift_clusters(cq_fetch_date, cq_id)
+            ON DELETE CASCADE;
+
+-- Resource: rds.instances
+TRUNCATE TABLE aws_rds_instances CASCADE;
+ALTER TABLE IF EXISTS aws_rds_instances DROP CONSTRAINT aws_rds_instances_pk;
+ALTER TABLE IF EXISTS aws_rds_instances ADD CONSTRAINT aws_rds_instances_pk PRIMARY KEY (cq_fetch_date,arn);
+
+-- Resource: ssm.instances
+TRUNCATE TABLE aws_ssm_instance_compliance_items CASCADE;
+ALTER TABLE IF EXISTS aws_ssm_instance_compliance_items DROP CONSTRAINT aws_ssm_instance_compliance_items_pk;
+ALTER TABLE IF EXISTS aws_ssm_instance_compliance_items ADD CONSTRAINT aws_ssm_instance_compliance_items_pk PRIMARY KEY (cq_fetch_date,cq_id);
