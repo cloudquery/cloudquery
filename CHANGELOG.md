@@ -51,21 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Release 0.23.0 ([#674](https://github.com/cloudquery/cloudquery/issues/674)) ([d4a2502](https://github.com/cloudquery/cloudquery/commit/d4a250288832b28104ae7e5497fbe6dc9a8f1231))
 
-## [Unreleased] 
-
-### :rocket: Added
-* Added core migrations implementation
-* Added fetch summary saving to `fetches` table
-
-
-<!-- 
-## Unreleased
-### Added
-### Changed
-### Fixed
-### Breaking Changes
--->
-
 ## [v0.19.0] - 2022-01-10
 ### Breaking Changes
 * Policy command updated and spec changed [#369](https://github.com/cloudquery/cloudquery/pull/369)
