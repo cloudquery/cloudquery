@@ -55,10 +55,10 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 
 	configPolicies := policies.All()
 	if len(configPolicies) == 0 {
-		return nil, diag.FromError(fmt.Errorf("no valid policy with name %s found. If using a local policy directory, ensure the path is correct and the directory exists", policyName), diag.USER)
+		return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found. If using a local policy directory, ensure the path is correct and the directory exists", policyName), diag.USER)
 	}
 
-	return nil, diag.FromError(fmt.Errorf("no valid policy with name %s found in configuration or remote. Available in config: %s", policyName, configPolicies), diag.USER)
+	return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found in configuration or remote. Available in config: %s", policyName, configPolicies), diag.USER)
 
 }
 
