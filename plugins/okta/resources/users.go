@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-okta/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"github.com/okta/okta-sdk-golang/v2/okta/query"
@@ -167,7 +168,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	api := meta.(*client.Client)
 	users, resp, err := api.Okta.User.ListUsers(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if len(users) == 0 {
 		return nil
@@ -177,7 +178,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		var nextUserSet []*okta.User
 		resp, err = resp.Next(ctx, &nextUserSet)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- nextUserSet
 	}

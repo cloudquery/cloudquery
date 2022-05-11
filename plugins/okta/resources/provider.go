@@ -23,6 +23,7 @@ func Provider() *provider.Provider {
 		Config: func() provider.Config {
 			return &client.Config{}
 		},
-		Migrations: migrationFiles,
+		ErrorClassifier: client.ErrorClassifier,
+		Migrations:      migrationFiles,
 	}
 }

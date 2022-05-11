@@ -41,7 +41,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	_, c, err := okta.NewClient(context.Background(), okta.WithOrgUrl(providerConfig.Domain), okta.WithToken(oktaToken), okta.WithCache(true))
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, classifyError(err, diag.INTERNAL)
 	}
 	client := Client{
 		logger: logger,
