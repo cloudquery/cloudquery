@@ -87,6 +87,14 @@ func Initialize(ctx context.Context, providers []string) error {
 		},
 	}, "cloudquery")
 
+	// Update connection block to remove unwanted keys
+	if b := cqBlock.Body().FirstMatchingBlock("connection", nil); b != nil {
+		bd := b.Body()
+		bd.RemoveAttribute("dsn")
+		bd.RemoveAttribute("type")
+		bd.RemoveAttribute("extras")
+	}
+
 	rootBody.AppendBlock(cqBlock)
 	cfg, diags := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
