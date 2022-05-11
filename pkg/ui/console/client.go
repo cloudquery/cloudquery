@@ -365,7 +365,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		OutputDir:   outputDir,
 		RunCallback: policyRunCallback,
 	})
-	if resp != nil {
+	if resp == nil {
 		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
 	} else {
 		analytics.Capture("policy run", c.Providers, resp.Policies, diags)
@@ -375,7 +375,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress.MarkAllDone()
 		policyRunProgress.Wait()
 	}
-	if !noResults {
+	if !noResults && resp != nil {
 		printPolicyResponse(resp.Executions)
 	}
 
