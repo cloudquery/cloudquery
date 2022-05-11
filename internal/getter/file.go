@@ -15,15 +15,6 @@ type fileDetector struct {
 	allowNonExisting bool
 }
 
-func isValidPath(fs afero.Fs, path string) bool {
-	err := fs.MkdirAll(path, 0700)
-	if err == nil {
-		_ = fs.Remove(path)
-	}
-
-	return err == nil
-}
-
 func NewFileDetector(allowNonExisting bool) *fileDetector {
 	p := new(fileDetector)
 	p.allowNonExisting = allowNonExisting
@@ -55,7 +46,8 @@ func (d *fileDetector) Detect(src, pwd string) (string, bool, error) {
 	}
 	fs := afero.NewOsFs()
 	if ok, _ := afero.Exists(fs, checkPath); !ok {
-		if d.allowNonExisting && isValidPath(fs, checkPath) {
+		if d.allowNonExisting {
+			// This assumes the file detector runs last to give a chance to other detectors to detect the source
 			return fmtFileURL(checkPath), true, nil
 		}
 		return "", false, nil
