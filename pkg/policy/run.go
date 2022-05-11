@@ -143,6 +143,9 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 		finishedQueries   = 0
 	)
 	filteredPolicy := request.Policy.Filter(request.Policy.meta.SubPolicy)
+	if filteredPolicy.Config == nil {
+		filteredPolicy.Config = request.Policy.Config
+	}
 	if !filteredPolicy.HasChecks() {
 		log.Error().Str("selector", request.Policy.meta.SubPolicy).Strs("available_policies", filteredPolicy.Policies.All()).Msg("policy/query not found with provided sub-policy selector")
 		return nil, diag.FromError(fmt.Errorf("%s//%s: %w", request.Policy.Name, request.Policy.meta.SubPolicy, ErrPolicyOrQueryNotFound),
