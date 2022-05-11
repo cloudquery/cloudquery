@@ -11,25 +11,21 @@ jobs:
   release-dry-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
       -
         name: Checkout
-        if: steps.extract_branch.outputs.branch == 'release-please--branches--main'
+        if: github.ref_name == 'release-please--branches--main'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       -
         name: Set up Go
-        if: steps.extract_branch.outputs.branch == 'release-please--branches--main'
+        if: github.ref_name == 'release-please--branches--main'
         uses: actions/setup-go@v3
         with:
           go-version: 1.17
       -
         name: Run GoReleaser Dry-Run
-        if: steps.extract_branch.outputs.branch == 'release-please--branches--main'
+        if: github.ref_name == 'release-please--branches--main'
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
