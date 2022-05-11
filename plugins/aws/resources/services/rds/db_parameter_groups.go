@@ -151,7 +151,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 			o.Region = cl.Region
 		})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- output.DBParameterGroups
 		if aws.ToString(output.Marker) == "" {
@@ -172,7 +172,11 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 			o.Region = cl.Region
 		})
 		if err != nil {
-			return err
+			if client.IsAWSError(err, "DBParameterGroupNotFound") {
+				cl.Logger().Debug("received DBParameterGroupNotFound on DescribeDBParameters", "region", cl.Region, "err", err)
+				return nil
+			}
+			return diag.WrapError(err)
 		}
 		res <- output.Parameters
 		if aws.ToString(output.Marker) == "" {
