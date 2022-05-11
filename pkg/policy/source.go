@@ -2,12 +2,15 @@ package policy
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/getter"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/afero"
 )
 
@@ -59,6 +62,9 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 
 	data, err := afero.ReadFile(afero.NewOsFs(), filepath.Join(policyDir, defaultPolicyFileName))
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, nil, diag.FromError(fmt.Errorf("could not find %q in %q. Please verify it exists", defaultPolicyFileName, source), diag.USER)
+		}
 		// TODO: make more descriptive error
 		return nil, nil, fmt.Errorf("failed to open source: %w", err)
 	}
