@@ -11,22 +11,19 @@ jobs:
   release-dry-run:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         if: github.head_ref == 'release-please--branches--main'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      -
-        name: Set up Go
+      - name: Set up Go
         if: github.head_ref == 'release-please--branches--main'
         uses: actions/setup-go@v3
         with:
           go-version: 1.17
-      -
-        name: Run GoReleaser Dry-Run
+      - name: Run GoReleaser Dry-Run
         if: github.head_ref == 'release-please--branches--main'
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --rm-dist --skip-validate --skip-publish
+          args: release --rm-dist --skip-validate --skip-publish --skip-sign
