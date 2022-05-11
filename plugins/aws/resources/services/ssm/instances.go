@@ -150,7 +150,6 @@ func SsmInstances() *schema.Table {
 				Description: "Information about the compliance as defined by the resource type",
 				Resolver:    fetchSsmInstanceComplianceItems,
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "resource_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
