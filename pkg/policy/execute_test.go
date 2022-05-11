@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 	"strings"
 	"testing"
 	"text/template"
@@ -587,4 +588,70 @@ func TestInterpolate(t *testing.T) {
 	err = tpl.Execute(&b, map[string]interface{}{"test": 1, "key": "lol"})
 	assert.Nil(t, err)
 	fmt.Print(b.String())
+}
+
+func TestRow_Sort(t *testing.T) {
+
+	testCases := []struct {
+		Name     string
+		Data     Rows
+		Expected Rows
+	}{
+		{
+			Name: "simple",
+			Data: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"a", "c"}},
+			},
+			Expected: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"a", "c"}},
+			},
+		},
+		{
+			Name: "same",
+			Data: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"a", "b"}},
+			},
+			Expected: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"a", "b"}},
+			},
+		},
+		{
+			Name: "complex",
+			Data: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"k", "b"}},
+				{Identifiers: []interface{}{"z", "b"}},
+			},
+			Expected: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"k", "b"}},
+				{Identifiers: []interface{}{"z", "b"}},
+			},
+		},
+		{
+			Name: "complex-2nd-level",
+			Data: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"k", "c"}},
+				{Identifiers: []interface{}{"k", "b"}},
+			},
+			Expected: Rows{
+				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: []interface{}{"k", "b"}},
+				{Identifiers: []interface{}{"k", "c"}},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			sort.Sort(tc.Data)
+			assert.Equal(t, tc.Expected, tc.Data)
+		})
+	}
+
 }

@@ -103,7 +103,7 @@ func (r Rows) Less(i, j int) bool {
 	r1 := r[i]
 	r2 := r[j]
 	for l := 0; l < len(r1.Identifiers); l++ {
-		if cast.ToString(r1.Identifiers[l]) > cast.ToString(r2.Identifiers[l]) {
+		if cast.ToString(r1.Identifiers[l]) < cast.ToString(r2.Identifiers[l]) {
 			return true
 		}
 	}
