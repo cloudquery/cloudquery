@@ -4,6 +4,19 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.23.1](https://github.com/cloudquery/cloudquery/compare/v0.23.0...v0.23.1) (2022-05-11)
+
+
+### Features
+
+* DSN credentials ([#670](https://github.com/cloudquery/cloudquery/issues/670)) ([35e27d0](https://github.com/cloudquery/cloudquery/commit/35e27d03bb4d1102c93b04b981ed435720171386))
+
+
+### Bug Fixes
+
+* Handle nil policy run response ([#688](https://github.com/cloudquery/cloudquery/issues/688)) ([bd3e3bd](https://github.com/cloudquery/cloudquery/commit/bd3e3bd36e7a531f0fdb56378c658a9822b1166e))
+* Run detectors in order ([#690](https://github.com/cloudquery/cloudquery/issues/690)) ([a39b2b6](https://github.com/cloudquery/cloudquery/commit/a39b2b6c878d41bcd78e81e84daf1ee95f05d125))
+
 ## [0.23.0](https://github.com/cloudquery/cloudquery/compare/v0.22.10...v0.23.0) (2022-05-10)
 
 
