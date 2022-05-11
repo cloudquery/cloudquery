@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
@@ -43,7 +44,7 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 		}
 		return policy.Policies{p}, nil
 	}
-	// run hub detector
+	// run hub detector. We got here if we couldn't find the policy specified by the command argument in the configuration
 	p, found, err := policy.DetectPolicy(policyName, subPath)
 	if err != nil {
 		return nil, err
@@ -51,7 +52,14 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	if found {
 		return policy.Policies{p}, nil
 	}
-	return nil, fmt.Errorf("no policy with name %s found in configuration or remote. Available in config: %s", policyName, policies.All())
+
+	configPolicies := policies.All()
+	if len(configPolicies) == 0 {
+		return nil, diag.FromError(fmt.Errorf("no valid policy with name %s found. If using a local policy directory, ensure the path is correct and the directory exists", policyName), diag.USER)
+	}
+
+	return nil, diag.FromError(fmt.Errorf("no valid policy with name %s found in configuration or remote. Available in config: %s", policyName, configPolicies), diag.USER)
+
 }
 
 func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyRootPath string) {
