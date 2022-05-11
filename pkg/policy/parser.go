@@ -30,6 +30,9 @@ var policySchema = &hcl.BodySchema{
 		{
 			Name: "doc",
 		},
+		{
+			Name: "identifiers",
+		},
 	},
 	Blocks: []hcl.BlockHeaderSchema{
 		{
@@ -110,6 +113,10 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Doc)...)
 	}
 
+	if descriptionAttr, ok := content.Attributes["identifiers"]; ok {
+		diags = append(diags, gohcl.DecodeExpression(descriptionAttr.Expr, ctx, &p.Identifiers)...)
+	}
+
 	if sourceAttr, ok := content.Attributes["source"]; ok {
 		// Sanity check
 		if len(content.Blocks) > 0 {
@@ -178,6 +185,9 @@ func decodePolicyContent(labels []string, content *hcl.BodyContent, ctx *hcl.Eva
 		case "policy":
 			inner, innerDiags := DecodePolicyBlock(block, ctx)
 			diags = append(diags, innerDiags...)
+			if len(inner.Identifiers) == 0 {
+				inner.Identifiers = p.Identifiers
+			}
 			p.Policies = append(p.Policies, inner)
 		case "check":
 			// check if there is a slash within check name

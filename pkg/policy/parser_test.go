@@ -9,6 +9,21 @@ import (
 )
 
 const (
+	testPolicyIdentifiers = `
+policy "test_policy" {
+  identifiers = ["id"]
+  check "1" {
+    query = "select 1 as id, 'test' as cq_reason"
+  }
+  policy "child_policy" {
+    check "1" {
+      query = "select 1 as id"
+      reason = "test"
+    }
+  }
+}
+`
+
 	testPolicyUnexpectedBlock = `policy "test_policy" {
  unknown {
    attr = "value"
@@ -281,6 +296,35 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 			},
 			wantErr:   true,
 			errString: "Slash character in check label",
+		},
+		{
+			name:      "test-policy-identifiers",
+			policyHCL: testPolicyIdentifiers,
+			expected: &Policy{
+				Name:        "test_policy",
+				Identifiers: []string{"id"},
+				Checks: []*Check{
+					{
+						Name:  "1",
+						Query: "select 1 as id, 'test' as cq_reason",
+						Type:  AutomaticQuery,
+					},
+				},
+				Policies: Policies{
+					{
+						Name: "child_policy",
+						Checks: []*Check{
+							{
+								Name:   "1",
+								Query:  "select 1 as id",
+								Type:   AutomaticQuery,
+								Reason: "test",
+							},
+						},
+						Identifiers: []string{"id"},
+					},
+				},
+			},
 		},
 	}
 	for _, tt := range tests {

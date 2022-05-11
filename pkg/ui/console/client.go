@@ -442,6 +442,22 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 	return nil
 }
 
+func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	policyToValidate, err := FilterPolicies(policySource, c.cfg.Policies)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return diag.FromError(err, diag.USER)
+	}
+	if len(policyToValidate) > 1 {
+		return diag.FromError(fmt.Errorf("multiple policies given to validate, only one policy allowed at a time"), diag.USER)
+	}
+	return policy.Validate(ctx, c.Storage, &policy.ValidateRequest{
+		Policy:    policyToValidate[0],
+		Directory: c.cfg.CloudQuery.PolicyDirectory,
+	})
+}
+
 // =====================================================================================================================
 // 													Module Commands
 // =====================================================================================================================
