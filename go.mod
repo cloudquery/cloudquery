@@ -42,7 +42,7 @@ require (
 	github.com/google/go-cmp v0.5.7
 	github.com/google/uuid v1.3.0
 	github.com/hairyhenderson/go-fsimpl v0.0.0-20220419174024-16654461dc34
-	github.com/hashicorp/go-getter v1.5.10
+	github.com/hashicorp/go-getter v1.5.11
 	github.com/jackc/pgconn v1.12.0
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/jeremywohl/flatten v1.0.1
@@ -54,6 +54,7 @@ require (
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.11.0
+	github.com/xo/dburl v0.8.4
 	google.golang.org/grpc v1.45.0
 )
 
@@ -153,7 +154,6 @@ require (
 	github.com/ulikunitz/xz v0.5.8 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	github.com/xo/dburl v0.8.4 // indirect
 	github.com/xtgo/uuid v0.0.0-20140804021211-a0b114877d4c // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
