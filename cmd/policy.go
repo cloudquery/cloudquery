@@ -19,6 +19,7 @@ const (
 	policyRunHelpMsg      = "Executes a policy on CloudQuery database"
 	policySnapshotHelpMsg = `Take database snapshot of all tables included in a CloudQuery policy`
 	policyTestHelpMsg     = "Tests policy against a precompiled set of database snapshots"
+	policyValidateHelpMsg = "Validate policy for any issues and diagnostics"
 )
 
 var (
@@ -138,8 +139,10 @@ var (
 	}
 
 	validatePolicyCmd = &cobra.Command{
-		Use:  "validate",
-		Args: cobra.ExactArgs(1),
+		Use:   "validate",
+		Short: policyValidateHelpMsg,
+		Long:  policyValidateHelpMsg,
+		Args:  cobra.ExactArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			diags := c.ValidatePolicy(ctx, args[0])
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_validate"})

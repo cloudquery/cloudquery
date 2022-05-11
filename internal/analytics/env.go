@@ -10,16 +10,16 @@ import (
 
 type Environment struct {
 	// OS Client executing
-	OS string `json:"os,omitempty"`
+	OS string `json:"os"`
 	// Terminal is true if Client is executed inside a terminal environment
-	Terminal bool `json:"terminal,omitempty"`
+	Terminal bool `json:"terminal"`
 	// CI is true if the Client is executed inside a CI i.e github actions etc'
-	CI bool `json:"ci,omitempty"`
+	CI bool `json:"ci"`
 	// FaaS is true if Client is executed inside a function i.e lambda etc'
-	FaaS bool `json:"faas,omitempty"`
+	FaaS bool `json:"faas"`
 	// Hashed hostname identifier
-	Hostname string `json:"hostname,omitempty"`
-	MacAddr  string `json:"mac_addr,omitempty"`
+	Hostname string `json:"hostname"`
+	MacAddr  string `json:"mac_addr"`
 }
 
 func getEnvironmentAttributes(terminal bool) *Environment {
