@@ -39,7 +39,7 @@ func fmtFileURL(path string) string {
 	}
 
 	// Make sure that we don't start with "/" since we add that below.
-	if path[0] == '/' {
+	if len(path) > 0 && path[0] == '/' {
 		path = path[1:]
 	}
 	return fmt.Sprintf("file:///%s", path)
