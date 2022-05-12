@@ -345,6 +345,14 @@ func Test_doNormalizeResources(t *testing.T) {
 			nil,
 			true,
 		},
+		{
+			"invalid glob 3",
+			[]string{"c1.res*"},
+			nil,
+			map[string]*schema.Table{"c1.res1": nil, "c1.res2": nil, "c2.res3": nil, "c2.res4": nil},
+			nil,
+			true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
