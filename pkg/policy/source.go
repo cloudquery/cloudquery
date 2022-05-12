@@ -40,7 +40,7 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 
 func classifyError(source string, err error) error {
 	matched, _ := regexp.MatchString("subdir .+? not found", err.Error())
-	formattedError := fmt.Errorf("failed to  %s: %w", source, err)
+	formattedError := fmt.Errorf("failed to get source %s: %w", source, err)
 	if matched {
 		return diag.FromError(formattedError, diag.USER)
 	}
