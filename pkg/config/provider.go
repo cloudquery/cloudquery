@@ -14,6 +14,7 @@ type Provider struct {
 	Name                          string   `hcl:"name,label"`
 	Alias                         string   `hcl:"alias,optional"`
 	Resources                     []string `hcl:"resources,optional"`
+	SkipResources                 []string `hcl:"skip_resources,optional"`
 	Env                           []string `hcl:"env,optional"`
 	Configuration                 []byte
 	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
@@ -71,6 +72,10 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Resources)
 		diags = append(diags, valDiags...)
 	}
+	if attr, exists := content.Attributes["skip_resources"]; exists {
+		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.SkipResources)
+		diags = append(diags, valDiags...)
+	}
 	if attr, exists := content.Attributes["env"]; exists {
 		valDiags := gohcl.DecodeExpression(attr.Expr, ctx, &provider.Env)
 		diags = append(diags, valDiags...)
@@ -117,6 +122,9 @@ var providerBlockSchema = &hcl.BodySchema{
 	Attributes: []hcl.AttributeSchema{
 		{
 			Name: "resources",
+		},
+		{
+			Name: "skip_resources",
 		},
 		{
 			Name: "alias",

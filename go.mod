@@ -51,6 +51,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/rudderlabs/analytics-go v3.3.2+incompatible
+	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.11.0

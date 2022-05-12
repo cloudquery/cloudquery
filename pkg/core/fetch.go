@@ -6,26 +6,28 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"sort"
 	"sync"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	cqsort "github.com/cloudquery/cloudquery/internal/sort"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/ryanuber/go-glob"
+	"github.com/thoas/go-funk"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -337,7 +339,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 	}()
 
 	var resources []string
-	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources)
+	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources, info.Config.SkipResources)
 	if diags.HasErrors() {
 		summary.Status = FetchFailed
 		return summary, diags
@@ -418,27 +420,42 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 // * wildcard expansion
 // * verify no unknown resources
 // * verify no duplicate resources
-func normalizeResources(ctx context.Context, provider plugin.Plugin, resources []string) ([]string, diag.Diagnostics) {
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources, skip []string) ([]string, diag.Diagnostics) {
 	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	return doNormalizeResources(resources, s.ResourceTables)
+
+	return doNormalizeResources(resources, skip, s.ResourceTables)
 }
 
-// doNormalizeResources returns a canonical list of resources given a list of requested and all known resources.
-// It replaces wildcard resource with all resources. Error is returned if:
+// doNormalizeResources matches the given two resource lists to all provider resources and returns the requested resources (excluding skip resources) as another list.
+func doNormalizeResources(resources, skip []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+	useRes, diags := doGlobResources(resources, false, all)
+	skipRes, dd := doGlobResources(skip, true, all)
+	return funk.Subtract(useRes, skipRes).([]string), diags.Add(dd)
+}
+
+// doGlobResources returns a canonical list of resources given a list of requested and all known resources.
+// It replaces wildcard resource with all resources in non-wild mode. Error is returned if:
 //
 // * wildcard is present and other explicit resource is requested;
 // * one of explicitly requested resources is not present in all known;
 // * some resource is specified more than once (duplicate).
-func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
-	if len(requested) == 1 && requested[0] == "*" {
+func doGlobResources(requested []string, allowWild bool, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+	if allowWild {
+		for _, s := range requested {
+			if s == "*" {
+				return nil, diag.FromError(fmt.Errorf("wildcard resource can only be in the requested resources list"), diag.USER, diag.WithDetails("you can only use * in the resources part of the configuration"))
+			}
+		}
+	} else if len(requested) == 1 && requested[0] == "*" {
 		requested = make([]string, 0, len(all))
 		for k := range all {
 			requested = append(requested, k)
 		}
 	}
+
 	result := make([]string, 0, len(requested))
 	seen := make(map[string]struct{})
 	for _, r := range requested {
@@ -446,16 +463,29 @@ func doNormalizeResources(requested []string, all map[string]*schema.Table) ([]s
 			return nil, diag.FromError(fmt.Errorf("resource %q is duplicate", r), diag.USER, diag.WithDetails("configuration has duplicate resources"))
 		}
 		seen[r] = struct{}{}
+
 		if _, ok := all[r]; !ok {
 			if r == "*" {
 				return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
+			}
+
+			// do glob match
+			found := false
+			for k := range all {
+				if glob.Glob(r, k) {
+					result = append(result, k)
+					found = true
+				}
+			}
+			if found {
+				continue
 			}
 			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
 		}
 		result = append(result, r)
 	}
-	sort.Strings(result)
-	return result, nil
+
+	return cqsort.Unique(result), nil
 }
 
 func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {

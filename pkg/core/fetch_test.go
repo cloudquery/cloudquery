@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"reflect"
 	"testing"
 	"time"
 
@@ -261,6 +260,7 @@ func Test_doNormalizeResources(t *testing.T) {
 	tests := []struct {
 		name      string
 		requested []string
+		skip      []string
 		all       map[string]*schema.Table
 		want      []string
 		wantErr   bool
@@ -268,6 +268,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"wilcard",
 			[]string{"*"},
+			nil,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			[]string{"1", "2", "3"},
 			false,
@@ -275,6 +276,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"wilcard with explicit",
 			[]string{"*", "1"},
+			nil,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
@@ -282,6 +284,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"unknown resource",
 			[]string{"1", "2", "x"},
+			nil,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
@@ -289,6 +292,7 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"duplicate resource",
 			[]string{"1", "2", "1"},
+			nil,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			nil,
 			true,
@@ -296,21 +300,50 @@ func Test_doNormalizeResources(t *testing.T) {
 		{
 			"ok, all explicit",
 			[]string{"2", "1"},
+			nil,
 			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
 			[]string{"1", "2"},
+			false,
+		},
+		{
+			"ok, all explicit with ignores",
+			[]string{"2", "1", "3"},
+			[]string{"1"},
+			map[string]*schema.Table{"3": nil, "2": nil, "1": nil},
+			[]string{"2", "3"},
+			false,
+		},
+		{
+			"ok, some globs",
+			[]string{"c1.*", "c2.res4"},
+			nil,
+			map[string]*schema.Table{"c1.res1": nil, "c1.res2": nil, "c2.res3": nil, "c2.res4": nil},
+			[]string{"c1.res1", "c1.res2", "c2.res4"},
+			false,
+		},
+		{
+			"ok, some globs with skips",
+			[]string{"c1.*", "c2.res4"},
+			[]string{"c1.res1"},
+			map[string]*schema.Table{"c1.res1": nil, "c1.res2": nil, "c2.res3": nil, "c2.res4": nil},
+			[]string{"c1.res2", "c2.res4"},
 			false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := doNormalizeResources(tt.requested, tt.all)
+			got, err := doNormalizeResources(tt.requested, tt.skip, tt.all)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("doInterpolate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("doInterpolate() = %v, want %v", got, tt.want)
+			if tt.want == nil {
+				tt.want = []string{}
 			}
+			if got == nil {
+				got = []string{}
+			}
+			assert.EqualValues(t, tt.want, got)
 		})
 	}
 }
