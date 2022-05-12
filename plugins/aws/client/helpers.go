@@ -220,6 +220,7 @@ type AWSService string
 
 const (
 	ApigatewayService           AWSService = "apigateway"
+	Athena                      AWSService = "athena"
 	CloudfrontService           AWSService = "cloudfront"
 	CognitoIdentityService      AWSService = "cognito-identity"
 	DirectConnectService        AWSService = "directconnect"

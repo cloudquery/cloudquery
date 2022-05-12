@@ -180,6 +180,8 @@ github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1 h1:JbtOhT/gRUVyna1ZaPct
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.3.1/go.mod h1:DD6WKNCH+slCJ6n71kqQv8p9slCnwJIfK7zUpVoGszo=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2 h1:GJsq/y3peudaMovMdHJhBiLtfUcwvV37WL7H9SKMDqw=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.10.2/go.mod h1:JRrNjpM1qIFI25ikEvad6g8Q5qw0B1S8G0di/9kU7DY=
+github.com/aws/aws-sdk-go-v2/service/athena v1.15.1 h1:T+hJ+1AtXUYcCpr2u1uIcTMKzEjfMALrFmD0jcRMt+c=
+github.com/aws/aws-sdk-go-v2/service/athena v1.15.1/go.mod h1:4itVgxs5x4BFmsgTguGQpwIGtCtwzyT1X5sSl7YcOX8=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0 h1:7dqTi+BP80MdTWZdnYDJwkl7t/4fD51+uuTPXZ0LhE0=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.2.0/go.mod h1:F9sOgLk8RCWpkJ9DgH5LQCDqHnJzW1e28ShymxCM7Cw=
 github.com/aws/aws-sdk-go-v2/service/backup v1.15.4 h1:PVlUfQeHFHPRuOvhLzUZtN87pW+PS3nEN26HafySdmU=
