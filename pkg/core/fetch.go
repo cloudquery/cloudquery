@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"strings"
 	"sync"
 	"time"
 
@@ -26,7 +27,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/ryanuber/go-glob"
 	"github.com/thoas/go-funk"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -459,30 +459,43 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 	result := make([]string, 0, len(requested))
 	seen := make(map[string]struct{})
 	for _, r := range requested {
+		if r == "" {
+			return nil, diag.FromError(errors.New("invalid resource"), diag.USER, diag.WithDetails("empty resource names are not allowed"))
+		}
+
 		if _, ok := seen[r]; ok {
 			return nil, diag.FromError(fmt.Errorf("resource %q is duplicate", r), diag.USER, diag.WithDetails("configuration has duplicate resources"))
 		}
 		seen[r] = struct{}{}
 
-		if _, ok := all[r]; !ok {
-			if r == "*" {
-				return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
-			}
+		if _, ok := all[r]; ok {
+			result = append(result, r)
+			continue
+		}
 
-			// do glob match
-			found := false
+		if r == "*" {
+			return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
+		}
+
+		// do globish match: end with ".*"
+		found := false
+		if wildPos := strings.Index(r, ".*"); wildPos > 0 {
+			if wildPos != len(r)-2 { // make sure it ends with .*
+				return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
+			}
 			for k := range all {
-				if glob.Glob(r, k) {
+				if strings.HasPrefix(k, r[:wildPos+1]) { // include the "." in the match
 					result = append(result, k)
 					found = true
 				}
 			}
-			if found {
-				continue
-			}
+		} else if wildPos == 0 || strings.Index(r, "*") > -1 {
+			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
+		}
+
+		if !found {
 			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
 		}
-		result = append(result, r)
 	}
 
 	return cqsort.Unique(result), nil
