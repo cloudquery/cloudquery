@@ -489,7 +489,7 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 					found = true
 				}
 			}
-		} else if wildPos == 0 || strings.Index(r, "*") > -1 {
+		} else if wildPos == 0 || strings.Contains(r, "*") {
 			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
 		}
 
