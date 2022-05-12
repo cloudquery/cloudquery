@@ -100,9 +100,10 @@ func initSentry() {
 			ID: userId.String(),
 		})
 		scope.SetTags(map[string]string{
-			"terminal": strconv.FormatBool(ui.IsTerminal()),
-			"ci":       strconv.FormatBool(analytics.IsCI()),
-			"faas":     strconv.FormatBool(analytics.IsFaaS()),
+			"cookie_id": userId.String(),
+			"terminal":  strconv.FormatBool(ui.IsTerminal()),
+			"ci":        strconv.FormatBool(analytics.IsCI()),
+			"faas":      strconv.FormatBool(analytics.IsFaaS()),
 		})
 	})
 }

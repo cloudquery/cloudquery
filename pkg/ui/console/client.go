@@ -121,6 +121,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 
 		if dbId, ok := dialect.Identifier(ctx); ok {
 			setAnalyticsProperties(map[string]interface{}{"database_id": dbId})
+			setUserId(dbId)
 		}
 
 		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
@@ -775,6 +776,15 @@ func setAnalyticsProperties(props map[string]interface{}) {
 	}
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		scope.SetTags(sprops)
+	})
+}
+
+func setUserId(databaseId string) {
+	analytics.SetUserId(databaseId)
+	sentry.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetUser(sentry.User{
+			ID: databaseId,
+		})
 	})
 }
 

@@ -35,8 +35,9 @@ type Client struct {
 	version    VersionInfo
 	env        *Environment
 	terminal   bool
-	userId     uuid.UUID
+	userId     string
 	instanceId uuid.UUID
+	cookieId   uuid.UUID
 
 	disabled bool
 	debug    bool
@@ -106,7 +107,8 @@ func Init(opts ...Option) error {
 func New(opts ...Option) *Client {
 	c := &Client{
 		version:    VersionInfo{},
-		userId:     GetUserId(),
+		userId:     GetUserId().String(),
+		cookieId:   GetUserId(),
 		instanceId: uuid.New(),
 		properties: make(map[string]interface{}),
 		debug:      false,
@@ -171,6 +173,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"build_date":          c.version.BuildDate,
 		"env":                 c.env,
 		"instance_id":         c.instanceId,
+		"cookie_id":           c.cookieId,
 		"success":             !diags.HasErrors(),
 		"installed_providers": pp,
 		"diagnostics":         core.SummarizeDiagnostics(diags),
@@ -196,12 +199,16 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		return
 	}
 
-	event := analytics.Track{UserId: c.userId.String(), Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
+	event := analytics.Track{UserId: c.userId, Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
 	if err := c.client.Enqueue(event); err != nil {
 		if c.debug {
 			log.Error().Err(err).Msg("failed to send analytics")
 		}
 	}
+}
+func SetUserId(userId string) {
+	c := currentHub
+	c.userId = userId
 }
 
 func SetGlobalProperty(k string, v interface{}) {
