@@ -115,7 +115,7 @@ func (p Policy) Filter(path string) Policy {
 		if policy.Name == selectorPath[0] {
 			filtered := policy.Filter(nextPolicy)
 			if filtered.Config == nil {
-				filtered.Config = policy.Config
+				filtered.Config = p.Config
 			}
 			return filtered
 		}

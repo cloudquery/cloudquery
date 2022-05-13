@@ -533,7 +533,7 @@ func TestFilterPolicies(t *testing.T) {
 					},
 				},
 			},
-			path: "aws/test/",
+			path: "test",
 			expectedPolicy: Policy{
 				Name: "test",
 				Config: &Configuration{
@@ -554,20 +554,25 @@ func TestFilterPolicies(t *testing.T) {
 				Policies: Policies{
 					&Policy{
 						Name: "test",
-						Config: &Configuration{
-							[]*Provider{
-								{"test", "v0.1.2"},
+						Policies: Policies{
+							&Policy{
+								Name: "test1",
+								Config: &Configuration{
+									[]*Provider{
+										{"test", "v0.1.2"},
+									},
+								},
 							},
 						},
 					},
 				},
 			},
-			path: "aws/test/",
+			path: "test/test1",
 			expectedPolicy: Policy{
 				Name: "test",
 				Config: &Configuration{
 					[]*Provider{
-						{"test", "v0.1.2"},
+						{"test1", "v0.1.2"},
 					},
 				},
 			},
