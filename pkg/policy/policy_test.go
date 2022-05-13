@@ -569,10 +569,10 @@ func TestFilterPolicies(t *testing.T) {
 			},
 			path: "test/test1",
 			expectedPolicy: Policy{
-				Name: "test",
+				Name: "test1",
 				Config: &Configuration{
 					[]*Provider{
-						{"test1", "v0.1.2"},
+						{"test", "v0.1.2"},
 					},
 				},
 			},
