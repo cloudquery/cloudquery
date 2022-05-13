@@ -477,28 +477,39 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 			return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
 		}
 
-		// do globish match: end with ".*"
-		found := false
-		if wildPos := strings.Index(r, ".*"); wildPos > 0 {
-			if wildPos != len(r)-2 { // make sure it ends with .*
-				return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
-			}
-			for k := range all {
-				if strings.HasPrefix(k, r[:wildPos+1]) { // include the "." in the match
-					result = append(result, k)
-					found = true
-				}
-			}
-		} else if wildPos == 0 || strings.Contains(r, "*") {
-			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
-		}
-
-		if !found {
+		switch globMatches, diags := matchResourceGlob(r, all); {
+		case diags.HasDiags():
+			return nil, diags
+		case len(globMatches) == 0:
 			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
+		default:
+			result = append(result, globMatches...)
 		}
 	}
 
 	return cqsort.Unique(result), nil
+}
+
+// matchResourceGlob matches pattern to the given resources, returns matched resources or diags
+// pattern should end with .*, exact matches are not handled.
+func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+	var result []string
+	wildPos := strings.Index(pattern, ".*")
+
+	if wildPos > 0 {
+		if wildPos != len(pattern)-2 { // make sure it ends with .*
+			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
+		}
+		for k := range all {
+			if strings.HasPrefix(k, pattern[:wildPos+1]) { // include the "." in the match
+				result = append(result, k)
+			}
+		}
+	} else if wildPos == 0 || strings.Contains(pattern, "*") {
+		return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
+	}
+
+	return result, nil
 }
 
 func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
