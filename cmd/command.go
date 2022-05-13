@@ -55,13 +55,13 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 	var (
 		c            *console.Client
 		cfgMutator   func(*config.Config) error
-		delayMessage = ui.IsTerminal()
+		telemetryMsg = true
 	)
 
 	switch cmd.Name() {
 	// Don't init console client with these commands
 	case "completion", "options":
-		delayMessage = false
+		telemetryMsg = false
 	case "init":
 		// No console client created here
 	case "describe":
@@ -81,9 +81,9 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		}
 	}
 
-	if analytics.Enabled() {
+	if telemetryMsg && analytics.Enabled() {
 		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
-		if delayMessage {
+		if ui.IsTerminal() {
 			select {
 			case <-time.After(2 * time.Second):
 			case <-ctx.Done():
