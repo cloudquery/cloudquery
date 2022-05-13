@@ -122,33 +122,19 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	return nil
 }
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
 	rule := resource.Item.(*types.Rule)
-	usedClient := meta.(*client.Client)
-
-	// Generate arn
-	arnStr := client.GenerateResourceARN(
-		"waf",
-		"rule",
-		aws.ToString(rule.RuleId),
-		usedClient.Region,
-		usedClient.AccountID)
-
-	return resource.Set(c.Name, arnStr)
+	return resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId)))
 }
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(*types.Rule)
 
 	// Resolve tags for resource
-	usedClient := meta.(*client.Client)
-	service := usedClient.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services().Waf
 
 	// Generate arn
-	arnStr := client.GenerateResourceARN(
-		"waf",
-		"rule",
-		aws.ToString(rule.RuleId),
-		"",
-		usedClient.AccountID)
+	arnStr := cl.AccountGlobalARN("waf", "rule", aws.ToString(rule.RuleId))
 
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}

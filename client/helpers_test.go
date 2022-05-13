@@ -94,7 +94,8 @@ func TestMakeARN(t *testing.T) {
 		},
 	}
 	for _, tc := range cases {
-		res := MakeARN(tc.service, "12345", tc.region, tc.idParts...)
+		p, _ := RegionsPartition(tc.region)
+		res := makeARN(tc.service, p, "12345", tc.region, tc.idParts...).String()
 		assert.Equal(t, tc.expected, res)
 	}
 }

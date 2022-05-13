@@ -479,7 +479,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 
 	for _, option := range output.Options {
 		res <- ConfigOptions{
-			option, client.GenerateResourceARN("elasticbeanstalk", "application", *p.ApplicationName, c.Region, c.AccountID),
+			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 
@@ -515,7 +515,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 
 	for _, option := range output.ConfigurationSettings {
 		res <- ConfigSettings{
-			option, client.GenerateResourceARN("elasticbeanstalk", "application", *p.ApplicationName, c.Region, c.AccountID),
+			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 

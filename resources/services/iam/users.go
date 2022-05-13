@@ -298,13 +298,16 @@ func IamUsers() *schema.Table {
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListUsersInput
-	svc := meta.(*client.Client).Services().IAM
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
 	report, err := getCredentialReport(ctx, meta)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	root := report.GetUser(fmt.Sprintf("arn:aws:iam::%s:root", meta.(*client.Client).AccountID))
+	partition, _ := client.RegionsPartition(cl.Region)
+	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", partition, cl.AccountID))
 	if root != nil {
 		res <- wrappedUser{
 			User: types.User{

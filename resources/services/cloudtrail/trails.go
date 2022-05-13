@@ -3,6 +3,7 @@ package cloudtrail
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -13,6 +14,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+// groupNameRegex extracts log group name from the ARN
+var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
 func CloudtrailTrails() *schema.Table {
 	return &schema.Table{
@@ -364,7 +368,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 	log := meta.(*client.Client).Logger()
 	r := resource.Item.(CloudTrailWrapper)
 	if r.CloudWatchLogsLogGroupArn != nil {
-		matches := client.GroupNameRegex.FindStringSubmatch(*r.CloudWatchLogsLogGroupArn)
+		matches := groupNameRegex.FindStringSubmatch(*r.CloudWatchLogsLogGroupArn)
 		if len(matches) < 2 {
 			log.Warn("CloudWatchLogsLogGroupARN doesn't fit standard regex", "arn", *r.CloudWatchLogsLogGroupArn)
 		} else {

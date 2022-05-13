@@ -276,5 +276,5 @@ func resolveSnapshotARN(ctx context.Context, meta schema.ClientMeta, resource *s
 }
 
 func snapshotARN(cl *client.Client, clusterName, snapshotName string) string {
-	return client.MakeARN(client.RedshiftService, cl.AccountID, cl.Region, fmt.Sprintf("snapshot:%s", clusterName), snapshotName)
+	return cl.ARN(client.RedshiftService, fmt.Sprintf("snapshot:%s", clusterName), snapshotName)
 }

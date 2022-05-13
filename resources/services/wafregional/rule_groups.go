@@ -126,5 +126,5 @@ func resolveRuleGroupARN(ctx context.Context, meta schema.ClientMeta, resource *
 }
 func ruleGroupARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
-	return client.MakeARN(client.WAFRegional, cl.AccountID, cl.Region, "rulegroup", id)
+	return cl.ARN(client.WAFRegional, "rulegroup", id)
 }

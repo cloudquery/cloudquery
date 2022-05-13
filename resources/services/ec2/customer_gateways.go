@@ -113,5 +113,5 @@ func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cg := resource.Item.(types.CustomerGateway)
-	return resource.Set(c.Name, client.GenerateResourceARN("ec2", "customer-gateway", *cg.CustomerGatewayId, cl.Region, cl.AccountID))
+	return resource.Set(c.Name, cl.ARN(client.EC2Service, "customer-gateway", *cg.CustomerGatewayId))
 }
