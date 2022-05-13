@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	orgTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
@@ -58,9 +59,20 @@ func loadAccounts(ctx context.Context, awsConfig *Config, accountsApi Organizati
 		if account.Status != orgTypes.AccountStatusActive {
 			continue
 		}
+		roleArn := arn.ARN{
+			Partition: "aws",
+			Service:   "iam",
+			Region:    "",
+			AccountID: *account.Id,
+			Resource:  "role/" + awsConfig.Organization.ChildAccountRoleName,
+		}
+		if parsed, err := arn.Parse(aws.ToString(account.Arn)); err == nil {
+			roleArn.Partition = parsed.Partition
+		}
+
 		accounts = append(accounts, Account{
 			ID:              *account.Id,
-			RoleARN:         GenerateResourceARN("iam", "role", awsConfig.Organization.ChildAccountRoleName, "", *account.Id),
+			RoleARN:         roleArn.String(),
 			RoleSessionName: awsConfig.Organization.ChildAccountRoleSessionName,
 			ExternalID:      awsConfig.Organization.ChildAccountExternalID,
 			LocalProfile:    awsConfig.Organization.AdminAccount.LocalProfile,

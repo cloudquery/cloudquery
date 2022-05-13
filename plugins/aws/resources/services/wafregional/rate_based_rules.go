@@ -171,5 +171,5 @@ func resolveRateBasedRuleARN(ctx context.Context, meta schema.ClientMeta, resour
 }
 func rateBasedRuleARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
-	return client.MakeARN(client.WAFRegional, cl.AccountID, cl.Region, "ratebasedrule", id)
+	return cl.ARN(client.WAFRegional, "ratebasedrule", id)
 }

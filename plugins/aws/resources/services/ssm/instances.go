@@ -272,5 +272,5 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 func resolveSSMInstanceARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
-	return resource.Set(c.Name, client.GenerateResourceARN("ssm", "managed-instance", *instance.InstanceId, cl.Region, cl.AccountID))
+	return resource.Set(c.Name, cl.ARN("ssm", "managed-instance", *instance.InstanceId))
 }

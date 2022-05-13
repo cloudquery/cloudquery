@@ -161,5 +161,5 @@ func resolveRuleARN(ctx context.Context, meta schema.ClientMeta, resource *schem
 }
 func ruleARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
-	return client.MakeARN(client.WAFRegional, cl.AccountID, cl.Region, "rule", id)
+	return cl.ARN(client.WAFRegional, "rule", id)
 }

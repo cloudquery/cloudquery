@@ -2,7 +2,6 @@ package athena
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
@@ -447,13 +446,13 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 func ResolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
-	return resource.Set(c.Name, createWorkGroupArn(cl.Region, cl.AccountID, *dc.Name))
+	return resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name))
 }
 func ResolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
 	wg := resource.Item.(types.WorkGroup)
-	arn := createWorkGroupArn(cl.Region, cl.AccountID, *wg.Name)
+	arn := createWorkGroupArn(cl, *wg.Name)
 	params := athena.ListTagsForResourceInput{ResourceARN: &arn}
 	tags := make(map[string]string)
 	for {
@@ -585,6 +584,6 @@ func fetchWorkGroup(ctx context.Context, res chan<- interface{}, svc client.Athe
 	return nil
 }
 
-func createWorkGroupArn(region, accountId, groupName string) string {
-	return fmt.Sprintf("arn:aws:athena:%s:%s:workgroup/%s", region, accountId, groupName)
+func createWorkGroupArn(cl *client.Client, groupName string) string {
+	return cl.ARN(client.Athena, "workgroup", groupName)
 }

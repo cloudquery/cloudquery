@@ -133,5 +133,5 @@ func resolveEventSubscriptionARN(ctx context.Context, meta schema.ClientMeta, re
 }
 
 func eventSubscriptionARN(cl *client.Client, name string) string {
-	return client.MakeARN(client.RedshiftService, cl.AccountID, cl.Region, fmt.Sprintf("eventsubscription:%s", name))
+	return cl.ARN(client.RedshiftService, fmt.Sprintf("eventsubscription:%s", name))
 }
