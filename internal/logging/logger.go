@@ -20,26 +20,26 @@ var GlobalConfig Config
 // Config for logging
 type Config struct {
 	// Enable console logging
-	ConsoleLoggingEnabled bool `hcl:"enable_console_logging,optional"`
+	ConsoleLoggingEnabled bool `yaml:"enable_console_logging,omitempty"`
 	// Enable Verbose logging
-	Verbose bool `hcl:"verbose,optional"`
+	Verbose bool `yaml:"verbose,omitempty"`
 	// EncodeLogsAsJson makes the logging framework logging JSON
-	EncodeLogsAsJson bool `hcl:"encode_logs_as_json,optional"`
+	EncodeLogsAsJson bool `yaml:"encode_logs_as_json,omitempty"`
 	// FileLoggingEnabled makes the framework logging to a file
 	// the fields below can be skipped if this value is false!
-	FileLoggingEnabled bool `hcl:"file_logging_enabled,optional"`
+	FileLoggingEnabled bool `yaml:"file_logging_enabled,omitempty"`
 	// Directory to logging to to when file logging is enabled
-	Directory string `hcl:"directory,optional"`
+	Directory string `yaml:"directory,omitempty"`
 	// Filename is the name of the logfile which will be placed inside the directory
-	Filename string `hcl:"filename,optional"`
+	Filename string `yaml:"filename,omitempty"`
 	// MaxSize the max size in MB of the logfile before it's rolled
-	MaxSize int `hcl:"max_size,optional"`
+	MaxSize int `yaml:"max_size,omitempty"`
 	// MaxBackups the max number of rolled files to keep
-	MaxBackups int `hcl:"max_backups,optional"`
+	MaxBackups int `yaml:"max_backups,omitempty"`
 	// MaxAge the max age in days to keep a logfile
-	MaxAge int `hcl:"max_age,optional"`
+	MaxAge int `yaml:"max_age,omitempty"`
 	// Console logging will be without color, console logging must be enabled first.
-	ConsoleNoColor bool `hcl:"console_no_color,optional"`
+	ConsoleNoColor bool `yaml:"console_no_color,omitempty"`
 
 	// console is a writer that will be used for console output. If it is not set os.Stderr will be used.
 	console io.Writer
