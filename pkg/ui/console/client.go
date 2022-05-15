@@ -401,10 +401,10 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		return err
 	}
 
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
-	if err != nil {
-		log.Error().Err(err).Msg("failed to create policy manager")
-		return err
+	p, diags := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
+	if diags.HasErrors() {
+		log.Error().Err(err).Msg("failed to load policy")
+		return diags
 	}
 
 	e := policy.NewExecutor(conn, nil)
