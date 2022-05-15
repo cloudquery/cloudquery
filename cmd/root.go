@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/google/uuid"
+
 	"github.com/cloudquery/cloudquery/internal/analytics"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -68,9 +70,10 @@ Use "{{.Root.Use}} options" for a list of global CLI options.
 var (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
-	Commit = "development"
-	Date   = "unknown"
-	APIKey = ""
+	Commit     = "development"
+	Date       = "unknown"
+	APIKey     = ""
+	instanceId = uuid.New().String()
 
 	rootCmd = &cobra.Command{
 		Use:   "cloudquery",
@@ -173,8 +176,9 @@ func initLogging() {
 	if !ui.IsTerminal() {
 		logging.GlobalConfig.ConsoleLoggingEnabled = true // always true when no terminal
 	}
+	logging.GlobalConfig.InstanceId = instanceId
 
-	zerolog.Logger = logging.Configure(logging.GlobalConfig)
+	zerolog.Logger = logging.Configure(logging.GlobalConfig).With().Logger()
 }
 
 func initAnalytics() {
@@ -182,6 +186,7 @@ func initAnalytics() {
 		analytics.WithVersionInfo(core.Version, Commit, Date),
 		analytics.WithTerminal(ui.IsTerminal()),
 		analytics.WithApiKey(viper.GetString("telemetry-apikey")),
+		analytics.WithInstanceId(instanceId),
 	}
 
 	if viper.GetBool("no-telemetry") {

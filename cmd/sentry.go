@@ -104,5 +104,6 @@ func initSentry() {
 			"ci":       strconv.FormatBool(analytics.IsCI()),
 			"faas":     strconv.FormatBool(analytics.IsFaaS()),
 		})
+		scope.SetExtra("instance_id", instanceId)
 	})
 }
