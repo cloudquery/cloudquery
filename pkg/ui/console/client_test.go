@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestCreateClient(t *testing.T) {
@@ -30,7 +32,7 @@ func TestCreateClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if _, err := CreateClient(context.Background(), tt.configPath, false, nil); (err != nil) != tt.wantErr {
+			if _, err := CreateClient(context.Background(), tt.configPath, false, nil, uuid.Nil); (err != nil) != tt.wantErr {
 				t.Errorf("CreateClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
@@ -70,7 +72,7 @@ func TestDescribePolicies(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
-			c, err := CreateClient(ctx, "", true, nil)
+			c, err := CreateClient(ctx, "", true, nil, uuid.Nil)
 			if err != nil {
 				t.Errorf("Case: %d - CreateClient() error = %v", i, err)
 				return

@@ -73,7 +73,7 @@ var (
 	Commit     = "development"
 	Date       = "unknown"
 	APIKey     = ""
-	instanceId = uuid.New().String()
+	instanceId = uuid.New()
 
 	rootCmd = &cobra.Command{
 		Use:   "cloudquery",
@@ -176,7 +176,7 @@ func initLogging() {
 	if !ui.IsTerminal() {
 		logging.GlobalConfig.ConsoleLoggingEnabled = true // always true when no terminal
 	}
-	logging.GlobalConfig.InstanceId = instanceId
+	logging.GlobalConfig.InstanceId = instanceId.String()
 
 	zerolog.Logger = logging.Configure(logging.GlobalConfig).With().Logger()
 }
@@ -186,7 +186,7 @@ func initAnalytics() {
 		analytics.WithVersionInfo(core.Version, Commit, Date),
 		analytics.WithTerminal(ui.IsTerminal()),
 		analytics.WithApiKey(viper.GetString("telemetry-apikey")),
-		analytics.WithInstanceId(instanceId),
+		analytics.WithInstanceId(instanceId.String()),
 	}
 
 	if viper.GetBool("no-telemetry") {
