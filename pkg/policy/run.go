@@ -57,23 +57,23 @@ func Snapshot(ctx context.Context, storage database.Storage, policy *Policy, out
 
 	return StoreOutput(ctx, e, policy, snapShotPath)
 }
-func Load(ctx context.Context, directory string, policy *Policy) (*Policy, error) {
-	var err error
+func Load(ctx context.Context, directory string, policy *Policy) (*Policy, diag.Diagnostics) {
+	var dd diag.Diagnostics
 	// if policy is configured with source we load it first
 	if policy.Source != "" {
 		log.Debug().Str("policy", policy.Name).Str("source", policy.Source).Msg("loading policy from source")
-		policy, err = loadPolicyFromSource(ctx, directory, policy.Name, policy.SubPolicy(), policy.Source)
-		if err != nil {
-			return nil, err
+		policy, dd = loadPolicyFromSource(ctx, directory, policy.Name, policy.SubPolicy(), policy.Source)
+		if dd.HasDiags() {
+			return nil, dd
 		}
 	}
 	// TODO: add recursive stop
 	// load inner policies
 	for i, p := range policy.Policies {
 		log.Debug().Str("policy", policy.Name).Str("inner_policy", p.Name).Msg("loading inner policy from source")
-		policy.Policies[i], err = Load(ctx, directory, p)
-		if err != nil {
-			return nil, err
+		policy.Policies[i], dd = Load(ctx, directory, p)
+		if dd.HasErrors() {
+			return nil, dd
 		}
 	}
 	return policy, nil
@@ -184,18 +184,18 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 	return NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy, nil)
 }
 
-func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourceURL string) (*Policy, error) {
+func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourceURL string) (*Policy, diag.Diagnostics) {
 	data, meta, err := LoadSource(ctx, directory, sourceURL)
 	if err != nil {
-		return nil, err
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	f, dd := hclsyntax.ParseConfig(data, name, hcl.Pos{Byte: 0, Line: 1, Column: 1})
 	if dd.HasErrors() {
-		return nil, dd
+		return nil, diag.FromError(dd, diag.USER)
 	}
 	policy, dd := DecodePolicy(f.Body, nil, meta.Directory)
 	if dd.HasErrors() {
-		return nil, dd
+		return nil, diag.FromError(dd, diag.USER)
 	}
 	policy.meta = meta
 	if subPolicy != "" {
