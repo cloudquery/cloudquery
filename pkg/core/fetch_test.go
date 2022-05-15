@@ -121,6 +121,13 @@ func Test_Fetch(t *testing.T) {
 				},
 				FetchId: uuid.New(),
 			},
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
+				Name:                  "test",
+				Alias:                 "",
+				Version:               registry.LatestVersion,
+				TotalResourcesFetched: 0,
+				Status:                FetchFinished,
+			}}},
 		},
 		{
 			Name: "fetch-timeout",
