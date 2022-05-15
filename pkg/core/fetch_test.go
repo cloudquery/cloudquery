@@ -17,7 +17,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/configv2"
 )
 
 func Test_Fetch(t *testing.T) {
@@ -39,7 +39,7 @@ func Test_Fetch(t *testing.T) {
 							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
-						Config: &config.Provider{
+						Config: &configv2.Provider{
 							Name:          "test",
 							Alias:         "test_alias",
 							Resources:     []string{"slow_resource", "panic_resource", "error_resource", "very_slow_resource"},
@@ -84,7 +84,7 @@ func Test_Fetch(t *testing.T) {
 							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
-						Config: &config.Provider{
+						Config: &configv2.Provider{
 							Name:          "test",
 							Resources:     []string{"slow_resource", "very_slow_resource"},
 							Env:           nil,
@@ -112,7 +112,7 @@ func Test_Fetch(t *testing.T) {
 							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
-						Config: &config.Provider{
+						Config: &configv2.Provider{
 							Name:          "test",
 							Resources:     []string{"slow_resource", "very_slow_resource"},
 							Env:           nil,
@@ -148,7 +148,7 @@ func Test_Fetch(t *testing.T) {
 							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
-						Config: &config.Provider{
+						Config: &configv2.Provider{
 							Name:      "test",
 							Resources: []string{"slow_resource"},
 						},
@@ -173,7 +173,7 @@ func Test_Fetch(t *testing.T) {
 							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
-						Config: &config.Provider{
+						Config: &configv2.Provider{
 							Name:          "test",
 							Resources:     []string{"slow_resource", "slow_resource", "slow_resource"},
 							Env:           nil,

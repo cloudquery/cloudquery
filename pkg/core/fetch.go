@@ -11,12 +11,13 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/configv2"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"gopkg.in/yaml.v3"
 
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
@@ -175,7 +176,7 @@ func (fr FetchResponse) HasErrors() bool {
 
 type ProviderInfo struct {
 	Provider registry.Provider
-	Config   *config.Provider
+	Config   *configv2.Provider
 }
 
 // FetchOptions is provided to the Client to execute a fetch on one or more providers
@@ -285,12 +286,16 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	defer pm.ClosePlugin(providerPlugin)
 
 	pLog.Info().Msg("requesting provider to configure")
+	providerConfigurationYaml, err := yaml.Marshal(cfg.Configuration)
+	if err != nil {
+		return nil, diag.FromError(err, diag.INTERNAL)
+	}
 	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
 			DSN: dsn,
 		},
-		Config:      cfg.Configuration,
+		Config:      providerConfigurationYaml,
 		ExtraFields: opts.ExtraFields,
 	})
 	if err != nil {

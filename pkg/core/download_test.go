@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/configv2"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
@@ -144,7 +144,7 @@ func TestDownloadCommunity(t *testing.T) {
 		t.FailNow()
 	}
 
-	src, name, err := ParseProviderSource(&config.RequiredProvider{
+	src, name, err := ParseProviderSource(&configv2.RequiredProvider{
 		Name:    "yandex-cloud/yandex",
 		Source:  nil,
 		Version: "v0.0.8",
@@ -164,7 +164,7 @@ func TestDownloadCommunity(t *testing.T) {
 	assert.Nil(t, diags)
 
 	source := "yandex-cloud"
-	src, name, err = ParseProviderSource(&config.RequiredProvider{
+	src, name, err = ParseProviderSource(&configv2.RequiredProvider{
 		Name:    "yandex",
 		Source:  &source,
 		Version: "v0.0.8",

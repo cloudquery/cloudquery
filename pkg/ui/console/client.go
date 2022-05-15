@@ -7,14 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/configv2"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/module"
@@ -53,24 +52,24 @@ policy "%s" {
 // Client console client is a wrapper around core.Client for console execution of CloudQuery
 type Client struct {
 	downloadProgress ui.Progress
-	cfg              *config.Config
+	cfg              *configv2.Config
 	Providers        registry.Providers
 	Registry         registry.Registry
 	PluginManager    *plugin.Manager
 	Storage          database.Storage
 }
 
-func CreateClient(ctx context.Context, configPath string, allowDefaultConfig bool, configMutator func(*config.Config) error) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, allowDefaultConfig bool, configMutator func(*configv2.Config) error) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		if !allowDefaultConfig {
 			return nil, diag.FromError(fmt.Errorf("config not read"), diag.USER)
 		}
-		cfg = &config.Config{
-			CloudQuery: config.CloudQuery{
+		cfg = &configv2.Config{
+			CloudQuery: &configv2.CloudQuery{
 				PluginDirectory: "./.cq/providers",
 				PolicyDirectory: "./.cq/policies",
-				Connection:      &config.Connection{},
+				Connection:      &configv2.Connection{},
 			},
 		}
 	}
@@ -80,11 +79,11 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			return nil, err
 		}
 	}
-	setConfigAnalytics(cfg, cfg.CloudQuery.History != nil)
+	setConfigAnalytics(cfg)
 	return CreateClientFromConfig(ctx, cfg)
 }
 
-func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, error) {
+func CreateClientFromConfig(ctx context.Context, cfg *configv2.Config) (*Client, error) {
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
@@ -106,7 +105,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 
 	var storage database.Storage
 	if cfg.CloudQuery.Connection.DSN != "" {
-		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
+		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN)
 		if err != nil {
 			return nil, err
 		}
@@ -127,7 +126,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 	}
 	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
 	for i, rp := range cfg.CloudQuery.Providers {
-		src, name, err := core.ParseProviderSource(rp)
+		src, name, err := core.ParseProviderSource(&rp)
 		if err != nil {
 			return nil, err
 		}
@@ -194,7 +193,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	result, diags := core.Fetch(ctx, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
-		History:        c.cfg.CloudQuery.History,
+		History:        nil,
 	})
 	// first wait for progress to complete correctly
 	if fetchProgress != nil {
@@ -597,7 +596,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	return nil
 }
 
-func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, core.FetchUpdateCallback) {
+func buildFetchProgress(ctx context.Context, providers []configv2.Provider) (*Progress, core.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
 	})
@@ -696,32 +695,20 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 	return policyRunProgress, policyRunCallback
 }
 
-func loadConfig(file string) (*config.Config, bool) {
-	parser := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-		config.WithFileFunc(filepath.Dir(file)),
-	)
-	cfg, diags := parser.LoadConfigFile(file)
-	if diags != nil {
-		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
-		for _, d := range diags {
-			c := ui.ColorInfo
-			switch d.Severity {
-			case hcl.DiagError:
-				c = ui.ColorError
-			case hcl.DiagWarning:
-				c = ui.ColorWarning
-			}
-			if d.Subject == nil {
-				ui.ColorizedOutput(c, "❌ %s; %s\n", d.Summary, d.Detail)
-				continue
-			}
-			ui.ColorizedOutput(c, "❌ %s; %s [%s]\n", d.Summary, d.Detail, d.Subject.String())
-		}
-		if diags.HasErrors() {
-			return nil, false
-		}
+func loadConfig(file string) (*configv2.Config, bool) {
+	cfg, validationErrors, err := configv2.UnmarshalConfigFile(file)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, "❌ Error loading config file: %s\n", err)
+		return nil, false
 	}
+	if !validationErrors.Valid() {
+		ui.ColorizedOutput(ui.ColorError, "❌ Error loading config file: %s\n", err)
+		for _, err := range validationErrors.Errors() {
+			ui.ColorizedOutput(ui.ColorError, "  %s\n", err.String())
+		}
+		return nil, false
+	}
+
 	return cfg, true
 }
 
@@ -778,13 +765,12 @@ func setAnalyticsProperties(props map[string]interface{}) {
 	})
 }
 
-func setConfigAnalytics(cfg *config.Config, history bool) {
+func setConfigAnalytics(cfg *configv2.Config) {
 	cfgJSON, _ := json.Marshal(cfg)
 	s := sha256.New()
 	_, _ = s.Write(cfgJSON)
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
-	analytics.SetGlobalProperty("history", history)
 
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		if analytics.IsCI() {
@@ -794,7 +780,6 @@ func setConfigAnalytics(cfg *config.Config, history bool) {
 		}
 		scope.SetTags(map[string]string{
 			"cfghash": cfgHash,
-			"history": strconv.FormatBool(history),
 		})
 	})
 }

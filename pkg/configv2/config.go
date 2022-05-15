@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/hcl/v2"
 	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -19,7 +18,7 @@ type Provider struct {
 	Alias                         string      `yaml:"alias,omitempty" json:"alias,omitempty"`
 	Resources                     []string    `yaml:"resources,omitempty" json:"resources,omitempty"`
 	Env                           []string    `yaml:"env,omitempty" json:"env,omitempty"`
-	Configuration                 interface{} `yaml:"-"`
+	Configuration                 interface{} `yaml:"configuration,omitempty" json:"-"`
 	MaxParallelResourceFetchLimit uint64      `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty"`
 	MaxGoroutines                 uint64      `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty"`
 	ResourceTimeout               uint64      `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty"`
@@ -41,6 +40,14 @@ type Connection struct {
 	Extras   []string `yaml:"extras,omitempty" json:"extras,omitempty"`
 }
 
+type RequiredProvider struct {
+	Name    string  `yaml:"name,omitempty" json:"name,omitempty"`
+	Source  *string `yaml:"source,omitempty" json:"source,omitempty"`
+	Version string  `yaml:"version,omitempty" json:"version,omitempty"`
+}
+
+type RequiredProviders []RequiredProvider
+
 type CloudQuery struct {
 	PluginDirectory string            `yaml:"plugin_directory,omitempty" json:"plugin_directory,omitempty"`
 	PolicyDirectory string            `yaml:"policy_directory,omitempty" json:"policy_directory,omitempty"`
@@ -53,7 +60,7 @@ type Config struct {
 	CloudQuery *CloudQuery     `yaml:"cloudquery,omitempty" json:"cloudquery,omitempty"`
 	Providers  []Provider      `yaml:"providers,omitempty" json:"providers,omitempty"`
 	Policies   policy.Policies `yaml:"policy" json:"policy"`
-	Modules    hcl.Body        `yaml:"modules"`
+	Modules    interface{}     `yaml:"modules,omitempty" json:"-"`
 }
 
 func (pp Providers) Names() []string {
@@ -129,12 +136,6 @@ func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
 	}, nil
 }
 
-type RequiredProvider struct {
-	Name    string  `yaml:"name"`
-	Source  *string `yaml:"source"`
-	Version string  `yaml:"version"`
-}
-
 func (r RequiredProvider) String() string {
 	var source string
 	if r.Source != nil {
@@ -142,8 +143,6 @@ func (r RequiredProvider) String() string {
 	}
 	return fmt.Sprintf("%scq-provider-%s@%s", source, r.Name, r.Version)
 }
-
-type RequiredProviders []RequiredProvider
 
 // Distinct returns one name per provider
 func (r RequiredProviders) Distinct() RequiredProviders {

@@ -1,7 +1,6 @@
 package configv2
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -143,78 +142,6 @@ const testBadVersion = `cloudquery {
   }
 }`
 
-type Account struct {
-	ID      string `yaml:",label"`
-	RoleARN string `yaml:"role_arn,optional"`
-}
-
-// func TestParser_LoadConfigFromSource(t *testing.T) {
-// 	p := NewParser()
-// 	cfg, diags := p.LoadConfigFromSource([]byte(testConfig))
-// 	assert.Nil(t, diags)
-// 	// Check configuration was added, we will nil it after it to check the whole structure
-// 	assert.NotNil(t, cfg.Providers[0].Configuration)
-// 	cfg.Providers[0].Configuration = yaml.Node{}
-// 	// source := "cloudquery"
-// 	// assert.Equal(t, &Config{
-// 	// 	CloudQuery: CloudQuery{
-// 	// 		Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
-// 	// 		Providers: []RequiredProvider{{
-// 	// 			Name:    "test",
-// 	// 			Source:  &source,
-// 	// 			Version: "v0.0.0",
-// 	// 		}},
-// 	// 		Logger: &logging.Config{},
-// 	// 	},
-// 	// 	Providers: []Provider{
-// 	// 		{
-// 	// 			Name:          "aws",
-// 	// 			Alias:         "aws",
-// 	// 			Resources:     []string{"slow_resource"},
-// 	// 			Configuration: yaml.Node{},
-// 	// 		},
-// 	// 	},
-// 	// }, cfg)
-// }
-
-// func TestParser_BadVersion(t *testing.T) {
-// 	p := NewParser()
-// 	_, diags := p.LoadConfigFromSource([]byte(testBadVersion))
-// 	assert.NotNil(t, diags)
-// 	assert.Equal(t, "test.hcl:1,1-11: Provider test version 0.0.0 is invalid; Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z", diags[0].Error())
-// }
-
-// func TestParser_DuplicateProviderNaming(t *testing.T) {
-// 	p := NewParser()
-// 	_, diags := p.LoadConfigFromSource([]byte(testMultipleProviderConfig))
-// 	assert.NotNil(t, diags)
-// 	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
-// }
-
-// func TestParser_AliasedProvider(t *testing.T) {
-// 	p := NewParser()
-// 	cfg, diags := p.LoadConfigFromSource([]byte(testAliasProviderConfig))
-// 	assert.Nil(t, diags)
-// 	_, err := cfg.GetProvider("another-aws")
-// 	assert.Nil(t, err)
-// 	_, err = cfg.GetProvider("aws")
-// 	assert.Nil(t, err)
-// }
-
-// func TestParser_DuplicateAliasedProvider(t *testing.T) {
-// 	p := NewParser()
-// 	_, diags := p.LoadConfigFromSource([]byte(testDuplicateAliasProviderConfig))
-// 	assert.NotNil(t, diags)
-// 	assert.Equal(t, expectedDuplicateAliasProviderError, diags[0].Error())
-// }
-
-// func TestProviderLoadConfiguration(t *testing.T) {
-// 	p := NewParser()
-// 	cfg, diags := p.LoadConfigFromSource([]byte(testConfig))
-// 	assert.Nil(t, diags)
-// 	assert.NotNil(t, cfg.Providers[0].Configuration)
-// }
-
 const testEnvVarConfig = `
 cloudquery:
   connection:
@@ -235,56 +162,13 @@ providers:
       - name: "slow_resource"
 `
 
-// func TestConfigEnvVariableSubstitution(t *testing.T) {
-// 	p := NewParser(WithEnvironmentVariables([]string{
-// 		"DSN=postgres://postgres:pass@localhost:5432/postgres",
-// 		"ROLE_ARN=12312312",
-// 	}))
-// 	cfg, diags := p.LoadConfigFromSource([]byte(testEnvVarConfig))
-// 	if diags != nil {
-// 		for _, d := range diags {
-// 			t.Error(d.Summary)
-// 		}
-// 		return
-// 	}
-// 	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
-// }
-
-// func TestParser_LoadConfigNoSourceField(t *testing.T) {
-// 	p := NewParser()
-// 	cfg, diags := p.LoadConfigFromSource([]byte(testNoSource))
-// 	assert.Nil(t, diags)
-// 	// Check configuration was added, we will nil it after it to check the whole structure
-// 	// assert.NotNil(t, cfg.Providers[0].Configuration)
-// 	// cfg.Providers[0].Configuration = nil
-// 	// assert.Equal(t, &Config{
-// 	// 	CloudQuery: CloudQuery{
-// 	// 		Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
-// 	// 		Providers: []RequiredProvider{{
-// 	// 			Name:    "test",
-// 	// 			Source:  nil,
-// 	// 			Version: "v0.0.0",
-// 	// 		}},
-// 	// 		Logger: &logging.Config{},
-// 	// 	},
-// 	// 	Providers: []Provider{
-// 	// 		{
-// 	// 			Name:          "test",
-// 	// 			Alias:         "test",
-// 	// 			Resources:     []string{"slow_resource"},
-// 	// 			Configuration: nil,
-// 	// 		},
-// 	// 	},
-// 	// }, cfg)
-// 	assert.Equal(t, cfg.CloudQuery.Providers[0].String(), "cq-provider-test@v0.0.0")
-// }
-
 func TestParser_LoadConfigFromSourceConnectionOptionality(t *testing.T) {
 	cases := []struct {
-		Name           string
-		cfg            string
-		expectedConfig *Config
-		expectedError  bool
+		name                     string
+		configYaml               string
+		expectedConfig           *Config
+		expectedValidationErrors []string
+		expectedError            bool
 	}{
 		{
 			"DSN only",
@@ -307,23 +191,39 @@ cloudquery:
 					}},
 				},
 			},
+			nil,
 			false,
 		},
 		{
 			"violate mutual exclusive dsn and connection block",
 			`
 cloudquery:
-  dsn:  "postgres://postgres:pass@localhost:5432/postgres"
   connection:
-    database: "cq"
+    username: "cq"
+    dsn:  "postgres://postgres:pass@localhost:5432/postgres"
+  providers:
+  - name: "test"
+    version: "1.1.0"
 `,
+			&Config{
+				CloudQuery: &CloudQuery{
+					Connection: &Connection{
+						Username: "cq",
+						DSN:      "postgres://postgres:pass@localhost:5432/postgres",
+					},
+					Providers: []RequiredProvider{{
+						Name:    "test",
+						Version: "1.1.0",
+					}},
+				},
+			},
 			nil,
 			true,
 		},
 		{
 			"Connection block only",
 			`
-cloudquery;
+cloudquery:
   connection:
     username: "postgres"
     password: "pass"
@@ -331,6 +231,9 @@ cloudquery;
     port: 15432
     database: "cq"
     sslmode: "disable"
+  providers:
+  - name: "test"
+    version: "1.1.0"
 `,
 			&Config{
 				CloudQuery: &CloudQuery{
@@ -342,8 +245,13 @@ cloudquery;
 						Database: "cq",
 						SSLMode:  "disable",
 					},
+					Providers: []RequiredProvider{{
+						Name:    "test",
+						Version: "1.1.0",
+					}},
 				},
 			},
+			nil,
 			false,
 		},
 		{
@@ -359,6 +267,9 @@ cloudquery:
     sslmode: "disable"
     extras:
       - "search_path=myschema"
+  providers:
+  - name: "test"
+    version: "1.1.0"
 `,
 			&Config{
 				CloudQuery: &CloudQuery{
@@ -371,21 +282,42 @@ cloudquery:
 						SSLMode:  "disable",
 						Extras:   []string{"search_path=myschema"},
 					},
+					Providers: []RequiredProvider{{
+						Name:    "test",
+						Version: "1.1.0",
+					}},
 				},
 			},
+			nil,
 			false,
 		},
 	}
 	for _, tc := range cases {
-		t.Run(tc.Name, func(t *testing.T) {
-			cfg, result, err := UnmarshalConfig([]byte(tc.cfg))
+		t.Run(tc.name, func(t *testing.T) {
+			cfg, result, err := UnmarshalConfig([]byte(tc.configYaml))
 			if err != nil {
 				if tc.expectedError {
 					return
 				}
 				t.Fatalf("unexpected error: %s", err)
 			}
-			fmt.Println(result)
+
+			validationErrors := result.Errors()
+			for i := range validationErrors {
+				t.Log("validation errors:")
+				desc := validationErrors[i].String()
+				t.Log(desc)
+			}
+			if len(validationErrors) != len(tc.expectedValidationErrors) {
+				t.Fatalf("expected %d validation errors, got %d", len(tc.expectedValidationErrors), len(validationErrors))
+			} else {
+				for i := range tc.expectedValidationErrors {
+					if tc.expectedValidationErrors[i] != validationErrors[i].Description() {
+						t.Errorf("expected validation error %s, got %s", tc.expectedValidationErrors[i], validationErrors[i].Description())
+					}
+				}
+			}
+
 			if diff := cmp.Diff(cfg, tc.expectedConfig); diff != "" {
 				t.Errorf("Config mismatch (-want +got):\n%s", diff)
 			}

@@ -45,6 +45,14 @@ func ReadConfigFile(path string) ([]byte, error) {
 	return content, nil
 }
 
+func UnmarshalConfigFile(path string) (*Config, *gojsonschema.Result, error) {
+	data, err := ReadConfigFile(path)
+	if err != nil {
+		return nil, nil, err
+	}
+	return UnmarshalConfig(data)
+}
+
 func UnmarshalConfig(data []byte) (*Config, *gojsonschema.Result, error) {
 	c := Config{}
 	err := yaml.Unmarshal([]byte(data), &c)
