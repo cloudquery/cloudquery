@@ -66,7 +66,7 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		// No console client created here
 	case "describe":
 		var err error
-		c, err = console.CreateClient(ctx, cfgPath, true, cfgMutator)
+		c, err = console.CreateClient(ctx, cfgPath, true, cfgMutator, instanceId)
 		if err != nil {
 			return err
 		}
@@ -75,7 +75,7 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		fallthrough
 	default:
 		var err error
-		c, err = console.CreateClient(ctx, cfgPath, false, cfgMutator)
+		c, err = console.CreateClient(ctx, cfgPath, false, cfgMutator, instanceId)
 		if err != nil {
 			return err
 		}

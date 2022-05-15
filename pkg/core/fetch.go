@@ -188,15 +188,21 @@ type FetchOptions struct {
 	ExtraFields map[string]interface{}
 	// Optional: whether fetch is executed in history mode or not
 	History *history.Config
+	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
+	FetchId uuid.UUID
 }
 
 func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
-	fetchId, err := uuid.NewUUID()
-	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+	var err error
+	fetchId := opts.FetchId
+	if fetchId == uuid.Nil {
+		fetchId, err = uuid.NewUUID()
+		if err != nil {
+			return nil, diag.FromError(err, diag.INTERNAL)
+		}
 	}
 	// set metadata we want to pass to
-	metadata := map[string]interface{}{"cq_fetch_id": fetchId.String()}
+	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
 	if opts.History != nil {
 		fd := opts.History.FetchDate()
 		log.Info().Str("fetch_date", fd.Format(time.RFC3339)).Stringer("fetch_id", fetchId).Msg("history enabled adding fetch date")

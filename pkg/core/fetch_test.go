@@ -6,18 +6,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
-	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Fetch(t *testing.T) {
@@ -94,6 +93,34 @@ func Test_Fetch(t *testing.T) {
 				},
 			},
 			ExpectedDiags: nil,
+			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
+				Name:                  "test",
+				Alias:                 "",
+				Version:               registry.LatestVersion,
+				TotalResourcesFetched: 0,
+				Status:                FetchFinished,
+			}}},
+		},
+		{
+			Name: "fetch-unique-fetch-id",
+			Options: FetchOptions{
+				ProvidersInfo: []ProviderInfo{
+					{
+						Provider: registry.Provider{
+							Name:    "test",
+							Version: registry.LatestVersion,
+							Source:  registry.DefaultOrganization,
+						},
+						Config: &config.Provider{
+							Name:          "test",
+							Resources:     []string{"slow_resource", "very_slow_resource"},
+							Env:           nil,
+							Configuration: nil,
+						},
+					},
+				},
+				FetchId: uuid.New(),
+			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
@@ -240,6 +267,9 @@ func Test_Fetch(t *testing.T) {
 			if tc.ExpectedResponse == nil {
 				require.Nil(t, resp)
 			} else {
+				if tc.Options.FetchId != uuid.Nil {
+					assert.Equal(t, tc.Options.FetchId, resp.FetchId)
+				}
 				for k, p := range tc.ExpectedResponse.ProviderFetchSummary {
 					fetchSummary, ok := resp.ProviderFetchSummary[k]
 					require.True(t, ok)

@@ -36,7 +36,7 @@ type Client struct {
 	env        *Environment
 	terminal   bool
 	userId     uuid.UUID
-	instanceId uuid.UUID
+	instanceId string
 
 	disabled bool
 	debug    bool
@@ -61,6 +61,12 @@ func WithProperties(properties map[string]interface{}) Option {
 func WithApiKey(apikey string) Option {
 	return func(c *Client) {
 		c.apikey = apikey
+	}
+}
+
+func WithInstanceId(instanceId string) Option {
+	return func(c *Client) {
+		c.instanceId = instanceId
 	}
 }
 
@@ -107,7 +113,7 @@ func New(opts ...Option) *Client {
 	c := &Client{
 		version:    VersionInfo{},
 		userId:     GetUserId(),
-		instanceId: uuid.New(),
+		instanceId: uuid.New().String(),
 		properties: make(map[string]interface{}),
 		debug:      false,
 		inspect:    false,
