@@ -70,7 +70,7 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 					diag.WithType(diag.THROTTLE),
 					diag.WithSeverity(diag.WARNING),
 					ParseSummaryMessage(err),
-					diag.WithDetails("CloudQuery AWS provider has been throttled, increase max_retries in provider configuration."),
+					diag.WithDetails("CloudQuery AWS provider has been throttled. This is unexpected - you can open an issue on github (https://github.com/cloudquery/cq-provider-aws/issues) or contact us on discord (https://cloudquery.io/discord)"),
 				)...),
 			),
 		}
