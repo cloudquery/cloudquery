@@ -107,8 +107,8 @@ func Init(opts ...Option) error {
 func New(opts ...Option) *Client {
 	c := &Client{
 		version:    VersionInfo{},
-		userId:     GetUserId().String(),
-		cookieId:   GetUserId(),
+		userId:     GetCookieId().String(),
+		cookieId:   GetCookieId(),
 		instanceId: uuid.New(),
 		properties: make(map[string]interface{}),
 		debug:      false,
@@ -136,11 +136,11 @@ func New(opts ...Option) *Client {
 	return c
 }
 
-// GetUserId will read or generate a persistent `telemetry-random-id` file and return its value.
+// GetCookieId will read or generate a persistent `telemetry-random-id` file and return its value.
 // First it will try reading ~/.cq/telemetry-random-id and use that value if found. If not, it will move on to ./cq/telemetry-random-id, first attempting a read and if not found, will create that file filling it with a newly generated ID.
 // If a directory with the same name is encountered, process is aborted and an empty string is returned.
 // If a new file is generated, c.newRandomId is set.
-func GetUserId() uuid.UUID {
+func GetCookieId() uuid.UUID {
 	fs := afero.Afero{Fs: afero.NewOsFs()}
 	v, err := persistentdata.New(fs, "telemetry-random-id", uuid.NewString).Get()
 	if err != nil {
