@@ -12,6 +12,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+const ssoInvalidOrExpired = "failed to refresh cached credentials, the SSO session has expired or is invalid"
+
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
@@ -22,7 +24,7 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
-		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
+		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId", "AuthFailure":
 			return diag.Diagnostics{
 				RedactError(accounts, diag.NewBaseError(err,
 					diag.ACCESS,
@@ -57,6 +59,19 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 						diag.WithSeverity(diag.IGNORE),
 						ParseSummaryMessage(err),
 						diag.WithDetails("The action is invalid for the service."),
+					)...),
+				),
+			}
+		}
+		if ae.ErrorMessage() == ssoInvalidOrExpired {
+			return diag.Diagnostics{
+				RedactError(accounts, diag.NewBaseError(err,
+					diag.ACCESS,
+					append(opts,
+						diag.WithType(diag.ACCESS),
+						diag.WithSeverity(diag.WARNING),
+						ParseSummaryMessage(err),
+						diag.WithDetails(errorCodeDescriptions[ae.ErrorCode()]),
 					)...),
 				),
 			}
@@ -152,6 +167,7 @@ var errorCodeDescriptions = map[string]string{
 	"AccessDeniedException":         "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
 	"AccessDenied":                  "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
 	"AuthorizationError":            "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
+	"AuthFailure":                   "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
 }
 
 var throttleCodes = map[string]struct{}{
