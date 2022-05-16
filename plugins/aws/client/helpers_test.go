@@ -64,7 +64,7 @@ func TestResolveARN(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			resolver := ResolveARN(tt.service, tt.resourceID)
 			col := schema.Column{Name: tt.columnName}
-			client := Client{Region: "region"}
+			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
 			require.Equal(t, tt.resource.Get(tt.columnName), tt.want)
 			require.Equal(t, err != nil, tt.wantErr)

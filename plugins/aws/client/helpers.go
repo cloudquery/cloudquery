@@ -230,8 +230,7 @@ func resolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 		if useRegion {
 			region = cl.Region
 		}
-		p, _ := RegionsPartition(cl.Region)
-		return resource.Set(c.Name, makeARN(service, p, accountID, region, idParts...).String())
+		return resource.Set(c.Name, makeARN(service, cl.Partition, accountID, region, idParts...).String())
 	}
 }
 
