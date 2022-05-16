@@ -40,6 +40,8 @@ type Config struct {
 	MaxAge int `hcl:"max_age,optional"`
 	// Console logging will be without color, console logging must be enabled first.
 	ConsoleNoColor bool `hcl:"console_no_color,optional"`
+	// Unique Identifier of execution
+	InstanceId string
 
 	// console is a writer that will be used for console output. If it is not set os.Stderr will be used.
 	console io.Writer
@@ -79,7 +81,7 @@ func Configure(config Config) zerolog.Logger {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
 
-	logger := zerolog.New(mw).With().Timestamp().Logger()
+	logger := zerolog.New(mw).With().Timestamp().Str("instance_id", config.InstanceId).Logger()
 	// override global logger
 	log.Logger = logger
 	// Default level is info, unless verbose flag is on

@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/getter"
@@ -58,9 +60,10 @@ type Client struct {
 	Registry         registry.Registry
 	PluginManager    *plugin.Manager
 	Storage          database.Storage
+	instanceId       uuid.UUID
 }
 
-func CreateClient(ctx context.Context, configPath string, allowDefaultConfig bool, configMutator func(*config.Config) error) (*Client, error) {
+func CreateClient(ctx context.Context, configPath string, allowDefaultConfig bool, configMutator func(*config.Config) error, instanceId uuid.UUID) (*Client, error) {
 	cfg, ok := loadConfig(configPath)
 	if !ok {
 		if !allowDefaultConfig {
@@ -81,10 +84,10 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 		}
 	}
 	setConfigAnalytics(cfg, cfg.CloudQuery.History != nil)
-	return CreateClientFromConfig(ctx, cfg)
+	return CreateClientFromConfig(ctx, cfg, instanceId)
 }
 
-func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, error) {
+func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId uuid.UUID) (*Client, error) {
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
@@ -135,7 +138,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config) (*Client, e
 		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
-	c := &Client{progressUpdater, cfg, pp, hub, pm, storage}
+	c := &Client{progressUpdater, cfg, pp, hub, pm, storage, instanceId}
 	c.checkForUpdate(ctx)
 	return c, err
 }
@@ -196,6 +199,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
 		History:        c.cfg.CloudQuery.History,
+		FetchId:        c.instanceId,
 	})
 	// first wait for progress to complete correctly
 	if fetchProgress != nil {
@@ -402,10 +406,10 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		return err
 	}
 
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
-	if err != nil {
-		log.Error().Err(err).Msg("failed to create policy manager")
-		return err
+	p, diags := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
+	if diags.HasErrors() {
+		log.Error().Err(err).Msg("failed to load policy")
+		return diags
 	}
 
 	e := policy.NewExecutor(conn, nil)

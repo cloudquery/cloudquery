@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/google/uuid"
+
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -104,7 +106,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	}
 
 	cfg.CloudQuery.Connection.DSN = "" // Don't connect
-	c, err := console.CreateClientFromConfig(ctx, cfg)
+	c, err := console.CreateClientFromConfig(ctx, cfg, uuid.Nil)
 	if err != nil {
 		return err
 	}

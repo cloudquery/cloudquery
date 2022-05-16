@@ -105,5 +105,6 @@ func initSentry() {
 			"faas":     strconv.FormatBool(analytics.IsFaaS()),
 		})
 		scope.SetExtra("cookie_id", userId.String())
+		scope.SetExtra("instance_id", instanceId)
 	})
 }
