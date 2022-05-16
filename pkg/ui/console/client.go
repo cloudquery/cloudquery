@@ -779,7 +779,7 @@ func setAnalyticsProperties(props map[string]interface{}) {
 	})
 }
 
-func setUserId(databaseId string) {
+func setUserId(newId string) {
 	analytics.SetUserId(databaseId)
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		scope.SetUser(sentry.User{
