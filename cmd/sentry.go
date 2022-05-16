@@ -37,7 +37,7 @@ func initSentry() {
 	if core.Version == core.DevelopmentVersion && !viper.GetBool("debug-sentry") {
 		dsn = "" // Disable Sentry in development mode, unless debug-sentry was enabled
 	}
-	userId := analytics.GetUserId()
+	userId := analytics.GetCookieId()
 	if analytics.CQTeamID == userId.String() && !viper.GetBool("debug-sentry") {
 		dsn = ""
 	}
@@ -104,6 +104,7 @@ func initSentry() {
 			"ci":       strconv.FormatBool(analytics.IsCI()),
 			"faas":     strconv.FormatBool(analytics.IsFaaS()),
 		})
+		scope.SetExtra("cookie_id", userId.String())
 		scope.SetExtra("instance_id", instanceId)
 	})
 }

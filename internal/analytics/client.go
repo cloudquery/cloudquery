@@ -35,7 +35,8 @@ type Client struct {
 	version    VersionInfo
 	env        *Environment
 	terminal   bool
-	userId     uuid.UUID
+	userId     string
+	cookieId   uuid.UUID
 	instanceId string
 
 	disabled bool
@@ -112,7 +113,8 @@ func Init(opts ...Option) error {
 func New(opts ...Option) *Client {
 	c := &Client{
 		version:    VersionInfo{},
-		userId:     GetUserId(),
+		userId:     GetCookieId().String(),
+		cookieId:   GetCookieId(),
 		instanceId: uuid.New().String(),
 		properties: make(map[string]interface{}),
 		debug:      false,
@@ -140,11 +142,11 @@ func New(opts ...Option) *Client {
 	return c
 }
 
-// GetUserId will read or generate a persistent `telemetry-random-id` file and return its value.
+// GetCookieId will read or generate a persistent `telemetry-random-id` file and return its value.
 // First it will try reading ~/.cq/telemetry-random-id and use that value if found. If not, it will move on to ./cq/telemetry-random-id, first attempting a read and if not found, will create that file filling it with a newly generated ID.
 // If a directory with the same name is encountered, process is aborted and an empty string is returned.
 // If a new file is generated, c.newRandomId is set.
-func GetUserId() uuid.UUID {
+func GetCookieId() uuid.UUID {
 	fs := afero.Afero{Fs: afero.NewOsFs()}
 	v, err := persistentdata.New(fs, "telemetry-random-id", uuid.NewString).Get()
 	if err != nil {
@@ -177,6 +179,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"build_date":          c.version.BuildDate,
 		"env":                 c.env,
 		"instance_id":         c.instanceId,
+		"cookie_id":           c.cookieId,
 		"success":             !diags.HasErrors(),
 		"installed_providers": pp,
 		"diagnostics":         core.SummarizeDiagnostics(diags),
@@ -202,12 +205,16 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		return
 	}
 
-	event := analytics.Track{UserId: c.userId.String(), Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
+	event := analytics.Track{UserId: c.userId, Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
 	if err := c.client.Enqueue(event); err != nil {
 		if c.debug {
 			log.Error().Err(err).Msg("failed to send analytics")
 		}
 	}
+}
+func SetUserId(userId string) {
+	c := currentHub
+	c.userId = userId
 }
 
 func SetGlobalProperty(k string, v interface{}) {
