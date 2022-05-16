@@ -780,10 +780,10 @@ func setAnalyticsProperties(props map[string]interface{}) {
 }
 
 func setUserId(newId string) {
-	analytics.SetUserId(databaseId)
+	analytics.SetUserId(newId)
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		scope.SetUser(sentry.User{
-			ID: databaseId,
+			ID: newId,
 		})
 	})
 }
