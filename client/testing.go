@@ -42,6 +42,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 					Level: hclog.Warn,
 				}), accounts)
 				c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", builder(t, ctrl))
+				c.Partition = "aws"
 				return &c, nil
 			},
 			ResourceMap: map[string]*schema.Table{

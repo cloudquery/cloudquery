@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -209,6 +210,7 @@ type Client struct {
 	Region               string
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
+	Partition            string
 }
 
 var (
@@ -267,24 +269,22 @@ func (c *Client) Services() *Services {
 
 // ARN builds an ARN tied to current client's partition, accountID and region
 func (c *Client) ARN(service AWSService, idParts ...string) string {
-	p, _ := RegionsPartition(c.Region)
-	return makeARN(service, p, c.AccountID, c.Region, idParts...).String()
+	return makeARN(service, c.Partition, c.AccountID, c.Region, idParts...).String()
 }
 
 // AccountGlobalARN builds an ARN tied to current client's partition and accountID
 func (c *Client) AccountGlobalARN(service AWSService, idParts ...string) string {
-	p, _ := RegionsPartition(c.Region)
-	return makeARN(service, p, c.AccountID, "", idParts...).String()
+	return makeARN(service, c.Partition, c.AccountID, "", idParts...).String()
 }
 
 // PartitionGlobalARN builds an ARN tied to current client's partition
 func (c *Client) PartitionGlobalARN(service AWSService, idParts ...string) string {
-	p, _ := RegionsPartition(c.Region)
-	return makeARN(service, p, "", "", idParts...).String()
+	return makeARN(service, c.Partition, "", "", idParts...).String()
 }
 
 func (c *Client) withAccountID(accountID string) *Client {
 	return &Client{
+		Partition:            c.Partition,
 		Accounts:             c.Accounts,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -299,6 +299,7 @@ func (c *Client) withAccountID(accountID string) *Client {
 
 func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
+		Partition:            c.Partition,
 		Accounts:             c.Accounts,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -314,6 +315,7 @@ func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 
 func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace string) *Client {
 	return &Client{
+		Partition:            c.Partition,
 		Accounts:             c.Accounts,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -329,6 +331,7 @@ func (c *Client) withAccountIDRegionAndNamespace(accountID, region, namespace st
 
 func (c *Client) withAccountIDRegionAndScope(accountID, region string, scope wafv2types.Scope) *Client {
 	return &Client{
+		Partition:            c.Partition,
 		Accounts:             c.Accounts,
 		logLevel:             c.logLevel,
 		maxRetries:           c.maxRetries,
@@ -527,11 +530,17 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if err != nil {
 			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
 		}
+		iamArn, err := arn.Parse(*output.Arn)
+		if err != nil {
+			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
+		}
 		if client.AccountID == "" {
 			// set default
 			client.AccountID = *output.Account
 			client.Region = account.Regions[0]
+			client.Partition = iamArn.Partition
 			client.Accounts = append(client.Accounts, Account{ID: *output.Account, RoleARN: *output.Arn})
+
 		}
 		for _, region := range account.Regions {
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))

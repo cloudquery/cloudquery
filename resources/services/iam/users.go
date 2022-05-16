@@ -306,8 +306,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 		return diag.WrapError(err)
 	}
 
-	partition, _ := client.RegionsPartition(cl.Region)
-	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", partition, cl.AccountID))
+	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", cl.Partition, cl.AccountID))
 	if root != nil {
 		res <- wrappedUser{
 			User: types.User{
