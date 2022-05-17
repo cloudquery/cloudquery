@@ -100,6 +100,9 @@ func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, paren
 		o.Region = c.Region
 	})
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- output.Subscription

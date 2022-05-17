@@ -83,6 +83,9 @@ func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, pa
 			o.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- output.ProtectionGroups
