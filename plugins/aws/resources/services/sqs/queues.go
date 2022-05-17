@@ -214,6 +214,9 @@ func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			}
 			out, err := sqsClient.GetQueueAttributes(ctx, &input, optsFn)
 			if err != nil {
+				if client.IsNotFoundError(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 
