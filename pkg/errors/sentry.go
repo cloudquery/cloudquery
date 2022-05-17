@@ -23,7 +23,7 @@ func CaptureError(err error, tags map[string]string) {
 
 func CaptureDiagnostics(dd diag.Diagnostics, tags map[string]string) {
 	allowUnmanaged := core.Version == core.DevelopmentVersion && viper.GetBool("debug-sentry")
-	for _, d := range dd {
+	for _, d := range dd.Squash().Redacted() {
 		if ShouldIgnoreDiag(d) {
 			continue
 		}
