@@ -18,7 +18,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -204,17 +203,11 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
 	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
 
-	// TODO: in future more components will want state, so make state more generic and passable via database.Storage
-	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "fetch"), storage.DSN())
+	stateClient, err := state.NewMigratedClient(ctx, storage.DSN(), logging.NewZHcLog(&log.Logger, "fetch"))
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
-	}
-	defer db.Close()
-	stateClient := state.NewClient(db, logging.NewZHcLog(&log.Logger, "fetch"))
-	// migrate CloudQuery core tables to latest version
-	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
+	defer stateClient.Close()
 
 	var (
 		diags          diag.Diagnostics

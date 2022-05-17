@@ -3,12 +3,9 @@ package state
 import (
 	"context"
 	"errors"
-	"fmt"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
@@ -79,19 +76,9 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSaveSummary(t *testing.T) {
-	// create database connection
-	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
+	fetchSummaryClient, err := NewMigratedClient(context.Background(), testDBConnection, hclog.NewNullLogger())
 	assert.NoError(t, err)
-
-	fetchSummaryClient := NewClient(db, hclog.NewNullLogger())
-
-	_, de, err := database.GetExecutor(testDBConnection)
-	if err != nil {
-		t.Fatal(fmt.Errorf("getExecutor: %w", err))
-	}
-
-	err = fetchSummaryClient.MigrateCore(context.Background(), de)
-	assert.NoError(t, err)
+	defer fetchSummaryClient.Close()
 
 	fetchId := uuid.New()
 	for _, f := range fetchSummaryTests {

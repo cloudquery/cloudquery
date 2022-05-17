@@ -261,10 +261,6 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 	for _, p := range providers {
 		sync, dd := core.Sync(ctx, c.Storage, c.PluginManager, &core.SyncOptions{Provider: p, DownloadLatest: false})
 		if dd.HasErrors() {
-			if errors.Is(dd, core.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s failed to sync provider, migrations not supported %s.\n", emojiStatus[ui.StatusWarn], p.String())
-				continue
-			}
 			ui.ColorizedOutput(ui.ColorError, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusError], p.String())
 			// TODO: should we just append diags and continue to sync others or stop syncing?
 			return nil, dd

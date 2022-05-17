@@ -25,10 +25,6 @@ func New(dsn string) *Executor {
 	}
 }
 
-func (e Executor) Setup(ctx context.Context) (string, error) {
-	return e.dsn, nil
-}
-
 func (e *Executor) Validate(ctx context.Context) (bool, error) {
 	pool, err := sdkpg.Connect(ctx, e.dsn)
 	if err != nil {
@@ -55,14 +51,6 @@ func (e Executor) Identifier(_ context.Context) (string, bool) {
 		return "", false
 	}
 	return e.dbId, true
-}
-
-func (e Executor) Prepare(_ context.Context) error {
-	return nil
-}
-
-func (e Executor) Finalize(_ context.Context, err error) error {
-	return err
 }
 
 // ValidatePostgresConnection validates that we can actually connect to the postgres database.

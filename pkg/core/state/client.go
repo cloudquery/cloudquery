@@ -6,9 +6,10 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/golang-migrate/migrate/v4"
@@ -21,7 +22,9 @@ var (
 )
 
 type Client struct {
+	dsn    string
 	db     execution.QueryExecer
+	closer func()
 	Logger hclog.Logger
 }
 
@@ -32,14 +35,37 @@ func NewClient(db execution.QueryExecer, logger hclog.Logger) *Client {
 	}
 }
 
-func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
-	err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-	if err != nil {
-		return err
+func NewMigratedClient(ctx context.Context, dsn string, logger hclog.Logger) (*Client, error) {
+	c := &Client{
+		dsn:    dsn,
+		Logger: logger,
 	}
 
-	newDSN, err := de.Setup(ctx)
+	db, err := sdkdb.New(ctx, c.Logger, c.dsn)
 	if err != nil {
+		return nil, diag.FromError(err, diag.DATABASE)
+	}
+	c.db = db
+	c.closer = db.Close
+
+	// migrate CloudQuery core tables to latest version
+	if err := c.migrateCore(ctx); err != nil {
+		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
+	}
+
+	return c, nil
+}
+
+func (c *Client) Close() {
+	if c.db == nil {
+		return
+	}
+	c.closer()
+	c.db, c.closer = nil, nil
+}
+
+func (c *Client) migrateCore(ctx context.Context) error {
+	if err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery"); err != nil {
 		return err
 	}
 
@@ -47,7 +73,7 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 	if err != nil {
 		return err
 	}
-	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
+	newDSN, err := dsn.SetDSNElement(c.dsn, map[string]string{"search_path": "cloudquery"})
 	if err != nil {
 		return err
 	}

@@ -14,7 +14,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
@@ -419,15 +418,9 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := state.NewClient(db, hclog.NewNullLogger())
-
-	_, de, err := database.GetExecutor(testDBConnection)
-	if err != nil {
-		t.Fatal(fmt.Errorf("getExecutor: %w", err))
-	}
-
-	err = metaStorage.MigrateCore(context.Background(), de)
+	metaStorage, err := state.NewMigratedClient(context.Background(), testDBConnection, hclog.NewNullLogger())
 	assert.NoError(t, err)
+	defer metaStorage.Close()
 
 	executor := NewExecutor(db, nil)
 
@@ -490,15 +483,9 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage := state.NewClient(db, hclog.NewNullLogger())
-
-	_, de, err := database.GetExecutor(testDBConnection)
-	if err != nil {
-		t.Fatal(fmt.Errorf("getExecutor: %w", err))
-	}
-
-	err = metaStorage.MigrateCore(context.Background(), de)
+	metaStorage, err := state.NewMigratedClient(context.Background(), testDBConnection, hclog.NewNullLogger())
 	assert.NoError(t, err)
+	defer metaStorage.Close()
 
 	executor := NewExecutor(db, nil)
 
