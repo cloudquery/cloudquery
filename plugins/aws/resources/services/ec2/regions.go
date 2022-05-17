@@ -48,6 +48,12 @@ func AwsRegions() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RegionName"),
 			},
+			{
+				Name:        "partition",
+				Description: "AWS partition",
+				Type:        schema.TypeString,
+				Resolver:    resolveRegionPartition,
+			},
 		},
 	}
 }
@@ -68,7 +74,6 @@ func fetchRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-
 	region := resource.Item.(types.Region)
 	switch *region.OptInStatus {
 	case "opt-in-not-required", "opted-in":
@@ -77,4 +82,8 @@ func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource 
 		return resource.Set(c.Name, false)
 	}
 	return nil
+}
+func resolveRegionPartition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return diag.WrapError(resource.Set(c.Name, cl.Partition))
 }
