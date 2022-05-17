@@ -39,12 +39,15 @@ func (e *Executor) Validate(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
+	// Not returning the error immediately as this error should not block anything
+	var dbIdErr error
+	e.dbId, dbIdErr = GetDatabaseId(ctx, pool)
+
 	if err := ValidatePostgresVersion(ctx, pool); err != nil {
 		return true, err
 	}
 
-	e.dbId, err = GetDatabaseId(ctx, pool)
-	return true, err
+	return true, dbIdErr
 }
 
 func (e Executor) Identifier(_ context.Context) (string, bool) {
