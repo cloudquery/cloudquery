@@ -4,6 +4,30 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.23.3](https://github.com/cloudquery/cloudquery/compare/v0.23.2...v0.23.3) (2022-05-17)
+
+
+### Features
+
+* Add global log id ([#714](https://github.com/cloudquery/cloudquery/issues/714)) ([cece150](https://github.com/cloudquery/cloudquery/commit/cece150a78c83365a36cb3c295de8218ae959995))
+* Policy Output ([#664](https://github.com/cloudquery/cloudquery/issues/664)) ([31f7e19](https://github.com/cloudquery/cloudquery/commit/31f7e19463da541b5ec13e18f4faf6d91dcfe6b0))
+* Resource list enhancements ([#706](https://github.com/cloudquery/cloudquery/issues/706)) ([1952a27](https://github.com/cloudquery/cloudquery/commit/1952a27f212e109bac7bc74761cf193478aa1289))
+* Use database id as unique id ([#705](https://github.com/cloudquery/cloudquery/issues/705)) ([dc00381](https://github.com/cloudquery/cloudquery/commit/dc0038158924b48ac41cbe57f7140084f2059ec3))
+
+
+### Bug Fixes
+
+* Add missing descriptions ([#700](https://github.com/cloudquery/cloudquery/issues/700)) ([c3c288c](https://github.com/cloudquery/cloudquery/commit/c3c288c62ff134109b2f35ec1a73b6cdd63c2d72))
+* Classify not found policies and improve errors ([#697](https://github.com/cloudquery/cloudquery/issues/697)) ([413a2cf](https://github.com/cloudquery/cloudquery/commit/413a2cfe757f6a29ebc2fdb2db07b99b1fa9c4a1))
+* Classify policy parse errors as User ([#716](https://github.com/cloudquery/cloudquery/issues/716)) ([f5947bf](https://github.com/cloudquery/cloudquery/commit/f5947bf443631454d41c2764c45bb32e5cfc2058))
+* Classify subdir not found error ([#701](https://github.com/cloudquery/cloudquery/issues/701)) ([1a30732](https://github.com/cloudquery/cloudquery/commit/1a307321dab4c75c6697b20f8756d7282689a5cf))
+* Completion issue ([#703](https://github.com/cloudquery/cloudquery/issues/703)) ([21c7bfe](https://github.com/cloudquery/cloudquery/commit/21c7bfeeb7afee4f1da7b8492e7be3a4c92b2bca))
+* Handle empty policy directory ([#699](https://github.com/cloudquery/cloudquery/issues/699)) ([6acd308](https://github.com/cloudquery/cloudquery/commit/6acd3087cb3a81d990c77f351b969445e12d2bfd))
+* Remove empty keys from init config ([#696](https://github.com/cloudquery/cloudquery/issues/696)) ([0e8dda1](https://github.com/cloudquery/cloudquery/commit/0e8dda1aecf5ac8ca785f1f9d4912b412b040ae8))
+* Remove lambda support ([#710](https://github.com/cloudquery/cloudquery/issues/710)) ([5254f34](https://github.com/cloudquery/cloudquery/commit/5254f34f30f96b27d82e627a2be6c302bcb174af))
+* Remove unused lambda dependency ([#717](https://github.com/cloudquery/cloudquery/issues/717)) ([7c78974](https://github.com/cloudquery/cloudquery/commit/7c78974668ad4144c7d9ded285cb4290fb0b01e6))
+* Set ID For all Versions ([#724](https://github.com/cloudquery/cloudquery/issues/724)) ([ac46d2a](https://github.com/cloudquery/cloudquery/commit/ac46d2ad77bc8987e693028211a034bfe70cb06f))
+
 ### [0.23.2](https://github.com/cloudquery/cloudquery/compare/v0.23.1...v0.23.2) (2022-05-11)
 
 
