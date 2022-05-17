@@ -12,7 +12,7 @@ import (
 )
 
 func TestCreateClient(t *testing.T) {
-	analytics.Init()
+	_ = analytics.Init()
 
 	_, filename, _, _ := runtime.Caller(0)
 	fixtures := filepath.Join(filepath.Dir(filename), "fixtures")
