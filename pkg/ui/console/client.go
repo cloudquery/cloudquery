@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -83,7 +82,12 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			return nil, err
 		}
 	}
-	setConfigAnalytics(cfg, cfg.CloudQuery.History != nil)
+
+	if cfg.CloudQuery.History != nil {
+		return nil, diag.FromError(fmt.Errorf("history feature is removed. See more at https://TODO"), diag.USER) // TODO
+	}
+
+	setConfigAnalytics(cfg)
 	return CreateClientFromConfig(ctx, cfg, instanceId)
 }
 
@@ -109,7 +113,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 
 	var storage database.Storage
 	if cfg.CloudQuery.Connection.DSN != "" {
-		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
+		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN)
 		if err != nil {
 			return nil, err
 		}
@@ -198,7 +202,6 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	result, diags := core.Fetch(ctx, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
-		History:        c.cfg.CloudQuery.History,
 		FetchId:        c.instanceId,
 	})
 	// first wait for progress to complete correctly
@@ -795,13 +798,12 @@ func setUserId(newId string) {
 	})
 }
 
-func setConfigAnalytics(cfg *config.Config, history bool) {
+func setConfigAnalytics(cfg *config.Config) {
 	cfgJSON, _ := json.Marshal(cfg)
 	s := sha256.New()
 	_, _ = s.Write(cfgJSON)
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
-	analytics.SetGlobalProperty("history", history)
 
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		if analytics.IsCI() {
@@ -811,7 +813,6 @@ func setConfigAnalytics(cfg *config.Config, history bool) {
 		}
 		scope.SetTags(map[string]string{
 			"cfghash": cfgHash,
-			"history": strconv.FormatBool(history),
 		})
 	})
 }

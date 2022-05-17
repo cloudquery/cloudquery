@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
@@ -86,7 +85,7 @@ func TestFetchSaveSummary(t *testing.T) {
 
 	fetchSummaryClient := NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection)
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}

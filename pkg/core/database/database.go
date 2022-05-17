@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database/postgres"
-	"github.com/cloudquery/cloudquery/pkg/core/database/timescale"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -30,10 +28,9 @@ type DialectExecutor interface {
 
 var (
 	_ DialectExecutor = (*postgres.Executor)(nil)
-	_ DialectExecutor = (*timescale.Executor)(nil)
 )
 
-func GetExecutor(dsn string, c *history.Config) (schema.DialectType, DialectExecutor, error) {
+func GetExecutor(dsn string) (schema.DialectType, DialectExecutor, error) {
 	if dsn == "" {
 		return schema.Postgres, nil, fmt.Errorf("missing DSN")
 	}
@@ -47,11 +44,7 @@ func GetExecutor(dsn string, c *history.Config) (schema.DialectType, DialectExec
 	case schema.Postgres:
 		return dType, postgres.New(dsn), nil
 	case schema.TSDB:
-		ts, err := timescale.New(dsn, c)
-		if err != nil {
-			return dType, nil, err
-		}
-		return dType, ts, nil
+		return dType, nil, fmt.Errorf("history feature is removed. See more at https://TODO") // TODO
 	default:
 		return dType, nil, fmt.Errorf("unhandled dialect type")
 	}

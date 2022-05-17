@@ -14,7 +14,6 @@ import (
 	cqsort "github.com/cloudquery/cloudquery/internal/sort"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -186,10 +185,8 @@ type FetchOptions struct {
 	UpdateCallback FetchUpdateCallback
 	// Providers list of providers to call for fetching
 	ProvidersInfo []ProviderInfo
-	// Optional: Adds extra fields to the provider, this is used for history mode and testing purposes.
+	// Optional: Adds extra fields to the provider
 	ExtraFields map[string]interface{}
-	// Optional: whether fetch is executed in history mode or not
-	History *history.Config
 	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
 	FetchId uuid.UUID
 }
@@ -205,18 +202,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	}
 	// set metadata we want to pass to
 	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
-	if opts.History != nil {
-		fd := opts.History.FetchDate()
-		log.Info().Str("fetch_date", fd.Format(time.RFC3339)).Stringer("fetch_id", fetchId).Msg("history enabled adding fetch date")
-		metadata["cq_fetch_date"] = fd
-		// TODO Remove(Compatibility): Code below is for providers using the old SDK version, where metadata isn't available in FetchRequest
-		// Removing this without updating provider will set cq_fetch_date to the time of execution start, which HistoryCfg.TimeTruncation doesn't apply
-		if opts.ExtraFields == nil {
-			opts.ExtraFields = make(map[string]interface{})
-		}
-		opts.ExtraFields["cq_fetch_date"] = fd
-	}
-	log.Info().Interface("extra_fields", opts.ExtraFields).Bool("history_enabled", opts.History != nil).Msg("received fetch request")
+	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
 
 	// TODO: in future more components will want state, so make state more generic and passable via database.Storage
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "fetch"), storage.DSN())
@@ -237,7 +223,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 		start          = time.Now()
 	)
 
-	dsnURI, err := parseDSN(storage, opts.History)
+	dsnURI, err := parseDSN(storage)
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
@@ -518,15 +504,12 @@ func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, 
 	return result, nil
 }
 
-func parseDSN(storage database.Storage, cfg *history.Config) (string, error) {
-	if cfg == nil {
-		parsed, err := dsn.ParseConnectionString(storage.DSN())
-		if err != nil {
-			return "", err
-		}
-		return parsed.String(), nil
+func parseDSN(storage database.Storage) (string, error) {
+	parsed, err := dsn.ParseConnectionString(storage.DSN())
+	if err != nil {
+		return "", err
 	}
-	return history.TransformDSN(storage.DSN())
+	return parsed.String(), nil
 }
 
 type fetchResult struct {

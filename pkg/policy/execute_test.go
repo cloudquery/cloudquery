@@ -15,7 +15,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
@@ -422,7 +421,7 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 
 	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection)
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}
@@ -493,7 +492,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 
 	metaStorage := state.NewClient(db, hclog.NewNullLogger())
 
-	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
+	_, de, err := database.GetExecutor(testDBConnection)
 	if err != nil {
 		t.Fatal(fmt.Errorf("getExecutor: %w", err))
 	}

@@ -21,7 +21,7 @@ func Test_Sync(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	_, dialect, err := database.GetExecutor(dsn, nil)
+	_, dialect, err := database.GetExecutor(dsn)
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -83,7 +83,7 @@ func Test_Drop(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	_, dialect, err := database.GetExecutor(dsn, nil)
+	_, dialect, err := database.GetExecutor(dsn)
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
