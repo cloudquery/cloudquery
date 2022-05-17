@@ -1,3 +1,6 @@
+-- Resource: aws.regions
+ALTER TABLE IF EXISTS "aws_regions" DROP COLUMN IF EXISTS "partition";
+
 -- Resource: athena.data_catalogs
 DROP TABLE IF EXISTS aws_athena_data_catalog_database_table_columns;
 DROP TABLE IF EXISTS aws_athena_data_catalog_database_table_partition_keys;

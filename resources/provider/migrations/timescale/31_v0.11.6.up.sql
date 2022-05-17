@@ -172,3 +172,6 @@ CREATE TABLE IF NOT EXISTS "aws_athena_work_group_named_queries"(
 );
 CREATE INDEX ON aws_athena_work_group_named_queries(cq_fetch_date,work_group_cq_id);
 SELECT setup_tsdb_child('aws_athena_work_group_named_queries','work_group_cq_id','aws_athena_work_groups','cq_id');
+
+-- Resource: aws.regions
+ALTER TABLE IF EXISTS "aws_regions" ADD COLUMN IF NOT EXISTS "partition" text;

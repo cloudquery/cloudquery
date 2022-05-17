@@ -149,3 +149,6 @@ CREATE TABLE IF NOT EXISTS "aws_athena_work_group_named_queries" (
 	UNIQUE (cq_id),
 	FOREIGN KEY (work_group_cq_id) REFERENCES aws_athena_work_groups(cq_id) ON DELETE CASCADE
 );
+
+-- Resource: aws.regions
+ALTER TABLE IF EXISTS "aws_regions" ADD COLUMN IF NOT EXISTS "partition" text;
