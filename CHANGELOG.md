@@ -4,6 +4,17 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.23.4](https://github.com/cloudquery/cloudquery/compare/v0.23.3...v0.23.4) (2022-05-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.9.4 ([#725](https://github.com/cloudquery/cloudquery/issues/725)) ([69afca7](https://github.com/cloudquery/cloudquery/commit/69afca7dd34200ef0fda2341293e3fb46ee75faa))
+* Don't generate telemetry-random-id in current dir ([#729](https://github.com/cloudquery/cloudquery/issues/729)) ([5eb493b](https://github.com/cloudquery/cloudquery/commit/5eb493b7215dc488d515106beff1a863a384b002))
+* Panic on nil fetch response ([#728](https://github.com/cloudquery/cloudquery/issues/728)) ([8118554](https://github.com/cloudquery/cloudquery/commit/811855475622955dcfb323298292bde958f4372d))
+* Panic on nil fetch result ([#730](https://github.com/cloudquery/cloudquery/issues/730)) ([7f224d0](https://github.com/cloudquery/cloudquery/commit/7f224d0371ed0014948fb6c572adef20bdb16094))
+* squash redact errors ([#727](https://github.com/cloudquery/cloudquery/issues/727)) ([bccf7b7](https://github.com/cloudquery/cloudquery/commit/bccf7b71094eef4552e9227e4290aeec9a47896f))
+
 ### [0.23.3](https://github.com/cloudquery/cloudquery/compare/v0.23.2...v0.23.3) (2022-05-17)
 
 
