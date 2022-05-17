@@ -388,10 +388,7 @@ func isAllRegions(regions []string) bool {
 
 func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentityOutput, error) {
 	svc := sts.NewFromConfig(awsCfg)
-	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{}, func(o *sts.Options) {
-		o.Region = "aws-global"
-	})
-
+	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
 type AssumeRoleAPIClient interface {
@@ -525,7 +522,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if len(account.Regions) == 0 {
 			return nil, diags.Add(diag.FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.USER))
 		}
-
+		awsCfg.Region = account.Regions[0]
 		output, err := getAccountId(ctx, awsCfg)
 		if err != nil {
 			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
