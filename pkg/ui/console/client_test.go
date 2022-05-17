@@ -7,10 +7,13 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/google/uuid"
 )
 
 func TestCreateClient(t *testing.T) {
+	analytics.Init()
+
 	_, filename, _, _ := runtime.Caller(0)
 	fixtures := filepath.Join(filepath.Dir(filename), "fixtures")
 
