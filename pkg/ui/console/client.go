@@ -217,6 +217,9 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
 	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	if result == nil {
+		return result, nil
+	}
 	for _, summary := range result.ProviderFetchSummary {
 		s := emojiStatus[ui.StatusOK]
 		if summary.Status == core.FetchCanceled {
