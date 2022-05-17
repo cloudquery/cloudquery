@@ -29,7 +29,7 @@ type VersionInfo struct {
 }
 
 // Consumers must call analytics.Init before using this package
-var currentHub *Client = nil
+var currentHub *Client
 
 type Client struct {
 	version    VersionInfo
