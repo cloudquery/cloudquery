@@ -28,8 +28,8 @@ type VersionInfo struct {
 	CommitId  string `json:"commit_id,omitempty"`
 }
 
-// currentHub is the initial Hub with no Client bound and an empty Scope.
-var currentHub = New()
+// Consumers must call analytics.Init before using this package
+var currentHub *Client
 
 type Client struct {
 	version    VersionInfo
