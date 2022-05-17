@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.3](https://github.com/cloudquery/cq-provider-okta/compare/v0.4.2...v0.4.3) (2022-05-17)
+
+
+### Features
+
+* Add error classifier ([#62](https://github.com/cloudquery/cq-provider-okta/issues/62)) ([1519c2d](https://github.com/cloudquery/cq-provider-okta/commit/1519c2d244734203d8b874642c5720180fabf956))
+
 ### [0.4.2](https://github.com/cloudquery/cq-provider-okta/compare/v0.4.1...v0.4.2) (2022-05-10)
 
 
