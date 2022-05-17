@@ -38,7 +38,7 @@ jobs:
         id-token: write
         contents: read    # This is required for actions/checkout@v2
     needs: is_organization_member
-    if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true'
+    if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true' || github.actor == 'renovate[bot]'
     strategy:
       matrix:
         dbversion: [ "postgres:latest" ]
