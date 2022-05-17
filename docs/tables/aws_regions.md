@@ -9,3 +9,4 @@ Describes a Region.
 |endpoint|text|The Region service endpoint.|
 |opt_in_status|text|The Region opt-in status|
 |region|text|The name of the Region.|
+|partition|text|AWS partition|

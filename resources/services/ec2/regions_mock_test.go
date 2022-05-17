@@ -19,6 +19,7 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	r.OptInStatus = aws.String("opted-in")
+	r.RegionName = aws.String("us-east-1")
 	m.EXPECT().DescribeRegions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeRegionsOutput{
 			Regions: []ec2Types.Region{r},
