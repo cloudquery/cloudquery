@@ -152,7 +152,7 @@ func GetCookieId() uuid.UUID {
 	if err != nil {
 		return uuid.New()
 	}
-	id, err := uuid.Parse(strings.TrimSuffix(v.Content, "\r\n"))
+	id, err := uuid.Parse(strings.TrimSpace(v.Content))
 	if err != nil {
 		return uuid.New()
 	}
