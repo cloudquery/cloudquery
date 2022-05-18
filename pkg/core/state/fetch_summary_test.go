@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -76,7 +75,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSaveSummary(t *testing.T) {
-	fetchSummaryClient, err := NewMigratedClient(context.Background(), testDBConnection, hclog.NewNullLogger())
+	fetchSummaryClient, err := NewMigratedClient(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer fetchSummaryClient.Close()
 

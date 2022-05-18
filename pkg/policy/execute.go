@@ -226,7 +226,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	metaStorage := state.NewClient(e.conn, e.log)
+	metaStorage := state.NewClient(e.conn)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {

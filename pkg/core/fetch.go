@@ -10,7 +10,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
 	cqsort "github.com/cloudquery/cloudquery/internal/sort"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
@@ -203,7 +202,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
 	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
 
-	stateClient, err := state.NewMigratedClient(ctx, storage.DSN(), logging.NewZHcLog(&log.Logger, "fetch"))
+	stateClient, err := state.NewMigratedClient(ctx, storage.DSN())
 	if err != nil {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}

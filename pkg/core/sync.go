@@ -68,7 +68,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", provider.Version), diag.INTERNAL)
 	}
 
-	sta, err := state.NewMigratedClient(ctx, storage.DSN(), logging.NewZHcLog(&log.Logger, "sync"))
+	sta, err := state.NewMigratedClient(ctx, storage.DSN())
 	if err != nil {
 		return nil, diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
@@ -151,7 +151,7 @@ func dropProvider(ctx context.Context, dsn string, provider registry.Provider, r
 		return err
 	}
 
-	sta, err := state.NewMigratedClient(ctx, dsn, logging.NewZHcLog(&log.Logger, "sync"))
+	sta, err := state.NewMigratedClient(ctx, dsn)
 	if err != nil {
 		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
@@ -181,7 +181,7 @@ func installProvider(ctx context.Context, dsn string, db execution.QueryExecer, 
 		}
 	}
 
-	sta, err := state.NewMigratedClient(ctx, dsn, logging.NewZHcLog(&log.Logger, "sync"))
+	sta, err := state.NewMigratedClient(ctx, dsn)
 	if err != nil {
 		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}

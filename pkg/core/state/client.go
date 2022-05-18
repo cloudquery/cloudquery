@@ -6,6 +6,7 @@ import (
 	"embed"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
@@ -14,6 +15,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -28,17 +30,17 @@ type Client struct {
 	Logger hclog.Logger
 }
 
-func NewClient(db execution.QueryExecer, logger hclog.Logger) *Client {
+func NewClient(db execution.QueryExecer) *Client {
 	return &Client{
 		db:     db,
-		Logger: logger,
+		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
 }
 
-func NewMigratedClient(ctx context.Context, dsn string, logger hclog.Logger) (*Client, error) {
+func NewMigratedClient(ctx context.Context, dsn string) (*Client, error) {
 	c := &Client{
 		dsn:    dsn,
-		Logger: logger,
+		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
 
 	db, err := sdkdb.New(ctx, c.Logger, c.dsn)
