@@ -354,7 +354,7 @@ func setupTestProvider(t *testing.T, dsn string) {
 	})
 	assert.False(t, diags.HasErrors())
 
-	if _, diags := Sync(context.TODO(), database.NewStorage(dsn, nil), pm, &SyncOptions{provider, true}); diags.HasErrors() {
+	if _, diags := Sync(context.TODO(), database.NewStorage(dsn, nil), pm, provider); diags.HasErrors() {
 		t.FailNow()
 	}
 }

@@ -31,11 +31,11 @@ func Test_Sync(t *testing.T) {
 	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}, {Name: "test", Version: "latest", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())
 
-	result, diags := Sync(context.Background(), storage, pManager, &SyncOptions{Provider: registry.Provider{
+	result, diags := Sync(context.Background(), storage, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
-	}})
+	})
 	assert.False(t, diags.HasErrors())
 	assert.Equal(t, &SyncResult{State: Upgraded, OldVersion: "v0.0.0", NewVersion: "v0.0.10"}, result)
 	// Verify tables were created
@@ -53,21 +53,21 @@ func Test_Sync(t *testing.T) {
 	assert.False(t, diags.HasErrors())
 
 	// upgrade
-	result, diags = Sync(context.Background(), storage, pManager, &SyncOptions{Provider: registry.Provider{
+	result, diags = Sync(context.Background(), storage, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.11",
 		Source:  "cloudquery",
-	}})
+	})
 	assert.False(t, diags.HasErrors())
 	assert.Equal(t, &SyncResult{State: Upgraded, OldVersion: "v0.0.10", NewVersion: "v0.0.11"}, result)
 	_, err = conn.Exec(context.Background(), "select some_bool from slow_resource")
 	assert.Nil(t, err)
 
-	result, diags = Sync(context.Background(), storage, pManager, &SyncOptions{Provider: registry.Provider{
+	result, diags = Sync(context.Background(), storage, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
-	}})
+	})
 	assert.False(t, diags.HasErrors())
 	assert.Equal(t, &SyncResult{State: Downgraded, OldVersion: "v0.0.11", NewVersion: "v0.0.10"}, result)
 	_, err = conn.Exec(context.Background(), "select some_bool from slow_resource")
@@ -99,11 +99,11 @@ func Test_Drop(t *testing.T) {
 	})
 	assert.False(t, diags.HasErrors())
 
-	result, diags := Sync(context.Background(), storage, pManager, &SyncOptions{Provider: registry.Provider{
+	result, diags := Sync(context.Background(), storage, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
-	}})
+	})
 	assert.False(t, diags.HasErrors())
 	assert.Equal(t, &SyncResult{State: Upgraded, OldVersion: "v0.0.0", NewVersion: "v0.0.10"}, result)
 	// Verify tables were created

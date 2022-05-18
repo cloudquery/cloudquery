@@ -40,31 +40,16 @@ func (s SyncState) String() string {
 	return "Unknown"
 }
 
-type SyncOptions struct {
-	Provider registry.Provider
-	// DownloadLatest specifies whether the latest provider should be downloaded before sync is called.
-	DownloadLatest bool
-}
-
 type SyncResult struct {
 	State      SyncState
 	OldVersion string
 	NewVersion string
 }
 
-func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *SyncOptions) (*SyncResult, diag.Diagnostics) {
-	log.Info().Stringer("provider", opts.Provider).Msg("syncing provider schema")
-	if opts.DownloadLatest {
-		if _, diags := Download(ctx, pm, &DownloadOptions{
-			[]registry.Provider{{Name: opts.Provider.Name, Version: registry.LatestVersion, Source: opts.Provider.Source}}, false}); diags.HasErrors() {
-			return nil, diags
-		}
-	}
+func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
+	log.Info().Stringer("provider", provider).Msg("syncing provider schema")
 
-	rp := registry.Provider{Name: opts.Provider.Name, Version: registry.LatestVersion, Source: opts.Provider.Source}
-
-	// always use latest available provider available
-	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: rp})
+	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if diags.HasDiags() {
 		return nil, diags
 	}
@@ -76,11 +61,11 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 	}
 	defer db.Close()
 
-	rp.Version = s.Version
+	provider.Version = s.Version // override any "latest"
 
-	want := state.ProviderFromRegistry(rp)
+	want := state.ProviderFromRegistry(provider)
 	if want.ParsedVersion == nil {
-		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", rp.Version), diag.INTERNAL)
+		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", provider.Version), diag.INTERNAL)
 	}
 
 	sta, err := state.NewMigratedClient(ctx, storage.DSN(), logging.NewZHcLog(&log.Logger, "sync"))
@@ -89,13 +74,13 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 	}
 	defer sta.Close()
 
-	cur, err := sta.GetProvider(ctx, rp)
+	cur, err := sta.GetProvider(ctx, provider)
 	if err != nil {
 		return nil, diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
 
 	res := &SyncResult{
-		NewVersion: opts.Provider.Version,
+		NewVersion: provider.Version,
 	}
 	if cur != nil {
 		res.OldVersion = cur.Version
@@ -105,22 +90,22 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 
 	switch {
 	case cur == nil || cur.ParsedVersion == nil: // New install (or older provider)
-		log.Debug().Stringer("provider", opts.Provider).Str("version", opts.Provider.Version).Msg("installing provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("installing provider schema")
 		res.State = Upgraded
 	case cur.ParsedVersion.Equal(want.ParsedVersion): // Same version
 		res.State = NoChange
 	case cur.ParsedVersion.LessThan(want.ParsedVersion): // Upgrade
-		log.Debug().Stringer("provider", opts.Provider).Str("version", opts.Provider.Version).Msg("upgrading provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("upgrading provider schema")
 		res.State = Upgraded
 	case cur.ParsedVersion.GreaterThan(want.ParsedVersion): // Downgrade
-		log.Debug().Stringer("provider", opts.Provider).Str("version", opts.Provider.Version).Msg("downgrading provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("downgrading provider schema")
 		res.State = Downgraded
 	default:
 		return nil, diag.FromError(fmt.Errorf("sync: unhandled case"), diag.INTERNAL)
 	}
 
 	if res.State == Upgraded || res.State == Downgraded {
-		if err := dropProvider(ctx, storage.DSN(), rp, s.ResourceTables); err != nil {
+		if err := dropProvider(ctx, storage.DSN(), provider, s.ResourceTables); err != nil {
 			return nil, diag.FromError(fmt.Errorf("drop provider failed: %w", err), diag.INTERNAL)
 		}
 		if err := installProvider(ctx, storage.DSN(), db, want, s.ResourceTables); err != nil {
@@ -128,7 +113,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, opt
 		}
 	}
 
-	log.Debug().Stringer("provider", opts.Provider).Stringer("state", res.State).Msg("provider sync complete")
+	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Msg("provider sync complete")
 	return res, nil
 }
 

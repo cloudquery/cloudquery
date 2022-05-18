@@ -241,10 +241,7 @@ func Test_Fetch(t *testing.T) {
 
 			for _, r := range rp {
 				// Sync provider in table before fetch
-				_, diags := Sync(context.Background(), storage, pManager, &SyncOptions{
-					Provider:       r,
-					DownloadLatest: false,
-				})
+				_, diags := Sync(context.Background(), storage, pManager, r)
 				require.False(t, diags.HasDiags())
 			}
 
