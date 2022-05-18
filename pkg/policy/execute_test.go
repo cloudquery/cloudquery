@@ -418,7 +418,7 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage, err := state.NewMigratedClient(context.Background(), testDBConnection)
+	metaStorage, err := state.NewClient(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer metaStorage.Close()
 
@@ -483,7 +483,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
 	assert.NoError(t, err)
 
-	metaStorage, err := state.NewMigratedClient(context.Background(), testDBConnection)
+	metaStorage, err := state.NewClient(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer metaStorage.Close()
 

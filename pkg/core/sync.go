@@ -74,7 +74,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", provider.Version), diag.INTERNAL)
 	}
 
-	sta, err := state.NewMigratedClient(ctx, storage.DSN())
+	sta, err := state.NewClient(ctx, storage.DSN())
 	if err != nil {
 		return nil, diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
@@ -124,7 +124,7 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		return diags
 	}
 
-	sta, err := state.NewMigratedClient(ctx, storage.DSN())
+	sta, err := state.NewClient(ctx, storage.DSN())
 	if err != nil {
 		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}

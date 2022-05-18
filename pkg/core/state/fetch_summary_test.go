@@ -75,7 +75,7 @@ var fetchSummaryTests = []fetchSummaryTest{
 }
 
 func TestFetchSaveSummary(t *testing.T) {
-	fetchSummaryClient, err := NewMigratedClient(context.Background(), testDBConnection)
+	fetchSummaryClient, err := NewClient(context.Background(), testDBConnection)
 	assert.NoError(t, err)
 	defer fetchSummaryClient.Close()
 

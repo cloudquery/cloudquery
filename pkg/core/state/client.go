@@ -30,14 +30,17 @@ type Client struct {
 	Logger    hclog.Logger
 }
 
-func NewClient(db execution.QueryExecer) *Client {
+// NewReadClient creates a client solely for reading.
+func NewReadClient(db execution.QueryExecer) *Client {
 	return &Client{
 		db:     db,
 		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
 }
 
-func NewMigratedClient(ctx context.Context, dsn string) (*Client, error) {
+// NewClient creates a client from the given DSN and migrates the metadata schema.
+// client.Close should be called to disconnect afterwards.
+func NewClient(ctx context.Context, dsn string) (*Client, error) {
 	c := &Client{
 		dsn:    dsn,
 		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
@@ -58,6 +61,7 @@ func NewMigratedClient(ctx context.Context, dsn string) (*Client, error) {
 	return c, nil
 }
 
+// Close closes the underlying database connection.
 func (c *Client) Close() {
 	if c.capableDB == nil {
 		return
