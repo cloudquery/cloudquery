@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"crypto/sha256"
 	"fmt"
 	"sort"
 	"strconv"
@@ -254,9 +253,7 @@ func resourceTableNames(resourceTables map[string]*schema.Table) map[string][]st
 func resourceSignatures(resourceTables map[string]*schema.Table) map[string]string {
 	ret := make(map[string]string, len(resourceTables))
 	for k, t := range resourceTables {
-		h := sha256.New()
-		h.Write([]byte(t.Signature()))
-		ret[k] = fmt.Sprintf("%x", h.Sum(nil))
+		ret[k] = t.Signature(schema.PostgresDialect{})
 	}
 	return ret
 }
