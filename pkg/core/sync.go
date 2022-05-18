@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 )
 
@@ -94,17 +93,17 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 
 	curTables := s.ResourceTables
 
-	// TODO after progressbar fixes
-	if false && cur != nil && cur.ParsedVersion != nil { // Old provider with known, valid version
+	if cur != nil && cur.ParsedVersion != nil { // Old provider with known, valid version
 		// Make sure we have it
-		_, diags = Download(ctx, pm, &DownloadOptions{Providers: []registry.Provider{cur.Registry()}, NoVerify: viper.GetBool("no-verify")})
+		// _, diags := Download(ctx, pm, &DownloadOptions{Providers: []registry.Provider{cur.Registry()}, NoVerify: viper.GetBool("no-verify")})
 
 		oldSchema, dd := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: cur.Registry()})
-		diags = diags.Add(dd)
-		if diags.HasErrors() {
-			return nil, diags
+		// diags = diags.Add(dd)
+		if dd.HasErrors() {
+			log.Warn().Stringer("provider", cur.Registry()).Msg("failed to acquire current version")
+		} else {
+			curTables = oldSchema.ResourceTables
 		}
-		curTables = oldSchema.ResourceTables
 	}
 
 	// TODO run inside TX
