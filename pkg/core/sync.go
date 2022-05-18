@@ -91,23 +91,6 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		res.OldVersion = cur.Version
 	}
 
-	curTables := s.ResourceTables
-
-	if cur != nil && cur.ParsedVersion != nil { // Old provider with known, valid version
-		// Make sure we have it
-		// _, diags := Download(ctx, pm, &DownloadOptions{Providers: []registry.Provider{cur.Registry()}, NoVerify: viper.GetBool("no-verify")})
-
-		oldSchema, dd := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: cur.Registry()})
-		// diags = diags.Add(dd)
-		if dd.HasErrors() {
-			log.Warn().Stringer("provider", cur.Registry()).Msg("failed to acquire current version")
-		} else {
-			curTables = oldSchema.ResourceTables
-		}
-	}
-
-	// TODO run inside TX
-
 	switch {
 	case cur == nil || cur.ParsedVersion == nil: // New install (or older provider)
 		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("installing provider schema")
@@ -125,11 +108,8 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	}
 
 	if res.State != NoChange {
-		if err := dropProvider(ctx, storage.DSN(), db, provider, curTables); err != nil {
-			return nil, diag.FromError(fmt.Errorf("drop provider failed: %w", err), diag.INTERNAL)
-		}
-		if err := installProvider(ctx, storage.DSN(), db, want, s.ResourceTables); err != nil {
-			return nil, diag.FromError(fmt.Errorf("install provider failed: %w", err), diag.INTERNAL)
+		if err := syncTables(ctx, sta, cur, want, s.ResourceTables); err != nil {
+			return nil, diag.FromError(err, diag.INTERNAL)
 		}
 	}
 
@@ -143,63 +123,98 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	if diags.HasDiags() {
 		return diags
 	}
-	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "drop-provider"), storage.DSN())
-	if err != nil {
-		return diag.FromError(err, diag.DATABASE)
-	}
-	defer db.Close()
 
-	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	if err := dropProvider(ctx, storage.DSN(), db, provider, s.ResourceTables); err != nil {
-		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to drop provider"))
-	}
-	return nil
-}
-
-func dropProvider(ctx context.Context, dsn string, db execution.QueryExecer, provider registry.Provider, resourceTables map[string]*schema.Table) error {
-	q := fmt.Sprintf(dropTableSQL, strconv.Quote(fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)))
-	if err := db.Exec(ctx, q); err != nil {
-		return err
-	}
-	for name, table := range resourceTables {
-		log.Debug().Str("table", name).Str("provider", provider.Name).Msg("deleting table and all relations")
-		if err := dropTables(ctx, db, table); err != nil {
-			return err
-		}
-	}
-
-	sta, err := state.NewMigratedClient(ctx, dsn)
+	sta, err := state.NewMigratedClient(ctx, storage.DSN())
 	if err != nil {
 		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
 	defer sta.Close()
 
-	if err := sta.UninstallProvider(ctx, provider); err != nil {
+	tx, err := sta.ProviderSync(ctx)
+	if err != nil {
+		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+	}
+	defer tx.Rollback(ctx) // nolint:errcheck
+
+	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
+	if err := dropProvider(ctx, tx, provider, resourceTableNames(s.ResourceTables)); err != nil {
+		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to drop provider"))
+	}
+
+	if err := tx.UninstallProvider(ctx, provider); err != nil {
 		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
 	}
 
+	if err := tx.Commit(ctx); err != nil {
+		return diag.FromError(err, diag.DATABASE)
+	}
+
 	return nil
 }
 
-func dropTables(ctx context.Context, db execution.QueryExecer, table *schema.Table) error {
-	if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(table.Name))); err != nil {
+func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provider, resourceTables map[string]*schema.Table) error {
+	want.Tables = resourceTableNames(resourceTables)
+	want.Signatures = resourceSignatures(resourceTables)
+
+	var curTables map[string][]string
+
+	if cur != nil && len(cur.Tables) > 0 { // Old provider with known, valid data
+		curTables = cur.Tables
+	} else {
+		curTables = want.Tables // Fallback to installed provider tables
+	}
+
+	tx, err := sta.ProviderSync(ctx)
+	if err != nil {
+		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+	}
+	defer tx.Rollback(ctx) // nolint:errcheck
+
+	// TODO: compare signatures, keep unchanged tables, drop extra tables
+
+	if err := dropProvider(ctx, tx, want.Registry(), curTables); err != nil {
+		return diag.FromError(fmt.Errorf("drop provider failed: %w", err), diag.INTERNAL)
+	}
+
+	if err := installProvider(ctx, tx, resourceTables); err != nil {
+		return diag.FromError(fmt.Errorf("install provider failed: %w", err), diag.INTERNAL)
+	}
+
+	if err := tx.UninstallProvider(ctx, want.Registry()); err != nil {
+		return diag.FromError(fmt.Errorf("uninstall provider failed: %w", err), diag.INTERNAL)
+	}
+
+	if err := tx.InstallProvider(ctx, want); err != nil {
+		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return diag.FromError(err, diag.DATABASE)
+	}
+
+	return nil
+}
+
+func dropProvider(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string) error {
+	q := fmt.Sprintf(dropTableSQL, strconv.Quote(fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)))
+	if err := db.Exec(ctx, q); err != nil {
 		return err
 	}
-	for _, rel := range table.Relations {
-		if err := dropTables(ctx, db, rel); err != nil {
-			return err
+	for name, tables := range tableNames {
+		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting table and all relations")
+		for _, t := range tables {
+			if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(t))); err != nil {
+				return err
+			}
 		}
 	}
+
 	return nil
 }
 
-func installProvider(ctx context.Context, dsn string, db execution.QueryExecer, provider *state.Provider, resourceTables map[string]*schema.Table) error {
-	logger := logging.NewZHcLog(&log.Logger, "sync-install")
-
-	tc := migration.NewTableCreator(logger, schema.PostgresDialect{})
-
+func installProvider(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) error {
 	for _, t := range sort.StringSlice(funk.Keys(resourceTables).([]string)) {
-		up, _, err := tc.CreateTableDefinitions(ctx, resourceTables[t], nil)
+		up, err := migration.CreateTableDefinitions(ctx, schema.PostgresDialect{}, resourceTables[t], nil)
 		if err != nil {
 			return diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to get create table definition"), diag.WithResourceName(t))
 		}
@@ -210,15 +225,21 @@ func installProvider(ctx context.Context, dsn string, db execution.QueryExecer, 
 		}
 	}
 
-	sta, err := state.NewMigratedClient(ctx, dsn)
-	if err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
-	}
-	defer sta.Close()
-
-	if err := sta.InstallProvider(ctx, provider); err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
-	}
-
 	return nil
+}
+
+func resourceTableNames(resourceTables map[string]*schema.Table) map[string][]string {
+	ret := make(map[string][]string, len(resourceTables))
+	for k, t := range resourceTables {
+		ret[k] = t.TableNames()
+	}
+	return ret
+}
+
+func resourceSignatures(resourceTables map[string]*schema.Table) map[string]string {
+	ret := make(map[string]string, len(resourceTables))
+	for k, t := range resourceTables {
+		ret[k] = t.Signature()
+	}
+	return ret
 }

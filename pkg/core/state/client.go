@@ -24,10 +24,10 @@ var (
 )
 
 type Client struct {
-	dsn    string
-	db     execution.QueryExecer
-	closer func()
-	Logger hclog.Logger
+	dsn       string
+	db        execution.QueryExecer
+	capableDB *sdkdb.DB
+	Logger    hclog.Logger
 }
 
 func NewClient(db execution.QueryExecer) *Client {
@@ -48,7 +48,7 @@ func NewMigratedClient(ctx context.Context, dsn string) (*Client, error) {
 		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	c.db = db
-	c.closer = db.Close
+	c.capableDB = db
 
 	// migrate CloudQuery core tables to latest version
 	if err := c.migrateCore(ctx); err != nil {
@@ -59,11 +59,11 @@ func NewMigratedClient(ctx context.Context, dsn string) (*Client, error) {
 }
 
 func (c *Client) Close() {
-	if c.db == nil {
+	if c.capableDB == nil {
 		return
 	}
-	c.closer()
-	c.db, c.closer = nil, nil
+	c.capableDB.Close()
+	c.capableDB = nil
 }
 
 func (c *Client) migrateCore(ctx context.Context) error {

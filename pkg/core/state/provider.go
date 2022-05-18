@@ -2,9 +2,12 @@ package state
 
 import (
 	"context"
+	"database/sql/driver"
+	"encoding/json"
 	"errors"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-version"
@@ -23,6 +26,9 @@ type Provider struct {
 	VPre   string `db:"v_pre"`
 	VMeta  string `db:"v_meta"`
 
+	Tables     tableList `db:"tables"`
+	Signatures stringMap `db:"signatures"`
+
 	ParsedVersion *version.Version `db:"-"`
 }
 
@@ -37,7 +43,7 @@ func (p *Provider) Registry() registry.Provider {
 // GetProvider gets state about given provider, or returns nil, nil.
 func (c *Client) GetProvider(ctx context.Context, p registry.Provider) (*Provider, error) {
 	q := goqu.Dialect("postgres").
-		Select("source", "name", "version", "v_major", "v_minor", "v_patch", "v_pre", "v_meta").
+		Select("source", "name", "version", "v_major", "v_minor", "v_patch", "v_pre", "v_meta", "tables", "signatures").
 		From("cloudquery.providers").
 		Where(goqu.Ex{"source": p.Source, "name": p.Name}).
 		Limit(1)
@@ -60,34 +66,25 @@ func (c *Client) GetProvider(ctx context.Context, p registry.Provider) (*Provide
 	return &data, nil
 }
 
-// InstallProvider saves state about given provider
-// TODO should be wrapped in TX
-func (c *Client) InstallProvider(ctx context.Context, p *Provider) error {
-	q := goqu.Dialect("postgres").Insert("cloudquery.providers").Rows(p)
-	sql, args, err := q.ToSQL()
+func (c *Client) ProviderSync(ctx context.Context) (*Tx, error) {
+	tx, err := c.capableDB.Begin(ctx)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return c.db.Exec(ctx, sql, args...)
-}
-
-// UninstallProvider removes state about given provider
-// TODO should be wrapped in TX
-func (c *Client) UninstallProvider(ctx context.Context, p registry.Provider) error {
-	q := goqu.Dialect("postgres").Delete("cloudquery.providers").Where(goqu.Ex{"source": p.Source, "name": p.Name})
-	sql, args, err := q.ToSQL()
-	if err != nil {
-		return err
-	}
-	return c.db.Exec(ctx, sql, args...)
+	return &Tx{
+		TXQueryExecer: tx,
+		c:             c,
+	}, nil
 }
 
 // ProviderFromRegistry returns a Provider struct with info filled from a registry.Provider
 func ProviderFromRegistry(r registry.Provider) *Provider {
 	p := &Provider{
-		Source:  r.Source,
-		Name:    r.Name,
-		Version: r.Version,
+		Source:     r.Source,
+		Name:       r.Name,
+		Version:    r.Version,
+		Tables:     make(tableList),
+		Signatures: make(stringMap),
 	}
 	if r.Version != "" {
 		if ver, err := version.NewVersion(r.Version); err == nil {
@@ -105,4 +102,60 @@ func ProviderFromRegistry(r registry.Provider) *Provider {
 		}
 	}
 	return p
+}
+
+type Tx struct {
+	execution.TXQueryExecer
+
+	c *Client
+}
+
+// InstallProvider saves state about given provider
+func (t *Tx) InstallProvider(ctx context.Context, p *Provider) error {
+	q := goqu.Dialect("postgres").Insert("cloudquery.providers").Rows(p)
+	sql, args, err := q.ToSQL()
+	if err != nil {
+		return err
+	}
+	return t.TXQueryExecer.Exec(ctx, sql, args...)
+}
+
+// UninstallProvider removes state about given provider
+func (t *Tx) UninstallProvider(ctx context.Context, p registry.Provider) error {
+	q := goqu.Dialect("postgres").Delete("cloudquery.providers").Where(goqu.Ex{"source": p.Source, "name": p.Name})
+	sql, args, err := q.ToSQL()
+	if err != nil {
+		return err
+	}
+	return t.TXQueryExecer.Exec(ctx, sql, args...)
+}
+
+type tableList map[string][]string
+
+func (a tableList) Value() (driver.Value, error) {
+	return json.Marshal(a)
+}
+
+func (a *tableList) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+
+	return json.Unmarshal(b, &a)
+}
+
+type stringMap map[string]string
+
+func (a stringMap) Value() (driver.Value, error) {
+	return json.Marshal(a)
+}
+
+func (a *stringMap) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+
+	return json.Unmarshal(b, &a)
 }
