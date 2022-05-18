@@ -184,10 +184,10 @@ func RoleBindings() *schema.Table {
 // ====================================================================================================================
 
 func fetchRbacRoleBindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client).Services().RoleBindings
+	cl := meta.(*client.Client).Services().RoleBindings
 	opts := metav1.ListOptions{}
 	for {
-		result, err := client.List(ctx, opts)
+		result, err := cl.List(ctx, opts)
 		if err != nil {
 			return err
 		}

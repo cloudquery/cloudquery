@@ -6,10 +6,9 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 func LimitRanges() *schema.Table {

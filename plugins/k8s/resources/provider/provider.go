@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cq-provider-k8s/resources/services/core"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/networking"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/rbac"
-
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

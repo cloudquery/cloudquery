@@ -11,6 +11,10 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
+type TestOptions struct {
+	SkipEmptyJsonB bool
+}
+
 func K8sTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
 	cfg := ``
 	providertest.TestResource(t, providertest.ResourceTestCase{
@@ -27,10 +31,6 @@ func K8sTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
 		},
 		Config: cfg,
 	})
-}
-
-type TestOptions struct {
-	SkipEmptyJsonB bool
 }
 
 func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, options TestOptions) {

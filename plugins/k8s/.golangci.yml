@@ -32,7 +32,7 @@ linters:
     - errcheck
     - gocritic
     - gofmt
-    - goimports
+    - gci
     - gosimple
     - govet
     - ineffassign
@@ -51,7 +51,7 @@ issues:
       linters:
         - dupl
         - gocritic
-     # Exclude some linters from running on resource files.
+      # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
       linters:
         - dupl

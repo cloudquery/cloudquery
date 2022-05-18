@@ -292,10 +292,10 @@ func StatefulSets() *schema.Table {
 // ====================================================================================================================
 
 func fetchAppsStatefulSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client).Services().StatefulSets
+	cl := meta.(*client.Client).Services().StatefulSets
 	opts := metav1.ListOptions{}
 	for {
-		result, err := client.List(ctx, opts)
+		result, err := cl.List(ctx, opts)
 		if err != nil {
 			return err
 		}

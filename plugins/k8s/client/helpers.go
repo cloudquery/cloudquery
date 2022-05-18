@@ -9,6 +9,11 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
+type OwnerReferences struct {
+	ResourceUID types.UID
+	v1.OwnerReference
+}
+
 const (
 	ContextFieldName = "context"
 	ContextFieldDesc = "Name of the context from k8s configuration."
@@ -61,9 +66,4 @@ func OwnerReferenceResolver(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	res <- refs
 	return nil
-}
-
-type OwnerReferences struct {
-	ResourceUID types.UID
-	v1.OwnerReference
 }
