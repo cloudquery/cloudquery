@@ -220,9 +220,7 @@ func Test_Fetch(t *testing.T) {
 	}
 
 	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	require.NoError(t, err)
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -248,7 +246,6 @@ func Test_Fetch(t *testing.T) {
 				require.False(t, diags.HasDiags())
 			}
 
-			require.Nil(t, err)
 			var (
 				ctx    = context.Background()
 				cancel context.CancelFunc
