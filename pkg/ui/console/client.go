@@ -265,7 +265,9 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 			// TODO: should we just append diags and continue to sync others or stop syncing?
 			return nil, dd
 		}
-		ui.ColorizedOutput(ui.ColorSuccess, "%s sync provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
+		if sync.State != core.NoChange {
+			ui.ColorizedOutput(ui.ColorSuccess, "%s sync provider %s to %s successfully. [%s]\n", emojiStatus[ui.StatusOK], p.Name, p.Version, sync.State)
+		}
 		diags = diags.Add(dd)
 		if sync != nil {
 			results = append(results, sync)

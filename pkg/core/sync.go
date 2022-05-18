@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strconv"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
@@ -12,24 +13,27 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration"
-	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 )
 
 type SyncState int
 
 const (
-	Upgraded SyncState = iota + 1
+	Installed SyncState = iota + 1
+	Upgraded
 	Downgraded
 	NoChange
 )
 
 func (s SyncState) String() string {
 	switch s {
+	case Installed:
+		return "Installed"
 	case Upgraded:
 		return "Upgraded"
 	case Downgraded:
@@ -45,6 +49,8 @@ type SyncResult struct {
 	OldVersion string
 	NewVersion string
 }
+
+const dropTableSQL = "DROP TABLE IF EXISTS %s CASCADE"
 
 func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
 	log.Info().Stringer("provider", provider).Msg("syncing provider schema")
@@ -86,12 +92,27 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		res.OldVersion = cur.Version
 	}
 
+	curTables := s.ResourceTables
+
+	// TODO after progressbar fixes
+	if false && cur != nil && cur.ParsedVersion != nil { // Old provider with known, valid version
+		// Make sure we have it
+		_, diags = Download(ctx, pm, &DownloadOptions{Providers: []registry.Provider{cur.Registry()}, NoVerify: viper.GetBool("no-verify")})
+
+		oldSchema, dd := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: cur.Registry()})
+		diags = diags.Add(dd)
+		if diags.HasErrors() {
+			return nil, diags
+		}
+		curTables = oldSchema.ResourceTables
+	}
+
 	// TODO run inside TX
 
 	switch {
 	case cur == nil || cur.ParsedVersion == nil: // New install (or older provider)
 		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("installing provider schema")
-		res.State = Upgraded
+		res.State = Installed
 	case cur.ParsedVersion.Equal(want.ParsedVersion): // Same version
 		res.State = NoChange
 	case cur.ParsedVersion.LessThan(want.ParsedVersion): // Upgrade
@@ -104,8 +125,8 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		return nil, diag.FromError(fmt.Errorf("sync: unhandled case"), diag.INTERNAL)
 	}
 
-	if res.State == Upgraded || res.State == Downgraded {
-		if err := dropProvider(ctx, storage.DSN(), provider, s.ResourceTables); err != nil {
+	if res.State != NoChange {
+		if err := dropProvider(ctx, storage.DSN(), db, provider, curTables); err != nil {
 			return nil, diag.FromError(fmt.Errorf("drop provider failed: %w", err), diag.INTERNAL)
 		}
 		if err := installProvider(ctx, storage.DSN(), db, want, s.ResourceTables); err != nil {
@@ -114,7 +135,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	}
 
 	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Msg("provider sync complete")
-	return res, nil
+	return res, diags
 }
 
 func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
@@ -123,32 +144,29 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	if diags.HasDiags() {
 		return diags
 	}
-	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	err := dropProvider(ctx, storage.DSN(), provider, s.ResourceTables)
+	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "drop-provider"), storage.DSN())
 	if err != nil {
+		return diag.FromError(err, diag.DATABASE)
+	}
+	defer db.Close()
+
+	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
+	if err := dropProvider(ctx, storage.DSN(), db, provider, s.ResourceTables); err != nil {
 		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to drop provider"))
 	}
 	return nil
 }
 
-func dropProvider(ctx context.Context, dsn string, provider registry.Provider, resourceTables map[string]*schema.Table) error {
-	dType, _, err := sdkdb.ParseDialectDSN(dsn)
-	if err != nil {
+func dropProvider(ctx context.Context, dsn string, db execution.QueryExecer, provider registry.Provider, resourceTables map[string]*schema.Table) error {
+	q := fmt.Sprintf(dropTableSQL, strconv.Quote(fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)))
+	if err := db.Exec(ctx, q); err != nil {
 		return err
 	}
-
-	m, err := migrator.New(logging.NewZHcLog(&log.Logger, "migrator"), dType, nil, dsn, fmt.Sprintf("%s_%s", provider.Source, provider.Name))
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := m.Close(); err != nil {
-			log.Error().Err(err).Msg("failed to close migrator connection")
+	for name, table := range resourceTables {
+		log.Debug().Str("table", name).Str("provider", provider.Name).Msg("deleting table and all relations")
+		if err := dropTables(ctx, db, table); err != nil {
+			return err
 		}
-	}()
-
-	if err := m.DropProvider(ctx, resourceTables); err != nil {
-		return err
 	}
 
 	sta, err := state.NewMigratedClient(ctx, dsn)
@@ -164,6 +182,18 @@ func dropProvider(ctx context.Context, dsn string, provider registry.Provider, r
 	return nil
 }
 
+func dropTables(ctx context.Context, db execution.QueryExecer, table *schema.Table) error {
+	if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(table.Name))); err != nil {
+		return err
+	}
+	for _, rel := range table.Relations {
+		if err := dropTables(ctx, db, rel); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func installProvider(ctx context.Context, dsn string, db execution.QueryExecer, provider *state.Provider, resourceTables map[string]*schema.Table) error {
 	logger := logging.NewZHcLog(&log.Logger, "sync-install")
 
@@ -172,11 +202,11 @@ func installProvider(ctx context.Context, dsn string, db execution.QueryExecer, 
 	for _, t := range sort.StringSlice(funk.Keys(resourceTables).([]string)) {
 		up, _, err := tc.CreateTableDefinitions(ctx, resourceTables[t], nil)
 		if err != nil {
-			return diag.FromError(fmt.Errorf("CreateTableDefinitions failed for %s: %w", t, err), diag.INTERNAL)
+			return diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to get create table definition"), diag.WithResourceName(t))
 		}
 		for _, sql := range up {
 			if err := db.Exec(ctx, sql); err != nil {
-				return diag.FromError(fmt.Errorf("error creating table %s: %w", t, err), diag.INTERNAL)
+				return diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t))
 			}
 		}
 	}

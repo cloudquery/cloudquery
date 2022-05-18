@@ -13,7 +13,7 @@ import (
 
 // Provider keeps track of installed providers
 type Provider struct {
-	Org     string `db:"org"`
+	Source  string `db:"source"`
 	Name    string `db:"name"`
 	Version string `db:"version"`
 
@@ -26,12 +26,20 @@ type Provider struct {
 	ParsedVersion *version.Version `db:"-"`
 }
 
+func (p *Provider) Registry() registry.Provider {
+	return registry.Provider{
+		Source:  p.Source,
+		Name:    p.Name,
+		Version: p.Version,
+	}
+}
+
 // GetProvider gets state about given provider, or returns nil, nil.
 func (c *Client) GetProvider(ctx context.Context, p registry.Provider) (*Provider, error) {
 	q := goqu.Dialect("postgres").
-		Select("org", "name", "version", "v_major", "v_minor", "v_patch", "v_pre", "v_meta").
+		Select("source", "name", "version", "v_major", "v_minor", "v_patch", "v_pre", "v_meta").
 		From("cloudquery.providers").
-		Where(goqu.Ex{"org": p.Source, "name": p.Name}).
+		Where(goqu.Ex{"source": p.Source, "name": p.Name}).
 		Limit(1)
 	sql, _, err := q.ToSQL()
 	if err != nil {
@@ -66,7 +74,7 @@ func (c *Client) InstallProvider(ctx context.Context, p *Provider) error {
 // UninstallProvider removes state about given provider
 // TODO should be wrapped in TX
 func (c *Client) UninstallProvider(ctx context.Context, p registry.Provider) error {
-	q := goqu.Dialect("postgres").Delete("cloudquery.providers").Where(goqu.Ex{"org": p.Source, "name": p.Name})
+	q := goqu.Dialect("postgres").Delete("cloudquery.providers").Where(goqu.Ex{"source": p.Source, "name": p.Name})
 	sql, args, err := q.ToSQL()
 	if err != nil {
 		return err
@@ -77,7 +85,7 @@ func (c *Client) UninstallProvider(ctx context.Context, p registry.Provider) err
 // ProviderFromRegistry returns a Provider struct with info filled from a registry.Provider
 func ProviderFromRegistry(r registry.Provider) *Provider {
 	p := &Provider{
-		Org:     r.Source, // FIXME check. we aim for "cloudquery" for official providers
+		Source:  r.Source,
 		Name:    r.Name,
 		Version: r.Version,
 	}
