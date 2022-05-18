@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"crypto/sha256"
 	"fmt"
 	"sort"
 	"strconv"
@@ -108,12 +109,11 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	}
 
 	if res.State != NoChange {
-		if err := syncTables(ctx, sta, cur, want, s.ResourceTables); err != nil {
-			return nil, diag.FromError(err, diag.INTERNAL)
-		}
+		dd := syncTables(ctx, sta, cur, want, s.ResourceTables)
+		diags = diags.Add(dd)
 	}
 
-	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Msg("provider sync complete")
+	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", diags.Errors()).Msg("provider sync complete")
 	return res, diags
 }
 
@@ -137,8 +137,8 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	if err := dropProvider(ctx, tx, provider, resourceTableNames(s.ResourceTables)); err != nil {
-		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to drop provider"))
+	if diags := dropProvider(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasErrors() {
+		return diags
 	}
 
 	if err := tx.UninstallProvider(ctx, provider); err != nil {
@@ -152,14 +152,18 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	return nil
 }
 
-func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provider, resourceTables map[string]*schema.Table) error {
+func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provider, resourceTables map[string]*schema.Table) diag.Diagnostics {
 	want.Tables = resourceTableNames(resourceTables)
 	want.Signatures = resourceSignatures(resourceTables)
 
-	var curTables map[string][]string
+	var (
+		curTables     map[string][]string
+		curSignatures map[string]string
+	)
 
 	if cur != nil && len(cur.Tables) > 0 { // Old provider with known, valid data
 		curTables = cur.Tables
+		curSignatures = cur.Signatures
 	} else {
 		curTables = want.Tables // Fallback to installed provider tables
 	}
@@ -170,14 +174,11 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	}
 	defer tx.Rollback(ctx) // nolint:errcheck
 
-	// TODO: compare signatures, keep unchanged tables, drop extra tables
+	diags := dropProvider(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures)
+	diags = diags.Add(installProvider(ctx, tx, resourceTables))
 
-	if err := dropProvider(ctx, tx, want.Registry(), curTables); err != nil {
-		return diag.FromError(fmt.Errorf("drop provider failed: %w", err), diag.INTERNAL)
-	}
-
-	if err := installProvider(ctx, tx, resourceTables); err != nil {
-		return diag.FromError(fmt.Errorf("install provider failed: %w", err), diag.INTERNAL)
+	if diags.HasErrors() {
+		return diags
 	}
 
 	if err := tx.UninstallProvider(ctx, want.Registry()); err != nil {
@@ -195,37 +196,51 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	return nil
 }
 
-func dropProvider(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string) error {
-	q := fmt.Sprintf(dropTableSQL, strconv.Quote(fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)))
-	if err := db.Exec(ctx, q); err != nil {
-		return err
+func dropProvider(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	{
+		migTable := fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)
+		q := fmt.Sprintf(dropTableSQL, strconv.Quote(migTable))
+		if err := db.Exec(ctx, q); err != nil {
+			diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(migTable)))
+		}
 	}
+
 	for name, tables := range tableNames {
-		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting table and all relations")
+		if curSignatures != nil && wantSignatures != nil && curSignatures[name] != "" && wantSignatures[name] == curSignatures[name] {
+			log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("keeping tables and all data")
+			continue
+		}
+
+		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting tables and all relations")
 		for _, t := range tables {
 			if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(t))); err != nil {
-				return err
+				diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t)))
 			}
 		}
 	}
 
-	return nil
+	return diags
 }
 
-func installProvider(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) error {
+func installProvider(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	for _, t := range sort.StringSlice(funk.Keys(resourceTables).([]string)) {
 		up, err := migration.CreateTableDefinitions(ctx, schema.PostgresDialect{}, resourceTables[t], nil)
 		if err != nil {
-			return diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to get create table definition"), diag.WithResourceName(t))
+			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to get create table definition"), diag.WithResourceName(t)))
+			continue
 		}
 		for _, sql := range up {
 			if err := db.Exec(ctx, sql); err != nil {
-				return diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t))
+				diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
 			}
 		}
 	}
 
-	return nil
+	return diags
 }
 
 func resourceTableNames(resourceTables map[string]*schema.Table) map[string][]string {
@@ -239,7 +254,9 @@ func resourceTableNames(resourceTables map[string]*schema.Table) map[string][]st
 func resourceSignatures(resourceTables map[string]*schema.Table) map[string]string {
 	ret := make(map[string]string, len(resourceTables))
 	for k, t := range resourceTables {
-		ret[k] = t.Signature()
+		h := sha256.New()
+		h.Write([]byte(t.Signature()))
+		ret[k] = fmt.Sprintf("%x", h.Sum(nil))
 	}
 	return ret
 }
