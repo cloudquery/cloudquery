@@ -92,16 +92,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		return nil, errors.New("connection configuration is not set")
 	}
 	var (
-		progressUpdater ui.Progress
-		dialect         database.DialectExecutor
-		err             error
+		progressFunc ui.ProgressFunc
+		dialect      database.DialectExecutor
+		err          error
 	)
 	if ui.DoProgress() {
-		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
+		progressFunc = NewProgress(func(o *ProgressOptions) {
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
 		})
 	}
-	hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory), registry.WithProgress(progressUpdater))
+	hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(cfg.CloudQuery.PluginDirectory), registry.WithProgressFunc(progressFunc))
 	pm, err := plugin.NewManager(hub, plugin.WithAllowReattach())
 	if err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
-	c := &Client{progressUpdater, cfg, pp, hub, pm, storage, instanceId}
+	c := &Client{progressFunc, cfg, pp, hub, pm, storage, instanceId}
 	c.checkForUpdate(ctx)
 	return c, err
 }
@@ -608,7 +608,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, core.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
-	})
+	})()
 
 	for _, p := range providers {
 		if len(p.Resources) == 0 {

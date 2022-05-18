@@ -83,7 +83,7 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 
 	if telemetryMsg && analytics.Enabled() {
 		ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
-		if ui.IsTerminal() {
+		if false && ui.IsTerminal() {
 			select {
 			case <-time.After(2 * time.Second):
 			case <-ctx.Done():

@@ -26,11 +26,13 @@ type Hub struct {
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
 	// Optional: Download propagator allows the creator to get called back on download progress and completion.
-	ProgressUpdater ui.Progress
+	ProgressFunc ui.ProgressFunc
 	// Url for hub to connect to download and verify plugins
 	url string
 	// map of downloaded providers
 	providers map[string]ProviderBinary
+	// current progressbar
+	progressUpdater ui.Progress
 }
 
 type Option func(h *Hub)
@@ -41,9 +43,9 @@ func WithPluginDirectory(d string) Option {
 	}
 }
 
-func WithProgress(u ui.Progress) Option {
+func WithProgressFunc(f ui.ProgressFunc) Option {
 	return func(h *Hub) {
-		h.ProgressUpdater = u
+		h.ProgressFunc = f
 	}
 }
 
@@ -136,14 +138,17 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
 	}
 
-	if h.ProgressUpdater != nil {
+	defer h.resetProgress()
+
+	pr := h.progress(ctx)
+	if pr != nil {
 		// set up a done download progress
-		h.ProgressUpdater.Add(provider.Name, fmt.Sprintf("%s@%s", ProviderRepoName(provider.Name), requestedVersion), requestedVersion, 2)
+		pr.Add(provider.Name, fmt.Sprintf("%s@%s", ProviderRepoName(provider.Name), requestedVersion), requestedVersion, 2)
 	}
 
 	if noVerify {
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusWarn, "skipped verification...", 2)
+		if pr != nil {
+			pr.Update(provider.Name, ui.StatusWarn, "skipped verification...", 2)
 		}
 		return p, nil
 	}
@@ -156,8 +161,9 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 
 func (h Hub) verifyProvider(ctx context.Context, provider Provider, version string) bool {
 	if provider.Source != DefaultOrganization {
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusWarn, "skipped community provider verification...", 2)
+		pr := h.progress(ctx)
+		if pr != nil {
+			pr.Update(provider.Name, ui.StatusWarn, "skipped community provider verification...", 2)
 		}
 		return true
 	}
@@ -168,8 +174,9 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	if version != "latest" {
 		checksumsURL = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", provider.Source, ProviderRepoName(provider.Name), version)
 	}
-	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
+	pr := h.progress(ctx)
+	if pr != nil {
+		pr.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
 	}
 	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
 	// download checksums
@@ -187,21 +194,21 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	err := validateFile(checksumsPath, checksumsPath+".sig")
 	if err != nil {
 		l.Error().Err(err).Msg("validating provider signature failed")
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad signature", 0)
+		if pr != nil {
+			pr.Update(provider.Name, ui.StatusError, "Bad signature", 0)
 		}
 		return false
 	}
 	providerPath := h.getProviderPath(provider.Source, provider.Name, version)
 	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
 		l.Error().Err(err).Msg("validating provider checksum failed")
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad checksum", 0)
+		if pr != nil {
+			pr.Update(provider.Name, ui.StatusError, "Bad checksum", 0)
 		}
 		return false
 	}
-	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.Update(provider.Name, ui.StatusOK, "verified", 1)
+	if pr != nil {
+		pr.Update(provider.Name, ui.StatusOK, "verified", 1)
 	}
 	return true
 }
@@ -219,8 +226,9 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	}
 	// Create a new progress updater callback func
 	var progressCB ui.ProgressUpdateFunc
-	if h.ProgressUpdater != nil {
-		progressCB = ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf("%s@%s", ProviderRepoName(provider.Name), requestedVersion))
+	pr := h.progress(ctx)
+	if pr != nil {
+		progressCB = ui.CreateProgressUpdater(pr, fmt.Sprintf("%s@%s", ProviderRepoName(provider.Name), requestedVersion))
 	}
 
 	providerURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/%s", provider.Source, ProviderRepoName(provider.Name), requestedVersion, getPluginBinaryName(provider.Name))
@@ -316,6 +324,28 @@ func (h Hub) loadExisting() {
 		log.Debug().Str("provider", provider).Str("version", pVersion).Msg("found existing provider")
 		return nil
 	})
+}
+
+func (h *Hub) progress(ctx context.Context) ui.Progress {
+	if h.ProgressFunc == nil {
+		return nil
+	} else if h.progressUpdater != nil {
+		return h.progressUpdater
+	}
+
+	h.progressUpdater = h.ProgressFunc(ctx)
+	return h.progressUpdater
+}
+
+func (h Hub) waitProgress() {
+	if h.progressUpdater == nil {
+		return
+	}
+	h.progressUpdater.Wait()
+}
+
+func (h *Hub) resetProgress() {
+	h.progressUpdater = nil
 }
 
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS

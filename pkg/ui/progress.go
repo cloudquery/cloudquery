@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"context"
 	"io"
 
 	"github.com/google/uuid"
@@ -36,7 +37,10 @@ type Progress interface {
 	MarkAllDone()
 }
 
-type ProgressUpdateFunc func(io.Reader, int64) io.Reader
+type (
+	ProgressFunc       func(context.Context) Progress
+	ProgressUpdateFunc func(io.Reader, int64) io.Reader
+)
 
 // CreateProgressUpdater creates a progress update callback method for periodic updates.
 func CreateProgressUpdater(progress Progress, displayName string) ProgressUpdateFunc {

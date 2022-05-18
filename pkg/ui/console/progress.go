@@ -52,23 +52,25 @@ type ProgressOptions struct {
 	AppendDecorators []decor.Decorator
 }
 
-type ProgressOption func(o *ProgressOptions)
+type ProgressOption func(*ProgressOptions)
 
-func NewProgress(ctx context.Context, opts ...ProgressOption) *Progress {
-	u := &Progress{
-		p:    mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
-		bars: make(map[string]*Bar),
-		options: &ProgressOptions{
-			Filler:           "[=>-|",
-			StatusFunc:       defaultStatusUpdater,
-			MessageHook:      defaultMessageUpdater,
-			AppendDecorators: nil,
-		},
+func NewProgress(opts ...ProgressOption) ui.ProgressFunc {
+	return func(ctx context.Context) ui.Progress {
+		u := &Progress{
+			p:    mpb.NewWithContext(ctx, mpb.WithWidth(64), mpb.WithRefreshRate(180*time.Millisecond)),
+			bars: make(map[string]*Bar),
+			options: &ProgressOptions{
+				Filler:           "[=>-|",
+				StatusFunc:       defaultStatusUpdater,
+				MessageHook:      defaultMessageUpdater,
+				AppendDecorators: nil,
+			},
+		}
+		for _, o := range opts {
+			o(u.options)
+		}
+		return u
 	}
-	for _, o := range opts {
-		o(u.options)
-	}
-	return u
 }
 
 func (u *Progress) Add(name, displayName, message string, total int64) {

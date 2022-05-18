@@ -28,9 +28,9 @@ func TestOsFs_DownloadFile(t *testing.T) {
 	}
 
 	// With progress updater
-	pu := console.NewProgress(ctx, func(o *console.ProgressOptions) {
+	pu := console.NewProgress(func(o *console.ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
-	})
+	})(ctx)
 	progressCB := ui.CreateProgressUpdater(pu, "test-123")
 	if err := osFs.DownloadFile(ctx, filePath, testFileDownloadUrl, progressCB); err != nil {
 		t.Fatal(err)
