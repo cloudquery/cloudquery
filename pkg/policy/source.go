@@ -38,13 +38,20 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 	}, true, nil
 }
 
-func classifyError(source string, err error) error {
-	matched, _ := regexp.MatchString("subdir .+? not found", err.Error())
-	formattedError := fmt.Errorf("failed to get source %s: %w", source, err)
-	if matched {
-		return diag.FromError(formattedError, diag.USER)
-	}
+// a list of regexps to match against error string to decide if it's a user error
+var userErrors = []*regexp.Regexp{
+	regexp.MustCompile("subdir .+? not found"),
+	regexp.MustCompile("stat .*: permission denied"),
+}
 
+func classifyError(source string, err error) error {
+	formattedError := fmt.Errorf("failed to get source %s: %w", source, err)
+	errmsg := err.Error()
+	for _, r := range userErrors {
+		if r.MatchString(errmsg) {
+			return diag.FromError(formattedError, diag.USER)
+		}
+	}
 	return formattedError
 }
 
