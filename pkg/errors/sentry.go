@@ -1,9 +1,9 @@
 package errors
 
 import (
-	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/getsentry/sentry-go"
 	"github.com/spf13/viper"
 )
@@ -22,7 +22,7 @@ func CaptureError(err error, tags map[string]string) {
 }
 
 func CaptureDiagnostics(dd diag.Diagnostics, tags map[string]string) {
-	allowUnmanaged := core.Version == core.DevelopmentVersion && viper.GetBool("debug-sentry")
+	allowUnmanaged := viper.GetBool("debug-sentry")
 	for _, d := range dd.Squash().Redacted() {
 		if ShouldIgnoreDiag(d) {
 			continue
@@ -32,11 +32,11 @@ func CaptureDiagnostics(dd diag.Diagnostics, tags map[string]string) {
 			continue
 		}
 		sentry.WithScope(func(scope *sentry.Scope) {
-			if t, ok := d.(core.FetchDiagnostic); ok {
-				if allowUnmanaged && t.Version == plugin.Unmanaged {
+			if ok, p, v := isFetchDiagnostic(d); ok {
+				if !allowUnmanaged && v == plugin.Unmanaged {
 					return
 				}
-				scope.SetTags(map[string]string{"provider": t.Provider, "provider_version": t.Version, "resource": t.Description().Resource})
+				scope.SetTags(map[string]string{"provider": p, "provider_version": v, "resource": d.Description().Resource})
 			}
 			if isConfigureDiagnostic(d) {
 				scope.SetTag("source", "configure")

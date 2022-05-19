@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	gcodes "google.golang.org/grpc/codes"
@@ -116,7 +117,18 @@ type configureDiag interface {
 }
 
 func isConfigureDiagnostic(d diag.Diagnostic) bool {
-	d = diag.UnsquashDiag(d)
-	cd, ok := d.(configureDiag)
+	cd, ok := diag.UnsquashDiag(d).(configureDiag)
 	return ok && cd.IsConfigureDiagnostic()
+}
+
+type fetchDiag interface {
+	IsFetchDiagnostic() (bool, string, string)
+}
+
+func isFetchDiagnostic(d diag.Diagnostic) (bool, string, string) {
+	cd, ok := diag.UnsquashDiag(d).(fetchDiag)
+	if !ok {
+		return false, "", ""
+	}
+	return cd.IsFetchDiagnostic()
 }

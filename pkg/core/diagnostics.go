@@ -10,32 +10,14 @@ func (d *ConfigureDiagnostic) IsConfigureDiagnostic() bool {
 	return true
 }
 
-func convertToConfigureDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
-	ret := make(diag.Diagnostics, len(dd))
-	for i := range dd {
-		ret[i] = &ConfigureDiagnostic{
-			Diagnostic: dd[i],
-		}
-	}
-	return ret
-}
-
 type FetchDiagnostic struct {
 	diag.Diagnostic
 	Provider string
 	Version  string
 }
 
-func convertToFetchDiags(diags diag.Diagnostics, provider, version string) diag.Diagnostics {
-	fd := make(diag.Diagnostics, len(diags))
-	for i, d := range diags {
-		fd[i] = FetchDiagnostic{
-			Diagnostic: d,
-			Provider:   provider,
-			Version:    version,
-		}
-	}
-	return fd
+func (d *FetchDiagnostic) IsFetchDiagnostic() (bool, string, string) {
+	return true, d.Provider, d.Version
 }
 
 type DiagnosticsSummary struct {
@@ -65,4 +47,26 @@ func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
 		}
 	}
 	return summary
+}
+
+func convertToConfigureDiags(dd diag.Diagnostics) diag.Diagnostics {
+	ret := make(diag.Diagnostics, len(dd))
+	for i := range dd {
+		ret[i] = &ConfigureDiagnostic{
+			Diagnostic: dd[i],
+		}
+	}
+	return ret
+}
+
+func convertToFetchDiags(diags diag.Diagnostics, provider, version string) diag.Diagnostics {
+	fd := make(diag.Diagnostics, len(diags))
+	for i, d := range diags {
+		fd[i] = FetchDiagnostic{
+			Diagnostic: d,
+			Provider:   provider,
+			Version:    version,
+		}
+	}
+	return fd
 }

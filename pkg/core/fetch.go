@@ -332,7 +332,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
-		}, convertToConfigureDiagnostics(resp.Diagnostics)
+		}, convertToConfigureDiags(resp.Diagnostics)
 	}
 
 	pLog.Info().Msg("provider configured successfully")
