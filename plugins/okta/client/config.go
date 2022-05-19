@@ -7,7 +7,7 @@ type Config struct {
 	Domain string `hcl:"domain"`
 }
 
-func (c Config) Example() string {
+func (Config) Example() string {
 	return `configuration {
 	// Optional. Okta Token to access API, you can set this with OKTA_API_TOKEN env variable
     // token = <YOUR_OKTA_TOKEN>

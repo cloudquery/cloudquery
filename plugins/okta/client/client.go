@@ -28,11 +28,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	providerConfig := config.(*Config)
 	oktaToken, ok := os.LookupEnv("OKTA_API_TOKEN")
 	if !ok {
-		if providerConfig.Token != "" {
-			oktaToken = providerConfig.Token
-		} else {
+		if providerConfig.Token == "" {
 			return nil, diag.FromError(errors.New("missing OKTA_API_TOKEN, either set it as an environment variable or pass it in the configuration"), diag.USER)
 		}
+
+		oktaToken = providerConfig.Token
 	}
 
 	if providerConfig.Domain == "" || providerConfig.Domain == exampleDomain {
