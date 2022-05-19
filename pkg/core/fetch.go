@@ -226,7 +226,8 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	defer db.Close()
 	stateClient := state.NewClient(db, logging.NewZHcLog(&log.Logger, "fetch"))
 	// migrate CloudQuery core tables to latest version
-	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil {
+	// context.DeadlineExceeded is handled inside runProviderFetch that returns a response and summary
+	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil && !errors.Is(err, context.DeadlineExceeded) {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
 
@@ -303,13 +304,26 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to configure provider")
+		var (
+			d      diag.Diagnostics
+			status FetchStatus
+		)
+
+		if isErrorCancellation(err) {
+			d = getCancellationDiag(err)
+			status = FetchCanceled
+		} else {
+			d = diag.FromError(err, diag.INTERNAL)
+			status = FetchConfigureFailed
+		}
+
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
 			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
-			Status:           FetchConfigureFailed,
-		}, diag.FromError(err, diag.INTERNAL)
+			Status:           status,
+		}, d
 	}
 	if resp.Diagnostics.HasErrors() {
 		return &ProviderFetchSummary{
@@ -324,6 +338,18 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
 	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
+}
+
+func isErrorCancellation(err error) bool {
+	if st, ok := status.FromError(err); ok && (st.Code() == gcodes.Canceled || st.Code() == gcodes.DeadlineExceeded) {
+		return true
+	}
+
+	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
+}
+
+func getCancellationDiag(err error) diag.Diagnostics {
+	return diag.FromError(err, diag.USER, diag.WithSummary("provider fetch was canceled by user / fetch deadline exceeded"))
 }
 
 func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
@@ -409,10 +435,10 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				})
 			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
-			if st, ok := status.FromError(err); ok && st.Code() == gcodes.Canceled || st.Code() == gcodes.DeadlineExceeded {
+			if isErrorCancellation(err) {
 				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
 				summary.Status = FetchCanceled
-				return summary, diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("provider fetch was canceled by user / fetch deadline exceeded")))
+				return summary, diags.Add(getCancellationDiag(err))
 			}
 			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
 			summary.Status = FetchFailed
