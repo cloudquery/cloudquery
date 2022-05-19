@@ -208,7 +208,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
-	result, diags := core.Fetch(ctx, c.Storage, c.PluginManager, &core.FetchOptions{
+	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
 		FetchId:        c.instanceId,

@@ -189,7 +189,7 @@ type FetchOptions struct {
 	FetchId uuid.UUID
 }
 
-func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
+func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
 	var err error
 	fetchId := opts.FetchId
 	if fetchId == uuid.Nil {
@@ -201,12 +201,6 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	// set metadata we want to pass to
 	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
 	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
-
-	stateClient, err := state.NewClient(ctx, storage.DSN())
-	if err != nil {
-		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
-	}
-	defer stateClient.Close()
 
 	var (
 		diags          diag.Diagnostics
@@ -235,7 +229,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 				return
 			}
 			// TODO: if context deadline exceeds in fetch, do we still want to run the save?
-			if err := stateClient.SaveFetchSummary(ctx, createFetchSummary(fetchId, start, s)); err != nil {
+			if err := sta.SaveFetchSummary(ctx, createFetchSummary(fetchId, start, s)); err != nil {
 				d = d.Add(diag.FromError(err, diag.INTERNAL))
 			}
 			fetchSummaries <- fetchResult{s, d}

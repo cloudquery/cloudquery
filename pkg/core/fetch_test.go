@@ -258,7 +258,7 @@ func Test_Fetch(t *testing.T) {
 				ctx, cancel = context.WithTimeout(context.Background(), tc.Timeout)
 				defer cancel()
 			}
-			resp, diags := Fetch(ctx, storage, pManager, &tc.Options)
+			resp, diags := Fetch(ctx, sta, storage, pManager, &tc.Options)
 			if tc.ExpectedDiags != nil {
 				flattenedDiags := diag.FlattenDiags(diags, false)
 				require.Len(t, flattenedDiags, len(tc.ExpectedDiags))
