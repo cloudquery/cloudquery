@@ -8,6 +8,11 @@ import (
 	"github.com/digitalocean/godo"
 )
 
+type lbDroplets struct {
+	DropletId      int
+	LoadBalancerId string
+}
+
 func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:         "digitalocean_load_balancers",
@@ -303,13 +308,4 @@ func fetchLoadBalancerDroplets(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	res <- vd
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type lbDroplets struct {
-	DropletId      int
-	LoadBalancerId string
 }

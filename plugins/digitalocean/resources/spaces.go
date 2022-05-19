@@ -11,6 +11,15 @@ import (
 	"github.com/pkg/errors"
 )
 
+type WrappedBucket struct {
+	types.Bucket
+	Location string
+	Public   bool
+	acls     []types.Grant
+}
+
+const publicAccessURI = "http://acs.amazonaws.com/groups/global/AllUsers"
+
 func Spaces() *schema.Table {
 	return &schema.Table{
 		Name:                 "digitalocean_spaces",
@@ -157,9 +166,9 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		if !svc.CredentialStatus.Spaces {
 			log.Warn("Spaces credentials not set. skipping")
 			return nil
-		} else {
-			return err
 		}
+
+		return err
 	}
 
 	wb := make([]*WrappedBucket, len(buckets.Buckets))
@@ -222,23 +231,14 @@ func fetchSpaceCorsRules(ctx context.Context, meta schema.ClientMeta, parent *sc
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).S3
-	CORSOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
+	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = r.Location
 	})
 	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "NoSuchCORSConfiguration") {
 		return err
 	}
-	if CORSOutput != nil {
-		res <- CORSOutput.CORSRules
+	if corsOutput != nil {
+		res <- corsOutput.CORSRules
 	}
 	return nil
 }
-
-type WrappedBucket struct {
-	types.Bucket
-	Location string
-	Public   bool
-	acls     []types.Grant
-}
-
-const publicAccessURI = "http://acs.amazonaws.com/groups/global/AllUsers"

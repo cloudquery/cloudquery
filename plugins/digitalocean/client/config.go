@@ -14,7 +14,7 @@ type Config struct {
 	SpacesDebugLogging bool `hcl:"spaces_debug_logging,optional"`
 }
 
-func (c Config) Example() string {
+func (Config) Example() string {
 	return `
 		configuration {
 			// API Token to access DigitalOcean resources 

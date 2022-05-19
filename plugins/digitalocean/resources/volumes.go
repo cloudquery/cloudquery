@@ -8,6 +8,11 @@ import (
 	"github.com/digitalocean/godo"
 )
 
+type volumeDroplets struct {
+	DropletId int
+	VolumeId  string
+}
+
 func Volumes() *schema.Table {
 	return &schema.Table{
 		Name:         "digitalocean_volumes",
@@ -164,13 +169,4 @@ func fetchVolumeDroplets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	res <- vd
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type volumeDroplets struct {
-	DropletId int
-	VolumeId  string
 }

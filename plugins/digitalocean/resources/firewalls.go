@@ -8,6 +8,11 @@ import (
 	"github.com/digitalocean/godo"
 )
 
+type firewallDroplets struct {
+	DropletId  int
+	FirewallId string
+}
+
 func Firewalls() *schema.Table {
 	return &schema.Table{
 		Name:         "digitalocean_firewalls",
@@ -263,13 +268,4 @@ func fetchFirewallDroplets(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	res <- vd
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type firewallDroplets struct {
-	DropletId  int
-	FirewallId string
 }

@@ -49,5 +49,4 @@ func Provider() *sdkprovider.Provider {
 			return &client.Config{}
 		},
 	}
-
 }

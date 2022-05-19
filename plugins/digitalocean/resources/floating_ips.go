@@ -8,6 +8,11 @@ import (
 	"github.com/digitalocean/godo"
 )
 
+type floatingIpWrapper struct {
+	godo.FloatingIP
+	DropletId int
+}
+
 func FloatingIps() *schema.Table {
 	return &schema.Table{
 		Name:          "digitalocean_floating_ips",
@@ -97,13 +102,4 @@ func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schem
 		opt.Page = page + 1
 	}
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type floatingIpWrapper struct {
-	godo.FloatingIP
-	DropletId int
 }

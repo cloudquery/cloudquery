@@ -8,6 +8,11 @@ import (
 	"github.com/digitalocean/godo"
 )
 
+type neighborWrapper struct {
+	DropletId  int
+	NeighborId int
+}
+
 func Droplets() *schema.Table {
 	return &schema.Table{
 		Name:         "digitalocean_droplets",
@@ -457,13 +462,4 @@ func fetchDropletNeighbors(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	res <- nn
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type neighborWrapper struct {
-	DropletId  int
-	NeighborId int
 }

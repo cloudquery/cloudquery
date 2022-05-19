@@ -16,10 +16,6 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
-var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
-
-const MaxItemsPerPage = 200
-
 type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
@@ -31,13 +27,28 @@ type Client struct {
 	S3               *s3.Client
 }
 
-func (c *Client) Logger() hclog.Logger {
-	return c.logger
-}
-
 type DoCredentialStruct struct {
 	Api    bool
 	Spaces bool
+}
+
+type SpacesCredentialsProvider struct {
+	SpacesAccessKey   string
+	SpacesAccessKeyId string
+}
+
+type AwsLogger struct {
+	l hclog.Logger
+}
+
+type SpacesEndpointResolver struct{}
+
+const MaxItemsPerPage = 200
+
+var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
+
+func (c *Client) Logger() hclog.Logger {
+	return c.logger
 }
 
 func (c *Client) WithSpacesRegion(region string) *Client {
@@ -49,11 +60,6 @@ func (c *Client) WithSpacesRegion(region string) *Client {
 	}
 }
 
-type SpacesCredentialsProvider struct {
-	SpacesAccessKey   string
-	SpacesAccessKeyId string
-}
-
 func (s SpacesCredentialsProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
 	return aws.Credentials{
 		AccessKeyID:     s.SpacesAccessKeyId,
@@ -62,9 +68,7 @@ func (s SpacesCredentialsProvider) Retrieve(ctx context.Context) (aws.Credential
 	}, nil
 }
 
-type SpacesEndpointResolver struct{}
-
-func (s SpacesEndpointResolver) ResolveEndpoint(_, region string) (aws.Endpoint, error) {
+func (SpacesEndpointResolver) ResolveEndpoint(_, region string) (aws.Endpoint, error) {
 	return aws.Endpoint{
 		URL:    fmt.Sprintf("https://%s.digitaloceanspaces.com", region),
 		Source: aws.EndpointSourceCustom,
@@ -144,10 +148,6 @@ func getSpacesTokenFromEnv() (string, string) {
 		return "", ""
 	}
 	return spacesAccessKey, spacesSecretKey
-}
-
-type AwsLogger struct {
-	l hclog.Logger
 }
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
