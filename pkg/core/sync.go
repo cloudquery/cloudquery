@@ -108,8 +108,7 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	}
 
 	if res.State != NoChange {
-		dd := syncTables(ctx, sta, cur, want, s.ResourceTables)
-		diags = diags.Add(dd)
+		diags = diags.Add(syncTables(ctx, sta, cur, want, s.ResourceTables))
 	}
 
 	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", diags.Errors()).Msg("provider sync complete")
@@ -136,7 +135,7 @@ func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	if diags := dropProvider(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasErrors() {
+	if diags := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasErrors() {
 		return diags
 	}
 
@@ -174,10 +173,10 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	// If a single SQL fails, all following commands also fail with "current transaction is aborted"
-	if diags := dropProvider(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures); diags.HasErrors() {
+	if diags := dropProviderTables(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures); diags.HasErrors() {
 		return diags
 	}
-	if diags := installProvider(ctx, tx, resourceTables); diags.HasErrors() {
+	if diags := createProviderTables(ctx, tx, resourceTables); diags.HasErrors() {
 		return diags
 	}
 
@@ -196,7 +195,7 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	return nil
 }
 
-func dropProvider(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) diag.Diagnostics {
+func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) diag.Diagnostics {
 	{
 		migTable := fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)
 		q := fmt.Sprintf(dropTableSQL, strconv.Quote(migTable))
@@ -222,9 +221,10 @@ func dropProvider(ctx context.Context, db execution.QueryExecer, provider regist
 	return nil
 }
 
-func installProvider(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
+func createProviderTables(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	// We didn't filter which tables we already have in the DB (and didn't drop due to signature matches) and trust that all CREATE TABLE statements will have IF NOT EXISTS
 	for _, t := range sort.StringSlice(funk.Keys(resourceTables).([]string)) {
 		up, err := migration.CreateTableDefinitions(ctx, schema.PostgresDialect{}, resourceTables[t], nil)
 		if err != nil {
@@ -233,7 +233,7 @@ func installProvider(ctx context.Context, db execution.QueryExecer, resourceTabl
 		}
 		for _, sql := range up {
 			if err := db.Exec(ctx, sql); err != nil {
-				return diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
+				return diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
 			}
 		}
 	}
