@@ -150,11 +150,11 @@ func Test_Fetch(t *testing.T) {
 			Timeout: time.Second * 4,
 			ExpectedDiags: []diag.FlatDiag{
 				{
-					Err:         "rpc error: code = DeadlineExceeded desc = context deadline exceeded",
+					Err:         "context deadline exceeded",
 					Type:        diag.USER,
 					Severity:    diag.ERROR,
-					Summary:     "provider fetch was canceled by user / fetch deadline exceeded: rpc error: code = DeadlineExceeded desc = context deadline exceeded",
-					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "provider fetch was canceled by user / fetch deadline exceeded: rpc error: code = DeadlineExceeded desc = context deadline exceeded", Detail: ""}},
+					Summary:     "provider fetch was canceled by user / fetch deadline exceeded",
+					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "provider fetch was canceled by user / fetch deadline exceeded", Detail: ""}},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
@@ -256,7 +256,20 @@ func Test_Fetch(t *testing.T) {
 			}
 			resp, diags := Fetch(ctx, storage, pManager, &tc.Options)
 			if tc.ExpectedDiags != nil {
-				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
+				flattenedDiags := diag.FlattenDiags(diags, false)
+				require.Len(t, flattenedDiags, len(tc.ExpectedDiags))
+				for i, expected := range tc.ExpectedDiags {
+					actual := flattenedDiags[i]
+					assert.ElementsMatch(t, expected.Description.ResourceID, actual.Description.ResourceID)
+					assert.Contains(t, actual.Description.Detail, expected.Description.Detail)
+					assert.Contains(t, actual.Description.Resource, expected.Description.Resource)
+					assert.Contains(t, actual.Description.Summary, expected.Description.Summary)
+					assert.Contains(t, actual.Err, expected.Err)
+					assert.Contains(t, actual.Summary, expected.Summary)
+
+					assert.Equal(t, expected.Type, actual.Type)
+					assert.Equal(t, expected.Severity, actual.Severity)
+				}
 			} else {
 				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
 			}
