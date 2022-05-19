@@ -6,12 +6,9 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
@@ -51,7 +48,7 @@ type SyncResult struct {
 
 const dropTableSQL = "DROP TABLE IF EXISTS %s CASCADE"
 
-func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
+func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
 	log.Info().Stringer("provider", provider).Msg("syncing provider schema")
 
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
@@ -59,25 +56,12 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 		return nil, diags
 	}
 
-	// TODO: in future more components will want state, so make state more generic and passable via database.Storage
-	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "sync"), storage.DSN())
-	if err != nil {
-		return nil, diag.FromError(err, diag.DATABASE)
-	}
-	defer db.Close()
-
 	provider.Version = s.Version // override any "latest"
 
 	want := state.ProviderFromRegistry(provider)
 	if want.ParsedVersion == nil {
 		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", provider.Version), diag.INTERNAL)
 	}
-
-	sta, err := state.NewClient(ctx, storage.DSN())
-	if err != nil {
-		return nil, diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
-	}
-	defer sta.Close()
 
 	cur, err := sta.GetProvider(ctx, provider)
 	if err != nil {
@@ -115,18 +99,12 @@ func Sync(ctx context.Context, storage database.Storage, pm *plugin.Manager, pro
 	return res, diags
 }
 
-func Drop(ctx context.Context, storage database.Storage, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
+func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
 	log.Warn().Stringer("provider", provider).Msg("dropping provider schema")
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if diags.HasDiags() {
 		return diags
 	}
-
-	sta, err := state.NewClient(ctx, storage.DSN())
-	if err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
-	}
-	defer sta.Close()
 
 	tx, err := sta.ProviderSync(ctx)
 	if err != nil {

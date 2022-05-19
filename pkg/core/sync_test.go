@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/jackc/pgx/v4"
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
@@ -21,17 +21,18 @@ func Test_Sync(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	_, dialect, err := database.GetExecutor(dsn)
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
-	storage := database.NewStorage(dsn, dialect)
 
 	// Download plugin before sync call
 	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}, {Name: "test", Version: "latest", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())
 
-	result, diags := Sync(context.Background(), storage, pManager, registry.Provider{
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	defer sta.Close()
+
+	result, diags := Sync(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
@@ -53,7 +54,7 @@ func Test_Sync(t *testing.T) {
 	assert.False(t, diags.HasErrors())
 
 	// upgrade
-	result, diags = Sync(context.Background(), storage, pManager, registry.Provider{
+	result, diags = Sync(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.11",
 		Source:  "cloudquery",
@@ -63,7 +64,7 @@ func Test_Sync(t *testing.T) {
 	_, err = conn.Exec(context.Background(), "select some_bool from slow_resource")
 	assert.Nil(t, err)
 
-	result, diags = Sync(context.Background(), storage, pManager, registry.Provider{
+	result, diags = Sync(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
@@ -83,23 +84,25 @@ func Test_Drop(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	_, dialect, err := database.GetExecutor(dsn)
-	if !assert.NoError(t, err) {
-		t.FailNow()
+
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
 	}
-	storage := database.NewStorage(dsn, dialect)
+	defer sta.Close()
+
 	// Download plugin before sync call
 	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())
 
-	diags = Drop(context.Background(), storage, pManager, registry.Provider{
+	diags = Drop(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
 	})
 	assert.False(t, diags.HasErrors())
 
-	result, diags := Sync(context.Background(), storage, pManager, registry.Provider{
+	result, diags := Sync(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",
@@ -116,7 +119,7 @@ func Test_Drop(t *testing.T) {
 	_, err = conn.Exec(context.Background(), "select some_bool from slow_resource")
 	assert.Nil(t, err)
 
-	diags = Drop(context.Background(), storage, pManager, registry.Provider{
+	diags = Drop(context.Background(), sta, pManager, registry.Provider{
 		Name:    "test",
 		Version: "v0.0.10",
 		Source:  "cloudquery",

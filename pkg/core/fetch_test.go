@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
@@ -239,9 +240,15 @@ func Test_Fetch(t *testing.T) {
 			})
 			require.False(t, diags.HasDiags())
 
+			sta, err := state.NewClient(context.Background(), storage.DSN())
+			if err != nil {
+				assert.NoError(t, err)
+			}
+			defer sta.Close()
+
 			for _, r := range rp {
 				// Sync provider in table before fetch
-				_, diags := Sync(context.Background(), storage, pManager, r)
+				_, diags := Sync(context.Background(), sta, pManager, r)
 				require.False(t, diags.HasDiags())
 			}
 

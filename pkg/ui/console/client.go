@@ -10,20 +10,20 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/google/uuid"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -59,6 +59,7 @@ type Client struct {
 	Registry         registry.Registry
 	PluginManager    *plugin.Manager
 	Storage          database.Storage
+	StateManager     *state.Client
 	instanceId       uuid.UUID
 }
 
@@ -95,11 +96,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
-	var (
-		progressUpdater ui.Progress
-		dialect         database.DialectExecutor
-		err             error
-	)
+
+	var progressUpdater ui.Progress
+
 	if ui.DoProgress() {
 		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
@@ -111,9 +110,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		return nil, err
 	}
 
-	var storage database.Storage
+	c := &Client{
+		downloadProgress: progressUpdater,
+		cfg:              cfg,
+		Registry:         hub,
+		PluginManager:    pm,
+		instanceId:       instanceId,
+	}
+
 	if cfg.CloudQuery.Connection.DSN != "" {
-		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN)
+		_, dialect, err := database.GetExecutor(cfg.CloudQuery.Connection.DSN)
 		if err != nil {
 			return nil, err
 		}
@@ -131,20 +137,23 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 			setUserId(dbId)
 		}
 
-		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+		c.Storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+		c.StateManager, err = state.NewClient(ctx, c.Storage.DSN())
+		if err != nil {
+			return nil, fmt.Errorf("could not init state: %w", err)
+		}
 	}
-	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
+	c.Providers = make(registry.Providers, len(cfg.CloudQuery.Providers))
 	for i, rp := range cfg.CloudQuery.Providers {
 		src, name, err := core.ParseProviderSource(rp)
 		if err != nil {
 			return nil, err
 		}
-		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
+		c.Providers[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
-	c := &Client{progressUpdater, cfg, pp, hub, pm, storage, instanceId}
 	c.checkForUpdate(ctx)
-	return c, err
+	return c, nil
 }
 
 // =====================================================================================================================
@@ -259,7 +268,7 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 	}
 
 	for _, p := range providers {
-		sync, dd := core.Sync(ctx, c.Storage, c.PluginManager, p)
+		sync, dd := core.Sync(ctx, c.StateManager, c.PluginManager, p)
 		if dd.HasErrors() {
 			ui.ColorizedOutput(ui.ColorError, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusError], p.String())
 			// TODO: should we just append diags and continue to sync others or stop syncing?
@@ -288,7 +297,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) (diags di
 		return diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.INTERNAL)
 	}
 
-	if diags = core.Drop(ctx, c.Storage, c.PluginManager, p); diags.HasErrors() {
+	if diags = core.Drop(ctx, c.StateManager, c.PluginManager, p); diags.HasErrors() {
 		ui.ColorizedOutput(ui.ColorError, "%s Failed to drop provider %s schema.\n\n", emojiStatus[ui.StatusError], providerName)
 		return diags
 	}
@@ -548,6 +557,9 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) diag.Diag
 
 func (c Client) Close() {
 	c.PluginManager.Shutdown()
+	if c.StateManager != nil {
+		c.StateManager.Close()
+	}
 }
 
 func (c Client) checkForUpdate(ctx context.Context) {

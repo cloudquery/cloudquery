@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
@@ -348,13 +349,19 @@ func setupTestProvider(t *testing.T, dsn string) {
 	}
 	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL), plugin.WithAllowReattach())
 	assert.Nil(t, err)
-	_, diags := Download(context.TODO(), pm, &DownloadOptions{
+	_, diags := Download(context.Background(), pm, &DownloadOptions{
 		Providers: []registry.Provider{provider},
 		NoVerify:  false,
 	})
 	assert.False(t, diags.HasErrors())
 
-	if _, diags := Sync(context.TODO(), database.NewStorage(dsn, nil), pm, provider); diags.HasErrors() {
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	defer sta.Close()
+
+	if _, diags := Sync(context.Background(), sta, pm, provider); diags.HasErrors() {
 		t.FailNow()
 	}
 }
