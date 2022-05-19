@@ -226,7 +226,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	stateClient := state.NewClient(db, logging.NewZHcLog(&log.Logger, "fetch"))
 	// migrate CloudQuery core tables to latest version
 	// context.DeadlineExceeded is handled inside runProviderFetch that returns a response and summary
-	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil && !errors.Is(err, context.DeadlineExceeded) {
+	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil && !cqerrors.IsCancelation(err) {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
 
