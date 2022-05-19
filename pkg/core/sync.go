@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
@@ -13,7 +14,10 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 )
 
@@ -113,7 +117,7 @@ func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	if diags := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasErrors() {
+	if diags := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasDiags() {
 		return diags
 	}
 
@@ -173,7 +177,7 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	return nil
 }
 
-func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) diag.Diagnostics {
+func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) (diags diag.Diagnostics) {
 	{
 		migTable := fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)
 		q := fmt.Sprintf(dropTableSQL, strconv.Quote(migTable))
@@ -181,6 +185,8 @@ func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider 
 			return diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(migTable))
 		}
 	}
+
+	force := viper.GetBool("force-drop")
 
 	for name, tables := range tableNames {
 		if curSignatures != nil && wantSignatures != nil && curSignatures[name] != "" && wantSignatures[name] == curSignatures[name] {
@@ -190,13 +196,20 @@ func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider 
 
 		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting tables and all relations")
 		for _, t := range tables {
+			if !force {
+				diags = diags.Add(safeToDropTable(ctx, db, name, t))
+			}
+			if diags.HasErrors() { // Don't actually drop any table if we have safety warnings
+				continue
+			}
 			if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(t))); err != nil {
-				return diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t))
+				diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t)))
+				return diags
 			}
 		}
 	}
 
-	return nil
+	return diags
 }
 
 func createProviderTables(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
@@ -217,6 +230,38 @@ func createProviderTables(ctx context.Context, db execution.QueryExecer, resourc
 	}
 
 	return diags
+}
+
+func safeToDropTable(ctx context.Context, db execution.QueryExecer, resName, table string) diag.Diagnostics {
+	rows, err := db.Query(ctx, `
+SELECT DISTINCT CONCAT(dependent_ns.nspname, '.', dependent_view.relname) as dependent_view
+FROM pg_depend
+JOIN pg_rewrite ON pg_depend.objid = pg_rewrite.oid
+JOIN pg_class as dependent_view ON pg_rewrite.ev_class = dependent_view.oid
+JOIN pg_class as source_table ON pg_depend.refobjid = source_table.oid
+JOIN pg_attribute ON pg_depend.refobjid = pg_attribute.attrelid AND pg_depend.refobjsubid = pg_attribute.attnum
+JOIN pg_namespace dependent_ns ON dependent_ns.oid = dependent_view.relnamespace
+JOIN pg_namespace source_ns ON source_ns.oid = source_table.relnamespace
+WHERE source_ns.nspname = current_schema() AND source_table.relname = $1 AND pg_attribute.attnum > 0 ORDER BY 1
+`, table)
+	if err != nil {
+		return diag.FromError(err, diag.DATABASE, diag.WithSummary("error checking dependent views"))
+	}
+
+	var dependentViews []string
+	if err := pgxscan.ScanAll(&dependentViews, rows); err != nil {
+		return diag.FromError(err, diag.DATABASE)
+	}
+
+	if len(dependentViews) > 0 {
+		return diag.Diagnostics{diag.NewBaseError(nil, diag.USER,
+			diag.WithSummary("One or more views depend on table %q, which is about to be dropped. Run with --force-drop to override this message which will drop all dependent views.", table),
+			diag.WithDetails("%s", strings.Join(dependentViews, ", ")),
+			diag.WithResourceName(resName),
+		)}
+	}
+
+	return nil
 }
 
 func resourceTableNames(resourceTables map[string]*schema.Table) map[string][]string {
