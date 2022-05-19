@@ -2,7 +2,7 @@ package core
 
 import (
 	"context"
-	"errors"
+	stderrors "errors"
 	"fmt"
 	"io"
 	"math"
@@ -16,7 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-	cqerrors "github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/errors"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -226,7 +226,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 	stateClient := state.NewClient(db, logging.NewZHcLog(&log.Logger, "fetch"))
 	// migrate CloudQuery core tables to latest version
 	// context.DeadlineExceeded is handled inside runProviderFetch that returns a response and summary
-	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil && !errors.Is(err, context.DeadlineExceeded) {
+	if err := stateClient.MigrateCore(ctx, storage.DialectExecutor()); err != nil && !errors.IsCancelation(err) {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
 
@@ -308,8 +308,8 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 			sts FetchStatus
 		)
 
-		if cqerrors.IsCancelation(err) {
-			d = cqerrors.CancelationDiag(err)
+		if errors.IsCancelation(err) {
+			d = errors.CancelationDiag(err)
 			sts = FetchCanceled
 		} else {
 			d = diag.FromError(err, diag.INTERNAL)
@@ -400,7 +400,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{resp.Summary.Status.String(), resp.Summary.ResourceCount, resp.Summary.Diagnostics, time.Since(start)}
 			if resp.Error != "" {
 				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
-				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
+				diags = diags.Add(diag.FromError(stderrors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
 			}
 			// TODO: print diags, specific to resource into log?
 			if resp.Summary.Diagnostics.HasDiags() {
@@ -422,10 +422,10 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				})
 			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
-			if cqerrors.IsCancelation(err) {
+			if errors.IsCancelation(err) {
 				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
 				summary.Status = FetchCanceled
-				return summary, diags.Add(cqerrors.CancelationDiag(err))
+				return summary, diags.Add(errors.CancelationDiag(err))
 			}
 			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
 			summary.Status = FetchFailed
@@ -479,7 +479,7 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 	seen := make(map[string]struct{})
 	for _, r := range requested {
 		if r == "" {
-			return nil, diag.FromError(errors.New("invalid resource"), diag.USER, diag.WithDetails("empty resource names are not allowed"))
+			return nil, diag.FromError(fmt.Errorf("invalid resource"), diag.USER, diag.WithDetails("empty resource names are not allowed"))
 		}
 
 		if _, ok := seen[r]; ok {
@@ -517,7 +517,7 @@ func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, 
 
 	if wildPos > 0 {
 		if wildPos != len(pattern)-2 { // make sure it ends with .*
-			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
+			return nil, diag.FromError(stderrors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
 		}
 		for k := range all {
 			if strings.HasPrefix(k, pattern[:wildPos+1]) { // include the "." in the match
@@ -525,7 +525,7 @@ func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, 
 			}
 		}
 	} else if wildPos == 0 || strings.Contains(pattern, "*") {
-		return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
+		return nil, diag.FromError(stderrors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
 	}
 
 	return result, nil
