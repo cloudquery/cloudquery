@@ -37,7 +37,7 @@ func Test_Sync(t *testing.T) {
 		Source:  "cloudquery",
 	})
 	assert.False(t, diags.HasErrors())
-	assert.Equal(t, &SyncResult{State: Upgraded, OldVersion: "v0.0.0", NewVersion: "v0.0.10"}, result)
+	assert.Equal(t, &SyncResult{State: Installed, OldVersion: "", NewVersion: "v0.0.10"}, result)
 	// Verify tables were created
 	conn, err := pgx.Connect(context.Background(), dsn)
 	if err != nil {
@@ -49,7 +49,7 @@ func Test_Sync(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Download plugin before sync call
-	_, diags = Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}}, false})
+	_, diags = Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.11", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())
 
 	// upgrade
@@ -105,7 +105,7 @@ func Test_Drop(t *testing.T) {
 		Source:  "cloudquery",
 	})
 	assert.False(t, diags.HasErrors())
-	assert.Equal(t, &SyncResult{State: Upgraded, OldVersion: "v0.0.0", NewVersion: "v0.0.10"}, result)
+	assert.Equal(t, &SyncResult{State: Installed, OldVersion: "", NewVersion: "v0.0.10"}, result)
 	// Verify tables were created
 	conn, err := pgx.Connect(context.Background(), dsn)
 	if err != nil {
