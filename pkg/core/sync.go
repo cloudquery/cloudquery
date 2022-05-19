@@ -173,10 +173,11 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 	}
 	defer tx.Rollback(ctx) // nolint:errcheck
 
-	diags := dropProvider(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures)
-	diags = diags.Add(installProvider(ctx, tx, resourceTables))
-
-	if diags.HasErrors() {
+	// If a single SQL fails, all following commands also fail with "current transaction is aborted"
+	if diags := dropProvider(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures); diags.HasErrors() {
+		return diags
+	}
+	if diags := installProvider(ctx, tx, resourceTables); diags.HasErrors() {
 		return diags
 	}
 
@@ -196,13 +197,11 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 }
 
 func dropProvider(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) diag.Diagnostics {
-	var diags diag.Diagnostics
-
 	{
 		migTable := fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)
 		q := fmt.Sprintf(dropTableSQL, strconv.Quote(migTable))
 		if err := db.Exec(ctx, q); err != nil {
-			diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(migTable)))
+			return diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(migTable))
 		}
 	}
 
@@ -215,12 +214,12 @@ func dropProvider(ctx context.Context, db execution.QueryExecer, provider regist
 		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting tables and all relations")
 		for _, t := range tables {
 			if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(t))); err != nil {
-				diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t)))
+				return diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t))
 			}
 		}
 	}
 
-	return diags
+	return nil
 }
 
 func installProvider(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
@@ -234,7 +233,7 @@ func installProvider(ctx context.Context, db execution.QueryExecer, resourceTabl
 		}
 		for _, sql := range up {
 			if err := db.Exec(ctx, sql); err != nil {
-				diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
+				return diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
 			}
 		}
 	}
