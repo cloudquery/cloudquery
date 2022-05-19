@@ -358,10 +358,11 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 	fullPath := fmt.Sprintf("%s.json", filepath.Join(outputDir, result.PolicyName))
 
 	// Ensure entire directory structure is created
-	directory := fullPath[:strings.LastIndex(fullPath, "/")]
-
-	if err := fs.MkdirAll(directory, 0755); err != nil {
-		return err
+	if strings.LastIndex(fullPath, "/") > -1 {
+		directory := fullPath[:strings.LastIndex(fullPath, "/")]
+		if err := fs.MkdirAll(directory, 0755); err != nil {
+			return err
+		}
 	}
 
 	f, err := fs.Create(fullPath)
