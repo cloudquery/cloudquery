@@ -5823,6 +5823,11 @@
             "us-iso-east-1": {}
           }
         },
+        "appconfigdata": {
+          "regions": {
+            "us-iso-west-1": {}
+          }
+        },
         "application-autoscaling": {
           "regions": {
             "us-iso-east-1": {},
