@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
@@ -31,12 +32,12 @@ type LowLevelQueryExecer interface {
 	execution.QueryExecer
 }
 
-func Snapshot(ctx context.Context, storage database.Storage, policy *Policy, outputPath, subpath string) error {
+func Snapshot(ctx context.Context, sta *state.Client, storage database.Storage, policy *Policy, outputPath, subpath string) error {
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "executor-database"), storage.DSN())
 	if err != nil {
 		return err
 	}
-	e := NewExecutor(db, nil)
+	e := NewExecutor(db, sta, nil)
 
 	if err := e.createViews(ctx, policy); err != nil {
 		return err
@@ -96,7 +97,7 @@ type RunResponse struct {
 	Executions []*ExecutionResult
 }
 
-func Run(ctx context.Context, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
+func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
 	var (
 		diags diag.Diagnostics
 		resp  = &RunResponse{
@@ -112,7 +113,7 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) (*RunRe
 		}
 		resp.Policies = append(resp.Policies, loadedPolicy)
 		log.Debug().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("loaded policy successfully")
-		result, dd := run(ctx, storage, &ExecuteRequest{
+		result, dd := run(ctx, sta, storage, &ExecuteRequest{
 			Policy:         loadedPolicy,
 			UpdateCallback: req.RunCallback,
 		})
@@ -137,7 +138,7 @@ func Run(ctx context.Context, storage database.Storage, req *RunRequest) (*RunRe
 	return resp, diags
 }
 
-func run(ctx context.Context, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, diag.Diagnostics) {
+func run(ctx context.Context, sta *state.Client, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, diag.Diagnostics) {
 	var (
 		totalQueriesToRun = request.Policy.TotalQueries()
 		finishedQueries   = 0
@@ -181,7 +182,7 @@ func run(ctx context.Context, storage database.Storage, request *ExecuteRequest)
 		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	// execute the queries
-	return NewExecutor(db, progressUpdate).Execute(ctx, request, &filteredPolicy, nil)
+	return NewExecutor(db, sta, progressUpdate).Execute(ctx, request, &filteredPolicy, nil)
 }
 
 func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourceURL string) (*Policy, diag.Diagnostics) {

@@ -65,7 +65,7 @@ func (c *Client) GetProvider(ctx context.Context, p registry.Provider) (*Provide
 }
 
 func (c *Client) ProviderSync(ctx context.Context) (*Tx, error) {
-	tx, err := c.capableDB.Begin(ctx)
+	tx, err := c.db.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}

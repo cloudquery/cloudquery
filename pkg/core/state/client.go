@@ -1,4 +1,4 @@
-// Package meta_storage interacts with core database schema and stores cloudquery metadata such as fetch summaries
+// Package state interacts with core database schema and stores cloudquery metadata such as fetch summaries
 package state
 
 import (
@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
@@ -24,18 +23,9 @@ var (
 )
 
 type Client struct {
-	dsn       string
-	db        execution.QueryExecer
-	capableDB *sdkdb.DB
-	Logger    hclog.Logger
-}
-
-// NewReadClient creates a client solely for reading.
-func NewReadClient(db execution.QueryExecer) *Client {
-	return &Client{
-		db:     db,
-		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
-	}
+	dsn    string
+	db     *sdkdb.DB
+	Logger hclog.Logger
 }
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.
@@ -51,7 +41,6 @@ func NewClient(ctx context.Context, dsn string) (*Client, error) {
 		return nil, diag.FromError(err, diag.DATABASE)
 	}
 	c.db = db
-	c.capableDB = db
 
 	// migrate CloudQuery core tables to latest version
 	if err := c.migrateCore(ctx); err != nil {
@@ -63,11 +52,7 @@ func NewClient(ctx context.Context, dsn string) (*Client, error) {
 
 // Close closes the underlying database connection.
 func (c *Client) Close() {
-	if c.capableDB == nil {
-		return
-	}
-	c.capableDB.Close()
-	c.capableDB = nil
+	c.db.Close()
 }
 
 func (c *Client) migrateCore(ctx context.Context) error {

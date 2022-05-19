@@ -377,7 +377,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	resp, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
+	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
@@ -425,7 +425,7 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		return diags
 	}
 
-	e := policy.NewExecutor(conn, nil)
+	e := policy.NewExecutor(conn, c.StateManager, nil)
 	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
 
 }
@@ -591,7 +591,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelec
 	if pol.TotalQueries() != 1 {
 		return errors.New("selector must specify only a single control")
 	}
-	return policy.Snapshot(ctx, c.Storage, &pol, destination, subPath)
+	return policy.Snapshot(ctx, c.StateManager, c.Storage, &pol, destination, subPath)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
