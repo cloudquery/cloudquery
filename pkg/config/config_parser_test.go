@@ -15,32 +15,23 @@ func TestHandleConnectionBlock(t *testing.T) {
 	}{
 		{
 			&Connection{
-				DSN:  `host=localhost database=somedb port=5432 sslmode=disable`,
-				Type: "tsdb",
-			},
-			"",
-			true,
-		},
-		{
-			&Connection{
 				Username: `user`,
 				Password: `pass`,
-				Type:     `tsdb`,
 				Host:     `localhost`,
 				Database: `postgres`,
 			},
-			"tsdb://user:pass@localhost:5432/postgres",
+			"postgres://user:pass@localhost:5432/postgres",
 			false,
 		},
 		{
 			&Connection{
 				Username: `user`,
-				Type:     `tsdb`,
+				Type:     `postgres`,
 				Host:     `localhost`,
 				Port:     15432,
 				Database: `postgres`,
 			},
-			"tsdb://user@localhost:15432/postgres",
+			"postgres://user@localhost:15432/postgres",
 			false,
 		},
 		{
