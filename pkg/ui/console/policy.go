@@ -21,7 +21,7 @@ import (
 
 func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policies, error) {
 	if policyPath == "" && len(policies) == 0 {
-		return nil, errors.New("no policies defined in configuration")
+		return nil, diag.NewBaseError(errors.New("no policies defined in configuration"), diag.USER)
 	}
 	policyName, subPath := getter.ParseSourceSubPolicy(policyPath)
 	// run them all
@@ -59,7 +59,6 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	}
 
 	return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found in configuration or remote. Available in config: %s", policyName, configPolicies), diag.USER)
-
 }
 
 func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyRootPath string) {
