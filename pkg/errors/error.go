@@ -25,10 +25,6 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 		return true
 	}
 
-	if d.Type() == diag.ACCESS && isConfigureDiagnostic(d) {
-		return true
-	}
-
 	if d.Type() == diag.DATABASE {
 		ret := sqlStateRegex.FindStringSubmatch(d.Error())
 		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
@@ -110,15 +106,6 @@ func shouldIgnorePgCode(code string) bool {
 		}
 	}
 	return false
-}
-
-type configureDiag interface {
-	IsConfigureDiagnostic() bool
-}
-
-func isConfigureDiagnostic(d diag.Diagnostic) bool {
-	cd, ok := diag.UnsquashDiag(d).(configureDiag)
-	return ok && cd.IsConfigureDiagnostic()
 }
 
 type sentryDiag interface {
