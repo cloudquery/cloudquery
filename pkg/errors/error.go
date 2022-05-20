@@ -121,14 +121,14 @@ func isConfigureDiagnostic(d diag.Diagnostic) bool {
 	return ok && cd.IsConfigureDiagnostic()
 }
 
-type fetchDiag interface {
-	IsFetchDiagnostic() (bool, string, string)
+type sentryDiag interface {
+	IsSentryDiagnostic() (bool, map[string]string, bool)
 }
 
-func isFetchDiagnostic(d diag.Diagnostic) (bool, string, string) {
-	cd, ok := diag.UnsquashDiag(d).(fetchDiag)
+func isSentryDiagnostic(d diag.Diagnostic) (bool, map[string]string, bool) {
+	cd, ok := diag.UnsquashDiag(d).(sentryDiag)
 	if !ok {
-		return false, "", ""
+		return false, nil, false
 	}
-	return cd.IsFetchDiagnostic()
+	return cd.IsSentryDiagnostic()
 }

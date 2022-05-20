@@ -1,23 +1,20 @@
 package core
 
-import "github.com/cloudquery/cq-provider-sdk/provider/diag"
+import (
+	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/spf13/viper"
+)
 
-type ConfigureDiagnostic struct {
+type SentryDiagnostic struct {
 	diag.Diagnostic
+
+	Tags   map[string]string
+	Ignore bool
 }
 
-func (d *ConfigureDiagnostic) IsConfigureDiagnostic() bool {
-	return true
-}
-
-type FetchDiagnostic struct {
-	diag.Diagnostic
-	Provider string
-	Version  string
-}
-
-func (d *FetchDiagnostic) IsFetchDiagnostic() (bool, string, string) {
-	return true, d.Provider, d.Version
+func (d *SentryDiagnostic) IsSentryDiagnostic() (bool, map[string]string, bool) {
+	return true, d.Tags, d.Ignore
 }
 
 type DiagnosticsSummary struct {
@@ -49,24 +46,41 @@ func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
 	return summary
 }
 
-func convertToConfigureDiags(dd diag.Diagnostics) diag.Diagnostics {
-	ret := make(diag.Diagnostics, len(dd))
-	for i := range dd {
-		ret[i] = &ConfigureDiagnostic{
-			Diagnostic: dd[i],
+func convertToConfigureDiags(diags diag.Diagnostics) diag.Diagnostics {
+	return convertToSentryDiags(diags, func(d diag.Diagnostic) *SentryDiagnostic {
+		return &SentryDiagnostic{
+			Diagnostic: d,
+			Tags:       map[string]string{"source": "configure"},
+			Ignore:     d.Type() == diag.ACCESS,
 		}
-	}
-	return ret
+	})
 }
 
-func convertToFetchDiags(diags diag.Diagnostics, provider, version string) diag.Diagnostics {
-	fd := make(diag.Diagnostics, len(diags))
-	for i, d := range diags {
-		fd[i] = FetchDiagnostic{
+func convertToFetchDiags(diags diag.Diagnostics, providerName, providerVersion string) diag.Diagnostics {
+	allowUnmanaged := viper.GetBool("debug-sentry")
+
+	return convertToSentryDiags(diags, func(d diag.Diagnostic) *SentryDiagnostic {
+		return &SentryDiagnostic{
 			Diagnostic: d,
-			Provider:   provider,
-			Version:    version,
+			Tags: map[string]string{
+				"provider":         providerName,
+				"provider_version": providerVersion,
+				"resource":         d.Description().Resource,
+			},
+			Ignore: !allowUnmanaged && providerVersion == plugin.Unmanaged,
 		}
+	})
+}
+
+// convertToSentryDiags gets the diags and applies the given handleFunc to each diag which converts them to a Sentry Diagnostic.
+func convertToSentryDiags(diags diag.Diagnostics, handleFunc func(diag.Diagnostic) *SentryDiagnostic) diag.Diagnostics {
+	fd := make(diag.Diagnostics, 0, len(diags))
+	for i := range diags {
+		sd := handleFunc(diags[i])
+		if sd == nil {
+			continue
+		}
+		fd = append(fd, sd)
 	}
 	return fd
 }
