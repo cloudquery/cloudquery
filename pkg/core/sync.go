@@ -63,6 +63,11 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	provider.Version = s.Version // override any "latest"
 
 	want := state.ProviderFromRegistry(provider)
+	if want.ParsedVersion == nil && s.Unmanaged {
+		provider.Version = "v0.0.0"
+		want = state.ProviderFromRegistry(provider)
+	}
+
 	if want.ParsedVersion == nil {
 		return nil, diag.FromError(fmt.Errorf("failing provider with invalid version %q", provider.Version), diag.INTERNAL)
 	}
@@ -255,7 +260,7 @@ WHERE source_ns.nspname = current_schema() AND source_table.relname = $1 AND pg_
 
 	if len(dependentViews) > 0 {
 		return diag.Diagnostics{diag.NewBaseError(nil, diag.USER,
-			diag.WithSummary("One or more views depend on table %q, which is about to be dropped. Run with --force-drop to override this message which will drop all dependent views.", table),
+			diag.WithSummary("One or more views depend on table %q, which is about to be dropped. Run with --force-drop to override this message, which will drop ALL dependent views.", table),
 			diag.WithDetails("%s", strings.Join(dependentViews, ", ")),
 			diag.WithResourceName(resName),
 		)}
