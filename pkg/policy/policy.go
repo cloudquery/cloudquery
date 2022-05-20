@@ -34,19 +34,19 @@ func (pp Policies) Properties() map[string]interface{} {
 
 type Policy struct {
 	// Name of the policy
-	Name string `hcl:"name,label"`
+	Name string `yaml:"name,omitempty" json:"name,omitempty"`
 	// Short human-readable title about the policy
-	Title string `hcl:"title,optional"`
+	Title string `yaml:"title,omitempty" json:"title,omitempty"`
 	// Full documentation about the policy, this will be shown in the hub
-	Doc    string         `hcl:"doc,optional"`
-	Config *Configuration `hcl:"configuration,block"`
+	Doc    string         `yaml:"doc,omitempty" json:"doc,omitempty"`
+	Config *Configuration `yaml:"configuration,omitempty" json:"configuration,omitempty"`
 
-	Policies Policies `hcl:"policy,block"`
-	Checks   []*Check `hcl:"check,block"`
-	Views    []*View  `hcl:"view,block"`
+	Policies Policies `yaml:"policy,omitempty" json:"policy,omitempty"`
+	Checks   []*Check `yaml:"check,omitempty" json:"check,omitempty"`
+	Views    []*View  `yaml:"view,omitempty" json:"view,omitempty"`
 
 	// Link to policy in filesystem/hub/git etc' to use, if source flag is set, all other attributes aren't allowed.
-	Source string `hcl:"source,optional"`
+	Source string `yaml:"source,omitempty" json:"source,omitempty"`
 
 	// List of identifiers that all checks and sub-policies must have, unless sub-policy overrides.
 	Identifiers []string
@@ -136,18 +136,18 @@ type Meta struct {
 }
 
 type View struct {
-	Name  string `hcl:"name,label"`
-	Title string `hcl:"title,optional"`
-	Query string `hcl:"query"`
+	Name  string `yaml:"name,omitempty" json:"name,omitempty"`
+	Title string `yaml:"title,omitempty" json:"title,omitempty"`
+	Query string `yaml:"query" json:"query"`
 }
 
 type Configuration struct {
-	Providers []*Provider `hcl:"provider,block"`
+	Providers []*Provider `yaml:"providers,omitempty"`
 }
 
 type Provider struct {
-	Type    string `hcl:"type,label"`
-	Version string `hcl:"version,optional"`
+	Type    string `yaml:"type,omitempty" json:"type,omitempty"`
+	Version string `yaml:"version,omitempty" json:"version,omitempty"`
 }
 
 type QueryType string
@@ -158,11 +158,11 @@ const (
 )
 
 type Check struct {
-	Name         string    `hcl:"name,label"`
-	Title        string    `hcl:"title,optional"`
-	Doc          string    `hcl:"doc,optional"`
-	ExpectOutput bool      `hcl:"expect_output,optional"`
-	Type         QueryType `hcl:"type,optional"`
-	Query        string    `hcl:"query"`
-	Reason       string    `hcl:"reason,optional"`
+	Name         string    `yaml:"name,omitempty" json:"name,omitempty"`
+	Title        string    `yaml:"title,omitempty" json:"title,omitempty"`
+	Doc          string    `yaml:"doc,omitempty" json:"doc,omitempty"`
+	ExpectOutput bool      `yaml:"expect_output,omitempty" json:"expect_output,omitempty"`
+	Type         QueryType `yaml:"type,omitempty" json:"type,omitempty"`
+	Query        string    `yaml:"query,omitempty" json:"query,omitempty"`
+	Reason       string    `yaml:"reason,omitempty" json:"reason,omitempty"`
 }

@@ -19,8 +19,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
-	"github.com/cloudquery/cloudquery/pkg/module"
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
@@ -464,85 +462,6 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 		Policy:    policyToValidate[0],
 		Directory: c.cfg.CloudQuery.PolicyDirectory,
 	})
-}
-
-// =====================================================================================================================
-// 													Module Commands
-// =====================================================================================================================
-
-func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) diag.Diagnostics {
-	_, diags := c.SyncProviders(ctx)
-	if diags.HasErrors() {
-		return diags
-	}
-
-	profiles, err := config.ReadModuleConfigProfiles(req.Name, c.cfg.Modules)
-	if err != nil {
-		return diags.Add(diag.FromError(err, diag.USER))
-	}
-	cfg, err := selectProfile(req.Profile, profiles)
-	if err != nil {
-		return diags.Add(diag.FromError(err, diag.USER))
-	}
-	ui.ColorizedOutput(ui.ColorProgress, "Starting module...\n")
-
-	m := module.NewManager(c.Storage, c.PluginManager)
-	m.Register(drift.New())
-	out, err := m.Execute(ctx, &module.ExecutionOptions{
-		Module:        req.Name,
-		ProfileConfig: cfg,
-		Params:        req.Params,
-		Providers:     c.Providers,
-	})
-	if err != nil {
-		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to execute module: %s.\n\n", err.Error())
-		return diags.Add(diag.FromError(err, diag.INTERNAL))
-	} else if out == nil {
-		ui.ColorizedOutput(ui.ColorSuccess, "Finished module, no results\n\n")
-		return diags
-	}
-
-	if out.ErrorMsg != "" {
-		ui.ColorizedOutput(ui.ColorError, "Finished module with error: %s\n\n", out.ErrorMsg)
-		return diags.Add(diag.FromError(out.Error, diag.USER))
-	}
-
-	if req.OutputPath != "" {
-		// Store output in file if requested
-		fs := afero.NewOsFs()
-		f, err := fs.OpenFile(req.OutputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			return diags.Add(diag.FromError(err, diag.USER))
-		}
-		defer func() {
-			_ = f.Close()
-		}()
-
-		data, err := json.MarshalIndent(out, "", "  ")
-		if err != nil {
-			return diags.Add(diag.FromError(err, diag.INTERNAL))
-		}
-		if _, err := f.Write(data); err != nil {
-			return diags.Add(diag.FromError(err, diag.USER))
-		}
-
-		ui.ColorizedOutput(ui.ColorProgress, "Wrote JSON output to %q\n", req.OutputPath)
-	}
-	if outString, ok := out.Result.(fmt.Stringer); ok {
-		ui.ColorizedOutput(ui.ColorInfo, "Module output: \n%s\n", outString.String())
-	} else {
-		b, _ := json.MarshalIndent(out.Result, "", "  ")
-		ui.ColorizedOutput(ui.ColorInfo, "Module output: \n%s\n", string(b))
-	}
-
-	ui.ColorizedOutput(ui.ColorSuccess, "Finished module\n\n")
-
-	if exitCoder, ok := out.Result.(module.ExitCoder); ok {
-		return diags.Add(diag.FromError(fmt.Errorf("module exited with code %d", exitCoder.ExitCode()), diag.USER))
-	}
-
-	return diags
 }
 
 func (c Client) Close() {

@@ -7,13 +7,23 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/hcl/v2"
 	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 )
+
+type Provider struct {
+	Name                          string      `yaml:"name,omitempty" json:"name,omitempty"`
+	Alias                         string      `yaml:"alias,omitempty" json:"alias,omitempty"`
+	Resources                     []string    `yaml:"resources,omitempty" json:"resources,omitempty"`
+	SkipResources                 []string    `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty"`
+	Env                           []string    `yaml:"env,omitempty" json:"env,omitempty"`
+	Configuration                 interface{} `yaml:"-"`
+	MaxParallelResourceFetchLimit uint64      `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty"`
+	MaxGoroutines                 uint64      `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty"`
+	ResourceTimeout               uint64      `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty"`
+}
 
 type Providers []*Provider
 
@@ -26,10 +36,9 @@ func (pp Providers) Names() []string {
 }
 
 type Config struct {
-	CloudQuery CloudQuery      `hcl:"cloudquery,block"`
-	Providers  Providers       `hcl:"provider,block"`
-	Policies   policy.Policies `hcl:"policy,block"`
-	Modules    hcl.Body        `hcl:"modules,block"`
+	CloudQuery CloudQuery      `yaml:"cloudquery,omitempty" json:"cloudquery,omitempty"`
+	Providers  Providers       `yaml:"providers,omitempty" json:"providers,omitempty"`
+	Policies   policy.Policies `yaml:"policies,omitempty"`
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {
@@ -42,12 +51,11 @@ func (c Config) GetProvider(name string) (*Provider, error) {
 }
 
 type CloudQuery struct {
-	PluginDirectory string            `hcl:"plugin_directory,optional"`
-	PolicyDirectory string            `hcl:"policy_directory,optional"`
-	Logger          *logging.Config   `hcl:"logging,block"`
-	Providers       RequiredProviders `hcl:"provider,block"`
-	Connection      *Connection       `hcl:"connection,block"`
-	History         *history.Config   `hcl:"history,block"`
+	PluginDirectory string            `yaml:"plugin_directory,omitempty" json:"plugin_directory,omitempty"`
+	PolicyDirectory string            `yaml:"policy_directory,omitempty" json:"policy_directory,omitempty"`
+	Logger          *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty"`
+	Providers       RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty"`
+	Connection      *Connection       `yaml:"connection,omitempty" json:"connection,omitempty"`
 }
 
 func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
@@ -60,17 +68,17 @@ func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) 
 }
 
 type Connection struct {
-	DSN string `hcl:"dsn,optional"`
+	DSN string `yaml:"dsn,omitempty" json:"dsn,omitempty"`
 
 	// These params are mutually exclusive with DSN
-	Type     string   `hcl:"type,optional"`
-	Username string   `hcl:"username,optional"`
-	Password string   `hcl:"password,optional"`
-	Host     string   `hcl:"host,optional"`
-	Port     int      `hcl:"port,optional"`
-	Database string   `hcl:"database,optional"`
-	SSLMode  string   `hcl:"sslmode,optional"`
-	Extras   []string `hcl:"extras,optional"`
+	Type     string   `yaml:"type,omitempty" json:"type,omitempty"`
+	Username string   `yaml:"username,omitempty" json:"username,omitempty"`
+	Password string   `yaml:"password,omitempty" json:"password,omitempty"`
+	Host     string   `yaml:"host,omitempty" json:"host,omitempty"`
+	Port     int      `yaml:"port,omitempty" json:"port,omitempty"`
+	Database string   `yaml:"database,omitempty" json:"database,omitempty"`
+	SSLMode  string   `yaml:"sslmode,omitempty" json:"sslmode,omitempty"`
+	Extras   []string `yaml:"extras,omitempty"`
 }
 
 func (c Connection) IsAnyConnParamsSet() bool {
@@ -125,9 +133,9 @@ func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
 }
 
 type RequiredProvider struct {
-	Name    string  `hcl:"name,label"`
-	Source  *string `hcl:"source,optional"`
-	Version string  `hcl:"version"`
+	Name    string  `yaml:"name,omitempty" json:"name,omitempty"`
+	Source  *string `yaml:"source,omitempty" json:"source,omitempty"`
+	Version string  `yaml:"version,omitempty" json:"version,omitempty"`
 }
 
 func (r RequiredProvider) String() string {
@@ -177,26 +185,4 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 		}
 	}
 	return nil
-}
-
-// configFileSchema is the schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configFileSchema = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules",
-		},
-	},
 }

@@ -9,10 +9,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/cloudquery/cloudquery/pkg/core"
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
-	"github.com/cloudquery/cloudquery/pkg/module"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -137,16 +134,6 @@ func Initialize(ctx context.Context, providers []string) error {
 		}
 		buffer.Write(pCfg.Config)
 		buffer.WriteString("\n")
-	}
-	mm := module.NewManager(nil, nil)
-	mm.Register(drift.New())
-	if mex := mm.ExampleConfigs(providers); len(mex) > 0 {
-		buffer.WriteString("\n// Module Configurations\nmodules {\n")
-		for _, c := range mex {
-			buffer.WriteString(c)
-			buffer.WriteString("\n")
-		}
-		buffer.WriteString("}\n")
 	}
 
 	formattedData := hclwrite.Format(buffer.Bytes())

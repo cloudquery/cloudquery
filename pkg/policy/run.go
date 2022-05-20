@@ -12,8 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/hclsyntax"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 
@@ -189,13 +187,12 @@ func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourc
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	f, dd := hclsyntax.ParseConfig(data, name, hcl.Pos{Byte: 0, Line: 1, Column: 1})
-	if dd.HasErrors() {
-		return nil, diag.FromError(dd, diag.USER)
+	policy, result, err := UnmarshalPolicy(data)
+	if err != nil {
+		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	policy, dd := DecodePolicy(f.Body, nil, meta.Directory)
-	if dd.HasErrors() {
-		return nil, diag.FromError(dd, diag.USER)
+	if !result.Valid() {
+		return nil, diag.FromError(fmt.Errorf("unmarshal policy had validation errors"), diag.USER)
 	}
 	policy.meta = meta
 	if subPolicy != "" {

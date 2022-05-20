@@ -1,0 +1,60 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://example.com/product.schema.json",
+  "title":"CloudQuery Policy",
+  "description":"CloudQuery Policy Schema",
+  "type":"object",
+  "properties":{
+     "name": {
+      "description": "Policy Name",
+      "type": "string"
+     },
+     "title": {
+         "description": "Policy Title",
+         "type": "string"
+     },
+     "source": {
+         "description": "Policy Source",
+         "type": "string"
+     },
+     "checks": {
+         "description": "Policy Checks",
+         "type": "array",
+         "items": {
+             "type": "object",
+             "properties": {
+                 "title": {
+                     "description": "Check Title",
+                     "type": "string"
+                 },
+                 "query": {
+                     "description": "Check SQL Query",
+                     "type": "string"
+                 },
+                 "type": {
+                     "description": "Check Type",
+                     "type": "string"
+                 }
+             }
+         }
+     },
+     "policies": {
+      "description": "Subpolicies",
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      }
+     }
+  },
+  "oneOf": [
+     {
+      "required": ["name"],
+      "not": {"required": ["source"]}
+     },
+     {
+      "required": ["source", "name"],
+      "not": {"required": ["checks", "policies"]}
+     }
+  ]
+ 
+} 
