@@ -188,7 +188,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		if !ok {
 			return nil, diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.INTERNAL)
 		}
-		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
+		providers[i] = core.ProviderInfo{Provider: rp, Config: &p}
 	}
 	result, diags := core.Fetch(ctx, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
@@ -596,7 +596,7 @@ func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector s
 	return nil
 }
 
-func buildFetchProgress(ctx context.Context, providers []configv2.Provider) (*Progress, core.FetchUpdateCallback) {
+func buildFetchProgress(ctx context.Context, providers configv2.Providers) (*Progress, core.FetchUpdateCallback) {
 	fetchProgress := NewProgress(ctx, func(o *ProgressOptions) {
 		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Resources: %d/%d")}
 	})
@@ -786,6 +786,6 @@ func setConfigAnalytics(cfg *configv2.Config) {
 
 func (c Client) ConvertRequiredToRegistry(providerName string) registry.Provider {
 	rp := c.cfg.CloudQuery.Providers.Get(providerName)
-	src, name, _ := core.ParseProviderSource(rp)
+	src, name, _ := core.ParseProviderSource(&rp)
 	return registry.Provider{Name: name, Version: rp.Version, Source: src}
 }

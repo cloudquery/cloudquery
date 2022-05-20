@@ -58,7 +58,7 @@ type CloudQuery struct {
 
 type Config struct {
 	CloudQuery *CloudQuery     `yaml:"cloudquery,omitempty" json:"cloudquery,omitempty"`
-	Providers  []Provider      `yaml:"providers,omitempty" json:"providers,omitempty"`
+	Providers  Providers       `yaml:"providers,omitempty" json:"providers,omitempty"`
 	Policies   policy.Policies `yaml:"policy" json:"policy"`
 	Modules    interface{}     `yaml:"modules,omitempty" json:"-"`
 }

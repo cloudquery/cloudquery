@@ -18,28 +18,28 @@ var builtinConfig []byte
 
 type BaseConfig struct {
 	WildProvider *ProviderConfig
-	Providers    []*ProviderConfig      `hcl:"provider,block"`
-	Terraform    *TerraformSourceConfig `hcl:"terraform,block"`
+	Providers    []*ProviderConfig      `yaml:"provider,omitempty" json:"provider,omitempty"`
+	Terraform    *TerraformSourceConfig `yaml:"terraform,omitempty" json:"terraform,omitempty"`
 }
 
 type ProviderConfig struct {
 	WildResource *ResourceConfig
 
-	Name            string                     `hcl:"name,label"`
-	Resources       map[string]*ResourceConfig `hcl:"resource,block"`
-	IgnoreResources ResourceSelectors          `hcl:"ignore_resources,optional"`
-	CheckResources  ResourceSelectors          `hcl:"check_resources,optional"`
-	AccountIDs      []string                   `hcl:"account_ids,optional"`
+	Name            string                     `yaml:"name,omitempty" json:"name,omitempty"`
+	Resources       map[string]*ResourceConfig `yaml:"resources,omitempty" json:"resources,omitempty"`
+	IgnoreResources ResourceSelectors          `yaml:"ignore_resources,omitempty" json:"ignore_resources,omitempty"`
+	CheckResources  ResourceSelectors          `yaml:"check_resources,omitempty" json:"check_resources,omitempty"`
+	AccountIDs      []string                   `yaml:"account_ids,omtempty" json:"account_ids,omitempty"`
 }
 
 type ResourceConfig struct {
-	Identifiers       []string `hcl:"identifiers,optional"`
-	IgnoreIdentifiers []string `hcl:"ignore_identifiers,optional"`
-	Attributes        []string `hcl:"attributes,optional"`
-	IgnoreAttributes  []string `hcl:"ignore_attributes,optional"`
-	Deep              *bool    `hcl:"deep,optional"`    // Check attributes if true, otherwise just match identifiers
-	Filters           []string `hcl:"filters,optional"` // SQL filters to exclude cloud providers default resources
-	Sets              []string `hcl:"sets,optional"`    // Unordered list-attributes where item order doesn't matter
+	Identifiers       []string `yaml:"identifiers,omitempty" json:"identifiers,omitempty"`
+	IgnoreIdentifiers []string `yaml:"ignore_identifiers,omitempty" json:"ignore_identifiers,omitempty"`
+	Attributes        []string `yaml:"attributes,omitempty" json:"attributes,omitempty"`
+	IgnoreAttributes  []string `yaml:"ignore_attributes,omitempty" json:"ignore_attributes,omitempty"`
+	Deep              *bool    `yaml:"deep,omitempty" json:"deep,omitempty"` // Check attributes if true, otherwise just match identifiers
+	Filters           []string `yaml:"filters,omitempty" json:"omitempty"`   // SQL filters to exclude cloud providers default resources
+	Sets              []string `yaml:"sets,omitempty" json:"sets,omitempty"` // Unordered list-attributes where item order doesn't matter
 
 	IAC map[iacProvider]*IACConfig
 
@@ -90,27 +90,27 @@ func (r ResourceACL) HasTagFilters() bool {
 }
 
 type IACConfig struct {
-	Type        string   `hcl:"type,optional"`
-	Path        string   `hcl:"path,optional"`
-	Identifiers []string `hcl:"identifiers,optional"`
+	Type        string   `yaml:"type,omitempty" json:"type,omitempty"`
+	Path        string   `yaml:"path,omitempty" json:"path,omitempty"`
+	Identifiers []string `yaml:"identifiers,omitempty" json:"identifiers,omitempty"`
 
-	AttributeMap []string `hcl:"attribute_map,optional"`
+	AttributeMap []string `yaml:"attribute_map,omitempty" json:"attribute_map,omitempty"`
 
 	attributeMap map[string]string // cloud vs. iac
 	defRange     *hcl.Range
 }
 
 type TerraformSourceConfig struct {
-	Backend TerraformBackend `hcl:"backend"`
+	Backend TerraformBackend `yaml:"backend,omitempty" json:"backend,omitempty"`
 
 	// S3 backend
-	Bucket  string   `hcl:"bucket,optional"`
-	Keys    []string `hcl:"keys,optional"`
-	Region  string   `hcl:"region,optional"`
-	RoleARN string   `hcl:"role_arn,optional"`
+	Bucket  string   `yaml:"bucket,omitempty" json:"bucket,omitempty"`
+	Keys    []string `yaml:"keys,omitempty" json:"keys,omitempty"`
+	Region  string   `yaml:"region,omitempty" json:"region,omitempty"`
+	RoleARN string   `yaml:"role_arn,omiempty" json:"role_arn,omitempty"`
 
 	// Local backend
-	Files []string `hcl:"files,optional"`
+	Files []string `yaml:"files,omitempty" json:"files,omitempty"`
 }
 
 type TerraformBackend string

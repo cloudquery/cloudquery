@@ -1,0 +1,100 @@
+{
+  "format_version": "1.0",
+  "terraform_version": "1.1.8",
+  "values": {
+    "root_module": {
+      "child_modules": [
+        {
+          "resources": [
+            {
+              "address": "module.demo.aws_kms_key.ec2_kms_key",
+              "mode": "managed",
+              "type": "aws_kms_key",
+              "name": "ec2_kms_key",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "arn": "arn:aws:kms:us-east-1:1234567:key/12341234-234-234-234-123412341234",
+                "bypass_policy_lockout_safety_check": false,
+                "customer_master_key_spec": "SYMMETRIC_DEFAULT",
+                "deletion_window_in_days": null,
+                "another_attribute": [],
+                "another_attribute2": [
+                  123
+                ],
+                "tags": {
+                  "Name": "first-resource"
+                },
+                "tags_all": {}
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.demo.aws_kms_key.ec2_kms_key",
+              "mode": "managed",
+              "type": "aws_kms_key",
+              "name": "ec2_kms_key",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "arn": "arn:aws:kms:us-east-1:1234567:key/12341234-234-234-234-123412341234",
+                "bypass_policy_lockout_safety_check": false,
+                "customer_master_key_spec": "SYMMETRIC_DEFAULT",
+                "deletion_window_in_days": null,
+                "another_attribute": [],
+                "another_attribute2": [
+                  123
+                ],
+                "tags": {
+                  "Name": "first-resource"
+                },
+                "tags_all": {}
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            }
+          ],
+          "address": "module.demo",
+          "child_modules": [
+            {
+              "resources": [
+                {
+                  "address": "module.demo.aws_kms_key.ec2_kms_key",
+                  "mode": "managed",
+                  "type": "gcp_kms_key",
+                  "name": "gcp_kms_key",
+                  "provider_name": "registry.terraform.io/hashicorp/gcp",
+                  "schema_version": 0,
+                  "values": {
+                    "arn": "arn:aws:kms:us-east-1:1234567:key/12341234-234-234-234-123412341234",
+                    "bypass_policy_lockout_safety_check": false,
+                    "customer_master_key_spec": "SYMMETRIC_DEFAULT",
+                    "deletion_window_in_days": null,
+                    "another_attribute": [],
+                    "another_attribute2": [
+                      123
+                    ],
+                    "tags": {
+                      "Name": "first-resource"
+                    },
+                    "tags_all": {}
+                  },
+                  "sensitive_values": {
+                    "tags": {},
+                    "tags_all": {}
+                  }
+                }
+              ],
+              "address": "module.demo.module.deny_all_sg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
