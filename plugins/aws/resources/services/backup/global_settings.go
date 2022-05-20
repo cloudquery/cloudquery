@@ -14,10 +14,11 @@ func GlobalSettings() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_backup_global_settings",
 		Resolver:     fetchBackupGlobalSettings,
-		Multiplex:    client.AccountMultiplex,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		Global:       true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -54,6 +55,10 @@ func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, pare
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) || client.IsAWSError(err, "ERROR_9601") /* "Your account is not a member of an organization" */ {
 			meta.Logger().Debug("received access denied on DescribeGlobalSettings", "err", err)
+			return nil
+		}
+		if client.IsAWSError(err, "ERROR_2502") /* "Feature Cross Account Backup is not available in current region" */ {
+			meta.Logger().Debug("Feature Cross Account Backup is not available in current region on DescribeGlobalSettings", "err", err)
 			return nil
 		}
 		return diag.WrapError(err)
