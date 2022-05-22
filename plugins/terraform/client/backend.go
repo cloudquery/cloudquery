@@ -8,15 +8,14 @@ import (
 	"io"
 	"os"
 
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/hashicorp/hcl/v2"
+	"github.com/hashicorp/hcl/v2/gohcl"
 )
 
 type BackendType string
@@ -80,7 +79,7 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 			"us-east-1",
 		); err != nil {
 			return nil, err
-		} else {
+		} else { //nolint:revive
 			b.Region = region
 		}
 	}
@@ -99,11 +98,11 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 	awsCfg := &aws.Config{}
 	if b.RoleArn != "" {
 		// if has RoleArn use it instead
-		arn, err := arn.Parse(b.RoleArn)
+		parsedArn, err := arn.Parse(b.RoleArn)
 		if err != nil {
 			return nil, err
 		}
-		creds := stscreds.NewCredentials(sess, arn.String())
+		creds := stscreds.NewCredentials(sess, parsedArn.String())
 		awsCfg.Credentials = creds
 	}
 	svc := s3.New(sess, awsCfg)

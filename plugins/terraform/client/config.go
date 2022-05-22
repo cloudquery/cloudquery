@@ -4,7 +4,7 @@ type Config struct {
 	Config []BackendConfigBlock `hcl:"config,block"`
 }
 
-func (c Config) Example() string {
+func (Config) Example() string {
 	return `configuration {
 
 	// local backend

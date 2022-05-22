@@ -39,7 +39,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	for _, config := range terraformConfig.Config {
 		logger.Info("creating new backend", "type", config.BackendType)
 		// create backend for each backend config
-		if b, err := NewBackend(&config); err == nil {
+		if b, err := NewBackend(&config); err == nil { //nolint:revive
 			backends[b.BackendName] = b
 		} else {
 			return nil, diag.FromError(fmt.Errorf("cannot initialize %s backend: %w", config.BackendType, err), diag.INTERNAL)

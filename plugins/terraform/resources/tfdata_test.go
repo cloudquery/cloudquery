@@ -18,5 +18,4 @@ func TestTfData(t *testing.T) {
 		Provider: Provider(),
 		Config:   cfg,
 	})
-
 }

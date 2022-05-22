@@ -48,7 +48,7 @@ type Instance struct {
 	SchemaVersion           uint64            `json:"schema_version"`
 	AttributesRaw           json.RawMessage   `json:"attributes,omitempty"`
 	AttributesFlat          map[string]string `json:"attributes_flat,omitempty"`
-	AttributeSensitivePaths json.RawMessage   `json:"sensitive_attributes,omitempty,"`
+	AttributeSensitivePaths json.RawMessage   `json:"sensitive_attributes,omitempty"`
 
 	PrivateRaw []byte `json:"private,omitempty"`
 
