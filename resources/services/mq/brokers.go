@@ -12,7 +12,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	xj "github.com/basgys/goxml2json"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -535,12 +534,12 @@ func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.Cl
 		return diag.WrapError(err)
 	}
 	xml := bytes.NewReader(rawDecodedText)
-	json, err := xj.Convert(xml)
+	marshalledJson, err := xj.Convert(xml)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, json.Bytes())
+	return resource.Set(c.Name, marshalledJson.Bytes())
 }
 
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

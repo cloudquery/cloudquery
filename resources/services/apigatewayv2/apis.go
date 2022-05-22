@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -1039,11 +1038,11 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 		ApiId:   p.ApiId,
 		ModelId: r.ModelId,
 	}
-	client := meta.(*client.Client)
-	svc := client.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 
 	response, err := svc.GetModelTemplate(ctx, &config, func(o *apigatewayv2.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)

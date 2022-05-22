@@ -9,6 +9,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type IamSamlIdentityProviderWrapper struct {
+	*iam.GetSAMLProviderOutput
+	Arn string
+}
+
 func IamSamlIdentityProviders() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_saml_identity_providers",
@@ -74,9 +79,4 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 		res <- IamSamlIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
 	}
 	return nil
-}
-
-type IamSamlIdentityProviderWrapper struct {
-	*iam.GetSAMLProviderOutput
-	Arn string
 }

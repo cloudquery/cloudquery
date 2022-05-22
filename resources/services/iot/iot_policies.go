@@ -85,15 +85,15 @@ func IotPolicies() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListPoliciesInput{
 		PageSize: aws.Int32(250),
 	}
 
 	for {
 		response, err := svc.ListPolicies(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -103,7 +103,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			profile, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
 				PolicyName: s.PolicyName,
 			}, func(options *iot.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)

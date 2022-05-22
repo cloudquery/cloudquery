@@ -275,7 +275,6 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 				return diag.WrapError(err)
 			}
 			ledgers = append(ledgers, response)
-
 		}
 		res <- ledgers
 		if aws.ToString(response.NextToken) == "" {

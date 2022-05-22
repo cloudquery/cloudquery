@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -218,10 +217,10 @@ func SsmDocuments() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().SSM
+	cl := meta.(*client.Client)
+	svc := cl.Services().SSM
 	optsFn := func(o *ssm.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	params := ssm.ListDocumentsInput{
 		Filters: []types.DocumentKeyValuesFilter{{Key: aws.String("Owner"), Values: []string{"Self"}}},
@@ -260,10 +259,10 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 
 func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) (exitErr error) {
 	d := resource.Item.(*types.DocumentDescription)
-	client := meta.(*client.Client)
-	svc := client.Services().SSM
+	cl := meta.(*client.Client)
+	svc := cl.Services().SSM
 	optsFn := func(o *ssm.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	input := ssm.DescribeDocumentPermissionInput{
 		Name:           d.Name,

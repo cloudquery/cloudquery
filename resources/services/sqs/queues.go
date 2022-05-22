@@ -7,11 +7,38 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/mitchellh/mapstructure"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/mitchellh/mapstructure"
 )
+
+type sqsQueue struct {
+	URL                                   string
+	Policy                                *string
+	VisibilityTimeout                     *int32
+	MaximumMessageSize                    *int32
+	MessageRetentionPeriod                *int32
+	ApproximateNumberOfMessages           *int32
+	ApproximateNumberOfMessagesNotVisible *int32
+	CreatedTimestamp                      *int32
+	LastModifiedTimestamp                 *int32
+	QueueArn                              *string
+	ApproximateNumberOfMessagesDelayed    *int32
+	DelaySeconds                          *int32
+	ReceiveMessageWaitTimeSeconds         *int32
+	RedrivePolicy                         *string
+	FifoQueue                             *bool
+	ContentBasedDeduplication             *bool
+	KmsMasterKeyId                        *string
+	KmsDataKeyReusePeriodSeconds          *int32
+	DeduplicationScope                    *string
+	FifoThroughputLimit                   *string
+	RedriveAllowPolicy                    *string
+
+	UnknownFields map[string]interface{} `mapstructure:",remain"`
+
+	Tags map[string]string
+}
 
 func SQSQueues() *schema.Table {
 	return &schema.Table{
@@ -166,39 +193,11 @@ func SQSQueues() *schema.Table {
 	}
 }
 
-type sqsQueue struct {
-	URL                                   string
-	Policy                                *string
-	VisibilityTimeout                     *int32
-	MaximumMessageSize                    *int32
-	MessageRetentionPeriod                *int32
-	ApproximateNumberOfMessages           *int32
-	ApproximateNumberOfMessagesNotVisible *int32
-	CreatedTimestamp                      *int32
-	LastModifiedTimestamp                 *int32
-	QueueArn                              *string
-	ApproximateNumberOfMessagesDelayed    *int32
-	DelaySeconds                          *int32
-	ReceiveMessageWaitTimeSeconds         *int32
-	RedrivePolicy                         *string
-	FifoQueue                             *bool
-	ContentBasedDeduplication             *bool
-	KmsMasterKeyId                        *string
-	KmsDataKeyReusePeriodSeconds          *int32
-	DeduplicationScope                    *string
-	FifoThroughputLimit                   *string
-	RedriveAllowPolicy                    *string
-
-	UnknownFields map[string]interface{} `mapstructure:",remain"`
-
-	Tags map[string]string
-}
-
 func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	sqsClient := client.Services().SQS
+	cl := meta.(*client.Client)
+	sqsClient := cl.Services().SQS
 	optsFn := func(o *sqs.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	var params sqs.ListQueuesInput
 	for {
@@ -214,7 +213,7 @@ func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			}
 			out, err := sqsClient.GetQueueAttributes(ctx, &input, optsFn)
 			if err != nil {
-				if client.IsNotFoundError(err) {
+				if cl.IsNotFoundError(err) {
 					continue
 				}
 				return diag.WrapError(err)

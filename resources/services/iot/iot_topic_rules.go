@@ -1304,15 +1304,15 @@ func IotTopicRules() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListTopicRulesInput{
 		MaxResults: aws.Int32(250),
 	}
 
 	for {
 		response, err := svc.ListTopicRules(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -1322,7 +1322,7 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 			rule, err := svc.GetTopicRule(ctx, &iot.GetTopicRuleInput{
 				RuleName: s.RuleName,
 			}, func(options *iot.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)

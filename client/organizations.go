@@ -36,12 +36,10 @@ func loadOrgAccounts(ctx context.Context, logger hclog.Logger, awsConfig *Config
 		}
 	}
 	return accounts, sts.NewFromConfig(awsCfg), err
-
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
 func loadAccounts(ctx context.Context, awsConfig *Config, accountsApi OrganizationsClient) ([]Account, error) {
-
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
@@ -104,7 +102,6 @@ func getOUAccounts(ctx context.Context, accountsApi OrganizationsClient, ous []s
 			paginationToken = resp.NextToken
 		}
 	}
-
 	return rawAccounts, nil
 }
 
@@ -127,5 +124,4 @@ func getAllAccounts(ctx context.Context, accountsApi OrganizationsClient) ([]org
 		paginationToken = resp.NextToken
 	}
 	return rawAccounts, nil
-
 }

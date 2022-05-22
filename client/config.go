@@ -31,7 +31,7 @@ type Config struct {
 	MaxBackoff   int       `hcl:"max_backoff,optional" default:"30"`
 }
 
-func (c Config) Example() string {
+func (Config) Example() string {
 	return ` configuration {
   // Optional, Repeated. Add an 'accounts' block for every account you want to assume-role into and fetch data from.
   // accounts "<UNIQUE ACCOUNT IDENTIFIER>" {

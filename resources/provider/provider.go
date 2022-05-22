@@ -3,10 +3,6 @@ package provider
 import (
 	"embed"
 
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/module"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cq-provider-aws/resources/services/acm"
@@ -63,6 +59,9 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/wafv2"
 	"github.com/cloudquery/cq-provider-aws/resources/services/workspaces"
 	"github.com/cloudquery/cq-provider-aws/resources/services/xray"
+	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/module"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
 var (

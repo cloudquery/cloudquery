@@ -13,6 +13,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type AliasWrapper struct {
+	*types.AliasConfiguration
+	UrlConfig *lambda.GetFunctionUrlConfigOutput
+}
+
 //go:generate cq-gen --resource ledgers --config gen.hcl --output .
 func Functions() *schema.Table {
 	return &schema.Table{
@@ -1212,11 +1217,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	if err := resource.Set("code_signing_last_modified", codeSigningLastModified); err != nil {
-		return err
-	}
-
-	return nil
+	return resource.Set("code_signing_last_modified", codeSigningLastModified)
 }
 func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*lambda.GetFunctionOutput)
@@ -1426,8 +1427,3 @@ func resolveFunctionEventSourceMappingsSourceAccessConfigurations(ctx context.Co
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-type AliasWrapper struct {
-	*types.AliasConfiguration
-	UrlConfig *lambda.GetFunctionUrlConfigOutput
-}

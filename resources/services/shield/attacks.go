@@ -184,11 +184,11 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 func resolveAttacksAttackCounters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.AttackDetail)
-	json, err := json.Marshal(r.AttackCounters)
+	marshalledJson, err := json.Marshal(r.AttackCounters)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, json)
+	return resource.Set(c.Name, marshalledJson)
 }
 func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.AttackDetail)
@@ -205,11 +205,11 @@ func fetchShieldAttackProperties(ctx context.Context, meta schema.ClientMeta, pa
 }
 func resolveAttackPropertiesTopContributors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.AttackProperty)
-	json := make(map[string]interface{})
+	marshalledJson := make(map[string]interface{})
 	for _, c := range r.TopContributors {
-		json[*c.Name] = c.Value
+		marshalledJson[*c.Name] = c.Value
 	}
-	return resource.Set(c.Name, json)
+	return resource.Set(c.Name, marshalledJson)
 }
 func fetchShieldAttackSubResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*types.AttackDetail)
@@ -218,18 +218,18 @@ func fetchShieldAttackSubResources(ctx context.Context, meta schema.ClientMeta, 
 }
 func resolveAttackSubResourcesAttackVectors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.SubResourceSummary)
-	json, err := json.Marshal(r.AttackVectors)
+	marshalledJson, err := json.Marshal(r.AttackVectors)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, json)
+	return resource.Set(c.Name, marshalledJson)
 }
 
 func resolveAttackSubResourcesCounters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.SubResourceSummary)
-	json, err := json.Marshal(r.Counters)
+	marshalledJson, err := json.Marshal(r.Counters)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, json)
+	return resource.Set(c.Name, marshalledJson)
 }

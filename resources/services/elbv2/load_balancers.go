@@ -10,11 +10,25 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/mitchellh/mapstructure"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/mitchellh/mapstructure"
 )
+
+type lbAttributes struct {
+	AccessLogsS3Enabled                   bool   `mapstructure:"access_logs.s3.enabled"`
+	AccessLogsS3Bucket                    string `mapstructure:"access_logs.s3.bucket"`
+	AccessLogsS3Prefix                    string `mapstructure:"access_logs.s3.prefix"`
+	DeletionProtection                    bool   `mapstructure:"deletion_protection.enabled"`
+	IdleTimeout                           int32  `mapstructure:"idle_timeout.timeout_seconds"`
+	RoutingHTTPDesyncMitigationMode       string `mapstructure:"routing.http.desync_mitigation_mode"`
+	RoutingHTTPDropInvalidHeaderFields    bool   `mapstructure:"routing.http.drop_invalid_header_fields.enabled"`
+	RoutingHTTPXAmznTLSVersionCipherSuite bool   `mapstructure:"routing.http.x_amzn_tls_version_and_cipher_suite.enabled"`
+	RoutingHTTPXFFClientPort              bool   `mapstructure:"routing.http.xff_client_port.enabled"`
+	RoutingHTTP2                          bool   `mapstructure:"routing.http2.enabled"`
+	WAFFailOpen                           bool   `mapstructure:"waf.fail_open.enabled"`
+	LoadBalancingCrossZone                bool   `mapstructure:"load_balancing.cross_zone.enabled"`
+}
 
 func Elbv2LoadBalancers() *schema.Table {
 	return &schema.Table{
@@ -317,9 +331,9 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	if p.Type != types.LoadBalancerTypeEnumApplication {
 		return nil
 	}
-	client := meta.(*client.Client).Services().WafV2
+	cl := meta.(*client.Client).Services().WafV2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
-	response, err := client.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})
+	response, err := cl.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})
 	if err != nil {
 		var exc *wafv2types.WAFNonexistentItemException
 		if errors.As(err, &exc) {
@@ -376,21 +390,6 @@ func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta s
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-type lbAttributes struct {
-	AccessLogsS3Enabled                   bool   `mapstructure:"access_logs.s3.enabled"`
-	AccessLogsS3Bucket                    string `mapstructure:"access_logs.s3.bucket"`
-	AccessLogsS3Prefix                    string `mapstructure:"access_logs.s3.prefix"`
-	DeletionProtection                    bool   `mapstructure:"deletion_protection.enabled"`
-	IdleTimeout                           int32  `mapstructure:"idle_timeout.timeout_seconds"`
-	RoutingHTTPDesyncMitigationMode       string `mapstructure:"routing.http.desync_mitigation_mode"`
-	RoutingHTTPDropInvalidHeaderFields    bool   `mapstructure:"routing.http.drop_invalid_header_fields.enabled"`
-	RoutingHTTPXAmznTLSVersionCipherSuite bool   `mapstructure:"routing.http.x_amzn_tls_version_and_cipher_suite.enabled"`
-	RoutingHTTPXFFClientPort              bool   `mapstructure:"routing.http.xff_client_port.enabled"`
-	RoutingHTTP2                          bool   `mapstructure:"routing.http2.enabled"`
-	WAFFailOpen                           bool   `mapstructure:"waf.fail_open.enabled"`
-	LoadBalancingCrossZone                bool   `mapstructure:"load_balancing.cross_zone.enabled"`
-}
 
 func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb := parent.Item.(types.LoadBalancer)

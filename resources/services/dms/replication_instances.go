@@ -5,12 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
-
+	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
-	"github.com/cloudquery/cq-provider-aws/client"
 )
+
+type DmsReplicationInstanceWrapper struct {
+	types.ReplicationInstance
+	Tags map[string]interface{}
+}
 
 func DmsReplicationInstances() *schema.Table {
 	return &schema.Table{
@@ -314,9 +317,4 @@ func fetchDmsReplicationInstanceVpcSecurityGroups(_ context.Context, _ schema.Cl
 	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
 	res <- replicationInstance.VpcSecurityGroups
 	return nil
-}
-
-type DmsReplicationInstanceWrapper struct {
-	types.ReplicationInstance
-	Tags map[string]interface{}
 }

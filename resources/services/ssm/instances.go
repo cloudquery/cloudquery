@@ -225,10 +225,10 @@ func SsmInstances() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().SSM
+	cl := meta.(*client.Client)
+	svc := cl.Services().SSM
 	optsFn := func(o *ssm.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	var input ssm.DescribeInstanceInformationInput
 	for {
@@ -247,10 +247,10 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.InstanceInformation)
-	client := meta.(*client.Client)
-	svc := client.Services().SSM
+	cl := meta.(*client.Client)
+	svc := cl.Services().SSM
 	optsFn := func(o *ssm.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},

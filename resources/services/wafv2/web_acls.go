@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -346,19 +345,19 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*types.WebACL)
 
-	client := meta.(*client.Client)
-	service := client.Services().WafV2
+	cl := meta.(*client.Client)
+	service := cl.Services().WafV2
 
 	resourceArns := []string{}
-	if client.WAFScope == types.ScopeCloudfront {
-		cloudfrontService := client.Services().Cloudfront
+	if cl.WAFScope == types.ScopeCloudfront {
+		cloudfrontService := cl.Services().Cloudfront
 		params := &cloudfront.ListDistributionsByWebACLIdInput{
 			WebACLId: webACL.Id,
 			MaxItems: aws.Int32(100),
 		}
 		for {
 			output, err := cloudfrontService.ListDistributionsByWebACLId(ctx, params, func(options *cloudfront.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)
@@ -373,7 +372,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 		}
 	} else {
 		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN}, func(options *wafv2.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -385,15 +384,15 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*types.WebACL)
 
-	client := meta.(*client.Client)
-	service := client.Services().WafV2
+	cl := meta.(*client.Client)
+	service := cl.Services().WafV2
 
 	// Resolve tags
 	outputTags := make(map[string]*string)
 	tagsConfig := wafv2.ListTagsForResourceInput{ResourceARN: webACL.ARN}
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(options *wafv2.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)

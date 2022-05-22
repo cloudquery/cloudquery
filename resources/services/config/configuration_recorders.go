@@ -6,12 +6,21 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
-
+	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
-	"github.com/cloudquery/cq-provider-aws/client"
 )
+
+type configurationRecorderWrapper struct {
+	types.ConfigurationRecorder
+	StatusLastErrorCode        *string
+	StatusLastErrorMessage     *string
+	StatusLastStartTime        *time.Time
+	StatusLastStatus           types.RecorderStatus
+	StatusLastStatusChangeTime *time.Time
+	StatusLastStopTime         *time.Time
+	StatusRecording            bool
+}
 
 func ConfigConfigurationRecorders() *schema.Table {
 	return &schema.Table{
@@ -160,7 +169,6 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 				break
 			}
 		}
-
 	}
 	return nil
 }
@@ -169,15 +177,4 @@ func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resour
 	cl := meta.(*client.Client)
 	cfg := resource.Item.(configurationRecorderWrapper)
 	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
-}
-
-type configurationRecorderWrapper struct {
-	types.ConfigurationRecorder
-	StatusLastErrorCode        *string
-	StatusLastErrorMessage     *string
-	StatusLastStartTime        *time.Time
-	StatusLastStatus           types.RecorderStatus
-	StatusLastStatusChangeTime *time.Time
-	StatusLastStopTime         *time.Time
-	StatusRecording            bool
 }

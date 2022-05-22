@@ -9,10 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type Route53HostedZoneWrapper struct {
+	types.HostedZone
+	Tags            map[string]string
+	DelegationSetId *string
+	VPCs            []types.VPC
+}
 
 func Route53HostedZones() *schema.Table {
 	return &schema.Table{
@@ -471,13 +477,6 @@ func fetchRoute53HostedZoneVpcAssociationAuthorizations(ctx context.Context, met
 	return nil
 }
 
-type Route53HostedZoneWrapper struct {
-	types.HostedZone
-	Tags            map[string]string
-	DelegationSetId *string
-	VPCs            []types.VPC
-}
-
 func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.Tag {
 	for _, s := range set {
 		if *s.ResourceId == id {
@@ -490,7 +489,6 @@ func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, reso
 	cl := meta.(*client.Client)
 	hz := resource.Item.(Route53HostedZoneWrapper)
 	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "hostedzone", *hz.Id))
-
 }
 func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

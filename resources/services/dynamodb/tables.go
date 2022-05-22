@@ -12,6 +12,13 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type simplifiedGlobalSecondaryIndex struct {
+	Name          *string                `json:"name"`
+	Status        types.IndexStatus      `json:"status"`
+	ReadCapacity  map[string]interface{} `json:"read_capacity"`
+	WriteCapacity map[string]interface{} `json:"write_capacity"`
+}
+
 func DynamodbTables() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_dynamodb_tables",
@@ -738,13 +745,6 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-type simplifiedGlobalSecondaryIndex struct {
-	Name          *string                `json:"name"`
-	Status        types.IndexStatus      `json:"status"`
-	ReadCapacity  map[string]interface{} `json:"read_capacity"`
-	WriteCapacity map[string]interface{} `json:"write_capacity"`
-}
 
 func marshalAutoScalingSettingsDescription(d *types.AutoScalingSettingsDescription) map[string]interface{} {
 	if d == nil {

@@ -88,10 +88,8 @@ func partitionRegionServiceGenerator() error {
 		return err
 	}
 
-	if err := saveToJsonFile(data, filepath.Join("client", client.PartitionServiceRegionFile)); err != nil {
-		return err
-	}
-	return nil
+	err = saveToJsonFile(data, filepath.Join("client", client.PartitionServiceRegionFile))
+	return err
 }
 
 func main() {
