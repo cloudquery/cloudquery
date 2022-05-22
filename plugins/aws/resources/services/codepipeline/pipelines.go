@@ -12,6 +12,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type StageWrapper struct {
+	types.StageDeclaration
+	StageOrder int32
+}
+
 //go:generate cq-gen --resource pipelines --config gen.hcl --output .
 func Pipelines() *schema.Table {
 	return &schema.Table{
@@ -231,11 +236,6 @@ func Pipelines() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-
-type StageWrapper struct {
-	types.StageDeclaration
-	StageOrder int32
-}
 
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

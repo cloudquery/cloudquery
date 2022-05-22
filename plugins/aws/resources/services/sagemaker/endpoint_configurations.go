@@ -6,9 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
-
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -148,7 +146,6 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 
 		// get more details about the notebook instance
 		for _, n := range response.EndpointConfigs {
-
 			config := sagemaker.DescribeEndpointConfigInput{
 				EndpointConfigName: n.EndpointConfigName,
 			}

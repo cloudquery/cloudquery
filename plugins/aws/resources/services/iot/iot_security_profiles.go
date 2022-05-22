@@ -187,15 +187,15 @@ func IotSecurityProfiles() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListSecurityProfilesInput{
 		MaxResults: aws.Int32(250),
 	}
 
 	for {
 		response, err := svc.ListSecurityProfiles(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -205,7 +205,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 			profile, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
 				SecurityProfileName: s.Name,
 			}, func(options *iot.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)
@@ -222,8 +222,8 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 }
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListTargetsForSecurityProfileInput{
 		SecurityProfileName: i.SecurityProfileName,
 		MaxResults:          aws.Int32(250),
@@ -232,7 +232,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	var targets []string
 	for {
 		response, err := svc.ListTargetsForSecurityProfile(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)

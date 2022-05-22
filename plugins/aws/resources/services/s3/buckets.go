@@ -9,10 +9,27 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type WrappedBucket struct {
+	types.Bucket
+	ReplicationRole       *string
+	ReplicationRules      []types.ReplicationRule
+	Region                string
+	LoggingTargetBucket   *string
+	LoggingTargetPrefix   *string
+	Policy                *string
+	VersioningStatus      types.BucketVersioningStatus
+	VersioningMfaDelete   types.MFADeleteStatus
+	BlockPublicAcls       bool
+	BlockPublicPolicy     bool
+	IgnorePublicAcls      bool
+	RestrictPublicBuckets bool
+	Tags                  *string
+	OwnershipControls     []string
+}
 
 // fetchS3BucketsPoolSize describes the amount of go routines that resolve the S3 buckets
 const fetchS3BucketsPoolSize = 10
@@ -548,11 +565,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		return err
 	}
 
-	if err = resolveBucketOwnershipControls(ctx, meta, resource, bucketRegion); err != nil {
-		return err
-	}
-
-	return nil
+	return resolveBucketOwnershipControls(ctx, meta, resource, bucketRegion)
 }
 
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -574,7 +587,7 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	r := parent.Item.(*WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
-	CORSOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
+	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
 	if err != nil {
@@ -583,8 +596,8 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 		}
 		return err
 	}
-	if CORSOutput != nil {
-		res <- CORSOutput.CORSRules
+	if corsOutput != nil {
+		res <- corsOutput.CORSRules
 	}
 	return nil
 }
@@ -675,24 +688,6 @@ func resolveS3BucketLifecycleTransitions(ctx context.Context, meta schema.Client
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-type WrappedBucket struct {
-	types.Bucket
-	ReplicationRole       *string
-	ReplicationRules      []types.ReplicationRule
-	Region                string
-	LoggingTargetBucket   *string
-	LoggingTargetPrefix   *string
-	Policy                *string
-	VersioningStatus      types.BucketVersioningStatus
-	VersioningMfaDelete   types.MFADeleteStatus
-	BlockPublicAcls       bool
-	BlockPublicPolicy     bool
-	IgnorePublicAcls      bool
-	RestrictPublicBuckets bool
-	Tags                  *string
-	OwnershipControls     []string
-}
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *WrappedBucket, bucketRegion string) error {
 	svc := meta.(*client.Client).Services().S3

@@ -262,15 +262,15 @@ func IotJobs() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListJobsInput{
 		MaxResults: aws.Int32(250),
 	}
 
 	for {
 		response, err := svc.ListJobs(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -280,7 +280,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			job, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
 				JobId: s.JobId,
 			}, func(options *iot.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)

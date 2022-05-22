@@ -13,6 +13,8 @@ import (
 	"golang.org/x/sync/semaphore"
 )
 
+const MAX_GOROUTINES = 10
+
 //go:generate cq-gen --resource data_catalogs --config gen.hcl --output .
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
@@ -298,15 +300,15 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	input := athena.ListTableMetadataInput{
 		CatalogName:  parent.Parent.Item.(types.DataCatalog).Name,
 		DatabaseName: parent.Item.(types.Database).Name,
 	}
 	for {
 		response, err := svc.ListTableMetadata(ctx, &input, func(options *athena.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -332,8 +334,6 @@ func fetchAthenaDataCatalogDatabaseTablePartitionKeys(ctx context.Context, meta 
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-const MAX_GOROUTINES = 10
 
 func fetchDataCatalog(ctx context.Context, res chan<- interface{}, svc client.AthenaClient, region string, catalogSummary types.DataCatalogSummary) error {
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{

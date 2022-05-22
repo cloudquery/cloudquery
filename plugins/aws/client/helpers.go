@@ -16,17 +16,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-const (
-	PartitionServiceRegionFile = "data/partition_service_region.json"
-	defaultPartition           = "aws"
-)
-
-var (
-	//go:embed data/partition_service_region.json
-	supportedServiceRegionFile embed.FS
-	readOnce                   sync.Once
-	supportedServiceRegion     *SupportedServiceRegionsData
-)
+type AWSService string
 
 type AwsService struct {
 	Regions map[string]*map[string]interface{} `json:"regions"`
@@ -41,6 +31,44 @@ type AwsPartition struct {
 type SupportedServiceRegionsData struct {
 	Partitions        map[string]AwsPartition `json:"partitions"`
 	regionVsPartition map[string]string
+}
+
+const (
+	ApigatewayService           AWSService = "apigateway"
+	Athena                      AWSService = "athena"
+	CloudfrontService           AWSService = "cloudfront"
+	CognitoIdentityService      AWSService = "cognito-identity"
+	DirectConnectService        AWSService = "directconnect"
+	DynamoDBService             AWSService = "dynamodb"
+	EC2Service                  AWSService = "ec2"
+	EFSService                  AWSService = "elasticfilesystem"
+	ElasticLoadBalancingService AWSService = "elasticloadbalancing"
+	GuardDutyService            AWSService = "guardduty"
+	RedshiftService             AWSService = "redshift"
+	Route53Service              AWSService = "route53"
+	S3Service                   AWSService = "s3"
+	WAFRegional                 AWSService = "waf-regional"
+	WorkspacesService           AWSService = "workspaces"
+)
+
+const (
+	PartitionServiceRegionFile = "data/partition_service_region.json"
+	defaultPartition           = "aws"
+)
+
+var (
+	//go:embed data/partition_service_region.json
+	supportedServiceRegionFile embed.FS
+	readOnce                   sync.Once
+	supportedServiceRegion     *SupportedServiceRegionsData
+)
+
+var notFoundErrorPrefixes = []string{
+	"ResourceNotFoundException",
+	"WAFNonexistentItemException",
+	"NoSuch",
+	"NotFound",
+	"NotFoundError",
 }
 
 func readSupportedServiceRegions() *SupportedServiceRegionsData {
@@ -183,26 +211,6 @@ func accountObfusactor(aa []Account, msg string) string {
 	return msg
 }
 
-type AWSService string
-
-const (
-	ApigatewayService           AWSService = "apigateway"
-	Athena                      AWSService = "athena"
-	CloudfrontService           AWSService = "cloudfront"
-	CognitoIdentityService      AWSService = "cognito-identity"
-	DirectConnectService        AWSService = "directconnect"
-	DynamoDBService             AWSService = "dynamodb"
-	EC2Service                  AWSService = "ec2"
-	EFSService                  AWSService = "elasticfilesystem"
-	ElasticLoadBalancingService AWSService = "elasticloadbalancing"
-	GuardDutyService            AWSService = "guardduty"
-	RedshiftService             AWSService = "redshift"
-	Route53Service              AWSService = "route53"
-	S3Service                   AWSService = "s3"
-	WAFRegional                 AWSService = "waf-regional"
-	WorkspacesService           AWSService = "workspaces"
-)
-
 // makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
 // Resource id parts are concatenated using forward slash (/).
 // See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for more information.
@@ -260,14 +268,6 @@ func ResolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 // Region  and account id are left empty.
 func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
 	return resolveARN(service, resourceID, false, false)
-}
-
-var notFoundErrorPrefixes = []string{
-	"ResourceNotFoundException",
-	"WAFNonexistentItemException",
-	"NoSuch",
-	"NotFound",
-	"NotFoundError",
 }
 
 // IsNotFoundError checks if api error should be ignored

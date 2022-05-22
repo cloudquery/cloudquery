@@ -9,10 +9,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type WrappedSecret struct {
+	types.SecretListEntry
+	RotationRules     *types.RotationRulesType
+	ReplicationStatus []types.ReplicationStatusType
+}
 
 func SecretsmanagerSecrets() *schema.Table {
 	return &schema.Table{
@@ -236,10 +241,4 @@ func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, re
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set(c.Name, tags)
-}
-
-type WrappedSecret struct {
-	types.SecretListEntry
-	RotationRules     *types.RotationRulesType
-	ReplicationStatus []types.ReplicationStatusType
 }

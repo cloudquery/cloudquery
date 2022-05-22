@@ -7,10 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type ipPermission struct {
+	types.IpPermission
+	PermissionType string
+}
 
 func Ec2SecurityGroups() *schema.Table {
 	return &schema.Table{
@@ -245,7 +249,6 @@ func resolveEc2securityGroupTags(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set("tags", tags)
 }
 func fetchEc2SecurityGroupIpPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	securityGroup := parent.Item.(types.SecurityGroup)
 
 	capacity := len(securityGroup.IpPermissionsEgress) + len(securityGroup.IpPermissions)
@@ -263,7 +266,6 @@ func fetchEc2SecurityGroupIpPermissions(ctx context.Context, meta schema.ClientM
 }
 
 func fetchEc2SecurityGroupIpPermissionIpRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	securityGroupIpPermission := parent.Item.(ipPermission)
 
 	type customIpRange struct {
@@ -294,9 +296,4 @@ func fetchEc2SecurityGroupIpPermissionUserIdGroupPairs(ctx context.Context, meta
 	securityGroupIpPermission := parent.Item.(ipPermission)
 	res <- securityGroupIpPermission.UserIdGroupPairs
 	return nil
-}
-
-type ipPermission struct {
-	types.IpPermission
-	PermissionType string
 }

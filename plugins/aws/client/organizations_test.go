@@ -11,17 +11,17 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
+type mockOrgClient struct {
+	listAccountsForParent func(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
+	listAccounts          func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
+}
+
 func (m mockOrgClient) ListAccountsForParent(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error) {
 	return m.listAccountsForParent(ctx, params, optFns...)
 }
 
 func (m mockOrgClient) ListAccounts(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error) {
 	return m.listAccounts(ctx, params, optFns...)
-}
-
-type mockOrgClient struct {
-	listAccountsForParent func(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
-	listAccounts          func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
 }
 
 func Test_Org_Configure(t *testing.T) {
@@ -95,6 +95,5 @@ func Test_Org_Configure(t *testing.T) {
 		if errDiff != "" {
 			t.Fatal(errDiff)
 		}
-
 	}
 }

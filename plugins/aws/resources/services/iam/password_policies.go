@@ -6,9 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type PasswordPolicy struct {
+	types.PasswordPolicy
+	PolicyExists bool
+}
 
 func IamPasswordPolicies() *schema.Table {
 	return &schema.Table{
@@ -103,13 +107,7 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 			return nil
 		}
 		return err
-	} else {
-		res <- PasswordPolicy{*response.PasswordPolicy, true}
 	}
+	res <- PasswordPolicy{*response.PasswordPolicy, true}
 	return nil
-}
-
-type PasswordPolicy struct {
-	types.PasswordPolicy
-	PolicyExists bool
 }

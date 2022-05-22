@@ -11,6 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type S3AccountConfig struct {
+	s3controlTypes.PublicAccessBlockConfiguration
+	ConfigExists bool
+}
+
 func S3Accounts() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_s3_account_config",
@@ -78,9 +83,4 @@ func fetchS3AccountConfig(ctx context.Context, meta schema.ClientMeta, _ *schema
 	}
 
 	return nil
-}
-
-type S3AccountConfig struct {
-	s3controlTypes.PublicAccessBlockConfiguration
-	ConfigExists bool
 }

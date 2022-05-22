@@ -6,18 +6,47 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gocarina/gocsv"
-	"github.com/spf13/cast"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/gocarina/gocsv"
+	"github.com/spf13/cast"
 )
+
+type wrappedKey struct {
+	types.AccessKeyMetadata
+	LastRotated time.Time
+}
+
+type wrappedUser struct {
+	types.User
+	*reportUser
+	isRoot bool
+}
+
+type reportUser struct {
+	User                  string    `csv:"user"`
+	ARN                   string    `csv:"arn"`
+	UserCreationTime      time.Time `csv:"user_creation_time"`
+	PasswordStatus        string    `csv:"password_enabled"`
+	PasswordLastChanged   string    `csv:"password_last_changed"`
+	PasswordNextRotation  string    `csv:"password_next_rotation"`
+	MfaActive             bool      `csv:"mfa_active"`
+	AccessKey1Active      bool      `csv:"access_key_1_active"`
+	AccessKey2Active      bool      `csv:"access_key_2_active"`
+	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
+	Cert1Active           bool      `csv:"cert_1_active"`
+	Cert2Active           bool      `csv:"cert_2_active"`
+	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
+	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
+}
+
+type reportUsers []*reportUser
 
 const rootName = "<root_account>"
 
@@ -383,10 +412,8 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
 			return err
 		}
-		if err := resource.Set("access_key_2_last_rotated", nil); err != nil {
-			return err
-		}
-		return nil
+
+		return resource.Set("access_key_2_last_rotated", nil)
 	}
 
 	if r.PasswordNextRotation == "N/A" || r.PasswordNextRotation == "not_supported" {
@@ -532,7 +559,6 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			default:
 				keys[i] = wrappedKey{key, time.Time{}}
 			}
-
 		}
 		res <- keys
 		if output.Marker == nil {
@@ -602,37 +628,6 @@ func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	return resource.Set("tags", tags)
 }
-
-type wrappedKey struct {
-	types.AccessKeyMetadata
-	LastRotated time.Time
-}
-
-type wrappedUser struct {
-	types.User
-	*reportUser
-	isRoot bool
-}
-
-type reportUser struct {
-	User                  string    `csv:"user"`
-	ARN                   string    `csv:"arn"`
-	UserCreationTime      time.Time `csv:"user_creation_time"`
-	PasswordStatus        string    `csv:"password_enabled"`
-	PasswordLastChanged   string    `csv:"password_last_changed"`
-	PasswordNextRotation  string    `csv:"password_next_rotation"`
-	MfaActive             bool      `csv:"mfa_active"`
-	AccessKey1Active      bool      `csv:"access_key_1_active"`
-	AccessKey2Active      bool      `csv:"access_key_2_active"`
-	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
-	Cert1Active           bool      `csv:"cert_1_active"`
-	Cert2Active           bool      `csv:"cert_2_active"`
-	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
-	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
-}
-
-type reportUsers []*reportUser
 
 func (r reportUsers) GetUser(arn string) *reportUser {
 	for _, u := range r {

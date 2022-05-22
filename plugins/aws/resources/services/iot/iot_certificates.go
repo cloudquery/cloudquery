@@ -161,15 +161,15 @@ func IotCertificates() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListCertificatesInput{
 		PageSize: aws.Int32(250),
 	}
 
 	for {
 		response, err := svc.ListCertificates(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -179,7 +179,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 			cert, err := svc.DescribeCertificate(ctx, &iot.DescribeCertificateInput{
 				CertificateId: ct.CertificateId,
 			}, func(options *iot.Options) {
-				options.Region = client.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return diag.WrapError(err)
@@ -196,8 +196,8 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CertificateDescription)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListAttachedPoliciesInput{
 		Target:   i.CertificateArn,
 		PageSize: aws.Int32(250),
@@ -206,7 +206,7 @@ func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, 
 	var policies []string
 	for {
 		response, err := svc.ListAttachedPolicies(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)

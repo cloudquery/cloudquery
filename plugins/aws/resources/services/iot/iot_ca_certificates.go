@@ -147,8 +147,8 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 }
 func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CACertificateDescription)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListCertificatesByCAInput{
 		CaCertificateId: i.CertificateId,
 		PageSize:        aws.Int32(250),
@@ -157,7 +157,7 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 	var certs []string
 	for {
 		response, err := svc.ListCertificatesByCA(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)

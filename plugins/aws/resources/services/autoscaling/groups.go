@@ -11,10 +11,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type autoscalingGroupWrapper struct {
+	types.AutoScalingGroup
+	NotificationConfigurations []types.NotificationConfiguration
+}
 
 func AutoscalingGroups() *schema.Table {
 	return &schema.Table{
@@ -600,13 +604,13 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 }
 func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
-	client := meta.(*client.Client)
-	svc := client.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancersInput{AutoScalingGroupName: p.AutoScalingGroupName}
 	j := map[string]interface{}{}
 	for {
 		output, err := svc.DescribeLoadBalancers(ctx, &config, func(o *autoscaling.Options) {
-			o.Region = client.Region
+			o.Region = cl.Region
 		})
 		if err != nil {
 			if isAutoScalingGroupNotExistsError(err) {
@@ -627,13 +631,13 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 }
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
-	client := meta.(*client.Client)
-	svc := client.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancerTargetGroupsInput{AutoScalingGroupName: p.AutoScalingGroupName}
 	j := map[string]interface{}{}
 	for {
 		output, err := svc.DescribeLoadBalancerTargetGroups(ctx, &config, func(o *autoscaling.Options) {
-			o.Region = client.Region
+			o.Region = cl.Region
 		})
 		if err != nil {
 			if isAutoScalingGroupNotExistsError(err) {
@@ -690,13 +694,13 @@ func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, pare
 }
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)
-	client := meta.(*client.Client)
-	svc := client.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribePoliciesInput{AutoScalingGroupName: p.AutoScalingGroupName}
 
 	for {
 		output, err := svc.DescribePolicies(ctx, &config, func(o *autoscaling.Options) {
-			o.Region = client.Region
+			o.Region = cl.Region
 		})
 		if err != nil {
 			return diag.WrapError(err)
@@ -739,12 +743,12 @@ func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomized
 }
 func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)
-	client := meta.(*client.Client)
-	svc := client.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLifecycleHooksInput{AutoScalingGroupName: p.AutoScalingGroupName}
 
 	output, err := svc.DescribeLifecycleHooks(ctx, &config, func(o *autoscaling.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)
@@ -765,11 +769,6 @@ func getNotificationConfigurationByGroupName(name string, set []types.Notificati
 		}
 	}
 	return response
-}
-
-type autoscalingGroupWrapper struct {
-	types.AutoScalingGroup
-	NotificationConfigurations []types.NotificationConfiguration
 }
 
 func isAutoScalingGroupNotExistsError(err error) bool {

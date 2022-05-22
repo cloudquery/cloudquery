@@ -7,10 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type Route53HealthCheckWrapper struct {
+	types.HealthCheck
+	Tags map[string]string
+}
 
 func Route53HealthChecks() *schema.Table {
 	return &schema.Table{
@@ -294,9 +298,4 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 		tags[*t.Name] = t.Value
 	}
 	return resource.Set(c.Name, tags)
-}
-
-type Route53HealthCheckWrapper struct {
-	types.HealthCheck
-	Tags map[string]string
 }

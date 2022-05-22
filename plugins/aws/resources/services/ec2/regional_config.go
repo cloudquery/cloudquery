@@ -9,6 +9,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type ec2RegionalConfig struct {
+	EbsEncryptionEnabledByDefault bool
+	EbsDefaultKmsKeyId            *string
+}
+
 func Ec2RegionalConfig() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_regional_config",
@@ -68,9 +73,4 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 	}
 	res <- regionalConfig
 	return nil
-}
-
-type ec2RegionalConfig struct {
-	EbsEncryptionEnabledByDefault bool
-	EbsDefaultKmsKeyId            *string
 }

@@ -10,10 +10,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type CloudTrailWrapper struct {
+	types.Trail
+	Tags map[string]string
+}
 
 // groupNameRegex extracts log group name from the ARN
 var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
@@ -357,10 +361,7 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err := resource.Set("start_logging_time", response.StartLoggingTime); err != nil {
 		return err
 	}
-	if err := resource.Set("stop_logging_time", response.StopLoggingTime); err != nil {
-		return err
-	}
-	return nil
+	return resource.Set("stop_logging_time", response.StopLoggingTime)
 }
 
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -413,9 +414,4 @@ func aggregateCloudTrails(trails []types.Trail) (map[string][]types.Trail, error
 		resp[*t.HomeRegion] = append(resp[*t.HomeRegion], t)
 	}
 	return resp, nil
-}
-
-type CloudTrailWrapper struct {
-	types.Trail
-	Tags map[string]string
 }

@@ -8,10 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type ConfigOptions struct {
+	types.ConfigurationOptionDescription
+	ApplicationArn string
+}
+
+type ConfigSettings struct {
+	types.ConfigurationSettingsDescription
+	ApplicationArn string
+}
 
 func ElasticbeanstalkEnvironments() *schema.Table {
 	return &schema.Table{
@@ -486,11 +495,6 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 	return nil
 }
 
-type ConfigOptions struct {
-	types.ConfigurationOptionDescription
-	ApplicationArn string
-}
-
 func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	c := meta.(*client.Client)
@@ -520,11 +524,6 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 	}
 
 	return nil
-}
-
-type ConfigSettings struct {
-	types.ConfigurationSettingsDescription
-	ApplicationArn string
 }
 
 func fetchElasticbeanstalkConfigurationSettingOptionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

@@ -9,14 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/go-hclog"
-	"github.com/stretchr/testify/assert"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	stsTypes "github.com/aws/aws-sdk-go-v2/service/sts/types"
+	"github.com/google/go-cmp/cmp"
+	"github.com/hashicorp/go-hclog"
+	"github.com/stretchr/testify/assert"
 )
+
+type mockAssumeRole func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 
 // emptyInterfaceFieldNames looks at value s, which should be a struct (or a pointer to a struct),
 // and returns the list of its field names which represent interface values but have nil value.
@@ -184,8 +185,6 @@ func Test_isAllRegions(t *testing.T) {
 	}
 }
 
-type mockAssumeRole func(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
-
 func (m mockAssumeRole) AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error) {
 	return m(ctx, params, optFns...)
 }
@@ -309,6 +308,5 @@ func Test_Configure(t *testing.T) {
 		if a.AccessKeyID != tt.keyId {
 			t.Errorf("Case-%d failed: %+v", i, err)
 		}
-
 	}
 }

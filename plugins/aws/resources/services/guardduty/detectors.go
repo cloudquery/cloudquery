@@ -6,10 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type Detector struct {
+	*guardduty.GetDetectorOutput
+	Id string
+}
 
 func GuarddutyDetectors() *schema.Table {
 	return &schema.Table{
@@ -208,9 +212,4 @@ func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, 
 		}
 		config.NextToken = output.NextToken
 	}
-}
-
-type Detector struct {
-	*guardduty.GetDetectorOutput
-	Id string
 }

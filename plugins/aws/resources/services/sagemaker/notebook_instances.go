@@ -8,10 +8,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	sagemakertypes "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type WrappedSageMakerNotebookInstance struct {
+	*sagemaker.DescribeNotebookInstanceOutput
+	NotebookInstanceArn  string
+	NotebookInstanceName string
+}
 
 func SagemakerNotebookInstances() *schema.Table {
 	return &schema.Table{
@@ -159,7 +164,6 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 
 		// get more details about the notebook instance
 		for _, n := range response.NotebookInstances {
-
 			config := sagemaker.DescribeNotebookInstanceInput{
 				NotebookInstanceName: n.NotebookInstanceName,
 			}
@@ -226,11 +230,4 @@ func resolveSagemakerNotebookInstanceDirectInternetAccess(_ context.Context, _ s
 	}
 
 	return resource.Set("direct_internet_access", false)
-
-}
-
-type WrappedSageMakerNotebookInstance struct {
-	*sagemaker.DescribeNotebookInstanceOutput
-	NotebookInstanceArn  string
-	NotebookInstanceName string
 }

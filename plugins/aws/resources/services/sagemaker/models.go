@@ -6,12 +6,16 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
-
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type WrappedSageMakerModel struct {
+	*sagemaker.DescribeModelOutput
+	ModelArn  *string
+	ModelName *string
+}
 
 func SagemakerModels() *schema.Table {
 	return &schema.Table{
@@ -189,7 +193,6 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 
 		// get more details about the notebook instance
 		for _, n := range response.Models {
-
 			config := sagemaker.DescribeModelInput{
 				ModelName: n.ModelName,
 			}
@@ -254,10 +257,4 @@ func fetchSagemakerModelVpcConfigs(_ context.Context, _ schema.ClientMeta, paren
 	r := parent.Item.(WrappedSageMakerModel)
 	res <- r.VpcConfig
 	return nil
-}
-
-type WrappedSageMakerModel struct {
-	*sagemaker.DescribeModelOutput
-	ModelArn  *string
-	ModelName *string
 }

@@ -209,10 +209,10 @@ func AcmCertificates() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().ACM
+	cl := meta.(*client.Client)
+	svc := cl.Services().ACM
 	optsFn := func(o *acm.Options) {
-		o.Region = client.Region
+		o.Region = cl.Region
 	}
 	var input acm.ListCertificatesInput
 	for {

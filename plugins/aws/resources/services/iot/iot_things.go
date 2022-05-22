@@ -100,8 +100,8 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingAttribute)
-	client := meta.(*client.Client)
-	svc := client.Services().IOT
+	cl := meta.(*client.Client)
+	svc := cl.Services().IOT
 	input := iot.ListThingPrincipalsInput{
 		ThingName:  i.ThingName,
 		MaxResults: aws.Int32(250),
@@ -110,7 +110,7 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 
 	for {
 		response, err := svc.ListThingPrincipals(ctx, &input, func(options *iot.Options) {
-			options.Region = client.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {

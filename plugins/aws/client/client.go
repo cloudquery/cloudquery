@@ -79,26 +79,37 @@ import (
 	"github.com/hashicorp/go-hclog"
 )
 
-var envVarsToCheck = []string{
-	"AWS_PROFILE",
-	"AWS_ACCESS_KEY_ID",
-	"AWS_SECRET_ACCESS_KEY",
-	"AWS_CONFIG_FILE",
-	"AWS_ROLE_ARN",
-	"AWS_SESSION_TOKEN",
-	"AWS_SHARED_CREDENTIALS_FILE",
+type Client struct {
+	// Those are already normalized values after configure and this is why we don't want to hold
+	// config directly.
+	Accounts        []Account
+	logLevel        *string
+	maxRetries      int
+	maxBackoff      int
+	ServicesManager ServicesManager
+	logger          hclog.Logger
+	// this is set by table clientList
+	AccountID            string
+	Region               string
+	AutoscalingNamespace string
+	WAFScope             wafv2types.Scope
+	Partition            string
 }
 
-const (
-	defaultRegion              = "us-east-1"
-	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
-	defaultVar                 = "default"
-	cloudfrontScopeRegion      = defaultRegion
-)
+// S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
+// has different structure then all other services (i.e no service but just a function) and we need
+// the ability to mock it.
+// Also we need to use s3 manager to be able to query the bucket-region https://github.com/aws/aws-sdk-go-v2/pull/1027#issuecomment-759818990
+type S3Manager struct {
+	s3Client *s3.Client
+}
 
-var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
-var errUnknownRegion = func(region string) error {
-	return fmt.Errorf("unknown region: %q", region)
+type AwsLogger struct {
+	l hclog.Logger
+}
+
+type AssumeRoleAPIClient interface {
+	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 }
 
 type Services struct {
@@ -171,6 +182,33 @@ type ServicesManager struct {
 	wafScopeServices map[string]*Services
 }
 
+const (
+	defaultRegion              = "us-east-1"
+	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
+	defaultVar                 = "default"
+	cloudfrontScopeRegion      = defaultRegion
+)
+
+var envVarsToCheck = []string{
+	"AWS_PROFILE",
+	"AWS_ACCESS_KEY_ID",
+	"AWS_SECRET_ACCESS_KEY",
+	"AWS_CONFIG_FILE",
+	"AWS_ROLE_ARN",
+	"AWS_SESSION_TOKEN",
+	"AWS_SHARED_CREDENTIALS_FILE",
+}
+
+var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
+var errUnknownRegion = func(region string) error {
+	return fmt.Errorf("unknown region: %q", region)
+}
+
+var (
+	_ schema.ClientMeta       = (*Client)(nil)
+	_ schema.ClientIdentifier = (*Client)(nil)
+)
+
 func (s *ServicesManager) ServicesByAccountAndRegion(accountId string, region string) *Services {
 	if region == "" {
 		region = defaultRegion
@@ -194,36 +232,6 @@ func (s *ServicesManager) InitServicesForAccountAndScope(accountId string, servi
 		s.wafScopeServices = make(map[string]*Services)
 	}
 	s.wafScopeServices[accountId] = &services
-}
-
-type Client struct {
-	// Those are already normalized values after configure and this is why we don't want to hold
-	// config directly.
-	Accounts        []Account
-	logLevel        *string
-	maxRetries      int
-	maxBackoff      int
-	ServicesManager ServicesManager
-	logger          hclog.Logger
-	// this is set by table clientList
-	AccountID            string
-	Region               string
-	AutoscalingNamespace string
-	WAFScope             wafv2types.Scope
-	Partition            string
-}
-
-var (
-	_ schema.ClientMeta       = (*Client)(nil)
-	_ schema.ClientIdentifier = (*Client)(nil)
-)
-
-// S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
-// has different structure then all other services (i.e no service but just a function) and we need
-// the ability to mock it.
-// Also we need to use s3 manager to be able to query the bucket-region https://github.com/aws/aws-sdk-go-v2/pull/1027#issuecomment-759818990
-type S3Manager struct {
-	s3Client *s3.Client
 }
 
 func newS3ManagerFromConfig(cfg aws.Config) S3Manager {
@@ -371,7 +379,6 @@ func verifyRegions(regions []string) error {
 	return nil
 }
 func isAllRegions(regions []string) bool {
-
 	// if regions array is not valid return false
 	err := verifyRegions(regions)
 	if err != nil {
@@ -383,16 +390,11 @@ func isAllRegions(regions []string) bool {
 		wildcardAllRegions = true
 	}
 	return wildcardAllRegions
-
 }
 
 func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentityOutput, error) {
 	svc := sts.NewFromConfig(awsCfg)
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
-}
-
-type AssumeRoleAPIClient interface {
-	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 }
 
 func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
@@ -537,7 +539,6 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			client.Region = account.Regions[0]
 			client.Partition = iamArn.Partition
 			client.Accounts = append(client.Accounts, Account{ID: *output.Account, RoleARN: *output.Arn})
-
 		}
 		for _, region := range account.Regions {
 			client.ServicesManager.InitServicesForAccountAndRegion(*output.Account, region, initServices(region, awsCfg))
@@ -639,10 +640,6 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 		}
 	}
 	return filteredRegions
-}
-
-type AwsLogger struct {
-	l hclog.Logger
 }
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {

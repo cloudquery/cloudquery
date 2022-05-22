@@ -8,12 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 )
+
+type TaskDefinitionWrapper struct {
+	*types.TaskDefinition
+	Tags []types.Tag
+}
 
 const MAX_GOROUTINES = 10
 
@@ -611,11 +615,6 @@ func EcsTaskDefinitions() *schema.Table {
 	}
 }
 
-type TaskDefinitionWrapper struct {
-	*types.TaskDefinition
-	Tags []types.Tag
-}
-
 func fetchEcsTaskDefinition(ctx context.Context, res chan<- interface{}, svc client.EcsClient, region, taskArn string) error {
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
@@ -666,7 +665,6 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent 
 					return fetchEcsTaskDefinition(ctx, res, svc, region, arn)
 				})
 			}(t)
-
 		}
 		err = errs.Wait()
 		if err != nil {

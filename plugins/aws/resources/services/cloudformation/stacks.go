@@ -354,5 +354,4 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		config.NextToken = output.NextToken
 	}
 	return nil
-
 }

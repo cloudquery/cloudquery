@@ -5,10 +5,14 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cq-provider-aws/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type IamOpenIdIdentityProviderWrapper struct {
+	*iam.GetOpenIDConnectProviderOutput
+	Arn string
+}
 
 func IamOpenidConnectIdentityProviders() *schema.Table {
 	return &schema.Table{
@@ -81,9 +85,4 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 		res <- IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
 	}
 	return nil
-}
-
-type IamOpenIdIdentityProviderWrapper struct {
-	*iam.GetOpenIDConnectProviderOutput
-	Arn string
 }

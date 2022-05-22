@@ -5,6 +5,10 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+var AllNamespaces = []string{ // this is only used in applicationautoscaling
+	"comprehend", "rds", "sagemaker", "appstream", "elasticmapreduce", "dynamodb", "lambda", "ecs", "cassandra", "ec2", "neptune", "kafka", "custom-resource", "elasticache",
+}
+
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	var l = make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
@@ -29,10 +33,6 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 		}
 		return l
 	}
-}
-
-var AllNamespaces = []string{ // this is only used in applicationautoscaling
-	"comprehend", "rds", "sagemaker", "appstream", "elasticmapreduce", "dynamodb", "lambda", "ecs", "cassandra", "ec2", "neptune", "kafka", "custom-resource", "elasticache",
 }
 
 func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
