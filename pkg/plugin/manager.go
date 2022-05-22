@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 type CreationOptions struct {
@@ -65,8 +66,8 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []registry.Pr
 	log.Debug().Interface("providers", providers).Msg("Downloading required providers")
 	downloaded := make([]registry.ProviderBinary, len(providers))
 	for i, rp := range providers {
-		if _, ok := m.clients[rp.String()]; ok {
-			log.Debug().Str("name", rp.Name).Str("version", rp.Version).Msg("Skipping provider download, using reattach instead")
+		if _, ok := m.clients[rp.Name]; ok {
+			ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Skipping provider %s download, using reattach instead\n", ui.Colorize(ui.ColorSuccessBold, false, rp.Name)))
 			continue
 		}
 		log.Info().Str("name", rp.Name).Str("version", rp.Version).Msg("Downloading provider")

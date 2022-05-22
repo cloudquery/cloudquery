@@ -154,7 +154,7 @@ func init() {
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(usageTemplate)
-	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry, initAnalytics)
+	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry, initAnalytics, initReattachMode)
 }
 
 func initUlimit() {
@@ -217,4 +217,10 @@ func logInvocationParams(cmd *cobra.Command, args []string) {
 	})
 
 	l.Str("command", cmd.CommandPath()).Strs("args", args).Msg("Invocation parameters")
+}
+
+func initReattachMode() {
+	if viper.GetString("reattach-providers") != "" {
+		viper.Set("no-verify", true)
+	}
 }
