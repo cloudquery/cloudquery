@@ -4,6 +4,23 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.23.5](https://github.com/cloudquery/cloudquery/compare/v0.23.4...v0.23.5) (2022-05-22)
+
+
+### Features
+
+* Classify some policy download errors as USER ([#742](https://github.com/cloudquery/cloudquery/issues/742)) ([8224e60](https://github.com/cloudquery/cloudquery/commit/8224e60d3a76d3b3f181d3b32b9153a63b04816a))
+
+
+### Bug Fixes
+
+* Classify "no policies in config" as USER error ([#743](https://github.com/cloudquery/cloudquery/issues/743)) ([4cbc03e](https://github.com/cloudquery/cloudquery/commit/4cbc03e22f5a0bbfa33812b407e65704727a88fd))
+* Don't attempt to download provider in re-attach mode ([#748](https://github.com/cloudquery/cloudquery/issues/748)) ([59973b8](https://github.com/cloudquery/cloudquery/commit/59973b84826599915f7b76fc8d8b16626dd26c74))
+* FetchId column regression ([#745](https://github.com/cloudquery/cloudquery/issues/745)) ([585d395](https://github.com/cloudquery/cloudquery/commit/585d39589ef6c27ae2aab5d224fc00a2387d7628))
+* Handle DeadlineExceeded errors ([#741](https://github.com/cloudquery/cloudquery/issues/741)) ([0167ce4](https://github.com/cloudquery/cloudquery/commit/0167ce4158d4795fc3a4b0f6661c19ae197c20c9))
+* Handle Outputting Policies With Selectors ([a3ecfc9](https://github.com/cloudquery/cloudquery/commit/a3ecfc9166170e1bb77011befd11a5fbe1c86007))
+* Space trimming in telemetry file ([#734](https://github.com/cloudquery/cloudquery/issues/734)) ([16c4cfc](https://github.com/cloudquery/cloudquery/commit/16c4cfce7e15f4474af3ab5d7e0cdb3698d2d08e))
+
 ### [0.23.4](https://github.com/cloudquery/cloudquery/compare/v0.23.3...v0.23.4) (2022-05-17)
 
 
