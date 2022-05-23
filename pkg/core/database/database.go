@@ -35,7 +35,7 @@ func GetExecutor(dsn string) (schema.DialectType, DialectExecutor, error) {
 	case schema.Postgres:
 		return dType, postgres.New(dsn), nil
 	case schema.TSDB:
-		return dType, nil, fmt.Errorf("history feature is removed. See more at https://TODO") // TODO
+		return dType, nil, fmt.Errorf("history feature is removed. See more at https://www.cloudquery.io/blog/migration-and-history-deprecation")
 	default:
 		return dType, nil, fmt.Errorf("unhandled dialect type")
 	}

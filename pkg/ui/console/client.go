@@ -85,7 +85,7 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 	}
 
 	if cfg.CloudQuery.History != nil {
-		return nil, diag.FromError(fmt.Errorf("history feature is removed. See more at https://TODO"), diag.USER) // TODO
+		return nil, diag.FromError(fmt.Errorf("history feature is removed. See more at https://www.cloudquery.io/blog/migration-and-history-deprecation"), diag.USER)
 	}
 
 	setConfigAnalytics(cfg)
