@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.15.0
 	github.com/aws/smithy-go v1.8.0
-	github.com/cloudquery/cq-provider-sdk v0.9.4
+	github.com/cloudquery/cq-provider-sdk v0.9.5
 	github.com/digitalocean/godo v1.65.0
 	github.com/hashicorp/go-hclog v1.0.0
 	github.com/pkg/errors v0.9.1
