@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.6](https://github.com/cloudquery/cq-provider-k8s/compare/v0.4.5...v0.4.6) (2022-05-23)
+
+
+### Bug Fixes
+
+* Added ignoring of 404 error when not supported resource fetched ([#123](https://github.com/cloudquery/cq-provider-k8s/issues/123)) ([b0179a2](https://github.com/cloudquery/cq-provider-k8s/commit/b0179a2c67c13e0bad59ff5be4009017200e7392))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.9.5 ([#126](https://github.com/cloudquery/cq-provider-k8s/issues/126)) ([2dbab59](https://github.com/cloudquery/cq-provider-k8s/commit/2dbab59f4d688588f17b242da4094e1c007a6ded))
+
 ### [0.4.5](https://github.com/cloudquery/cq-provider-k8s/compare/v0.4.4...v0.4.5) (2022-05-17)
 
 
