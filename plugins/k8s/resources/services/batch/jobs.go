@@ -18,7 +18,7 @@ func Jobs() *schema.Table {
 		Resolver:      fetchBatchJobs,
 		Multiplex:     client.ContextMultiplex,
 		DeleteFilter:  client.DeleteContextFilter,
-		IgnoreError:   client.IgnoreForbidden,
+		IgnoreError:   client.IgnoreForbiddenNotFound,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{

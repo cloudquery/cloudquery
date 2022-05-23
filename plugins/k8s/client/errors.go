@@ -22,12 +22,12 @@ func classifyError(err error, fallbackType diag.Type, opts ...diag.BaseErrorOpti
 	return diag.Diagnostics{diag.NewBaseError(err, fallbackType, opts...)}
 }
 
-func IgnoreForbidden(err error) bool {
+func IgnoreForbiddenNotFound(err error) bool {
 	statusError, ok := err.(k8s.APIStatus)
 	if !ok {
 		return false
 	}
-	if statusError.Status().Code == 403 {
+	if statusError.Status().Code == 403 || statusError.Status().Code == 404 {
 		return true
 	}
 	return false

@@ -18,7 +18,7 @@ func StatefulSets() *schema.Table {
 		Resolver:     fetchAppsStatefulSets,
 		Multiplex:    client.ContextMultiplex,
 		DeleteFilter: client.DeleteContextFilter,
-		IgnoreError:  client.IgnoreForbidden,
+		IgnoreError:  client.IgnoreForbiddenNotFound,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
 			client.CommonContextField,

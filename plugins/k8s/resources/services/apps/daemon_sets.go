@@ -18,7 +18,7 @@ func DaemonSets() *schema.Table {
 		Resolver:     fetchDaemonSets,
 		Multiplex:    client.ContextMultiplex,
 		DeleteFilter: client.DeleteContextFilter,
-		IgnoreError:  client.IgnoreForbidden,
+		IgnoreError:  client.IgnoreForbiddenNotFound,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},
 		Columns: []schema.Column{
 			client.CommonContextField,
