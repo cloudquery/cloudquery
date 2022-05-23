@@ -48,8 +48,10 @@ func emptyInterfaceFieldNames(s interface{}) []string {
 	return empty
 }
 
+// emptyInterfaceFieldNames is a test helper but it is not trivial and uses reflection. So let's test it too.
 func Test_emptyInterfaceFieldNames(t *testing.T) {
-	// emptyInterfaceFieldNames is a test helper but it is not trivial and uses reflection. So let's test it too.
+	// nested structs are ok here to simplify the test matrix
+	// nolint:revive
 	tests := []struct {
 		s    interface{}
 		want []string
@@ -216,6 +218,8 @@ func Test_Configure(t *testing.T) {
 	os.Unsetenv("AWS_SECRET_ACCESS_KEY")
 	os.Unsetenv("AWS_SESSION_TOKEN")
 
+	// nested structs are ok here to simplify the test matrix
+	// nolint:revive
 	tests := []struct {
 		stsclient    func(t *testing.T) AssumeRoleAPIClient
 		account      Account

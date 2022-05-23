@@ -208,6 +208,9 @@ func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 		for _, url := range result.QueueUrls {
 			input := sqs.GetQueueAttributesInput{
+				// Using the pointer of url is OK in this case (we don't store the value)
+				// See https://stackoverflow.com/questions/48826460/using-pointers-in-a-for-loop for pitfalls
+				// nolint:revive
 				QueueUrl:       &url,
 				AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll},
 			}

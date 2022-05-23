@@ -15,6 +15,8 @@ const (
 )
 
 type supportedServicesData struct {
+	// nested structs are ok here to simplify JSON unmarshaling
+	// nolint:revive
 	Partitions []struct {
 		PartitionId   string `json:"partition"`
 		PartitionName string `json:"partitionName"`
