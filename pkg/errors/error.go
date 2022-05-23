@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	gcodes "google.golang.org/grpc/codes"
@@ -21,10 +22,6 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	if d.Severity() == diag.IGNORE ||
 		(d.Severity() == diag.WARNING && (d.Type() == diag.ACCESS || d.Type() == diag.THROTTLE)) ||
 		d.Type() == diag.USER {
-		return true
-	}
-
-	if d.Type() == diag.ACCESS && isConfigureDiagnostic(d) {
 		return true
 	}
 
@@ -111,12 +108,14 @@ func shouldIgnorePgCode(code string) bool {
 	return false
 }
 
-type configureDiag interface {
-	IsConfigureDiagnostic() bool
+type sentryDiag interface {
+	IsSentryDiagnostic() (bool, map[string]string, bool)
 }
 
-func isConfigureDiagnostic(d diag.Diagnostic) bool {
-	d = diag.UnsquashDiag(d)
-	cd, ok := d.(configureDiag)
-	return ok && cd.IsConfigureDiagnostic()
+func isSentryDiagnostic(d diag.Diagnostic) (bool, map[string]string, bool) {
+	cd, ok := diag.UnsquashDiag(d).(sentryDiag)
+	if !ok {
+		return false, nil, false
+	}
+	return cd.IsSentryDiagnostic()
 }
