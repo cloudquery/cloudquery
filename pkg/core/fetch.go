@@ -203,7 +203,7 @@ func Fetch(ctx context.Context, storage database.Storage, pm *plugin.Manager, op
 		}
 	}
 	// set metadata we want to pass to
-	metadata := map[string]interface{}{"cq_fetch_id": fetchId.String()}
+	metadata := map[string]interface{}{schema.FetchIdMetaKey: fetchId.String()}
 	if opts.History != nil {
 		fd := opts.History.FetchDate()
 		log.Info().Str("fetch_date", fd.Format(time.RFC3339)).Stringer("fetch_id", fetchId).Msg("history enabled adding fetch date")
