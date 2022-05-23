@@ -199,7 +199,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 		}
 	}
 	// set metadata we want to pass to
-	metadata := map[string]interface{}{"cq_fetch_id": fetchId}
+	metadata := map[string]interface{}{schema.FetchIdMetaKey: fetchId}
 	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
 
 	var (

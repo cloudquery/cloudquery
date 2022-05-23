@@ -329,7 +329,7 @@ func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Re
 		t.FailNow()
 	}
 	defer db.Close()
-	assert.Nil(t, db.Insert(context.TODO(), tbl, resources))
+	assert.Nil(t, db.Insert(context.TODO(), tbl, resources, false, nil))
 }
 
 func truncateTable(t *testing.T, dsn, table string) {
