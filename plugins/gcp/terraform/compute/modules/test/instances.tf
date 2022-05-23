@@ -28,6 +28,11 @@ resource "google_compute_instance" "default" {
   zone         = "${var.region}-b"
   name         = "${var.prefix}-compute"
   machine_type = "e2-micro"
+
+  scheduling {
+    preemptible       = true
+    automatic_restart = false
+  }
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-9"
