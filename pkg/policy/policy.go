@@ -113,7 +113,11 @@ func (p Policy) Filter(path string) Policy {
 	}
 	for _, policy := range p.Policies {
 		if policy.Name == selectorPath[0] {
-			return policy.Filter(nextPolicy)
+			filtered := policy.Filter(nextPolicy)
+			if filtered.Config == nil {
+				filtered.Config = p.Config
+			}
+			return filtered
 		}
 	}
 

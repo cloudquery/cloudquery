@@ -268,7 +268,8 @@ func TestFilterPolicies(t *testing.T) {
 			},
 			path:           "test1",
 			expectedPolicy: Policy{},
-		}, {
+		},
+		{
 			expectError: true,
 			p: Policy{
 				Name: "aws",
@@ -514,6 +515,64 @@ func TestFilterPolicies(t *testing.T) {
 								Name: "Control-5",
 							},
 						},
+					},
+				},
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Config: &Configuration{
+					[]*Provider{
+						{"aws", "v0.1.1"},
+					},
+				},
+				Policies: Policies{
+					&Policy{
+						Name: "test",
+					},
+				},
+			},
+			path: "test",
+			expectedPolicy: Policy{
+				Name: "test",
+				Config: &Configuration{
+					[]*Provider{
+						{"aws", "v0.1.1"},
+					},
+				},
+			},
+		},
+		{
+			p: Policy{
+				Name: "aws",
+				Config: &Configuration{
+					[]*Provider{
+						{"aws", "v0.1.1"},
+					},
+				},
+				Policies: Policies{
+					&Policy{
+						Name: "test",
+						Policies: Policies{
+							&Policy{
+								Name: "test1",
+								Config: &Configuration{
+									[]*Provider{
+										{"test", "v0.1.2"},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			path: "test/test1",
+			expectedPolicy: Policy{
+				Name: "test1",
+				Config: &Configuration{
+					[]*Provider{
+						{"test", "v0.1.2"},
 					},
 				},
 			},
