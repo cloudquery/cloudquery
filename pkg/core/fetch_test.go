@@ -153,8 +153,8 @@ func Test_Fetch(t *testing.T) {
 					Err:         "context deadline exceeded",
 					Type:        diag.USER,
 					Severity:    diag.ERROR,
-					Summary:     "provider fetch was canceled by user / fetch deadline exceeded",
-					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "provider fetch was canceled by user / fetch deadline exceeded", Detail: ""}},
+					Summary:     "operation was canceled by user",
+					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "operation was canceled by user", Detail: ""}},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
