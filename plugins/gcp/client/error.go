@@ -23,6 +23,9 @@ func IgnoreErrorHandler(err error) bool {
 				return true
 			}
 		}
+		if gerr.Code == http.StatusNotFound && len(gerr.Errors) > 0 {
+			return true
+		}
 	}
 	return false
 }

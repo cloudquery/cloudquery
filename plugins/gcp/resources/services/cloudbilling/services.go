@@ -44,6 +44,7 @@ func Services() *schema.Table {
 				Name:        "gcp_cloudbilling_service_skus",
 				Description: "Encapsulates a single SKU in Google Cloud Platform",
 				Resolver:    fetchCloudbillingServiceSkus,
+				IgnoreError: client.IgnoreErrorHandler,
 				Columns: []schema.Column{
 					{
 						Name:        "service_cq_id",
