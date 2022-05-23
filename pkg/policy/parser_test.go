@@ -39,8 +39,8 @@ name: "source_policy"
 source: "./path/to/file"
 check:
   - name: "sub-level-query"
-    query = "SELECT * from test.subquery"
-    type = "manual"
+    query: "SELECT * from test.subquery"
+    type: "manual"
 `,
 			expectedError:    true,
 			expectedErrorStr: "Found source with blocks; There must be one of the following: Policy source attribute or blocks",
@@ -48,7 +48,7 @@ check:
 		{
 			name: "unexpected block within a policy",
 			policyHCL: `
-name: "test_policy":
+name: "test_policy"
 unknown:
   attr: "value"`,
 			expectedError:    true,
@@ -57,9 +57,9 @@ unknown:
 		{
 			name: "multiple configuration blocks",
 			policyHCL: `
-policy: "test_policy"
-  configuration:
-  configuration:`,
+name: "test_policy"
+configuration: {}
+configuration: {}`,
 			expected: &Policy{
 				Name:   "test_policy",
 				Config: &Configuration{},
@@ -290,7 +290,14 @@ policies:
 		t.Run(tt.name, func(t *testing.T) {
 			p, result, err := UnmarshalPolicy([]byte(tt.policyHCL))
 			if err != nil {
-				t.Fatal(err)
+				if !tt.expectedError {
+					t.Fatal(err)
+				}
+				if strings.Compare(err.Error(), tt.expectedErrorStr) != 0 {
+					t.Errorf("expected error %s, got %s", tt.expectedErrorStr, err.Error())
+				} else {
+					return
+				}
 			}
 			if !result.Valid() {
 				if len(result.Errors()) != len(tt.expectedValidationErrors) {

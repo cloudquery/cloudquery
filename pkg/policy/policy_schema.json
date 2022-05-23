@@ -46,15 +46,5 @@
       }
      }
   },
-  "oneOf": [
-     {
-      "required": ["name"],
-      "not": {"required": ["source"]}
-     },
-     {
-      "required": ["source", "name"],
-      "not": {"required": ["checks", "policies"]}
-     }
-  ]
- 
-} 
+  "required": ["name"]
+}
