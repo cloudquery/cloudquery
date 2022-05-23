@@ -101,7 +101,8 @@ func Execute() {
 func init() {
 	// add inner commands
 	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
-	rootCmd.PersistentFlags().Bool("no-verify", false, "disable plugins verification")
+	rootCmd.PersistentFlags().Bool("no-verify", false, "NoVerify is true registry won't verify the plugins")
+	rootCmd.PersistentFlags().Bool("no-download", false, "disable plugins download. Will cause an error if a plugin is not found")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 
 	// Logging Flags
@@ -140,6 +141,7 @@ func init() {
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
+	_ = viper.BindPFlag("no-download", rootCmd.PersistentFlags().Lookup("no-download"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
 	_ = viper.BindPFlag("force-drop", rootCmd.PersistentFlags().Lookup("force-drop"))
 

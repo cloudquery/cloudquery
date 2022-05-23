@@ -264,9 +264,12 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 		return nil, diag.FromError(fmt.Errorf("one or more providers not found: %s", pp), diag.USER,
 			diag.WithDetails("providers not found, are they defined in configuration?. Defined: %s", c.Providers))
 	}
-	diags = diags.Add(c.DownloadProviders(ctx))
-	if diags.HasErrors() {
-		return nil, diags
+
+	if !viper.GetBool("no-download") {
+		diags = diags.Add(c.DownloadProviders(ctx))
+		if diags.HasErrors() {
+			return nil, diags
+		}
 	}
 
 	for _, p := range providers {
