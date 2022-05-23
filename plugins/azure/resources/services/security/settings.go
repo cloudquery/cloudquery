@@ -71,7 +71,7 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 				res <- v
 			} else if v, ok := item.AsDataExportSettings(); ok {
 				res <- v
-			} else if v, ok := item.AsAlertSyncSettings(); ok { // nolint:revive (in this case revive has a false positive on early-return)
+			} else if v, ok := item.AsAlertSyncSettings(); ok { // nolint:revive
 				res <- v
 			} else {
 				return fmt.Errorf("unexpected BasicSetting: %#v", item)
