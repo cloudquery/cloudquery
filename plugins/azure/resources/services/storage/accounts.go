@@ -864,13 +864,13 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 		return nil
 	}
 
-	// fetch storage account keys for Shared Key authentication
-	storage := meta.(*client.Client).Services().Storage
+	// fetch storageClient account keys for Shared Key authentication
+	storageClient := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
 			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
@@ -887,7 +887,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	blobProps := storage.NewBlobServiceProperties(auth)
+	blobProps := storageClient.NewBlobServiceProperties(auth)
 	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
 	if err != nil {
 		// For premium 'page blob' storage accounts, we sometimes get "authorization error", not sure why.
@@ -920,12 +920,12 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	}
 
 	// fetch storage account keys for Shared Key authentication
-	storage := meta.(*client.Client).Services().Storage
+	storageClient := meta.(*client.Client).Services().Storage
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	keysResult, err := storage.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
 			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
@@ -941,7 +941,7 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	blobProps := storage.NewQueueServiceProperties(auth)
+	blobProps := storageClient.NewQueueServiceProperties(auth)
 	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
 	if err != nil {
 		return diag.WrapError(err)

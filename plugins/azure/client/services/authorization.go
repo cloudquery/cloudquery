@@ -12,6 +12,14 @@ type AuthorizationClient struct {
 	RoleDefinitions RoleDefinitionsClient
 }
 
+type RoleAssignmentsClient interface {
+	List(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultPage, err error)
+}
+
+type RoleDefinitionsClient interface {
+	List(ctx context.Context, scope string, filter string) (result authorization.RoleDefinitionListResultPage, err error)
+}
+
 func NewAuthorizationClient(subscriptionId string, auth autorest.Authorizer) AuthorizationClient {
 	assignments := authorization.NewRoleAssignmentsClient(subscriptionId)
 	assignments.Authorizer = auth
@@ -21,12 +29,4 @@ func NewAuthorizationClient(subscriptionId string, auth autorest.Authorizer) Aut
 		RoleAssignments: assignments,
 		RoleDefinitions: definitions,
 	}
-}
-
-type RoleAssignmentsClient interface {
-	List(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultPage, err error)
-}
-
-type RoleDefinitionsClient interface {
-	List(ctx context.Context, scope string, filter string) (result authorization.RoleDefinitionListResultPage, err error)
 }

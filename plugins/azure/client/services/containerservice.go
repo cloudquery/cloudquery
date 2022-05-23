@@ -11,14 +11,14 @@ type ContainerServiceClient struct {
 	ManagedClusters ManagedClustersClient
 }
 
+type ManagedClustersClient interface {
+	List(ctx context.Context) (result containerservice.ManagedClusterListResultPage, err error)
+}
+
 func NewContainerServiceClient(subscriptionID string, auth autorest.Authorizer) ContainerServiceClient {
 	m := containerservice.NewManagedClustersClient(subscriptionID)
 	m.Authorizer = auth
 	return ContainerServiceClient{
 		ManagedClusters: m,
 	}
-}
-
-type ManagedClustersClient interface {
-	List(ctx context.Context) (result containerservice.ManagedClusterListResultPage, err error)
 }

@@ -16,23 +16,6 @@ type ResourcesClient struct {
 	Links       LinksClient
 }
 
-func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) ResourcesClient {
-	groups := resources.NewGroupsClient(subscriptionId)
-	groups.Authorizer = auth
-	resources := resources.NewClient(subscriptionId)
-	resources.Authorizer = auth
-	assignments := policy.NewAssignmentsClient()
-	assignments.Authorizer = auth
-	ls := links.NewResourceLinksClient(subscriptionId)
-	ls.Authorizer = auth
-	return ResourcesClient{
-		Groups:      groups,
-		Resources:   resources,
-		Assignments: assignments,
-		Links:       ls,
-	}
-}
-
 type GroupsClient interface {
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)
 }
@@ -47,4 +30,21 @@ type AssignmentsClient interface {
 
 type LinksClient interface {
 	ListAtSubscription(ctx context.Context, filter string) (result links.ResourceLinkResultPage, err error)
+}
+
+func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) ResourcesClient {
+	groups := resources.NewGroupsClient(subscriptionId)
+	groups.Authorizer = auth
+	client := resources.NewClient(subscriptionId)
+	client.Authorizer = auth
+	assignments := policy.NewAssignmentsClient()
+	assignments.Authorizer = auth
+	ls := links.NewResourceLinksClient(subscriptionId)
+	ls.Authorizer = auth
+	return ResourcesClient{
+		Groups:      groups,
+		Resources:   client,
+		Assignments: assignments,
+		Links:       ls,
+	}
 }

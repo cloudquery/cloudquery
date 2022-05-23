@@ -17,6 +17,27 @@ type StorageClient struct {
 	NewQueueServiceProperties func(autorest.Authorizer) StorageQueueServicePropertiesClient
 }
 
+type StorageAccountClient interface {
+	List(ctx context.Context) (result storage.AccountListResultPage, err error)
+	ListKeys(ctx context.Context, resourceGroupName string, accountName string, expand storage.ListKeyExpand) (result storage.AccountListKeysResult, err error)
+}
+
+type StorageBlobServicesClient interface {
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceItems, err error)
+}
+
+type StorageContainerClient interface {
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
+}
+
+type StorageBlobServicePropertiesClient interface {
+	GetServiceProperties(ctx context.Context, accountName string) (result accounts.GetServicePropertiesResult, err error)
+}
+
+type StorageQueueServicePropertiesClient interface {
+	GetServiceProperties(ctx context.Context, accountName string) (result queues.StorageServicePropertiesResponse, err error)
+}
+
 func NewStorageClient(subscriptionId string, auth autorest.Authorizer) StorageClient {
 	accs := storage.NewAccountsClient(subscriptionId)
 	accs.Authorizer = auth
@@ -39,25 +60,4 @@ func NewStorageClient(subscriptionId string, auth autorest.Authorizer) StorageCl
 			return client
 		},
 	}
-}
-
-type StorageAccountClient interface {
-	List(ctx context.Context) (result storage.AccountListResultPage, err error)
-	ListKeys(ctx context.Context, resourceGroupName string, accountName string, expand storage.ListKeyExpand) (result storage.AccountListKeysResult, err error)
-}
-
-type StorageBlobServicesClient interface {
-	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceItems, err error)
-}
-
-type StorageContainerClient interface {
-	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
-}
-
-type StorageBlobServicePropertiesClient interface {
-	GetServiceProperties(ctx context.Context, accountName string) (result accounts.GetServicePropertiesResult, err error)
-}
-
-type StorageQueueServicePropertiesClient interface {
-	GetServiceProperties(ctx context.Context, accountName string) (result queues.StorageServicePropertiesResponse, err error)
 }

@@ -30,7 +30,6 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/streamanalytics"
 	"github.com/cloudquery/cq-provider-azure/resources/services/subscription"
 	"github.com/cloudquery/cq-provider-azure/resources/services/web"
-
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

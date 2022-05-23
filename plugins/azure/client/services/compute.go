@@ -15,6 +15,23 @@ type ComputeClient struct {
 	VirtualMachineScaleSets  VirtualMachineScaleSetsClient
 }
 
+type DisksClient interface {
+	List(ctx context.Context) (result compute.DiskListPage, err error)
+}
+
+type VirtualMachinesClient interface {
+	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
+	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
+}
+
+type VirtualMachineExtensionsClient interface {
+	List(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
+}
+
+type VirtualMachineScaleSetsClient interface {
+	ListAll(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultPage, err error)
+}
+
 func NewComputeClient(subscriptionId string, auth autorest.Authorizer) ComputeClient {
 	disks := compute.NewDisksClient(subscriptionId)
 	disks.Authorizer = auth
@@ -34,21 +51,4 @@ func NewComputeClient(subscriptionId string, auth autorest.Authorizer) ComputeCl
 		VirtualMachineExtensions: vmsEx,
 		VirtualMachineScaleSets:  vmsScaleSets,
 	}
-}
-
-type DisksClient interface {
-	List(ctx context.Context) (result compute.DiskListPage, err error)
-}
-
-type VirtualMachinesClient interface {
-	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
-	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
-}
-
-type VirtualMachineExtensionsClient interface {
-	List(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
-}
-
-type VirtualMachineScaleSetsClient interface {
-	ListAll(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultPage, err error)
 }

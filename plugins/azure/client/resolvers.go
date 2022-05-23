@@ -7,6 +7,6 @@ import (
 )
 
 func ResolveAzureSubscription(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
-	client := meta.(*Client)
-	return r.Set("subscription_id", client.SubscriptionId)
+	cl := meta.(*Client)
+	return r.Set("subscription_id", cl.SubscriptionId)
 }

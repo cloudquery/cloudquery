@@ -12,6 +12,14 @@ type MySQL struct {
 	Configuration MySQLConfigurationClient
 }
 
+type MySQLServerClient interface {
+	List(ctx context.Context) (result mysql.ServerListResult, err error)
+}
+
+type MySQLConfigurationClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ConfigurationListResult, err error)
+}
+
 func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQL {
 	servers := mysql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
@@ -21,12 +29,4 @@ func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQL {
 		Servers:       servers,
 		Configuration: conf,
 	}
-}
-
-type MySQLServerClient interface {
-	List(ctx context.Context) (result mysql.ServerListResult, err error)
-}
-
-type MySQLConfigurationClient interface {
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ConfigurationListResult, err error)
 }

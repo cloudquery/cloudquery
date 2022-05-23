@@ -13,6 +13,18 @@ type PostgreSQL struct {
 	FirewallRule  PostgresqlFirewallRuleClient
 }
 
+type PostgresqlServerClient interface {
+	List(ctx context.Context) (result postgresql.ServerListResult, err error)
+}
+
+type PostgresqlConfigurationClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ConfigurationListResult, err error)
+}
+
+type PostgresqlFirewallRuleClient interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.FirewallRuleListResult, err error)
+}
+
 func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreSQL {
 	servers := postgresql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
@@ -27,16 +39,4 @@ func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreS
 		Configuration: confSvc,
 		FirewallRule:  firewallSvc,
 	}
-}
-
-type PostgresqlServerClient interface {
-	List(ctx context.Context) (result postgresql.ServerListResult, err error)
-}
-
-type PostgresqlConfigurationClient interface {
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ConfigurationListResult, err error)
-}
-
-type PostgresqlFirewallRuleClient interface {
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.FirewallRuleListResult, err error)
 }

@@ -14,6 +14,16 @@ type DataLakeClient struct {
 	DataLakeAnalyticsAccounts DataLakeAnalyticsAccountsClient
 }
 
+type DataLakeStorageAccountsClient interface {
+	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result storeAccount.DataLakeStoreAccountListResultPage, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string) (result storeAccount.DataLakeStoreAccount, err error)
+}
+
+type DataLakeAnalyticsAccountsClient interface {
+	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultPage, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeAnalyticsAccount, err error)
+}
+
 func NewDataLakeClient(subscriptionId string, auth autorest.Authorizer) DataLakeClient {
 	storeAccounts := storeAccount.NewAccountsClient(subscriptionId)
 	storeAccounts.Authorizer = auth
@@ -23,14 +33,4 @@ func NewDataLakeClient(subscriptionId string, auth autorest.Authorizer) DataLake
 		DataLakeStorageAccounts:   storeAccounts,
 		DataLakeAnalyticsAccounts: analyticsAccounts,
 	}
-}
-
-type DataLakeStorageAccountsClient interface {
-	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result storeAccount.DataLakeStoreAccountListResultPage, err error)
-	Get(ctx context.Context, resourceGroupName string, accountName string) (result storeAccount.DataLakeStoreAccount, err error)
-}
-
-type DataLakeAnalyticsAccountsClient interface {
-	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultPage, err error)
-	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeAnalyticsAccount, err error)
 }

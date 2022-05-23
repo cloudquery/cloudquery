@@ -16,6 +16,27 @@ type KeyVaultClient struct {
 	ManagedHSM KeyVaultManagedHSMClient
 }
 
+type VaultClient interface {
+	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
+}
+
+type KeysClient interface {
+	// List lists the keys in the specified key vault.
+	// Parameters:
+	// resourceGroupName - the name of the resource group which contains the specified key vault.
+	// vaultName - the name of the vault which contains the keys to be retrieved.
+	List(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.KeyListResultPage, err error)
+}
+
+type KeyVault71Client interface {
+	GetKeys(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.KeyListResultPage, err error)
+	GetSecrets(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.SecretListResultPage, err error)
+}
+
+type KeyVaultManagedHSMClient interface {
+	ListBySubscription(ctx context.Context, top *int32) (result hsm.ManagedHsmListResultPage, err error)
+}
+
 func NewKeyVaultClient(subscriptionId string, auth autorest.Authorizer) (KeyVaultClient, error) {
 	kv71 := keyvault71.New()
 	// The audience for keyvault71 should be different so we need to request a new token
@@ -40,25 +61,4 @@ func NewKeyVaultClient(subscriptionId string, auth autorest.Authorizer) (KeyVaul
 		KeyVault71: kv71,
 		ManagedHSM: vhsm,
 	}, nil
-}
-
-type VaultClient interface {
-	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
-}
-
-type KeysClient interface {
-	// List lists the keys in the specified key vault.
-	// Parameters:
-	// resourceGroupName - the name of the resource group which contains the specified key vault.
-	// vaultName - the name of the vault which contains the keys to be retrieved.
-	List(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.KeyListResultPage, err error)
-}
-
-type KeyVault71Client interface {
-	GetKeys(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.KeyListResultPage, err error)
-	GetSecrets(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.SecretListResultPage, err error)
-}
-
-type KeyVaultManagedHSMClient interface {
-	ListBySubscription(ctx context.Context, top *int32) (result hsm.ManagedHsmListResultPage, err error)
 }

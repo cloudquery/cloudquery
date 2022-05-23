@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
+	// Import all autorest modules
 	_ "github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"github.com/cloudquery/cq-provider-azure/client/services"
@@ -34,8 +35,8 @@ func (c Client) Logger() hclog.Logger {
 }
 
 // SetSubscriptionServices adds a set of services to an azure subscription
-func (c *Client) SetSubscriptionServices(subscriptionId string, services services.Services) {
-	c.services[subscriptionId] = &services
+func (c *Client) SetSubscriptionServices(subscriptionId string, servicesSet services.Services) {
+	c.services[subscriptionId] = &servicesSet
 }
 
 // Services returns all available services of client, returns subscriptionId's specific services

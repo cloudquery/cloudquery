@@ -19,6 +19,10 @@ var errorCodeDescriptions = map[interface{}]string{
 	http.StatusForbidden:  "You are not authorized to perform this operation.",
 }
 
+var (
+	uuidRegex = regexp.MustCompile(`(\W)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}(\W)`)
+)
+
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 	return classifyError(err, diag.RESOLVING, client.SubscriptionId, diag.WithResourceName(resourceName))
@@ -91,10 +95,6 @@ func RedactError(subId string, e diag.Diagnostic) diag.Diagnostic {
 	)
 	return diag.NewRedactedDiagnostic(e, r)
 }
-
-var (
-	uuidRegex = regexp.MustCompile(`(\W)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}(\W)`)
-)
 
 func removePII(subId string, msg string) string {
 	if subId != "" {

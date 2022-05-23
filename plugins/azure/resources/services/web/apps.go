@@ -13,6 +13,16 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type PublishProfile struct {
+	PublishUrl string `xml:"publishUrl,attr"`
+	UserName   string `xml:"userName,attr"`
+	UserPWD    string `xml:"userPWD,attr"`
+}
+type PublishData struct {
+	XMLName     xml.Name         `xml:"publishData"`
+	PublishData []PublishProfile `xml:"publishProfile"`
+}
+
 func WebApps() *schema.Table {
 	return &schema.Table{
 		Name:          "azure_web_apps",
@@ -610,18 +620,4 @@ func fetchVnetConnections(ctx context.Context, meta schema.ClientMeta, resource 
 		return resource.Set(c.Name, b)
 	}
 	return nil
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-type PublishProfile struct {
-	PublishUrl string `xml:"publishUrl,attr"`
-	UserName   string `xml:"userName,attr"`
-	UserPWD    string `xml:"userPWD,attr"`
-}
-type PublishData struct {
-	XMLName     xml.Name         `xml:"publishData"`
-	PublishData []PublishProfile `xml:"publishProfile"`
 }

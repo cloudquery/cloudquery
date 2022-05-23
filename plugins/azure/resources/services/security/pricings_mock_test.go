@@ -3,9 +3,8 @@ package security
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-azure/client"
-
 	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
+	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/client/services"
 	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"

@@ -15,6 +15,20 @@ type MonitorClient struct {
 	DiagnosticSettings DiagnosticSettingsClient
 }
 
+type ActivityLogAlertsClient interface {
+	ListBySubscriptionID(ctx context.Context) (result o.ActivityLogAlertList, err error)
+}
+type ActivityLogClient interface {
+	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+}
+type LogProfilesClient interface {
+	List(ctx context.Context) (result insights.LogProfileCollection, err error)
+}
+
+type DiagnosticSettingsClient interface {
+	List(ctx context.Context, resourceURI string) (result insights.DiagnosticSettingsResourceCollection, err error)
+}
+
 func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorClient {
 	servers := o.NewActivityLogAlertsClient(subscriptionId)
 	servers.Authorizer = auth
@@ -30,18 +44,4 @@ func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorCl
 		ActivityLogs:       activityLogs,
 		DiagnosticSettings: diagnosticSettings,
 	}
-}
-
-type ActivityLogAlertsClient interface {
-	ListBySubscriptionID(ctx context.Context) (result o.ActivityLogAlertList, err error)
-}
-type ActivityLogClient interface {
-	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
-}
-type LogProfilesClient interface {
-	List(ctx context.Context) (result insights.LogProfileCollection, err error)
-}
-
-type DiagnosticSettingsClient interface {
-	List(ctx context.Context, resourceURI string) (result insights.DiagnosticSettingsResourceCollection, err error)
 }

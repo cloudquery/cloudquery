@@ -13,6 +13,11 @@ type Subscriptions struct {
 	Subscriptions  SubscriptionsClient
 }
 
+type SubscriptionsClient interface {
+	Get(ctx context.Context, subscriptionID string) (result subscription.Model, err error)
+	ListLocations(ctx context.Context, subscriptionID string) (result subscription.LocationListResult, err error)
+}
+
 func NewSubscriptionsClient(subscriptionId string, auth autorest.Authorizer) Subscriptions {
 	s := subscription.NewSubscriptionsClient()
 	s.Authorizer = auth
@@ -20,9 +25,4 @@ func NewSubscriptionsClient(subscriptionId string, auth autorest.Authorizer) Sub
 		SubscriptionID: subscriptionId,
 		Subscriptions:  s,
 	}
-}
-
-type SubscriptionsClient interface {
-	Get(ctx context.Context, subscriptionID string) (result subscription.Model, err error)
-	ListLocations(ctx context.Context, subscriptionID string) (result subscription.LocationListResult, err error)
 }

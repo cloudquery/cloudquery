@@ -499,11 +499,11 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		client, ok := svc.(network.WatchersClient)
+		watchersClient, ok := svc.(network.WatchersClient)
 		if !ok {
-			client = network.WatchersClient{} //use a dummy network.WatchersClient with unit tests
+			watchersClient = network.WatchersClient{} //use a dummy network.WatchersClient with unit tests
 		}
-		properties, err := result.Result(client)
+		properties, err := result.Result(watchersClient)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -11,15 +11,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`
-
-var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
-
-func DeleteSubscriptionFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
-	client := meta.(*Client)
-	return []interface{}{"subscription_id", client.SubscriptionId}
-}
-
 // ResourceDetails contains details about an Azure resource
 type ResourceDetails struct {
 	Subscription  string
@@ -27,6 +18,15 @@ type ResourceDetails struct {
 	Provider      string
 	ResourceType  string
 	ResourceName  string
+}
+
+const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`
+
+var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
+
+func DeleteSubscriptionFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
+	client := meta.(*Client)
+	return []interface{}{"subscription_id", client.SubscriptionId}
 }
 
 // ParseResourceID parses a resource ID into a ResourceDetails struct

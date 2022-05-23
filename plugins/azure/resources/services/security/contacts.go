@@ -83,7 +83,6 @@ func fetchSecurityContacts(ctx context.Context, meta schema.ClientMeta, parent *
 		if err := response.NextWithContext(ctx); err != nil {
 			return diag.WrapError(err)
 		}
-
 	}
 	return nil
 }

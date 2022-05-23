@@ -143,7 +143,6 @@ func fetchSecurityJitNetworkAccessPolicies(ctx context.Context, meta schema.Clie
 		if err := response.NextWithContext(ctx); err != nil {
 			return diag.WrapError(err)
 		}
-
 	}
 	return nil
 }

@@ -32,77 +32,6 @@ type SQLClient struct {
 	ServerSecurityAlertPolicies                 ServerSecurityAlertPoliciesClient
 }
 
-func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
-	databases := sql.NewDatabasesClient(subscriptionId)
-	databases.Authorizer = auth
-	dbap := sql.NewDatabaseBlobAuditingPoliciesClient(subscriptionId)
-	dbap.Authorizer = auth
-	dtdp := sql.NewDatabaseThreatDetectionPoliciesClient(subscriptionId)
-	dtdp.Authorizer = auth
-	dva := sql.NewDatabaseVulnerabilityAssessmentsClient(subscriptionId)
-	dva.Authorizer = auth
-	dvas := sql.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
-	dvas.Authorizer = auth
-	firewall := sql.NewFirewallRulesClient(subscriptionId)
-	firewall.Authorizer = auth
-	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
-	sbap.Authorizer = auth
-	sdas := sql.NewServerDevOpsAuditSettingsClient(subscriptionId)
-	sdas.Authorizer = auth
-	serverAdmins := sql.NewServerAzureADAdministratorsClient(subscriptionId)
-	serverAdmins.Authorizer = auth
-	servers := sql.NewServersClient(subscriptionId)
-	servers.Authorizer = auth
-	sva := sql.NewServerVulnerabilityAssessmentsClient(subscriptionId)
-	sva.Authorizer = auth
-	enc := sql.NewTransparentDataEncryptionsClient(subscriptionId)
-	enc.Authorizer = auth
-	ep := sql.NewEncryptionProtectorsClient(subscriptionId)
-	ep.Authorizer = auth
-	mi := sql.NewManagedInstancesClient(subscriptionId)
-	mi.Authorizer = auth
-	miva := sql.NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionId)
-	miva.Authorizer = auth
-	miep := sql.NewManagedInstanceEncryptionProtectorsClient(subscriptionId)
-	miep.Authorizer = auth
-	md := sql.NewManagedDatabasesClient(subscriptionId)
-	md.Authorizer = auth
-	mdva := sql.NewManagedDatabaseVulnerabilityAssessmentsClient(subscriptionId)
-	mdva.Authorizer = auth
-	mdvas := sql.NewManagedDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
-	mdvas.Authorizer = auth
-	vnr := sql.NewVirtualNetworkRulesClient(subscriptionId)
-	vnr.Authorizer = auth
-	ssap := sql.NewServerSecurityAlertPoliciesClient(subscriptionId)
-	ssap.Authorizer = auth
-	bltrp := sql.NewBackupLongTermRetentionPoliciesClient(subscriptionId)
-	bltrp.Authorizer = auth
-	return SQLClient{
-		BackupLongTermRetentionPolicies:             bltrp,
-		DatabaseBlobAuditingPolicies:                dbap,
-		Databases:                                   databases,
-		DatabaseThreatDetectionPolicies:             dtdp,
-		DatabaseVulnerabilityAssessments:            dva,
-		DatabaseVulnerabilityAssessmentScans:        dvas,
-		Firewall:                                    firewall,
-		ServerAdmins:                                serverAdmins,
-		ServerBlobAuditingPolicies:                  sbap,
-		ServerDevOpsAuditSettings:                   sdas,
-		Servers:                                     servers,
-		ServerVulnerabilityAssessments:              sva,
-		TransparentDataEncryptions:                  enc,
-		EncryptionProtectors:                        ep,
-		ManagedInstances:                            mi,
-		ManagedInstanceVulnerabilityAssessments:     miva,
-		ManagedInstanceEncryptionProtectors:         miep,
-		ManagedDatabases:                            md,
-		ManagedDatabaseVulnerabilityAssessments:     mdva,
-		ManagedDatabaseVulnerabilityAssessmentScans: mdvas,
-		VirtualNetworkRules:                         vnr,
-		ServerSecurityAlertPolicies:                 ssap,
-	}
-}
-
 //go:generate mockgen -destination=./mocks/sql_server.go -package=mocks . SQLServerClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
 type SQLServerClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
@@ -193,4 +122,75 @@ type ManagedDatabaseVulnerabilityAssessmentsClient interface {
 
 type ManagedDatabaseVulnerabilityAssessmentScansClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+}
+
+func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
+	databases := sql.NewDatabasesClient(subscriptionId)
+	databases.Authorizer = auth
+	dbap := sql.NewDatabaseBlobAuditingPoliciesClient(subscriptionId)
+	dbap.Authorizer = auth
+	dtdp := sql.NewDatabaseThreatDetectionPoliciesClient(subscriptionId)
+	dtdp.Authorizer = auth
+	dva := sql.NewDatabaseVulnerabilityAssessmentsClient(subscriptionId)
+	dva.Authorizer = auth
+	dvas := sql.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
+	dvas.Authorizer = auth
+	firewall := sql.NewFirewallRulesClient(subscriptionId)
+	firewall.Authorizer = auth
+	sbap := sql.NewServerBlobAuditingPoliciesClient(subscriptionId)
+	sbap.Authorizer = auth
+	sdas := sql.NewServerDevOpsAuditSettingsClient(subscriptionId)
+	sdas.Authorizer = auth
+	serverAdmins := sql.NewServerAzureADAdministratorsClient(subscriptionId)
+	serverAdmins.Authorizer = auth
+	servers := sql.NewServersClient(subscriptionId)
+	servers.Authorizer = auth
+	sva := sql.NewServerVulnerabilityAssessmentsClient(subscriptionId)
+	sva.Authorizer = auth
+	enc := sql.NewTransparentDataEncryptionsClient(subscriptionId)
+	enc.Authorizer = auth
+	ep := sql.NewEncryptionProtectorsClient(subscriptionId)
+	ep.Authorizer = auth
+	mi := sql.NewManagedInstancesClient(subscriptionId)
+	mi.Authorizer = auth
+	miva := sql.NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionId)
+	miva.Authorizer = auth
+	miep := sql.NewManagedInstanceEncryptionProtectorsClient(subscriptionId)
+	miep.Authorizer = auth
+	md := sql.NewManagedDatabasesClient(subscriptionId)
+	md.Authorizer = auth
+	mdva := sql.NewManagedDatabaseVulnerabilityAssessmentsClient(subscriptionId)
+	mdva.Authorizer = auth
+	mdvas := sql.NewManagedDatabaseVulnerabilityAssessmentScansClient(subscriptionId)
+	mdvas.Authorizer = auth
+	vnr := sql.NewVirtualNetworkRulesClient(subscriptionId)
+	vnr.Authorizer = auth
+	ssap := sql.NewServerSecurityAlertPoliciesClient(subscriptionId)
+	ssap.Authorizer = auth
+	bltrp := sql.NewBackupLongTermRetentionPoliciesClient(subscriptionId)
+	bltrp.Authorizer = auth
+	return SQLClient{
+		BackupLongTermRetentionPolicies:             bltrp,
+		DatabaseBlobAuditingPolicies:                dbap,
+		Databases:                                   databases,
+		DatabaseThreatDetectionPolicies:             dtdp,
+		DatabaseVulnerabilityAssessments:            dva,
+		DatabaseVulnerabilityAssessmentScans:        dvas,
+		Firewall:                                    firewall,
+		ServerAdmins:                                serverAdmins,
+		ServerBlobAuditingPolicies:                  sbap,
+		ServerDevOpsAuditSettings:                   sdas,
+		Servers:                                     servers,
+		ServerVulnerabilityAssessments:              sva,
+		TransparentDataEncryptions:                  enc,
+		EncryptionProtectors:                        ep,
+		ManagedInstances:                            mi,
+		ManagedInstanceVulnerabilityAssessments:     miva,
+		ManagedInstanceEncryptionProtectors:         miep,
+		ManagedDatabases:                            md,
+		ManagedDatabaseVulnerabilityAssessments:     mdva,
+		ManagedDatabaseVulnerabilityAssessmentScans: mdvas,
+		VirtualNetworkRules:                         vnr,
+		ServerSecurityAlertPolicies:                 ssap,
+	}
 }

@@ -6,7 +6,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 	"github.com/cloudquery/cq-provider-azure/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
