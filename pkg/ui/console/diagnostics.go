@@ -5,11 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/rs/zerolog/log"
 )
 
 func classifyDiagnostics(dd diag.Diagnostics) diag.Diagnostics {

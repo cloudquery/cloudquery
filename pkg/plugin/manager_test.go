@@ -5,10 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestManager_DownloadProvider(t *testing.T) {

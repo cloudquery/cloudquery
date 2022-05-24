@@ -11,21 +11,20 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/thoas/go-funk"
-
-	"github.com/spf13/cast"
-
 	"github.com/cloudquery/cloudquery/internal"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
+	"github.com/spf13/cast"
+	"github.com/spf13/cast"
 	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")

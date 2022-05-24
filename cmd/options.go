@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-
 	"github.com/spf13/cobra"
 )
 

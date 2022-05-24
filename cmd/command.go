@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"

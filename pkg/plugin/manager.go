@@ -4,13 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/serve"
-	"github.com/spf13/viper"
-
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 )
 
 type CreationOptions struct {

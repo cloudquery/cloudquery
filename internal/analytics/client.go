@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
 	"github.com/modern-go/reflect2"

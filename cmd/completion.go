@@ -20,9 +20,7 @@ import (
 	"os"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
-
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-
 	"github.com/spf13/cobra"
 )
 

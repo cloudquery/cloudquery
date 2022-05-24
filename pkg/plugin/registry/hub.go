@@ -9,12 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 )
 
 const (

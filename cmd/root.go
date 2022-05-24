@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/google/uuid"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"

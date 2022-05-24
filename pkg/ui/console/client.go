@@ -23,7 +23,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
@@ -35,9 +36,6 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 const (

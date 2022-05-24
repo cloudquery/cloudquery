@@ -6,14 +6,10 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-
-	"github.com/hashicorp/hcl/v2/hclparse"
-
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_CheckAvailableUpdates(t *testing.T) {

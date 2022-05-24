@@ -5,15 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/errors"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
-
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 var fetchCmd = &cobra.Command{

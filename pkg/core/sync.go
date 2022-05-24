@@ -14,7 +14,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"

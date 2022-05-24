@@ -8,21 +8,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-
-	"github.com/cloudquery/cloudquery/pkg/core/database"
-
 	"github.com/rs/zerolog/log"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 const (

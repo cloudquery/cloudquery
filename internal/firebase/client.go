@@ -10,9 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 )
 
 const (

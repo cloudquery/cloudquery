@@ -6,9 +6,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/pkg/core"
-
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/stretchr/testify/assert"

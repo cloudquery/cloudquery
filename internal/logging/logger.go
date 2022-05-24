@@ -7,11 +7,10 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/natefinch/lumberjack.v2"
-
-	"github.com/cloudquery/cloudquery/pkg/ui"
 )
 
 // GlobalConfig is the global alterable logging config

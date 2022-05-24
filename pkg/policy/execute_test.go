@@ -13,17 +13,14 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
-
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {

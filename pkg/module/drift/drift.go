@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	cqschema "github.com/cloudquery/cq-provider-sdk/provider/schema"

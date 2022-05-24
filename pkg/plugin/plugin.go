@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
-
 	"github.com/hashicorp/go-plugin"
 	zerolog "github.com/rs/zerolog/log"
 )

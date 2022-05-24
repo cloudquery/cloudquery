@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/spf13/cobra"
 )
 

@@ -9,7 +9,6 @@ import (
 	"sync"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/spf13/afero"
 )
 

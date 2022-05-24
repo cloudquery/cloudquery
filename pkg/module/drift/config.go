@@ -6,11 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/core"
-
 	"github.com/hashicorp/hcl/v2"
+	"github.com/rs/zerolog/log"
 )
 
 //go:embed drift.hcl

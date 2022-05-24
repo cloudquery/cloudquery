@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	gcodes "google.golang.org/grpc/codes"

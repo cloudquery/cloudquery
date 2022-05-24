@@ -3,11 +3,10 @@ package cmd
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/errors"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-
-	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/spf13/cobra"
 )
 
