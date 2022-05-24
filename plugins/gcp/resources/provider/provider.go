@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"embed"
-
 	"github.com/cloudquery/cq-provider-gcp/resources/services/bigquery"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/cloudbilling"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/cloudfunctions"
@@ -24,11 +22,6 @@ import (
 )
 
 var (
-	//go:embed migrations/*/*.sql
-	gcpMigrations embed.FS
-)
-
-var (
 	Version = "Development"
 )
 
@@ -38,7 +31,6 @@ func Provider() *provider.Provider {
 		Name:            "gcp",
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
-		Migrations:      gcpMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"kms.keys":                     kms.KmsKeyrings(),
 			"compute.addresses":            compute.ComputeAddresses(),
