@@ -69,9 +69,7 @@ func filterConfigProviders(list []string) func(*config.Config) error {
 			if len(parts) == 2 && parts[1] != "*" {
 				resources := strings.Split(parts[1], ",")
 				pMap[prov] = make([]string, len(resources))
-				for i, res := range resources {
-					pMap[prov][i] = res
-				}
+				copy(pMap[prov], resources)
 			} else {
 				pMap[prov] = nil
 			}
