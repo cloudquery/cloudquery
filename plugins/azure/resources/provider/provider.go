@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"embed"
-
 	"github.com/cloudquery/cq-provider-azure/client"
 	"github.com/cloudquery/cq-provider-azure/resources/services/account"
 	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
@@ -35,9 +33,7 @@ import (
 )
 
 var (
-	//go:embed migrations/*/*.sql
-	azureMigrations embed.FS
-	Version         = "Development"
+	Version = "Development"
 )
 
 func Provider() *provider.Provider {
@@ -46,7 +42,6 @@ func Provider() *provider.Provider {
 		Name:            "azure",
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
-		Migrations:      azureMigrations,
 		ResourceMap: map[string]*schema.Table{
 			"account.locations":                  account.AccountLocations(),
 			"authorization.role_assignments":     authorization.AuthorizationRoleAssignments(),
