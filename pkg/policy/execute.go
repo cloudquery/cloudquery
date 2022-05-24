@@ -27,8 +27,6 @@ import (
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
 
-const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-
 type UpdateCallback func(update Update)
 
 type Update struct {
@@ -57,9 +55,9 @@ func (f Update) DoneCount() int {
 // Executor implements the execution framework.
 type Executor struct {
 	// Connection to the database
-	conn LowLevelQueryExecer
-
-	log hclog.Logger
+	conn         LowLevelQueryExecer
+	stateManager *state.Client
+	log          hclog.Logger
 
 	PolicyPath []string
 
@@ -139,9 +137,10 @@ type ExecuteRequest struct {
 }
 
 // NewExecutor creates a new executor.
-func NewExecutor(conn LowLevelQueryExecer, progressUpdate UpdateCallback) *Executor {
+func NewExecutor(conn LowLevelQueryExecer, sta *state.Client, progressUpdate UpdateCallback) *Executor {
 	return &Executor{
 		conn:           conn,
+		stateManager:   sta,
 		log:            logging.NewZHcLog(&log.Logger, "policy"),
 		progressUpdate: progressUpdate,
 		PolicyPath:     []string{},
@@ -226,13 +225,12 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 	if policyConfig == nil {
 		return nil
 	}
-	metaStorage := state.NewClient(e.conn, e.log)
 	for _, p := range policyConfig.Providers {
 		c, err := version.NewConstraint(p.Version)
 		if err != nil {
 			return fmt.Errorf("failed to parse version constraint for provider %s: %w", p.Type, err)
 		}
-		fetchSummary, err := metaStorage.GetFetchSummaryForProvider(ctx, p.Type)
+		fetchSummary, err := e.stateManager.GetFetchSummaryForProvider(ctx, p.Type)
 		if err != nil {
 			return fmt.Errorf("failed to get fetch summary for provider %s: %w", p.Type, err)
 		}

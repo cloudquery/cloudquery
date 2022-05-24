@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"testing"
@@ -14,8 +15,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
@@ -24,8 +23,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupPolicyDatabase(t *testing.T, tableName string) (LowLevelQueryExecer, func(t *testing.T)) {
-	conn, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), "postgres://postgres:pass@localhost:5432/postgres")
+func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {
+	baseDSN := os.Getenv("CQ_CLIENT_TEST_DSN")
+	if baseDSN == "" {
+		baseDSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+	}
+
+	conn, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), baseDSN)
 	assert.NoError(t, err)
 
 	// Setup test data
@@ -37,7 +41,7 @@ func setupPolicyDatabase(t *testing.T, tableName string) (LowLevelQueryExecer, f
 	assert.NoError(t, err)
 
 	// Return conn and tear down func
-	return conn, func(t *testing.T) {
+	return baseDSN, conn, func(t *testing.T) {
 		err = conn.Exec(context.Background(), fmt.Sprintf("DROP TABLE IF EXISTS %s CASCADE", tableName))
 		assert.NoError(t, err)
 	}
@@ -64,9 +68,16 @@ func TestExecutor_executeQuery(t *testing.T) {
 		},
 	}
 
-	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	dsn, conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, nil)
+
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	defer sta.Close()
+
+	executor := NewExecutor(conn, sta, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -164,9 +175,16 @@ func TestExecutor_executePolicy(t *testing.T) {
 		},
 	}
 
-	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	dsn, conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, nil)
+
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	defer sta.Close()
+
+	executor := NewExecutor(conn, sta, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -365,9 +383,16 @@ func TestExecutor_Execute(t *testing.T) {
 		},
 	}
 
-	conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	dsn, conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
 	defer tearDownFunc(t)
-	executor := NewExecutor(conn, nil)
+
+	sta, err := state.NewClient(context.Background(), dsn)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	defer sta.Close()
+
+	executor := NewExecutor(conn, sta, nil)
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -417,20 +442,16 @@ func setupCheckFetchDatabase(db execution.QueryExecer, summary *state.FetchSumma
 }
 
 func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
-	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
-	assert.NoError(t, err)
+	dsn, conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	defer tearDownFunc(t)
 
-	metaStorage := state.NewClient(db, hclog.NewNullLogger())
-
-	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
+	sta, err := state.NewClient(context.Background(), dsn)
 	if err != nil {
-		t.Fatal(fmt.Errorf("getExecutor: %w", err))
+		assert.NoError(t, err)
 	}
+	defer sta.Close()
 
-	err = metaStorage.MigrateCore(context.Background(), de)
-	assert.NoError(t, err)
-
-	executor := NewExecutor(db, nil)
+	executor := NewExecutor(conn, sta, nil)
 
 	policy := &Policy{
 		Name:     "test",
@@ -487,21 +508,16 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
-	// create database connection
-	db, err := sdkdb.New(context.Background(), hclog.NewNullLogger(), testDBConnection)
-	assert.NoError(t, err)
+	dsn, conn, tearDownFunc := setupPolicyDatabase(t, t.Name())
+	defer tearDownFunc(t)
 
-	metaStorage := state.NewClient(db, hclog.NewNullLogger())
-
-	_, de, err := database.GetExecutor(testDBConnection, &history.Config{})
+	sta, err := state.NewClient(context.Background(), dsn)
 	if err != nil {
-		t.Fatal(fmt.Errorf("getExecutor: %w", err))
+		assert.NoError(t, err)
 	}
+	defer sta.Close()
 
-	err = metaStorage.MigrateCore(context.Background(), de)
-	assert.NoError(t, err)
-
-	executor := NewExecutor(db, nil)
+	executor := NewExecutor(conn, sta, nil)
 
 	finish := time.Now().UTC()
 	assert.NoError(t, err)
@@ -565,7 +581,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
-			clear, err := setupCheckFetchDatabase(db, tc.f, metaStorage)
+			clear, err := setupCheckFetchDatabase(conn, tc.f, sta)
 			assert.NoError(t, err)
 
 			err = executor.checkFetches(context.Background(), &tc.Config)

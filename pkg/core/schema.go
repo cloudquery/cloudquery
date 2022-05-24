@@ -20,6 +20,7 @@ type GetProviderSchemaOptions struct {
 type ProviderSchema struct {
 	*cqproto.GetProviderSchemaResponse
 	ProtocolVersion int
+	Unmanaged       bool
 }
 
 func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *GetProviderSchemaOptions) (*ProviderSchema, diag.Diagnostics) {
@@ -46,6 +47,7 @@ func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *Ge
 	return &ProviderSchema{
 		GetProviderSchemaResponse: schema,
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),
+		Unmanaged:                 providerPlugin.Version() == plugin.Unmanaged,
 	}, nil
 
 }

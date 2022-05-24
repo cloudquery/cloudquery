@@ -11,7 +11,6 @@ import (
 	"github.com/xo/dburl"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/core/history"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 )
 
@@ -47,7 +46,11 @@ type CloudQuery struct {
 	Logger          *logging.Config   `hcl:"logging,block"`
 	Providers       RequiredProviders `hcl:"provider,block"`
 	Connection      *Connection       `hcl:"connection,block"`
-	History         *history.Config   `hcl:"history,block"`
+	History         *struct {         // Deprecated
+		Retention      int `hcl:"retention,optional"`
+		TimeInterval   int `hcl:"interval,optional"`
+		TimeTruncation int `hcl:"truncation,optional"`
+	} `hcl:"history,block"`
 }
 
 func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {

@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/creasty/defaults"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
@@ -125,11 +124,6 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 	// TODO: decode in a more generic way
 	if cq.Connection == nil {
 		cq.Connection = &Connection{}
-	}
-	if cq.History != nil {
-		if err := defaults.Set(cq.History); err != nil {
-			diags = append(diags, &hcl.Diagnostic{Severity: hcl.DiagError, Summary: "failed to set defaults in history"})
-		}
 	}
 
 	if err := handleConnectionBlock(cq.Connection); err != nil {

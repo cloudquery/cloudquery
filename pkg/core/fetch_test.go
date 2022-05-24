@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 
@@ -237,12 +238,15 @@ func Test_Fetch(t *testing.T) {
 			})
 			require.False(t, diags.HasDiags())
 
+			sta, err := state.NewClient(context.Background(), storage.DSN())
+			if err != nil {
+				assert.NoError(t, err)
+			}
+			defer sta.Close()
+
 			for _, r := range rp {
 				// Sync provider in table before fetch
-				_, diags := Sync(context.Background(), storage, pManager, &SyncOptions{
-					Provider:       r,
-					DownloadLatest: false,
-				})
+				_, diags := Sync(context.Background(), sta, pManager, r)
 				require.False(t, diags.HasDiags())
 			}
 
@@ -254,7 +258,7 @@ func Test_Fetch(t *testing.T) {
 				ctx, cancel = context.WithTimeout(context.Background(), tc.Timeout)
 				defer cancel()
 			}
-			resp, diags := Fetch(ctx, storage, pManager, &tc.Options)
+			resp, diags := Fetch(ctx, sta, storage, pManager, &tc.Options)
 			if tc.ExpectedDiags != nil {
 				flattenedDiags := diag.FlattenDiags(diags, false)
 				require.Len(t, flattenedDiags, len(tc.ExpectedDiags))

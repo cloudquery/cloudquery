@@ -8,10 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"time"
-
-	"github.com/google/uuid"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
@@ -19,12 +16,14 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/google/uuid"
 
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -60,6 +59,7 @@ type Client struct {
 	Registry         registry.Registry
 	PluginManager    *plugin.Manager
 	Storage          database.Storage
+	StateManager     *state.Client
 	instanceId       uuid.UUID
 }
 
@@ -83,7 +83,12 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 			return nil, err
 		}
 	}
-	setConfigAnalytics(cfg, cfg.CloudQuery.History != nil)
+
+	if cfg.CloudQuery.History != nil {
+		return nil, diag.FromError(fmt.Errorf("history feature is removed. See more at https://www.cloudquery.io/blog/migration-and-history-deprecation"), diag.USER)
+	}
+
+	setConfigAnalytics(cfg)
 	return CreateClientFromConfig(ctx, cfg, instanceId)
 }
 
@@ -91,11 +96,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 	if cfg.CloudQuery.Connection == nil {
 		return nil, errors.New("connection configuration is not set")
 	}
-	var (
-		progressUpdater ui.Progress
-		dialect         database.DialectExecutor
-		err             error
-	)
+
+	var progressUpdater ui.Progress
+
 	if ui.DoProgress() {
 		progressUpdater = NewProgress(ctx, func(o *ProgressOptions) {
 			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
@@ -107,9 +110,16 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		return nil, err
 	}
 
-	var storage database.Storage
+	c := &Client{
+		downloadProgress: progressUpdater,
+		cfg:              cfg,
+		Registry:         hub,
+		PluginManager:    pm,
+		instanceId:       instanceId,
+	}
+
 	if cfg.CloudQuery.Connection.DSN != "" {
-		_, dialect, err = database.GetExecutor(cfg.CloudQuery.Connection.DSN, cfg.CloudQuery.History)
+		_, dialect, err := database.GetExecutor(cfg.CloudQuery.Connection.DSN)
 		if err != nil {
 			return nil, err
 		}
@@ -127,20 +137,23 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 			setUserId(dbId)
 		}
 
-		storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+		c.Storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
+		c.StateManager, err = state.NewClient(ctx, c.Storage.DSN())
+		if err != nil {
+			return nil, fmt.Errorf("could not init state: %w", err)
+		}
 	}
-	pp := make(registry.Providers, len(cfg.CloudQuery.Providers))
+	c.Providers = make(registry.Providers, len(cfg.CloudQuery.Providers))
 	for i, rp := range cfg.CloudQuery.Providers {
 		src, name, err := core.ParseProviderSource(rp)
 		if err != nil {
 			return nil, err
 		}
-		pp[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
+		c.Providers[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
-	c := &Client{progressUpdater, cfg, pp, hub, pm, storage, instanceId}
 	c.checkForUpdate(ctx)
-	return c, err
+	return c, nil
 }
 
 // =====================================================================================================================
@@ -195,10 +208,9 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
-	result, diags := core.Fetch(ctx, c.Storage, c.PluginManager, &core.FetchOptions{
+	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
-		History:        c.cfg.CloudQuery.History,
 		FetchId:        c.instanceId,
 	})
 	// first wait for progress to complete correctly
@@ -256,17 +268,15 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 	}
 
 	for _, p := range providers {
-		sync, dd := core.Sync(ctx, c.Storage, c.PluginManager, &core.SyncOptions{Provider: p, DownloadLatest: false})
+		sync, dd := core.Sync(ctx, c.StateManager, c.PluginManager, p)
 		if dd.HasErrors() {
-			if errors.Is(dd, core.ErrMigrationsNotSupported) {
-				ui.ColorizedOutput(ui.ColorWarning, "%s failed to sync provider, migrations not supported %s.\n", emojiStatus[ui.StatusWarn], p.String())
-				continue
-			}
 			ui.ColorizedOutput(ui.ColorError, "%s failed to sync provider %s.\n", emojiStatus[ui.StatusError], p.String())
 			// TODO: should we just append diags and continue to sync others or stop syncing?
 			return nil, dd
 		}
-		ui.ColorizedOutput(ui.ColorSuccess, "%s sync provider %s to %s successfully.\n", emojiStatus[ui.StatusOK], p.Name, p.Version)
+		if sync.State != core.NoChange {
+			ui.ColorizedOutput(ui.ColorSuccess, "%s sync provider %s to %s successfully. [%s]\n", emojiStatus[ui.StatusOK], p.Name, p.Version, sync.State)
+		}
 		diags = diags.Add(dd)
 		if sync != nil {
 			results = append(results, sync)
@@ -287,7 +297,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) (diags di
 		return diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.INTERNAL)
 	}
 
-	if diags = core.Drop(ctx, c.Storage, c.PluginManager, p); diags.HasErrors() {
+	if diags = core.Drop(ctx, c.StateManager, c.PluginManager, p); diags.HasErrors() {
 		ui.ColorizedOutput(ui.ColorError, "%s Failed to drop provider %s schema.\n\n", emojiStatus[ui.StatusError], providerName)
 		return diags
 	}
@@ -367,7 +377,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
 	}
 	// Policies run request
-	resp, diags := policy.Run(ctx, c.Storage, &policy.RunRequest{
+	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
 		Policies:    policiesToRun,
 		Directory:   c.cfg.CloudQuery.PolicyDirectory,
 		OutputDir:   outputDir,
@@ -415,7 +425,7 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 		return diags
 	}
 
-	e := policy.NewExecutor(conn, nil)
+	e := policy.NewExecutor(conn, c.StateManager, nil)
 	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
 
 }
@@ -547,6 +557,9 @@ func (c Client) CallModule(ctx context.Context, req ModuleCallRequest) diag.Diag
 
 func (c Client) Close() {
 	c.PluginManager.Shutdown()
+	if c.StateManager != nil {
+		c.StateManager.Close()
+	}
 }
 
 func (c Client) checkForUpdate(ctx context.Context) {
@@ -578,7 +591,7 @@ func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelec
 	if pol.TotalQueries() != 1 {
 		return errors.New("selector must specify only a single control")
 	}
-	return policy.Snapshot(ctx, c.Storage, &pol, destination, subPath)
+	return policy.Snapshot(ctx, c.StateManager, c.Storage, &pol, destination, subPath)
 }
 
 func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
@@ -795,13 +808,12 @@ func setUserId(newId string) {
 	})
 }
 
-func setConfigAnalytics(cfg *config.Config, history bool) {
+func setConfigAnalytics(cfg *config.Config) {
 	cfgJSON, _ := json.Marshal(cfg)
 	s := sha256.New()
 	_, _ = s.Write(cfgJSON)
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
-	analytics.SetGlobalProperty("history", history)
 
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		if analytics.IsCI() {
@@ -811,7 +823,6 @@ func setConfigAnalytics(cfg *config.Config, history bool) {
 		}
 		scope.SetTags(map[string]string{
 			"cfghash": cfgHash,
-			"history": strconv.FormatBool(history),
 		})
 	})
 }

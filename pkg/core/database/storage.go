@@ -12,7 +12,7 @@ type SimpleStorage struct {
 
 func NewStorage(dsn string, dialect DialectExecutor) *SimpleStorage {
 	if dialect == nil {
-		_, dialect, _ = GetExecutor(dsn, nil)
+		_, dialect, _ = GetExecutor(dsn)
 	}
 	return &SimpleStorage{dsn, dialect}
 }

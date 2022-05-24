@@ -352,7 +352,6 @@ cloudquery {
   connection {
     username = "postgres"
     password = "pass"
-#    type = "tsdb"
     host = "localhost"
     port = 15432
     database = "cq"
@@ -369,7 +368,7 @@ cloudquery {
   connection {
     username = "postgres"
     password = "pass"
-    type = "tsdb"
+    type = "postgres"
     host = "localhost"
     port = 15432
     database = "cq"
@@ -378,7 +377,7 @@ cloudquery {
   }
 }
 `,
-			"tsdb://postgres:pass@localhost:15432/cq?search_path=myschema&sslmode=disable",
+			"postgres://postgres:pass@localhost:15432/cq?search_path=myschema&sslmode=disable",
 			false,
 		},
 	}

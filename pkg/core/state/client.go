@@ -1,4 +1,4 @@
-// Package meta_storage interacts with core database schema and stores cloudquery metadata such as fetch summaries
+// Package state interacts with core database schema and stores cloudquery metadata such as fetch summaries
 package state
 
 import (
@@ -6,13 +6,15 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/core/database"
+	"github.com/cloudquery/cloudquery/internal/logging"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -21,25 +23,40 @@ var (
 )
 
 type Client struct {
-	db     execution.QueryExecer
+	dsn    string
+	db     *sdkdb.DB
 	Logger hclog.Logger
 }
 
-func NewClient(db execution.QueryExecer, logger hclog.Logger) *Client {
-	return &Client{
-		db:     db,
-		Logger: logger,
+// NewClient creates a client from the given DSN and migrates the metadata schema.
+// client.Close should be called to disconnect afterwards.
+func NewClient(ctx context.Context, dsn string) (*Client, error) {
+	c := &Client{
+		dsn:    dsn,
+		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
+
+	db, err := sdkdb.New(ctx, c.Logger, c.dsn)
+	if err != nil {
+		return nil, diag.FromError(err, diag.DATABASE)
+	}
+	c.db = db
+
+	// migrate CloudQuery core tables to latest version
+	if err := c.migrateCore(ctx); err != nil {
+		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
+	}
+
+	return c, nil
 }
 
-func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) error {
-	err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery")
-	if err != nil {
-		return err
-	}
+// Close closes the underlying database connection.
+func (c *Client) Close() {
+	c.db.Close()
+}
 
-	newDSN, err := de.Setup(ctx)
-	if err != nil {
+func (c *Client) migrateCore(ctx context.Context) error {
+	if err := c.db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cloudquery"); err != nil {
 		return err
 	}
 
@@ -47,7 +64,7 @@ func (c *Client) MigrateCore(ctx context.Context, de database.DialectExecutor) e
 	if err != nil {
 		return err
 	}
-	newDSN, err = dsn.SetDSNElement(newDSN, map[string]string{"search_path": "cloudquery"})
+	newDSN, err := dsn.SetDSNElement(c.dsn, map[string]string{"search_path": "cloudquery"})
 	if err != nil {
 		return err
 	}
