@@ -65,9 +65,6 @@ import (
 )
 
 var (
-	//go:embed migrations/*/*.sql
-	awsMigrations embed.FS
-
 	//go:embed moduledata/*
 	moduleData embed.FS
 
@@ -80,7 +77,6 @@ func Provider() *provider.Provider {
 		Version:          Version,
 		Configure:        client.Configure,
 		ErrorClassifier:  client.ErrorClassifier,
-		Migrations:       awsMigrations,
 		ModuleInfoReader: module.EmbeddedReader(moduleData, "moduledata"),
 		ResourceMap: map[string]*schema.Table{
 			"accessanalyzer.analyzers":              accessanalyzer.Analyzers(),
