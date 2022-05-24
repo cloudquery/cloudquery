@@ -586,7 +586,7 @@ func (c Client) Close() {
 	}
 }
 
-func (c Client) checkForUpdate(ctx context.Context) {
+func (Client) checkForUpdate(ctx context.Context) {
 	v, err := core.CheckCoreUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), core.UpdateCheckPeriod)
 	if err != nil {
 		log.Warn().Err(err).Msg("update check failed")

@@ -14,7 +14,7 @@ type mockS3Client struct {
 	s3iface.S3API
 }
 
-func (m *mockS3Client) ListObjectsV2Pages(_ *s3.ListObjectsV2Input, fn func(*s3.ListObjectsV2Output, bool) bool) error {
+func (*mockS3Client) ListObjectsV2Pages(_ *s3.ListObjectsV2Input, fn func(*s3.ListObjectsV2Output, bool) bool) error {
 	objs := []string{
 		"path/to/object.tfstate",
 		"a/path/2021-11-15/object.tfstate",

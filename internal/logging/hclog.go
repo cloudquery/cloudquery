@@ -79,7 +79,7 @@ func (z ZerologKVAdapter) IsError() bool {
 	return z.l.GetLevel() <= zerolog.ErrorLevel
 }
 
-func (z ZerologKVAdapter) ImpliedArgs() []interface{} {
+func (ZerologKVAdapter) ImpliedArgs() []interface{} {
 	// Not supported
 	return nil
 }

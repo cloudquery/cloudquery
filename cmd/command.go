@@ -91,9 +91,5 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		}
 	}
 
-	if err := f(ctx, c, cmd, args); err != nil {
-		return err
-	}
-
-	return nil
+	return f(ctx, c, cmd, args)
 }

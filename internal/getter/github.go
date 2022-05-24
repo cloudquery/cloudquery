@@ -31,7 +31,7 @@ func (d *GitHubDetector) Detect(src, _ string) (string, bool, error) {
 	return "", false, nil
 }
 
-func (d *GitHubDetector) detectHTTP(src string) (string, bool, error) {
+func (*GitHubDetector) detectHTTP(src string) (string, bool, error) {
 	parts := strings.Split(src, "/")
 	if len(parts) < 3 {
 		return "", false, fmt.Errorf(

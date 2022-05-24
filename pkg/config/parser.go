@@ -114,7 +114,7 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 	if err != nil {
 		if e, ok := err.(*fs.PathError); ok {
 			if errors.Is(err, fs.ErrNotExist) {
-				err = fmt.Errorf("%s. Hint: Try `cloudquery init <provider>`.", e.Err.Error())
+				err = fmt.Errorf("%s. Hint: Try `cloudquery init <provider>`", e.Err.Error())
 			} else {
 				err = fmt.Errorf(e.Err.Error())
 			}
