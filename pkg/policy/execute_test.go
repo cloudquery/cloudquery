@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
@@ -668,6 +670,61 @@ func TestRow_Sort(t *testing.T) {
 			sort.Sort(tc.Data)
 			assert.Equal(t, tc.Expected, tc.Data)
 		})
+	}
+
+}
+
+// Tests the path of the policy execution result file is correct.
+// It should always be named as the root policy. i.e. for policy run "aws//cis_v1.2.0", it should be named
+// aws.json
+func TestGenerateExecutionResultFile(t *testing.T) {
+	tempDirPath, err := ioutil.TempDir("", "cqtest")
+	if !assert.NoError(t, err) {
+		return
+	}
+	defer os.RemoveAll(tempDirPath)
+
+	testCases := []struct {
+		PolicyName   string
+		OutputDir    string
+		ExpectedFile string
+	}{
+		{
+			"aws//cis_v1.2.0",
+			filepath.Join(tempDirPath, "1"),
+			filepath.Join(tempDirPath, "1", "aws.json"),
+		},
+		{
+			"aws//cis_v1.2.0",
+			filepath.Join(tempDirPath, ".", "2"),
+			filepath.Join(tempDirPath, "2", "aws.json"),
+		},
+		{
+			"aws//cis_v1.2.0",
+			filepath.Join(tempDirPath, "3", "..", "3"),
+			filepath.Join(tempDirPath, "3", "aws.json"),
+		},
+		{
+			"aws//cis_v1.2.0/somecheck",
+			filepath.Join(tempDirPath, "4"),
+			filepath.Join(tempDirPath, "4", "aws.json"),
+		},
+		{
+			"aws",
+			filepath.Join(tempDirPath, "5", "aws.json"),
+			filepath.Join(tempDirPath, "5"),
+		},
+	}
+
+	for _, tc := range testCases {
+		executiionResult := ExecutionResult{PolicyName: tc.PolicyName}
+		err := GenerateExecutionResultFile(&executiionResult, tc.OutputDir)
+		if !assert.NoError(t, err) {
+			continue
+		}
+
+		_, err = os.Stat(tc.ExpectedFile) // os.Stat will return an error if file doesn't exist
+		assert.NoError(t, err)
 	}
 
 }
