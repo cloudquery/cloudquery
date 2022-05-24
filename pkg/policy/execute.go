@@ -246,7 +246,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 		if err != nil {
 			return fmt.Errorf("failed to parse version for %s fetch summary: %w", p.Type, err)
 		}
-		if !c.Check(v) {
+		if !c.Check(v.Core()) {
 			return fmt.Errorf("the latest fetch for provider %s does not satisfy version requirement %s", p.Type, c)
 		}
 	}
