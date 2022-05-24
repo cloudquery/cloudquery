@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"text/template"
 	"time"
@@ -354,16 +355,19 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
 	fs := afero.NewOsFs()
 
-	fullPath := fmt.Sprintf("%s.json", filepath.Join(outputDir, result.PolicyName))
-
-	// Ensure entire directory structure is created
-	directory := fullPath[:strings.LastIndex(fullPath, "/")]
-
-	if err := fs.MkdirAll(directory, 0755); err != nil {
+	if err := fs.MkdirAll(outputDir, 0755); err != nil {
 		return err
 	}
 
-	f, err := fs.Create(fullPath)
+	// result.PolicyName is the full selector for this policy run.
+	// The name of the output file should just be the base policy.
+	// e.g. for "aws//cis_v1.2.0", the output file should be "aws.json"
+	basePolicyName, err := extractFirstPathComponent(result.PolicyName)
+	if err != nil {
+		return err
+	}
+
+	f, err := fs.Create(fmt.Sprintf("%s.json", filepath.Join(outputDir, basePolicyName)))
 	if err != nil {
 		return err
 	}
@@ -379,6 +383,22 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 		return err
 	}
 	return nil
+}
+
+// extractFirstPathComponent extracts the first path component form a given string.
+// e.g: "a/b/c" -> "a"
+//      "a" -> "a"
+//      "a//b" -> "a"
+func extractFirstPathComponent(str string) (string, error) {
+	regex := regexp.MustCompile(`^([^/]+)(?:/[^/]*)*`)
+
+	matches := regex.FindSubmatch([]byte(str))
+
+	if matches == nil {
+		return "", fmt.Errorf("failed to extract first path component")
+	}
+
+	return string(matches[1]), nil
 }
 
 func parseRow(columns []string, values []interface{}, identifiers []string, reasonTpl *template.Template) (Row, error) {
