@@ -35,7 +35,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: "v0.0.11",
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -68,7 +68,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test(test_alias)": {
 				Name:                  "test",
 				Alias:                 "test_alias",
-				Version:               registry.LatestVersion,
+				Version:               "v0.0.11",
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
