@@ -8,7 +8,7 @@ func FlattenRow(m map[string]interface{}) map[string]interface{} {
 		case map[string]interface{}:
 			nm := FlattenRow(child)
 			for nk, nv := range nm {
-				o[k+"."+nk] = nv
+				o[nk] = nv
 			}
 		default:
 			if v == nil {

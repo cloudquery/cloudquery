@@ -46,12 +46,12 @@ type CloudQuery struct {
 	Logger          *logging.Config   `hcl:"logging,block"`
 	Providers       RequiredProviders `hcl:"provider,block"`
 	Connection      *Connection       `hcl:"connection,block"`
+	Policy          *Policy           `hcl:"policy,block"`
 	History         *struct {         // Deprecated
 		Retention      int `hcl:"retention,optional"`
 		TimeInterval   int `hcl:"interval,optional"`
 		TimeTruncation int `hcl:"truncation,optional"`
 	} `hcl:"history,block"`
-	Policy *Policy `hcl:"policy,block"`
 }
 
 func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {

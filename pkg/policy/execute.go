@@ -88,8 +88,8 @@ type QueryResult struct {
 type Row struct {
 	// AdditionalData is any extra information that was returned from the result set
 	AdditionalData map[string]interface{} `json:"additional_data,omitempty"`
-	// Identifiers are a list of identifiers as defined by the policy
-	Identifiers []interface{} `json:"identifiers,omitempty"`
+	// Identifiers is a map of identifiers as defined by the policy
+	Identifiers map[string]interface{} `json:"identifiers,omitempty"`
 	// Reason is a user readable explanation returned by the query, or interpolated from check defined reason.
 	Reason string `json:"reason,omitempty"`
 	// Status is user defined status of the row i.e OK, ALERT etc'
@@ -108,8 +108,15 @@ func (r Rows) Swap(i, j int) {
 func (r Rows) Less(i, j int) bool {
 	r1 := r[i]
 	r2 := r[j]
-	for l := 0; l < len(r1.Identifiers); l++ {
-		if cast.ToString(r1.Identifiers[l]) < cast.ToString(r2.Identifiers[l]) {
+	v1, v2 := make([]string, 0, len(r1.Identifiers)), make([]string, 0, len(r2.Identifiers))
+	for _, v := range r1.Identifiers {
+		v1 = append(v1, cast.ToString(v))
+	}
+	for _, v := range r2.Identifiers {
+		v2 = append(v2, cast.ToString(v))
+	}
+	for l := 0; l < len(v1); l++ {
+		if v1[l] < v2[l] {
 			return true
 		}
 	}
@@ -261,8 +268,9 @@ func (e *Executor) createCheckResult(ctx context.Context, selector []string, pol
 		if len(r.AdditionalData) > 0 {
 			m["data"] = r.AdditionalData
 		}
+		m = internal.FlattenRow(m)
 		if len(r.Identifiers) > 0 {
-			m["identifiers"] = r.Identifiers
+			m["identifiers"] = internal.FlattenRow(r.Identifiers)
 		}
 		if r.Reason != "" {
 			m["reason"] = r.Reason
@@ -270,13 +278,13 @@ func (e *Executor) createCheckResult(ctx context.Context, selector []string, pol
 		if r.Status != "" {
 			m["status"] = r.Status
 		}
-		rows[i] = internal.FlattenRow(m)
+		rows[i] = m
 	}
 	var byt []byte
 	if byt, err = json.Marshal(rows); err != nil {
 		return err
 	}
-	checkResult.Result = string(byt)
+	checkResult.RawResults = string(byt)
 
 	return e.stateManager.CreateCheckResult(ctx, checkResult)
 }
@@ -460,9 +468,9 @@ func extractFirstPathComponent(str string) (string, error) {
 func parseRow(columns []string, values []interface{}, identifiers []string, reasonTpl *template.Template) (Row, error) {
 	r := Row{
 		AdditionalData: make(map[string]interface{}, len(values)),
-		Identifiers:    make([]interface{}, len(identifiers)),
+		Identifiers:    make(map[string]interface{}, len(identifiers)),
 		Reason:         "",
-		Status:         "violation",
+		Status:         statusFailed,
 	}
 
 	for i := 0; i < len(columns); i++ {
@@ -472,7 +480,7 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 		case columns[i] == "cq_status":
 			r.Status = cast.ToString(values[i])
 		case funk.InStrings(identifiers, columns[i]):
-			r.Identifiers[funk.IndexOfString(identifiers, columns[i])] = values[i]
+			r.Identifiers[columns[i]] = values[i]
 		default:
 			r.AdditionalData[columns[i]] = values[i]
 		}

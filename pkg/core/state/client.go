@@ -27,6 +27,7 @@ type Client struct {
 	dsn    string
 	db     *sdkdb.DB
 	Logger hclog.Logger
+
 	// StoreRunResults indicates whether to persist a run result
 	StoreRunResults bool
 }
@@ -46,7 +47,7 @@ func NewClient(ctx context.Context, dsn string) (*Client, error) {
 	c.db = db
 
 	// migrate CloudQuery core tables to latest version
-	if err := c.migrateCore(ctx); err != nil {
+	if err = c.migrateCore(ctx); err != nil {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
 
@@ -77,12 +78,12 @@ func (c *Client) migrateCore(ctx context.Context) error {
 	}
 
 	defer func() {
-		if err := m.Close(); err != nil {
+		if err = m.Close(); err != nil {
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
 
-	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
+	if err = m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil

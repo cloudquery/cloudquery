@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/getter"
@@ -27,6 +25,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 
 	"github.com/getsentry/sentry-go"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
@@ -363,10 +362,13 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, storeResults bool) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("storeResults", storeResults).Msg("run policy received params")
+
 	// use config value for storeResults if not already enabled through the cli
 	if !storeResults && c.cfg.CloudQuery.Policy != nil {
 		storeResults = c.cfg.CloudQuery.Policy.DBPersistence
 	}
+	c.StateManager.StoreRunResults = storeResults
+
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -384,11 +386,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	// Policies run request
 	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
-		Policies:     policiesToRun,
-		Directory:    c.cfg.CloudQuery.PolicyDirectory,
-		OutputDir:    outputDir,
-		RunCallback:  policyRunCallback,
-		StoreResults: storeResults,
+		Policies:    policiesToRun,
+		Directory:   c.cfg.CloudQuery.PolicyDirectory,
+		OutputDir:   outputDir,
+		RunCallback: policyRunCallback,
 	})
 	if resp == nil {
 		analytics.Capture("policy run", c.Providers, policiesToRun, diags)

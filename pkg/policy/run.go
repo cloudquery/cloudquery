@@ -92,8 +92,6 @@ type RunRequest struct {
 	OutputDir string
 	// RunCallback is the callback method that is called after every policy execution.
 	RunCallback UpdateCallback
-	// StoreResults indicates whether to store the results
-	StoreResults bool
 }
 
 type RunResponse struct {
@@ -102,7 +100,6 @@ type RunResponse struct {
 }
 
 func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
-	sta.StoreRunResults = req.StoreResults
 	var (
 		diags diag.Diagnostics
 		resp  = &RunResponse{

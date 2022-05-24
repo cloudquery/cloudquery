@@ -16,7 +16,7 @@ type CheckResult struct {
 	Selector           string    `db:"selector"`
 	Description        string    `db:"description"`
 	Status             string    `db:"status"`
-	Result             string    `db:"result"`
+	RawResults         string    `db:"raw_results"`
 	Error              string    `db:"error"`
 }
 

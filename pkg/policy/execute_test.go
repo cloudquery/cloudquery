@@ -619,49 +619,49 @@ func TestRow_Sort(t *testing.T) {
 		{
 			Name: "simple",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "c"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "c"}},
 			},
 		},
 		{
 			Name: "same",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
 			},
 		},
 		{
 			Name: "complex",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"z", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"z": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"z", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"z": "b"}},
 			},
 		},
 		{
 			Name: "complex-2nd-level",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "c"}},
-				{Identifiers: []interface{}{"k", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "c"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"k", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"k": "c"}},
 			},
 		},
 	}

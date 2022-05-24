@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "check_results" (
   "selector" text NOT NULL,
   "description" text,
   "status" text,
-  "result" jsonb,
+  "raw_results" jsonb,
   "error" text,
   PRIMARY KEY ("execution_id", "selector"),
   FOREIGN KEY ("execution_id") REFERENCES "policy_executions" ("id") ON DELETE CASCADE
