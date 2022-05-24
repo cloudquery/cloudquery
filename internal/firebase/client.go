@@ -76,6 +76,8 @@ func (f *Client) GetLatestProviderRelease(ctx context.Context, organization, pro
 		return "", fmt.Errorf("unexpected status code %d", res.StatusCode)
 	}
 
+	// Nested structs are ok here to simplify unmarshalling
+	// nolint:revive
 	var doc struct {
 		Documents []struct {
 			Name   string `json:"name"`
@@ -116,6 +118,8 @@ func (f *Client) GetLatestPolicyRelease(ctx context.Context, organization, polic
 		return "", fmt.Errorf("unexpected status code %d", res.StatusCode)
 	}
 
+	// Nested structs are ok here to simplify unmarshalling
+	// nolint:revive
 	var doc struct {
 		Documents []struct {
 			Name string `json:"name"`

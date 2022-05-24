@@ -35,7 +35,6 @@ provider "test" {
 }`
 
 func Test_CheckAvailableUpdates(t *testing.T) {
-
 	latestVersion := getLatestVersion(t, "test")
 
 	testCases := []struct {

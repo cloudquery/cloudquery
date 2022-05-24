@@ -15,6 +15,20 @@ type GetProviderConfigOptions struct {
 	Provider registry.Provider
 }
 
+type CheckUpdatesOptions struct {
+	Providers []registry.Provider
+}
+
+// AvailableUpdate notes a pending update available for provider from current version
+type AvailableUpdate struct {
+	// Name of provider that has an update available
+	Name string
+	// CurrentVersion is the version the provider is currently at
+	CurrentVersion string
+	// AvailableVersion is the version available for downloading
+	AvailableVersion string
+}
+
 type TestOptions struct {
 	Connection   cqproto.ConnectionDetails
 	Config       []byte
@@ -56,20 +70,6 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 		return false, fmt.Errorf("provider test connection failed. Reason: %w", err)
 	}
 	return true, nil
-}
-
-type CheckUpdatesOptions struct {
-	Providers []registry.Provider
-}
-
-// AvailableUpdate notes a pending update available for provider from current version
-type AvailableUpdate struct {
-	// Name of provider that has an update available
-	Name string
-	// CurrentVersion is the version the provider is currently at
-	CurrentVersion string
-	// AvailableVersion is the version available for downloading
-	AvailableVersion string
 }
 
 // TODO: support installed providers table to save what providers were installed regardless of current disk

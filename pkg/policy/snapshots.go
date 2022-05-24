@@ -30,7 +30,6 @@ func persistSnapshot(ctx context.Context, e *Executor, outputPath string, table 
 		return fmt.Errorf("error exporting file: %w", err)
 	}
 	return nil
-
 }
 func StoreSnapshot(ctx context.Context, e *Executor, outputPath string, tables []string) error {
 	if len(tables) == 0 {
@@ -42,7 +41,6 @@ func StoreSnapshot(ctx context.Context, e *Executor, outputPath string, tables [
 		if err != nil {
 			return err
 		}
-
 	}
 
 	return nil
@@ -206,7 +204,6 @@ func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) erro
 }
 
 func (e *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
-
 	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
 	rows, err := e.conn.Query(ctx, explainQuery)
 	if err != nil {
@@ -216,7 +213,6 @@ func (e *Executor) checkTableExistence(ctx context.Context, tableName string) (q
 
 	var s string
 	for rows.Next() {
-
 		if err := rows.Scan(&s); err != nil {
 			e.log.Error("error scanning into variable", "error", err)
 		}
@@ -252,7 +248,6 @@ AND conrelid::regclass = '%s'::regclass;`, tableName)
 			log.Error("error deleting fks for table", "query", deletionQuery, "err", err)
 			return err
 		}
-
 	}
 	if err := rows.Err(); err != nil {
 		log.Error("Error fetching rows", "query", fkQuery, "error", err)

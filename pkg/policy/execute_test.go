@@ -504,7 +504,6 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
@@ -592,7 +591,6 @@ func TestExecutor_CheckFetches(t *testing.T) {
 			}
 			clear(t)
 		})
-
 	}
 }
 
@@ -607,7 +605,6 @@ func TestInterpolate(t *testing.T) {
 }
 
 func TestRow_Sort(t *testing.T) {
-
 	testCases := []struct {
 		Name     string
 		Data     Rows
@@ -669,7 +666,6 @@ func TestRow_Sort(t *testing.T) {
 			assert.Equal(t, tc.Expected, tc.Data)
 		})
 	}
-
 }
 
 // Tests the path of the policy execution result file is correct.
@@ -724,7 +720,6 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 		_, err = os.Stat(tc.ExpectedFile) // os.Stat will return an error if file doesn't exist
 		assert.NoError(t, err)
 	}
-
 }
 
 func TestNormalizeCheckSelector(t *testing.T) {

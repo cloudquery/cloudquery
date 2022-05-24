@@ -33,9 +33,9 @@ func (v Value) Update(content string) error {
 	return v.fs.WriteFile(v.Path, []byte(content), defaultPermissions)
 }
 
-func New(fs afero.Afero, fn string, gen func() string) *Client {
+func New(aferofs afero.Afero, fn string, gen func() string) *Client {
 	return &Client{
-		fs:  fs,
+		fs:  aferofs,
 		fn:  fn,
 		gen: gen,
 	}
@@ -103,8 +103,8 @@ func (c *Client) read(filePath string) (string, error) {
 }
 
 // write the given payload into the file in the given fs and path
-func (c *Client) write(path, payload string) error {
-	return c.fs.WriteFile(path, []byte(payload), defaultPermissions)
+func (c *Client) write(filePath, payload string) error {
+	return c.fs.WriteFile(filePath, []byte(payload), defaultPermissions)
 }
 
 func readOrder() []string {

@@ -290,13 +290,11 @@ func Test_PurgeProviderData(t *testing.T) {
 				result, diags := PurgeProviderData(context.TODO(), database.NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedSecondaryDryRunResults, result, tc.ExpectedSecondaryRunDiags, diag.FlattenDiags(diags, true))
 			}
-
 		})
 	}
 }
 
 func Test_PurgeProviderDataBadUserValues(t *testing.T) {
-
 	storage := database.NewStorage("host=localhost user=postgres password=pass database=no-db port=5432 sslmode=disable", nil)
 	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	require.Nil(t, err)

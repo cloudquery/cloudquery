@@ -117,7 +117,6 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 				createOutputTable(res)
 				ui.ColorizedOutput(ui.ColorInfo, "\n\n")
 			}
-
 		}
 	}
 }

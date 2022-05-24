@@ -53,7 +53,6 @@ func (p *Policy) Test(ctx context.Context, e *Executor, _, snapshotDirectory, te
 }
 
 func compareArbitraryArrays(f1, f2 [][]string) error {
-
 	if len(f1) != len(f2) {
 		return errors.New("query results should have same number of items")
 	}
@@ -82,7 +81,6 @@ func compareArbitraryArrays(f1, f2 [][]string) error {
 		}
 	}
 	return nil
-
 }
 func OpenAndParse(filePath string) ([][]string, error) {
 	csvFile, err := os.Open(filePath)

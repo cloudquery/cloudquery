@@ -48,5 +48,4 @@ func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *Ge
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),
 		Unmanaged:                 providerPlugin.Version() == plugin.Unmanaged,
 	}, nil
-
 }

@@ -47,7 +47,6 @@ func TestFindAllTables(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-
 		}
 
 		resp, err := FindAllTables(uniqueTempDir)
@@ -67,7 +66,6 @@ func TestFindAllTables(t *testing.T) {
 	}
 }
 func TestFindAllTestCases(t *testing.T) {
-
 	tests := []struct {
 		createPath bool
 		paths      []string
@@ -117,7 +115,6 @@ func TestFindAllTestCases(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-
 			}
 		}
 		resp, err := FindAllTestCases(uniqueTempDir)

@@ -257,7 +257,6 @@ func TestProviderLoadConfiguration(t *testing.T) {
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
-
 }
 
 func TestWithEnvironmentVariables(t *testing.T) {

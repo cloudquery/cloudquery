@@ -16,6 +16,10 @@ import (
 
 type errClass string
 
+type sentryDiag interface {
+	IsSentryDiagnostic() (bool, map[string]string, bool)
+}
+
 const (
 	errNoClass      = errClass("")
 	errCancellation = errClass("cancelled")
@@ -107,10 +111,6 @@ func shouldIgnorePgCode(code string) bool {
 		}
 	}
 	return false
-}
-
-type sentryDiag interface {
-	IsSentryDiagnostic() (bool, map[string]string, bool)
 }
 
 func isSentryDiagnostic(d diag.Diagnostic) (bool, map[string]string, bool) {

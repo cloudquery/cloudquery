@@ -22,6 +22,12 @@ type Config struct {
 	Modules    hcl.Body        `hcl:"modules,block"`
 }
 
+// Deprecated
+type History struct {
+	Retention      int `hcl:"retention,optional"`
+	TimeInterval   int `hcl:"interval,optional"`
+	TimeTruncation int `hcl:"truncation,optional"`
+}
 type CloudQuery struct {
 	PluginDirectory string            `hcl:"plugin_directory,optional"`
 	PolicyDirectory string            `hcl:"policy_directory,optional"`
@@ -29,11 +35,8 @@ type CloudQuery struct {
 	Providers       RequiredProviders `hcl:"provider,block"`
 	Connection      *Connection       `hcl:"connection,block"`
 	Policy          *Policy           `hcl:"policy,block"`
-	History         *struct {         // Deprecated
-		Retention      int `hcl:"retention,optional"`
-		TimeInterval   int `hcl:"interval,optional"`
-		TimeTruncation int `hcl:"truncation,optional"`
-	} `hcl:"history,block"`
+	// Deprecated
+	History *History `hcl:"history,block"`
 }
 
 type Connection struct {

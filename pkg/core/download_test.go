@@ -179,5 +179,4 @@ func TestDownloadCommunity(t *testing.T) {
 		NoVerify: false,
 	})
 	assert.Nil(t, diags)
-
 }
