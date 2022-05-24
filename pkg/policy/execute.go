@@ -354,16 +354,11 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
 	fs := afero.NewOsFs()
 
-	fullPath := fmt.Sprintf("%s.json", filepath.Join(outputDir, result.PolicyName))
-
-	// Ensure entire directory structure is created
-	directory := fullPath[:strings.LastIndex(fullPath, "/")]
-
-	if err := fs.MkdirAll(directory, 0755); err != nil {
+	if err := fs.MkdirAll(outputDir, 0755); err != nil {
 		return err
 	}
 
-	f, err := fs.Create(fullPath)
+	f, err := fs.Create(fmt.Sprintf("%s.json", filepath.Join(outputDir, result.PolicyName)))
 	if err != nil {
 		return err
 	}
