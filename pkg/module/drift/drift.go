@@ -184,9 +184,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 	p := NewParser("")
 
 	if body == nil {
-		if diags := p.interpret(base); diags.HasErrors() {
-			return nil, diags
-		}
+		p.interpret(base)
 		return base, nil
 	}
 
@@ -227,9 +225,7 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 		}
 	}
 
-	if diags := p.interpret(base); diags.HasErrors() {
-		return nil, diags
-	}
+	p.interpret(base)
 
 	return base, nil
 }

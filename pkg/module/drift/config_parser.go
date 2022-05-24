@@ -164,7 +164,7 @@ func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnos
 }
 
 // interpret iterates over every provider/resource and replaces missing values with the ones in wildprovider/wildresource
-func (p *Parser) interpret(cfg *BaseConfig) hcl.Diagnostics {
+func (p *Parser) interpret(cfg *BaseConfig) {
 	for _, prov := range cfg.Providers {
 		prov.applyWildProvider(cfg.WildProvider)
 
@@ -175,7 +175,6 @@ func (p *Parser) interpret(cfg *BaseConfig) hcl.Diagnostics {
 			}
 		}
 	}
-	return nil
 }
 
 var (
