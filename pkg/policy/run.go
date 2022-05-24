@@ -6,15 +6,17 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/google/uuid"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
+
+	"github.com/cloudquery/cloudquery/internal/logging"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 
@@ -88,8 +90,10 @@ type RunRequest struct {
 	Directory string
 	// OutputDir is the output dir for policy execution output.
 	OutputDir string
-	// RunCallBack is the callback method that is called after every policy execution.
+	// RunCallback is the callback method that is called after every policy execution.
 	RunCallback UpdateCallback
+	// StoreResults indicates whether to store the results
+	StoreResults bool
 }
 
 type RunResponse struct {
@@ -98,6 +102,7 @@ type RunResponse struct {
 }
 
 func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {
+	sta.StoreRunResults = req.StoreResults
 	var (
 		diags diag.Diagnostics
 		resp  = &RunResponse{
@@ -107,16 +112,32 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 	)
 	for _, p := range req.Policies {
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("preparing to run policy")
-		loadedPolicy, err := Load(ctx, req.Directory, p)
-		if err != nil {
-			return nil, diag.FromError(err, diag.INTERNAL)
+		loadedPolicy, dd := Load(ctx, req.Directory, p)
+		if dd != nil {
+			return nil, diag.FromError(dd, diag.INTERNAL)
 		}
+
+		policyExecution := &state.PolicyExecution{
+			Scheme:     p.SourceType(),
+			Location:   p.Source,
+			PolicyName: p.String(),
+			Selector:   p.SubPolicy(),
+			Sha256Hash: p.Sha256Hash(),
+			Version:    p.Version(),
+		}
+		var err error
+		if policyExecution, err = sta.CreatePolicyExecution(ctx, policyExecution); err != nil {
+			return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to create policy execution"))
+		}
+
 		resp.Policies = append(resp.Policies, loadedPolicy)
 		log.Debug().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("loaded policy successfully")
 		result, dd := run(ctx, sta, storage, &ExecuteRequest{
-			Policy:         loadedPolicy,
-			UpdateCallback: req.RunCallback,
+			Policy:          loadedPolicy,
+			UpdateCallback:  req.RunCallback,
+			PolicyExecution: policyExecution,
 		})
+
 		diags = diags.Add(dd)
 		if diags.HasErrors() {
 			// this error means error in execution and not policy violation
@@ -136,6 +157,13 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 		}
 	}
 	return resp, diags
+}
+
+func Prune(ctx context.Context, sta *state.Client, pruneBefore time.Time) diag.Diagnostics {
+	if err := sta.PrunePolicyExecutions(ctx, pruneBefore); err != nil {
+		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to prune policy executions"))
+	}
+	return nil
 }
 
 func run(ctx context.Context, sta *state.Client, storage database.Storage, request *ExecuteRequest) (*ExecutionResult, diag.Diagnostics) {

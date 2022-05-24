@@ -17,12 +17,13 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {
@@ -89,9 +90,9 @@ func TestExecutor_executeQuery(t *testing.T) {
 			}, nil)
 			assert.NoError(t, err)
 			if tc.ShouldBeEmpty {
-				assert.Empty(t, res.Data)
+				assert.Empty(t, res.Rows)
 			} else {
-				assert.NotEmpty(t, res.Data)
+				assert.NotEmpty(t, res.Rows)
 			}
 		})
 	}

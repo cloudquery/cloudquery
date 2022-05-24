@@ -6,15 +6,16 @@ import (
 	"embed"
 	"fmt"
 
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -26,6 +27,8 @@ type Client struct {
 	dsn    string
 	db     *sdkdb.DB
 	Logger hclog.Logger
+	// StoreRunResults indicates whether to persist a run result
+	StoreRunResults bool
 }
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.

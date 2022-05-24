@@ -51,6 +51,7 @@ type CloudQuery struct {
 		TimeInterval   int `hcl:"interval,optional"`
 		TimeTruncation int `hcl:"truncation,optional"`
 	} `hcl:"history,block"`
+	Policy *Policy `hcl:"policy,block"`
 }
 
 func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
@@ -180,6 +181,10 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 		}
 	}
 	return nil
+}
+
+type Policy struct {
+	DBPersistence bool `hcl:"db_persistence,optional"`
 }
 
 // configFileSchema is the schema for the top-level of a config file. We use
