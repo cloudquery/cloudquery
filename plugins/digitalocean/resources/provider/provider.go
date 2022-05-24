@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"embed"
-
 	"github.com/cloudquery/cq-provider-digitalocean/client"
 	"github.com/cloudquery/cq-provider-digitalocean/resources"
 	sdkprovider "github.com/cloudquery/cq-provider-sdk/provider"
@@ -10,9 +8,6 @@ import (
 )
 
 var (
-	//go:embed migrations/*/*.sql
-	migrationFiles embed.FS
-
 	Version = "Development"
 )
 
@@ -44,7 +39,6 @@ func Provider() *sdkprovider.Provider {
 			"certificates":    resources.Certificates(),
 			"load_balancers":  resources.LoadBalancers(),
 		},
-		Migrations: migrationFiles,
 		Config: func() sdkprovider.Config {
 			return &client.Config{}
 		},
