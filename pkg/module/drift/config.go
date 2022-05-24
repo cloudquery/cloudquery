@@ -80,6 +80,14 @@ type TerraformSourceConfig struct {
 
 type TerraformBackend string
 
+type ResourceSelectors []*ResourceSelector
+
+type ResourceSelector struct {
+	Type string
+	ID   *string
+	Tags *map[string]string
+}
+
 const wildcard = "*"
 
 const (
@@ -142,14 +150,6 @@ func (c TerraformSourceConfig) Validate() error {
 	default:
 		return fmt.Errorf("invalid backend type")
 	}
-}
-
-type ResourceSelectors []*ResourceSelector
-
-type ResourceSelector struct {
-	Type string
-	ID   *string
-	Tags *map[string]string
 }
 
 func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
@@ -464,7 +464,6 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *core.ProviderSchema) (bool
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
 			res.Sets = replacePlaceholderInSlice(k, v, res.Sets)
 		}
-
 		// {$sql:*} identifiers are still not replaced
 	}
 

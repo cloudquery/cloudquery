@@ -152,7 +152,6 @@ func createOutputTable(res *policy.QueryResult) {
 		}
 		data = append(data, cast.ToStringSlice(ad)...)
 		table.Append(data)
-
 	}
 	table.Render()
 }

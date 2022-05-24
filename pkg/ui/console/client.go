@@ -436,7 +436,6 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 
 	e := policy.NewExecutor(conn, c.StateManager, nil)
 	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
-
 }
 
 func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {

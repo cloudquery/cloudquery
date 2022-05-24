@@ -25,6 +25,20 @@ import (
 
 type TFStates []*terraform.Data
 
+type TFInstances []terraform.Instance
+
+type Attribute struct {
+	ID        string           // Identifier from config
+	SQL       string           // SQL expression
+	Type      schema.ValueType // Type in DB as reported by provider
+	TFName    string           // TF attribute name
+	Unordered bool             // True if unordered slice
+
+	CloudMod func(interface{}) interface{} // Modifier function after fetching the SQL
+}
+
+type AttrList []Attribute
+
 const tfIDAttribute = "id"
 
 // FindType returns all instances of the given type under a given mode
@@ -43,20 +57,6 @@ func (t TFStates) FindType(tfType string, tfMode terraform.Mode) TFInstances {
 	}
 	return ret
 }
-
-type TFInstances []terraform.Instance
-
-type Attribute struct {
-	ID        string           // Identifier from config
-	SQL       string           // SQL expression
-	Type      schema.ValueType // Type in DB as reported by provider
-	TFName    string           // TF attribute name
-	Unordered bool             // True if unordered slice
-
-	CloudMod func(interface{}) interface{} // Modifier function after fetching the SQL
-}
-
-type AttrList []Attribute
 
 func (a AttrList) SQLs() []string {
 	ret := make([]string, len(a))
@@ -162,7 +162,6 @@ func parseTerraformInstance(ins terraform.Instance, identifiers []string, alist 
 			}
 			ret = append(ret, res)
 		}
-
 	}
 
 	return ret

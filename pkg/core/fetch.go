@@ -161,7 +161,6 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 		"fetch_diags":                 SummarizeDiagnostics(p.Diagnostics()),
 		"fetch_status":                p.Status.String(),
 	}
-
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -251,7 +250,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	return response, diags
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, clientDsn string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -271,7 +270,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
-			DSN: dsn,
+			DSN: clientDsn,
 		},
 		Config:      cfg.Configuration,
 		ExtraFields: opts.ExtraFields,

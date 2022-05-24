@@ -304,7 +304,6 @@ func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 		DryRun:     false,
 	})
 	assert.NotNil(t, diags)
-
 }
 
 func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags diag.FlatDiags) {
@@ -316,7 +315,6 @@ func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderD
 	if expectedResult != nil {
 		assert.Equal(t, expectedResult, actualResult)
 	}
-
 }
 
 func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Resources) {

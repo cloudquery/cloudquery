@@ -32,11 +32,11 @@ type Registry interface {
 	Download(ctx context.Context, provider Provider, noVerify bool) (ProviderBinary, error)
 }
 
+type Providers []Provider
+
 func (p Provider) String() string {
 	return fmt.Sprintf("%s@%s", p.Name, p.Version)
 }
-
-type Providers []Provider
 
 func (pp Providers) Get(name string) (Provider, bool) {
 	for _, p := range pp {

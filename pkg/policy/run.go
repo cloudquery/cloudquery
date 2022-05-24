@@ -20,14 +20,33 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const (
-	CloudQueryOrg = "cloudquery-policies"
-)
-
 type LowLevelQueryExecer interface {
 	execution.Copier
 	execution.QueryExecer
 }
+
+// RunRequest is the request used to run one or more policy.
+type RunRequest struct {
+	// Policies to run
+	Policies Policies
+	// Directory to load / save policies to
+	Directory string
+	// OutputDir is the output dir for policy execution output.
+	OutputDir string
+	// RunCallback is the callback method that is called after every policy execution.
+	RunCallback UpdateCallback
+	// DBPersistence defines weather or not to store run results
+	DBPersistence bool
+}
+
+type RunResponse struct {
+	Policies   Policies
+	Executions []*ExecutionResult
+}
+
+const (
+	CloudQueryOrg = "cloudquery-policies"
+)
 
 func Snapshot(ctx context.Context, sta *state.Client, storage database.Storage, policy *Policy, outputPath, subpath string) error {
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "executor-database"), storage.DSN())
@@ -75,25 +94,6 @@ func Load(ctx context.Context, directory string, policy *Policy) (*Policy, diag.
 		}
 	}
 	return policy, nil
-}
-
-// RunRequest is the request used to run one or more policy.
-type RunRequest struct {
-	// Policies to run
-	Policies Policies
-	// Directory to load / save policies to
-	Directory string
-	// OutputDir is the output dir for policy execution output.
-	OutputDir string
-	// RunCallback is the callback method that is called after every policy execution.
-	RunCallback UpdateCallback
-	// DBPersistence defines weather or not to store run results
-	DBPersistence bool
-}
-
-type RunResponse struct {
-	Policies   Policies
-	Executions []*ExecutionResult
 }
 
 func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {

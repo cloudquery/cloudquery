@@ -22,6 +22,12 @@ type Plugin interface {
 	Close()
 }
 
+type unmanagedPlugin struct {
+	name     string
+	config   *plugin.ReattachConfig
+	client   *plugin.Client
+	provider cqproto.CQProvider
+}
 type managedPlugin struct {
 	name     string
 	version  string
@@ -118,13 +124,6 @@ func (m managedPlugin) Close() {
 		return
 	}
 	m.client.Kill()
-}
-
-type unmanagedPlugin struct {
-	name     string
-	config   *plugin.ReattachConfig
-	client   *plugin.Client
-	provider cqproto.CQProvider
 }
 
 // newUnmanagedPlugin attaches to and existing running plugin  a new unmanaged plugin using go_plugin

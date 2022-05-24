@@ -12,20 +12,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func init() {
-	_, filename, _, _ := runtime.Caller(0)
-	err := os.Chdir(path.Dir(filename))
-	if err != nil {
-		panic(err)
-	}
-}
-
 type sourceTest struct {
 	Name          string
 	Source        string
 	Expected      bool
 	ExpectedMeta  *Meta
 	ErrorExpected bool
+}
+
+func init() {
+	_, filename, _, _ := runtime.Caller(0)
+	err := os.Chdir(path.Dir(filename))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func TestLoadSource(t *testing.T) {

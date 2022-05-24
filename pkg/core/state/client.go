@@ -30,9 +30,9 @@ type Client struct {
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.
 // client.Close should be called to disconnect afterwards.
-func NewClient(ctx context.Context, dsn string) (*Client, error) {
+func NewClient(ctx context.Context, clientDns string) (*Client, error) {
 	c := &Client{
-		dsn:    dsn,
+		dsn:    clientDns,
 		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
 
