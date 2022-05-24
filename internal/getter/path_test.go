@@ -7,7 +7,6 @@ import (
 )
 
 func TestNormalizePath(t *testing.T) {
-
 	tt := []struct {
 		name     string
 		path     string

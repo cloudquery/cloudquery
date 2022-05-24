@@ -80,6 +80,8 @@ type TerraformSourceConfig struct {
 
 type TerraformBackend string
 
+const wildcard = "*"
+
 const (
 	TFLocal TerraformBackend = "local"
 	TFS3    TerraformBackend = "s3"
@@ -257,8 +259,6 @@ func parseTags(tags []string) map[string]string {
 	}
 	return ret
 }
-
-const wildcard = "*"
 
 func (b *BaseConfig) FindProvider(name string) *ProviderConfig {
 	for i := range b.Providers {

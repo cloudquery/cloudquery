@@ -19,6 +19,133 @@ type Parser struct {
 	HCLContext *hcl.EvalContext
 }
 
+type placeholder string
+
+const (
+	placeholderResourceKey             placeholder = "resourceKey"
+	placeholderResourceName            placeholder = "resourceName"
+	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
+	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
+)
+
+var baseSchema = &hcl.BodySchema{
+	Blocks: []hcl.BlockHeaderSchema{
+		{
+			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type: "terraform",
+		},
+	},
+}
+
+var (
+	providerSchema = &hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       "resource",
+				LabelNames: []string{"name"},
+			},
+		},
+		Attributes: []hcl.AttributeSchema{
+			{
+				Name:     "ignore_resources",
+				Required: false,
+			},
+			{
+				Name:     "check_resources",
+				Required: false,
+			},
+			{
+				Name:     "account_ids", // only valid for non-"*" providers
+				Required: false,
+			},
+		},
+	}
+
+	resourceSchema = &hcl.BodySchema{
+		Attributes: []hcl.AttributeSchema{
+			{
+				Name:     "identifiers",
+				Required: false,
+			},
+			{
+				Name:     "ignore_identifiers",
+				Required: false,
+			},
+			{
+				Name:     "attributes",
+				Required: false,
+			},
+			{
+				Name:     "ignore_attributes",
+				Required: false,
+			},
+			{
+				Name:     "deep",
+				Required: false,
+			},
+			{
+				Name:     "filters",
+				Required: false,
+			},
+			{
+				Name:     "sets",
+				Required: false,
+			},
+		},
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       "iac",
+				LabelNames: nil,
+			},
+		},
+	}
+
+	iacSchema = &hcl.BodySchema{
+		Blocks: []hcl.BlockHeaderSchema{
+			{
+				Type:       string(iacTerraform),
+				LabelNames: nil,
+			},
+			{
+				Type:       string(iacCloudformation),
+				LabelNames: nil,
+			},
+		},
+	}
+
+	terraformSourceSchema = &hcl.BodySchema{
+		Attributes: []hcl.AttributeSchema{
+			{
+				Name:     "backend",
+				Required: false,
+			},
+			{
+				Name:     "files",
+				Required: false,
+			},
+			{
+				Name:     "bucket",
+				Required: false,
+			},
+			{
+				Name:     "keys",
+				Required: false,
+			},
+			{
+				Name:     "region",
+				Required: false,
+			},
+			{
+				Name:     "role_arn",
+				Required: false,
+			},
+		},
+	}
+)
+
 func NewParser(basePath string) *Parser {
 	ctx := convert.GetEvalContext(basePath)
 	ctx.Variables = make(map[string]cty.Value)
@@ -46,27 +173,6 @@ func NewParser(basePath string) *Parser {
 		HCLContext: ctx,
 	}
 }
-
-var baseSchema = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "terraform",
-		},
-	},
-}
-
-type placeholder string
-
-const (
-	placeholderResourceKey             placeholder = "resourceKey"
-	placeholderResourceName            placeholder = "resourceName"
-	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
-	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
-)
 
 func makePlaceholder(varName placeholder) cty.Value {
 	return cty.StringVal("${" + string(varName) + "}")
@@ -176,112 +282,6 @@ func (p *Parser) interpret(cfg *BaseConfig) {
 		}
 	}
 }
-
-var (
-	providerSchema = &hcl.BodySchema{
-		Blocks: []hcl.BlockHeaderSchema{
-			{
-				Type:       "resource",
-				LabelNames: []string{"name"},
-			},
-		},
-		Attributes: []hcl.AttributeSchema{
-			{
-				Name:     "ignore_resources",
-				Required: false,
-			},
-			{
-				Name:     "check_resources",
-				Required: false,
-			},
-			{
-				Name:     "account_ids", // only valid for non-"*" providers
-				Required: false,
-			},
-		},
-	}
-
-	resourceSchema = &hcl.BodySchema{
-		Attributes: []hcl.AttributeSchema{
-			{
-				Name:     "identifiers",
-				Required: false,
-			},
-			{
-				Name:     "ignore_identifiers",
-				Required: false,
-			},
-			{
-				Name:     "attributes",
-				Required: false,
-			},
-			{
-				Name:     "ignore_attributes",
-				Required: false,
-			},
-			{
-				Name:     "deep",
-				Required: false,
-			},
-			{
-				Name:     "filters",
-				Required: false,
-			},
-			{
-				Name:     "sets",
-				Required: false,
-			},
-		},
-		Blocks: []hcl.BlockHeaderSchema{
-			{
-				Type:       "iac",
-				LabelNames: nil,
-			},
-		},
-	}
-
-	iacSchema = &hcl.BodySchema{
-		Blocks: []hcl.BlockHeaderSchema{
-			{
-				Type:       string(iacTerraform),
-				LabelNames: nil,
-			},
-			{
-				Type:       string(iacCloudformation),
-				LabelNames: nil,
-			},
-		},
-	}
-
-	terraformSourceSchema = &hcl.BodySchema{
-		Attributes: []hcl.AttributeSchema{
-			{
-				Name:     "backend",
-				Required: false,
-			},
-			{
-				Name:     "files",
-				Required: false,
-			},
-			{
-				Name:     "bucket",
-				Required: false,
-			},
-			{
-				Name:     "keys",
-				Required: false,
-			},
-			{
-				Name:     "region",
-				Required: false,
-			},
-			{
-				Name:     "role_arn",
-				Required: false,
-			},
-		},
-	}
-)
 
 func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ProviderConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(providerSchema)

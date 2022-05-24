@@ -399,7 +399,7 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 		}
 		count := 0
 		for data.Next() {
-			count += 1
+			count++
 		}
 		if data.Err() != nil {
 			e.log.Error("Failed to check if view is temporary", "policy", policy.Name, "view", v.Name, "err", data.Err())

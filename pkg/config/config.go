@@ -15,28 +15,11 @@ import (
 
 type Providers []*Provider
 
-func (pp Providers) Names() []string {
-	pNames := make([]string, len(pp))
-	for i, p := range pp {
-		pNames[i] = p.Name
-	}
-	return pNames
-}
-
 type Config struct {
 	CloudQuery CloudQuery      `hcl:"cloudquery,block"`
 	Providers  Providers       `hcl:"provider,block"`
 	Policies   policy.Policies `hcl:"policy,block"`
 	Modules    hcl.Body        `hcl:"modules,block"`
-}
-
-func (c Config) GetProvider(name string) (*Provider, error) {
-	for _, p := range c.Providers {
-		if name == p.Alias {
-			return p, nil
-		}
-	}
-	return nil, fmt.Errorf("provider %s does not exist", name)
 }
 
 type CloudQuery struct {
@@ -53,15 +36,6 @@ type CloudQuery struct {
 	} `hcl:"history,block"`
 }
 
-func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
-	for _, p := range c.Providers {
-		if name == p.Name {
-			return p, nil
-		}
-	}
-	return nil, fmt.Errorf("provider %s does not exist", name)
-}
-
 type Connection struct {
 	DSN string `hcl:"dsn,optional"`
 
@@ -74,6 +48,87 @@ type Connection struct {
 	Database string   `hcl:"database,optional"`
 	SSLMode  string   `hcl:"sslmode,optional"`
 	Extras   []string `hcl:"extras,optional"`
+}
+
+type RequiredProvider struct {
+	Name    string  `hcl:"name,label"`
+	Source  *string `hcl:"source,optional"`
+	Version string  `hcl:"version"`
+}
+type RequiredProviders []*RequiredProvider
+
+type Policy struct {
+	DBPersistence bool `hcl:"db_persistence,optional"`
+}
+
+// configFileSchema is the schema for the top-level of a config file. We use
+// the low-level HCL API for this level so we can easily deal with each
+// block type separately with its own decoding logic.
+var configFileSchema = &hcl.BodySchema{
+	Blocks: []hcl.BlockHeaderSchema{
+		{
+			Type: "cloudquery",
+		},
+		{
+			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type:       "policy",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type: "modules",
+		},
+	},
+}
+
+// configFileSchema is the schema for the top-level of a config file. We use
+// the low-level HCL API for this level so we can easily deal with each
+// block type separately with its own decoding logic.
+var configFileSchema = &hcl.BodySchema{
+	Blocks: []hcl.BlockHeaderSchema{
+		{
+			Type: "cloudquery",
+		},
+		{
+			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type:       "policy",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type: "modules",
+		},
+	},
+}
+
+func (pp Providers) Names() []string {
+	pNames := make([]string, len(pp))
+	for i, p := range pp {
+		pNames[i] = p.Name
+	}
+	return pNames
+}
+
+func (c Config) GetProvider(name string) (*Provider, error) {
+	for _, p := range c.Providers {
+		if name == p.Alias {
+			return p, nil
+		}
+	}
+	return nil, fmt.Errorf("provider %s does not exist", name)
+}
+
+func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) {
+	for _, p := range c.Providers {
+		if name == p.Name {
+			return p, nil
+		}
+	}
+	return nil, fmt.Errorf("provider %s does not exist", name)
 }
 
 func (c Connection) IsAnyConnParamsSet() bool {
@@ -126,12 +181,6 @@ func (c *Connection) BuildFromConnParams() error {
 	return nil
 }
 
-type RequiredProvider struct {
-	Name    string  `hcl:"name,label"`
-	Source  *string `hcl:"source,optional"`
-	Version string  `hcl:"version"`
-}
-
 func (r RequiredProvider) String() string {
 	var source string
 	if r.Source != nil {
@@ -139,8 +188,6 @@ func (r RequiredProvider) String() string {
 	}
 	return fmt.Sprintf("%scq-provider-%s@%s", source, r.Name, r.Version)
 }
-
-type RequiredProviders []*RequiredProvider
 
 // Distinct returns one name per provider
 func (r RequiredProviders) Distinct() RequiredProviders {
@@ -179,30 +226,4 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 		}
 	}
 	return nil
-}
-
-type Policy struct {
-	DBPersistence bool `hcl:"db_persistence,optional"`
-}
-
-// configFileSchema is the schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configFileSchema = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules",
-		},
-	},
 }

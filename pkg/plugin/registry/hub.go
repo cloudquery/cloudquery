@@ -249,7 +249,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	return details, nil
 }
 
-func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
+func (Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
 	client := firebase.New(firebase.CloudQueryRegistryURL)
 	latest, err := client.GetLatestProviderRelease(ctx, organization, providerName)
 	return latest, err

@@ -14,6 +14,16 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+type errClass string
+
+const (
+	errNoClass      = errClass("")
+	errCancellation = errClass("cancelled")
+	errAuth         = errClass("auth")
+	errConn         = errClass("connection")
+	errDatabase     = errClass("database")
+)
+
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
 
 // ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
@@ -35,16 +45,6 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	}
 	return false
 }
-
-type errClass string
-
-const (
-	errNoClass      = errClass("")
-	errCancellation = errClass("cancelled")
-	errAuth         = errClass("auth")
-	errConn         = errClass("connection")
-	errDatabase     = errClass("database")
-)
 
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {

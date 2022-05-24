@@ -14,6 +14,23 @@ import (
 	zerolog "github.com/rs/zerolog/log"
 )
 
+type Plugin interface {
+	Name() string
+	Version() string
+	ProtocolVersion() int
+	Provider() cqproto.CQProvider
+	Close()
+}
+
+type managedPlugin struct {
+	name     string
+	version  string
+	client   *plugin.Client
+	provider cqproto.CQProvider
+}
+
+type Plugins map[string]Plugin
+
 const (
 	Unmanaged = "unmanaged"
 )
@@ -22,8 +39,6 @@ const (
 var pluginMap = map[string]plugin.Plugin{
 	"provider": &cqproto.CQPlugin{},
 }
-
-type Plugins map[string]Plugin
 
 // Get returns a Plugin instance from a registry.Provider creation info or it's created alias
 func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
@@ -40,21 +55,6 @@ func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
 		}
 	}
 	return nil
-}
-
-type Plugin interface {
-	Name() string
-	Version() string
-	ProtocolVersion() int
-	Provider() cqproto.CQProvider
-	Close()
-}
-
-type managedPlugin struct {
-	name     string
-	version  string
-	client   *plugin.Client
-	provider cqproto.CQProvider
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin

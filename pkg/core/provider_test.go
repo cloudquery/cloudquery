@@ -12,6 +12,28 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const expectedProviderConfig = `
+provider "test" {
+
+  configuration {
+    account "1" {
+      id        = "testid"
+      regions   = ["asdas"]
+      resources = ["ab", "c"]
+    }
+  }
+  // list of resources to fetch
+  resources = [
+    "error_resource",
+    "migrate_resource",
+    "panic_resource",
+    "slow_resource",
+    "very_slow_resource"
+  ]
+  // enables partial fetching, allowing for any failures to not stop full resource pull
+  enable_partial_fetch = true
+}`
+
 func Test_CheckAvailableUpdates(t *testing.T) {
 
 	latestVersion := getLatestVersion(t, "test")
@@ -86,28 +108,6 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		})
 	}
 }
-
-const expectedProviderConfig = `
-provider "test" {
-
-  configuration {
-    account "1" {
-      id        = "testid"
-      regions   = ["asdas"]
-      resources = ["ab", "c"]
-    }
-  }
-  // list of resources to fetch
-  resources = [
-    "error_resource",
-    "migrate_resource",
-    "panic_resource",
-    "slow_resource",
-    "very_slow_resource"
-  ]
-  // enables partial fetching, allowing for any failures to not stop full resource pull
-  enable_partial_fetch = true
-}`
 
 func Test_GetProviderConfig(t *testing.T) {
 	provider := registry.Provider{

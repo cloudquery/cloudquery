@@ -10,16 +10,16 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// NewZHcLog Creates hclog.Logger adapter from a zerolog log
-func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
-	return &ZerologKVAdapter{l, name, nil}
-}
-
 type ZerologKVAdapter struct {
 	l    *zerolog.Logger
 	name string
 
 	impliedArgs []interface{}
+}
+
+// NewZHcLog Creates hclog.Logger adapter from a zerolog log
+func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
+	return &ZerologKVAdapter{l, name, nil}
 }
 
 func (z ZerologKVAdapter) Log(level hclog.Level, msg string, args ...interface{}) {
@@ -85,7 +85,6 @@ func (ZerologKVAdapter) ImpliedArgs() []interface{} {
 }
 
 func (z ZerologKVAdapter) With(args ...interface{}) hclog.Logger {
-
 	l := z.l.With().Fields(keyvals.ToMap(args)).Logger()
 	return NewZHcLog(&l, z.Name())
 }

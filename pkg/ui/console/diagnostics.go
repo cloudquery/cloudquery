@@ -10,6 +10,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+const diagFormat = "%sType: %-10s Severity: %s\n\tSummary: %s\n"
+
 func classifyDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
 	// TODO: placeholder, every diagnostic we see that can be classified to diag.USER should be updated here
 	return dd
@@ -61,8 +63,6 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose 
 	}
 	ui.ColorizedOutput(ui.ColorInfo, "\n")
 }
-
-const diagFormat = "%sType: %-10s Severity: %s\n\tSummary: %s\n"
 
 func printDiagnostic(d diag.Diagnostic) {
 	desc := d.Description()

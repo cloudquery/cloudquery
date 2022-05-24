@@ -16,8 +16,8 @@ import (
 	"github.com/jeremywohl/flatten"
 )
 
-func persistSnapshot(ctx context.Context, e *Executor, path string, table string) error {
-	ef, err := os.OpenFile(filepath.Join(path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
+func persistSnapshot(ctx context.Context, e *Executor, outputPath string, table string) error {
+	ef, err := os.OpenFile(filepath.Join(outputPath, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
@@ -32,13 +32,13 @@ func persistSnapshot(ctx context.Context, e *Executor, path string, table string
 	return nil
 
 }
-func StoreSnapshot(ctx context.Context, e *Executor, path string, tables []string) error {
+func StoreSnapshot(ctx context.Context, e *Executor, outputPath string, tables []string) error {
 	if len(tables) == 0 {
 		return errors.New("no tables to snapshot")
 	}
 
 	for _, table := range tables {
-		err := persistSnapshot(ctx, e, path, table)
+		err := persistSnapshot(ctx, e, outputPath, table)
 		if err != nil {
 			return err
 		}

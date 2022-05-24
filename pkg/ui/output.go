@@ -18,6 +18,22 @@ import (
 var removeAnsi = regexp.MustCompile(`(?i)\\u00[1-9]b[[0-9;]*[mGKHF]`)
 var emojiStatus = []string{color.GreenString("✓"), "📋", color.RedString("❌"), "⚠️", "⌛"}
 
+var (
+	ColorTrace        = color.New(color.FgMagenta, color.Bold)
+	ColorDebug        = color.New(color.FgWhite, color.Faint)
+	ColorHeader       = color.New(color.Bold)
+	ColorInfo         = color.New()
+	ColorProgress     = color.New(color.FgCyan)
+	ColorProgressBold = color.New(color.FgCyan, color.Bold)
+	ColorError        = color.New(color.FgRed)
+	ColorErrorBold    = color.New(color.FgRed, color.Bold)
+	ColorSuccess      = color.New(color.FgGreen)
+	ColorSuccessBold  = color.New(color.FgGreen, color.Bold)
+	ColorWarning      = color.New(color.FgYellow)
+	ColorWarningBold  = color.New(color.FgYellow, color.Bold)
+	ColorUnderline    = color.New(color.Underline)
+)
+
 // ColorizedOutput outputs a colored message directly to the terminal.
 // The remaining arguments should be interpolations for the format string.
 func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
@@ -75,22 +91,6 @@ func Colorize(c *color.Color, noColor bool, msg string, values ...interface{}) s
 	}
 	return c.Sprintf(msg, values...)
 }
-
-var (
-	ColorTrace        = color.New(color.FgMagenta, color.Bold)
-	ColorDebug        = color.New(color.FgWhite, color.Faint)
-	ColorHeader       = color.New(color.Bold)
-	ColorInfo         = color.New()
-	ColorProgress     = color.New(color.FgCyan)
-	ColorProgressBold = color.New(color.FgCyan, color.Bold)
-	ColorError        = color.New(color.FgRed)
-	ColorErrorBold    = color.New(color.FgRed, color.Bold)
-	ColorSuccess      = color.New(color.FgGreen)
-	ColorSuccessBold  = color.New(color.FgGreen, color.Bold)
-	ColorWarning      = color.New(color.FgYellow)
-	ColorWarningBold  = color.New(color.FgYellow, color.Bold)
-	ColorUnderline    = color.New(color.Underline)
-)
 
 func strip(str string) string {
 	for _, s := range emojiStatus {

@@ -33,8 +33,7 @@ func NormalizePath(src string) string {
 //   proto://dom.com/path//path2?q=p => proto://dom.com/path?q=p, "path2"
 //   dom.com/path@q=p               => dom.com/path/?q=p, ""
 //
-func ParseSourceSubPolicy(src string) (string, string) {
-
+func ParseSourceSubPolicy(src string) (policySrc string, subdir string) {
 	// URL might contains another url in query parameters
 	stop := len(src)
 	if idx := strings.Index(src, "?"); idx > -1 {
@@ -59,7 +58,7 @@ func ParseSourceSubPolicy(src string) (string, string) {
 	}
 
 	idx += offset
-	subdir := src[idx+2:]
+	subdir = src[idx+2:]
 	src = src[:idx]
 
 	// Next, check if we have query parameters and push them onto the

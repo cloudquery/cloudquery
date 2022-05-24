@@ -8,29 +8,38 @@ import (
 
 type Policies []*Policy
 
-func (pp Policies) All() []string {
-	policyNames := make([]string, len(pp))
-	for i, p := range pp {
-		policyNames[i] = p.Name
-	}
-	return policyNames
+type Meta struct {
+	Type      string `json:"type,omitempty"`
+	Version   string `json:"version,omitempty"`
+	SubPolicy string `json:"sub_policy,omitempty"`
+	Directory string `json:"directory,omitempty"`
 }
 
-func (pp Policies) Properties() map[string]interface{} {
-	usedCustom := 0
-	policies := make([]*Meta, 0)
-	for _, p := range pp {
-		if p.meta == nil || p.meta.Type != "hub" {
-			usedCustom++
-			// we don't add info about custom policies that were executed
-			continue
-		}
-		policies = append(policies, p.meta)
-	}
-	return map[string]interface{}{
-		"used_custom": usedCustom,
-		"policies":    policies,
-	}
+type View struct {
+	Name  string `hcl:"name,label"`
+	Title string `hcl:"title,optional"`
+	Query string `hcl:"query"`
+}
+
+type Configuration struct {
+	Providers []*Provider `hcl:"provider,block"`
+}
+
+type Provider struct {
+	Type    string `hcl:"type,label"`
+	Version string `hcl:"version,optional"`
+}
+
+type QueryType string
+
+type Check struct {
+	Name         string    `hcl:"name,label"`
+	Title        string    `hcl:"title,optional"`
+	Doc          string    `hcl:"doc,optional"`
+	ExpectOutput bool      `hcl:"expect_output,optional"`
+	Type         QueryType `hcl:"type,optional"`
+	Query        string    `hcl:"query"`
+	Reason       string    `hcl:"reason,optional"`
 }
 
 type Policy struct {
@@ -54,6 +63,36 @@ type Policy struct {
 
 	// Meta is information added to the policy after it was loaded
 	meta *Meta
+}
+
+const (
+	ManualQuery    QueryType = "manual"
+	AutomaticQuery QueryType = "automatic"
+)
+
+func (pp Policies) All() []string {
+	policyNames := make([]string, len(pp))
+	for i, p := range pp {
+		policyNames[i] = p.Name
+	}
+	return policyNames
+}
+
+func (pp Policies) Properties() map[string]interface{} {
+	usedCustom := 0
+	policies := make([]*Meta, 0)
+	for _, p := range pp {
+		if p.meta == nil || p.meta.Type != "hub" {
+			usedCustom++
+			// we don't add info about custom policies that were executed
+			continue
+		}
+		policies = append(policies, p.meta)
+	}
+	return map[string]interface{}{
+		"used_custom": usedCustom,
+		"policies":    policies,
+	}
 }
 
 func (p Policy) String() string {
@@ -144,43 +183,4 @@ func (p Policy) Sha256Hash() string {
 	h := sha256.New()
 	h.Write([]byte(fmt.Sprintf("%v", p.Policies)))
 	return fmt.Sprintf("%x", h.Sum(nil))
-}
-
-type Meta struct {
-	Type      string `json:"type,omitempty"`
-	Version   string `json:"version,omitempty"`
-	SubPolicy string `json:"sub_policy,omitempty"`
-	Directory string `json:"directory,omitempty"`
-}
-
-type View struct {
-	Name  string `hcl:"name,label"`
-	Title string `hcl:"title,optional"`
-	Query string `hcl:"query"`
-}
-
-type Configuration struct {
-	Providers []*Provider `hcl:"provider,block"`
-}
-
-type Provider struct {
-	Type    string `hcl:"type,label"`
-	Version string `hcl:"version,optional"`
-}
-
-type QueryType string
-
-const (
-	ManualQuery    QueryType = "manual"
-	AutomaticQuery QueryType = "automatic"
-)
-
-type Check struct {
-	Name         string    `hcl:"name,label"`
-	Title        string    `hcl:"title,optional"`
-	Doc          string    `hcl:"doc,optional"`
-	ExpectOutput bool      `hcl:"expect_output,optional"`
-	Type         QueryType `hcl:"type,optional"`
-	Query        string    `hcl:"query"`
-	Reason       string    `hcl:"reason,optional"`
 }

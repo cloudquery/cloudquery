@@ -18,7 +18,6 @@ type validateTest struct {
 }
 
 func TestValidate(t *testing.T) {
-
 	testCases := []validateTest{
 		{
 			Name: "simple-validate",

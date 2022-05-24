@@ -25,6 +25,8 @@ import (
 
 type TFStates []*terraform.Data
 
+const tfIDAttribute = "id"
+
 // FindType returns all instances of the given type under a given mode
 func (t TFStates) FindType(tfType string, tfMode terraform.Mode) TFInstances {
 	var ret []terraform.Instance
@@ -72,8 +74,6 @@ func (a AttrList) TypeOf(id string) schema.ValueType {
 	}
 	return schema.TypeInvalid
 }
-
-const tfIDAttribute = "id"
 
 // AsResourceList returns a map of resource ID vs. attributes
 func (r TFInstances) AsResourceList(identifiers []string, alist AttrList, path string) ResourceList {

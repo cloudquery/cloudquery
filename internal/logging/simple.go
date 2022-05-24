@@ -18,14 +18,14 @@ type Logger interface {
 	Errorf(format string, args ...interface{})
 }
 
-// NewSimple Creates hclog.Logger adapter from a simpler logger interfaces
-func NewSimple(l *zerolog.Logger, name string) Logger {
-	return &ZerologSimpleLogger{l, name}
-}
-
 type ZerologSimpleLogger struct {
 	l    *zerolog.Logger
 	name string
+}
+
+// NewSimple Creates hclog.Logger adapter from a simpler logger interfaces
+func NewSimple(l *zerolog.Logger, name string) Logger {
+	return &ZerologSimpleLogger{l, name}
 }
 
 func (z ZerologSimpleLogger) Logf(format string, args ...interface{}) {

@@ -109,9 +109,8 @@ func TestLoadSource(t *testing.T) {
 			if s.ErrorExpected {
 				require.Error(t, err)
 				return
-			} else {
-				require.Nil(t, err)
 			}
+			require.Nil(t, err)
 			assert.Equal(t, s.ExpectedMeta.Type, meta.Type)
 			assert.Equal(t, filepath.ToSlash(s.ExpectedMeta.Directory), filepath.ToSlash(meta.Directory), "unexpected saved policy directory")
 			assert.NotNil(t, data)

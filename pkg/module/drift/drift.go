@@ -43,6 +43,13 @@ const (
 	protoVersion           = 2
 )
 
+const idSeparator = "|"
+
+var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
+
+// Make sure we satisfy the interface
+var _ module.Module = (*Drift)(nil)
+
 func (i iacProvider) String() string {
 	switch i {
 	case iacTerraform:
@@ -432,10 +439,6 @@ func handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDat
 	return sel
 }
 
-var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
-
-const idSeparator = "|"
-
 // handleIdentifiers returns an SQL expression given one or multiple identifiers. the `sql(<query>)` is also handled here.
 // Given multiple identifiers, each of them are concatenated using the idSeparator
 func handleIdentifiers(identifiers []string) (exp.Expression, error) {
@@ -536,6 +539,3 @@ func readIACStates(iacID iacProvider, tf *TerraformSourceConfig, stateFiles []st
 
 	return iacTerraform, ret, nil
 }
-
-// Make sure we satisfy the interface
-var _ module.Module = (*Drift)(nil)

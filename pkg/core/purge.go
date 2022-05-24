@@ -44,7 +44,7 @@ func (p PurgeProviderDataResult) Resources() []string {
 }
 
 // PurgeProviderData purges resources that were not updated recently, if dry run is set to true, no resources will be removed.
-func PurgeProviderData(ctx context.Context, storage database.Storage, plugin *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, diag.Diagnostics) {
+func PurgeProviderData(ctx context.Context, storage database.Storage, manager *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, diag.Diagnostics) {
 	if len(opts.Providers) == 0 {
 		return nil, diag.Diagnostics{diag.NewBaseError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("no providers were given"))}
 	}
@@ -65,7 +65,7 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, plugin *pl
 	lastUpdateTime := time.Now().UTC().Add(-opts.LastUpdate)
 	for _, p := range opts.Providers {
 		log.Debug().Stringer("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
-		affectedResources, affected, err := removeProviderStaleData(ctx, db, plugin, p, lastUpdateTime, opts.DryRun)
+		affectedResources, affected, err := removeProviderStaleData(ctx, db, manager, p, lastUpdateTime, opts.DryRun)
 		diags = diags.Add(err)
 		result.TotalAffected += affected
 		for k, v := range affectedResources {
@@ -75,8 +75,8 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, plugin *pl
 	return &result, diags
 }
 
-func removeProviderStaleData(ctx context.Context, storage execution.Storage, plugin *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
-	providerSchema, err := GetProviderSchema(ctx, plugin, &GetProviderSchemaOptions{Provider: provider})
+func removeProviderStaleData(ctx context.Context, storage execution.Storage, manager *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
+	providerSchema, err := GetProviderSchema(ctx, manager, &GetProviderSchemaOptions{Provider: provider})
 	if err != nil {
 		return nil, 0, err
 	}
