@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,12 +19,6 @@ func TestClient_CreatePolicyExecution(t *testing.T) {
 		Version:    "1.2.3",
 	}
 
-	c.StoreRunResults = false
-	pe, err := c.CreatePolicyExecution(context.Background(), pe)
-	assert.NoError(t, err)
-	assert.Equal(t, uuid.Nil, pe.Id)
-
-	c.StoreRunResults = true
 	data, err := c.db.Query(context.Background(), "SELECT * FROM cloudquery.policy_executions")
 	assert.NoError(t, err)
 	countBefore := 0

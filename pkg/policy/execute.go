@@ -151,6 +151,8 @@ type ExecuteRequest struct {
 	UpdateCallback UpdateCallback
 	// PolicyExecution represents the current policy execution
 	PolicyExecution *state.PolicyExecution
+	// DBPersistence defines weather or not to store run results
+	DBPersistence bool
 }
 
 // NewExecutor creates a new executor.
@@ -219,8 +221,10 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	for _, q := range policy.Checks {
 		e.log = e.log.With("query", q.Name)
 		qr, err := e.executeQuery(ctx, q, identifiers)
-		if errStore := e.createCheckResult(ctx, append([]string{req.Policy.Name}, e.PolicyPath...), req.PolicyExecution, q, qr, err); errStore != nil {
-			e.log.Error("failed to create check result", "err", errStore)
+		if req.DBPersistence {
+			if errStore := e.createCheckResult(ctx, append([]string{req.Policy.Name}, e.PolicyPath...), req.PolicyExecution, q, qr, err); errStore != nil {
+				e.log.Error("failed to create check result", "err", errStore)
+			}
 		}
 		if err != nil {
 			e.log.Error("failed to execute query", "err", err)

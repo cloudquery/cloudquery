@@ -92,6 +92,8 @@ type RunRequest struct {
 	OutputDir string
 	// RunCallback is the callback method that is called after every policy execution.
 	RunCallback UpdateCallback
+	// DBPersistence defines weather or not to store run results
+	DBPersistence bool
 }
 
 type RunResponse struct {
@@ -122,9 +124,11 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 			Sha256Hash: p.Sha256Hash(),
 			Version:    p.Version(),
 		}
-		var err error
-		if policyExecution, err = sta.CreatePolicyExecution(ctx, policyExecution); err != nil {
-			return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to create policy execution"))
+		if req.DBPersistence {
+			var err error
+			if policyExecution, err = sta.CreatePolicyExecution(ctx, policyExecution); err != nil {
+				return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to create policy execution"))
+			}
 		}
 
 		resp.Policies = append(resp.Policies, loadedPolicy)
@@ -133,6 +137,7 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 			Policy:          loadedPolicy,
 			UpdateCallback:  req.RunCallback,
 			PolicyExecution: policyExecution,
+			DBPersistence:   req.DBPersistence,
 		})
 
 		diags = diags.Add(dd)
@@ -140,7 +145,7 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 			// this error means error in execution and not policy violation
 			// we should exit immediately as this is a non-recoverable error
 			// might mean schema is incorrect, provider version
-			log.Error().Err(err).Msg("policy execution finished with error")
+			log.Error().Msg("policy execution finished with error")
 			return resp, diags
 		}
 		log.Info().Str("policy", p.Name).Msg("policy execution finished")

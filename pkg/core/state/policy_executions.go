@@ -37,9 +37,6 @@ type PolicyExecution struct {
 
 // CreateCheckResult inserts a check result in the database
 func (c *Client) CreateCheckResult(ctx context.Context, cr *CheckResult) error {
-	if !c.StoreRunResults {
-		return nil
-	}
 	q := goqu.Dialect("postgres").Insert("cloudquery.check_results").Rows(cr)
 	sql, args, err := q.ToSQL()
 	if err != nil {
@@ -50,9 +47,6 @@ func (c *Client) CreateCheckResult(ctx context.Context, cr *CheckResult) error {
 
 // CreatePolicyExecution inserts a policy execution in the database
 func (c *Client) CreatePolicyExecution(ctx context.Context, pe *PolicyExecution) (*PolicyExecution, error) {
-	if !c.StoreRunResults {
-		return pe, nil
-	}
 	var err error
 	if pe.Id, err = uuid.NewUUID(); err != nil {
 		return nil, err

@@ -27,9 +27,6 @@ type Client struct {
 	dsn    string
 	db     *sdkdb.DB
 	Logger hclog.Logger
-
-	// StoreRunResults indicates whether to persist a run result
-	StoreRunResults bool
 }
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.

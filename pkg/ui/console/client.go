@@ -359,15 +359,14 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, storeResults bool) (diags diag.Diagnostics) {
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
-	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("storeResults", storeResults).Msg("run policy received params")
+	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
 
-	// use config value for storeResults if not already enabled through the cli
-	if !storeResults && c.cfg.CloudQuery.Policy != nil {
-		storeResults = c.cfg.CloudQuery.Policy.DBPersistence
+	// use config value for dbPersistence if not already enabled through the cli
+	if !dbPersistence && c.cfg.CloudQuery.Policy != nil {
+		dbPersistence = c.cfg.CloudQuery.Policy.DBPersistence
 	}
-	c.StateManager.StoreRunResults = storeResults
 
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
@@ -386,10 +385,11 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	// Policies run request
 	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
-		Policies:    policiesToRun,
-		Directory:   c.cfg.CloudQuery.PolicyDirectory,
-		OutputDir:   outputDir,
-		RunCallback: policyRunCallback,
+		Policies:      policiesToRun,
+		Directory:     c.cfg.CloudQuery.PolicyDirectory,
+		OutputDir:     outputDir,
+		RunCallback:   policyRunCallback,
+		DBPersistence: dbPersistence,
 	})
 	if resp == nil {
 		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
