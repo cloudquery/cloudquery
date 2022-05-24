@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resources/services/logging"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/monitoring"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/resource_manager"
-	"github.com/cloudquery/cq-provider-gcp/resources/services/serviceusage"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/sql"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/storage"
 
@@ -66,12 +65,12 @@ func Provider() *provider.Provider {
 			"monitoring.alert_policies":    monitoring.MonitoringAlertPolicies(),
 			"resource_manager.projects":    resource_manager.ResourceManagerProjects(),
 			"resource_manager.folders":     resource_manager.ResourceManagerFolders(),
-			"serviceusage.services":        serviceusage.Services(),
-			"storage.buckets":              storage.StorageBuckets(),
-			"storage.metrics":              storage.Metrics(),
-			"sql.instances":                sql.SQLInstances(),
-			"domains.registrations":        domains.DomainsRegistration(),
-			"bigquery.datasets":            bigquery.BigqueryDatasets(),
+			// "serviceusage.services":        serviceusage.Services(),
+			"storage.buckets":       storage.StorageBuckets(),
+			"storage.metrics":       storage.Metrics(),
+			"sql.instances":         sql.SQLInstances(),
+			"domains.registrations": domains.DomainsRegistration(),
+			"bigquery.datasets":     bigquery.BigqueryDatasets(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
