@@ -152,6 +152,7 @@ func (e *Executor) with(policy string, args ...interface{}) *Executor {
 	policyPath = append(policyPath, policy)
 	return &Executor{
 		conn:           e.conn,
+		stateManager:   e.stateManager,
 		log:            e.log.With("policy", strings.Join(policyPath, "/")).With(args...),
 		progressUpdate: e.progressUpdate,
 		PolicyPath:     policyPath,
