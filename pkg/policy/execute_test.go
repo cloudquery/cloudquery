@@ -23,6 +23,89 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	multiLayerPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:         "other-query",
+						Query:        "SELECT 1 as result;",
+						ExpectOutput: true,
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	failingPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:  "other-query",
+						Query: "SELECT 1 as result;",
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	multiLayerWithEmptySubPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name:   "subpolicy",
+				Checks: []*Check{},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	// views cannot be inherited from parent policies.
+	multiLayerWithInheritedView = &Policy{
+		Name: "test",
+		Views: []*View{
+			{
+				Name:  "testview",
+				Query: "SELECT 'something'",
+			},
+		},
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{
+					{
+						Name:         "query-with-view",
+						ExpectOutput: true,
+						Query:        "SELECT * from testview",
+					},
+				},
+			},
+		},
+	}
+)
+
 func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {
 	baseDSN := os.Getenv("CQ_CLIENT_TEST_DSN")
 	if baseDSN == "" {
@@ -218,89 +301,6 @@ func TestExecutor_executePolicy(t *testing.T) {
 		})
 	}
 }
-
-var (
-	multiLayerPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{{
-					Name:         "sub-query",
-					Query:        "SELECT 1 as result;",
-					ExpectOutput: true,
-				},
-					{
-						Name:         "other-query",
-						Query:        "SELECT 1 as result;",
-						ExpectOutput: true,
-					},
-				},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	failingPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{{
-					Name:         "sub-query",
-					Query:        "SELECT 1 as result;",
-					ExpectOutput: true,
-				},
-					{
-						Name:  "other-query",
-						Query: "SELECT 1 as result;",
-					},
-				},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	multiLayerWithEmptySubPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name:   "subpolicy",
-				Checks: []*Check{},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	// views cannot be inherited from parent policies.
-	multiLayerWithInheritedView = &Policy{
-		Name: "test",
-		Views: []*View{
-			{
-				Name:  "testview",
-				Query: "SELECT 'something'",
-			},
-		},
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{
-					{
-						Name:         "query-with-view",
-						ExpectOutput: true,
-						Query:        "SELECT * from testview",
-					},
-				},
-			},
-		},
-	}
-)
 
 func TestExecutor_Execute(t *testing.T) {
 	cases := []struct {

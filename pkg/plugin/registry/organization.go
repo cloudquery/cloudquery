@@ -31,17 +31,17 @@ func ProviderRepoName(name string) string {
 }
 
 // ParseProviderNameWithVersion parses the given string as "repository/provider@version" or "provider@version" (or @version omitted, defaulting to "latest")
-func ParseProviderNameWithVersion(nameWithVersion string) (string, string, string, error) {
+func ParseProviderNameWithVersion(nameWithVersion string) (org string, name string, version string, err error) {
 	versionParts := strings.Split(nameWithVersion, "@")
 
 	if l := len(versionParts); l == 1 || (l == 2 && versionParts[1] == "latest") {
-		org, name, err := ParseProviderName(versionParts[0])
+		org, name, err = ParseProviderName(versionParts[0])
 		return org, name, "latest", err
 	} else if l != 2 {
 		return "", "", "", fmt.Errorf("invalid provider name@version %q", nameWithVersion)
 	}
 
-	org, name, err := ParseProviderName(versionParts[0])
+	org, name, err = ParseProviderName(versionParts[0])
 	if err != nil {
 		return "", "", "", err
 	}
