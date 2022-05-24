@@ -35,7 +35,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: "v0.0.11",
+							Version: registry.LatestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -57,18 +57,18 @@ func Test_Fetch(t *testing.T) {
 					Summary:     "error from provider",
 					Description: diag.Description{Resource: "error_resource", ResourceID: []string(nil), Summary: "error from provider", Detail: ""}},
 				{
-					Err:         "failed table panic_resource fetch. Error: resource with panic",
+					Err:         "panic on resource table \"panic_resource\" fetch: table resolver panic: resource with panic",
 					Resource:    "panic_resource",
 					Type:        diag.RESOLVING,
-					Severity:    diag.ERROR,
-					Summary:     "failed table panic_resource fetch. Error: resource with panic",
-					Description: diag.Description{Resource: "panic_resource", ResourceID: []string(nil), Summary: "failed table panic_resource fetch. Error: resource with panic", Detail: ""},
+					Severity:    diag.PANIC,
+					Summary:     "panic on resource table \"panic_resource\" fetch: table resolver panic: resource with panic",
+					Description: diag.Description{Resource: "panic_resource", ResourceID: []string(nil), Summary: "panic on resource table \"panic_resource\" fetch: table resolver panic: resource with panic", Detail: ""},
 				},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test(test_alias)": {
 				Name:                  "test",
 				Alias:                 "test_alias",
-				Version:               "v0.0.11",
+				Version:               registry.LatestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
