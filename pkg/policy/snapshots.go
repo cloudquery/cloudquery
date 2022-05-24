@@ -136,7 +136,6 @@ func (e *Executor) extractTableNames(ctx context.Context, query string) ([]strin
 			tableNames = append(tableNames, val.(string))
 		}
 		if strings.HasSuffix(key, "Alias") { // Aliases could be query aliases or table aliases (views)
-
 			// Check if query alias, if it is the table will not exist
 			viewQuery, err := e.checkTableExistence(ctx, val.(string))
 			if err != nil && strings.Contains(err.Error(), "does not exist (SQLSTATE 42P01)") {

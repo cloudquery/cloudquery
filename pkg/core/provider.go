@@ -15,6 +15,12 @@ type GetProviderConfigOptions struct {
 	Provider registry.Provider
 }
 
+type TestOptions struct {
+	Connection   cqproto.ConnectionDetails
+	Config       []byte
+	CreationInfo *plugin.CreationOptions
+}
+
 func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, diag.Diagnostics) {
 	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{Provider: opts.Provider})
 	if err != nil {
@@ -27,12 +33,6 @@ func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *Get
 		return result, diag.FromError(err, diag.INTERNAL)
 	}
 	return result, nil
-}
-
-type TestOptions struct {
-	Connection   cqproto.ConnectionDetails
-	Config       []byte
-	CreationInfo *plugin.CreationOptions
 }
 
 // TODO: add tests for Test method, add a "special" configuration that will return a failure in test provider

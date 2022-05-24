@@ -8,6 +8,8 @@ import (
 
 type tableList map[string][]string
 
+type stringMap map[string]string
+
 func (a tableList) Value() (driver.Value, error) {
 	return json.Marshal(a)
 }
@@ -20,8 +22,6 @@ func (a *tableList) Scan(value interface{}) error {
 
 	return json.Unmarshal(b, &a)
 }
-
-type stringMap map[string]string
 
 func (a stringMap) Value() (driver.Value, error) {
 	return json.Marshal(a)

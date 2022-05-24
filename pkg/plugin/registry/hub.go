@@ -206,7 +206,6 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 }
 
 func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedVersion string, noVerify bool) (ProviderBinary, error) {
-
 	if !h.verifyRegistered(provider.Source, provider.Name, requestedVersion, noVerify) {
 		return ProviderBinary{}, fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", provider.Name, requestedVersion)
 	}

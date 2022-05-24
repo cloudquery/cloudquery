@@ -15,14 +15,12 @@ import (
 )
 
 func (p *Policy) Test(ctx context.Context, e *Executor, _, snapshotDirectory, tempDirectory string) error {
-
 	tests, err := FindAllTestCases(snapshotDirectory)
 	if err != nil {
 		return err
 	}
 	e.log.Debug("Found tests", "tests", tests)
 	for _, test := range tests {
-
 		selector := strings.TrimPrefix(test, snapshotDirectory+"/")
 		selector = strings.Split(selector, "/tests")[0]
 		pol := p.Filter(selector)
@@ -46,7 +44,6 @@ func (p *Policy) Test(ctx context.Context, e *Executor, _, snapshotDirectory, te
 		f2, _ := OpenAndParse(path.Join(test, "snapshot_data.csv"))
 		f1, _ := OpenAndParse(path.Join(tempDirectory, "snapshot_data.csv"))
 		if err := compareArbitraryArrays(f1, f2); err != nil {
-
 			e.log.Error("Failed test case", "case", test, "got", f1, "expected", f2)
 			return err
 		}

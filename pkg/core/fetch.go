@@ -29,6 +29,75 @@ import (
 
 type FetchStatus int
 
+// ProviderFetchSummary represents a request for the FetchFinishCallback
+type ProviderFetchSummary struct {
+	Name                  string                          `json:"name,omitempty"`
+	Alias                 string                          `json:"alias,omitempty"`
+	Version               string                          `json:"version,omitempty"`
+	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
+	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
+	Status                FetchStatus                     `json:"status,omitempty"`
+	Duration              time.Duration                   `json:"duration,omitempty"`
+}
+
+type ResourceFetchSummary struct {
+	// Execution status of resource
+	Status string `json:"status,omitempty"`
+	// Total Amount of resources collected by this resource
+	ResourceCount uint64 `json:"resource_count,omitempty"`
+	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
+	// details on how to solve this issue
+	Diagnostics diag.Diagnostics `json:"-"`
+	// Duration in seconds
+	Duration time.Duration `json:"duration,omitempty"`
+}
+
+type FetchUpdateCallback func(update FetchUpdate)
+
+type FetchUpdate struct {
+	Name    string
+	Alias   string
+	Version string
+	// Map of resources that have finished fetching
+	FinishedResources map[string]bool
+	// Amount of resources collected so far
+	ResourceCount uint64
+	// Error if any returned by the provider
+	Error string
+	// Diagnostic count
+	DiagnosticCount int
+}
+
+// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
+type FetchResponse struct {
+	FetchId              uuid.UUID                        `json:"fetch_id,omitempty"`
+	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
+	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
+	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
+}
+
+type ProviderInfo struct {
+	Provider registry.Provider
+	Config   *config.Provider
+}
+
+// FetchOptions is provided to the Client to execute a fetch on one or more providers
+type FetchOptions struct {
+	// UpdateCallback allows gets called when the client receives updates on fetch.
+	UpdateCallback FetchUpdateCallback
+	// Providers list of providers to call for fetching
+	ProvidersInfo []ProviderInfo
+	// Optional: Adds extra fields to the provider
+	ExtraFields map[string]interface{}
+	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
+	FetchId uuid.UUID
+}
+
+type fetchResult struct {
+	summary *ProviderFetchSummary
+	diags   diag.Diagnostics
+}
+
 const (
 	FetchFailed FetchStatus = iota + 1
 	FetchConfigureFailed
@@ -52,17 +121,6 @@ func (fs FetchStatus) String() string {
 	default:
 		return "unknown"
 	}
-}
-
-// ProviderFetchSummary represents a request for the FetchFinishCallback
-type ProviderFetchSummary struct {
-	Name                  string                          `json:"name,omitempty"`
-	Alias                 string                          `json:"alias,omitempty"`
-	Version               string                          `json:"version,omitempty"`
-	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
-	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
-	Status                FetchStatus                     `json:"status,omitempty"`
-	Duration              time.Duration                   `json:"duration,omitempty"`
 }
 
 func (p ProviderFetchSummary) Resources() []string {
@@ -106,34 +164,6 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 
 }
 
-type ResourceFetchSummary struct {
-	// Execution status of resource
-	Status string `json:"status,omitempty"`
-	// Total Amount of resources collected by this resource
-	ResourceCount uint64 `json:"resource_count,omitempty"`
-	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
-	// details on how to solve this issue
-	Diagnostics diag.Diagnostics `json:"-"`
-	// Duration in seconds
-	Duration time.Duration `json:"duration,omitempty"`
-}
-
-type FetchUpdateCallback func(update FetchUpdate)
-
-type FetchUpdate struct {
-	Name    string
-	Alias   string
-	Version string
-	// Map of resources that have finished fetching
-	FinishedResources map[string]bool
-	// Amount of resources collected so far
-	ResourceCount uint64
-	// Error if any returned by the provider
-	Error string
-	// Diagnostic count
-	DiagnosticCount int
-}
-
 func (f FetchUpdate) AllDone() bool {
 	for _, v := range f.FinishedResources {
 		if !v {
@@ -153,14 +183,6 @@ func (f FetchUpdate) DoneCount() int {
 	return count
 }
 
-// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
-type FetchResponse struct {
-	FetchId              uuid.UUID                        `json:"fetch_id,omitempty"`
-	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
-	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
-	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
-}
-
 func (fr FetchResponse) HasErrors() bool {
 	for _, p := range fr.ProviderFetchSummary {
 		if p.Diagnostics().HasErrors() {
@@ -168,23 +190,6 @@ func (fr FetchResponse) HasErrors() bool {
 		}
 	}
 	return false
-}
-
-type ProviderInfo struct {
-	Provider registry.Provider
-	Config   *config.Provider
-}
-
-// FetchOptions is provided to the Client to execute a fetch on one or more providers
-type FetchOptions struct {
-	// UpdateCallback allows gets called when the client receives updates on fetch.
-	UpdateCallback FetchUpdateCallback
-	// Providers list of providers to call for fetching
-	ProvidersInfo []ProviderInfo
-	// Optional: Adds extra fields to the provider
-	ExtraFields map[string]interface{}
-	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
-	FetchId uuid.UUID
 }
 
 func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
@@ -507,11 +512,6 @@ func parseDSN(storage database.Storage) (string, error) {
 		return "", err
 	}
 	return parsed.String(), nil
-}
-
-type fetchResult struct {
-	summary *ProviderFetchSummary
-	diags   diag.Diagnostics
 }
 
 func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSummary) *state.FetchSummary {

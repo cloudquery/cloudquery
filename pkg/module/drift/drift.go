@@ -232,7 +232,6 @@ func (*Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, e
 	}
 
 	p.interpret(base)
-
 	return base, nil
 }
 
