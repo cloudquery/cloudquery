@@ -4,6 +4,36 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.24.0](https://github.com/cloudquery/cloudquery/compare/v0.23.4...v0.24.0) (2022-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove provider migrations (#731)
+
+### Features
+
+* Classify some policy download errors as USER ([#742](https://github.com/cloudquery/cloudquery/issues/742)) ([8224e60](https://github.com/cloudquery/cloudquery/commit/8224e60d3a76d3b3f181d3b32b9153a63b04816a))
+* Remove provider migrations ([#731](https://github.com/cloudquery/cloudquery/issues/731)) ([bb93967](https://github.com/cloudquery/cloudquery/commit/bb93967803a28dfc1fccc0fb45af207d76208b2d))
+
+
+### Bug Fixes
+
+* Added root policy config inheritance to selected subpolicy ([#702](https://github.com/cloudquery/cloudquery/issues/702)) ([0d8b3c7](https://github.com/cloudquery/cloudquery/commit/0d8b3c77741177e6417c59e269856639dce0155e))
+* Check policy version on it's core version ([#773](https://github.com/cloudquery/cloudquery/issues/773)) ([c7c9ad0](https://github.com/cloudquery/cloudquery/commit/c7c9ad0384e2b90c6507c52ab87da65db2bc836f))
+* Classify "no policies in config" as USER error ([#743](https://github.com/cloudquery/cloudquery/issues/743)) ([4cbc03e](https://github.com/cloudquery/cloudquery/commit/4cbc03e22f5a0bbfa33812b407e65704727a88fd))
+* **deps:** Update SDK ([#758](https://github.com/cloudquery/cloudquery/issues/758)) ([c9b4094](https://github.com/cloudquery/cloudquery/commit/c9b4094cfe2ebbae9b6cbbc8df4568c7460208e5))
+* Diag import clean up ([#744](https://github.com/cloudquery/cloudquery/issues/744)) ([437c956](https://github.com/cloudquery/cloudquery/commit/437c956ee941c3ed2c9859a0af6a0b88401b58d8))
+* Don't attempt to download provider in re-attach mode ([#748](https://github.com/cloudquery/cloudquery/issues/748)) ([59973b8](https://github.com/cloudquery/cloudquery/commit/59973b84826599915f7b76fc8d8b16626dd26c74))
+* FetchId column regression ([#745](https://github.com/cloudquery/cloudquery/issues/745)) ([585d395](https://github.com/cloudquery/cloudquery/commit/585d39589ef6c27ae2aab5d224fc00a2387d7628))
+* Handle DeadlineExceeded errors ([#741](https://github.com/cloudquery/cloudquery/issues/741)) ([0167ce4](https://github.com/cloudquery/cloudquery/commit/0167ce4158d4795fc3a4b0f6661c19ae197c20c9))
+* Handle Outputting Policies With Selectors ([a3ecfc9](https://github.com/cloudquery/cloudquery/commit/a3ecfc9166170e1bb77011befd11a5fbe1c86007))
+* Policy executor ([#769](https://github.com/cloudquery/cloudquery/issues/769)) ([d5b6aef](https://github.com/cloudquery/cloudquery/commit/d5b6aef25f1cccaaf30618c53d5d7204f83d74aa))
+* Policy output file name ([#770](https://github.com/cloudquery/cloudquery/issues/770)) ([1a87c25](https://github.com/cloudquery/cloudquery/commit/1a87c259ddf9d0d1694976f551503918ca1557bd))
+* Space trimming in telemetry file ([#734](https://github.com/cloudquery/cloudquery/issues/734)) ([16c4cfc](https://github.com/cloudquery/cloudquery/commit/16c4cfce7e15f4474af3ab5d7e0cdb3698d2d08e))
+* Upgrade protocol version to V5 ([#774](https://github.com/cloudquery/cloudquery/issues/774)) ([69b405d](https://github.com/cloudquery/cloudquery/commit/69b405d686031dec3443ebc018047f42dd259d0e))
+* Use consistent descriptions for flags ([#753](https://github.com/cloudquery/cloudquery/issues/753)) ([cedeb3d](https://github.com/cloudquery/cloudquery/commit/cedeb3d0b1d733b352a03d45753914a6e1d11ee4))
+
 ### [0.23.4](https://github.com/cloudquery/cloudquery/compare/v0.23.3...v0.23.4) (2022-05-17)
 
 
