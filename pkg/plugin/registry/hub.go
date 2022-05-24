@@ -269,7 +269,7 @@ func (h Hub) verifyRegistered(organization, providerName, version string, noVeri
 	return true
 }
 
-func (h Hub) isProviderRegistered(org, provider string) bool {
+func (Hub) isProviderRegistered(org, provider string) bool {
 	client := firebase.New(firebase.CloudQueryRegistryURL)
 	return client.IsProviderRegistered(org, provider)
 }

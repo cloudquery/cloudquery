@@ -161,10 +161,10 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 
 func (m unmanagedPlugin) Name() string { return m.name }
 
-func (m unmanagedPlugin) Version() string { return Unmanaged }
+func (unmanagedPlugin) Version() string { return Unmanaged }
 
-func (m unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
+func (unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
 
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
-func (m unmanagedPlugin) Close() {}
+func (unmanagedPlugin) Close() {}

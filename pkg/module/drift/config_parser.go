@@ -352,7 +352,7 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	return prov, diags
 }
 
-func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ResourceConfig, hcl.Diagnostics) {
+func (*Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ResourceConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(resourceSchema)
 	if diags.HasErrors() {
 		return nil, diags
@@ -426,7 +426,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	return res, diags
 }
 
-func (p *Parser) decodeTerraformBlock(b *hcl.Block, ctx *hcl.EvalContext) (*TerraformSourceConfig, hcl.Diagnostics) {
+func (*Parser) decodeTerraformBlock(b *hcl.Block, ctx *hcl.EvalContext) (*TerraformSourceConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(terraformSourceSchema)
 	if diags.HasErrors() {
 		return nil, diags

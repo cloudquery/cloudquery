@@ -58,11 +58,11 @@ func New() *Drift {
 	return &Drift{}
 }
 
-func (d *Drift) ID() string {
+func (*Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) ProtocolVersions() []uint32 {
+func (*Drift) ProtocolVersions() []uint32 {
 	return []uint32{protoVersion, compatibleProtoVersion}
 }
 
@@ -92,7 +92,7 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
-func (d *Drift) ExampleConfig(providers []string) string {
+func (*Drift) ExampleConfig(providers []string) string {
 	hasAws := false
 	for i := range providers {
 		if providers[i] == "aws" {
@@ -130,7 +130,7 @@ drift "drift-example" {
 }`
 }
 
-func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
+func (*Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
 	if version != protoVersion && version != compatibleProtoVersion {
 		return nil, fmt.Errorf("unsupported module protocol version %d", version)
 	}
@@ -179,7 +179,7 @@ func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.M
 	return cfg, nil
 }
 
-func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
+func (*Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
 	p := NewParser("")
 
 	if body == nil {

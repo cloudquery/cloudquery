@@ -26,7 +26,7 @@ func SetupDB(t *testing.T) (dsn string) {
 	conn, err := pgx.Connect(context.Background(), baseDSN)
 	if err != nil {
 		assert.FailNow(t, "failed to create connection")
-		return
+		return ""
 	}
 
 	newDB := "test_" + strconv.Itoa(rand.Int())

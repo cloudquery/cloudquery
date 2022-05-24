@@ -11,9 +11,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-//go:embed drift.hcl
-var builtinConfig []byte
-
 type BaseConfig struct {
 	WildProvider *ProviderConfig
 	Providers    []*ProviderConfig      `hcl:"provider,block"`
@@ -57,36 +54,6 @@ type ResourceACL struct {
 	Ignore ResourceSelectors
 }
 
-// ShouldSkip gets a resource and compares it to the ACL, returning whether the given resource should be skipped or not
-func (r ResourceACL) ShouldSkip(resource *Resource) bool {
-	if r.AllowEnabled && !r.Allow.ContainsInstance(resource.ID) && !r.Allow.ContainsInstance("*") && !r.Allow.ContainsTags(resource.Tags) {
-		return true
-	}
-	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
-		return true
-	}
-	return false
-}
-
-// HasTagFilters returns true if the ACL contains tag filters
-func (r ResourceACL) HasTagFilters() bool {
-	if r.AllowEnabled {
-		for _, f := range r.Allow {
-			if f.Tags != nil {
-				return true
-			}
-		}
-	}
-
-	for _, f := range r.Ignore {
-		if f.Tags != nil {
-			return true
-		}
-	}
-
-	return false
-}
-
 type IACConfig struct {
 	Type        string   `hcl:"type,optional"`
 	Path        string   `hcl:"path,optional"`
@@ -117,6 +84,39 @@ const (
 	TFLocal TerraformBackend = "local"
 	TFS3    TerraformBackend = "s3"
 )
+
+//go:embed drift.hcl
+var builtinConfig []byte
+
+// ShouldSkip gets a resource and compares it to the ACL, returning whether the given resource should be skipped or not
+func (r ResourceACL) ShouldSkip(resource *Resource) bool {
+	if r.AllowEnabled && !r.Allow.ContainsInstance(resource.ID) && !r.Allow.ContainsInstance("*") && !r.Allow.ContainsTags(resource.Tags) {
+		return true
+	}
+	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
+		return true
+	}
+	return false
+}
+
+// HasTagFilters returns true if the ACL contains tag filters
+func (r ResourceACL) HasTagFilters() bool {
+	if r.AllowEnabled {
+		for _, f := range r.Allow {
+			if f.Tags != nil {
+				return true
+			}
+		}
+	}
+
+	for _, f := range r.Ignore {
+		if f.Tags != nil {
+			return true
+		}
+	}
+
+	return false
+}
 
 func (t TerraformBackend) Valid() bool {
 	return t == TFLocal || t == TFS3
@@ -193,7 +193,7 @@ func (t ResourceSelectors) ContainsTags(tags map[string]string) bool {
 
 		matches := 0
 		for k, v := range *s.Tags {
-			if v2, ok := tags[k]; ok && v2 == v {
+			if tag, ok := tags[k]; ok && tag == v {
 				matches++
 			}
 		}

@@ -15,7 +15,7 @@ func classifyDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
 	return dd
 }
 
-func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose, squash bool) {
+func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose bool) {
 	// Nothing to
 	if dd == nil || !dd.HasDiags() {
 		return
@@ -26,9 +26,7 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose,
 		diags = diags.Redacted()
 	}
 
-	if squash {
-		diags = diags.Squash()
-	}
+	diags = diags.Squash()
 
 	// classify diags to user diags + add details best on received error messages
 	diags = classifyDiagnostics(diags)
