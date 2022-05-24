@@ -66,6 +66,7 @@ func newRemotePlugin(details *registry.ProviderBinary, alias string, env []strin
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: serve.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
+			cqproto.V4: pluginMap,
 			cqproto.V5: pluginMap,
 		},
 		Managed:          true,
