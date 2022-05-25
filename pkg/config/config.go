@@ -80,7 +80,7 @@ func (c Connection) IsAnyConnParamsSet() bool {
 	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || len(c.Extras) > 0
 }
 
-func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
+func (c *Connection) BuildFromConnParams() error {
 	if c.Port == 0 {
 		c.Port = 5432
 	}
@@ -88,10 +88,10 @@ func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
 		c.Type = "postgres"
 	}
 	if c.Host == "" {
-		return nil, errors.New("missing host")
+		return errors.New("missing host")
 	}
 	if c.Database == "" {
-		return nil, errors.New("missing database")
+		return errors.New("missing database")
 	}
 
 	u := url.URL{
@@ -121,10 +121,14 @@ func (c Connection) BuildFromConnParams() (*dburl.URL, error) {
 	}
 	u.RawQuery = v.Encode()
 
-	return &dburl.URL{
+	dbUrl := &dburl.URL{
 		OriginalScheme: c.Type,
 		URL:            u,
-	}, nil
+	}
+
+	c.DSN = dbUrl.String()
+
+	return nil
 }
 
 type RequiredProvider struct {
