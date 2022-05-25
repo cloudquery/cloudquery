@@ -186,7 +186,7 @@ func Provider() *provider.Provider {
 			"lambda.layers":                         lambda.LambdaLayers(),
 			"lambda.runtimes":                       lambda.LambdaRuntimes(),
 			"mq.brokers":                            mq.Brokers(),
-			"organizations.accounts":                organizations.OrganizationsAccounts(),
+			"organizations.accounts":                organizations.Accounts(),
 			"qldb.ledgers":                          qldb.Ledgers(),
 			"rds.certificates":                      rds.RdsCertificates(),
 			"rds.cluster_parameter_groups":          rds.RdsClusterParameterGroups(),
