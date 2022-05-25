@@ -155,7 +155,6 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Name:        "aws_autoscaling_launch_configuration_block_device_mappings",
 				Description: "Describes a block device mapping.",
 				Resolver:    fetchAutoscalingLaunchConfigurationBlockDeviceMappings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"launch_configuration_cq_id", "device_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "launch_configuration_cq_id",

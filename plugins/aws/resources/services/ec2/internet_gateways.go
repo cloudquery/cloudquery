@@ -64,7 +64,6 @@ func Ec2InternetGateways() *schema.Table {
 				Name:        "aws_ec2_internet_gateway_attachments",
 				Description: "Describes the attachment of a VPC to an internet gateway or an egress-only internet gateway.",
 				Resolver:    fetchEc2InternetGatewayAttachments,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"internet_gateway_cq_id", "vpc_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "internet_gateway_cq_id",

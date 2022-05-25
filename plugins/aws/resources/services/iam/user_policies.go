@@ -18,7 +18,6 @@ func IamUserPolicies() *schema.Table {
 		Description:   "Inline policies that are embedded in the specified IAM user",
 		Resolver:      fetchIamUserPolicies,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "policy_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

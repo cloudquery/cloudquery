@@ -144,7 +144,6 @@ func Elbv2LoadBalancers() *schema.Table {
 				Name:        "aws_elbv2_load_balancer_availability_zones",
 				Description: "Information about an Availability Zone.",
 				Resolver:    fetchElbv2LoadBalancerAvailabilityZones,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"load_balancer_cq_id", "zone_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "load_balancer_cq_id",

@@ -199,7 +199,6 @@ func IamUsers() *schema.Table {
 				Name:                 "aws_iam_user_access_keys",
 				Resolver:             fetchIamUserAccessKeys,
 				PostResourceResolver: postIamUserAccessKeyResolver,
-				Options:              schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "access_key_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "user_cq_id",
@@ -248,7 +247,6 @@ func IamUsers() *schema.Table {
 			{
 				Name:          "aws_iam_user_groups",
 				Resolver:      fetchIamUserGroups,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "group_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -294,7 +292,6 @@ func IamUsers() *schema.Table {
 			{
 				Name:     "aws_iam_user_attached_policies",
 				Resolver: fetchIamUserAttachedPolicies,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"user_cq_id", "policy_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "user_cq_id",

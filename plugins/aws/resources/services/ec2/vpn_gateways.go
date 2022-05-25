@@ -69,7 +69,6 @@ func Ec2VpnGateways() *schema.Table {
 			{
 				Name:          "aws_ec2_vpc_attachment",
 				Resolver:      fetchEc2VpcAttachments,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vpn_gateway_cq_id", "vpc_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

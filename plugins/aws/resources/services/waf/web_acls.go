@@ -74,7 +74,6 @@ func WafWebAcls() *schema.Table {
 				Name:          "aws_waf_web_acl_rules",
 				Description:   "This is AWS WAF Classic documentation",
 				Resolver:      fetchWafWebAclRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "rule_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

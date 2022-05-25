@@ -18,7 +18,6 @@ func Snapshots() *schema.Table {
 		Description:   "Describes a snapshot.",
 		Resolver:      fetchRedshiftSnapshots,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

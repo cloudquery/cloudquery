@@ -99,7 +99,6 @@ func Ec2InstanceStatuses() *schema.Table {
 				Name:          "aws_ec2_instance_status_events",
 				Description:   "Any scheduled events associated with the instance.",
 				Resolver:      fetchEc2InstanceStatusEvents,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_status_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

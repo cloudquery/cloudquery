@@ -74,7 +74,6 @@ func RedshiftSubnetGroups() *schema.Table {
 				Name:        "aws_redshift_subnet_group_subnets",
 				Description: "Describes a subnet.",
 				Resolver:    fetchRedshiftSubnetGroupSubnets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"subnet_group_cq_id", "subnet_identifier"}},
 				Columns: []schema.Column{
 					{
 						Name:        "subnet_group_cq_id",

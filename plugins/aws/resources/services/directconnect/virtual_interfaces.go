@@ -159,7 +159,6 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 				Name:          "aws_directconnect_virtual_interface_bgp_peers",
 				Description:   "Information about a BGP peer. ",
 				Resolver:      fetchDirectconnectVirtualInterfaceBgpPeers,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_interface_cq_id", "bgp_peer_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

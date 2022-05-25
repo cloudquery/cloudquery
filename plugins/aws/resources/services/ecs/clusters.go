@@ -159,7 +159,6 @@ func Clusters() *schema.Table {
 				Name:          "aws_ecs_cluster_attachments",
 				Description:   "An object representing a container instance or task attachment.",
 				Resolver:      fetchEcsClusterAttachments,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

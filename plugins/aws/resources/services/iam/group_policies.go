@@ -19,7 +19,6 @@ func IamGroupPolicies() *schema.Table {
 		Description:   "Inline policies that are embedded in the specified IAM group",
 		Resolver:      fetchIamGroupPolicies,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"group_cq_id", "policy_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

@@ -62,7 +62,6 @@ func CloudwatchlogsFilters() *schema.Table {
 				Name:          "aws_cloudwatchlogs_filter_metric_transformations",
 				Description:   "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
 				Resolver:      fetchCloudwatchlogsFilterMetricTransformations,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"filter_cq_id", "metric_name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
