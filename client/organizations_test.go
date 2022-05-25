@@ -24,6 +24,10 @@ func (m mockOrgClient) ListAccounts(ctx context.Context, params *organizations.L
 	return m.listAccounts(ctx, params, optFns...)
 }
 
+func (mockOrgClient) ListTagsForResource(ctx context.Context, input *organizations.ListTagsForResourceInput, f ...func(*organizations.Options)) (*organizations.ListTagsForResourceOutput, error) {
+	return &organizations.ListTagsForResourceOutput{Tags: nil, NextToken: nil}, nil
+}
+
 func Test_Org_Configure(t *testing.T) {
 	ctx := context.Background()
 	tests := []struct {

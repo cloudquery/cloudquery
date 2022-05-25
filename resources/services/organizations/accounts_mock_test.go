@@ -23,11 +23,21 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		&organizations.ListAccountsOutput{
 			Accounts: []organizationsTypes.Account{g},
 		}, nil)
+
+	tt := make([]organizationsTypes.Tag, 3)
+	if err := faker.FakeData(&tt); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListTagsForResourceOutput{
+			Tags: tt,
+		}, nil)
 	return client.Services{
 		Organizations: m,
 	}
 }
 
 func TestOrganizationsAccounts(t *testing.T) {
-	client.AwsMockTestHelper(t, OrganizationsAccounts(), buildOrganizationsAccounts, client.TestOptions{})
+	client.AwsMockTestHelper(t, Accounts(), buildOrganizationsAccounts, client.TestOptions{})
 }

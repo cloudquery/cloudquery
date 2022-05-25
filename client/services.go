@@ -379,6 +379,7 @@ type MQClient interface {
 type OrganizationsClient interface {
 	ListAccountsForParent(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
 	ListAccounts(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
+	organizations.ListTagsForResourceAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_rds.go . RdsClient
