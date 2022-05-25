@@ -230,7 +230,6 @@ func StorageBuckets() *schema.Table {
 				Resolver:      fetchStorageBucketAcls,
 				IgnoreError:   client.IgnoreErrorHandler,
 				IgnoreInTests: true,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "bucket_cq_id",
@@ -350,7 +349,6 @@ func StorageBuckets() *schema.Table {
 				Name:          "gcp_storage_bucket_default_object_acls",
 				Description:   "Default access controls to apply to new objects when no ACL is provided.",
 				Resolver:      fetchStorageBucketDefaultObjectAcls,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"bucket_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

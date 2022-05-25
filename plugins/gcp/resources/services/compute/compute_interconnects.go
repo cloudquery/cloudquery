@@ -132,7 +132,6 @@ func ComputeInterconnects() *schema.Table {
 				Name:        "gcp_compute_interconnect_circuit_infos",
 				Description: "Describes a single physical circuit between the Customer and Google CircuitInfo objects are created by Google, so all fields are output only",
 				Resolver:    fetchComputeInterconnectCircuitInfos,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"interconnect_cq_id", "google_circuit_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "interconnect_cq_id",
@@ -166,7 +165,6 @@ func ComputeInterconnects() *schema.Table {
 				Name:        "gcp_compute_interconnect_expected_outages",
 				Description: "Description of a planned outage on this Interconnect",
 				Resolver:    fetchComputeInterconnectExpectedOutages,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"interconnect_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "interconnect_cq_id",

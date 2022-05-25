@@ -223,7 +223,6 @@ func DNSManagedZones() *schema.Table {
 			{
 				Name:     "gcp_dns_managed_zone_private_visibility_config_networks",
 				Resolver: fetchDnsManagedZonePrivateVisibilityConfigNetworks,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"managed_zone_cq_id", "network_url"}},
 				Columns: []schema.Column{
 					{
 						Name:        "managed_zone_cq_id",

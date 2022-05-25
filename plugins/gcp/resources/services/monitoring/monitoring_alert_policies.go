@@ -110,7 +110,6 @@ func MonitoringAlertPolicies() *schema.Table {
 				Name:        "gcp_monitoring_alert_policy_conditions",
 				Description: "A condition is a true/false test that determines when an alerting policy should open an incident If a condition evaluates to true, it signifies that something is wrong",
 				Resolver:    fetchMonitoringAlertPolicyConditions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"alert_policy_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "alert_policy_cq_id",

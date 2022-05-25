@@ -94,7 +94,6 @@ func ComputeNetworks() *schema.Table {
 				Name:        "gcp_compute_network_peerings",
 				Description: "A network peering attached to a network resource The message includes the peering name, peer network, peering state, and a flag indicating whether Google Compute Engine should automatically create routes for the peering",
 				Resolver:    fetchComputeNetworkPeerings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"network_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "network_cq_id",

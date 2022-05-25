@@ -374,7 +374,6 @@ func DomainsRegistration() *schema.Table {
 				Name:        "gcp_domains_registration_glue_records",
 				Description: "Defines a host on your domain that is a DNS name server for your domain and/or other domains Glue records are a way of making the IP address of a name server known, even when it serves DNS queries for its parent domain For example, when `nsexamplecom` is a name server for `examplecom`, the host `nsexamplecom` must have a glue record to break the circular DNS reference",
 				Resolver:    fetchDomainsRegistrationGlueRecords,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"registration_cq_id", "host_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "registration_cq_id",

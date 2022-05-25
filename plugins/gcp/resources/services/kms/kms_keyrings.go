@@ -51,7 +51,6 @@ func KmsKeyrings() *schema.Table {
 				Resolver:             fetchKmsKeyringCryptoKeys,
 				IgnoreError:          client.IgnoreErrorHandler,
 				PostResourceResolver: client.AddGcpMetadata,
-				Options:              schema.TableCreationOptions{PrimaryKeys: []string{"keyring_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "keyring_cq_id",

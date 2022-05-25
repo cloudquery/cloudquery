@@ -67,7 +67,6 @@ func DNSPolicies() *schema.Table {
 			{
 				Name:     "gcp_dns_policy_alternative_name_servers",
 				Resolver: fetchDnsPolicyAlternativeNameServers,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"policy_cq_id", "ipv4_address"}},
 				Columns: []schema.Column{
 					{
 						Name:        "policy_cq_id",
@@ -100,7 +99,6 @@ func DNSPolicies() *schema.Table {
 			{
 				Name:     "gcp_dns_policy_networks",
 				Resolver: fetchDnsPolicyNetworks,
-				Options:  schema.TableCreationOptions{PrimaryKeys: []string{"policy_cq_id", "network_url"}},
 				Columns: []schema.Column{
 					{
 						Name:        "policy_cq_id",

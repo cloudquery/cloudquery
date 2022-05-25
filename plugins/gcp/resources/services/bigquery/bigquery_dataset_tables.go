@@ -20,7 +20,6 @@ func BigqueryDatasetTables() *schema.Table {
 		Description: "Model options used for the first training run These options are immutable for subsequent training runs Default values are used for any options not specified in the input query",
 		IgnoreError: client.IgnoreErrorHandler,
 		Resolver:    listBigqueryDatasetTables,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"dataset_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "dataset_cq_id",
@@ -308,7 +307,6 @@ func BigqueryDatasetTables() *schema.Table {
 				Name:          "gcp_bigquery_dataset_table_dataset_model_training_runs",
 				Description:   "Training options used by this training run These options are mutable for subsequent training runs Default values are explicitly stored for options not specified in the input query of the first training run For subsequent training runs, any option not explicitly specified in the input query will be copied from the previous training run",
 				Resolver:      fetchBigqueryDatasetTableDatasetModelTrainingRuns,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"dataset_table_cq_id", "start_time"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

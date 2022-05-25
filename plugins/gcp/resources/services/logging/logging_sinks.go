@@ -93,7 +93,6 @@ func LoggingSinks() *schema.Table {
 				Name:        "gcp_logging_sink_exclusions",
 				Description: "Specifies a set of log entries that are not to be stored in Logging If your GCP resource receives a large volume of logs, you can use exclusions to reduce your chargeable logs Exclusions are processed after log sinks, so you can export log entries before they are excluded Note that organization-level and folder-level exclusions don't apply to child resources, and that you can't exclude audit log entries",
 				Resolver:    fetchLoggingSinkExclusions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"sink_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "sink_cq_id",
