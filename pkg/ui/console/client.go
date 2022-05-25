@@ -365,7 +365,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 
 	// use config value for dbPersistence if not already enabled through the cli
 	if !dbPersistence && c.cfg.CloudQuery.Policy != nil {
-		dbPersistence = c.cfg.CloudQuery.Policy.DBPersistence
+		dbPersistence = c.cfg.CloudQuery.Policy.PersistenceEnabled(policySource)
 	}
 
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
@@ -487,16 +487,22 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
 	log.Debug().Str("retention_period", retentionPeriod).Msg("prune policy executions received params")
-	duration, err := time.ParseDuration(retentionPeriod)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return diag.FromError(err, diag.USER)
+	var persistence []*config.PolicyPersistence
+	if retentionPeriod != "" {
+		persistence = append(persistence, &config.PolicyPersistence{
+			Name:            "*",
+			RetentionPeriod: retentionPeriod,
+		})
+	} else if c.cfg.CloudQuery.Policy != nil {
+		persistence = c.cfg.CloudQuery.Policy.Persistence
 	}
-	pruneBefore := time.Now().Add(-duration)
-	if !pruneBefore.Before(time.Now()) {
-		return diag.FromError(fmt.Errorf("prune retention period can't be in the future"), diag.USER)
+	for _, p := range persistence {
+		log.Debug().Str("policy_name", p.Name).Str("retention_period", p.RetentionPeriod).Msg("auto prune policy executions")
+		if err := policy.Prune(ctx, c.StateManager, p.Name, p.RetentionPeriod); err != nil {
+			return err
+		}
 	}
-	return policy.Prune(ctx, c.StateManager, pruneBefore)
+	return nil
 }
 
 // =====================================================================================================================

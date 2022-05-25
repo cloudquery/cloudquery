@@ -161,8 +161,16 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 	return resp, diags
 }
 
-func Prune(ctx context.Context, sta *state.Client, pruneBefore time.Time) diag.Diagnostics {
-	if err := sta.PrunePolicyExecutions(ctx, pruneBefore); err != nil {
+func Prune(ctx context.Context, sta *state.Client, policyName, retentionPeriod string) diag.Diagnostics {
+	duration, err := time.ParseDuration(retentionPeriod)
+	if err != nil {
+		return diag.FromError(err, diag.USER)
+	}
+	pruneBefore := time.Now().Add(-duration)
+	if !pruneBefore.Before(time.Now()) {
+		return diag.FromError(fmt.Errorf("prune retention period can't be in the future"), diag.USER)
+	}
+	if err = sta.PrunePolicyExecutions(ctx, policyName, pruneBefore); err != nil {
 		return diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to prune policy executions"))
 	}
 	return nil

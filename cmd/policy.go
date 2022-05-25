@@ -158,11 +158,17 @@ var (
 		Short: policyPruneHelpMsg,
 		Long:  policyPruneHelpMsg,
 		Example: `
-  # Prune the policy executions which are older than the relative time specified
-  cloudquery policy prune 24h`,
-		Args: cobra.ExactArgs(1),
+  # Prune all the policy executions which are older than the relative time specified
+  cloudquery policy prune 24h
+
+  # Prune the policy executions which apply to the configuration defined in the config file
+  cloudquery policy prune`,
+		Args: cobra.MaximumNArgs(1),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			retentionPeriod := args[0]
+			var retentionPeriod string
+			if len(args) > 0 {
+				retentionPeriod = args[0]
+			}
 			diags := c.PrunePolicyExecutions(ctx, retentionPeriod)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_prune"})
 			if diags.HasErrors() {

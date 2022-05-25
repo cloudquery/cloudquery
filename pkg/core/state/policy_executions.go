@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/doug-martin/goqu/v9"
+	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/google/uuid"
 )
 
@@ -37,35 +38,30 @@ type PolicyExecution struct {
 
 // CreateCheckResult inserts a check result in the database
 func (c *Client) CreateCheckResult(ctx context.Context, cr *CheckResult) error {
-	q := goqu.Dialect("postgres").Insert("cloudquery.check_results").Rows(cr)
-	sql, args, err := q.ToSQL()
-	if err != nil {
-		return err
-	}
-	return c.db.Exec(ctx, sql, args...)
+	return c.exec(ctx, goqu.Dialect("postgres").Insert("cloudquery.check_results").Rows(cr))
 }
 
 // CreatePolicyExecution inserts a policy execution in the database
-func (c *Client) CreatePolicyExecution(ctx context.Context, pe *PolicyExecution) (*PolicyExecution, error) {
-	var err error
+func (c *Client) CreatePolicyExecution(ctx context.Context, pe *PolicyExecution) (_ *PolicyExecution, err error) {
 	if pe.Id, err = uuid.NewUUID(); err != nil {
 		return nil, err
 	}
 	pe.Timestamp = time.Now()
-	q := goqu.Dialect("postgres").Insert("cloudquery.policy_executions").Rows(pe)
-	sql, args, err := q.ToSQL()
-	if err != nil {
-		return nil, err
-	}
-	return pe, c.db.Exec(ctx, sql, args...)
+	return pe, c.exec(ctx, goqu.Dialect("postgres").Insert("cloudquery.policy_executions").Rows(pe))
 }
 
 // PrunePolicyExecutions deletes old policy executions in the database
-func (c *Client) PrunePolicyExecutions(ctx context.Context, pruneBefore time.Time) error {
-	q := goqu.Dialect("postgres").Delete("cloudquery.policy_executions").Where(goqu.Ex{
-		"timestamp": goqu.Op{"lt": pruneBefore},
-	})
-	sql, args, err := q.ToSQL()
+func (c *Client) PrunePolicyExecutions(ctx context.Context, policyName string, pruneBefore time.Time) error {
+	var expression exp.Expression = goqu.C("timestamp").Lt(pruneBefore)
+	if policyName != "*" {
+		expression = goqu.And(expression, goqu.C("policy_name").Eq(policyName))
+	}
+	return c.exec(ctx, goqu.Dialect("postgres").Delete("cloudquery.policy_executions").Where(expression))
+}
+
+// exec runs a goqu sql expression
+func (c *Client) exec(ctx context.Context, sqlExpression exp.SQLExpression) error {
+	sql, args, err := sqlExpression.ToSQL()
 	if err != nil {
 		return err
 	}

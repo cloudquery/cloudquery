@@ -183,7 +183,26 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 }
 
 type Policy struct {
-	DBPersistence bool `hcl:"db_persistence,optional"`
+	DBPersistence *bool                `hcl:"db_persistence,optional"`
+	Persistence   []*PolicyPersistence `hcl:"persistence,block"`
+}
+
+func (p Policy) PersistenceEnabled(policySource string) bool {
+	if p.DBPersistence != nil {
+		return *p.DBPersistence
+	}
+	for _, persistence := range p.Persistence {
+		if strings.HasPrefix(policySource, persistence.Name) || persistence.Name == "*" {
+			return persistence.DBPersistence
+		}
+	}
+	return false
+}
+
+type PolicyPersistence struct {
+	Name            string `hcl:"name,label"`
+	DBPersistence   bool   `hcl:"db_persistence"`
+	RetentionPeriod string `hcl:"retention_period,optional"`
 }
 
 // configFileSchema is the schema for the top-level of a config file. We use
