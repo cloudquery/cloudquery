@@ -8,27 +8,10 @@ import (
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"google.golang.org/api/googleapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
-
-func IgnoreErrorHandler(err error) bool {
-	var gerr *googleapi.Error
-	if ok := errors.As(err, &gerr); ok {
-		if gerr.Code == http.StatusForbidden && len(gerr.Errors) > 0 {
-			switch gerr.Errors[0].Reason {
-			case "accessNotConfigured", "forbidden", "SERVICE_DISABLED":
-				return true
-			}
-		}
-		if gerr.Code == http.StatusNotFound && len(gerr.Errors) > 0 {
-			return true
-		}
-	}
-	return false
-}
 
 type diagValue struct {
 	severity diag.Severity
@@ -48,6 +31,28 @@ var httpCodeToGRPCCode = map[int]codes.Code{
 	http.StatusUnauthorized:    codes.Unauthenticated,
 	http.StatusTooManyRequests: codes.ResourceExhausted,
 	http.StatusNotImplemented:  codes.Unimplemented,
+}
+
+var (
+	codeRegex      = regexp.MustCompile(`\(Code: '[A-Z0-9\.]+'\)`)
+	projectIdRegex = regexp.MustCompile(`project(_number|s)?(\W)[0-9]+(\W)`)
+	userIdRegex    = regexp.MustCompile(`(\W)[^@ ]+@(.+?)\.iam\.gserviceaccount\.com`)
+)
+
+func IgnoreErrorHandler(err error) bool {
+	var gerr *googleapi.Error
+	if ok := errors.As(err, &gerr); ok {
+		if gerr.Code == http.StatusForbidden && len(gerr.Errors) > 0 {
+			switch gerr.Errors[0].Reason {
+			case "accessNotConfigured", "forbidden", "SERVICE_DISABLED":
+				return true
+			}
+		}
+		if gerr.Code == http.StatusNotFound && len(gerr.Errors) > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
@@ -131,12 +136,6 @@ func RedactError(projects []string, e diag.Diagnostic) diag.Diagnostic {
 	)
 	return diag.NewRedactedDiagnostic(e, r)
 }
-
-var (
-	codeRegex      = regexp.MustCompile(`\(Code: '[A-Z0-9\.]+'\)`)
-	projectIdRegex = regexp.MustCompile(`project(_number|s)?(\W)[0-9]+(\W)`)
-	userIdRegex    = regexp.MustCompile(`(\W)[^@ ]+@(.+?)\.iam\.gserviceaccount\.com`)
-)
 
 func removePII(projects []string, msg string) string {
 	for i := range projects {

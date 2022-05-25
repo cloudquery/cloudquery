@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/bigquery/v2"
 )

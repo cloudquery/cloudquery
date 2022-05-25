@@ -3,14 +3,18 @@ package cloudbilling
 import (
 	"context"
 
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
-
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/cloudbilling/v1"
 )
+
+type BillingAccountWrapper struct {
+	*cloudbilling.BillingAccount
+	*cloudbilling.ProjectBillingInfo
+}
 
 const MAX_GOROUTINES = 10
 
@@ -113,11 +117,6 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
-
-type BillingAccountWrapper struct {
-	*cloudbilling.BillingAccount
-	*cloudbilling.ProjectBillingInfo
-}
 
 func fetchProjectBillingInfo(ctx context.Context, res chan<- interface{}, c *client.Client, b cloudbilling.BillingAccount) error {
 	nextPageToken := ""

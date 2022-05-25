@@ -3,17 +3,15 @@ package compute
 import (
 	"context"
 	"encoding/json"
-	"testing"
-
 	"net/http"
 	"net/http/httptest"
+	"testing"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/julienschmidt/httprouter"
-	"google.golang.org/api/option"
-
 	"google.golang.org/api/compute/v1"
+	"google.golang.org/api/option"
 )
 
 func createComputeAutoscalerServer() (*client.Services, error) {

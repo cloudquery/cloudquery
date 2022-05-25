@@ -6,7 +6,6 @@ import (
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"google.golang.org/api/compute/v1"
 )
 

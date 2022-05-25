@@ -11,10 +11,19 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
+type doer interface {
+	Do(...googleapi.CallOption) (interface{}, error)
+	Context(context.Context) interface{}
+}
+
+type doerWrapper struct {
+	doer interface{}
+}
+
 func shouldRetryFunc(log hclog.Logger, maxRetries int) func(err error) bool {
 	totalRetries := 0
 	return func(err error) bool {
-		totalRetries += 1
+		totalRetries++
 		if totalRetries > maxRetries {
 			log.Debug("retrier not retrying, reached max retries", "err", err, "max_retries", maxRetries)
 			return false
@@ -58,17 +67,8 @@ func (c *Client) RetryingDo(ctx context.Context, doerIface interface{}, opts ...
 	return val, err
 }
 
-type doer interface {
-	Do(...googleapi.CallOption) (interface{}, error)
-	Context(context.Context) interface{}
-}
-
 func makeDoer(x interface{}) doer {
 	return &doerWrapper{doer: x}
-}
-
-type doerWrapper struct {
-	doer interface{}
 }
 
 func (d *doerWrapper) Do(opts ...googleapi.CallOption) (interface{}, error) {

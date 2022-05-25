@@ -11,9 +11,8 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/faker/v3"
 	"github.com/julienschmidt/httprouter"
-	"google.golang.org/api/option"
-
 	"google.golang.org/api/compute/v1"
+	"google.golang.org/api/option"
 )
 
 func createTargetHTTPProxies() (*client.Services, error) {

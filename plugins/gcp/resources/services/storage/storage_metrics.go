@@ -4,12 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/spf13/cast"
-
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/spf13/cast"
 	"google.golang.org/api/monitoring/v3"
 )
+
+type storageSetter func(metric *storageMetric, value *monitoring.TypedValue)
+
+type storageMetric struct {
+	BucketName        string
+	AclOperationCount int64
+	ObjectCount       int64
+	TotalSize         int64
+}
 
 const (
 	queryACLCount = `
@@ -136,8 +144,6 @@ func doTimeSeriesCall(ctx context.Context, cl *client.Client, query string, sett
 	return nil
 }
 
-type storageSetter func(metric *storageMetric, value *monitoring.TypedValue)
-
 func getDescriptorIndex(descriptors []*monitoring.LabelDescriptor, value string) int {
 	for i, d := range descriptors {
 		if d.Key == value {
@@ -145,11 +151,4 @@ func getDescriptorIndex(descriptors []*monitoring.LabelDescriptor, value string)
 		}
 	}
 	return -1
-}
-
-type storageMetric struct {
-	BucketName        string
-	AclOperationCount int64
-	ObjectCount       int64
-	TotalSize         int64
 }

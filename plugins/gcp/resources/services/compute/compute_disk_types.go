@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/cast"
-
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/spf13/cast"
 	"google.golang.org/api/compute/v1"
 )
 

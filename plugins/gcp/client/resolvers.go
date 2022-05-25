@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/thoas/go-funk"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/spf13/cast"
+	"github.com/thoas/go-funk"
 )
 
 func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {

@@ -10,6 +10,11 @@ import (
 	"google.golang.org/api/cloudkms/v1"
 )
 
+type KeyRing struct {
+	*cloudkms.KeyRing
+	Location string
+}
+
 func KmsKeyrings() *schema.Table {
 	return &schema.Table{
 		Name:                 "gcp_kms_keyrings",
@@ -354,9 +359,4 @@ func getAllKmsLocations(ctx context.Context, c *client.Client) ([]*cloudkms.Loca
 		nextPageToken = resp.NextPageToken
 	}
 	return locations, nil
-}
-
-type KeyRing struct {
-	*cloudkms.KeyRing
-	Location string
 }

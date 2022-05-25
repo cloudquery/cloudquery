@@ -25,7 +25,13 @@ type Config struct {
 	MaxRetries        int     `hcl:"max_retries,optional" default:"3"`
 }
 
-func (c Config) Example() string {
+type BackoffSettings struct {
+	Gax        gax.Backoff
+	Backoff    backoff.Config
+	MaxRetries int
+}
+
+func (Config) Example() string {
 	return `configuration {
 				// Optional. List of folders to get projects from. Required permission: resourcemanager.projects.list
 				// folder_ids = [ "organizations/<ORG_ID>", "folders/<FOLDER_ID>" ]
@@ -56,12 +62,6 @@ func (c Config) ClientOptions() []option.ClientOption {
 	return []option.ClientOption{
 		option.WithGRPCDialOption(grpc.WithConnectParams(p)),
 	}
-}
-
-type BackoffSettings struct {
-	Gax        gax.Backoff
-	Backoff    backoff.Config
-	MaxRetries int
 }
 
 func (c Config) Backoff() BackoffSettings {
