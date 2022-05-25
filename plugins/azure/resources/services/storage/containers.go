@@ -14,7 +14,6 @@ func StorageContainers() *schema.Table {
 		Name:        "azure_storage_containers",
 		Description: "Azure storage container",
 		Resolver:    fetchStorageContainers,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

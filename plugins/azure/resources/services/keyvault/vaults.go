@@ -214,7 +214,6 @@ func KeyvaultVaults() *schema.Table {
 				Name:          "azure_keyvault_vault_private_endpoint_connections",
 				Description:   "Azure ketvault vault endpoint connection",
 				Resolver:      fetchKeyvaultVaultPrivateEndpointConnections,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "private_endpoint_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -330,7 +329,6 @@ func KeyvaultVaults() *schema.Table {
 				Name:          "azure_keyvault_vault_secrets",
 				Description:   "SecretItem the secret item containing secret metadata",
 				Resolver:      fetchKeyvaultVaultSecrets,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"vault_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

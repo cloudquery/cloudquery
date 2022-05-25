@@ -467,7 +467,6 @@ func ContainerManagedClusters() *schema.Table {
 				Name:          "azure_container_managed_cluster_pip_user_assigned_id_exceptions",
 				Description:   "ManagedClusterPodIdentityException",
 				Resolver:      fetchContainerManagedClusterPipUserAssignedIdentityExceptions,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"managed_cluster_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -497,7 +496,6 @@ func ContainerManagedClusters() *schema.Table {
 				Name:          "azure_container_managed_cluster_private_link_resources",
 				Description:   "PrivateLinkResource a private link resource",
 				Resolver:      fetchContainerManagedClusterPrivateLinkResources,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"managed_cluster_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -545,7 +543,6 @@ func ContainerManagedClusters() *schema.Table {
 				Name:        "azure_container_managed_cluster_agent_pool_profiles",
 				Description: "ManagedClusterAgentPoolProfile profile for the container service agent pool",
 				Resolver:    fetchContainerManagedClusterAgentPoolProfiles,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"managed_cluster_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "managed_cluster_cq_id",
@@ -832,7 +829,6 @@ func ContainerManagedClusters() *schema.Table {
 				Name:          "azure_container_managed_cluster_pip_user_assigned_identities",
 				Description:   "ManagedClusterPodIdentity",
 				Resolver:      fetchContainerManagedClusterPipUserAssignedIdentities,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"managed_cluster_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

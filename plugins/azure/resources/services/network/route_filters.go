@@ -81,7 +81,6 @@ func NetworkRouteFilters() *schema.Table {
 				Name:        "azure_network_route_filter_rules",
 				Description: "Route Filter Rule Resource.",
 				Resolver:    fetchNetworkRouteFilterRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"route_filter_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "route_filter_cq_id",

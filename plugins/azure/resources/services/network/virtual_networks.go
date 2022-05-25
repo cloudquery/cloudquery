@@ -143,7 +143,6 @@ func NetworkVirtualNetworks() *schema.Table {
 				Name:        "azure_network_virtual_network_subnets",
 				Description: "Azure virtual network subnet",
 				Resolver:    fetchNetworksVirtualNetworkSubnets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "virtual_network_cq_id",
@@ -348,7 +347,6 @@ func NetworkVirtualNetworks() *schema.Table {
 				Name:          "azure_network_virtual_network_peerings",
 				Description:   "Azure virtual network peering",
 				Resolver:      fetchNetworksVirtualNetworkPeerings,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"virtual_network_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

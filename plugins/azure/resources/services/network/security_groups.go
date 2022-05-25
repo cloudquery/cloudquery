@@ -75,7 +75,6 @@ func NetworkSecurityGroups() *schema.Table {
 				Name:        "azure_network_security_group_security_rules",
 				Description: "SecurityRule network security rule",
 				Resolver:    fetchNetworkSecurityGroupSecurityRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",
@@ -195,7 +194,6 @@ func NetworkSecurityGroups() *schema.Table {
 				Name:          "azure_network_security_group_flow_logs",
 				Description:   "FlowLog a flow log resource",
 				Resolver:      fetchNetworkSecurityGroupFlowLogs,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -329,7 +327,6 @@ func NetworkSecurityGroups() *schema.Table {
 				Name:        "azure_network_security_group_default_security_rules",
 				Description: "SecurityRule network security rule",
 				Resolver:    fetchNetworkSecurityGroupDefaultSecurityRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"security_group_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "security_group_cq_id",

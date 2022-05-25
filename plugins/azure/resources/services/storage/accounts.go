@@ -681,7 +681,6 @@ func StorageAccounts() *schema.Table {
 				Name:          "azure_storage_account_network_rule_set_virtual_network_rules",
 				Description:   "VirtualNetworkRule virtual Network rule. ",
 				Resolver:      fetchStorageAccountNetworkRuleSetVirtualNetworkRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "virtual_network_resource_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -712,7 +711,6 @@ func StorageAccounts() *schema.Table {
 				Name:          "azure_storage_account_network_rule_set_ip_rules",
 				Description:   "IPRule IP rule with specific IP or IP range in CIDR format. ",
 				Resolver:      fetchStorageAccountNetworkRuleSetIpRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "ip_address_or_range"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -738,7 +736,6 @@ func StorageAccounts() *schema.Table {
 				Name:          "azure_storage_account_private_endpoint_connections",
 				Description:   "Azure storage account private endpoint connection",
 				Resolver:      fetchStorageAccountPrivateEndpointConnections,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

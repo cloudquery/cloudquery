@@ -210,7 +210,6 @@ func MySQLServers() *schema.Table {
 				Name:        "azure_mysql_server_private_endpoint_connections",
 				Description: "Azure mysql server private endpoint connection",
 				Resolver:    fetchMySQLServerPrivateEndpointConnections,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -260,7 +259,6 @@ func MySQLServers() *schema.Table {
 				Name:        "azure_mysql_server_configurations",
 				Description: "Azure mysql server configuration",
 				Resolver:    fetchMySQLServerConfigurations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",

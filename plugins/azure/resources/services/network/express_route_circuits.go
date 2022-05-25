@@ -165,7 +165,6 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				Name:        "azure_network_express_route_circuit_authorizations",
 				Description: "Authorization in an ExpressRouteCircuit resource.",
 				Resolver:    fetchNetworkExpressRouteCircuitAuthorizations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_circuit_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_circuit_cq_id",
@@ -218,7 +217,6 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				Name:        "azure_network_express_route_circuit_peerings",
 				Description: "Peering in an ExpressRouteCircuit resource.",
 				Resolver:    fetchNetworkExpressRouteCircuitPeerings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_circuit_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_circuit_cq_id",
@@ -433,7 +431,6 @@ func NetworkExpressRouteCircuits() *schema.Table {
 						Name:        "azure_network_express_route_circuit_connections",
 						Description: "Express Route Circuit Connection in an ExpressRouteCircuitPeering resource.",
 						Resolver:    fetchNetworkExpressRouteCircuitConnections,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_circuit_peering_cq_id", "id"}},
 						Columns: []schema.Column{
 							{
 								Name:        "express_route_circuit_peering_cq_id",
@@ -510,7 +507,6 @@ func NetworkExpressRouteCircuits() *schema.Table {
 						Name:        "azure_network_peer_express_route_circuit_connections",
 						Description: "Peer Express Route Circuit Connection in an ExpressRouteCircuitPeering resource.",
 						Resolver:    fetchNetworkPeerExpressRouteCircuitConnections,
-						Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_circuit_peering_cq_id", "id"}},
 						Columns: []schema.Column{
 							{
 								Name:        "express_route_circuit_peering_cq_id",

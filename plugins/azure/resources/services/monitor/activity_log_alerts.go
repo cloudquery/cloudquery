@@ -75,7 +75,6 @@ func MonitorActivityLogAlerts() *schema.Table {
 				Name:        "azure_monitor_activity_log_alert_conditions",
 				Description: "ActivityLogAlertLeafCondition an Activity Log alert condition that is met by comparing an activity log field and value",
 				Resolver:    fetchMonitorActivityLogAlertConditions,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"activity_log_alert_cq_id", "field"}},
 				Columns: []schema.Column{
 					{
 						Name:        "activity_log_alert_cq_id",
@@ -106,7 +105,6 @@ func MonitorActivityLogAlerts() *schema.Table {
 				Name:        "azure_monitor_activity_log_alert_action_groups",
 				Description: "ActivityLogAlertActionGroup a pointer to an Azure Action Group",
 				Resolver:    fetchMonitorActivityLogAlertActionGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"activity_log_alert_cq_id", "action_group_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "activity_log_alert_cq_id",

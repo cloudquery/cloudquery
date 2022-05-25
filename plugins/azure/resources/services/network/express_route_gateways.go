@@ -87,7 +87,6 @@ func NetworkExpressRouteGateways() *schema.Table {
 				Name:        "azure_network_express_route_connections",
 				Description: "ExpressRouteConnection resource.",
 				Resolver:    fetchNetworkExpressRouteConnections,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_gateway_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_gateway_cq_id",

@@ -203,7 +203,6 @@ func NetworkInterfaces() *schema.Table {
 				Name:        "azure_network_interface_ip_configurations",
 				Description: "NetworkInterface IP Configurations. ",
 				Resolver:    fetchNetworkInterfaceIPConfigurations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"interface_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "interface_cq_id",

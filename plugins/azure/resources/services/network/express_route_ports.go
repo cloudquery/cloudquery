@@ -147,7 +147,6 @@ func NetworkExpressRoutePorts() *schema.Table {
 				Name:        "azure_network_express_route_links",
 				Description: "ExpressRouteLink resource.",
 				Resolver:    fetchNetworkExpressRouteLinks,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"express_route_port_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_port_cq_id",

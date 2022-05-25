@@ -15,7 +15,6 @@ func StorageBlobServices() *schema.Table {
 		Name:        "azure_storage_blob_services",
 		Description: "Azure storage blob service",
 		Resolver:    fetchStorageBlobServices,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"account_cq_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_cq_id",

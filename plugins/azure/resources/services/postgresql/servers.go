@@ -210,7 +210,6 @@ func PostgresqlServers() *schema.Table {
 				Name:          "azure_postgresql_server_private_endpoint_connections",
 				Description:   "Azure postgresql server private endpoint connection",
 				Resolver:      fetchPostgresqlServerPrivateEndpointConnections,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -261,7 +260,6 @@ func PostgresqlServers() *schema.Table {
 				Name:        "azure_postgresql_server_configurations",
 				Description: "Azure postgresql server configuration",
 				Resolver:    fetchPostgresqlServerConfigurations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -327,7 +325,6 @@ func PostgresqlServers() *schema.Table {
 				Name:        "azure_postgresql_server_firewall_rules",
 				Description: "Azure postgresql server firewall rule",
 				Resolver:    fetchPostgresqlServerFirewallRules,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",

@@ -128,7 +128,6 @@ func SQLServers() *schema.Table {
 				Name:          "azure_sql_server_private_endpoint_connections",
 				Description:   "List of private endpoint connections on a server",
 				Resolver:      fetchSqlServerPrivateEndpointConnections,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -179,7 +178,6 @@ func SQLServers() *schema.Table {
 				Name:          "azure_sql_server_firewall_rules",
 				Description:   "The list of server firewall rules.",
 				Resolver:      fetchSqlServerFirewallRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -232,7 +230,6 @@ func SQLServers() *schema.Table {
 				Name:          "azure_sql_server_admins",
 				Description:   "ServerAzureADAdministrator azure Active Directory administrator",
 				Resolver:      fetchSqlServerAdmins,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -293,7 +290,6 @@ func SQLServers() *schema.Table {
 				Name:        "azure_sql_server_db_blob_auditing_policies",
 				Description: "Database blob auditing policy",
 				Resolver:    fetchSqlServerDbBlobAuditingPolicies,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -379,7 +375,6 @@ func SQLServers() *schema.Table {
 				Name:        "azure_sql_server_devops_audit_settings",
 				Description: "ServerDevOpsAuditingSettings a server DevOps auditing settings",
 				Resolver:    fetchSqlServerDevopsAuditSettings,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -478,7 +473,6 @@ func SQLServers() *schema.Table {
 				Name:        "azure_sql_server_vulnerability_assessments",
 				Description: "Server vulnerability assessment",
 				Resolver:    fetchSqlServerVulnerabilityAssessments,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "server_cq_id",
@@ -548,7 +542,6 @@ func SQLServers() *schema.Table {
 				Name:          "azure_sql_server_virtual_network_rules",
 				Description:   "List of virtual network for a server",
 				Resolver:      fetchSqlServerVirtualNetworkRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -599,7 +592,6 @@ func SQLServers() *schema.Table {
 				Name:          "azure_sql_server_security_alert_policy",
 				Description:   "List the server's threat detection policies",
 				Resolver:      fetchSqlServerSecurityAlertPolicies,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 				IgnoreInTests: false,
 				Columns: []schema.Column{
 					{
