@@ -121,12 +121,7 @@ func (c *Connection) BuildFromConnParams() error {
 	}
 	u.RawQuery = v.Encode()
 
-	dbUrl := &dburl.URL{
-		OriginalScheme: c.Type,
-		URL:            u,
-	}
-
-	c.DSN = dbUrl.String()
+	c.DSN = (&dburl.URL{OriginalScheme: c.Type, URL: u}).String()
 
 	return nil
 }
