@@ -106,7 +106,6 @@ func Route53HostedZones() *schema.Table {
 				Name:          "aws_route53_hosted_zone_query_logging_configs",
 				Description:   "A complex type that contains information about a configuration for DNS query logging.",
 				Resolver:      fetchRoute53HostedZoneQueryLoggingConfigs,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -246,7 +245,6 @@ func Route53HostedZones() *schema.Table {
 				Name:          "aws_route53_hosted_zone_traffic_policy_instances",
 				Description:   "A complex type that contains settings for the new traffic policy instance.",
 				Resolver:      fetchRoute53HostedZoneTrafficPolicyInstances,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -309,7 +307,6 @@ func Route53HostedZones() *schema.Table {
 				Name:          "aws_route53_hosted_zone_vpc_association_authorizations",
 				Description:   "(Private hosted zones only) A complex type that contains information about an Amazon VPC.",
 				Resolver:      fetchRoute53HostedZoneVpcAssociationAuthorizations,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"hosted_zone_cq_id", "vpc_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

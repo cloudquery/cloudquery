@@ -446,7 +446,6 @@ func CognitoUserPools() *schema.Table {
 				Name:        "aws_cognito_user_pool_schema_attributes",
 				Description: "Contains information about the schema attribute.",
 				Resolver:    fetchCognitoUserPoolSchemaAttributes,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"user_pool_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "user_pool_cq_id",
@@ -517,7 +516,6 @@ func CognitoUserPools() *schema.Table {
 				Description:   "A container for information about an identity provider.",
 				Resolver:      fetchCognitoUserPoolIdentityProviders,
 				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"user_pool_cq_id", "provider_name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

@@ -132,7 +132,6 @@ func Ec2NatGateways() *schema.Table {
 				Name:        "aws_ec2_nat_gateway_addresses",
 				Description: "Describes the IP addresses and network interface associated with a NAT gateway.",
 				Resolver:    fetchEc2NatGatewayAddresses,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"nat_gateway_cq_id", "network_interface_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "nat_gateway_cq_id",

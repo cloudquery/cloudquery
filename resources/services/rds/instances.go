@@ -492,7 +492,6 @@ func RdsInstances() *schema.Table {
 				Name:          "aws_rds_instance_associated_roles",
 				Description:   "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
 				Resolver:      fetchRdsInstanceAssociatedRoles,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "role_arn"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -528,7 +527,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_instance_automated_backups_replications",
 				Description: "Automated backups of a DB instance replicated to another AWS Region",
 				Resolver:    fetchRdsInstanceDbInstanceAutomatedBackupsReplications,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_instance_automated_backups_arn"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -554,7 +552,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_parameter_groups",
 				Description: "The status of the DB parameter group",
 				Resolver:    fetchRdsInstanceDbParameterGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_parameter_group_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -585,7 +582,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_security_groups",
 				Description: "This data type is used as a response element in the following actions:  * ModifyDBInstance  * RebootDBInstance  * RestoreDBInstanceFromDBSnapshot  * RestoreDBInstanceToPointInTime ",
 				Resolver:    fetchRdsInstanceDbSecurityGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "db_security_group_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -616,7 +612,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_db_subnet_group_subnets",
 				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
 				Resolver:    fetchRdsInstanceDbSubnetGroupSubnets,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "subnet_identifier"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -658,7 +653,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
 				Resolver:    fetchRdsInstanceDomainMemberships,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "domain"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -700,7 +694,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_option_group_memberships",
 				Description: "Provides information on the option groups the DB instance is a member of. ",
 				Resolver:    fetchRdsInstanceOptionGroupMemberships,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "option_group_name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -724,7 +717,6 @@ func RdsInstances() *schema.Table {
 				Name:        "aws_rds_instance_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
 				Resolver:    fetchRdsInstanceVpcSecurityGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"instance_cq_id", "vpc_security_group_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",

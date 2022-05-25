@@ -17,7 +17,6 @@ func Elbv2Listeners() *schema.Table {
 		Description:   "Information about a listener.",
 		Resolver:      fetchElbv2Listeners,
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

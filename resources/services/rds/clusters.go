@@ -365,7 +365,6 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_associated_roles",
 				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB cluster. ",
 				Resolver:    fetchRdsClusterAssociatedRoles,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "role_arn"}},
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -394,7 +393,6 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_db_cluster_members",
 				Description: "Contains information about an instance that is part of a DB cluster. ",
 				Resolver:    fetchRdsClusterDbClusterMembers,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "db_instance_identifier"}},
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -430,7 +428,6 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
 				Resolver:    fetchRdsClusterDomainMemberships,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "domain"}},
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -466,7 +463,6 @@ func RdsClusters() *schema.Table {
 				Name:        "aws_rds_cluster_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
 				Resolver:    fetchRdsClusterVpcSecurityGroups,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"cluster_cq_id", "vpc_security_group_id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",

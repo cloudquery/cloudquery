@@ -129,7 +129,6 @@ func Wafv2WebAcls() *schema.Table {
 				Name:          "aws_wafv2_web_acl_rules",
 				Description:   "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
 				Resolver:      fetchWafv2WebAclRules,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -196,7 +195,6 @@ func Wafv2WebAcls() *schema.Table {
 				Name:          "aws_wafv2_web_acl_post_process_firewall_manager_rule_groups",
 				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
 				Resolver:      fetchWafv2WebAclPostProcessFirewallManagerRuleGroups,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -251,7 +249,6 @@ func Wafv2WebAcls() *schema.Table {
 				Name:          "aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups",
 				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
 				Resolver:      fetchWafv2WebAclPreProcessFirewallManagerRuleGroups,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"web_acl_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

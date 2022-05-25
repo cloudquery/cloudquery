@@ -378,7 +378,6 @@ func Route53Domains() *schema.Table {
 				Name:        "aws_route53_domain_nameservers",
 				Description: "Nameserver includes the following elements.",
 				Resolver:    fetchRoute53DomainNameservers,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"domain_cq_id", "name"}},
 				Columns: []schema.Column{
 					{
 						Name:        "domain_cq_id",

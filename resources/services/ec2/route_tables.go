@@ -69,7 +69,6 @@ func Ec2RouteTables() *schema.Table {
 				Name:        "aws_ec2_route_table_associations",
 				Description: "Describes an association between a route table and a subnet or gateway.",
 				Resolver:    fetchEc2RouteTableAssociations,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "route_table_cq_id",
@@ -118,7 +117,6 @@ func Ec2RouteTables() *schema.Table {
 				Name:          "aws_ec2_route_table_propagating_vgws",
 				Description:   "Describes a virtual private gateway propagating route.",
 				Resolver:      fetchEc2RouteTablePropagatingVgws,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"route_table_cq_id", "gateway_id"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

@@ -124,7 +124,6 @@ func Ec2Subnets() *schema.Table {
 				Name:          "aws_ec2_subnet_ipv6_cidr_block_association_sets",
 				Description:   "Describes an IPv6 CIDR block associated with a subnet.",
 				Resolver:      fetchEc2SubnetIpv6CidrBlockAssociationSets,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subnet_cq_id", "ipv6_cidr_block"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
