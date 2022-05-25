@@ -274,13 +274,13 @@ func (e *Executor) createCheckResult(ctx context.Context, selector []string, pol
 		}
 		m = internal.FlattenRow(m)
 		if len(r.Identifiers) > 0 {
-			m["identifiers"] = internal.FlattenRow(r.Identifiers)
+			m["cq_identifiers"] = internal.FlattenRow(r.Identifiers)
 		}
 		if r.Reason != "" {
-			m["reason"] = r.Reason
+			m["cq_reason"] = r.Reason
 		}
 		if r.Status != "" {
-			m["status"] = r.Status
+			m["cq_status"] = r.Status
 		}
 		rows[i] = m
 	}
