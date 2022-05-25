@@ -44,6 +44,7 @@ BEGIN
 END;
 $$ LANGUAGE "plpgsql";
 
+DROP TRIGGER IF EXISTS "CalculatePolicyExecutionsStats" ON "cloudquery"."check_results";
 CREATE TRIGGER "CalculatePolicyExecutionsStats"
 AFTER INSERT ON "cloudquery"."check_results"
 FOR EACH ROW
