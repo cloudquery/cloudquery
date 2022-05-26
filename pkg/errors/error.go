@@ -59,7 +59,7 @@ func classifyError(err error) errClass {
 		}
 	}
 
-	if errors.Is(err, context.Canceled) {
+	if errors.Is(err, context.Canceled) || strings.Contains(err.Error(), context.Canceled.Error()) {
 		return errCancellation
 	}
 
