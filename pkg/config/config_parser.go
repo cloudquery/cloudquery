@@ -180,6 +180,7 @@ func handleConnectionBlock(c *Connection) error {
 		c.DSN = ds
 		return nil
 	}
+
 	if c.DSN != "" {
 		if c.IsAnyConnParamsSet() {
 			return errors.New("DSN specified along with explicit attributes, only one type is supported")
@@ -187,10 +188,5 @@ func handleConnectionBlock(c *Connection) error {
 		return nil
 	}
 
-	s, err := c.BuildFromConnParams()
-	if err != nil {
-		return err
-	}
-	c.DSN = s.String()
-	return nil
+	return c.BuildFromConnParams()
 }
