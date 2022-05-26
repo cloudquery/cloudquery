@@ -211,7 +211,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "resource \"slow_resource\" is duplicate", Type: 7, Severity: 2, Summary: "resource \"slow_resource\" is duplicate", Description: diag.Description{Summary: "resource \"slow_resource\" is duplicate", Detail: "configuration has duplicate resources"}}},
+			ExpectedDiags: []diag.FlatDiag{{Err: "resource \"slow_resource\" is duplicate", Type: diag.USER, Severity: diag.ERROR, Summary: "resource \"slow_resource\" is duplicate", Description: diag.Description{Summary: "resource \"slow_resource\" is duplicate", Detail: "configuration has duplicate resources"}}},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
