@@ -245,15 +245,6 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	return &total, nil
 }
 
-func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, policyName string) string {
-	selector := []string{policyExecution.PolicyName}
-	if !strings.HasPrefix(selector[0], policyExecution.Location+"//") {
-		selector[0] = policyExecution.Location + "/"
-	}
-	selector = append(selector, policyPath...)
-	return strings.Join(append(selector, policyName), "/")
-}
-
 func (e *Executor) createCheckResult(ctx context.Context, policyExecution *state.PolicyExecution, q *Check, qr *QueryResult, err error) error {
 	if policyExecution == nil {
 		return nil
@@ -507,4 +498,13 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 		r.Reason = b.String()
 	}
 	return r, nil
+}
+
+func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, policyName string) string {
+	selector := []string{policyExecution.PolicyName}
+	if !strings.HasPrefix(selector[0], policyExecution.Location+"//") {
+		selector[0] = policyExecution.Location + "/"
+	}
+	selector = append(selector, policyPath...)
+	return strings.Join(append(selector, policyName), "/")
 }
