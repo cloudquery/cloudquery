@@ -13,6 +13,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/internal/network"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-version"
 )
@@ -174,13 +175,13 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
 	// download checksums
 	osFs := file.NewOsFs()
-	if err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil); err != nil {
+	if err := osFs.DownloadFile(network.NewHttpGetDownloader(ctx, checksumsURL), checksumsPath, nil); err != nil {
 		l.Error().Err(err).Msg("failed to download checksums file")
 		return false
 	}
 	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums signature")
 	// download checksums signature
-	if err := osFs.DownloadFile(ctx, checksumsPath+".sig", checksumsURL+".sig", nil); err != nil {
+	if err := osFs.DownloadFile(network.NewHttpGetDownloader(ctx, checksumsURL+".sig"), checksumsPath+".sig", nil); err != nil {
 		l.Error().Err(err).Msg("failed to download signature file")
 		return false
 	}
@@ -225,7 +226,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 
 	providerURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/%s", provider.Source, ProviderRepoName(provider.Name), requestedVersion, getPluginBinaryName(provider.Name))
 	providerPath := h.getProviderPath(provider.Source, provider.Name, requestedVersion)
-	if err := osFs.DownloadFile(ctx, providerPath, providerURL, progressCB); err != nil {
+	if err := osFs.DownloadFile(network.NewHttpGetDownloader(ctx, providerURL), providerPath, progressCB); err != nil {
 		return ProviderBinary{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", provider.Source, provider.Name, requestedVersion, err)
 	}
 

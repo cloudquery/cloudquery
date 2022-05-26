@@ -21,6 +21,7 @@ func TestFileFunc(t *testing.T) {
 	fileContent := "teststring"
 	_, err = f.WriteString(fileContent)
 	assert.NoError(t, err)
+	assert.NoError(t, f.Close())
 
 	val, err := fileFunc.Call([]cty.Value{
 		cty.StringVal(testFilePath),

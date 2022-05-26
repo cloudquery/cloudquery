@@ -1,15 +1,12 @@
 package file
 
 import (
-	"context"
-	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"sync"
 
+	"github.com/cloudquery/cloudquery/internal/network"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/spf13/afero"
 )
 
@@ -37,8 +34,8 @@ func NewOsFs() *OsFs {
 // DownloadFile will download url to a local file. It's efficient because it will
 // write as it downloads and not load the whole file into memory. We pass an io.TeeReader
 // into Copy() to report progress on the download.
-func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
-	if err := o.downloadFile(ctx, filepath, url, progressUpdater); err != nil {
+func (o *OsFs) DownloadFile(downloader network.Downloader, filepath string, progressUpdater ui.ProgressUpdateFunc) error {
+	if err := o.downloadFile(downloader, filepath, progressUpdater); err != nil {
 		return err
 	}
 	if err := o.fs.Rename(filepath+".tmp", filepath); err != nil {
@@ -47,7 +44,7 @@ func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressU
 	return nil
 }
 
-func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
+func (o *OsFs) downloadFile(downloader network.Downloader, filepath string, progressUpdater ui.ProgressUpdateFunc) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := o.fs.Create(filepath + ".tmp")
@@ -55,24 +52,14 @@ func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressU
 		return err
 	}
 	defer func() { _ = out.Close() }()
-	// Get the data
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	body, length, err := downloader()
 	if err != nil {
 		return err
 	}
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("got %d http code instead expected %d", resp.StatusCode, http.StatusOK)
-	}
-
-	var reader io.Reader = resp.Body
+	defer body.Close()
+	var reader io.Reader = body
 	if progressUpdater != nil {
-		reader = progressUpdater(resp.Body, resp.ContentLength)
+		reader = progressUpdater(body, length)
 	}
 	// Create our progress reporter and pass it to be used alongside our writer
 	if _, err = io.Copy(out, reader); err != nil {
