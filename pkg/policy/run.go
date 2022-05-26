@@ -194,7 +194,7 @@ func loadPolicyFromSource(ctx context.Context, directory, name, subPolicy, sourc
 	if dd.HasErrors() {
 		return nil, diag.FromError(dd, diag.USER)
 	}
-	policy, dd := DecodePolicy(f.Body, nil, meta.Directory)
+	policy, dd := decodePolicy(f.Body, meta.Directory)
 	if dd.HasErrors() {
 		return nil, diag.FromError(dd, diag.USER)
 	}

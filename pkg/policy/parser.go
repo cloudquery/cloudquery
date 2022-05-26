@@ -53,34 +53,35 @@ var policySchema = &hcl.BodySchema{
 	},
 }
 
-func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policy, hcl.Diagnostics) {
-	content, contentDiags := body.Content(policyWrapperSchema)
-	if contentDiags.HasErrors() {
+func decodePolicy(body hcl.Body, basePath string) (*Policy, hcl.Diagnostics) {
+	content, diags := body.Content(policyWrapperSchema)
+	if diags.HasErrors() {
 		return nil, diags
 	}
 	if len(content.Blocks) > 1 {
-		return nil, hcl.Diagnostics{{
+		return nil, diags.Append(&hcl.Diagnostic{
 			Severity: hcl.DiagError,
 			Summary:  `Only single root policy block allowed`,
 			Detail:   `Only a single policy block is allowed in root level policy`,
 			Subject:  &content.MissingItemRange,
-		}}
+		})
 	}
 
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "policy":
-			return DecodePolicyBlock(block, convert.GetEvalContext(basePath))
+			p, moreDiags := DecodePolicyBlock(block, convert.GetEvalContext(basePath))
+			return p, diags.Extend(moreDiags)
 		default:
 			panic("unexpected block")
 		}
 	}
-	return nil, hcl.Diagnostics{{
+	return nil, diags.Append(&hcl.Diagnostic{
 		Severity: hcl.DiagError,
 		Summary:  `No policy root found`,
 		Detail:   `policy root block required in policy file`,
 		Subject:  &content.MissingItemRange,
-	}}
+	})
 }
 
 func DecodePolicyBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Policy, hcl.Diagnostics) {
