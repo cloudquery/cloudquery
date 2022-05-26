@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"sort"
 	"testing"
 	"time"
 
@@ -24,7 +25,7 @@ func Test_Fetch(t *testing.T) {
 	testCases := []struct {
 		Name             string
 		Options          FetchOptions
-		ExpectedDiags    []diag.FlatDiag
+		ExpectedDiags    diag.FlatDiags
 		ExpectedResponse *FetchResponse
 		Timeout          time.Duration
 	}{
@@ -155,7 +156,8 @@ func Test_Fetch(t *testing.T) {
 					Type:        diag.USER,
 					Severity:    diag.ERROR,
 					Summary:     "operation was canceled by user",
-					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "operation was canceled by user", Detail: ""}},
+					Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "operation was canceled by user", Detail: ""},
+				},
 			},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
@@ -259,8 +261,12 @@ func Test_Fetch(t *testing.T) {
 				defer cancel()
 			}
 			resp, diags := Fetch(ctx, sta, storage, pManager, &tc.Options)
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
 				flattenedDiags := diag.FlattenDiags(diags, false)
+
+				sort.Stable(tc.ExpectedDiags)
+				sort.Stable(flattenedDiags)
+
 				require.Len(t, flattenedDiags, len(tc.ExpectedDiags))
 				for i, expected := range tc.ExpectedDiags {
 					actual := flattenedDiags[i]
@@ -275,7 +281,7 @@ func Test_Fetch(t *testing.T) {
 					assert.Equal(t, expected.Severity, actual.Severity)
 				}
 			} else {
-				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
+				assert.Equal(t, diag.FlatDiags{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ExpectedResponse == nil {
 				require.Nil(t, resp)
