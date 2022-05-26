@@ -49,7 +49,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			ExpectedDiags: []diag.FlatDiag{
+			ExpectedDiags: diag.FlatDiags{
 				{
 					Err:         "error from provider",
 					Resource:    "error_resource",
@@ -150,7 +150,7 @@ func Test_Fetch(t *testing.T) {
 				},
 			},
 			Timeout: time.Second * 4,
-			ExpectedDiags: []diag.FlatDiag{
+			ExpectedDiags: diag.FlatDiags{
 				{
 					Err:         "context deadline exceeded",
 					Type:        diag.USER,
@@ -211,7 +211,7 @@ func Test_Fetch(t *testing.T) {
 					},
 				},
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "resource \"slow_resource\" is duplicate", Type: diag.USER, Severity: diag.ERROR, Summary: "resource \"slow_resource\" is duplicate", Description: diag.Description{Summary: "resource \"slow_resource\" is duplicate", Detail: "configuration has duplicate resources"}}},
+			ExpectedDiags: diag.FlatDiags{{Err: "resource \"slow_resource\" is duplicate", Type: diag.USER, Severity: diag.ERROR, Summary: "resource \"slow_resource\" is duplicate", Description: diag.Description{Summary: "resource \"slow_resource\" is duplicate", Detail: "configuration has duplicate resources"}}},
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",

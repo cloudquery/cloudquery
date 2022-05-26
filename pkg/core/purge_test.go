@@ -51,7 +51,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 				DryRun:     true,
 			},
-			ExpectedDryRunDiags: []diag.FlatDiag{
+			ExpectedDryRunDiags: diag.FlatDiags{
 				{
 					Err:      "no providers were given",
 					Type:     diag.INTERNAL,
@@ -67,7 +67,7 @@ func Test_PurgeProviderData(t *testing.T) {
 				LastUpdate: 0,
 				DryRun:     true,
 			},
-			ExpectedDryRunDiags: []diag.FlatDiag{
+			ExpectedDryRunDiags: diag.FlatDiags{
 				{
 					Err:      "no such provider bad-plugin. plugin might be missing from directory or wasn't downloaded",
 					Type:     diag.INTERNAL,

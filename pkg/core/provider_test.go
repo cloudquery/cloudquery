@@ -50,7 +50,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 			Options: &CheckUpdatesOptions{Providers: []registry.Provider{
 				{Name: "not-existing", Version: "v0.0.1", Source: registry.DefaultOrganization},
 			}},
-			ExpectedDiags: []diag.FlatDiag{
+			ExpectedDiags: diag.FlatDiags{
 				{
 					Err:      "failed to find provider[not-existing] latest version",
 					Type:     diag.INTERNAL,
@@ -79,7 +79,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		t.Run(tc.Name, func(t *testing.T) {
 			reg := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
 			updates, diags := CheckAvailableUpdates(context.Background(), reg, tc.Options)
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
 				assert.Equal(t, tc.ExpectedDiags, diag.FlattenDiags(diags, true))
 			} else {
 				assert.Len(t, tc.ExpectedDiags, 0)

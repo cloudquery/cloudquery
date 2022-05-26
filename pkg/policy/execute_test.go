@@ -149,7 +149,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+			ExpectedDiags: diag.FlatDiags{{Err: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
 				Summary:     "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)",
 				Description: diag.Description{Summary: "broken_policy_query/broken-query: ERROR: syntax error at or near \"SECT\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
@@ -169,7 +169,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 					Query: "SECT * OM testview",
 				},
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
+			ExpectedDiags: diag.FlatDiags{{Err: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Type: diag.DATABASE, Severity: diag.ERROR,
 				Summary:     "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)",
 				Description: diag.Description{Summary: "broken_policy_view/failed to create view broken_policy_view/brokenview: ERROR: syntax error at or near \"INVALID\" (SQLSTATE 42601)", Detail: ""}}},
 			ShouldBeEmpty: true,
@@ -204,10 +204,10 @@ func TestExecutor_executePolicy(t *testing.T) {
 			}
 
 			res, diags := executor.Execute(context.Background(), execReq, p, nil)
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
+				assert.Equal(t, diag.FlatDiags{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -379,7 +379,7 @@ func TestExecutor_Execute(t *testing.T) {
 			Name:          "multilayer policy w/ using view inherited from parent",
 			Policy:        multiLayerWithInheritedView,
 			ShouldBeEmpty: true,
-			ExpectedDiags: []diag.FlatDiag{{Err: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Type: diag.DATABASE, Severity: diag.ERROR,
+			ExpectedDiags: diag.FlatDiags{{Err: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Type: diag.DATABASE, Severity: diag.ERROR,
 				Summary:     "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)",
 				Description: diag.Description{Summary: "test/subpolicy/query-with-view: ERROR: relation \"testview\" does not exist (SQLSTATE 42P01)", Detail: ""}}},
 		},
@@ -405,10 +405,10 @@ func TestExecutor_Execute(t *testing.T) {
 			}
 			filtered := tc.Policy.Filter(tc.Selector)
 			res, diags := executor.Execute(context.Background(), execReq, &filtered, nil)
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
+				assert.Equal(t, diag.FlatDiags{}, diag.FlattenDiags(diags, false))
 			}
 			if tc.ShouldBeEmpty {
 				assert.Empty(t, res)
@@ -479,7 +479,7 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	}{{
 		Name:              "fetch_check_enabled",
 		DisableFetchCheck: false,
-		ExpectedDiags: []diag.FlatDiag{{Err: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider",
+		ExpectedDiags: diag.FlatDiags{{Err: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider",
 			Type: diag.USER, Severity: diag.ERROR, Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Description: diag.Description{Resource: "", ResourceID: []string(nil), Summary: "failed to get fetch summary for provider testProvider: could not find a completed fetch for requested provider", Detail: "test: please run `cloudquery fetch` before running policy"}}},
 	},
 		{
@@ -499,10 +499,10 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 
 			_, diags := executor.Execute(context.Background(), executeRequest, policy, nil)
 
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
+				assert.Equal(t, diag.FlatDiags{}, diag.FlattenDiags(diags, false))
 			}
 		})
 	}
