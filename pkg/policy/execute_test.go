@@ -729,3 +729,46 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 	}
 
 }
+
+func TestNormalizeCheckSelector(t *testing.T) {
+
+	testCases := []struct {
+		pe               *state.PolicyExecution
+		PolicyPath       []string
+		CheckName        string
+		ExpectedSelector string
+	}{
+		{
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws",
+			},
+			[]string{"pci_dss_v3.2.1", "cloudtrail"},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		}, {
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws//pci_dss_v3.2.1",
+			},
+			[]string{"cloudtrail"},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		}, {
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws//pci_dss_v3.2.1/cloudtrail",
+			},
+			[]string{},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		},
+	}
+
+	for _, tc := range testCases {
+		computedSelector := normalizeCheckSelector(tc.pe, tc.PolicyPath, tc.CheckName)
+		assert.Equal(t, computedSelector, tc.ExpectedSelector)
+
+	}
+
+}

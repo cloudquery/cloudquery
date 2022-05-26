@@ -222,7 +222,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		e.log = e.log.With("query", q.Name)
 		qr, err := e.executeQuery(ctx, q, identifiers)
 		if req.DBPersistence {
-			if errStore := e.createCheckResult(ctx, append([]string{req.Policy.Name}, e.PolicyPath...), req.PolicyExecution, q, qr, err); errStore != nil {
+			if errStore := e.createCheckResult(ctx, req.PolicyExecution, q, qr, err); errStore != nil {
 				e.log.Error("failed to create check result", "err", errStore)
 			}
 		}
@@ -245,7 +245,7 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	return &total, nil
 }
 
-func (e *Executor) createCheckResult(ctx context.Context, selector []string, policyExecution *state.PolicyExecution, q *Check, qr *QueryResult, err error) error {
+func (e *Executor) createCheckResult(ctx context.Context, policyExecution *state.PolicyExecution, q *Check, qr *QueryResult, err error) error {
 	if policyExecution == nil {
 		return nil
 	}
@@ -253,7 +253,7 @@ func (e *Executor) createCheckResult(ctx context.Context, selector []string, pol
 		ExecutionId:        policyExecution.Id,
 		ExecutionTimestamp: policyExecution.Timestamp,
 		Name:               qr.Name,
-		Selector:           strings.Join(append(selector, q.Name), "/"),
+		Selector:           normalizeCheckSelector(policyExecution, e.PolicyPath, q.Name),
 		Description:        qr.Description,
 		Status:             statusFailed,
 	}
@@ -498,4 +498,13 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 		r.Reason = b.String()
 	}
 	return r, nil
+}
+
+func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, checkName string) string {
+	selector := []string{policyExecution.PolicyName}
+	if !strings.HasPrefix(selector[0], policyExecution.Location+"//") {
+		selector[0] = policyExecution.Location + "/"
+	}
+	selector = append(selector, policyPath...)
+	return strings.Join(append(selector, checkName), "/")
 }
