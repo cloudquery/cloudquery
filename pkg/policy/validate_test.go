@@ -2,6 +2,7 @@ package policy
 
 import (
 	"context"
+	"sort"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/internal/test"
@@ -15,7 +16,7 @@ import (
 type validateTest struct {
 	Name          string
 	Policy        *Policy
-	ExpectedDiags []diag.FlatDiag
+	ExpectedDiags diag.FlatDiags
 }
 
 func TestValidate(t *testing.T) {
@@ -34,7 +35,7 @@ func TestValidate(t *testing.T) {
 				Name:   "localPolicy",
 				Source: "tests/validate/missing_identifiers",
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "check \"test_policy/1\" is missing identifier id", Type: diag.USER, Severity: diag.RESOLVING,
+			ExpectedDiags: diag.FlatDiags{{Err: "check \"test_policy/1\" is missing identifier id", Type: diag.USER, Severity: diag.WARNING,
 				Summary:     "check \"test_policy/1\" is missing identifier id",
 				Description: diag.Description{Summary: "check \"test_policy/1\" is missing identifier id", Detail: "Check that query returns the following identifier: id"}}},
 		},
@@ -58,8 +59,8 @@ func TestValidate(t *testing.T) {
 				Name:   "localPolicy",
 				Source: "tests/validate/no_reason",
 			},
-			ExpectedDiags: []diag.FlatDiag{{Err: "check \"test_policy/1\" doesn't define reason in configuration or query",
-				Type: diag.USER, Severity: diag.RESOLVING, Summary: "check \"test_policy/1\" doesn't define reason in configuration or query",
+			ExpectedDiags: diag.FlatDiags{{Err: "check \"test_policy/1\" doesn't define reason in configuration or query",
+				Type: diag.USER, Severity: diag.WARNING, Summary: "check \"test_policy/1\" doesn't define reason in configuration or query",
 				Description: diag.Description{Summary: "check \"test_policy/1\" doesn't define reason in configuration or query",
 					Detail: "Either add cq_reason column to query or reason attribute to check block"}}},
 		},
@@ -69,10 +70,11 @@ func TestValidate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
 			diags := Validate(context.Background(), storage, &ValidateRequest{tc.Policy, "tests/output"})
-			if tc.ExpectedDiags != nil {
+			if len(tc.ExpectedDiags) > 0 {
+				sort.Sort(tc.ExpectedDiags)
 				assert.ElementsMatch(t, tc.ExpectedDiags, diag.FlattenDiags(diags, false))
 			} else {
-				assert.Equal(t, []diag.FlatDiag{}, diag.FlattenDiags(diags, false))
+				assert.Equal(t, diag.FlatDiags{}, diag.FlattenDiags(diags, false))
 			}
 		})
 	}
