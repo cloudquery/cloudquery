@@ -342,7 +342,7 @@ func Test_decodePolicy(t *testing.T) {
 			if diags != nil && diags.HasErrors() {
 				t.Fatal(diags.Errs())
 			}
-			policiesWrapper, diags := decodePolicy(f.Body, diags, "")
+			policiesWrapper, diags := decodePolicy(f.Body, "")
 			if tt.wantErr != diags.HasErrors() {
 				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, diags.HasErrors(), diags.Error())
 			}
