@@ -22,17 +22,30 @@ func TestOsFs_DownloadFile(t *testing.T) {
 		t.Fatal(err)
 	}
 	ctx := context.Background()
-	filePath := filepath.Join(testDir, "cloudquery_linux.zip")
-	if err := osFs.DownloadFile(ctx, filePath, testFileDownloadUrl, nil); err != nil {
-		t.Fatal(err)
-	}
 
-	// With progress updater
-	pu := console.NewProgress(ctx, func(o *console.ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+	t.Run("successful run without progress bar", func(t *testing.T) {
+		filePath := filepath.Join(testDir, "cloudquery_linux.zip")
+		if err := osFs.DownloadFile(ctx, filePath, testFileDownloadUrl, nil); err != nil {
+			t.Fatal(err)
+		}
 	})
-	progressCB := ui.CreateProgressUpdater(pu, "test-123")
-	if err := osFs.DownloadFile(ctx, filePath, testFileDownloadUrl, progressCB); err != nil {
-		t.Fatal(err)
-	}
+
+	t.Run("successful run with progress bar", func(t *testing.T) {
+		pu := console.NewProgress(ctx, func(o *console.ProgressOptions) {
+			o.AppendDecorators = []decor.Decorator{decor.Percentage()}
+		})
+		progressCB := ui.CreateProgressUpdater(pu, "test-123")
+		filePath := filepath.Join(testDir, "cloudquery_linux.zip")
+		if err := osFs.DownloadFile(ctx, filePath, testFileDownloadUrl, progressCB); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("failure with non existing path", func(t *testing.T) {
+		// we have to use real fs because mem fs creates non existing folders on the fly
+		osFs.SetFSInstance(afero.NewOsFs())
+		if err := osFs.DownloadFile(ctx, "/no/such/dir/cloudquery_linux.zip", testFileDownloadUrl, nil); err == nil {
+			t.Fatal("expected to get non nil error")
+		}
+	})
 }
