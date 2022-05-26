@@ -24,7 +24,18 @@ func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 	if viper.GetBool("enable-console-log") {
 		// Print output to log
 		if logMsg := strip(fmt.Sprintf(msg, values...)); logMsg != "" {
-			log.Info().Msg(logMsg)
+			switch c {
+			case ColorDebug:
+				log.Debug().Msg(logMsg)
+			case ColorError:
+				log.Error().Msg(logMsg)
+			case ColorWarning:
+				log.Warn().Msg(logMsg)
+			case ColorTrace:
+				log.Trace().Msg(logMsg)
+			default:
+				log.Info().Msg(logMsg)
+			}
 		}
 		return
 	}
