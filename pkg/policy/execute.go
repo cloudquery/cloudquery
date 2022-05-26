@@ -500,11 +500,11 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 	return r, nil
 }
 
-func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, policyName string) string {
+func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, checkName string) string {
 	selector := []string{policyExecution.PolicyName}
 	if !strings.HasPrefix(selector[0], policyExecution.Location+"//") {
 		selector[0] = policyExecution.Location + "/"
 	}
 	selector = append(selector, policyPath...)
-	return strings.Join(append(selector, policyName), "/")
+	return strings.Join(append(selector, checkName), "/")
 }
