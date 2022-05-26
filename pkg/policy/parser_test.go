@@ -29,6 +29,9 @@ policy "test_policy" {
    attr = "value"
  }
 }`
+
+	testPolicyUnexpectedBlockTopLevel = `myblock {}`
+
 	testPolicyMultipleConfigurationBlocks = `policy "test_policy" {
  configuration {
  }
@@ -128,7 +131,7 @@ policy "test_policy" {
 		}`
 )
 
-func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
+func Test_decodePolicy(t *testing.T) {
 	tests := []struct {
 		name      string
 		policyHCL string
@@ -166,6 +169,12 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 		{
 			name:      "unexpected block within a policy",
 			policyHCL: testPolicyUnexpectedBlock,
+			wantErr:   true,
+			errString: "Unsupported block type",
+		},
+		{
+			name:      "unexpected block at the top level",
+			policyHCL: testPolicyUnexpectedBlockTopLevel,
 			wantErr:   true,
 			errString: "Unsupported block type",
 		},
@@ -333,7 +342,7 @@ func TestPolicyParser_LoadConfigFromSource(t *testing.T) {
 			if diags != nil && diags.HasErrors() {
 				t.Fatal(diags.Errs())
 			}
-			policiesWrapper, diags := DecodePolicy(f.Body, diags, "")
+			policiesWrapper, diags := decodePolicy(f.Body, diags, "")
 			if tt.wantErr != diags.HasErrors() {
 				t.Errorf("want errors is %v, but have %v, error details: %s", tt.wantErr, diags.HasErrors(), diags.Error())
 			}

@@ -53,8 +53,9 @@ var policySchema = &hcl.BodySchema{
 	},
 }
 
-func DecodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policy, hcl.Diagnostics) {
+func decodePolicy(body hcl.Body, diags hcl.Diagnostics, basePath string) (*Policy, hcl.Diagnostics) {
 	content, contentDiags := body.Content(policyWrapperSchema)
+	diags = append(diags, contentDiags...)
 	if contentDiags.HasErrors() {
 		return nil, diags
 	}
