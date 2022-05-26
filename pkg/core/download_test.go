@@ -116,11 +116,11 @@ func TestDownloadUnverified(t *testing.T) {
 		NoVerify: false,
 	})
 	assert.NotNil(t, diags)
-	assert.Equal(t, []diag.FlatDiag{{
+	assert.Equal(t, diag.FlatDiags{{
 		Err:      "provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io",
 		Resource: "",
-		Type:     6,
-		Severity: 2,
+		Type:     diag.INTERNAL,
+		Severity: diag.ERROR,
 		Summary:  "failed to download providers: provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io"}},
 		diag.FlattenDiags(diags, true))
 
