@@ -23,11 +23,9 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/google/uuid"
 
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
+	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
@@ -37,6 +35,9 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 const (
@@ -358,9 +359,15 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	return nil
 }
 
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults bool) (diags diag.Diagnostics) {
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
-	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Msg("run policy received params")
+	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
+
+	// use config value for dbPersistence if not already enabled through the cli
+	if !dbPersistence && c.cfg.CloudQuery.Policy != nil {
+		dbPersistence = c.cfg.CloudQuery.Policy.DBPersistence
+	}
+
 	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -378,10 +385,11 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 	}
 	// Policies run request
 	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
-		Policies:    policiesToRun,
-		Directory:   c.cfg.CloudQuery.PolicyDirectory,
-		OutputDir:   outputDir,
-		RunCallback: policyRunCallback,
+		Policies:      policiesToRun,
+		Directory:     c.cfg.CloudQuery.PolicyDirectory,
+		OutputDir:     outputDir,
+		RunCallback:   policyRunCallback,
+		DBPersistence: dbPersistence,
 	})
 	if resp == nil {
 		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
@@ -474,6 +482,21 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 		Policy:    policyToValidate[0],
 		Directory: c.cfg.CloudQuery.PolicyDirectory,
 	})
+}
+
+func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	log.Debug().Str("retention_period", retentionPeriod).Msg("prune policy executions received params")
+	duration, err := time.ParseDuration(retentionPeriod)
+	if err != nil {
+		ui.ColorizedOutput(ui.ColorError, err.Error())
+		return diag.FromError(err, diag.USER)
+	}
+	pruneBefore := time.Now().Add(-duration)
+	if !pruneBefore.Before(time.Now()) {
+		return diag.FromError(fmt.Errorf("prune retention period can't be in the future"), diag.USER)
+	}
+	return policy.Prune(ctx, c.StateManager, pruneBefore)
 }
 
 // =====================================================================================================================

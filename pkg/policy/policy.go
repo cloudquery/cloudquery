@@ -1,6 +1,7 @@
 package policy
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"strings"
 )
@@ -76,6 +77,13 @@ func (p Policy) SubPolicy() string {
 	return p.meta.SubPolicy
 }
 
+func (p Policy) SourceType() string {
+	if p.meta == nil {
+		return ""
+	}
+	return p.meta.Type
+}
+
 func (p Policy) HasChecks() bool {
 	for _, policy := range p.Policies {
 		if policy.HasChecks() {
@@ -130,6 +138,12 @@ func (p Policy) Filter(path string) Policy {
 	}
 
 	return emptyPolicy
+}
+
+func (p Policy) Sha256Hash() string {
+	h := sha256.New()
+	h.Write([]byte(fmt.Sprintf("%v", p.Policies)))
+	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
 type Meta struct {

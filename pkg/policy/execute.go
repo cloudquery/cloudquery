@@ -13,8 +13,10 @@ import (
 
 	"github.com/thoas/go-funk"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/cast"
+
+	"github.com/cloudquery/cloudquery/internal"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
@@ -27,6 +29,12 @@ import (
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
+
+const (
+	statusError  = "error"
+	statusFailed = "failed"
+	statusPassed = "passed"
+)
 
 type UpdateCallback func(update Update)
 
@@ -68,21 +76,20 @@ type Executor struct {
 
 // QueryResult contains the result information from an executed query.
 type QueryResult struct {
-	Name         string          `json:"name"`
-	Description  string          `json:"description"`
-	QueryColumns []string        `json:"-"`
-	Columns      []string        `json:"result_header"`
-	Data         [][]interface{} `json:"-"`
-	Rows         Rows            `json:"result_rows"`
-	Type         QueryType       `json:"type"`
-	Passed       bool            `json:"check_passed"`
+	Name         string    `json:"name"`
+	Description  string    `json:"description"`
+	QueryColumns []string  `json:"-"`
+	Columns      []string  `json:"result_header"`
+	Rows         Rows      `json:"result_rows"`
+	Type         QueryType `json:"type"`
+	Passed       bool      `json:"check_passed"`
 }
 
 type Row struct {
 	// AdditionalData is any extra information that was returned from the result set
-	AdditionalData []interface{} `json:"additional_data,omitempty"`
-	// Identifiers are a list of identifiers as defined by the policy
-	Identifiers []interface{} `json:"identifiers,omitempty"`
+	AdditionalData map[string]interface{} `json:"additional_data,omitempty"`
+	// Identifiers is a map of identifiers as defined by the policy
+	Identifiers map[string]interface{} `json:"identifiers,omitempty"`
 	// Reason is a user readable explanation returned by the query, or interpolated from check defined reason.
 	Reason string `json:"reason,omitempty"`
 	// Status is user defined status of the row i.e OK, ALERT etc'
@@ -101,8 +108,15 @@ func (r Rows) Swap(i, j int) {
 func (r Rows) Less(i, j int) bool {
 	r1 := r[i]
 	r2 := r[j]
-	for l := 0; l < len(r1.Identifiers); l++ {
-		if cast.ToString(r1.Identifiers[l]) < cast.ToString(r2.Identifiers[l]) {
+	v1, v2 := make([]string, 0, len(r1.Identifiers)), make([]string, 0, len(r2.Identifiers))
+	for _, v := range r1.Identifiers {
+		v1 = append(v1, cast.ToString(v))
+	}
+	for _, v := range r2.Identifiers {
+		v2 = append(v2, cast.ToString(v))
+	}
+	for l := 0; l < len(v1); l++ {
+		if v1[l] < v2[l] {
 			return true
 		}
 	}
@@ -135,6 +149,10 @@ type ExecuteRequest struct {
 	StopOnFailure bool
 	// UpdateCallback is the console ui update callback
 	UpdateCallback UpdateCallback
+	// PolicyExecution represents the current policy execution
+	PolicyExecution *state.PolicyExecution
+	// DBPersistence defines weather or not to store run results
+	DBPersistence bool
 }
 
 // NewExecutor creates a new executor.
@@ -203,6 +221,11 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 	for _, q := range policy.Checks {
 		e.log = e.log.With("query", q.Name)
 		qr, err := e.executeQuery(ctx, q, identifiers)
+		if req.DBPersistence {
+			if errStore := e.createCheckResult(ctx, req.PolicyExecution, q, qr, err); errStore != nil {
+				e.log.Error("failed to create check result", "err", errStore)
+			}
+		}
 		if err != nil {
 			e.log.Error("failed to execute query", "err", err)
 			return nil, diag.FromError(fmt.Errorf("%s/%w", policy.Name, err), diag.DATABASE)
@@ -220,6 +243,54 @@ func (e *Executor) Execute(ctx context.Context, req *ExecuteRequest, policy *Pol
 		}
 	}
 	return &total, nil
+}
+
+func (e *Executor) createCheckResult(ctx context.Context, policyExecution *state.PolicyExecution, q *Check, qr *QueryResult, err error) error {
+	if policyExecution == nil {
+		return nil
+	}
+	checkResult := &state.CheckResult{
+		ExecutionId:        policyExecution.Id,
+		ExecutionTimestamp: policyExecution.Timestamp,
+		Name:               qr.Name,
+		Selector:           normalizeCheckSelector(policyExecution, e.PolicyPath, q.Name),
+		Description:        qr.Description,
+		Status:             statusFailed,
+	}
+	if err != nil {
+		checkResult.Status = statusError
+		checkResult.Error = err.Error()
+		return e.stateManager.CreateCheckResult(ctx, checkResult)
+	}
+	if qr.Passed {
+		checkResult.Status = statusPassed
+	}
+
+	rows := make([]map[string]interface{}, len(qr.Rows))
+	for i, r := range qr.Rows {
+		m := make(map[string]interface{})
+		if len(r.AdditionalData) > 0 {
+			m["data"] = r.AdditionalData
+		}
+		m = internal.FlattenRow(m)
+		if len(r.Identifiers) > 0 {
+			m["cq_identifiers"] = internal.FlattenRow(r.Identifiers)
+		}
+		if r.Reason != "" {
+			m["cq_reason"] = r.Reason
+		}
+		if r.Status != "" {
+			m["cq_status"] = r.Status
+		}
+		rows[i] = m
+	}
+	var byt []byte
+	if byt, err = json.Marshal(rows); err != nil {
+		return err
+	}
+	checkResult.RawResults = string(byt)
+
+	return e.stateManager.CreateCheckResult(ctx, checkResult)
 }
 
 // checkFetches checks if there are fetch reports in database that satisfy providers from policy
@@ -266,7 +337,6 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 		Description:  q.Title,
 		QueryColumns: make([]string, 0),
 		Columns:      []string{"status"},
-		Data:         make([][]interface{}, 0),
 		Rows:         make([]Row, 0),
 		Type:         q.Type,
 	}
@@ -293,8 +363,6 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", q.Name, err)
 		}
-		// TODO: Keep data for backwards compatibility, might remove in end of PR
-		result.Data = append(result.Data, values)
 		row, err := parseRow(result.QueryColumns, values, identifiers, rtpl)
 		if err != nil {
 			log.Warn().Err(err).Msg("failed to create reason for check")
@@ -304,7 +372,7 @@ func (e *Executor) executeQuery(ctx context.Context, q *Check, identifiers []str
 	if data.Err() != nil {
 		return nil, fmt.Errorf("%s: %w", q.Name, data.Err())
 	}
-	result.Passed = (len(result.Data) == 0) == !q.ExpectOutput
+	result.Passed = (len(result.Rows) == 0) == !q.ExpectOutput
 	return result, nil
 }
 
@@ -403,13 +471,12 @@ func extractFirstPathComponent(str string) (string, error) {
 
 func parseRow(columns []string, values []interface{}, identifiers []string, reasonTpl *template.Template) (Row, error) {
 	r := Row{
-		AdditionalData: make([]interface{}, 0),
-		Identifiers:    make([]interface{}, len(identifiers)),
+		AdditionalData: make(map[string]interface{}, len(values)),
+		Identifiers:    make(map[string]interface{}, len(identifiers)),
 		Reason:         "",
-		Status:         "Violation",
+		Status:         statusFailed,
 	}
 
-	data := make(map[string]interface{}, len(values))
 	for i := 0; i < len(columns); i++ {
 		switch {
 		case columns[i] == "cq_reason":
@@ -417,19 +484,27 @@ func parseRow(columns []string, values []interface{}, identifiers []string, reas
 		case columns[i] == "cq_status":
 			r.Status = cast.ToString(values[i])
 		case funk.InStrings(identifiers, columns[i]):
-			r.Identifiers[funk.IndexOfString(identifiers, columns[i])] = values[i]
+			r.Identifiers[columns[i]] = values[i]
 		default:
-			r.AdditionalData = append(r.AdditionalData, values[i])
+			r.AdditionalData[columns[i]] = values[i]
 		}
-		data[columns[i]] = values[i]
 	}
 
 	if r.Reason == "" && reasonTpl != nil {
 		var b strings.Builder
-		if err := reasonTpl.Execute(&b, data); err != nil {
+		if err := reasonTpl.Execute(&b, r.AdditionalData); err != nil {
 			return r, err
 		}
 		r.Reason = b.String()
 	}
 	return r, nil
+}
+
+func normalizeCheckSelector(policyExecution *state.PolicyExecution, policyPath []string, checkName string) string {
+	selector := []string{policyExecution.PolicyName}
+	if !strings.HasPrefix(selector[0], policyExecution.Location+"//") {
+		selector[0] = policyExecution.Location + "/"
+	}
+	selector = append(selector, policyPath...)
+	return strings.Join(append(selector, checkName), "/")
 }

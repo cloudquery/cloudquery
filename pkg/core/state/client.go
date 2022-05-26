@@ -6,15 +6,16 @@ import (
 	"embed"
 	"fmt"
 
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
+
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -43,7 +44,7 @@ func NewClient(ctx context.Context, dsn string) (*Client, error) {
 	c.db = db
 
 	// migrate CloudQuery core tables to latest version
-	if err := c.migrateCore(ctx); err != nil {
+	if err = c.migrateCore(ctx); err != nil {
 		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
 	}
 
@@ -74,12 +75,12 @@ func (c *Client) migrateCore(ctx context.Context) error {
 	}
 
 	defer func() {
-		if err := m.Close(); err != nil {
+		if err = m.Close(); err != nil {
 			c.Logger.Error("failed to close migrator connection", "error", err)
 		}
 	}()
 
-	if err := m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
+	if err = m.UpgradeProvider(migrator.Latest); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to migrate cloudquery core schema: %w", err)
 	}
 	return nil

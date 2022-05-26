@@ -8,8 +8,9 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
+
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
 )
 
 const (
@@ -20,6 +21,7 @@ const (
 	policySnapshotHelpMsg = `Take database snapshot of all tables included in a CloudQuery policy`
 	policyTestHelpMsg     = "Tests policy against a precompiled set of database snapshots"
 	policyValidateHelpMsg = "Validate policy for any issues and diagnostics"
+	policyPruneHelpMsg    = "Prune policy executions from the database which are older than the relative time specified"
 )
 
 var (
@@ -75,6 +77,7 @@ var (
 
 	outputDir    string
 	noResults    bool
+	storeResults bool
 	policyRunCmd = &cobra.Command{
 		Use:   "run",
 		Short: policyRunHelpMsg,
@@ -100,7 +103,7 @@ var (
 			if len(args) == 1 {
 				source = args[0]
 			}
-			diags := c.RunPolicies(ctx, source, outputDir, noResults)
+			diags := c.RunPolicies(ctx, source, outputDir, noResults, storeResults)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
 			if diags.HasErrors() {
 				return fmt.Errorf("policy has one or more errors, check logs")
@@ -149,6 +152,25 @@ var (
 			return fmt.Errorf("policy validate has one or more errors, check logs")
 		}),
 	}
+
+	prunePolicyCmd = &cobra.Command{
+		Use:   "prune",
+		Short: policyPruneHelpMsg,
+		Long:  policyPruneHelpMsg,
+		Example: `
+  # Prune the policy executions which are older than the relative time specified
+  cloudquery policy prune 24h`,
+		Args: cobra.ExactArgs(1),
+		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+			retentionPeriod := args[0]
+			diags := c.PrunePolicyExecutions(ctx, retentionPeriod)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_prune"})
+			if diags.HasErrors() {
+				return fmt.Errorf("policy prune has one or more errors, check logs")
+			}
+			return nil
+		}),
+	}
 )
 
 func init() {
@@ -160,6 +182,7 @@ func init() {
 	flags := policyRunCmd.Flags()
 	flags.StringVar(&outputDir, "output-dir", "", "Generates a new file for each policy at the given dir with the output")
 	flags.BoolVar(&noResults, "no-results", false, "Do not show policies results")
+	flags.BoolVar(&storeResults, "enable-db-persistence", false, "Enable storage of policy output in database")
 	flags.Bool("disable-fetch-check", false, "Disable checking if a respective fetch happened before running policies")
 	_ = viper.BindPFlag("disable-fetch-check", flags.Lookup("disable-fetch-check"))
 	policyRunCmd.SetUsageTemplate(usageTemplateWithFlags)
@@ -175,6 +198,8 @@ func init() {
 	policyCmd.AddCommand(policyTestCmd)
 
 	policyCmd.AddCommand(validatePolicyCmd)
+
+	policyCmd.AddCommand(prunePolicyCmd)
 
 	policyCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(policyCmd)

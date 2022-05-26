@@ -148,7 +148,11 @@ func createOutputTable(res *policy.QueryResult) {
 			data = append(data, cast.ToStringSlice(row.Identifiers)...)
 		}
 		data = append(data, row.Reason)
-		data = append(data, cast.ToStringSlice(row.AdditionalData)...)
+		ad := make([]interface{}, 0, len(row.AdditionalData))
+		for _, v := range row.AdditionalData {
+			ad = append(ad, v)
+		}
+		data = append(data, cast.ToStringSlice(ad)...)
 		table.Append(data)
 
 	}

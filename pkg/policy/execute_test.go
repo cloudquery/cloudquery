@@ -17,12 +17,13 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {
@@ -89,9 +90,9 @@ func TestExecutor_executeQuery(t *testing.T) {
 			}, nil)
 			assert.NoError(t, err)
 			if tc.ShouldBeEmpty {
-				assert.Empty(t, res.Data)
+				assert.Empty(t, res.Rows)
 			} else {
-				assert.NotEmpty(t, res.Data)
+				assert.NotEmpty(t, res.Rows)
 			}
 		})
 	}
@@ -618,49 +619,49 @@ func TestRow_Sort(t *testing.T) {
 		{
 			Name: "simple",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "c"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "c"}},
 			},
 		},
 		{
 			Name: "same",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"a", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
 			},
 		},
 		{
 			Name: "complex",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"z", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"z": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"z", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"z": "b"}},
 			},
 		},
 		{
 			Name: "complex-2nd-level",
 			Data: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "c"}},
-				{Identifiers: []interface{}{"k", "b"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "c"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
 			},
 			Expected: Rows{
-				{Identifiers: []interface{}{"a", "b"}},
-				{Identifiers: []interface{}{"k", "b"}},
-				{Identifiers: []interface{}{"k", "c"}},
+				{Identifiers: map[string]interface{}{"a": "b"}},
+				{Identifiers: map[string]interface{}{"k": "b"}},
+				{Identifiers: map[string]interface{}{"k": "c"}},
 			},
 		},
 	}
@@ -725,6 +726,49 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 
 		_, err = os.Stat(tc.ExpectedFile) // os.Stat will return an error if file doesn't exist
 		assert.NoError(t, err)
+	}
+
+}
+
+func TestNormalizeCheckSelector(t *testing.T) {
+
+	testCases := []struct {
+		pe               *state.PolicyExecution
+		PolicyPath       []string
+		CheckName        string
+		ExpectedSelector string
+	}{
+		{
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws",
+			},
+			[]string{"pci_dss_v3.2.1", "cloudtrail"},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		}, {
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws//pci_dss_v3.2.1",
+			},
+			[]string{"cloudtrail"},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		}, {
+			&state.PolicyExecution{
+				Location:   "aws",
+				PolicyName: "aws//pci_dss_v3.2.1/cloudtrail",
+			},
+			[]string{},
+			"4",
+			"aws//pci_dss_v3.2.1/cloudtrail/4",
+		},
+	}
+
+	for _, tc := range testCases {
+		computedSelector := normalizeCheckSelector(tc.pe, tc.PolicyPath, tc.CheckName)
+		assert.Equal(t, computedSelector, tc.ExpectedSelector)
+
 	}
 
 }
