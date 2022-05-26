@@ -20,7 +20,7 @@ func init() {
 func setupDB(t *testing.T) (dsn string) {
 	baseDSN := os.Getenv("CQ_CLIENT_TEST_DSN")
 	if baseDSN == "" {
-		baseDSN = "postgres://postgres:pass@localhost:15432/postgres?sslmode=disable"
+		baseDSN = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	}
 
 	conn, err := pgx.Connect(context.Background(), baseDSN)

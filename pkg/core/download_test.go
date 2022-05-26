@@ -120,7 +120,7 @@ func TestDownloadUnverified(t *testing.T) {
 		Err:      "provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io",
 		Resource: "",
 		Type:     diag.INTERNAL,
-		Severity: diag.ACCESS,
+		Severity: diag.ERROR,
 		Summary:  "failed to download providers: provider plugin unverified@v0.0.3 not registered at https://hub.cloudquery.io"}},
 		diag.FlattenDiags(diags, true))
 
