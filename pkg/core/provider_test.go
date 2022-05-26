@@ -25,7 +25,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		Options *CheckUpdatesOptions
 
 		ExpectedAvailableUpdates []AvailableUpdate
-		ExpectedDiags            []diag.FlatDiag
+		ExpectedDiags            diag.FlatDiags
 	}{
 		{
 			Name: "simple-update-check",

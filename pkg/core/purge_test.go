@@ -29,16 +29,16 @@ func Test_PurgeProviderData(t *testing.T) {
 
 		// Expected results and diags from first dry run
 		ExpectedDryRunResult *PurgeProviderDataResult
-		ExpectedDryRunDiags  []diag.FlatDiag
+		ExpectedDryRunDiags  diag.FlatDiags
 
 		// Expected results diags from normal run, if RunResults is nil, normal purge is not called.
 		ExpectedRunResults *PurgeProviderDataResult
-		ExpectedRunDiags   []diag.FlatDiag
+		ExpectedRunDiags   diag.FlatDiags
 
 		// Expected results and diags from secondary dry run
 		SecondaryDryRunUpdate          time.Duration
 		ExpectedSecondaryDryRunResults *PurgeProviderDataResult
-		ExpectedSecondaryRunDiags      []diag.FlatDiag
+		ExpectedSecondaryRunDiags      diag.FlatDiags
 
 		// Override plugin manager option
 		PluginManagerCreator func() plugin.Manager
@@ -311,7 +311,7 @@ func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 
 }
 
-func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags []diag.FlatDiag) {
+func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags diag.FlatDiags) {
 	if len(expectedDiags) > 0 {
 		assert.Equal(t, expectedDiags, actualDiags)
 	} else {

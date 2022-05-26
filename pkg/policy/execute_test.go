@@ -104,7 +104,7 @@ func TestExecutor_executePolicy(t *testing.T) {
 		Views         []*View
 		ShouldBeEmpty bool
 		Pass          bool
-		ExpectedDiags []diag.FlatDiag
+		ExpectedDiags diag.FlatDiags
 	}{
 		{
 			Name: "multiple_queries",
@@ -311,7 +311,7 @@ func TestExecutor_Execute(t *testing.T) {
 		Selector             string
 		ShouldBeEmpty        bool
 		Pass                 bool
-		ExpectedDiags        []diag.FlatDiag
+		ExpectedDiags        diag.FlatDiags
 		TotalExpectedResults int
 		StopOnFailure        bool
 	}{
@@ -475,7 +475,7 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 	testCases := []struct {
 		Name              string
 		DisableFetchCheck bool
-		ExpectedDiags     []diag.FlatDiag
+		ExpectedDiags     diag.FlatDiags
 	}{{
 		Name:              "fetch_check_enabled",
 		DisableFetchCheck: false,
