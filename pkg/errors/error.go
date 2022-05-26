@@ -97,11 +97,13 @@ func classifyError(err error) errClass {
 func shouldIgnorePgCode(code string) bool {
 	if len(code) >= 2 {
 		switch code[0:2] {
+		// https://www.postgresql.org/docs/9.3/errcodes-appendix.html
+		// Class 08 - Connection Exception
 		// Class 28 - Invalid Authorization Specification
 		// Class 3D - Invalid Catalog Name
+		// Class 53 - Insufficient Resources
 		// Class 57 - Operator Intervention
-		// Class 08 - Connection Exception
-		case "28", "3D", "57", "08":
+		case "08", "28", "3D", "53", "57":
 			return true
 		}
 	}
