@@ -51,10 +51,10 @@ func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressU
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := o.fs.Create(filepath + ".tmp")
-	defer func() { _ = out.Close() }()
 	if err != nil {
 		return err
 	}
+	defer func() { _ = out.Close() }()
 	// Get the data
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
