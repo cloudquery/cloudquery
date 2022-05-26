@@ -4,6 +4,24 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.24.1](https://github.com/cloudquery/cloudquery/compare/v0.24.0...v0.24.1) (2022-05-26)
+
+
+### Features
+
+* Store Policy Output ([#709](https://github.com/cloudquery/cloudquery/issues/709)) ([bda4a50](https://github.com/cloudquery/cloudquery/commit/bda4a50d7ddf446f92ba72850e8d1e778620be6a))
+
+
+### Bug Fixes
+
+* Console log log level ([#786](https://github.com/cloudquery/cloudquery/issues/786)) ([8a7b76e](https://github.com/cloudquery/cloudquery/commit/8a7b76ecdeaceb62dd7b5cd376aaf8760ea5f9e3))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.2 ([#784](https://github.com/cloudquery/cloudquery/issues/784)) ([f904794](https://github.com/cloudquery/cloudquery/commit/f9047942373cd0650412b7eb6e9a4a1694f31596))
+* Error classifier improvements ([#788](https://github.com/cloudquery/cloudquery/issues/788)) ([f32a701](https://github.com/cloudquery/cloudquery/commit/f32a701a8893cdb2f0b5f28c304a98d341ef4f82))
+* Panic in loadPolicyFromSource ([#787](https://github.com/cloudquery/cloudquery/issues/787)) ([5953d09](https://github.com/cloudquery/cloudquery/commit/5953d091110c30f6d8760aadc1784fe9a88eff95))
+* Panic in OsFs.downloadFile ([#789](https://github.com/cloudquery/cloudquery/issues/789)) ([f2c76e8](https://github.com/cloudquery/cloudquery/commit/f2c76e8d9e95d77b479f0d12bac4bfdfebb9e15a))
+* Remove always nil return value ([#778](https://github.com/cloudquery/cloudquery/issues/778)) ([dca8745](https://github.com/cloudquery/cloudquery/commit/dca8745c24fbff70c7b3ba89eafb87b90259daeb))
+* Test flakiness ([#790](https://github.com/cloudquery/cloudquery/issues/790)) ([1497c51](https://github.com/cloudquery/cloudquery/commit/1497c511da1f31e7b0cf8eca2a9b159580bbe8e0))
+
 ## [0.24.0](https://github.com/cloudquery/cloudquery/compare/v0.23.4...v0.24.0) (2022-05-24)
 
 
