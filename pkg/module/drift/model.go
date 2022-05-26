@@ -170,7 +170,7 @@ func (rs *Results) process() {
 		if r == nil {
 			continue
 		}
-		cleanRes := SplitHashedResource(r.ResourceType)
+		cleanRes, _ := SplitHashedResource(r.ResourceType)
 		transform(r.Different.IDs(), r.Provider, cleanRes, &combo.Different)
 		transform(r.Extra.IDs(), r.Provider, cleanRes, &combo.Extra)
 		transform(r.Equal.IDs(), r.Provider, cleanRes, &combo.Equal)

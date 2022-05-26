@@ -423,7 +423,7 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *core.ProviderSchema) (bool
 	checkEnabled := len(cfg.CheckResources) > 0
 
 	for resName, res := range cfg.Resources {
-		cleanRes := SplitHashedResource(resName)
+		cleanRes, _ := SplitHashedResource(resName)
 
 		// CheckResources / IgnoreResources broad strokes...
 		if checkEnabled {
@@ -479,12 +479,15 @@ func (d *Drift) lookupResource(resName string, prov *core.ProviderSchema) *trave
 		d.tableMap[prov.Name] = traverseResourceTable(prov.ResourceTables)
 	}
 
-	res := SplitHashedResource(resName)
+	res, _ := SplitHashedResource(resName)
 	return d.tableMap[prov.Name][res]
 }
 
 // SplitHashedResource splits a given resource name and returns the resource and hash elements separately.
-func SplitHashedResource(configResName string) string {
+func SplitHashedResource(configResName string) (string, string) {
 	resParts := strings.SplitN(configResName, "#", 2)
-	return resParts[0]
+	if len(resParts) == 1 {
+		return resParts[0], ""
+	}
+	return resParts[0], resParts[1]
 }
