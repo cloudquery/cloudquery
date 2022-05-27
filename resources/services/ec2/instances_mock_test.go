@@ -20,6 +20,8 @@ func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	l.Instances[0].StateTransitionReason = aws.String("User initiated (2021-11-26 11:33:00 GMT)")
+	creationDate := "1994-11-05T08:15:30-05:00"
+	l.Instances[0].ElasticGpuAssociations[0].ElasticGpuAssociationTime = &creationDate
 	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeInstancesOutput{
 			Reservations: []ec2Types.Reservation{l},

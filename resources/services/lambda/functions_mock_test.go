@@ -15,11 +15,14 @@ import (
 func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockLambdaClient(ctrl)
 
+	lastModified := "1994-11-05T08:15:30.000+0500"
+
 	f := lambda.GetFunctionOutput{}
 	err := faker.FakeData(&f)
 	if err != nil {
 		t.Fatal(err)
 	}
+	f.Configuration.LastModified = &lastModified
 	m.EXPECT().GetFunction(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&f, nil)
 
@@ -58,6 +61,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err != nil {
 		t.Fatal(err)
 	}
+	cc.LastModified = &lastModified
 	m.EXPECT().ListProvisionedConcurrencyConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListProvisionedConcurrencyConfigsOutput{
 			ProvisionedConcurrencyConfigs: []types.ProvisionedConcurrencyConfigListItem{cc},
@@ -102,7 +106,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&lambda.GetCodeSigningConfigOutput{
 			CodeSigningConfig: &csc,
 		}, nil)
-
+	fc.LastModified = &lastModified
 	m.EXPECT().ListVersionsByFunction(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListVersionsByFunctionOutput{
 			Versions: []types.FunctionConfiguration{fc},

@@ -37,7 +37,7 @@ AWS Lambda is a serverless compute service that lets you run code without provis
 |image_config_entry_point|text[]|Specifies the entry point to their application, which is typically the location of the runtime executable.|
 |image_config_working_directory|text|Specifies the working directory.|
 |kms_key_arn|text|The KMS key that's used to encrypt the function's environment variables|
-|last_modified|text|The date and time that the function was last updated, in ISO-8601 format (https://www.w3.org/TR/NOTE-datetime) (YYYY-MM-DDThh:mm:ss.sTZD).|
+|last_modified|timestamp without time zone|The date and time that the function was last updated, in ISO-8601 format (https://www.w3.org/TR/NOTE-datetime) (YYYY-MM-DDThh:mm:ss.sTZD).|
 |last_update_status|text|The status of the last update that was performed on the function|
 |last_update_status_reason|text|The reason for the last update that was performed on the function.|
 |last_update_status_reason_code|text|The reason code for the last update that was performed on the function.|

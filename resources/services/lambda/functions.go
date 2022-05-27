@@ -240,8 +240,8 @@ func Functions() *schema.Table {
 			{
 				Name:        "last_modified",
 				Description: "The date and time that the function was last updated, in ISO-8601 format (https://www.w3.org/TR/NOTE-datetime) (YYYY-MM-DDThh:mm:ss.sTZD).",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Configuration.LastModified"),
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("Configuration.LastModified", TimestampLayoutNano),
 			},
 			{
 				Name:        "last_update_status",
@@ -712,7 +712,8 @@ func Functions() *schema.Table {
 					{
 						Name:        "last_modified",
 						Description: "The date and time that the function was last updated, in ISO-8601 format (https://www.w3.org/TR/NOTE-datetime) (YYYY-MM-DDThh:mm:ss.sTZD).",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ResolveTimestampField("LastModified", TimestampLayout),
 					},
 					{
 						Name:        "last_update_status",
@@ -919,7 +920,8 @@ func Functions() *schema.Table {
 					{
 						Name:        "last_modified",
 						Description: "The date and time that a user last updated the configuration, in ISO 8601 format (https://www.iso.org/iso-8601-date-and-time-format.html).",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ResolveTimestampField("LastModified", TimestampLayout),
 					},
 					{
 						Name:        "requested_provisioned_concurrent_executions",
