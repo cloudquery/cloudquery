@@ -178,7 +178,10 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
 
 	ui.ColorizedOutput(ui.ColorProgress, "Checking available provider updates...\n\n")
-	updates, dd := core.CheckAvailableUpdates(ctx, c.Registry, &core.CheckUpdatesOptions{Providers: c.Providers})
+	checkUpdateOpts := core.CheckUpdatesOptions{
+		Providers: core.ManagedProviders(c.PluginManager, c.Providers),
+	}
+	updates, dd := core.CheckAvailableUpdates(ctx, c.Registry, &checkUpdateOpts)
 	if dd.HasErrors() {
 		return diags.Add(dd)
 	}
