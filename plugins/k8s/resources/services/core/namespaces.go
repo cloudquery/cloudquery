@@ -146,7 +146,6 @@ func Namespaces() *schema.Table {
 				Name:          "k8s_meta_owner_references",
 				Description:   "OwnerReference contains enough information to let you identify an owning object",
 				Resolver:      client.OwnerReferenceResolver,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"resource_uid", "owner_uid"}},
 				Columns: []schema.Column{
 					{
 						Name:        "namespace_cq_id",
