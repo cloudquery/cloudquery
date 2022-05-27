@@ -4,6 +4,14 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.24.2](https://github.com/cloudquery/cloudquery/compare/v0.24.1...v0.24.2) (2022-05-27)
+
+
+### Bug Fixes
+
+* Add Git Binary To Docker ([f30c2fe](https://github.com/cloudquery/cloudquery/commit/f30c2fe8f5a262d3f1f044aff9e51ef508f59ee8))
+* Skip reattached provider update checks ([#801](https://github.com/cloudquery/cloudquery/issues/801)) ([714b446](https://github.com/cloudquery/cloudquery/commit/714b44678f8afcb2a27b967b89b86f59a5ecb391))
+
 ### [0.24.1](https://github.com/cloudquery/cloudquery/compare/v0.24.0...v0.24.1) (2022-05-26)
 
 
