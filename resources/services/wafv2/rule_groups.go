@@ -15,14 +15,13 @@ import (
 
 func Wafv2RuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_wafv2_rule_groups",
-		Description:   "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
-		Resolver:      fetchWafv2RuleGroups,
-		Multiplex:     client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionScopeFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "aws_wafv2_rule_groups",
+		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
+		Resolver:     fetchWafv2RuleGroups,
+		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter: client.DeleteAccountRegionScopeFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -48,9 +47,10 @@ func Wafv2RuleGroups() *schema.Table {
 				Resolver: resolveWafv2ruleGroupTags,
 			},
 			{
-				Name:     "policy",
-				Type:     schema.TypeJSON,
-				Resolver: resolveWafv2ruleGroupPolicy,
+				Name:          "policy",
+				Type:          schema.TypeJSON,
+				IgnoreInTests: true,
+				Resolver:      resolveWafv2ruleGroupPolicy,
 			},
 			{
 				Name:        "arn",

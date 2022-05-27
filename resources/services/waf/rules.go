@@ -13,14 +13,13 @@ import (
 
 func WafRules() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_waf_rules",
-		Description:   "This is AWS WAF Classic documentation",
-		Resolver:      fetchWafRules,
-		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "aws_waf_rules",
+		Description:  "This is AWS WAF Classic documentation",
+		Resolver:     fetchWafRules,
+		Multiplex:    client.AccountMultiplex,
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -56,10 +55,9 @@ func WafRules() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "aws_waf_rule_predicates",
-				Description:   "This is AWS WAF Classic documentation",
-				Resolver:      fetchWafRulePredicates,
-				IgnoreInTests: true,
+				Name:        "aws_waf_rule_predicates",
+				Description: "This is AWS WAF Classic documentation",
+				Resolver:    fetchWafRulePredicates,
 				Columns: []schema.Column{
 					{
 						Name:        "rule_cq_id",

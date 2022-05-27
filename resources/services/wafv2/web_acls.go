@@ -14,16 +14,20 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type WebACLWrapper struct {
+	*types.WebACL
+	LoggingConfiguration *types.LoggingConfiguration
+}
+
 func Wafv2WebAcls() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_wafv2_web_acls",
-		Description:   "A Web ACL defines a collection of rules to use to inspect and control web requests",
-		Resolver:      fetchWafv2WebAcls,
-		Multiplex:     client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionScopeFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "aws_wafv2_web_acls",
+		Description:  "A Web ACL defines a collection of rules to use to inspect and control web requests",
+		Resolver:     fetchWafv2WebAcls,
+		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter: client.DeleteAccountRegionScopeFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -126,10 +130,9 @@ func Wafv2WebAcls() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "aws_wafv2_web_acl_rules",
-				Description:   "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
-				Resolver:      fetchWafv2WebAclRules,
-				IgnoreInTests: true,
+				Name:        "aws_wafv2_web_acl_rules",
+				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
+				Resolver:    fetchWafv2WebAclRules,
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",
@@ -299,6 +302,46 @@ func Wafv2WebAcls() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "aws_wafv2_web_acl_logging_configuration",
+				Description: "The LoggingConfiguration for the specified web ACL.",
+				Resolver:    fetchWafv2WebACLLoggingConfiguration,
+				Columns: []schema.Column{
+					{
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "log_destination_configs",
+						Description: "The Amazon Resource Names (ARNs) of the logging destinations that you want to associate with the web ACL.",
+						Type:        schema.TypeStringArray,
+					},
+					{
+						Name:        "resource_arn",
+						Description: "The Amazon Resource Name (ARN) of the web ACL that you want to associate with LogDestinationConfigs.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "logging_filter",
+						Description: "Filtering that specifies which web requests are kept in the logs and which are dropped. You can filter on the rule action and on the web request labels that were applied by matching rules during web ACL evaluation.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveWafv2WebACLLoggingConfigurationLoggingFilter,
+					},
+					{
+						Name:        "managed_by_firewall_manager",
+						Description: "Indicates whether the logging configuration was created by Firewall Manager, as part of an WAF policy configuration. If true, only Firewall Manager can modify or delete the configuration.",
+						Type:        schema.TypeBool,
+					},
+					{
+						Name:        "redacted_fields",
+						Description: "The parts of the request that you want redacted from the logs. For example, if you redact the cookie field, the cookie field in the firehose will be xxx. You can specify only the following fields for redaction: UriPath, QueryString, SingleHeader, Method, and JsonBody.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveWafv2WebACLLoggingConfigurationRedactedFields,
+					},
+				},
+			},
 		},
 	}
 }
@@ -329,7 +372,27 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 			if err != nil {
 				return diag.WrapError(err)
 			}
-			res <- webAclOutput.WebACL
+
+			cfg := wafv2.GetLoggingConfigurationInput{
+				ResourceArn: webAclOutput.WebACL.ARN,
+			}
+
+			loggingConfigurationOutput, err := service.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
+				options.Region = c.Region
+			})
+			if err != nil {
+				var exc *types.WAFNonexistentItemException
+				if errors.As(err, &exc) {
+					if exc.ErrorCode() != "WAFNonexistentItemException" {
+						return err
+					}
+				}
+			}
+
+			res <- &WebACLWrapper{
+				webAclOutput.WebACL,
+				loggingConfigurationOutput.LoggingConfiguration,
+			}
 		}
 
 		if aws.ToString(output.NextMarker) == "" {
@@ -340,7 +403,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*types.WebACL)
+	webACL := resource.Item.(*WebACLWrapper)
 
 	cl := meta.(*client.Client)
 	service := cl.Services().WafV2
@@ -379,7 +442,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 	return resource.Set(c.Name, resourceArns)
 }
 func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*types.WebACL)
+	webACL := resource.Item.(*WebACLWrapper)
 
 	cl := meta.(*client.Client)
 	service := cl.Services().WafV2
@@ -405,7 +468,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 	return resource.Set(c.Name, outputTags)
 }
 func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*types.WebACL)
+	webACL := resource.Item.(*WebACLWrapper)
 	if webACL.DefaultAction == nil {
 		return nil
 	}
@@ -416,7 +479,7 @@ func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta
 	return resource.Set(c.Name, data)
 }
 func fetchWafv2WebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*types.WebACL)
+	webACL := parent.Item.(*WebACLWrapper)
 	res <- webACL.Rules
 	return nil
 }
@@ -462,7 +525,7 @@ func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, r
 	return resource.Set(c.Name, labels)
 }
 func fetchWafv2WebAclPostProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*types.WebACL)
+	webACL := parent.Item.(*WebACLWrapper)
 	res <- webACL.PostProcessFirewallManagerRuleGroups
 	return nil
 }
@@ -489,7 +552,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx con
 	return resource.Set(c.Name, data)
 }
 func fetchWafv2WebAclPreProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*types.WebACL)
+	webACL := parent.Item.(*WebACLWrapper)
 	res <- webACL.PreProcessFirewallManagerRuleGroups
 	return nil
 }
@@ -515,24 +578,28 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx cont
 	}
 	return resource.Set(c.Name, data)
 }
-func resolveWafV2WebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(*types.WebACL)
-	cl := meta.(*client.Client)
-	svc := cl.Services().WafV2
-	cfg := wafv2.GetLoggingConfigurationInput{
-		ResourceArn: rule.ARN,
-	}
-	output, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
-		options.Region = cl.Region
-	})
+func fetchWafv2WebACLLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
+	rule := resource.Item.(*WebACLWrapper)
+	res <- rule.LoggingConfiguration
+	return nil
+}
+func resolveWafv2WebACLLoggingConfigurationRedactedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	conf := resource.Item.(*types.LoggingConfiguration)
+	out, err := json.Marshal(conf.RedactedFields)
 	if err != nil {
-		var exc *types.WAFNonexistentItemException
-		if errors.As(err, &exc) {
-			if exc.ErrorCode() == "WAFNonexistentItemException" {
-				return nil
-			}
-		}
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, output.LoggingConfiguration.LogDestinationConfigs)
+	return resource.Set(c.Name, out)
+}
+func resolveWafv2WebACLLoggingConfigurationLoggingFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	conf := resource.Item.(*types.LoggingConfiguration)
+	out, err := json.Marshal(conf.LoggingFilter)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return resource.Set(c.Name, out)
+}
+func resolveWafV2WebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	rule := resource.Item.(*WebACLWrapper)
+	return resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs)
 }
