@@ -2,6 +2,7 @@ package waf
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -12,16 +13,20 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+type WebACLWrapper struct {
+	*types.WebACL
+	LoggingConfiguration *types.LoggingConfiguration
+}
+
 func WafWebAcls() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_waf_web_acls",
-		Description:   "This is AWS WAF Classic documentation",
-		Resolver:      fetchWafWebAcls,
-		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "aws_waf_web_acls",
+		Description:  "This is AWS WAF Classic documentation",
+		Resolver:     fetchWafWebAcls,
+		Multiplex:    client.AccountMultiplex,
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -71,10 +76,9 @@ func WafWebAcls() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "aws_waf_web_acl_rules",
-				Description:   "This is AWS WAF Classic documentation",
-				Resolver:      fetchWafWebAclRules,
-				IgnoreInTests: true,
+				Name:        "aws_waf_web_acl_rules",
+				Description: "This is AWS WAF Classic documentation",
+				Resolver:    fetchWafWebAclRules,
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",
@@ -117,6 +121,35 @@ func WafWebAcls() *schema.Table {
 					},
 				},
 			},
+			{
+				Name:        "aws_waf_web_acl_logging_configuration",
+				Description: "The LoggingConfiguration for the specified web ACL.",
+				Resolver:    fetchWafWebACLLoggingConfiguration,
+				Columns: []schema.Column{
+					{
+						Name:        "web_acl_cq_id",
+						Description: "Unique CloudQuery ID of aws_waf_web_acls table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "log_destination_configs",
+						Description: "An array of Amazon Kinesis Data Firehose ARNs.",
+						Type:        schema.TypeStringArray,
+					},
+					{
+						Name:        "resource_arn",
+						Description: "The Amazon Resource Name (ARN) of the web ACL that you want to associate with LogDestinationConfigs.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "redacted_fields",
+						Description: "The parts of the request that you want redacted from the logs. For example, if you redact the cookie field, the cookie field in the firehose will be xxx.",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveWafWebACLLoggingConfigurationRedactedFields,
+					},
+				},
+			},
 		},
 	}
 }
@@ -143,7 +176,26 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 			if err != nil {
 				return diag.WrapError(err)
 			}
-			res <- webAclOutput.WebACL
+
+			cfg := waf.GetLoggingConfigurationInput{
+				ResourceArn: webAclOutput.WebACL.WebACLArn,
+			}
+			loggingConfigurationOutput, err := service.GetLoggingConfiguration(ctx, &cfg, func(options *waf.Options) {
+				options.Region = c.Region
+			})
+			if err != nil {
+				var exc *types.WAFNonexistentItemException
+				if errors.As(err, &exc) {
+					if exc.ErrorCode() != "WAFNonexistentItemException" {
+						return err
+					}
+				}
+			}
+
+			res <- &WebACLWrapper{
+				webAclOutput.WebACL,
+				loggingConfigurationOutput.LoggingConfiguration,
+			}
 		}
 
 		if aws.ToString(output.NextMarker) == "" {
@@ -154,7 +206,7 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 	return nil
 }
 func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*types.WebACL)
+	webACL := resource.Item.(*WebACLWrapper)
 
 	// Resolve tags for resource
 	awsClient := meta.(*client.Client)
@@ -179,7 +231,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	return resource.Set("tags", outputTags)
 }
 func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*types.WebACL)
+	webACL := parent.Item.(*WebACLWrapper)
 	res <- webACL.Rules
 	return nil
 }
@@ -191,25 +243,21 @@ func resolveWafWebACLRuleExcludedRules(ctx context.Context, meta schema.ClientMe
 	}
 	return resource.Set(c.Name, excludedRules)
 }
-func resolveWafWebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(*types.WebACL)
-
-	cl := meta.(*client.Client)
-	svc := cl.Services().Waf
-	cfg := waf.GetLoggingConfigurationInput{
-		ResourceArn: rule.WebACLArn,
-	}
-	output, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *waf.Options) {
-		options.Region = cl.Region
-	})
+func fetchWafWebACLLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
+	rule := resource.Item.(*WebACLWrapper)
+	res <- rule.LoggingConfiguration
+	return nil
+}
+func resolveWafWebACLLoggingConfigurationRedactedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	conf := resource.Item.(*types.LoggingConfiguration)
+	out, err := json.Marshal(conf.RedactedFields)
 	if err != nil {
-		var exc *types.WAFNonexistentItemException
-		if errors.As(err, &exc) {
-			if exc.ErrorCode() == "WAFNonexistentItemException" {
-				return nil
-			}
-		}
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, output.LoggingConfiguration.LogDestinationConfigs)
+	return resource.Set(c.Name, out)
+}
+
+func resolveWafWebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	rule := resource.Item.(*WebACLWrapper)
+	return resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs)
 }
