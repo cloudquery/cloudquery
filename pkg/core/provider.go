@@ -114,3 +114,14 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 	}
 	return updates, diags
 }
+
+// ManagedProviders returns list of providers which are not in reattach mode
+func ManagedProviders(pm *plugin.Manager, provs []registry.Provider) []registry.Provider {
+	ret := make([]registry.Provider, 0, len(provs))
+	for i := range provs {
+		if !pm.IsReattachProvider(provs[i]) {
+			ret = append(ret, provs[i])
+		}
+	}
+	return ret
+}

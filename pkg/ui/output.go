@@ -96,5 +96,5 @@ func strip(str string) string {
 	for _, s := range emojiStatus {
 		str = strings.ReplaceAll(str, s, "")
 	}
-	return strings.TrimSuffix(strings.TrimSpace(removeAnsi.ReplaceAllString(str, "")), ".")
+	return strings.TrimRight(strings.TrimSpace(removeAnsi.ReplaceAllString(str, "")), ".")
 }

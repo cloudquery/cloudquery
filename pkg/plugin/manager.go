@@ -66,7 +66,7 @@ func (m *Manager) DownloadProviders(ctx context.Context, providers []registry.Pr
 	log.Debug().Interface("providers", providers).Msg("Downloading required providers")
 	downloaded := make([]registry.ProviderBinary, len(providers))
 	for i, rp := range providers {
-		if _, ok := m.clients[rp.Name]; ok {
+		if m.IsReattachProvider(rp) {
 			ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Skipping provider %s download, using reattach instead\n", ui.Colorize(ui.ColorSuccessBold, false, rp.Name)))
 			continue
 		}
@@ -124,6 +124,11 @@ func (m *Manager) ClosePlugin(p Plugin) {
 	if err := m.killProvider(p.Name()); err != nil {
 		log.Warn().Str("provider", p.Name()).Msg("failed to kill provider")
 	}
+}
+
+func (m *Manager) IsReattachProvider(rp registry.Provider) bool {
+	_, ok := m.clients[rp.Name]
+	return ok
 }
 
 func (m *Manager) reattachProviders() error {
