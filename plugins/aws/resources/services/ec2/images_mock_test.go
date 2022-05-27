@@ -23,7 +23,9 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	creationDate := "1994-11-05T08:15:30-05:00"
 	g.OwnerId = aws.String("testAccount")
+	g.CreationDate = &creationDate
 
 	m.EXPECT().DescribeImages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeImagesOutput{

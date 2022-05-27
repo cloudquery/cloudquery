@@ -13,8 +13,8 @@ Simple Queue Service
 |message_retention_period|integer|The length of time, in seconds, for which Amazon SQS retains a message.|
 |approximate_number_of_messages|integer|The approximate number of messages available for retrieval from the queue.|
 |approximate_number_of_messages_not_visible|integer|The approximate number of messages that are in flight.|
-|created_timestamp|integer|UNIX time when the queue was created.|
-|last_modified_timestamp|integer|UNIX time when the queue was last changed.|
+|created_timestamp|timestamp without time zone|UNIX time when the queue was created.|
+|last_modified_timestamp|timestamp without time zone|UNIX time when the queue was last changed.|
 |arn|text|Amazon resource name (ARN) of the queue.|
 |approximate_number_of_messages_delayed|integer|The approximate number of messages in the queue that are delayed and not available for reading immediately.|
 |delay_seconds|integer|The default delay on the queue in seconds.|

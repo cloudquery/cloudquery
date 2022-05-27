@@ -14,11 +14,14 @@ import (
 func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockLambdaClient(ctrl)
 
+	creationDate := "1994-11-05T08:15:30.000+0500"
+
 	l := types.LayersListItem{}
 	err := faker.FakeData(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
+	l.LatestMatchingVersion.CreatedDate = &creationDate
 	m.EXPECT().ListLayers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListLayersOutput{
 			Layers: []types.LayersListItem{l},
@@ -31,6 +34,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	}
 	arn := "arn:aws:s3:::my_corporate_bucket/test:exampleobject.png:1"
 	lv.LayerVersionArn = &arn
+	lv.CreatedDate = &creationDate
 	m.EXPECT().ListLayerVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListLayerVersionsOutput{
 			LayerVersions: []types.LayerVersionsListItem{lv},

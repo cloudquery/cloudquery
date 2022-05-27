@@ -9,7 +9,7 @@ Describes an image.
 |arn|text|The Amazon Resource Name (ARN) for the resource.|
 |id|text|The ID of the AMI.|
 |architecture|text|The architecture of the image.|
-|creation_date|text|The date and time the image was created.|
+|creation_date|timestamp without time zone|The date and time the image was created.|
 |description|text|The description of the AMI that was provided during image creation.|
 |ena_support|boolean|Specifies whether enhanced networking with ENA is enabled.|
 |hypervisor|text|The hypervisor type of the image.|

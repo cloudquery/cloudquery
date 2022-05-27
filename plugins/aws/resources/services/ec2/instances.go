@@ -467,7 +467,8 @@ func Ec2Instances() *schema.Table {
 					{
 						Name:        "elastic_gpu_association_time",
 						Description: "The time the Elastic Graphics accelerator was associated with the instance.",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ResolveTimestampField("ElasticGpuAssociationTime"),
 					},
 					{
 						Name:        "elastic_gpu_id",

@@ -57,7 +57,8 @@ func Ec2Images() *schema.Table {
 			{
 				Name:        "creation_date",
 				Description: "The date and time the image was created.",
-				Type:        schema.TypeString,
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("CreationDate"),
 			},
 			{
 				Name:        "description",

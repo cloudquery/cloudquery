@@ -102,12 +102,14 @@ func SQSQueues() *schema.Table {
 			{
 				Name:        "created_timestamp",
 				Description: "UNIX time when the queue was created.",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("CreatedTimestamp"),
 			},
 			{
 				Name:        "last_modified_timestamp",
 				Description: "UNIX time when the queue was last changed.",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("LastModifiedTimestamp"),
 			},
 			{
 				Name:        "arn",

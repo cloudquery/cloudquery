@@ -11,6 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+const (
+	TimestampLayoutNano = "2006-01-02T15:04:05.000-0700"
+	TimestampLayout     = "2006-01-02T15:04:05-0700"
+)
+
 func LambdaLayers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lambda_layers",
@@ -42,8 +47,8 @@ func LambdaLayers() *schema.Table {
 			{
 				Name:        "latest_matching_version_created_date",
 				Description: "The date that the version was created, in ISO 8601 format",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.CreatedDate"),
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("LatestMatchingVersion.CreatedDate", TimestampLayoutNano),
 			},
 			{
 				Name:        "latest_matching_version_description",
@@ -103,7 +108,8 @@ func LambdaLayers() *schema.Table {
 					{
 						Name:        "created_date",
 						Description: "The date that the version was created, in ISO 8601 format",
-						Type:        schema.TypeString,
+						Type:        schema.TypeTimestamp,
+						Resolver:    client.ResolveTimestampField("CreatedDate", TimestampLayoutNano),
 					},
 					{
 						Name:        "description",
