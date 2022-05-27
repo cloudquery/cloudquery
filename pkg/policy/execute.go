@@ -252,9 +252,9 @@ func (e *Executor) createCheckResult(ctx context.Context, policyExecution *state
 	checkResult := &state.CheckResult{
 		ExecutionId:        policyExecution.Id,
 		ExecutionTimestamp: policyExecution.Timestamp,
-		Name:               qr.Name,
+		Name:               q.Name,
 		Selector:           normalizeCheckSelector(policyExecution, e.PolicyPath, q.Name),
-		Description:        qr.Description,
+		Description:        q.Title,
 		Status:             statusFailed,
 	}
 	if err != nil {
