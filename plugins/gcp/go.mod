@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.10.3
+	github.com/cloudquery/cq-provider-sdk v0.10.4
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/googleapis/gax-go/v2 v2.1.1
 	github.com/hashicorp/go-hclog v1.0.0
@@ -29,6 +29,7 @@ require (
 	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.17.0 // indirect
+	github.com/elliotchance/orderedmap v1.4.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/georgysavva/scany v0.2.9 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
@@ -65,6 +66,7 @@ require (
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/segmentio/stats/v4 v4.6.3 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
