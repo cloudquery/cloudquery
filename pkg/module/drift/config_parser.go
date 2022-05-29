@@ -336,7 +336,7 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 				diags = append(diags, resDiags...)
 				continue
 			}
-			// False positive of the `range-val-address` rule
+			// Using the range pointer here is safe since save DefRange (revive false positive)
 			// nolint:revive
 			res.defRange = &block.DefRange
 			if block.Labels[0] == wildcard {
@@ -397,7 +397,7 @@ func (*Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resourc
 					diags = append(diags, diag...)
 					continue
 				}
-				// False positive of the `range-val-address` rule
+				// Using the range pointer here is safe since save DefRange (revive false positive)
 				// nolint:revive
 				ia.defRange = &block.DefRange
 				ia.attributeMap = make(map[string]string, len(ia.AttributeMap))

@@ -109,25 +109,6 @@ func (r ResourceACL) ShouldSkip(resource *Resource) bool {
 	return false
 }
 
-// HasTagFilters returns true if the ACL contains tag filters
-func (r ResourceACL) HasTagFilters() bool {
-	if r.AllowEnabled {
-		for _, f := range r.Allow {
-			if f.Tags != nil {
-				return true
-			}
-		}
-	}
-
-	for _, f := range r.Ignore {
-		if f.Tags != nil {
-			return true
-		}
-	}
-
-	return false
-}
-
 func (t TerraformBackend) Valid() bool {
 	return t == TFLocal || t == TFS3
 }
@@ -150,6 +131,25 @@ func (c TerraformSourceConfig) Validate() error {
 	default:
 		return fmt.Errorf("invalid backend type")
 	}
+}
+
+// HasTagFilters returns true if the ACL contains tag filters
+func (r ResourceACL) HasTagFilters() bool {
+	if r.AllowEnabled {
+		for _, f := range r.Allow {
+			if f.Tags != nil {
+				return true
+			}
+		}
+	}
+
+	for _, f := range r.Ignore {
+		if f.Tags != nil {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
@@ -484,7 +484,7 @@ func (d *Drift) lookupResource(resName string, prov *core.ProviderSchema) *trave
 }
 
 // SplitHashedResource splits a given resource name and returns the resource and hash elements separately.
-func SplitHashedResource(configResName string) (string, string) {
+func SplitHashedResource(configResName string) (resource string, hash string) {
 	resParts := strings.SplitN(configResName, "#", 2)
 	if len(resParts) == 1 {
 		return resParts[0], ""

@@ -15,6 +15,12 @@ type GetProviderConfigOptions struct {
 	Provider registry.Provider
 }
 
+type TestOptions struct {
+	Connection   cqproto.ConnectionDetails
+	Config       []byte
+	CreationInfo *plugin.CreationOptions
+}
+
 type CheckUpdatesOptions struct {
 	Providers []registry.Provider
 }
@@ -27,12 +33,6 @@ type AvailableUpdate struct {
 	CurrentVersion string
 	// AvailableVersion is the version available for downloading
 	AvailableVersion string
-}
-
-type TestOptions struct {
-	Connection   cqproto.ConnectionDetails
-	Config       []byte
-	CreationInfo *plugin.CreationOptions
 }
 
 func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, diag.Diagnostics) {

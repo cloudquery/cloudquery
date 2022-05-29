@@ -723,7 +723,6 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 }
 
 func TestNormalizeCheckSelector(t *testing.T) {
-
 	testCases := []struct {
 		pe               *state.PolicyExecution
 		PolicyPath       []string
@@ -760,7 +759,5 @@ func TestNormalizeCheckSelector(t *testing.T) {
 	for _, tc := range testCases {
 		computedSelector := normalizeCheckSelector(tc.pe, tc.PolicyPath, tc.CheckName)
 		assert.Equal(t, computedSelector, tc.ExpectedSelector)
-
 	}
-
 }

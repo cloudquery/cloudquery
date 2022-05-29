@@ -24,6 +24,14 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
+
+const (
+	statusError  = "error"
+	statusFailed = "failed"
+	statusPassed = "passed"
+)
+
 type UpdateCallback func(update Update)
 
 type Update struct {
@@ -77,14 +85,6 @@ type Row struct {
 }
 type Rows []Row
 
-var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
-
-const (
-	statusError  = "error"
-	statusFailed = "failed"
-	statusPassed = "passed"
-)
-
 // ExecutionResult contains all policy execution results.
 type ExecutionResult struct {
 	// PolicyName is the running policy name
@@ -136,8 +136,15 @@ func (r Rows) Swap(i, j int) {
 func (r Rows) Less(i, j int) bool {
 	r1 := r[i]
 	r2 := r[j]
-	for l := 0; l < len(r1.Identifiers); l++ {
-		if cast.ToString(r1.Identifiers[l]) < cast.ToString(r2.Identifiers[l]) {
+	v1, v2 := make([]string, 0, len(r1.Identifiers)), make([]string, 0, len(r2.Identifiers))
+	for _, v := range r1.Identifiers {
+		v1 = append(v1, cast.ToString(v))
+	}
+	for _, v := range r2.Identifiers {
+		v2 = append(v2, cast.ToString(v))
+	}
+	for l := 0; l < len(v1); l++ {
+		if v1[l] < v2[l] {
 			return true
 		}
 	}

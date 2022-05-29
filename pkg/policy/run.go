@@ -20,6 +20,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+const (
+	CloudQueryOrg = "cloudquery-policies"
+)
+
 type LowLevelQueryExecer interface {
 	execution.Copier
 	execution.QueryExecer
@@ -43,10 +47,6 @@ type RunResponse struct {
 	Policies   Policies
 	Executions []*ExecutionResult
 }
-
-const (
-	CloudQueryOrg = "cloudquery-policies"
-)
 
 func Snapshot(ctx context.Context, sta *state.Client, storage database.Storage, policy *Policy, outputPath, subpath string) error {
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "executor-database"), storage.DSN())

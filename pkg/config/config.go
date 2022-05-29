@@ -28,6 +28,7 @@ type History struct {
 	TimeInterval   int `hcl:"interval,optional"`
 	TimeTruncation int `hcl:"truncation,optional"`
 }
+
 type CloudQuery struct {
 	PluginDirectory string            `hcl:"plugin_directory,optional"`
 	PolicyDirectory string            `hcl:"policy_directory,optional"`
@@ -53,16 +54,17 @@ type Connection struct {
 	Extras   []string `hcl:"extras,optional"`
 }
 
+type Policy struct {
+	DBPersistence bool `hcl:"db_persistence,optional"`
+}
+
 type RequiredProvider struct {
 	Name    string  `hcl:"name,label"`
 	Source  *string `hcl:"source,optional"`
 	Version string  `hcl:"version"`
 }
-type RequiredProviders []*RequiredProvider
 
-type Policy struct {
-	DBPersistence bool `hcl:"db_persistence,optional"`
-}
+type RequiredProviders []*RequiredProvider
 
 // configFileSchema is the schema for the top-level of a config file. We use
 // the low-level HCL API for this level so we can easily deal with each

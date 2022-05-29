@@ -250,7 +250,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	return response, diags
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, clientDsn string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -270,7 +270,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
-			DSN: clientDsn,
+			DSN: dsnURI,
 		},
 		Config:      cfg.Configuration,
 		ExtraFields: opts.ExtraFields,
@@ -313,13 +313,13 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
 }
 
-func executeFetch(ctx context.Context, pLog zerolog.Logger, p plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
+func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
 	var (
 		start   = time.Now()
 		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
-			Version:               p.Version(),
+			Version:               providerPlugin.Version(),
 			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
@@ -332,14 +332,14 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, p plugin.Plugin, inf
 	}()
 
 	var resources []string
-	resources, diags = normalizeResources(ctx, p, info.Config.Resources, info.Config.SkipResources)
+	resources, diags = normalizeResources(ctx, providerPlugin, info.Config.Resources, info.Config.SkipResources)
 	if diags.HasErrors() {
 		summary.Status = FetchFailed
 		return summary, diags
 	}
 
 	pLog.Info().Msg("provider started fetching resources")
-	stream, err := p.Provider().FetchResources(ctx,
+	stream, err := providerPlugin.Provider().FetchResources(ctx,
 		&cqproto.FetchResourcesRequest{
 			Resources:             resources,
 			ParallelFetchingLimit: info.Config.MaxParallelResourceFetchLimit,
@@ -362,7 +362,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, p plugin.Plugin, inf
 				callback(FetchUpdate{
 					Name:              info.Provider.Name,
 					Alias:             info.Config.Alias,
-					Version:           p.Version(),
+					Version:           providerPlugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
 					DiagnosticCount:   diags.Len(),
@@ -390,7 +390,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, p plugin.Plugin, inf
 				callback(FetchUpdate{
 					Name:            info.Provider.Name,
 					Alias:           info.Config.Alias,
-					Version:         p.Version(),
+					Version:         providerPlugin.Version(),
 					Error:           err.Error(),
 					DiagnosticCount: diags.Len(),
 				})
