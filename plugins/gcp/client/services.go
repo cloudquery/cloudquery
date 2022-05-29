@@ -9,6 +9,7 @@ import (
 	kms "google.golang.org/api/cloudkms/v1"
 	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/compute/v1"
+	"google.golang.org/api/container/v1"
 	"google.golang.org/api/dns/v1"
 	domains "google.golang.org/api/domains/v1beta1"
 	"google.golang.org/api/iam/v1"
@@ -35,6 +36,7 @@ type Services struct {
 	Monitoring      *monitoring.Service
 	ResourceManager *cloudresourcemanager.Service
 	ServiceUsage    *serviceusage.Service
+	Container       *container.Service
 }
 
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
@@ -58,6 +60,7 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	if err != nil {
 		return nil, err
 	}
+
 	domainSvc, err := domains.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
@@ -95,6 +98,11 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 
+	containerSvc, err := container.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Services{
 		Kms:             kmsSvc,
 		Storage:         storageSvc,
@@ -110,5 +118,6 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		Monitoring:      monitoringSvc,
 		ResourceManager: resourceManagerSvc,
 		ServiceUsage:    serviceusageManagerSvc,
+		Container:       containerSvc,
 	}, nil
 }
