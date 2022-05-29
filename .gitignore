@@ -9,10 +9,10 @@ cloudquery.zip
 .go-version
 /config.yml
 dist/
+tmp/
 vendor/
 bin/
 .release-env
-cq-provider-aws
 *.exe
 *.log
 .cq_reattach
