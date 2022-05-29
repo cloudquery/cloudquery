@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/pkg/core/database/model"
+
 	"github.com/cloudquery/cloudquery/pkg/core/database/postgres"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -12,9 +14,10 @@ import (
 type DialectExecutor interface {
 	// Identifier returns a unique identifier for the database if possible, or "", false
 	Identifier(context.Context) (string, bool)
-
 	// Validate is called before startup to check that the dialect can execute properly. If returns true and error is set, the error is merely logged.
 	Validate(context.Context) (bool, error)
+	// Info returns basic information about the database such as version, uptime, etc'
+	Info(context.Context) (model.DatabaseInfo, error)
 }
 
 var (
