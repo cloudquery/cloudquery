@@ -5,35 +5,40 @@ crash.log
 cloudquery
 cloudquery.db
 cloudquery.zip
+# goenv
+.go-version
 /config.yml
 dist/
+tmp/
 vendor/
 bin/
 .release-env
-cq-provider-gcp
 *.exe
 *.log
 .cq_reattach
+.cq/*
 # Local .terraform directories
-**/.terraform
+**/.terraform/*
 # Local .terraform.lock.hcl files
 **/terraform/**/local/.terraform.lock.hcl
-tmp/
-
+node_modules/
 # .tfstate files
 *.tfstate
 *.tfstate.*
-tfplan.binary
-plan.json
+.swp
+tflog
 
+__debug_bin
 #test directories
 **/.test/*
-.cq/
+**/snapshots/*
+./terraform/tmp
+./terraform/builds
+./terraform/.terraform
+./terraform/.terraform.loch.hcl
+./terraform/terraform-override.tf
+.env
+terraform/downloaded*
 config.hcl
-
-resources/integration_tests/infra/.terraform
-resources/integration_tests/infra/.terraform.lock.hcl
-resources/integration_tests/infra/terraform-override.tf
-resources/integration_tests/infra/tmp/
-resources/integration_tests/infra/credentials.json
-
+terraform/tfplan.binary
+cq-provider
