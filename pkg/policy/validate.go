@@ -6,7 +6,6 @@ import (
 	"path"
 
 	"github.com/cloudquery/cloudquery/pkg/core/database"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"

@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/rs/zerolog/log"
@@ -49,5 +48,4 @@ func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *Ge
 		ProtocolVersion:           providerPlugin.ProtocolVersion(),
 		Unmanaged:                 providerPlugin.Version() == plugin.Unmanaged,
 	}, nil
-
 }

@@ -33,14 +33,6 @@ type FetchSummary struct {
 
 type ResourceFetchSummaries []ResourceFetchSummary
 
-// Value implements Valuer interface required by goqu
-func (r ResourceFetchSummaries) Value() (driver.Value, error) {
-	if len(r) == 0 {
-		return nil, nil
-	}
-	return json.Marshal(r)
-}
-
 // ResourceFetchSummary includes a data about fetching specific resource
 type ResourceFetchSummary struct {
 	ResourceName string `json:"resource_name"`
@@ -52,6 +44,14 @@ type ResourceFetchSummary struct {
 	Status string `json:"status"`
 	// Total Amount of resources collected by this resource
 	ResourceCount uint64 `json:"resource_count"`
+}
+
+// Value implements Valuer interface required by goqu
+func (r ResourceFetchSummaries) Value() (driver.Value, error) {
+	if len(r) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(r)
 }
 
 // SaveFetchSummary saves fetch summary into fetches database

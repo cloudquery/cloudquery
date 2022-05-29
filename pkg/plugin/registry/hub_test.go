@@ -88,7 +88,6 @@ func TestHub_CheckUpdate(t *testing.T) {
 }
 
 func TestHub_Get(t *testing.T) {
-
 	testCases := []struct {
 		Name             string
 		Provider         Provider
@@ -147,7 +146,6 @@ func TestHub_Get(t *testing.T) {
 			assert.Equal(t, tc.ExpectedProvider.Provider, result.Provider)
 			assert.Equal(t, tc.ExpectedProvider.FilePath, filepath.ToSlash(result.FilePath))
 		})
-
 	}
 }
 
@@ -167,7 +165,6 @@ func TestHub_Download(t *testing.T) {
 		assert.Error(t, err)
 		_, err = hub.Get("test", "v0.0.11")
 		assert.Error(t, err)
-
 	})
 
 	t.Run("download-test-provider", func(t *testing.T) {
@@ -194,5 +191,4 @@ func TestHub_Download(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, p, pGet)
 	})
-
 }

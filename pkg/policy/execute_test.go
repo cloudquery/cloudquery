@@ -13,17 +13,97 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+)
 
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
+var (
+	multiLayerPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:         "other-query",
+						Query:        "SELECT 1 as result;",
+						ExpectOutput: true,
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	failingPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{{
+					Name:         "sub-query",
+					Query:        "SELECT 1 as result;",
+					ExpectOutput: true,
+				},
+					{
+						Name:  "other-query",
+						Query: "SELECT 1 as result;",
+					},
+				},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	multiLayerWithEmptySubPolicy = &Policy{
+		Name: "test",
+		Policies: Policies{
+			{
+				Name:   "subpolicy",
+				Checks: []*Check{},
+			},
+		},
+		Checks: []*Check{{
+			Query:        "SELECT 1 as result;",
+			ExpectOutput: true,
+		}},
+	}
+	// views cannot be inherited from parent policies.
+	multiLayerWithInheritedView = &Policy{
+		Name: "test",
+		Views: []*View{
+			{
+				Name:  "testview",
+				Query: "SELECT 'something'",
+			},
+		},
+		Policies: Policies{
+			{
+				Name: "subpolicy",
+				Checks: []*Check{
+					{
+						Name:         "query-with-view",
+						ExpectOutput: true,
+						Query:        "SELECT * from testview",
+					},
+				},
+			},
+		},
+	}
 )
 
 func setupPolicyDatabase(t *testing.T, tableName string) (string, LowLevelQueryExecer, func(t *testing.T)) {
@@ -221,89 +301,6 @@ func TestExecutor_executePolicy(t *testing.T) {
 		})
 	}
 }
-
-var (
-	multiLayerPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{{
-					Name:         "sub-query",
-					Query:        "SELECT 1 as result;",
-					ExpectOutput: true,
-				},
-					{
-						Name:         "other-query",
-						Query:        "SELECT 1 as result;",
-						ExpectOutput: true,
-					},
-				},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	failingPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{{
-					Name:         "sub-query",
-					Query:        "SELECT 1 as result;",
-					ExpectOutput: true,
-				},
-					{
-						Name:  "other-query",
-						Query: "SELECT 1 as result;",
-					},
-				},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	multiLayerWithEmptySubPolicy = &Policy{
-		Name: "test",
-		Policies: Policies{
-			{
-				Name:   "subpolicy",
-				Checks: []*Check{},
-			},
-		},
-		Checks: []*Check{{
-			Query:        "SELECT 1 as result;",
-			ExpectOutput: true,
-		}},
-	}
-	// views cannot be inherited from parent policies.
-	multiLayerWithInheritedView = &Policy{
-		Name: "test",
-		Views: []*View{
-			{
-				Name:  "testview",
-				Query: "SELECT 'something'",
-			},
-		},
-		Policies: Policies{
-			{
-				Name: "subpolicy",
-				Checks: []*Check{
-					{
-						Name:         "query-with-view",
-						ExpectOutput: true,
-						Query:        "SELECT * from testview",
-					},
-				},
-			},
-		},
-	}
-)
 
 func TestExecutor_Execute(t *testing.T) {
 	cases := []struct {
@@ -507,7 +504,6 @@ func TestExecutor_DisableFetchCheckFlag(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestExecutor_CheckFetches(t *testing.T) {
@@ -595,7 +591,6 @@ func TestExecutor_CheckFetches(t *testing.T) {
 			}
 			clear(t)
 		})
-
 	}
 }
 
@@ -610,7 +605,6 @@ func TestInterpolate(t *testing.T) {
 }
 
 func TestRow_Sort(t *testing.T) {
-
 	testCases := []struct {
 		Name     string
 		Data     Rows
@@ -672,7 +666,6 @@ func TestRow_Sort(t *testing.T) {
 			assert.Equal(t, tc.Expected, tc.Data)
 		})
 	}
-
 }
 
 // Tests the path of the policy execution result file is correct.
@@ -727,11 +720,9 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 		_, err = os.Stat(tc.ExpectedFile) // os.Stat will return an error if file doesn't exist
 		assert.NoError(t, err)
 	}
-
 }
 
 func TestNormalizeCheckSelector(t *testing.T) {
-
 	testCases := []struct {
 		pe               *state.PolicyExecution
 		PolicyPath       []string
@@ -768,7 +759,5 @@ func TestNormalizeCheckSelector(t *testing.T) {
 	for _, tc := range testCases {
 		computedSelector := normalizeCheckSelector(tc.pe, tc.PolicyPath, tc.CheckName)
 		assert.Equal(t, computedSelector, tc.ExpectedSelector)
-
 	}
-
 }

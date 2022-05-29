@@ -9,12 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -207,7 +206,6 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 }
 
 func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedVersion string, noVerify bool) (ProviderBinary, error) {
-
 	if !h.verifyRegistered(provider.Source, provider.Name, requestedVersion, noVerify) {
 		return ProviderBinary{}, fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", provider.Name, requestedVersion)
 	}
@@ -250,7 +248,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	return details, nil
 }
 
-func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
+func (Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
 	client := firebase.New(firebase.CloudQueryRegistryURL)
 	latest, err := client.GetLatestProviderRelease(ctx, organization, providerName)
 	return latest, err
@@ -270,7 +268,7 @@ func (h Hub) verifyRegistered(organization, providerName, version string, noVeri
 	return true
 }
 
-func (h Hub) isProviderRegistered(org, provider string) bool {
+func (Hub) isProviderRegistered(org, provider string) bool {
 	client := firebase.New(firebase.CloudQueryRegistryURL)
 	return client.IsProviderRegistered(org, provider)
 }

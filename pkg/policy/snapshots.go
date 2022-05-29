@@ -16,8 +16,8 @@ import (
 	"github.com/jeremywohl/flatten"
 )
 
-func persistSnapshot(ctx context.Context, e *Executor, path string, table string) error {
-	ef, err := os.OpenFile(filepath.Join(path, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
+func persistSnapshot(ctx context.Context, e *Executor, outputPath string, table string) error {
+	ef, err := os.OpenFile(filepath.Join(outputPath, fmt.Sprintf("table_%s.csv", table)), os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		return fmt.Errorf("error opening file %q: %w", table, err)
 	}
@@ -30,19 +30,17 @@ func persistSnapshot(ctx context.Context, e *Executor, path string, table string
 		return fmt.Errorf("error exporting file: %w", err)
 	}
 	return nil
-
 }
-func StoreSnapshot(ctx context.Context, e *Executor, path string, tables []string) error {
+func StoreSnapshot(ctx context.Context, e *Executor, outputPath string, tables []string) error {
 	if len(tables) == 0 {
 		return errors.New("no tables to snapshot")
 	}
 
 	for _, table := range tables {
-		err := persistSnapshot(ctx, e, path, table)
+		err := persistSnapshot(ctx, e, outputPath, table)
 		if err != nil {
 			return err
 		}
-
 	}
 
 	return nil
@@ -136,7 +134,6 @@ func (e *Executor) extractTableNames(ctx context.Context, query string) ([]strin
 			tableNames = append(tableNames, val.(string))
 		}
 		if strings.HasSuffix(key, "Alias") { // Aliases could be query aliases or table aliases (views)
-
 			// Check if query alias, if it is the table will not exist
 			viewQuery, err := e.checkTableExistence(ctx, val.(string))
 			if err != nil && strings.Contains(err.Error(), "does not exist (SQLSTATE 42P01)") {
@@ -207,7 +204,6 @@ func storeOutput(ctx context.Context, e *Executor, w io.Writer, sql string) erro
 }
 
 func (e *Executor) checkTableExistence(ctx context.Context, tableName string) (query string, err error) {
-
 	explainQuery := fmt.Sprintf("select coalesce(pg_get_viewdef('%s'::regclass::oid),'') ", tableName)
 	rows, err := e.conn.Query(ctx, explainQuery)
 	if err != nil {
@@ -217,7 +213,6 @@ func (e *Executor) checkTableExistence(ctx context.Context, tableName string) (q
 
 	var s string
 	for rows.Next() {
-
 		if err := rows.Scan(&s); err != nil {
 			e.log.Error("error scanning into variable", "error", err)
 		}
@@ -253,7 +248,6 @@ AND conrelid::regclass = '%s'::regclass;`, tableName)
 			log.Error("error deleting fks for table", "query", deletionQuery, "err", err)
 			return err
 		}
-
 	}
 	if err := rows.Err(); err != nil {
 		log.Error("Error fetching rows", "query", fkQuery, "error", err)

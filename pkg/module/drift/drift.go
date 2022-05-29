@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/module"
 	"github.com/cloudquery/cloudquery/pkg/module/drift/terraform"
-
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	cqschema "github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -44,6 +43,13 @@ const (
 	protoVersion           = 2
 )
 
+const idSeparator = "|"
+
+var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
+
+// Make sure we satisfy the interface
+var _ module.Module = (*Drift)(nil)
+
 func (i iacProvider) String() string {
 	switch i {
 	case iacTerraform:
@@ -59,11 +65,11 @@ func New() *Drift {
 	return &Drift{}
 }
 
-func (d *Drift) ID() string {
+func (*Drift) ID() string {
 	return "drift"
 }
 
-func (d *Drift) ProtocolVersions() []uint32 {
+func (*Drift) ProtocolVersions() []uint32 {
 	return []uint32{protoVersion, compatibleProtoVersion}
 }
 
@@ -93,7 +99,7 @@ func (d *Drift) Execute(ctx context.Context, req *module.ExecuteRequest) *module
 	return ret
 }
 
-func (d *Drift) ExampleConfig(providers []string) string {
+func (*Drift) ExampleConfig(providers []string) string {
 	hasAws := false
 	for i := range providers {
 		if providers[i] == "aws" {
@@ -131,7 +137,7 @@ drift "drift-example" {
 }`
 }
 
-func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
+func (*Drift) readBaseConfig(version uint32, providerData map[string]cqproto.ModuleInfo) (*BaseConfig, error) {
 	if version != protoVersion && version != compatibleProtoVersion {
 		return nil, fmt.Errorf("unsupported module protocol version %d", version)
 	}
@@ -180,7 +186,7 @@ func (d *Drift) readBaseConfig(version uint32, providerData map[string]cqproto.M
 	return cfg, nil
 }
 
-func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
+func (*Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig, error) {
 	p := NewParser("")
 
 	if body == nil {
@@ -226,7 +232,6 @@ func (d *Drift) readProfileConfig(base *BaseConfig, body hcl.Body) (*BaseConfig,
 	}
 
 	p.interpret(base)
-
 	return base, nil
 }
 
@@ -433,10 +438,6 @@ func handleFilters(sel *goqu.SelectDataset, res *ResourceConfig) *goqu.SelectDat
 	return sel
 }
 
-var idRegEx = regexp.MustCompile(`(?ms)^\$\{sql:(.+?)\}$`)
-
-const idSeparator = "|"
-
 // handleIdentifiers returns an SQL expression given one or multiple identifiers. the `sql(<query>)` is also handled here.
 // Given multiple identifiers, each of them are concatenated using the idSeparator
 func handleIdentifiers(identifiers []string) (exp.Expression, error) {
@@ -537,6 +538,3 @@ func readIACStates(iacID iacProvider, tf *TerraformSourceConfig, stateFiles []st
 
 	return iacTerraform, ret, nil
 }
-
-// Make sure we satisfy the interface
-var _ module.Module = (*Drift)(nil)

@@ -6,20 +6,14 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/core"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
-
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-
-	"github.com/rs/zerolog/log"
-
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/rs/zerolog/log"
 )
 
 // ManagerImpl is the manager implementation struct.

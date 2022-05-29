@@ -8,21 +8,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/google/uuid"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
-
-	"github.com/cloudquery/cloudquery/internal/logging"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-
-	"github.com/cloudquery/cloudquery/pkg/core/database"
-
 	"github.com/rs/zerolog/log"
-
-	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 )
 
 const (
@@ -32,6 +27,25 @@ const (
 type LowLevelQueryExecer interface {
 	execution.Copier
 	execution.QueryExecer
+}
+
+// RunRequest is the request used to run one or more policy.
+type RunRequest struct {
+	// Policies to run
+	Policies Policies
+	// Directory to load / save policies to
+	Directory string
+	// OutputDir is the output dir for policy execution output.
+	OutputDir string
+	// RunCallback is the callback method that is called after every policy execution.
+	RunCallback UpdateCallback
+	// DBPersistence defines weather or not to store run results
+	DBPersistence bool
+}
+
+type RunResponse struct {
+	Policies   Policies
+	Executions []*ExecutionResult
 }
 
 func Snapshot(ctx context.Context, sta *state.Client, storage database.Storage, policy *Policy, outputPath, subpath string) error {
@@ -80,25 +94,6 @@ func Load(ctx context.Context, directory string, policy *Policy) (*Policy, diag.
 		}
 	}
 	return policy, nil
-}
-
-// RunRequest is the request used to run one or more policy.
-type RunRequest struct {
-	// Policies to run
-	Policies Policies
-	// Directory to load / save policies to
-	Directory string
-	// OutputDir is the output dir for policy execution output.
-	OutputDir string
-	// RunCallback is the callback method that is called after every policy execution.
-	RunCallback UpdateCallback
-	// DBPersistence defines weather or not to store run results
-	DBPersistence bool
-}
-
-type RunResponse struct {
-	Policies   Policies
-	Executions []*ExecutionResult
 }
 
 func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *RunRequest) (*RunResponse, diag.Diagnostics) {

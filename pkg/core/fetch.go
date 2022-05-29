@@ -21,7 +21,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -29,6 +28,75 @@ import (
 )
 
 type FetchStatus int
+
+// ProviderFetchSummary represents a request for the FetchFinishCallback
+type ProviderFetchSummary struct {
+	Name                  string                          `json:"name,omitempty"`
+	Alias                 string                          `json:"alias,omitempty"`
+	Version               string                          `json:"version,omitempty"`
+	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
+	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
+	Status                FetchStatus                     `json:"status,omitempty"`
+	Duration              time.Duration                   `json:"duration,omitempty"`
+}
+
+type ResourceFetchSummary struct {
+	// Execution status of resource
+	Status string `json:"status,omitempty"`
+	// Total Amount of resources collected by this resource
+	ResourceCount uint64 `json:"resource_count,omitempty"`
+	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
+	// details on how to solve this issue
+	Diagnostics diag.Diagnostics `json:"-"`
+	// Duration in seconds
+	Duration time.Duration `json:"duration,omitempty"`
+}
+
+type FetchUpdateCallback func(update FetchUpdate)
+
+type FetchUpdate struct {
+	Name    string
+	Alias   string
+	Version string
+	// Map of resources that have finished fetching
+	FinishedResources map[string]bool
+	// Amount of resources collected so far
+	ResourceCount uint64
+	// Error if any returned by the provider
+	Error string
+	// Diagnostic count
+	DiagnosticCount int
+}
+
+// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
+type FetchResponse struct {
+	FetchId              uuid.UUID                        `json:"fetch_id,omitempty"`
+	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
+	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
+	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
+}
+
+type ProviderInfo struct {
+	Provider registry.Provider
+	Config   *config.Provider
+}
+
+// FetchOptions is provided to the Client to execute a fetch on one or more providers
+type FetchOptions struct {
+	// UpdateCallback allows gets called when the client receives updates on fetch.
+	UpdateCallback FetchUpdateCallback
+	// Providers list of providers to call for fetching
+	ProvidersInfo []ProviderInfo
+	// Optional: Adds extra fields to the provider
+	ExtraFields map[string]interface{}
+	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
+	FetchId uuid.UUID
+}
+
+type fetchResult struct {
+	summary *ProviderFetchSummary
+	diags   diag.Diagnostics
+}
 
 const (
 	FetchFailed FetchStatus = iota + 1
@@ -53,17 +121,6 @@ func (fs FetchStatus) String() string {
 	default:
 		return "unknown"
 	}
-}
-
-// ProviderFetchSummary represents a request for the FetchFinishCallback
-type ProviderFetchSummary struct {
-	Name                  string                          `json:"name,omitempty"`
-	Alias                 string                          `json:"alias,omitempty"`
-	Version               string                          `json:"version,omitempty"`
-	TotalResourcesFetched uint64                          `json:"total_resources_fetched,omitempty"`
-	FetchedResources      map[string]ResourceFetchSummary `json:"fetch_resources,omitempty"`
-	Status                FetchStatus                     `json:"status,omitempty"`
-	Duration              time.Duration                   `json:"duration,omitempty"`
 }
 
 func (p ProviderFetchSummary) Resources() []string {
@@ -104,35 +161,6 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 		"fetch_diags":                 SummarizeDiagnostics(p.Diagnostics()),
 		"fetch_status":                p.Status.String(),
 	}
-
-}
-
-type ResourceFetchSummary struct {
-	// Execution status of resource
-	Status string `json:"status,omitempty"`
-	// Total Amount of resources collected by this resource
-	ResourceCount uint64 `json:"resource_count,omitempty"`
-	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
-	// details on how to solve this issue
-	Diagnostics diag.Diagnostics `json:"-"`
-	// Duration in seconds
-	Duration time.Duration `json:"duration,omitempty"`
-}
-
-type FetchUpdateCallback func(update FetchUpdate)
-
-type FetchUpdate struct {
-	Name    string
-	Alias   string
-	Version string
-	// Map of resources that have finished fetching
-	FinishedResources map[string]bool
-	// Amount of resources collected so far
-	ResourceCount uint64
-	// Error if any returned by the provider
-	Error string
-	// Diagnostic count
-	DiagnosticCount int
 }
 
 func (f FetchUpdate) AllDone() bool {
@@ -148,18 +176,10 @@ func (f FetchUpdate) DoneCount() int {
 	count := 0
 	for _, v := range f.FinishedResources {
 		if v {
-			count += 1
+			count++
 		}
 	}
 	return count
-}
-
-// FetchResponse is returned after a successful fetch execution, it holds a fetch summary for each provider that was executed.
-type FetchResponse struct {
-	FetchId              uuid.UUID                        `json:"fetch_id,omitempty"`
-	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
-	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
-	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
 }
 
 func (fr FetchResponse) HasErrors() bool {
@@ -169,23 +189,6 @@ func (fr FetchResponse) HasErrors() bool {
 		}
 	}
 	return false
-}
-
-type ProviderInfo struct {
-	Provider registry.Provider
-	Config   *config.Provider
-}
-
-// FetchOptions is provided to the Client to execute a fetch on one or more providers
-type FetchOptions struct {
-	// UpdateCallback allows gets called when the client receives updates on fetch.
-	UpdateCallback FetchUpdateCallback
-	// Providers list of providers to call for fetching
-	ProvidersInfo []ProviderInfo
-	// Optional: Adds extra fields to the provider
-	ExtraFields map[string]interface{}
-	// Optional: unique identifier for the fetch, if this isn't given, a random one is generated.
-	FetchId uuid.UUID
 }
 
 func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
@@ -247,7 +250,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	return response, diags
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsn string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -267,7 +270,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
-			DSN: dsn,
+			DSN: dsnURI,
 		},
 		Config:      cfg.Configuration,
 		ExtraFields: opts.ExtraFields,
@@ -310,13 +313,13 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
 }
 
-func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
+func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
 	var (
 		start   = time.Now()
 		summary = &ProviderFetchSummary{
 			Name:                  info.Provider.Name,
 			Alias:                 info.Config.Alias,
-			Version:               plugin.Version(),
+			Version:               providerPlugin.Version(),
 			FetchedResources:      make(map[string]ResourceFetchSummary),
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
@@ -329,14 +332,14 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 	}()
 
 	var resources []string
-	resources, diags = normalizeResources(ctx, plugin, info.Config.Resources, info.Config.SkipResources)
+	resources, diags = normalizeResources(ctx, providerPlugin, info.Config.Resources, info.Config.SkipResources)
 	if diags.HasErrors() {
 		summary.Status = FetchFailed
 		return summary, diags
 	}
 
 	pLog.Info().Msg("provider started fetching resources")
-	stream, err := plugin.Provider().FetchResources(ctx,
+	stream, err := providerPlugin.Provider().FetchResources(ctx,
 		&cqproto.FetchResourcesRequest{
 			Resources:             resources,
 			ParallelFetchingLimit: info.Config.MaxParallelResourceFetchLimit,
@@ -359,7 +362,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				callback(FetchUpdate{
 					Name:              info.Provider.Name,
 					Alias:             info.Config.Alias,
-					Version:           plugin.Version(),
+					Version:           providerPlugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
 					DiagnosticCount:   diags.Len(),
@@ -387,7 +390,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, plugin plugin.Plugin
 				callback(FetchUpdate{
 					Name:            info.Provider.Name,
 					Alias:           info.Config.Alias,
-					Version:         plugin.Version(),
+					Version:         providerPlugin.Version(),
 					Error:           err.Error(),
 					DiagnosticCount: diags.Len(),
 				})
@@ -508,11 +511,6 @@ func parseDSN(storage database.Storage) (string, error) {
 		return "", err
 	}
 	return parsed.String(), nil
-}
-
-type fetchResult struct {
-	summary *ProviderFetchSummary
-	diags   diag.Diagnostics
 }
 
 func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSummary) *state.FetchSummary {

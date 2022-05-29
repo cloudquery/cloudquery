@@ -17,6 +17,12 @@ import (
 
 const defaultPolicyFileName = "policy.hcl"
 
+// a list of regexps to match against error string to decide if it's a user error
+var userErrors = []*regexp.Regexp{
+	regexp.MustCompile("subdir .+? not found"),
+	regexp.MustCompile("stat .*: permission denied"),
+}
+
 func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 	t, _, found, err := getter.DetectType(name)
 
@@ -36,12 +42,6 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 			SubPolicy: subPolicy,
 		},
 	}, true, nil
-}
-
-// a list of regexps to match against error string to decide if it's a user error
-var userErrors = []*regexp.Regexp{
-	regexp.MustCompile("subdir .+? not found"),
-	regexp.MustCompile("stat .*: permission denied"),
 }
 
 func classifyError(source string, err error) error {
@@ -95,10 +95,10 @@ func LoadSource(ctx context.Context, installDir, source string) ([]byte, *Meta, 
 	}, nil
 }
 
-func parseSyntacticUrl(source string) (string, string) {
-	u := strings.Split(source, "@")
+func parseSyntacticUrl(src string) (source string, version string) {
+	u := strings.Split(src, "@")
 	if len(u) > 1 {
 		return fmt.Sprintf("%s?ref=%s", u[0], u[1]), u[1]
 	}
-	return source, ""
+	return src, ""
 }

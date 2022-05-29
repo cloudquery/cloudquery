@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -49,7 +48,6 @@ func handleCommand(f func(context.Context, *console.Client, *cobra.Command, []st
 }
 
 func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f func(context.Context, *console.Client, *cobra.Command, []string) error) error {
-
 	cfgPath := viper.GetString("configPath")
 	ctx, _ = signalcontext.WithInterrupt(ctx, logging.NewZHcLog(&log.Logger, ""))
 	var (
@@ -92,9 +90,5 @@ func handleConsole(ctx context.Context, cmd *cobra.Command, args []string, f fun
 		}
 	}
 
-	if err := f(ctx, c, cmd, args); err != nil {
-		return err
-	}
-
-	return nil
+	return f(ctx, c, cmd, args)
 }

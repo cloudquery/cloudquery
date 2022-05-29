@@ -10,10 +10,32 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/serve"
-
 	"github.com/hashicorp/go-plugin"
 	zerolog "github.com/rs/zerolog/log"
 )
+
+type Plugin interface {
+	Name() string
+	Version() string
+	ProtocolVersion() int
+	Provider() cqproto.CQProvider
+	Close()
+}
+
+type unmanagedPlugin struct {
+	name     string
+	config   *plugin.ReattachConfig
+	client   *plugin.Client
+	provider cqproto.CQProvider
+}
+type managedPlugin struct {
+	name     string
+	version  string
+	client   *plugin.Client
+	provider cqproto.CQProvider
+}
+
+type Plugins map[string]Plugin
 
 const (
 	Unmanaged = "unmanaged"
@@ -23,8 +45,6 @@ const (
 var pluginMap = map[string]plugin.Plugin{
 	"provider": &cqproto.CQPlugin{},
 }
-
-type Plugins map[string]Plugin
 
 // Get returns a Plugin instance from a registry.Provider creation info or it's created alias
 func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
@@ -41,21 +61,6 @@ func (pm Plugins) Get(p registry.Provider, alias string) Plugin {
 		}
 	}
 	return nil
-}
-
-type Plugin interface {
-	Name() string
-	Version() string
-	ProtocolVersion() int
-	Provider() cqproto.CQProvider
-	Close()
-}
-
-type managedPlugin struct {
-	name     string
-	version  string
-	client   *plugin.Client
-	provider cqproto.CQProvider
 }
 
 // NewRemotePlugin creates a new remoted plugin using go_plugin
@@ -121,13 +126,6 @@ func (m managedPlugin) Close() {
 	m.client.Kill()
 }
 
-type unmanagedPlugin struct {
-	name     string
-	config   *plugin.ReattachConfig
-	client   *plugin.Client
-	provider cqproto.CQProvider
-}
-
 // newUnmanagedPlugin attaches to and existing running plugin  a new unmanaged plugin using go_plugin
 func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*unmanagedPlugin, error) {
 	client := plugin.NewClient(&plugin.ClientConfig{
@@ -162,10 +160,10 @@ func newUnmanagedPlugin(providerName string, config *plugin.ReattachConfig) (*un
 
 func (m unmanagedPlugin) Name() string { return m.name }
 
-func (m unmanagedPlugin) Version() string { return Unmanaged }
+func (unmanagedPlugin) Version() string { return Unmanaged }
 
-func (m unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
+func (unmanagedPlugin) ProtocolVersion() int { return cqproto.Vunmanaged }
 
 func (m unmanagedPlugin) Provider() cqproto.CQProvider { return m.provider }
 
-func (m unmanagedPlugin) Close() {}
+func (unmanagedPlugin) Close() {}

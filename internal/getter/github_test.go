@@ -39,5 +39,4 @@ func TestGitHubDetector_Detect(t *testing.T) {
 			assert.Equal(t, tc.ExpectedError, err)
 		})
 	}
-
 }

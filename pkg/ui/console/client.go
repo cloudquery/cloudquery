@@ -23,7 +23,8 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
+	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
@@ -35,9 +36,6 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 const (
@@ -163,7 +161,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 
 func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) {
 	// make sure to print diagnostics, if any exist
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	ui.ColorizedOutput(ui.ColorProgress, "Initializing CloudQuery Providers...\n\n")
 	_, diags = core.Download(ctx, c.PluginManager, &core.DownloadOptions{Providers: c.Providers, NoVerify: viper.GetBool("no-verify")})
 	if c.downloadProgress != nil {
@@ -226,13 +224,13 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	if diags.HasErrors() {
 		// Ignore context cancelled error
 		if st, ok := status.FromError(diags); ok && st.Code() == gcodes.Canceled {
-			printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+			printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			ui.ColorizedOutput(ui.ColorProgress, "Provider fetch canceled.\n\n")
 			return result, diags
 		}
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Provider fetch complete.\n\n")
-	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	if result == nil {
 		return nil, diags
 	}
@@ -256,7 +254,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 // =====================================================================================================================
 
 func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*core.SyncResult, diags diag.Diagnostics) {
-	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("Sync", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	providers := c.Providers
 	if len(pp) > 0 {
 		providers = c.Providers.GetMany(pp...)
@@ -291,7 +289,7 @@ func (c Client) SyncProviders(ctx context.Context, pp ...string) (results []*cor
 }
 
 func (c Client) DropProvider(ctx context.Context, providerName string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	ui.ColorizedOutput(ui.ColorProgress, "Dropping CloudQuery provider %s schema...\n\n", providerName)
 	if dd := c.DownloadProviders(ctx); dd.HasErrors() {
 		return dd
@@ -322,7 +320,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 		pp[i] = rp
 	}
 	ui.ColorizedOutput(ui.ColorHeader, "Purging providers %s resources..\n\n", providers)
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	result, diags := core.PurgeProviderData(ctx, c.Storage, c.PluginManager, &core.PurgeProviderDataOptions{
 		Providers:  pp,
 		LastUpdate: lastUpdate,
@@ -349,7 +347,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 
 func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.Diagnostics) {
 	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "policy", Source: args[0]})
 	if err != nil {
 		ui.SleepBeforeError(ctx)
@@ -363,7 +361,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 }
 
 func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
 
 	// use config value for dbPersistence if not already enabled through the cli
@@ -438,7 +436,6 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 
 	e := policy.NewExecutor(conn, c.StateManager, nil)
 	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
-
 }
 
 func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
@@ -472,7 +469,7 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 }
 
 func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	policyToValidate, err := FilterPolicies(policySource, c.cfg.Policies)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
@@ -488,7 +485,7 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 }
 
 func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	log.Debug().Str("retention_period", retentionPeriod).Msg("prune policy executions received params")
 	duration, err := time.ParseDuration(retentionPeriod)
 	if err != nil {
@@ -588,7 +585,7 @@ func (c Client) Close() {
 	}
 }
 
-func (c Client) checkForUpdate(ctx context.Context) {
+func (Client) checkForUpdate(ctx context.Context) {
 	v, err := core.CheckCoreUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), core.UpdateCheckPeriod)
 	if err != nil {
 		log.Warn().Err(err).Msg("update check failed")

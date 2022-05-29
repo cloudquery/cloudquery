@@ -68,5 +68,4 @@ func TestManager_Load(t *testing.T) {
 			assert.Equal(t, tc.ExpectedPolicy, p)
 		})
 	}
-
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
 	"github.com/modern-go/reflect2"
@@ -28,8 +27,9 @@ type VersionInfo struct {
 	CommitId  string `json:"commit_id,omitempty"`
 }
 
-// Consumers must call analytics.Init before using this package
-var currentHub *Client
+type Message interface {
+	Properties() map[string]interface{}
+}
 
 type Client struct {
 	version    VersionInfo
@@ -50,6 +50,9 @@ type Client struct {
 }
 
 type Option func(c *Client)
+
+// Consumers must call analytics.Init before using this package
+var currentHub *Client
 
 func WithProperties(properties map[string]interface{}) Option {
 	return func(c *Client) {
@@ -157,10 +160,6 @@ func GetCookieId() uuid.UUID {
 		return uuid.New()
 	}
 	return id
-}
-
-type Message interface {
-	Properties() map[string]interface{}
 }
 
 func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics, extra ...interface{}) {

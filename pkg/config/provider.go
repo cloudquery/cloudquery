@@ -22,6 +22,39 @@ type Provider struct {
 	ResourceTimeout               uint64 `hcl:"resource_timeout"`
 }
 
+var providerBlockSchema = &hcl.BodySchema{
+	Attributes: []hcl.AttributeSchema{
+		{
+			Name: "resources",
+		},
+		{
+			Name: "skip_resources",
+		},
+		{
+			Name: "alias",
+		},
+		{
+			Name: "enable_partial_fetch",
+		},
+		{
+			Name: "env",
+		},
+		{
+			Name: "max_parallel_resource_fetch_limit",
+		},
+		{
+			Name: "max_goroutines",
+		},
+		{
+			Name: "resource_timeout",
+		},
+	},
+	Blocks: []hcl.BlockHeaderSchema{
+		// _All_ of these are reserved for future expansion.
+		{Type: "configuration"},
+	},
+}
+
 func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProviders map[string]bool) (*Provider, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 
@@ -116,37 +149,4 @@ func decodeProviderBlock(block *hcl.Block, ctx *hcl.EvalContext, existingProvide
 		}
 	}
 	return provider, diags
-}
-
-var providerBlockSchema = &hcl.BodySchema{
-	Attributes: []hcl.AttributeSchema{
-		{
-			Name: "resources",
-		},
-		{
-			Name: "skip_resources",
-		},
-		{
-			Name: "alias",
-		},
-		{
-			Name: "enable_partial_fetch",
-		},
-		{
-			Name: "env",
-		},
-		{
-			Name: "max_parallel_resource_fetch_limit",
-		},
-		{
-			Name: "max_goroutines",
-		},
-		{
-			Name: "resource_timeout",
-		},
-	},
-	Blocks: []hcl.BlockHeaderSchema{
-		// _All_ of these are reserved for future expansion.
-		{Type: "configuration"},
-	},
 }

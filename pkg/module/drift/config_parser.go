@@ -19,33 +19,14 @@ type Parser struct {
 	HCLContext *hcl.EvalContext
 }
 
-func NewParser(basePath string) *Parser {
-	ctx := convert.GetEvalContext(basePath)
-	ctx.Variables = make(map[string]cty.Value)
-	ctx.Functions["sql"] = function.New(&function.Spec{
-		Params: []function.Parameter{
-			{
-				Name: "sql-expr",
-				Type: cty.String,
-			},
-		},
-		Type: function.StaticReturnType(cty.String),
-		Impl: func(args []cty.Value, retType cty.Type) (cty.Value, error) {
-			if len(args) != 1 {
-				return cty.UnknownVal(cty.String), fmt.Errorf("invalid arguments: single expression required")
-			}
+type placeholder string
 
-			return cty.StringVal("${sql:" + args[0].AsString() + "}"), nil
-		},
-	})
-
-	config.EnvToHCLContext(ctx, config.EnvVarPrefix, os.Environ())
-
-	return &Parser{
-		p:          hclparse.NewParser(),
-		HCLContext: ctx,
-	}
-}
+const (
+	placeholderResourceKey             placeholder = "resourceKey"
+	placeholderResourceName            placeholder = "resourceName"
+	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
+	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
+)
 
 var baseSchema = &hcl.BodySchema{
 	Blocks: []hcl.BlockHeaderSchema{
@@ -57,124 +38,6 @@ var baseSchema = &hcl.BodySchema{
 			Type: "terraform",
 		},
 	},
-}
-
-type placeholder string
-
-const (
-	placeholderResourceKey             placeholder = "resourceKey"
-	placeholderResourceName            placeholder = "resourceName"
-	placeholderResourceColumnNames     placeholder = "resourceColumnNames"
-	placeholderResourceOptsPrimaryKeys placeholder = "resourceOptionsPrimaryKeys"
-)
-
-func makePlaceholder(varName placeholder) cty.Value {
-	return cty.StringVal("${" + string(varName) + "}")
-}
-
-func replacePlaceholderInSlice(varName placeholder, value, subject []string) []string {
-	plc := "${" + string(varName) + "}"
-	newSubj := make([]string, 0, len(subject))
-	for i := range subject {
-		if subject[i] == plc {
-			newSubj = append(newSubj, value...)
-		} else {
-			newSubj = append(newSubj, subject[i])
-		}
-	}
-	return newSubj
-}
-
-func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
-	baseConfig := &BaseConfig{}
-	content, contentDiags := body.Content(baseSchema)
-	diags = append(diags, contentDiags...)
-
-	ctx := *p.HCLContext
-	ctx.Variables["resource"] = cty.ObjectVal(map[string]cty.Value{
-		// FIXME expose the resource struct here, with late binding?
-		"Key": makePlaceholder(placeholderResourceKey),
-		"Value": cty.ObjectVal(map[string]cty.Value{
-			"Name":        makePlaceholder(placeholderResourceName),
-			"ColumnNames": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceColumnNames)}),
-			"Options": cty.ObjectVal(map[string]cty.Value{
-				"PrimaryKeys": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceOptsPrimaryKeys)}),
-			}),
-		}),
-	})
-
-	for _, block := range content.Blocks {
-		switch block.Type {
-		case "provider":
-			prov, provDiags := p.decodeProviderBlock(block, &ctx)
-			diags = append(diags, provDiags...)
-			if prov == nil {
-				continue
-			}
-			if allowedProvider != "" && prov.Name != allowedProvider {
-				diags = append(diags, &hcl.Diagnostic{
-					Severity: hcl.DiagError,
-					Summary:  `Invalid label`,
-					Detail:   `Provider label should be ` + allowedProvider,
-					Subject:  &block.DefRange,
-				})
-				continue
-			}
-
-			if prov.Name == wildcard {
-				if baseConfig.WildProvider != nil {
-					diags = append(diags, &hcl.Diagnostic{
-						Severity: hcl.DiagError,
-						Summary:  `Duplicate block`,
-						Detail:   `There must be at most one block of "*" type provider`,
-						Subject:  &block.DefRange,
-					})
-					continue
-				}
-				if len(prov.AccountIDs) > 0 {
-					diags = append(diags, &hcl.Diagnostic{
-						Severity: hcl.DiagError,
-						Summary:  `Invalid attribute`,
-						Detail:   `account_ids attribute is only valid for non-"*" providers`,
-						Subject:  &block.DefRange,
-					})
-					continue
-				}
-
-				baseConfig.WildProvider = prov
-				continue
-			}
-
-			baseConfig.Providers = append(baseConfig.Providers, prov)
-		case "terraform":
-			ts, tsDiags := p.decodeTerraformBlock(block, &ctx)
-			diags = append(diags, tsDiags...)
-			if ts != nil {
-				baseConfig.Terraform = ts
-			}
-		default:
-			panic("unexpected block")
-		}
-	}
-	if diags.HasErrors() {
-		return nil, diags
-	}
-
-	return baseConfig, diags
-}
-
-// interpret iterates over every provider/resource and replaces missing values with the ones in wildprovider/wildresource
-func (p *Parser) interpret(cfg *BaseConfig) {
-	for _, prov := range cfg.Providers {
-		prov.applyWildProvider(cfg.WildProvider)
-
-		for _, res := range prov.Resources {
-			res.applyWildResource(prov.WildResource)
-			if cfg.WildProvider != nil {
-				res.applyWildResource(cfg.WildProvider.WildResource)
-			}
-		}
-	}
 }
 
 var (
@@ -283,6 +146,143 @@ var (
 	}
 )
 
+func NewParser(basePath string) *Parser {
+	ctx := convert.GetEvalContext(basePath)
+	ctx.Variables = make(map[string]cty.Value)
+	ctx.Functions["sql"] = function.New(&function.Spec{
+		Params: []function.Parameter{
+			{
+				Name: "sql-expr",
+				Type: cty.String,
+			},
+		},
+		Type: function.StaticReturnType(cty.String),
+		Impl: func(args []cty.Value, retType cty.Type) (cty.Value, error) {
+			if len(args) != 1 {
+				return cty.UnknownVal(cty.String), fmt.Errorf("invalid arguments: single expression required")
+			}
+
+			return cty.StringVal("${sql:" + args[0].AsString() + "}"), nil
+		},
+	})
+
+	config.EnvToHCLContext(ctx, config.EnvVarPrefix, os.Environ())
+
+	return &Parser{
+		p:          hclparse.NewParser(),
+		HCLContext: ctx,
+	}
+}
+
+func makePlaceholder(varName placeholder) cty.Value {
+	return cty.StringVal("${" + string(varName) + "}")
+}
+
+func replacePlaceholderInSlice(varName placeholder, value, subject []string) []string {
+	plc := "${" + string(varName) + "}"
+	newSubj := make([]string, 0, len(subject))
+	for i := range subject {
+		if subject[i] == plc {
+			newSubj = append(newSubj, value...)
+		} else {
+			newSubj = append(newSubj, subject[i])
+		}
+	}
+	return newSubj
+}
+
+func (p *Parser) Decode(body hcl.Body, allowedProvider string, diags hcl.Diagnostics) (*BaseConfig, hcl.Diagnostics) {
+	baseConfig := &BaseConfig{}
+	content, contentDiags := body.Content(baseSchema)
+	diags = append(diags, contentDiags...)
+
+	ctx := *p.HCLContext
+	ctx.Variables["resource"] = cty.ObjectVal(map[string]cty.Value{
+		// FIXME expose the resource struct here, with late binding?
+		"Key": makePlaceholder(placeholderResourceKey),
+		"Value": cty.ObjectVal(map[string]cty.Value{
+			"Name":        makePlaceholder(placeholderResourceName),
+			"ColumnNames": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceColumnNames)}),
+			"Options": cty.ObjectVal(map[string]cty.Value{
+				"PrimaryKeys": cty.ListVal([]cty.Value{makePlaceholder(placeholderResourceOptsPrimaryKeys)}),
+			}),
+		}),
+	})
+
+	for _, block := range content.Blocks {
+		switch block.Type {
+		case "provider":
+			prov, provDiags := p.decodeProviderBlock(block, &ctx)
+			diags = append(diags, provDiags...)
+			if prov == nil {
+				continue
+			}
+			if allowedProvider != "" && prov.Name != allowedProvider {
+				diags = append(diags, &hcl.Diagnostic{
+					Severity: hcl.DiagError,
+					Summary:  `Invalid label`,
+					Detail:   `Provider label should be ` + allowedProvider,
+					Subject:  &block.DefRange,
+				})
+				continue
+			}
+
+			if prov.Name == wildcard {
+				if baseConfig.WildProvider != nil {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Duplicate block`,
+						Detail:   `There must be at most one block of "*" type provider`,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+				if len(prov.AccountIDs) > 0 {
+					diags = append(diags, &hcl.Diagnostic{
+						Severity: hcl.DiagError,
+						Summary:  `Invalid attribute`,
+						Detail:   `account_ids attribute is only valid for non-"*" providers`,
+						Subject:  &block.DefRange,
+					})
+					continue
+				}
+
+				baseConfig.WildProvider = prov
+				continue
+			}
+
+			baseConfig.Providers = append(baseConfig.Providers, prov)
+		case "terraform":
+			ts, tsDiags := p.decodeTerraformBlock(block, &ctx)
+			diags = append(diags, tsDiags...)
+			if ts != nil {
+				baseConfig.Terraform = ts
+			}
+		default:
+			panic("unexpected block")
+		}
+	}
+	if diags.HasErrors() {
+		return nil, diags
+	}
+
+	return baseConfig, diags
+}
+
+// interpret iterates over every provider/resource and replaces missing values with the ones in wildprovider/wildresource
+func (*Parser) interpret(cfg *BaseConfig) {
+	for _, prov := range cfg.Providers {
+		prov.applyWildProvider(cfg.WildProvider)
+
+		for _, res := range prov.Resources {
+			res.applyWildResource(prov.WildResource)
+			if cfg.WildProvider != nil {
+				res.applyWildResource(cfg.WildProvider.WildResource)
+			}
+		}
+	}
+}
+
 func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ProviderConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(providerSchema)
 	if diags.HasErrors() {
@@ -336,6 +336,8 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 				diags = append(diags, resDiags...)
 				continue
 			}
+			// Using the range pointer here is safe since save DefRange (revive false positive)
+			// nolint:revive
 			res.defRange = &block.DefRange
 			if block.Labels[0] == wildcard {
 				prov.WildResource = res
@@ -352,7 +354,7 @@ func (p *Parser) decodeProviderBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Provi
 	return prov, diags
 }
 
-func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ResourceConfig, hcl.Diagnostics) {
+func (*Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*ResourceConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(resourceSchema)
 	if diags.HasErrors() {
 		return nil, diags
@@ -395,6 +397,8 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 					diags = append(diags, diag...)
 					continue
 				}
+				// Using the range pointer here is safe since save DefRange (revive false positive)
+				// nolint:revive
 				ia.defRange = &block.DefRange
 				ia.attributeMap = make(map[string]string, len(ia.AttributeMap))
 
@@ -426,7 +430,7 @@ func (p *Parser) decodeResourceBlock(b *hcl.Block, ctx *hcl.EvalContext) (*Resou
 	return res, diags
 }
 
-func (p *Parser) decodeTerraformBlock(b *hcl.Block, ctx *hcl.EvalContext) (*TerraformSourceConfig, hcl.Diagnostics) {
+func (*Parser) decodeTerraformBlock(b *hcl.Block, ctx *hcl.EvalContext) (*TerraformSourceConfig, hcl.Diagnostics) {
 	content, diags := b.Body.Content(terraformSourceSchema)
 	if diags.HasErrors() {
 		return nil, diags

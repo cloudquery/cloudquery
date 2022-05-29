@@ -6,21 +6,20 @@ import (
 	"reflect"
 
 	"github.com/cloudquery/cloudquery/internal/logging/keyvals"
-
 	"github.com/hashicorp/go-hclog"
 	"github.com/rs/zerolog"
 )
-
-// NewZHcLog Creates hclog.Logger adapter from a zerolog log
-func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
-	return &ZerologKVAdapter{l, name, nil}
-}
 
 type ZerologKVAdapter struct {
 	l    *zerolog.Logger
 	name string
 
 	impliedArgs []interface{}
+}
+
+// NewZHcLog Creates hclog.Logger adapter from a zerolog log
+func NewZHcLog(l *zerolog.Logger, name string) hclog.Logger {
+	return &ZerologKVAdapter{l, name, nil}
 }
 
 func (z ZerologKVAdapter) Log(level hclog.Level, msg string, args ...interface{}) {
@@ -80,13 +79,12 @@ func (z ZerologKVAdapter) IsError() bool {
 	return z.l.GetLevel() <= zerolog.ErrorLevel
 }
 
-func (z ZerologKVAdapter) ImpliedArgs() []interface{} {
+func (ZerologKVAdapter) ImpliedArgs() []interface{} {
 	// Not supported
 	return nil
 }
 
 func (z ZerologKVAdapter) With(args ...interface{}) hclog.Logger {
-
 	l := z.l.With().Fields(keyvals.ToMap(args)).Logger()
 	return NewZHcLog(&l, z.Name())
 }

@@ -13,14 +13,14 @@ type SentryDiagnostic struct {
 	Ignore bool
 }
 
-func (d *SentryDiagnostic) IsSentryDiagnostic() (bool, map[string]string, bool) {
-	return true, d.Tags, d.Ignore
-}
-
 type DiagnosticsSummary struct {
 	Total      int            `json:"total,omitempty"`
 	ByType     map[string]int `json:"by_type,omitempty"`
 	BySeverity map[string]int `json:"by_severity,omitempty"`
+}
+
+func (d *SentryDiagnostic) IsSentryDiagnostic() (bool, map[string]string, bool) {
+	return true, d.Tags, d.Ignore
 }
 
 func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
@@ -30,17 +30,17 @@ func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
 		BySeverity: make(map[string]int),
 	}
 	for _, d := range diags {
-		summary.Total += 1
+		summary.Total++
 		if _, ok := summary.BySeverity[d.Severity().String()]; ok {
 			summary.BySeverity[d.Severity().String()] = 1
 		} else {
-			summary.BySeverity[d.Severity().String()] += 1
+			summary.BySeverity[d.Severity().String()]++
 		}
 
 		if _, ok := summary.ByType[d.Type().String()]; ok {
 			summary.ByType[d.Type().String()] = 1
 		} else {
-			summary.ByType[d.Type().String()] += 1
+			summary.ByType[d.Type().String()]++
 		}
 	}
 	return summary

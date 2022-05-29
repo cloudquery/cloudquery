@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 )
 
-func ParseProviderSource(requestedProvider *config.RequiredProvider) (string, string, error) {
+func ParseProviderSource(requestedProvider *config.RequiredProvider) (org string, provider string, err error) {
 	var requestedSource string
 	if requestedProvider.Source == nil || *requestedProvider.Source == "" {
 		requestedSource = requestedProvider.Name

@@ -6,18 +6,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/google/uuid"
-
-	"github.com/cloudquery/cloudquery/pkg/core"
-	"github.com/cloudquery/cloudquery/pkg/module/drift"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
-	"github.com/cloudquery/cloudquery/pkg/module"
-
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/core"
+	"github.com/cloudquery/cloudquery/pkg/module"
+	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/google/uuid"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"

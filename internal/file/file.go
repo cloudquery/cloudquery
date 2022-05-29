@@ -9,7 +9,6 @@ import (
 	"sync"
 
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/spf13/afero"
 )
 
@@ -41,10 +40,8 @@ func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressU
 	if err := o.downloadFile(ctx, filepath, url, progressUpdater); err != nil {
 		return err
 	}
-	if err := o.fs.Rename(filepath+".tmp", filepath); err != nil {
-		return err
-	}
-	return nil
+
+	return o.fs.Rename(filepath+".tmp", filepath)
 }
 
 func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {

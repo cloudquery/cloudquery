@@ -13,29 +13,12 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
-var emojiStatus = map[string]string{
-	ui.StatusOK:         color.GreenString("✓"),
-	ui.StatusInfo:       "📋",
-	ui.StatusError:      color.RedString("❌"),
-	ui.StatusWarn:       "⚠️",
-	ui.StatusInProgress: "⌛",
-}
-
 type Bar struct {
 	b       *mpb.Bar
 	Name    string
 	Message string
 	Status  string
 	Total   int64
-}
-
-func (b *Bar) SetTotal(total int64, triggerComplete bool) {
-	b.Total = total
-	b.b.SetTotal(total, triggerComplete)
-}
-
-func (b *Bar) Done() {
-	b.b.Abort(false)
 }
 
 type Progress struct {
@@ -53,6 +36,23 @@ type ProgressOptions struct {
 }
 
 type ProgressOption func(o *ProgressOptions)
+
+var emojiStatus = map[string]string{
+	ui.StatusOK:         color.GreenString("✓"),
+	ui.StatusInfo:       "📋",
+	ui.StatusError:      color.RedString("❌"),
+	ui.StatusWarn:       "⚠️",
+	ui.StatusInProgress: "⌛",
+}
+
+func (b *Bar) SetTotal(total int64, triggerComplete bool) {
+	b.Total = total
+	b.b.SetTotal(total, triggerComplete)
+}
+
+func (b *Bar) Done() {
+	b.b.Abort(false)
+}
 
 func NewProgress(ctx context.Context, opts ...ProgressOption) *Progress {
 	u := &Progress{

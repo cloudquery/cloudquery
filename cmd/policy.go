@@ -5,12 +5,9 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
-
-	"github.com/spf13/viper"
-
-	"github.com/spf13/cobra"
-
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const (

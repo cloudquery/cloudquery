@@ -5,19 +5,19 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/ui"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/rs/zerolog/log"
 )
+
+const diagFormat = "%sType: %-10s Severity: %s\n\tSummary: %s\n"
 
 func classifyDiagnostics(dd diag.Diagnostics) diag.Diagnostics {
 	// TODO: placeholder, every diagnostic we see that can be classified to diag.USER should be updated here
 	return dd
 }
 
-func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose, squash bool) {
+func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose bool) {
 	// Nothing to
 	if dd == nil || !dd.HasDiags() {
 		return
@@ -28,9 +28,7 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose,
 		diags = diags.Redacted()
 	}
 
-	if squash {
-		diags = diags.Squash()
-	}
+	diags = diags.Squash()
 
 	// classify diags to user diags + add details best on received error messages
 	diags = classifyDiagnostics(diags)
@@ -65,8 +63,6 @@ func printDiagnostics(header string, dd *diag.Diagnostics, redactDiags, verbose,
 	}
 	ui.ColorizedOutput(ui.ColorInfo, "\n")
 }
-
-const diagFormat = "%sType: %-10s Severity: %s\n\tSummary: %s\n"
 
 func printDiagnostic(d diag.Diagnostic) {
 	desc := d.Description()

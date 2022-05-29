@@ -168,6 +168,26 @@ type AwsConfig struct {
 	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
 }
 
+const testEnvVarConfig = `cloudquery {
+	connection {
+	  dsn =  "${DSN}"
+	}
+	provider "test" {
+	  source = "cloudquery"
+	  version = "v0.0.0"
+	}
+  }
+  
+  provider "aws" {
+	configuration {
+	  account "dev" {
+		  role_arn ="${ROLE_ARN}"
+	  }
+	  account "ron" {}
+	}
+	resources = ["slow_resource"]
+  }`
+
 func TestParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
@@ -237,7 +257,6 @@ func TestProviderLoadConfiguration(t *testing.T) {
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
-
 }
 
 func TestWithEnvironmentVariables(t *testing.T) {
@@ -246,26 +265,6 @@ func TestWithEnvironmentVariables(t *testing.T) {
 	assert.Equal(t, "value1", p.HCLContext.Variables["VAR1"].AsString())
 	assert.Equal(t, "value 2", p.HCLContext.Variables["Var2"].AsString())
 }
-
-const testEnvVarConfig = `cloudquery {
-  connection {
-    dsn =  "${DSN}"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "v0.0.0"
-  }
-}
-
-provider "aws" {
-  configuration {
-	account "dev" {
-		role_arn ="${ROLE_ARN}"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}`
 
 func TestConfigEnvVariableSubstitution(t *testing.T) {
 	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{

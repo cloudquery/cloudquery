@@ -21,7 +21,7 @@ func (h HubDetector) Detect(src, pwd string) (string, bool, error) {
 	return h.detectHTTP(fmt.Sprintf("github.com/cloudquery-policies/%s", src))
 }
 
-func (h HubDetector) detectHTTP(src string) (string, bool, error) {
+func (HubDetector) detectHTTP(src string) (string, bool, error) {
 	parts := strings.Split(src, "/")
 	if len(parts) < 3 {
 		return "", false, fmt.Errorf(

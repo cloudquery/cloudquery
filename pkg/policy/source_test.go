@@ -12,20 +12,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func init() {
-	_, filename, _, _ := runtime.Caller(0)
-	err := os.Chdir(path.Dir(filename))
-	if err != nil {
-		panic(err)
-	}
-}
-
 type sourceTest struct {
 	Name          string
 	Source        string
 	Expected      bool
 	ExpectedMeta  *Meta
 	ErrorExpected bool
+}
+
+func init() {
+	_, filename, _, _ := runtime.Caller(0)
+	err := os.Chdir(path.Dir(filename))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func TestLoadSource(t *testing.T) {
@@ -109,9 +109,8 @@ func TestLoadSource(t *testing.T) {
 			if s.ErrorExpected {
 				require.Error(t, err)
 				return
-			} else {
-				require.Nil(t, err)
 			}
+			require.Nil(t, err)
 			assert.Equal(t, s.ExpectedMeta.Type, meta.Type)
 			assert.Equal(t, filepath.ToSlash(s.ExpectedMeta.Directory), filepath.ToSlash(meta.Directory), "unexpected saved policy directory")
 			assert.NotNil(t, data)

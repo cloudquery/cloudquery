@@ -14,7 +14,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -22,6 +21,14 @@ import (
 )
 
 type SyncState int
+
+type SyncResult struct {
+	State      SyncState
+	OldVersion string
+	NewVersion string
+}
+
+const dropTableSQL = "DROP TABLE IF EXISTS %s CASCADE"
 
 const (
 	Installed SyncState = iota + 1
@@ -43,14 +50,6 @@ func (s SyncState) String() string {
 	}
 	return "Unknown"
 }
-
-type SyncResult struct {
-	State      SyncState
-	OldVersion string
-	NewVersion string
-}
-
-const dropTableSQL = "DROP TABLE IF EXISTS %s CASCADE"
 
 func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
 	log.Info().Stringer("provider", provider).Msg("syncing provider schema")

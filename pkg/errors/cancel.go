@@ -5,7 +5,6 @@ import (
 	stderrors "errors"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

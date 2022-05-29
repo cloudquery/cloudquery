@@ -8,11 +8,24 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+)
+
+type errClass string
+
+type sentryDiag interface {
+	IsSentryDiagnostic() (bool, map[string]string, bool)
+}
+
+const (
+	errNoClass      = errClass("")
+	errCancellation = errClass("cancelled")
+	errAuth         = errClass("auth")
+	errConn         = errClass("connection")
+	errDatabase     = errClass("database")
 )
 
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
@@ -36,16 +49,6 @@ func ShouldIgnoreDiag(d diag.Diagnostic) bool {
 	}
 	return false
 }
-
-type errClass string
-
-const (
-	errNoClass      = errClass("")
-	errCancellation = errClass("cancelled")
-	errAuth         = errClass("auth")
-	errConn         = errClass("connection")
-	errDatabase     = errClass("database")
-)
 
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
@@ -108,10 +111,6 @@ func shouldIgnorePgCode(code string) bool {
 		}
 	}
 	return false
-}
-
-type sentryDiag interface {
-	IsSentryDiagnostic() (bool, map[string]string, bool)
 }
 
 func isSentryDiagnostic(d diag.Diagnostic) (bool, map[string]string, bool) {

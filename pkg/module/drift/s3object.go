@@ -55,16 +55,18 @@ func loadIACStatesFromS3(iacID, bucket string, keys []string, region, roleARN st
 
 func s3session(bucket, region, roleARN string) (*s3.S3, error) {
 	if region == "" {
-		if reg, err := s3manager.GetBucketRegion(
+		reg, err := s3manager.GetBucketRegion(
 			context.Background(),
 			session.Must(session.NewSession()),
 			bucket,
 			"us-east-1",
-		); err != nil {
+		)
+
+		if err != nil {
 			return nil, err
-		} else {
-			region = reg
 		}
+
+		region = reg
 	}
 
 	sess, err := session.NewSessionWithOptions(session.Options{

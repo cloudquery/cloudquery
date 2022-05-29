@@ -11,21 +11,17 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/thoas/go-funk"
-
-	"github.com/spf13/cast"
-
 	"github.com/cloudquery/cloudquery/internal"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-version"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
+	"github.com/spf13/cast"
 	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 var ErrPolicyOrQueryNotFound = errors.New("selected policy/query not found")
@@ -51,14 +47,6 @@ type Update struct {
 	QueriesCount int
 	// Error if any returned by the provider
 	Error string
-}
-
-func (f Update) AllDone() bool {
-	return f.FinishedQueries == f.QueriesCount
-}
-
-func (f Update) DoneCount() int {
-	return f.FinishedQueries
 }
 
 // Executor implements the execution framework.
@@ -97,32 +85,6 @@ type Row struct {
 }
 type Rows []Row
 
-func (r Rows) Len() int {
-	return len(r)
-}
-
-func (r Rows) Swap(i, j int) {
-	r[i], r[j] = r[j], r[i]
-}
-
-func (r Rows) Less(i, j int) bool {
-	r1 := r[i]
-	r2 := r[j]
-	v1, v2 := make([]string, 0, len(r1.Identifiers)), make([]string, 0, len(r2.Identifiers))
-	for _, v := range r1.Identifiers {
-		v1 = append(v1, cast.ToString(v))
-	}
-	for _, v := range r2.Identifiers {
-		v2 = append(v2, cast.ToString(v))
-	}
-	for l := 0; l < len(v1); l++ {
-		if v1[l] < v2[l] {
-			return true
-		}
-	}
-	return false
-}
-
 // ExecutionResult contains all policy execution results.
 type ExecutionResult struct {
 	// PolicyName is the running policy name
@@ -153,6 +115,40 @@ type ExecuteRequest struct {
 	PolicyExecution *state.PolicyExecution
 	// DBPersistence defines weather or not to store run results
 	DBPersistence bool
+}
+
+func (f Update) AllDone() bool {
+	return f.FinishedQueries == f.QueriesCount
+}
+
+func (f Update) DoneCount() int {
+	return f.FinishedQueries
+}
+
+func (r Rows) Len() int {
+	return len(r)
+}
+
+func (r Rows) Swap(i, j int) {
+	r[i], r[j] = r[j], r[i]
+}
+
+func (r Rows) Less(i, j int) bool {
+	r1 := r[i]
+	r2 := r[j]
+	v1, v2 := make([]string, 0, len(r1.Identifiers)), make([]string, 0, len(r2.Identifiers))
+	for _, v := range r1.Identifiers {
+		v1 = append(v1, cast.ToString(v))
+	}
+	for _, v := range r2.Identifiers {
+		v2 = append(v2, cast.ToString(v))
+	}
+	for l := 0; l < len(v1); l++ {
+		if v1[l] < v2[l] {
+			return true
+		}
+	}
+	return false
 }
 
 // NewExecutor creates a new executor.
@@ -391,7 +387,6 @@ func (e *Executor) createViews(ctx context.Context, policy *Policy) error {
 // This method should be executed in 'defer' statements, so it doesn't return an error.
 func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 	for _, v := range policy.Views {
-
 		// Validate that the view is actually a temp view
 		data, err := e.conn.Query(ctx, fmt.Sprintf("SELECT table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '%s' and TABLE_SCHEMA LIKE 'pg_temp%%'", v.Name))
 		if err != nil {
@@ -400,7 +395,7 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 		}
 		count := 0
 		for data.Next() {
-			count += 1
+			count++
 		}
 		if data.Err() != nil {
 			e.log.Error("Failed to check if view is temporary", "policy", policy.Name, "view", v.Name, "err", data.Err())

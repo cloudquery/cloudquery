@@ -12,17 +12,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-const defaultPermissions = 0644
-
 type Value struct {
 	fs      afero.Afero
 	Content string
 	Created bool
 	Path    string
-}
-
-func (v Value) Update(content string) error {
-	return v.fs.WriteFile(v.Path, []byte(content), defaultPermissions)
 }
 
 type Client struct {
@@ -31,11 +25,17 @@ type Client struct {
 	gen func() string
 }
 
+const defaultPermissions = 0644
+
 var errIsDirectory = fmt.Errorf("file is directory")
 
-func New(fs afero.Afero, fn string, gen func() string) *Client {
+func (v Value) Update(content string) error {
+	return v.fs.WriteFile(v.Path, []byte(content), defaultPermissions)
+}
+
+func New(aferofs afero.Afero, fn string, gen func() string) *Client {
 	return &Client{
-		fs:  fs,
+		fs:  aferofs,
 		fn:  fn,
 		gen: gen,
 	}
@@ -78,10 +78,10 @@ func (c *Client) Get() (v Value, err error) {
 	return v, err
 }
 
-// read the contents of given path in the given fs. Returns errIsDirectory if the file exists but is a directory.
-func (c *Client) read(path string) (string, error) {
+// read the contents of given file path in the given fs. Returns errIsDirectory if the file exists but is a directory.
+func (c *Client) read(filePath string) (string, error) {
 	exists := true
-	fi, err := c.fs.Stat(path)
+	fi, err := c.fs.Stat(filePath)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			return "", err
@@ -95,7 +95,7 @@ func (c *Client) read(path string) (string, error) {
 		return "", nil
 	}
 
-	b, err := c.fs.ReadFile(path)
+	b, err := c.fs.ReadFile(filePath)
 	if err != nil {
 		return "", err
 	}
@@ -103,8 +103,8 @@ func (c *Client) read(path string) (string, error) {
 }
 
 // write the given payload into the file in the given fs and path
-func (c *Client) write(path, payload string) error {
-	return c.fs.WriteFile(path, []byte(payload), defaultPermissions)
+func (c *Client) write(filePath, payload string) error {
+	return c.fs.WriteFile(filePath, []byte(payload), defaultPermissions)
 }
 
 func readOrder() []string {

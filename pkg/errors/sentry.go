@@ -2,7 +2,6 @@ package errors
 
 import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-
 	"github.com/getsentry/sentry-go"
 )
 

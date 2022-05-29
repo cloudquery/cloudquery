@@ -6,16 +6,15 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/hashicorp/go-hclog"
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -31,9 +30,9 @@ type Client struct {
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.
 // client.Close should be called to disconnect afterwards.
-func NewClient(ctx context.Context, dsn string) (*Client, error) {
+func NewClient(ctx context.Context, clientDns string) (*Client, error) {
 	c := &Client{
-		dsn:    dsn,
+		dsn:    clientDns,
 		Logger: logging.NewZHcLog(&log.Logger, "statedb"),
 	}
 

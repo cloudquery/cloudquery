@@ -30,6 +30,12 @@ type Provider struct {
 	ParsedVersion *version.Version `db:"-"`
 }
 
+type Tx struct {
+	execution.TXQueryExecer
+
+	c *Client
+}
+
 func (p *Provider) Registry() registry.Provider {
 	return registry.Provider{
 		Source:  p.Source,
@@ -100,12 +106,6 @@ func ProviderFromRegistry(r registry.Provider) *Provider {
 		}
 	}
 	return p
-}
-
-type Tx struct {
-	execution.TXQueryExecer
-
-	c *Client
 }
 
 // InstallProvider saves state about given provider

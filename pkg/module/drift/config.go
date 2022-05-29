@@ -6,15 +6,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/cloudquery/cloudquery/pkg/core"
-
 	"github.com/hashicorp/hcl/v2"
+	"github.com/rs/zerolog/log"
 )
-
-//go:embed drift.hcl
-var builtinConfig []byte
 
 type BaseConfig struct {
 	WildProvider *ProviderConfig
@@ -59,36 +54,6 @@ type ResourceACL struct {
 	Ignore ResourceSelectors
 }
 
-// ShouldSkip gets a resource and compares it to the ACL, returning whether the given resource should be skipped or not
-func (r ResourceACL) ShouldSkip(resource *Resource) bool {
-	if r.AllowEnabled && !r.Allow.ContainsInstance(resource.ID) && !r.Allow.ContainsInstance("*") && !r.Allow.ContainsTags(resource.Tags) {
-		return true
-	}
-	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
-		return true
-	}
-	return false
-}
-
-// HasTagFilters returns true if the ACL contains tag filters
-func (r ResourceACL) HasTagFilters() bool {
-	if r.AllowEnabled {
-		for _, f := range r.Allow {
-			if f.Tags != nil {
-				return true
-			}
-		}
-	}
-
-	for _, f := range r.Ignore {
-		if f.Tags != nil {
-			return true
-		}
-	}
-
-	return false
-}
-
 type IACConfig struct {
 	Type        string   `hcl:"type,optional"`
 	Path        string   `hcl:"path,optional"`
@@ -115,10 +80,34 @@ type TerraformSourceConfig struct {
 
 type TerraformBackend string
 
+type ResourceSelectors []*ResourceSelector
+
+type ResourceSelector struct {
+	Type string
+	ID   *string
+	Tags *map[string]string
+}
+
+const wildcard = "*"
+
 const (
 	TFLocal TerraformBackend = "local"
 	TFS3    TerraformBackend = "s3"
 )
+
+//go:embed drift.hcl
+var builtinConfig []byte
+
+// ShouldSkip gets a resource and compares it to the ACL, returning whether the given resource should be skipped or not
+func (r ResourceACL) ShouldSkip(resource *Resource) bool {
+	if r.AllowEnabled && !r.Allow.ContainsInstance(resource.ID) && !r.Allow.ContainsInstance("*") && !r.Allow.ContainsTags(resource.Tags) {
+		return true
+	}
+	if r.Ignore.ContainsInstance(resource.ID) || r.Ignore.ContainsInstance("*") || r.Ignore.ContainsTags(resource.Tags) {
+		return true
+	}
+	return false
+}
 
 func (t TerraformBackend) Valid() bool {
 	return t == TFLocal || t == TFS3
@@ -144,12 +133,23 @@ func (c TerraformSourceConfig) Validate() error {
 	}
 }
 
-type ResourceSelectors []*ResourceSelector
+// HasTagFilters returns true if the ACL contains tag filters
+func (r ResourceACL) HasTagFilters() bool {
+	if r.AllowEnabled {
+		for _, f := range r.Allow {
+			if f.Tags != nil {
+				return true
+			}
+		}
+	}
 
-type ResourceSelector struct {
-	Type string
-	ID   *string
-	Tags *map[string]string
+	for _, f := range r.Ignore {
+		if f.Tags != nil {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (t ResourceSelectors) ByType(resourceType string) ResourceSelectors {
@@ -195,7 +195,7 @@ func (t ResourceSelectors) ContainsTags(tags map[string]string) bool {
 
 		matches := 0
 		for k, v := range *s.Tags {
-			if v2, ok := tags[k]; ok && v2 == v {
+			if tag, ok := tags[k]; ok && tag == v {
 				matches++
 			}
 		}
@@ -259,8 +259,6 @@ func parseTags(tags []string) map[string]string {
 	}
 	return ret
 }
-
-const wildcard = "*"
 
 func (b *BaseConfig) FindProvider(name string) *ProviderConfig {
 	for i := range b.Providers {
@@ -466,7 +464,6 @@ func (d *Drift) applyProvider(cfg *ProviderConfig, p *core.ProviderSchema) (bool
 			res.IgnoreAttributes = replacePlaceholderInSlice(k, v, res.IgnoreAttributes)
 			res.Sets = replacePlaceholderInSlice(k, v, res.Sets)
 		}
-
 		// {$sql:*} identifiers are still not replaced
 	}
 
@@ -487,7 +484,7 @@ func (d *Drift) lookupResource(resName string, prov *core.ProviderSchema) *trave
 }
 
 // SplitHashedResource splits a given resource name and returns the resource and hash elements separately.
-func SplitHashedResource(configResName string) (string, string) {
+func SplitHashedResource(configResName string) (resource string, hash string) {
 	resParts := strings.SplitN(configResName, "#", 2)
 	if len(resParts) == 1 {
 		return resParts[0], ""

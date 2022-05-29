@@ -6,16 +6,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
-
-	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
@@ -292,13 +290,11 @@ func Test_PurgeProviderData(t *testing.T) {
 				result, diags := PurgeProviderData(context.TODO(), database.NewStorage(dbDSN, nil), pm, tc.Options)
 				checkPurgeOutput(t, tc.ExpectedSecondaryDryRunResults, result, tc.ExpectedSecondaryRunDiags, diag.FlattenDiags(diags, true))
 			}
-
 		})
 	}
 }
 
 func Test_PurgeProviderDataBadUserValues(t *testing.T) {
-
 	storage := database.NewStorage("host=localhost user=postgres password=pass database=no-db port=5432 sslmode=disable", nil)
 	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	require.Nil(t, err)
@@ -308,7 +304,6 @@ func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 		DryRun:     false,
 	})
 	assert.NotNil(t, diags)
-
 }
 
 func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderDataResult, expectedDiags, actualDiags diag.FlatDiags) {
@@ -320,7 +315,6 @@ func checkPurgeOutput(t *testing.T, expectedResult, actualResult *PurgeProviderD
 	if expectedResult != nil {
 		assert.Equal(t, expectedResult, actualResult)
 	}
-
 }
 
 func insertData(t *testing.T, dsn string, tbl *schema.Table, resources schema.Resources) {

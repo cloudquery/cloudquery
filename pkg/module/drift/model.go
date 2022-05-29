@@ -27,6 +27,39 @@ type Resource struct {
 
 type ResourceList []*Resource
 
+type Result struct {
+	Provider     string `json:"provider"`
+	ResourceType string `json:"resource_type"`
+
+	// Deep mode
+	Different ResourceList `json:"diff,omitempty"`       // Resources don't match fully (id + attributes don't match)
+	DeepEqual ResourceList `json:"deep_equal,omitempty"` // Resource exists in both places (attributes match)
+
+	// Shallow mode
+	Equal ResourceList `json:"equal,omitempty"` // Resource exists in both places (attributes not checked)
+
+	// Both modes
+	Missing ResourceList `json:"missing"` // Missing in cloud provider, defined in iac
+	Extra   ResourceList `json:"extra"`   // Exists in cloud provider, not defined in iac
+}
+
+type Results struct {
+	IACName string    `json:"iac"`
+	Data    []*Result `json:"data"`
+
+	// Options
+	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
+	Debug       bool `json:"-"` // Print debug output regarding results
+
+	// These fields are calculated
+	Drifted  int     `json:"drifted_res"`
+	Covered  int     `json:"covered_res"`
+	Total    int     `json:"total_res"`
+	Coverage float64 `json:"coverage_pct"`
+
+	Text string `json:"-"`
+}
+
 func (r ResourceList) IDs(exclude ...*Resource) []string {
 	exMap := make(map[string]struct{}, len(exclude))
 	for i := range exclude {
@@ -60,22 +93,6 @@ func (r ResourceList) Map() map[string][]interface{} {
 	return ret
 }
 
-type Result struct {
-	Provider     string `json:"provider"`
-	ResourceType string `json:"resource_type"`
-
-	// Deep mode
-	Different ResourceList `json:"diff,omitempty"`       // Resources don't match fully (id + attributes don't match)
-	DeepEqual ResourceList `json:"deep_equal,omitempty"` // Resource exists in both places (attributes match)
-
-	// Shallow mode
-	Equal ResourceList `json:"equal,omitempty"` // Resource exists in both places (attributes not checked)
-
-	// Both modes
-	Missing ResourceList `json:"missing"` // Missing in cloud provider, defined in iac
-	Extra   ResourceList `json:"extra"`   // Exists in cloud provider, not defined in iac
-}
-
 func (r *Result) String() string {
 	stringDump := func(input []*Resource, name string, dst *[]string) {
 		switch l := len(input); l {
@@ -101,23 +118,6 @@ func (r *Result) String() string {
 	}
 
 	return fmt.Sprintf("%s:%s has %s resources", r.Provider, r.ResourceType, strings.Join(parts, ", "))
-}
-
-type Results struct {
-	IACName string    `json:"iac"`
-	Data    []*Result `json:"data"`
-
-	// Options
-	ListManaged bool `json:"-"` // Show or hide Equal/DeepEqual output
-	Debug       bool `json:"-"` // Print debug output regarding results
-
-	// These fields are calculated
-	Drifted  int     `json:"drifted_res"`
-	Covered  int     `json:"covered_res"`
-	Total    int     `json:"total_res"`
-	Coverage float64 `json:"coverage_pct"`
-
-	Text string `json:"-"`
 }
 
 func (rs *Results) String() string {

@@ -21,6 +21,9 @@ var (
 	Version = DevelopmentVersion
 )
 
+// unit tests helper
+var getLatestRelease = doGetLatestRelease
+
 const (
 	// Timeout for http requests related to CloudQuery core version check.
 	versionCheckHTTPTimeout = time.Second * 10
@@ -38,9 +41,6 @@ func doGetLatestRelease(ctx context.Context, client *http.Client, owner, repo st
 	r, _, err := gh.Repositories.GetLatestRelease(ctx, owner, repo)
 	return r, err
 }
-
-// unit tests helper
-var getLatestRelease = doGetLatestRelease
 
 // CheckCoreUpdate checks if an update to CloudQuery core is available and returns its (new) version.
 // To avoid making those network requests on each CLI invocation it stores last time and version seen on GitHub

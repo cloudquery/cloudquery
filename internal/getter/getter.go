@@ -94,7 +94,7 @@ func Get(ctx context.Context, installPath, url string, options ...getter.ClientO
 	return nil
 }
 
-func DetectType(src string) (string, string, bool, error) {
+func DetectType(src string) (name string, source string, found bool, err error) {
 	forcedProtocol := strings.Split(src, "::")
 	if len(forcedProtocol) > 1 {
 		if _, ok := detectorsMap[forcedProtocol[0]]; ok {

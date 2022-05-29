@@ -37,9 +37,9 @@ type Parser struct {
 
 type Option func(*Parser)
 
-func WithFS(fs afero.Fs) Option {
+func WithFS(aferoFs afero.Fs) Option {
 	return func(p *Parser) {
-		p.fs = afero.Afero{Fs: fs}
+		p.fs = afero.Afero{Fs: aferoFs}
 	}
 }
 
@@ -89,7 +89,6 @@ func NewParser(options ...Option) *Parser {
 //
 // The file will be parsed using the HCL native syntax
 func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
-
 	var contents []byte
 	// Example of path supported paths:
 	// `./local/relative/path/to/config.hcl`
@@ -115,7 +114,7 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 	if err != nil {
 		if e, ok := err.(*fs.PathError); ok {
 			if errors.Is(err, fs.ErrNotExist) {
-				err = fmt.Errorf("%s. Hint: Try `cloudquery init <provider>`.", e.Err.Error())
+				err = fmt.Errorf("%s. Hint: Try `cloudquery init <provider>`", e.Err.Error())
 			} else {
 				err = fmt.Errorf(e.Err.Error())
 			}

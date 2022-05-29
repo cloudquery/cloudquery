@@ -6,18 +6,35 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
-
-	"github.com/hashicorp/hcl/v2/hclparse"
-
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_CheckAvailableUpdates(t *testing.T) {
+const expectedProviderConfig = `
+provider "test" {
 
+  configuration {
+    account "1" {
+      id        = "testid"
+      regions   = ["asdas"]
+      resources = ["ab", "c"]
+    }
+  }
+  // list of resources to fetch
+  resources = [
+    "error_resource",
+    "migrate_resource",
+    "panic_resource",
+    "slow_resource",
+    "very_slow_resource"
+  ]
+  // enables partial fetching, allowing for any failures to not stop full resource pull
+  enable_partial_fetch = true
+}`
+
+func Test_CheckAvailableUpdates(t *testing.T) {
 	latestVersion := getLatestVersion(t, "test")
 
 	testCases := []struct {
@@ -90,28 +107,6 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		})
 	}
 }
-
-const expectedProviderConfig = `
-provider "test" {
-
-  configuration {
-    account "1" {
-      id        = "testid"
-      regions   = ["asdas"]
-      resources = ["ab", "c"]
-    }
-  }
-  // list of resources to fetch
-  resources = [
-    "error_resource",
-    "migrate_resource",
-    "panic_resource",
-    "slow_resource",
-    "very_slow_resource"
-  ]
-  // enables partial fetching, allowing for any failures to not stop full resource pull
-  enable_partial_fetch = true
-}`
 
 func Test_GetProviderConfig(t *testing.T) {
 	provider := registry.Provider{
