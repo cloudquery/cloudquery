@@ -66,7 +66,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/cq-gen v0.0.4
-	github.com/cloudquery/cq-provider-sdk v0.10.2
+	github.com/cloudquery/cq-provider-sdk v0.10.3
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gocarina/gocsv v0.0.0-20210516172204-ca9e8a8ddea8
 	github.com/golang/mock v1.6.0
@@ -75,15 +75,6 @@ require (
 	github.com/mitchellh/mapstructure v1.4.3
 	github.com/spf13/cast v1.4.1
 	github.com/stretchr/testify v1.7.0
-)
-
-require (
-	github.com/daixiang0/gci v0.3.3 // indirect
-	github.com/hexops/gotextdiff v1.0.3 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
-	github.com/spf13/cobra v1.3.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 )
 
 require (
