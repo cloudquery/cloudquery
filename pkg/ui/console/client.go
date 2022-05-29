@@ -138,7 +138,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		}
 
 		if info, err := dialect.Info(ctx); err != nil {
-			setAnalyticsProperties(map[string]interface{}{"database_version": info.Version, "database_uptime": info.Uptime.Seconds()gi, "database_full_version": info.FullVersion})
+			setAnalyticsProperties(map[string]interface{}{"database_version": info.Version, "database_uptime": info.Uptime.Seconds(), "database_full_version": info.FullVersion})
 		}
 
 		c.Storage = database.NewStorage(cfg.CloudQuery.Connection.DSN, dialect)
