@@ -360,8 +360,8 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	return nil
 }
 
-func (Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
 
 	// use config value for dbPersistence if not already enabled through the cli
@@ -485,7 +485,7 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 }
 
 func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"), true)
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	log.Debug().Str("retention_period", retentionPeriod).Msg("prune policy executions received params")
 	duration, err := time.ParseDuration(retentionPeriod)
 	if err != nil {

@@ -86,28 +86,6 @@ var configFileSchema = &hcl.BodySchema{
 	},
 }
 
-// configFileSchema is the schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configFileSchema = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules",
-		},
-	},
-}
-
 func (pp Providers) Names() []string {
 	pNames := make([]string, len(pp))
 	for i, p := range pp {

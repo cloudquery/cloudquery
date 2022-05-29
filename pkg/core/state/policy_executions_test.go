@@ -23,7 +23,7 @@ func TestClient_CreatePolicyExecution(t *testing.T) {
 	assert.NoError(t, err)
 	countBefore := 0
 	for data.Next() {
-		countBefore += 1
+		countBefore++
 	}
 	assert.NoError(t, data.Err())
 
@@ -34,7 +34,7 @@ func TestClient_CreatePolicyExecution(t *testing.T) {
 	assert.NoError(t, err)
 	countAfter := 0
 	for data.Next() {
-		countAfter += 1
+		countAfter++
 	}
 	assert.NoError(t, data.Err())
 	assert.Equal(t, countBefore+1, countAfter)
