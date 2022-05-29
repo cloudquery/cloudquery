@@ -31,12 +31,19 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 func classifyError(err error, fallbackType diag.Type, subId string, opts ...diag.BaseErrorOption) diag.Diagnostics {
 	var (
 		detailedError autorest.DetailedError
-		reqError      azure.RequestError
+		reqError      *azure.RequestError
 	)
 	if errors.As(err, &detailedError) {
-		if errors.As(detailedError.Original, &reqError) && reqError.ServiceError != nil && reqError.ServiceError.Code == "DisallowedOperation" {
-			return diag.Diagnostics{
-				RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
+		if errors.As(detailedError.Original, &reqError) && reqError.ServiceError != nil {
+			switch reqError.ServiceError.Code {
+			case "DisallowedOperation":
+				return diag.Diagnostics{
+					RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
+				}
+			case "SubscriptionNotRegistered":
+				return diag.Diagnostics{
+					RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
+				}
 			}
 		}
 
