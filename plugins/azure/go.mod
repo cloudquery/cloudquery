@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go v61.6.0+incompatible
 	github.com/Azure/go-autorest/autorest v0.11.21
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.7
-	github.com/cloudquery/cq-provider-sdk v0.10.2
+	github.com/cloudquery/cq-provider-sdk v0.10.4
 	github.com/cloudquery/faker/v3 v3.7.5
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/mock v1.6.0
@@ -33,6 +33,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.17.0 // indirect
+	github.com/elliotchance/orderedmap v1.4.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/form3tech-oss/jwt-go v3.2.3+incompatible // indirect
 	github.com/georgysavva/scany v0.2.9 // indirect
@@ -69,6 +70,7 @@ require (
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/segmentio/stats/v4 v4.6.3 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/thoas/go-funk v0.9.1 // indirect
