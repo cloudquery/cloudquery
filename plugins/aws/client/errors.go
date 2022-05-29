@@ -86,6 +86,20 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 					),
 				}
 			}
+		case "MetadataException":
+			if strings.Contains(ae.Error(), "is not authorized to perform") {
+				return diag.Diagnostics{
+					RedactError(accounts, diag.NewBaseError(err,
+						diag.ACCESS,
+						append(opts,
+							diag.WithType(diag.ACCESS),
+							diag.WithOptionalSeverity(diag.WARNING),
+							ParseSummaryMessage(err),
+							diag.WithDetails("Something is wrong with your credentials. Ensure you have access to the specified resource."),
+						)...),
+					),
+				}
+			}
 		case "InvalidAction":
 			return diag.Diagnostics{
 				RedactError(accounts, diag.NewBaseError(err,
