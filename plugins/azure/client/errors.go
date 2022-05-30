@@ -41,6 +41,7 @@ func classifyError(err error, fallbackType diag.Type, subId string, opts ...diag
 					RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 				}
 			case "SubscriptionNotRegistered":
+			case "Subscription Not Registered":
 				return diag.Diagnostics{
 					RedactError(subId, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), ParseSummaryMessage(subId, err, detailedError), diag.WithDetails("%s", errorCodeDescriptions[detailedError.StatusCode]))...)),
 				}
