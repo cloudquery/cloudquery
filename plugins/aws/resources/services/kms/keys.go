@@ -213,6 +213,9 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 				options.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 			if d.KeyMetadata != nil {

@@ -1324,6 +1324,9 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		output, err := svc.ListVersionsByFunction(ctx, &config)
 		if err != nil {
+			if meta.(*client.Client).IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- output.Versions
