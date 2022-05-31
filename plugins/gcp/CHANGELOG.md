@@ -14,6 +14,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+### [0.8.1](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.0...v0.8.1) (2022-05-31)
+
+
+### Features
+
+* Add GKE clusters ([#267](https://github.com/cloudquery/cq-provider-gcp/issues/267)) ([4edf94c](https://github.com/cloudquery/cq-provider-gcp/commit/4edf94c42f0eaaa5425993185f6ec53899cd88c3))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.2 ([#286](https://github.com/cloudquery/cq-provider-gcp/issues/286)) ([2261fdf](https://github.com/cloudquery/cq-provider-gcp/commit/2261fdf070d1fa068f7502778c82f99b013d7f8a))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.3 ([#287](https://github.com/cloudquery/cq-provider-gcp/issues/287)) ([c145063](https://github.com/cloudquery/cq-provider-gcp/commit/c14506324fa6957792f4fc9bfe3b514af758b392))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.4 ([#290](https://github.com/cloudquery/cq-provider-gcp/issues/290)) ([ce4e586](https://github.com/cloudquery/cq-provider-gcp/commit/ce4e586b14db526c758669f61c2d202d7e6b4187))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.5 ([#296](https://github.com/cloudquery/cq-provider-gcp/issues/296)) ([3e2e5b4](https://github.com/cloudquery/cq-provider-gcp/commit/3e2e5b49c5125bbc708c2adf6e8248edbb593ed7))
+* Remove relation tables PK ([#265](https://github.com/cloudquery/cq-provider-gcp/issues/265)) ([802e532](https://github.com/cloudquery/cq-provider-gcp/commit/802e532563fd90a8a930dd6234fc6ede8034ad1c))
+
 ## [0.8.0](https://github.com/cloudquery/cq-provider-gcp/compare/v0.7.4...v0.8.0) (2022-05-24)
 
 
