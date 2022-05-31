@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+### [0.5.1](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.0...v0.5.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.2 ([#107](https://github.com/cloudquery/cq-provider-digitalocean/issues/107)) ([17c001b](https://github.com/cloudquery/cq-provider-digitalocean/commit/17c001b786fa9c4f558d0c64b3b8760508e92b32))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.3 ([#109](https://github.com/cloudquery/cq-provider-digitalocean/issues/109)) ([1c14850](https://github.com/cloudquery/cq-provider-digitalocean/commit/1c14850e19c3d8e660f37152eeae4a6e60629768))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.4 ([#112](https://github.com/cloudquery/cq-provider-digitalocean/issues/112)) ([c64d20a](https://github.com/cloudquery/cq-provider-digitalocean/commit/c64d20a843593e8fc5564d1719e14b3043ced2ee))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.5 ([#117](https://github.com/cloudquery/cq-provider-digitalocean/issues/117)) ([376aeab](https://github.com/cloudquery/cq-provider-digitalocean/commit/376aeabadb10b2303bd64c506e597150a07de060))
+
 ## [0.5.0](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.4.4...v0.5.0) (2022-05-24)
 
 
