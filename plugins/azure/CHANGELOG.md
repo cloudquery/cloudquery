@@ -18,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+### [0.11.1](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.0...v0.11.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* Added IgnoreError filter for diagnostic setting resource ([#284](https://github.com/cloudquery/cq-provider-azure/issues/284)) ([e0c4330](https://github.com/cloudquery/cq-provider-azure/commit/e0c43301bde6a05bd0764d49f90a56f64a0abe75))
+* Clasify Subscription Not Registered ([#305](https://github.com/cloudquery/cq-provider-azure/issues/305)) ([ac41418](https://github.com/cloudquery/cq-provider-azure/commit/ac414184a6fe9eee9a3649db61da9de2276d8e8c))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.2 ([#300](https://github.com/cloudquery/cq-provider-azure/issues/300)) ([0cc7511](https://github.com/cloudquery/cq-provider-azure/commit/0cc751136459fd8eb77cfb97ed606488729bfe03))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.4 ([#301](https://github.com/cloudquery/cq-provider-azure/issues/301)) ([d7b1d85](https://github.com/cloudquery/cq-provider-azure/commit/d7b1d85a55539ba4561d8bedc7d152d9444d70f8))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.5 ([#311](https://github.com/cloudquery/cq-provider-azure/issues/311)) ([78bd6ee](https://github.com/cloudquery/cq-provider-azure/commit/78bd6eed676c0ccfc3553393014b6fd109ef1e30))
+* Remove relation tables PK ([#286](https://github.com/cloudquery/cq-provider-azure/issues/286)) ([f5e09e8](https://github.com/cloudquery/cq-provider-azure/commit/f5e09e87d3145a39baa7c3f6cc688ba9a0b11f96))
+
 ## [0.11.0](https://github.com/cloudquery/cq-provider-azure/compare/v0.10.4...v0.11.0) (2022-05-24)
 
 
