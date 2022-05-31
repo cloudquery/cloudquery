@@ -554,7 +554,7 @@ func TestExecutor_CheckFetches(t *testing.T) {
 				},
 			},
 			f:   &state.FetchSummary{ProviderName: "test3", ProviderVersion: "v0.2.3", Finish: finish, IsSuccess: false},
-			err: errors.New("last fetch for provider test3 wasn't successful"),
+			err: errors.New("last fetch for provider test3 wasn't successful. To force the policy execution us the `--disable-fetch-check` flag"),
 		},
 		{
 			Name: "no fetches",
