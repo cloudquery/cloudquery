@@ -205,6 +205,9 @@ func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.Client
 		},
 	)
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	if out.DBClusterSnapshotAttributesResult == nil {
