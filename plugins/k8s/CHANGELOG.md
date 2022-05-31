@@ -1,5 +1,16 @@
 # Changelog
 
+### [0.5.1](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.0...v0.5.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.2 ([#133](https://github.com/cloudquery/cq-provider-k8s/issues/133)) ([7c59b11](https://github.com/cloudquery/cq-provider-k8s/commit/7c59b1182147201b65630bfc709ebeb30944ae00))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.3 ([#135](https://github.com/cloudquery/cq-provider-k8s/issues/135)) ([26dbb7a](https://github.com/cloudquery/cq-provider-k8s/commit/26dbb7ae2bcf0384efc6f3ac55fff31eb9a97ecb))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.4 ([#138](https://github.com/cloudquery/cq-provider-k8s/issues/138)) ([884166a](https://github.com/cloudquery/cq-provider-k8s/commit/884166a3ddc5fdf2c53782166f0e8a6d87b0f0cd))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.5 ([#143](https://github.com/cloudquery/cq-provider-k8s/issues/143)) ([376ef7e](https://github.com/cloudquery/cq-provider-k8s/commit/376ef7e0d58b292cbaeafda6a266f96b48ce1d07))
+* Remove relation tables PK ([#121](https://github.com/cloudquery/cq-provider-k8s/issues/121)) ([668eb32](https://github.com/cloudquery/cq-provider-k8s/commit/668eb3204dd913cc545d00a428e15eee194c1435))
+
 ## [0.5.0](https://github.com/cloudquery/cq-provider-k8s/compare/v0.4.6...v0.5.0) (2022-05-24)
 
 
