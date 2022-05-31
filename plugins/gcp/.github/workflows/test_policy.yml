@@ -37,7 +37,7 @@ jobs:
           --health-retries 5
     steps:
       - name: Check out code into the policy directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download Cloudquery
         run: |
