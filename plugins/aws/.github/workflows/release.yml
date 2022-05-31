@@ -32,9 +32,9 @@ jobs:
           args: release --rm-dist --skip-validate --skip-publish --skip-sign
       - name: Import GPG key
         id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          gpg-private-key: ${{ secrets.PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
