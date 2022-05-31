@@ -43,7 +43,6 @@ func Registries() *schema.Table {
 				Description:   "Repository represents a repository",
 				Resolver:      fetchRegistryRepositories,
 				DeleteFilter:  client.DeleteFilter,
-				Options:       schema.TableCreationOptions{PrimaryKeys: []string{"registry_cq_id", "name"}},
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

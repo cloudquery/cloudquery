@@ -38,7 +38,6 @@ func Domains() *schema.Table {
 				Name:        "digitalocean_domain_records",
 				Description: "DomainRecord represents a DigitalOcean DomainRecord",
 				Resolver:    fetchDomainRecords,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "domain_cq_id",

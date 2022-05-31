@@ -65,7 +65,6 @@ func Vpcs() *schema.Table {
 				Name:        "digitalocean_vpc_members",
 				Description: "Resources that are members of a VPC.",
 				Resolver:    fetchVpcMembers,
-				Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 				Columns: []schema.Column{
 					{
 						Name:        "vpc_cq_id",
