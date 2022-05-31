@@ -307,7 +307,7 @@ func (e *Executor) checkFetches(ctx context.Context, policyConfig *Configuration
 			return fmt.Errorf("could not find finished fetches for provider %s", p.Type)
 		}
 		if !fetchSummary.IsSuccess {
-			return fmt.Errorf("last fetch for provider %s wasn't successful", p.Type)
+			return fmt.Errorf("last fetch for provider %s wasn't successful. To force the policy execution us the `--disable-fetch-check` flag.", p.Type)
 		}
 		v, err := version.NewVersion(fetchSummary.ProviderVersion)
 		if err != nil {
