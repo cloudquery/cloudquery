@@ -41,7 +41,8 @@ func (e *Executor) Validate(ctx context.Context) (bool, error) {
 	var dbIdErr error
 	e.dbId, dbIdErr = GetDatabaseId(ctx, pool)
 
-	e.info, _ = GetDatabaseInfo(ctx, pool)
+	// set database info
+	e.info = GetDatabaseInfo(ctx, pool)
 
 	if err := ValidatePostgresVersion(ctx, pool); err != nil {
 		return true, err
@@ -87,11 +88,18 @@ func GetDatabaseId(ctx context.Context, q pgxscan.Querier) (string, error) {
 	return result, err
 }
 
-func GetDatabaseInfo(ctx context.Context, q pgxscan.Querier) (model.DatabaseInfo, error) {
+func GetDatabaseInfo(ctx context.Context, q pgxscan.Querier) model.DatabaseInfo {
 	var result model.DatabaseInfo
 	err := pgxscan.Get(ctx, q, &result, `SELECT split_part(current_setting('server_version'), ' ', 1) as version,
 	date_trunc('second', current_timestamp - pg_postmaster_start_time()) as uptime, version() as full_version`)
-	return result, err
+	if err != nil {
+		return model.DatabaseInfo{
+			Version:     "unknown",
+			Uptime:      0,
+			FullVersion: "unknown",
+		}
+	}
+	return result
 }
 
 func doValidatePostgresVersion(ctx context.Context, q pgxscan.Querier, want *version.Version) error {
