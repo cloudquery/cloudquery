@@ -75,7 +75,7 @@ jobs:
 
       - name: Setup Terraform
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
 
       - name: Terraform fmt
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
