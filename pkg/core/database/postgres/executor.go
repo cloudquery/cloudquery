@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/pkg/core/database/model"
 	sdkpg "github.com/cloudquery/cq-provider-sdk/database/postgres"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/hashicorp/go-version"
@@ -15,6 +16,7 @@ import (
 type Executor struct {
 	dsn  string
 	dbId string
+	info model.DatabaseInfo
 }
 
 var MinPostgresVersion = version.Must(version.NewVersion("11.0"))
@@ -39,11 +41,18 @@ func (e *Executor) Validate(ctx context.Context) (bool, error) {
 	var dbIdErr error
 	e.dbId, dbIdErr = GetDatabaseId(ctx, pool)
 
+	// set database info
+	e.info = GetDatabaseInfo(ctx, pool)
+
 	if err := ValidatePostgresVersion(ctx, pool); err != nil {
 		return true, err
 	}
 
 	return true, dbIdErr
+}
+
+func (e *Executor) Info(context.Context) (model.DatabaseInfo, error) {
+	return e.info, nil
 }
 
 func (e Executor) Identifier(_ context.Context) (string, bool) {
@@ -77,6 +86,20 @@ func GetDatabaseId(ctx context.Context, q pgxscan.Querier) (string, error) {
 	var result string
 	err := pgxscan.Get(ctx, q, &result, `SELECT system_identifier::varchar AS id FROM pg_control_system()`)
 	return result, err
+}
+
+func GetDatabaseInfo(ctx context.Context, q pgxscan.Querier) model.DatabaseInfo {
+	var result model.DatabaseInfo
+	err := pgxscan.Get(ctx, q, &result, `SELECT split_part(current_setting('server_version'), ' ', 1) as version,
+	date_trunc('second', current_timestamp - pg_postmaster_start_time()) as uptime, version() as full_version`)
+	if err != nil {
+		return model.DatabaseInfo{
+			Version:     "unknown",
+			Uptime:      0,
+			FullVersion: "unknown",
+		}
+	}
+	return result
 }
 
 func doValidatePostgresVersion(ctx context.Context, q pgxscan.Querier, want *version.Version) error {

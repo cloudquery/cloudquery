@@ -39,3 +39,19 @@ func TestDatabaseId(t *testing.T) {
 
 	pool.Close()
 }
+
+func TestDatabaseInfo(t *testing.T) {
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
+	}
+
+	pool, err := database.New(context.Background(), hclog.NewNullLogger(), dbUrl)
+	assert.NoError(t, err)
+	defer pool.Close()
+
+	info := GetDatabaseInfo(context.Background(), pool)
+	assert.NotEmpty(t, info.Version)
+	assert.NotEmpty(t, info.Uptime)
+	assert.NotEmpty(t, info.FullVersion)
+}
