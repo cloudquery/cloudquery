@@ -50,8 +50,7 @@ func TestDatabaseInfo(t *testing.T) {
 	assert.NoError(t, err)
 	defer pool.Close()
 
-	info, err := GetDatabaseInfo(context.Background(), pool)
-	assert.Nil(t, err)
+	info := GetDatabaseInfo(context.Background(), pool)
 	assert.NotEmpty(t, info.Version)
 	assert.NotEmpty(t, info.Uptime)
 	assert.NotEmpty(t, info.FullVersion)
