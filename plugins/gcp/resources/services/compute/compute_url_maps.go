@@ -262,7 +262,8 @@ func ComputeURLMaps() *schema.Table {
 			{
 				Name:        "id",
 				Description: "The unique identifier for the resource This identifier is defined by the server",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveResourceId,
 			},
 			{
 				Name:        "kind",
