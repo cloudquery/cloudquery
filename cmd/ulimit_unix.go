@@ -1,5 +1,4 @@
 //go:build darwin || linux
-// +build darwin linux
 
 package cmd
 
@@ -25,7 +24,7 @@ func checkAndSetUlimitUnix() {
 
 func setUlimit(ulimit uint64) error {
 	logger := zerolog.Logger
-	rLimit, err := getUlimit()
+	rLimit, err := GetUlimit()
 	if err != nil {
 		logger.Err(fmt.Errorf("error getting ulimit: %w", err))
 	}
@@ -38,7 +37,7 @@ func setUlimit(ulimit uint64) error {
 	return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit)
 }
 
-func getUlimit() (syscall.Rlimit, error) {
+func GetUlimit() (syscall.Rlimit, error) {
 	var rLimit syscall.Rlimit
 	err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit)
 	return rLimit, err
