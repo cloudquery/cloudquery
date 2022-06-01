@@ -457,10 +457,7 @@ func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 func resolveNetworkVirtualNetworksDhcpOptionsDnsServers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	vn, ok := resource.Item.(network.VirtualNetwork)
-	if !ok {
-		return fmt.Errorf("expected to have network.VirtualNetwork but got %T", resource.Item)
-	}
+	vn := resource.Item.(network.VirtualNetwork)
 	if vn.DhcpOptions == nil || vn.DhcpOptions.DNSServers == nil || len(*vn.DhcpOptions.DNSServers) == 0 {
 		return nil
 	}
@@ -468,18 +465,15 @@ func resolveNetworkVirtualNetworksDhcpOptionsDnsServers(ctx context.Context, met
 	for _, ip := range *vn.DhcpOptions.DNSServers {
 		i := net.ParseIP(ip)
 		if i == nil {
-			return fmt.Errorf("wrong format of IP: %s", ip)
+			return diag.WrapError(fmt.Errorf("wrong format of IP: %s", ip))
 		}
 		ips = append(ips, i)
 		net.ParseIP(ip)
 	}
-	return resource.Set(c.Name, ips)
+	return diag.WrapError(resource.Set(c.Name, ips))
 }
 func resolveNetworkVirtualNetworksIpAllocations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	vn, ok := resource.Item.(network.VirtualNetwork)
-	if !ok {
-		return fmt.Errorf("expected to have network.VirtualNetwork but got %T", resource.Item)
-	}
+	vn := resource.Item.(network.VirtualNetwork)
 	if vn.IPAllocations == nil {
 		return nil
 	}
@@ -487,13 +481,10 @@ func resolveNetworkVirtualNetworksIpAllocations(ctx context.Context, meta schema
 	for _, a := range *vn.IPAllocations {
 		allocations = append(allocations, *a.ID)
 	}
-	return resource.Set(c.Name, allocations)
+	return diag.WrapError(resource.Set(c.Name, allocations))
 }
 func fetchNetworksVirtualNetworkSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	vn, ok := parent.Item.(network.VirtualNetwork)
-	if !ok {
-		return fmt.Errorf("expected to have network.VirtualNetwork but got %T", parent.Item)
-	}
+	vn := parent.Item.(network.VirtualNetwork)
 	if vn.Subnets == nil {
 		return nil
 	}
@@ -502,10 +493,7 @@ func fetchNetworksVirtualNetworkSubnets(ctx context.Context, meta schema.ClientM
 }
 
 func fetchNetworksVirtualNetworkPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	vn, ok := parent.Item.(network.VirtualNetwork)
-	if !ok {
-		return fmt.Errorf("expected to have network.VirtualNetwork but got %T", parent.Item)
-	}
+	vn := parent.Item.(network.VirtualNetwork)
 	if vn.VirtualNetworkPeerings == nil {
 		return nil
 	}

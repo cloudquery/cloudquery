@@ -3,7 +3,6 @@ package monitor
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -223,7 +222,7 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 		id := i
 		g.Go(func() error {
 			if err := limiter.Acquire(ctx, 1); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			defer limiter.Release(1)
 			response, err := monSvc.List(ctx, id)
@@ -251,13 +250,10 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 
 	err = g.Wait()
 
-	return err
+	return diag.WrapError(err)
 }
 func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(diagnosticSetting)
-	if !ok {
-		return fmt.Errorf("expected insights.DiagnosticSettingsResource but got %T", parent.Item)
-	}
+	p := parent.Item.(diagnosticSetting)
 	if p.DiagnosticSettings == nil ||
 		p.DiagnosticSettings.Metrics == nil {
 		return nil
@@ -267,10 +263,7 @@ func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.Clien
 	return nil
 }
 func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(diagnosticSetting)
-	if !ok {
-		return fmt.Errorf("expected insights.DiagnosticSettingsResource but got %T", parent.Item)
-	}
+	p := parent.Item.(diagnosticSetting)
 	if p.DiagnosticSettings == nil ||
 		p.DiagnosticSettings.Logs == nil {
 		return nil

@@ -3,7 +3,6 @@ package compute
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -650,25 +649,17 @@ func fetchComputeVirtualMachines(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 func resolveComputeVirtualMachinesStorageProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	data, err := json.Marshal(p.StorageProfile)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 func resolveComputeVirtualMachinesWindowsConfigurationAdditionalUnattendContent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	if p.VirtualMachineProperties == nil ||
 		p.VirtualMachineProperties.OsProfile == nil ||
 		p.VirtualMachineProperties.OsProfile.WindowsConfiguration == nil {
@@ -680,14 +671,10 @@ func resolveComputeVirtualMachinesWindowsConfigurationAdditionalUnattendContent(
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachinesLinuxConfigurationSshPublicKeys(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	if p.VirtualMachineProperties == nil ||
 		p.VirtualMachineProperties.OsProfile == nil ||
 		p.VirtualMachineProperties.OsProfile.LinuxConfiguration == nil ||
@@ -700,14 +687,10 @@ func resolveComputeVirtualMachinesLinuxConfigurationSshPublicKeys(ctx context.Co
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachinesNetworkProfileNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	if p.NetworkProfile == nil {
 		return nil
 	}
@@ -717,14 +700,10 @@ func resolveComputeVirtualMachinesNetworkProfileNetworkInterfaces(ctx context.Co
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachinesNetworkProfileNetworkInterfaceConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	if p.NetworkProfile == nil {
 		return nil
 	}
@@ -734,51 +713,41 @@ func resolveComputeVirtualMachinesNetworkProfileNetworkInterfaceConfigurations(c
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachinesInstanceView(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	svc := meta.(*client.Client).Services().Compute.VirtualMachines
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
+	p := resource.Item.(compute.VirtualMachine)
 	details, err := client.ParseResourceID(*p.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	response, err := svc.InstanceView(ctx, details.ResourceGroup, *p.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	data, err := json.Marshal(response)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachinesScheduledEventsProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachine)
 	if p.ScheduledEventsProfile == nil {
 		return nil
 	}
 
 	data, err := json.Marshal(p.ScheduledEventsProfile)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
-	}
+	p := parent.Item.(compute.VirtualMachine)
 	if p.OsProfile == nil ||
 		p.OsProfile.WindowsConfiguration == nil ||
 		p.OsProfile.WindowsConfiguration.WinRM == nil ||
@@ -790,11 +759,7 @@ func fetchComputeVirtualMachineWinConfigRmListeners(ctx context.Context, meta sc
 	return nil
 }
 func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
-	}
-
+	p := parent.Item.(compute.VirtualMachine)
 	if p.OsProfile == nil || p.OsProfile.Secrets == nil {
 		return nil
 	}
@@ -803,11 +768,7 @@ func fetchComputeVirtualMachineSecrets(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(compute.VaultSecretGroup)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VaultSecretGroup but got %T", parent.Item)
-	}
-
+	p := parent.Item.(compute.VaultSecretGroup)
 	if p.VaultCertificates == nil {
 		return nil
 	}
@@ -817,10 +778,7 @@ func fetchComputeVirtualMachineSecretVaultCertificates(ctx context.Context, meta
 }
 func fetchComputeVirtualMachineResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Compute.VirtualMachineExtensions
-	p, ok := parent.Item.(compute.VirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachine but got %T", parent.Item)
-	}
+	p := parent.Item.(compute.VirtualMachine)
 	details, err := client.ParseResourceID(*p.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -836,41 +794,29 @@ func fetchComputeVirtualMachineResources(ctx context.Context, meta schema.Client
 	return nil
 }
 func resolveComputeVirtualMachineResourcesSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineExtension but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineExtension)
 	data, err := json.Marshal(p.Settings)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachineResourcesProtectedSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineExtension but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineExtension)
 	data, err := json.Marshal(p.ProtectedSettings)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveComputeVirtualMachineResourcesInstanceView(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineExtension but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineExtension)
 	data, err := json.Marshal(p.InstanceView)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }

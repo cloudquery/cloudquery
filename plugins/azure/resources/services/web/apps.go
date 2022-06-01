@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -536,11 +535,7 @@ func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	return nil
 }
 func resolveWebAppSiteConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(web.Site)
-	if !ok {
-		return fmt.Errorf("expected web.Site but got %T", resource.Item)
-	}
-
+	r := resource.Item.(web.Site)
 	if r.SiteConfig == nil {
 		return nil
 	}
@@ -549,14 +544,10 @@ func resolveWebAppSiteConfig(ctx context.Context, meta schema.ClientMeta, resour
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchWebAppHostNameSslStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(web.Site)
-	if !ok {
-		return fmt.Errorf("expected web.Site but got %T", parent.Item)
-	}
-
+	p := parent.Item.(web.Site)
 	if p.HostNameSslStates == nil {
 		return nil
 	}
@@ -565,11 +556,7 @@ func fetchWebAppHostNameSslStates(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 func fetchWebAppPublishingProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(web.Site)
-	if !ok {
-		return fmt.Errorf("expected web.Site but got %T", parent.Item)
-	}
-
+	p := parent.Item.(web.Site)
 	svc := meta.(*client.Client).Services().Web.Apps
 	response, err := svc.ListPublishingProfileXMLWithSecrets(ctx, *p.ResourceGroup, *p.Name, web.CsmPublishingProfileOptions{})
 	if err != nil {
@@ -599,7 +586,7 @@ func fetchVnetConnections(ctx context.Context, meta schema.ClientMeta, resource 
 
 	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *site.SiteConfig.VnetName)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if response.VnetInfoProperties != nil {
 		vnetConnection := make(map[string]interface{})
@@ -615,9 +602,9 @@ func fetchVnetConnections(ctx context.Context, meta schema.ClientMeta, resource 
 		vnetConnection["properties"] = response.VnetInfoProperties
 		b, err := json.Marshal(vnetConnection)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 	return nil
 }

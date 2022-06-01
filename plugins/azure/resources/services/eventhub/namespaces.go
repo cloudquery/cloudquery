@@ -3,7 +3,6 @@ package eventhub
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -216,10 +215,7 @@ func fetchEventhubNamespaces(ctx context.Context, meta schema.ClientMeta, _ *sch
 	return nil
 }
 func fetchEventhubNamespaceEncryptionKeyVaultProperties(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	namespace, ok := parent.Item.(eventhub.EHNamespace)
-	if !ok {
-		return fmt.Errorf("expected to have eventhub.EHNamespace but got %T", parent.Item)
-	}
+	namespace := parent.Item.(eventhub.EHNamespace)
 	if namespace.Encryption == nil || namespace.Encryption.KeyVaultProperties == nil {
 		return nil
 	}
@@ -242,5 +238,5 @@ func resolveNamespaceNetworkRuleSet(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

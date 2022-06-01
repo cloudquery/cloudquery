@@ -3,7 +3,6 @@ package compute
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -467,11 +466,7 @@ func fetchComputeVirtualMachineScaleSets(ctx context.Context, meta schema.Client
 	return nil
 }
 func resolveVirtualMachineScaleSetsOsProfileWindowsConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.OsProfile == nil ||
@@ -484,14 +479,10 @@ func resolveVirtualMachineScaleSetsOsProfileWindowsConfiguration(ctx context.Con
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsOsProfileLinuxConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.OsProfile == nil ||
@@ -504,14 +495,10 @@ func resolveVirtualMachineScaleSetsOsProfileLinuxConfiguration(ctx context.Conte
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsStorageProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.StorageProfile == nil {
@@ -523,14 +510,10 @@ func resolveVirtualMachineScaleSetsStorageProfile(ctx context.Context, meta sche
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsNetworkProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.NetworkProfile == nil {
@@ -542,14 +525,10 @@ func resolveVirtualMachineScaleSetsNetworkProfile(ctx context.Context, meta sche
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.SecurityProfile == nil {
@@ -561,14 +540,10 @@ func resolveVirtualMachineScaleSetsSecurityProfile(ctx context.Context, meta sch
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsDiagnosticsProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.DiagnosticsProfile == nil {
@@ -580,14 +555,10 @@ func resolveVirtualMachineScaleSetsDiagnosticsProfile(ctx context.Context, meta 
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetsScheduledEventsProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.ScheduledEventsProfile == nil {
@@ -599,14 +570,10 @@ func resolveVirtualMachineScaleSetsScheduledEventsProfile(ctx context.Context, m
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchComputeVirtualMachineScaleSetOsProfileSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", parent.Item)
-	}
-
+	p := parent.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.OsProfile == nil ||
@@ -618,11 +585,7 @@ func fetchComputeVirtualMachineScaleSetOsProfileSecrets(ctx context.Context, met
 	return nil
 }
 func fetchComputeVirtualMachineScaleSetExtensions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(compute.VirtualMachineScaleSet)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", parent.Item)
-	}
-
+	p := parent.Item.(compute.VirtualMachineScaleSet)
 	if p.VirtualMachineScaleSetProperties == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile == nil ||
 		p.VirtualMachineScaleSetProperties.VirtualMachineProfile.ExtensionProfile == nil {
@@ -633,32 +596,22 @@ func fetchComputeVirtualMachineScaleSetExtensions(ctx context.Context, meta sche
 	return nil
 }
 func ResolveComputeVirtualMachineScaleSetExtensionType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSetExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
+	p := resource.Item.(compute.VirtualMachineScaleSetExtension)
 	if p.VirtualMachineScaleSetExtensionProperties == nil ||
 		p.VirtualMachineScaleSetExtensionProperties.Type == nil {
 		return nil
 	}
-	return resource.Set(c.Name, p.VirtualMachineScaleSetExtensionProperties.Type)
+	return diag.WrapError(resource.Set(c.Name, p.VirtualMachineScaleSetExtensionProperties.Type))
 }
 func ResolveComputeVirtualMachineScaleSetExtensionExtensionType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSetExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
+	p := resource.Item.(compute.VirtualMachineScaleSetExtension)
 	if p.Type == nil {
 		return nil
 	}
-	return resource.Set(c.Name, p.Type)
+	return diag.WrapError(resource.Set(c.Name, p.Type))
 }
 func resolveVirtualMachineScaleSetExtensionsSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSetExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSetExtension)
 	if p.VirtualMachineScaleSetExtensionProperties == nil ||
 		p.VirtualMachineScaleSetExtensionProperties.Settings == nil {
 		return nil
@@ -669,14 +622,10 @@ func resolveVirtualMachineScaleSetExtensionsSettings(ctx context.Context, meta s
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveVirtualMachineScaleSetExtensionsProtectedSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(compute.VirtualMachineScaleSetExtension)
-	if !ok {
-		return fmt.Errorf("expected to have compute.VirtualMachineScaleSet but got %T", resource.Item)
-	}
-
+	p := resource.Item.(compute.VirtualMachineScaleSetExtension)
 	if p.VirtualMachineScaleSetExtensionProperties == nil ||
 		p.VirtualMachineScaleSetExtensionProperties.ProtectedSettings == nil {
 		return nil
@@ -687,5 +636,5 @@ func resolveVirtualMachineScaleSetExtensionsProtectedSettings(ctx context.Contex
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }

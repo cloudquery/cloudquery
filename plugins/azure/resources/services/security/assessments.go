@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -189,12 +190,12 @@ func fetchSecurityAssessments(ctx context.Context, meta schema.ClientMeta, paren
 	svc := cl.Services().Security.Assessments
 	result, err := svc.List(ctx, fmt.Sprintf("/subscriptions/%s", cl.SubscriptionId))
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -207,7 +208,7 @@ func resolveSecurityAssessmentResourceDetails(ctx context.Context, meta schema.C
 	}
 	b, err := json.Marshal(a.AssessmentProperties.ResourceDetails)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -293,10 +292,7 @@ func sqlManagedDatabases() *schema.Table {
 
 func fetchSqlManagedDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedDatabases
-	server, ok := parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedInstance instance: %T", parent.Item)
-	}
+	server := parent.Item.(sql.ManagedInstance)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -315,18 +311,12 @@ func fetchSqlManagedDatabases(ctx context.Context, meta schema.ClientMeta, paren
 }
 func fetchSqlManagedDatabaseVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedDatabaseVulnerabilityAssessments
-	database, ok := parent.Item.(sql.ManagedDatabase)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedDatabase instance: %T", parent.Item)
-	}
+	database := parent.Item.(sql.ManagedDatabase)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not a sql.ManagedInstance instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.ManagedInstance)
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -341,18 +331,12 @@ func fetchSqlManagedDatabaseVulnerabilityAssessments(ctx context.Context, meta s
 }
 func fetchSqlManagedDatabaseVulnerabilityAssessmentScans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedDatabaseVulnerabilityAssessmentScans
-	database, ok := parent.Item.(sql.ManagedDatabase)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedDatabase instance: %T", parent.Item)
-	}
+	database := parent.Item.(sql.ManagedDatabase)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not a sql.ManagedInstance instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.ManagedInstance)
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)

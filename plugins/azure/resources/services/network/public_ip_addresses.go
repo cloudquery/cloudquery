@@ -236,11 +236,7 @@ func fetchNetworkPublicIpAddresses(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 func resolveNetworkPublicIPAddressesIpConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.PublicIPAddress)
 	if p.PublicIPAddressPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.IPConfiguration == nil {
 		return nil
@@ -250,13 +246,10 @@ func resolveNetworkPublicIPAddressesIpConfiguration(ctx context.Context, meta sc
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }
 func resolveNetworkPublicIPAddressesIpTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
+	p := resource.Item.(network.PublicIPAddress)
 	if p.IPTags == nil {
 		return nil
 	}
@@ -264,28 +257,21 @@ func resolveNetworkPublicIPAddressesIpTags(ctx context.Context, meta schema.Clie
 	for _, t := range *p.IPTags {
 		j[*t.IPTagType] = *t.Tag
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveNetworkPublicIPAddressesIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
+	p := resource.Item.(network.PublicIPAddress)
 	if p.IPAddress == nil {
 		return nil
 	}
 	i := net.ParseIP(*p.IPAddress)
 	if i == nil {
-		return fmt.Errorf("wrong format of IP: %s", *p.IPAddress)
+		return diag.WrapError(fmt.Errorf("wrong format of IP: %s", *p.IPAddress))
 	}
-	return resource.Set(c.Name, i)
+	return diag.WrapError(resource.Set(c.Name, i))
 }
 func resolveNetworkPublicIPAddressesServicePublicIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.PublicIPAddress)
 	if p.PublicIPAddressPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.ServicePublicIPAddress == nil {
 		return nil
@@ -295,14 +281,10 @@ func resolveNetworkPublicIPAddressesServicePublicIpAddress(ctx context.Context, 
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }
 func resolveNetworkPublicIPAddressesNatGateway(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.PublicIPAddress)
 	if p.PublicIPAddressPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.NatGateway == nil {
 		return nil
@@ -312,14 +294,10 @@ func resolveNetworkPublicIPAddressesNatGateway(ctx context.Context, meta schema.
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }
 func resolveNetworkPublicIPAddressesLinkedPublicIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.PublicIPAddress)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.PublicIPAddress)
 	if p.PublicIPAddressPropertiesFormat == nil ||
 		p.PublicIPAddressPropertiesFormat.LinkedPublicIPAddress == nil {
 		return nil
@@ -329,5 +307,5 @@ func resolveNetworkPublicIPAddressesLinkedPublicIpAddress(ctx context.Context, m
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }

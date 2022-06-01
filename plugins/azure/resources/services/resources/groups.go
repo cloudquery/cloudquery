@@ -76,7 +76,7 @@ func fetchResourcesGroups(ctx context.Context, meta schema.ClientMeta, _ *schema
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

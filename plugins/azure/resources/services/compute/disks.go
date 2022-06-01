@@ -348,7 +348,7 @@ func resolveComputeDiskShareInfo(_ context.Context, _ schema.ClientMeta, resourc
 	for i, info := range *disk.ShareInfo {
 		shareInfo[i] = info.VMURI
 	}
-	return resource.Set("share_info", shareInfo)
+	return diag.WrapError(resource.Set("share_info", shareInfo))
 }
 
 func fetchComputeDiskEncryptionSettings(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

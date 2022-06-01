@@ -2,7 +2,6 @@ package network
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -261,10 +260,7 @@ func fetchNetworkExpressRoutePorts(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 func resolveExpressRoutePortCircuits(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	erp, ok := resource.Item.(network.ExpressRoutePort)
-	if !ok {
-		return fmt.Errorf("not a network.ExpressRoutePort instance: %T", resource.Item)
-	}
+	erp := resource.Item.(network.ExpressRoutePort)
 	if erp.Circuits == nil {
 		return nil
 	}
@@ -275,13 +271,10 @@ func resolveExpressRoutePortCircuits(ctx context.Context, meta schema.ClientMeta
 			ids = append(ids, *cir.ID)
 		}
 	}
-	return resource.Set(c.Name, ids)
+	return diag.WrapError(resource.Set(c.Name, ids))
 }
 func fetchNetworkExpressRouteLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	erp, ok := parent.Item.(network.ExpressRoutePort)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRoutePort but got %T", parent.Item)
-	}
+	erp := parent.Item.(network.ExpressRoutePort)
 	if erp.ExpressRoutePortPropertiesFormat != nil && erp.ExpressRoutePortPropertiesFormat.Links != nil {
 		res <- *erp.ExpressRoutePortPropertiesFormat.Links
 	}

@@ -259,9 +259,9 @@ func resolveServicebusNamespacesSystemData(ctx context.Context, meta schema.Clie
 	}
 	b, err := json.Marshal(n.SystemData)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveServicebusNamespacesKeyVaultProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -271,9 +271,9 @@ func resolveServicebusNamespacesKeyVaultProperties(ctx context.Context, meta sch
 	}
 	b, err := json.Marshal(n.SBNamespaceProperties.Encryption.KeyVaultProperties)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchServicebusNamespacesPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -292,7 +292,7 @@ func resolveServicebusNamespacePrivateEndpointConnectionSystemData(ctx context.C
 	}
 	b, err := json.Marshal(n.SystemData)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

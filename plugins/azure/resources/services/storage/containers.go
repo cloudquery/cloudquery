@@ -196,7 +196,7 @@ func resolveStorageContainerImmutabilityPolicy(_ context.Context, _ schema.Clien
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("immutability_policy", data)
+	return diag.WrapError(resource.Set("immutability_policy", data))
 }
 
 func resolveStorageContainerLegalHold(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
@@ -208,5 +208,5 @@ func resolveStorageContainerLegalHold(_ context.Context, _ schema.ClientMeta, re
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("legal_hold", data)
+	return diag.WrapError(resource.Set("legal_hold", data))
 }

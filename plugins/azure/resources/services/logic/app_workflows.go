@@ -6,6 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -230,12 +231,12 @@ func fetchLogicAppWorkflows(ctx context.Context, meta schema.ClientMeta, parent 
 	var top int32 = 100
 	response, err := svc.ListBySubscription(ctx, &top, "")
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err = response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -248,9 +249,9 @@ func endpointsConfigurationResolver(ctx context.Context, meta schema.ClientMeta,
 	}
 	b, err := json.Marshal(*workflow.EndpointsConfiguration)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func accessControlResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	workflow := resource.Item.(logic.Workflow)
@@ -259,9 +260,9 @@ func accessControlResolver(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	b, err := json.Marshal(*workflow.AccessControl)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func definitionResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -271,9 +272,9 @@ func definitionResolver(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	b, err := json.Marshal(definition)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func parametersResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	workflow := resource.Item.(logic.Workflow)
@@ -282,9 +283,9 @@ func parametersResolver(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	b, err := json.Marshal(workflow.Parameters)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func identityUserAssignedIdentitiesResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -294,9 +295,9 @@ func identityUserAssignedIdentitiesResolver(ctx context.Context, meta schema.Cli
 	}
 	b, err := json.Marshal(workflow.Identity.UserAssignedIdentities)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchDiagnosticSettingsResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -304,7 +305,7 @@ func fetchDiagnosticSettingsResolver(ctx context.Context, meta schema.ClientMeta
 	svc := meta.(*client.Client).Services().Logic.DiagnosticSettings
 	response, err := svc.List(ctx, id)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	diagnosticSettings := []map[string]interface{}{}
 	for _, v := range *response.Value {
@@ -325,7 +326,7 @@ func fetchDiagnosticSettingsResolver(ctx context.Context, meta schema.ClientMeta
 	}
 	b, err := json.Marshal(diagnosticSettings)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

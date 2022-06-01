@@ -2,7 +2,6 @@ package keyvault
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
@@ -433,7 +432,7 @@ func resolveKeyvaultVaultNetworkAclsIPRules(ctx context.Context, meta schema.Cli
 	for i, ip := range *vault.Properties.NetworkAcls.IPRules {
 		ips[i] = ip.Value
 	}
-	return resource.Set("network_acls_ip_rules", ips)
+	return diag.WrapError(resource.Set("network_acls_ip_rules", ips))
 }
 func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	vault := resource.Item.(keyvault.Vault)
@@ -444,7 +443,7 @@ func resolveKeyvaultVaultNetworkAclsVirtualNetworkRules(ctx context.Context, met
 	for i, rule := range *vault.Properties.NetworkAcls.VirtualNetworkRules {
 		ipRules[i] = rule.ID
 	}
-	return resource.Set("network_acls_virtual_network_rules", ipRules)
+	return diag.WrapError(resource.Set("network_acls_virtual_network_rules", ipRules))
 }
 func fetchKeyvaultVaultAccessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	vault := parent.Item.(keyvault.Vault)
@@ -479,58 +478,39 @@ func fetchKeyvaultVaultKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	return nil
 }
 func resolveKeyvaultVaultKeyNotBefore(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.KeyItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.KeyItem)
 	if key.Attributes == nil || key.Attributes.NotBefore == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.NotBefore))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.NotBefore)))
 }
 func resolveKeyvaultVaultKeyExpires(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.KeyItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.KeyItem)
 	if key.Attributes == nil || key.Attributes.Expires == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Expires))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Expires)))
 }
 func resolveKeyvaultVaultKeyCreated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.KeyItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.KeyItem)
 	if key.Attributes == nil || key.Attributes.Created == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Created))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Created)))
 }
 func resolveKeyvaultVaultKeyUpdated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.KeyItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.KeyItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.KeyItem)
 	if key.Attributes == nil || key.Attributes.Updated == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Updated))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Updated)))
 }
 func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	vault, ok := parent.Item.(keyvault.Vault)
-	if !ok {
-		return fmt.Errorf("not a keyvault.Vault instance: %#v", parent.Item)
-	}
+	vault := parent.Item.(keyvault.Vault)
 	svc := meta.(*client.Client).Services().KeyVault.KeyVault71
 	maxResults := int32(25)
 	result, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, &maxResults)
@@ -546,50 +526,34 @@ func fetchKeyvaultVaultSecrets(ctx context.Context, meta schema.ClientMeta, pare
 	return nil
 }
 func resolveKeyvaultVaultSecretNotBefore(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.SecretItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.SecretItem)
 	if key.Attributes == nil || key.Attributes.NotBefore == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.NotBefore))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.NotBefore)))
 }
 func resolveKeyvaultVaultSecretExpires(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.SecretItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.SecretItem)
 	if key.Attributes == nil || key.Attributes.Expires == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Expires))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Expires)))
 }
 func resolveKeyvaultVaultSecretCreated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.SecretItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.SecretItem)
 	if key.Attributes == nil || key.Attributes.Created == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Created))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Created)))
 }
 func resolveKeyvaultVaultSecretUpdated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key, ok := resource.Item.(keyvault71.SecretItem)
-	if !ok {
-		return fmt.Errorf("not a keyvault71.SecretItem instance: %#v", resource.Item)
-	}
-
+	key := resource.Item.(keyvault71.SecretItem)
 	if key.Attributes == nil || key.Attributes.Updated == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, time.Time(*key.Attributes.Updated))
+	return diag.WrapError(resource.Set(c.Name, time.Time(*key.Attributes.Updated)))
 }

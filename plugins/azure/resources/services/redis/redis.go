@@ -243,7 +243,7 @@ func resolveServiceLinkedServers(ctx context.Context, meta schema.ClientMeta, re
 			ids = append(ids, *v.ID)
 		}
 	}
-	return resource.Set(c.Name, ids)
+	return diag.WrapError(resource.Set(c.Name, ids))
 }
 
 func resolveServiceJSONField(getter func(s redis.ResourceType) interface{}) schema.ColumnResolver {
@@ -253,7 +253,7 @@ func resolveServiceJSONField(getter func(s redis.ResourceType) interface{}) sche
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
@@ -269,10 +269,10 @@ func resolveServiceStaticIP(ctx context.Context, meta schema.ClientMeta, resourc
 	if v4 := ip.To4(); v4 != nil {
 		ip = v4
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func resolveServicePublicNetworkAccess(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	s := resource.Item.(redis.ResourceType)
-	return resource.Set(c.Name, s.PublicNetworkAccess == redis.PublicNetworkAccessEnabled)
+	return diag.WrapError(resource.Set(c.Name, s.PublicNetworkAccess == redis.PublicNetworkAccessEnabled))
 }

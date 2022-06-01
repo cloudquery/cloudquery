@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 	"github.com/Azure/go-autorest/autorest"
@@ -824,7 +823,7 @@ func resolveStorageAccountBlobRestoreStatusParametersBlobRanges(_ context.Contex
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("blob_restore_status_parameters_blob_ranges", data)
+	return diag.WrapError(resource.Set("blob_restore_status_parameters_blob_ranges", data))
 }
 func fetchStorageAccountNetworkRuleSetVirtualNetworkRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	account := parent.Item.(storage.Account)
@@ -852,10 +851,7 @@ func fetchStorageAccountPrivateEndpointConnections(_ context.Context, _ schema.C
 }
 
 func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	acc, ok := resource.Item.(storage.Account)
-	if !ok {
-		return fmt.Errorf("not a storage.Account: %T", resource.Item)
-	}
+	acc := resource.Item.(storage.Account)
 
 	if !isBlobSupported(&acc) {
 		return nil
@@ -903,15 +899,11 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	acc, ok := resource.Item.(storage.Account)
-	if !ok {
-		return fmt.Errorf("not a storage.Account: %T", resource.Item)
-	}
-
+	acc := resource.Item.(storage.Account)
 	if !isQueueSupported(&acc) {
 		return nil
 	}
@@ -947,7 +939,7 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 // isQueueSupported checks whether queues are supported for a storage account.

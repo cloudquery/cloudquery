@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -258,21 +259,18 @@ func fetchSearchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.
 	svc := meta.(*client.Client).Services().Search.Service
 	response, err := svc.ListBySubscription(ctx, nil)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
 }
 func resolveSearchServicesNetworkRuleSetIpRules(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(search.Service)
-	if !ok {
-		return fmt.Errorf("expected to have search.Service but got %T", resource.Item)
-	}
+	service := resource.Item.(search.Service)
 	if service.NetworkRuleSet == nil || service.NetworkRuleSet.IPRules == nil {
 		return nil
 	}
@@ -281,19 +279,16 @@ func resolveSearchServicesNetworkRuleSetIpRules(_ context.Context, _ schema.Clie
 		ipStr := *ipRule.Value
 		ip := net.ParseIP(ipStr)
 		if ipStr != "" && ip == nil {
-			return fmt.Errorf("failed to parse IP from %s", ipStr)
+			return diag.WrapError(fmt.Errorf("failed to parse IP from %s", ipStr))
 		}
 		if ip.To4() != nil {
 			ipRules = append(ipRules, ip.To4())
 		}
 	}
-	return resource.Set(c.Name, ipRules)
+	return diag.WrapError(resource.Set(c.Name, ipRules))
 }
 func fetchSearchServicePrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service, ok := parent.Item.(search.Service)
-	if !ok {
-		return fmt.Errorf("expected to have search.Service but got %T", parent.Item)
-	}
+	service := parent.Item.(search.Service)
 	if service.PrivateEndpointConnections == nil {
 		return nil
 	}
@@ -301,10 +296,7 @@ func fetchSearchServicePrivateEndpointConnections(_ context.Context, _ schema.Cl
 	return nil
 }
 func fetchSearchServiceSharedPrivateLinkResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service, ok := parent.Item.(search.Service)
-	if !ok {
-		return fmt.Errorf("expected to have search.Service but got %T", parent.Item)
-	}
+	service := parent.Item.(search.Service)
 	if service.SharedPrivateLinkResources == nil {
 		return nil
 	}

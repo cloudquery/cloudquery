@@ -3,7 +3,6 @@ package resources
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -151,10 +150,7 @@ func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 func resolveResourcesPolicyAssignmentMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	a, ok := resource.Item.(policy.Assignment)
-	if !ok {
-		return fmt.Errorf("expected policy.Assignment but got %T", resource.Item)
-	}
+	a := resource.Item.(policy.Assignment)
 	if a.Metadata == nil {
 		return nil
 	}
@@ -163,5 +159,5 @@ func resolveResourcesPolicyAssignmentMetadata(ctx context.Context, meta schema.C
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }

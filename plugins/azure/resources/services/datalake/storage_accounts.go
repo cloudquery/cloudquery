@@ -338,10 +338,7 @@ func fetchDatalakeStorageAccounts(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 func fetchDatalakeStorageAccountFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeStoreAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeStoreAccount)
 	if p.FirewallRules != nil {
 		res <- *p.FirewallRules
 	}
@@ -349,44 +346,30 @@ func fetchDatalakeStorageAccountFirewallRules(ctx context.Context, meta schema.C
 	return nil
 }
 func resolveStorageAccountFirewallRulesStartIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(account.FirewallRule)
-	if !ok {
-		return fmt.Errorf("not a account.FirewallRule instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(account.FirewallRule)
 	i := net.ParseIP(*p.StartIPAddress)
 	if i == nil {
-		return fmt.Errorf("wrong format of IP: %s", *p.StartIPAddress)
+		return diag.WrapError(fmt.Errorf("wrong format of IP: %s", *p.StartIPAddress))
 	}
-	return resource.Set(c.Name, i)
+	return diag.WrapError(resource.Set(c.Name, i))
 }
 func resolveStorageAccountFirewallRulesEndIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(account.FirewallRule)
-	if !ok {
-		return fmt.Errorf("not a account.FirewallRule instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(account.FirewallRule)
 	i := net.ParseIP(*p.EndIPAddress)
 	if i == nil {
-		return fmt.Errorf("wrong format of IP: %s", *p.EndIPAddress)
+		return diag.WrapError(fmt.Errorf("wrong format of IP: %s", *p.EndIPAddress))
 	}
-	return resource.Set(c.Name, i)
+	return diag.WrapError(resource.Set(c.Name, i))
 }
 func fetchDatalakeStorageAccountVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeStoreAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeStoreAccount)
 	if p.VirtualNetworkRules != nil {
 		res <- *p.VirtualNetworkRules
 	}
 	return nil
 }
 func fetchDatalakeStorageAccountTrustedIdProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeStoreAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeStoreAccount)
 	if p.TrustedIDProviders != nil {
 		res <- *p.TrustedIDProviders
 	}

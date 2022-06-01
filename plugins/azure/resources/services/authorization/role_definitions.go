@@ -2,7 +2,6 @@ package authorization
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -114,10 +113,7 @@ func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMe
 }
 
 func fetchAuthorizationRoleDefinitionPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	def, ok := parent.Item.(authorization.RoleDefinition)
-	if !ok {
-		return fmt.Errorf("not an authorization.RoleDefinition instance: %T", parent.Item)
-	}
+	def := parent.Item.(authorization.RoleDefinition)
 	if def.Permissions == nil {
 		return nil
 	}

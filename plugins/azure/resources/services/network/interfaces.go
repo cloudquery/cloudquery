@@ -3,7 +3,6 @@ package network
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -343,21 +342,14 @@ func fetchNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, _ *sche
 	return nil
 }
 func fetchNetworkInterfaceIPConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	ni, ok := parent.Item.(network.Interface)
-	if !ok {
-		return fmt.Errorf("expected to have network.Interface but got %T", parent.Item)
-	}
+	ni := parent.Item.(network.Interface)
 	if ni.IPConfigurations != nil {
 		res <- *ni.IPConfigurations
 	}
 	return nil
 }
 func resolveNetworkInterfacePrivateLinkService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.Interface)
-	if !ok {
-		return fmt.Errorf("expected to have network.Interface but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.Interface)
 	if p.InterfacePropertiesFormat == nil ||
 		p.InterfacePropertiesFormat.PrivateLinkService == nil {
 		return nil
@@ -367,14 +359,10 @@ func resolveNetworkInterfacePrivateLinkService(ctx context.Context, meta schema.
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }
 func resolveNetworkInterfaceTapConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.Interface)
-	if !ok {
-		return fmt.Errorf("expected to have network.Interface but got %T", resource.Item)
-	}
-
+	p := resource.Item.(network.Interface)
 	if p.InterfacePropertiesFormat == nil ||
 		p.InterfacePropertiesFormat.TapConfigurations == nil {
 		return nil
@@ -384,14 +372,11 @@ func resolveNetworkInterfaceTapConfigurations(ctx context.Context, meta schema.C
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }
 
 func resolveInterfaceIPConfigurationPrivateLinkConnectionProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(network.InterfaceIPConfiguration)
-	if !ok {
-		return fmt.Errorf("expected to have network.InterfaceIPConfiguration but got %T", resource.Item)
-	}
+	p := resource.Item.(network.InterfaceIPConfiguration)
 	if p.PrivateLinkConnectionProperties == nil {
 		return nil
 	}
@@ -402,7 +387,7 @@ func resolveInterfaceIPConfigurationPrivateLinkConnectionProperties(ctx context.
 		"groupId":            p.PrivateLinkConnectionProperties.GroupID,
 	})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, out)
+	return diag.WrapError(resource.Set(c.Name, out))
 }

@@ -378,10 +378,7 @@ func fetchDatalakeAnalyticsAccounts(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 func fetchDatalakeAnalyticsAccountDataLakeStoreAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeAnalyticsAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeAnalyticsAccount)
 	if p.DataLakeStoreAccounts != nil {
 		res <- *p.DataLakeStoreAccounts
 	}
@@ -389,10 +386,7 @@ func fetchDatalakeAnalyticsAccountDataLakeStoreAccounts(ctx context.Context, met
 	return nil
 }
 func fetchDatalakeAnalyticsAccountStorageAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeAnalyticsAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeAnalyticsAccount)
 	if p.StorageAccounts != nil {
 		res <- *p.StorageAccounts
 	}
@@ -400,10 +394,7 @@ func fetchDatalakeAnalyticsAccountStorageAccounts(ctx context.Context, meta sche
 	return nil
 }
 func fetchDatalakeAnalyticsAccountComputePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeAnalyticsAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeAnalyticsAccount)
 	if p.ComputePolicies != nil {
 		res <- *p.ComputePolicies
 	}
@@ -411,10 +402,7 @@ func fetchDatalakeAnalyticsAccountComputePolicies(ctx context.Context, meta sche
 	return nil
 }
 func fetchDatalakeAnalyticsAccountFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(account.DataLakeAnalyticsAccount)
-	if !ok {
-		return fmt.Errorf("not a account.DataLakeStoreAccount instance: %T", parent.Item)
-	}
+	p := parent.Item.(account.DataLakeAnalyticsAccount)
 	if p.FirewallRules != nil {
 		res <- *p.FirewallRules
 	}
@@ -422,26 +410,18 @@ func fetchDatalakeAnalyticsAccountFirewallRules(ctx context.Context, meta schema
 	return nil
 }
 func resolveAnalyticsAccountFirewallRulesStartIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(account.FirewallRule)
-	if !ok {
-		return fmt.Errorf("not a account.FirewallRule instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(account.FirewallRule)
 	i := net.ParseIP(*p.StartIPAddress)
 	if i == nil {
-		return fmt.Errorf("wrong format of IP: %s", *p.StartIPAddress)
+		return diag.WrapError(fmt.Errorf("wrong format of IP: %s", *p.StartIPAddress))
 	}
-	return resource.Set(c.Name, i)
+	return diag.WrapError(resource.Set(c.Name, i))
 }
 func resolveAnalyticsAccountFirewallRulesEndIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(account.FirewallRule)
-	if !ok {
-		return fmt.Errorf("not a account.FirewallRule instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(account.FirewallRule)
 	i := net.ParseIP(*p.EndIPAddress)
 	if i == nil {
-		return fmt.Errorf("wrong format of IP: %s", *p.EndIPAddress)
+		return diag.WrapError(fmt.Errorf("wrong format of IP: %s", *p.EndIPAddress))
 	}
-	return resource.Set(c.Name, i)
+	return diag.WrapError(resource.Set(c.Name, i))
 }

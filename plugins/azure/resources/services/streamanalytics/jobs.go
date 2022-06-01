@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -260,12 +261,12 @@ func fetchStreamanalyticsJobs(ctx context.Context, meta schema.ClientMeta, paren
 	svc := meta.(*client.Client).Services().StreamAnalytics.Jobs
 	result, err := svc.List(ctx, "")
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -276,7 +277,7 @@ func resolveStreamAnalyticsJobsTransformationPropertiesStreamingUnits(ctx contex
 	if j.StreamingJobProperties == nil || j.StreamingJobProperties.Transformation == nil || j.StreamingJobProperties.Transformation.TransformationProperties == nil || j.StreamingJobProperties.Transformation.TransformationProperties.StreamingUnits == nil {
 		return nil
 	}
-	return resource.Set(c.Name, *j.StreamingJobProperties.Transformation.TransformationProperties.StreamingUnits)
+	return diag.WrapError(resource.Set(c.Name, *j.StreamingJobProperties.Transformation.TransformationProperties.StreamingUnits))
 }
 
 func resolveStreamAnalyticsJobsTransformationPropertiesValidStreamingUnits(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -290,5 +291,5 @@ func resolveStreamAnalyticsJobsTransformationPropertiesValidStreamingUnits(ctx c
 	for i, v := range u {
 		items[i] = int(v)
 	}
-	return resource.Set(c.Name, items)
+	return diag.WrapError(resource.Set(c.Name, items))
 }

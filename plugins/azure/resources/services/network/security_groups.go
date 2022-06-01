@@ -463,18 +463,12 @@ func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func fetchNetworkSecurityGroupSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(network.SecurityGroup)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
-	}
+	p := parent.Item.(network.SecurityGroup)
 	res <- *p.SecurityRules
 	return nil
 }
 func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(network.SecurityGroup)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
-	}
+	p := parent.Item.(network.SecurityGroup)
 	///subscriptions/ce681e53-1bc4-4218-b777-ddbfeec1986f/resourceGroups/example-resources/providers/Microsoft.Network/networkWatchers/acctestnw/flowLogs/Microsoft.Networkexample-resourcesacceptanceTestSecurityGroup1test
 	if p.FlowLogs == nil {
 		return nil
@@ -485,7 +479,7 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 		//parse flow log id and get required fields from it
 		v := strings.Split(*fl.ID, "/")
 		if len(v) != 11 {
-			return fmt.Errorf("wrong format of flow logs id")
+			return diag.WrapError(fmt.Errorf("wrong format of flow logs id"))
 		}
 		networkWatcherName := v[8]
 		resourceGroup := v[4]
@@ -525,10 +519,7 @@ func fetchNetworkSecurityGroupFlowLogs(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 func fetchNetworkSecurityGroupDefaultSecurityRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(network.SecurityGroup)
-	if !ok {
-		return fmt.Errorf("expected to have network.SecurityGroup but got %T", parent.Item)
-	}
+	p := parent.Item.(network.SecurityGroup)
 	res <- *p.DefaultSecurityRules
 	return nil
 }

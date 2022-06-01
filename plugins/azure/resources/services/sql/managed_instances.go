@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -441,10 +440,7 @@ func fetchSqlManagedInstances(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func fetchSqlManagedInstancePrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	server, ok := parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedInstance instance: %T", parent.Item)
-	}
+	server := parent.Item.(sql.ManagedInstance)
 	if server.PrivateEndpointConnections != nil {
 		res <- *server.PrivateEndpointConnections
 	}
@@ -452,10 +448,7 @@ func fetchSqlManagedInstancePrivateEndpointConnections(ctx context.Context, meta
 }
 func fetchSqlManagedInstanceVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedInstanceVulnerabilityAssessments
-	s, ok := parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedInstance instance: %T", parent.Item)
-	}
+	s := parent.Item.(sql.ManagedInstance)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -474,10 +467,7 @@ func fetchSqlManagedInstanceVulnerabilityAssessments(ctx context.Context, meta s
 }
 func fetchSqlManagedInstanceEncryptionProtectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedInstanceEncryptionProtectors
-	s, ok := parent.Item.(sql.ManagedInstance)
-	if !ok {
-		return fmt.Errorf("not an sql.ManagedInstance instance: %T", parent.Item)
-	}
+	s := parent.Item.(sql.ManagedInstance)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
 		return diag.WrapError(err)

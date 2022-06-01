@@ -2,7 +2,6 @@ package network
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -604,40 +603,28 @@ func fetchNetworkExpressRouteCircuits(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 func fetchNetworkExpressRouteCircuitAuthorizations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	erc, ok := parent.Item.(network.ExpressRouteCircuit)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRouteCircuit but got %T", parent.Item)
-	}
+	erc := parent.Item.(network.ExpressRouteCircuit)
 	if erc.ExpressRouteCircuitPropertiesFormat != nil && erc.ExpressRouteCircuitPropertiesFormat.Authorizations != nil {
 		res <- *erc.ExpressRouteCircuitPropertiesFormat.Authorizations
 	}
 	return nil
 }
 func fetchNetworkExpressRouteCircuitPeerings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	erc, ok := parent.Item.(network.ExpressRouteCircuit)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRouteCircuit but got %T", parent.Item)
-	}
+	erc := parent.Item.(network.ExpressRouteCircuit)
 	if erc.ExpressRouteCircuitPropertiesFormat != nil && erc.ExpressRouteCircuitPropertiesFormat.Peerings != nil {
 		res <- *erc.ExpressRouteCircuitPropertiesFormat.Peerings
 	}
 	return nil
 }
 func fetchNetworkExpressRouteCircuitConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rcp, ok := parent.Item.(network.ExpressRouteCircuitPeering)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRouteCircuitPeering but got %T", parent.Item)
-	}
+	rcp := parent.Item.(network.ExpressRouteCircuitPeering)
 	if rcp.ExpressRouteCircuitPeeringPropertiesFormat != nil && rcp.ExpressRouteCircuitPeeringPropertiesFormat.Connections != nil {
 		res <- *rcp.ExpressRouteCircuitPeeringPropertiesFormat.Connections
 	}
 	return nil
 }
 func fetchNetworkPeerExpressRouteCircuitConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rcp, ok := parent.Item.(network.ExpressRouteCircuitPeering)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRouteCircuitPeering but got %T", parent.Item)
-	}
+	rcp := parent.Item.(network.ExpressRouteCircuitPeering)
 	if rcp.ExpressRouteCircuitPeeringPropertiesFormat != nil && rcp.ExpressRouteCircuitPeeringPropertiesFormat.PeeredConnections != nil {
 		res <- *rcp.ExpressRouteCircuitPeeringPropertiesFormat.PeeredConnections
 	}

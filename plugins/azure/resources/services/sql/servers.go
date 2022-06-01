@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -691,10 +690,7 @@ func fetchSqlServers(ctx context.Context, meta schema.ClientMeta, parent *schema
 }
 
 func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	server, ok := parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
-	}
+	server := parent.Item.(sql.Server)
 	if server.PrivateEndpointConnections != nil {
 		res <- *server.PrivateEndpointConnections
 	}
@@ -703,10 +699,7 @@ func fetchSqlServerPrivateEndpointConnections(ctx context.Context, meta schema.C
 
 func fetchSqlServerVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.VirtualNetworkRules
-	server, ok := parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
-	}
+	server := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -726,10 +719,7 @@ func fetchSqlServerVirtualNetworkRules(ctx context.Context, meta schema.ClientMe
 
 func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.Firewall
-	server, ok := parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
-	}
+	server := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -746,10 +736,7 @@ func fetchSqlServerFirewallRules(ctx context.Context, meta schema.ClientMeta, pa
 
 func fetchSqlServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerAdmins
-	server, ok := parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
-	}
+	server := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return diag.WrapError(err)
@@ -772,16 +759,16 @@ func fetchSqlServerDbBlobAuditingPolicies(ctx context.Context, meta schema.Clien
 	s := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*s.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	result, err := svc.ListByServer(ctx, details.ResourceGroup, *s.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for result.NotDone() {
 		res <- result.Values()
 		if err := result.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -829,10 +816,7 @@ func fetchSqlServerVulnerabilityAssessments(ctx context.Context, meta schema.Cli
 
 func fetchSqlServerSecurityAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ServerSecurityAlertPolicies
-	server, ok := parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not an sql.Server instance: %#v", parent.Item)
-	}
+	server := parent.Item.(sql.Server)
 	details, err := client.ParseResourceID(*server.ID)
 	if err != nil {
 		return diag.WrapError(err)

@@ -3,7 +3,6 @@ package iothub
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -797,10 +796,7 @@ func fetchIothubHubs(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 	return nil
 }
 func resolveIothubHubsRoutingEnrichments(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	iothub, ok := resource.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", resource.Item)
-	}
+	iothub := resource.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Enrichments == nil {
 		return nil
 	}
@@ -808,13 +804,10 @@ func resolveIothubHubsRoutingEnrichments(_ context.Context, _ schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveIothubHubsLocations(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	iothub, ok := resource.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", resource.Item)
-	}
+	iothub := resource.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Locations == nil {
 		return nil
 	}
@@ -822,13 +815,10 @@ func resolveIothubHubsLocations(_ context.Context, _ schema.ClientMeta, resource
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchIothubHubAuthorizationPolicies(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.AuthorizationPolicies == nil {
 		return nil
 	}
@@ -836,10 +826,7 @@ func fetchIothubHubAuthorizationPolicies(_ context.Context, _ schema.ClientMeta,
 	return nil
 }
 func fetchIothubHubIpFilterRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.IPFilterRules == nil {
 		return nil
 	}
@@ -847,10 +834,7 @@ func fetchIothubHubIpFilterRules(_ context.Context, _ schema.ClientMeta, parent 
 	return nil
 }
 func fetchIothubHubNetworkRuleSetsIpRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.NetworkRuleSets == nil || iothub.Properties.NetworkRuleSets.IPRules == nil {
 		return nil
 	}
@@ -858,10 +842,7 @@ func fetchIothubHubNetworkRuleSetsIpRules(_ context.Context, _ schema.ClientMeta
 	return nil
 }
 func fetchIothubHubPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.PrivateEndpointConnections == nil {
 		return nil
 	}
@@ -869,10 +850,7 @@ func fetchIothubHubPrivateEndpointConnections(_ context.Context, _ schema.Client
 	return nil
 }
 func fetchIothubHubRoutingEndpointsServiceBusQueues(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Endpoints == nil || iothub.Properties.Routing.Endpoints.ServiceBusQueues == nil {
 		return nil
 	}
@@ -880,10 +858,7 @@ func fetchIothubHubRoutingEndpointsServiceBusQueues(_ context.Context, _ schema.
 	return nil
 }
 func fetchIothubHubRoutingEndpointsServiceBusTopics(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Endpoints == nil || iothub.Properties.Routing.Endpoints.ServiceBusTopics == nil {
 		return nil
 	}
@@ -891,10 +866,7 @@ func fetchIothubHubRoutingEndpointsServiceBusTopics(_ context.Context, _ schema.
 	return nil
 }
 func fetchIothubHubRoutingEndpointsEventHubs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Endpoints == nil || iothub.Properties.Routing.Endpoints.EventHubs == nil {
 		return nil
 	}
@@ -902,10 +874,7 @@ func fetchIothubHubRoutingEndpointsEventHubs(_ context.Context, _ schema.ClientM
 	return nil
 }
 func fetchIothubHubRoutingEndpointsStorageContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Endpoints == nil || iothub.Properties.Routing.Endpoints.StorageContainers == nil {
 		return nil
 	}
@@ -913,10 +882,7 @@ func fetchIothubHubRoutingEndpointsStorageContainers(_ context.Context, _ schema
 	return nil
 }
 func fetchIothubHubRoutingRoutes(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	iothub, ok := parent.Item.(devices.IotHubDescription)
-	if !ok {
-		return fmt.Errorf("expected to have devices.IotHubDescription but got %T", parent.Item)
-	}
+	iothub := parent.Item.(devices.IotHubDescription)
 	if iothub.Properties == nil || iothub.Properties.Routing == nil || iothub.Properties.Routing.Routes == nil {
 		return nil
 	}

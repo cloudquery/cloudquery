@@ -2,7 +2,6 @@ package container
 
 import (
 	"context"
-	"fmt"
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
@@ -296,10 +295,7 @@ func fetchContainerRegistries(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 func fetchContainerRegistryNetworkRuleSetVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(containerregistry.Registry)
-	if !ok {
-		return fmt.Errorf("not a containerregistry.Registry instance: %T", parent.Item)
-	}
+	r := parent.Item.(containerregistry.Registry)
 	if r.RegistryProperties == nil || r.RegistryProperties.NetworkRuleSet == nil || r.RegistryProperties.NetworkRuleSet.VirtualNetworkRules == nil {
 		return nil
 	}
@@ -307,10 +303,7 @@ func fetchContainerRegistryNetworkRuleSetVirtualNetworkRules(ctx context.Context
 	return nil
 }
 func fetchContainerRegistryNetworkRuleSetIpRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(containerregistry.Registry)
-	if !ok {
-		return fmt.Errorf("not a containerregistry.Registry instance: %T", parent.Item)
-	}
+	r := parent.Item.(containerregistry.Registry)
 	if r.RegistryProperties == nil || r.RegistryProperties.NetworkRuleSet == nil || r.RegistryProperties.NetworkRuleSet.IPRules == nil {
 		return nil
 	}
@@ -318,23 +311,16 @@ func fetchContainerRegistryNetworkRuleSetIpRules(ctx context.Context, meta schem
 	return nil
 }
 func resolveContainerRegistryNetworkRuleSetIPRulesIpAddressOrRange(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(containerregistry.IPRule)
-	if !ok {
-		return fmt.Errorf("not a containerregistry.IPRule instance: %T", resource.Item)
-	}
-
+	r := resource.Item.(containerregistry.IPRule)
 	_, cidr, err := net.ParseCIDR(*r.IPAddressOrRange)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, cidr)
+	return diag.WrapError(resource.Set(c.Name, cidr))
 }
 func fetchContainerRegistryReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r, ok := parent.Item.(containerregistry.Registry)
-	if !ok {
-		return fmt.Errorf("not a containerregistry.Registry instance: %T", parent.Item)
-	}
+	r := parent.Item.(containerregistry.Registry)
 	svc := meta.(*client.Client).Services().ContainerRegistry.Replications
 	resource, err := client.ParseResourceID(*r.ID)
 	if err != nil {

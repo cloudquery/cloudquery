@@ -2,7 +2,6 @@ package network
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -158,30 +157,21 @@ func fetchNetworkRouteFilters(ctx context.Context, meta schema.ClientMeta, _ *sc
 	return nil
 }
 func resolveNetworkRouteFilterIpv6Peerings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rf, ok := resource.Item.(network.RouteFilter)
-	if !ok {
-		return fmt.Errorf("expected to have network.RouteFilter but got %T", resource.Item)
-	}
+	rf := resource.Item.(network.RouteFilter)
 	if rf.Ipv6Peerings == nil {
 		return nil
 	}
-	return resource.Set(c.Name, *rf.Ipv6Peerings)
+	return diag.WrapError(resource.Set(c.Name, *rf.Ipv6Peerings))
 }
 func resolveNetworkRouteFilterPeerings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rf, ok := resource.Item.(network.RouteFilter)
-	if !ok {
-		return fmt.Errorf("expected to have network.RouteFilter but got %T", resource.Item)
-	}
+	rf := resource.Item.(network.RouteFilter)
 	if rf.Peerings == nil {
 		return nil
 	}
-	return resource.Set(c.Name, *rf.Peerings)
+	return diag.WrapError(resource.Set(c.Name, *rf.Peerings))
 }
 func fetchNetworkRouteFilterRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rf, ok := parent.Item.(network.RouteFilter)
-	if !ok {
-		return fmt.Errorf("expected to have network.RouteFilter but got %T", parent.Item)
-	}
+	rf := parent.Item.(network.RouteFilter)
 	if rf.RouteFilterPropertiesFormat != nil && rf.RouteFilterPropertiesFormat.Rules != nil {
 		res <- *rf.RouteFilterPropertiesFormat.Rules
 	}

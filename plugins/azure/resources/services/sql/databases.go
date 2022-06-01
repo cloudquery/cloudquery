@@ -3,7 +3,6 @@ package sql
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -671,18 +670,12 @@ func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 func ResolveSqlDatabaseTransparentDataEncryption(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	svc := meta.(*client.Client).Services().SQL.TransparentDataEncryptions
-	database, ok := resource.Item.(sql.Database)
-	if !ok {
-		return fmt.Errorf("expected sql.Database but got %T", resource.Item)
-	}
+	database := resource.Item.(sql.Database)
 	details, err := client.ParseResourceID(*database.ID)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := resource.Parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not a sql.Server instance: %T", resource.Parent.Item)
-	}
+	server := resource.Parent.Item.(sql.Server)
 	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -693,7 +686,7 @@ func ResolveSqlDatabaseTransparentDataEncryption(ctx context.Context, meta schem
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.DatabaseBlobAuditingPolicies
@@ -702,10 +695,7 @@ func fetchSqlDatabaseDbBlobAuditingPolicies(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.Server)
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -725,10 +715,7 @@ func fetchSqlDatabaseDbVulnerabilityAssessments(ctx context.Context, meta schema
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.Server)
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -748,10 +735,7 @@ func fetchSqlDatabaseDbVulnerabilityAssessmentScans(ctx context.Context, meta sc
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.Server)
 	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -765,11 +749,7 @@ func fetchSqlDatabaseDbVulnerabilityAssessmentScans(ctx context.Context, meta sc
 	return nil
 }
 func resolveSqlDatabaseDbVulnerabilityAssessmentScansErrors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(sql.VulnerabilityAssessmentScanRecord)
-	if !ok {
-		return fmt.Errorf("expected sql.VulnerabilityAssessmentScanRecord but got %T", resource.Item)
-	}
-
+	p := resource.Item.(sql.VulnerabilityAssessmentScanRecord)
 	if p.Errors == nil {
 		return nil
 	}
@@ -788,7 +768,7 @@ func resolveSqlDatabaseDbVulnerabilityAssessmentScansErrors(ctx context.Context,
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.DatabaseThreatDetectionPolicies
@@ -797,10 +777,7 @@ func fetchSqlDatabaseDbThreatDetectionPolicies(ctx context.Context, meta schema.
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	server, ok := parent.Parent.Item.(sql.Server)
-	if !ok {
-		return fmt.Errorf("not a sql.Server instance: %T", parent.Parent.Item)
-	}
+	server := parent.Parent.Item.(sql.Server)
 	result, err := svc.Get(ctx, details.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
 		return diag.WrapError(err)
@@ -825,5 +802,5 @@ func resolveSQLDatabaseBackupLongTermRetentionPolicy(ctx context.Context, meta s
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

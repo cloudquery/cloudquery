@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -60,7 +61,7 @@ func fetchAccountLocations(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := meta.(*client.Client).Services().Subscriptions
 	response, err := svc.Subscriptions.ListLocations(ctx, svc.SubscriptionID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- *response.Value
 	return nil

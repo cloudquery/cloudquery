@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -92,11 +93,11 @@ func fetchSqlServerEncryptionProtectors(ctx context.Context, meta schema.ClientM
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	ep, err := svc.Get(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- ep
 	return nil

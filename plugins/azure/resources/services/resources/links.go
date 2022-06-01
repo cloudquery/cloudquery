@@ -85,5 +85,5 @@ func resolveResourceLinksType(ctx context.Context, meta schema.ClientMeta, r *sc
 	if link.Type == nil {
 		return nil
 	}
-	return r.Set(c.Name, fmt.Sprintf("%s", link.Type))
+	return diag.WrapError(r.Set(c.Name, fmt.Sprintf("%s", link.Type)))
 }

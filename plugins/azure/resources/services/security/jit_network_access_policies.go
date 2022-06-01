@@ -2,7 +2,6 @@ package security
 
 import (
 	"context"
-	"fmt"
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
@@ -147,10 +146,7 @@ func fetchSecurityJitNetworkAccessPolicies(ctx context.Context, meta schema.Clie
 	return nil
 }
 func fetchSecurityJitNetworkAccessPolicyVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	policy, ok := parent.Item.(security.JitNetworkAccessPolicy)
-	if !ok {
-		return fmt.Errorf("expected to have security.JitNetworkAccessPolicy but got %T", parent.Item)
-	}
+	policy := parent.Item.(security.JitNetworkAccessPolicy)
 	if policy.VirtualMachines == nil {
 		return nil
 	}
@@ -159,19 +155,12 @@ func fetchSecurityJitNetworkAccessPolicyVirtualMachines(ctx context.Context, met
 	return nil
 }
 func resolveSecurityJitNetworkAccessPolicyVirtualMachinesPublicIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(security.JitNetworkAccessPolicyVirtualMachine)
-	if !ok {
-		return fmt.Errorf("expected to have security.JitNetworkAccessPolicy but got %T", resource.Item)
-	}
-
+	p := resource.Item.(security.JitNetworkAccessPolicyVirtualMachine)
 	ip := net.ParseIP(*p.PublicIPAddress)
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 func fetchSecurityJitNetworkAccessPolicyRequests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	policy, ok := parent.Item.(security.JitNetworkAccessPolicy)
-	if !ok {
-		return fmt.Errorf("expected to have security.JitNetworkAccessPolicy but got %T", parent.Item)
-	}
+	policy := parent.Item.(security.JitNetworkAccessPolicy)
 	if policy.Requests == nil {
 		return nil
 	}
@@ -179,10 +168,7 @@ func fetchSecurityJitNetworkAccessPolicyRequests(ctx context.Context, meta schem
 	return nil
 }
 func resolveSecurityJitNetworkAccessPolicyRequestsVirtualMachines(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	vm, ok := resource.Item.(security.JitNetworkAccessRequest)
-	if !ok {
-		return fmt.Errorf("expected to have security.JitNetworkAccessPolicyVirtualMachine but got %T", resource.Item)
-	}
+	vm := resource.Item.(security.JitNetworkAccessRequest)
 	if vm.VirtualMachines == nil {
 		return nil
 	}
@@ -192,5 +178,5 @@ func resolveSecurityJitNetworkAccessPolicyRequestsVirtualMachines(ctx context.Co
 		result = append(result, *v.ID)
 	}
 
-	return resource.Set(c.Name, result)
+	return diag.WrapError(resource.Set(c.Name, result))
 }

@@ -2,7 +2,6 @@ package storage
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -217,11 +216,7 @@ func StorageBlobServices() *schema.Table {
 // ====================================================================================================================
 func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Storage.BlobServices
-	account, ok := parent.Item.(storage.Account)
-	if !ok {
-		return fmt.Errorf("not a storage.Account: %T", parent.Item)
-	}
-
+	account := parent.Item.(storage.Account)
 	if !isBlobSupported(&account) {
 		return nil
 	}
@@ -242,10 +237,7 @@ func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, paren
 }
 
 func fetchStorageBlobServiceCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	blob, ok := parent.Item.(storage.BlobServiceProperties)
-	if !ok {
-		return fmt.Errorf("not a storage.BlobServiceProperties: %T", parent.Item)
-	}
+	blob := parent.Item.(storage.BlobServiceProperties)
 	if blob.BlobServicePropertiesProperties == nil ||
 		blob.BlobServicePropertiesProperties.Cors == nil ||
 		blob.BlobServicePropertiesProperties.Cors.CorsRules == nil {

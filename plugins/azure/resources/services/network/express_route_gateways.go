@@ -2,7 +2,6 @@ package network
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cq-provider-azure/client"
@@ -158,10 +157,7 @@ func fetchNetworkExpressRouteGateways(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 func fetchNetworkExpressRouteConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	erg, ok := parent.Item.(network.ExpressRouteGateway)
-	if !ok {
-		return fmt.Errorf("expected to have network.ExpressRouteGateway but got %T", parent.Item)
-	}
+	erg := parent.Item.(network.ExpressRouteGateway)
 	if erg.ExpressRouteGatewayProperties != nil && erg.ExpressRouteGatewayProperties.ExpressRouteConnections != nil {
 		res <- *erg.ExpressRouteGatewayProperties.ExpressRouteConnections
 	}

@@ -3,10 +3,10 @@ package batch
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -275,35 +275,29 @@ func fetchBatchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	svc := meta.(*client.Client).Services().Batch.Account
 	response, err := svc.List(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
 }
 func resolveBatchAccountsDedicatedCoreQuotaPerVmFamily(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	account, ok := resource.Item.(batch.Account)
-	if !ok {
-		return fmt.Errorf("expected to have batch.Account but got %T", resource.Item)
-	}
+	account := resource.Item.(batch.Account)
 	if account.DedicatedCoreQuotaPerVMFamily == nil {
 		return nil
 	}
 	b, err := json.Marshal(account.DedicatedCoreQuotaPerVMFamily)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchBatchAccountPrivateEndpointConnections(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	account, ok := parent.Item.(batch.Account)
-	if !ok {
-		return fmt.Errorf("expected to have batch.Account but got %T", parent.Item)
-	}
+	account := parent.Item.(batch.Account)
 	if account.PrivateEndpointConnections == nil {
 		return nil
 	}
