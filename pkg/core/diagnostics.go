@@ -1,6 +1,8 @@
 package core
 
 import (
+	"strings"
+
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
@@ -31,16 +33,19 @@ func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
 	}
 	for _, d := range diags {
 		summary.Total++
-		if _, ok := summary.BySeverity[d.Severity().String()]; ok {
-			summary.BySeverity[d.Severity().String()] = 1
+		severity := strings.ToLower(d.Severity().String())
+		dtype := strings.ToLower(d.Type().String())
+
+		if _, ok := summary.BySeverity[severity]; ok {
+			summary.BySeverity[severity] = summary.BySeverity[severity] + 1
 		} else {
-			summary.BySeverity[d.Severity().String()]++
+			summary.BySeverity[severity] = 1
 		}
 
-		if _, ok := summary.ByType[d.Type().String()]; ok {
-			summary.ByType[d.Type().String()] = 1
+		if _, ok := summary.ByType[dtype]; ok {
+			summary.ByType[dtype] = summary.ByType[dtype] + 1
 		} else {
-			summary.ByType[d.Type().String()]++
+			summary.ByType[dtype] = 1
 		}
 	}
 	return summary
