@@ -5,11 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/helpers/limit"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/helpers/limit"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
