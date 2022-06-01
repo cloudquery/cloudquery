@@ -16,7 +16,7 @@ func EksClusters() *schema.Table {
 		Description:  "An object representing an Amazon EKS cluster.",
 		Resolver:     fetchEksClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("eks"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

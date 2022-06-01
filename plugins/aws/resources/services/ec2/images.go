@@ -18,7 +18,7 @@ func Ec2Images() *schema.Table {
 		Description:   "Describes an image.",
 		Resolver:      fetchEc2Images,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,

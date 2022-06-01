@@ -17,7 +17,7 @@ func IotJobs() *schema.Table {
 		Description:  "The Job object contains details about a job.",
 		Resolver:     fetchIotJobs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

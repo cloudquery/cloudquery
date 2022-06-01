@@ -17,7 +17,7 @@ func RdsEventSubscriptions() *schema.Table {
 		Description:  "Contains the results of a successful invocation of the DescribeEventSubscriptions action.",
 		Resolver:     fetchRdsEventSubscriptions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

@@ -22,7 +22,7 @@ func S3Accounts() *schema.Table {
 		Description:  "Account configurations for S3",
 		Resolver:     fetchS3AccountConfig,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{

@@ -17,7 +17,7 @@ func IotStreams() *schema.Table {
 		Description:   "Information about a stream.",
 		Resolver:      fetchIotStreams,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

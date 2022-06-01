@@ -18,7 +18,7 @@ func IamRolePolicies() *schema.Table {
 		Name:        "aws_iam_role_policies",
 		Description: "Inline policies that are embedded in the specified IAM role",
 		Resolver:    fetchIamRolePolicies,
-		IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError: client.IgnoreCommonErrors,
 		Columns: []schema.Column{
 			{
 				Name:        "role_cq_id",

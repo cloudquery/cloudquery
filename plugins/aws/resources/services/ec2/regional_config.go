@@ -20,7 +20,7 @@ func Ec2RegionalConfig() *schema.Table {
 		Description:  "Ec2 Regional Config defines common default configuration for ec2 service",
 		Resolver:     fetchEc2RegionalConfig,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
 		Columns: []schema.Column{

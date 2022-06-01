@@ -17,7 +17,7 @@ func RdsDbParameterGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB parameter group",
 		Resolver:     fetchRdsDbParameterGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -68,7 +68,7 @@ func RdsDbParameterGroups() *schema.Table {
 				Name:        "aws_rds_db_parameters",
 				Description: "Database Parameters",
 				Resolver:    fetchRdsDbParameterGroupDbParameters,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError: client.IgnoreCommonErrors,
 				Columns: []schema.Column{
 					{
 						Name:        "db_parameter_group_cq_id",

@@ -16,7 +16,7 @@ func IotPolicies() *schema.Table {
 		Description:  "The output from the GetPolicy operation.",
 		Resolver:     fetchIotPolicies,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

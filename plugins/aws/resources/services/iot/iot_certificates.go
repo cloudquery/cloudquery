@@ -17,7 +17,7 @@ func IotCertificates() *schema.Table {
 		Description:  "Describes a certificate.",
 		Resolver:     fetchIotCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

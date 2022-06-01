@@ -20,7 +20,7 @@ func IamPasswordPolicies() *schema.Table {
 		Description:  "Contains information about the account password policy.",
 		Resolver:     fetchIamPasswordPolicies,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{

@@ -17,7 +17,7 @@ func IamGroups() *schema.Table {
 		Description:   "Contains information about an IAM group entity.",
 		Resolver:      fetchIamGroups,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,

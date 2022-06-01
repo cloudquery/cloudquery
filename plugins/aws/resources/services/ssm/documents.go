@@ -18,7 +18,7 @@ func SsmDocuments() *schema.Table {
 		Description:          "Describes a Amazon Web Services Systems Manager document (SSM document).",
 		Resolver:             fetchSsmDocuments,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("ssm"),
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:          client.IgnoreCommonErrors,
 		DeleteFilter:         client.DeleteAccountRegionFilter,
 		PostResourceResolver: ssmDocumentPostResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

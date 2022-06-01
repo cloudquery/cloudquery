@@ -40,7 +40,7 @@ func S3Buckets() *schema.Table {
 		Description:  "An Amazon S3 bucket is a public cloud storage resource available in Amazon Web Services' (AWS) Simple Storage Service (S3)",
 		Resolver:     fetchS3Buckets,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "name"}},
 		Columns: []schema.Column{
@@ -137,7 +137,7 @@ func S3Buckets() *schema.Table {
 			{
 				Name:        "aws_s3_bucket_grants",
 				Description: "Container for grant information.",
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError: client.IgnoreCommonErrors,
 				Resolver:    fetchS3BucketGrants,
 				Columns: []schema.Column{
 					{
@@ -189,7 +189,7 @@ func S3Buckets() *schema.Table {
 				Name:          "aws_s3_bucket_cors_rules",
 				Description:   "Specifies a cross-origin access rule for an Amazon S3 bucket.",
 				Resolver:      fetchS3BucketCorsRules,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError:   client.IgnoreCommonErrors,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -235,7 +235,7 @@ func S3Buckets() *schema.Table {
 				Name:          "aws_s3_bucket_encryption_rules",
 				Description:   "Specifies the default server-side encryption configuration.",
 				Resolver:      fetchS3BucketEncryptionRules,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError:   client.IgnoreCommonErrors,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -267,7 +267,7 @@ func S3Buckets() *schema.Table {
 				Name:          "aws_s3_bucket_replication_rules",
 				Description:   "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
 				Resolver:      fetchS3BucketReplicationRules,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError:   client.IgnoreCommonErrors,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -385,7 +385,7 @@ func S3Buckets() *schema.Table {
 			{
 				Name:          "aws_s3_bucket_lifecycles",
 				Description:   "A lifecycle rule for individual objects in an Amazon S3 bucket.",
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError:   client.IgnoreCommonErrors,
 				Resolver:      fetchS3BucketLifecycles,
 				IgnoreInTests: true,
 				Columns: []schema.Column{

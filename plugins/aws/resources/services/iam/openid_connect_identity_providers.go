@@ -20,7 +20,7 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 		Description:   "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
 		Resolver:      fetchIamOpenidConnectIdentityProviders,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

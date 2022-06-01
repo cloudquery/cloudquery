@@ -17,7 +17,7 @@ func RdsClusterParameterGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB cluster parameter group",
 		Resolver:     fetchRdsClusterParameterGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -68,7 +68,7 @@ func RdsClusterParameterGroups() *schema.Table {
 				Name:        "aws_rds_cluster_parameters",
 				Description: "This data type is used as a request parameter in the ModifyDBParameterGroup and ResetDBParameterGroup actions",
 				Resolver:    fetchRdsClusterParameterGroupDbParameters,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError: client.IgnoreCommonErrors,
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_parameter_group_cq_id",

@@ -184,6 +184,13 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 	return false
 }
 
+func IgnoreCommonErrors(err error) bool {
+	if IgnoreAccessDeniedServiceDisabled(err) || IgnoreNotAvailableRegion(err) || IgnoreWithInvalidAction(err) || isNotFoundError(err) {
+		return true
+	}
+	return false
+}
+
 func IgnoreWithInvalidAction(err error) bool {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
@@ -272,6 +279,14 @@ func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resou
 
 // IsNotFoundError checks if api error should be ignored
 func (c *Client) IsNotFoundError(err error) bool {
+	if isNotFoundError(err) {
+		c.logger.Warn("API returned \"NotFound\" error ignoring it...", "error", err)
+		return true
+	}
+	return false
+}
+
+func isNotFoundError(err error) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
 		return false
@@ -279,7 +294,6 @@ func (c *Client) IsNotFoundError(err error) bool {
 	errorCode := ae.ErrorCode()
 	for _, s := range notFoundErrorPrefixes {
 		if strings.Contains(errorCode, s) {
-			c.logger.Warn("API returned \"NotFound\" error ignoring it...", "error", err)
 			return true
 		}
 	}

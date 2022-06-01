@@ -16,7 +16,7 @@ func IotBillingGroups() *schema.Table {
 		Description:   "Billing groups are groups of things created for billing purposes that collect billable information for the things",
 		Resolver:      fetchIotBillingGroups,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

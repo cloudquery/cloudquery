@@ -17,7 +17,7 @@ func IamUserPolicies() *schema.Table {
 		Name:          "aws_iam_user_policies",
 		Description:   "Inline policies that are embedded in the specified IAM user",
 		Resolver:      fetchIamUserPolicies,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

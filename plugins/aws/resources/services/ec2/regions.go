@@ -17,7 +17,7 @@ func AwsRegions() *schema.Table {
 		Description:  "Describes a Region.",
 		Resolver:     fetchRegions,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Columns: []schema.Column{
 			{

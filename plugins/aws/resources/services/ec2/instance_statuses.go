@@ -17,7 +17,7 @@ func Ec2InstanceStatuses() *schema.Table {
 		Description:  "Describes the status of an instance.",
 		Resolver:     fetchEc2InstanceStatuses,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

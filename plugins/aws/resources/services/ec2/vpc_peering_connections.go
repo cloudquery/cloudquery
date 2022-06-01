@@ -17,7 +17,7 @@ func Ec2VpcPeeringConnections() *schema.Table {
 		Description:   "Describes a VPC peering connection.",
 		Resolver:      fetchEc2VpcPeeringConnections,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		IgnoreInTests: true,

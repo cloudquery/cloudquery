@@ -18,7 +18,7 @@ func Hosts() *schema.Table {
 		Description:   "Describes the properties of the Dedicated Host.",
 		Resolver:      fetchEc2Hosts,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

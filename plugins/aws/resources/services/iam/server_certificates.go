@@ -16,7 +16,7 @@ func IamServerCertificates() *schema.Table {
 		Description:   "Contains information about a server certificate without its certificate body, certificate chain, and private key.",
 		Resolver:      fetchIamServerCertificates,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,

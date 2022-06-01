@@ -17,7 +17,7 @@ func IamVirtualMfaDevices() *schema.Table {
 		Description:   "Contains information about a virtual MFA device.",
 		Resolver:      fetchIamVirtualMfaDevices,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"serial_number"}},
 		IgnoreInTests: true,

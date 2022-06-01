@@ -5,7 +5,7 @@ add_generate     = true
 resource "aws" "ec2" "egress_only_internet_gateways" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.EgressOnlyInternetGateway"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
@@ -62,7 +62,7 @@ resource "aws" "ec2" "egress_only_internet_gateways" {
 resource "aws" "ec2" "network_interfaces" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.NetworkInterface"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
@@ -146,7 +146,7 @@ resource "aws" "ec2" "network_interfaces" {
 resource "aws" "ec2" "hosts" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.Host"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"

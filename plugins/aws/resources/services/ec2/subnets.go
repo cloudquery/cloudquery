@@ -17,7 +17,7 @@ func Ec2Subnets() *schema.Table {
 		Description:  "Describes a subnet.",
 		Resolver:     fetchEc2Subnets,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{

@@ -19,7 +19,7 @@ func Keys() *schema.Table {
 		Description:  "Contains metadata about a KMS key",
 		Resolver:     fetchKmsKeys,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("kms"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

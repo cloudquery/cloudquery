@@ -17,7 +17,7 @@ func IotThingGroups() *schema.Table {
 		Description:  "Groups allow you to manage several things at once by categorizing them into groups",
 		Resolver:     fetchIotThingGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

@@ -17,7 +17,7 @@ func Ec2VpcEndpoints() *schema.Table {
 		Description:   "Describes a VPC endpoint.",
 		Resolver:      fetchEc2VpcEndpoints,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,

@@ -17,7 +17,7 @@ func EfsFilesystems() *schema.Table {
 		Description:   "A description of the file system.",
 		Resolver:      fetchEfsFilesystems,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
