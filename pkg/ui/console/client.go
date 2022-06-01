@@ -193,10 +193,12 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	return diags
 }
 
-func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostics) {
+func (c Client) Fetch(ctx context.Context) (result *core.FetchResponse, diags diag.Diagnostics) {
 	if _, dd := c.SyncProviders(ctx, c.cfg.Providers.Names()...); dd.HasErrors() {
 		return nil, dd
 	}
+	defer printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var (
 		fetchProgress ui.Progress
@@ -214,7 +216,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
-	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
+	result, diags = core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
 		FetchId:        c.instanceId,
