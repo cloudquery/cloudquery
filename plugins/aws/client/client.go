@@ -444,7 +444,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
 		logger.Error("error retrieving credentials", "err", err)
-		return awsCfg, classifyError(fmt.Errorf(awsFailedToConfigureErrMsg, account.AccountName, err, checkEnvVariables()), diag.INTERNAL, nil, diag.WithSeverity(diag.ERROR))
+		return awsCfg, classifyError(fmt.Errorf(awsFailedToConfigureErrMsg, account.AccountName, err, checkEnvVariables()), diag.INTERNAL, nil, diag.WithSeverity(diag.ERROR), diag.WithNoOverwrite())
 	}
 
 	return awsCfg, err
@@ -517,7 +517,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				}
 			})
 		if err != nil {
-			return nil, diags.Add(classifyError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.INTERNAL, nil, diag.WithSeverity(diag.ERROR)))
+			return nil, diags.Add(classifyError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.INTERNAL, nil, diag.WithSeverity(diag.ERROR), diag.WithNoOverwrite()))
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
