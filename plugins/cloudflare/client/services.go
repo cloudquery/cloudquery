@@ -1,0 +1,18 @@
+package client
+
+import (
+	"context"
+
+	"github.com/cloudflare/cloudflare-go"
+	_ "github.com/golang/mock/gomock"
+)
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_client.go . Api
+type Api interface {
+	Accounts(ctx context.Context, params cloudflare.AccountsListParams) ([]cloudflare.Account, cloudflare.ResultInfo, error)
+	AccountMembers(ctx context.Context, accountID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.AccountMember, cloudflare.ResultInfo, error)
+
+	ListZonesContext(ctx context.Context, opts ...cloudflare.ReqOption) (r cloudflare.ZonesResponse, err error)
+
+	DNSRecords(ctx context.Context, zoneID string, rr cloudflare.DNSRecord) ([]cloudflare.DNSRecord, error)
+}
