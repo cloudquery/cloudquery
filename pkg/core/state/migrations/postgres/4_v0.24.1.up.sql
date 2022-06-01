@@ -1,4 +1,10 @@
+do $$
+BEGIN
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
+EXCEPTION WHEN OTHERS THEN
+    raise notice 'pg_trgm extension missing';
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS "policy_executions" (
   "id" uuid NOT NULL,
@@ -30,7 +36,15 @@ CREATE TABLE IF NOT EXISTS "check_results" (
   FOREIGN KEY ("execution_id") REFERENCES "policy_executions" ("id") ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS "check_results_execution_timestamp_idx" ON "check_results" USING btree ("execution_timestamp");
+
+do $$
+BEGIN
 CREATE INDEX IF NOT EXISTS "check_results_selector_idx" ON "check_results" USING gin ("selector" gin_trgm_ops);
+EXCEPTION WHEN OTHERS THEN
+    raise notice 'pg_trgm extension missing not creating selector index';
+END;
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION "cloudquery"."calculate_policy_executions_stats"()
 RETURNS TRIGGER AS $$
