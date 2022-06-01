@@ -4,6 +4,13 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.24.5](https://github.com/cloudquery/cloudquery/compare/v0.24.4...v0.24.5) (2022-06-01)
+
+
+### Features
+
+* Add ulimit info to sentry ([#819](https://github.com/cloudquery/cloudquery/issues/819)) ([540878b](https://github.com/cloudquery/cloudquery/commit/540878b5cbc12f07fadc530099fb008f84142569))
+
 ### [0.24.4](https://github.com/cloudquery/cloudquery/compare/v0.24.3...v0.24.4) (2022-06-01)
 
 
