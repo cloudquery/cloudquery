@@ -136,7 +136,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 			setUserId(dbId)
 		}
 
-		if info, err := dialect.Info(ctx); err != nil {
+		if info, err := dialect.Info(ctx); err == nil {
 			setAnalyticsProperties(map[string]interface{}{"database_version": info.Version, "database_uptime": info.Uptime.Seconds(), "database_full_version": info.FullVersion})
 		}
 
