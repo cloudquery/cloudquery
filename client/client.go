@@ -546,7 +546,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		client.ServicesManager.InitServicesForAccountAndScope(*output.Account, initServices(cloudfrontScopeRegion, awsCfg))
 	}
 	if len(client.Accounts) == 0 {
-		return nil, diags.Add(diag.FromError(errors.New("no accounts instantiated"), diag.INTERNAL))
+		return nil, diags.Add(diag.FromError(errors.New("no accounts instantiated"), diag.USER))
 	}
 	return &client, diags
 }
