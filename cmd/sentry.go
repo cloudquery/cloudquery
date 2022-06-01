@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"runtime"
 	"strconv"
 	"time"
 
@@ -105,6 +106,7 @@ func initSentry() {
 		})
 		scope.SetExtra("cookie_id", userId.String())
 		scope.SetExtra("instance_id", instanceId)
+		scope.SetExtra("goroutine_count", runtime.NumGoroutine())
 		ulimit, err := limit.GetUlimit()
 		if err == nil && ulimit.Max != 0 {
 			scope.SetExtra("current_ulimit", ulimit.Cur)
