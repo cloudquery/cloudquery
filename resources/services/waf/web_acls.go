@@ -3,7 +3,6 @@ package waf
 import (
 	"context"
 	"encoding/json"
-	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -184,17 +183,21 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 				options.Region = c.Region
 			})
 			if err != nil {
-				var exc *types.WAFNonexistentItemException
-				if errors.As(err, &exc) {
-					if exc.ErrorCode() != "WAFNonexistentItemException" {
-						return err
-					}
+				if client.IsAWSError(err, "WAFNonexistentItemException") {
+					c.Logger().Debug("Logging configuration not found for: %s", webAclOutput.WebACL.Name)
+				} else {
+					c.Logger().Error("GetLoggingConfiguration failed with error: %s", err.Error())
 				}
+			}
+
+			var webAclLoggingConfiguration *types.LoggingConfiguration
+			if loggingConfigurationOutput != nil {
+				webAclLoggingConfiguration = loggingConfigurationOutput.LoggingConfiguration
 			}
 
 			res <- &WebACLWrapper{
 				webAclOutput.WebACL,
-				loggingConfigurationOutput.LoggingConfiguration,
+				webAclLoggingConfiguration,
 			}
 		}
 
@@ -249,15 +252,19 @@ func fetchWafWebACLLoggingConfiguration(ctx context.Context, meta schema.ClientM
 	return nil
 }
 func resolveWafWebACLLoggingConfigurationRedactedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	conf := resource.Item.(*types.LoggingConfiguration)
-	out, err := json.Marshal(conf.RedactedFields)
-	if err != nil {
-		return diag.WrapError(err)
+	if conf := resource.Item.(*types.LoggingConfiguration); conf != nil {
+		out, err := json.Marshal(conf.RedactedFields)
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		return resource.Set(c.Name, out)
 	}
-	return resource.Set(c.Name, out)
+	return nil
 }
 
 func resolveWafWebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(*WebACLWrapper)
-	return resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs)
+	if rule := resource.Item.(*WebACLWrapper); rule.LoggingConfiguration != nil {
+		return resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs)
+	}
+	return nil
 }
