@@ -4,6 +4,22 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### [0.24.6](https://github.com/cloudquery/cloudquery/compare/v0.24.5...v0.24.6) (2022-06-01)
+
+
+### Features
+
+* Add goroutine count to sentry ([#825](https://github.com/cloudquery/cloudquery/issues/825)) ([d4d56c2](https://github.com/cloudquery/cloudquery/commit/d4d56c2011e3f5665feab629ce9ac2d3e46990f9))
+
+
+### Bug Fixes
+
+* Bad condition db version analytics ([#829](https://github.com/cloudquery/cloudquery/issues/829)) ([6cd8d6d](https://github.com/cloudquery/cloudquery/commit/6cd8d6daeb92a8fc3930d166ebcd3906b0bc7db5))
+* Changed level of bad config diagnostics ([#822](https://github.com/cloudquery/cloudquery/issues/822)) ([67b0bd3](https://github.com/cloudquery/cloudquery/commit/67b0bd3ef32401443c20c74b76968a14ed6ac62a))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.7 ([#826](https://github.com/cloudquery/cloudquery/issues/826)) ([f075726](https://github.com/cloudquery/cloudquery/commit/f075726a99122509b10f21ffa9b7384787f28edb))
+* Don't fail on PG_TRGM missing ([#821](https://github.com/cloudquery/cloudquery/issues/821)) ([a0672b5](https://github.com/cloudquery/cloudquery/commit/a0672b5411a3858e9c69e590a387b6bd96730fdd)), closes [#816](https://github.com/cloudquery/cloudquery/issues/816)
+* Incorrect diagnostics summary count ([#823](https://github.com/cloudquery/cloudquery/issues/823)) ([58760b4](https://github.com/cloudquery/cloudquery/commit/58760b451527c14cb61877c3d75c0aa172b99782))
+
 ### [0.24.5](https://github.com/cloudquery/cloudquery/compare/v0.24.4...v0.24.5) (2022-06-01)
 
 
