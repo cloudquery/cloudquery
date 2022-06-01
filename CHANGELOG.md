@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+### [0.12.3](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.2...v0.12.3) (2022-06-01)
+
+
+### Bug Fixes
+
+* Bucket missing region ([#978](https://github.com/cloudquery/cq-provider-aws/issues/978)) ([1467b6e](https://github.com/cloudquery/cq-provider-aws/commit/1467b6e590c646d222da2c0a2bb0c7962f6d7f12))
+* Handle panic on Waf logging configuration not found ([#970](https://github.com/cloudquery/cq-provider-aws/issues/970)) ([8ffb3e6](https://github.com/cloudquery/cq-provider-aws/commit/8ffb3e6803090f03c5e736b3f6b4fce941bcd457))
+
 ### [0.12.2](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.1...v0.12.2) (2022-06-01)
 
 
