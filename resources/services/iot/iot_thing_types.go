@@ -17,7 +17,7 @@ func IotThingTypes() *schema.Table {
 		Description:  "The definition of the thing type, including thing type name and description.",
 		Resolver:     fetchIotThingTypes,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

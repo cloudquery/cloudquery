@@ -19,7 +19,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 		Description:  "Describes an egress-only internet gateway.",
 		Resolver:     fetchEc2EgressOnlyInternetGateways,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

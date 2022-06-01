@@ -18,7 +18,7 @@ func EmrClusters() *schema.Table {
 		Description:   "The detailed description of the cluster.",
 		Resolver:      fetchEmrClusters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

@@ -47,7 +47,7 @@ func IamAccounts() *schema.Table {
 		Description:   "Information about IAM entity usage and IAM quotas in the AWS account.",
 		Resolver:      fetchAccountSummary,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		IgnoreInTests: true,

@@ -17,7 +17,7 @@ func IotSecurityProfiles() *schema.Table {
 		Name:         "aws_iot_security_profiles",
 		Resolver:     fetchIotSecurityProfiles,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

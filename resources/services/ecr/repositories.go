@@ -17,7 +17,7 @@ func EcrRepositories() *schema.Table {
 		Description:   "An object representing a repository.",
 		Resolver:      fetchEcrRepositories,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.ecr"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests: true,

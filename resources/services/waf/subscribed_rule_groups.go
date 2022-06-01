@@ -16,7 +16,7 @@ func WafSubscribedRuleGroups() *schema.Table {
 		Description:   "This is AWS WAF Classic documentation",
 		Resolver:      fetchWafSubscribedRuleGroups,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountFilter,
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "rule_group_id"}},

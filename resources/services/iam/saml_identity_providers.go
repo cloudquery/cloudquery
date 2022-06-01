@@ -20,7 +20,7 @@ func IamSamlIdentityProviders() *schema.Table {
 		Description:  "SAML provider resource objects defined in IAM for the AWS account.",
 		Resolver:     fetchIamSamlIdentityProviders,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

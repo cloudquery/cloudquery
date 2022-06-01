@@ -18,7 +18,7 @@ func RdsClusterSnapshots() *schema.Table {
 		Description:   "Contains the details for an Amazon RDS DB cluster snapshot This data type is used as a response element in the DescribeDBClusterSnapshots action.",
 		Resolver:      fetchRdsClusterSnapshots,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

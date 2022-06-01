@@ -16,7 +16,7 @@ func Ec2Eips() *schema.Table {
 		Description:  "Describes an Elastic IP address, or a carrier IP address.",
 		Resolver:     fetchEc2Eips,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "allocation_id"}},
 		Columns: []schema.Column{

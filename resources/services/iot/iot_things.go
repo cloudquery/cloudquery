@@ -17,7 +17,7 @@ func IotThings() *schema.Table {
 		Description:  "The properties of the thing, including thing name, thing type name, and a list of thing attributes.",
 		Resolver:     fetchIotThings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

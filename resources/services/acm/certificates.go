@@ -19,7 +19,7 @@ func AcmCertificates() *schema.Table {
 		Description:   "Contains metadata about an ACM certificate",
 		Resolver:      fetchAcmCertificates,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("acm"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

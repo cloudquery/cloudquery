@@ -17,7 +17,7 @@ func RdsSubnetGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB subnet group",
 		Resolver:     fetchRdsSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

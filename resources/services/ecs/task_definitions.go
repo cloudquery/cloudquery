@@ -27,7 +27,7 @@ func EcsTaskDefinitions() *schema.Table {
 		Description:   "The details of a task definition which describes the container and volume definitions of an Amazon Elastic Container Service task",
 		Resolver:      listEcsTaskDefinitions,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ecs"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

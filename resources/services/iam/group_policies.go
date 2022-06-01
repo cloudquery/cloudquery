@@ -18,7 +18,7 @@ func IamGroupPolicies() *schema.Table {
 		Name:          "aws_iam_group_policies",
 		Description:   "Inline policies that are embedded in the specified IAM group",
 		Resolver:      fetchIamGroupPolicies,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

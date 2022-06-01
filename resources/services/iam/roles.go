@@ -18,7 +18,7 @@ func IamRoles() *schema.Table {
 		Description:  "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
 		Resolver:     fetchIamRoles,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
@@ -32,7 +32,7 @@ func IamRoles() *schema.Table {
 				Name:        "policies",
 				Description: "List of policies attached to group.",
 				Type:        schema.TypeJSON,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				IgnoreError: client.IgnoreCommonErrors,
 				Resolver:    resolveIamRolePolicies,
 			},
 			{

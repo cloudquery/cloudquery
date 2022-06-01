@@ -10,7 +10,7 @@ add_generate     = true
 resource "aws" "mq" "brokers" {
   path = "github.com/aws/aws-sdk-go-v2/service/mq.DescribeBrokerOutput"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"

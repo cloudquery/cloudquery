@@ -55,7 +55,7 @@ func IamUsers() *schema.Table {
 		Name:                 "aws_iam_users",
 		Resolver:             fetchIamUsers,
 		Multiplex:            client.AccountMultiplex,
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:          client.IgnoreCommonErrors,
 		DeleteFilter:         client.DeleteAccountFilter,
 		PostResourceResolver: postIamUserResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},

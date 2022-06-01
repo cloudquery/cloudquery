@@ -18,7 +18,7 @@ func IotTopicRules() *schema.Table {
 		Description:  "The output from the GetTopicRule operation.",
 		Resolver:     fetchIotTopicRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

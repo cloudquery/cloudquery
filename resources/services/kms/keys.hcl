@@ -8,7 +8,7 @@ resource "aws" "kms" "keys" {
     path = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
   }
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"

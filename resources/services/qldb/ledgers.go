@@ -16,7 +16,7 @@ func Ledgers() *schema.Table {
 		Name:         "aws_qldb_ledgers",
 		Resolver:     fetchQldbLedgers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("qldb"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

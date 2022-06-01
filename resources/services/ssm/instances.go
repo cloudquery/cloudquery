@@ -17,7 +17,7 @@ func SsmInstances() *schema.Table {
 		Description:   "Describes a filter for a specific list of instances.",
 		Resolver:      fetchSsmInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ssm"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,

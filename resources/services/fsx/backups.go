@@ -17,7 +17,7 @@ func FsxBackups() *schema.Table {
 		Description:  "A backup of an Amazon FSx file system.",
 		Resolver:     fetchFsxBackups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
