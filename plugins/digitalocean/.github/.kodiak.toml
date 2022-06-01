@@ -2,7 +2,7 @@
 version = 1
 
 [approve]
-auto_approve_usernames = ["renovate", "cq-bot"]
+auto_approve_usernames = ["cq-bot"]
 
 [merge.message]
 body = "pull_request_body"
@@ -10,4 +10,4 @@ title = "pull_request_title"
 
 [merge.automerge_dependencies]
 versions = ["patch"]
-usernames = ["renovate"]
+usernames = ["cq-bot"]
