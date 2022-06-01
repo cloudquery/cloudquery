@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+### [0.8.3](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.2...v0.8.3) (2022-06-01)
+
+
+### Features
+
+* compute_url_maps ID from BigInt to String ([#298](https://github.com/cloudquery/cq-provider-gcp/issues/298)) ([3f2c8d7](https://github.com/cloudquery/cq-provider-gcp/commit/3f2c8d746c9362b6f82d8f14dc24252ecd97f711))
+
 ### [0.8.2](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.1...v0.8.2) (2022-06-01)
 
 
