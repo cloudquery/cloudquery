@@ -3,10 +3,10 @@ package core
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -1723,45 +1723,37 @@ func fetchCorePods(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	pods := meta.(*client.Client).Services().Pods
 	result, err := pods.List(ctx, metav1.ListOptions{})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- result.Items
 	return nil
 }
 
 func resolveCorePodsHostIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	ip := net.ParseIP(pod.Status.HostIP)
 	if ip != nil {
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func resolveCorePodsPodIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
+
 	ip := net.ParseIP(pod.Status.PodIP)
 	if ip != nil {
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func resolveCorePodPodIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	ips := make([]net.IP, 0, len(pod.Status.PodIPs))
 	for _, v := range pod.Status.PodIPs {
 		ip := net.ParseIP(v.IP)
@@ -1772,316 +1764,229 @@ func resolveCorePodPodIPs(ctx context.Context, meta schema.ClientMeta, resource 
 		}
 		ips = append(ips, ip)
 	}
-	return resource.Set(c.Name, ips)
+	return diag.WrapError(resource.Set(c.Name, ips))
 }
 
 func resolveCorePodOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.ObjectMeta.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodSecurityContext(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.SecurityContext)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodImagePullSecrets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.ImagePullSecrets)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodAffinity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.Affinity)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodTolerations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.Tolerations)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodHostAliases(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.HostAliases)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodDNSConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.DNSConfig)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodReadinessGates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.ReadinessGates)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodTopologySpreadConstraints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Spec.TopologySpreadConstraints)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCorePodConditions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pod, ok := resource.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", resource.Item)
-	}
+	pod := resource.Item.(corev1.Pod)
 	b, err := json.Marshal(pod.Status.Conditions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchCorePodInitContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Spec.InitContainers
 	return nil
 }
 
 func resolveContainerJSONField(fieldResolver func(c corev1.Container) interface{}) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		cont, ok := resource.Item.(corev1.Container)
-		if !ok {
-			return fmt.Errorf("not a corev1.Container instance: %T", resource.Item)
-		}
+		cont := resource.Item.(corev1.Container)
 		b, err := json.Marshal(fieldResolver(cont))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
 func fetchCorePodContainerPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.Container)
-	if !ok {
-		return fmt.Errorf("not a corev1.Container instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.Container)
 	res <- cont.Ports
 	return nil
 }
 
 func fetchCorePodContainerEnvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.Container)
-	if !ok {
-		return fmt.Errorf("not a corev1.Container instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.Container)
 	res <- cont.Env
 	return nil
 }
 
 func fetchCorePodContainerVolumeMounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.Container)
-	if !ok {
-		return fmt.Errorf("not a corev1.Container instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.Container)
 	res <- cont.VolumeMounts
 	return nil
 }
 
 func fetchCorePodContainerVolumeDevices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.Container)
-	if !ok {
-		return fmt.Errorf("not a corev1.Container instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.Container)
 	res <- cont.VolumeDevices
 	return nil
 }
 
 func fetchCorePodContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Spec.Containers
 	return nil
 }
 
 func fetchCorePodEphemeralContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Spec.EphemeralContainers
 	return nil
 }
 
 func resolveEphemeralContainerJSONField(fieldResolver func(c corev1.EphemeralContainer) interface{}) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		cont, ok := resource.Item.(corev1.EphemeralContainer)
-		if !ok {
-			return fmt.Errorf("not a corev1.EphemeralContainer instance: %T", resource.Item)
-		}
+		cont := resource.Item.(corev1.EphemeralContainer)
 		b, err := json.Marshal(fieldResolver(cont))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
 func fetchCorePodEphemeralContainerPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.EphemeralContainer)
-	if !ok {
-		return fmt.Errorf("not a corev1.EphemeralContainer instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.EphemeralContainer)
 	res <- cont.EphemeralContainerCommon.Ports
 	return nil
 }
 
 func fetchCorePodEphemeralContainerEnvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.EphemeralContainer)
-	if !ok {
-		return fmt.Errorf("not a corev1.EphemeralContainer instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.EphemeralContainer)
 	res <- cont.EphemeralContainerCommon.Env
 	return nil
 }
 
 func fetchCorePodEphemeralContainerVolumeMounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.EphemeralContainer)
-	if !ok {
-		return fmt.Errorf("not a corev1.EphemeralContainer instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.EphemeralContainer)
 	res <- cont.EphemeralContainerCommon.VolumeMounts
 	return nil
 }
 
 func fetchCorePodEphemeralContainerVolumeDevices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cont, ok := parent.Item.(corev1.EphemeralContainer)
-	if !ok {
-		return fmt.Errorf("not a corev1.EphemeralContainer instance: %T", parent.Item)
-	}
+	cont := parent.Item.(corev1.EphemeralContainer)
 	res <- cont.EphemeralContainerCommon.VolumeDevices
 	return nil
 }
 
 func fetchCorePodVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Spec.Volumes
 	return nil
 }
 
 func resolveVolumeJSONField(fieldResolver func(v corev1.Volume) interface{}) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		vol, ok := resource.Item.(corev1.Volume)
-		if !ok {
-			return fmt.Errorf("not a corev1.Volume instance: %T", resource.Item)
-		}
+		vol := resource.Item.(corev1.Volume)
 		b, err := json.Marshal(fieldResolver(vol))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
 func fetchCorePodInitContainerStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Status.InitContainerStatuses
 	return nil
 }
 
 func resolveContainerStatusJSONField(fieldResolver func(s corev1.ContainerStatus) interface{}) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		s, ok := resource.Item.(corev1.ContainerStatus)
-		if !ok {
-			return fmt.Errorf("not a corev1.Volume instance: %T", resource.Item)
-		}
+		s := resource.Item.(corev1.ContainerStatus)
 		b, err := json.Marshal(fieldResolver(s))
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
 func fetchCorePodContainerStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Status.ContainerStatuses
 	return nil
 }
 
 func fetchCorePodEphemeralContainerStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pod, ok := parent.Item.(corev1.Pod)
-	if !ok {
-		return fmt.Errorf("not a corev1.Pod instance: %T", parent.Item)
-	}
+	pod := parent.Item.(corev1.Pod)
 	res <- pod.Status.EphemeralContainerStatuses
 	return nil
 }

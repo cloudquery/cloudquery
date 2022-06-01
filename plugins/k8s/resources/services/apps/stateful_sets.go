@@ -3,9 +3,9 @@ package apps
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -297,7 +297,7 @@ func fetchAppsStatefulSets(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -307,54 +307,39 @@ func fetchAppsStatefulSets(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 }
 func resolveAppsStatefulSetsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.StatefulSet)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsStatefulSetsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.StatefulSet)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsStatefulSetsTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.StatefulSet)
 	b, err := json.Marshal(p.Spec.Template)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsStatefulSetsVolumeClaimTemplates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.StatefulSet)
 	b, err := json.Marshal(p.Spec.VolumeClaimTemplates)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchAppsStatefulSetSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", parent.Item)
-	}
+	p := parent.Item.(appsv1.StatefulSet)
 	if p.Spec.Selector == nil {
 		return nil
 	}
@@ -362,11 +347,7 @@ func fetchAppsStatefulSetSelectorMatchExpressions(ctx context.Context, meta sche
 	return nil
 }
 func fetchAppsStatefulSetStatusConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.StatefulSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.StatefulSet instance: %T", parent.Item)
-	}
-
+	p := parent.Item.(appsv1.StatefulSet)
 	res <- p.Status.Conditions
 	return nil
 }

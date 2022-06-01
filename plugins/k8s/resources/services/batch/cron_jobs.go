@@ -3,9 +3,9 @@ package batch
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -173,7 +173,7 @@ func fetchBatchCronJobs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		result, err := jobs.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		next := result.GetContinue()
@@ -184,46 +184,34 @@ func fetchBatchCronJobs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 }
 func resolveBatchCronJobsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cronJob, ok := resource.Item.(batchv1.CronJob)
-	if !ok {
-		return fmt.Errorf("not a batchv1.CronJob instance: %T", resource.Item)
-	}
+	cronJob := resource.Item.(batchv1.CronJob)
 	b, err := json.Marshal(cronJob.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveBatchCronJobsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cronJob, ok := resource.Item.(batchv1.CronJob)
-	if !ok {
-		return fmt.Errorf("not a batchv1.CronJob instance: %T", resource.Item)
-	}
+	cronJob := resource.Item.(batchv1.CronJob)
 	b, err := json.Marshal(cronJob.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveBatchCronJobsJobTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cronJob, ok := resource.Item.(batchv1.CronJob)
-	if !ok {
-		return fmt.Errorf("not a batchv1.CronJob instance: %T", resource.Item)
-	}
+	cronJob := resource.Item.(batchv1.CronJob)
 	b, err := json.Marshal(cronJob.Spec.JobTemplate)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveBatchCronJobsStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cronJob, ok := resource.Item.(batchv1.CronJob)
-	if !ok {
-		return fmt.Errorf("not a batchv1.CronJob instance: %T", resource.Item)
-	}
+	cronJob := resource.Item.(batchv1.CronJob)
 	b, err := json.Marshal(cronJob.Status)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

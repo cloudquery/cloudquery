@@ -7,6 +7,7 @@ import (
 	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -320,7 +321,7 @@ func fetchCoreNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		result, err := nodes.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -331,100 +332,77 @@ func fetchCoreNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func resolveCoreNodeOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
 	b, err := json.Marshal(node.ObjectMeta.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreNodePodCIDR(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
+
 	if node.Spec.PodCIDR == "" {
 		return nil
 	}
 	_, n, err := net.ParseCIDR(node.Spec.PodCIDR)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, n)
+	return diag.WrapError(resource.Set(c.Name, n))
 }
 
 func resolveCoreNodePodCIDRs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
 	cidrs := make([]*net.IPNet, 0, len(node.Spec.PodCIDRs))
 	for _, v := range node.Spec.PodCIDRs {
 		_, n, err := net.ParseCIDR(v)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		cidrs = append(cidrs, n)
 	}
-	return resource.Set(c.Name, cidrs)
+	return diag.WrapError(resource.Set(c.Name, cidrs))
 }
 
 func resolveCoreNodeTaints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
 	b, err := json.Marshal(node.Spec.Taints)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreNodeConditions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
 	b, err := json.Marshal(node.Status.Conditions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchCoreNodeImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	node, ok := parent.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", parent.Item)
-	}
+	node := parent.Item.(corev1.Node)
 	res <- node.Status.Images
 	return nil
 }
 
 func fetchCoreNodeVolumesAttached(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	node, ok := parent.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", parent.Item)
-	}
+	node := parent.Item.(corev1.Node)
 	res <- node.Status.VolumesAttached
 	return nil
 }
 
 func resolveCoreNodeConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
+	node := resource.Item.(corev1.Node)
 	b, err := json.Marshal(node.Status.Config)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchAddressValue(addrs []corev1.NodeAddress, key corev1.NodeAddressType) (string, bool) {
@@ -437,36 +415,28 @@ func fetchAddressValue(addrs []corev1.NodeAddress, key corev1.NodeAddressType) (
 }
 
 func resolveCoreNodeHostname(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	node, ok := resource.Item.(corev1.Node)
-	if !ok {
-		return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-	}
-
+	node := resource.Item.(corev1.Node)
 	v, ok := fetchAddressValue(node.Status.Addresses, corev1.NodeHostName)
 	if !ok {
 		return nil
 	}
-	return resource.Set(c.Name, v)
+	return diag.WrapError(resource.Set(c.Name, v))
 }
 
 func resolveCoreNodeIP(key corev1.NodeAddressType) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		node, ok := resource.Item.(corev1.Node)
-		if !ok {
-			return fmt.Errorf("not a corev1.Node instance: %T", resource.Item)
-		}
-
+		node := resource.Item.(corev1.Node)
 		v, ok := fetchAddressValue(node.Status.Addresses, key)
 		if !ok {
 			return nil
 		}
 		ip := net.ParseIP(v)
 		if ip == nil {
-			return fmt.Errorf("failed to convert %v to IP address", v)
+			return diag.WrapError(fmt.Errorf("failed to convert %v to IP address", v))
 		}
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
-		return resource.Set(c.Name, ip)
+		return diag.WrapError(resource.Set(c.Name, ip))
 	}
 }

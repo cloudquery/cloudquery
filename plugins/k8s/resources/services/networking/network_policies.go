@@ -3,9 +3,9 @@ package networking
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -402,7 +402,7 @@ func fetchNetworkingNetworkPolicies(ctx context.Context, meta schema.ClientMeta,
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -412,136 +412,97 @@ func fetchNetworkingNetworkPolicies(ctx context.Context, meta schema.ClientMeta,
 	}
 }
 func resolveNetworkingNetworkPoliciesOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicy)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicy instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicy)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveNetworkingNetworkPoliciesManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicy)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicy instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicy)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchNetworkingNetworkPolicyPodSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicy)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicy instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicy)
 	res <- p.Spec.PodSelector.MatchExpressions
 	return nil
 }
 func fetchNetworkingNetworkPolicyIngresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicy)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicy instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicy)
 	res <- p.Spec.Ingress
 	return nil
 }
 func fetchNetworkingNetworkPolicyIngressPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicyIngressRule)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyIngressRule instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicyIngressRule)
 	res <- p.Ports
 	return nil
 }
 func fetchNetworkingNetworkPolicyIngressFroms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicyIngressRule)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyIngressRule instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicyIngressRule)
 	res <- p.From
 	return nil
 }
 func resolveNetworkingNetworkPolicyIngressFromsPodSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicyPeer)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyPeer instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicyPeer)
 	if p.PodSelector == nil {
 		return nil
 	}
 	b, err := json.Marshal(p.PodSelector.MatchExpressions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveNetworkingNetworkPolicyIngressFromsNamespaceSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicyPeer)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyPeer instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicyPeer)
 	if p.NamespaceSelector == nil {
 		return nil
 	}
 	b, err := json.Marshal(p.NamespaceSelector.MatchExpressions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchNetworkingNetworkPolicyEgresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicy)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicy instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicy)
 	res <- p.Spec.Egress
 	return nil
 }
 func fetchNetworkingNetworkPolicyEgressPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicyEgressRule)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyIngressRule instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicyEgressRule)
 	res <- p.Ports
 	return nil
 }
 func fetchNetworkingNetworkPolicyEgressTos(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(networkingv1.NetworkPolicyEgressRule)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyIngressRule instance: %T", parent.Item)
-	}
+	p := parent.Item.(networkingv1.NetworkPolicyEgressRule)
 	res <- p.To
 	return nil
 }
 func resolveNetworkingNetworkPolicyEgressTosPodSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicyPeer)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyPeer instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicyPeer)
 	if p.PodSelector == nil {
 		return nil
 	}
 	b, err := json.Marshal(p.PodSelector.MatchExpressions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveNetworkingNetworkPolicyEgressTosNamespaceSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(networkingv1.NetworkPolicyPeer)
-	if !ok {
-		return fmt.Errorf("not a networkingv1.NetworkPolicyPeer instance: %T", resource.Item)
-	}
+	p := resource.Item.(networkingv1.NetworkPolicyPeer)
 	if p.NamespaceSelector == nil {
 		return nil
 	}
 	b, err := json.Marshal(p.NamespaceSelector.MatchExpressions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

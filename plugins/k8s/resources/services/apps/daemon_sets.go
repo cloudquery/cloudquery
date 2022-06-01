@@ -3,9 +3,9 @@ package apps
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -303,7 +303,7 @@ func fetchDaemonSets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -313,43 +313,31 @@ func fetchDaemonSets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 }
 func resolveDaemonSetsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.DaemonSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.DaemonSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.DaemonSet)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveDaemonSetsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.DaemonSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.DaemonSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.DaemonSet)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveDaemonSetsTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.DaemonSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.DaemonSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.DaemonSet)
 	b, err := json.Marshal(p.Spec.Template)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchDaemonSetSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.DaemonSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.DaemonSet instance: %T", parent.Item)
-	}
+	p := parent.Item.(appsv1.DaemonSet)
 	if p.Spec.Selector == nil {
 		return nil
 	}
@@ -357,11 +345,7 @@ func fetchDaemonSetSelectorMatchExpressions(ctx context.Context, meta schema.Cli
 	return nil
 }
 func fetchDaemonSetStatusConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.DaemonSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.DaemonSet instance: %T", parent.Item)
-	}
-
+	p := parent.Item.(appsv1.DaemonSet)
 	res <- p.Status.Conditions
 	return nil
 }

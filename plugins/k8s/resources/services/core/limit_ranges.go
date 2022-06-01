@@ -3,9 +3,9 @@ package core
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -186,7 +186,7 @@ func fetchCoreLimitRanges(ctx context.Context, meta schema.ClientMeta, _ *schema
 	for {
 		result, err := c.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -197,34 +197,25 @@ func fetchCoreLimitRanges(ctx context.Context, meta schema.ClientMeta, _ *schema
 }
 
 func resolveCoreLimitRangesOwnerReferences(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.LimitRange)
-	if !ok {
-		return fmt.Errorf("not a corev1.LimitRange instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.LimitRange)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreLimitRangesManagedFields(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.LimitRange)
-	if !ok {
-		return fmt.Errorf("not a corev1.LimitRange instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.LimitRange)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchCoreLimitRangeLimits(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	limitRange, ok := parent.Item.(corev1.LimitRange)
-	if !ok {
-		return fmt.Errorf("not a corev1.LimitRange instance: %T", parent.Item)
-	}
+	limitRange := parent.Item.(corev1.LimitRange)
 	res <- limitRange.Spec.Limits
 	return nil
 }

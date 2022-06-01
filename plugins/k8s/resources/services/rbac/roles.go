@@ -3,9 +3,9 @@ package rbac
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -178,7 +178,7 @@ func fetchRbacRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -188,32 +188,23 @@ func fetchRbacRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 }
 func resolveRbacRolesOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(rbacv1.Role)
-	if !ok {
-		return fmt.Errorf("not a rbacv1.Role instance: %T", resource.Item)
-	}
+	p := resource.Item.(rbacv1.Role)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveRbacRolesManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(rbacv1.Role)
-	if !ok {
-		return fmt.Errorf("not a rbacv1.Role instance: %T", resource.Item)
-	}
+	p := resource.Item.(rbacv1.Role)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchRbacRoleRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	role, ok := parent.Item.(rbacv1.Role)
-	if !ok {
-		return fmt.Errorf("not a rbacv1.Role instance: %T", parent.Item)
-	}
+	role := parent.Item.(rbacv1.Role)
 	res <- role.Rules
 	return nil
 }

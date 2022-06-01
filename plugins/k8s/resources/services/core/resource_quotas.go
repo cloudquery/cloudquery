@@ -3,9 +3,9 @@ package core
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -193,7 +193,7 @@ func fetchCoreResourceQuotas(ctx context.Context, meta schema.ClientMeta, _ *sch
 	for {
 		result, err := c.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -204,34 +204,25 @@ func fetchCoreResourceQuotas(ctx context.Context, meta schema.ClientMeta, _ *sch
 }
 
 func resolveCoreResourceQuotasOwnerReferences(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.ResourceQuota)
-	if !ok {
-		return fmt.Errorf("not a corev1.ResourceQuotas instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.ResourceQuota)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreResourceQuotasManagedFields(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.ResourceQuota)
-	if !ok {
-		return fmt.Errorf("not a corev1.ResourceQuotas instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.ResourceQuota)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchCoreResourceQuotaScopeSelectorMatchExpressions(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	resourceQuota, ok := parent.Item.(corev1.ResourceQuota)
-	if !ok {
-		return fmt.Errorf("not a corev1.ResourceQuota instance: %T", parent.Item)
-	}
+	resourceQuota := parent.Item.(corev1.ResourceQuota)
 	if resourceQuota.Spec.ScopeSelector == nil {
 		return nil
 	}

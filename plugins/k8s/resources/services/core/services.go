@@ -3,10 +3,10 @@ package core
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -381,7 +381,7 @@ func fetchCoreServices(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		result, err := services.List(ctx, metav1.ListOptions{})
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -392,24 +392,18 @@ func fetchCoreServices(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func resolveCoreServicesClusterIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
-	}
+	service := resource.Item.(corev1.Service)
 	ip := net.ParseIP(service.Spec.ClusterIP)
 	if ip != nil {
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func resolveCoreServicesClusterIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
-	}
+	service := resource.Item.(corev1.Service)
 	ips := make([]net.IP, 0, len(service.Spec.ClusterIPs))
 	for _, v := range service.Spec.ClusterIPs {
 		ip := net.ParseIP(v)
@@ -420,14 +414,11 @@ func resolveCoreServicesClusterIPs(ctx context.Context, meta schema.ClientMeta, 
 		}
 		ips = append(ips, ip)
 	}
-	return resource.Set(c.Name, ips)
+	return diag.WrapError(resource.Set(c.Name, ips))
 }
 
 func resolveCoreServicesExternalIPs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
-	}
+	service := resource.Item.(corev1.Service)
 	ips := make([]net.IP, 0, len(service.Spec.ExternalIPs))
 	for _, v := range service.Spec.ExternalIPs {
 		ip := net.ParseIP(v)
@@ -438,53 +429,38 @@ func resolveCoreServicesExternalIPs(ctx context.Context, meta schema.ClientMeta,
 		}
 		ips = append(ips, ip)
 	}
-	return resource.Set(c.Name, ips)
+	return diag.WrapError(resource.Set(c.Name, ips))
 }
 
 func resolveCoreServiceOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service, ok := resource.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", resource.Item)
-	}
+	service := resource.Item.(corev1.Service)
 	b, err := json.Marshal(service.ObjectMeta.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func fetchCoreServicePorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service, ok := parent.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", parent.Item)
-	}
+	service := parent.Item.(corev1.Service)
 	res <- service.Spec.Ports
 	return nil
 }
 
 func fetchCoreServiceLoadBalancerIngresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service, ok := parent.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", parent.Item)
-	}
+	service := parent.Item.(corev1.Service)
 	res <- service.Status.LoadBalancer.Ingress
 	return nil
 }
 
 func fetchCoreServiceLoadBalancerIngressPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	ingress, ok := parent.Item.(corev1.LoadBalancerIngress)
-	if !ok {
-		return fmt.Errorf("not a corev1.LoadBalancerIngress instance: %T", parent.Item)
-	}
+	ingress := parent.Item.(corev1.LoadBalancerIngress)
 	res <- ingress.Ports
 	return nil
 }
 
 func fetchCoreServiceConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service, ok := parent.Item.(corev1.Service)
-	if !ok {
-		return fmt.Errorf("not a corev1.Service instance: %T", parent.Item)
-	}
+	service := parent.Item.(corev1.Service)
 	res <- service.Status.Conditions
 	return nil
 }

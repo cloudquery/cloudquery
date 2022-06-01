@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -207,7 +208,7 @@ func fetchCoreNamespaces(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		result, err := namespaces.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -220,23 +221,23 @@ func resolveCoreNamespacesOwnerReferences(ctx context.Context, meta schema.Clien
 	n := resource.Item.(v1.Namespace)
 	data, err := json.Marshal(n.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveCoreNamespacesManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	n := resource.Item.(v1.Namespace)
 	data, err := json.Marshal(n.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveCoreNamespacesConditions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	n := resource.Item.(v1.Namespace)
 	data, err := json.Marshal(n.Status.Conditions)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }

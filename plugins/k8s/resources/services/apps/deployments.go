@@ -3,9 +3,9 @@ package apps
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -315,7 +315,7 @@ func fetchAppsDeployments(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -325,43 +325,31 @@ func fetchAppsDeployments(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 }
 func resolveAppsDeploymentsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.Deployment)
-	if !ok {
-		return fmt.Errorf("not a appsv1.Deployment instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.Deployment)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsDeploymentsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.Deployment)
-	if !ok {
-		return fmt.Errorf("not a appsv1.Deployment instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.Deployment)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsDeploymentsTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.Deployment)
-	if !ok {
-		return fmt.Errorf("not a appsv1.Deployment instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.Deployment)
 	b, err := json.Marshal(p.Spec.Template)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchAppsDeploymentSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	deployment, ok := parent.Item.(appsv1.Deployment)
-	if !ok {
-		return fmt.Errorf("not a appsv1.Deployment instance: %T", parent.Item)
-	}
+	deployment := parent.Item.(appsv1.Deployment)
 	if deployment.Spec.Selector == nil {
 		return nil
 	}
@@ -369,10 +357,7 @@ func fetchAppsDeploymentSelectorMatchExpressions(ctx context.Context, meta schem
 	return nil
 }
 func fetchAppsDeploymentStatusConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	deployment, ok := parent.Item.(appsv1.Deployment)
-	if !ok {
-		return fmt.Errorf("not a appsv1.Deployment instance: %T", parent.Item)
-	}
+	deployment := parent.Item.(appsv1.Deployment)
 	res <- deployment.Status.Conditions
 	return nil
 }

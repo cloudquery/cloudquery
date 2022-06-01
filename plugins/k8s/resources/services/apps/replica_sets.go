@@ -3,9 +3,9 @@ package apps
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -237,7 +237,7 @@ func fetchAppsReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -247,43 +247,31 @@ func fetchAppsReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 }
 func resolveAppsReplicaSetsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.ReplicaSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.ReplicaSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.ReplicaSet)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsReplicaSetsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.ReplicaSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.ReplicaSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.ReplicaSet)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveAppsReplicaSetsTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(appsv1.ReplicaSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.ReplicaSet instance: %T", resource.Item)
-	}
+	p := resource.Item.(appsv1.ReplicaSet)
 	b, err := json.Marshal(p.Spec.Template)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchAppsReplicaSetSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.ReplicaSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.ReplicaSet instance: %T", parent.Item)
-	}
+	p := parent.Item.(appsv1.ReplicaSet)
 	if p.Spec.Selector == nil {
 		return nil
 	}
@@ -291,11 +279,7 @@ func fetchAppsReplicaSetSelectorMatchExpressions(ctx context.Context, meta schem
 	return nil
 }
 func fetchAppsReplicaSetStatusConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(appsv1.ReplicaSet)
-	if !ok {
-		return fmt.Errorf("not a appsv1.ReplicaSet instance: %T", parent.Item)
-	}
-
+	p := parent.Item.(appsv1.ReplicaSet)
 	res <- p.Status.Conditions
 	return nil
 }

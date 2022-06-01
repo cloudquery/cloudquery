@@ -3,9 +3,9 @@ package batch
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -282,7 +282,7 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		result, err := cl.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -292,46 +292,31 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 }
 func resolveBatchJobsOwnerReferences(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(batchv1.Job)
-	if !ok {
-		return fmt.Errorf("not a batchv1.Job instance: %T", resource.Item)
-	}
+	p := resource.Item.(batchv1.Job)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveBatchJobsManagedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(batchv1.Job)
-	if !ok {
-		return fmt.Errorf("not a batchv1.Job instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(batchv1.Job)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveBatchJobsTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(batchv1.Job)
-	if !ok {
-		return fmt.Errorf("not a batchv1.Job instance: %T", resource.Item)
-	}
-
+	p := resource.Item.(batchv1.Job)
 	b, err := json.Marshal(p.Spec.Template)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchBatchJobSelectorMatchExpressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	job, ok := parent.Item.(batchv1.Job)
-	if !ok {
-		return fmt.Errorf("not a batchv1.Job instance: %T", parent.Item)
-	}
-
+	job := parent.Item.(batchv1.Job)
 	if job.Spec.Selector == nil {
 		return nil
 	}
@@ -339,11 +324,7 @@ func fetchBatchJobSelectorMatchExpressions(ctx context.Context, meta schema.Clie
 	return nil
 }
 func fetchBatchJobStatusConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	job, ok := parent.Item.(batchv1.Job)
-	if !ok {
-		return fmt.Errorf("not a batchv1.Job instance: %T", parent.Item)
-	}
-
+	job := parent.Item.(batchv1.Job)
 	res <- job.Status.Conditions
 	return nil
 }

@@ -3,10 +3,10 @@ package core
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net"
 
 	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -342,7 +342,7 @@ func fetchCoreEndpoints(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	for {
 		result, err := c.List(ctx, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- result.Items
 		if result.GetContinue() == "" {
@@ -353,89 +353,65 @@ func fetchCoreEndpoints(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 }
 
 func resolveCoreEndpointsOwnerReferences(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.Endpoints)
-	if !ok {
-		return fmt.Errorf("not a corev1.Endpoints instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.Endpoints)
 	b, err := json.Marshal(p.OwnerReferences)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreEndpointsManagedFields(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(corev1.Endpoints)
-	if !ok {
-		return fmt.Errorf("not a corev1.Endpoints instance: %T", resource.Item)
-	}
+	p := resource.Item.(corev1.Endpoints)
 	b, err := json.Marshal(p.ManagedFields)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveCoreEndpointSubsetAddressesIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	endpointAddress, ok := resource.Item.(corev1.EndpointAddress)
-	if !ok {
-		return fmt.Errorf("not a corev1.EndpointAddress instance: %T", resource.Item)
-	}
+	endpointAddress := resource.Item.(corev1.EndpointAddress)
 	ip := net.ParseIP(endpointAddress.IP)
 	if ip != nil {
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func resolveCoreEndpointSubsetNotReadyAddressesIP(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	endpointAddress, ok := resource.Item.(corev1.EndpointAddress)
-	if !ok {
-		return fmt.Errorf("not a corev1.EndpointAddress instance: %T", resource.Item)
-	}
+	endpointAddress := resource.Item.(corev1.EndpointAddress)
 	ip := net.ParseIP(endpointAddress.IP)
 	if ip != nil {
 		if v4 := ip.To4(); v4 != nil {
 			ip = v4
 		}
 	}
-	return resource.Set(c.Name, ip)
+	return diag.WrapError(resource.Set(c.Name, ip))
 }
 
 func fetchCoreEndpointSubsets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpoints, ok := parent.Item.(corev1.Endpoints)
-	if !ok {
-		return fmt.Errorf("not a corev1.Endpoints instance: %T", parent.Item)
-	}
+	endpoints := parent.Item.(corev1.Endpoints)
 	res <- endpoints.Subsets
 	return nil
 }
 
 func fetchCoreEndpointSubsetAddresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpointSubset, ok := parent.Item.(corev1.EndpointSubset)
-	if !ok {
-		return fmt.Errorf("not a corev1.EndpointSubset instance: %T", parent.Item)
-	}
+	endpointSubset := parent.Item.(corev1.EndpointSubset)
 	res <- endpointSubset.Addresses
 	return nil
 }
 
 func fetchCoreEndpointSubsetNotReadyAddresses(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpointSubset, ok := parent.Item.(corev1.EndpointSubset)
-	if !ok {
-		return fmt.Errorf("not a corev1.EndpointSubset instance: %T", parent.Item)
-	}
+	endpointSubset := parent.Item.(corev1.EndpointSubset)
 	res <- endpointSubset.NotReadyAddresses
 	return nil
 }
 
 func fetchCoreEndpointSubsetPorts(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpointSubset, ok := parent.Item.(corev1.EndpointSubset)
-	if !ok {
-		return fmt.Errorf("not a corev1.EndpointSubset instance: %T", parent.Item)
-	}
+	endpointSubset := parent.Item.(corev1.EndpointSubset)
 	res <- endpointSubset.Ports
 	return nil
 }
