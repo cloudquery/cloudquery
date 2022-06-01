@@ -123,14 +123,9 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 
 func createOutputTable(res *policy.QueryResult) {
 	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader(res.Columns)
+	table.SetFooter(append(makeStringArrayOfLength(len(res.Columns)-2), "Total:", strconv.Itoa(len(res.Rows))))
 
-	if len(res.Rows[0].Identifiers) == 0 {
-		table.SetHeader(append([]string{"status", "reason"}, res.QueryColumns...))
-		table.SetFooter(append(makeStringArrayOfLength(len(res.QueryColumns)), "Total:", strconv.Itoa(len(res.Rows))))
-	} else {
-		table.SetHeader(res.Columns)
-		table.SetFooter(append(makeStringArrayOfLength(len(res.Columns)-2), "Total:", strconv.Itoa(len(res.Rows))))
-	}
 	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAutoWrapText(true)
@@ -147,8 +142,11 @@ func createOutputTable(res *policy.QueryResult) {
 		}
 		data = append(data, row.Reason)
 		ad := make([]interface{}, 0, len(row.AdditionalData))
-		for _, v := range row.AdditionalData {
-			ad = append(ad, v)
+		for _, key := range res.Columns {
+			if val, ok := row.AdditionalData[key]; ok {
+				ad = append(ad, val)
+			}
+
 		}
 		data = append(data, cast.ToStringSlice(ad)...)
 		table.Append(data)
