@@ -469,7 +469,7 @@ func S3Buckets() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().S3
 	response, err := svc.ListBuckets(ctx, nil)
 	if err != nil {
@@ -508,13 +508,14 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	return diags
 }
 
-func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, err chan<- error, res chan<- interface{}, wg *sync.WaitGroup) {
+func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- interface{}, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for bucket := range buckets {
-		wb := &WrappedBucket{Bucket: bucket}
+		// always set default bucket region to us-east-1
+		wb := &WrappedBucket{Bucket: bucket, Region: "us-east-1"}
 		e := resolveS3BucketsAttributes(ctx, meta, wb)
 		res <- wb
-		err <- e
+		errs <- e
 	}
 }
 
@@ -523,6 +524,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	log.Debug("fetching bucket attributes", "bucket", aws.ToString(resource.Name))
 	c := meta.(*client.Client)
 	mgr := c.Services().S3Manager
+
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
 	if err != nil {
 		if c.IsNotFoundError(err) {
@@ -530,40 +532,39 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		}
 		return err
 	}
-	bucketRegion := "us-east-1"
+	// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
+	// empty output == region of the bucket is us-east-1, as we set it by default we are okay
 	if output != "" {
-		// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
-		bucketRegion = output
+		resource.Region = output
 	}
-	resource.Region = bucketRegion
-	if err = resolveBucketLogging(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketLogging(ctx, meta, resource, resource.Region); err != nil {
 		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return err
 	}
 
-	if err = resolveBucketPolicy(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketPolicy(ctx, meta, resource, resource.Region); err != nil {
 		return err
 	}
 
-	if err = resolveBucketVersioning(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketVersioning(ctx, meta, resource, resource.Region); err != nil {
 		return err
 	}
 
-	if err = resolveBucketPublicAccessBlock(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketPublicAccessBlock(ctx, meta, resource, resource.Region); err != nil {
 		return err
 	}
 
-	if err = resolveBucketReplication(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketReplication(ctx, meta, resource, resource.Region); err != nil {
 		return err
 	}
 
-	if err = resolveBucketTagging(ctx, meta, resource, bucketRegion); err != nil {
+	if err = resolveBucketTagging(ctx, meta, resource, resource.Region); err != nil {
 		return err
 	}
 
-	return resolveBucketOwnershipControls(ctx, meta, resource, bucketRegion)
+	return resolveBucketOwnershipControls(ctx, meta, resource, resource.Region)
 }
 
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -615,14 +616,14 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
 	return nil
 }
-func fetchS3BucketReplicationRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3BucketReplicationRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	bucket := parent.Item.(*WrappedBucket)
 	if bucket.ReplicationRules != nil {
 		res <- bucket.ReplicationRules
 	}
 	return nil
 }
-func resolveS3BucketReplicationRuleFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveS3BucketReplicationRuleFilter(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	rule := resource.Item.(types.ReplicationRule)
 	if rule.Filter == nil {
 		return nil
@@ -649,7 +650,7 @@ func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent
 	res <- lifecycleOutput.Rules
 	return nil
 }
-func resolveS3BucketLifecycleFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveS3BucketLifecycleFilter(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	lc := resource.Item.(types.LifecycleRule)
 	if lc.Filter == nil {
 		return nil
@@ -660,7 +661,7 @@ func resolveS3BucketLifecycleFilter(ctx context.Context, meta schema.ClientMeta,
 	}
 	return resource.Set("filter", data)
 }
-func resolveS3BucketLifecycleNoncurrentVersionTransitions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveS3BucketLifecycleNoncurrentVersionTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	lc := resource.Item.(types.LifecycleRule)
 	if lc.Transitions == nil {
 		return nil
@@ -671,7 +672,7 @@ func resolveS3BucketLifecycleNoncurrentVersionTransitions(ctx context.Context, m
 	}
 	return resource.Set("noncurrent_version_transitions", data)
 }
-func resolveS3BucketLifecycleTransitions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveS3BucketLifecycleTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	lc := resource.Item.(types.LifecycleRule)
 	if lc.Transitions == nil {
 		return nil
