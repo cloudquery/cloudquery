@@ -197,7 +197,6 @@ func (c Client) Fetch(ctx context.Context) (result *core.FetchResponse, diags di
 	if _, dd := c.SyncProviders(ctx, c.cfg.Providers.Names()...); dd.HasErrors() {
 		return nil, dd
 	}
-	defer printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 
 	ui.ColorizedOutput(ui.ColorProgress, "Starting provider fetch...\n\n")
 	var (
@@ -212,7 +211,9 @@ func (c Client) Fetch(ctx context.Context) (result *core.FetchResponse, diags di
 	for i, p := range c.cfg.Providers {
 		rp, ok := c.Providers.Get(p.Name)
 		if !ok {
-			return nil, diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
+			diags = diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
+			printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
+			return nil, diags
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
