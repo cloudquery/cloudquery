@@ -193,7 +193,7 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	return diags
 }
 
-func (c Client) Fetch(ctx context.Context) (result *core.FetchResponse, diags diag.Diagnostics) {
+func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostics) {
 	if _, dd := c.SyncProviders(ctx, c.cfg.Providers.Names()...); dd.HasErrors() {
 		return nil, dd
 	}
@@ -211,13 +211,13 @@ func (c Client) Fetch(ctx context.Context) (result *core.FetchResponse, diags di
 	for i, p := range c.cfg.Providers {
 		rp, ok := c.Providers.Get(p.Name)
 		if !ok {
-			diags = diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
+			diags := diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
 			printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			return nil, diags
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
-	result, diags = core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
+	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
 		ProvidersInfo:  providers,
 		FetchId:        c.instanceId,
