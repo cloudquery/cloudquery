@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-terraform/client"
 )
@@ -170,20 +171,17 @@ func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *sche
 func resolveBackendType(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
-	return resource.Set("backend_type", backend.BackendType)
+	return diag.WrapError(resource.Set("backend_type", backend.BackendType))
 }
 
 func resolveBackendName(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
-	return resource.Set("backend_name", backend.BackendName)
+	return diag.WrapError(resource.Set("backend_name", backend.BackendName))
 }
 
 func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	state, ok := parent.Item.(client.State)
-	if !ok {
-		return fmt.Errorf("not terraform state")
-	}
+	state := parent.Item.(client.State)
 	for _, resource := range state.Resources {
 		res <- resource
 	}
@@ -191,10 +189,7 @@ func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *s
 }
 
 func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	resource, ok := parent.Item.(client.Resource)
-	if !ok {
-		return fmt.Errorf("not terraform Resource")
-	}
+	resource := parent.Item.(client.Resource)
 	for _, instance := range resource.Instances {
 		res <- instance
 	}
@@ -202,39 +197,32 @@ func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, p
 }
 
 func resolveProviderName(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	res, ok := resource.Item.(client.Resource)
-	if !ok {
-		return fmt.Errorf("not terraform Resource")
-	}
-
+	res := resource.Item.(client.Resource)
 	matches := providerNameRegex.FindStringSubmatch(res.ProviderConfig)
 	typeIndex := providerNameRegex.SubexpIndex("Type")
 	if len(matches) >= 3 {
-		return resource.Set(c.Name, matches[typeIndex])
+		return diag.WrapError(resource.Set(c.Name, matches[typeIndex]))
 	}
 	return nil
 }
 
 func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance, ok := resource.Item.(client.Instance)
-	if !ok {
-		return fmt.Errorf("not terraform Instance")
-	}
+	instance := resource.Item.(client.Instance)
 	attrs, err := instance.AttributesRaw.MarshalJSON()
 	if err != nil {
-		return fmt.Errorf("not valid JSON attributes")
+		return diag.WrapError(fmt.Errorf("not valid JSON attributes"))
 	}
-	return resource.Set(c.Name, attrs)
+	return diag.WrapError(resource.Set(c.Name, attrs))
 }
 
 func resolveInstanceInternalId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
 	data := make(map[string]interface{})
 	if err := json.Unmarshal(instance.AttributesRaw, &data); err != nil {
-		return fmt.Errorf("could not parse internal instance id")
+		return diag.WrapError(fmt.Errorf("could not parse internal instance id"))
 	}
 	if val, ok := data["id"]; ok {
-		return resource.Set(c.Name, val)
+		return diag.WrapError(resource.Set(c.Name, val))
 	}
 	return nil
 }
