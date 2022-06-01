@@ -210,7 +210,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 	for i, p := range c.cfg.Providers {
 		rp, ok := c.Providers.Get(p.Name)
 		if !ok {
-			return nil, diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.INTERNAL)
+			return nil, diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
 		}
 		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
 	}
@@ -300,7 +300,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) (diags di
 	}
 	p, ok := c.Providers.Get(providerName)
 	if !ok {
-		return diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.INTERNAL)
+		return diag.FromError(fmt.Errorf("failed to find provider %s in configuration", p.Name), diag.USER)
 	}
 
 	if diags = core.Drop(ctx, c.StateManager, c.PluginManager, p); diags.HasErrors() {
