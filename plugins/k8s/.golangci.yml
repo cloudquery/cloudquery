@@ -110,6 +110,7 @@ issues:
       linters:
         - dupl
         - gocritic
+        - wrapcheck
       # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
       linters:
