@@ -66,6 +66,6 @@ resource "azurerm_express_route_gateway" "gateway" {
   scale_units         = 1
 
   tags = {
-    environment = "Test"
+    environment = "test"
   }
 }
