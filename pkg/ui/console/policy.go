@@ -146,7 +146,6 @@ func createOutputTable(res *policy.QueryResult) {
 			if val, ok := row.AdditionalData[key]; ok {
 				ad = append(ad, val)
 			}
-
 		}
 		data = append(data, cast.ToStringSlice(ad)...)
 		table.Append(data)
