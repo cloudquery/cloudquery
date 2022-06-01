@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/helpers/limit"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -104,5 +105,10 @@ func initSentry() {
 		})
 		scope.SetExtra("cookie_id", userId.String())
 		scope.SetExtra("instance_id", instanceId)
+		ulimit, err := limit.GetUlimit()
+		if err == nil && ulimit.Max != 0 {
+			scope.SetExtra("current_ulimit", ulimit.Cur)
+			scope.SetExtra("max_ulimit", ulimit.Max)
+		}
 	})
 }
