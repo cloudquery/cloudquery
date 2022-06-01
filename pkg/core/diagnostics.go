@@ -36,14 +36,14 @@ func SummarizeDiagnostics(diags diag.Diagnostics) DiagnosticsSummary {
 		severity := strings.ToLower(d.Severity().String())
 		dtype := strings.ToLower(d.Type().String())
 
-		if _, ok := summary.BySeverity[severity]; ok {
-			summary.BySeverity[severity] = summary.BySeverity[severity] + 1
+		if count, ok := summary.BySeverity[severity]; ok {
+			summary.BySeverity[severity] = count + 1
 		} else {
 			summary.BySeverity[severity] = 1
 		}
 
-		if _, ok := summary.ByType[dtype]; ok {
-			summary.ByType[dtype] = summary.ByType[dtype] + 1
+		if count, ok := summary.ByType[dtype]; ok {
+			summary.ByType[dtype] = count + 1
 		} else {
 			summary.ByType[dtype] = 1
 		}

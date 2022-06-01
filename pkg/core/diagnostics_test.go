@@ -4,13 +4,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_SummarizeDiagnostics(t *testing.T) {
-
 	testCases := []struct {
 		Name            string
 		Diags           diag.Diagnostics
