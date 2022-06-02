@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -428,7 +429,7 @@ func fetchDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		databases, resp, err := svc.DoClient.Databases.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- databases
@@ -438,7 +439,7 @@ func fetchDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1
@@ -460,7 +461,7 @@ func fetchDatabaseBackups(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		backups, resp, err := svc.DoClient.Databases.ListBackups(ctx, db.ID, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- backups
@@ -470,7 +471,7 @@ func fetchDatabaseBackups(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1
@@ -487,7 +488,7 @@ func fetchDatabaseReplicas(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		replicas, resp, err := svc.DoClient.Databases.ListReplicas(ctx, db.ID, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- replicas
@@ -497,7 +498,7 @@ func fetchDatabaseReplicas(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1
@@ -509,7 +510,7 @@ func fetchDatabaseFirewallRules(ctx context.Context, meta schema.ClientMeta, par
 	svc := meta.(*client.Client)
 	rules, _, err := svc.DoClient.Databases.GetFirewallRules(ctx, db.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- rules
 	return nil

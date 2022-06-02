@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -102,7 +103,7 @@ func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	for {
 		images, resp, err := svc.DoClient.Images.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- images
@@ -112,7 +113,7 @@ func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1

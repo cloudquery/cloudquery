@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -118,7 +119,7 @@ func fetchVpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	for {
 		vpcs, resp, err := svc.DoClient.VPCs.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- vpcs
 		// if we are at the last page, break out the for loop
@@ -127,7 +128,7 @@ func fetchVpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1
@@ -144,7 +145,7 @@ func fetchVpcMembers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		vpcMembers, resp, err := svc.DoClient.VPCs.ListMembers(ctx, vpc.ID, nil, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- vpcMembers
 		// if we are at the last page, break out the for loop
@@ -153,7 +154,7 @@ func fetchVpcMembers(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -81,7 +82,7 @@ func fetchSizes(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	for {
 		sizes, resp, err := svc.DoClient.Sizes.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- sizes
@@ -91,7 +92,7 @@ func fetchSizes(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1

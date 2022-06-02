@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -69,7 +70,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	svc := meta.(*client.Client)
 	account, _, err := svc.DoClient.Account.Get(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- *account
 	return nil

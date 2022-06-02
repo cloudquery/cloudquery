@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -138,7 +139,7 @@ func fetchVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	for {
 		volumes, resp, err := svc.DoClient.Storage.ListVolumes(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- volumes
@@ -148,7 +149,7 @@ func fetchVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.ListOptions.Page = page + 1

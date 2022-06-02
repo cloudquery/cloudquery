@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -61,7 +62,7 @@ func fetchBillingHistory(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		billingHistory, resp, err := svc.DoClient.BillingHistory.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		res <- billingHistory.BillingHistory
@@ -71,7 +72,7 @@ func fetchBillingHistory(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1

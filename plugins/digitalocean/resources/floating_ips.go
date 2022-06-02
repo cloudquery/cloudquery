@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/digitalocean/godo"
 )
@@ -80,7 +81,7 @@ func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		floatIps, resp, err := svc.DoClient.FloatingIPs.List(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
 		fw := make([]floatingIpWrapper, len(floatIps))
@@ -96,7 +97,7 @@ func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schem
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1

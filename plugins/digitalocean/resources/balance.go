@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -47,7 +48,7 @@ func fetchBalances(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	svc := meta.(*client.Client)
 	balance, _, err := svc.DoClient.Balance.Get(ctx)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if balance == nil {
 		return nil
