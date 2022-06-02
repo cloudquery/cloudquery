@@ -4,6 +4,13 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.24.8](https://github.com/cloudquery/cloudquery/compare/v0.24.7...v0.24.8) (2022-06-02)
+
+
+### Bug Fixes
+
+* Disable Telemetry with special CQ team cookie ([#832](https://github.com/cloudquery/cloudquery/issues/832)) ([550b17b](https://github.com/cloudquery/cloudquery/commit/550b17be108adb2f0393507db4a0ee1c46a0bdac))
+
 ## [0.24.7](https://github.com/cloudquery/cloudquery/compare/v0.24.6...v0.24.7) (2022-06-02)
 
 
