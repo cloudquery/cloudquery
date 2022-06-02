@@ -2,7 +2,6 @@ package compute
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -168,10 +167,7 @@ func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func resolveComputeProjectCommonInstanceMetadataItems(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*compute.Project)
-	if !ok {
-		return fmt.Errorf("expected *compute.Project but got %T", p)
-	}
+	p := resource.Item.(*compute.Project)
 	m := make(map[string]interface{})
 	for _, i := range p.CommonInstanceMetadata.Items {
 		m[i.Key] = i.Value
@@ -179,10 +175,7 @@ func resolveComputeProjectCommonInstanceMetadataItems(ctx context.Context, meta 
 	return resource.Set(c.Name, m)
 }
 func fetchComputeProjectQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*compute.Project)
-	if !ok {
-		return fmt.Errorf("expected *compute.Project but got %T", p)
-	}
+	p := parent.Item.(*compute.Project)
 	res <- p.Quotas
 	return nil
 }

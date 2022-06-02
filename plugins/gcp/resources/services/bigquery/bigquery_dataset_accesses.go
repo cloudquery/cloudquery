@@ -2,7 +2,6 @@ package bigquery
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -106,18 +105,12 @@ func BigqueryDatasetAccesses() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func fetchBigqueryDatasetAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*bigquery.Dataset)
-	if !ok {
-		return fmt.Errorf("expected bigquery.Dataset but got %T", p)
-	}
+	p := parent.Item.(*bigquery.Dataset)
 	res <- p.Access
 	return nil
 }
 func resolveBigqueryDatasetAccessTargetTypes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*bigquery.DatasetAccess)
-	if !ok {
-		return fmt.Errorf("expected bigquery.DatasetAccess but got %T", p)
-	}
+	p := resource.Item.(*bigquery.DatasetAccess)
 	if p.Dataset == nil {
 		return nil
 	}

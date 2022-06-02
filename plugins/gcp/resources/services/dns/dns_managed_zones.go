@@ -2,7 +2,6 @@ package dns
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -275,10 +274,7 @@ func fetchDnsManagedZones(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 func fetchDnsManagedZoneDnssecConfigDefaultKeySpecs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*dns.ManagedZone)
-	if !ok {
-		return fmt.Errorf("expected *dns.ManagedZone but got %T", p)
-	}
+	p := parent.Item.(*dns.ManagedZone)
 
 	if p.DnssecConfig == nil {
 		return nil
@@ -288,10 +284,7 @@ func fetchDnsManagedZoneDnssecConfigDefaultKeySpecs(ctx context.Context, meta sc
 	return nil
 }
 func fetchDnsManagedZoneForwardingConfigTargetNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*dns.ManagedZone)
-	if !ok {
-		return fmt.Errorf("expected *dns.ManagedZone but got %T", p)
-	}
+	p := parent.Item.(*dns.ManagedZone)
 
 	if p.ForwardingConfig == nil {
 		return nil
@@ -301,10 +294,7 @@ func fetchDnsManagedZoneForwardingConfigTargetNameServers(ctx context.Context, m
 	return nil
 }
 func fetchDnsManagedZonePrivateVisibilityConfigNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*dns.ManagedZone)
-	if !ok {
-		return fmt.Errorf("expected *dns.ManagedZone but got %T", p)
-	}
+	p := parent.Item.(*dns.ManagedZone)
 
 	if p.PrivateVisibilityConfig == nil {
 		return nil

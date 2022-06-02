@@ -2,7 +2,6 @@ package dns
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -151,10 +150,7 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*dns.Policy)
-	if !ok {
-		return fmt.Errorf("expected *dns.Policy but got %T", p)
-	}
+	p := parent.Item.(*dns.Policy)
 
 	if p.AlternativeNameServerConfig == nil {
 		return nil
@@ -164,10 +160,7 @@ func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.Clien
 	return nil
 }
 func fetchDnsPolicyNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*dns.Policy)
-	if !ok {
-		return fmt.Errorf("expected *dns.Policy but got %T", p)
-	}
+	p := parent.Item.(*dns.Policy)
 	res <- p.Networks
 	return nil
 }

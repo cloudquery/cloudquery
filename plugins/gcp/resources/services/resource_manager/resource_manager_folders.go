@@ -3,7 +3,6 @@ package resource_manager
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -98,10 +97,7 @@ func fetchResourceManagerFolders(ctx context.Context, meta schema.ClientMeta, pa
 }
 func resolveResourceManagerFolderPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	p, ok := resource.Item.(*cloudresourcemanager.Folder)
-	if !ok {
-		return fmt.Errorf("expected *cloudresourcemanager.Folder but got %T", p)
-	}
+	p := resource.Item.(*cloudresourcemanager.Folder)
 
 	call := cl.Services.ResourceManager.Projects.
 		GetIamPolicy("folders/"+p.Name, &cloudresourcemanager.GetIamPolicyRequest{})

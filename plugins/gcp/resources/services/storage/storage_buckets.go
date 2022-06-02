@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -577,10 +576,7 @@ func fetchStorageBucketLifecycleRules(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*storage.Bucket)
-	if !ok {
-		return fmt.Errorf("expected *storage.Bucket but got %T", p)
-	}
+	p := resource.Item.(*storage.Bucket)
 	cl := meta.(*client.Client)
 	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name).OptionsRequestedPolicyVersion(3)
 	list, err := cl.RetryingDo(ctx, call)

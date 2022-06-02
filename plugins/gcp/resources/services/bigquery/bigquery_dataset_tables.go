@@ -2,7 +2,6 @@ package bigquery
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -415,10 +414,7 @@ func BigqueryDatasetTables() *schema.Table {
 // ====================================================================================================================
 func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
-	p, ok := parent.Item.(*bigquery.Dataset)
-	if !ok {
-		return fmt.Errorf("expected *bigquery.Dataset but got %T", p)
-	}
+	p := parent.Item.(*bigquery.Dataset)
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -464,10 +460,7 @@ func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigque
 }
 
 func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*bigquery.Table)
-	if !ok {
-		return fmt.Errorf("expected *bigquery.Table but got %T", p)
-	}
+	p := resource.Item.(*bigquery.Table)
 
 	if p.ExternalDataConfiguration == nil || p.ExternalDataConfiguration.Schema == nil {
 		return nil
@@ -480,10 +473,7 @@ func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Cont
 	return resource.Set(c.Name, s)
 }
 func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*bigquery.Table)
-	if !ok {
-		return fmt.Errorf("expected *bigquery.Table but got %T", p)
-	}
+	p := resource.Item.(*bigquery.Table)
 
 	if p.Schema == nil {
 		return nil
@@ -496,10 +486,7 @@ func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMe
 	return resource.Set(c.Name, s)
 }
 func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*bigquery.Table)
-	if !ok {
-		return fmt.Errorf("expected *bigquery.Table but got %T", p)
-	}
+	p := parent.Item.(*bigquery.Table)
 
 	if p.Model == nil {
 		return nil
@@ -509,10 +496,7 @@ func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta
 	return nil
 }
 func fetchBigqueryDatasetTableUserDefinedFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*bigquery.Table)
-	if !ok {
-		return fmt.Errorf("expected *bigquery.Table but got %T", p)
-	}
+	p := parent.Item.(*bigquery.Table)
 
 	if p.View == nil {
 		return nil

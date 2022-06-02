@@ -3,7 +3,6 @@ package resource_manager
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -102,10 +101,7 @@ func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, p
 }
 func resolveResourceManagerProjectPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	p, ok := resource.Item.(*cloudresourcemanager.Project)
-	if !ok {
-		return fmt.Errorf("expected *cloudresourcemanager.Project but got %T", p)
-	}
+	p := resource.Item.(*cloudresourcemanager.Project)
 
 	call := cl.Services.ResourceManager.Projects.
 		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{})

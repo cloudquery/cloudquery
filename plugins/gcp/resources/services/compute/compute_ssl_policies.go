@@ -2,7 +2,6 @@ package compute
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -149,18 +148,12 @@ func fetchComputeSslPolicies(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func fetchComputeSslPolicyWarnings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*compute.SslPolicy)
-	if !ok {
-		return fmt.Errorf("expected *compute.SslPolicy but got %T", p)
-	}
+	p := parent.Item.(*compute.SslPolicy)
 	res <- p.Warnings
 	return nil
 }
 func resolveComputeSslPolicyWarningData(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p, ok := resource.Item.(*compute.SslPolicyWarnings)
-	if !ok {
-		return fmt.Errorf("expected *compute.SslPolicy but got %T", p)
-	}
+	p := resource.Item.(*compute.SslPolicyWarnings)
 	data := make(map[string]string)
 	for _, v := range p.Data {
 		data[v.Key] = v.Value

@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -135,10 +134,7 @@ func fetchIamServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent
 }
 func fetchIamServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	p, ok := parent.Item.(*iam.ServiceAccount)
-	if !ok {
-		return fmt.Errorf("expected *iam.ServiceAccount but got %T", p)
-	}
+	p := parent.Item.(*iam.ServiceAccount)
 	call := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name)
 	list, err := c.RetryingDo(ctx, call)
 	if err != nil {

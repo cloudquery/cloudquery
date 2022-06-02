@@ -227,10 +227,7 @@ func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 func fetchLoggingMetricDescriptorLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*logging.LogMetric)
-	if !ok {
-		return fmt.Errorf("expected *logging.LogMetric but got %T", p)
-	}
+	p := parent.Item.(*logging.LogMetric)
 
 	if p.MetricDescriptor == nil {
 		return nil

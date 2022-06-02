@@ -278,10 +278,7 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	keyRing, ok := parent.Item.(*KeyRing)
-	if !ok {
-		return fmt.Errorf("expected *resources.KeyRing but got %T", keyRing)
-	}
+	keyRing := parent.Item.(*KeyRing)
 	nextPageToken := ""
 	call := c.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.List(keyRing.Name)
 	for {
@@ -303,10 +300,7 @@ func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, pare
 }
 func resolveKmsKeyringCryptoKeyPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	client_ := meta.(*client.Client)
-	p, ok := resource.Item.(*cloudkms.CryptoKey)
-	if !ok {
-		return fmt.Errorf("expected *cloudkms.CryptoKey but got %T", p)
-	}
+	p := resource.Item.(*cloudkms.CryptoKey)
 	call := client_.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.GetIamPolicy(p.Name)
 	item, err := client_.RetryingDo(ctx, call)
 	if err != nil {
@@ -327,10 +321,7 @@ func resolveKmsKeyringCryptoKeyPolicy(ctx context.Context, meta schema.ClientMet
 }
 
 func resolveKmsKeyringCryptKeyLocation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	keyRing, ok := resource.Parent.Item.(*KeyRing)
-	if !ok {
-		return fmt.Errorf("expected *resources.KeyRing but got %T", keyRing)
-	}
+	keyRing := resource.Parent.Item.(*KeyRing)
 	// CryptoKey location is the same as it's keyring location
 	return resource.Set(c.Name, keyRing.Location)
 }

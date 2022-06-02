@@ -161,10 +161,7 @@ func fetchLoggingSinks(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 func fetchLoggingSinkExclusions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p, ok := parent.Item.(*logging.LogSink)
-	if !ok {
-		return fmt.Errorf("expected *logging.LogSink but got %T", p)
-	}
+	p := parent.Item.(*logging.LogSink)
 
 	res <- p.Exclusions
 	return nil
