@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.2...v0.5.3) (2022-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.7 ([#104](https://github.com/cloudquery/cq-provider-okta/issues/104)) ([e7ea575](https://github.com/cloudquery/cq-provider-okta/commit/e7ea5754292852dc95200544b36b0335731e6e6d))
+
 ### [0.5.2](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.1...v0.5.2) (2022-06-01)
 
 
