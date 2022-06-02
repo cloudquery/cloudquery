@@ -16,7 +16,7 @@ jobs:
   PolicyTest:
     strategy:
       matrix:
-        dbversion: [ "postgres:latest" ]
+        dbversion: [ "postgres:10" ]
         go: [ "1.17" ]
         platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
