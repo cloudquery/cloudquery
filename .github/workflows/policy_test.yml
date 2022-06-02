@@ -15,7 +15,7 @@ jobs:
   policy-tests:
     strategy:
       matrix:
-        dbversion: ['postgres:latest']
+        dbversion: ['postgres:10']
         go: ['1.17']
         platform: [ ubuntu-latest]
         provider: ['aws', 'gcp', 'azure', 'k8s']

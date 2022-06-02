@@ -16,7 +16,7 @@ jobs:
   unitests:
     strategy:
       matrix:
-        dbversion: ['postgres:latest']
+        dbversion: ['postgres:10']
         go: ['1.17']
         platform: [ ubuntu-latest]
     runs-on: ${{ matrix.platform }}
