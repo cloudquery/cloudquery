@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+### [0.12.4](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.3...v0.12.4) (2022-06-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.5 ([#984](https://github.com/cloudquery/cq-provider-aws/issues/984)) ([9c7fd19](https://github.com/cloudquery/cq-provider-aws/commit/9c7fd19dd741d5b5e4334c1a8ad32a6fff2a51a6))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.7 ([#985](https://github.com/cloudquery/cq-provider-aws/issues/985)) ([6fe6cc0](https://github.com/cloudquery/cq-provider-aws/commit/6fe6cc087489b7eb29dc78e66549148fb46865c1))
+* Fixed Auth config diagnostics level ([#987](https://github.com/cloudquery/cq-provider-aws/issues/987)) ([9e8be90](https://github.com/cloudquery/cq-provider-aws/commit/9e8be90fefc224a9f05f205e4e3e3850fabd130f))
+* Ignore NotFound on all aws resoruces ([#982](https://github.com/cloudquery/cq-provider-aws/issues/982)) ([a68e885](https://github.com/cloudquery/cq-provider-aws/commit/a68e8859735c61d13c961d38acc26135ff354b0d))
+
 ### [0.12.3](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.2...v0.12.3) (2022-06-01)
 
 
