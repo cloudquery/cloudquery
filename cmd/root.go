@@ -187,8 +187,8 @@ func initAnalytics() {
 		analytics.WithApiKey(viper.GetString("telemetry-apikey")),
 		analytics.WithInstanceId(instanceId.String()),
 	}
-
-	if viper.GetBool("no-telemetry") {
+	userId := analytics.GetCookieId()
+	if viper.GetBool("no-telemetry") || analytics.CQTeamID == userId.String() {
 		opts = append(opts, analytics.WithDisabled())
 	}
 	if viper.GetBool("debug-telemetry") {
