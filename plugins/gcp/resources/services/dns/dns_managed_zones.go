@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/dns/v1"
 )
@@ -261,7 +262,7 @@ func fetchDnsManagedZones(ctx context.Context, meta schema.ClientMeta, parent *s
 			PageToken(nextPageToken)
 		ret, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := ret.(*dns.ManagedZonesListResponse)
 
@@ -275,7 +276,6 @@ func fetchDnsManagedZones(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 func fetchDnsManagedZoneDnssecConfigDefaultKeySpecs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*dns.ManagedZone)
-
 	if p.DnssecConfig == nil {
 		return nil
 	}
@@ -285,7 +285,6 @@ func fetchDnsManagedZoneDnssecConfigDefaultKeySpecs(ctx context.Context, meta sc
 }
 func fetchDnsManagedZoneForwardingConfigTargetNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*dns.ManagedZone)
-
 	if p.ForwardingConfig == nil {
 		return nil
 	}
@@ -295,7 +294,6 @@ func fetchDnsManagedZoneForwardingConfigTargetNameServers(ctx context.Context, m
 }
 func fetchDnsManagedZonePrivateVisibilityConfigNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*dns.ManagedZone)
-
 	if p.PrivateVisibilityConfig == nil {
 		return nil
 	}

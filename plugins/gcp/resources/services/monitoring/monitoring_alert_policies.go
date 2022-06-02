@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/monitoring/v3"
 )
@@ -336,7 +337,7 @@ func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, p
 			PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*monitoring.ListAlertPoliciesResponse)
 
@@ -351,13 +352,11 @@ func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, p
 }
 func fetchMonitoringAlertPolicyConditions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*monitoring.AlertPolicy)
-
 	res <- p.Conditions
 	return nil
 }
 func fetchMonitoringAlertPolicyConditionAbsentAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*monitoring.Condition)
-
 	if p.ConditionAbsent == nil {
 		return nil
 	}
@@ -366,7 +365,6 @@ func fetchMonitoringAlertPolicyConditionAbsentAggregations(ctx context.Context, 
 }
 func fetchMonitoringAlertPolicyConditionThresholdAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*monitoring.Condition)
-
 	if p.ConditionThreshold == nil {
 		return nil
 	}
@@ -375,7 +373,6 @@ func fetchMonitoringAlertPolicyConditionThresholdAggregations(ctx context.Contex
 }
 func fetchMonitoringAlertPolicyConditionDenominatorAggregations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*monitoring.Condition)
-
 	if p.ConditionThreshold == nil {
 		return nil
 	}

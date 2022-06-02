@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -562,7 +563,7 @@ func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, pa
 		call := c.Services.Compute.BackendServices.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.BackendServiceAggregatedList)
 
@@ -587,7 +588,7 @@ func resolveComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders(ctx contex
 	for i, v := range r.CdnPolicy.BypassCacheOnRequestHeaders {
 		headers[i] = v.HeaderName
 	}
-	return resource.Set("cdn_policy_bypass_cache_on_request_headers", headers)
+	return diag.WrapError(resource.Set("cdn_policy_bypass_cache_on_request_headers", headers))
 }
 func resolveComputeBackendServiceCdnPolicyNegativeCachingPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*compute.BackendService)
@@ -597,9 +598,9 @@ func resolveComputeBackendServiceCdnPolicyNegativeCachingPolicy(ctx context.Cont
 
 	data, err := json.Marshal(r.CdnPolicy.NegativeCachingPolicy)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 func fetchComputeBackendServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

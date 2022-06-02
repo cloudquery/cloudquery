@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/cloudbilling/v1"
 )
@@ -252,7 +253,7 @@ func fetchCloudbillingServices(ctx context.Context, meta schema.ClientMeta, pare
 		call := c.Services.CloudBilling.Services.List().PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*cloudbilling.ListServicesResponse)
 
@@ -273,7 +274,7 @@ func fetchCloudbillingServiceSkus(ctx context.Context, meta schema.ClientMeta, p
 		call := c.Services.CloudBilling.Services.Skus.List(r.Name).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*cloudbilling.ListSkusResponse)
 

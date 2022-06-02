@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/logging/v2"
 )
@@ -214,7 +215,7 @@ func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 			PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*logging.ListLogMetricsResponse)
 
@@ -228,7 +229,6 @@ func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 func fetchLoggingMetricDescriptorLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*logging.LogMetric)
-
 	if p.MetricDescriptor == nil {
 		return nil
 	}

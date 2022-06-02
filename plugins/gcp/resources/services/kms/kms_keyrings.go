@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/cloudkms/v1"
 )
@@ -246,7 +247,7 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	locations, err := getAllKmsLocations(ctx, c)
 	if err != nil {
-		return fmt.Errorf("failed to get kms locations. %w", err)
+		return diag.WrapError(fmt.Errorf("failed to get kms locations. %w", err))
 	}
 	nextPageToken := ""
 	for _, l := range locations {
@@ -255,7 +256,7 @@ func fetchKmsKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schem
 			call.PageToken(nextPageToken)
 			list, err := c.RetryingDo(ctx, call)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			resp := list.(*cloudkms.ListKeyRingsResponse)
 
@@ -285,7 +286,7 @@ func fetchKmsKeyringCryptoKeys(ctx context.Context, meta schema.ClientMeta, pare
 		call.PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		resp := list.(*cloudkms.ListCryptoKeysResponse)
 
@@ -304,26 +305,26 @@ func resolveKmsKeyringCryptoKeyPolicy(ctx context.Context, meta schema.ClientMet
 	call := client_.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.GetIamPolicy(p.Name)
 	item, err := client_.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	resp := item.(*cloudkms.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(resp)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, policy)
+	return diag.WrapError(resource.Set(c.Name, policy))
 }
 
 func resolveKmsKeyringCryptKeyLocation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	keyRing := resource.Parent.Item.(*KeyRing)
 	// CryptoKey location is the same as it's keyring location
-	return resource.Set(c.Name, keyRing.Location)
+	return diag.WrapError(resource.Set(c.Name, keyRing.Location))
 }
 
 // ====================================================================================================================
@@ -338,7 +339,7 @@ func getAllKmsLocations(ctx context.Context, c *client.Client) ([]*cloudkms.Loca
 		call.PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return nil, err
+			return nil, diag.WrapError(err)
 		}
 		resp := list.(*cloudkms.ListLocationsResponse)
 

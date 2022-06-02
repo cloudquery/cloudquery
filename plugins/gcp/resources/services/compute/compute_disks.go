@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -271,7 +272,7 @@ func fetchComputeDisks(ctx context.Context, meta schema.ClientMeta, parent *sche
 		call := c.Services.Compute.Disks.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.DiskAggregatedList)
 
@@ -294,5 +295,5 @@ func resolveComputeDiskGuestOsFeatures(ctx context.Context, meta schema.ClientMe
 	for i, v := range r.GuestOsFeatures {
 		res[i] = v.Type
 	}
-	return resource.Set("guest_os_features", res)
+	return diag.WrapError(resource.Set("guest_os_features", res))
 }

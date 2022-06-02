@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -728,7 +729,7 @@ func fetchComputeInstances(ctx context.Context, meta schema.ClientMeta, parent *
 		call := c.Services.Compute.Instances.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.InstanceAggregatedList)
 
@@ -750,7 +751,7 @@ func resolveComputeInstanceGuestAccelerators(ctx context.Context, meta schema.Cl
 	for _, v := range r.GuestAccelerators {
 		res[v.AcceleratorType] = v.AcceleratorCount
 	}
-	return resource.Set("guest_accelerators", res)
+	return diag.WrapError(resource.Set("guest_accelerators", res))
 }
 func resolveComputeInstanceMetadataItems(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*compute.Instance)
@@ -760,7 +761,7 @@ func resolveComputeInstanceMetadataItems(ctx context.Context, meta schema.Client
 			res[v.Key] = *v.Value
 		}
 	}
-	return resource.Set("metadata_items", res)
+	return diag.WrapError(resource.Set("metadata_items", res))
 }
 func fetchComputeInstanceDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
@@ -773,7 +774,7 @@ func resolveComputeInstanceDiskGuestOsFeatures(ctx context.Context, meta schema.
 	for i, v := range r.GuestOsFeatures {
 		res[i] = v.Type
 	}
-	return resource.Set("guest_os_features", res)
+	return diag.WrapError(resource.Set("guest_os_features", res))
 }
 func fetchComputeInstanceNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/logging/v2"
 )
@@ -148,7 +149,7 @@ func fetchLoggingSinks(ctx context.Context, meta schema.ClientMeta, parent *sche
 			PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*logging.ListSinksResponse)
 
@@ -162,7 +163,6 @@ func fetchLoggingSinks(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 func fetchLoggingSinkExclusions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*logging.LogSink)
-
 	res <- p.Exclusions
 	return nil
 }

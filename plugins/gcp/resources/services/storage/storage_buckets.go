@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	storage "google.golang.org/api/storage/v1"
 )
@@ -541,7 +542,7 @@ func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *sc
 		call := c.Services.Storage.Buckets.List(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*storage.Buckets)
 
@@ -581,25 +582,25 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name).OptionsRequestedPolicyVersion(3)
 	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := list.(*storage.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, policy)
+	return diag.WrapError(resource.Set(c.Name, policy))
 }
 func resolveBucketEncryptionType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*storage.Bucket)
 	if p.Encryption == nil {
-		return resource.Set(c.Name, "GMKE")
+		return diag.WrapError(resource.Set(c.Name, "GMKE"))
 	}
-	return resource.Set(c.Name, "CMKE")
+	return diag.WrapError(resource.Set(c.Name, "CMKE"))
 }

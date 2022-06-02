@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	domains "google.golang.org/api/domains/v1beta1"
 )
@@ -416,7 +417,7 @@ func fetchDomainsRegistrations(ctx context.Context, meta schema.ClientMeta, pare
 		call := c.Services.Domain.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*domains.ListRegistrationsResponse)
 
@@ -435,9 +436,9 @@ func resolveDomainsRegistrationCustomDNSDsRecords(ctx context.Context, meta sche
 	}
 	data, err := json.Marshal(reg.DnsSettings.CustomDns.DsRecords)
 	if err != nil {
-		return fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err)
+		return diag.WrapError(fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err))
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	reg := resource.Item.(*domains.Registration)
@@ -446,9 +447,9 @@ func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, me
 	}
 	data, err := json.Marshal(reg.DnsSettings.GoogleDomainsDns.DsRecords)
 	if err != nil {
-		return fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err)
+		return diag.WrapError(fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err))
 	}
-	return resource.Set("google_domains_dns_ds_records", data)
+	return diag.WrapError(resource.Set("google_domains_dns_ds_records", data))
 }
 func fetchDomainsRegistrationGlueRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	reg := parent.Item.(*domains.Registration)

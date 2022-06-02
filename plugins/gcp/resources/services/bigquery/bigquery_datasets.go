@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/bigquery/v2"
 )
@@ -117,7 +118,7 @@ func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *
 			PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*bigquery.DatasetList)
 
@@ -126,7 +127,7 @@ func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *
 				Get(c.ProjectId, d.DatasetReference.DatasetId)
 			dataset, err := c.RetryingDo(ctx, call)
 			if err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			res <- dataset.(*bigquery.Dataset)
 		}

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/iam/v1"
 )
@@ -120,7 +121,7 @@ func fetchIamServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent
 		call := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*iam.ListServiceAccountsResponse)
 
@@ -138,7 +139,7 @@ func fetchIamServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, par
 	call := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name)
 	list, err := c.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := list.(*iam.ListServiceAccountKeysResponse)
 

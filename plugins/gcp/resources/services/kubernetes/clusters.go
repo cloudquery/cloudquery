@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/container/v1"
 )
@@ -1018,7 +1019,7 @@ func fetchKubernetesClusters(ctx context.Context, meta schema.ClientMeta, parent
 	call := c.Services.Container.Projects.Locations.Clusters.List("projects/" + c.ProjectId + "/locations/-")
 	list, err := c.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := list.(*container.ListClustersResponse)
 

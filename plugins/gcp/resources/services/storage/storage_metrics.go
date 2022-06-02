@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/spf13/cast"
 	"google.golang.org/api/monitoring/v3"
@@ -91,18 +92,18 @@ func fetchStorageMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 	if err := doTimeSeriesCall(ctx, cl, queryACLCount, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.AclOperationCount = cast.ToInt64(value.Int64Value)
 	}, metrics); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := doTimeSeriesCall(ctx, cl, queryTotalObjects, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.ObjectCount = cast.ToInt64(value.DoubleValue)
 	}, metrics); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err := doTimeSeriesCall(ctx, cl, queryTotalBucketSize, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.TotalSize = cast.ToInt64(value.DoubleValue)
 	}, metrics); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	totalMetrics := make([]*storageMetric, 0, len(metrics))
@@ -119,7 +120,7 @@ func doTimeSeriesCall(ctx context.Context, cl *client.Client, query string, sett
 	})
 	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	response := list.(*monitoring.QueryTimeSeriesResponse)
 
@@ -128,7 +129,7 @@ func doTimeSeriesCall(ctx context.Context, cl *client.Client, query string, sett
 	}
 	bucketIndex := getDescriptorIndex(response.TimeSeriesDescriptor.LabelDescriptors, "resource.bucket_name")
 	if bucketIndex == -1 {
-		return fmt.Errorf("failed to get bucket index for timeseries call")
+		return diag.WrapError(fmt.Errorf("failed to get bucket index for timeseries call"))
 	}
 
 	for _, data := range response.TimeSeriesData {

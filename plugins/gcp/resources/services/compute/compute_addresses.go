@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -124,7 +125,7 @@ func fetchComputeAddresses(ctx context.Context, meta schema.ClientMeta, parent *
 		call := c.Services.Compute.Addresses.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.AddressAggregatedList)
 

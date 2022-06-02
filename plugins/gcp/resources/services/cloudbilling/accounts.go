@@ -87,7 +87,7 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 		call := c.Services.CloudBilling.BillingAccounts.List().PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*cloudbilling.ListBillingAccountsResponse)
 		errs, ctx := errgroup.WithContext(ctx)
@@ -124,7 +124,7 @@ func fetchProjectBillingInfo(ctx context.Context, res chan<- interface{}, c *cli
 		projectsCall := c.Services.CloudBilling.BillingAccounts.Projects.List(b.Name).PageToken(nextPageToken)
 		projectsList, err := c.RetryingDo(ctx, projectsCall)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := projectsList.(*cloudbilling.ListProjectBillingInfoResponse)
 		for _, p := range output.ProjectBillingInfo {

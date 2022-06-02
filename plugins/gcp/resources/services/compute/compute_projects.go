@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -159,7 +160,7 @@ func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, parent *s
 	call := c.Services.Compute.Projects.Get(c.ProjectId)
 	item, err := c.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := item.(*compute.Project)
 
@@ -172,7 +173,7 @@ func resolveComputeProjectCommonInstanceMetadataItems(ctx context.Context, meta 
 	for _, i := range p.CommonInstanceMetadata.Items {
 		m[i.Key] = i.Value
 	}
-	return resource.Set(c.Name, m)
+	return diag.WrapError(resource.Set(c.Name, m))
 }
 func fetchComputeProjectQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*compute.Project)

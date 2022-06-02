@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/dns/v1"
 )
@@ -136,7 +137,7 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		call := c.Services.Dns.Policies.List(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*dns.PoliciesListResponse)
 
@@ -151,7 +152,6 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 func fetchDnsPolicyAlternativeNameServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*dns.Policy)
-
 	if p.AlternativeNameServerConfig == nil {
 		return nil
 	}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/cloudresourcemanager/v3"
 )
@@ -92,7 +93,7 @@ func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, p
 		Get("projects/" + c.ProjectId)
 	list, err := c.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := list.(*cloudresourcemanager.Project)
 
@@ -102,23 +103,22 @@ func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, p
 func resolveResourceManagerProjectPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	p := resource.Item.(*cloudresourcemanager.Project)
-
 	call := cl.Services.ResourceManager.Projects.
 		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{})
 	list, err := cl.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	output := list.(*cloudresourcemanager.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, policy)
+	return diag.WrapError(resource.Set(c.Name, policy))
 }

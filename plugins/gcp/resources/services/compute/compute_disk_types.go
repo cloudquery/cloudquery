@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/spf13/cast"
 	"google.golang.org/api/compute/v1"
@@ -121,7 +122,7 @@ func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *
 		call := c.Services.Compute.DiskTypes.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.DiskTypeAggregatedList)
 
@@ -142,8 +143,8 @@ func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *
 func ResolveDiskTypeId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	disk := resource.Item.(*compute.DiskType)
 	if disk.Id != 0 {
-		return resource.Set(c.Name, cast.ToString(disk.Id))
+		return diag.WrapError(resource.Set(c.Name, cast.ToString(disk.Id)))
 	}
 	linkParts := strings.Split(disk.SelfLink, "/")
-	return resource.Set(c.Name, fmt.Sprintf("%s/%s", linkParts[len(linkParts)-3], disk.Name))
+	return diag.WrapError(resource.Set(c.Name, fmt.Sprintf("%s/%s", linkParts[len(linkParts)-3], disk.Name)))
 }

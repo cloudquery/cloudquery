@@ -404,7 +404,7 @@ func resolveServicesAuthentication(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveServicesDocumentation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -415,7 +415,7 @@ func resolveServicesDocumentation(ctx context.Context, meta schema.ClientMeta, r
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -431,7 +431,7 @@ func resolveServiceApisMethods(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveServiceApisMixins(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.Api)
@@ -439,7 +439,7 @@ func resolveServiceApisMixins(ctx context.Context, meta schema.ClientMeta, resou
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveServiceApisOptions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.Api)
@@ -447,7 +447,7 @@ func resolveServiceApisOptions(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -471,7 +471,7 @@ func resolveServiceMonitoredResourcesLabels(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceMonitoringConsumerDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -499,7 +499,7 @@ func fetchServiceusageServiceQuotaLimits(ctx context.Context, meta schema.Client
 }
 func resolveServiceQuotaLimitsDefaultLimit(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.QuotaLimit)
-	return resource.Set(c.Name, int32(p.DefaultLimit))
+	return diag.WrapError(resource.Set(c.Name, int32(p.DefaultLimit)))
 }
 func fetchServiceusageServiceQuotaMetricRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)

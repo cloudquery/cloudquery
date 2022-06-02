@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -744,7 +745,7 @@ func fetchSqlInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 			PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*sql.InstancesListResponse)
 
@@ -762,7 +763,7 @@ func resolveSQLInstanceSettingsDatabaseFlags(ctx context.Context, meta schema.Cl
 	for _, f := range db.Settings.DatabaseFlags {
 		flags[f.Name] = f.Value
 	}
-	return resource.Set("settings_database_flags", flags)
+	return diag.WrapError(resource.Set("settings_database_flags", flags))
 }
 func fetchSqlInstanceIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	compute "google.golang.org/api/compute/v1"
 )
@@ -140,7 +141,7 @@ func fetchComputeInstanceGroups(ctx context.Context, meta schema.ClientMeta, par
 		call := c.Services.Compute.InstanceGroups.AggregatedList(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.InstanceGroupAggregatedList)
 
@@ -163,7 +164,7 @@ func resolveInstanceGroupsNamedPorts(ctx context.Context, meta schema.ClientMeta
 	for _, v := range r.NamedPorts {
 		j[v.Name] = v.Port
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchComputeInstanceGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.InstanceGroup)
@@ -179,7 +180,7 @@ func fetchComputeInstanceGroupInstances(ctx context.Context, meta schema.ClientM
 		call := c.Services.Compute.InstanceGroups.ListInstances(c.ProjectId, zone, r.Name, &compute.InstanceGroupsListInstancesRequest{}).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.InstanceGroupsListInstances)
 
@@ -198,5 +199,5 @@ func resolveInstanceGroupInstancesNamedPorts(ctx context.Context, meta schema.Cl
 	for _, v := range r.NamedPorts {
 		j[v.Name] = v.Port
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }

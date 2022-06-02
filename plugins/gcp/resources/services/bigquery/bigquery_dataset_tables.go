@@ -421,7 +421,7 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 		call := c.Services.BigQuery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*bigquery.TableList)
 		errs, ctx := errgroup.WithContext(ctx)
@@ -438,7 +438,7 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		err = errs.Wait()
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
 		if output.NextPageToken == "" {
@@ -453,7 +453,7 @@ func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigque
 	call := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId)
 	item, err := c.RetryingDo(ctx, call)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- item.(*bigquery.Table)
 	return nil
@@ -461,7 +461,6 @@ func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigque
 
 func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*bigquery.Table)
-
 	if p.ExternalDataConfiguration == nil || p.ExternalDataConfiguration.Schema == nil {
 		return nil
 	}
@@ -470,11 +469,10 @@ func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Cont
 	for _, f := range p.ExternalDataConfiguration.Schema.Fields {
 		s[f.Name] = f.Type
 	}
-	return resource.Set(c.Name, s)
+	return diag.WrapError(resource.Set(c.Name, s))
 }
 func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*bigquery.Table)
-
 	if p.Schema == nil {
 		return nil
 	}
@@ -483,11 +481,10 @@ func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMe
 	for _, f := range p.Schema.Fields {
 		s[f.Name] = f.Type
 	}
-	return resource.Set(c.Name, s)
+	return diag.WrapError(resource.Set(c.Name, s))
 }
 func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*bigquery.Table)
-
 	if p.Model == nil {
 		return nil
 	}
@@ -497,7 +494,6 @@ func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta
 }
 func fetchBigqueryDatasetTableUserDefinedFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*bigquery.Table)
-
 	if p.View == nil {
 		return nil
 	}

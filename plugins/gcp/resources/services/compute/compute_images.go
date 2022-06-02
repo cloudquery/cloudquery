@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/compute/v1"
 )
@@ -305,7 +306,7 @@ func fetchComputeImages(ctx context.Context, meta schema.ClientMeta, parent *sch
 		call := c.Services.Compute.Images.List(c.ProjectId).PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		output := list.(*compute.ImageList)
 
@@ -323,5 +324,5 @@ func resolveComputeImageGuestOsFeatures(ctx context.Context, meta schema.ClientM
 	for i, v := range r.GuestOsFeatures {
 		res[i] = v.Type
 	}
-	return resource.Set("guest_os_features", res)
+	return diag.WrapError(resource.Set("guest_os_features", res))
 }
