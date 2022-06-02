@@ -41,7 +41,7 @@ jobs:
     if: github.event_name != 'pull_request_target' || needs.is_organization_member.outputs.status == 'true' || github.actor == 'renovate[bot]'
     strategy:
       matrix:
-        dbversion: [ "postgres:latest" ]
+        dbversion: [ "postgres:10" ]
         go: [ "1.17" ]
         platform: [ ubuntu-latest ] # can not run in macOS and windowsOS
     runs-on: ${{ matrix.platform }}
