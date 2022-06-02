@@ -193,7 +193,7 @@ func resolveEc2natGatewayTags(ctx context.Context, meta schema.ClientMeta, resou
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchEc2NatGatewayAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.NatGateway)

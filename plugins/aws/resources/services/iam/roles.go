@@ -151,7 +151,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return err
+			return diag.WrapError(err)
 		}
 		for _, p := range response.AttachedPolicies {
 			policies[*p.PolicyArn] = p.PolicyName
@@ -161,7 +161,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		input.Marker = response.Marker
 	}
-	return resource.Set("policies", policies)
+	return diag.WrapError(resource.Set("policies", policies))
 }
 
 func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -171,7 +171,7 @@ func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set("assume_role_policy_document", decodedDocument)
+		return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
 	}
 	return nil
 }
@@ -191,5 +191,5 @@ func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	for _, t := range response.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

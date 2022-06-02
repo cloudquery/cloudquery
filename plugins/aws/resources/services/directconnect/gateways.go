@@ -278,5 +278,5 @@ func resolveDirectconnectGatewayAssociationAllowedPrefixes(ctx context.Context, 
 	for i, prefix := range r.AllowedPrefixesToDirectConnectGateway {
 		allowedPrefixes[i] = prefix.Cidr
 	}
-	return resource.Set(c.Name, allowedPrefixes)
+	return diag.WrapError(resource.Set(c.Name, allowedPrefixes))
 }

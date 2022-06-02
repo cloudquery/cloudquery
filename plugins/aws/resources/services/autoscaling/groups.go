@@ -627,7 +627,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 		}
 		config.NextToken = output.NextToken
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -654,7 +654,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 		}
 		config.NextToken = output.NextToken
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -662,7 +662,7 @@ func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, met
 	for _, n := range p.NotificationConfigurations {
 		j[*n.NotificationType] = *n.TopicARN
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -671,7 +671,7 @@ func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.Cli
 		j[*em.Metric] = *em.Granularity
 	}
 
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -680,7 +680,7 @@ func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema
 		j[*sp.ProcessName] = *sp.SuspensionReason
 	}
 
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)
@@ -720,7 +720,7 @@ func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta sche
 	for _, a := range p.Alarms {
 		j[*a.AlarmName] = *a.AlarmARN
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.ScalingPolicy)
@@ -728,7 +728,7 @@ func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, 
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.ScalingPolicy)
@@ -739,7 +739,7 @@ func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomized
 	for _, d := range p.TargetTrackingConfiguration.CustomizedMetricSpecification.Dimensions {
 		j[*d.Name] = *d.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)

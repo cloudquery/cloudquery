@@ -2,7 +2,6 @@ package elasticbeanstalk
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
@@ -430,7 +429,7 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	for _, l := range p.Resources.LoadBalancer.Listeners {
 		listeners[l.Port] = l.Protocol
 	}
-	return resource.Set(c.Name, listeners)
+	return diag.WrapError(resource.Set(c.Name, listeners))
 }
 func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
@@ -454,7 +453,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	for _, s := range tagsOutput.ResourceTags {
 		tags[*s.Key] = s.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.EnvironmentDescription)
@@ -524,11 +523,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 }
 
 func fetchElasticbeanstalkConfigurationSettingOptionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	option, ok := parent.Item.(ConfigSettings)
-	if !ok {
-		meta.Logger().Error("parent.Item", "Item", parent.Item)
-		return fmt.Errorf("not %T", option)
-	}
+	option := parent.Item.(ConfigSettings)
 	for _, t := range option.OptionSettings {
 		res <- t
 	}

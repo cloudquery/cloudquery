@@ -101,5 +101,5 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 	for _, p := range response.AttachedPolicies {
 		policyMap[*p.PolicyArn] = p.PolicyName
 	}
-	return resource.Set(c.Name, policyMap)
+	return diag.WrapError(resource.Set(c.Name, policyMap))
 }

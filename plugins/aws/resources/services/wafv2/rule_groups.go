@@ -189,7 +189,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return resource.Set(c.Name, outputTags)
+	return diag.WrapError(resource.Set(c.Name, outputTags))
 }
 func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -205,12 +205,12 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		// we may get WAFNonexistentItemException error until SetPermissionPolicy is called on a rule group
 		var e *types.WAFNonexistentItemException
 		if errors.As(err, &e) {
-			return resource.Set(c.Name, "null")
+			return diag.WrapError(resource.Set(c.Name, "null"))
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, policy.Policy)
+	return diag.WrapError(resource.Set(c.Name, policy.Policy))
 }
 func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -221,7 +221,7 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -229,7 +229,7 @@ func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, re
 	for i, l := range ruleGroup.AvailableLabels {
 		labels[i] = *l.Name
 	}
-	return resource.Set(c.Name, labels)
+	return diag.WrapError(resource.Set(c.Name, labels))
 }
 func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -237,5 +237,5 @@ func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, res
 	for i, l := range ruleGroup.ConsumedLabels {
 		labels[i] = *l.Name
 	}
-	return resource.Set(c.Name, labels)
+	return diag.WrapError(resource.Set(c.Name, labels))
 }

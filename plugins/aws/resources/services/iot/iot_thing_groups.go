@@ -200,7 +200,7 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, things)
+	return diag.WrapError(resource.Set(c.Name, things))
 }
 func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
@@ -229,7 +229,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 		}
 		input.Marker = response.NextMarker
 	}
-	return resource.Set(c.Name, policies)
+	return diag.WrapError(resource.Set(c.Name, policies))
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
@@ -269,5 +269,5 @@ func resolveIotThingGroupsRootToParentThingGroups(ctx context.Context, meta sche
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }

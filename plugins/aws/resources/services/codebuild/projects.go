@@ -721,7 +721,7 @@ func resolveCodebuildProjectsSecondarySourceVersions(ctx context.Context, meta s
 	for _, v := range p.SecondarySourceVersions {
 		j[*v.SourceIdentifier] = *v.SourceVersion
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveCodebuildProjectsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.Project)
@@ -729,7 +729,7 @@ func resolveCodebuildProjectsTags(ctx context.Context, meta schema.ClientMeta, r
 	for _, v := range p.Tags {
 		j[*v.Key] = *v.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.Project)
@@ -740,7 +740,7 @@ func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schem
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchCodebuildProjectEnvironmentVariables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.Project)

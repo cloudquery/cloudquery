@@ -273,7 +273,7 @@ func resolveDaxClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta
 			"status":     r.SecurityGroups[i].Status,
 		}
 	}
-	return resource.Set(c.Name, val)
+	return diag.WrapError(resource.Set(c.Name, val))
 }
 func fetchDaxClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Cluster)

@@ -186,15 +186,15 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
-			return resource.Set(c.Name, types.StatusDisabled)
+			return diag.WrapError(resource.Set(c.Name, types.StatusDisabled))
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if response.BackupPolicy == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, response.BackupPolicy.Status)
+	return diag.WrapError(resource.Set(c.Name, response.BackupPolicy.Status))
 }
 func resolveEfsFilesystemsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.FileSystemDescription)
@@ -202,5 +202,5 @@ func resolveEfsFilesystemsTags(ctx context.Context, meta schema.ClientMeta, reso
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

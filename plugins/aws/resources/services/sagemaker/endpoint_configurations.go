@@ -2,7 +2,6 @@ package sagemaker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -172,12 +171,7 @@ func fetchSagemakerEndpointConfigurationProductionVariants(ctx context.Context, 
 	return nil
 }
 func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r, ok := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
-
-	if !ok {
-		return fmt.Errorf("expected DescribeEndpointConfigOutput but got %T", r)
-	}
-
+	r := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTagsInput{
@@ -195,5 +189,5 @@ func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.
 		tags[*t.Key] = t.Value
 	}
 
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

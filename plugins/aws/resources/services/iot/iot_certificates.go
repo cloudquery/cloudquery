@@ -221,5 +221,5 @@ func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, 
 		}
 		input.Marker = response.NextMarker
 	}
-	return resource.Set(c.Name, policies)
+	return diag.WrapError(resource.Set(c.Name, policies))
 }

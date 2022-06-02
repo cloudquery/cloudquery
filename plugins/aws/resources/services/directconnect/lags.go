@@ -201,7 +201,7 @@ func resolveDirectconnectLagTags(ctx context.Context, meta schema.ClientMeta, re
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func fetchDirectconnectLagMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -216,5 +216,5 @@ func resolveDirectconnectLagConnectionIds(ctx context.Context, meta schema.Clien
 	for i, connection := range r.Connections {
 		connectionIds[i] = connection.ConnectionId
 	}
-	return resource.Set("connection_ids", connectionIds)
+	return diag.WrapError(resource.Set("connection_ids", connectionIds))
 }

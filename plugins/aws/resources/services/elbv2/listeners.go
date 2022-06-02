@@ -396,7 +396,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 	}
 
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	region := meta.(*client.Client).Region

@@ -514,7 +514,7 @@ func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	for _, t := range r.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.DBCluster)
@@ -535,7 +535,7 @@ func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta 
 	for _, m := range cluster.DBClusterOptionGroupMemberships {
 		memberships[*m.DBClusterOptionGroupName] = m.Status
 	}
-	return resource.Set(c.Name, memberships)
+	return diag.WrapError(resource.Set(c.Name, memberships))
 }
 
 func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

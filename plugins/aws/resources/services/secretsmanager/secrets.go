@@ -3,7 +3,6 @@ package secretsmanager
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
@@ -190,12 +189,7 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 }
 
 func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r, ok := resource.Item.(WrappedSecret)
-
-	if !ok {
-		return fmt.Errorf("expected WrappedSecret but got %T", r)
-	}
-
+	r := resource.Item.(WrappedSecret)
 	cl := meta.(*client.Client)
 	svc := cl.Services().SecretsManager
 	cfg := secretsmanager.GetResourcePolicyInput{
@@ -211,7 +205,7 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -231,7 +225,7 @@ func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.Cl
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -240,5 +234,5 @@ func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, re
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

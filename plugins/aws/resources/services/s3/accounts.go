@@ -8,6 +8,7 @@ import (
 	s3control "github.com/aws/aws-sdk-go-v2/service/s3control"
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -75,7 +76,7 @@ func fetchS3AccountConfig(ctx context.Context, meta schema.ClientMeta, _ *schema
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
 		var nspabc *s3controlTypes.NoSuchPublicAccessBlockConfiguration
 		if !errors.As(err, &nspabc) {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- S3AccountConfig{s3controlTypes.PublicAccessBlockConfiguration{}, false}
 	} else {

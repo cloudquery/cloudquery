@@ -220,7 +220,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return err
+				return diag.WrapError(err)
 			}
 			res <- describeClusterOutput.Cluster
 		}
@@ -247,5 +247,5 @@ func resolveEksClusterLoggingTypes(ctx context.Context, meta schema.ClientMeta, 
 	for i, l := range logSetup.Types {
 		logTypes[i] = string(l)
 	}
-	return resource.Set("types", logTypes)
+	return diag.WrapError(resource.Set("types", logTypes))
 }

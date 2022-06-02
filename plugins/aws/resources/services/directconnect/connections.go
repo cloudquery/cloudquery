@@ -204,7 +204,7 @@ func resolveDirectconnectConnectionTags(ctx context.Context, meta schema.ClientM
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchDirectconnectConnectionMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	connection := parent.Item.(types.Connection)

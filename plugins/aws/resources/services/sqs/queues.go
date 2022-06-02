@@ -230,7 +230,7 @@ func fetchSQSQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				return diag.WrapError(err)
 			}
 			if err := d.Decode(out.Attributes); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 			q.URL = url
 

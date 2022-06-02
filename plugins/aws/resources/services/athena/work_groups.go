@@ -446,7 +446,7 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 func ResolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
-	return resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name))
+	return diag.WrapError(resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name)))
 }
 func ResolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

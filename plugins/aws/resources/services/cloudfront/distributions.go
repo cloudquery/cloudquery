@@ -813,7 +813,7 @@ func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, m
 	for _, k := range distribution.ActiveTrustedKeyGroups.Items {
 		j[*k.KeyGroupId] = k.KeyPairIds.Items
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
@@ -824,7 +824,7 @@ func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, met
 	for _, k := range distribution.ActiveTrustedSigners.Items {
 		j[*k.AwsAccountNumber] = k.KeyPairIds.Items
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
@@ -832,7 +832,7 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 	for _, a := range distribution.AliasICPRecordals {
 		j[*a.CNAME] = a.ICPRecordalStatus
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Distribution)
@@ -856,7 +856,7 @@ func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta
 	for _, t := range r.CustomHeaders.Items {
 		tags[*t.HeaderName] = *t.HeaderValue
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	distribution := parent.Item.(types.Distribution)
@@ -896,7 +896,7 @@ func resolveCloudfrontDistributionOriginGroupsFailoverCriteriaStatusCodes(ctx co
 	for _, i := range origin.FailoverCriteria.StatusCodes.Items {
 		data = append(data, int(i))
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveCloudfrontDistributionOriginGroupsMembersOriginIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.OriginGroup)
@@ -907,5 +907,5 @@ func resolveCloudfrontDistributionOriginGroupsMembersOriginIds(ctx context.Conte
 	for _, t := range r.Members.Items {
 		members = append(members, *t.OriginId)
 	}
-	return resource.Set(c.Name, members)
+	return diag.WrapError(resource.Set(c.Name, members))
 }

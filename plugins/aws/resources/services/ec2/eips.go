@@ -136,5 +136,5 @@ func resolveEc2eipTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

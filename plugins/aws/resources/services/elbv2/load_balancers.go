@@ -341,13 +341,13 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 			}
 		}
 
-		return err
+		return diag.WrapError(err)
 	}
 	if response.WebACL == nil {
 		return nil
 	}
 
-	return resource.Set(c.Name, response.WebACL.ARN)
+	return diag.WrapError(resource.Set(c.Name, response.WebACL.ARN))
 }
 func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
@@ -373,7 +373,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		}
 	}
 
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.LoadBalancer)
@@ -410,7 +410,7 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 		return diag.WrapError(err)
 	}
 	if err := dec.Decode(m); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- attrs
 	return nil

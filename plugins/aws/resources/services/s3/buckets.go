@@ -530,7 +530,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
 	// empty output == region of the bucket is us-east-1, as we set it by default we are okay
@@ -541,27 +541,27 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err = resolveBucketPolicy(ctx, meta, resource, resource.Region); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err = resolveBucketVersioning(ctx, meta, resource, resource.Region); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err = resolveBucketPublicAccessBlock(ctx, meta, resource, resource.Region); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err = resolveBucketReplication(ctx, meta, resource, resource.Region); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	if err = resolveBucketTagging(ctx, meta, resource, resource.Region); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	return resolveBucketOwnershipControls(ctx, meta, resource, resource.Region)
@@ -593,7 +593,7 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 		if client.IsAWSError(err, "NoSuchCORSConfiguration", "NoSuchBucket") {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if corsOutput != nil {
 		res <- corsOutput.CORSRules
@@ -611,7 +611,7 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 		if client.IsAWSError(err, "ServerSideEncryptionConfigurationNotFoundError") {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
 	return nil
@@ -632,7 +632,7 @@ func resolveS3BucketReplicationRuleFilter(_ context.Context, _ schema.ClientMeta
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("filter", data)
+	return diag.WrapError(resource.Set("filter", data))
 }
 func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
@@ -645,7 +645,7 @@ func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent
 		if client.IsAWSError(err, "NoSuchLifecycleConfiguration") {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	res <- lifecycleOutput.Rules
 	return nil
@@ -659,7 +659,7 @@ func resolveS3BucketLifecycleFilter(_ context.Context, _ schema.ClientMeta, reso
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("filter", data)
+	return diag.WrapError(resource.Set("filter", data))
 }
 func resolveS3BucketLifecycleNoncurrentVersionTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	lc := resource.Item.(types.LifecycleRule)
@@ -670,7 +670,7 @@ func resolveS3BucketLifecycleNoncurrentVersionTransitions(_ context.Context, _ s
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("noncurrent_version_transitions", data)
+	return diag.WrapError(resource.Set("noncurrent_version_transitions", data))
 }
 func resolveS3BucketLifecycleTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	lc := resource.Item.(types.LifecycleRule)
@@ -681,7 +681,7 @@ func resolveS3BucketLifecycleTransitions(_ context.Context, _ schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("transitions", data)
+	return diag.WrapError(resource.Set("transitions", data))
 }
 
 // ====================================================================================================================
@@ -698,7 +698,7 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 			meta.Logger().Warn("received access denied on GetBucketLogging", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if loggingOutput.LoggingEnabled == nil {
 		return nil
@@ -716,7 +716,7 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
-		// if we got an error, and it's not a NoSuchBucketError, return err
+		// if we got an error, and it's not a NoSuchBucketError, return diag.WrapError(err)
 		if client.IsAWSError(err, "NoSuchBucketPolicy") {
 			return nil
 		}
@@ -724,7 +724,7 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 			meta.Logger().Warn("received access denied on GetBucketPolicy", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if policyOutput == nil {
 		return nil
@@ -744,7 +744,7 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 			meta.Logger().Warn("received access denied on GetBucketVersioning", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	resource.VersioningStatus = versioningOutput.Status
 	resource.VersioningMfaDelete = versioningOutput.MFADelete
@@ -766,7 +766,7 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 			meta.Logger().Warn("received access denied on GetPublicAccessBlock", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	resource.BlockPublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
 	resource.BlockPublicPolicy = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
@@ -791,7 +791,7 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 			meta.Logger().Warn("received access denied on GetBucketReplication", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if replicationOutput.ReplicationConfiguration == nil {
 		return nil
@@ -816,7 +816,7 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 			meta.Logger().Warn("received access denied on GetBucketTagging", "bucket", resource.Name, "err", err)
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	if taggingOutput == nil {
 		return nil
@@ -828,7 +828,7 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 
 	b, err := json.Marshal(tags)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	t := string(b)
 	resource.Tags = &t
@@ -854,7 +854,7 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 			return nil
 		}
 
-		return err
+		return diag.WrapError(err)
 	}
 
 	if getBucketOwnershipControlOutput == nil {

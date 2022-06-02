@@ -358,6 +358,6 @@ func resolveEMRClusterJSONField(getter func(c *types.Cluster) interface{}) func(
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }

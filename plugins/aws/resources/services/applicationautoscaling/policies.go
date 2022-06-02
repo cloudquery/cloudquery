@@ -134,7 +134,7 @@ func resolveApplicationautoscalingPolicyAlarms(ctx context.Context, meta schema.
 		return nil
 	}
 	b, _ := json.Marshal(r.Alarms)
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveApplicationautoscalingPolicyStepScalingPolicyConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ScalingPolicy)
@@ -142,7 +142,7 @@ func resolveApplicationautoscalingPolicyStepScalingPolicyConfiguration(ctx conte
 		return nil
 	}
 	b, _ := json.Marshal(r.StepScalingPolicyConfiguration)
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveApplicationautoscalingPolicyTargetTrackingScalingPolicyConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ScalingPolicy)
@@ -150,5 +150,5 @@ func resolveApplicationautoscalingPolicyTargetTrackingScalingPolicyConfiguration
 		return nil
 	}
 	b, _ := json.Marshal(r.TargetTrackingScalingPolicyConfiguration)
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }

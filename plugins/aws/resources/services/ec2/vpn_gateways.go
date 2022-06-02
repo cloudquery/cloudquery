@@ -117,5 +117,5 @@ func resolveEc2VpnGatewayTags(ctx context.Context, meta schema.ClientMeta, resou
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

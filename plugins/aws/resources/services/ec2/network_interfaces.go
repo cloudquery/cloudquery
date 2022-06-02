@@ -368,7 +368,7 @@ func resolveNetworkInterfacesGroups(ctx context.Context, meta schema.ClientMeta,
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveNetworkInterfacesIpv4Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ni := resource.Item.(types.NetworkInterface)
@@ -376,7 +376,7 @@ func resolveNetworkInterfacesIpv4Prefixes(ctx context.Context, meta schema.Clien
 	for _, i := range ni.Ipv4Prefixes {
 		ipv4 = append(ipv4, i.Ipv4Prefix)
 	}
-	return resource.Set(c.Name, ipv4)
+	return diag.WrapError(resource.Set(c.Name, ipv4))
 }
 func resolveNetworkInterfacesIpv6Addresses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ni := resource.Item.(types.NetworkInterface)
@@ -384,7 +384,7 @@ func resolveNetworkInterfacesIpv6Addresses(ctx context.Context, meta schema.Clie
 	for _, i := range ni.Ipv6Addresses {
 		ipv6 = append(ipv6, i.Ipv6Address)
 	}
-	return resource.Set(c.Name, ipv6)
+	return diag.WrapError(resource.Set(c.Name, ipv6))
 }
 func resolveNetworkInterfacesIpv6Prefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ni := resource.Item.(types.NetworkInterface)
@@ -392,7 +392,7 @@ func resolveNetworkInterfacesIpv6Prefixes(ctx context.Context, meta schema.Clien
 	for _, i := range ni.Ipv6Prefixes {
 		ipv6 = append(ipv6, i.Ipv6Prefix)
 	}
-	return resource.Set(c.Name, ipv6)
+	return diag.WrapError(resource.Set(c.Name, ipv6))
 }
 func fetchEc2NetworkInterfacePrivateIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	ni := parent.Item.(types.NetworkInterface)

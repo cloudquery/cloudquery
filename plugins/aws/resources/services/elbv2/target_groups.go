@@ -180,5 +180,5 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 	for _, s := range tagsOutput.TagDescriptions[0].Tags {
 		tags[*s.Key] = s.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

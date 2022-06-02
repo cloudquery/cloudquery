@@ -774,7 +774,7 @@ func resolveRdsInstancePendingModifiedValuesProcessorFeatures(ctx context.Contex
 	for _, t := range r.PendingModifiedValues.ProcessorFeatures {
 		pendingProcessorFeatures[*t.Name] = t.Value
 	}
-	return resource.Set(c.Name, pendingProcessorFeatures)
+	return diag.WrapError(resource.Set(c.Name, pendingProcessorFeatures))
 }
 func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
@@ -782,7 +782,7 @@ func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.Client
 	for _, t := range r.ProcessorFeatures {
 		processorFeatures[*t.Name] = t.Value
 	}
-	return resource.Set(c.Name, processorFeatures)
+	return diag.WrapError(resource.Set(c.Name, processorFeatures))
 }
 func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
@@ -790,7 +790,7 @@ func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resourc
 	for _, t := range r.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchRdsInstanceAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.DBInstance)
@@ -833,7 +833,7 @@ func resolveRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchRdsInstanceVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.DBInstance)

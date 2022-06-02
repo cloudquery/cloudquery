@@ -129,5 +129,5 @@ func ResolveOrganizationsAccountTags(ctx context.Context, meta schema.ClientMeta
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set("tags", allTags)
+	return diag.WrapError(resource.Set("tags", allTags))
 }

@@ -469,6 +469,6 @@ func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.Ge
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(col.Name, b)
+		return diag.WrapError(resource.Set(col.Name, b))
 	}
 }

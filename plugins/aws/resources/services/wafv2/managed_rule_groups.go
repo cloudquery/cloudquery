@@ -129,7 +129,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		labels[id] = aws.ToString(label.Name)
 	}
 	if err := resource.Set("available_labels", labels); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// Consumed labels
 	labels = make([]string, len(descrManagedRuleGroup.ConsumedLabels))
@@ -137,15 +137,15 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		labels[id] = aws.ToString(label.Name)
 	}
 	if err := resource.Set("consumed_labels", labels); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// Capacity
 	if err := resource.Set("capacity", cast.ToInt(descrManagedRuleGroup.Capacity)); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// Label namespace
 	if err := resource.Set("label_namespace", aws.ToString(descrManagedRuleGroup.LabelNamespace)); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	// Rules
 	if len(descrManagedRuleGroup.Rules) > 0 {
@@ -154,7 +154,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("rules", data); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil

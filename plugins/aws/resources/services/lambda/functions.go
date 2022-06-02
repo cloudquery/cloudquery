@@ -1111,7 +1111,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 				if c.IsNotFoundError(err) {
 					return nil
 				}
-				return err
+				return diag.WrapError(err)
 			}
 
 			res <- funcResponse
@@ -1142,12 +1142,12 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		if client.IsAWSError(err, "ResourceNotFoundException") {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	if response != nil {
 		if err := resource.Set("policy_revision_id", response.RevisionId); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		var policyDocument map[string]interface{}
 		err = json.Unmarshal([]byte(*response.Policy), &policyDocument)
@@ -1155,7 +1155,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("policy_document", policyDocument); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
@@ -1190,19 +1190,19 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	if err := resource.Set("code_signing_allowed_publishers_version_arns", signing.CodeSigningConfig.AllowedPublishers.SigningProfileVersionArns); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := resource.Set("code_signing_config_arn", signing.CodeSigningConfig.CodeSigningConfigArn); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := resource.Set("code_signing_config_id", signing.CodeSigningConfig.CodeSigningConfigId); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := resource.Set("code_signing_policies_untrusted_artifact_on_deployment", signing.CodeSigningConfig.CodeSigningPolicies.UntrustedArtifactOnDeployment); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	if err := resource.Set("code_signing_description", signing.CodeSigningConfig.Description); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	location, err := time.LoadLocation("UTC")
@@ -1213,7 +1213,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("code_signing_last_modified", codeSigningLastModified)
+	return diag.WrapError(resource.Set("code_signing_last_modified", codeSigningLastModified))
 }
 func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*lambda.GetFunctionOutput)
@@ -1277,7 +1277,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return err
+			return diag.WrapError(err)
 		}
 		aliases := make([]AliasWrapper, 0, len(output.Aliases))
 		for _, a := range output.Aliases {
@@ -1308,7 +1308,7 @@ func resolveFunctionAliasesUrlConfigCors(ctx context.Context, meta schema.Client
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
@@ -1408,7 +1408,7 @@ func resolveFunctionEventSourceMappingsCriteriaFilters(ctx context.Context, meta
 		filters = append(filters, *f.Pattern)
 	}
 
-	return resource.Set(c.Name, filters)
+	return diag.WrapError(resource.Set(c.Name, filters))
 }
 func resolveFunctionEventSourceMappingsSourceAccessConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EventSourceMappingConfiguration)
@@ -1420,7 +1420,7 @@ func resolveFunctionEventSourceMappingsSourceAccessConfigurations(ctx context.Co
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 // ====================================================================================================================
