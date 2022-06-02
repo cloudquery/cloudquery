@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+### [0.8.4](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.3...v0.8.4) (2022-06-01)
+
+
+### Features
+
+* Convert id TypeBigInt to TypeString ([#305](https://github.com/cloudquery/cq-provider-gcp/issues/305)) ([f739796](https://github.com/cloudquery/cq-provider-gcp/commit/f739796df3347c3aacb95422ecfbdc06c89708fd))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.7 ([#308](https://github.com/cloudquery/cq-provider-gcp/issues/308)) ([05ff866](https://github.com/cloudquery/cq-provider-gcp/commit/05ff8662689a992eac0f3785b80fa1a6b60a163c))
+
 ### [0.8.3](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.2...v0.8.3) (2022-06-01)
 
 
