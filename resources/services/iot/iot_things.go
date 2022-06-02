@@ -123,5 +123,5 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, principals)
+	return diag.WrapError(resource.Set(c.Name, principals))
 }

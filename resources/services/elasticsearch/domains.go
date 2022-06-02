@@ -470,5 +470,5 @@ func resolveElasticsearchDomainTags(ctx context.Context, meta schema.ClientMeta,
 	for _, s := range tagsOutput.TagList {
 		tags[*s.Key] = s.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

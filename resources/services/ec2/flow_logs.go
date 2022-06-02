@@ -151,5 +151,5 @@ func resolveEc2flowLogTags(ctx context.Context, meta schema.ClientMeta, resource
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

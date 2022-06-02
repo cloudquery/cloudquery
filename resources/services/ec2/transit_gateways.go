@@ -556,7 +556,7 @@ func resolveEc2TransitGatewayTags(ctx context.Context, meta schema.ClientMeta, r
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveEc2TransitGatewayAttachmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -565,7 +565,7 @@ func resolveEc2TransitGatewayAttachmentTags(ctx context.Context, meta schema.Cli
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveEc2TransitGatewayRouteTableTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -574,7 +574,7 @@ func resolveEc2TransitGatewayRouteTableTags(ctx context.Context, meta schema.Cli
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveEc2TransitGatewayVpcAttachmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -583,7 +583,7 @@ func resolveEc2TransitGatewayVpcAttachmentTags(ctx context.Context, meta schema.
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveEc2TransitGatewayPeeringAttachmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -592,7 +592,7 @@ func resolveEc2TransitGatewayPeeringAttachmentTags(ctx context.Context, meta sch
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveEc2TransitGatewayMulticastDomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -601,5 +601,5 @@ func resolveEc2TransitGatewayMulticastDomainTags(ctx context.Context, meta schem
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

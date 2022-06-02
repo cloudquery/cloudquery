@@ -322,7 +322,7 @@ func resolveStacksTags(_ context.Context, _ schema.ClientMeta, resource *schema.
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchCloudformationStackOutputs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Stack)

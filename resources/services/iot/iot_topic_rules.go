@@ -1373,7 +1373,7 @@ func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema
 	for _, h := range i.Rule.ErrorAction.Http.Headers {
 		j[*h.Key] = *h.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveIotTopicRulesErrorActionIotSiteWise(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
@@ -1384,7 +1384,7 @@ func resolveIotTopicRulesErrorActionIotSiteWise(ctx context.Context, meta schema
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
@@ -1395,7 +1395,7 @@ func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, me
 	for _, h := range i.Rule.ErrorAction.Timestream.Dimensions {
 		j[*h.Name] = *h.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchIotTopicRuleActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	i := parent.Item.(*iot.GetTopicRuleOutput)
@@ -1414,7 +1414,7 @@ func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.Clie
 	for _, h := range i.Http.Headers {
 		j[*h.Key] = *h.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveIotTopicRuleActionsIotSiteWise(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)
@@ -1425,7 +1425,7 @@ func resolveIotTopicRuleActionsIotSiteWise(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)
@@ -1436,5 +1436,5 @@ func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta sc
 	for _, h := range i.Timestream.Dimensions {
 		j[*h.Name] = *h.Value
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }

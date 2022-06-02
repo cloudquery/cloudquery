@@ -2,7 +2,6 @@ package sagemaker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -192,12 +191,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 }
 
 func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r, ok := resource.Item.(WrappedSageMakerNotebookInstance)
-
-	if !ok {
-		return fmt.Errorf("expected WrappedNotebookInstance but got %T", r)
-	}
-
+	r := resource.Item.(WrappedSageMakerNotebookInstance)
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTagsInput{
@@ -215,19 +209,14 @@ func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.Clien
 		tags[*t.Key] = t.Value
 	}
 
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveSagemakerNotebookInstanceDirectInternetAccess(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r, ok := resource.Item.(WrappedSageMakerNotebookInstance)
-
-	if !ok {
-		return fmt.Errorf("expected WrappedNotebookInstance but got %T", r)
-	}
-
+	r := resource.Item.(WrappedSageMakerNotebookInstance)
 	if r.DirectInternetAccess == sagemakertypes.DirectInternetAccessEnabled {
-		return resource.Set("direct_internet_access", true)
+		return diag.WrapError(resource.Set("direct_internet_access", true))
 	}
 
-	return resource.Set("direct_internet_access", false)
+	return diag.WrapError(resource.Set("direct_internet_access", false))
 }

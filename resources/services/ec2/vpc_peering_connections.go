@@ -211,7 +211,7 @@ func resolveEc2vpcPeeringConnectionAccepterCidrBlockSet(ctx context.Context, met
 	for i, b := range r.AccepterVpcInfo.CidrBlockSet {
 		blocks[i] = b.CidrBlock
 	}
-	return resource.Set("accepter_cidr_block_set", blocks)
+	return diag.WrapError(resource.Set("accepter_cidr_block_set", blocks))
 }
 func resolveEc2vpcPeeringConnectionAccepterIpv6CidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VpcPeeringConnection)
@@ -219,7 +219,7 @@ func resolveEc2vpcPeeringConnectionAccepterIpv6CidrBlockSet(ctx context.Context,
 	for i, b := range r.AccepterVpcInfo.Ipv6CidrBlockSet {
 		blocks[i] = b.Ipv6CidrBlock
 	}
-	return resource.Set("accepter_ipv6_cidr_block_set", blocks)
+	return diag.WrapError(resource.Set("accepter_ipv6_cidr_block_set", blocks))
 }
 func resolveEc2vpcPeeringConnectionRequesterCidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VpcPeeringConnection)
@@ -227,7 +227,7 @@ func resolveEc2vpcPeeringConnectionRequesterCidrBlockSet(ctx context.Context, me
 	for i, b := range r.RequesterVpcInfo.CidrBlockSet {
 		blocks[i] = b.CidrBlock
 	}
-	return resource.Set("requester_cidr_block_set", blocks)
+	return diag.WrapError(resource.Set("requester_cidr_block_set", blocks))
 }
 func resolveEc2vpcPeeringConnectionRequesterIpv6CidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VpcPeeringConnection)
@@ -236,7 +236,7 @@ func resolveEc2vpcPeeringConnectionRequesterIpv6CidrBlockSet(ctx context.Context
 	for i, b := range r.RequesterVpcInfo.Ipv6CidrBlockSet {
 		blocks[i] = b.Ipv6CidrBlock
 	}
-	return resource.Set("requester_ipv6_cidr_block_set", blocks)
+	return diag.WrapError(resource.Set("requester_ipv6_cidr_block_set", blocks))
 }
 func resolveEc2vpcPeeringConnectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VpcPeeringConnection)
@@ -244,5 +244,5 @@ func resolveEc2vpcPeeringConnectionTags(ctx context.Context, meta schema.ClientM
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

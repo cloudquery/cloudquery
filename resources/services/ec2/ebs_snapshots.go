@@ -177,7 +177,7 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 		return diag.WrapError(err)
 	}
 
-	return resource.Set("create_volume_permissions", b)
+	return diag.WrapError(resource.Set("create_volume_permissions", b))
 }
 func resolveEc2ebsSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Snapshot)
@@ -185,5 +185,5 @@ func resolveEc2ebsSnapshotTags(ctx context.Context, meta schema.ClientMeta, reso
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }

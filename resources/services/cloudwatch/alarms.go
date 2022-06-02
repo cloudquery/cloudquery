@@ -294,7 +294,7 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 	for _, d := range alarm.Dimensions {
 		dimensions[*d.Name] = d.Value
 	}
-	return resource.Set("dimensions", dimensions)
+	return diag.WrapError(resource.Set("dimensions", dimensions))
 }
 func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	alarm := parent.Item.(types.MetricAlarm)
@@ -310,5 +310,5 @@ func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context,
 	for _, d := range metric.MetricStat.Metric.Dimensions {
 		dimensions[*d.Name] = d.Value
 	}
-	return resource.Set("metric_stat_metric_dimensions", dimensions)
+	return diag.WrapError(resource.Set("metric_stat_metric_dimensions", dimensions))
 }

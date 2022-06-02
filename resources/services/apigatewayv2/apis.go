@@ -1039,7 +1039,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, response.Value)
+	return diag.WrapError(resource.Set(c.Name, response.Value))
 }
 func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)

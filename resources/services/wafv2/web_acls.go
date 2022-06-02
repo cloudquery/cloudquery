@@ -442,7 +442,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 		}
 		resourceArns = output.ResourceArns
 	}
-	return resource.Set(c.Name, resourceArns)
+	return diag.WrapError(resource.Set(c.Name, resourceArns))
 }
 func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*WebACLWrapper)
@@ -468,7 +468,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return resource.Set(c.Name, outputTags)
+	return diag.WrapError(resource.Set(c.Name, outputTags))
 }
 func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*WebACLWrapper)
@@ -479,7 +479,7 @@ func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchWafv2WebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL := parent.Item.(*WebACLWrapper)
@@ -495,7 +495,7 @@ func resolveWafv2webACLRuleStatement(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2webACLRuleAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.Rule)
@@ -506,7 +506,7 @@ func resolveWafv2webACLRuleAction(ctx context.Context, meta schema.ClientMeta, r
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2webACLRuleOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.Rule)
@@ -517,7 +517,7 @@ func resolveWafv2webACLRuleOverrideAction(ctx context.Context, meta schema.Clien
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.Rule)
@@ -525,7 +525,7 @@ func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, r
 	for i := range rule.RuleLabels {
 		labels[i] = aws.ToString(rule.RuleLabels[i].Name)
 	}
-	return resource.Set(c.Name, labels)
+	return diag.WrapError(resource.Set(c.Name, labels))
 }
 func fetchWafv2WebAclPostProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL := parent.Item.(*WebACLWrapper)
@@ -541,7 +541,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupStatement(ctx context.
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
@@ -552,7 +552,7 @@ func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx con
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchWafv2WebAclPreProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	webACL := parent.Item.(*WebACLWrapper)
@@ -568,7 +568,7 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupStatement(ctx context.C
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
@@ -579,7 +579,7 @@ func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx cont
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 func fetchWafv2WebACLLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
 	rule := resource.Item.(*WebACLWrapper)
@@ -592,7 +592,7 @@ func resolveWafv2WebACLLoggingConfigurationRedactedFields(ctx context.Context, m
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, out)
+		return diag.WrapError(resource.Set(c.Name, out))
 	}
 	return nil
 }
@@ -602,13 +602,13 @@ func resolveWafv2WebACLLoggingConfigurationLoggingFilter(ctx context.Context, me
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, out)
+		return diag.WrapError(resource.Set(c.Name, out))
 	}
 	return nil
 }
 func resolveWafV2WebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	if rule := resource.Item.(*WebACLWrapper); rule.LoggingConfiguration != nil {
-		return resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs)
+		return diag.WrapError(resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs))
 	}
 	return nil
 }

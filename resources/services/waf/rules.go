@@ -120,7 +120,7 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	rule := resource.Item.(*types.Rule)
-	return resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId)))
+	return diag.WrapError(resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId))))
 }
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(*types.Rule)
@@ -150,7 +150,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return resource.Set("tags", outputTags)
+	return diag.WrapError(resource.Set("tags", outputTags))
 }
 func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	rule := parent.Item.(*types.Rule)

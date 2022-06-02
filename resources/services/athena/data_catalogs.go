@@ -252,7 +252,7 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 func ResolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.DataCatalog)
-	return resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name))
+	return diag.WrapError(resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name)))
 }
 func ResolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

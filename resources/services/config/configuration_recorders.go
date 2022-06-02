@@ -176,5 +176,5 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cfg := resource.Item.(configurationRecorderWrapper)
-	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
+	return diag.WrapError(resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name)))
 }

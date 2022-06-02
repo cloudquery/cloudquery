@@ -2,7 +2,6 @@ package sagemaker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -221,12 +220,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 }
 
 func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r, ok := resource.Item.(WrappedSageMakerModel)
-
-	if !ok {
-		return fmt.Errorf("expected ModelSummary but got %T", r)
-	}
-
+	r := resource.Item.(WrappedSageMakerModel)
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTagsInput{
@@ -244,7 +238,7 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 		tags[*t.Key] = t.Value
 	}
 
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

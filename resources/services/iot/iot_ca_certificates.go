@@ -172,5 +172,5 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 		}
 		input.Marker = response.NextMarker
 	}
-	return resource.Set(c.Name, certs)
+	return diag.WrapError(resource.Set(c.Name, certs))
 }

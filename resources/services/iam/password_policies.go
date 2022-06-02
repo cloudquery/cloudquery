@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -106,7 +107,7 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 			res <- PasswordPolicy{types.PasswordPolicy{}, false}
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	res <- PasswordPolicy{*response.PasswordPolicy, true}
 	return nil

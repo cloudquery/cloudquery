@@ -129,5 +129,5 @@ func resolveFsxBackupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

@@ -75,7 +75,7 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return err
+			return diag.WrapError(err)
 		}
 		for _, p := range output.PolicyNames {
 			policyCfg := &iam.GetUserPolicyInput{PolicyName: &p, UserName: user.UserName}
@@ -105,5 +105,5 @@ func resolveIamUserPolicyPolicyDocument(ctx context.Context, meta schema.ClientM
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, document)
+	return diag.WrapError(resource.Set(c.Name, document))
 }

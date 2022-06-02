@@ -137,7 +137,7 @@ func resolveRedshiftSubnetGroupTags(ctx context.Context, meta schema.ClientMeta,
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchRedshiftSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	clusterSubnetGroup := parent.Item.(types.ClusterSubnetGroup)
@@ -150,5 +150,5 @@ func resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms(ct
 	for i, p := range r.SubnetAvailabilityZone.SupportedPlatforms {
 		platforms[i] = p.Name
 	}
-	return resource.Set("subnet_availability_zone_supported_platforms", platforms)
+	return diag.WrapError(resource.Set("subnet_availability_zone_supported_platforms", platforms))
 }

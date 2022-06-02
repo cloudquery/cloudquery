@@ -230,7 +230,7 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 		if client.IsAWSError(err, "ResourceNotFoundException") {
 			return nil
 		}
-		return err
+		return diag.WrapError(err)
 	}
 	res <- output
 

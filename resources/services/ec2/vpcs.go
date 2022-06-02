@@ -199,7 +199,7 @@ func resolveEc2vpcTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchEc2VpcCidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Vpc)

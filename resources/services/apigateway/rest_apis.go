@@ -912,7 +912,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 		}
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, response.Value)
+	return diag.WrapError(resource.Set(c.Name, response.Value))
 }
 func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)

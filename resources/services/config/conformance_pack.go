@@ -187,7 +187,7 @@ func resolveConfigConformancePackConformancePackInputParameters(ctx context.Cont
 	for _, p := range conformancePack.ConformancePackInputParameters {
 		params[*p.ParameterName] = p.ParameterValue
 	}
-	return resource.Set(c.Name, params)
+	return diag.WrapError(resource.Set(c.Name, params))
 }
 
 func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

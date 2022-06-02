@@ -206,7 +206,7 @@ func fetchAccountSummary(ctx context.Context, meta schema.ClientMeta, _ *schema.
 		return diag.WrapError(err)
 	}
 	if err := decoder.Decode(summary.SummaryMap); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	config := iam.ListAccountAliasesInput{}
 	for {

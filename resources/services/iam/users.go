@@ -389,33 +389,33 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 	// Only set if cast is successful
 	if enabled, err := cast.ToBoolE(r.PasswordStatus); err == nil {
 		if err := resource.Set("password_enabled", enabled); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.reportUser.ARN == "" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("password_last_changed", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 
-		return resource.Set("access_key_2_last_rotated", nil)
+		return diag.WrapError(resource.Set("access_key_2_last_rotated", nil))
 	}
 
 	if r.PasswordNextRotation == "N/A" || r.PasswordNextRotation == "not_supported" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		passwordNextRotation, err := time.ParseInLocation(time.RFC3339, r.PasswordNextRotation, location)
@@ -423,13 +423,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("password_next_rotation", passwordNextRotation); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.PasswordLastChanged == "N/A" || r.PasswordLastChanged == "not_supported" {
 		if err := resource.Set("password_last_changed", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		passwordLastChanged, err := time.ParseInLocation(time.RFC3339, r.PasswordLastChanged, location)
@@ -437,13 +437,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("password_last_changed", passwordLastChanged); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.Cert1LastRotated == "N/A" || r.Cert1LastRotated == "not_supported" {
 		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		cert1LastRotated, err := time.ParseInLocation(time.RFC3339, r.Cert1LastRotated, location)
@@ -451,13 +451,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("cert_1_last_rotated", cert1LastRotated); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.Cert2LastRotated == "N/A" || r.Cert2LastRotated == "not_supported" {
 		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		cert2LastRotated, err := time.ParseInLocation(time.RFC3339, r.Cert2LastRotated, location)
@@ -465,13 +465,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("cert_2_last_rotated", cert2LastRotated); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.AccessKey1LastRotated == "N/A" || r.AccessKey1LastRotated == "not_supported" {
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		accessKey1LastRotated, err := time.ParseInLocation(time.RFC3339, r.AccessKey1LastRotated, location)
@@ -479,13 +479,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("access_key_1_last_rotated", accessKey1LastRotated); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
 	if r.AccessKey2LastRotated == "N/A" || r.AccessKey2LastRotated == "not_supported" {
 		if err := resource.Set("access_key_2_last_rotated", nil); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	} else {
 		accessKey2LastRotated, err := time.ParseInLocation(time.RFC3339, r.AccessKey2LastRotated, location)
@@ -493,7 +493,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return diag.WrapError(err)
 		}
 		if err := resource.Set("access_key_2_last_rotated", accessKey2LastRotated); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 
@@ -578,10 +578,10 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	}
 	if output.AccessKeyLastUsed != nil {
 		if err := resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		if err := resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 	}
 	return nil
@@ -623,7 +623,7 @@ func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 			tags[*t.Key] = t.Value
 		}
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func (r reportUsers) GetUser(arn string) *reportUser {
@@ -646,24 +646,24 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 			var users reportUsers
 			err = gocsv.UnmarshalBytes(reportOutput.Content, &users)
 			if err != nil {
-				return nil, err
+				return nil, diag.WrapError(err)
 			}
 			return users, nil
 		}
 		if !errors.As(err, &apiErr) {
-			return nil, err
+			return nil, diag.WrapError(err)
 		}
 		switch apiErr.ErrorCode() {
 		case "ReportNotPresent", "ReportExpired":
 			_, err := svc.GenerateCredentialReport(ctx, &iam.GenerateCredentialReportInput{})
 			if err != nil {
-				return nil, err
+				return nil, diag.WrapError(err)
 			}
 		case "ReportInProgress":
 			meta.Logger().Debug("Waiting for credential report to be generated", "resource", "iam.users")
 			time.Sleep(5 * time.Second)
 		default:
-			return nil, err
+			return nil, diag.WrapError(err)
 		}
 	}
 }

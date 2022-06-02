@@ -166,9 +166,9 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 		}
 		data := make(map[string]interface{})
 		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
-		return resource.Set("document", data)
+		return diag.WrapError(resource.Set("document", data))
 	}
 	return nil
 }

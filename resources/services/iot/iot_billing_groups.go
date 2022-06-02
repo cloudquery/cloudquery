@@ -146,7 +146,7 @@ func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, things)
+	return diag.WrapError(resource.Set(c.Name, things))
 }
 func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)

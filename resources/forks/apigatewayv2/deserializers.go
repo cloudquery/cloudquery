@@ -20,12 +20,13 @@ import (
 	"github.com/aws/smithy-go/ptr"
 	smithytime "github.com/aws/smithy-go/time"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 func SwapGetDomainNamesOperationDeserializer(stack *middleware.Stack) error {
 	m := &awsRestjson1_deserializeOpGetDomainNames{}
 	_, err := stack.Deserialize.Swap(m.ID(), m)
-	return err
+	return diag.WrapError(err)
 }
 
 type awsRestjson1_deserializeOpGetDomainNames struct {
@@ -114,7 +115,7 @@ func awsRestjson1_deserializeOpErrorGetDomainNames(response *smithyhttp.Response
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	errorBody.Seek(0, io.SeekStart)
@@ -169,7 +170,7 @@ func awsRestjson1_deserializeOpDocumentGetDomainNamesOutput(v **apigatewayv2.Get
 		switch key {
 		case "items":
 			if err := awsRestjson1_deserializeDocument__listOfDomainName(&sv.Items, value); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 		case "nextToken":
@@ -206,7 +207,7 @@ func awsRestjson1_deserializeErrorBadRequestException(response *smithyhttp.Respo
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	err := awsRestjson1_deserializeDocumentBadRequestException(&output, shape)
@@ -218,7 +219,7 @@ func awsRestjson1_deserializeErrorBadRequestException(response *smithyhttp.Respo
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	errorBody.Seek(0, io.SeekStart)
@@ -242,7 +243,7 @@ func awsRestjson1_deserializeErrorNotFoundException(response *smithyhttp.Respons
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	err := awsRestjson1_deserializeDocumentNotFoundException(&output, shape)
@@ -254,7 +255,7 @@ func awsRestjson1_deserializeErrorNotFoundException(response *smithyhttp.Respons
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	errorBody.Seek(0, io.SeekStart)
@@ -278,7 +279,7 @@ func awsRestjson1_deserializeErrorTooManyRequestsException(response *smithyhttp.
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	err := awsRestjson1_deserializeDocumentTooManyRequestsException(&output, shape)
@@ -290,7 +291,7 @@ func awsRestjson1_deserializeErrorTooManyRequestsException(response *smithyhttp.
 			Err:      fmt.Errorf("failed to decode response body, %w", err),
 			Snapshot: snapshot.Bytes(),
 		}
-		return err
+		return diag.WrapError(err)
 	}
 
 	errorBody.Seek(0, io.SeekStart)
@@ -322,7 +323,7 @@ func awsRestjson1_deserializeDocument__listOfDomainName(v *[]types.DomainName, v
 		var col types.DomainName
 		destAddr := &col
 		if err := awsRestjson1_deserializeDocumentDomainName(&destAddr, value); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		col = *destAddr
 		cv = append(cv, col)
@@ -463,17 +464,17 @@ func awsRestjson1_deserializeDocumentDomainName(v **types.DomainName, value inte
 
 		case "domainNameConfigurations":
 			if err := awsRestjson1_deserializeDocumentDomainNameConfigurations(&sv.DomainNameConfigurations, value); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 		case "mutualTlsAuthentication":
 			if err := awsRestjson1_deserializeDocumentMutualTlsAuthentication(&sv.MutualTlsAuthentication, value); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 		case "tags":
 			if err := awsRestjson1_deserializeDocumentTags(&sv.Tags, value); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 		default:
@@ -509,7 +510,7 @@ func awsRestjson1_deserializeDocumentDomainNameConfigurations(v *[]types.DomainN
 		var col types.DomainNameConfiguration
 		destAddr := &col
 		if err := awsRestjson1_deserializeDocumentDomainNameConfiguration(&destAddr, value); err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		col = *destAddr
 		cv = append(cv, col)
@@ -561,7 +562,7 @@ func awsRestjson1_deserializeDocumentMutualTlsAuthentication(v **types.MutualTls
 
 		case "truststoreWarnings":
 			if err := awsRestjson1_deserializeDocument__listOf__string(&sv.TruststoreWarnings, value); err != nil {
-				return err
+				return diag.WrapError(err)
 			}
 
 		default:
@@ -716,7 +717,7 @@ func awsRestjson1_deserializeDocumentDomainNameConfiguration(v **types.DomainNam
 				}
 				f, err := jtv.Float64()
 				if err != nil {
-					return err
+					return diag.WrapError(err)
 				}
 				t := smithytime.ParseEpochSeconds(f)
 				sv.CertificateUploadDate = ptr.Time(t)

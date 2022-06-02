@@ -620,7 +620,7 @@ func resolveCognitoUserPoolAccountRecoverySetting(ctx context.Context, meta sche
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

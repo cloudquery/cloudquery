@@ -246,7 +246,7 @@ func resolveEc2securityGroupTags(ctx context.Context, meta schema.ClientMeta, re
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchEc2SecurityGroupIpPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	securityGroup := parent.Item.(types.SecurityGroup)

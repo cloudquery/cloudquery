@@ -253,7 +253,7 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 
@@ -283,17 +283,17 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 		input.NextToken = output.NextToken
 	}
 	if err := resource.Set("account_ids", accountIDs); err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	b, err := json.Marshal(infoList)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set("account_sharing_info_list", b)
+	return diag.WrapError(resource.Set("account_sharing_info_list", b))
 }
 
 func resolveSSMDocumentARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
-	return resource.Set(c.Name, cl.ARN("ssm", "document", *d.Name))
+	return diag.WrapError(resource.Set(c.Name, cl.ARN("ssm", "document", *d.Name)))
 }

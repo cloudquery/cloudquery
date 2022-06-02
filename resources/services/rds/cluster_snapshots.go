@@ -190,7 +190,7 @@ func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, 
 	for _, t := range s.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }
 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
@@ -218,5 +218,5 @@ func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.Client
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(column.Name, b)
+	return diag.WrapError(resource.Set(column.Name, b))
 }

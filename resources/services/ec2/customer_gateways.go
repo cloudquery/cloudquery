@@ -106,11 +106,11 @@ func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, 
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cg := resource.Item.(types.CustomerGateway)
-	return resource.Set(c.Name, cl.ARN(client.EC2Service, "customer-gateway", *cg.CustomerGatewayId))
+	return diag.WrapError(diag.WrapError(resource.Set(c.Name, cl.ARN(client.EC2Service, "customer-gateway", *cg.CustomerGatewayId))))
 }

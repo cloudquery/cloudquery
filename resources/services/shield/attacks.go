@@ -188,7 +188,7 @@ func resolveAttacksAttackCounters(ctx context.Context, meta schema.ClientMeta, r
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, marshalledJson)
+	return diag.WrapError(resource.Set(c.Name, marshalledJson))
 }
 func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.AttackDetail)
@@ -196,7 +196,7 @@ func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, reso
 	for _, m := range r.Mitigations {
 		mitigations = append(mitigations, *m.MitigationName)
 	}
-	return resource.Set(c.Name, mitigations)
+	return diag.WrapError(resource.Set(c.Name, mitigations))
 }
 func fetchShieldAttackProperties(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*types.AttackDetail)
@@ -209,7 +209,7 @@ func resolveAttackPropertiesTopContributors(ctx context.Context, meta schema.Cli
 	for _, c := range r.TopContributors {
 		marshalledJson[*c.Name] = c.Value
 	}
-	return resource.Set(c.Name, marshalledJson)
+	return diag.WrapError(resource.Set(c.Name, marshalledJson))
 }
 func fetchShieldAttackSubResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*types.AttackDetail)
@@ -222,7 +222,7 @@ func resolveAttackSubResourcesAttackVectors(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, marshalledJson)
+	return diag.WrapError(resource.Set(c.Name, marshalledJson))
 }
 
 func resolveAttackSubResourcesCounters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -231,5 +231,5 @@ func resolveAttackSubResourcesCounters(ctx context.Context, meta schema.ClientMe
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, marshalledJson)
+	return diag.WrapError(resource.Set(c.Name, marshalledJson))
 }

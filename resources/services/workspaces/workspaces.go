@@ -187,5 +187,5 @@ func resolveWorkspacesModificationStates(_ context.Context, _ schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }

@@ -246,7 +246,7 @@ func resolveDirectconnectVirtualInterfaceRouteFilterPrefixes(ctx context.Context
 	for i, prefix := range r.RouteFilterPrefixes {
 		routeFilterPrefixes[i] = prefix.Cidr
 	}
-	return resource.Set("route_filter_prefixes", routeFilterPrefixes)
+	return diag.WrapError(resource.Set("route_filter_prefixes", routeFilterPrefixes))
 }
 func resolveDirectconnectVirtualInterfaceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.VirtualInterface)
@@ -254,7 +254,7 @@ func resolveDirectconnectVirtualInterfaceTags(ctx context.Context, meta schema.C
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchDirectconnectVirtualInterfaceBgpPeers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	virtualInterface := parent.Item.(types.VirtualInterface)

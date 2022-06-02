@@ -208,7 +208,7 @@ func resolveEc2vpcEndpointTags(ctx context.Context, meta schema.ClientMeta, reso
 	for _, t := range r.Tags {
 		tags[*t.Key] = t.Value
 	}
-	return resource.Set("tags", tags)
+	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchEc2VpcEndpointDnsEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	endpoint := parent.Item.(types.VpcEndpoint)

@@ -160,5 +160,5 @@ func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, value)
+	return diag.WrapError(resource.Set(c.Name, value))
 }

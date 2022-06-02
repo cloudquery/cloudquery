@@ -115,7 +115,7 @@ func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) int
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		return resource.Set(c.Name, b)
+		return diag.WrapError(resource.Set(c.Name, b))
 	}
 }
 

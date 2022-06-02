@@ -297,5 +297,5 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 	for _, t := range r.CloudWatchAlarmConfiguration.Dimensions {
 		tags[*t.Name] = t.Value
 	}
-	return resource.Set(c.Name, tags)
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

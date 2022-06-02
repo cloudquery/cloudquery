@@ -77,9 +77,9 @@ func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource 
 	region := resource.Item.(types.Region)
 	switch *region.OptInStatus {
 	case "opt-in-not-required", "opted-in":
-		return resource.Set(c.Name, true)
+		return diag.WrapError(resource.Set(c.Name, true))
 	case "not-opted-in":
-		return resource.Set(c.Name, false)
+		return diag.WrapError(resource.Set(c.Name, false))
 	}
 	return nil
 }

@@ -247,7 +247,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set(c.Name, targets)
+	return diag.WrapError(resource.Set(c.Name, targets))
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
@@ -274,7 +274,7 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return diag.WrapError(diag.WrapError(resource.Set(c.Name, tags)))
 }
 func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
@@ -287,7 +287,7 @@ func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, 
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, b)
+	return diag.WrapError(resource.Set(c.Name, b))
 }
 func fetchIotSecurityProfileBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	i := parent.Item.(*iot.DescribeSecurityProfileOutput)
@@ -309,5 +309,5 @@ func resolveIotSecurityProfileBehaviorsCriteriaValue(ctx context.Context, meta s
 		return diag.WrapError(err)
 	}
 
-	return resource.Set(c.Name, data)
+	return diag.WrapError(resource.Set(c.Name, data))
 }
