@@ -19,7 +19,7 @@ type Executor struct {
 	info model.DatabaseInfo
 }
 
-var MinPostgresVersion = version.Must(version.NewVersion("11.0"))
+var MinPostgresVersion = version.Must(version.NewVersion("10.0"))
 
 func New(dsn string) *Executor {
 	return &Executor{
