@@ -15,7 +15,7 @@ func ComputeURLMaps() *schema.Table {
 		Name:         "gcp_compute_url_maps",
 		Description:  "Represents a URL Map resource",
 		Resolver:     fetchComputeUrlMaps,
-		Multiplex:    client.ProjectMultiplex,
+		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
 		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},

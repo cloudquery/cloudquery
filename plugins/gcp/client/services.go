@@ -21,6 +21,24 @@ import (
 	"google.golang.org/api/storage/v1"
 )
 
+type GcpService string
+
+const (
+	BigQueryService             GcpService = "bigquery.googleapis.com"
+	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
+	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
+	CloudKmsService             GcpService = "cloudkms.googleapis.com"
+	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
+	ComputeService              GcpService = "compute.googleapis.com"
+	DnsService                  GcpService = "dns.googleapis.com"
+	DomainsService              GcpService = "domains.googleapis.com"
+	IamService                  GcpService = "iam.googleapis.com"
+	LoggingService              GcpService = "logging.googleapis.com"
+	MonitoringService           GcpService = "monitoring.googleapis.com"
+	SqlAdminService             GcpService = "sqladmin.googleapis.com"
+	StorageService              GcpService = "storage-api.googleapis.com"
+)
+
 type Services struct {
 	Kms             *kms.Service
 	Storage         *storage.Service

@@ -15,7 +15,7 @@ func ComputeVpnGateways() *schema.Table {
 		Description:   "Represents a HA VPN gateway  HA VPN is a high-availability (HA) Cloud VPN solution that lets you securely connect your on-premises network to your Google Cloud Virtual Private Cloud network through an IPsec VPN connection in a single region.",
 		Resolver:      fetchComputeVpnGateways,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
-		Multiplex:     client.ProjectMultiplex,
+		Multiplex:     client.ProjectMultiplexEnabledAPIs(client.ComputeService),
 		IgnoreError:   client.IgnoreErrorHandler,
 		DeleteFilter:  client.DeleteProjectFilter,
 		IgnoreInTests: true,

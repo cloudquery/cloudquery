@@ -21,7 +21,7 @@ func KmsKeyrings() *schema.Table {
 		Name:                 "gcp_kms_keyrings",
 		Description:          "A KeyRing is a toplevel logical grouping of CryptoKeys.",
 		Resolver:             fetchKmsKeyrings,
-		Multiplex:            client.ProjectMultiplex,
+		Multiplex:            client.ProjectMultiplexEnabledAPIs(client.CloudKmsService),
 		IgnoreError:          client.IgnoreErrorHandler,
 		DeleteFilter:         client.DeleteProjectFilter,
 		PostResourceResolver: client.AddGcpMetadata,

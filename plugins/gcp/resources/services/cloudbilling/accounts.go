@@ -23,7 +23,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:          "gcp_cloudbilling_accounts",
 		Resolver:      fetchBillingAccounts,
-		Multiplex:     client.ProjectMultiplex,
+		Multiplex:     client.ProjectMultiplexEnabledAPIs(client.CloudBillingService),
 		IgnoreError:   client.IgnoreErrorHandler,
 		DeleteFilter:  client.DeleteProjectFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},

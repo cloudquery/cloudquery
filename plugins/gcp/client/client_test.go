@@ -9,12 +9,14 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/faker/v3"
 	"github.com/hashicorp/go-hclog"
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/option"
+	"google.golang.org/api/serviceusage/v1"
 )
 
 func TestAppendWithoutDupes(t *testing.T) {
@@ -127,4 +129,69 @@ func mockCRMFolders() (*cloudresourcemanager.FoldersService, error) {
 		return nil, err
 	}
 	return svc.Folders, nil
+}
+
+func mockServiceusageService(t *testing.T, name, state string) *serviceusage.GoogleApiServiceusageV1Service {
+	var service serviceusage.GoogleApiServiceusageV1Service
+	if err := faker.FakeDataSkipFields(&service, []string{"Config"}); err != nil {
+		t.Fatal(err)
+	}
+	service.State = state
+	service.Config = &serviceusage.GoogleApiServiceusageV1ServiceConfig{}
+	if err := faker.FakeDataSkipFields(service.Config, []string{"Documentation"}); err != nil {
+		t.Fatal(err)
+	}
+	service.Config.Name = name
+	service.Config.Documentation = &serviceusage.Documentation{}
+	service.Config.Apis[0].Methods[0].Options[0].Value = []byte("{}")
+	service.Config.Apis[0].Options[0].Value = []byte("{}")
+	if err := faker.FakeDataSkipFields(service.Config.Documentation, []string{"Pages"}); err != nil {
+		t.Fatal(err)
+	}
+	return &service
+}
+
+func createServices(t *testing.T) *Services {
+	ctx := context.Background()
+	service := mockServiceusageService(t, "service1", "ENABLED")
+	mux := httprouter.New()
+	mux.GET("/v1/projects/project1/services", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &serviceusage.ListServicesResponse{
+			Services: []*serviceusage.GoogleApiServiceusageV1Service{service},
+		}
+		b, err := json.Marshal(resp)
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+
+	ts := httptest.NewServer(mux)
+	svc, err := serviceusage.NewService(ctx, option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(ts.Close)
+	return &Services{
+		ServiceUsage: svc,
+	}
+}
+
+func TestClient_configureEnabledServices(t *testing.T) {
+	cl := NewGcpClient(
+		logging.New(&hclog.LoggerOptions{
+			Level: hclog.Warn,
+		}),
+		BackoffSettings{},
+		[]string{"project1"},
+		createServices(t),
+	)
+	assert.NoError(t, cl.configureEnabledServices())
+	assert.Equal(t, map[string]map[GcpService]bool{
+		"project1": {"service1": true},
+	}, cl.EnabledServices)
 }

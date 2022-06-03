@@ -74,6 +74,13 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 }
 
 func classifyError(err error, fallbackType diag.Type, projects []string, opts ...diag.BaseErrorOption) diag.Diagnostics {
+	// If the error is a diagnostic already then there is no need to classify it.
+	if d, ok := err.(diag.Diagnostic); ok {
+		return diag.Diagnostics{
+			RedactError(projects, d),
+		}
+	}
+
 	// https://pkg.go.dev/cloud.google.com/go#hdr-Inspecting_errors:
 	// Most of the errors returned by the generated clients can be converted into a `grpc.Status`
 	if s, ok := statusFromError(err); ok {
@@ -124,19 +131,12 @@ func classifyError(err error, fallbackType diag.Type, projects []string, opts ..
 		}
 	}
 
-	// Take over from SDK and always return diagnostics, redacting PII
-	if d, ok := err.(diag.Diagnostic); ok {
-		return diag.Diagnostics{
-			RedactError(projects, d),
-		}
-	}
-
 	return diag.Diagnostics{
 		RedactError(projects, diag.NewBaseError(err, fallbackType, opts...)),
 	}
 }
 
-// RedactError redacts a given diagnostic and returns a RedactedDiagnostic containing both original and redacted versions
+// RedactError redacts a given diagnostic and returns a redacted diagnostic containing both original and redacted versions
 func RedactError(projects []string, e diag.Diagnostic) diag.Diagnostic {
 	r := diag.NewBaseError(
 		errors.New(removePII(projects, e.Error())),

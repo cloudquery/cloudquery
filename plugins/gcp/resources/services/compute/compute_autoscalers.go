@@ -15,7 +15,7 @@ func ComputeAutoscalers() *schema.Table {
 		Description:  "Represents an Autoscaler resource.",
 		Resolver:     fetchComputeAutoscalers,
 		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
+		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{

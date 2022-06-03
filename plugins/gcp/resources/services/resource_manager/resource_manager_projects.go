@@ -15,7 +15,7 @@ func ResourceManagerProjects() *schema.Table {
 		Name:         "gcp_resource_manager_projects",
 		Description:  "A project is a high-level Google Cloud entity It is a container for ACLs, APIs, App Engine Apps, VMs, and other Google Cloud Platform resources",
 		Resolver:     fetchResourceManagerProjects,
-		Multiplex:    client.ProjectMultiplex,
+		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.CloudResourceManagerService),
 		IgnoreError:  client.IgnoreErrorHandler,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		DeleteFilter: client.DeleteProjectFilter,

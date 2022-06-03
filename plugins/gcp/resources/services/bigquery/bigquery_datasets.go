@@ -15,7 +15,7 @@ func BigqueryDatasets() *schema.Table {
 		Description:  "dataset resources in the project",
 		Resolver:     fetchBigqueryDatasets,
 		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
+		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.BigQueryService),
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{

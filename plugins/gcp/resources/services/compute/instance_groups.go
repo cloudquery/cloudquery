@@ -17,7 +17,7 @@ func InstanceGroups() *schema.Table {
 		Description:  "Represents an Instance Group resource",
 		Resolver:     fetchComputeInstanceGroups,
 		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
+		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
