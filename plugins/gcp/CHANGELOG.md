@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.5](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.4...v0.8.5) (2022-06-03)
+
+
+### Features
+
+* Hit only enabled/disabled apis ([#309](https://github.com/cloudquery/cq-provider-gcp/issues/309)) ([b7151f7](https://github.com/cloudquery/cq-provider-gcp/commit/b7151f78b5b0be6ea13063f2181d3c549a4a9122))
+
+
+### Bug Fixes
+
+* Remove unneeded type assertion ([#310](https://github.com/cloudquery/cq-provider-gcp/issues/310)) ([9980d06](https://github.com/cloudquery/cq-provider-gcp/commit/9980d0699bcab19d90d7207105e6405648768e2e))
+* Wrap provider errors ([#313](https://github.com/cloudquery/cq-provider-gcp/issues/313)) ([953490f](https://github.com/cloudquery/cq-provider-gcp/commit/953490fa76c07e41026ae038c41f9786eebc6011))
+
 ### [0.8.4](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.3...v0.8.4) (2022-06-01)
 
 
