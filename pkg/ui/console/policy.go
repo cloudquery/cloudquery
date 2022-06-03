@@ -1,7 +1,6 @@
 package console
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -18,18 +17,15 @@ import (
 	"github.com/spf13/cast"
 )
 
-func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policies, error) {
-	if policyPath == "" && len(policies) == 0 {
-		return nil, diag.NewBaseError(errors.New("no policies defined in configuration"), diag.USER)
+func ParseAndDetect(policyPath string) (policy.Policies, error) {
+	if policyPath == "" {
+		return nil, diag.FromError(fmt.Errorf("empty policy specified"), diag.USER)
 	}
+
 	policyName, subPath := getter.ParseSourceSubPolicy(policyPath)
-	// run them all
+
 	if policyName == "" {
-		return policies, nil
-	}
-	p := policies.Get(policyName, subPath)
-	if p != nil {
-		return policy.Policies{p}, nil
+		return nil, diag.FromError(fmt.Errorf("unable to parse policy path \"%s\"", policyPath), diag.USER)
 	}
 
 	// run hub detector. We got here if we couldn't find the policy specified by the command argument in the configuration
@@ -41,12 +37,7 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 		return policy.Policies{p}, nil
 	}
 
-	configPolicies := policies.All()
-	if len(configPolicies) == 0 {
-		return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found. If using a local policy directory, ensure the path is correct and the directory exists", policyName), diag.USER)
-	}
-
-	return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found in configuration or remote. Available in config: %s", policyName, configPolicies), diag.USER)
+	return nil, diag.FromError(fmt.Errorf("no valid policy with name %q found. If using a local policy directory, ensure the path is correct and the directory exists", policyName), diag.USER)
 }
 
 func buildDescribePolicyTable(t ui.Table, pp policy.Policies, policyRootPath string) {

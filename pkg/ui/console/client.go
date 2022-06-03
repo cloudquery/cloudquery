@@ -376,7 +376,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		dbPersistence = c.cfg.CloudQuery.Policy.DBPersistence
 	}
 
-	policiesToRun, err := FilterPolicies(policySource, c.cfg.Policies)
+	policiesToRun, err := ParseAndDetect(policySource)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return diag.FromError(err, diag.RESOLVING)
@@ -403,7 +403,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policiesToRun = resp.Policies
 	}
 	for _, p := range policiesToRun {
-		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence, c.cfg.Policies.Get(p.Name, p.SubPolicy()) != nil), diags)
+		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence), diags)
 	}
 
 	if policyRunProgress != nil {
@@ -447,7 +447,7 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 }
 
 func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
-	policiesToSnapshot, err := FilterPolicies(policySource, c.cfg.Policies)
+	policiesToSnapshot, err := ParseAndDetect(policySource)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -462,7 +462,7 @@ func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestin
 }
 
 func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
-	policiesToDescribe, err := FilterPolicies(policySource, []*policy.Policy{})
+	policiesToDescribe, err := ParseAndDetect(policySource)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return err
@@ -478,7 +478,7 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 
 func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	policyToValidate, err := FilterPolicies(policySource, c.cfg.Policies)
+	policyToValidate, err := ParseAndDetect(policySource)
 	if err != nil {
 		ui.ColorizedOutput(ui.ColorError, err.Error())
 		return diag.FromError(err, diag.USER)
