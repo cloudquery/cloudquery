@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.6](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.5...v0.8.6) (2022-06-06)
+
+
+### Features
+
+* Hit only enabled APIs if permissions allow ([#317](https://github.com/cloudquery/cq-provider-gcp/issues/317)) ([7a48703](https://github.com/cloudquery/cq-provider-gcp/commit/7a48703fae18e571f109e8155fadd7d5a4950087))
+
+
+### Bug Fixes
+
+* Adjusted bigquery error severity when api is disabled ([#314](https://github.com/cloudquery/cq-provider-gcp/issues/314)) ([bac820e](https://github.com/cloudquery/cq-provider-gcp/commit/bac820e84e5e60e41771bc070549748dd8cd11ed))
+
 ## [0.8.5](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.4...v0.8.5) (2022-06-03)
 
 
