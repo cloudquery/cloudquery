@@ -37,9 +37,9 @@ var testCases = map[string]testCase{
 			{"createdb", "-h", dbHost, "-p", dbPort, "-U", dbUser, dbName},
 			// Created using `pg_dump -h 127.0.0.1 -U postgres postgres > test_integration/fixtures/fetch_data/aws_s3.pgsql` after fetching only `s3*` resources, and sanitizing the output
 			{"psql", fmt.Sprintf("host=%s port=%s dbname=%s user=%s", dbHost, dbPort, dbName, dbUser), "-f", getFixtureFilePath("fetch_data/aws_s3.pgsql")},
-			{"go", "run", mainFile, "init", "aws"},
+			{"go", "run", mainFile, "init", "aws@v0.12.4"},
 		},
-		actCommand: []string{"go", "run", mainFile, "policy", "run", "aws"},
+		actCommand: []string{"go", "run", mainFile, "policy", "run", "aws@v0.1.14"},
 	},
 }
 
