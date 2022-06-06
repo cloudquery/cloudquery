@@ -47,6 +47,10 @@ func DetectPolicy(name string, subPolicy string) (*Policy, bool, error) {
 func classifyError(source string, err error) error {
 	formattedError := fmt.Errorf("failed to get source %s: %w", source, err)
 	errmsg := err.Error()
+	if errmsg == "git must be available and on the PATH" {
+		return diag.FromError(err, diag.USER, diag.WithDetails("git binary must be available on machine to download policies from git sources"))
+	}
+
 	for _, r := range userErrors {
 		if r.MatchString(errmsg) {
 			return diag.FromError(formattedError, diag.USER)
