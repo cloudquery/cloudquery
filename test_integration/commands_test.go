@@ -80,7 +80,7 @@ func getFixtureFilePath(fixtureName string) string {
 
 func getCwd() (string, error) {
 	tempDir := path.Join(getTestFileDir(), "..", "tmp")
-	os.Mkdir(tempDir, 0755)
+	_ = os.Mkdir(tempDir, 0755)
 	dir, err := ioutil.TempDir(tempDir, "test_integration")
 	return dir, err
 }
@@ -93,6 +93,6 @@ func runCommand(cwd string, args ...string) (out string, err string) {
 	var stderr bytes.Buffer
 	command.Stdout = &stdout
 	command.Stderr = &stderr
-	command.Run()
+	_ = command.Run()
 	return stdout.String(), stderr.String()
 }
