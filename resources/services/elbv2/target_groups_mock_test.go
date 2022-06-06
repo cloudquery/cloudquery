@@ -30,6 +30,13 @@ func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
+
+	th := elasticloadbalancingv2.DescribeTargetHealthOutput{}
+	err = faker.FakeData(&th)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeTargetHealth(gomock.Any(), gomock.Any(), gomock.Any()).Return(&th, nil)
 	return client.Services{
 		ELBv2: m,
 	}

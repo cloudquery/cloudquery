@@ -134,6 +134,63 @@ func Elbv2TargetGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 		},
+		Relations: []*schema.Table{
+			{
+				Name:          "aws_elbv2_target_group_target_health_descriptions",
+				Description:   "Information about the health of a target.",
+				Resolver:      resolveElbv2TargetGroupTargetHealthDescriptions,
+				IgnoreInTests: true,
+				Columns: []schema.Column{
+					{
+						Name:        "target_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv2_target_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "health_check_port",
+						Description: "The port to use to connect with the target.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "target_id",
+						Description: "The ID of the target.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Target.Id"),
+					},
+					{
+						Name:        "target_availability_zone",
+						Description: "An Availability Zone or all.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("Target.AvailabilityZone"),
+					},
+					{
+						Name:        "target_port",
+						Description: "The port on which the target is listening.",
+						Type:        schema.TypeInt,
+						Resolver:    schema.PathResolver("Target.Port"),
+					},
+					{
+						Name:        "target_health_description",
+						Description: "A description of the target health that provides additional details.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("TargetHealth.Description"),
+					},
+					{
+						Name:        "target_health_reason",
+						Description: "The reason code. If the target state is healthy, a reason code is not provided.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("TargetHealth.Reason"),
+					},
+					{
+						Name:        "target_health_state",
+						Description: "The state of the target.",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("TargetHealth.State"),
+					},
+				},
+			},
+		},
 	}
 }
 
@@ -181,4 +238,17 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 		tags[*s.Key] = s.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
+}
+
+func resolveElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().ELBv2
+	tg := parent.Item.(types.TargetGroup)
+	response, err := svc.DescribeTargetHealth(ctx, &elbv2.DescribeTargetHealthInput{
+		TargetGroupArn: tg.TargetGroupArn,
+	})
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	res <- response.TargetHealthDescriptions
+	return nil
 }
