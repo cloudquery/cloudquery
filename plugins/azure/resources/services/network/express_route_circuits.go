@@ -11,13 +11,12 @@ import (
 
 func NetworkExpressRouteCircuits() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_express_route_circuits",
-		Description:   "Azure Network Express Route Circuits",
-		Resolver:      fetchNetworkExpressRouteCircuits,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_network_express_route_circuits",
+		Description:  "Azure Network Express Route Circuits",
+		Resolver:     fetchNetworkExpressRouteCircuits,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -38,10 +37,11 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.AllowClassicOperations"),
 			},
 			{
-				Name:        "bandwidth_in_gbps",
-				Description: "The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.BandwidthInGbps"),
+				Name:          "bandwidth_in_gbps",
+				Description:   "The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.",
+				Type:          schema.TypeFloat,
+				Resolver:      schema.PathResolver("ExpressRouteCircuitPropertiesFormat.BandwidthInGbps"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "circuit_provisioning_state",
@@ -55,16 +55,18 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "express_route_port_id",
-				Description: "The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.ExpressRoutePort.ID"),
+				Name:          "express_route_port_id",
+				Description:   "The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ExpressRouteCircuitPropertiesFormat.ExpressRoutePort.ID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "gateway_manager_etag",
-				Description: "The GatewayManager Etag.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.GatewayManagerEtag"),
+				Name:          "gateway_manager_etag",
+				Description:   "The GatewayManager Etag.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ExpressRouteCircuitPropertiesFormat.GatewayManagerEtag"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "global_reach_enabled",
@@ -95,10 +97,11 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.ServiceKey"),
 			},
 			{
-				Name:        "service_provider_notes",
-				Description: "The ServiceProviderNotes.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ExpressRouteCircuitPropertiesFormat.ServiceProviderNotes"),
+				Name:          "service_provider_notes",
+				Description:   "The ServiceProviderNotes.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("ExpressRouteCircuitPropertiesFormat.ServiceProviderNotes"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "service_provider_properties_bandwidth_in_mbps",
@@ -161,9 +164,10 @@ func NetworkExpressRouteCircuits() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_network_express_route_circuit_authorizations",
-				Description: "Authorization in an ExpressRouteCircuit resource.",
-				Resolver:    fetchNetworkExpressRouteCircuitAuthorizations,
+				Name:          "azure_network_express_route_circuit_authorizations",
+				Description:   "Authorization in an ExpressRouteCircuit resource.",
+				Resolver:      fetchNetworkExpressRouteCircuitAuthorizations,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_circuit_cq_id",
@@ -213,9 +217,10 @@ func NetworkExpressRouteCircuits() *schema.Table {
 				},
 			},
 			{
-				Name:        "azure_network_express_route_circuit_peerings",
-				Description: "Peering in an ExpressRouteCircuit resource.",
-				Resolver:    fetchNetworkExpressRouteCircuitPeerings,
+				Name:          "azure_network_express_route_circuit_peerings",
+				Description:   "Peering in an ExpressRouteCircuit resource.",
+				Resolver:      fetchNetworkExpressRouteCircuitPeerings,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_circuit_cq_id",

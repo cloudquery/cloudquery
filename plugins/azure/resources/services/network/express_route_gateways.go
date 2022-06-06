@@ -11,13 +11,12 @@ import (
 
 func NetworkExpressRouteGateways() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_express_route_gateways",
-		Description:   "Azure Network Express Route Gateways",
-		Resolver:      fetchNetworkExpressRouteGateways,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_network_express_route_gateways",
+		Description:  "Azure Network Express Route Gateways",
+		Resolver:     fetchNetworkExpressRouteGateways,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -32,10 +31,11 @@ func NetworkExpressRouteGateways() *schema.Table {
 				Resolver:    schema.PathResolver("ID"),
 			},
 			{
-				Name:        "auto_scale_configuration_bound_max",
-				Description: "Maximum number of scale units deployed for ExpressRoute gateway.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ExpressRouteGatewayProperties.AutoScaleConfiguration.Bounds.Max"),
+				Name:          "auto_scale_configuration_bound_max",
+				Description:   "Maximum number of scale units deployed for ExpressRoute gateway.",
+				Type:          schema.TypeInt,
+				Resolver:      schema.PathResolver("ExpressRouteGatewayProperties.AutoScaleConfiguration.Bounds.Max"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "auto_scale_configuration_bound_min",
@@ -83,9 +83,10 @@ func NetworkExpressRouteGateways() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "azure_network_express_route_connections",
-				Description: "ExpressRouteConnection resource.",
-				Resolver:    fetchNetworkExpressRouteConnections,
+				Name:          "azure_network_express_route_connections",
+				Description:   "ExpressRouteConnection resource.",
+				Resolver:      fetchNetworkExpressRouteConnections,
+				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "express_route_gateway_cq_id",

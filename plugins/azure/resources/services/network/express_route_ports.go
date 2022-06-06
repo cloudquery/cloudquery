@@ -11,13 +11,12 @@ import (
 
 func NetworkExpressRoutePorts() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_express_route_ports",
-		Description:   "Azure Network Express Route Ports",
-		Resolver:      fetchNetworkExpressRoutePorts,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_network_express_route_ports",
+		Description:  "Azure Network Express Route Ports",
+		Resolver:     fetchNetworkExpressRoutePorts,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -44,10 +43,11 @@ func NetworkExpressRoutePorts() *schema.Table {
 				Resolver:    schema.PathResolver("ExpressRoutePortPropertiesFormat.BandwidthInGbps"),
 			},
 			{
-				Name:        "circuits",
-				Description: "Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.",
-				Type:        schema.TypeStringArray,
-				Resolver:    resolveExpressRoutePortCircuits,
+				Name:          "circuits",
+				Description:   "Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.",
+				Type:          schema.TypeStringArray,
+				Resolver:      resolveExpressRoutePortCircuits,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "encapsulation",
@@ -67,16 +67,18 @@ func NetworkExpressRoutePorts() *schema.Table {
 				Resolver:    schema.PathResolver("ExpressRoutePortPropertiesFormat.EtherType"),
 			},
 			{
-				Name:        "identity_principal_id",
-				Description: "The principal id of the system assigned identity.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.PrincipalID"),
+				Name:          "identity_principal_id",
+				Description:   "The principal id of the system assigned identity.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.PrincipalID"),
+				IgnoreInTests: true,
 			},
 			{
-				Name:        "identity_tenant_id",
-				Description: "The tenant id of the system assigned identity.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.TenantID"),
+				Name:          "identity_tenant_id",
+				Description:   "The tenant id of the system assigned identity.",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("Identity.TenantID"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "identity_type",
@@ -85,10 +87,11 @@ func NetworkExpressRoutePorts() *schema.Table {
 				Resolver:    schema.PathResolver("Identity.Type"),
 			},
 			{
-				Name:        "identity_user_assigned_identities",
-				Description: "The list of user identities associated with resource.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("Identity.UserAssignedIdentities"),
+				Name:          "identity_user_assigned_identities",
+				Description:   "The list of user identities associated with resource.",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("Identity.UserAssignedIdentities"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "location",
@@ -183,10 +186,11 @@ func NetworkExpressRoutePorts() *schema.Table {
 						Resolver:    schema.PathResolver("ExpressRouteLinkPropertiesFormat.InterfaceName"),
 					},
 					{
-						Name:        "mac_sec_config_cak_secret_identifier",
-						Description: "Keyvault Secret Identifier URL containing Mac security CAK key.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ExpressRouteLinkPropertiesFormat.MacSecConfig.CakSecretIdentifier"),
+						Name:          "mac_sec_config_cak_secret_identifier",
+						Description:   "Keyvault Secret Identifier URL containing Mac security CAK key.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("ExpressRouteLinkPropertiesFormat.MacSecConfig.CakSecretIdentifier"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "mac_sec_config_cipher",
@@ -195,10 +199,11 @@ func NetworkExpressRoutePorts() *schema.Table {
 						Resolver:    schema.PathResolver("ExpressRouteLinkPropertiesFormat.MacSecConfig.Cipher"),
 					},
 					{
-						Name:        "mac_sec_config_ckn_secret_identifier",
-						Description: "Keyvault Secret Identifier URL containing Mac security CKN key.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ExpressRouteLinkPropertiesFormat.MacSecConfig.CknSecretIdentifier"),
+						Name:          "mac_sec_config_ckn_secret_identifier",
+						Description:   "Keyvault Secret Identifier URL containing Mac security CKN key.",
+						Type:          schema.TypeString,
+						Resolver:      schema.PathResolver("ExpressRouteLinkPropertiesFormat.MacSecConfig.CknSecretIdentifier"),
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "mac_sec_config_sci_state",

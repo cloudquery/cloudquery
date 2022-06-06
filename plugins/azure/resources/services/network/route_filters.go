@@ -11,13 +11,12 @@ import (
 
 func NetworkRouteFilters() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_route_filters",
-		Description:   "Azure Network Route Filters",
-		Resolver:      fetchNetworkRouteFilters,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:         "azure_network_route_filters",
+		Description:  "Azure Network Route Filters",
+		Resolver:     fetchNetworkRouteFilters,
+		Multiplex:    client.SubscriptionMultiplex,
+		DeleteFilter: client.DeleteSubscriptionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",
@@ -37,10 +36,11 @@ func NetworkRouteFilters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "ipv6_peerings",
-				Description: "A collection of references to express route circuit ipv6 peerings.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkRouteFilterIpv6Peerings,
+				Name:          "ipv6_peerings",
+				Description:   "A collection of references to express route circuit ipv6 peerings.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveNetworkRouteFilterIpv6Peerings,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "location",
@@ -53,10 +53,11 @@ func NetworkRouteFilters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "peerings",
-				Description: "A collection of references to express route circuit peerings.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkRouteFilterPeerings,
+				Name:          "peerings",
+				Description:   "A collection of references to express route circuit peerings.",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveNetworkRouteFilterPeerings,
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "provisioning_state",
@@ -111,9 +112,10 @@ func NetworkRouteFilters() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "location",
-						Description: "Resource location.",
-						Type:        schema.TypeString,
+						Name:          "location",
+						Description:   "Resource location.",
+						Type:          schema.TypeString,
+						IgnoreInTests: true,
 					},
 					{
 						Name:        "name",
