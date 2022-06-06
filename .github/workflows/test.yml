@@ -39,7 +39,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version: ^1.17
+          go-version: ^${{ matrix.go }}
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -54,9 +54,9 @@ jobs:
             ~/.cache/go-build
             ~/Library/Caches/go-build
             ~\AppData\Local\go-build
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go-version }}-
+            ${{ runner.os }}-go-${{ matrix.go }}-
 
       - name: Get dependencies
         run: go get -v -t -d ./...
