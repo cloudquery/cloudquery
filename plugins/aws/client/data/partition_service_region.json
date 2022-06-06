@@ -2630,6 +2630,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
@@ -2645,6 +2646,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
@@ -2687,11 +2689,15 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
             "eu-west-1": {},
+            "fips-ca-central-1": {},
             "fips-us-east-1": {},
+            "fips-us-east-2": {},
             "fips-us-west-2": {},
             "us-east-1": {},
+            "us-east-2": {},
             "us-west-2": {}
           }
         },
@@ -3284,6 +3290,27 @@
             "us-east-1-fips": {},
             "us-west-2": {},
             "us-west-2-fips": {}
+          }
+        },
+        "memory-db": {
+          "regions": {
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "fips": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
           }
         },
         "messaging-chime": {
@@ -5650,6 +5677,12 @@
             "cn-northwest-1": {}
           }
         },
+        "memory-db": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "monitoring": {
           "regions": {
             "cn-north-1": {},
@@ -7295,8 +7328,6 @@
         },
         "servicecatalog-appregistry": {
           "regions": {
-            "fips-us-gov-east-1": {},
-            "fips-us-gov-west-1": {},
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
