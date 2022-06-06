@@ -190,7 +190,7 @@ func TestClient_configureEnabledServices(t *testing.T) {
 		[]string{"project1"},
 		createServices(t),
 	)
-	assert.NoError(t, cl.configureEnabledServices())
+	assert.True(t, !cl.configureEnabledServices().HasErrors())
 	assert.Equal(t, map[string]map[GcpService]bool{
 		"project1": {"service1": true},
 	}, cl.EnabledServices)

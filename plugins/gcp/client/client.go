@@ -66,27 +66,33 @@ func (c Client) withProject(project string) *Client {
 	return &c
 }
 
-func (c *Client) configureEnabledServices() error {
+func (c *Client) configureEnabledServices() diag.Diagnostics {
 	var esLock sync.Mutex
+	var diags diag.Diagnostics
 	g, ctx := errgroup.WithContext(context.Background())
 	maxGoroutines := limit.GetMaxGoRoutines()
 	goroutinesSem := semaphore.NewWeighted(helpers.Uint64ToInt64(maxGoroutines))
 	for _, p := range c.projects {
 		project := p
 		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return diag.WrapError(err)
+			return diags.Add(diag.WrapError(err))
 		}
 		g.Go(func() error {
 			defer goroutinesSem.Release(1)
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
 			esLock.Lock()
-			c.EnabledServices[project] = svc
+			if err != nil {
+				c.logger.Warn("failed to fetch enabled services", "project_id", project, "error", err)
+				diags = diags.Add(classifyError(err, diag.INTERNAL, c.projects, diag.WithSeverity(diag.Severity(diag.INTERNAL)), diag.WithSummary("failed to fetch enabled services for project=%s", project)))
+			} else {
+				c.EnabledServices[project] = svc
+			}
 			esLock.Unlock()
 			return err
 		})
 	}
-	return g.Wait()
+	return diags.Add(g.Wait())
 }
 
 func (c *Client) fetchEnabledServices(ctx context.Context) (map[GcpService]bool, error) {
@@ -194,9 +200,8 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	}
 
 	client := NewGcpClient(logger, providerConfig.Backoff(), projects, services)
-	if err := client.configureEnabledServices(); err != nil {
-		return nil, diags.Add(err)
-	}
+	// we just add diags in case configureEnabledServices failed
+	diags = diags.Add(client.configureEnabledServices())
 	return client, diags
 }
 
@@ -229,7 +234,7 @@ func getProjects(logger hclog.Logger, service *cloudresourcemanager.Service, fol
 		for {
 			output, err := call.Do()
 			if err != nil {
-				return nil, err
+				return nil, diag.WrapError(err)
 			}
 			for _, project := range output.Projects {
 				if project.State == "ACTIVE" {
@@ -316,7 +321,7 @@ func listFolders(ctx context.Context, logger hclog.Logger, service *cloudresourc
 	for {
 		output, err := call.Do()
 		if err != nil {
-			return nil, err
+			return nil, diag.WrapError(err)
 		}
 		for _, folder := range output.Folders {
 			if folder.State != "ACTIVE" {
@@ -325,7 +330,7 @@ func listFolders(ctx context.Context, logger hclog.Logger, service *cloudresourc
 			}
 			fList, err := listFolders(ctx, logger, service, folder.Name, maxDepth-1)
 			if err != nil {
-				return nil, err
+				return nil, diag.WrapError(err)
 			}
 			folders = append(folders, fList...)
 		}
