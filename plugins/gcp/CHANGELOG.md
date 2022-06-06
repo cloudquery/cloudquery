@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.7](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.6...v0.8.7) (2022-06-06)
+
+
+### Features
+
+* Rollback hit only enabled APIs ([#321](https://github.com/cloudquery/cq-provider-gcp/issues/321)) ([86fc301](https://github.com/cloudquery/cq-provider-gcp/commit/86fc3011b8c6db737107f6ae9eaf0b597dda3d96))
+
 ## [0.8.6](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.5...v0.8.6) (2022-06-06)
 
 
