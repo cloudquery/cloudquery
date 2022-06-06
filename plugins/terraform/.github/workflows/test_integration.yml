@@ -83,18 +83,25 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         uses: actions/setup-go@v3
         with:
-          go-version: ^1.16
+          go-version: ^${{ matrix.go }}
 
 
       - uses: actions/cache@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
           path: |
-            ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ matrix.go }}-
 
       - name: Integration Test
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
