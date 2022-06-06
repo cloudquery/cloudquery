@@ -23,7 +23,7 @@ type testCase struct {
 const (
 	dbUser     = "postgres"
 	dbPort     = "5432"
-	dbName     = "postgres"
+	dbName     = "test_integration"
 	dbHost     = "localhost"
 	dbPassword = "pass"
 )
@@ -35,11 +35,10 @@ var testCases = map[string]testCase{
 		setupCommands: [][]string{
 			{"dropdb", "-h", dbHost, "-p", dbPort, "-U", dbUser, dbName},
 			{"createdb", "-h", dbHost, "-p", dbPort, "-U", dbUser, dbName},
-			// Created using `pg_dump -h 127.0.0.1 -U postgres postgres > test_integration/fixtures/fetch_data/aws_s3.pgsql` after fetching only `s3*` resources, and sanitizing the output
+			// Created using `pg_dump -h 127.0.0.1 -U postgres test_integration > test_integration/fixtures/fetch_data/aws_s3.pgsql` after fetching only `s3*` resources, and sanitizing the output
 			{"psql", fmt.Sprintf("host=%s port=%s dbname=%s user=%s", dbHost, dbPort, dbName, dbUser), "-f", getFixtureFilePath("fetch_data/aws_s3.pgsql")},
-			{"go", "run", mainFile, "init", "aws@v0.12.4"},
 		},
-		actCommand: []string{"go", "run", mainFile, "policy", "run", "aws@v0.1.14"},
+		actCommand: []string{"go", "run", mainFile, "policy", "run", "github.com/cloudquery-policies/aws?ref=v0.1.14", "--config", getFixtureFilePath("fetch_data/aws_config.hcl")},
 	},
 }
 
@@ -55,7 +54,8 @@ func TestIntegrationCommands(t *testing.T) {
 					fmt.Println(err)
 				}
 			}
-			out, _ := runCommand(cwd, args.actCommand...)
+			out, e := runCommand(cwd, args.actCommand...)
+			fmt.Println(e)
 			cupaloy.SnapshotT(t, out)
 		})
 	}
