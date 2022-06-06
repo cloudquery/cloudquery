@@ -31,6 +31,7 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20220517143526-88bb52951d5b
+	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v0.2.9

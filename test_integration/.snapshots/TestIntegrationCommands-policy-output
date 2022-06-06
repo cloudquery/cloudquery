@@ -1,0 +1,96 @@
+  STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
+---------+--------+--------------+--------------------------------+---------------
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-2  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-3  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-4  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-5  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-6  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-7  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-8  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-9  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-10 | eu-central-1  
+---------+--------+--------------+--------------------------------+---------------
+                                   TOTAL:                         | 10            
+                                 ---------------------------------+---------------
+  STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
+---------+--------+--------------+--------------------------------+---------------
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-2  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-3  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-4  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-5  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-6  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-7  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-8  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-9  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-10 | eu-central-1  
+---------+--------+--------------+--------------------------------+---------------
+                                   TOTAL:                         | 10            
+                                 ---------------------------------+---------------
+  STATUS | REASON                         | ACCOUNT ID   | REGION       | ARN                             
+---------+--------------------------------+--------------+--------------+---------------------------------
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-1   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-2   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-3   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-4   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-5   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-6   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-7   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-8   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-9   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | eu-central-1 | arn:aws:s3:::cq-test-bucket-10  
+         | enabled                        |              |              |                                 
+---------+--------------------------------+--------------+--------------+---------------------------------
+                                                           TOTAL:       | 10                              
+                                                         ---------------+---------------------------------
+  STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
+---------+--------+--------------+--------------------------------+---------------
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-2  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-3  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-4  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-5  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-6  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-7  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-8  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-9  | us-east-1     
+  failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-10 | eu-central-1  
+---------+--------+--------------+--------------------------------+---------------
+                                   TOTAL:                         | 10            
+                                 ---------------------------------+---------------
+  STATUS | REASON                         | ACCOUNT ID   | REGION       | ARN                             
+---------+--------------------------------+--------------+--------------+---------------------------------
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-1   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-2   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-3   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-4   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-5   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-6   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-7   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-8   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-9   
+         | enabled                        |              |              |                                 
+  failed | bucket has non SSL requested   | 123456123456 | eu-central-1 | arn:aws:s3:::cq-test-bucket-10  
+         | enabled                        |              |              |                                 
+---------+--------------------------------+--------------+--------------+---------------------------------
+                                                           TOTAL:       | 10                              
+                                                         ---------------+---------------------------------
+
