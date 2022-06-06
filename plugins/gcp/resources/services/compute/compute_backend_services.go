@@ -17,7 +17,7 @@ func ComputeBackendServices() *schema.Table {
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		IgnoreError:  client.IgnoreErrorHandler,
 		Resolver:     fetchComputeBackendServices,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
+		Multiplex:    client.ProjectMultiplex,
 		DeleteFilter: client.DeleteProjectFilter,
 		Columns: []schema.Column{
 			{

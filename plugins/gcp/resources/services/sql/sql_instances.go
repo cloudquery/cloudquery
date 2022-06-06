@@ -14,7 +14,7 @@ func SQLInstances() *schema.Table {
 		Name:         "gcp_sql_instances",
 		Description:  "A Cloud SQL instance resource",
 		Resolver:     fetchSqlInstances,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.SqlAdminService),
+		Multiplex:    client.ProjectMultiplex,
 		DeleteFilter: client.DeleteProjectFilter,
 		IgnoreError:  client.IgnoreErrorHandler,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},

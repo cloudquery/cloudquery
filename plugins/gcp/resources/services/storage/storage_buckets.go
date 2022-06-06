@@ -15,7 +15,7 @@ func StorageBuckets() *schema.Table {
 		Name:         "gcp_storage_buckets",
 		Description:  "The Buckets resource represents a bucket in Cloud Storage",
 		Resolver:     fetchStorageBuckets,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.StorageService),
+		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},

@@ -14,7 +14,7 @@ func ComputeImages() *schema.Table {
 		Name:         "gcp_compute_images",
 		Description:  "Represents an Image resource  You can use images to create boot disks for your VM instances",
 		Resolver:     fetchComputeImages,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
+		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},

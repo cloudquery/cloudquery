@@ -15,7 +15,7 @@ func ComputeDisks() *schema.Table {
 		Description:  "Represents a Persistent Disk resource.",
 		Resolver:     fetchComputeDisks,
 		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
+		Multiplex:    client.ProjectMultiplex,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{

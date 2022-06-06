@@ -14,7 +14,7 @@ func ComputeTargetHTTPSProxies() *schema.Table {
 		Name:         "gcp_compute_target_https_proxies",
 		Description:  "Represents a Target HTTPS Proxy resource",
 		Resolver:     fetchComputeTargetHttpsProxies,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.ComputeService),
+		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
 		DeleteFilter: client.DeleteProjectFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},

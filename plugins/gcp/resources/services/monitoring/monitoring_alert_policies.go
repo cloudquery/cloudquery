@@ -15,7 +15,7 @@ func MonitoringAlertPolicies() *schema.Table {
 		Name:         "gcp_monitoring_alert_policies",
 		Description:  "A description of the conditions under which some aspect of your system is considered to be \"unhealthy\" and the ways to notify people or services about this state For an overview of alert policies, see Introduction to Alerting (https://cloudgooglecom/monitoring/alerts/)",
 		Resolver:     fetchMonitoringAlertPolicies,
-		Multiplex:    client.ProjectMultiplexEnabledAPIs(client.MonitoringService),
+		Multiplex:    client.ProjectMultiplex,
 		IgnoreError:  client.IgnoreErrorHandler,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		DeleteFilter: client.DeleteProjectFilter,

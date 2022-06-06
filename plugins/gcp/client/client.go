@@ -6,20 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"sync"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/helpers"
-	"github.com/cloudquery/cq-provider-sdk/helpers/limit"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/option"
-	"google.golang.org/api/serviceusage/v1"
 )
 
 const defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
@@ -35,17 +29,14 @@ type Client struct {
 	Services *Services
 	// this is set by table client multiplexer
 	ProjectId string
-	// List of enabled services per project
-	EnabledServices map[string]map[GcpService]bool
 }
 
 func NewGcpClient(log hclog.Logger, bo BackoffSettings, projects []string, services *Services) *Client {
 	c := &Client{
-		projects:        projects,
-		logger:          log,
-		backoff:         bo,
-		Services:        services,
-		EnabledServices: make(map[string]map[GcpService]bool),
+		projects: projects,
+		logger:   log,
+		backoff:  bo,
+		Services: services,
 	}
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
@@ -64,57 +55,6 @@ func (c Client) withProject(project string) *Client {
 	c.logger = c.logger.With("project_id", project)
 	c.ProjectId = project
 	return &c
-}
-
-func (c *Client) configureEnabledServices() diag.Diagnostics {
-	var esLock sync.Mutex
-	var diags diag.Diagnostics
-	g, ctx := errgroup.WithContext(context.Background())
-	maxGoroutines := limit.GetMaxGoRoutines()
-	goroutinesSem := semaphore.NewWeighted(helpers.Uint64ToInt64(maxGoroutines))
-	for _, p := range c.projects {
-		project := p
-		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return diags.Add(diag.WrapError(err))
-		}
-		g.Go(func() error {
-			defer goroutinesSem.Release(1)
-			cl := c.withProject(project)
-			svc, err := cl.fetchEnabledServices(ctx)
-			esLock.Lock()
-			if err != nil {
-				c.logger.Warn("failed to fetch enabled services", "project_id", project, "error", err)
-				diags = diags.Add(classifyError(err, diag.INTERNAL, c.projects, diag.WithSeverity(diag.Severity(diag.INTERNAL)), diag.WithSummary("failed to fetch enabled services for project=%s", project)))
-			} else {
-				c.EnabledServices[project] = svc
-			}
-			esLock.Unlock()
-			return err
-		})
-	}
-	return diags.Add(g.Wait())
-}
-
-func (c *Client) fetchEnabledServices(ctx context.Context) (map[GcpService]bool, error) {
-	enabled := make(map[GcpService]bool)
-	nextPageToken := ""
-	for {
-		call := c.Services.ServiceUsage.Services.List(fmt.Sprintf("projects/%s", c.ProjectId))
-		call = call.Filter("state:ENABLED").PageSize(200).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
-		if err != nil {
-			return nil, diag.WrapError(err)
-		}
-		output := list.(*serviceusage.ListServicesResponse)
-		for _, item := range output.Services {
-			enabled[GcpService(item.Config.Name)] = true
-		}
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return enabled, nil
 }
 
 func isValidJson(content []byte) error {
@@ -200,8 +140,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	}
 
 	client := NewGcpClient(logger, providerConfig.Backoff(), projects, services)
-	// we just add diags in case configureEnabledServices failed
-	diags = diags.Add(client.configureEnabledServices())
+
 	return client, diags
 }
 
