@@ -788,6 +788,11 @@
             "aws-global": {}
           }
         },
+        "catalog.marketplace": {
+          "regions": {
+            "us-east-1": {}
+          }
+        },
         "ce": {
           "regions": {
             "aws-global": {}
