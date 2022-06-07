@@ -503,7 +503,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				diags = diags.Add(diag.FromError(errors.New("unable to assume role in account"), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 				continue
 			}
-			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
+			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
 		}
 
 		// This is a work-around to skip disabled regions
