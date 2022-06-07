@@ -8,6 +8,12 @@ import (
 	"github.com/spf13/viper"
 )
 
+type DiagnosticsSummary struct {
+	Total      int            `json:"total,omitempty"`
+	ByType     map[string]int `json:"by_type,omitempty"`
+	BySeverity map[string]int `json:"by_severity,omitempty"`
+}
+
 type SentryDiagnostic struct {
 	diag.Diagnostic
 
@@ -15,10 +21,19 @@ type SentryDiagnostic struct {
 	Ignore bool
 }
 
-type DiagnosticsSummary struct {
-	Total      int            `json:"total,omitempty"`
-	ByType     map[string]int `json:"by_type,omitempty"`
-	BySeverity map[string]int `json:"by_severity,omitempty"`
+func (d SentryDiagnostic) Redacted() diag.Diagnostic {
+	v, ok := d.Diagnostic.(diag.Redactable)
+	if !ok {
+		return d
+	}
+	if r := v.Redacted(); r != nil {
+		return &SentryDiagnostic{
+			Diagnostic: r,
+			Tags:       d.Tags,
+			Ignore:     d.Ignore,
+		}
+	}
+	return d
 }
 
 func (d *SentryDiagnostic) IsSentryDiagnostic() (bool, map[string]string, bool) {
