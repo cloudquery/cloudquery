@@ -15,26 +15,50 @@ import (
 )
 
 func fakeInterfaceIPConfiguration(t *testing.T) network.InterfaceIPConfiguration {
+	subnet := fakeSubnet(t)
 	sb := network.InterfaceIPConfiguration{
-		InterfaceIPConfigurationPropertiesFormat: &network.InterfaceIPConfigurationPropertiesFormat{},
+		InterfaceIPConfigurationPropertiesFormat: &network.InterfaceIPConfigurationPropertiesFormat{
+			PrivateIPAllocationMethod: network.IPAllocationMethodDynamic,
+			Subnet:                    &subnet,
+		},
 	}
-	if err := faker.FakeDataSkipFields(&sb, []string{"ProvisioningState", "InterfaceIPConfigurationPropertiesFormat"}); err != nil {
-		t.Fatal(err)
-	}
-	if err := faker.FakeDataSkipFields(sb.InterfaceIPConfigurationPropertiesFormat, []string{"VirtualNetworkTaps",
+	var bap network.BackendAddressPool
+	require.NoError(t, faker.FakeDataSkipFields(&bap, []string{"BackendAddressPoolPropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools = &[]network.BackendAddressPool{bap}
+
+	var aap network.ApplicationGatewayBackendAddressPool
+	require.NoError(t, faker.FakeDataSkipFields(&aap, []string{"ApplicationGatewayBackendAddressPoolPropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.ApplicationGatewayBackendAddressPools = &[]network.ApplicationGatewayBackendAddressPool{aap}
+
+	var vnt network.VirtualNetworkTap
+	require.NoError(t, faker.FakeDataSkipFields(&vnt, []string{"VirtualNetworkTapPropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.VirtualNetworkTaps = &[]network.VirtualNetworkTap{vnt}
+
+	var inr network.InboundNatRule
+	require.NoError(t, faker.FakeDataSkipFields(&inr, []string{"InboundNatRulePropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.LoadBalancerInboundNatRules = &[]network.InboundNatRule{inr}
+
+	var pip network.PublicIPAddress
+	require.NoError(t, faker.FakeDataSkipFields(&pip, []string{"PublicIPAddressPropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.PublicIPAddress = &pip
+
+	require.NoError(t, faker.FakeDataSkipFields(&sb, []string{"ProvisioningState", "InterfaceIPConfigurationPropertiesFormat"}))
+	require.NoError(t, faker.FakeDataSkipFields(sb.InterfaceIPConfigurationPropertiesFormat, []string{
 		"ApplicationGatewayBackendAddressPools",
 		"LoadBalancerBackendAddressPools",
 		"LoadBalancerInboundNatRules",
-		"PrivateIPAddress",
-		"PrivateIPAllocationMethod",
 		"PrivateIPAddressVersion",
-		"Subnet",
+		"PrivateIPAllocationMethod",
+		"ProvisioningState",
 		"PublicIPAddress",
-		"ApplicationSecurityGroups",
-		"PrivateLinkConnectionProperties",
-		"ProvisioningState"}); err != nil {
-		t.Fatal(err)
-	}
+		"Subnet",
+		"VirtualNetworkTaps",
+	}))
+	sb.InterfaceIPConfigurationPropertiesFormat.ProvisioningState = network.ProvisioningStateSucceeded
+	sb.InterfaceIPConfigurationPropertiesFormat.PrivateIPAddressVersion = network.IPVersionIPv4
+	var asg network.ApplicationSecurityGroup
+	require.NoError(t, faker.FakeDataSkipFields(&asg, []string{"ApplicationSecurityGroupPropertiesFormat"}))
+	sb.InterfaceIPConfigurationPropertiesFormat.ApplicationSecurityGroups = &[]network.ApplicationSecurityGroup{asg}
 	return sb
 }
 

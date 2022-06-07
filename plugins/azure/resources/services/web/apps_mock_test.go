@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
@@ -37,7 +38,9 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return web.AppCollection{}, nil
 	})
 	apps.EXPECT().List(gomock.Any()).Return(page, nil)
-	apps.EXPECT().GetVnetConnection(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(web.VnetInfo{}, nil)
+	var vi web.VnetInfo
+	require.NoError(t, faker.FakeDataSkipFields(&vi, []string{"Routes"}))
+	apps.EXPECT().GetVnetConnection(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(vi, nil)
 
 	pp := PublishData{
 		PublishData: []PublishProfile{

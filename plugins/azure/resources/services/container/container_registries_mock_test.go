@@ -67,6 +67,10 @@ func fakeContainerRegistryProperties(t *testing.T) *containerregistry.RegistryPr
 	mcp.ProvisioningState = "test"
 	cidr := faker.IPv4() + "/24"
 	(*mcp.NetworkRuleSet.IPRules)[0].IPAddressOrRange = &cidr
+	// and test with IP address too
+	*mcp.NetworkRuleSet.IPRules = append(*mcp.NetworkRuleSet.IPRules, (*mcp.NetworkRuleSet.IPRules)[0])
+	ip := faker.IPv4()
+	(*mcp.NetworkRuleSet.IPRules)[1].IPAddressOrRange = &ip
 	return &mcp
 }
 

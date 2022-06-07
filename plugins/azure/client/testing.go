@@ -30,7 +30,6 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 	cfg := `
 		subscriptions = ["test_sub"]
 	`
-	table.IgnoreInTests = false
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
 			Name:    "azure_mock_test_provider",
@@ -49,7 +48,8 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 				return &Config{}
 			},
 		},
-		Config: cfg,
+		Config:           cfg,
+		SkipIgnoreInTest: true,
 	})
 }
 

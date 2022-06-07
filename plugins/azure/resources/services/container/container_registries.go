@@ -314,6 +314,16 @@ func resolveContainerRegistryNetworkRuleSetIPRulesIpAddressOrRange(ctx context.C
 	r := resource.Item.(containerregistry.IPRule)
 	_, cidr, err := net.ParseCIDR(*r.IPAddressOrRange)
 	if err != nil {
+		ip := net.ParseIP(*r.IPAddressOrRange)
+		if ip == nil {
+			return diag.WrapError(err)
+		}
+		if v4 := ip.To4(); v4 != nil {
+			return diag.WrapError(resource.Set(c.Name, &net.IPNet{IP: v4, Mask: net.CIDRMask(32, 32)}))
+		}
+		if v6 := ip.To16(); v6 != nil {
+			return diag.WrapError(resource.Set(c.Name, &net.IPNet{IP: v6, Mask: net.CIDRMask(128, 128)}))
+		}
 		return diag.WrapError(err)
 	}
 
