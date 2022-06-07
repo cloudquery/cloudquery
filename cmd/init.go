@@ -73,9 +73,7 @@ func Initialize(ctx context.Context, providers []string) error {
 	}
 	// TODO: build this manually with block and add comments as well
 	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
-		PluginDirectory: "./cq/providers",
-		PolicyDirectory: "./cq/policies",
-		Providers:       requiredProviders,
+		Providers: requiredProviders,
 		Connection: &config.Connection{
 			Username: "postgres",
 			Password: "pass",
@@ -85,6 +83,10 @@ func Initialize(ctx context.Context, providers []string) error {
 			SSLMode:  "disable",
 		},
 	}, "cloudquery")
+
+	// Remove deprecated "plugin_directory" and "policy_directory"
+	cqBlock.Body().RemoveAttribute("plugin_directory")
+	cqBlock.Body().RemoveAttribute("policy_directory")
 
 	// Update connection block to remove unwanted keys
 	if b := cqBlock.Body().FirstMatchingBlock("connection", nil); b != nil {
