@@ -637,11 +637,11 @@ func TestPolicies_Get(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			pp := tc.Policies.Get(tc.PolicyName, tc.SubPolicy)
+			p := tc.Policies.Get(tc.PolicyName, tc.SubPolicy)
 			if tc.ExpectedPolicy {
-				assert.Len(t, pp, 1)
+				assert.NotNil(t, p)
 			} else {
-				assert.Nil(t, pp)
+				assert.Nil(t, p)
 			}
 		})
 	}
