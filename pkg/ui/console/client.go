@@ -399,10 +399,11 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		RunCallback:   policyRunCallback,
 		DBPersistence: dbPersistence,
 	})
-	if resp == nil {
-		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
-	} else {
-		analytics.Capture("policy run", c.Providers, resp.Policies, diags)
+	if resp != nil {
+		policiesToRun = resp.Policies
+	}
+	for _, p := range policiesToRun {
+		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence, c.cfg.Policies.Get(p.Name, p.SubPolicy()) != nil), diags)
 	}
 
 	if policyRunProgress != nil {

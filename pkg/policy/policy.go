@@ -4,6 +4,8 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"strings"
+
+	"github.com/cloudquery/cloudquery/internal/getter"
 )
 
 type Policies []*Policy
@@ -42,6 +44,21 @@ type Check struct {
 	Reason       string    `hcl:"reason,optional"`
 }
 
+type Analytic struct {
+	// Whether policy will persist in database
+	Persistence bool
+	// Where the policy was originated from (cli/config)
+	UsageOrigin string
+	// Name of the policy
+	Name string
+	// Type of the policy i.e S3/Hub/Git
+	Type string
+	// The selector used for the policy
+	Selector string
+	// Whether policy is private
+	Private bool
+}
+
 type Policy struct {
 	// Name of the policy
 	Name string `hcl:"name,label"`
@@ -78,21 +95,53 @@ func (pp Policies) All() []string {
 	return policyNames
 }
 
-func (pp Policies) Properties() map[string]interface{} {
-	usedCustom := 0
-	policies := make([]*Meta, 0)
+func (pp Policies) Get(policyName, subPath string) *Policy {
+	if subPath == "" {
+		policyName, subPath = getter.ParseSourceSubPolicy(policyName)
+	}
+
 	for _, p := range pp {
-		if p.meta == nil || p.meta.Type != "hub" {
-			usedCustom++
-			// we don't add info about custom policies that were executed
+		if policyName != p.Name {
 			continue
 		}
-		policies = append(policies, p.meta)
+		if subPath != "" && p.SubPolicy() == "" {
+			return &Policy{
+				Name:   p.Name,
+				Source: p.Source + "//" + subPath,
+			}
+		}
+		return p
 	}
-	return map[string]interface{}{
-		"used_custom": usedCustom,
-		"policies":    policies,
+	return nil
+}
+
+func (p Policy) Analytic(dbPersistence, usedConfig bool) Analytic {
+	origin := "cli"
+	if usedConfig {
+		origin = "config"
 	}
+
+	pa := Analytic{
+		Persistence: dbPersistence,
+		UsageOrigin: origin,
+		Name:        p.Name,
+		Type:        p.SourceType(),
+		Selector:    p.SubPolicy(),
+		Private:     p.SourceType() != "hub",
+	}
+	if !p.HasMeta() {
+		policyName, subPath := getter.ParseSourceSubPolicy(p.Source)
+		dp, _, _ := DetectPolicy(policyName, subPath)
+		pa.Type = dp.SourceType()
+		pa.Selector = subPath
+		pa.Name = policyName
+		pa.Private = p.SourceType() != "hub"
+	}
+	if pa.Private {
+		pa.Selector = "private"
+		pa.Name = p.Sha256Hash()
+	}
+	return pa
 }
 
 func (p Policy) String() string {
@@ -121,6 +170,10 @@ func (p Policy) SourceType() string {
 		return ""
 	}
 	return p.meta.Type
+}
+
+func (p Policy) HasMeta() bool {
+	return p.meta != nil
 }
 
 func (p Policy) HasChecks() bool {
@@ -183,4 +236,15 @@ func (p Policy) Sha256Hash() string {
 	h := sha256.New()
 	h.Write([]byte(fmt.Sprintf("%v", p.Policies)))
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func (a Analytic) Properties() map[string]interface{} {
+	return map[string]interface{}{
+		"policy_persistence": a.Persistence,
+		"policy_name":        a.Name,
+		"policy_type":        a.Type,
+		"policy_is_private":  a.Private,
+		"policy_selector":    a.Selector,
+		"policy_used_origin": a.UsageOrigin,
+	}
 }
