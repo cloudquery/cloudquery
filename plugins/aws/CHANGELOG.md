@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.6](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.5...v0.12.6) (2022-06-07)
+
+
+### Features
+
+* Added Target Health Descriptions to Target Groups ([#996](https://github.com/cloudquery/cq-provider-aws/issues/996)) ([d1ffc37](https://github.com/cloudquery/cq-provider-aws/commit/d1ffc372bd5715c5756b206b3d1a885e0dd5c636))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.8 ([#1011](https://github.com/cloudquery/cq-provider-aws/issues/1011)) ([0d8f687](https://github.com/cloudquery/cq-provider-aws/commit/0d8f687579c78ba1a11b3bc8ceb415ab6aa9d872))
+* Update endpoints ([#1008](https://github.com/cloudquery/cq-provider-aws/issues/1008)) ([6bfa91a](https://github.com/cloudquery/cq-provider-aws/commit/6bfa91ae63f5707ee17e135244731157882703ae))
+
 ## [0.12.5](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.4...v0.12.5) (2022-06-06)
 
 
