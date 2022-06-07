@@ -53,13 +53,15 @@ func ColorizedOutput(c *color.Color, msg string, values ...interface{}) {
 				log.Info().Msg(logMsg)
 			}
 		}
-		return
+		if IsTerminal() {
+			return
+		}
 	}
 	_, _ = c.Printf(msg, values...)
 }
 
 func ColorizedNoLogOutput(c *color.Color, msg string, values ...interface{}) {
-	if viper.GetBool("enable-console-log") {
+	if viper.GetBool("enable-console-log") && IsTerminal() {
 		return
 	}
 	// TODO: make zerolog not print this
