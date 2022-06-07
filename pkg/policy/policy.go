@@ -10,32 +10,6 @@ import (
 
 type Policies []*Policy
 
-func (pp Policies) All() []string {
-	policyNames := make([]string, len(pp))
-	for i, p := range pp {
-		policyNames[i] = p.Name
-	}
-	return policyNames
-}
-
-func (pp Policies) Get(policyName, subPath string) Policies {
-	for _, p := range pp {
-		if policyName != p.Name {
-			continue
-		}
-		if subPath != "" && p.SubPolicy() == "" {
-			return Policies{
-				&Policy{
-					Name:   p.Name,
-					Source: p.Source + "//" + subPath,
-				},
-			}
-		}
-		return Policies{p}
-	}
-	return nil
-}
-
 type Meta struct {
 	Type      string `json:"type,omitempty"`
 	Version   string `json:"version,omitempty"`
@@ -70,6 +44,21 @@ type Check struct {
 	Reason       string    `hcl:"reason,optional"`
 }
 
+type Analytic struct {
+	// Whether policy will persist in database
+	Persistence bool
+	// Whether policy was defined in configuration
+	UsedConfig bool
+	// Name of the policy
+	Name string
+	// Type of the policy i.e S3/Hub/Git
+	Type string
+	// The selector used for the policy
+	Selector string
+	// Whether policy is private
+	Private bool
+}
+
 type Policy struct {
 	// Name of the policy
 	Name string `hcl:"name,label"`
@@ -97,6 +86,32 @@ const (
 	ManualQuery    QueryType = "manual"
 	AutomaticQuery QueryType = "automatic"
 )
+
+func (pp Policies) All() []string {
+	policyNames := make([]string, len(pp))
+	for i, p := range pp {
+		policyNames[i] = p.Name
+	}
+	return policyNames
+}
+
+func (pp Policies) Get(policyName, subPath string) Policies {
+	for _, p := range pp {
+		if policyName != p.Name {
+			continue
+		}
+		if subPath != "" && p.SubPolicy() == "" {
+			return Policies{
+				&Policy{
+					Name:   p.Name,
+					Source: p.Source + "//" + subPath,
+				},
+			}
+		}
+		return Policies{p}
+	}
+	return nil
+}
 
 func (p Policy) Analytic(dbPersistence, usedConfig bool) Analytic {
 	pa := Analytic{
@@ -214,20 +229,6 @@ func (p Policy) Sha256Hash() string {
 	h := sha256.New()
 	h.Write([]byte(fmt.Sprintf("%v", p.Policies)))
 	return fmt.Sprintf("%x", h.Sum(nil))
-}
-
-type Analytic struct {
-	// Whether policy will persist in database
-	Persistence bool
-	UsedConfig  bool
-	// Name of the policy
-	Name string
-	// Type of the policy i.e S3/Hub/Git
-	Type string
-	// The selector used for the policy
-	Selector string
-	// Whether policy is private
-	Private bool
 }
 
 func (a Analytic) Properties() map[string]interface{} {
