@@ -27,22 +27,11 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	if policyName == "" {
 		return policies, nil
 	}
-	// select policies to run
-	for _, p := range policies {
-		// request to run only specific policy
-		if policyName != p.Name {
-			continue
-		}
-		if subPath != "" && p.SubPolicy() == "" {
-			return policy.Policies{
-				&policy.Policy{
-					Name:   p.Name,
-					Source: p.Source + "//" + subPath,
-				},
-			}, nil
-		}
-		return policy.Policies{p}, nil
+	pp := policies.Get(policyName, subPath)
+	if len(pp) > 0 {
+		return pp, nil
 	}
+
 	// run hub detector. We got here if we couldn't find the policy specified by the command argument in the configuration
 	p, found, err := policy.DetectPolicy(policyName, subPath)
 	if err != nil {

@@ -400,9 +400,10 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		DBPersistence: dbPersistence,
 	})
 	if resp == nil {
-		analytics.Capture("policy run", c.Providers, policiesToRun, diags)
-	} else {
-		analytics.Capture("policy run", c.Providers, resp.Policies, diags)
+		policiesToRun = resp.Policies
+	}
+	for _, p := range policiesToRun {
+		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence, len(c.cfg.Policies.Get(p.Name, p.SubPolicy())) > 0), diags)
 	}
 
 	if policyRunProgress != nil {
