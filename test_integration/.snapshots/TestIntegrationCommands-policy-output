@@ -1,3 +1,159 @@
+Starting policies run...
+
+📋 aws Results:
+
+⚠️ Policy finished with violations
+
+Passed: Policy 1.1 - Avoid the use of 'root' account. Show used in last 30 days (Scored)
+
+Passed: Policy 1.2 - Ensure MFA is enabled for all IAM users that have a console password (Scored)
+
+Passed: Policy 1.3 - Ensure credentials unused for 90 days or greater are disabled (Scored)
+
+Passed: Policy 1.4 - Ensure access keys are rotated every 90 days or less
+
+Passed: Policy 1.5 -  Ensure IAM password policy requires at least one uppercase letter
+
+Passed: Policy 1.6 -  Ensure IAM password policy requires at least one lowercase letter
+
+Passed: Policy 1.7 -  Ensure IAM password policy requires at least one symbol
+
+Passed: Policy 1.8 -  Ensure IAM password policy requires at least one number
+
+Passed: Policy 1.9 - Ensure IAM password policy requires minimum length of 14 or greater
+
+Passed: Policy 1.10 - Ensure IAM password policy prevents password reuse
+
+Passed: Policy 1.11 - Ensure IAM password policy expires passwords within 90 days or less
+
+Passed: Policy 1.12 -  Ensure no root account access key exists (Scored)
+
+Passed: Policy 1.13 - Ensure MFA is enabled for the 'root' account
+
+Passed: Policy 1.14 - Ensure hardware MFA is enabled for the 'root' account (Scored)
+
+Passed: Policy 1.16 - Ensure IAM policies are attached only to groups or roles (Scored)
+
+Passed: Policy 2.1 - Ensure CloudTrail is enabled in all regions
+
+Passed: Policy 2.2 - Ensure CloudTrail log file validation is enabled
+
+Passed: Policy 2.4 - Ensure CloudTrail trails are integrated with CloudWatch Logs
+
+Passed: Policy 2.6 - Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket
+
+Passed: Policy 2.7 - Ensure CloudTrail logs are encrypted at rest using KMS CMKs
+
+Passed: Policy 2.8 - Ensure rotation for customer created CMKs is enabled (Scored)
+
+Passed: Policy 2.9 - Ensure VPC flow logging is enabled in all VPCs (Scored)
+
+Failed: Policy 3.1 - Ensure a log metric filter and alarm exist for unauthorized API calls (Scored)
+
+Failed: Policy 3.2 - Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)
+
+Failed: Policy 3.3 -  Ensure a log metric filter and alarm exist for usage of 'root' account (Score)
+
+Failed: Policy 3.4 - Ensure a log metric filter and alarm exist for IAM policy changes (Score)
+
+Failed: Policy 3.5 - Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)
+
+Failed: Policy 3.6 - Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)
+
+Failed: Policy 3.7 - Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)
+
+Failed: Policy 3.8 - Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)
+
+Failed: Policy 3.9 - Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)
+
+Failed: Policy 3.10 - Ensure a log metric filter and alarm exist for security group changes (Scored)
+
+Failed: Policy 3.11 - Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)
+
+Failed: Policy 3.12 - Ensure a log metric filter and alarm exist for changes to network gateways (Scored)
+
+Failed: Policy 3.13 - Ensure a log metric filter and alarm exist for route table changes (Scored)
+
+Failed: Policy 3.14 - Ensure a log metric filter and alarm exist for VPC changes (Scored)
+
+Passed: Policy 4.1 - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
+
+Passed: Policy 4.2 - Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)
+
+Passed: Policy 4.3 -  Ensure the default security group of every VPC restricts all traffic (Scored)
+
+Passed: Policy 1 - Auto Scaling groups associated with a load balancer should use health checks
+
+Passed: Policy 1 - CloudTrail logs should be encrypted at rest using AWS KMS keys
+
+Passed: Policy 2 - CloudTrail should be enabled
+
+Passed: Policy 3 - CloudTrail log file validation should be enabled
+
+Passed: Policy 4 - CloudTrail trails should be integrated with CloudWatch Logs
+
+Passed: Policy 1 - CodeBuild GitHub or Bitbucket source repository URLs should use OAuth
+
+Passed: Policy 2 - CodeBuild project environment variables should not contain clear text credentials
+
+Passed: Policy 1 - AWS Config should be enabled
+
+Passed: Policy 1 - A log metric filter and alarm should exist for usage of the 'root' user
+
+Passed: Policy 1 - AWS Database Migration Service replication instances should not be public
+
+Passed: Policy 1 - Amazon EBS snapshots should not be publicly restorable
+
+Passed: Policy 2 - VPC default security group should prohibit inbound and outbound traffic
+
+Passed: Policy 4 - Unused EC2 EIPs should be removed
+
+Passed: Policy 5 - Security groups should not allow ingress from 0.0.0.0/0 to port 22
+
+Passed: Policy 6 - VPC flow logging should be enabled in all VPCs
+
+Passed: Policy 1 - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
+
+Passed: Policy 1 - Elasticsearch domains should be in a VPC
+
+Passed: Policy 2 - Elasticsearch domains should have encryption at rest enabled
+
+Passed: Policy guardduty enabled in all enabled regions - GuardDuty should be enabled
+
+Passed: Policy 1 - IAM root user access key should not exist
+
+Passed: Policy 2 - IAM users should not have IAM policies attached
+
+Passed: Policy 3 - IAM policies should not allow full '*' administrative privileges
+
+Passed: Policy 4 - Hardware MFA should be enabled for the root user
+
+Passed: Policy 5 - Virtual MFA should be enabled for the root user
+
+Passed: Policy 6 - MFA should be enabled for all IAM users
+
+Passed: Policy 7 - IAM user credentials should be disabled if not used within a predefined number of days
+
+Passed: Policy 8 - Password policies for IAM users should have strong configurations
+
+Passed: Policy 1 - KMS key rotation should be enabled
+
+Passed: Policy 1 - Lambda functions should prohibit public access
+
+Passed: Policy 2 - Lambda functions should be in a VPC
+
+Passed: Policy 1 - RDS snapshots should prohibit public access
+
+Passed: Policy 2 - RDS DB Instances should prohibit public access
+
+Passed: Policy 1 - Amazon Redshift clusters should prohibit public access
+
+Passed: Policy 1 - S3 buckets should prohibit public write access
+
+Passed: Policy 2 - S3 buckets should prohibit public read access
+
+Failed: Policy 3 - S3 buckets should have cross-region replication enabled
+
   STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
 ---------+--------+--------------+--------------------------------+---------------
   failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
@@ -13,6 +169,10 @@
 ---------+--------+--------------+--------------------------------+---------------
                                    TOTAL:                         | 10            
                                  ---------------------------------+---------------
+
+
+Failed: Policy 4 - S3 buckets should have server-side encryption enabled
+
   STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
 ---------+--------+--------------+--------------------------------+---------------
   failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
@@ -28,6 +188,10 @@
 ---------+--------+--------------+--------------------------------+---------------
                                    TOTAL:                         | 10            
                                  ---------------------------------+---------------
+
+
+Failed: Policy 5 - S3 buckets should require requests to use Secure Socket Layer
+
   STATUS | REASON                         | ACCOUNT ID   | REGION       | ARN                             
 ---------+--------------------------------+--------------+--------------+---------------------------------
   failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-1   
@@ -53,6 +217,244 @@
 ---------+--------------------------------+--------------+--------------+---------------------------------
                                                            TOTAL:       | 10                              
                                                          ---------------+---------------------------------
+
+
+Passed: Policy 6 - S3 Block Public Access setting should be enabled
+
+Passed: Policy 1 - Amazon SageMaker notebook instances should not have direct internet access
+
+Passed: Policy 1 - Secrets Manager secrets should have automatic rotation enabled
+
+Passed: Policy 2 - Secrets Manager secrets configured with automatic rotation should rotate successfully
+
+Passed: Policy 3 - Remove unused Secrets Manager secrets
+
+Passed: Policy 4 - Secrets Manager secrets should be rotated within a specified number of days
+
+Passed: Policy 1 - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
+
+Passed: Policy 2 - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
+
+Passed: Policy 3 - EC2 instances should be managed by AWS Systems Manager
+
+Passed: Policy 1 - AWS WAF Classic global web ACL logging should be enabled
+
+Passed: Policy ACM.1 - Imported ACM certificates should be renewed after a specified time period
+
+Passed: Policy ApiGateway.1 - API Gateway REST and WebSocket API logging should be enabled
+
+Passed: Policy ApiGateway.2 - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
+
+Passed: Policy ApiGateway.3 - API Gateway REST API stages should have AWS X-Ray tracing enabled
+
+Passed: Policy ApiGateway.4 - API Gateway should be associated with an AWS WAF web ACL
+
+Passed: Policy ApiGateway.5 - API Gateway REST API cache data should be encrypted at rest
+
+Passed: Policy AutoScaling.1 - 
+
+Passed: Policy Cloudfront.1 - CloudFront distributions should have a default root object configured
+
+Passed: Policy Cloudfront.2 - CloudFront distributions should have origin access identity enabled
+
+Passed: Policy Cloudfront.3 - CloudFront distributions should require encryption in transit
+
+Passed: Policy Cloudfront.4 - CloudFront distributions should have origin failover configured
+
+Passed: Policy Cloudfront.5 - CloudFront distributions should have logging enabled
+
+Passed: Policy Cloudfront.6 - CloudFront distributions should have AWS WAF enabled
+
+Passed: Policy CloudTrail.1 - CloudTrail should be enabled and configured with at least one multi-Region trail and not have management events excluded
+
+Passed: Policy CloudTrail.2 - CloudTrail should have encryption at rest enabled
+
+Passed: Policy CloudTrail.4 - Ensure CloudTrail log file validation is enabled
+
+Passed: Policy CloudTrail.5 - Ensure CloudTrail trails are integrated with Amazon CloudWatch Logs
+
+Passed: Policy CodeBuild.1 - CodeBuild GitHub or Bitbucket source repository URLs should use OAuth
+
+Passed: Policy CodeBuild.2 - CodeBuild project environment variables should not contain clear text credentials
+
+Passed: Policy Config.1 - AWS Config should be enabled
+
+Passed: Policy DMS.1 - AWS Database Migration Service replication instances should not be public
+
+Passed: Policy DynamoDB.1 - DynamoDB tables should automatically scale capacity with demand
+
+Passed: Policy DynamoDB.2 - DynamoDB tables should have point-in-time recovery enabled
+
+Passed: Policy DynamoDB.3 - DynamoDB Accelerator (DAX) clusters should be encrypted at rest
+
+Passed: Policy EC2.1 - Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone
+
+Passed: Policy EC2.2 - The VPC default security group should not allow inbound and outbound traffic
+
+Passed: Policy EC2.3 - Attached EBS volumes should be encrypted at rest
+
+Passed: Policy EC2.4 - Stopped EC2 instances should be removed after a specified time period
+
+Passed: Policy EC2.6 - VPC flow logging should be enabled in all VPCs
+
+Passed: Policy EC2.7 - EBS default encryption should be enabled
+
+Passed: Policy EC2.8 - EC2 instances should use IMDSv2
+
+Passed: Policy EC2.9 - EC2 instances should not have a public IP address
+
+Passed: Policy EC2.10 - Amazon EC2 should be configured to use VPC endpoints that are created for the Amazon EC2 service
+
+Passed: Policy EC2.15 - EC2 subnets should not automatically assign public IP addresses
+
+Passed: Policy EC2.16 - Unused network access control lists should be removed
+
+Passed: Policy EC2.17 - EC2 instances should not use multiple ENIs
+
+Passed: Policy EC2.18 - Security groups should only allow unrestricted incoming traffic for authorized ports
+
+Passed: Policy EC2.19 - Security groups should not allow unrestricted access to ports with high risk
+
+Passed: Policy ECS.1 - Amazon ECS task definitions should have secure networking modes and user definitions
+
+Passed: Policy ECS.2 - Amazon ECS services should not have public IP addresses assigned to them automatically
+
+Passed: Policy EFS.1 - Amazon EFS should be configured to encrypt file data at rest using AWS KMS
+
+Passed: Policy EFS.2 - Amazon EFS volumes should be in backup plans
+
+Passed: Policy ElasticBeanstalk.1 - Elastic Beanstalk environments should have enhanced health reporting enabled
+
+Passed: Policy ElasticBeanstalk.2 - Elastic Beanstalk managed platform updates should be enabled
+
+Passed: Policy ELB.2 - Classic Load Balancers with SSL/HTTPS listeners should use a certificate provided by AWS Certificate Manager
+
+Passed: Policy ELB.3 - Classic Load Balancer listeners should be configured with HTTPS or TLS termination
+
+Passed: Policy ELB.4 - Application load balancers should be configured to drop HTTP headers
+
+Passed: Policy ELB.5 - Application and Classic Load Balancers logging should be enabled
+
+Passed: Policy ELB.6 - Application Load Balancer deletion protection should be enabled
+
+Passed: Policy ELB.7 - Classic Load Balancers should have connection draining enabled
+
+Passed: Policy ELB.8 - Classic Load Balancers with HTTPS/SSL listeners should use a predefined security policy that has strong configuration
+
+Passed: Policy ELBv2.1 - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
+
+Passed: Policy EMR.1 - Amazon EMR cluster master nodes should not have public IP addresses
+
+Passed: Policy Elasticsearch.1 - Elasticsearch domains should have encryption at rest enabled
+
+Passed: Policy Elasticsearch.2 - Elasticsearch domains should be in a VPC
+
+Passed: Policy Elasticsearch.3 - Elasticsearch domains should encrypt data sent between nodes
+
+Passed: Policy Elasticsearch.4 - Elasticsearch domain error logging to CloudWatch Logs should be enabled
+
+Passed: Policy Elasticsearch.5 - Elasticsearch domains should have audit logging enabled
+
+Passed: Policy Elasticsearch.6 - Elasticsearch domains should have at least three data nodes
+
+Passed: Policy Elasticsearch.7 - Elasticsearch domains should be configured with at least three dedicated master nodes
+
+Passed: Policy Elasticsearch.8 - Connections to Elasticsearch domains should be encrypted using TLS 1.2
+
+Passed: Policy GuardDuty.1 - GuardDuty should be enabled
+
+Passed: Policy IAM.1 - IAM policies should not allow full '*' administrative privileges
+
+Passed: Policy IAM.2 - IAM users should not have IAM policies attached
+
+Passed: Policy IAM.3 - IAM users' access keys should be rotated every 90 days or less
+
+Passed: Policy IAM.4 - IAM root user access key should not exist
+
+Passed: Policy IAM.5 - MFA should be enabled for all IAM users that have a console password
+
+Passed: Policy IAM.6 - Hardware MFA should be enabled for the root user
+
+Passed: Policy IAM.7 - Password policies for IAM users should have strong configurations
+
+Passed: Policy IAM.8 - Unused IAM user credentials should be removed
+
+Passed: Policy IAM.21 - IAM customer managed policies that you create should not allow wildcard actions for services
+
+Passed: Policy KMS.1 - IAM customer managed policies should not allow decryption and re-encryption actions on all KMS keys
+
+Passed: Policy KMS.2 - IAM principals should not have IAM inline policies that allow decryption and re-encryption actions on all KMS keys
+
+Passed: Policy KMS.3 - AWS KMS keys should not be unintentionally deleted
+
+Passed: Policy Lambda.1 - Lambda function policies should prohibit public access
+
+Passed: Policy Lambda.2 - Lambda functions should use supported runtimes
+
+Passed: Policy RDS.1 - RDS snapshots should be private
+
+Passed: Policy RDS.2 - RDS DB instances should prohibit public access, determined by the PubliclyAccessible configuration
+
+Passed: Policy RDS.3 - RDS DB instances should have encryption at rest enabled
+
+Passed: Policy RDS.4 - RDS cluster snapshots and database snapshots should be encrypted at rest
+
+Passed: Policy RDS.5 - RDS DB instances should be configured with multiple Availability Zones
+
+Passed: Policy RDS.6 - Enhanced monitoring should be configured for RDS DB instances and clusters
+
+Passed: Policy RDS.7 - RDS clusters should have deletion protection enabled
+
+Passed: Policy RDS.8 - RDS DB instances should have deletion protection enabled
+
+Passed: Policy RDS.9 - Database logging should be enabled
+
+Passed: Policy RDS.10 - IAM authentication should be configured for RDS instances
+
+Passed: Policy RDS.12 - IAM authentication should be configured for RDS clusters
+
+Passed: Policy RDS.13 - RDS automatic minor version upgrades should be enabled
+
+Passed: Policy RDS.14 - Amazon Aurora clusters should have backtracking enabled
+
+Passed: Policy RDS.15 - RDS DB clusters should be configured for multiple Availability Zones
+
+Passed: Policy RDS.16 - RDS DB clusters should be configured to copy tags to snapshots
+
+Passed: Policy RDS.17 - RDS DB instances should be configured to copy tags to snapshots
+
+Passed: Policy RDS.18 - RDS instances should be deployed in a VPC
+
+Passed: Policy RDS.19 - An RDS event notifications subscription should be configured for critical cluster events
+
+Passed: Policy RDS.20 - An RDS event notifications subscription should be configured for critical database instance events
+
+Passed: Policy RDS.21 - An RDS event notifications subscription should be configured for critical database parameter group events
+
+Passed: Policy RDS.22 - An RDS event notifications subscription should be configured for critical database security group events
+
+Passed: Policy RDS.23 - RDS databases and clusters should not use a database engine default port
+
+Passed: Policy Redshift.1 - Amazon Redshift clusters should prohibit public access
+
+Passed: Policy Redshift.2 - Connections to Amazon Redshift clusters should be encrypted in transit
+
+Passed: Policy Redshift.3 - Amazon Redshift clusters should have automatic snapshots enabled
+
+Passed: Policy Redshift.4 - Amazon Redshift clusters should have audit logging enabled
+
+Passed: Policy Redshift.6 - Amazon Redshift should have automatic upgrades to major versions enabled
+
+Passed: Policy Redshift.7 - Amazon Redshift clusters should use enhanced VPC routing
+
+Passed: Policy S3.1 - S3 Block Public Access setting should be enabled
+
+Passed: Policy S3.2 - S3 buckets should prohibit public read access
+
+Passed: Policy S3.3 - S3 buckets should prohibit public write access
+
+Failed: Policy S3.4 - S3 buckets should have server-side encryption enabled
+
   STATUS | REASON | ACCOUNT ID   | ARN                            | REGION        
 ---------+--------+--------------+--------------------------------+---------------
   failed |        | 123456123456 | arn:aws:s3:::cq-test-bucket-1  | us-east-1     
@@ -68,6 +470,10 @@
 ---------+--------+--------------+--------------------------------+---------------
                                    TOTAL:                         | 10            
                                  ---------------------------------+---------------
+
+
+Failed: Policy S3.5 - S3 buckets should require requests to use Secure Socket Layer
+
   STATUS | REASON                         | ACCOUNT ID   | REGION       | ARN                             
 ---------+--------------------------------+--------------+--------------+---------------------------------
   failed | bucket has non SSL requested   | 123456123456 | us-east-1    | arn:aws:s3:::cq-test-bucket-1   
@@ -93,4 +499,69 @@
 ---------+--------------------------------+--------------+--------------+---------------------------------
                                                            TOTAL:       | 10                              
                                                          ---------------+---------------------------------
+
+
+Passed: Policy S3.6 - Amazon S3 permissions granted to other AWS accounts in bucket policies should be restricted
+
+Passed: Policy S3.8 - S3 Block Public Access setting should be enabled at the bucket level
+
+Passed: Policy SageMaker.1 - Amazon SageMaker notebook instances should not have direct internet access
+
+Passed: Policy SecretsManager.1 - Secrets Manager secrets should have automatic rotation enabled
+
+Passed: Policy SecretsManager.2 - Secrets Manager secrets configured with automatic rotation should rotate successfully
+
+Passed: Policy SecretsManager.3 - Remove unused Secrets Manager secrets
+
+Passed: Policy SecretsManager.4 - Secrets Manager secrets should be rotated within a specified number of days
+
+Passed: Policy SNS.1 - SNS topics should be encrypted at rest using AWS KMS
+
+Passed: Policy SQS.1 - SNS topics should be encrypted at rest using AWS KMS
+
+Passed: Policy SSM.1 - EC2 instances should be managed by AWS Systems Manager
+
+Passed: Policy SSM.2 - All EC2 instances managed by Systems Manager should be compliant with patching requirements
+
+Passed: Policy SSM.3 - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
+
+Passed: Policy SSM.4 - SSM documents should not be public
+
+Passed: Policy WAF.1 - AWS WAF Classic global web ACL logging should be enabled
+
+Manual: Policy ec2-all-instances-with-routes-and-security-groups - Find all ec2 instances that have unrestricted access to the internet with a wide open security group and routing
+
+
+Manual: Policy ec2-instances - Find all ec2 instances that have unrestricted access to the internet via a security group
+
+
+Manual: Policy lambda-functions - Find all ec2 instances that have unrestricted access to the internet
+
+
+Manual: Policy API-Gateways - Find all API Gateway instances that are publicly accessible
+
+
+Manual: Policy API-Gateway-V2 - Find all API Gateway V2 instances (HTTP and Webhook) that are publicly accessible
+
+
+Manual: Policy CloudFront-Distributions - Find all Cloudfront distributions
+
+
+Manual: Policy EC2-Public-Ips - Find all instances with a public IP address
+
+
+Manual: Policy ELB-Classic - Find all Classic ELBs that are Internet Facing
+
+
+Manual: Policy ELB-V2 - Find all ELB V2s that are Internet Facing
+
+
+Manual: Policy Redshift - Find all Redshift Clusters are publicly accessible
+
+
+Manual: Policy RDS - Find all RDS Instances are publicly accessible
+
+
+Finished policies run...
+
 
