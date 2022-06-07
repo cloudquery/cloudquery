@@ -149,6 +149,9 @@ func validateProjects(projects []string) diag.Diagnostics {
 		if project == defaultProjectIdName {
 			return diag.FromError(errors.New("please specify a valid project_id in config.hcl instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>"), diag.USER)
 		}
+		if project == "" {
+			return diag.FromError(errors.New("please specify a valid project_id in config.hcl instead of empty string"), diag.USER)
+		}
 	}
 	return nil
 }
