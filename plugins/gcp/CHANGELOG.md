@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.8](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.7...v0.8.8) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.8 ([#325](https://github.com/cloudquery/cq-provider-gcp/issues/325)) ([ad11c01](https://github.com/cloudquery/cq-provider-gcp/commit/ad11c012dc651d098a45a722dbf6509b7eb53095))
+
 ## [0.8.7](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.6...v0.8.7) (2022-06-06)
 
 
