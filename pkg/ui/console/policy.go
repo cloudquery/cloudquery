@@ -27,9 +27,9 @@ func FilterPolicies(policyPath string, policies policy.Policies) (policy.Policie
 	if policyName == "" {
 		return policies, nil
 	}
-	pp := policies.Get(policyName, subPath)
-	if len(pp) > 0 {
-		return pp, nil
+	p := policies.Get(policyName, subPath)
+	if p != nil {
+		return policy.Policies{p}, nil
 	}
 
 	// run hub detector. We got here if we couldn't find the policy specified by the command argument in the configuration

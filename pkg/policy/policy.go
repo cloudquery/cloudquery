@@ -47,8 +47,8 @@ type Check struct {
 type Analytic struct {
 	// Whether policy will persist in database
 	Persistence bool
-	// Whether policy was defined in configuration
-	UsedConfig bool
+	// Where the policy was originated from (cli/config)
+	UsageOrigin string
 	// Name of the policy
 	Name string
 	// Type of the policy i.e S3/Hub/Git
@@ -95,7 +95,7 @@ func (pp Policies) All() []string {
 	return policyNames
 }
 
-func (pp Policies) Get(policyName, subPath string) Policies {
+func (pp Policies) Get(policyName, subPath string) *Policy {
 	if subPath == "" {
 		policyName, subPath = getter.ParseSourceSubPolicy(policyName)
 	}
@@ -105,22 +105,25 @@ func (pp Policies) Get(policyName, subPath string) Policies {
 			continue
 		}
 		if subPath != "" && p.SubPolicy() == "" {
-			return Policies{
-				&Policy{
-					Name:   p.Name,
-					Source: p.Source + "//" + subPath,
-				},
+			return &Policy{
+				Name:   p.Name,
+				Source: p.Source + "//" + subPath,
 			}
 		}
-		return Policies{p}
+		return p
 	}
 	return nil
 }
 
 func (p Policy) Analytic(dbPersistence, usedConfig bool) Analytic {
+	origin := "cli"
+	if usedConfig {
+		origin = "config"
+	}
+
 	pa := Analytic{
 		Persistence: dbPersistence,
-		UsedConfig:  usedConfig,
+		UsageOrigin: origin,
 		Name:        p.Name,
 		Type:        p.SourceType(),
 		Selector:    p.SubPolicy(),
@@ -237,11 +240,11 @@ func (p Policy) Sha256Hash() string {
 
 func (a Analytic) Properties() map[string]interface{} {
 	return map[string]interface{}{
-		"policy_persistence":    a.Persistence,
-		"policy_name":           a.Name,
-		"policy_type":           a.Type,
-		"policy_is_private":     a.Private,
-		"policy_selector":       a.Selector,
-		"policy_used_in_config": a.UsedConfig,
+		"policy_persistence": a.Persistence,
+		"policy_name":        a.Name,
+		"policy_type":        a.Type,
+		"policy_is_private":  a.Private,
+		"policy_selector":    a.Selector,
+		"policy_used_origin": a.UsageOrigin,
 	}
 }
