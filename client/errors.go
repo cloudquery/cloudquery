@@ -112,6 +112,19 @@ func classifyError(err error, fallbackType diag.Type, accounts []Account, opts .
 					)...),
 				),
 			}
+		case "UnsupportedOperation":
+			if strings.Contains(ae.ErrorMessage(), "The functionality you requested is not available in this region.") {
+				return diag.Diagnostics{
+					RedactError(accounts, diag.NewBaseError(err,
+						diag.RESOLVING,
+						append(opts,
+							diag.WithType(diag.RESOLVING),
+							diag.WithSeverity(diag.IGNORE),
+							ParseSummaryMessage(err),
+							diag.WithDetails("The action is not available in selected region"))...),
+					),
+				}
+			}
 		}
 		if ae.ErrorMessage() == ssoInvalidOrExpired {
 			return diag.Diagnostics{
