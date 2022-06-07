@@ -590,7 +590,6 @@ func TestFilterPolicies(t *testing.T) {
 }
 
 func TestPolicies_Get(t *testing.T) {
-
 	testCases := []struct {
 		Name           string
 		PolicyName     string
