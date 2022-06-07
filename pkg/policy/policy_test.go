@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHasChecks(t *testing.T) {
@@ -583,6 +584,65 @@ func TestFilterPolicies(t *testing.T) {
 			diff := cmp.Diff(tt.expectedPolicy, tt.p.Filter(tt.path), cmpopts.IgnoreUnexported(Policy{}))
 			if diff != "" && !tt.expectError {
 				t.Fatalf("values are not the same %s", diff)
+			}
+		})
+	}
+}
+
+func TestPolicies_Get(t *testing.T) {
+
+	testCases := []struct {
+		Name           string
+		PolicyName     string
+		SubPolicy      string
+		Policies       Policies
+		ExpectedPolicy bool
+	}{
+		{
+			Name:       "simple",
+			PolicyName: "aws",
+			SubPolicy:  "",
+			Policies: Policies{
+				{
+					Name: "aws",
+				},
+			},
+			ExpectedPolicy: true,
+		},
+		{
+			Name:       "missing",
+			PolicyName: "not-existing",
+			SubPolicy:  "",
+			Policies: Policies{
+				{
+					Name: "aws",
+				},
+			},
+			ExpectedPolicy: false,
+		},
+		{
+			Name:       "sub-policy",
+			PolicyName: "aws//sub-policy",
+			SubPolicy:  "",
+			Policies: Policies{
+				{
+					Name: "aws",
+					meta: &Meta{
+						SubPolicy: "sub-policy",
+					},
+				},
+			},
+			ExpectedPolicy: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			pp := tc.Policies.Get(tc.PolicyName, tc.SubPolicy)
+			if tc.ExpectedPolicy {
+				assert.Len(t, pp, 1)
+			} else {
+				assert.Nil(t, pp)
 			}
 		})
 	}

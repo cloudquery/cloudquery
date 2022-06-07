@@ -96,6 +96,10 @@ func (pp Policies) All() []string {
 }
 
 func (pp Policies) Get(policyName, subPath string) Policies {
+	if subPath == "" {
+		policyName, subPath = getter.ParseSourceSubPolicy(policyName)
+	}
+
 	for _, p := range pp {
 		if policyName != p.Name {
 			continue
