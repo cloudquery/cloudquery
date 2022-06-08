@@ -4,6 +4,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
@@ -74,6 +75,16 @@ func initSentry() {
 			return analytics.HashAttribute(hn)
 		}(),
 		BeforeSend: func(event *sentry.Event, hint *sentry.EventHint) *sentry.Event {
+			if event.Tags["provider"] != "" {
+				// Save core version in separate tag and report provider version as Release
+				event.Tags["core_version"] = event.Release
+				event.Release = event.Tags["provider"] + "@" + strings.TrimPrefix(event.Tags["provider_version"], "v")
+			}
+
+			if len(event.Exception) > 0 && event.Tags["provider"] != "" {
+				event.Exception[0].Type = "Diag:" + event.Tags["provider"] + "@" + event.Tags["provider_version"]
+			}
+
 			if hint != nil && hint.RecoveredException != nil {
 				// Keep stack trace on recover() events
 				return event
@@ -82,12 +93,6 @@ func initSentry() {
 			// Remove stack trace otherwise
 			for i := range event.Exception {
 				event.Exception[i].Stacktrace = nil
-			}
-
-			if len(event.Exception) > 0 {
-				if event.Tags["provider"] != "" {
-					event.Exception[0].Type = "Diag:" + event.Tags["provider"] + "@" + event.Tags["provider_version"]
-				}
 			}
 
 			return event
