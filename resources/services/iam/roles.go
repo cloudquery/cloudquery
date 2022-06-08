@@ -32,7 +32,6 @@ func IamRoles() *schema.Table {
 				Name:        "policies",
 				Description: "List of policies attached to group.",
 				Type:        schema.TypeJSON,
-				IgnoreError: client.IgnoreCommonErrors,
 				Resolver:    resolveIamRolePolicies,
 			},
 			{
