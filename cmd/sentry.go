@@ -4,6 +4,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
@@ -77,7 +78,7 @@ func initSentry() {
 			if event.Tags["provider"] != "" {
 				// Save core version in separate tag and report provider version as Release
 				event.Tags["core_version"] = event.Release
-				event.Release = event.Tags["provider"] + "@" + event.Tags["provider_version"]
+				event.Release = event.Tags["provider"] + "@" + strings.TrimPrefix(event.Tags["provider_version"], "v")
 			}
 
 			if len(event.Exception) > 0 && event.Tags["provider"] != "" {
