@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.9](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.8...v0.8.9) (2022-06-07)
+
+
+### Bug Fixes
+
+* Added check for empty project_id ([#322](https://github.com/cloudquery/cq-provider-gcp/issues/322)) ([c04e1f7](https://github.com/cloudquery/cq-provider-gcp/commit/c04e1f7904eb7c9d28d7750b78042255ad6e78e4))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.10 ([#329](https://github.com/cloudquery/cq-provider-gcp/issues/329)) ([4923808](https://github.com/cloudquery/cq-provider-gcp/commit/49238085984bc25468ced7484761a3ceb1b7a99e))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.11 ([#330](https://github.com/cloudquery/cq-provider-gcp/issues/330)) ([8db6d1e](https://github.com/cloudquery/cq-provider-gcp/commit/8db6d1e043aec6b17f1f30afc3a0cb551595e34e))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.9 ([#327](https://github.com/cloudquery/cq-provider-gcp/issues/327)) ([70dcad2](https://github.com/cloudquery/cq-provider-gcp/commit/70dcad2cee090fbbec201a6fd4ca49fbec75b387))
+
 ## [0.8.8](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.7...v0.8.8) (2022-06-07)
 
 
