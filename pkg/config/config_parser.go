@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
@@ -45,6 +44,8 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 	content, contentDiags := body.Content(configFileSchema)
 	diags = append(diags, contentDiags...)
 
+	hasPolicyBlock := false
+
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "cloudquery":
@@ -60,11 +61,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 				config.Providers = append(config.Providers, cfg)
 			}
 		case "policy":
-			cfg, cfgDiags := policy.DecodePolicyBlock(block, &p.HCLContext)
-			diags = append(diags, cfgDiags...)
-			if cfg != nil {
-				config.Policies = append(config.Policies, cfg)
-			}
+			hasPolicyBlock = true
 		case "modules":
 			// Module manager will process this for us
 			config.Modules = block.Body
@@ -74,6 +71,17 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			continue
 		}
 	}
+
+	if hasPolicyBlock {
+		diags = append(diags,
+			&hcl.Diagnostic{
+				Severity: hcl.DiagWarning,
+				Summary:  "Deprecated 'policy' block in config file",
+				Detail:   "Specifying 'policy' blocks in 'config.hcl' has been deprecated. See https://docs.cloudquery.io/docs/tutorials/policies/writing-your-first-policy for instructions on running a local policy.",
+			},
+		)
+	}
+
 	return config, diags
 }
 

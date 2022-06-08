@@ -96,10 +96,7 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			source := ""
-			if len(args) == 1 {
-				source = args[0]
-			}
+			source := args[0]
 			diags := c.RunPolicies(ctx, source, outputDir, noResults, storeResults)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
 			if diags.HasErrors() {
@@ -107,7 +104,7 @@ var (
 			}
 			return nil
 		}),
-		Args: cobra.MaximumNArgs(1),
+		Args: cobra.ExactArgs(1),
 	}
 
 	policyTestCmd = &cobra.Command{
