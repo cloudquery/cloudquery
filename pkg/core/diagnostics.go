@@ -21,7 +21,7 @@ type SentryDiagnostic struct {
 	Ignore bool
 }
 
-func (d SentryDiagnostic) Redacted() diag.Diagnostic {
+func (d *SentryDiagnostic) Redacted() diag.Diagnostic {
 	v, ok := d.Diagnostic.(diag.Redactable)
 	if !ok {
 		return d
