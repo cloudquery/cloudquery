@@ -87,6 +87,10 @@ func initSentry() {
 			if len(event.Exception) > 0 {
 				if event.Tags["provider"] != "" {
 					event.Exception[0].Type = "Diag:" + event.Tags["provider"] + "@" + event.Tags["provider_version"]
+
+					// Save core version in separate tag and report provider version as Release
+					event.Tags["core_version"] = event.Release
+					event.Release = event.Tags["provider"] + "@" + event.Tags["provider_version"]
 				}
 			}
 
