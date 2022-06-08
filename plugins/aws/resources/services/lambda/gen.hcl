@@ -100,6 +100,9 @@ resource "aws" "lambda" "functions" {
     skip_prefix = true
   }
 
+  column "tags" {
+    generate_resolver = true
+  }
 
   column "image_config_response" {
     skip_prefix = true

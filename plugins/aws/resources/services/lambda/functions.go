@@ -18,7 +18,7 @@ type AliasWrapper struct {
 	UrlConfig *lambda.GetFunctionUrlConfigOutput
 }
 
-//go:generate cq-gen --resource ledgers --config gen.hcl --output .
+//go:generate cq-gen --resource functions --config gen.hcl --output .
 func Functions() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_lambda_functions",
@@ -375,7 +375,7 @@ func Functions() *schema.Table {
 				Name:          "tags",
 				Description:   "The function's tags (https://docs.aws.amazon.com/lambda/latest/dg/tagging.html).",
 				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("Tags"),
+				Resolver:      resolveFunctionsTags,
 				IgnoreInTests: true,
 			},
 		},
@@ -1423,6 +1423,10 @@ func resolveFunctionEventSourceMappingsSourceAccessConfigurations(ctx context.Co
 	return diag.WrapError(resource.Set(c.Name, data))
 }
 
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
+func resolveFunctionsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	if r.Tags == nil {
+		return diag.WrapError(resource.Set(c.Name, make(map[string]string)))
+	}
+	return diag.WrapError(resource.Set(c.Name, r.Tags))
+}
