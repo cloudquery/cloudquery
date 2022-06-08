@@ -1,12 +1,9 @@
 package getter
 
 import (
-	"context"
 	"fmt"
 	"net/url"
 	"strings"
-
-	"github.com/cloudquery/cloudquery/internal/firebase"
 )
 
 var (
@@ -44,12 +41,6 @@ func (*GitHubDetector) detectHTTP(src string) (string, bool, error) {
 		return "", true, fmt.Errorf("error parsing GitHub URL: %s", err)
 	}
 
-	if !_url.Query().Has("ref") {
-		if err := addLatestTag(_url, parts[1], parts[2]); err != nil {
-			return "", false, err
-		}
-	}
-
 	if !strings.HasSuffix(_url.Path, ".git") {
 		_url.Path += ".git"
 	}
@@ -59,26 +50,4 @@ func (*GitHubDetector) detectHTTP(src string) (string, bool, error) {
 	}
 
 	return "git::" + _url.String(), true, nil
-}
-
-func addLatestTag(_url *url.URL, owner, repo string) error {
-	client := firebase.New(firebase.CloudQueryRegistryURL)
-	org, ok := repoToFirebasePath[owner]
-	if !ok {
-		org = owner
-	}
-	latest, err := client.GetLatestPolicyRelease(context.Background(), org, repo)
-
-	if err != nil {
-		return fmt.Errorf("failed to find latest version: %w", err)
-	}
-
-	if latest == "" {
-		return nil
-	}
-
-	q := _url.Query()
-	q.Add("ref", latest)
-	_url.RawQuery = q.Encode()
-	return nil
 }
