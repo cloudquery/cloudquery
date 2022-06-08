@@ -302,11 +302,7 @@ func isNotFoundError(err error) bool {
 
 func IsInvalidParameterValueError(err error) bool {
 	var apiErr smithy.APIError
-	if errors.As(err, &apiErr); apiErr.ErrorCode() == "InvalidParameterValue" {
-		return true
-	}
-
-	return false
+	return errors.As(err, &apiErr) && apiErr.ErrorCode() == "InvalidParameterValue"
 }
 
 func IsAWSError(err error, code ...string) bool {
