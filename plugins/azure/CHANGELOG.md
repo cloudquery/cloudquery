@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.5](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.4...v0.11.5) (2022-06-07)
+
+
+### Bug Fixes
+
+* Correctly process IPs in ip_address_or_range ([#310](https://github.com/cloudquery/cq-provider-azure/issues/310)) ([1c7afb9](https://github.com/cloudquery/cq-provider-azure/commit/1c7afb93fcefb2d05056fed93bb179343b077aed))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.10 ([#329](https://github.com/cloudquery/cq-provider-azure/issues/329)) ([b57c3ef](https://github.com/cloudquery/cq-provider-azure/commit/b57c3ef78f195d0b09e4d5a6ef8139c3845140fb))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.11 ([#330](https://github.com/cloudquery/cq-provider-azure/issues/330)) ([8afdef5](https://github.com/cloudquery/cq-provider-azure/commit/8afdef541f7c5e52ee05b37a19ce2d3c48c0e816))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.9 ([#327](https://github.com/cloudquery/cq-provider-azure/issues/327)) ([bded97f](https://github.com/cloudquery/cq-provider-azure/commit/bded97f830c739e0d692d200fab429686f19ef2e))
+
 ## [0.11.4](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.3...v0.11.4) (2022-06-07)
 
 
