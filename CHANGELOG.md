@@ -4,6 +4,22 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.24.11](https://github.com/cloudquery/cloudquery/compare/v0.24.10...v0.24.11) (2022-06-07)
+
+
+### Features
+
+* Improve policy analytics ([#862](https://github.com/cloudquery/cloudquery/issues/862)) ([7789f82](https://github.com/cloudquery/cloudquery/commit/7789f82563e644e1e7b87f8c2d2f1cc6c4ec47b1))
+
+
+### Bug Fixes
+
+* **console:** Output to console when console log is enabled in non termial envs ([#853](https://github.com/cloudquery/cloudquery/issues/853)) ([83731e5](https://github.com/cloudquery/cloudquery/commit/83731e5e56c57839d7abb47ba150eca0b8626083))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.10 ([#865](https://github.com/cloudquery/cloudquery/issues/865)) ([13c0b7e](https://github.com/cloudquery/cloudquery/commit/13c0b7e1eb04eead871032dc2cc7c3c7a6712061))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.11 ([#866](https://github.com/cloudquery/cloudquery/issues/866)) ([ed50a3c](https://github.com/cloudquery/cloudquery/commit/ed50a3ca222150fae4ff401329a91ea7683844fa))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.10.9 ([#863](https://github.com/cloudquery/cloudquery/issues/863)) ([eb998ad](https://github.com/cloudquery/cloudquery/commit/eb998ada94e9f56134d8c57b49d246b9e6b54536))
+* Remove deprecated 'policy_directory' and 'plugin_directory' from hcl file ([#855](https://github.com/cloudquery/cloudquery/issues/855)) ([cd3eb90](https://github.com/cloudquery/cloudquery/commit/cd3eb90806f2a73ffba20f9b5f8752fcc429db07))
+
 ## [0.24.10](https://github.com/cloudquery/cloudquery/compare/v0.24.9...v0.24.10) (2022-06-07)
 
 
