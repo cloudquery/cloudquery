@@ -315,6 +315,7 @@ func (c Client) DropProvider(ctx context.Context, providerName string) (diags di
 }
 
 func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, dryRun bool, providers []string) (diags diag.Diagnostics) {
+	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	if dd := c.DownloadProviders(ctx); dd.HasErrors() {
 		return dd
 	}
@@ -340,7 +341,7 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 			ui.ColorizedOutput(ui.ColorWarning, "\t%s: %d resources\n\n", r, result.AffectedResources[r])
 		}
 	}
-	if !diags.HasErrors() {
+	if diags.HasErrors() {
 		ui.ColorizedOutput(ui.ColorProgress, "Purge for providers %s failed\n\n", providers)
 		return diags
 	}
