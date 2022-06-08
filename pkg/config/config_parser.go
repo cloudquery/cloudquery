@@ -77,7 +77,7 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			&hcl.Diagnostic{
 				Severity: hcl.DiagWarning,
 				Summary:  "Deprecated 'policy' block in config file",
-				Detail:   "Specifying 'policy' blocks in 'config.hcl' has been deprecated. See https://docs.cloudquery.io/docs/tutorials/policies/writing-your-first-policy for instructions on running a local policy.",
+				Detail:   "Specifying 'policy' blocks in 'config.hcl' has been deprecated. See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on running policies (either from cloudquery-hub or a local file).",
 			},
 		)
 	}
