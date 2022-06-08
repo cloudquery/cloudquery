@@ -814,7 +814,9 @@ func fetchRdsInstanceDbSecurityGroups(ctx context.Context, meta schema.ClientMet
 }
 func fetchRdsInstanceDbSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.DBInstance)
-	res <- instance.DBSubnetGroup.Subnets
+	if instance.DBSubnetGroup != nil {
+		res <- instance.DBSubnetGroup.Subnets
+	}
 	return nil
 }
 func fetchRdsInstanceDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
