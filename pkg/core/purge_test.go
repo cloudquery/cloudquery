@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/uuid"
@@ -365,12 +366,8 @@ func testTable() *schema.Table {
 		Name: "slow_resource",
 		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 			meta.Logger().Info("fetching")
-			select {
-			case <-ctx.Done():
-				return nil
-			case <-time.After(time.Second * 5):
-				return nil
-			}
+			_ = helpers.Sleep(ctx, 5*time.Second)
+			return nil
 		},
 		Columns: []schema.Column{
 			{
