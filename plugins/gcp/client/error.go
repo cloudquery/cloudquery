@@ -2,7 +2,6 @@ package client
 
 import (
 	"errors"
-	"net"
 	"net/http"
 	"regexp"
 	"strings"
@@ -50,17 +49,6 @@ func IgnoreErrorHandler(err error) bool {
 			}
 		}
 		if gerr.Code == http.StatusNotFound && len(gerr.Errors) > 0 {
-			return true
-		}
-	}
-	return false
-}
-
-func IgnoreErrorColumnHandler(err error) bool {
-	// gcp API can return an empty string for some CIDR values, so we ignore those
-	var parseError *net.ParseError
-	if ok := errors.As(err, &parseError); ok {
-		if parseError.Type == "CIDR address" {
 			return true
 		}
 	}

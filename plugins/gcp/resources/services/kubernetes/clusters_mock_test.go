@@ -27,11 +27,25 @@ func createClusters() (*client.Services, error) {
 	cluster.ExpireTime = time.Now().Format(time.RFC3339)
 	cluster.Endpoint = "192.168.0.1"
 
+	// faker creates random strings that are invalid CIDR blocks
+	cluster.ClusterIpv4Cidr = ""
+	cluster.IpAllocationPolicy.ClusterIpv4Cidr = ""
+	cluster.IpAllocationPolicy.ClusterIpv4CidrBlock = ""
+	cluster.IpAllocationPolicy.NodeIpv4Cidr = ""
+	cluster.IpAllocationPolicy.NodeIpv4CidrBlock = ""
+	cluster.IpAllocationPolicy.ServicesIpv4Cidr = ""
+	cluster.IpAllocationPolicy.ServicesIpv4CidrBlock = ""
+	cluster.IpAllocationPolicy.TpuIpv4CidrBlock = ""
+	cluster.PrivateClusterConfig.MasterIpv4CidrBlock = ""
+	cluster.ServicesIpv4Cidr = ""
+	cluster.TpuIpv4CidrBlock = ""
+
 	cluster.MaintenancePolicy.Window.RecurringWindow.Window.StartTime = time.Now().Format(time.RFC3339)
 	cluster.MaintenancePolicy.Window.RecurringWindow.Window.EndTime = time.Now().Format(time.RFC3339)
 	cluster.MaintenancePolicy.Window.DailyMaintenanceWindow.StartTime = "00:00"
 
 	cluster.NodePools[0].Management.UpgradeOptions.AutoUpgradeStartTime = time.Now().Format(time.RFC3339)
+	cluster.NodePools[0].NetworkConfig.PodIpv4CidrBlock = ""
 
 	mux.GET("/v1/projects/testProject/locations/-/clusters", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &container.ListClustersResponse{
