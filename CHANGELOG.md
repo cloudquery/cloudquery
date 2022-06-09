@@ -4,6 +4,31 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.25.0](https://github.com/cloudquery/cloudquery/compare/v0.24.11...v0.25.0) (2022-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Disable policies in config file, Disallow running more than one policy (#841)
+
+### Features
+
+* Sentry: Report provider version as release ([#874](https://github.com/cloudquery/cloudquery/issues/874)) ([349d4cf](https://github.com/cloudquery/cloudquery/commit/349d4cfc16a7f93cc23346fff9df11dc664a3705))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.11.0 ([#875](https://github.com/cloudquery/cloudquery/issues/875)) ([890ac09](https://github.com/cloudquery/cloudquery/commit/890ac09931db55397fcd4c49a1ee8578465cef16))
+* Github detector should not use firebase ([#871](https://github.com/cloudquery/cloudquery/issues/871)) ([2175524](https://github.com/cloudquery/cloudquery/commit/2175524107f41b74d19fc45a33b3f0504f839220))
+* Purge command failure ([#869](https://github.com/cloudquery/cloudquery/issues/869)) ([9010f18](https://github.com/cloudquery/cloudquery/commit/9010f1808f59118f6d8803cf70b5dcb3b670d982))
+* Redact errors again ([#867](https://github.com/cloudquery/cloudquery/issues/867)) ([9e9f81a](https://github.com/cloudquery/cloudquery/commit/9e9f81a6843f8811607b904ba28324fc0afcd7e2))
+* Small fix in deprecation warning for "policy in config" ([#873](https://github.com/cloudquery/cloudquery/issues/873)) ([11d27ab](https://github.com/cloudquery/cloudquery/commit/11d27aba7449af5d6d5720f9a6f6e7a5349e25fc))
+
+
+### breaking
+
+* Disable policies in config file, Disallow running more than one policy ([#841](https://github.com/cloudquery/cloudquery/issues/841)) ([f97de5d](https://github.com/cloudquery/cloudquery/commit/f97de5df4b45a16a7ad5952cebcc3fe750e66bdf))
+
 ## [0.24.11](https://github.com/cloudquery/cloudquery/compare/v0.24.10...v0.24.11) (2022-06-07)
 
 
