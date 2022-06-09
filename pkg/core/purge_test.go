@@ -16,7 +16,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/uuid"
-	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -367,6 +366,7 @@ func testTable() *schema.Table {
 		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 			meta.Logger().Info("fetching")
 			_ = helpers.Sleep(ctx, 5*time.Second)
+			return nil
 		},
 		Columns: []schema.Column{
 			{
