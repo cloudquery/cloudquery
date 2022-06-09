@@ -63,12 +63,11 @@ var (
 	supportedServiceRegion     *SupportedServiceRegionsData
 )
 
-var notFoundErrorPrefixes = []string{
-	"ResourceNotFoundException",
-	"WAFNonexistentItemException",
+var notFoundErrorSubstrings = []string{
 	"NoSuch",
 	"NotFound",
-	"NotFoundError",
+	"ResourceNotFoundException",
+	"WAFNonexistentItemException",
 }
 
 func readSupportedServiceRegions() *SupportedServiceRegionsData {
@@ -292,7 +291,7 @@ func isNotFoundError(err error) bool {
 		return false
 	}
 	errorCode := ae.ErrorCode()
-	for _, s := range notFoundErrorPrefixes {
+	for _, s := range notFoundErrorSubstrings {
 		if strings.Contains(errorCode, s) {
 			return true
 		}
