@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/gocarina/gocsv"
@@ -657,11 +658,25 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 		case "ReportNotPresent", "ReportExpired":
 			_, err := svc.GenerateCredentialReport(ctx, &iam.GenerateCredentialReportInput{})
 			if err != nil {
-				return nil, diag.WrapError(err)
+				var serviceError smithy.APIError
+				if !errors.As(err, &serviceError) {
+					return nil, diag.WrapError(err)
+				}
+				// LimitExceeded is the only specific error that should not stop processing
+				// If Limit Exceeded is returned we should try and see if there is a credential report
+				// already generated so we want to sleep for 5 seconds then continue
+				if serviceError.ErrorCode() != "LimitExceeded" {
+					return nil, diag.WrapError(err)
+				}
+				if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
+					return nil, diag.WrapError(err)
+				}
 			}
 		case "ReportInProgress":
 			meta.Logger().Debug("Waiting for credential report to be generated", "resource", "iam.users")
-			time.Sleep(5 * time.Second)
+			if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
+				return nil, diag.WrapError(err)
+			}
 		default:
 			return nil, diag.WrapError(err)
 		}
