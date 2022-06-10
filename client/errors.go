@@ -53,10 +53,10 @@ var throttleCodes = map[string]struct{}{
 func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	client := meta.(*Client)
 
-	return classifyError(err, diag.RESOLVING, client.Accounts, diag.WithResourceName(resourceName), includeResourceIdWithAccount(client, err))
+	return classifyError(err, diag.RESOLVING, client.ServicesManager.services.Accounts(), diag.WithResourceName(resourceName), includeResourceIdWithAccount(client, err))
 }
 
-func classifyError(err error, fallbackType diag.Type, accounts []Account, opts ...diag.BaseErrorOption) diag.Diagnostics {
+func classifyError(err error, fallbackType diag.Type, accounts []string, opts ...diag.BaseErrorOption) diag.Diagnostics {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
@@ -199,7 +199,7 @@ func ParseSummaryMessage(err error) diag.BaseErrorOption {
 }
 
 // RedactError redacts a given diagnostic and returns a RedactedDiagnostic containing both original and redacted versions
-func RedactError(aa []Account, e diag.Diagnostic) diag.Diagnostic {
+func RedactError(aa []string, e diag.Diagnostic) diag.Diagnostic {
 	r := diag.NewBaseError(
 		nil,
 		e.Type(),
@@ -227,9 +227,9 @@ func isCodeThrottle(code string) bool {
 	return ok
 }
 
-func removePII(aa []Account, msg string) string {
-	for i := range aa {
-		msg = strings.ReplaceAll(msg, " AccountID "+aa[i].ID, " AccountID xxxx")
+func removePII(aa []string, msg string) string {
+	for _, i := range aa {
+		msg = strings.ReplaceAll(msg, " AccountID "+i, " AccountID xxxx")
 	}
 	msg = requestIdRegex.ReplaceAllString(msg, " ${1} xxxx")
 	msg = hostIdRegex.ReplaceAllString(msg, " HostID: xxxx")

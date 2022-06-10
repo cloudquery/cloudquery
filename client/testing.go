@@ -28,9 +28,9 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		max_retries = 3
 		max_backoff = 60
 	`
-	accounts := []Account{
-		{ID: "testAccount"},
-	}
+	// accounts := []Account{
+	// 	{ID: "testAccount"},
+	// }
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
@@ -39,8 +39,8 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
 				c := NewAwsClient(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
-				}), accounts)
-				c.ServicesManager.InitServicesForAccountAndRegion("testAccount", "us-east-1", builder(t, ctrl))
+				}))
+				c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", builder(t, ctrl))
 				c.Partition = "aws"
 				return &c, nil
 			},
