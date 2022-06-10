@@ -29,6 +29,7 @@ type Config struct {
 	AWSDebug     bool      `hcl:"aws_debug,optional"`
 	MaxRetries   int       `hcl:"max_retries,optional" default:"10"`
 	MaxBackoff   int       `hcl:"max_backoff,optional" default:"30"`
+	GlobalRegion string    `hcl:"global_region,optional" default:"us-east-1"`
 }
 
 func (Config) Example() string {

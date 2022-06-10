@@ -6,7 +6,7 @@ import (
 
 type awsLogger struct {
 	hclog.Logger
-	accounts []Account
+	accounts []string
 }
 
 func (a awsLogger) Log(level hclog.Level, msg string, args ...interface{}) {

@@ -210,9 +210,9 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-func accountObfusactor(aa []Account, msg string) string {
+func accountObfusactor(aa []string, msg string) string {
 	for _, a := range aa {
-		msg = strings.ReplaceAll(msg, a.ID, obfuscateAccountId(a.ID))
+		msg = strings.ReplaceAll(msg, a, obfuscateAccountId(a))
 	}
 	return msg
 }

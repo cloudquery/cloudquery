@@ -57,7 +57,7 @@ func TestRemovePII(t *testing.T) {
 		},
 	}
 	for i, tc := range cases {
-		res := removePII([]Account{{ID: "123456789"}}, tc.Input)
+		res := removePII([]string{"123456789"}, tc.Input)
 		assert.Equalf(t, tc.Expected, res, "Case #%d", i+1)
 	}
 }
