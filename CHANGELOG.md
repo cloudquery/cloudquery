@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.9](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.8...v0.12.9) (2022-06-10)
+
+
+### Bug Fixes
+
+* Added FailedResourceAccessException to error classifier ([#1028](https://github.com/cloudquery/cq-provider-aws/issues/1028)) ([f43fe15](https://github.com/cloudquery/cq-provider-aws/commit/f43fe15f502936b99a331842ba5e07824a904e62))
+* Continue fetching on incorrect account permissions ([#1030](https://github.com/cloudquery/cq-provider-aws/issues/1030)) ([71008d2](https://github.com/cloudquery/cq-provider-aws/commit/71008d2854ab8d5f8248a38a916eaf1554d4391e))
+* Improve IAM Report Error Handling ([#1009](https://github.com/cloudquery/cq-provider-aws/issues/1009)) ([1c77a63](https://github.com/cloudquery/cq-provider-aws/commit/1c77a63d868376b050476276c799e3f8b88f6de5))
+
 ## [0.12.8](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.7...v0.12.8) (2022-06-08)
 
 
