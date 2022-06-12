@@ -159,7 +159,7 @@ jobs:
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-        if: ${{  github.event_name != 'pull_request_target' && failure() }}
+        if: ${{  github.event_name == 'push' && failure() }}
         env:
           SLACK_CHANNEL: oss-tests
           SLACK_COLOR: ${{ job.status }}
