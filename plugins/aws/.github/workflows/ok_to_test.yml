@@ -8,7 +8,7 @@ jobs:
   manual-approve:
     runs-on: ubuntu-latest
     steps:
-      - name: Slash Command Dispatch
+      - name: Trigger AWS provider integration tests 
         uses: peter-evans/slash-command-dispatch@v3
         with:
           token: ${{ secrets.GH_CQ_BOT }}
