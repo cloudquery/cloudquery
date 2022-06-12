@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.11](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.10...v0.8.11) (2022-06-09)
+
+
+### Bug Fixes
+
+* Fixed error detail when bigquery is disabled ([#323](https://github.com/cloudquery/cq-provider-gcp/issues/323)) ([25de1ba](https://github.com/cloudquery/cq-provider-gcp/commit/25de1ba20419779f1a84baec5b210eaf4b41deb5))
+
 ## [0.8.10](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.9...v0.8.10) (2022-06-09)
 
 
