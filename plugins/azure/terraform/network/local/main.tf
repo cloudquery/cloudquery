@@ -1,4 +1,4 @@
 module "demo" {
     source = "../modules/test"
-    prefix = "cq"
+    prefix = var.prefix
 }
