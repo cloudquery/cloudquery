@@ -50,7 +50,7 @@ jobs:
     permissions:
         id-token: write
         contents: read
-    needs: [is_organization_member, manually_approved]
+    needs: [is_organization_member, ok_to_test]
     # Allow conditions in order
     # 1. is_organization_member - for pull requests from CloudQuery employees
     # 2. ok_to_test - for pull requests from external contributors (after manually approved)
