@@ -106,6 +106,7 @@ jobs:
         if: github.event_name == 'repository_dispatch'
         id: checks-action
         with:
+          repo: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           name: "test_integration (${{ matrix.dbversion }}, ${{ matrix.go }}, ${{ matrix.platform }})"
           sha: "${{ github.event.client_payload.slash_command.args.named.sha }}"
@@ -157,6 +158,7 @@ jobs:
       - uses: LouisBrunner/checks-action@3d24d4813a797720cc4e2080a50bdafb3373aef1
         if: ${{ github.event_name == 'repository_dispatch' && success() }}
         with:
+          repo: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           check_id: ${{ steps.checks-action.outputs.check_id }}
           sha: "${{ github.event.client_payload.slash_command.args.named.sha }}"
@@ -167,6 +169,7 @@ jobs:
       - uses: LouisBrunner/checks-action@3d24d4813a797720cc4e2080a50bdafb3373aef1
         if: ${{ github.event_name == 'repository_dispatch' && failure() }}
         with:
+          repo: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           check_id: ${{ steps.checks-action.outputs.check_id }}
           sha: "${{ github.event.client_payload.slash_command.args.named.sha }}"
