@@ -140,6 +140,10 @@ func fetchRegistryRepositories(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		certs, resp, err := svc.DoClient.Registry.ListRepositories(ctx, registry.Name, opt)
 		if err != nil {
+			if client.IsErrorMessage(err, "registry does not exist") {
+				meta.Logger().Debug("received registry not found on ListRepositories", "err", err)
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
