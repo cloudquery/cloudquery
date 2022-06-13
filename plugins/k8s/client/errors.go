@@ -15,8 +15,11 @@ func ErrorClassifier(_ schema.ClientMeta, resourceName string, err error) diag.D
 func classifyError(err error, fallbackType diag.Type, opts ...diag.BaseErrorOption) diag.Diagnostics {
 	ie := errors.Unwrap(err)
 	if se, ok := ie.(k8s.APIStatus); ok {
-		if se.Status().Code == 403 {
+		switch se.Status().Code {
+		case 403:
 			return diag.FromError(ie, diag.ACCESS, diag.WithSeverity(diag.WARNING), diag.WithDetails(se.Status().Details.String()))
+		case 404:
+			return diag.FromError(ie, diag.RESOLVING, diag.WithSeverity(diag.IGNORE), diag.WithDetails("Current version of k8s might not support the requested resource. Consider upgrading k8s to the latest version"))
 		}
 	}
 	return diag.Diagnostics{diag.NewBaseError(err, fallbackType, opts...)}
