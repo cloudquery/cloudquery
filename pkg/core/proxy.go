@@ -1,8 +1,9 @@
 package core
 
 import (
-	"github.com/cloudquery/cloudquery/pkg/config"
 	"os"
+
+	"github.com/cloudquery/cloudquery/pkg/config"
 )
 
 func ConfigureProxy(pCfg *config.Proxy) {
