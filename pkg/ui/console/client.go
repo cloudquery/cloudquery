@@ -155,6 +155,8 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 		c.Providers[i] = registry.Provider{Name: name, Version: rp.Version, Source: src}
 	}
 
+	core.ConfigureProxy(cfg.CloudQuery.Proxy)
+
 	c.checkForUpdate(ctx)
 	return c, nil
 }

@@ -28,15 +28,16 @@ type History struct {
 }
 
 type CloudQuery struct {
-	// Deprecated. Value from hcl is overrwritten.
+	// Deprecated. Value from hcl is overwritten.
 	PluginDirectory string `hcl:"plugin_directory,optional"`
-	// Deprecated. Value from hcl is overrwritten.
+	// Deprecated. Value from hcl is overwritten.
 	PolicyDirectory string `hcl:"policy_directory,optional"`
 
 	Logger     *logging.Config   `hcl:"logging,block"`
 	Providers  RequiredProviders `hcl:"provider,block"`
 	Connection *Connection       `hcl:"connection,block"`
 	Policy     *Policy           `hcl:"policy,block"`
+	Proxy      *Proxy            `hcl:"proxy,block"`
 	// Deprecated
 	History *History `hcl:"history,block"`
 }
@@ -63,6 +64,13 @@ type RequiredProvider struct {
 	Name    string  `hcl:"name,label"`
 	Source  *string `hcl:"source,optional"`
 	Version string  `hcl:"version"`
+}
+
+// Proxy allows to set or owerwrite proxy configuration environment variables.
+type Proxy struct {
+	HttpProxy     *string `hcl:"http_proxy,optional"`
+	HttpsProxy    *string `hcl:"https_proxy,optional"`
+	RequestMethod *string `hcl:"request_method,optional"`
 }
 
 type RequiredProviders []*RequiredProvider
