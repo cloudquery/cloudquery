@@ -4,6 +4,19 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.25.1](https://github.com/cloudquery/cloudquery/compare/v0.25.0...v0.25.1) (2022-06-13)
+
+
+### Features
+
+* Add clickable links support ([#882](https://github.com/cloudquery/cloudquery/issues/882)) ([366d585](https://github.com/cloudquery/cloudquery/commit/366d585d34947c1d3cbcb7864bad281798d86dbe))
+
+
+### Bug Fixes
+
+* **deps:** Bump github.com/hashicorp/go-getter from 1.5.11 to 1.6.1 ([#881](https://github.com/cloudquery/cloudquery/issues/881)) ([1dddb95](https://github.com/cloudquery/cloudquery/commit/1dddb952ec51d6fd17fc5f2c8190c8b23cc76a93))
+* Improve invalid provider version error ([#879](https://github.com/cloudquery/cloudquery/issues/879)) ([6a03444](https://github.com/cloudquery/cloudquery/commit/6a0344435d9a7611100e62e1c03fbb01b377bcdf))
+
 ## [0.25.0](https://github.com/cloudquery/cloudquery/compare/v0.24.11...v0.25.0) (2022-06-09)
 
 
